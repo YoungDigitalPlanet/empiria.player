@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="qtiplayer" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="empiria.player" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
 	<tstamp><format property="tstamp" pattern="yyyyMMddHHmm" timezone="GMT"/></tstamp>
-	<property file="./default.properties" />
+	<property file="default.properties" />
 	
-	<dirname property="base.dir" file="${ant.file.qtiplayer.build}" />
-	<property name="lib.dir" value="${base.dir}/libs" />	
+	<dirname property="base.dir" file="${ant.file.empiria.player}" />
+	<property name="lib.dir" value="${base.dir}/ivy-lib" />	
+	<property name="lib.static.dir" value="${base.dir}/static-lib" />	
 	<echo>${lib.dir}</echo>
 	
-  <!-- Configure path to GWT SDK -->
-  <!--property name="gwt.sdk" location="/home/klangner/lib/gwt-linux-1.7.1" /-->
   <condition property="XstartOnFirstThread" value="-XstartOnFirstThread">
     <os family="mac"/>
   </condition>
+  
   <condition property="XstartOnFirstThread" value="">
     <not><os family="mac"/></not>
   </condition>
 
   <path id="project.class.path">
     <pathelement location="war/WEB-INF/classes"/>
-    <!--pathelement location="${gwt.sdk}/gwt-user.jar"/-->
     <fileset dir="${lib.dir}" includes="**/*.jar"/>
-    <!-- Add any additional non-server libs (such as JUnit) -->
+    <fileset dir="${lib.static.dir}" includes="**/*.jar"/>
     <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
   </path>
 
@@ -32,12 +31,13 @@
   <target name="libs" depends="resolve" description="Copy libs to WEB-INF/lib">
     <mkdir dir="war/WEB-INF/lib" />
     <copy todir="war/WEB-INF/lib">
-		<fileset dir="${lib.dir}" includes="**/*.jar"/>  
+		<fileset dir="${lib.dir}" includes="**/*.jar"/> 
+		<fileset dir="${lib.static.dir}" includes="**/*.jar"/>  
 	</copy>
     <!-- Add any additional server libs that need to be copied -->
   </target>
 
-  <target name="javac" depends="libs" description="Compile java source">
+  <target name="javac" depends="resolve" description="Compile java source">
     <mkdir dir="war/WEB-INF/classes"/>
     <javac srcdir="src" includes="**" encoding="utf-8"
         destdir="war/WEB-INF/classes"
@@ -60,7 +60,7 @@
       <jvmarg value="-Xmx256M"/>
       <jvmarg line="${XstartOnFirstThread}"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
-      <arg value="com.qtitools.player.Player"/>
+      <arg value="eu.ydp.empiria.player.Player"/>
     </java>
   </target>
 
@@ -82,55 +82,29 @@
   <target name="build" depends="gwtc" description="Build this project" />
 
   <target name="war" depends="build" description="Create a war file">
-    <zip destfile="qtiplayer.war" basedir="war"/>
+    <zip destfile="empiriaplayer.war" basedir="war"/>
   </target>
 
   <target name="clean" description="Cleans this project">
     <delete dir="dist"/>
     <delete dir="war/WEB-INF/classes" failonerror="false" />
-    <delete dir="war/qtiplayer" failonerror="false" />
+    <delete dir="war/empiria.player" failonerror="false" />
   </target>
   
   <target name="buildnumber" description="Update build number">
-	<ivy:buildnumber organisation="eu.ydp" module="qtiplayer" />
-  </target>
-  
-  <target name="modulelib" depends="javac, buildnumber" description="Create module library">
-    <mkdir dir="dist/lib" />
-    <copy todir="dist/lib">
-      <fileset dir="war/WEB-INF/classes" includes="**/player/**"/>
-      <fileset dir="src" includes="**/player/**"/>
-    </copy>
-
-	<zip destfile="dist/qtiplayerlib.jar" basedir="dist/lib"/>
+	<ivy:buildnumber organisation="eu.ydp" module="empiriaplayer" />
   </target>
 
-  <target name="dist" depends="clean, build, modulelib, buildnumber" description="Create java script distribution">
+  <target name="dist" depends="clean, build, buildnumber" description="Create java script distribution">
     <mkdir dir="dist/build" />
-    <copy todir="dist/build/qtiplayer">
-      <fileset dir="war/qtiplayer"/>
+    <copy todir="dist/build/empiria.player/empiria.player">
+      <fileset dir="war/empiria.player"/>
     </copy>
-    <copy todir="dist/build/scorm">
-      <fileset dir="war/scorm"/>
-    </copy>
-    <copy todir="dist/build/images">
-      <fileset dir="war/images"/>
-    </copy>
-    <copy todir="dist/build/content/demo">
-      <fileset dir="war/content/demo"/>
-    </copy>
-    <copy todir="dist/build/content" file="war/content/demo.xml" />
-	<copy todir="dist/build/content" file="war/content/demo.css" />
-    <copy todir="dist/build" file="war/demo.html" />
-    <copy todir="dist/build" file="war/defaultplayer.css" />
-	<copy todir="dist/build" file="war/locale_en.js" />
 
-    <zip destfile="dist/qtiplayer.zip" basedir="dist/build/qtiplayer"/>
-    <zip destfile="dist/qtiplayer-${version}.zip" basedir="dist/build"/>
-  	<zip destfile="dist/qtiplayerLibs.zip" basedir="./libs"/>
+    <zip destfile="dist/empiriaplayer.zip" basedir="dist/build/empiria.player"/>
   </target>
   
-  <target name="publish" depends="dist, modulelib" description="Publish artifacts into Ivy repository">  	
+  <target name="publish" depends="dist" description="Publish artifacts into Ivy repository">  	
   	<!-- resolve is needed to get organization/module from ivy.xml for publish task !-->
 		<ivy:resolve />
 		<ivy:publish
