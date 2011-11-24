@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.7.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/1.7.0/distro-source/core/src/gwt-module.dtd">
+<module rename-to='empiria.player'>
+
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	<inherits name='com.google.gwt.user.ImageBundle' />
+	<inherits name="com.google.gwt.http.HTTP" />
+	<inherits name="com.google.gwt.xml.XML" />
+	<inherits name="com.google.gwt.json.JSON" />
+	<inherits name='org.vaadin.gwtgraphics.GWTGraphics' />
+	<inherits name='com.allen_sauer.gwt.voices.gwt-voices' />
+	<inherits name='pl.smath.expression.Expression' />
+	<inherits name='gwt.g2d.g2d'/>
+	<inherits name='pl.smath.renderer.Renderer' />
+	
+	<!-- google gin -->
+	<inherits name="com.google.gwt.inject.Inject"/>
+	
+	<set-property name="compiler.emulatedStack" value="true" />
+	<set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true" />
+
+	<!-- Specify the app entry point class. -->
+	<entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint' />
+
+	<!-- Application standard css (override standard.css) -->
+	<stylesheet src="standardplayer.css" />
+
+	<!-- css parser -->
+	<script src="jscss/cssparser.js" />
+
+	<!-- Flash player as default value -->
+	<script src="video/AC_RunActiveContent.js" />
+	<script src="video/FAVideo.js" />
+
+	<replace-with
+		class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
+		<when-type-is
+			class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+	</replace-with>
+
+	<!-- Use video tag for iphone browser -->
+	<replace-with
+		class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
+		<when-type-is
+			class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+		<any>
+			<when-property-is name="user.agent" value="safari" />
+		</any>
+	</replace-with>
+
+	<!-- link as default value for audio -->
+	<replace-with
+		class="eu.ydp.empiria.player.client.module.object.impl.EmbedAudioImpl">
+		<when-type-is
+			class="eu.ydp.empiria.player.client.module.object.impl.AudioImpl" />
+	</replace-with>
+
+	<!-- Use audio tag for iphone browser -->
+	<replace-with
+		class="eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl">
+		<when-type-is
+			class="eu.ydp.empiria.player.client.module.object.impl.AudioImpl" />
+		<any>
+			<when-property-is name="user.agent" value="safari" />
+		</any>
+	</replace-with>
+
+</module>
