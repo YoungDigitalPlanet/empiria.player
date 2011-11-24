@@ -1,11 +1,11 @@
 <ivy-module version="2.0">
   <info organisation="eu.ydp" module="empiriaPlayer"/>
 	<configurations>
-		<conf name="empiriaplayer_executables"  description="Player executables"/>
+		<conf name="default"  description="Player executables"/>
   </configurations>
   
   <publications>
-  	<artifact name="empiriaplayer" type="zip" conf="empiriaplayer_executables" ext="zip"/>
+  	<artifact name="empiriaplayer" type="zip" conf="default" ext="zip"/>
   </publications>
 
   <dependencies>
