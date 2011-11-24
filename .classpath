@@ -3,16 +3,18 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/junit.jar"/>
-	<classpathentry kind="lib" path="libs/gwt-graphics-0.9.6.jar"/>
-	<classpathentry kind="lib" path="libs/aopalliance.jar"/>
-	<classpathentry kind="lib" path="libs/gin.jar"/>
-	<classpathentry kind="lib" path="libs/guice.jar"/>
-	<classpathentry kind="lib" path="libs/smath-expression.jar"/>
-	<classpathentry kind="lib" path="libs/smath-renderer.jar"/>
-	<classpathentry kind="lib" path="libs/gwt-g2d-v007.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT (2)"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/gwt-voices-1.7.0.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/aopalliance.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/gin.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/guice.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/gwt-dev.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/gwt-servlet.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/gwt-user.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/gwt-g2d-v007.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/gwt-graphics-0.9.6.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/gwt-voices-1.7.0.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/smath-expression.jar"/>
+	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/smath-renderer.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

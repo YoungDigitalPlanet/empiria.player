@@ -1,15 +1,11 @@
 <ivy-module version="2.0">
-  <info organisation="eu.ydp" module="qtiplayer"/>
+  <info organisation="eu.ydp" module="empiriaPlayer"/>
 	<configurations>
-		<conf name="qtiplayer"  description="Player runtime"/>
-		<conf name="qtiplayer_lib"  description="Player as library"/>
-		<conf name="libs" description="Libs required to build qtiplayer"/>
+		<conf name="empiriaplayer_executables"  description="Player executables"/>
   </configurations>
   
   <publications>
-  	<artifact name="qtiplayer" type="zip" conf="qtiplayer" ext="zip"/>
-	<artifact name="qtiplayerLibs" type="zip" conf="libs" ext="zip"/>
-	<artifact name="qtiplayerlib" type="jar" conf="qtiplayer_lib" ext="jar"/>
+  	<artifact name="empiriaplayer" type="zip" conf="empiriaplayer_executables" ext="zip"/>
   </publications>
 
   <dependencies>
