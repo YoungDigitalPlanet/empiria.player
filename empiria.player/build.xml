@@ -97,7 +97,7 @@
 
   <target name="dist" depends="clean, build, buildnumber" description="Create java script distribution">
     <mkdir dir="dist/build" />
-    <copy todir="dist/build/empiria.player/empiria.player">
+    <copy todir="dist/build/empiria.player">
       <fileset dir="war/empiria.player"/>
     </copy>
 
