@@ -1,0 +1,21 @@
+<ivy-module version="2.0">
+  <info organisation="eu.ydp" module="qtiplayer"/>
+	<configurations>
+		<conf name="qtiplayer"  description="Player runtime"/>
+		<conf name="qtiplayer_lib"  description="Player as library"/>
+		<conf name="libs" description="Libs required to build qtiplayer"/>
+  </configurations>
+  
+  <publications>
+  	<artifact name="qtiplayer" type="zip" conf="qtiplayer" ext="zip"/>
+	<artifact name="qtiplayerLibs" type="zip" conf="libs" ext="zip"/>
+	<artifact name="qtiplayerlib" type="jar" conf="qtiplayer_lib" ext="jar"/>
+  </publications>
+
+  <dependencies>
+    <dependency org="com.google.gwt" name="gwt-servlet" rev="2.0.0"/>  
+    <dependency org="com.google.gwt" name="gwt-user" rev="2.0.0"/>  
+    <dependency org="com.google.gwt" name="gwt-dev" rev="2.0.0"/> 
+	<dependency org="com.google.gwt.inject" name="gin" rev="1.0" conf="*->default" />
+  </dependencies>
+</ivy-module>
