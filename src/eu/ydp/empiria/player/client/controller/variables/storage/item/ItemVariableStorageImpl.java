@@ -39,6 +39,7 @@ public class ItemVariableStorageImpl<V extends Variable> extends VariablePossess
 		return stateArr;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void fromJSON(JSONValue json){
 		
 		JSONArray jsonArr = json.isArray();
@@ -50,7 +51,10 @@ public class ItemVariableStorageImpl<V extends Variable> extends VariablePossess
 				if (type.equals("Outcome")){
 					Variable o = new Outcome();
 					o.fromJSON(jsonArr.get(i));
-					currVar = (V)o;
+					try {
+						currVar = (V)o;
+					} catch (Exception e) {
+					}
 				}
 				if (currVar != null){
 					variables.put(currVar.identifier, currVar);
