@@ -70,11 +70,11 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 	
 	public ChoiceModule(Element element, ModuleSocket moduleSocket, ModuleInteractionEventsListener stateChangedListener){
 		
-		multi = (XMLUtils.getAttributeAsInt(element, "maxChoices") != 1);
 		shuffle = XMLUtils.getAttributeAsBoolean(element, "shuffle");
 
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
+		multi = response.cardinality == Cardinality.MULTIPLE;
 		stateListener = stateChangedListener;
 		
 		VerticalPanel vp = new VerticalPanel();
