@@ -6,8 +6,8 @@ import java.util.Set;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.controller.style.variables.IVariableCreator;
-import eu.ydp.empiria.player.client.controller.style.variables.VariablePossessorBase;
+import eu.ydp.empiria.player.client.controller.variables.IVariableCreator;
+import eu.ydp.empiria.player.client.controller.variables.VariablePossessorBase;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 
 

@@ -16,6 +16,7 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEvent;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEventTrigger;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModuleEventsListener;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
@@ -70,6 +71,12 @@ public class IdentificationModule extends Composite implements
 		}
 		
 		initWidget(panel);
+
+		NodeList childNodes = element.getChildNodes();
+		for (int f = 0 ; f < childNodes.getLength() ; f ++){
+			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
+				moduleSocket.add(new InlineFeedback(panel, childNodes.item(f), moduleEventsListener));
+		}
 	}
 	
 	private int maxSelections;

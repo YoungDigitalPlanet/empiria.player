@@ -10,7 +10,7 @@ import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
 
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
-import eu.ydp.empiria.player.client.controller.style.variables.VariableProviderSocket;
+import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;

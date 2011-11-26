@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.style.variables;
+package eu.ydp.empiria.player.client.controller.variables;
 
 import java.util.HashMap;
 import java.util.Set;

@@ -83,6 +83,7 @@ public class FeedbackManager implements InlineFeedbackSocket{
 						currFeedback.getValue().contains("^")  ||
 						currFeedback.getValue().contains("$")  ||
 						currFeedback.getValue().contains("]")  ||
+						currFeedback.getValue().contains("|")  ||
 						currFeedback.getValue().contains(")")){
 				String currVarValues = currVar.getValuesShort();
 				try {
