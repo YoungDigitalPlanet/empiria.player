@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.style.variables;
+package eu.ydp.empiria.player.client.controller.variables;
 
 import java.util.Set;
 
@@ -34,10 +34,10 @@ public abstract class VariableProviderBase implements JsSocketHolder, VariablePr
 		var socket = [];
 		var instance = this;
 		socket.getVariableIdentifiers = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.style.variables.VariableProviderBase::getVariableIdentifiersJs()();
+			return instance.@eu.ydp.empiria.player.client.controller.variables.VariableProviderBase::getVariableIdentifiersJs()();
 		}
 		socket.getVariableValue = function(identifier){
-			return instance.@eu.ydp.empiria.player.client.controller.style.variables.VariableProviderBase::getVariableValuesShortJs(Ljava/lang/String;)(identifier);
+			return instance.@eu.ydp.empiria.player.client.controller.variables.VariableProviderBase::getVariableValuesShortJs(Ljava/lang/String;)(identifier);
 		}
 		return socket;
 	}-*/;

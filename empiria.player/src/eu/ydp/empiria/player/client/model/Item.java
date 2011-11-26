@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
-import eu.ydp.empiria.player.client.controller.style.variables.IVariableCreator;
+import eu.ydp.empiria.player.client.controller.variables.IVariableCreator;
 import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseTypeConverter;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;

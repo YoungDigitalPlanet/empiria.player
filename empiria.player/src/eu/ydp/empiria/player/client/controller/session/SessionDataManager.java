@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataS
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.SessionSocket;
-import eu.ydp.empiria.player.client.controller.style.variables.VariableProviderSocket;
+import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl;
 import eu.ydp.empiria.player.client.module.IStateful;

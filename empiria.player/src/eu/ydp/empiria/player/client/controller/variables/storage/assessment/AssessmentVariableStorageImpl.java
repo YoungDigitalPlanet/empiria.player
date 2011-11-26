@@ -5,7 +5,7 @@ import java.util.Set;
 import com.google.gwt.core.client.JavaScriptObject;
 import eu.ydp.empiria.player.client.controller.communication.sockets.JsSocketHolder;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemsCollectionSessionDataSocket;
-import eu.ydp.empiria.player.client.controller.style.variables.VariableProviderBase;
+import eu.ydp.empiria.player.client.controller.variables.VariableProviderBase;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
