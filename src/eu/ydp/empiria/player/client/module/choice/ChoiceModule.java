@@ -40,6 +40,7 @@ import eu.ydp.empiria.player.client.controller.events.internal.InternalEvent;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEventTrigger;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
 import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionEventsListener;
@@ -84,6 +85,12 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 		vp.add(getOptionsView(element, moduleSocket, stateChangedListener));
 		
 		initWidget(vp);
+		
+		NodeList childNodes = element.getChildNodes();
+		for (int f = 0 ; f < childNodes.getLength() ; f ++){
+			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
+				moduleSocket.add(new InlineFeedback(vp, childNodes.item(f), stateChangedListener));
+		}
 	}
 	
 
