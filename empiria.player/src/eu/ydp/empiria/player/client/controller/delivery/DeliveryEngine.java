@@ -151,7 +151,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	@Override
 	public void onDataReady() {
-		extensionsManager.init();
+		initExtensions();
 		flowManager.init(dataManager.getItemsCount());
 		assessmentController.init(dataManager.getAssessmentData());
 		getDeliveryEventsListener().onDeliveryEvent(
@@ -163,15 +163,16 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		updatePageStyle();
 	}
 
+	private void loadPredefinedExtensions() {
+		
+	}
+
 	public void loadExtension(JavaScriptObject extension) {
 		List<Extension> currExtensions = extensionsManager
 				.addExtension(extension);
 		for (Extension currExtension : currExtensions) {
 			integrateExtension(currExtension);
 		}
-	}
-
-	private void loadPredefinedExtensions() {
 	}
 
 	public void loadExtension(String extensionName) {
@@ -189,17 +190,13 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	protected void integrateExtension(Extension extension) {
 		if (extension != null) {
-			if (extension instanceof FlowRequestProcessorExtension) {
-				flowManager
-						.addCommandProcessor(((FlowRequestProcessorExtension) extension));
+			if (extension instanceof StyleSocketUserExtension) {
+				((JsStyleSocketUserExtension) extension)
+						.setStyleSocket(styleSocket);
 			}
 			if (extension instanceof DeliveryEventsListenerExtension) {
 				deliveryEventsHub
 						.addDeliveryEventsListener(((DeliveryEventsListener) extension));
-			}
-			if (extension instanceof StyleSocketUserExtension) {
-				((JsStyleSocketUserExtension) extension)
-						.setStyleSocket(styleSocket);
 			}
 			if (extension instanceof FlowCommandsSocketUserExtension) {
 				((FlowCommandsSocketUserExtension) extension)
@@ -240,16 +237,34 @@ public class DeliveryEngine implements DataLoaderEventListener,
 				((PlayerJsObjectModifierExtension) extension)
 						.setPlayerJsObject(playerJsObject);
 			}
-			if (extension instanceof AssessmentHeaderViewExtension) {
-				assessmentController
-						.setHeaderViewSocket(((AssessmentHeaderViewExtension) extension).getAssessmentHeaderViewSocket());
-			}
-			if (extension instanceof AssessmentFooterViewExtension) {
-				assessmentController
-						.setFooterViewSocket(((AssessmentFooterViewExtension) extension).getAssessmentFooterViewSocket());
-			}
 		}
+	}
+	
+	protected void initExtensions(){
+		extensionsManager.init();
+		employExtensions();
+	}
 
+	protected void employExtensions(){
+		for (Extension currExtension : extensionsManager.getExtensions()) {
+			employExtension(currExtension);
+		}
+	}
+	
+	protected void employExtension(Extension extension){
+		if (extension instanceof FlowRequestProcessorExtension) {
+			flowManager
+					.addCommandProcessor(((FlowRequestProcessorExtension) extension));
+		}
+		if (extension instanceof AssessmentHeaderViewExtension) {
+			assessmentController
+					.setHeaderViewSocket(((AssessmentHeaderViewExtension) extension).getAssessmentHeaderViewSocket());
+		}
+		if (extension instanceof AssessmentFooterViewExtension) {
+			assessmentController
+					.setFooterViewSocket(((AssessmentFooterViewExtension) extension).getAssessmentFooterViewSocket());
+		}
+		
 	}
 
 	@Override
