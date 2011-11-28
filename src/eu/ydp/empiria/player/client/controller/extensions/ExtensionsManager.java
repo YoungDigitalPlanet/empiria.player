@@ -126,6 +126,10 @@ public class ExtensionsManager implements IStateful  {
 		return currExtensions;		
 	}
 	
+	public List<Extension> getExtensions(){
+		return extensions;
+	}
+	
 	public Extension getInternaleExtensionByName(String name){
 		if ("DefaultAssessmentHeaderViewExtension".equals(name))
 			return new DefaultAssessmentHeaderViewExtension();
