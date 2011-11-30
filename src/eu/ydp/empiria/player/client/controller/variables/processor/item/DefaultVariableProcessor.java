@@ -97,6 +97,8 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					outcomes.get(currKey+"-LASTMISTAKEN").values.set(0,  String.valueOf(lastMistakes));
 				}
 				if (outcomes.containsKey(currKey+"-MISTAKES")){
+					if (outcomes.get(currKey+"-MISTAKES").values.size() == 0)
+						outcomes.get(currKey+"-MISTAKES").values.add("0");
 					Integer mistakes = Integer.parseInt( outcomes.get(currKey+"-MISTAKES").values.get(0) );
 					mistakes += Integer.parseInt( outcomes.get(currKey+"-LASTMISTAKEN").values.get(0) );
 					outcomes.get(currKey+"-MISTAKES").values.set(0, mistakes.toString());
@@ -134,6 +136,8 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			outcomes.get("LASTMISTAKEN").values.set(0, lastMistakes.toString());
 			
 			if (outcomes.containsKey("MISTAKES")){
+				if (outcomes.get("MISTAKES").values.size() == 0)
+					outcomes.get("MISTAKES").values.add("0");
 				Integer mistakes = Integer.parseInt( outcomes.get("MISTAKES").values.get(0) );
 				mistakes += Integer.parseInt( outcomes.get("LASTMISTAKEN").values.get(0) );
 				outcomes.get("MISTAKES").values.set(0, mistakes.toString());
@@ -328,6 +332,8 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	private void ensureVariable(HashMap<String, Outcome> outcomes, Outcome variable){
 		if (!outcomes.containsKey(variable.identifier)){
 			outcomes.put(variable.identifier, variable);
+		} else if (variable.values.size() > 0  &&  outcomes.get(variable.identifier).values.size() == 0){
+			outcomes.get(variable.identifier).values.addAll(variable.values);
 		}
 	}
 
