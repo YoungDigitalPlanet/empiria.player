@@ -10,7 +10,7 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.model.IModuleCreator;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
 public abstract class XMLConverter {
@@ -21,13 +21,13 @@ public abstract class XMLConverter {
 		return dom;
 	}
 	
-	public static Element getDOM(com.google.gwt.xml.client.Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, DisplayContentOptions options){
+	public static Element getDOM(com.google.gwt.xml.client.Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, DisplayContentOptions options){
 		Element dom = createElement(element);
 		parseXMLElement(element, dom, moduleSocket, moduleEventsListener, moduleCreator, null, options.getIgnoredTagsAsVector());
 		return dom;
 	}
 
-	public static Element getDOM(com.google.gwt.xml.client.Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, Vector<String> ignoredTags){
+	public static Element getDOM(com.google.gwt.xml.client.Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, Vector<String> ignoredTags){
 		Element dom = createElement(element);
 		parseXMLElement(element, dom, moduleSocket, moduleEventsListener, moduleCreator, ignoredTags, null);
 		return dom;
@@ -40,7 +40,7 @@ public abstract class XMLConverter {
 	}
 	
 	private static void parseXMLElement(com.google.gwt.xml.client.Element srcElement, com.google.gwt.dom.client.Element dstElement, 
-			ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, 
+			ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, 
 			Vector<String> ignoredNodes, Vector<String> ignoredTagNames){
 		NodeList	nodes = srcElement.getChildNodes();
 		Document	doc = Document.get();

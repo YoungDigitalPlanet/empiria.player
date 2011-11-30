@@ -19,14 +19,14 @@ import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEvent;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEventTrigger;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.order.dndcomponent.DragContainerPanel;
 import eu.ydp.empiria.player.client.module.order.dndcomponent.DragMode;
 
 public class TestModule extends Composite implements IInteractionModule {
 
-	public TestModule(Element element, ModuleSocket moduleSocket, ModuleInteractionEventsListener stateChangedListener){
+	public TestModule(Element element, ModuleSocket moduleSocket, ModuleInteractionListener stateChangedListener){
 		
 		String dm = element.getAttribute("dragMode");
 		

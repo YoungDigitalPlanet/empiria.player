@@ -4,5 +4,4 @@ public interface InteractionEventsSocket extends InteractionEventsListener {
 
 	void addStateChangedInteractionEventsListener(StateChangedInteractionEventListener stateChangedListener);
 	void removeStateChangedInteractionEventsListener(StateChangedInteractionEventListener stateChangedListener);
-	void addSoundPlayInteractionEventsListener(FeedbackInteractionEventListner soundPlayListener);
 }

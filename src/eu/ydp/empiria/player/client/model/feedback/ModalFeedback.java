@@ -10,7 +10,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEventListner;
-import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackSoundInteractionEvent;
+import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 
@@ -124,7 +124,7 @@ public class ModalFeedback extends Composite implements IItemFeedback {
 		else
 			combinedAddress = baseUrl + soundAddress;
 	
-		soundListener.onFeedback(new FeedbackSoundInteractionEvent(combinedAddress));
+		soundListener.onFeedbackSound(new FeedbackInteractionSoundEvent(combinedAddress));
 	}
 
 	@Override

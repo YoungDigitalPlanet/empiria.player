@@ -13,13 +13,13 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class MatchElement {
 
-	public MatchElement(Element element, MatchSide _side, InlineFeedbackSocket inlineFeedbackSocket, IModuleEventsListener moduleEventsListener){
+	public MatchElement(Element element, MatchSide _side, InlineFeedbackSocket inlineFeedbackSocket, ModuleEventsListener moduleEventsListener){
 		side = _side;
 		title = "asd";
 

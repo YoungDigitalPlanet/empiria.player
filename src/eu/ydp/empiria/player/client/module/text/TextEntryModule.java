@@ -44,7 +44,7 @@ import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
@@ -54,7 +54,7 @@ public class TextEntryModule extends InlineHTML implements IInteractionModule{
 	private Response 	response;
 	private String responseIdentifier;
 	/** module state changed listener */
-	private ModuleInteractionEventsListener stateListener;
+	private ModuleInteractionListener stateListener;
 	/** widget id */
 	private String  id;
 	/** text box control */
@@ -67,7 +67,7 @@ public class TextEntryModule extends InlineHTML implements IInteractionModule{
 	 * constructor
 	 * @param moduleSocket
 	 */
-	public TextEntryModule(Element element, ModuleSocket moduleSocket, ModuleInteractionEventsListener stateChangedListener){
+	public TextEntryModule(Element element, ModuleSocket moduleSocket, ModuleInteractionListener stateChangedListener){
 
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier"); 
 

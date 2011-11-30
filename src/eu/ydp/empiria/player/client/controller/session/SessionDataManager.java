@@ -7,6 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNull;
 
+import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
@@ -36,14 +37,16 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 		variableProvider = new AssessmentVariableStorageImpl();
 	}
 	
-	public void init(int itemsCount){
+	public void init(int itemsCount, InitialData data){
 		if (itemSessionDatas == null) {
 			itemSessionDatas = new ItemSessionData[itemsCount];
-			for (int i = 0 ; i < itemsCount ; i ++)
+			for (int i = 0 ; i < itemsCount ; i ++){
 				itemSessionDatas[i] = new ItemSessionData();
+				updateItemVariables(i, data.getItemInitialData(i).getOutcomes());
+			}
 		}
 		variableProvider.init(this);
-	}
+	}	
 	
 	@Override
 	public ItemSessionSocket getItemSessionSocket() {
@@ -93,7 +96,6 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 			listener.onStateChanged(new StateChangedInteractionEvent(false, null));
 		} catch (Exception e) {
 		}
-		
 	}
 
 	@Override

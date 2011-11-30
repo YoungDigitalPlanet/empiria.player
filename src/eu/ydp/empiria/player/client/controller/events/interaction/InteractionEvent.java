@@ -25,7 +25,7 @@ public abstract class InteractionEvent {
 		if (type.equals(InteractionEventType.FEEDBACK_SOUND.toString())){
 			try{
 				String url = getJsObjectUrl(jsObject);
-				return new FeedbackSoundInteractionEvent(url);
+				return new FeedbackInteractionSoundEvent(url);
 			} catch (Exception e) {
 			}
 		}

@@ -3,11 +3,11 @@ package eu.ydp.empiria.player.client.controller.events.interaction;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FeedbackSoundInteractionEvent extends InteractionEvent {
+public class FeedbackInteractionSoundEvent extends InteractionEvent {
 
 	protected String url;
 	
-	public FeedbackSoundInteractionEvent(String path){
+	public FeedbackInteractionSoundEvent(String path){
 		this.url = path;
 	}
 	

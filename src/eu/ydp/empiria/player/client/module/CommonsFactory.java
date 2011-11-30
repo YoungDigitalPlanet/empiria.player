@@ -36,7 +36,7 @@ public class CommonsFactory {
 			@Override
 			public com.google.gwt.dom.client.Element createModule(Element element,
 					ModuleSocket moduleSocket,
-					IModuleEventsListener moduleEventsListener) {
+					ModuleEventsListener moduleEventsListener) {
 				Widget widget = InlineModuleFactory.createWidget(element, null);
 				return widget.getElement();
 			}
@@ -60,7 +60,7 @@ public class CommonsFactory {
 			@Override
 			public com.google.gwt.dom.client.Element createModule(Element element,
 					ModuleSocket moduleSocket,
-					IModuleEventsListener moduleEventsListener) {
+					ModuleEventsListener moduleEventsListener) {
 				Widget widget = InlineModuleFactory.createWidget(element, null);
 
 				if (widget instanceof IUnattachedComponent){
@@ -94,7 +94,7 @@ public class CommonsFactory {
 			@Override
 			public com.google.gwt.dom.client.Element createModule(Element element,
 					ModuleSocket moduleSocket,
-					IModuleEventsListener moduleEventsListener) {
+					ModuleEventsListener moduleEventsListener) {
 				Widget widget = InlineModuleFactory.createWidget(element, attachedParent);
 				
 				if (widget instanceof IUnattachedComponent){

@@ -245,7 +245,8 @@ public class Item implements IStateful, ItemVariablesAccessor, ItemInterferenceS
 	}
 	
 	// -------------------------- SCORE -------------------------------
-	
+
+	@Deprecated
 	public void showScore(){
 		if (itemBody.getModuleCount() > 0){
 			Result r = getResult();
@@ -256,6 +257,7 @@ public class Item implements IStateful, ItemVariablesAccessor, ItemInterferenceS
 		}
 	}
 
+	@Deprecated
 	public void hideScore(){
 		scorePanel.clear();
 		scorePanel.setStyleName("qp-feedback-hidden");

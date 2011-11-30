@@ -18,15 +18,15 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.ITouchEventsListener;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 
 public class MatchContainer extends FlowPanel{
 
 	/** module state changed listener */
-	private ModuleInteractionEventsListener stateListener;
+	private ModuleInteractionListener stateListener;
 	/** module state changed listener */
 	private ITouchEventsListener touchEventsListener;
 	/** response processing interface */
@@ -55,11 +55,11 @@ public class MatchContainer extends FlowPanel{
 	private boolean showingAnswers = false;
 	
 	public MatchContainer(Element element, boolean _shuffle, int _maxAssociations, InlineFeedbackSocket inlineFeedbackSocket, 
-			Response _response, IModuleEventsListener moduleEventsListener, IInteractionModule _moduleReference){
+			Response _response, ModuleEventsListener moduleEventsListener, IInteractionModule _moduleReference){
 
 		NodeList setNodes = element.getElementsByTagName("simpleMatchSet");
 		
-		stateListener = (ModuleInteractionEventsListener)moduleEventsListener;
+		stateListener = (ModuleInteractionListener)moduleEventsListener;
 		touchEventsListener = (ITouchEventsListener)moduleEventsListener;
 		response = _response;
 		moduleReference = _moduleReference;

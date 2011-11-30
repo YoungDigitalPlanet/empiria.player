@@ -21,10 +21,10 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.model.IModuleCreator;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.xml.XMLConverter;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
@@ -36,7 +36,7 @@ public class DragDropModule extends Composite implements IInteractionModule {
 	/** response processing interface */
 	private Response response;
 	/** module state changed listener */
-	private ModuleInteractionEventsListener stateListener;
+	private ModuleInteractionListener stateListener;
 	
 	private Vector<DragElement> elements;
 	private Vector<DragSlot> slots;
@@ -52,13 +52,13 @@ public class DragDropModule extends Composite implements IInteractionModule {
 	private boolean locked = false;
 	private boolean showingAnswers = false;
 	
-	public DragDropModule(Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener){
+	public DragDropModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
 		
 		elements = new Vector<DragElement>();
 		slots = new Vector<DragSlot>();
 
 		inlineModules = new Vector<IUnattachedComponent>();
-		stateListener = (ModuleInteractionEventsListener)moduleEventsListener;
+		stateListener = (ModuleInteractionListener)moduleEventsListener;
 
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
@@ -79,7 +79,7 @@ public class DragDropModule extends Composite implements IInteractionModule {
 			@Override
 			public com.google.gwt.dom.client.Element createModule(Element element1,
 					ModuleSocket moduleSocket,
-					IModuleEventsListener moduleEventsListener) {
+					ModuleEventsListener moduleEventsListener) {
 				DragSlot ds = new DragSlot(element1);
 				slots.add(ds);
 				

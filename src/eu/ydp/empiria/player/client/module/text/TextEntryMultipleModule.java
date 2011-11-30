@@ -20,9 +20,9 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.model.IModuleCreator;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.xml.XMLConverter;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
@@ -34,7 +34,7 @@ public class TextEntryMultipleModule extends Composite implements IInteractionMo
 	/** response processing interface */
 	private String responseIdentifier;
 	/** module state changed listener */
-	private ModuleInteractionEventsListener stateListener;
+	private ModuleInteractionListener stateListener;
 	/** list of entry boxes */
 	private Vector<TextBox> textEntrys;
 	/** list of entry boxes */
@@ -45,7 +45,7 @@ public class TextEntryMultipleModule extends Composite implements IInteractionMo
 	private boolean showingAnswers = false;
 	
 	
-	public TextEntryMultipleModule(Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener){
+	public TextEntryMultipleModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
 		
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier"); 
 		response = moduleSocket.getResponse(responseIdentifier);
@@ -67,7 +67,7 @@ public class TextEntryMultipleModule extends Composite implements IInteractionMo
 			@Override
 			public com.google.gwt.dom.client.Element createModule(Element element1,
 					ModuleSocket moduleSocket,
-					IModuleEventsListener moduleEventsListener) {
+					ModuleEventsListener moduleEventsListener) {
 				TextBox tmpTB = new TextBox();
 				tmpTB.setStyleName("qp-textentrymultiple-textbox");
 				tmpTB.getElement().setId(Document.get().createUniqueId());

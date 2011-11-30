@@ -24,14 +24,14 @@ import eu.ydp.empiria.player.client.controller.events.internal.InternalEvent;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEventTrigger;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class MathModule extends Widget implements IInteractionModule {
 
-	public MathModule(Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener){
+	public MathModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
 
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
@@ -61,7 +61,7 @@ public class MathModule extends Widget implements IInteractionModule {
 		setElement(container.getElement());
 	}
 	
-	private IModuleEventsListener moduleEventsListener;
+	private ModuleEventsListener moduleEventsListener;
 	/** response identifier */
 	private String responseIdentifier;
 	/** response processing interface */

@@ -43,10 +43,10 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
-import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
@@ -55,7 +55,7 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 	/** response processing interface */
 	private Response response;
 	/** module state changed listener */
-	private ModuleInteractionEventsListener stateListener;
+	private ModuleInteractionListener stateListener;
 	/** response id */
 	private String responseIdentifier;
 	/** Work mode single or multiple choice */
@@ -69,7 +69,7 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 	private boolean showingAnswers = false;
 		
 	
-	public ChoiceModule(Element element, ModuleSocket moduleSocket, ModuleInteractionEventsListener stateChangedListener){
+	public ChoiceModule(Element element, ModuleSocket moduleSocket, ModuleInteractionListener stateChangedListener){
 		
 		shuffle = XMLUtils.getAttributeAsBoolean(element, "shuffle");
 
@@ -101,7 +101,7 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 	   * Get options view
 	   * @return
 	   */
-	  private Widget getOptionsView(Element element, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionEventsListener feedbackListener){
+	  private Widget getOptionsView(Element element, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionListener feedbackListener){
 
 		  VerticalPanel panel = new VerticalPanel();
 		  NodeList optionNodes = element.getElementsByTagName("simpleChoice");

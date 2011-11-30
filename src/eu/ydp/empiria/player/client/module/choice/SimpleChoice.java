@@ -41,7 +41,7 @@ import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
-import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 import eu.ydp.empiria.player.client.util.BrowserCompatibility;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
@@ -63,7 +63,7 @@ public class SimpleChoice extends Composite {
 	private Vector<IUnattachedComponent> inlineModules;
 	
 	
-	public SimpleChoice(Element element, String inputId, String labelId, boolean multi, String moduleIdentifier, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionEventsListener feedbackListener) {
+	public SimpleChoice(Element element, String inputId, String labelId, boolean multi, String moduleIdentifier, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionListener feedbackListener) {
 		
 		
 		this.inputId = inputId;

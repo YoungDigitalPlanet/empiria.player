@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.controller.events.internal.InternalEventTrig
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.match.area.MatchContainer;
@@ -35,7 +35,7 @@ public class MatchModule extends Composite implements IInteractionModule {
 	
 	private boolean locked = false;
 	
-	public MatchModule(Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener){
+	public MatchModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
 
 		/** Shuffle? */
 		boolean shuffle = XMLUtils.getAttributeAsBoolean(element, "shuffle");

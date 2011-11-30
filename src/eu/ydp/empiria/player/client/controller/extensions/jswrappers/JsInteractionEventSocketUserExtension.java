@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.extensions.jswrappers;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackSoundInteractionEvent;
+import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
@@ -35,8 +35,8 @@ public class JsInteractionEventSocketUserExtension extends JsExtension implement
 		InteractionEvent event = InteractionEvent.fromJsObject(requestJs);
 		if (event instanceof StateChangedInteractionEvent)
 			interactionEventsListener.onStateChanged( (StateChangedInteractionEvent)event);
-		if (event instanceof FeedbackSoundInteractionEvent)
-			interactionEventsListener.onFeedback( (FeedbackSoundInteractionEvent)event);
+		if (event instanceof FeedbackInteractionSoundEvent)
+			interactionEventsListener.onFeedbackSound( (FeedbackInteractionSoundEvent)event);
 	}
 	
 	private native JavaScriptObject createInteractionRequestSocketJs()/*-{

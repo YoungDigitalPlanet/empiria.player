@@ -76,7 +76,7 @@ public abstract class ModuleFactory {
 		return false;
 	}
 	
-	public static Widget createWidget(Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener){
+	public static Widget createWidget(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
 		Widget	widget = null;
 
 		if(element.getNodeName().compareTo("choiceInteraction") == 0)
@@ -108,7 +108,7 @@ public abstract class ModuleFactory {
 		else if(element.getNodeName().compareTo("mathInline") == 0)
 			widget = new MathInlineModule(element);
 		else if(element.getNodeName().compareTo("audioPlayer") == 0)
-			widget = new AudioPlayerModule(element);
+			widget = new AudioPlayerModule(element, moduleSocket, moduleEventsListener);
 		else if(element.getNodeName().compareTo("vocabox") == 0)
 			widget = new VocaboxModule(element);		
 		else if(element.getNodeName().compareTo("prompt") == 0)
