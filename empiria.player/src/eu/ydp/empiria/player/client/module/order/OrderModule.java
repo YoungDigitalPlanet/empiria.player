@@ -25,13 +25,13 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
-import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.ITouchEventsListener;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.order.dndcomponent.DragContainerPanel;
 import eu.ydp.empiria.player.client.module.order.dndcomponent.DragMode;
@@ -43,7 +43,7 @@ public class OrderModule extends Composite implements IInteractionModule {
 	/** response processing interface */
 	private Response response;
 	/** module state changed listener */
-	private ModuleInteractionEventsListener stateListener;
+	private ModuleInteractionListener stateListener;
 	/** module state changed listener */
 	private ITouchEventsListener touchEventsListener;
 	/** response id */
@@ -64,7 +64,7 @@ public class OrderModule extends Composite implements IInteractionModule {
 	private boolean locked = false;
 	private boolean showingAnswers = false;
 	
-	public OrderModule(Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener) {
+	public OrderModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener) {
 
 		shuffle = XMLUtils.getAttributeAsBoolean(element, "shuffle");
 		
@@ -74,7 +74,7 @@ public class OrderModule extends Composite implements IInteractionModule {
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
 		
-		stateListener = (ModuleInteractionEventsListener)moduleEventsListener;
+		stateListener = (ModuleInteractionListener)moduleEventsListener;
 		touchEventsListener = (ITouchEventsListener)moduleEventsListener;
 		
 		optionsIdentifiers = new Vector<String>();
@@ -159,7 +159,7 @@ public class OrderModule extends Composite implements IInteractionModule {
 			uac.onOwnerAttached();
 	}
 
-	private void extractOptionsWidgets(Element element, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionEventsListener feedbackListener){
+	private void extractOptionsWidgets(Element element, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionListener feedbackListener){
 		options = new Vector<AbsolutePanel>();
 		
 		NodeList optionNodes = element.getElementsByTagName("simpleChoice");

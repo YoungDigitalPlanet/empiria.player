@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.object.impl.AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.VideoImpl;
@@ -40,7 +40,7 @@ public class ObjectModule extends Composite{
 	 * constructor
 	 * @param node
 	 */
-	public ObjectModule(Element node, ModuleSocket  moduleSocket, ModuleInteractionEventsListener stateChangedListener){
+	public ObjectModule(Element node, ModuleSocket  moduleSocket, ModuleInteractionListener stateChangedListener){
 		
 	  String html;
 	  String src = XMLUtils.getAttributeAsString(node, "data");

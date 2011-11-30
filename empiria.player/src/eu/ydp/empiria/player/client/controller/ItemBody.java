@@ -14,9 +14,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 
+
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackSoundInteractionEvent;
+import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEvent;
+import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEvent;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEventHandlerInfo;
@@ -28,7 +31,7 @@ import eu.ydp.empiria.player.client.model.IModuleCreator;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IBrowserEventHandler;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 import eu.ydp.empiria.player.client.module.IUniqueComponent;
@@ -47,7 +50,7 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 
 	public InternalEventManager eventManager;
 
-	protected IModuleEventsListener moduleEventsListener;
+	protected ModuleEventsListener moduleEventsListener;
 	protected DisplayContentOptions options;
 	protected ModuleSocket moduleSocket;
 
@@ -67,7 +70,7 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 		this.moduleSocket = moduleSocket;
 		this.options = options;
 
-		moduleEventsListener = new IModuleEventsListener() {
+		moduleEventsListener = new ModuleEventsListener() {
 
 			@Override
 			public void onTouchStart(com.google.gwt.dom.client.Element target,
@@ -100,13 +103,18 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 			}
 
 			@Override
-			public void onSoundPlay(String url) {
+			public void onFeedbackSoundPlay(String url) {
 				interactionEventsListener
-						.onFeedback(new FeedbackSoundInteractionEvent(url));
+						.onFeedbackSound(new FeedbackInteractionSoundEvent(url));
+			}
+
+			@Override
+			public void onMediaSoundPlay(String url, MediaInteractionSoundEventCallback callback) {
+				interactionEventsListener.onMediaSound(new MediaInteractionSoundEvent(url, callback));
 			}
 
 		};
-
+		
 		ModuleFactory.isSupported("x");
 
 		// traceLabel = new Label();
@@ -126,9 +134,7 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 					}
 
 					@Override
-					public com.google.gwt.dom.client.Element createModule(
-							Element element, ModuleSocket moduleSocket,
-							IModuleEventsListener moduleEventsListener) {
+					public com.google.gwt.dom.client.Element createModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener) {
 						Widget widget = ModuleFactory.createWidget(element,
 								moduleSocket, moduleEventsListener);
 
@@ -301,23 +307,25 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 
 				try {
 
-					JSONObject stateObj = newState.isArray().get(0).isObject();
-
-					for (int i = 0; i < modules.size(); i++) {
-						if (modules.get(i) instanceof IStateful
-								&& modules.get(i) instanceof IUniqueComponent) {
-							String curridentifier = ((IUniqueComponent) modules
-									.get(i)).getIdentifier();
-
-							if (curridentifier != null && curridentifier != "") {
-
-								if (stateObj.containsKey(curridentifier)) {
-									JSONValue currState = stateObj
-											.get(curridentifier);
-									if (currState != null
-											&& currState.isArray() != null)
-										((IStateful) modules.get(i))
-												.setState(currState.isArray());
+					if (newState.isArray() != null  &&  newState.isArray().size() > 0){
+						JSONObject stateObj = newState.isArray().get(0).isObject();
+	
+						for (int i = 0; i < modules.size(); i++) {
+							if (modules.get(i) instanceof IStateful
+									&& modules.get(i) instanceof IUniqueComponent) {
+								String curridentifier = ((IUniqueComponent) modules
+										.get(i)).getIdentifier();
+	
+								if (curridentifier != null && curridentifier != "") {
+	
+									if (stateObj.containsKey(curridentifier)) {
+										JSONValue currState = stateObj
+												.get(curridentifier);
+										if (currState != null
+												&& currState.isArray() != null)
+											((IStateful) modules.get(i))
+													.setState(currState.isArray());
+									}
 								}
 							}
 						}

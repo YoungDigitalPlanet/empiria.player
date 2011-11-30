@@ -141,7 +141,6 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	@Override
 	public void onAssessmentLoaded() {
-		sessionDataManager.init(dataManager.getItemsCount());
 	}
 
 	@Override
@@ -151,6 +150,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	@Override
 	public void onDataReady() {
+		sessionDataManager.init(dataManager.getItemsCount(), dataManager.getInitialData());
 		initExtensions();
 		flowManager.init(dataManager.getItemsCount());
 		assessmentController.init(dataManager.getAssessmentData());

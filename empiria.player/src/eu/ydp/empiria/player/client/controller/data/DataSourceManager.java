@@ -20,6 +20,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.communication.PageData;
 import eu.ydp.empiria.player.client.controller.communication.PageDataError;
@@ -54,6 +55,14 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	private ItemDataSourceCollectionManager itemDataCollectionManager;
 	private DataSourceManagerMode mode;
 	private DataLoaderEventListener listener;
+	
+	public InitialData getInitialData(){
+		InitialData initialData = new InitialData(itemDataCollectionManager.getItemsCount());
+		for (int i = 0 ; i < itemDataCollectionManager.getItemsCount() ; i ++){
+			initialData.addItemInitialData(itemDataCollectionManager.getItemInitialData(i));
+		}
+		return initialData;
+	}
 	
 	public XMLData getAssessmentData(){
 		return assessmentDataManager.getAssessmentData();
@@ -199,30 +208,6 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	
 	@Override
 	public void onItemCollectionLoaded() {
-/*
-		long timeStart = (long) ((new Date()).getTime() );
-		for (int i = 0 ; i < itemDataCollectionManager.getItemsCount() ; i ++){
-			NodeList nodes = itemDataCollectionManager.getItemData(i).data.getDocument().getElementsByTagName("outcomeDeclaration");
-			for (int n = 0 ; n < nodes.getLength() ; n ++){
-				if (((Element)nodes.item(n)).getAttribute("identifier").equals("TODO")){
-					NodeList nodes2 = ((Element)nodes.item(n)).getElementsByTagName("defaultValue");
-					if (nodes2.getLength() > 0){
-						if (nodes2.item(0).hasChildNodes()){
-							NodeList nodes3 = ((Element)nodes2.item(0)).getElementsByTagName("value");
-							if (nodes3.getLength() > 0){
-								String valueString = nodes3.item(0).getFirstChild().getNodeValue();
-								int value = Integer.parseInt(valueString);
-								increment(value);
-							}
-						}
-					}
-				}
-				
-			}
-		}
-		long timeEnd = (long) ((new Date()).getTime() );
-		String msg = (new Long(timeEnd - timeStart)).toString();
-		Window.alert(msg);*/
 		// load item styles
 		loadStyles();
 	}

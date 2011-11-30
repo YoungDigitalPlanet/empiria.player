@@ -44,7 +44,7 @@ import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
@@ -55,7 +55,7 @@ public class InlineChoiceModule extends InlineHTML implements IInteractionModule
 	private Response response;
 	private String responseIdentifier;
 	/** module state changed listener */
-	private ModuleInteractionEventsListener stateListener;
+	private ModuleInteractionListener stateListener;
 	/** widget id */
 	private String  id;
 	/** panel widget */
@@ -70,7 +70,7 @@ public class InlineChoiceModule extends InlineHTML implements IInteractionModule
 	 * constructor
 	 * @param moduleSocket
 	 */
-	public InlineChoiceModule(Element element, ModuleSocket moduleSocket, ModuleInteractionEventsListener moduleEventsListener){
+	public InlineChoiceModule(Element element, ModuleSocket moduleSocket, ModuleInteractionListener moduleEventsListener){
 		
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier"); 
 

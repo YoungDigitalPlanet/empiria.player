@@ -18,9 +18,9 @@ import eu.ydp.empiria.player.client.controller.events.internal.InternalEventTrig
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
@@ -28,7 +28,7 @@ import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 public class IdentificationModule extends Composite implements
 		IInteractionModule {
 	
-	public IdentificationModule(Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener){
+	public IdentificationModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
 
 		locked = false;
 		
@@ -88,7 +88,7 @@ public class IdentificationModule extends Composite implements
 	private Vector<SelectableChoice> options;
 	private FlowPanel panel;
 	
-	private ModuleInteractionEventsListener stateChangedListener;
+	private ModuleInteractionListener stateChangedListener;
 	
 
 	@Override

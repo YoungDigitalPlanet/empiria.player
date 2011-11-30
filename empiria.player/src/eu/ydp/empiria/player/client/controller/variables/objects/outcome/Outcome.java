@@ -8,6 +8,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
@@ -51,6 +52,21 @@ public class Outcome extends Variable {
 		interpretation = "";
 		
 		normalMaximum = 0.0d;
+		
+		NodeList defaultValueNodes = ((Element)responseDeclarationNode).getElementsByTagName("defaultValue");
+		if (defaultValueNodes.getLength() > 0){
+			NodeList valueNodes = defaultValueNodes.item(0).getChildNodes();
+			String value;
+			for (int i = 0 ; i < valueNodes.getLength() ; i ++){
+				if (valueNodes.item(i) instanceof Element  &&  "value".equals( ((Element)valueNodes.item(i)).getNodeName() )   &&  valueNodes.item(i).hasChildNodes()){
+					value = valueNodes.item(i).getFirstChild().getNodeValue();
+					if (value != null){
+						values.add(value);
+					}
+				}
+				
+			}
+		}
 	}
 	
 	public String interpretation;

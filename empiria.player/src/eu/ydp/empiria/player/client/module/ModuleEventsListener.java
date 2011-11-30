@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module;
 
 
-public interface IModuleEventsListener extends ModuleInteractionEventsListener,
+public interface ModuleEventsListener extends ModuleInteractionListener,
 		ITouchEventsListener {
 
 }

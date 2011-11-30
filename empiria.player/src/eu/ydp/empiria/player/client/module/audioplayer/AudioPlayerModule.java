@@ -1,38 +1,30 @@
 package eu.ydp.empiria.player.client.module.audioplayer;
 
 import java.util.Vector;
-
-import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.SoundController;
-import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
-import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
-import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.controller.communication.Callable;
+import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
+import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEvent;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEventTrigger;
 import eu.ydp.empiria.player.client.module.IBrowserEventHandler;
+import eu.ydp.empiria.player.client.module.MediaModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class AudioPlayerModule extends Composite implements IBrowserEventHandler {
 
-	public AudioPlayerModule(Element element){
+	public AudioPlayerModule(Element element, ModuleSocket moduleSocket, MediaModuleInteractionListener moduleEventsListener){
 
-		String address = XMLUtils.getAttributeAsString(element, "data");
+		mediaListener = moduleEventsListener;
 		
-		SoundController soundCtrl = new SoundController();
-		sound = soundCtrl.createSound(Sound.MIME_TYPE_AUDIO_MPEG, address);
-		sound.addEventHandler(new SoundHandler() {
-			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-			}
-			
-			public void onPlaybackComplete(PlaybackCompleteEvent event) {
-				setStopped();	
-			}
-		});
+		address = XMLUtils.getAttributeAsString(element, "src");
+		if (address == null  ||  "".equals(address))
+			address = XMLUtils.getAttributeAsString(element, "data");
 		
 		playing = false;
 		
@@ -43,13 +35,36 @@ public class AudioPlayerModule extends Composite implements IBrowserEventHandler
 		initWidget(button);
 	}
 	
-	private Sound sound;
-	private boolean playing;
 	private PushButton button;
+	protected String address;
+	protected MediaModuleInteractionListener mediaListener;
+	protected boolean playing;
+	
+	protected MediaInteractionSoundEventCallforward callforward;
 	
 	private void play(){
-		sound.play();
+		mediaListener.onMediaSoundPlay(address, new MediaInteractionSoundEventCallback() {
+			
+			@Override
+			public void onStop() {
+				setStopped();
+			}
+			
+			@Override
+			public void onPlay() {
+				setPlaying();
+			}
+
+			@Override
+			public void setCallforward(MediaInteractionSoundEventCallforward cf) {
+				callforward = cf;
+			}
+		});
 		setPlaying();
+	}
+	
+	protected void stop(){
+		callforward.stop();
 	}
 	
 	private void setPlaying(){
@@ -57,16 +72,13 @@ public class AudioPlayerModule extends Composite implements IBrowserEventHandler
 		button.setStyleName("qp-audioplayer-button-playing");
 	}
 	
-	private void stop(){
-		sound.stop();
-		setStopped();
-	}
 	
 	private void setStopped(){
 		playing = false;
 		button.setStyleName("qp-audioplayer-button");	
 	}
 
+	
 	@Override
 	public Vector<InternalEventTrigger> getTriggers() {
 		Vector<InternalEventTrigger> triggers = new Vector<InternalEventTrigger>();
@@ -76,11 +88,10 @@ public class AudioPlayerModule extends Composite implements IBrowserEventHandler
 
 	@Override
 	public void handleEvent(String tagID, InternalEvent event) {
-		if (playing){
-			stop();
-		} else {
+		if (!playing)
 			play();
-		}
+		else
+			stop();
 		
 	}
 

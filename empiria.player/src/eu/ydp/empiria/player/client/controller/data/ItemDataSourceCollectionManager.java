@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.data;
 import java.util.Vector;
 
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
+import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
@@ -49,6 +50,13 @@ public class ItemDataSourceCollectionManager {
 			return new ItemData(index, items[index].getItemData());
 		else
 			return new ItemData(index, items[index].getErrorMessage());
+	}
+	
+	public InitialItemData getItemInitialData(int index){
+		if (index < items.length  &&  !items[index].isError())
+			return new InitialItemData(items[index].getItemData());
+		
+		return new InitialItemData(null);
 	}
 	
 	public String[] getTitlesList(){

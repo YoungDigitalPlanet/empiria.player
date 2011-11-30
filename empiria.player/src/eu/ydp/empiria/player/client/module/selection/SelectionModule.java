@@ -22,19 +22,19 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
-import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModuleEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class SelectionModule extends Composite implements IInteractionModule {
 
-	public SelectionModule(Element element, ModuleSocket moduleSocket, IModuleEventsListener moduleEventsListener){
+	public SelectionModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
 
 		inlineModules = new Vector<IUnattachedComponent>();
 		
@@ -42,7 +42,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
-		stateListener = (ModuleInteractionEventsListener)moduleEventsListener;
+		stateListener = (ModuleInteractionListener)moduleEventsListener;
 		
 		NodeList choices = element.getElementsByTagName("simpleChoice");
 		NodeList items = element.getElementsByTagName("item");
@@ -68,7 +68,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	/** response processing interface */
 	private Response response;
 	/** module state changed listener */
-	private ModuleInteractionEventsListener stateListener;
+	private ModuleInteractionListener stateListener;
 	/** response id */
 	private String responseIdentifier;
 	/** Shuffle answers */
@@ -95,7 +95,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 	}
 	
-	private void fillGrid(NodeList choices, NodeList items, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionEventsListener feedbackListener){
+	private void fillGrid(NodeList choices, NodeList items, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionListener feedbackListener){
 		buttons = new Vector<Vector<AccessibleRadioButton>>();
 
 		// header - choices

@@ -9,9 +9,11 @@ import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventsHandler;
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEventListner;
-import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackSoundInteractionEvent;
+import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
+import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEventListener;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
@@ -28,7 +30,6 @@ public class DeliveryEventsHub implements FlowProcessingEventsListener, Delivery
 	protected List<FlowActivityEventsHandler> flowActivityEventsListeners;
 	protected List<DeliveryEventsListener> deliveryEventsListeners;
 	protected List<StateChangedInteractionEventListener> stateChangedInteractionEventsListeners;
-	protected List<FeedbackInteractionEventListner> soundPlayInteractionEventsListeners;
 	
 	
 	protected Map<DeliveryEventType, FlowActivityEventType> map;
@@ -37,7 +38,6 @@ public class DeliveryEventsHub implements FlowProcessingEventsListener, Delivery
 		flowActivityEventsListeners = new ArrayList<FlowActivityEventsHandler>();
 		deliveryEventsListeners = new ArrayList<DeliveryEventsListener>();
 		stateChangedInteractionEventsListeners = new ArrayList<StateChangedInteractionEventListener>();
-		soundPlayInteractionEventsListeners = new ArrayList<FeedbackInteractionEventListner>();
 		
 		map = new HashMap<DeliveryEventType, FlowActivityEventType>();
 		map.put(DeliveryEventType.CHECK, FlowActivityEventType.CHECK);
@@ -58,11 +58,6 @@ public class DeliveryEventsHub implements FlowProcessingEventsListener, Delivery
 	@Override
 	public void removeStateChangedInteractionEventsListener(StateChangedInteractionEventListener listener) {
 		stateChangedInteractionEventsListeners.remove(listener);
-	}
-
-	@Override
-	public void addSoundPlayInteractionEventsListener( FeedbackInteractionEventListner soundPlayListener) {
-		soundPlayInteractionEventsListeners.add(soundPlayListener);
 	}
 	
 	public InteractionEventsSocket getInteractionSocket(){
@@ -115,7 +110,12 @@ public class DeliveryEventsHub implements FlowProcessingEventsListener, Delivery
 	}
 
 	@Override
-	public void onFeedback(FeedbackSoundInteractionEvent event) {
+	public void onFeedbackSound(FeedbackInteractionSoundEvent event) {
+		onInteractionEvent(event);
+	}
+
+	@Override
+	public void onMediaSound(MediaInteractionSoundEvent event) {
 		onInteractionEvent(event);
 	}
 	
@@ -125,13 +125,7 @@ public class DeliveryEventsHub implements FlowProcessingEventsListener, Delivery
 			for (StateChangedInteractionEventListener listener : stateChangedInteractionEventsListeners){
 				listener.onStateChanged( (StateChangedInteractionEvent)event );
 			}
-		}
-		if (event instanceof FeedbackSoundInteractionEvent){
-			for (FeedbackInteractionEventListner listener : soundPlayInteractionEventsListeners){
-				listener.onFeedback( (FeedbackSoundInteractionEvent)event);
-			}
-		}
-		
+		}		
 
 		for (DeliveryEventType currDet : DeliveryEventType.values()){
 			if (currDet.toString().equals(event.getType().toString())){

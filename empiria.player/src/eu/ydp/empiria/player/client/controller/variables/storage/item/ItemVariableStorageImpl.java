@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.variables.VariablePossessorBase;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderBase;

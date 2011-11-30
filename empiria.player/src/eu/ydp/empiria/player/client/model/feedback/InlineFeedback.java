@@ -15,15 +15,15 @@ import com.google.gwt.xml.client.Node;
 
 import eu.ydp.empiria.player.client.components.MouseEventPanel;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
-import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionEventsListener;
+import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 
 public class InlineFeedback extends PopupPanel implements IItemFeedback {
 
-	public InlineFeedback(Widget _mountingPoint, Node node, FeedbackModuleInteractionEventsListener feedbackListener){
+	public InlineFeedback(Widget _mountingPoint, Node node, FeedbackModuleInteractionListener fbkListener){
 		super(false, false);
 		
-		soundListener = feedbackListener;
+		this.feedbackListener = fbkListener;
 		
 		mountingPoint = _mountingPoint;
 		shown = false;
@@ -62,6 +62,8 @@ public class InlineFeedback extends PopupPanel implements IItemFeedback {
 			fadeEffectTime = 0;
 		
 		showHide = (node.getAttributes().getNamedItem("showHide").getNodeValue().toLowerCase().compareTo("show") == 0);
+		
+		hasContent = node.getChildNodes().getLength() > 0;
 
 		mathElements = new Vector<IUnattachedComponent>();
 		
@@ -70,7 +72,9 @@ public class InlineFeedback extends PopupPanel implements IItemFeedback {
 		
 		contentsPanel = new MouseEventPanel();
 		contentsPanel.setStyleName("qp-feedback-inline-contents");
-		contentsPanel.add(CommonsFactory.getFeedbackView((Element)node, this, mathElements));
+		
+		Widget feedbackView = CommonsFactory.getFeedbackView((Element)node, this, mathElements);
+		contentsPanel.add(feedbackView);
 		contentsPanel.addMouseUpHandler(new MouseUpHandler() {
 			public void onMouseUp(MouseUpEvent event) {
 				close();
@@ -90,7 +94,7 @@ public class InlineFeedback extends PopupPanel implements IItemFeedback {
 		getElement().setId(Document.get().createUniqueId());
 	}
 
-	private FeedbackModuleInteractionEventsListener soundListener;
+	private FeedbackModuleInteractionListener feedbackListener;
 
 	private String variable;
 	private String value;
@@ -102,6 +106,7 @@ public class InlineFeedback extends PopupPanel implements IItemFeedback {
 	private InlineFeedbackAlign align;
 
 	private String baseUrl;
+	private boolean hasContent;
 	
 	private Widget mountingPoint;
 	private Widget bodyView;
@@ -192,7 +197,7 @@ public class InlineFeedback extends PopupPanel implements IItemFeedback {
 
 	@Override
 	public boolean hasHTMLContent() {
-		return true;
+		return hasContent;
 	}
 
 	@Override
@@ -207,7 +212,7 @@ public class InlineFeedback extends PopupPanel implements IItemFeedback {
 		else
 			combinedAddress = baseUrl + soundAddress;
 		
-		soundListener.onSoundPlay(combinedAddress);
+		feedbackListener.onFeedbackSoundPlay(combinedAddress);
 	}
 
 	private void updatePosition(){
