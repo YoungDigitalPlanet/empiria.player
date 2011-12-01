@@ -1,20 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/gwt-user.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/gwt-dev.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/validation-api-1.0.0.GA.jar" sourcepath="C:/dev/eclipse_gwt24/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.relr37v201110112027/gwt-2.4.0/validation-api-1.0.0.GA-sources.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT (2)"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/aopalliance.jar"/>
-	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/gin.jar"/>
-	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/guice.jar"/>
-	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/gwt-dev.jar"/>
-	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/gwt-servlet.jar"/>
-	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/ivy-lib/gwt-user.jar"/>
-	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/gwt-g2d-v007.jar"/>
-	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/gwt-graphics-0.9.6.jar"/>
-	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/gwt-voices-1.7.0.jar"/>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/shared/appengine-local-runtime-shared.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/shared/el-api.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/shared/jsp/repackaged-appengine-ant-1.7.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/shared/jsp/repackaged-appengine-ant-launcher-1.7.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/shared/jsp/repackaged-appengine-jasper-6.0.29.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/shared/jsp/repackaged-appengine-jasper-el-6.0.29.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/shared/jsp/repackaged-appengine-tomcat-juli-6.0.29.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/shared/jsp-api.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/shared/servlet-api.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/appengine-api-1.0-sdk-1.6.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/appengine-api-labs-1.6.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/appengine-jsr107cache-1.6.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/jsr107cache-1.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/orm/datanucleus-appengine-1.0.10.final.jar" sourcepath="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/src/orm/datanucleus-appengine-1.0.10.final-src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/orm/datanucleus-core-1.1.5.jar" sourcepath="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/src/orm/datanucleus-core-1.1.5-src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/orm/datanucleus-jpa-1.1.5.jar" sourcepath="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/src/orm/datanucleus-jpa-1.1.5-src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/orm/geronimo-jpa_3.0_spec-1.1.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/orm/geronimo-jta_1.1_spec-1.1.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/user/orm/jdo2-api-2.3-eb.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/lib/appengine-tools-api.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt24/plugins/com.google.appengine.eclipse.sdkbundle_1.6.0.v201111171704r37/appengine-java-sdk-1.6.0/docs/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/smath-expression.jar"/>
 	<classpathentry kind="lib" path="D:/QTI-PLAYER/PROJEKTY/empiria.player/static-lib/smath-renderer.jar"/>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt/plugins/com.google.gwt.eclipse.sdkbundle.2.1.1_2.1.1.v201012170127/gwt-2.1.1/gwt-user.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt/plugins/com.google.gwt.eclipse.sdkbundle.2.1.1_2.1.1.v201012170127/gwt-2.1.1/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/dev/eclipse_gwt/plugins/com.google.gwt.eclipse.sdkbundle.2.1.1_2.1.1.v201012170127/gwt-2.1.1/gwt-dev.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/dev/eclipse_gwt/plugins/com.google.gwt.eclipse.sdkbundle.2.1.1_2.1.1.v201012170127/gwt-2.1.1/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="static-lib/gwt-g2d-v007.jar"/>
+	<classpathentry kind="lib" path="static-lib/gwt-graphics-0.9.6.jar"/>
+	<classpathentry kind="lib" path="static-lib/gwt-voices-1.7.0.jar"/>
+	<classpathentry kind="lib" path="static-lib/junit.jar"/>
+	<classpathentry kind="lib" path="static-lib/smath-expression.jar"/>
+	<classpathentry kind="lib" path="static-lib/smath-renderer.jar"/>
+	<classpathentry kind="lib" path="static-lib/gin-1.5-post-gwt-2.2.jar"/>
+	<classpathentry kind="lib" path="static-lib/guice-3.0.jar"/>
+	<classpathentry kind="lib" path="static-lib/guice-assistedinject-3.0.jar"/>
+	<classpathentry kind="lib" path="static-lib/javax.inject.jar"/>
+	<classpathentry kind="lib" path="static-lib/aopalliance.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
