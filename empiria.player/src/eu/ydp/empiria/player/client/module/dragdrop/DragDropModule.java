@@ -86,7 +86,7 @@ public class DragDropModule extends Composite implements IInteractionModule {
 				NodeList childNodes = element1.getChildNodes();
 				for (int f = 0 ; f < childNodes.getLength() ; f ++){
 					if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
-					moduleSocket.add(new InlineFeedback(ds, childNodes.item(f), moduleEventsListener));
+					moduleSocket.addInlineFeedback(new InlineFeedback(ds, childNodes.item(f), moduleEventsListener));
 				}
 				
 				return ds.getElement();

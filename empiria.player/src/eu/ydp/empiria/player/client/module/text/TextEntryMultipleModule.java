@@ -77,7 +77,7 @@ public class TextEntryMultipleModule extends Composite implements IInteractionMo
 				NodeList childNodes = element1.getChildNodes();
 				for (int f = 0 ; f < childNodes.getLength() ; f ++){
 					if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
-						moduleSocket.add(new InlineFeedback(tmpTB, childNodes.item(f), moduleEventsListener));
+						moduleSocket.addInlineFeedback(new InlineFeedback(tmpTB, childNodes.item(f), moduleEventsListener));
 				}
 				
 				textEntrys.add(tmpTB);

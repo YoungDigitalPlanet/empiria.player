@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.identification;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -9,7 +11,9 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
@@ -18,6 +22,7 @@ import eu.ydp.empiria.player.client.controller.events.internal.InternalEventTrig
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.model.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
+import eu.ydp.empiria.player.client.module.IMultiViewModule;
 import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
@@ -25,59 +30,8 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class IdentificationModule extends Composite implements
-		IInteractionModule {
-	
-	public IdentificationModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
-
-		locked = false;
-		
-		boolean shuffle = XMLUtils.getAttributeAsBoolean(element, "shuffle");
-		maxSelections = XMLUtils.getAttributeAsInt(element, "maxSelections");
-
-		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
-		response = moduleSocket.getResponse(responseIdentifier);
-		
-		stateChangedListener = moduleEventsListener;
-		
-		String separatorString = XMLUtils.getAttributeAsString(element, "separator");
-				
-		options = new Vector<SelectableChoice>();
-		RandomizedSet<SelectableChoice> optionsSet = new RandomizedSet<SelectableChoice>();
-		Vector<Boolean> fixeds = new Vector<Boolean>();
-		NodeList optionNodes = element.getElementsByTagName("simpleChoice");
-		for (int i = 0 ; i < optionNodes.getLength() ; i ++ ){
-			SelectableChoice sc = new SelectableChoice((Element)optionNodes.item(i));
-			options.add(sc);
-			if(shuffle  &&  !XMLUtils.getAttributeAsBoolean((Element)optionNodes.item(i), "fixed")){
-				optionsSet.push(sc);
-				fixeds.add(false);
-			} else 
-				fixeds.add(true);
-		}
-				
-		panel = new FlowPanel();
-		panel.setStyleName("qp-identification-module");
-		for (int i = 0 ; i < options.size() ; i ++){
-			if (fixeds.get(i))
-				panel.add(options.get(i));
-			else
-				panel.add(optionsSet.pull());
-			if (i != options.size()-1){
-				Label sep = new Label(separatorString);
-				sep.setStyleName("qp-identification-separator");
-				panel.add(sep);
-			}
-		}
-		
-		initWidget(panel);
-
-		NodeList childNodes = element.getChildNodes();
-		for (int f = 0 ; f < childNodes.getLength() ; f ++){
-			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
-				moduleSocket.add(new InlineFeedback(panel, childNodes.item(f), moduleEventsListener));
-		}
-	}
+public class IdentificationModule extends Widget implements
+		IInteractionModule, IMultiViewModule {
 	
 	private int maxSelections;
 	private boolean locked;
@@ -88,7 +42,89 @@ public class IdentificationModule extends Composite implements
 	private Vector<SelectableChoice> options;
 	private FlowPanel panel;
 	
-	private ModuleInteractionListener stateChangedListener;
+	private ModuleInteractionListener moduleListener;
+	protected ModuleSocket moduleSocket;
+	
+	protected List<Element> multiViewElements;
+	
+	public IdentificationModule(ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
+
+		locked = false;
+		multiViewElements = new ArrayList<Element>();
+		
+		moduleListener = moduleEventsListener;
+		this.moduleSocket = moduleSocket;
+	}
+
+
+	@Override
+	public void addElement(Element element) {
+		multiViewElements.add(element);
+	}
+
+	@Override
+	public void installViews(List<HasWidgets> placeholders) {
+		
+		options = new Vector<SelectableChoice>();
+		
+		for (int e = 0 ; e < multiViewElements.size()  &&  e < placeholders.size() ; e ++ ){
+			
+			Element element = multiViewElements.get(e);
+			HasWidgets currPlaceholder = placeholders.get(e);
+			Vector<SelectableChoice> currOptions = new Vector<SelectableChoice>();
+			
+			boolean shuffle = false;
+			String separatorString = "/";
+			
+			if (e == 0){
+		
+				shuffle = XMLUtils.getAttributeAsBoolean(element, "shuffle");
+				maxSelections = XMLUtils.getAttributeAsInt(element, "maxSelections");
+		
+				responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
+				response = moduleSocket.getResponse(responseIdentifier);
+				
+				separatorString = XMLUtils.getAttributeAsString(element, "separator");
+			}
+								
+			RandomizedSet<SelectableChoice> optionsSet = new RandomizedSet<SelectableChoice>();
+			Vector<Boolean> fixeds = new Vector<Boolean>();
+			NodeList optionNodes = element.getElementsByTagName("simpleChoice");
+			for (int i = 0 ; i < optionNodes.getLength() ; i ++ ){
+				SelectableChoice sc = new SelectableChoice((Element)optionNodes.item(i));
+				currOptions.add(sc);
+				if(shuffle  &&  !XMLUtils.getAttributeAsBoolean((Element)optionNodes.item(i), "fixed")){
+					optionsSet.push(sc);
+					fixeds.add(false);
+				} else 
+					fixeds.add(true);
+			}
+					
+			panel = new FlowPanel();
+			panel.setStyleName("qp-identification-module");
+			for (int i = 0 ; i < currOptions.size() ; i ++){
+				if (fixeds.get(i))
+					panel.add(currOptions.get(i));
+				else
+					panel.add(optionsSet.pull());
+				if (i != currOptions.size()-1){
+					Label sep = new Label(separatorString);
+					sep.setStyleName("qp-identification-separator");
+					panel.add(sep);
+				}
+			}
+			
+			currPlaceholder.add(panel);
+			
+			options.addAll(currOptions);
+	
+			NodeList childNodes = element.getChildNodes();
+			for (int f = 0 ; f < childNodes.getLength() ; f ++){
+				if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
+					moduleSocket.addInlineFeedback(new InlineFeedback(panel, childNodes.item(f), moduleListener));
+			}
+		}
+	}
 	
 
 	@Override
@@ -213,7 +249,7 @@ public class IdentificationModule extends Composite implements
 		
 		if (!response.compare(currResponseValues)  ||  !response.isInitialized()){
 			response.set(currResponseValues);
-			stateChangedListener.onStateChanged(userInteract, this);
+			moduleListener.onStateChanged(userInteract, this);
 		}
 	}
 

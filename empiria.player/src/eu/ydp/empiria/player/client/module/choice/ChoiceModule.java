@@ -89,7 +89,7 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 		NodeList childNodes = element.getChildNodes();
 		for (int f = 0 ; f < childNodes.getLength() ; f ++){
 			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
-				moduleSocket.add(new InlineFeedback(vp, childNodes.item(f), stateChangedListener));
+				moduleSocket.addInlineFeedback(new InlineFeedback(vp, childNodes.item(f), stateChangedListener));
 		}
 	}
 	

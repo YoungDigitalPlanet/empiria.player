@@ -86,7 +86,7 @@ public class TextEntryModule extends InlineHTML implements IInteractionModule{
 		
 		NodeList inlineFeedbackNodes = element.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			moduleSocket.add(new InlineFeedback(this, inlineFeedbackNodes.item(f), stateChangedListener));
+			moduleSocket.addInlineFeedback(new InlineFeedback(this, inlineFeedbackNodes.item(f), stateChangedListener));
 		}
 		
 	}

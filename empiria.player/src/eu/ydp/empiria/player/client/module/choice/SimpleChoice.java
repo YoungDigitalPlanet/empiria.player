@@ -141,7 +141,7 @@ public class SimpleChoice extends Composite {
 		
 		NodeList inlineFeedbackNodes = element.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			inlineFeedbackSocket.add(new InlineFeedback(labelPanel, inlineFeedbackNodes.item(f), feedbackListener));
+			inlineFeedbackSocket.addInlineFeedback(new InlineFeedback(labelPanel, inlineFeedbackNodes.item(f), feedbackListener));
 		}
 		
 	    

@@ -92,7 +92,7 @@ public class InlineChoiceModule extends InlineHTML implements IInteractionModule
 
 		NodeList inlineFeedbackNodes = element.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			moduleSocket.add(new InlineFeedback(listBox, inlineFeedbackNodes.item(f), moduleEventsListener));
+			moduleSocket.addInlineFeedback(new InlineFeedback(listBox, inlineFeedbackNodes.item(f), moduleEventsListener));
 		}
 		
 	}

@@ -110,7 +110,7 @@ public class MatchContainer extends FlowPanel{
 		NodeList childNodes = element.getChildNodes();
 		for (int f = 0 ; f < childNodes.getLength() ; f ++){
 			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
-			inlineFeedbackSocket.add(new InlineFeedback(area.getView(), childNodes.item(f), moduleEventsListener));
+			inlineFeedbackSocket.addInlineFeedback(new InlineFeedback(area.getView(), childNodes.item(f), moduleEventsListener));
 		}
 	}
 	

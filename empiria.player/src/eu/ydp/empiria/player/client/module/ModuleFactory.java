@@ -98,7 +98,7 @@ public abstract class ModuleFactory {
 		else if(element.getNodeName().compareTo("selectionInteraction") == 0)
 			widget = new SelectionModule(element, moduleSocket, moduleEventsListener);
 		else if(element.getNodeName().compareTo("identificationInteraction") == 0)
-			widget = new IdentificationModule(element, moduleSocket, moduleEventsListener);
+			widget = new IdentificationModule(moduleSocket, moduleEventsListener);
 		else if(element.getNodeName().compareTo("math") == 0)
 			widget = new MathExprInlineModule(element);
 		else if(element.getNodeName().compareTo("mathInteraction") == 0)
