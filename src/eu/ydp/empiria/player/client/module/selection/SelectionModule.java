@@ -61,7 +61,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		NodeList childNodes = element.getChildNodes();
 		for (int f = 0 ; f < childNodes.getLength() ; f ++){
 			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
-				moduleSocket.add(new InlineFeedback(grid, childNodes.item(f), moduleEventsListener));
+				moduleSocket.addInlineFeedback(new InlineFeedback(grid, childNodes.item(f), moduleEventsListener));
 		}
 	}
 
@@ -114,7 +114,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 			NodeList inlineFeedbackNodes = ((Element)choices.item(c)).getElementsByTagName("feedbackInline");
 			for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-				inlineFeedbackSocket.add(new InlineFeedback(choiceView, inlineFeedbackNodes.item(f), feedbackListener));
+				inlineFeedbackSocket.addInlineFeedback(new InlineFeedback(choiceView, inlineFeedbackNodes.item(f), feedbackListener));
 			}
 		}
 		
@@ -154,7 +154,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 			NodeList inlineFeedbackNodes = ((Element)itemNodes.get(i)).getElementsByTagName("feedbackInline");
 			for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-				inlineFeedbackSocket.add(new InlineFeedback(itemView, inlineFeedbackNodes.item(f), feedbackListener));
+				inlineFeedbackSocket.addInlineFeedback(new InlineFeedback(itemView, inlineFeedbackNodes.item(f), feedbackListener));
 			}
 		}
 		

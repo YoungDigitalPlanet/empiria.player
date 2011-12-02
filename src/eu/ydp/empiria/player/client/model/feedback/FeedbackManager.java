@@ -126,7 +126,7 @@ public class FeedbackManager implements InlineFeedbackSocket{
 	}
 
 	@Override
-	public void add(InlineFeedback inlineFeedback) {
+	public void addInlineFeedback(InlineFeedback inlineFeedback) {
 		feedbacks.add(inlineFeedback);
 	}
 	

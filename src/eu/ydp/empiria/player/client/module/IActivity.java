@@ -32,7 +32,7 @@ public interface IActivity {
 	/** Reset module (as if it was created once again) */
 	public void reset();
 
-	/** Mark wrong and show correct answers */
+	/** Mark wrong and mark correct answers */
 	public void markAnswers(boolean mark);
 	
 	/** Show correct answers */

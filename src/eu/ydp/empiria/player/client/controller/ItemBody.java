@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -10,6 +12,9 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
@@ -31,6 +36,7 @@ import eu.ydp.empiria.player.client.model.IModuleCreator;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IBrowserEventHandler;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
+import eu.ydp.empiria.player.client.module.IMultiViewModule;
 import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
@@ -46,6 +52,8 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 		WidgetWorkflowListener {
 
 	public Vector<Widget> modules = new Vector<Widget>();
+	public Map<String, IMultiViewModule> multiViewModules = new HashMap<String, IMultiViewModule>();
+	public Map<String, List<HasWidgets>> multiViewPlaceholders = new HashMap<String, List<HasWidgets>>();
 	public Vector<IUnattachedComponent> unattachedComponents = new Vector<IUnattachedComponent>();
 
 	public InternalEventManager eventManager;
@@ -114,9 +122,6 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 			}
 
 		};
-		
-		ModuleFactory.isSupported("x");
-
 		// traceLabel = new Label();
 		// dom.appendChild(traceLabel.getElement());
 
@@ -135,16 +140,45 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 
 					@Override
 					public com.google.gwt.dom.client.Element createModule(Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener) {
-						Widget widget = ModuleFactory.createWidget(element,
-								moduleSocket, moduleEventsListener);
+						
+						String responseIdentifier = element.getAttribute("responseIdentifier");
+						
+						Widget widget = null;
+						Panel placeholder = null;
+						
+						if (responseIdentifier != null  &&  multiViewModules.containsKey(responseIdentifier)){
+							multiViewModules.get(responseIdentifier).addElement(element);
+							placeholder = new FlowPanel();
+							multiViewPlaceholders.get(responseIdentifier).add(placeholder);
+						} else {
+							widget = ModuleFactory.createWidget(element,
+									moduleSocket, moduleEventsListener);
+							
+							if (widget instanceof IMultiViewModule  &&  widget instanceof IUniqueComponent){
+								((IMultiViewModule)widget).addElement(element);
+								multiViewModules.put( responseIdentifier , ((IMultiViewModule)widget) );
+								placeholder = new FlowPanel();
+								multiViewPlaceholders.put(responseIdentifier, new ArrayList<HasWidgets>());
+								multiViewPlaceholders.get(responseIdentifier).add(placeholder);
+							}
 
-						// if (widget instanceof IInteractionModule)
-						addModule(widget, moduleSocket);
+							if (!(widget instanceof IMultiViewModule)){
+								addModule(widget, moduleSocket);
+							}
+						}
 
+						if (placeholder != null)
+							return placeholder.getElement();
+						
 						return widget.getElement();
 					}
 				}, options);
 
+		for (String currModuleIdentifier : multiViewModules.keySet()){
+			multiViewModules.get(currModuleIdentifier).installViews( multiViewPlaceholders.get(currModuleIdentifier) );
+			addModule( ((Widget)multiViewModules.get(currModuleIdentifier)), moduleSocket);
+		}
+		
 		return dom;
 
 	}

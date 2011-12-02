@@ -72,7 +72,7 @@ public class MatchElement {
 
 		NodeList inlineFeedbackNodes = element.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			inlineFeedbackSocket.add(new InlineFeedback(textContainer, inlineFeedbackNodes.item(f), moduleEventsListener));
+			inlineFeedbackSocket.addInlineFeedback(new InlineFeedback(textContainer, inlineFeedbackNodes.item(f), moduleEventsListener));
 		}
 	}
 	

@@ -119,8 +119,8 @@ public class Item implements IStateful, ItemVariablesAccessor, ItemInterferenceS
 		}
 
 		@Override
-		public void add(InlineFeedback inlineFeedback) {
-			feedbackManager.add(inlineFeedback);
+		public void addInlineFeedback(InlineFeedback inlineFeedback) {
+			feedbackManager.addInlineFeedback(inlineFeedback);
 		}
 		
 		@Override
