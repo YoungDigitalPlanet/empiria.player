@@ -149,6 +149,7 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 						if (responseIdentifier != null  &&  multiViewModules.containsKey(responseIdentifier)){
 							multiViewModules.get(responseIdentifier).addElement(element);
 							placeholder = new FlowPanel();
+							placeholder.getElement().setAttribute("class", "qp-module-view-placeholder");
 							multiViewPlaceholders.get(responseIdentifier).add(placeholder);
 						} else {
 							widget = ModuleFactory.createWidget(element,
@@ -158,6 +159,7 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 								((IMultiViewModule)widget).addElement(element);
 								multiViewModules.put( responseIdentifier , ((IMultiViewModule)widget) );
 								placeholder = new FlowPanel();
+								placeholder.getElement().setAttribute("class", "qp-module-view-placeholder");
 								multiViewPlaceholders.put(responseIdentifier, new ArrayList<HasWidgets>());
 								multiViewPlaceholders.get(responseIdentifier).add(placeholder);
 							}
