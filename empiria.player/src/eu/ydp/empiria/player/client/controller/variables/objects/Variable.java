@@ -28,12 +28,20 @@ public abstract class Variable {
 		String output = "";
 		
 		for (int i = 0 ; i < values.size() ; i ++ ){
-			output += values.get(i);
+			output += escapeCSV (values.get(i) );
 			if (i < values.size()-1)
 				output += ";";
 		}
 		
 		return output;
+	}
+	
+	protected String escapeCSV(String value){
+		if (value.contains("'")  ||  value.contains(";")){
+			value = value.replace("'", "''");
+			value = "'" + value + "'";
+		}
+		return value;
 	}
 	
 	public boolean compareValues(String[] testValues){
