@@ -131,6 +131,10 @@ public abstract class XMLConverter {
 			return "span";
 		if (nodeName.toLowerCase().compareTo("group") == 0)
 			return "div";
+		if (nodeName.toLowerCase().compareTo("simpletext") == 0)
+			return "p";
+		if (nodeName.toLowerCase().compareTo("textinteraction") == 0)
+			return "div";
 		
 		return nodeName;
 	}
@@ -138,6 +142,12 @@ public abstract class XMLConverter {
 	private static void updateAttributes(String orgNodeName, Element element){
 		if (orgNodeName.toLowerCase().equals("group")){
 			element.setAttribute("class", "qp-group");
+		}
+		if (orgNodeName.toLowerCase().equals("simpletext")){
+			element.setAttribute("class", "qp-simpletext");
+		}
+		if (orgNodeName.toLowerCase().equals("textinteraction")){
+			element.setAttribute("class", "qp-textinteraction");
 		}
 		
 	}
