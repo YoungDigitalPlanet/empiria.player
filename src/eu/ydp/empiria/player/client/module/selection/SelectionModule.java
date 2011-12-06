@@ -164,7 +164,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 			buttons.add(new Vector<AccessibleRadioButton>());
 			buttonIds.add(new Vector<String>());
 			for (int c = 0 ; c < choices.getLength() ; c ++){
-				AccessibleRadioButton arb = new AccessibleRadioButton("btns"+String.valueOf(i));
+				AccessibleRadioButton arb = new AccessibleRadioButton(getIdentifier()+"_buttons_"+String.valueOf(i));
 				arb.setStyleName("qp-selection-button");
 				
 				String buttonId = Document.get().createUniqueId();
