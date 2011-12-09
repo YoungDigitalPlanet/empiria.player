@@ -104,7 +104,7 @@
     <zip destfile="dist/empiriaplayer.zip" basedir="dist/build/empiria.player"/>
   </target>
   
-  <target name="publish" depends="dist" description="Publish artifacts into Ivy repository">  	
+  <target name="publish" depends="dist, project.file" description="Publish artifacts into Ivy repository">  	
   	<!-- resolve is needed to get organization/module from ivy.xml for publish task !-->
 		<ivy:resolve />
 		<ivy:publish
@@ -115,6 +115,13 @@
 			artifactspattern="dist/[artifact].[ext]"
 			overwrite="true"/>		
 	</target>
-  
+	
+	<target name="project.file">
+		<copy file="${base.dir}/project.template.xml" tofile="${base.dir}/project.xml" encoding="UTF-8">
+			<filterchain>
+				<expandproperties />
+			</filterchain>
+		</copy>
+	</target>  
 
 </project>
