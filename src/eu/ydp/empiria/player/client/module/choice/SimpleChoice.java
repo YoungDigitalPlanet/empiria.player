@@ -46,11 +46,11 @@ import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 import eu.ydp.empiria.player.client.util.BrowserCompatibility;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class SimpleChoice extends Composite {
+public class SimpleChoice extends FlowPanel {
 
 	public String identifier;
 
-	private AccessibleCheckBox button;
+	private ChoiceButtonBase button;
 	private AbsolutePanel cover;
 	private AbsolutePanel container;
 	private Panel optionPanel;
@@ -63,29 +63,28 @@ public class SimpleChoice extends Composite {
 	private Vector<IUnattachedComponent> inlineModules;
 	
 	
-	public SimpleChoice(Element element, String inputId, String labelId, boolean multi, String moduleIdentifier, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionListener feedbackListener) {
+	public SimpleChoice(Element element, String inputId, String labelId, boolean multi, String moduleIdentifier, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionListener feedbackListener,
+			ChoiceGroupController ctrl) {
+		
 		
 		
 		this.inputId = inputId;
-		//this.labelId = labelId;
 		this.coverId = labelId;
 
 		identifier = XMLUtils.getAttributeAsString(element, "identifier");
 		
 		inlineModules = new Vector<IUnattachedComponent>();
 		
+		setStyleName("qp-choice-option-box");
+		
 		// button
 		if (multi)
-			button = new AccessibleCheckBox();
+			button = new MultiChoiceButton();
 		else
-			button = new AccessibleRadioButton(this.inputId);
-		button.setStyleName("qp-choice-button");
+			button = new SingleChoiceButton(ctrl);
 
 		Vector<String> ignoredTags = new Vector<String>();
 		ignoredTags.add("feedbackInline");
-		//com.google.gwt.dom.client.Element dom = XMLConverter.getDOM(element, ignoredTags);
-		//ElementWrapperWidget domWidget = new ElementWrapperWidget(dom);
-
 		Widget contentWidget = CommonsFactory.getInlineTextView(element, ignoredTags, inlineModules);
 		
 		cover = new AbsolutePanel();
@@ -98,26 +97,13 @@ public class SimpleChoice extends Composite {
 		container.add(cover, 0, 0);
 		
 		
-		// tmp
-		//button.setHTML(dom.getInnerHTML());
-		// /tmp
-		
-	    com.google.gwt.dom.client.Element buttonElement = (com.google.gwt.dom.client.Element)button.getElement();
-		(buttonElement.getElementsByTagName("input").getItem(0)).setId(inputId);
-		// tmp 
-		/*
-		if (buttonElement.getElementsByTagName("img").getLength() > 0)
-			(buttonElement.getElementsByTagName("img").getItem(0)).setId(labelId);
-		else
-			(buttonElement.getElementsByTagName("label").getItem(0)).setId(labelId);
-		*/
-		// /tmp
+		button.getElement().setId(inputId);
 		
 		labelPanel = new FlowPanel();
 		labelPanel.setStyleName("qp-choice-label");
 		labelPanel.add(container);
 
-		optionPanel = new HorizontalPanel();
+		optionPanel = new FlowPanel();
 		optionPanel.setStyleName("qp-choice-option");
 		optionPanel.add(button);
 		optionPanel.add(labelPanel); // tmp
@@ -135,7 +121,7 @@ public class SimpleChoice extends Composite {
 		}
 		
 
-		initWidget(widgetWrapped);
+		add(widgetWrapped);
 		
 		// feedback
 		
@@ -154,36 +140,22 @@ public class SimpleChoice extends Composite {
 
 	public void markAnswers(boolean mark, boolean correct) {
 
-		if (mark){
-			if(button.isChecked()){
-				if( correct )
-					button.setStyleName("qp-choice-selected-correct");
-				else
-					button.setStyleName("qp-choice-selected-wrong");
-			}
-			else{
-				if( correct )
-					button.setStyleName("qp-choice-notselected-wrong");
-				else
-					button.setStyleName("qp-choice-notselected-correct");
-			}
-			
-			setEnabled(false);
-			
-		} else {
 
-			button.setStyleName("qp-choice-button");
-			setEnabled(true);
-		}
+		if( correct )
+			button.markAsCorrect(mark);
+		else
+			button.markAsWrong(mark);
+			
+		setEnabled(!mark);
 
 	}
 	
 	public void setSelected(boolean sel){
-		button.setChecked(sel);
+		button.setSelected(sel);
 	}
 
 	public boolean isSelected(){
-		boolean isc = button.isChecked();
+		boolean isc = button.getSelected();
 		return isc;
 	}
 
@@ -217,11 +189,17 @@ public class SimpleChoice extends Composite {
 	}
 
 	public void reset(){
-		button.setStyleName("qp-choice-button");
-		button.setValue(false);
+		button.setSelected(false);
 		setEnabled(true);
 	}
 
 
+	public void setMouseOver(){
+		button.setMouseOver(true);
+	}
+	
+	public void setMouseOut(){
+		button.setMouseOver(false);
+	}
 
 }
