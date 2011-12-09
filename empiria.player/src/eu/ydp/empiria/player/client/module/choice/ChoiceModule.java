@@ -31,6 +31,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -67,6 +69,8 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 	
 	private boolean locked = false;
 	private boolean showingAnswers = false;
+	
+	protected ChoiceGroupController groupController;
 		
 	
 	public ChoiceModule(Element element, ModuleSocket moduleSocket, ModuleInteractionListener stateChangedListener){
@@ -78,7 +82,7 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 		multi = response.cardinality == Cardinality.MULTIPLE;
 		stateListener = stateChangedListener;
 		
-		VerticalPanel vp = new VerticalPanel();
+		Panel vp = new FlowPanel();
 		
 		vp.setStyleName("qp-choice-module");
 		vp.add(CommonsFactory.getPromptView(XMLUtils.getFirstElementWithTagName(element, "prompt")));
@@ -103,7 +107,7 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 	   */
 	  private Widget getOptionsView(Element element, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionListener feedbackListener){
 
-		  VerticalPanel panel = new VerticalPanel();
+		  Panel panel = new FlowPanel();
 		  NodeList optionNodes = element.getElementsByTagName("simpleChoice");
 		  RandomizedSet<Element> randomizedNodes = new RandomizedSet<Element>();
 		  RandomizedSet<Integer> randomizedIndices = new RandomizedSet<Integer>();
@@ -122,6 +126,8 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 				  }
 			  }
 		  }
+		  
+		  groupController = new ChoiceGroupController();
 
 		  // Create buttons
 		  for(int i = 0; i < optionNodes.getLength(); i++){
@@ -137,7 +143,7 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 				  option = (Element)optionNodes.item(optionIndex);
 			  }
 
-			  currInteractionElement = new SimpleChoice(option, currInputId, currLabelId, multi, responseIdentifier, inlineFeedbackSocket, feedbackListener);
+			  currInteractionElement = new SimpleChoice(option, currInputId, currLabelId, multi, responseIdentifier, inlineFeedbackSocket, feedbackListener, groupController);
 			  //interactionElements.add(currInteractionElement);
 			  interactionElements.set(optionIndex, currInteractionElement);
 			  panel.add(currInteractionElement);
@@ -242,6 +248,12 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 		for (SimpleChoice currSC:interactionElements){
 			ids.add(new InternalEventTrigger(currSC.getInputId(), Event.ONMOUSEUP));
 			ids.add(new InternalEventTrigger(currSC.getLabelId(), Event.ONMOUSEUP));
+
+			ids.add(new InternalEventTrigger(currSC.getInputId(), Event.ONMOUSEMOVE));
+			ids.add(new InternalEventTrigger(currSC.getLabelId(), Event.ONMOUSEMOVE));
+
+			ids.add(new InternalEventTrigger(currSC.getInputId(), Event.ONMOUSEOUT));
+			ids.add(new InternalEventTrigger(currSC.getLabelId(), Event.ONMOUSEOUT));
 		}
 		return ids;
 	}
@@ -252,13 +264,10 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 
 	@Override
 	public void handleEvent(String tagID, InternalEvent param) {
-		if (locked)
-			return;
 
-		SimpleChoice target = null;
+		SimpleChoice targetSC = null;
 		
 		// check if multi selection mode
-				
 		if (param != null){
 			String lastSelectedId = param.getEventTargetElement().getId();
 		
@@ -266,38 +275,38 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 
 			for (SimpleChoice currSC:interactionElements){
 				if (currSC.getInputId().compareTo(lastSelectedId) == 0){
+					targetSC = currSC;
 					targertIsButton = true;
 					break;
 				}
 			}
-			
-			if (targertIsButton){
-				for (SimpleChoice currSC:interactionElements){
-					if (currSC.getInputId().compareTo(lastSelectedId) == 0){
-						if (!multi  &&  !currSC.isSelected())
-							currSC.setSelected(!currSC.isSelected());
-						target = currSC;
-						continue;
-					} else if (!multi){
-						currSC.setSelected(false);
-					}
-				}
-				
-			} else {
+					
+			if (!targertIsButton) {
 				for (SimpleChoice currSC:interactionElements){
 					if (currSC.getLabelId().compareTo(lastSelectedId) == 0){
-						currSC.setSelected(!currSC.isSelected());
-						continue;
-					} else if (!multi){
-						currSC.setSelected(false);
+						targetSC = currSC;
+						break;
 					}
 				}
 			}
+			
+			if (targetSC != null){
+			
+				if (param.getTypeInt() == Event.ONMOUSEUP ){
+					if (!locked)
+						targetSC.setSelected(!targetSC.isSelected());
+				} else if (param.getTypeInt() == Event.ONMOUSEMOVE){
+					targetSC.setMouseOver();
+				} else if (param.getTypeInt() == Event.ONMOUSEOUT){
+					targetSC.setMouseOut();
+				}
+			}
 		}
+		
 		param.stopPropagation();
 		// pass response
 		
-		updateResponse(target, true);
+		updateResponse(targetSC, true);
 		
 	}
 	
