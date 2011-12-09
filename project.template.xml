@@ -1,0 +1,14 @@
+<project id="GroupAsItemFlowExtension" version="${revision}" branch="${version}">
+	<displayName>empiria.player</displayName>
+	<description>Empiria Player</description>
+	<author>Rafal Rybacki</author>
+	<about src="about.html" />
+
+	<scm type="svn" href="https://svn.ydp.eu/ydp/projects/empiria/player/trunk/empiria.player" />
+	<artifact name="yPublisher package" href="dist/empiriaplayer.zip" />
+	
+	<classification>
+		<label>JavaScript</label>
+		<label>Empiria</label>
+	</classification>
+</project>
