@@ -49,8 +49,8 @@ http://www.adobe.com/go/favideo/
  * and listen to events from a Flash video player through Javascript.
  *----------------------------------------------------- */
 	FAVideo = function(divName, videoPath, width, height, options) {
-		this.DEFAULT_SWF_PATH = "qtiplayer/video/FAVideo"; // dot swf is added by AC_RunActiveContent
-		this.DEFAULT_SKIN_PATH = "qtiplayer/video/skins/ClearExternalAll.swf";
+		this.DEFAULT_SWF_PATH = "empiria.player/video/FAVideo"; // dot swf is added by AC_RunActiveContent
+		this.DEFAULT_SKIN_PATH = "empiria.player/video/skins/ClearExternalAll.swf";
 		this.DEFAULT_WIDTH = 320;
 		this.DEFAULT_HEIGHT = 240;
 		this.ERROR_DIV_NOT_FOUND = "The specified DIV element was not found.";
