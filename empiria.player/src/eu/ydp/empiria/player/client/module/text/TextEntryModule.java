@@ -81,7 +81,18 @@ public class TextEntryModule extends InlineHTML implements IInteractionModule{
 		
 		if (!response.correctAnswers.get(0).matches(".*[^0-9].*"))
 			textBox.getElement().setAttribute("type", "number");
-		getElement().appendChild(textBox.getElement());
+
+		InlineHTML spanPrefix = new InlineHTML();
+		spanPrefix.setStyleName("qp-text-textentry-prefix");
+		InlineHTML spanSufix = new InlineHTML();
+		spanSufix.setStyleName("qp-text-textentry-sufix");
+		InlineHTML spanContent = new InlineHTML();
+		spanContent.setStyleName("qp-text-textentry-content");
+		spanContent.getElement().appendChild(textBox.getElement());
+		
+		getElement().appendChild(spanPrefix.getElement());
+		getElement().appendChild(spanSufix.getElement());
+		getElement().appendChild(spanContent.getElement());
 		setStyleName("qp-text-textentry");
 		
 		NodeList inlineFeedbackNodes = element.getElementsByTagName("feedbackInline");
