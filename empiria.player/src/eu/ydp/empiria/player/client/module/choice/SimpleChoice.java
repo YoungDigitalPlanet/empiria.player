@@ -43,6 +43,10 @@ import eu.ydp.empiria.player.client.model.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.module.CommonsFactory;
 import eu.ydp.empiria.player.client.module.FeedbackModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.IUnattachedComponent;
+import eu.ydp.empiria.player.client.module.components.selectablebutton.ChoiceButtonBase;
+import eu.ydp.empiria.player.client.module.components.selectablebutton.ChoiceGroupController;
+import eu.ydp.empiria.player.client.module.components.selectablebutton.MultiChoiceButton;
+import eu.ydp.empiria.player.client.module.components.selectablebutton.SingleChoiceButton;
 import eu.ydp.empiria.player.client.util.BrowserCompatibility;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
@@ -79,9 +83,9 @@ public class SimpleChoice extends FlowPanel {
 		
 		// button
 		if (multi)
-			button = new MultiChoiceButton();
+			button = new MultiChoiceButton("choice");
 		else
-			button = new SingleChoiceButton(ctrl);
+			button = new SingleChoiceButton(ctrl, "choice");
 
 		Vector<String> ignoredTags = new Vector<String>();
 		ignoredTags.add("feedbackInline");
@@ -155,7 +159,7 @@ public class SimpleChoice extends FlowPanel {
 	}
 
 	public boolean isSelected(){
-		boolean isc = button.getSelected();
+		boolean isc = button.isSelected();
 		return isc;
 	}
 
