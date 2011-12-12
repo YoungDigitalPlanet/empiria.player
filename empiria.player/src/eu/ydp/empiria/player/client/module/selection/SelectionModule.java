@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.selection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -8,8 +10,9 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
@@ -48,11 +51,11 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		NodeList choices = element.getElementsByTagName("simpleChoice");
 		NodeList items = element.getElementsByTagName("item");
 		
-		grid = new Grid(items.getLength()+1, choices.getLength()+1);
+		grid = new FlowPanel();
 		grid.setStyleName("qp-selection-table");
 		fillGrid(choices, items, moduleSocket, moduleEventsListener);
 		
-		panel = new VerticalPanel();
+		panel = new FlowPanel();
 		panel.setStyleName("qp-selection-module");
 		panel.add(CommonsFactory.getPromptView(XMLUtils.getFirstElementWithTagName(element, "prompt")));
 		panel.add(grid);
@@ -75,12 +78,14 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	/** Shuffle answers */
 	private boolean shuffle = false;
 	
-	private VerticalPanel panel;
-	private Grid grid;
+	private Panel panel;
+	private Panel grid;
 	private Vector<Vector<SingleChoiceButton>> buttons;
 	private Vector<Vector<String>> buttonIds;
 	private Vector<String> choiceIdentifiers;
 	private Vector<String> itemIdentifiers;
+	protected List<Panel> itemsPanels;
+	protected List<Widget> itemViews;
 
 	private boolean showingAnswers = false;
 	private boolean locked = false;
@@ -99,6 +104,14 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	private void fillGrid(NodeList choices, NodeList items, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionListener feedbackListener){
 		buttons = new Vector<Vector<SingleChoiceButton>>();
 
+		Panel choicesPanel = new FlowPanel();
+		choicesPanel.setStyleName("qp-selection-choices");
+		grid.add(choicesPanel);
+		
+		Panel emptyChoice = new FlowPanel();
+		emptyChoice.setStyleName("qp-selection-choice-empty");
+		choicesPanel.add(emptyChoice);
+		
 		// header - choices
 		
 		choiceIdentifiers = new Vector<String>();
@@ -109,7 +122,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 			Widget choiceView = CommonsFactory.getInlineTextView((Element)choices.item(c), ignoredTags, inlineModules);
 			choiceView.setStyleName("qp-selection-choice");
 			
-			grid.setWidget(0, c+1, choiceView);
+			choicesPanel.add(choiceView);
 			
 			choiceIdentifiers.add( ((Element)choices.item(c)).getAttribute("identifier") );
 
@@ -141,7 +154,17 @@ public class SelectionModule extends Composite implements IInteractionModule {
 			}
 		}
 		
+		itemsPanels = new ArrayList<Panel>();
+		
+		for (int i = 0 ; i < itemNodes.size() ; i ++){
+			Panel currItemPanel = new FlowPanel();
+			currItemPanel.setStyleName("qp-selection-items");
+			itemsPanels.add(currItemPanel);
+			grid.add(currItemPanel);
+		}
+		
 		itemIdentifiers = new Vector<String>();
+		itemViews = new ArrayList<Widget>();
 		for (int i = 0 ; i < itemNodes.size() ; i ++){
 			Vector<String> ignoredTags = new Vector<String>();
 			ignoredTags.add("feedbackInline");
@@ -149,8 +172,8 @@ public class SelectionModule extends Composite implements IInteractionModule {
 			Widget itemView = CommonsFactory.getInlineTextView((Element)itemNodes.get(i), ignoredTags, inlineModules);
 			itemView.setStyleName("qp-selection-item");
 			
-			grid.setWidget(i+1, 0, itemView);
-			
+			itemsPanels.get(i).add(itemView);
+			itemViews.add(itemView);
 			itemIdentifiers.add( ((Element)itemNodes.get(i)).getAttribute("identifier") );
 
 			NodeList inlineFeedbackNodes = ((Element)itemNodes.get(i)).getElementsByTagName("feedbackInline");
@@ -169,12 +192,10 @@ public class SelectionModule extends Composite implements IInteractionModule {
 				SingleChoiceButton arb = new SingleChoiceButton(cgc, "selection");
 				
 				String buttonId = Document.get().createUniqueId();
-			    //com.google.gwt.dom.client.Element buttonElement = (com.google.gwt.dom.client.Element)arb.getElement();
-				//(buttonElement.getElementsByTagName("input").getItem(0)).setId(buttonId);
 				arb.getElement().setId(buttonId);
 				buttonIds.get(i).add(buttonId);
 				
-				grid.setWidget(i+1, c+1, arb);
+				itemsPanels.get(i).add(arb);
 				buttons.get(i).add(arb);
 			}
 		}
@@ -207,14 +228,14 @@ public class SelectionModule extends Composite implements IInteractionModule {
 				if (itemIdentifiers.indexOf(currItemIdentifier) == -1)
 					continue;
 				if (response.values.contains(response.correctAnswers.get(r))){
-					grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-correct");
+					itemViews.get(itemIdentifiers.indexOf(currItemIdentifier)).setStyleName("qp-selection-item-correct");
 				} else {
-					grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-wrong");
+					itemViews.get(itemIdentifiers.indexOf(currItemIdentifier)).setStyleName("qp-selection-item-wrong");
 				}
 			}
 		} else {
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
-				grid.getWidget(i+1, 0).setStyleName("qp-selection-item");
+				itemViews.get(i).setStyleName("qp-selection-item");
 			}
 		}
 
