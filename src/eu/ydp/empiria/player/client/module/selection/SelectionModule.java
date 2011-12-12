@@ -15,7 +15,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.components.AccessibleRadioButton;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEvent;
 import eu.ydp.empiria.player.client.controller.events.internal.InternalEventTrigger;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -29,6 +28,8 @@ import eu.ydp.empiria.player.client.module.IUnattachedComponent;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.components.selectablebutton.ChoiceGroupController;
+import eu.ydp.empiria.player.client.module.components.selectablebutton.SingleChoiceButton;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
@@ -76,7 +77,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	
 	private VerticalPanel panel;
 	private Grid grid;
-	private Vector<Vector<AccessibleRadioButton>> buttons;
+	private Vector<Vector<SingleChoiceButton>> buttons;
 	private Vector<Vector<String>> buttonIds;
 	private Vector<String> choiceIdentifiers;
 	private Vector<String> itemIdentifiers;
@@ -96,7 +97,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	}
 	
 	private void fillGrid(NodeList choices, NodeList items, InlineFeedbackSocket inlineFeedbackSocket, FeedbackModuleInteractionListener feedbackListener){
-		buttons = new Vector<Vector<AccessibleRadioButton>>();
+		buttons = new Vector<Vector<SingleChoiceButton>>();
 
 		// header - choices
 		
@@ -161,15 +162,16 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		// body - buttons
 		buttonIds = new Vector<Vector<String>>();
 		for (int i = 0 ; i < items.getLength() ; i ++){
-			buttons.add(new Vector<AccessibleRadioButton>());
+			buttons.add(new Vector<SingleChoiceButton>());
 			buttonIds.add(new Vector<String>());
+			ChoiceGroupController cgc = new ChoiceGroupController();
 			for (int c = 0 ; c < choices.getLength() ; c ++){
-				AccessibleRadioButton arb = new AccessibleRadioButton(getIdentifier()+"_buttons_"+String.valueOf(i));
-				arb.setStyleName("qp-selection-button");
+				SingleChoiceButton arb = new SingleChoiceButton(cgc, "selection");
 				
 				String buttonId = Document.get().createUniqueId();
-			    com.google.gwt.dom.client.Element buttonElement = (com.google.gwt.dom.client.Element)arb.getElement();
-				(buttonElement.getElementsByTagName("input").getItem(0)).setId(buttonId);
+			    //com.google.gwt.dom.client.Element buttonElement = (com.google.gwt.dom.client.Element)arb.getElement();
+				//(buttonElement.getElementsByTagName("input").getItem(0)).setId(buttonId);
+				arb.getElement().setId(buttonId);
 				buttonIds.get(i).add(buttonId);
 				
 				grid.setWidget(i+1, c+1, arb);
@@ -229,8 +231,8 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 		for (int i = 0 ; i < buttons.size() ; i ++){
 			for (int c = 0 ; c < buttons.get(i).size() ; c ++){
-				if (buttons.get(i).get(c).isChecked())
-					buttons.get(i).get(c).setChecked(false);
+				if (buttons.get(i).get(c).isSelected())
+					buttons.get(i).get(c).setSelected(false);
 			}
 		}
 
@@ -245,7 +247,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
 				for (int c = 0 ; c < choiceIdentifiers.size() ; c ++){
 					if (response.correctAnswers.contains(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
-						buttons.get(i).get(c).setChecked(true);
+						buttons.get(i).get(c).setSelected(true);
 				}
 			}
 				
@@ -255,7 +257,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
 				for (int c = 0 ; c < choiceIdentifiers.size() ; c ++){
 					if (response.values.contains(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
-						buttons.get(i).get(c).setChecked(true);
+						buttons.get(i).get(c).setSelected(true);
 				}
 			}
 			showingAnswers = false;
@@ -283,7 +285,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		for (int e = 0 ; e < newState.size() ; e ++){
 			String[] components = newState.get(e).isString().stringValue().split(" ");
 			if (components.length == 2  &&  itemIdentifiers.indexOf(components[0]) != -1  &&  choiceIdentifiers.indexOf(components[1]) != -1){
-				buttons.get(itemIdentifiers.indexOf(components[0])).get(choiceIdentifiers.indexOf(components[1])).setChecked(true);
+				buttons.get(itemIdentifiers.indexOf(components[0])).get(choiceIdentifiers.indexOf(components[1])).setSelected(true);
 			}
 			
 		}
@@ -297,6 +299,8 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		for (int i = 0 ; i < buttons.size() ; i ++){
 			for (int c = 0 ; c < buttons.get(i).size() ; c ++){
 				triggers.add(new InternalEventTrigger(buttonIds.get(i).get(c), Event.ONMOUSEUP));
+				triggers.add(new InternalEventTrigger(buttonIds.get(i).get(c), Event.ONMOUSEMOVE));
+				triggers.add(new InternalEventTrigger(buttonIds.get(i).get(c), Event.ONMOUSEOUT));
 			}
 		}
 		
@@ -305,7 +309,34 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 	@Override
 	public void handleEvent(String tagID, InternalEvent event) {
-		updateResponse(tagID, true);
+		
+		SingleChoiceButton currTarget = null;
+		
+		if (tagID.length() > 0){
+			for (int i = 0 ; i < buttons.size() ; i ++){
+				for (int c = 0 ; c < buttons.get(i).size() ; c ++){
+					if (buttonIds.get(i).get(c).equals(tagID)){
+						currTarget = buttons.get(i).get(c);
+						break;
+					}
+				}
+			}
+		}
+			
+		if (currTarget != null){
+			if (event.getTypeInt() == Event.ONMOUSEUP ){
+				if (!locked){
+					currTarget.setSelected(!currTarget.isSelected());
+					// pass response
+
+					updateResponse(tagID, true);
+				}					
+			} else if (event.getTypeInt() == Event.ONMOUSEMOVE){
+				currTarget.setMouseOver(true);
+			} else if (event.getTypeInt() == Event.ONMOUSEOUT){
+				currTarget.setMouseOver(false);
+			}
+		}
 
 	}
 	
@@ -317,19 +348,8 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		
 		for (int i = 0 ; i < buttons.size() ; i ++){
 			
-			boolean isSenderFromCurrentItem = false;
-			
-			if (senderId.length() > 0){
-				for (int c = 0 ; c < buttons.get(i).size() ; c ++){
-					if (buttonIds.get(i).get(c).compareTo(senderId) == 0){
-						isSenderFromCurrentItem = true;
-						break;
-					}
-				}
-			}
 			for (int c = 0 ; c < buttons.get(i).size() ; c ++){
-				if (isSenderFromCurrentItem  &&  buttonIds.get(i).get(c).compareTo(senderId) == 0  &&  !buttons.get(i).get(c).isChecked()  ||
-					!isSenderFromCurrentItem  &&  buttonIds.get(i).get(c).compareTo(senderId) != 0  &&   buttons.get(i).get(c).isChecked()){
+				if (buttons.get(i).get(c).isSelected()){
 					currResponseValues.add(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c));
 				}					
 			}

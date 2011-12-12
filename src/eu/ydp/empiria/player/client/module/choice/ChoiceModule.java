@@ -50,6 +50,7 @@ import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.JsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.components.selectablebutton.ChoiceGroupController;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
@@ -293,8 +294,12 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 			if (targetSC != null){
 			
 				if (param.getTypeInt() == Event.ONMOUSEUP ){
-					if (!locked)
+					if (!locked){
 						targetSC.setSelected(!targetSC.isSelected());
+						// pass response
+						
+						updateResponse(targetSC, true);
+					}					
 				} else if (param.getTypeInt() == Event.ONMOUSEMOVE){
 					targetSC.setMouseOver();
 				} else if (param.getTypeInt() == Event.ONMOUSEOUT){
@@ -304,9 +309,6 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 		}
 		
 		param.stopPropagation();
-		// pass response
-		
-		updateResponse(targetSC, true);
 		
 	}
 	
@@ -317,12 +319,9 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 		Vector<String> currResponseValues = new Vector<String>();
 		
 		for (SimpleChoice currSC:interactionElements){
-			if (currSC.equals(target) && multi && !currSC.isSelected()){
-				currResponseValues.add(currSC.getIdentifier());
-			} else if ((!currSC.equals(target) || !multi) && currSC.isSelected()){
+			if (currSC.isSelected()){
 				currResponseValues.add(currSC.getIdentifier());
 			}
-			//currSC.showFeedback(currSC.isSelected());
 		}
 		
 		if (!response.compare(currResponseValues)  ||  !response.isInitialized()){

@@ -31,9 +31,7 @@ public class JsSoundProcessorExtension extends JsExtension implements
 				}
 				
 				if (playing)
-					soundStop();
-				
-				soundPlayJs(extensionJsObject, deliveryEvent.toJsObject());
+					soundStop();				
 				
 				if (callback != null){
 					
@@ -49,6 +47,8 @@ public class JsSoundProcessorExtension extends JsExtension implements
 						}
 					});
 				}
+				
+				soundPlayJs(extensionJsObject, deliveryEvent.toJsObject());
 				
 				
 			}
