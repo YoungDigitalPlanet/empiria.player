@@ -14,9 +14,11 @@ public class MultiChoiceButton extends ChoiceButtonBase {
 	
 	protected void updateStyle(){
 		if (selected){
-			setStyleName("qp-"+moduleStyleNamePart+"-button-multi-selected");
+			removeStyleName("qp-"+moduleStyleNamePart+"-button-multi-notselected");
+			addStyleName("qp-"+moduleStyleNamePart+"-button-multi-selected");
 		} else {
-			setStyleName("qp-"+moduleStyleNamePart+"-button-multi-notselected");
+			removeStyleName("qp-"+moduleStyleNamePart+"-button-multi-selected");
+			addStyleName("qp-"+moduleStyleNamePart+"-button-multi-notselected");
 		}
 	}
 	
