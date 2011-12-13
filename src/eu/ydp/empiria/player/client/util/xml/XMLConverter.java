@@ -93,7 +93,12 @@ public abstract class XMLConverter {
 		
 		for(int i = 0; i < attributes.getLength(); i++){
 			Node attribute = attributes.item(i);
-			dstElement.setAttribute(attribute.getNodeName(), attribute.getNodeValue());
+			if (attribute.getNodeName().equals("class")){
+				dstElement.addClassName(attribute.getNodeValue());
+			} else {
+				dstElement.setAttribute(attribute.getNodeName(), attribute.getNodeValue());
+			}
+			
 		}
 	}
 	
