@@ -59,10 +59,12 @@ public class SimpleChoice extends FlowPanel {
 	private AbsolutePanel container;
 	private Panel optionPanel;
 	private Panel labelPanel;
+	private Panel markAnswersPanel; 
 
-	public String inputId;
+	protected String inputId;
 	//public String labelId;
-	public String coverId;
+	protected String coverId;
+	protected boolean multi;
 	
 	private Vector<IUnattachedComponent> inlineModules;
 	
@@ -74,6 +76,7 @@ public class SimpleChoice extends FlowPanel {
 		
 		this.inputId = inputId;
 		this.coverId = labelId;
+		this.multi = multi;
 
 		identifier = XMLUtils.getAttributeAsString(element, "identifier");
 		
@@ -106,9 +109,18 @@ public class SimpleChoice extends FlowPanel {
 		labelPanel = new FlowPanel();
 		labelPanel.setStyleName("qp-choice-label");
 		labelPanel.add(container);
+		
+		markAnswersPanel = new FlowPanel();
+		String buttonTypeName;
+		if (multi)
+			buttonTypeName = "multi";
+		else
+			buttonTypeName = "single";
+		markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
 
 		optionPanel = new FlowPanel();
 		optionPanel.setStyleName("qp-choice-option");
+		optionPanel.add(markAnswersPanel);
 		optionPanel.add(button);
 		optionPanel.add(labelPanel); // tmp
 		
@@ -143,12 +155,22 @@ public class SimpleChoice extends FlowPanel {
 	}
 
 	public void markAnswers(boolean mark, boolean correct) {
-
-
-		if( correct )
-			button.markAsCorrect(mark);
+		
+		String buttonTypeName;
+		if (multi)
+			buttonTypeName = "multi";
 		else
-			button.markAsWrong(mark);
+			buttonTypeName = "single";
+
+		if (!mark){
+			markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
+		} else {
+			if( correct )
+				markAnswersPanel.addStyleName("qp-choice-button-"+buttonTypeName+"-correct");
+			else
+				markAnswersPanel.addStyleName("qp-choice-button-"+buttonTypeName+"-wrong");
+		}
+			
 			
 		setEnabled(!mark);
 

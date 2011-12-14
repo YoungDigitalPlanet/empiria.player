@@ -186,7 +186,9 @@ public class ChoiceModule extends Composite implements IInteractionModule {
 			}
 		} else if (response.cardinality == Cardinality.MULTIPLE){
 			for (SimpleChoice currSC:interactionElements){
-				currSC.markAnswers(mark, response.correctAnswers.contains(currSC.getIdentifier()) );
+				boolean correct = response.correctAnswers.contains(currSC.getIdentifier());
+				boolean ok = (correct && currSC.isSelected())  ||  (!correct && !currSC.isSelected());
+				currSC.markAnswers(mark,  ok);
 			}
 		}
 	}
