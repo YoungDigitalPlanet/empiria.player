@@ -83,9 +83,9 @@ public class SimpleChoice extends FlowPanel {
 		
 		// button
 		if (multi)
-			button = new MultiChoiceButton("choice");
+			button = new MultiChoiceButton("choice-multi");
 		else
-			button = new SingleChoiceButton(ctrl, "choice");
+			button = new SingleChoiceButton(ctrl, "choice-single");
 
 		Vector<String> ignoredTags = new Vector<String>();
 		ignoredTags.add("feedbackInline");
