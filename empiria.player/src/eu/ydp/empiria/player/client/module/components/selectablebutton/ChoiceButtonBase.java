@@ -18,24 +18,6 @@ public abstract class ChoiceButtonBase extends FlowPanel implements ISelectableB
 	
 	abstract protected void updateStyle();
 	
-
-	public void markAsCorrect(boolean mark) {
-		if (mark){
-			addStyleName("qp-"+moduleStyleNamePart+"-button-correct");
-		} else {
-			removeStyleName("qp-"+moduleStyleNamePart+"-button-correct");
-		}
-	}
-
-	public void markAsWrong(boolean mark) {
-		if (mark){
-			addStyleName("qp-"+moduleStyleNamePart+"-button-wrong");
-		} else {
-			removeStyleName("qp-"+moduleStyleNamePart+"-button-wrong");
-		}
-	}
-	
-	
 	public void setEnabled(boolean enabled){
 		this.enabled = enabled;
 		if (enabled){
