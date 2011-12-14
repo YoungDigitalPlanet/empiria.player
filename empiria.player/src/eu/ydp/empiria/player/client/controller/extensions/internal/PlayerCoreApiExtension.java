@@ -46,7 +46,7 @@ public class PlayerCoreApiExtension extends
 		if (deliveryEvent.getType() == DeliveryEventType.ASSESSMENT_LOADING){
 			setOptions();
 		}
-		if (deliveryEvent.getType() == DeliveryEventType.ASSESSMENT_LOADED){
+		if (deliveryEvent.getType() == DeliveryEventType.ASSESSMENT_STARTING){
 			importState();
 		}
 	}

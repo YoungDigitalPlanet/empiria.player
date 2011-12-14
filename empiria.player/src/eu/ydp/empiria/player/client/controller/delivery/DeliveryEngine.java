@@ -156,6 +156,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		assessmentController.init(dataManager.getAssessmentData());
 		getDeliveryEventsListener().onDeliveryEvent(
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
+		getDeliveryEventsListener().onDeliveryEvent(
+				new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTING));
 		flowManager.initFlow();
 		updateAssessmentStyle();
 		getDeliveryEventsListener().onDeliveryEvent(
