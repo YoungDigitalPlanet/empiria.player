@@ -58,8 +58,12 @@ public class JsSoundProcessorExtension extends JsExtension implements
 	}
 	
 	protected void soundStop(){
-		playing = false;
 		soundStopJs(extensionJsObject);
+		soundFinished();
+	}
+	
+	protected void soundFinished(){
+		playing = false;
 		if (currCallback != null)
 			currCallback.onStop();
 	}
@@ -76,7 +80,7 @@ public class JsSoundProcessorExtension extends JsExtension implements
 	}
 	
 	private void onSoundFinished(){
-		soundStop();
+		soundFinished();
 	}
 	
 	private native void soundPlayJs(JavaScriptObject extenstionObject, JavaScriptObject eventJsObject)/*-{
