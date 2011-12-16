@@ -87,6 +87,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	private StyleSocket styleSocket;
 
 	protected JavaScriptObject playerJsObject;
+	
+	protected String stateAsync;
 
 	/**
 	 * C'tor.
@@ -158,11 +160,49 @@ public class DeliveryEngine implements DataLoaderEventListener,
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
 		getDeliveryEventsListener().onDeliveryEvent(
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTING));
-		flowManager.initFlow();
+		initFlow();
 		updateAssessmentStyle();
 		getDeliveryEventsListener().onDeliveryEvent(
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		updatePageStyle();
+	}
+	
+	protected void initFlow(){
+
+		if (stateAsync != null){
+			try {
+				JSONArray deState = (JSONArray) JSONParser.parse(stateAsync);
+	
+				assessmentController.reset();
+	
+				sessionDataManager.setState((JSONArray) deState.get(1));
+	
+				extensionsManager.setState(deState.get(2).isArray());
+	
+				flowManager.deinitFlow();
+	
+				if (deState.get(0).isNumber() != null) {
+					flowManager.invokeFlowRequest(new FlowRequest.NavigateGotoItem(
+							(int) deState.get(0).isNumber().doubleValue()));
+				} else if (deState.get(0).isString() != null) {
+					if (deState.get(0).isString().stringValue()
+							.equals(PageType.TOC.toString()))
+						flowManager
+								.invokeFlowRequest(new FlowRequest.NavigateToc());
+					else if (deState.get(0).isString().stringValue()
+							.equals(PageType.SUMMARY.toString()))
+						flowManager
+								.invokeFlowRequest(new FlowRequest.NavigateSummary());
+				}
+	
+				flowManager.initFlow();
+	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			flowManager.initFlow();
+		}
 	}
 
 	private void loadPredefinedExtensions() {
@@ -334,38 +374,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		return deState.toString();
 	}
 
-	@SuppressWarnings("deprecation")
 	public void setStateString(String state) {
-		try {
-			JSONArray deState = (JSONArray) JSONParser.parse(state);
-
-			assessmentController.reset();
-
-			sessionDataManager.setState((JSONArray) deState.get(1));
-
-			extensionsManager.setState(deState.get(2).isArray());
-
-			flowManager.deinitFlow();
-
-			if (deState.get(0).isNumber() != null) {
-				flowManager.invokeFlowRequest(new FlowRequest.NavigateGotoItem(
-						(int) deState.get(0).isNumber().doubleValue()));
-			} else if (deState.get(0).isString() != null) {
-				if (deState.get(0).isString().stringValue()
-						.equals(PageType.TOC.toString()))
-					flowManager
-							.invokeFlowRequest(new FlowRequest.NavigateToc());
-				else if (deState.get(0).isString().stringValue()
-						.equals(PageType.SUMMARY.toString()))
-					flowManager
-							.invokeFlowRequest(new FlowRequest.NavigateSummary());
-			}
-
-			flowManager.initFlow();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		stateAsync = state;
 	}
 
 	public String getEngineMode() {
