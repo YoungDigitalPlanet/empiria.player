@@ -13,18 +13,6 @@ public class SingleChoiceButton extends ChoiceButtonBase {
 	}
 	
 	@Override
-	protected void updateStyle() {
-
-		if (selected){
-			addStyleName("qp-"+moduleStyleNamePart+"-button-single-selected");
-			removeStyleName("qp-"+moduleStyleNamePart+"-button-single-notselected");
-		} else {
-			addStyleName("qp-"+moduleStyleNamePart+"-button-single-notselected");
-			removeStyleName("qp-"+moduleStyleNamePart+"-button-single-selected");
-		}
-	}
-	
-	@Override
 	public void setSelected(boolean value){
 		if (!selected  &&  value){
 			ctrl.unselectAll();
