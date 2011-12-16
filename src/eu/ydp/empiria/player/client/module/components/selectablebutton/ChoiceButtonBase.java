@@ -16,15 +16,9 @@ public abstract class ChoiceButtonBase extends FlowPanel implements ISelectableB
 		this.moduleStyleNamePart = moduleStyleNamePart;
 	}
 	
-	abstract protected void updateStyle();
-	
-	public void setEnabled(boolean enabled){
-		this.enabled = enabled;
-		if (enabled){
-			removeStyleName("qp-"+moduleStyleNamePart+"-button-disabled");
-		} else {
-			addStyleName("qp-"+moduleStyleNamePart+"-button-disabled");
-		}
+	public void setEnabled(boolean value){
+		enabled = value;
+		updateStyle();
 	}
 
 	public void setSelected(boolean value){
@@ -37,11 +31,8 @@ public abstract class ChoiceButtonBase extends FlowPanel implements ISelectableB
 	}
 	
 	public void setMouseOver(boolean o){
-		if (o  &&  !over){
-			addStyleName("qp-"+moduleStyleNamePart+"-button-over");
-		} else if (!o){
-			removeStyleName("qp-"+moduleStyleNamePart+"-button-over");
-		}
+		over = o;
+		updateStyle();
 	}
 	
 	public void select(){
@@ -50,5 +41,26 @@ public abstract class ChoiceButtonBase extends FlowPanel implements ISelectableB
 	
 	public void unselect(){
 		setSelected(false);
+	}
+	
+	protected void updateStyle(){
+		String styleName = findStyleName();
+		setStyleName(styleName);
+	}
+	
+	protected String findStyleName(){
+		String styleName = "qp-" + moduleStyleNamePart + "-button";
+		if (selected){
+			styleName += "-selected";
+		} else {
+			styleName += "-notselected";			
+		}
+		if (!enabled){
+			styleName += "-disabled";
+		}
+		if (over){
+			styleName += "-over";
+		}
+		return styleName;
 	}
 }
