@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -52,8 +53,8 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 		WidgetWorkflowListener {
 
 	public Vector<Widget> modules = new Vector<Widget>();
-	public Map<String, IMultiViewModule> multiViewModules = new HashMap<String, IMultiViewModule>();
-	public Map<String, List<HasWidgets>> multiViewPlaceholders = new HashMap<String, List<HasWidgets>>();
+	public TreeMap<String, IMultiViewModule> multiViewModules = new TreeMap<String, IMultiViewModule>();
+	public TreeMap<String, List<HasWidgets>> multiViewPlaceholders = new TreeMap<String, List<HasWidgets>>();
 	public Vector<IUnattachedComponent> unattachedComponents = new Vector<IUnattachedComponent>();
 
 	public InternalEventManager eventManager;
