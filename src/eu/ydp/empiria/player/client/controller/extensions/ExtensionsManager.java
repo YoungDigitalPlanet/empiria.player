@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssess
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultSoundProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentFooterViewExtension;
+import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsDataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsDeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsExtension;
@@ -87,7 +88,9 @@ public class ExtensionsManager implements IStateful  {
 				currExt = new JsInteractionEventSocketUserExtension();
 			}
 			
-			else if (currExtType == ExtensionType.EXTENSION_VIEW_ASSESSMENT_FOOTER){
+			else if (currExtType == ExtensionType.EXTENSION_VIEW_ASSESSMENT_HEADER){
+				currExt = new JsAssessmentHeaderViewExtension();
+			} else if (currExtType == ExtensionType.EXTENSION_VIEW_ASSESSMENT_FOOTER){
 				currExt = new JsAssessmentFooterViewExtension();
 			}
 
