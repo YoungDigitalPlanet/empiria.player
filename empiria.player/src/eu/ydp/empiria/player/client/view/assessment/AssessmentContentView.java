@@ -13,7 +13,7 @@ public class AssessmentContentView implements AssessmentViewSocket {
 		assessmentPanel = ap;
 		pagePanel = new FlowPanel();
 		pagePanel.setStyleName("qp-body");
-		headerPanel = new HorizontalPanel();
+		headerPanel = new FlowPanel();
 		headerPanel.setStyleName("qp-header");
 		navigationPanel = new FlowPanel();
 		navigationPanel.setStyleName("qp-footer");
