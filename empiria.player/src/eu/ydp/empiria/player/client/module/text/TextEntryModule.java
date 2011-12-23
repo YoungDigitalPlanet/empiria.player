@@ -91,8 +91,8 @@ public class TextEntryModule extends InlineHTML implements IInteractionModule{
 		spanContent.getElement().appendChild(textBox.getElement());
 		
 		getElement().appendChild(spanPrefix.getElement());
-		getElement().appendChild(spanSufix.getElement());
 		getElement().appendChild(spanContent.getElement());
+		getElement().appendChild(spanSufix.getElement());
 		setStyleName("qp-text-textentry");
 		
 		NodeList inlineFeedbackNodes = element.getElementsByTagName("feedbackInline");
@@ -120,10 +120,14 @@ public class TextEntryModule extends InlineHTML implements IInteractionModule{
 	public void markAnswers(boolean mark) {
 		if (mark){
 			textBox.setEnabled(false);
-			if( response.isCorrectAnswer(lastValue) )
-				setStyleName("qp-text-textentry-correct");
-			else
-				setStyleName("qp-text-textentry-wrong");
+			if (textBox.getText().length() > 0){
+				if( response.isCorrectAnswer(lastValue) )
+					setStyleName("qp-text-textentry-correct");
+				else
+					setStyleName("qp-text-textentry-wrong");
+			} else {
+				setStyleName("qp-text-textentry-none");
+			}
 		} else {
 			textBox.setEnabled(true);
 			setStyleName("qp-text-textentry");

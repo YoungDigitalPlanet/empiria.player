@@ -117,10 +117,14 @@ public class InlineChoiceModule extends InlineHTML implements IInteractionModule
 	public void markAnswers(boolean mark) {
 		if (mark){
 			listBox.setEnabled(false);
-			if( response.isCorrectAnswer(lastValue) )
-				setStyleName("qp-text-choice-correct");
-			else
-				setStyleName("qp-text-choice-wrong");
+			if (listBox.getSelectedIndex() != 0){
+				if( response.isCorrectAnswer(lastValue) )
+					setStyleName("qp-text-choice-correct");
+				else
+					setStyleName("qp-text-choice-wrong");
+			} else {
+				setStyleName("qp-text-choice-none");
+			}
 		} else {
 			listBox.setEnabled(true);
 			setStyleName("qp-text-choice");
