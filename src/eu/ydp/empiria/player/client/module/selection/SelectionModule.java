@@ -206,10 +206,23 @@ public class SelectionModule extends Composite implements IInteractionModule {
 				String currItemIdentifier = response.correctAnswers.get(r).split(" ")[0];
 				if (itemIdentifiers.indexOf(currItemIdentifier) == -1)
 					continue;
-				if (response.values.contains(response.correctAnswers.get(r))){
-					grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-correct");
+
+				boolean itemSelected = false;
+				for (SingleChoiceButton btn : buttons.get(itemIdentifiers.indexOf(currItemIdentifier))){
+					if (btn.isSelected()){
+						itemSelected = true;
+						break;
+					}
+				}
+				
+				if (itemSelected){
+					if (response.values.contains(response.correctAnswers.get(r))){
+						grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-correct");
+					} else {
+						grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-wrong");
+					}
 				} else {
-					grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-wrong");
+					grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-none");
 				}
 			}
 		} else {

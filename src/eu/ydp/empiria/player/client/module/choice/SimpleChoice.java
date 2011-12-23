@@ -165,10 +165,14 @@ public class SimpleChoice extends FlowPanel {
 		if (!mark){
 			markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
 		} else {
-			if( correct )
-				markAnswersPanel.addStyleName("qp-choice-button-"+buttonTypeName+"-correct");
-			else
-				markAnswersPanel.addStyleName("qp-choice-button-"+buttonTypeName+"-wrong");
+			if (isSelected()){
+				if( correct )
+					markAnswersPanel.addStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-correct");
+				else
+					markAnswersPanel.addStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-wrong");
+			} else {
+				markAnswersPanel.addStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-none");
+			}
 		}
 			
 			
