@@ -39,19 +39,19 @@ public class JsSocketFactory {
 		//	instance.@eu.ydp.empiria.player.client.module.IActivity::showCorrectAnswers(Z)(false);
 		//	instance.@eu.ydp.empiria.player.client.module.IActivity::lock(Z)(false);
 		//}
-		jso.check = function(value){
+		jso.check = function(){
 			instance.@eu.ydp.empiria.player.client.module.IActivity::markAnswers(Z)(true);
 			instance.@eu.ydp.empiria.player.client.module.IActivity::lock(Z)(true);
 		}
-		jso.continue1 = function(value){
+		jso.continue1 = function(){
 			instance.@eu.ydp.empiria.player.client.module.IActivity::markAnswers(Z)(false);
 			instance.@eu.ydp.empiria.player.client.module.IActivity::showCorrectAnswers(Z)(false);
 			instance.@eu.ydp.empiria.player.client.module.IActivity::lock(Z)(false);
 		}
-		jso.lock = function(value){
+		jso.lock = function(){
 			instance.@eu.ydp.empiria.player.client.module.IActivity::lock(Z)(true);
 		}
-		jso.unlock = function(value){
+		jso.unlock = function(){
 			instance.@eu.ydp.empiria.player.client.module.IActivity::lock(Z)(false);
 		}
 		jso.reset = function(){
