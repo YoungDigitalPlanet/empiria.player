@@ -35,6 +35,7 @@ public class IdentificationModule extends Widget implements
 	
 	private int maxSelections;
 	private boolean locked;
+	private boolean showingCorrectAnswers;
 	
 	private String responseIdentifier;
 	private Response response;
@@ -50,6 +51,7 @@ public class IdentificationModule extends Widget implements
 	public IdentificationModule(ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener){
 
 		locked = false;
+		showingCorrectAnswers = false;
 		multiViewElements = new ArrayList<Element>();
 		
 		moduleListener = moduleEventsListener;
@@ -159,8 +161,26 @@ public class IdentificationModule extends Widget implements
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
-		// TODO Auto-generated method stub
-
+		if (show){
+			for (SelectableChoice sc : options){
+				if (response.correctAnswers.contains(sc.getIdentifier())){
+					sc.setSelected(true);
+				} else {
+					sc.setSelected(false);
+				}
+			}
+			showingCorrectAnswers = true;
+		} else {
+			for (SelectableChoice sc : options){
+				if (response.values.contains(sc.getIdentifier())){
+					sc.setSelected(true);
+				} else {
+					sc.setSelected(false);
+				}
+			}
+			showingCorrectAnswers = false;
+			
+		}
 	}
 		
 	public JavaScriptObject getJsSocket(){
@@ -240,6 +260,9 @@ public class IdentificationModule extends Widget implements
 	
 
 	private void updateResponse(boolean userInteract){
+		if (showingCorrectAnswers)
+			return;
+		
 		Vector<String> currResponseValues = new Vector<String>();
 		
 		for (SelectableChoice currSC:options){
