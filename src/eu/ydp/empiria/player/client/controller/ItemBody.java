@@ -274,7 +274,7 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 	@Override
 	public void markAnswers(boolean mark) {
 		if (showingAnswers)
-			return;
+			showCorrectAnswers(false);
 		markingAnswers = mark;
 		for (Widget currModule : modules) {
 			if (currModule instanceof IActivity)
@@ -286,7 +286,7 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (markingAnswers)
-			return;
+			markAnswers(false);
 		showingAnswers = show;
 		for (Widget currModule : modules) {
 			if (currModule instanceof IActivity)
@@ -296,6 +296,12 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 
 	@Override
 	public void reset() {
+		if (showingAnswers)
+			showCorrectAnswers(false);
+		if (markingAnswers)
+			markAnswers(false);
+		if (locked)
+			lock(false);
 		for (Widget currModule : modules) {
 			if (currModule instanceof IActivity)
 				((IActivity) currModule).reset();
