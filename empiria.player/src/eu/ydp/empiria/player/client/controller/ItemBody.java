@@ -46,6 +46,7 @@ import eu.ydp.empiria.player.client.module.ModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.mathexpr.MathJaxProcessor;
+import eu.ydp.empiria.player.client.util.StackMap;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 import eu.ydp.empiria.player.client.util.xml.XMLConverter;
 
@@ -53,8 +54,8 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 		WidgetWorkflowListener {
 
 	public Vector<Widget> modules = new Vector<Widget>();
-	public TreeMap<String, IMultiViewModule> multiViewModules = new TreeMap<String, IMultiViewModule>();
-	public TreeMap<String, List<HasWidgets>> multiViewPlaceholders = new TreeMap<String, List<HasWidgets>>();
+	public StackMap<String, IMultiViewModule> multiViewModules = new StackMap<String, IMultiViewModule>();
+	public StackMap<String, List<HasWidgets>> multiViewPlaceholders = new StackMap<String, List<HasWidgets>>();
 	public Vector<IUnattachedComponent> unattachedComponents = new Vector<IUnattachedComponent>();
 
 	public InternalEventManager eventManager;
@@ -177,7 +178,7 @@ public class ItemBody implements IActivity, IStateful, InternalEventsListener,
 					}
 				}, options);
 
-		for (String currModuleIdentifier : multiViewModules.keySet()){
+		for (String currModuleIdentifier : multiViewModules.getKeys()){
 			multiViewModules.get(currModuleIdentifier).installViews( multiViewPlaceholders.get(currModuleIdentifier) );
 			addModule( ((Widget)multiViewModules.get(currModuleIdentifier)), moduleSocket);
 		}
