@@ -1,29 +1,34 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 targetNamespace="http://www.w3schools.com"
-xmlns="http://www.w3schools.com"
-elementFormDefault="qualified">
+xmlns="http://www.w3schools.com">
 
 <xs:element name="assessmentItem" type="assessmentItemType"/>
 
 <xs:complexType name="assessmentItemType">
-	<xs:group ref="assessmentItemGroup" minOccur="0" maxOccur="unbouned" />
+	<xs:choice   maxOccurs="unbounded" minOccurs="2">
+		<xs:group ref="assessmentItemGroup" minOccurs="0" maxOccurs="unbouned" />
+		<xs:element name="itemBody" type="itemBodyType" minOccurs="1" maxOccurs="1"/>
+		<xs:element name="variableProcessing" type="variableProcessingType" minOccurs="1" maxOccurs="1"/>
+		<xs:element name="styleDeclaration" type="styleDeclarationType" minOccurs="0"/>
+		<xs:element name="supplement" type="supplementType" minOccurs="0"/>
+		<xs:any minOccurs="0" maxOccurs="unbouned"/>
+	</xs:choice>
+	<xs:attribute name="title" type="xs:string" use="required"/>
 </xs:complexType>
 
 <xs:group name="assessmentItemGroup">
-	<xs:element name="styleDeclaration" type="styleDeclarationType" minOccurs="0"/>
-	<xs:element name="variableProcessing" type="variableProcessingType"/>
-	<xs:element name="responseDeclaration" type="responseDeclarationType"/>
-	<xs:element name="outcomeDeclaration" type="outcomeDeclarationType"/>
-	<xs:element name="supplement" type="supplementType"/>
-	<xs:element name="modalFeedback" type="modalFeedbackType" minOccur="0" maxOccur="unbouned"/>
-	<xs:element name="itemBody" type="itemBodyType"/>
-	<xs:any minOccurs="0"/>
-	<xs:attribute name="title" type="xs:string" use="required"/>
+	<xs:choice minOccurs="0" maxOccurs="unbouned">
+		<xs:element name="responseDeclaration" type="responseDeclarationType" minOccurs="0" maxOccurs="unbouned"/>
+		<xs:element name="outcomeDeclaration" type="outcomeDeclarationType" minOccurs="0" maxOccurs="unbouned"/>
+		<xs:element name="modalFeedback" type="modalFeedbackType" minOccurs="0" maxOccurs="unbouned"/>
+	</xs:choice>
 </xs:group>
 
 <xs:complexType name="styleDeclarationType">
-	<xs:element name="link" type="linkType" minOccurs="0" maxOccurs="unbounded" />
+	<xs:sequence>
+		<xs:element name="link" type="linkType" minOccurs="0" maxOccurs="unbounded" />
+	</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="linkType">
@@ -36,29 +41,39 @@ elementFormDefault="qualified">
 </xs:complexType>
 
 <xs:complexType name="supplementType">
-	<xs:any minOccurs="0"/>
+	<xs:sequence>
+		<xs:any minOccurs="0"/>
+	</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="responseDeclarationType">
+	<xs:sequence>
+		<xs:element name="correctResponse" minOccurs="0">
+			<xs:complexType>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="value" type="xs:string"/>
+				</xs:choice>
+			</xs:complexType>
+		</xs:element>
+	</xs:sequence>
 	<xs:attribute name="identifier" type="xs:string" use="required"/>
 	<xs:attribute name="cardinality" type="cardinalityType" use="required"/>
 	<xs:attribute name="baseType" type="baseTypeType" use="required"/>
-	<xs:element name="correctResponse" minOccur="0">
-		<xs:complexType>
-			<xs:element minOccur="0" maxoccur="unbounded" name="value" type="xs:string"/>
-		</xs:complexType>
-	</xs:element>
 </xs:complexType>
 
 <xs:complexType name="outcomeDeclarationType">
+	<xs:sequence>
+		<xs:element name="defaultValue" minOccurs="0">
+			<xs:complexType>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:choice>
+			</xs:complexType>
+		</xs:element>
+	</xs:sequence>
 	<xs:attribute name="identifier" type="xs:string" use="required"/>
 	<xs:attribute name="cardinality" type="cardinalityType" use="required"/>
 	<xs:attribute name="baseType" type="baseTypeType" use="required"/>
-	<xs:element name="defaultValue" minOccur="0">
-		<xs:complexType>
-			<xs:element name="value" type="xs:string" minOccur="0" maxOccur="unbounded"/>
-		</xs:complexType>
-	</xs:element>
 </xs:complexType>
 
 <xs:simpleType name="cardinalityType">
@@ -74,40 +89,54 @@ elementFormDefault="qualified">
 </xs:simpleType>
 
 <xs:complexType name="itemBodyType" mixed="true">
-	<xs:group minOccurs="0" maxOccurs="unbounded" ref="itemBodyGroup" />
+	<xs:choice minOccurs="0" maxOccurs="unbounded">
+		<xs:group minOccurs="0" maxOccurs="unbounded" ref="itemBodyGroup" />
+	</xs:choice>
 </xs:complexType>
 
 <xs:group name="itemBodyGroup">
-	<xs:group minOccurs="0" maxOccurs="unbounded" ref="allsGroup" />
+	<xs:choice minOccurs="0" maxOccurs="unbounded">
+		<xs:group minOccurs="0" maxOccurs="unbounded" ref="allsGroup" />
+	</xs:choice>
 </xs:group>
 
 <xs:group name="allsGroup">
-	<xs:group ref="blockInteractionsGroup" minOccurs="0" maxOccurs="unbounded" />
-	<xs:group ref="containersGroup" minOccurs="0" maxOccurs="unbounded" />
-	<xs:group ref="noninteractionModulesGroup" minOccurs="0" maxOccurs="unbounded" />
+	<xs:choice minOccurs="0" maxOccurs="unbounded">
+		<xs:group ref="blockInteractionsGroup" minOccurs="0" maxOccurs="unbounded" />
+		<xs:group ref="containersGroup" minOccurs="0" maxOccurs="unbounded" />
+		<xs:group ref="noninteractionModulesGroup" minOccurs="0" maxOccurs="unbounded" />
+	</xs:choice>
 </xs:group>
 
 <xs:group name="blockInteractionsGroup">
-	<xs:element name="choiceInteraction" type="choiceInteractionType" minOccurs="0" maxOccurs="unbounded" />
-	<xs:element name="selectionInteraction" type="selectionInteractionType" minOccurs="0" maxOccurs="unbounded" />
-	<xs:element name="textInteraction" type="textInteractionType" minOccurs="0" maxOccurs="unbounded" />
+	<xs:choice>
+		<xs:element name="choiceInteraction" type="choiceInteractionType" minOccurs="0" maxOccurs="unbounded" />
+		<xs:element name="selectionInteraction" type="selectionInteractionType" minOccurs="0" maxOccurs="unbounded" />
+		<xs:element name="textInteraction" type="textInteractionType" minOccurs="0" maxOccurs="unbounded" />
+	</xs:choice>
 </xs:group>	
 	
 <xs:group name="inlineInteractionsGroup">
-	<xs:element name="identificationInteraction" type="identificationInteractionType" minOccurs="0" maxOccurs="unbounded" />
-	<xs:element name="textEntryInteraction" type="textEntryInteractionType" minOccurs="0" maxOccurs="unbounded" />
-	<xs:element name="inlineChoiceInteraction" type="inlineChoiceInteractionType" minOccurs="0" maxOccurs="unbounded" />
+	<xs:choice>
+		<xs:element name="identificationInteraction" type="identificationInteractionType" minOccurs="0" maxOccurs="unbounded" />
+		<xs:element name="textEntryInteraction" type="textEntryInteractionType" minOccurs="0" maxOccurs="unbounded" />
+		<xs:element name="inlineChoiceInteraction" type="inlineChoiceInteractionType" minOccurs="0" maxOccurs="unbounded" />
+	</xs:choice>
 </xs:group>
 
 <xs:group name="noninteractionInlineModulesGroup">
-	<xs:element name="img" type="imgType" minOccurs="0" maxOccurs="unbounded" />
-	<xs:element name="object" type="objectType" minOccurs="0" maxOccurs="unbounded" />
-	<xs:element name="audioPlayer" type="audioPlayerType" minOccurs="0" maxOccurs="unbounded" />
+	<xs:choice minOccurs="0" maxOccurs="unbounded">
+		<xs:element name="img" type="imgType" minOccurs="0" maxOccurs="unbounded" />
+		<xs:element name="object" type="objectType" minOccurs="0" maxOccurs="unbounded" />
+		<xs:element name="audioPlayer" type="audioPlayerType" minOccurs="0" maxOccurs="unbounded" />
+	</xs:choice>
 </xs:group>
 
 <xs:group name="noninteractionModulesGroup">
-	<xs:group ref="noninteractionInlineModulesGroup" minOccurs="0" maxOccurs="unbounded" />
-	<xs:element name="simpleText" type="simpleTextType" minOccurs="0" maxOccurs="unbounded" />
+	<xs:choice minOccurs="0" maxOccurs="unbounded">
+		<xs:group ref="noninteractionInlineModulesGroup" minOccurs="0" maxOccurs="unbounded" />
+		<xs:element name="simpleText" type="simpleTextType" minOccurs="0" maxOccurs="unbounded" />
+	</xs:choice>
 </xs:group>
 
 
@@ -125,26 +154,36 @@ elementFormDefault="qualified">
 </xs:complexType>
 
 <xs:group name="containersGroup">
-	<xs:element name="div" type="divType" />
-	<xs:element name="span" type="spanType" />
-	<xs:element name="section" type="sectionType" />
-	<xs:element name="group" type="groupType" />
+	<xs:choice>
+		<xs:element name="div" type="divType" />
+		<xs:element name="span" type="spanType" />
+		<xs:element name="section" type="sectionType" />
+		<xs:element name="group" type="groupType" />
+	</xs:choice>
 </xs:group>
 
-<xs:complexType name="divType">
-	<xs:group minOccurs="0" maxOccurs="unbounded" ref="allGroup" />
+<xs:complexType name="divType" mixed="true">
+	<xs:choice minOccurs="0" maxOccurs="unbounded">
+		<xs:group minOccurs="0" maxOccurs="unbounded" ref="allGroup" />
+	</xs:choice>
 </xs:complexType>
 
-<xs:complexType name="sectionType">
-	<xs:group minOccurs="0" maxOccurs="unbounded" ref="allGroup" />
+<xs:complexType name="sectionType" mixed="true">
+	<xs:choice minOccurs="0" maxOccurs="unbounded">
+		<xs:group minOccurs="0" maxOccurs="unbounded" ref="allGroup" />
+	</xs:choice>
 </xs:complexType>
 
 <xs:complexType name="spanType">
-	<xs:extension base="xs:string"/>
+	<xs:complexContent>
+		<xs:extension base="xs:string"/>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="simpleTextType">
-	<xs:extension base="xs:string"/>
+	<xs:complexContent>
+		<xs:extension base="xs:string"/>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="interactionType">
@@ -152,14 +191,20 @@ elementFormDefault="qualified">
 </xs:complexType>
 
 <xs:complexType name="blockInteractionType">
-	<xs:extension base="interactionType">
-		<xs:element name="prompt" type="xs:string" />
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="interactionType">
+			<xs:all>
+				<xs:element name="prompt" type="xs:string" />
+			</xs:all>
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="inlineInteractionType">
-	<xs:extension base="interactionType">
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="interactionType">
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="feedbackInlineType">
@@ -185,66 +230,98 @@ elementFormDefault="qualified">
 </xs:simpleType>
 
 <xs:complexType name="inlineChoiceType">
-	<xs:extension base="xs:string">
-		<xs:attribute name="identifier" type="identifierType"  use="required" />
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="identifier" type="identifierType"  use="required" />
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="simpleChoiceType">
-	<xs:extension base="xs:string">
-		<xs:attribute name="identifier" type="identifierType"  use="required" />
-		<xs:element name="feedbackInline" type="feedbackInlineType" minOccur="0"/>
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="xs:string">
+			<xs:choice minOccurs="0">
+				<xs:element name="feedbackInline" type="feedbackInlineType" minOccurs="0"/>
+			</xs:choice>
+			<xs:attribute name="identifier" type="identifierType"  use="required" />
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="itemType">
-	<xs:extension base="xs:string">
-		<xs:attribute name="identifier" type="identifierType"  use="required" />
-		<xs:element name="feedbackInline" type="feedbackInlineType"  minOccur="0"/>
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="xs:string">
+			<xs:choice  minOccurs="0">
+				<xs:element name="feedbackInline" type="feedbackInlineType" />
+			</xs:choice>
+			<xs:attribute name="identifier" type="identifierType"  use="required" />
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="choiceInteractionType">
-	<xs:extension base="blockInteractionType">
-		<xs:element name="simpleChoice" type="simpleChoiceType" maxOccur="unbouned" />
-		<xs:element name="feedbackInline" type="feedbackInlineType" minOccur="0" maxOccur="unbouned" />
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="blockInteractionType">
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="simpleChoice" type="simpleChoiceType" minOccurs="1" maxOccurs="unbouned" />
+				<xs:element name="feedbackInline" type="feedbackInlineType" minOccurs="0" maxOccurs="unbouned" />
+			</xs:choice>
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="selectionInteractionType">
-	<xs:extension base="blockInteractionType">
-		<xs:element name="simpleChoice" type="simpleChoiceType" maxOccur="unbouned" />
-		<xs:element name="item" type="itemType" maxOccur="unbouned" />
-		<xs:element name="feedbackInline" type="feedbackInlineType" minOccur="0" maxOccur="unbouned" />
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="blockInteractionType">
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="simpleChoice" type="simpleChoiceType" maxOccurs="unbouned" />
+				<xs:element name="item" type="itemType" maxOccurs="unbouned" />
+				<xs:element name="feedbackInline" type="feedbackInlineType" minOccurs="0" maxOccurs="unbouned" />
+			</xs:choice>
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="textInteractionType" mixed="true">
-	<xs:group ref="noninteractionInlineModulesGroup" minOccurs="0" maxOccurs="unbounded" />
-	<xs:group ref="inlineInteractionsGroup" minOccurs="0" maxOccurs="unbounded" />
+	<xs:choice minOccurs="0" maxOccurs="unbounded" >
+		<xs:group ref="noninteractionInlineModulesGroup" minOccurs="0" maxOccurs="unbounded" />
+		<xs:group ref="inlineInteractionsGroup" minOccurs="0" maxOccurs="unbounded" />
+	</xs:choice>
 </xs:complexType>
 
 <xs:complexType name="identificationInteractionType">
-	<xs:extension base="inlineInteractionType">
-		<xs:attribute name="maxSelections" type="xs:integer" />
-		<xs:attribute name="separator" type="xs:string" />
-		<xs:element name="simpleChoice" type="simpleChoiceType" maxOccur="unbouned" />
-		<xs:element name="feedbackInline" type="feedbackInlineType" minOccur="0" maxOccur="unbouned" />
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="inlineInteractionType">
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="simpleChoice" type="simpleChoiceType" maxOccurs="unbouned" />
+				<xs:element name="feedbackInline" type="feedbackInlineType" minOccurs="0" maxOccurs="unbouned" />
+			</xs:choice>
+			<xs:attribute name="maxSelections" type="xs:integer" />
+			<xs:attribute name="separator" type="xs:string" />
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="inlineChoiceInteractionType">
-	<xs:extension base="inlineInteractionType">
-		<xs:attribute name="shuffle" type="xs:boolean" />
-		<xs:element name="inlineChoice" type="inlineChoiceType" maxOccur="unbouned" />
-		<xs:element name="feedbackInline" type="feedbackInlineType" minOccur="0" maxOccur="unbouned" />
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="inlineInteractionType">
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="inlineChoice" type="inlineChoiceType" maxOccurs="unbouned" />
+				<xs:element name="feedbackInline" type="feedbackInlineType" minOccurs="0" maxOccurs="unbouned" />
+			</xs:choice>
+			<xs:attribute name="shuffle" type="xs:boolean" />
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="textEntryInteractionType">
-	<xs:extension base="inlineInteractionType">
-		<xs:element name="feedbackInline" type="feedbackInlineType" minOccur="0" maxOccur="unbouned" />
-	</xs:extension>
+	<xs:complexContent>
+		<xs:extension base="inlineInteractionType">
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="feedbackInline" type="feedbackInlineType" minOccurs="0" maxOccurs="unbouned" />
+			</xs:choice>
+		</xs:extension>
+	</xs:complexContent>
 </xs:complexType>
 
 </xs:schema> 
