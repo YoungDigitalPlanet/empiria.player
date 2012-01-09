@@ -192,7 +192,7 @@ public class IdentificationModule extends Widget implements
 		
 		JSONArray arr = new JSONArray();
 		for (int i = 0 ; i < options.size() ; i ++){
-			arr.set(i, JSONBoolean.getInstance(options.get(i).getSelected()));
+			arr.set(i, JSONBoolean.getInstance( response.values.contains(options.get(i).getIdentifier()) ));
 		}
 		
 		return arr;
