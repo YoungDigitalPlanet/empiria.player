@@ -33,8 +33,8 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.model.Assessment;
-import eu.ydp.empiria.player.client.model.Item;
+import eu.ydp.empiria.player.client.controller.Assessment;
+import eu.ydp.empiria.player.client.controller.Item;
 
 public class PlayerWidget extends Composite{
 

@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.components;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
-import eu.ydp.empiria.player.client.module.ITouchEventsListener;
+import eu.ydp.empiria.player.client.module.listener.ITouchEventsListener;
 
 public class TouchablePanel extends AbsolutePanel {
 

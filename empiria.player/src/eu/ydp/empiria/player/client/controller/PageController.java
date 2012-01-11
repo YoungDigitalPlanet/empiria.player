@@ -19,8 +19,7 @@ import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
-import eu.ydp.empiria.player.client.model.ItemVariablesAccessor;
-import eu.ydp.empiria.player.client.model.Page;
+import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 import eu.ydp.empiria.player.client.view.page.PageViewCarrier;
@@ -29,11 +28,12 @@ import eu.ydp.empiria.player.client.view.page.PageViewSocket;
 
 public final class PageController implements FlowActivityEventsHandler, PageInterferenceSocket {
 	
-	public PageController(PageViewSocket pvs, IFlowSocket fs, InteractionEventsSocket is, PageSessionSocket pss){
+	public PageController(PageViewSocket pvs, IFlowSocket fs, InteractionEventsSocket is, PageSessionSocket pss, ModulesRegistrySocket mrs){
 		pageViewSocket = pvs;
 		flowSocket = fs;
 		interactionSocket = is;
 		pageSessionSocket = pss;
+		modulesRegistrySocket = mrs;
 	}
 
 	private Page page;
@@ -41,6 +41,7 @@ public final class PageController implements FlowActivityEventsHandler, PageInte
 	private PageSessionSocket pageSessionSocket;
 	private IFlowSocket flowSocket;
 	private InteractionEventsSocket interactionSocket;
+	private ModulesRegistrySocket modulesRegistrySocket;
 	private ItemController[] items;
 	
 	private StyleSocket styleSocket;
@@ -69,7 +70,7 @@ public final class PageController implements FlowActivityEventsHandler, PageInte
 			pageViewSocket.setPageViewCarrier(new PageViewCarrier());
 	
 			for (int i = 0 ; i < pageDataTest.datas.length ; i ++){
-				ItemController controller = new ItemController(pageViewSocket.getItemViewSocket(i), flowSocket, interactionSocket, pageSessionSocket.getItemSessionSocket());
+				ItemController controller = new ItemController(pageViewSocket.getItemViewSocket(i), flowSocket, interactionSocket, pageSessionSocket.getItemSessionSocket(), modulesRegistrySocket);
 				controller.setStyleSocket( styleSocket );
 				controller.init(pageDataTest.datas[i], pageDataTest.displayOptions);
 				if (pageDataTest.flowOptions.activityMode == ActivityMode.CHECK){
@@ -107,13 +108,6 @@ public final class PageController implements FlowActivityEventsHandler, PageInte
 				items[i].handleFlowActivityEvent(event);
 			}
 		}
-	}
-
-	public ItemVariablesAccessor getItemVariablesAccessor(){
-		if (items != null  &&  items.length > 0)
-			return items[0].getItemVariablesAccessor();
-			
-		return null;
 	}
 
 	@Override

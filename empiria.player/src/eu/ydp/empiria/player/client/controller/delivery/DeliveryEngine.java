@@ -26,6 +26,18 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsHub
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsListener;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioPlayerModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ChoiceModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.DivModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.GroupModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.IdentificationModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ImgModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InlineChoiceModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SelectionModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleTextModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SpanModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TextEntryModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TextInteractionModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
@@ -37,6 +49,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUs
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
@@ -49,7 +62,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProces
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
-import eu.ydp.empiria.player.client.model.ItemVariablesAccessor;
+import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
@@ -85,6 +98,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	private AssessmentController assessmentController;
 
 	private StyleSocket styleSocket;
+	
+	private ModulesRegistry modulesRegistry;
 
 	protected JavaScriptObject playerJsObject;
 	
@@ -106,6 +121,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	public void init(JavaScriptObject playerJsObject) {
 		this.playerJsObject = playerJsObject;
 
+		modulesRegistry = new ModulesRegistry();
 		mode = new EngineModeManager();
 		styleManager = new StyleLinkManager();
 
@@ -121,13 +137,13 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		assessmentController = new AssessmentController(
 				playerViewSocket.getAssessmentViewSocket(),
 				flowManager.getFlowSocket(),
-				deliveryEventsHub.getInteractionSocket(), sessionDataManager);
+				deliveryEventsHub.getInteractionSocket(), sessionDataManager, modulesRegistry);
 		assessmentController.setStyleSocket(styleSocket);
 
 		deliveryEventsHub.addFlowActivityEventsListener(assessmentController);
 
 		playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
-
+		
 		loadPredefinedExtensions();
 	}
 
@@ -206,7 +222,18 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	}
 
 	private void loadPredefinedExtensions() {
-		
+		loadExtension(new DivModuleConnectorExtension());
+		loadExtension(new GroupModuleConnectorExtension());
+		loadExtension(new SpanModuleConnectorExtension());
+		loadExtension(new TextInteractionModuleConnectorExtension());
+		loadExtension(new ImgModuleConnectorExtension());
+		loadExtension(new ChoiceModuleConnectorExtension());
+		loadExtension(new SelectionModuleConnectorExtension());
+		loadExtension(new IdentificationModuleConnectorExtension());
+		loadExtension(new TextEntryModuleConnectorExtension());
+		loadExtension(new InlineChoiceModuleConnectorExtension());
+		loadExtension(new SimpleTextModuleConnectorExtension());
+		loadExtension(new AudioPlayerModuleConnectorExtension());
 	}
 
 	public void loadExtension(JavaScriptObject extension) {
@@ -233,51 +260,40 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	protected void integrateExtension(Extension extension) {
 		if (extension != null) {
 			if (extension instanceof StyleSocketUserExtension) {
-				((JsStyleSocketUserExtension) extension)
-						.setStyleSocket(styleSocket);
+				((JsStyleSocketUserExtension) extension).setStyleSocket(styleSocket);
 			}
 			if (extension instanceof DeliveryEventsListenerExtension) {
-				deliveryEventsHub
-						.addDeliveryEventsListener(((DeliveryEventsListener) extension));
+				deliveryEventsHub.addDeliveryEventsListener(((DeliveryEventsListener) extension));
 			}
 			if (extension instanceof FlowCommandsSocketUserExtension) {
-				((FlowCommandsSocketUserExtension) extension)
-						.setFlowCommandsExecutor(flowManager
-								.getFlowCommandsExecutor());
+				((FlowCommandsSocketUserExtension) extension).setFlowCommandsExecutor(flowManager.getFlowCommandsExecutor());
 			}
 			if (extension instanceof FlowRequestSocketUserExtension) {
-				((FlowRequestSocketUserExtension) extension)
-						.setFlowRequestsInvoker(flowManager
-								.getFlowRequestInvoker());
+				((FlowRequestSocketUserExtension) extension).setFlowRequestsInvoker(flowManager.getFlowRequestInvoker());
 			}
 			if (extension instanceof PageInterferenceSocketUserExtension) {
-				((PageInterferenceSocketUserExtension) extension)
-						.setPageInterferenceSocket(assessmentController
-								.getPageControllerSocket());
+				((PageInterferenceSocketUserExtension) extension).setPageInterferenceSocket(assessmentController.getPageControllerSocket());
 			}
 			if (extension instanceof DataSourceDataSocketUserExtension) {
-				((DataSourceDataSocketUserExtension) extension)
-						.setDataSourceDataSupplier(dataManager);
+				((DataSourceDataSocketUserExtension) extension).setDataSourceDataSupplier(dataManager);
 			}
 			if (extension instanceof SessionDataSocketUserExtension) {
-				((SessionDataSocketUserExtension) extension)
-						.setSessionDataSupplier(sessionDataManager);
+				((SessionDataSocketUserExtension) extension).setSessionDataSupplier(sessionDataManager);
 			}
 			if (extension instanceof FlowDataSocketUserExtension) {
-				((FlowDataSocketUserExtension) extension)
-						.setFlowDataSupplier(flowManager.getFlowDataSupplier());
+				((FlowDataSocketUserExtension) extension).setFlowDataSupplier(flowManager.getFlowDataSupplier());
 			}
 			if (extension instanceof DeliveryEngineSocketUserExtension) {
-				((DeliveryEngineSocketUserExtension) extension)
-						.setDeliveryEngineSocket(this);
+				((DeliveryEngineSocketUserExtension) extension).setDeliveryEngineSocket(this);
 			}
 			if (extension instanceof InteractionEventSocketUserExtension) {
-				((InteractionEventSocketUserExtension) extension)
-						.setInteractionEventsListener(deliveryEventsHub);
+				((InteractionEventSocketUserExtension) extension).setInteractionEventsListener(deliveryEventsHub);
 			}
 			if (extension instanceof PlayerJsObjectModifierExtension) {
-				((PlayerJsObjectModifierExtension) extension)
-						.setPlayerJsObject(playerJsObject);
+				((PlayerJsObjectModifierExtension) extension).setPlayerJsObject(playerJsObject);
+			}
+			if (extension instanceof ModuleConnectorExtension) {
+				modulesRegistry.registerModuleCreator(((ModuleConnectorExtension) extension).getModuleNodeName(), ((ModuleConnectorExtension) extension).getModuleCreator());
 			}
 		}
 	}
@@ -395,10 +411,6 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	public void setDisplayOptions(DisplayOptions o) {
 		flowManager.setDisplayOptions(o);
-	}
-
-	public ItemVariablesAccessor getItemVariablesAccessor() {
-		return assessmentController.getItemVariablesAccessor();
 	}
 
 	public void updateAssessmentStyle() {

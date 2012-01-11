@@ -13,19 +13,19 @@ import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
-import eu.ydp.empiria.player.client.model.Item;
-import eu.ydp.empiria.player.client.model.ItemVariablesAccessor;
+import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.view.item.ItemViewCarrier;
 import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 
 public class ItemController implements StateChangedInteractionEventListener, FlowActivityEventsHandler {
 
-	public ItemController(ItemViewSocket ivs, IFlowSocket fs, InteractionEventsSocket is, ItemSessionSocket iss){
+	public ItemController(ItemViewSocket ivs, IFlowSocket fs, InteractionEventsSocket is, ItemSessionSocket iss, ModulesRegistrySocket mrs){
 		itemViewSocket = ivs;
 		flowSocket = fs;
 		itemSessionSocket = iss;
 		interactionSocket = is;
+		modulesRegistrySocket = mrs;
 		
 	}
 	
@@ -37,6 +37,7 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 	private ItemSessionSocket itemSessionSocket;
 	private IFlowSocket flowSocket;
 	private InteractionEventsSocket interactionSocket;
+	private ModulesRegistrySocket modulesRegistrySocket;
 
 	private StyleSocket styleSocket;
 	public void setStyleSocket( StyleSocket ss) {
@@ -50,7 +51,7 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 			if (data.data == null)
 				throw new Exception("Item data is null");
 			interactionSocket.addStateChangedInteractionEventsListener(this);
-			item = new Item(data.data, options, interactionSocket, styleSocket);
+			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket);
 			itemIndex = data.itemIndex;
 			item.setState(itemSessionSocket.getState(itemIndex));
 			itemViewSocket.setItemView(new ItemViewCarrier(String.valueOf(itemIndex+1) + ". " + item.getTitle(), item.getContentView(), item.getFeedbackView(), item.getScoreView()));
@@ -101,10 +102,6 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 	public void checkItem(){
 		if(item != null)
 			item.checkItem();
-	}
-
-	public ItemVariablesAccessor getItemVariablesAccessor(){
-		return item;
 	}
 	
 	public ItemInterferenceSocket getItemSocket(){

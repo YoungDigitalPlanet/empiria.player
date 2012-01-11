@@ -1,17 +1,18 @@
 package eu.ydp.empiria.player.client.controller.communication;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class DisplayOptions extends DisplayContentOptions {
 	
 	public DisplayOptions(){
 		super();
-		//previewMode = false;
 	}
 
-	public DisplayOptions(String[] tags){
-		tagsIgnored = tags;
-		//previewMode = false;
+	public DisplayOptions(List<String> tags){
+		ignoredTags = tags;
 	}
 
 	public static DisplayOptions fromJsObject(JavaScriptObject o){
@@ -19,9 +20,10 @@ public class DisplayOptions extends DisplayContentOptions {
 		if (o == null)
 			return new DisplayOptions();
 		
-		String[] tags2Ignore = new String[decodeDisplayOptionsObjectArrayLength(o)];
-		for (int i = 0 ; i < decodeDisplayOptionsObjectArrayLength(o) ; i ++){
-			tags2Ignore[i] = decodeDisplayOptionsObjectArrayItem(o, i);
+		List<String> tags2Ignore = new ArrayList<String>(); 
+		int arrayLength = decodeDisplayOptionsObjectArrayLength(o);
+		for (int i = 0 ; i < arrayLength ; i ++){
+			tags2Ignore.add( decodeDisplayOptionsObjectArrayItem(o, i) );
 		}
 		
 		return new DisplayOptions(tags2Ignore);
