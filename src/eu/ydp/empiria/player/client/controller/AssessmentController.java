@@ -12,8 +12,8 @@ import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
-import eu.ydp.empiria.player.client.model.Assessment;
-import eu.ydp.empiria.player.client.model.ItemVariablesAccessor;
+import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
+import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentViewCarrier;
@@ -23,9 +23,9 @@ import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
 public class AssessmentController implements FlowActivityEventsHandler, AssessmentInterferenceSocket {
 
-	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fs, InteractionEventsSocket is, AssessmentSessionSocket ass){
+	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fs, InteractionEventsSocket is, AssessmentSessionSocket ass, ModulesRegistrySocket modulesRegistrySocket){
 		assessmentViewSocket = avs;
-		pageController = new PageController(avs.getPageViewSocket(), fs, is, ass.getPageSessionSocket());
+		pageController = new PageController(avs.getPageViewSocket(), fs, is, ass.getPageSessionSocket(), modulesRegistrySocket);
 		assessmentSessionSocket = ass;
 	}
 	
@@ -76,16 +76,6 @@ public class AssessmentController implements FlowActivityEventsHandler, Assessme
 		if (pageController != null)
 			pageController.handleFlowActivityEvent(event);	
 	}
-
-	public ItemVariablesAccessor getItemVariablesAccessor(){
-		return pageController.getItemVariablesAccessor();
-	}
-	
-//	public JavaScriptObject getControllerSocket(){
-//		return createControllerSocket(pageController.getControllerSocket());
-//	}
-//	
-
 
 	@Override
 	public JavaScriptObject getJsSocket() {

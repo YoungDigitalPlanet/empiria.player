@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.model;
 
 import com.google.gwt.dom.client.Element;
 
-import eu.ydp.empiria.player.client.module.ModuleEventsListener;
+import eu.ydp.empiria.player.client.controller.body.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
 public interface IModuleCreator {

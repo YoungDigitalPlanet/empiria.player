@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller.delivery;
 
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
-import eu.ydp.empiria.player.client.module.IStatefulString;
 
 public interface DeliveryEngineSocket extends IStatefulString {
 

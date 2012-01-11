@@ -1,24 +1,27 @@
 package eu.ydp.empiria.player.client.controller.communication;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 public class DisplayContentOptions {
 	
 	public DisplayContentOptions(){
-		tagsIgnored = new String[0];
+		ignoredTags = new ArrayList<String>();
+		ignoredInlineTags = new ArrayList<String>();
+		ignoredInlineTags.add("feedbackInline");
 	}
 
-	protected String[] tagsIgnored;
-
-	public String[] getIgnoredTags(){
-		return tagsIgnored;
+	protected List<String> ignoredTags;
+	protected List<String> ignoredInlineTags;
+	
+	public List<String> getIgnoredTags(){
+		return ignoredTags;
 	}
 
-	public Vector<String> getIgnoredTagsAsVector(){
-		Vector<String> v = new Vector<String>();
-		for (String tag:tagsIgnored)
-			v.add(tag);
-		return v;
+	public List<String> getIgnoredInlineTags(){
+		return ignoredInlineTags;
 	}
 
 }

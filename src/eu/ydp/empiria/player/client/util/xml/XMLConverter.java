@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.util.xml;
 
+import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.dom.client.Document;
@@ -8,9 +9,9 @@ import com.google.gwt.xml.client.NamedNodeMap;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.controller.body.ModuleEventsListener;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.model.IModuleCreator;
-import eu.ydp.empiria.player.client.module.ModuleEventsListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
 public abstract class XMLConverter {
@@ -23,7 +24,7 @@ public abstract class XMLConverter {
 	
 	public static Element getDOM(com.google.gwt.xml.client.Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, DisplayContentOptions options){
 		Element dom = createElement(element);
-		parseXMLElement(element, dom, moduleSocket, moduleEventsListener, moduleCreator, null, options.getIgnoredTagsAsVector());
+		parseXMLElement(element, dom, moduleSocket, moduleEventsListener, moduleCreator, null, options.getIgnoredTags());
 		return dom;
 	}
 
@@ -41,7 +42,7 @@ public abstract class XMLConverter {
 	
 	private static void parseXMLElement(com.google.gwt.xml.client.Element srcElement, com.google.gwt.dom.client.Element dstElement, 
 			ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, 
-			Vector<String> ignoredNodes, Vector<String> ignoredTagNames){
+			Vector<String> ignoredNodes, List<String> ignoredTagNames){
 		NodeList	nodes = srcElement.getChildNodes();
 		Document	doc = Document.get();
 		com.google.gwt.dom.client.Element domElement;

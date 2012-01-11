@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.session.sockets;
 import java.util.Map;
 
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONValue;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 

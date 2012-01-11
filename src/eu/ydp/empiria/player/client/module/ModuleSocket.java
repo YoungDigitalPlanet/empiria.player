@@ -23,13 +23,14 @@
 */
 package eu.ydp.empiria.player.client.module;
 
-import eu.ydp.empiria.player.client.model.feedback.InlineFeedbackSocket;
+import eu.ydp.empiria.player.client.controller.feedback.InlineFeedbackSocket;
+import eu.ydp.empiria.player.client.module.registry.InlineBodyGeneratorSocketProvider;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 
 /**
  * Socket interface for modules
  * @author Rafal Rybacki
  */
-public interface ModuleSocket extends ResponseSocket, InlineFeedbackSocket, StyleSocket {
+public interface ModuleSocket extends ResponseSocket, InlineFeedbackSocket, StyleSocket, InlineBodyGeneratorSocketProvider {
 	
 }

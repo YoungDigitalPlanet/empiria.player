@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.communication;
 
+import eu.ydp.empiria.player.client.controller.feedback.AssessmentFeedbackSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSocket;
-import eu.ydp.empiria.player.client.model.feedback.AssessmentFeedbackSocket;
 
 public class PageDataSummary extends PageData {
 

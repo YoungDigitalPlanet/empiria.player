@@ -7,12 +7,12 @@ import eu.ydp.empiria.player.client.controller.communication.PageDataError;
 import eu.ydp.empiria.player.client.controller.communication.PageDataSummary;
 import eu.ydp.empiria.player.client.controller.communication.PageDataToC;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
+import eu.ydp.empiria.player.client.controller.feedback.AssessmentFeedbackSocket;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequestSocket;
 import eu.ydp.empiria.player.client.controller.session.SessionDataCarrier;
 import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemsCollectionSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSocket;
-import eu.ydp.empiria.player.client.model.feedback.AssessmentFeedbackSocket;
 
 /**
  * 
