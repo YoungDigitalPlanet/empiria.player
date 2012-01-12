@@ -11,37 +11,18 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.body.ModuleEventsListener;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.model.IModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
 public abstract class XMLConverter {
 
-	public static Element getDOM(com.google.gwt.xml.client.Element element){
-		Element dom = createElement(element);
-		parseXMLElement(element, dom, null, null, null, null, null);
-		return dom;
-	}
-	
-	public static Element getDOM(com.google.gwt.xml.client.Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, DisplayContentOptions options){
-		Element dom = createElement(element);
-		parseXMLElement(element, dom, moduleSocket, moduleEventsListener, moduleCreator, null, options.getIgnoredTags());
-		return dom;
-	}
-
-	public static Element getDOM(com.google.gwt.xml.client.Element element, ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, Vector<String> ignoredTags){
-		Element dom = createElement(element);
-		parseXMLElement(element, dom, moduleSocket, moduleEventsListener, moduleCreator, ignoredTags, null);
-		return dom;
-	}
-
 	public static Element getDOM(com.google.gwt.xml.client.Element element, Vector<String> ignoredTags){
 		Element dom = createElement(element);
-		parseXMLElement(element, dom, null, null, null, ignoredTags, null);
+		parseXMLElement(element, dom, null, null, ignoredTags, null);
 		return dom;
 	}
 	
 	private static void parseXMLElement(com.google.gwt.xml.client.Element srcElement, com.google.gwt.dom.client.Element dstElement, 
-			ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener, IModuleCreator moduleCreator, 
+			ModuleSocket moduleSocket, ModuleEventsListener moduleEventsListener,  
 			Vector<String> ignoredNodes, List<String> ignoredTagNames){
 		NodeList	nodes = srcElement.getChildNodes();
 		Document	doc = Document.get();
@@ -57,19 +38,13 @@ public abstract class XMLConverter {
 			} else if (node.getNodeName().compareTo("qy:tag") == 0){
 				com.google.gwt.xml.client.Element xmlElement = (com.google.gwt.xml.client.Element)node;
 				// Add children
-				parseXMLElement(xmlElement, dstElement, moduleSocket, moduleEventsListener, moduleCreator, ignoredNodes, null);
+				parseXMLElement(xmlElement, dstElement, moduleSocket, moduleEventsListener, ignoredNodes, null);
 			
 			}else if(node.getNodeType() == Node.TEXT_NODE){
 				dstElement.appendChild(doc.createTextNode(node.getNodeValue()));
 			} else  if (node.getNodeType() == Node.COMMENT_NODE){
 			
-			}else if(moduleCreator != null && moduleCreator.isSupported(node.getNodeName()))
-			{
-				domElement = moduleCreator.createModule((com.google.gwt.xml.client.Element)node, moduleSocket, moduleEventsListener);
-				if( domElement != null )
-					dstElement.appendChild( domElement );
-			}
-			else if (ignoredNodes != null  &&  ignoredNodes.contains(node.getNodeName())){
+			}else if (ignoredNodes != null  &&  ignoredNodes.contains(node.getNodeName())){
 				
 			}else
 			{
@@ -79,7 +54,7 @@ public abstract class XMLConverter {
 				// Copy attributes
 				parseXMLAttributes(xmlElement, domElement);
 				// Add children
-				parseXMLElement(xmlElement, domElement, moduleSocket, moduleEventsListener, moduleCreator, ignoredNodes, ignoredTagNames);
+				parseXMLElement(xmlElement, domElement, moduleSocket, moduleEventsListener, ignoredNodes, ignoredTagNames);
 			}
 		}
 	}
