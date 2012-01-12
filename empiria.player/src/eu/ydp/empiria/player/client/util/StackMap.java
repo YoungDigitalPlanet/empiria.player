@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-public class StackMap<K, V> extends HashMap<K, V> {
+
+public class StackMap<K, V> extends TreeMap<K, V> {
 	
 	private static final long serialVersionUID = -5203287630904024114L;
 
