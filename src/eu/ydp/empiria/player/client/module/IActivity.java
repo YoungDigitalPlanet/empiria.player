@@ -25,7 +25,6 @@ package eu.ydp.empiria.player.client.module;
 
 /**
  * Interface for widgets implementing interactive module functions
- * @author Krzysztof Langner
  */
 public interface IActivity {
 

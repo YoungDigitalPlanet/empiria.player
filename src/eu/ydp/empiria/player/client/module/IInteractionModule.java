@@ -4,6 +4,4 @@ import eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInter
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
 public interface IInteractionModule extends IActivity, IStateful, ModuleInterferenceSocket, IUniqueModule, IMultiViewModule, IInitiableModule,ILifecycleModule, IModule {
-
-	public void initModule(ModuleSocket moduleSocket, ModuleInteractionListener moduleInteractionListener);
 }
