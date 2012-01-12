@@ -4,5 +4,8 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
-public interface ISimpleModule extends ISingleViewModuleWithoutBody {
+public interface ISingleViewModuleWithoutBody extends ISingleViewModule {
+
+	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil);
+
 }

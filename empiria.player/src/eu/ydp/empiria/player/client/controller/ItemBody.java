@@ -63,7 +63,7 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 
 
 			@Override
-			public void onStateChanged(boolean procesFeedback, IInteractionModule sender) {
+			public void onStateChanged(boolean procesFeedback, IUniqueModule sender) {
 				interactionEventsListener
 						.onStateChanged(new StateChangedInteractionEvent(
 								procesFeedback, sender));

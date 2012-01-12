@@ -4,13 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import eu.ydp.empiria.player.client.module.IInteractionModule;
+import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class StateChangedInteractionEvent extends InteractionEvent {
 
 	protected boolean userInteract;
-	protected IInteractionModule sender;
+	protected IUniqueModule sender;
 	
-	public StateChangedInteractionEvent(boolean userInteract, IInteractionModule sender){
+	public StateChangedInteractionEvent(boolean userInteract, IUniqueModule sender){
 		this.userInteract = userInteract;
 		this.sender = sender;
 	}
@@ -19,7 +21,7 @@ public class StateChangedInteractionEvent extends InteractionEvent {
 		return userInteract;
 	}
 
-	public IInteractionModule getSender() {
+	public IUniqueModule getSender() {
 		return sender;
 	}
 
