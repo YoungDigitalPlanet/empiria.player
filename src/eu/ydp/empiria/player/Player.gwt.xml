@@ -23,9 +23,6 @@
 	<!-- Specify the app entry point class. -->
 	<entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint' />
 
-	<!-- Application standard css (override standard.css) -->
-	<stylesheet src="standardplayer.css" />
-
 	<!-- css parser -->
 	<script src="jscss/cssparser.js" />
 
