@@ -9,7 +9,9 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -121,21 +123,8 @@ public class SimpleChoice extends FlowPanel {
 		optionPanel.add(markAnswersPanel);
 		optionPanel.add(button);
 		optionPanel.add(labelPanel); // tmp
-		
-		Widget widgetWrapped;
-		
-		if (BrowserCompatibility.detectIPhone()){			
-			com.google.gwt.dom.client.Element a = Document.get().createElement("a");
-			a.setAttribute("href", "javascript:void(0)");
-			a.appendChild(optionPanel.getElement());
-			
-			widgetWrapped = new ElementWrapperWidget(a);
-		} else {
-			widgetWrapped = optionPanel;
-		}
-		
 
-		add(widgetWrapped);
+		add(optionPanel);
 		
 		// feedback
 		
