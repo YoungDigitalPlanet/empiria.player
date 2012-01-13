@@ -11,9 +11,11 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -45,6 +47,8 @@ public class InlineChoiceModule  implements IInteractionModule{
 	private boolean showingAnswers = false;
 	
 	protected Element moduleElement;
+	
+	protected Panel container;
 	
 
 	/**
@@ -89,13 +93,16 @@ public class InlineChoiceModule  implements IInteractionModule{
 			}
 		});
 		
-		placeholders.get(0).add(listBox);
+		container = new FlowPanel();
+		container.add(listBox);
 		
-		listBox.setStyleName("qp-text-choice");		
+		placeholders.get(0).add(container);
+		
+		container.setStyleName("qp-text-choice");		
 
 		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			moduleSocket.addInlineFeedback(new InlineFeedback(listBox, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
+			moduleSocket.addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
 		}
 	}
 
@@ -128,15 +135,15 @@ public class InlineChoiceModule  implements IInteractionModule{
 			listBox.setEnabled(false);
 			if (listBox.getSelectedIndex() != 0){
 				if( response.isCorrectAnswer(lastValue) )
-					listBox.setStyleName("qp-text-choice-correct");
+					container.setStyleName("qp-text-choice-correct");
 				else
-					listBox.setStyleName("qp-text-choice-wrong");
+					container.setStyleName("qp-text-choice-wrong");
 			} else {
-				listBox.setStyleName("qp-text-choice-none");
+				container.setStyleName("qp-text-choice-none");
 			}
 		} else {
 			listBox.setEnabled(true);
-			listBox.setStyleName("qp-text-choice");
+			container.setStyleName("qp-text-choice");
 		}
 	}
 
@@ -149,7 +156,7 @@ public class InlineChoiceModule  implements IInteractionModule{
 		listBox.setSelectedIndex(0);
 		updateResponse(false);
 	  listBox.setEnabled(true);
-	  listBox.setStyleName("qp-text-choice");
+	  container.setStyleName("qp-text-choice");
 	}
 
 	/**
