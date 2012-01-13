@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class StackMap<K, V> extends TreeMap<K, V> {
+public class StackMap<K, V>  {
 	
 	private static final long serialVersionUID = -5203287630904024114L;
 
@@ -20,25 +20,16 @@ public class StackMap<K, V> extends TreeMap<K, V> {
 		values = new ArrayList<V>();
 	}
 
-	@Override
+
 	public V put(K key, V value){
 		keys.add(key);
 		values.add(value);
-		return super.put(key, value);
-	}
-
-	@Override
-	public void putAll(Map<? extends K, ? extends V> m){
-		keys.addAll(m.keySet());
-		values.addAll(m.values());
-		super.putAll(m);
+		return value;
 	}
 	
-	@Override
 	public void clear(){
 		keys.clear();
 		values.clear();
-		super.clear();
 	}
 	
 	public List<K> getKeys(){
@@ -47,6 +38,15 @@ public class StackMap<K, V> extends TreeMap<K, V> {
 	
 	public List<V> getValues(){
 		return values;
+	}
+	
+	public boolean containsKey(K key){
+		return keys.contains(key);
+	}
+	
+	public V get(K key){
+		int index = keys.indexOf(key);
+		return values.get(index);
 	}
 	
 }
