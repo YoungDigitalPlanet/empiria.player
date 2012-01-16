@@ -20,14 +20,23 @@ public class DisplayOptions extends DisplayContentOptions {
 		if (o == null)
 			return new DisplayOptions();
 		
+		JavaScriptObject is = decodeDisplayOptionsObjectGetIgnoredSections(o);
+		
 		List<String> tags2Ignore = new ArrayList<String>(); 
-		int arrayLength = decodeDisplayOptionsObjectArrayLength(o);
+		int arrayLength = decodeDisplayOptionsObjectArrayLength(is);
 		for (int i = 0 ; i < arrayLength ; i ++){
-			tags2Ignore.add( decodeDisplayOptionsObjectArrayItem(o, i) );
+			tags2Ignore.add( decodeDisplayOptionsObjectArrayItem(is, i) );
 		}
 		
 		return new DisplayOptions(tags2Ignore);
 	}
+	private native static JavaScriptObject decodeDisplayOptionsObjectGetIgnoredSections(JavaScriptObject obj)/*-{
+		if (typeof obj.ignoredSections == 'object'){
+			return obj.ignoredSections;
+		}
+		return [];
+	}-*/;
+
 	private native static int decodeDisplayOptionsObjectArrayLength(JavaScriptObject obj)/*-{
 		return obj.length;
 	}-*/;
