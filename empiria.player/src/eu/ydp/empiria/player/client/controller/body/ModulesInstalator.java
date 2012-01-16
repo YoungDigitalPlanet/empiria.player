@@ -14,8 +14,8 @@ import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IMultiViewModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ISingleViewModule;
-import eu.ydp.empiria.player.client.module.ISingleViewModuleWithBody;
-import eu.ydp.empiria.player.client.module.ISingleViewModuleWithoutBody;
+import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
+import eu.ydp.empiria.player.client.module.ISingleViewSimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
@@ -66,10 +66,10 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	@Override
 	public void createSingleViewModule(Element element, HasWidgets parent,BodyGeneratorSocket bodyGeneratorSocket) {
 		IModule module = registry.createModule(element.getNodeName());
-		if (module instanceof ISingleViewModuleWithBody){
-			((ISingleViewModuleWithBody) module).initModule(element, moduleSocket, bodyGeneratorSocket);
-		} else if (module instanceof ISingleViewModuleWithoutBody){
-			((ISingleViewModuleWithoutBody)module).initModule(element, moduleSocket, moduleInteractionListener);			
+		if (module instanceof ISingleViewWithBodyModule){
+			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, bodyGeneratorSocket);
+		} else if (module instanceof ISingleViewSimpleModule){
+			((ISingleViewSimpleModule)module).initModule(element, moduleSocket, moduleInteractionListener);			
 		}
 
 		if (((ISingleViewModule)module).getView() instanceof Widget ){
