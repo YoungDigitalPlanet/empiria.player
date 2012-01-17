@@ -42,7 +42,7 @@ public class JsInteractionEventSocketUserExtension extends JsExtension implement
 	private native JavaScriptObject createInteractionRequestSocketJs()/*-{
 		var instance = this;
 		var socket = [];
-		socket.invokeInteractionRequest = function(request){
+		socket.dispatchInteractionEvent = function(request){
 			instance.@eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsInteractionEventSocketUserExtension::dispatchInteractionEvent(Lcom/google/gwt/core/client/JavaScriptObject;)(request);
 		}
 		return socket;
