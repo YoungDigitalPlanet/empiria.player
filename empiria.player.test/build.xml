@@ -1,9 +1,27 @@
-<project name="Run Test" default="run_test" basedir=".">
-	<target name="run_test">
+<project name="RunTest" default="run_test" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">			
+	<dirname property="base.dir" file="${ant.file.RunTest}" />
+	<property file="${base.dir}/local.properties" />
+	<property file="${base.dir}/default.properties" />	
+	<property name="lib.dir" value="${base.dir}/lib" />
+	<property name="inc.dir" value="${base.dir}/functional/inc" />
+	
+	<target name="retrieve">
+		<mkdir dir="${lib.dir}" />
+		<ivy:retrieve pattern="${lib.dir}/[artifact].[ext]" />
+		<unzip src="${lib.dir}/seleniumPhpFw.zip" dest="${inc.dir}"/>
+	</target>
+	
+	<target name="run_test" depends="retrieve">
+		
 		<exec dir="${basedir}/functional" executable="cmd" failonerror="false">
 			<arg line="/C" />
 			<arg line="phpunit.bat" />
 			<arg line="TestRun.php --product-id 1" />
 		</exec>
 	</target>	
+	
+	<target name="clean">
+		<delete dir="${lib.dir}" />
+		<delete dir="${inc.dir}" />		
+	</target>
 </project>

@@ -1,0 +1,9 @@
+<ivy-module version="2.0">
+  <info organisation="eu.ydp" module="empiriaPlayerTest"/>
+	<configurations>
+		<conf name="default"  description="Extension executables"/>
+  </configurations>
+  <dependencies>
+  	<dependency name="seleniumPhpFw" org="eu.ydp" rev="latest.release" conf="default"/>
+  </dependencies>
+</ivy-module>
