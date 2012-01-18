@@ -273,8 +273,10 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 
 	@Override
 	public void onSimpleChoiceClick(SimpleChoice sc) {
-		sc.setSelected(!sc.isSelected());
-		updateResponse(null, true);
+		if (!locked){
+			sc.setSelected(!sc.isSelected());
+			updateResponse(null, true);
+		}
 	}
 
 }
