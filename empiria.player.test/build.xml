@@ -1,0 +1,9 @@
+<project name="Run Test" default="run_test" basedir=".">
+	<target name="run_test">
+		<exec dir="${basedir}/functional" executable="cmd" failonerror="false">
+			<arg line="/C" />
+			<arg line="phpunit.bat" />
+			<arg line="TestRun.php --product-id 1" />
+		</exec>
+	</target>	
+</project>
