@@ -16,7 +16,7 @@
 		<exec dir="${basedir}/functional" executable="cmd" failonerror="false">
 			<arg line="/C" />
 			<arg line="phpunit.bat" />
-			<arg line="TestRun.php --product-id 1" />
+			<arg line="inc/TestRun.php --product-id 1" />
 		</exec>
 	</target>	
 	
