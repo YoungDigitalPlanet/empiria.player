@@ -24,6 +24,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
@@ -95,6 +96,14 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		itemBodyModule.initModule(itemBodyElement, moduleSocket, generator);
 		
 		modules = modulesInstalator.installMultiViewUniqueModules();
+
+		for (IModule currModule : modules) {
+			if (currModule instanceof IUniqueModule){
+				Response currResponse = moduleSocket.getResponse( ((IUniqueModule) currModule).getIdentifier() );
+				if (currResponse != null)
+					currResponse.setModuleAdded();
+			}
+		}
 		
 		return itemBodyModule.getView();
 
