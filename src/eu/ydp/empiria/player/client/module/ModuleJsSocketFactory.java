@@ -46,6 +46,7 @@ public class ModuleJsSocketFactory {
 		jso.unlock = function(){
 			instance.@eu.ydp.empiria.player.client.module.ILockable::lock(Z)(false);
 		}
+		return jso; 
 	}-*/;
 	
 	
@@ -54,6 +55,7 @@ public class ModuleJsSocketFactory {
 		jso.reset = function(){
 			instance.@eu.ydp.empiria.player.client.module.IResetable::reset()();
 		}
+		return jso; 
 	}-*/;
 	
 	
