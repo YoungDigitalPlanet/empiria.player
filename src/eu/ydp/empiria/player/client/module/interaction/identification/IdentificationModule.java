@@ -234,23 +234,26 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 
 	protected void onChoiceClick(SelectableChoice sc){
 
-		sc.setSelected(!sc.getSelected());
+		if (!locked){
 		
-		int currSelectionsCount = 0;
-		for (int i = 0 ; i < options.size() ; i ++){
-			if (options.get(i).getSelected())
-				currSelectionsCount++;
-		}
-		
-		if (currSelectionsCount > maxSelections){
+			sc.setSelected(!sc.getSelected());
+			
+			int currSelectionsCount = 0;
 			for (int i = 0 ; i < options.size() ; i ++){
-				if (options.get(i).getSelected()  &&  sc != options.get(i)){
-					options.get(i).setSelected(false);
-					break;
+				if (options.get(i).getSelected())
+					currSelectionsCount++;
+			}
+			
+			if (currSelectionsCount > maxSelections){
+				for (int i = 0 ; i < options.size() ; i ++){
+					if (options.get(i).getSelected()  &&  sc != options.get(i)){
+						options.get(i).setSelected(false);
+						break;
+					}
 				}
 			}
+			updateResponse(true);
 		}
-		updateResponse(true);
 	}
 	
 
