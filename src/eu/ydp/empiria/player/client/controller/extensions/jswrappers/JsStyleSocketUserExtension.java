@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
@@ -51,8 +52,8 @@ public class JsStyleSocketUserExtension extends JsExtension implements StyleSock
 	}-*/;
 	
 	private JavaScriptObject getStyle(com.google.gwt.dom.client.Element element){
-		Document xmlDocument = XMLParser.parse(element.getString());
-		Map<String, String> styles = styleSocket.getStyles(xmlDocument.getDocumentElement());
+		Element xmlElement = XMLParser.createDocument().createElement(element.getNodeName().toLowerCase());
+		Map<String, String> styles = styleSocket.getStyles(xmlElement);
 		JavaScriptObject stylesJsArray = JavaScriptObject.createObject();
 		
 		for (String currKey : styles.keySet()){
