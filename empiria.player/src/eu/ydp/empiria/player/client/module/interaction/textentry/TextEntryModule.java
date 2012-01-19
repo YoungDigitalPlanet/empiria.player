@@ -11,8 +11,10 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -44,7 +46,7 @@ public class TextEntryModule implements IInteractionModule{
 	private boolean showingAnswers = false;
 
 	protected Element moduleElement;
-	protected InlineHTML moduleWidget;
+	protected Panel moduleWidget;
 	
 	/**	
 	 * constructor
@@ -86,19 +88,19 @@ public class TextEntryModule implements IInteractionModule{
 		if (!response.correctAnswers.get(0).matches(".*[^0-9].*"))
 			textBox.getElement().setAttribute("type", "number");
 
-		InlineHTML spanPrefix = new InlineHTML();
+		Panel spanPrefix = new FlowPanel();
 		spanPrefix.setStyleName("qp-text-textentry-prefix");
-		InlineHTML spanSufix = new InlineHTML();
+		Panel spanSufix = new FlowPanel();
 		spanSufix.setStyleName("qp-text-textentry-sufix");
-		InlineHTML spanContent = new InlineHTML();
+		Panel spanContent = new FlowPanel();
 		spanContent.setStyleName("qp-text-textentry-content");
-		spanContent.getElement().appendChild(textBox.getElement());
+		spanContent.add(textBox);
 		
-		moduleWidget = new InlineHTML();
+		moduleWidget = new FlowPanel();
 		
-		moduleWidget.getElement().appendChild(spanPrefix.getElement());
-		moduleWidget.getElement().appendChild(spanContent.getElement());
-		moduleWidget.getElement().appendChild(spanSufix.getElement());
+		moduleWidget.add(spanPrefix);
+		moduleWidget.add(spanContent);
+		moduleWidget.add(spanSufix);
 		moduleWidget.setStyleName("qp-text-textentry");
 		
 		placeholders.get(0).add(moduleWidget);
