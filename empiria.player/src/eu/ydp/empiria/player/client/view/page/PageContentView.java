@@ -153,7 +153,7 @@ public class PageContentView implements PageViewSocket {
 			    	if (currISDS != null){
 			    		Variable currVar;
 			    		currVar = pvc.sessionDataSocket.getItemSessionDataSocket(t).getVariableProviderSocket().getVariableValue("VISITED");
-			    		currVisited = "TRUE".equals(currVar.getValuesShort());
+			    		currVisited = (currVar != null  &&  "TRUE".equals(currVar.getValuesShort()));
 			    		currVar = pvc.sessionDataSocket.getItemSessionDataSocket(t).getVariableProviderSocket().getVariableValue("TODO");
 			    		if (currVar != null)
 			    			currTodo = IntegerUtils.tryParseInt( currVar.getValuesShort() );
