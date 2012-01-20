@@ -93,7 +93,11 @@ public class InlineChoiceMobileController implements InlineChoiceController, ExL
 		listBox = new ExListBox();
 		listBox.setChangeListener(this);
 		
-		listBox.addOption(new InlineHTML(), new InlineHTML());
+		Widget emptyOptionInBody = new InlineHTML();
+		emptyOptionInBody.setStyleName("qp-text-choice-popup-option-empty");
+		Widget emptyOptionInPopup = new InlineHTML();
+		emptyOptionInPopup.setStyleName("qp-text-choice-popup-option-empty");
+		listBox.addOption(emptyOptionInBody, emptyOptionInPopup);
 		
 		if (shuffle){
 			RandomizedSet<Integer> randomizedNodes = new RandomizedSet<Integer>();
