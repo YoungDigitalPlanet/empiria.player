@@ -63,7 +63,7 @@ public class ExListBox extends FlowPanel {
 		popupContainer.setStyleName("qp-exlistbox-popup-container");
 		popupContainer.add(popupOuterContainer);
 		
-		baseButton = new PushButton("select");
+		baseButton = new PushButton(" ");
 		baseButton.setStyleName("qp-exlistbox-base-button");
 		
 		baseContents = new FlowPanel();
