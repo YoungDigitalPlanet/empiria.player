@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.player.client.components.TwoStateButton;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
@@ -38,8 +39,9 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	protected PageInterferenceSocket pageInterferenceSocket;
 
 	private Panel menuPanel;
-	private PushButton checkButton;
-	private PushButton continueItemButton;
+	private TwoStateButton checkButton;
+	private TwoStateButton showAnswersButton;
+	private PushButton resetButton; 
 	private PushButton prevButton; 
 	private PushButton nextButton;
 	private PushButton finishButton; 
@@ -103,28 +105,43 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 		// BUTTONS MENU
 		
 		menuPanel = new FlowPanel();
-		menuPanel.setStyleName("qp-footer-buttons");
+		menuPanel.setStyleName("qp-defaultassessmentfooter-buttons");
 
-	    checkButton = new PushButton();
-	    checkButton.setStylePrimaryName("qp-check-button");
+	    checkButton = new TwoStateButton("qp-defaultassessmentfooter-check-button", "qp-defaultassessmentfooter-continue-button");
 	    checkButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				flowRequestInvoker.invokeRequest(new FlowRequest.Check());
+				if (checkButton.isDown()){
+					flowRequestInvoker.invokeRequest(new FlowRequest.Check());
+				} else {
+					flowRequestInvoker.invokeRequest(new FlowRequest.Continue());
+				}
 			}
 		});
 	    menuPanel.add(checkButton);
 	    
-	    continueItemButton = new PushButton();
-	    continueItemButton.setStylePrimaryName("qp-reset-button");
-	    continueItemButton.addClickHandler(new ClickHandler() {
+	    showAnswersButton = new TwoStateButton("qp-defaultassessmentfooter-showanswers-button", "qp-defaultassessmentfooter-hideanswers-button");
+	    showAnswersButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				flowRequestInvoker.invokeRequest(new FlowRequest.Continue());
+				if (showAnswersButton.isDown()){
+					flowRequestInvoker.invokeRequest(new FlowRequest.ShowAnswers());
+				} else {
+					flowRequestInvoker.invokeRequest(new FlowRequest.Continue());
+				}
 			}
 		});
-	    menuPanel.add(continueItemButton);
+	    menuPanel.add(showAnswersButton);
+
+	    resetButton = new PushButton();
+	    resetButton.setStylePrimaryName("qp-defaultassessmentfooter-reset-button");
+	    resetButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				flowRequestInvoker.invokeRequest(new FlowRequest.Reset());
+			}
+		});
+	    menuPanel.add(resetButton);
 
 	    prevButton = new PushButton();
-	    prevButton.setStylePrimaryName("qp-prev-button");
+	    prevButton.setStylePrimaryName("qp-defaultassessmentfooter-prev-button");
 	    prevButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigatePreviousItem());
@@ -133,7 +150,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	    menuPanel.add(prevButton);
 	    
 	    nextButton = new PushButton();
-	    nextButton.setStylePrimaryName("qp-next-button");
+	    nextButton.setStylePrimaryName("qp-defaultassessmentfooter-next-button");
 	    nextButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigateNextItem());
@@ -142,7 +159,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	    menuPanel.add(nextButton);
 	    
 	    finishButton = new PushButton();
-	    finishButton.setStylePrimaryName("qp-finish-button");
+	    finishButton.setStylePrimaryName("qp-defaultassessmentfooter-finish-button");
 	    finishButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigateSummary());
@@ -151,7 +168,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	    menuPanel.add(finishButton);
 	    
 	    summaryButton = new PushButton();
-	    summaryButton.setStylePrimaryName("qp-summary-button");
+	    summaryButton.setStylePrimaryName("qp-defaultassessmentfooter-summary-button");
 	    summaryButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigateSummary());
@@ -160,7 +177,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	    menuPanel.add(summaryButton);
 	    
 	    continueAssessmentButton = new PushButton();
-	    continueAssessmentButton.setStylePrimaryName("qp-resultpage-continue");
+	    continueAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-resultpage-continue");
 	    continueAssessmentButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigateFirstItem());
@@ -169,7 +186,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	    menuPanel.add(continueAssessmentButton);
 	    
 	    previewAssessmentButton = new PushButton();
-	    previewAssessmentButton.setStylePrimaryName("qp-resultpage-preview");
+	    previewAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-resultpage-preview");
 	    previewAssessmentButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigatePreviewItem(0));
@@ -198,7 +215,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 		boolean isPreview = flowDataSupplier.getFlowOptions().activityMode == ActivityMode.CHECK;
 		
 		boolean isCheck = flowDataSupplier.getFlowFlagCheck();
-		boolean isAnswers = flowDataSupplier.getFlowFlagMarkAnswers();
+		boolean isAnswers = flowDataSupplier.getFlowFlagShowAnswers();
 		PageType currPageType = flowDataSupplier.getCurrentPageType();
 		PageItemsDisplayMode currItemsDisplayMode = flowDataSupplier.getFlowOptions().itemsDisplayMode;
 		
@@ -210,8 +227,8 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 			}
 		}
 		
-		checkButton.setVisible(!isCheck  &&  !isAnswers  &&  currPageType == PageType.TEST  &&  !isPreview  &&  modulesCount > 0);
-		continueItemButton.setVisible((isCheck || isAnswers)  &&  currPageType == PageType.TEST  &&  !isPreview);
+		checkButton.setVisible(currPageType == PageType.TEST);
+		showAnswersButton.setVisible(currPageType == PageType.TEST);
 		prevButton.setVisible(currPageType == PageType.TEST  &&  currItemsDisplayMode == PageItemsDisplayMode.ONE);
 		prevButton.setEnabled(flowDataSupplier.getFlowOptions().showToC  ||  flowDataSupplier.getCurrentPageIndex() > 0);
 		nextButton.setVisible((currPageType == PageType.TEST  &&  currItemsDisplayMode == PageItemsDisplayMode.ONE)  ||  currPageType == PageType.TOC);

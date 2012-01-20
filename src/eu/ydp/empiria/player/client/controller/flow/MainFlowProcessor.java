@@ -23,7 +23,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		flowOptions = OptionsReader.getFlowOptions();
 		displayOptions = new DisplayOptions();
 		isCheck = false;
-		isMarkAnswers = false;
+		isShowAnswers = false;
 		isInitalized = false;
 	}
 	
@@ -38,7 +38,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	private DisplayOptions displayOptions;
 	//private ItemActivityOptions activityOptions;
 	private boolean isCheck;
-	private boolean isMarkAnswers;
+	private boolean isShowAnswers;
 	private boolean isLock;
 	private boolean isInitalized;
 
@@ -220,7 +220,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 
 	@Override
 	public void checkPage() {
-		if (isCheck == false  &&  isMarkAnswers == false){
+		if (isCheck == false  &&  isShowAnswers == false){
 			isCheck = true;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.CHECK ) );
 			//updateNavigation();
@@ -229,8 +229,8 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 
 	@Override
 	public void showAnswers() {
-		if (isCheck == false  &&  isMarkAnswers == false){
-			isMarkAnswers = true;
+		if (isCheck == false  &&  isShowAnswers == false){
+			isShowAnswers = true;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.SHOW_ANSWERS ) );
 			//updateNavigation();
 		}
@@ -254,8 +254,8 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 			isCheck = false;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.CONTINUE ) );
 		}
-		if (isMarkAnswers == true){
-			isMarkAnswers = false;
+		if (isShowAnswers == true){
+			isShowAnswers = false;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.HIDE_ANSWERS ) );
 		}
 		if (isLock == true){
@@ -286,7 +286,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	@Override
 	public void resetPage() {
 		isCheck = false;
-		isMarkAnswers = false;
+		isShowAnswers = false;
 		flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.RESET ) );
 		//updateNavigation();
 	}
@@ -302,7 +302,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	public void onPageChange(){
 		flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.PAGE_CHANGING ) );
 		isCheck = false;
-		isMarkAnswers = false;
+		isShowAnswers = false;
 		isLock = false;
 	}
 	/*
@@ -319,8 +319,8 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		return isCheck;
 	}
 	
-	public boolean getFlowFlagMarkAnswers(){
-		return isMarkAnswers;
+	public boolean getFlowFlagShowAnswers(){
+		return isShowAnswers;
 	}
 	
 	public boolean getFlowFlagLock(){
