@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.jswrappers;
 import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
@@ -52,6 +53,7 @@ public class JsStyleSocketUserExtension extends JsExtension implements StyleSock
 	}-*/;
 	
 	private JavaScriptObject getStyle(com.google.gwt.dom.client.Element element){
+		
 		Element xmlElement = XMLParser.createDocument().createElement(element.getNodeName().toLowerCase());
 		Map<String, String> styles = styleSocket.getStyles(xmlElement);
 		JavaScriptObject stylesJsArray = JavaScriptObject.createObject();

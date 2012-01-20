@@ -11,6 +11,6 @@ public interface FlowDataSupplier {
 	int getCurrentPageIndex();
 	ActivityMode getActivityMode();
 	boolean getFlowFlagCheck();
-	boolean getFlowFlagMarkAnswers();
+	boolean getFlowFlagShowAnswers();
 	boolean getFlowFlagLock();
 }
