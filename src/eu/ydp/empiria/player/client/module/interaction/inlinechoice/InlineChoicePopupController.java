@@ -33,7 +33,7 @@ import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class InlineChoiceMobileController implements InlineChoiceController, ExListBoxChangeListener {
+public class InlineChoicePopupController implements InlineChoiceController, ExListBoxChangeListener {
 
 
 	private Response response;
@@ -125,6 +125,7 @@ public class InlineChoiceMobileController implements InlineChoiceController, ExL
 		
 		placeholders.get(0).add(container);
 	}
+	
 	@Override
 	public void onBodyLoad() {
 		// TODO Auto-generated method stub
