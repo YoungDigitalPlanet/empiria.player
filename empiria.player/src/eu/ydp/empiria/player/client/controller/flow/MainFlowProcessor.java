@@ -248,6 +248,10 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 			isCheck = false;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.CONTINUE ) );
 		}
+		if (isShowAnswers == true){
+			isShowAnswers = false;
+			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.HIDE_ANSWERS ) );
+		}
 		if (isLock == true){
 			isLock = false;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.UNLOCK ) );
