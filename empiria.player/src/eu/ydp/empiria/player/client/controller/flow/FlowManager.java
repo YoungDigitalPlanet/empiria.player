@@ -7,7 +7,6 @@ import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.flow.execution.IFlowCommandsExecutor;
 import eu.ydp.empiria.player.client.controller.flow.execution.MainFlowCommandsExecutor;
-import eu.ydp.empiria.player.client.controller.flow.navigation.NavigationView;
 import eu.ydp.empiria.player.client.controller.flow.processing.IFlowRequestProcessor;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCommand;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventsListener;
@@ -20,12 +19,10 @@ public final class FlowManager {
 	private MainFlowProcessor flowProcessor;
 	private MainFlowRequestInvoker flowRequestInvoker;
 	private MainFlowCommandsExecutor flowCommandsExecutor;
-	private NavigationView navigationView;
 	
 	public FlowManager(FlowProcessingEventsListener fael){
 		flowRequestInvoker = new MainFlowRequestInvoker();
-		navigationView = new NavigationView(flowRequestInvoker);
-		flowProcessor = new MainFlowProcessor(fael, navigationView);
+		flowProcessor = new MainFlowProcessor(fael);
 		flowCommandsExecutor = new MainFlowCommandsExecutor(flowProcessor);
 	}
 	
@@ -68,10 +65,6 @@ public final class FlowManager {
 	public PageReference getPageReference(){
 		return flowProcessor.getPageReference();
 	}
-	/*
-	public NavigationSocket getNavigationSocket(){
-		return flowExecutor;
-	}*/
 
 	
 	public IFlowCommandsExecutor getFlowCommandsExecutor(){
@@ -109,16 +102,6 @@ public final class FlowManager {
 			public void invokeRequest(IFlowRequest command) {
 				flowRequestInvoker.invokeRequest(command);
 			}
-			/*
-			@Override
-			public NavigationViewSocket getNavigationViewSocket() {
-				return flowProcessor.getNavigationViewSocket();
-			}
-			
-			@Override
-			public NavigationSocket getNavigationSocket() {
-				return flowProcessor;
-			}*/
 		};
 	}
 	

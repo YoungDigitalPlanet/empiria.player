@@ -8,7 +8,6 @@ import eu.ydp.empiria.player.client.controller.communication.ItemParametersSocke
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
-import eu.ydp.empiria.player.client.controller.flow.navigation.NavigationView;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventType;
@@ -17,9 +16,8 @@ import eu.ydp.empiria.player.client.util.config.OptionsReader;
 
 public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier {
 
-	public MainFlowProcessor(FlowProcessingEventsListener feel,  NavigationView navigationView){
+	public MainFlowProcessor(FlowProcessingEventsListener feel){
 		flowExecutionEventsListener = feel;
-		this.navigationView = navigationView;
 		flowOptions = OptionsReader.getFlowOptions();
 		displayOptions = new DisplayOptions();
 		isCheck = false;
@@ -27,7 +25,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		isInitalized = false;
 	}
 	
-	private NavigationView navigationView;
 	private FlowProcessingEventsListener flowExecutionEventsListener;
 	private ItemParametersSocket itemParametersSocket;
 	
@@ -50,7 +47,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 			currentPageType = PageType.TOC;
 		else 
 			currentPageType = PageType.TEST;
-		navigationView.init(_itemsCount, flowOptions);
 	}
 
 	public void initFlow(){
