@@ -186,9 +186,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		} else if (event.getType() == FlowActivityEventType.CONTINUE){
 			continueItem();
 		} else if (event.getType() == FlowActivityEventType.SHOW_ANSWERS){
-			showAnswers(true);
-		} else if (event.getType() == FlowActivityEventType.HIDE_ANSWERS){
-			showAnswers(false);
+			showAnswers();
 		} else if (event.getType() == FlowActivityEventType.RESET){
 			resetItem();
 		} else if (event.getType() == FlowActivityEventType.LOCK){
@@ -290,14 +288,15 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	}
 	
 	public void continueItem(){
+		itemBody.showCorrectAnswers(false);
 		itemBody.markAnswers(false);
 		itemBody.lock(false);
 		hideScore();
 	}
 	
-	public void showAnswers(boolean show){
-		itemBody.showCorrectAnswers(show);
-		itemBody.lock(show);
+	public void showAnswers(){
+		itemBody.showCorrectAnswers(true);
+		itemBody.lock(true);
 	}
 
 
@@ -338,10 +337,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 			instance.@eu.ydp.empiria.player.client.controller.Item::resetItem()();
 		}
 		socket.showAnswers = function(){
-			instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers(Z)(true);
-		}
-		socket.hideAnswers = function(){
-			instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers(Z)(false);
+			instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers()();
 		}
 		socket.lock = function(){
 			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(true);
