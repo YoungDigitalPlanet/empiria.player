@@ -7,9 +7,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ItemViewCarrier {
 
-	public ItemViewCarrier(String title, Widget _contentView, Widget _feedbackView, Widget _scoreView){
-		titleView = new Label(title);
-		titleView.setStyleName("qp-item-title");
+	public ItemViewCarrier(Widget title, Widget _contentView, Widget _feedbackView, Widget _scoreView){
+		titleView = title;
 		contentView = _contentView;
 		feedbackView = _feedbackView;
 		scoreView = _scoreView;
@@ -25,7 +24,7 @@ public class ItemViewCarrier {
 		errorView.add(errorLabel);
 	}
 	
-	private Label titleView;
+	private Widget titleView;
 	private Widget contentView;
 	private Widget feedbackView;
 	private Widget scoreView;
