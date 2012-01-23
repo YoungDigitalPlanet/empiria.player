@@ -1,4 +1,4 @@
-package com.qtitools.player.client.controller.style.test;
+package eu.ydp.empiria.player.client.controller.style.test;
 
 import junit.framework.Assert;
 
@@ -11,7 +11,7 @@ public class JSOModelTest extends GWTTestCase {
 
 	@Override
 	public String getModuleName() {
-		return "com.qtitools.player.Player";
+		return "eu.ydp.empiria.player.Player";
 	}
 
 	public void testModelCreation() {

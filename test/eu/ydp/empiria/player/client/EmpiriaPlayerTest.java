@@ -21,20 +21,20 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-package com.qtitools.player.client;
+package eu.ydp.empiria.player.client;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**
  * GWT JUnit tests must extend GWTTestCase.
  */
-public class QtiplayerTest extends GWTTestCase {
+public class EmpiriaPlayerTest extends GWTTestCase {
 
   /**
    * Must refer to a valid module that sources this class.
    */
   public String getModuleName() {
-    return "com.qtitools.player.Player";
+    return "eu.ydp.empiria.player.Player";
   }
 
   /**
