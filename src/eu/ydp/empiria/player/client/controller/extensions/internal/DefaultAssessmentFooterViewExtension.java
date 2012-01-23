@@ -214,18 +214,8 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 		
 		boolean isPreview = flowDataSupplier.getFlowOptions().activityMode == ActivityMode.CHECK;
 		
-		boolean isCheck = flowDataSupplier.getFlowFlagCheck();
-		boolean isAnswers = flowDataSupplier.getFlowFlagShowAnswers();
 		PageType currPageType = flowDataSupplier.getCurrentPageType();
 		PageItemsDisplayMode currItemsDisplayMode = flowDataSupplier.getFlowOptions().itemsDisplayMode;
-		
-		int modulesCount = 0;
-		ItemInterferenceSocket[] itemSockets = pageInterferenceSocket.getItemSockets();
-		for (int i = 0 ; i < itemSockets.length ; i ++){
-			if (itemSockets[i] != null){
-				modulesCount += itemSockets[i].getModuleSockets().length;
-			}
-		}
 		
 		checkButton.setVisible(currPageType == PageType.TEST && !isPreview);
 		showAnswersButton.setVisible(currPageType == PageType.TEST && !isPreview);
