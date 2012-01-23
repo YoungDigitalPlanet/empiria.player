@@ -51,7 +51,7 @@ public class InlineChoiceModule  implements IInteractionModule{
 		this.moduleSocket = moduleSocket;
 		Map<String, String> styles = moduleSocket.getStyles(XMLParser.createDocument().createElement("inlinechoiceinteraction"));
 		if (styles != null  &&  styles.containsKey("-empiria-inlinechoice-type")  &&  styles.get("-empiria-inlinechoice-type").toLowerCase().equals("popup")){
-			controller = new InlineChoiceMobileController();	
+			controller = new InlineChoicePopupController();	
 		} else {
 			controller = new InlineChoiceDefaultController();
 		}

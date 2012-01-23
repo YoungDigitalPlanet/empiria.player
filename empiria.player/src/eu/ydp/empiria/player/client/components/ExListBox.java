@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -59,7 +60,6 @@ public class ExListBox extends FlowPanel {
 		popupOuterContainer.add(popupOuterFooter);
 		
 		popupContainer = new PopupPanel(true);
-		popupContainer.setAnimationEnabled(true);
 		popupContainer.setStyleName("qp-exlistbox-popup-container");
 		popupContainer.add(popupOuterContainer);
 		
@@ -126,17 +126,19 @@ public class ExListBox extends FlowPanel {
 		mountingPointX = baseContainer.getAbsoluteLeft() + baseContainer.getOffsetWidth()/2 - popupContainer.getOffsetWidth()/2;
 		mountingPointY = baseContainer.getAbsoluteTop() - popupContainer.getOffsetHeight();
 
-		if (mountingPointX < MARGIN){
-			mountingPointX = MARGIN;
-		} else if (mountingPointX + popupContainer.getOffsetWidth() > Window.getClientWidth() - MARGIN){
-			mountingPointX = Window.getClientWidth() - popupContainer.getOffsetWidth() - MARGIN;
-		}
-		if (mountingPointY + popupContainer.getOffsetHeight() < MARGIN){
-			mountingPointY = MARGIN;
-		} else if (mountingPointY + popupContainer.getOffsetWidth() > Window.getClientHeight() - MARGIN){
-			mountingPointY = Window.getClientHeight() - popupContainer.getOffsetHeight() - MARGIN;
+		if (mountingPointX < Window.getScrollLeft() + MARGIN){
+			mountingPointX = Window.getScrollLeft() + MARGIN;
+		} else if (mountingPointX + popupContainer.getOffsetWidth() > Window.getClientWidth() + Window.getScrollLeft() + MARGIN){
+			mountingPointX = Window.getClientWidth() + Window.getScrollLeft() + MARGIN - popupContainer.getOffsetWidth();
 		}
 		
+
+		if (mountingPointY < Window.getScrollTop() + MARGIN){
+			mountingPointY = Window.getScrollTop() + MARGIN;
+		} else if (mountingPointY + popupContainer.getOffsetHeight() > Window.getClientHeight() + Window.getScrollTop() + MARGIN){
+			mountingPointY = Window.getClientHeight() + Window.getScrollTop() + MARGIN - popupContainer.getOffsetHeight();
+		}
+				
 		popupContainer.setPopupPosition(mountingPointX, mountingPointY);
 		
 	}
