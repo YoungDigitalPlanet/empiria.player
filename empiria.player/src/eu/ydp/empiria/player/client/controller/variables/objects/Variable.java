@@ -21,7 +21,9 @@ public abstract class Variable {
 	
 	public Vector<String> values;
 		
-	public abstract void reset();
+	public void reset(){
+		values.clear();		
+	}
 	
 	public String getValuesShort(){
 		

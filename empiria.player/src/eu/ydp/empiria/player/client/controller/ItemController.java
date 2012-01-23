@@ -1,5 +1,10 @@
 package eu.ydp.empiria.player.client.controller;
 
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
+
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
@@ -54,7 +59,7 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket);
 			itemIndex = data.itemIndex;
 			item.setState(itemSessionSocket.getState(itemIndex));
-			itemViewSocket.setItemView(new ItemViewCarrier(String.valueOf(itemIndex+1) + ". " + item.getTitle(), item.getContentView(), item.getFeedbackView(), item.getScoreView()));
+			itemViewSocket.setItemView(new ItemViewCarrier(createTitleWidget(String.valueOf(itemIndex+1), item.getTitle()), item.getContentView(), item.getFeedbackView(), item.getScoreView()));
 			itemSessionSocket.beginItemSession(itemIndex);
 			item.updateItemSession(itemIndex, itemSessionSocket);
 		} catch (Exception e) {
@@ -106,5 +111,17 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 	
 	public ItemInterferenceSocket getItemSocket(){
 		return item;
+	}
+	
+	protected Widget createTitleWidget(String index, String text){
+		Panel titlePanel = new FlowPanel();
+		titlePanel.setStyleName("qp-item-title");
+		Label indexLabel = new Label(index+". ");
+		indexLabel.setStyleName("qp-item-title-index");
+		Label textLabel = new Label(text);
+		textLabel.setStyleName("qp-item-title-text");
+		titlePanel.add(indexLabel);
+		titlePanel.add(textLabel);
+		return titlePanel;
 	}
 }

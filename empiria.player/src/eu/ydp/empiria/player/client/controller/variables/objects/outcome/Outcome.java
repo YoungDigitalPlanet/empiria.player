@@ -73,12 +73,6 @@ public class Outcome extends Variable {
 	
 	public Double normalMaximum;
 
-	
-	@Override
-	public void reset() {
-		
-		
-	}
 
 	@Override
 	public JSONValue toJSON() {

@@ -33,7 +33,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	private int itemsCount;
 	private FlowOptions flowOptions;
 	private DisplayOptions displayOptions;
-	//private ItemActivityOptions activityOptions;
 	private boolean isCheck;
 	private boolean isShowAnswers;
 	private boolean isLock;
@@ -41,7 +40,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 
 	public void init(int _itemsCount){
 		itemsCount = _itemsCount;
-		//activityOptions = new ItemActivityOptions();
 		currentPageIndex = 0;
 		if (flowOptions.showToC)
 			currentPageType = PageType.TOC;
