@@ -194,7 +194,8 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 			deliveryEvent.getType() == DeliveryEventType.SUMMARY_PAGE_LOADED  ||
 			deliveryEvent.getType() == DeliveryEventType.CHECK  ||
 			deliveryEvent.getType() == DeliveryEventType.CONTINUE ||
-			deliveryEvent.getType() == DeliveryEventType.SHOW_ANSWERS){
+			deliveryEvent.getType() == DeliveryEventType.SHOW_ANSWERS ||
+			deliveryEvent.getType() == DeliveryEventType.HIDE_ANSWERS){
 			updateButtons();
 		}
 			
