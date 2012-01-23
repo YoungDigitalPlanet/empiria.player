@@ -11,7 +11,6 @@ import eu.ydp.empiria.player.client.components.TwoStateButton;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
-import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
@@ -23,7 +22,6 @@ import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsLi
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.types.ViewExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequestInvoker;
@@ -49,10 +47,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	private PushButton continueAssessmentButton;
 	private PushButton previewAssessmentButton;
 	
-	private int integrationCounter;
-	
 	public DefaultAssessmentFooterViewExtension(){
-		integrationCounter = 0;
 	}
 	
 	@Override
@@ -68,25 +63,21 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	@Override
 	public void setFlowDataSupplier(FlowDataSupplier supplier) {
 		flowDataSupplier = supplier;
-		integrationCounter++;
 	}
 
 	@Override
 	public void setDataSourceDataSupplier(DataSourceDataSupplier supplier) {
 		dataSourceDataSupplier = supplier;
-		integrationCounter++;
 	}
 
 	@Override
 	public void setFlowRequestsInvoker(IFlowRequestInvoker fri) {
 		flowRequestInvoker = fri;
-		integrationCounter++;
 	}
 
 	@Override
 	public void setPageInterferenceSocket(PageInterferenceSocket acs) {
 		pageInterferenceSocket = acs;
-		integrationCounter++;
 	}
 
 	@Override
