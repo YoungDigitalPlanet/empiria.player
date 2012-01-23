@@ -131,7 +131,6 @@ public class ExListBox extends FlowPanel {
 		} else if (mountingPointX + popupContainer.getOffsetWidth() > Window.getClientWidth() + Window.getScrollLeft() + MARGIN){
 			mountingPointX = Window.getClientWidth() + Window.getScrollLeft() + MARGIN - popupContainer.getOffsetWidth();
 		}
-		
 
 		if (mountingPointY < Window.getScrollTop() + MARGIN){
 			mountingPointY = Window.getScrollTop() + MARGIN;
@@ -159,12 +158,23 @@ public class ExListBox extends FlowPanel {
 	}
 	
 	public void setSelectedIndex(int index){
-		selectedIndex = index;
-		setSelectedBaseBody();
+		if (index >= 0   &&  index < options.size()){
+			selectedIndex = index;
+			setSelectedBaseBody();
+		}
 	}
 	
 	public void setEnabled(boolean enabled){
 		this.enabled = enabled;
+		if (this.enabled){
+			removeStyleName("qp-exlistbox-disabled");
+		} else {
+			addStyleName("qp-exlistbox-disabled");
+		}
+	}
+	
+	public boolean getEnabled(){
+		return this.enabled;
 	}
 
 }
