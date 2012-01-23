@@ -230,27 +230,13 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		}
 		
 	}
-	/*
-	// REMOVE HIDE_ANSWERS
-	@Override
-	public void hideAnswers() {
-		if (isCheck == false  &&  isMarkAnswers == true){
-			isMarkAnswers = false;
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.SHOW_ANSWERS ) );
-			//updateNavigation();
-		}
-		
-	}
-	*/
+
 	@Override
 	public void continuePage() {
-		if (isCheck == true){
+		if (isCheck == true  ||  isShowAnswers == true){
 			isCheck = false;
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.CONTINUE ) );
-		}
-		if (isShowAnswers == true){
 			isShowAnswers = false;
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.HIDE_ANSWERS ) );
+			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.CONTINUE ) );
 		}
 		if (isLock == true){
 			isLock = false;
@@ -264,7 +250,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		if (isLock == false){
 			isLock = true;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.LOCK ) );
-			//updateNavigation();
 		}
 	}
 
@@ -273,7 +258,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		if (isLock == true){
 			isLock = false;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.UNLOCK ) );
-			//updateNavigation();
 		}
 	}
 
@@ -282,14 +266,12 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		isCheck = false;
 		isShowAnswers = false;
 		flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.RESET ) );
-		//updateNavigation();
 	}
 
 	@Override
 	public void previewPage(int index) {
 		onPageChange();
 		flowOptions.activityMode = ActivityMode.CHECK;
-		//displayOptions.setPreviewMode(true);
 		gotoPage(index);
 	}
 	
@@ -299,15 +281,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		isShowAnswers = false;
 		isLock = false;
 	}
-	/*
-	public void updateNavigation(){
-		navigationView.updateButtons(currentPageType, currentPageIndex, 
-				(flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE)?itemsCount:1, flowOptions, isCheck, isAnswers, displayOptions, getItemParamters());
-	}
-	
-	public NavigationViewSocket getNavigationViewSocket(){
-		return navigationView;
-	}*/
 	
 	public boolean getFlowFlagCheck(){
 		return isCheck;
@@ -335,12 +308,8 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		PageReference pr = new PageReference(currentPageType, currentPageItemsIndices, flowOptions, displayOptions);
 		
 		return pr;
-	}/*
-	
-	public ItemActivityOptions getItemActivityOptions(){
-		return activityOptions;
 	}
-*/
+	
 	public PageType getPageType(){
 		return currentPageType;
 	}
@@ -356,11 +325,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		return currentPageType;
 	}
 
-/*
-	@Override
-	public void setItemParamtersSocket(ItemParametersSocket ips) {
-		itemParametersSocket = ips;
-	}*/
 
 	public ItemParameters getItemParamters() {
 		if (itemParametersSocket != null)
