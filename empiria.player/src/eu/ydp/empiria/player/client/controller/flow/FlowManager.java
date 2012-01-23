@@ -50,7 +50,7 @@ public final class FlowManager {
 	}
 	
 	public void addCommandProcessor(IFlowRequestProcessor processor){
-		flowRequestInvoker.addCommandProcessor(processor);
+		flowRequestInvoker.addRequestProcessor(processor);
 	}
 
 	public PageType getCurrentPageType(){

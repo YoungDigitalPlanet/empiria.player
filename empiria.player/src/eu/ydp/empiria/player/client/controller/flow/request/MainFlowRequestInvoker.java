@@ -13,7 +13,7 @@ public class MainFlowRequestInvoker implements IFlowRequestInvoker {
 		processors = new ArrayList<IFlowRequestProcessor>();
 	}
 	
-	public void addCommandProcessor(IFlowRequestProcessor processor){
+	public void addRequestProcessor(IFlowRequestProcessor processor){
 		processors.add(0,processor);
 	}
 	
