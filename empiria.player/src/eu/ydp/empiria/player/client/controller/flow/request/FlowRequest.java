@@ -51,13 +51,13 @@ public abstract class FlowRequest implements IFlowRequest {
 			request = new Reset();
 		} else if ("SHOW_ANSWERS".equals(objName)){ 
 			request = new ShowAnswers();
-		// REMOVE HIDE_ANSWERS
-		//} else if ("HIDE_ANSWERS".equals(objName)){ 
-		//	request = new HideAnswers();
 		} else if ("LOCK".equals(objName)){ 
 			request = new Lock();
 		}else if ("UNLOCK".equals(objName)){ 
 			request = new Unlock();
+		} else {
+			JavaScriptObject params = getJsObjectParams(obj);
+			request = new Custom(objName, params);
 		}
 		
 		return request;
@@ -72,6 +72,11 @@ public abstract class FlowRequest implements IFlowRequest {
 		if (typeof obj.index == 'number')
 			return obj.index;
 		return -1;
+	}-*/;
+	private static native JavaScriptObject getJsObjectParams(JavaScriptObject obj)/*-{
+		if (typeof obj.params == 'object')
+			return obj.params;
+		return {};
 	}-*/;
 	
 	public JavaScriptObject toJsObject() {
@@ -168,42 +173,12 @@ public abstract class FlowRequest implements IFlowRequest {
 		public Reset(){
 			super("RESET");
 		}
-	}/*
-	public abstract static class FlowRequestWithFlag extends FlowRequest{
-		
-		private FlowRequestWithFlag(String name, boolean flag){
-			super(name);
-			this.flag = flag;
-		}		
-		protected boolean flag;
-		
-		public boolean getFlag(){
-			return this.flag;
-		}
-
-		@Override
-		public JavaScriptObject toJsObject() {
-			return createRequestJsObject(getName(), getFlag());
-		}
-		
-		private native JavaScriptObject createRequestJsObject(String name, boolean flag)/*-{
-			var req = {};
-			req.name = name;
-			req.flag = flag;
-			return req;
-		}-* /;
-		
-	}*/
+	}
 	public static class ShowAnswers extends FlowRequest{
 		public ShowAnswers() {
 			super("SHOW_ANSWERS");
 		}
 	}
-	/*public static class HideAnswers extends FlowRequest{
-		public HideAnswers() {
-			super("HIDE_ANSWERS");
-		}
-	}*/
 	public static class Lock extends FlowRequest{
 		public Lock() {
 			super("LOCK");
@@ -214,26 +189,22 @@ public abstract class FlowRequest implements IFlowRequest {
 			super("UNLOCK");
 		}
 	}
-	public static class CustomFlowRequest extends FlowRequest{
+	public static class Custom extends FlowRequest{
 		
-		private CustomFlowRequest(String name, String[] params){
+		private Custom(String name, JavaScriptObject params ){
 			super(name);
 			this.params = params;
 		}		
 		
-		protected String[] params;
+		protected JavaScriptObject params;
 		
-		public String[] getParams(){
+		public JavaScriptObject getParams(){
 			return this.params;
 		}
 
 		@Override
 		public JavaScriptObject toJsObject() {
-			JavaScriptObject paramsJs = JSArrayUtils.createArray(getParams().length);
-			for (int i = 0 ; i < getParams().length ; i ++){
-				JSArrayUtils.fillArray(paramsJs, i, getParams()[i]);
-			}
-			return createRequestJsObject(getName(), paramsJs);
+			return createRequestJsObject(getName(), params);
 		}
 		
 		private native JavaScriptObject createRequestJsObject(String name, JavaScriptObject params)/*-{
