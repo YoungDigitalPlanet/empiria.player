@@ -177,7 +177,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	    menuPanel.add(summaryButton);
 	    
 	    continueAssessmentButton = new PushButton();
-	    continueAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-resultpage-continue");
+	    continueAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-summary-continue-button");
 	    continueAssessmentButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigateFirstItem());
@@ -186,7 +186,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	    menuPanel.add(continueAssessmentButton);
 	    
 	    previewAssessmentButton = new PushButton();
-	    previewAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-resultpage-preview");
+	    previewAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-summary-preview-button");
 	    previewAssessmentButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigatePreviewItem(0));
@@ -227,8 +227,9 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 			}
 		}
 		
-		checkButton.setVisible(currPageType == PageType.TEST);
-		showAnswersButton.setVisible(currPageType == PageType.TEST);
+		checkButton.setVisible(currPageType == PageType.TEST && !isPreview);
+		showAnswersButton.setVisible(currPageType == PageType.TEST && !isPreview);
+		resetButton.setVisible(currPageType == PageType.TEST && !isPreview);
 		prevButton.setVisible(currPageType == PageType.TEST  &&  currItemsDisplayMode == PageItemsDisplayMode.ONE);
 		prevButton.setEnabled(flowDataSupplier.getFlowOptions().showToC  ||  flowDataSupplier.getCurrentPageIndex() > 0);
 		nextButton.setVisible((currPageType == PageType.TEST  &&  currItemsDisplayMode == PageItemsDisplayMode.ONE)  ||  currPageType == PageType.TOC);
