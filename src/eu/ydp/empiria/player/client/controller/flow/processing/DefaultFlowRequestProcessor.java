@@ -57,9 +57,6 @@ public class DefaultFlowRequestProcessor implements IFlowRequestProcessor {
 			command = new FlowCommand.Reset();
 		} else if (request instanceof FlowRequest.ShowAnswers){
 			command = new FlowCommand.ShowAnswers();
-		// REMOVE HIDE_ANSWERS
-		//} else if (request instanceof FlowRequest.HideAnswers){
-		//	command = new FlowCommand.HideAnswers();
 		} else if (request instanceof FlowRequest.Lock){
 			command = new FlowCommand.Lock();
 		} else if (request instanceof FlowRequest.Unlock){

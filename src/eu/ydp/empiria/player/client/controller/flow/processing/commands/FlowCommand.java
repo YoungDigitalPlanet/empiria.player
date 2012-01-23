@@ -194,18 +194,6 @@ public abstract class FlowCommand implements IFlowCommand {
 			listener.showAnswers();
 		}
 	}
-	/*
-	// REMOVE HIDE_ANSWERS
-	public static class HideAnswers extends FlowCommand{
-		public HideAnswers(){
-			super("HIDE_ANSWERS");
-		}
-		@Override
-		public void execute(FlowCommandsListener listener) {
-			listener.hideAnswers();
-		}
-	}
-	*/
 	public static class Lock extends FlowCommand{
 		public Lock(){
 			super("LOCK");
