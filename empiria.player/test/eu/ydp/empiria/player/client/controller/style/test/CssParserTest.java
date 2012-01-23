@@ -1,4 +1,4 @@
-package com.qtitools.player.client.controller.style.test;
+package eu.ydp.empiria.player.client.controller.style.test;
 
 import junit.framework.Assert;
 
@@ -22,7 +22,7 @@ public class CssParserTest extends GWTTestCase {
 	
 	@Override
 	public String getModuleName() {
-		return "com.qtitools.player.Player";
+		return "eu.ydp.empiria.player.Player";
 	}
 	
 	private static native String parseCSS() /*-{
