@@ -106,11 +106,15 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			}
 		}
 
-		outcomes.get("DONE").values.clear();		
-		outcomes.get("DONE").values.add(points.toString());
+		if (outcomes.containsKey("DONE")){
+			outcomes.get("DONE").values.clear();		
+			outcomes.get("DONE").values.add(points.toString());
+		}
 
-		outcomes.get("TODO").values.clear();		
-		outcomes.get("TODO").values.add( (new Integer(responses.size())).toString() );
+		if (outcomes.containsKey("TODO")){
+			outcomes.get("TODO").values.clear();		
+			outcomes.get("TODO").values.add( (new Integer(responses.size())).toString() );
+		}
 		
 		if (outcomes.containsKey("DONEHISTORY")){
 			outcomes.get("DONEHISTORY").values.add(points.toString());
@@ -297,17 +301,18 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	@Override
 	public void ensureVariables(HashMap<String, Response> responses, HashMap<String, Outcome> outcomes) {
 
-		if (responses.keySet().size() > 0){
 			
-			ensureVariable(outcomes, new Outcome("DONE", Cardinality.SINGLE, BaseType.INTEGER));
-			ensureVariable(outcomes, new Outcome("TODO", Cardinality.SINGLE, BaseType.INTEGER));
-			ensureVariable(outcomes, new Outcome("DONEHISTORY", Cardinality.MULTIPLE, BaseType.INTEGER));
-			ensureVariable(outcomes, new Outcome("DONECHANGES", Cardinality.MULTIPLE, BaseType.INTEGER));
-			ensureVariable(outcomes, new Outcome("LASTMISTAKEN", Cardinality.SINGLE, BaseType.INTEGER, "0"));
-			ensureVariable(outcomes, new Outcome("CHECKS", Cardinality.SINGLE, BaseType.INTEGER));
-			ensureVariable(outcomes, new Outcome("SHOW_ANSWERS", Cardinality.SINGLE, BaseType.INTEGER));
-			ensureVariable(outcomes, new Outcome("RESET", Cardinality.SINGLE, BaseType.INTEGER));
-			ensureVariable(outcomes, new Outcome("MISTAKES", Cardinality.SINGLE, BaseType.INTEGER, "0"));
+		ensureVariable(outcomes, new Outcome("DONE", Cardinality.SINGLE, BaseType.INTEGER));
+		ensureVariable(outcomes, new Outcome("TODO", Cardinality.SINGLE, BaseType.INTEGER));
+		ensureVariable(outcomes, new Outcome("DONEHISTORY", Cardinality.MULTIPLE, BaseType.INTEGER));
+		ensureVariable(outcomes, new Outcome("DONECHANGES", Cardinality.MULTIPLE, BaseType.INTEGER));
+		ensureVariable(outcomes, new Outcome("LASTMISTAKEN", Cardinality.SINGLE, BaseType.INTEGER, "0"));
+		ensureVariable(outcomes, new Outcome("CHECKS", Cardinality.SINGLE, BaseType.INTEGER));
+		ensureVariable(outcomes, new Outcome("SHOW_ANSWERS", Cardinality.SINGLE, BaseType.INTEGER));
+		ensureVariable(outcomes, new Outcome("RESET", Cardinality.SINGLE, BaseType.INTEGER));
+		ensureVariable(outcomes, new Outcome("MISTAKES", Cardinality.SINGLE, BaseType.INTEGER, "0"));
+
+		if (responses.keySet().size() > 0){
 			
 			Iterator<String> responseKeys = responses.keySet().iterator();
 			
