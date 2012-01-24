@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
@@ -162,10 +163,15 @@ public class DefaultAssessmentHeaderViewExtension extends InternalExtension impl
 	
 	private void updateControls(){
 
-		if (flowDataSupplier.getFlowOptions().showToC)
+		if (flowDataSupplier.getFlowOptions().showToC  &&  flowDataSupplier.getCurrentPageType() == PageType.TOC){
+				setComboPageIndex(0);
+		} else if (flowDataSupplier.getFlowOptions().showSummary  &&  flowDataSupplier.getCurrentPageType() == PageType.SUMMARY){
+			setComboPageIndex(comboListBox.getItemCount()-1);
+		} else if (flowDataSupplier.getFlowOptions().showToC) {
 			setComboPageIndex(flowDataSupplier.getCurrentPageIndex()+1);
-		else
+		} else {
 			setComboPageIndex(flowDataSupplier.getCurrentPageIndex());
+		}
 	}
 	
 	private void setComboPageIndex(int index){
