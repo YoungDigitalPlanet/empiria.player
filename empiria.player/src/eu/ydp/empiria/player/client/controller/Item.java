@@ -301,8 +301,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 
 	public void resetItem(){
-		responseManager.reset();
-		outcomeManager.reset();
 		itemBody.reset();
 		hideScore();
 	}
