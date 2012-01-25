@@ -22,11 +22,6 @@ public class PlayerCoreApiExtension extends
 	protected DeliveryEngineSocket deliveryEngineSocket;
 	
 	@Override
-	public ExtensionType getType() {
-		return ExtensionType.EXTENSION_SOCKET_USER_DELIVERY_ENGINE;
-	}
-
-	@Override
 	public void init() {
 		initExportStateStringJs(playerJsObject);
 	}
