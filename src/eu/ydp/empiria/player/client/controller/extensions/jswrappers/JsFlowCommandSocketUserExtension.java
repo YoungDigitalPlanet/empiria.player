@@ -4,13 +4,13 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowCommandsSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.flow.execution.IFlowCommandsExecutor;
+import eu.ydp.empiria.player.client.controller.flow.execution.FlowCommandsExecutor;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommand;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCommand;
 
 public class JsFlowCommandSocketUserExtension extends JsExtension implements FlowCommandsSocketUserExtension {
 
-	protected IFlowCommandsExecutor flowCommandsExecutor;
+	protected FlowCommandsExecutor flowCommandsExecutor;
 	protected JavaScriptObject flowCommandsSocketJs;
 	
 	@Override
@@ -24,7 +24,7 @@ public class JsFlowCommandSocketUserExtension extends JsExtension implements Flo
 		setFlowCommandsSocketJs(extensionJsObject, flowCommandsSocketJs);
 	}
 	
-	public void setFlowCommandsExecutor(IFlowCommandsExecutor fce){
+	public void setFlowCommandsExecutor(FlowCommandsExecutor fce){
 		flowCommandsExecutor = fce;
 	}
 	

@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.flow.execution;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCommand;
 
-public class MainFlowCommandsExecutor implements IFlowCommandsExecutor {
+public class MainFlowCommandsExecutor implements FlowCommandsExecutor {
 
 	protected FlowCommandsListener flowCommandsListener;
 	

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.flow.processing;
 
-import eu.ydp.empiria.player.client.controller.flow.execution.IFlowCommandsExecutor;
+import eu.ydp.empiria.player.client.controller.flow.execution.FlowCommandsExecutor;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommand;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCommand;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
@@ -9,9 +9,9 @@ import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 
 public class DefaultFlowRequestProcessor implements IFlowRequestProcessor {
 	
-	protected IFlowCommandsExecutor flowCommandsExecutor;
+	protected FlowCommandsExecutor flowCommandsExecutor;
 	
-	public DefaultFlowRequestProcessor(IFlowCommandsExecutor fce){
+	public DefaultFlowRequestProcessor(FlowCommandsExecutor fce){
 		flowCommandsExecutor = fce;
 	}
 	
