@@ -210,14 +210,18 @@ public class PageContentView implements PageViewSocket {
 
 				contentPanel.add(resultItemsInfo);
 				
-	    	    contentPanel.add(pvc.assessmentFeedbackSocket.getFeedbackView((int)((doneTotal * 100)/todoTotal)));
+				int donePercent = 100;
+				if (todoTotal > 0){
+					donePercent = (doneTotal * 100)/todoTotal;
+				}
+	    	    contentPanel.add(pvc.assessmentFeedbackSocket.getFeedbackView(donePercent));
 				
 	    	    FlowPanel resultScorePanel = new FlowPanel();
 	    	    resultScorePanel.setStyleName("qp-resultpage-score");
 	    	    contentPanel.add(resultScorePanel);
 	    	    
 	    		Label resultScoreInfoPercent = new Label(LocalePublisher.getText(LocaleVariable.SUMMARY_INFO_YOURSCOREIS1) + 
-	    				(int)((doneTotal * 100)/todoTotal) + 
+	    				donePercent + 
 	    	    		LocalePublisher.getText(LocaleVariable.SUMMARY_INFO_YOURSCOREIS2)); 
 	    		resultScoreInfoPercent.setStylePrimaryName("qp-resultpage-percents");
 	    		resultScorePanel.add(resultScoreInfoPercent);
