@@ -96,7 +96,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	    checkButton = new TwoStateButton("qp-defaultassessmentfooter-check-button", "qp-defaultassessmentfooter-continue-button");
 	    checkButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if (checkButton.isDown()){
+				if (checkButton.isStateDown()){
 					flowRequestInvoker.invokeRequest(new FlowRequest.Check());
 				} else {
 					flowRequestInvoker.invokeRequest(new FlowRequest.Continue());
@@ -108,7 +108,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	    showAnswersButton = new TwoStateButton("qp-defaultassessmentfooter-showanswers-button", "qp-defaultassessmentfooter-hideanswers-button");
 	    showAnswersButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if (showAnswersButton.isDown()){
+				if (showAnswersButton.isStateDown()){
 					flowRequestInvoker.invokeRequest(new FlowRequest.ShowAnswers());
 				} else {
 					flowRequestInvoker.invokeRequest(new FlowRequest.Continue());
@@ -185,12 +185,12 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	@Override
 	public void onDeliveryEvent(DeliveryEvent deliveryEvent) {
 		if (deliveryEvent.getType() == DeliveryEventType.SHOW_ANSWERS){
-			checkButton.setDown(false);			
+			checkButton.setStateDown(false);			
 		} else if (deliveryEvent.getType() == DeliveryEventType.CHECK ){
-			showAnswersButton.setDown(false);				
+			showAnswersButton.setStateDown(false);				
 		} else if (deliveryEvent.getType() == DeliveryEventType.RESET){
-			checkButton.setDown(false);		
-			showAnswersButton.setDown(false);			
+			checkButton.setStateDown(false);		
+			showAnswersButton.setStateDown(false);			
 		}
 		
 		if (deliveryEvent.getType() == DeliveryEventType.TEST_PAGE_LOADED  ||  

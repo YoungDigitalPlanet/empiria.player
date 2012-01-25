@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.PushButton;
 
 public class TwoStateButton extends PushButton {
 
-	protected boolean down = false;
+	protected boolean stateDown = false;
 	protected String upStyleName;
 	protected String downStyleName;
 	
@@ -21,26 +21,26 @@ public class TwoStateButton extends PushButton {
 			
 			@Override
 			public void onClick(ClickEvent arg0) {
-				down = !down;
+				stateDown = !stateDown;
 				updateStyleName();
 			}
 		});
 	}
 	
 	protected void updateStyleName(){
-		if (down){
+		if (stateDown){
 			setStylePrimaryName(downStyleName);
 		} else {
 			setStylePrimaryName(upStyleName);
 		}
 	}
 	
-	public boolean isDown(){
-		return down;
+	public boolean isStateDown(){
+		return stateDown;
 	}
 	
-	public void setDown(boolean d){
-		down = d;
+	public void setStateDown(boolean d){
+		stateDown = d;
 		updateStyleName();
 	}
 }
