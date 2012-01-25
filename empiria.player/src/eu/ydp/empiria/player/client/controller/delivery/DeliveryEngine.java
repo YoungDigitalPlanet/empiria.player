@@ -148,12 +148,12 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	}
 
 	public void load(String url) {
-		getDeliveryEventsListener().onDeliveryEvent(
-				new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADING));
+		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADING));
 		dataManager.loadMainDocument(url);
 	}
 
 	public void load(XMLData assessmentData, XMLData[] itemsData) {
+		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADING));
 		dataManager.loadData(assessmentData, itemsData);
 	}
 
