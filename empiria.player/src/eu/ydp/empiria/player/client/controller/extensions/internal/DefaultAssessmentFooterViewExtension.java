@@ -201,9 +201,15 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 		
 		PageType currPageType = flowDataSupplier.getCurrentPageType();
 		PageItemsDisplayMode currItemsDisplayMode = flowDataSupplier.getFlowOptions().itemsDisplayMode;
+		boolean isCheck = flowDataSupplier.getFlowFlagCheck();
+		boolean isShowAnswers = flowDataSupplier.getFlowFlagShowAnswers();
 		
 		checkButton.setVisible(currPageType == PageType.TEST && !isPreview);
+		if (isCheck != checkButton.isDown())
+			checkButton.setDown(isCheck);
 		showAnswersButton.setVisible(currPageType == PageType.TEST && !isPreview);
+		if (isShowAnswers != showAnswersButton.isDown())
+			showAnswersButton.setDown(isShowAnswers);
 		resetButton.setVisible(currPageType == PageType.TEST && !isPreview);
 		prevButton.setVisible(currPageType == PageType.TEST  &&  currItemsDisplayMode == PageItemsDisplayMode.ONE);
 		prevButton.setEnabled(flowDataSupplier.getFlowOptions().showToC  ||  flowDataSupplier.getCurrentPageIndex() > 0);

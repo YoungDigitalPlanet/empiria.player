@@ -38,4 +38,9 @@ public class TwoStateButton extends PushButton {
 	public boolean isDown(){
 		return down;
 	}
+	
+	public void setDown(boolean d){
+		down = d;
+		updateStyleName();
+	}
 }

@@ -214,7 +214,10 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 
 	@Override
 	public void checkPage() {
-		if (isCheck == false  &&  isShowAnswers == false){
+		if (isCheck == false){
+			if (isShowAnswers){
+				continuePage();
+			}
 			isCheck = true;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.CHECK ) );
 			//updateNavigation();
@@ -223,7 +226,10 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 
 	@Override
 	public void showAnswers() {
-		if (isCheck == false  &&  isShowAnswers == false){
+		if (isShowAnswers == false){
+			if (isCheck){
+				continuePage();
+			}
 			isShowAnswers = true;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.SHOW_ANSWERS ) );
 			//updateNavigation();
@@ -237,10 +243,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 			isCheck = false;
 			isShowAnswers = false;
 			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.CONTINUE ) );
-		}
-		if (isLock == true){
-			isLock = false;
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.UNLOCK ) );
 		}
 
 	}
