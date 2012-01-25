@@ -184,6 +184,15 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 
 	@Override
 	public void onDeliveryEvent(DeliveryEvent deliveryEvent) {
+		if (deliveryEvent.getType() == DeliveryEventType.SHOW_ANSWERS){
+			checkButton.setDown(false);			
+		} else if (deliveryEvent.getType() == DeliveryEventType.CHECK ){
+			showAnswersButton.setDown(false);				
+		} else if (deliveryEvent.getType() == DeliveryEventType.RESET){
+			checkButton.setDown(false);		
+			showAnswersButton.setDown(false);			
+		}
+		
 		if (deliveryEvent.getType() == DeliveryEventType.TEST_PAGE_LOADED  ||  
 			deliveryEvent.getType() == DeliveryEventType.TOC_PAGE_LOADED  ||
 			deliveryEvent.getType() == DeliveryEventType.SUMMARY_PAGE_LOADED  ||
@@ -192,7 +201,6 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 			deliveryEvent.getType() == DeliveryEventType.SHOW_ANSWERS){
 			updateButtons();
 		}
-			
 	}
 	
 	public void updateButtons(){
@@ -201,15 +209,9 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 		
 		PageType currPageType = flowDataSupplier.getCurrentPageType();
 		PageItemsDisplayMode currItemsDisplayMode = flowDataSupplier.getFlowOptions().itemsDisplayMode;
-		boolean isCheck = flowDataSupplier.getFlowFlagCheck();
-		boolean isShowAnswers = flowDataSupplier.getFlowFlagShowAnswers();
 		
 		checkButton.setVisible(currPageType == PageType.TEST && !isPreview);
-		if (isCheck != checkButton.isDown())
-			checkButton.setDown(isCheck);
 		showAnswersButton.setVisible(currPageType == PageType.TEST && !isPreview);
-		if (isShowAnswers != showAnswersButton.isDown())
-			showAnswersButton.setDown(isShowAnswers);
 		resetButton.setVisible(currPageType == PageType.TEST && !isPreview);
 		prevButton.setVisible(currPageType == PageType.TEST  &&  currItemsDisplayMode == PageItemsDisplayMode.ONE);
 		prevButton.setEnabled(flowDataSupplier.getFlowOptions().showToC  ||  flowDataSupplier.getCurrentPageIndex() > 0);
