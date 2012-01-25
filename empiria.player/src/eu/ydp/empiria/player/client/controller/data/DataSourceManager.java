@@ -32,7 +32,6 @@ import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
-import eu.ydp.empiria.player.client.controller.data.events.StyleDataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -40,7 +39,7 @@ import eu.ydp.empiria.player.client.util.xml.XMLDocument;
 import eu.ydp.empiria.player.client.util.xml.document.IDocumentLoaded;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
-public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, StyleDataLoaderEventListener, DataSourceDataSupplier {
+public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier {
 	
 	public DataSourceManager(){
 		mode = DataSourceManagerMode.NONE;
@@ -212,10 +211,6 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		loadStyles();
 	}
 	
-	private void increment(int value){
-		value++;
-	}
-	
 	private void loadStyles() {
 		mode = DataSourceManagerMode.LOADING_STYLES;
 		String userAgent = Navigator.getUserAgent();
@@ -230,10 +225,14 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 					@Override
 					public void onResponseReceived(Request request, Response response) {
 						styleLoadCounter--;
-						if (response.getStatusCode()==Response.SC_OK) { 
-							getStyleDataSourceManager().addAssessmentStyle( response.getText() , styleURL2 );
-						} else {
-							// TODO add error handling
+						try {
+							if (response.getStatusCode()==Response.SC_OK) { 
+								getStyleDataSourceManager().addAssessmentStyle( response.getText() , styleURL2 );
+							} else {
+								// TODO add error handling
+							}
+						} finally {
+							checkLoadFinished();
 						}
 					}
 					
@@ -241,6 +240,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 					public void onError(Request request, Throwable exception) {
 						// TODO Add error handling
 						styleLoadCounter--;
+						checkLoadFinished();
 					}
 				});
 				builder.send();
@@ -258,10 +258,14 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 						@Override
 						public void onResponseReceived(Request request, Response response) {
 							styleLoadCounter--;
-							if (response.getStatusCode()==Response.SC_OK) {
-								getStyleDataSourceManager().addItemStyle(ii, response.getText() , styleURL2);
-							} else {
-								// TODO add error handling
+							try {
+								if (response.getStatusCode()==Response.SC_OK) {
+									getStyleDataSourceManager().addItemStyle(ii, response.getText() , styleURL2);
+								} else {
+									// TODO add error handling
+								}
+							} finally {
+								checkLoadFinished();
 							}
 						}
 						
@@ -269,6 +273,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 						public void onError(Request request, Throwable exception) {
 							// TODO add error handling
 							styleLoadCounter--;
+							checkLoadFinished();
 						}
 					});
 					builder.send();
@@ -278,23 +283,12 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 			e.printStackTrace();
 		}
 		
-		// check if all styles are loaded
-		DeferredCommand.addCommand( new IncrementalCommand() {
-			@Override
-			public boolean execute() {
-				if (styleLoadCounter==0) {
-					onLoadFinished();
-					return false;
-				}
-				return true;
-			}
-		});
-		
+		checkLoadFinished();
 	}
-
-	@Override
-	public void onStyleDataLoaded() {
-		onLoadFinished();
+	
+	protected void checkLoadFinished(){
+		if (styleLoadCounter==0)
+			onLoadFinished();		
 	}
 	
 	public void onLoadFinished(){
