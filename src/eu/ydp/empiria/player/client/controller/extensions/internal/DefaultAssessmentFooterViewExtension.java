@@ -49,11 +49,6 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	
 	public DefaultAssessmentFooterViewExtension(){
 	}
-	
-	@Override
-	public ExtensionType getType() {
-		return ExtensionType.EXTENSION_VIEW_ASSESSMENT_FOOTER;
-	}
 
 	@Override
 	public void init() {

@@ -18,7 +18,9 @@ public enum ExtensionType {
 	//OTHER
 	EXTENSION_PLAYER_JS_OBJECT_USER,
 	// MODULE (not defined yet)
-	EXTENSION_MODULE;
+	EXTENSION_MODULE,	
+	MULTITYPE;
+	
 	
 	public static ExtensionType fromString(String typeString){
 		for (ExtensionType currValue : values()){

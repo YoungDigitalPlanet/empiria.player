@@ -122,15 +122,6 @@ public class ExtensionsManager implements IStateful  {
 		return null;
 	}-*/;
 	
-	public List<Extension> getExtensionsOfType(ExtensionType type){
-		List<Extension> currExtensions = new ArrayList<Extension>();
-		for (Extension currExtension : extensions){
-			if (currExtension.getType().equals(type)){
-				currExtensions.add(currExtension);
-			}
-		}
-		return currExtensions;		
-	}
 	
 	public List<Extension> getExtensions(){
 		return extensions;

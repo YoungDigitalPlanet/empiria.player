@@ -47,11 +47,6 @@ public class DefaultAssessmentHeaderViewExtension extends InternalExtension impl
 	}
 
 	@Override
-	public ExtensionType getType() {
-		return ExtensionType.EXTENSION_VIEW_ASSESSMENT_HEADER;
-	}
-
-	@Override
 	public void init() {
 		createView();
 	}
