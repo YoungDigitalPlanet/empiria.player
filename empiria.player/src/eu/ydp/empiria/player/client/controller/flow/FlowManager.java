@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
-import eu.ydp.empiria.player.client.controller.flow.execution.IFlowCommandsExecutor;
+import eu.ydp.empiria.player.client.controller.flow.execution.FlowCommandsExecutor;
 import eu.ydp.empiria.player.client.controller.flow.execution.MainFlowCommandsExecutor;
 import eu.ydp.empiria.player.client.controller.flow.processing.IFlowRequestProcessor;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCommand;
@@ -67,7 +67,7 @@ public final class FlowManager {
 	}
 
 	
-	public IFlowCommandsExecutor getFlowCommandsExecutor(){
+	public FlowCommandsExecutor getFlowCommandsExecutor(){
 		return flowCommandsExecutor;
 	}
 	
