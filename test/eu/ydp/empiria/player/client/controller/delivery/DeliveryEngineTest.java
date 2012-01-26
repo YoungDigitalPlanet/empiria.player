@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSo
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
-import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequestInvoker;
+import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
 public class DeliveryEngineTest extends GWTTestCase {
@@ -44,7 +44,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 	}
 	
 	protected DeliveryEngine de;
-	protected IFlowRequestInvoker flowInvoker;
+	protected FlowRequestInvoker flowInvoker;
 
 	DeliveryEventType[] typesWithToc = {
 			DeliveryEventType.ASSESSMENT_LOADING, 
@@ -163,7 +163,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 		}
 
 		@Override
-		public void setFlowRequestsInvoker(IFlowRequestInvoker fri) {
+		public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
 			flowInvoker = fri;
 		}
 		
