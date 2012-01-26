@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.controller.extensions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.junit.client.GWTTestCase;
@@ -26,11 +29,18 @@ public abstract class ExtensionTestBase extends GWTTestCase {
 	}
 	
 	protected DeliveryEngine initDeliveryEngine(Extension ext, boolean showTocAndSummary){
+		List<Extension> exts = new ArrayList<Extension>();
+		exts.add(ext);
+		return initDeliveryEngine(exts, showTocAndSummary);
+	}
+	
+	protected DeliveryEngine initDeliveryEngine(List<Extension> exts, boolean showTocAndSummary){
 		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
 		DeliveryEngine de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		de.setFlowOptions(new FlowOptions(showTocAndSummary, showTocAndSummary, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
-		de.loadExtension(ext);		
+		for (Extension ext : exts)
+			de.loadExtension(ext);
 		de.load(getAssessmentXMLData(), getItemXMLDatas());
 		return de;
 	}
