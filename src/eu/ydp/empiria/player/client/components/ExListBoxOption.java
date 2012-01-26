@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.components;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -40,6 +42,13 @@ public class ExListBoxOption {
 				
 			}
 		}, MouseOutEvent.getType());
+		popupPanel.addDomHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent arg0) {
+				popupPanel.setStyleName("qp-exlistbox-popup-option-panel");
+			}
+		}, ClickEvent.getType());
 		popupPanel.add(popupBody);
 		popupPanel.add(popupButton);
 		
