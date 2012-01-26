@@ -28,7 +28,9 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
+import eu.ydp.empiria.player.client.module.ILockable;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IResetable;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -170,8 +172,8 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		if (locked)
 			lock(false);
 		for (IModule currModule : modules) {
-			if (currModule instanceof IActivity)
-				((IActivity) currModule).reset();
+			if (currModule instanceof IResetable)
+				((IResetable) currModule).reset();
 		}
 
 	}
@@ -180,8 +182,8 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 	public void lock(boolean l) {
 		locked = l;
 		for (IModule currModule : modules) {
-			if (currModule instanceof IActivity)
-				((IActivity) currModule).lock(l);
+			if (currModule instanceof ILockable)
+				((ILockable) currModule).lock(l);
 		}
 
 	}
