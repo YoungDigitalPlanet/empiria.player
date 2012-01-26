@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocke
 import eu.ydp.empiria.player.client.controller.extensions.types.ViewExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
-import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequestInvoker;
+import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
@@ -32,7 +32,7 @@ public class DefaultAssessmentHeaderViewExtension extends InternalExtension impl
 
 	protected DataSourceDataSupplier dataSourceDataSupplier; 
 	protected FlowDataSupplier flowDataSupplier;
-	protected IFlowRequestInvoker flowRequestInvoker;
+	protected FlowRequestInvoker flowRequestInvoker;
 	
 	private Panel comboPanel;
 	private Label comboLabel;
@@ -58,7 +58,7 @@ public class DefaultAssessmentHeaderViewExtension extends InternalExtension impl
 	}
 
 	@Override
-	public void setFlowRequestsInvoker(IFlowRequestInvoker fri) {
+	public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
 		flowRequestInvoker = fri;
 		integrationCounter++;
 	}

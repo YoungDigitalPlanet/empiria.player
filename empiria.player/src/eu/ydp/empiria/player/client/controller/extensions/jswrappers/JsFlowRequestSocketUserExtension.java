@@ -6,12 +6,12 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
-import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequestInvoker;
+import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 
 public class JsFlowRequestSocketUserExtension extends JsExtension implements FlowRequestSocketUserExtension {
 
 	protected JavaScriptObject flowRequestsSocketJs;
-	protected IFlowRequestInvoker flowRequestInvoker;
+	protected FlowRequestInvoker flowRequestInvoker;
 	
 	@Override
 	public ExtensionType getType() {
@@ -24,7 +24,7 @@ public class JsFlowRequestSocketUserExtension extends JsExtension implements Flo
 		setFlowRequestsSocketJs(extensionJsObject, flowRequestsSocketJs);
 	}
 	
-	public void setFlowRequestsInvoker(IFlowRequestInvoker fri){
+	public void setFlowRequestsInvoker(FlowRequestInvoker fri){
 		flowRequestInvoker = fri;
 	}
 	
