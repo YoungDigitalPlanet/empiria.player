@@ -151,7 +151,7 @@
   <target name="test.all" depends="test.dev, test.prod">
   </target>
 
-  <target name="dist" depends="clean, build, buildnumber" description="Create java script distribution">
+  <target name="dist" depends="clean, build, buildnumber, test.dev" description="Create java script distribution">
     <mkdir dir="dist/build" />
     <copy todir="dist/build/empiria.player">
       <fileset dir="war/empiria.player"/>
