@@ -5,7 +5,7 @@ import java.util.List;
 
 import eu.ydp.empiria.player.client.controller.flow.processing.IFlowRequestProcessor;
 
-public class MainFlowRequestInvoker implements IFlowRequestInvoker {
+public class MainFlowRequestInvoker implements FlowRequestInvoker {
 
 	protected List<IFlowRequestProcessor> processors;
 	

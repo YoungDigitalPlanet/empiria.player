@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.IFlowRequestProce
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCommand;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
-import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequestInvoker;
+import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.flow.request.MainFlowRequestInvoker;
 
 public final class FlowManager {
@@ -75,7 +75,7 @@ public final class FlowManager {
 		return flowProcessor;
 	}
 	
-	public IFlowRequestInvoker getFlowRequestInvoker(){
+	public FlowRequestInvoker getFlowRequestInvoker(){
 		return flowRequestInvoker;
 	}
 	
@@ -103,27 +103,5 @@ public final class FlowManager {
 				flowRequestInvoker.invokeRequest(command);
 			}
 		};
-	}
-	
-	/*
-	
-	
-	
-	public void gotoPage(int index){
-		
-	}
-	
-	public void gotoToc(){
-	
-	}
-	
-	public void gotoSummary(){
-	
-	}
-	
-	
-	
-	public NavigationSocket getNS(){
-		return flowExecutor;
-	}*/
+	}	
 }

@@ -25,35 +25,35 @@ public abstract class FlowRequest implements IFlowRequest {
 		
 		IFlowRequest request = null;
 
-		if ("NAVIGATE_NEXT_ITEM".equals(objName)){ 
+		if (NavigateNextItem.NAME.equals(objName)){ 
 			request = new NavigateNextItem();
-		} else if ("NAVIGATE_PREVIOUS_ITEM".equals(objName)){ 
+		} else if (NavigatePreviousItem.NAME.equals(objName)){ 
 			request = new NavigatePreviousItem();
-		} else if ("NAVIGATE_FIRST_ITEM".equals(objName)){ 
+		} else if (NavigateFirstItem.NAME.equals(objName)){ 
 			request = new NavigateFirstItem();
-		} else if ("NAVIGATE_LAST_ITEM".equals(objName)){ 
+		} else if (NavigateLastItem.NAME.equals(objName)){ 
 			request = new NavigateLastItem();
-		} else if ("NAVIGATE_TOC".equals(objName)){ 
+		} else if (NavigateToc.NAME.equals(objName)){ 
 			request = new NavigateToc();
-		} else if ("NAVIGATE_TEST".equals(objName)){ 
+		} else if (NavigateTest.NAME.equals(objName)){ 
 			request = new NavigateTest();
-		} else if ("NAVIGATE_SUMMARY".equals(objName)){ 
+		} else if (NavigateSummary.NAME.equals(objName)){ 
 			request = new NavigateSummary();
-		} else if ("NAVIGATE_GOTO_ITEM".equals(objName)){ 
+		} else if (NavigateGotoItem.NAME.equals(objName)){ 
 			request = new NavigateGotoItem(objIndex);
-		} else if ("NAVIGATE_PREVIEW_ITEM".equals(objName)){ 
+		} else if (NavigatePreviewItem.NAME.equals(objName)){ 
 			request = new NavigatePreviewItem(objIndex);
-		} else if ("CONTINUE".equals(objName)){ 
+		} else if (Continue.NAME.equals(objName)){ 
 			request = new Continue();
-		} else if ("CHECK".equals(objName)){ 
+		} else if (Check.NAME.equals(objName)){ 
 			request = new Check();
-		} else if ("RESET".equals(objName)){ 
+		} else if (Reset.NAME.equals(objName)){ 
 			request = new Reset();
-		} else if ("SHOW_ANSWERS".equals(objName)){ 
+		} else if (ShowAnswers.NAME.equals(objName)){ 
 			request = new ShowAnswers();
-		} else if ("LOCK".equals(objName)){ 
+		} else if (Lock.NAME.equals(objName)){ 
 			request = new Lock();
-		}else if ("UNLOCK".equals(objName)){ 
+		}else if (Unlock.NAME.equals(objName)){ 
 			request = new Unlock();
 		} else {
 			JavaScriptObject params = getJsObjectParams(obj);
@@ -91,38 +91,45 @@ public abstract class FlowRequest implements IFlowRequest {
 	
 	public final static class NavigateNextItem extends FlowRequest{
 		public NavigateNextItem(){
-			super("NAVIGATE_NEXT_ITEM");
+			super(NAME);
 		}
+		public static final String NAME = "NAVIGATE_NEXT_ITEM";
 	}
 	public final static class NavigatePreviousItem extends FlowRequest{
 		public NavigatePreviousItem(){
-			super("NAVIGATE_PREVIOUS_ITEM");
+			super(NAME);
 		}
+		public static final String NAME = "NAVIGATE_PREVIOUS_ITEM"; 
 	}
 	public final static class NavigateFirstItem extends FlowRequest{
 		public NavigateFirstItem(){
-			super("NAVIGATE_FIRST_ITEM");
+			super(NAME);
 		}
+		public static final String NAME = "NAVIGATE_FIRST_ITEM";
 	}
 	public final static class NavigateLastItem extends FlowRequest{
 		public NavigateLastItem(){
-			super("NAVIGATE_LAST_ITEM");
+			super(NAME);
 		}
+		public static final String NAME = "NAVIGATE_LAST_ITEM"; 
 	}
 	public final static class NavigateToc extends FlowRequest{
 		public NavigateToc(){
-			super("NAVIGATE_TOC");
+			super(NAME);
 		}
+		public static final String NAME = "NAVIGATE_TOC"; 
 	}
 	public final static class NavigateSummary extends FlowRequest{
 		public NavigateSummary(){
-			super("NAVIGATE_SUMMARY");
+			super(NAME);
 		}
+		public static final String NAME = "NAVIGATE_SUMMARY"; 
 	}
 	public final static class NavigateTest extends FlowRequest{
 		public NavigateTest(){
-			super("NAVIGATE_TEST");
+			super(NAME);
 		}
+		public static final String NAME = "NAVIGATE_TEST";
 	}
 	public abstract static class FlowRequestWithIndex extends FlowRequest{
 		
@@ -151,43 +158,51 @@ public abstract class FlowRequest implements IFlowRequest {
 	}
 	public final static class NavigateGotoItem extends FlowRequestWithIndex{
 		public NavigateGotoItem(int index) {
-			super("NAVIGATE_GOTO_ITEM", index);
+			super(NAME, index);
 		}		
+		public static final String NAME = "NAVIGATE_GOTO_ITEM"; 
 	}
 	public final static class NavigatePreviewItem extends FlowRequestWithIndex{
 		public NavigatePreviewItem(int index) {
-			super("NAVIGATE_PREVIEW_ITEM", index);
+			super(NAME, index);
 		}		
+		public static final String NAME = "NAVIGATE_PREVIEW_ITEM"; 
 	}
 	public static class Check extends FlowRequest{
 		public Check(){
-			super("CHECK");
+			super(NAME);
 		}
+		public static final String NAME = "CHECK"; 
 	}
 	public static class Continue extends FlowRequest{
 		public Continue(){
-			super("CONTINUE");
+			super(NAME);
 		}
+		public static final String NAME = "CONTINUE"; 
 	}
 	public static class Reset extends FlowRequest{
 		public Reset(){
-			super("RESET");
+			super(NAME);
 		}
+		public static final String NAME = "RESET"; 
 	}
 	public static class ShowAnswers extends FlowRequest{
 		public ShowAnswers() {
-			super("SHOW_ANSWERS");
+			super(NAME);
 		}
+		public static final String NAME = "SHOW_ANSWERS"; 
 	}
 	public static class Lock extends FlowRequest{
 		public Lock() {
-			super("LOCK");
+			super(NAME);
 		}
+		public static final String NAME = "LOCK"; 
 	}
 	public static class Unlock extends FlowRequest{
 		public Unlock() {
-			super("UNLOCK");
+			super(NAME);
 		}
+		public static final String NAME = "UNLOCK"; 
 	}
 	public static class Custom extends FlowRequest{
 		

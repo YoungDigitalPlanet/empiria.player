@@ -24,7 +24,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocke
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
-import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequestInvoker;
+import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
 public class DefaultAssessmentFooterViewExtension extends InternalExtension
@@ -33,7 +33,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 
 	protected DataSourceDataSupplier dataSourceDataSupplier; 
 	protected FlowDataSupplier flowDataSupplier;
-	protected IFlowRequestInvoker flowRequestInvoker;
+	protected FlowRequestInvoker flowRequestInvoker;
 	protected PageInterferenceSocket pageInterferenceSocket;
 
 	private Panel menuPanel;
@@ -66,7 +66,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	}
 
 	@Override
-	public void setFlowRequestsInvoker(IFlowRequestInvoker fri) {
+	public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
 		flowRequestInvoker = fri;
 	}
 
