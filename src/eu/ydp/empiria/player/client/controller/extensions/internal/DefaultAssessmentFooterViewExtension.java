@@ -188,7 +188,7 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 			checkButton.setStateDown(false);			
 		} else if (deliveryEvent.getType() == DeliveryEventType.CHECK ){
 			showAnswersButton.setStateDown(false);				
-		} else if (deliveryEvent.getType() == DeliveryEventType.RESET){
+		} else if (deliveryEvent.getType() == DeliveryEventType.RESET  ||  deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING){
 			checkButton.setStateDown(false);		
 			showAnswersButton.setStateDown(false);			
 		}
