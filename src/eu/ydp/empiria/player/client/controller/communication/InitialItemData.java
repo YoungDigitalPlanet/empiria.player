@@ -17,16 +17,17 @@ public class InitialItemData {
 
 		NodeList outcomeDeclarationNodes = null;
 		
-		if (itemData != null)
-			outcomeDeclarationNodes = itemData.getDocument().getElementsByTagName("outcomeDeclaration");
-		
 		outcomes = new HashMap<String, Outcome>();
 		
-		Outcome currOutcome;
-		for (int i = 0 ; i < outcomeDeclarationNodes.getLength() ; i ++){
-			currOutcome = new Outcome(outcomeDeclarationNodes.item(i));
-			if (currOutcome != null){
-				outcomes.put(currOutcome.identifier, currOutcome);
+		if (itemData != null){
+			outcomeDeclarationNodes = itemData.getDocument().getElementsByTagName("outcomeDeclaration");
+		
+			Outcome currOutcome;
+			for (int i = 0 ; i < outcomeDeclarationNodes.getLength() ; i ++){
+				currOutcome = new Outcome(outcomeDeclarationNodes.item(i));
+				if (currOutcome != null){
+					outcomes.put(currOutcome.identifier, currOutcome);
+				}
 			}
 		}
 	}
