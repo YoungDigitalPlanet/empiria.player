@@ -9,6 +9,8 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 
+import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
+import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
@@ -16,8 +18,8 @@ import eu.ydp.empiria.player.client.util.js.JSOModel;
 
 public class CssParserTest extends GWTTestCase {
 
-	private String css1 = "customSelector { width: 100px; customProperty: abc; } .customClass { height: 100px; xyz: 200; }";
-	private String css2 = "h2 { font-size: 5em; } customSelector { width: 200px; customproperty: xyz; color: #666; } .customClass { width: 10px; } orderInteraction { module-layout: vertical; }";
+	private String css1 = "customselector { width: 100px; customProperty: abc; } .customClass { height: 100px; xyz: 200; }";
+	private String css2 = "h2 { font-size: 5em; } customselector { width: 200px; customproperty: xyz; color: #666; } .customClass { width: 10px; } orderInteraction { module-layout: vertical; }";
 	private String css3 = "h1 { font-weight: bold; }";
 	
 	@Override
@@ -26,7 +28,7 @@ public class CssParserTest extends GWTTestCase {
 	}
 	
 	private static native String parseCSS() /*-{
-		var css = "customSelector { width: 100px; customProperty: abc } .customClass { height: 100px; xyz: 200 }";
+		var css = "customselector { width: 100px; customProperty: abc } .customClass { height: 100px; xyz: 200 }";
 		var parser = new $wnd.CSSParser();
 		var sheet = parser.parse(css, false, true);
 		return sheet.cssText();
@@ -39,7 +41,7 @@ public class CssParserTest extends GWTTestCase {
 	public void testIfParserIsPresent() {
 		String parsed = parseCSS();
 		System.out.println(parsed);
-		Assert.assertEquals("sample css was parsed", 0, parsed.indexOf("customSelector"));
+		Assert.assertEquals("sample css was parsed", 0, parsed.indexOf("customselector"));
 	}
 
 	public void testStyleDataSourceManager() {
@@ -52,7 +54,7 @@ public class CssParserTest extends GWTTestCase {
 		Assert.assertEquals( "no styles were added yet", 0, sdsm.getStyleProperties(e).keys().length() );
 
 
-		doc = XMLParser.parse("<customSelector />");
+		doc = XMLParser.parse("<customselector />");
 		e = doc.getDocumentElement();
 
 		sdsm.addAssessmentStyle(css1, "");
@@ -77,7 +79,7 @@ public class CssParserTest extends GWTTestCase {
 	public void testEmptyStyleManager() {
 		StyleDataSourceManager sdsm = new StyleDataSourceManager();
 		
-		Document doc = XMLParser.parse("<customSelector />");
+		Document doc = XMLParser.parse("<customselector />");
 		Element e = doc.getDocumentElement();
 		
 		JSOModel styles = sdsm.getStyleProperties(e);
