@@ -152,7 +152,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		}
 		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 			if (inlineBodyGenerator == null){
-				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, options);
+				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options);
 			}
 			return inlineBodyGenerator;
 		}

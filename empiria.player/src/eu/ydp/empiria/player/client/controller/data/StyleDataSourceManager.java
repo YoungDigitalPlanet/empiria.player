@@ -60,7 +60,7 @@ public class StyleDataSourceManager implements StyleSocket {
 	}
 
 	public JSOModel getStyleProperties(Element element) {
-		String selector = element.getNodeName();
+		String selector = element.getNodeName().toLowerCase();
 		JSOModel result = JavaScriptObject.createObject().cast();
 		for (StyleDocument sheet : assessmentStyle) {
 			result = sheet.getDeclarationsForSelector(selector, result);
