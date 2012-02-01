@@ -18,6 +18,9 @@ public class ExListBoxOption {
 	protected Panel popupPanel;
 	protected Widget popupButton;
 	
+	protected boolean selected = false;
+	protected boolean over = false;
+	
 	public ExListBoxOption(Widget baseBody, Widget popupBody){
 		this.baseBody = baseBody;
 		this.popupBody = popupBody;
@@ -31,14 +34,14 @@ public class ExListBoxOption {
 			
 			@Override
 			public void onMouseOver(MouseOverEvent arg0) {
-				popupPanel.setStyleName("qp-exlistbox-popup-option-panel-over");				
+				setOver(true);				
 			}
 		}, MouseOverEvent.getType());
 		popupPanel.addDomHandler(new MouseOutHandler() {
 			
 			@Override
 			public void onMouseOut(MouseOutEvent arg0) {
-				popupPanel.setStyleName("qp-exlistbox-popup-option-panel");
+				setOver(false);
 				
 			}
 		}, MouseOutEvent.getType());
@@ -46,7 +49,7 @@ public class ExListBoxOption {
 			
 			@Override
 			public void onClick(ClickEvent arg0) {
-				popupPanel.setStyleName("qp-exlistbox-popup-option-panel");
+				setOver(false);
 			}
 		}, ClickEvent.getType());
 		popupPanel.add(popupBody);
@@ -61,9 +64,26 @@ public class ExListBoxOption {
 	public Widget getBaseBody(){
 		return baseBody;
 	}
+	
+	protected void setOver(boolean ov){
+		over = ov;
+		updateStyle();
+	}
 		
 	public void setSelected(boolean sel){
-		if (sel)
+		selected = sel;
+		updateStyle();
+	}
+	
+	protected void updateStyle(){
+		String selectedPart = "";
+		if (selected)
+			selectedPart = "-selected";
+		String overPart = "";
+		if (over)
+			overPart = "-over";
+		popupPanel.setStyleName("qp-exlistbox-popup-option-panel"+selectedPart+overPart);
+		if (selected)
 			popupButton.setStyleName("qp-exlistbox-popup-option-button-selected");
 		else
 			popupButton.setStyleName("qp-exlistbox-popup-option-button");
