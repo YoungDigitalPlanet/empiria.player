@@ -8,11 +8,9 @@
 	<inherits name="com.google.gwt.http.HTTP" />
 	<inherits name="com.google.gwt.xml.XML" />
 	<inherits name="com.google.gwt.json.JSON" />
-	<inherits name='org.vaadin.gwtgraphics.GWTGraphics' />
 	<inherits name='com.allen_sauer.gwt.voices.gwt-voices' />
-	<inherits name='pl.smath.expression.Expression' />
 	<inherits name='gwt.g2d.g2d'/>
-	<inherits name='pl.smath.renderer.Renderer' />
+	<inherits name='com.mathplayer.Math_player'/>
 	
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject"/>
