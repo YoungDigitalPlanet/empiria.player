@@ -155,6 +155,7 @@ public class TextEntryModule implements IInteractionModule{
 		showCorrectAnswers(false);
 		lock(false);
 		textBox.setText("");
+		updateResponse(false);
 	}
 
 	/**
