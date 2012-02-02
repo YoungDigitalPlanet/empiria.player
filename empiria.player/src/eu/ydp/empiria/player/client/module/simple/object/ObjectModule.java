@@ -14,11 +14,11 @@ import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class ObjectModule implements ISimpleModule {
 
-	protected HTML htmlWidget;
+	protected Widget widget;
 	
 	@Override
 	public Widget getView() {
-		return htmlWidget;
+		return widget;
 	}
 
 	@Override
@@ -30,16 +30,17 @@ public class ObjectModule implements ISimpleModule {
 		  
 		  if(type.startsWith("video")){
 
-		    VideoImpl video = GWT.create(VideoImpl.class);
-	  		html = video.getHTML(src);
+			  VideoImpl video = GWT.create(VideoImpl.class);
+			  video.setSrc(src);
+			  widget = video.asWidget();
 		  }
 		  else{
 		    
-	      AudioImpl audio = GWT.create(AudioImpl.class);
-	      html = audio.getHTML(src);
+		      AudioImpl audio = GWT.create(AudioImpl.class);
+		      html = audio.getHTML(src);
+			  widget = new HTML(html);
 		  }
 			
-		  htmlWidget = new HTML(html);
 		
 	}
 
