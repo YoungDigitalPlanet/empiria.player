@@ -29,16 +29,16 @@
 	<script src="video/FAVideo.js" />
 
 	<replace-with
-		class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
+		class="eu.ydp.empiria.player.client.module.simple.object.impl.FlashVideoImpl">
 		<when-type-is
-			class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+			class="eu.ydp.empiria.player.client.module.simple.object.impl.VideoImpl" />
 	</replace-with>
 
 	<!-- Use video tag for iphone browser -->
 	<replace-with
-		class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
+		class="eu.ydp.empiria.player.client.module.simple.object.impl.HTML5VideoImpl">
 		<when-type-is
-			class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+			class="eu.ydp.empiria.player.client.module.simple.object.impl.VideoImpl" />
 		<any>
 			<when-property-is name="user.agent" value="safari" />
 		</any>
@@ -46,16 +46,16 @@
 
 	<!-- link as default value for audio -->
 	<replace-with
-		class="eu.ydp.empiria.player.client.module.object.impl.EmbedAudioImpl">
+		class="eu.ydp.empiria.player.client.module.simple.object.impl.EmbedAudioImpl">
 		<when-type-is
-			class="eu.ydp.empiria.player.client.module.object.impl.AudioImpl" />
+			class="eu.ydp.empiria.player.client.module.simple.object.impl.AudioImpl" />
 	</replace-with>
 
 	<!-- Use audio tag for iphone browser -->
 	<replace-with
-		class="eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl">
+		class="eu.ydp.empiria.player.client.module.simple.object.impl.HTML5AudioImpl">
 		<when-type-is
-			class="eu.ydp.empiria.player.client.module.object.impl.AudioImpl" />
+			class="eu.ydp.empiria.player.client.module.simple.object.impl.AudioImpl" />
 		<any>
 			<when-property-is name="user.agent" value="safari" />
 		</any>

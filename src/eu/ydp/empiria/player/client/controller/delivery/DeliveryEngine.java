@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ImgMo
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InlineChoiceModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathTextModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ObjectModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SelectionModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SpanModuleConnectorExtension;
@@ -238,6 +239,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new AudioPlayerModuleConnectorExtension());
 		loadExtension(new MathTextModuleConnectorExtension());
 		loadExtension(new MathModuleConnectorExtension());
+		loadExtension(new ObjectModuleConnectorExtension());
 	}
 
 	public void loadExtension(JavaScriptObject extension) {
