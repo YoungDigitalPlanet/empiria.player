@@ -69,6 +69,8 @@ public class MathModule implements IInteractionModule {
 		String fontName = "Arial";
 		boolean fontBold = false;
 		boolean fontItalic = false;
+		Integer gapWidth = null;
+		Integer gapHeight = null;
 		if (styles.containsKey("-empiria-math-font-size")){			
 			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-font-size"));
 		}
@@ -81,8 +83,18 @@ public class MathModule implements IInteractionModule {
 		if (styles.containsKey("-empiria-math-font-style")){			
 			fontItalic = styles.get("-empiria-math-font-style").toLowerCase().equals("italic");
 		}
+		if (styles.containsKey("-empiria-math-gap-width")){			
+			gapWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-width"));
+		}
+		if (styles.containsKey("-empiria-math-gap-height")){			
+			gapHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-height"));
+		}
 		Font f = new Font(fontSize, fontName, fontBold, fontItalic);
 		mpm.setFont(f);
+		if (gapWidth != null  &&  gapWidth > 0)
+			mpm.setGapWidth(gapWidth);
+		if (gapHeight != null  &&  gapHeight > 0)
+			mpm.setGapHeight(gapHeight);
 		interactionManager = mpm.createMath(element.getChildNodes().toString(), mainPanel);
 		
 		

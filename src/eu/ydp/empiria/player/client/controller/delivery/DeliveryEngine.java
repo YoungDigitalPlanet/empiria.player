@@ -178,8 +178,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
 		getDeliveryEventsListener().onDeliveryEvent(
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTING));
-		initFlow();
 		updateAssessmentStyle();
+		initFlow();
 		getDeliveryEventsListener().onDeliveryEvent(
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		updatePageStyle();
