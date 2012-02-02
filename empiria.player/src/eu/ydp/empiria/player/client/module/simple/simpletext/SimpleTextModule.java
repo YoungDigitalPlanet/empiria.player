@@ -21,7 +21,11 @@ public class SimpleTextModule implements ISimpleModule {
 	@Override
 	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
 		ms.getInlineBodyGeneratorSocket().generateInlineBody(element, contents.getElement());
-		
+
+		String className = element.getAttribute("class");
+		if (className != null  &&  !"".equals(className)  &&  getView() != null){
+			getView().addStyleName(className);
+		}
 		String id = element.getAttribute("id");
 		if (id != null  &&  !"".equals(id)  &&  getView() != null){
 			getView().getElement().setId(id);
