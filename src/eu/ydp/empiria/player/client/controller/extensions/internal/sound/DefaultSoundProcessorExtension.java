@@ -47,13 +47,15 @@ public class DefaultSoundProcessorExtension extends InternalExtension implements
 					callback = ((MediaInteractionSoundEventCallback)deliveryEvent.getParams().get("callback"));
 				}
 				
-				callback.setCallforward(new MediaInteractionSoundEventCallforward() {
-					
-					@Override
-					public void stop() {
-						forceStop();
-					}
-				});
+				if (callback != null){
+					callback.setCallforward(new MediaInteractionSoundEventCallforward() {
+						
+						@Override
+						public void stop() {
+							forceStop();
+						}
+					});
+				}
 				
 				soundExecutor.play(url);
 				
@@ -77,12 +79,6 @@ public class DefaultSoundProcessorExtension extends InternalExtension implements
 
 		if (callback != null){
 			callback.onPlay();
-			callback.setCallforward(new MediaInteractionSoundEventCallforward() {
-				@Override
-				public void stop() {
-					forceStop();
-				}
-			});
 		}
 		
 	}
