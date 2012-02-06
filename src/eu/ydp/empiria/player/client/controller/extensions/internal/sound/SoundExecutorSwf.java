@@ -28,7 +28,7 @@ public class SoundExecutorSwf implements SoundExecutor {
 			
 			@Override
 			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-				if (event.getLoadState() == LoadState.LOAD_STATE_SUPPORTED_AND_READY){
+				if (event.getLoadState() == LoadState.LOAD_STATE_SUPPORTED_AND_READY  ||  event.getLoadState() == LoadState.LOAD_STATE_SUPPORTED_MAYBE_READY){
 					if (listener != null)
 						listener.onPlay();
 					playing = true;
