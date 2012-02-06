@@ -38,6 +38,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathT
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ObjectModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SelectionModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleTextModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SlideshowPlayerModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SpanModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TextEntryModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TextInteractionModuleConnectorExtension;
@@ -240,6 +241,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new MathTextModuleConnectorExtension());
 		loadExtension(new MathModuleConnectorExtension());
 		loadExtension(new ObjectModuleConnectorExtension());
+		loadExtension(new SlideshowPlayerModuleConnectorExtension());
 	}
 
 	public void loadExtension(JavaScriptObject extension) {
