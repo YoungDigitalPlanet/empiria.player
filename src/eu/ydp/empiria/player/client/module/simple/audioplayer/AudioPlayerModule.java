@@ -24,6 +24,7 @@ public class AudioPlayerModule implements ISimpleModule {
 	protected String address;
 	protected MediaModuleInteractionListener mediaListener;
 	protected boolean playing;
+	protected boolean enabled = true;
 	
 	protected MediaInteractionSoundEventCallforward callforward;
 
@@ -55,6 +56,7 @@ public class AudioPlayerModule implements ISimpleModule {
 	}
 	
 	private void play(){
+		enabled = false;
 		mediaListener.onMediaSoundPlay(address, new MediaInteractionSoundEventCallback() {
 			
 			@Override
@@ -75,28 +77,32 @@ public class AudioPlayerModule implements ISimpleModule {
 	}
 	
 	protected void stop(){
+		enabled = false;
 		if (callforward != null)
 			callforward.stop();
 	}
 	
 	protected void setPlaying(){
+		enabled = true;
 		playing = true;
 		button.setStyleName("qp-audioplayer-button-playing");
 	}
 	
 	
 	protected void setStopped(){
+		enabled = true;
 		playing = false;
 		button.setStyleName("qp-audioplayer-button");	
 	}
 
 	
 	protected void onButtonClick() {
-		if (!playing)
-			play();
-		else
-			stop();
-		
+		if (enabled){
+			if (!playing)
+				play();
+			else
+				stop();
+		}
 	}
 
 }
