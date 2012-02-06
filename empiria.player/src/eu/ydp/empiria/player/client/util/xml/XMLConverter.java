@@ -13,6 +13,7 @@ import eu.ydp.empiria.player.client.controller.body.ModuleEventsListener;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
+@Deprecated
 public abstract class XMLConverter {
 
 	public static Element getDOM(com.google.gwt.xml.client.Element element, Vector<String> ignoredTags){

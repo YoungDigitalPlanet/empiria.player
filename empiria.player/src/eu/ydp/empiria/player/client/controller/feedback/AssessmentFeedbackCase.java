@@ -9,6 +9,7 @@ import com.google.gwt.xml.client.Node;
 
 import eu.ydp.empiria.player.client.util.xml.XMLConverter;
 
+@Deprecated
 public class AssessmentFeedbackCase {
 	public AssessmentFeedbackCase(Node node){
 		
