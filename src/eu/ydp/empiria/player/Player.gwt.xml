@@ -61,4 +61,21 @@
 		</any>
 	</replace-with>
 
+	<!-- default implementation of sound executor -->
+	<replace-with
+		class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorSwf">
+		<when-type-is
+			class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
+	</replace-with>
+
+	<!-- html5 implementation of sound executor -->
+	<replace-with
+		class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorHtml5">
+		<when-type-is
+			class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
+		<any>
+			<when-property-is name="user.agent" value="safari" />
+		</any>
+	</replace-with>
+
 </module>

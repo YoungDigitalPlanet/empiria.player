@@ -79,7 +79,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	
 	public void installMultiViewNonuniuqeModules(){
 		for (Element currElement : nonuniqueModulesMap.getKeys()){
-			
+			// TODO
 		}
 	}
 	

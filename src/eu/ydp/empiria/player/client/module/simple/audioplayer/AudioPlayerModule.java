@@ -72,7 +72,6 @@ public class AudioPlayerModule implements ISimpleModule {
 				callforward = cf;
 			}
 		});
-		setPlaying();
 	}
 	
 	protected void stop(){
@@ -80,19 +79,19 @@ public class AudioPlayerModule implements ISimpleModule {
 			callforward.stop();
 	}
 	
-	private void setPlaying(){
+	protected void setPlaying(){
 		playing = true;
 		button.setStyleName("qp-audioplayer-button-playing");
 	}
 	
 	
-	private void setStopped(){
+	protected void setStopped(){
 		playing = false;
 		button.setStyleName("qp-audioplayer-button");	
 	}
 
 	
-	public void onButtonClick() {
+	protected void onButtonClick() {
 		if (!playing)
 			play();
 		else
