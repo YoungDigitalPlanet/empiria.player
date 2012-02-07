@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
-import eu.ydp.empiria.player.client.module.interaction.math.MathModule;
+import eu.ydp.empiria.player.client.module.math.MathModule;
 
 public class MathModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension {
 

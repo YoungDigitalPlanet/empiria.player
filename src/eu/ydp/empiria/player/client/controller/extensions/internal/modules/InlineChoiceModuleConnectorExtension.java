@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
-import eu.ydp.empiria.player.client.module.interaction.inlinechoice.InlineChoiceModule;
+import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
 
 public class InlineChoiceModuleConnectorExtension extends ModuleExtension
 		implements ModuleConnectorExtension {

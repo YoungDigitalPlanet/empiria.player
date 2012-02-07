@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
-import eu.ydp.empiria.player.client.module.container.DivModule;
+import eu.ydp.empiria.player.client.module.containers.DivModule;
 
 public class DivModuleConnectorExtension extends ModuleExtension implements
 		ModuleConnectorExtension {
