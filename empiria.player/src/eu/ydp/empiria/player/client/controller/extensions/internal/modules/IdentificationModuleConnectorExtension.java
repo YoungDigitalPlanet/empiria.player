@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
-import eu.ydp.empiria.player.client.module.interaction.identification.IdentificationModule;
+import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 
 public class IdentificationModuleConnectorExtension extends ModuleExtension
 		implements ModuleConnectorExtension {

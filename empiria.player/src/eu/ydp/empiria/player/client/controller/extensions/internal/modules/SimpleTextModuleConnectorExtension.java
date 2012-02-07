@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
-import eu.ydp.empiria.player.client.module.simple.simpletext.SimpleTextModule;
+import eu.ydp.empiria.player.client.module.simpletext.SimpleTextModule;
 
 public class SimpleTextModuleConnectorExtension extends ModuleExtension
 		implements ModuleConnectorExtension {
