@@ -17,13 +17,15 @@ public class StyleLinkDeclaration {
 		
 		NodeList styleLinkNodes = styleNodes.item(0).getChildNodes();
 		
-		for (int n = 0 ; n < styleLinkNodes.getLength() ; n ++){
-			Node styleLinkNode = styleLinkNodes.item(n);
-			try {
-				StyleLink sd = new StyleLink(styleLinkNode.getAttributes().getNamedItem("href").getNodeValue(),
-					styleLinkNode.getAttributes().getNamedItem("userAgent").getNodeValue());
-				styles.add(sd);
-			} catch (Exception e) {
+		if (styleLinkNodes != null){		
+			for (int n = 0 ; n < styleLinkNodes.getLength() ; n ++){
+				Node styleLinkNode = styleLinkNodes.item(n);
+				try {
+					StyleLink sd = new StyleLink(styleLinkNode.getAttributes().getNamedItem("href").getNodeValue(),
+						styleLinkNode.getAttributes().getNamedItem("userAgent").getNodeValue());
+					styles.add(sd);
+				} catch (Exception e) {
+				}
 			}
 		}
 		

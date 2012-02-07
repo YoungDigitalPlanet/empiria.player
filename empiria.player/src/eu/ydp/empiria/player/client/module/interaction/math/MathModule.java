@@ -207,6 +207,7 @@ public class MathModule implements IInteractionModule {
 		for (int i = 0 ; i < interactionManager.getGapsCount() ; i ++){
 			response.values.add( interactionManager.getGapAt(i).getText() );
 		}
+		moduleInteractionListener.onStateChanged(userInteract, this);
 	}
 
 }

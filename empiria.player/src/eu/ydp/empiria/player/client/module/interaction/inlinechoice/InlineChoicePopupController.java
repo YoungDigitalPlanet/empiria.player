@@ -128,8 +128,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	
 	@Override
 	public void onBodyLoad() {
-		// TODO Auto-generated method stub
-		
+		updateResponse(false);
 	}
 
 	@Override

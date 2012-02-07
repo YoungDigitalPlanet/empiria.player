@@ -115,7 +115,8 @@ public class TextEntryModule implements IInteractionModule{
 
 
 	@Override
-	public void onBodyLoad() {		
+	public void onBodyLoad() {	
+		updateResponse(false);	
 	}
 
 	@Override

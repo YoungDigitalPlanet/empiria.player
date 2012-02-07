@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.controller.messages.OperationMessageType;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
 
+@Deprecated
 public class OptionsReader {
 
 	public static FlowOptions getFlowOptions(){

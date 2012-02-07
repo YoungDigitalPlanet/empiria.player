@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.util.localisation;
 
+@Deprecated
 public enum LocaleVariable {
 	MESSAGE_TITLE_ERROR, MESSAGE_TITLE_WARNING, MESSAGE_TITLE_INFO,
 	MESSAGE_LOADING, MESSAGE_LOADED,

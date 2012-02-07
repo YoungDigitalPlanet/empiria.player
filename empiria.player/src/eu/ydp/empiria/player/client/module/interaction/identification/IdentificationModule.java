@@ -53,15 +53,12 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 
 	@Override
 	public void onBodyLoad() {
-		// TODO Auto-generated method stub
-		
+		updateResponse(false);
 	}
 
 
 	@Override
 	public void onBodyUnload() {
-		// TODO Auto-generated method stub
-		
 	}
 
 
