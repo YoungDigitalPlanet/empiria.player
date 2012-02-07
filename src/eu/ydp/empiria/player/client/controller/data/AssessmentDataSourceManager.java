@@ -8,6 +8,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
+import eu.ydp.empiria.player.client.controller.data.library.LibraryLink;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
@@ -26,11 +27,13 @@ public class AssessmentDataSourceManager {
 	private StyleLinkDeclaration styleDeclaration;
 	private int itemsCount;
 	private String errorMessage;
+	private LibraryLink libraryLink;
 	
 	public void setAssessmentData(XMLData d){
 		data = d;
 		itemsCount = -1;
 		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
+		libraryLink = new LibraryLink(data.getDocument().getElementsByTagName("extensionsLibrary"), data.getBaseURL());
 		listener.onAssessmentDataLoaded();
 	}
 	
@@ -58,6 +61,14 @@ public class AssessmentDataSourceManager {
 	
 	public String getErrorMessage(){
 		return errorMessage;
+	}
+	
+	public boolean hasLibrary(){
+		return libraryLink.hasLink();
+	}
+	
+	public String getLibraryLink(){
+		return libraryLink.getLink();
 	}
 	
 	public String getAssessmentTitle(){

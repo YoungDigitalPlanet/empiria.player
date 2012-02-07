@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -32,6 +33,9 @@ import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
+import eu.ydp.empiria.player.client.controller.data.library.LibraryExtension;
+import eu.ydp.empiria.player.client.controller.data.library.LibraryLoaderListener;
+import eu.ydp.empiria.player.client.controller.data.library.LibraryLoader;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -39,12 +43,13 @@ import eu.ydp.empiria.player.client.util.xml.XMLDocument;
 import eu.ydp.empiria.player.client.util.xml.document.IDocumentLoaded;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
-public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier {
+public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier, LibraryLoaderListener {
 	
 	public DataSourceManager(){
 		mode = DataSourceManagerMode.NONE;
 		assessmentDataManager = new AssessmentDataSourceManager(this);
 		itemDataCollectionManager = new ItemDataSourceCollectionManager(this);
+		libraryLoader = new LibraryLoader(this);
 	}
 	
 	private StyleDataSourceManager styleDataSourceManager;
@@ -52,6 +57,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	
 	private AssessmentDataSourceManager assessmentDataManager;
 	private ItemDataSourceCollectionManager itemDataCollectionManager;
+	private LibraryLoader libraryLoader;
 	private DataSourceManagerMode mode;
 	private DataLoaderEventListener listener;
 	
@@ -107,7 +113,10 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 			public void finishedLoading(Document document, String baseURL) {
 				if (!isItemDocument(document)){
 					assessmentDataManager.setAssessmentData(new XMLData(document, baseURL));
-					loadItems();
+					if (assessmentDataManager.hasLibrary())
+						loadExtensionsLibrary();
+					else
+						loadItems();
 				} else {
 					assessmentDataManager.setAssessmentDefaultData();
 					loadSingleItemData(new XMLData(document, baseURL));
@@ -120,6 +129,28 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 				onLoadFinished();
 			}
 		});
+	}
+	
+	public void loadExtensionsLibrary(){
+		String libraryUrl = assessmentDataManager.getLibraryLink();
+		
+		new XMLDocument(libraryUrl, new IDocumentLoaded() {
+			
+			@Override
+			public void finishedLoading(Document document, String baseURL) {
+				libraryLoader.load(new XMLData(document, baseURL));
+			}
+			
+			@Override
+			public void loadingErrorHandler(String error) {
+				onExtensionsLoadFinished();
+			}
+		});
+				
+	}
+	
+	public void onExtensionsLoadFinished(){
+		loadItems();
 	}
 	
 	public void loadItems(){
@@ -332,6 +363,10 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		} catch (Exception e) {
 		}
 		return true;
+	}
+	
+	public List<LibraryExtension> getExtensionCreators(){
+		return libraryLoader.getExtensionCreators();
 	}
 	
 }

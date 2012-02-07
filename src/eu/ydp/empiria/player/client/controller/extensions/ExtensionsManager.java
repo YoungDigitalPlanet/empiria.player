@@ -134,8 +134,6 @@ public class ExtensionsManager implements IStateful  {
 			return new DefaultAssessmentFooterViewExtension();
 		if ("DefaultSoundProcessorExtension".equals(name))
 			return new DefaultSoundProcessorExtension();
-		if ("PlayerCoreApiExtension".equals(name))
-			return new PlayerCoreApiExtension();
 		return null;
 	}
 

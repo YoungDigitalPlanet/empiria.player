@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.util.localisation;
 
+@Deprecated
 public abstract class LocalePublisher {
 
 	public static String getText(LocaleVariable var){

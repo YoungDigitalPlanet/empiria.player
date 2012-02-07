@@ -20,12 +20,16 @@ import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManagerMode;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
+import eu.ydp.empiria.player.client.controller.data.library.LibraryExtension;
+import eu.ydp.empiria.player.client.controller.data.library.LibraryExternalExtension;
+import eu.ydp.empiria.player.client.controller.data.library.LibraryInternalExtension;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsHub;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsListener;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
+import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioPlayerModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ChoiceModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.DivModuleConnectorExtension;
@@ -172,6 +176,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	@Override
 	public void onDataReady() {
+		loadLibraryExtensions();
 		sessionDataManager.init(dataManager.getItemsCount(), dataManager.getInitialData());
 		initExtensions();
 		flowManager.init(dataManager.getItemsCount());
@@ -225,7 +230,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		}
 	}
 
-	private void loadPredefinedExtensions() {
+	protected void loadPredefinedExtensions() {
+		loadExtension(new PlayerCoreApiExtension());
 		loadExtension(new DivModuleConnectorExtension());
 		loadExtension(new GroupModuleConnectorExtension());
 		loadExtension(new SpanModuleConnectorExtension());
@@ -242,6 +248,20 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new MathModuleConnectorExtension());
 		loadExtension(new ObjectModuleConnectorExtension());
 		loadExtension(new SlideshowPlayerModuleConnectorExtension());
+	}
+	
+	protected void loadLibraryExtensions(){
+		List<LibraryExtension> extCreators = dataManager.getExtensionCreators();
+		for (LibraryExtension ext : extCreators){
+			if (ext instanceof LibraryExternalExtension){
+				JavaScriptObject extInstance = ((LibraryExternalExtension)ext).getExtensionInstance();
+				if (extInstance != null){
+					loadExtension(extInstance);
+				}
+			} else if (ext instanceof LibraryInternalExtension){
+				loadExtension(((LibraryInternalExtension)ext).getName());
+			}
+		}
 	}
 
 	public void loadExtension(JavaScriptObject extension) {
