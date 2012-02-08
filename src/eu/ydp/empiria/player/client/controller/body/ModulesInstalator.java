@@ -67,7 +67,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	public void createSingleViewModule(Element element, HasWidgets parent,BodyGeneratorSocket bodyGeneratorSocket) {
 		IModule module = registry.createModule(element.getNodeName());
 		if (module instanceof ISingleViewWithBodyModule){
-			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, bodyGeneratorSocket);
+			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, moduleInteractionListener, bodyGeneratorSocket);
 		} else if (module instanceof ISingleViewSimpleModule){
 			((ISingleViewSimpleModule)module).initModule(element, moduleSocket, moduleInteractionListener);			
 		}
