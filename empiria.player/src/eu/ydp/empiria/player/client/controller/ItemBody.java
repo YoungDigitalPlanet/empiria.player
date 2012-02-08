@@ -95,7 +95,7 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
 		
 		ItemBodyModule itemBodyModule = new ItemBodyModule(); 
-		itemBodyModule.initModule(itemBodyElement, moduleSocket, generator);
+		itemBodyModule.initModule(itemBodyElement, moduleSocket, moduleEventsListener, generator);
 		
 		modules = modulesInstalator.installMultiViewUniqueModules();
 

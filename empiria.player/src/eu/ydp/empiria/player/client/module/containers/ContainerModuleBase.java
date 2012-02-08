@@ -9,6 +9,7 @@ import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.IContainerModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
 public abstract class ContainerModuleBase implements IContainerModule {
 
@@ -19,7 +20,7 @@ public abstract class ContainerModuleBase implements IContainerModule {
 	}
 	
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
+	public void initModule(Element element, ModuleSocket moduleSocket, ModuleInteractionListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
 		bodyGeneratorSocket.generateBody(element, getContainer());
 
 		String className = element.getAttribute("class");
