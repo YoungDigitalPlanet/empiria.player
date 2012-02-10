@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.session;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,12 +76,20 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 		
 	}
 
-	@Override
 	public void updateItemVariables(int itemIndex, Map<String, Outcome> variablesMap) {
 		if (itemSessionDatas[itemIndex] != null)
 			itemSessionDatas[itemIndex].updateVariables(variablesMap);
 	}
 
+
+
+	@Override
+	public Map<String, Outcome> getOutcomeVariablesMap(int itemIndex) {
+		if (itemSessionDatas[itemIndex] != null)
+			return itemSessionDatas[itemIndex].getOutcomeVariablesMap();
+		return new HashMap<String, Outcome>();
+	}
+	
 	@Override
 	public void setState(JSONArray statesArr) {
 		try {			  

@@ -9,5 +9,13 @@ public class IntegerUtils {
 		}
 		return 0;
 	}
+	
+	public static int tryParseInt(String s, int defaultValue){
+		try {
+			return Integer.parseInt(s);
+		} catch (Exception e) {
+		}
+		return defaultValue;
+	}
 
 }

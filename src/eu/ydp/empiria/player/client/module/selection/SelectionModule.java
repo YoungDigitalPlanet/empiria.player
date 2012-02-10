@@ -112,15 +112,27 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 	@Override
 	public void onBodyLoad() {
-		updateResponse(false);
 		
 	}
 
 	@Override
 	public void onBodyUnload() {
-		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void onSetUp() {
+		updateResponse(false);
+	}
+
+	@Override
+	public void onStart() {
 		
 	}
+
+	@Override
+	public void onClose() {
+	}
+	
 	private void fillGrid(NodeList choices, NodeList items){
 		buttons = new Vector<Vector<SingleChoiceButton>>();
 

@@ -56,12 +56,13 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 			if (data.data == null)
 				throw new Exception("Item data is null");
 			interactionSocket.addStateChangedInteractionEventsListener(this);
-			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket);
 			itemIndex = data.itemIndex;
+			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex));
 			item.setState(itemSessionSocket.getState(itemIndex));
 			itemViewSocket.setItemView(new ItemViewCarrier(createTitleWidget(String.valueOf(itemIndex+1), item.getTitle()), item.getContentView(), item.getFeedbackView(), item.getScoreView()));
 			itemSessionSocket.beginItemSession(itemIndex);
-			item.updateItemSession(itemIndex, itemSessionSocket);
+			item.setUp();
+			item.start();
 		} catch (Exception e) {
 			item = null;
 			itemViewSocket.setItemView(new ItemViewCarrier(data.errorMessage.length() > 0 ? data.errorMessage : e.getClass().getName() + "<br/>" + e.getMessage() + "<br/>" + e.getStackTrace()));
@@ -89,12 +90,7 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 			// STATE
 			itemSessionSocket.setState(itemIndex, item.getState());		
 			
-			// RESULT & MISTAKES
-			item.updateItemSession(itemIndex, itemSessionSocket);
-	//		itemSessionSocket.setSessionResult(itemIndex, item.getResult());
-	//		int itemMistakes = item.getMistakesCount();
-	//		if (itemMistakes > 0)
-	//			itemSessionSocket.addSessionMistake(itemIndex);
+			//item.updateItemSession(itemIndex, itemSessionSocket);
 		}
 	}
 	

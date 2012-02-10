@@ -26,11 +26,13 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	protected ModulesRegistrySocket registry;
 	protected ModuleSocket moduleSocket;
 	protected ModuleInteractionListener moduleInteractionListener;
+	protected List<IModule> singleViewModules;
 	
 	public ModulesInstalator(ModulesRegistrySocket reg, ModuleSocket ms, ModuleInteractionListener mil){
 		this.registry = reg;
 		this.moduleSocket = ms;
 		this.moduleInteractionListener = mil;
+		singleViewModules = new ArrayList<IModule>();
 	}
 	
 	
@@ -75,6 +77,8 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		if (((ISingleViewModule)module).getView() instanceof Widget ){
 			parent.add( ((ISingleViewModule)module).getView() );
 		}
+		
+		singleViewModules.add(module);
 	}
 	
 	public void installMultiViewNonuniuqeModules(){
@@ -114,4 +118,9 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		}
 		return modules;
 	}
+
+	public List<IModule> getInstalledSingleViewModules(){
+		return singleViewModules;
+	}
+	
 }

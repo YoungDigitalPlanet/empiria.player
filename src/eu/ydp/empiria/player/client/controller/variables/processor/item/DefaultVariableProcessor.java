@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
 
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
@@ -15,7 +16,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 
 	@Override
-	public void processFlowActivityVariables(HashMap<String, Outcome> outcomes, FlowActivityEvent event) {
+	public void processFlowActivityVariables(Map<String, Outcome> outcomes, FlowActivityEvent event) {
 
 		if (event != null){
 			if (event.getType() == FlowActivityEventType.CHECK){
@@ -28,13 +29,33 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					outcomes.get("CHECKS").values.add(value.toString());
 				}
 			}
+			if (event.getType() == FlowActivityEventType.SHOW_ANSWERS){
+				if (outcomes.containsKey("SHOW_ANSWERS")){
+					Integer value = 0;
+					if (outcomes.get("SHOW_ANSWERS").values.size() > 0)
+							value = Integer.parseInt(outcomes.get("SHOW_ANSWERS").values.get(0));
+					value++;
+					outcomes.get("SHOW_ANSWERS").values.clear();
+					outcomes.get("SHOW_ANSWERS").values.add(value.toString());
+				}
+			}
+			if (event.getType() == FlowActivityEventType.RESET){
+				if (outcomes.containsKey("RESET")){
+					Integer value = 0;
+					if (outcomes.get("RESET").values.size() > 0)
+							value = Integer.parseInt(outcomes.get("RESET").values.get(0));
+					value++;
+					outcomes.get("RESET").values.clear();
+					outcomes.get("RESET").values.add(value.toString());
+				}
+			}
 		}
 		
 		
 	}
 	
 	@Override
-	public void processResponseVariables(HashMap<String, Response> responses, HashMap<String, Outcome> outcomes, boolean userInteract) {
+	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract) {
 
 
 		Integer points = 0;
@@ -92,16 +113,16 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 			if (outcomes.containsKey(currKey+"-LASTCHANGE")  &&  outcomes.containsKey(currKey+"-LASTMISTAKEN")){
-				int lastMistakes = processCheckMistakes( responses.get(currKey), outcomes.get(currKey+"-LASTCHANGE") );
 				if (userInteract){
+					int lastMistakes = processCheckMistakes( responses.get(currKey), outcomes.get(currKey+"-LASTCHANGE") );
 					outcomes.get(currKey+"-LASTMISTAKEN").values.set(0,  String.valueOf(lastMistakes));
-				}
-				if (outcomes.containsKey(currKey+"-MISTAKES")){
-					if (outcomes.get(currKey+"-MISTAKES").values.size() == 0)
-						outcomes.get(currKey+"-MISTAKES").values.add("0");
-					Integer mistakes = Integer.parseInt( outcomes.get(currKey+"-MISTAKES").values.get(0) );
-					mistakes += Integer.parseInt( outcomes.get(currKey+"-LASTMISTAKEN").values.get(0) );
-					outcomes.get(currKey+"-MISTAKES").values.set(0, mistakes.toString());
+					if (outcomes.containsKey(currKey+"-MISTAKES")){
+						if (outcomes.get(currKey+"-MISTAKES").values.size() == 0)
+							outcomes.get(currKey+"-MISTAKES").values.add("0");
+						Integer mistakes = Integer.parseInt( outcomes.get(currKey+"-MISTAKES").values.get(0) );
+						mistakes += Integer.parseInt( outcomes.get(currKey+"-LASTMISTAKEN").values.get(0) );
+						outcomes.get(currKey+"-MISTAKES").values.set(0, mistakes.toString());
+					}
 				}
 			}
 		}
@@ -129,22 +150,24 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			}
 		}
 		if (outcomes.containsKey("LASTMISTAKEN")){
-			Integer lastMistakes = 0;
-			Iterator<String> keys = responses.keySet().iterator();
-			while (keys.hasNext()){
-				String currKey2 = keys.next();
-				if (outcomes.containsKey(currKey2+"-LASTMISTAKEN")){
-					lastMistakes += Integer.parseInt( outcomes.get(currKey2+"-LASTMISTAKEN").values.get(0) );
+			if (userInteract){
+				Integer lastMistakes = 0;
+				Iterator<String> keys = responses.keySet().iterator();
+				while (keys.hasNext()){
+					String currKey2 = keys.next();
+					if (outcomes.containsKey(currKey2+"-LASTMISTAKEN")){
+						lastMistakes += Integer.parseInt( outcomes.get(currKey2+"-LASTMISTAKEN").values.get(0) );
+					}
 				}
-			}
-			outcomes.get("LASTMISTAKEN").values.set(0, lastMistakes.toString());
-			
-			if (outcomes.containsKey("MISTAKES")){
-				if (outcomes.get("MISTAKES").values.size() == 0)
-					outcomes.get("MISTAKES").values.add("0");
-				Integer mistakes = Integer.parseInt( outcomes.get("MISTAKES").values.get(0) );
-				mistakes += Integer.parseInt( outcomes.get("LASTMISTAKEN").values.get(0) );
-				outcomes.get("MISTAKES").values.set(0, mistakes.toString());
+				outcomes.get("LASTMISTAKEN").values.set(0, lastMistakes.toString());
+				
+				if (outcomes.containsKey("MISTAKES")){
+					if (outcomes.get("MISTAKES").values.size() == 0)
+						outcomes.get("MISTAKES").values.add("0");
+					Integer mistakes = Integer.parseInt( outcomes.get("MISTAKES").values.get(0) );
+					mistakes += Integer.parseInt( outcomes.get("LASTMISTAKEN").values.get(0) );
+					outcomes.get("MISTAKES").values.set(0, mistakes.toString());
+				}
 			}
 		}
 		
@@ -299,7 +322,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	}
 
 	@Override
-	public void ensureVariables(HashMap<String, Response> responses, HashMap<String, Outcome> outcomes) {
+	public void ensureVariables(Map<String, Response> responses, Map<String, Outcome> outcomes) {
 
 			
 		ensureVariable(outcomes, new Outcome("DONE", Cardinality.SINGLE, BaseType.INTEGER));
@@ -307,9 +330,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		ensureVariable(outcomes, new Outcome("DONEHISTORY", Cardinality.MULTIPLE, BaseType.INTEGER));
 		ensureVariable(outcomes, new Outcome("DONECHANGES", Cardinality.MULTIPLE, BaseType.INTEGER));
 		ensureVariable(outcomes, new Outcome("LASTMISTAKEN", Cardinality.SINGLE, BaseType.INTEGER, "0"));
-		ensureVariable(outcomes, new Outcome("CHECKS", Cardinality.SINGLE, BaseType.INTEGER));
-		ensureVariable(outcomes, new Outcome("SHOW_ANSWERS", Cardinality.SINGLE, BaseType.INTEGER));
-		ensureVariable(outcomes, new Outcome("RESET", Cardinality.SINGLE, BaseType.INTEGER));
+		ensureVariable(outcomes, new Outcome("CHECKS", Cardinality.SINGLE, BaseType.INTEGER, "0"));
+		ensureVariable(outcomes, new Outcome("SHOW_ANSWERS", Cardinality.SINGLE, BaseType.INTEGER, "0"));
+		ensureVariable(outcomes, new Outcome("RESET", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 		ensureVariable(outcomes, new Outcome("MISTAKES", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 
 		if (responses.keySet().size() > 0){
@@ -334,7 +357,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		
 	}
 	
-	private void ensureVariable(HashMap<String, Outcome> outcomes, Outcome variable){
+	private void ensureVariable(Map<String, Outcome> outcomes, Outcome variable){
 		if (!outcomes.containsKey(variable.identifier)){
 			outcomes.put(variable.identifier, variable);
 		} else if (variable.values.size() > 0  &&  outcomes.get(variable.identifier).values.size() == 0){

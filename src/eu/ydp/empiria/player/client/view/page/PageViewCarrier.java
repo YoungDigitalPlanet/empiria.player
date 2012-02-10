@@ -7,11 +7,7 @@ import eu.ydp.empiria.player.client.controller.communication.PageDataError;
 import eu.ydp.empiria.player.client.controller.communication.PageDataSummary;
 import eu.ydp.empiria.player.client.controller.communication.PageDataToC;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
-import eu.ydp.empiria.player.client.controller.feedback.AssessmentFeedbackSocket;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequestSocket;
-import eu.ydp.empiria.player.client.controller.session.SessionDataCarrier;
-import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
-import eu.ydp.empiria.player.client.controller.session.datasockets.ItemsCollectionSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSocket;
 
 /**
@@ -30,7 +26,6 @@ public class PageViewCarrier {
 	public String errorMessage;
 	
 	public IFlowRequestSocket flowRequestSocket;
-	public AssessmentFeedbackSocket assessmentFeedbackSocket;
 	
 	public PageViewCarrier(){
 		pageType = PageType.TEST;
@@ -47,7 +42,6 @@ public class PageViewCarrier {
 		titles = p.titles;
 		sessionDataSocket = p.sessionData;
 		flowRequestSocket = frs;
-		assessmentFeedbackSocket = p.getAssessmentFeedbackSocket();
 	}
 
 	public PageViewCarrier(PageDataError p){

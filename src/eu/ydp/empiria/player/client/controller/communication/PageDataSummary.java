@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.communication;
 
-import eu.ydp.empiria.player.client.controller.feedback.AssessmentFeedbackSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSocket;
 
 public class PageDataSummary extends PageData {
@@ -12,17 +11,8 @@ public class PageDataSummary extends PageData {
 	
 	public String[] titles;
 	public SessionDataSocket sessionData;
-	private AssessmentFeedbackSocket assessmentFeedbackSocket;
 
 	public void setAssessmentSessionData(SessionDataSocket sdc){
 		sessionData = sdc;
-	}
-	
-	public void setAssessmentFeedbackSocket(AssessmentFeedbackSocket afs){
-		assessmentFeedbackSocket = afs;
-	}
-	
-	public AssessmentFeedbackSocket getAssessmentFeedbackSocket(){
-		return assessmentFeedbackSocket;
 	}
 }

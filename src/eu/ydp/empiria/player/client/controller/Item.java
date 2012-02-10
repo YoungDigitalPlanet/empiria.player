@@ -31,6 +31,7 @@ import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.controller.variables.IVariableCreator;
+import eu.ydp.empiria.player.client.controller.variables.manager.BindableVariableManager;
 import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseTypeConverter;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
@@ -60,7 +61,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	
 	public VariableManager<Response> responseManager;
 	
-	public VariableManager<Outcome> outcomeManager;
+	public BindableVariableManager<Outcome> outcomeManager;
 	
 	public StyleLinkDeclaration styleDeclaration;
 	
@@ -74,7 +75,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	private XMLData xmlData;
 			
-	public Item(XMLData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket ss, ModulesRegistrySocket mrs){
+	public Item(XMLData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket ss, ModulesRegistrySocket mrs, Map<String, Outcome> outcomeVariables){
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
@@ -96,17 +97,12 @@ public class Item implements IStateful, ItemInterferenceSocket {
 					return new Response(node);
 				}
 			});
-	    
-	    outcomeManager = new VariableManager<Outcome>(xmlData.getDocument().getElementsByTagName("outcomeDeclaration"), new IVariableCreator<Outcome>() {
-			@Override
-			public Outcome createVariable(Node node) {
-				return new Outcome(node);
-			}
-		});
+
+		outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
+		
+	    variableProcessor.ensureVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
 	    
 	    styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
-	    
-	    variableProcessor.ensureVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
 	    
 	    VariableProcessor.interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
    
@@ -161,6 +157,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	
 	public void close(){
 		feedbackManager.hideAllInlineFeedbacks();
+		itemBody.close();
 	}
 	
 	public void process(boolean userInteract){
@@ -265,16 +262,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		return 0;
 	}
 	
-	// -------------------------- SCORE -------------------------------
-
-	@Deprecated
-	public void showScore(){
-	}
-
-	@Deprecated
-	public void hideScore(){
-	}
-	
 	// -------------------------- NAVIGATION -------------------------------
 	
 	public int getItemModuleCount(){
@@ -284,14 +271,12 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	public void checkItem(){
 		itemBody.markAnswers(true);
 		itemBody.lock(true);
-		showScore();
 	}
 	
 	public void continueItem(){
 		itemBody.showCorrectAnswers(false);
 		itemBody.markAnswers(false);
 		itemBody.lock(false);
-		hideScore();
 	}
 	
 	public void showAnswers(){
@@ -302,7 +287,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	public void resetItem(){
 		itemBody.reset();
-		hideScore();
 	}
 	
 	public void lockItem(boolean lock){
@@ -377,8 +361,12 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		return itemBody.getModuleSockets();
 	}
 	
-	public void updateItemSession(int itemIndex, ItemSessionSocket itemSessionSocket){
-		itemSessionSocket.updateItemVariables(itemIndex, outcomeManager.getVariablesMap());
+	public void setUp() {
+		itemBody.setUp();
+	}
+
+	public void start() {
+		itemBody.start();
 	}
 	
 	

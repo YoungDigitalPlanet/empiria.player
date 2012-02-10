@@ -156,13 +156,23 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 		for (SimpleChoice c:interactionElements){
 			c.onOwnerAttached();
 		}
-		updateResponse(null, false);
 	}
 
 	@Override
 	public void onBodyUnload() {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public void onSetUp() {
+		updateResponse(null, false);
+	}
+
+	@Override
+	public void onStart() {		
+	}
+
+	@Override
+	public void onClose() {
 	}
 
 	@Override

@@ -5,8 +5,8 @@ import com.google.gwt.core.client.JavaScriptObject;
 public class FlowOptions {
 
 	public FlowOptions(){
-		showToC = true;
-		showSummary = true;
+		showToC = false;
+		showSummary = false;
 		itemsDisplayMode = PageItemsDisplayMode.ONE;
 		activityMode = ActivityMode.NORMAL;
 	}
