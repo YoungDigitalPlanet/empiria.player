@@ -274,7 +274,7 @@ public class InlineFeedback extends PopupPanel implements IItemFeedback {
 	public native void fadeOutJs(com.google.gwt.dom.client.Element element, int fadeEffectTime)/*-{
 	    var instance = this;
 	    var _this = element;
-	    instance.@eu.ydp.empiria.player.client.controller.feedback.InlineFeedback::opacityto(Lcom/google/gwt/dom/client/Element;I)(_this, 0);
+	    instance.@eu.ydp.empiria.player.client.controller.feedback.InlineFeedback::opacityto(Lcom/google/gwt/dom/client/Element;I)(_this, 100);
 	    var delay = fadeEffectTime;
 	    _this.style.zoom = 1; // for ie, set haslayout
 	    _this.style.display="block"; 

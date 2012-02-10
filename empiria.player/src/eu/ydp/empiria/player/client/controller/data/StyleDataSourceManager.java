@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,10 +61,10 @@ public class StyleDataSourceManager implements StyleSocket {
 	}
 
 	public JSOModel getStyleProperties(Element element) {
-		String selector = element.getNodeName().toLowerCase();
+		List<String> selectors = getElementSelectors(element);
 		JSOModel result = JavaScriptObject.createObject().cast();
 		for (StyleDocument sheet : assessmentStyle) {
-			result = sheet.getDeclarationsForSelector(selector, result);
+			result = sheet.getDeclarationsForSelectors(selectors, result);
 			//JsCssModel cssModel = sheet.cast();
 			//cssModel.getDeclarationsForSelector(selector, result);
 		}
@@ -72,7 +73,7 @@ public class StyleDataSourceManager implements StyleSocket {
 				continue;
 			}
 			for (StyleDocument sheet : styles) {
-				result = sheet.getDeclarationsForSelector(selector, result);
+				result = sheet.getDeclarationsForSelectors(selectors, result);
 				//JsCssModel cssModel = sheet.cast();
 				//result = cssModel.getDeclarationsForSelector(selector, result);
 			}
@@ -80,6 +81,40 @@ public class StyleDataSourceManager implements StyleSocket {
 		return result;
 	}
 
+	protected List<String> getElementSelectors(Element element){
+		String name = element.getNodeName().toLowerCase();
+		String[] classes = null;
+		String id = null;
+		if (element.hasAttribute("class")  &&  !"".equals(element.getAttribute("class")) ){
+			classes = element.getAttribute("class").split(" ");
+		}
+		if (element.hasAttribute("id")  &&  !"".equals(element.getAttribute("id")) ){
+			id = element.getAttribute("id");
+		}
+		
+		return buildSelectors(name, classes, id);
+	}
+	
+	protected List<String> buildSelectors(String name, String[] classes, String id){
+		List<String> selectors = new ArrayList<String>();
+		
+		selectors.add(name);
+		if (classes != null){
+			for (int i = 0 ; i < classes.length ; i ++){
+				selectors.add("."+classes[i]);
+			}
+			for (int i = 0 ; i < classes.length ; i ++){
+				selectors.add(name+"."+classes[i]);
+			}
+		}
+		if (id != null){
+			selectors.add("#"+id);
+			selectors.add(name+"#"+id);
+		}
+		
+		return selectors;
+	}
+ 	
 	@Override
 	public Map<String, String> getStyles(Element element) {
 		Map<String, String> map = new HashMap<String, String>();

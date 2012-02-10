@@ -98,6 +98,7 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		itemBodyModule.initModule(itemBodyElement, moduleSocket, moduleEventsListener, generator);
 		
 		modules = modulesInstalator.installMultiViewUniqueModules();
+		modules.addAll(modulesInstalator.getInstalledSingleViewModules());
 
 		for (IModule currModule : modules) {
 			if (currModule instanceof IUniqueModule){
@@ -122,8 +123,6 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 
 		attached = true;
 
-		setState(stateAsync);
-
 		if (locked)
 			markAnswers(true);
 	}
@@ -133,6 +132,28 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		for (IModule currModule : modules) {
 			if (currModule instanceof ILifecycleModule)
 				((ILifecycleModule) currModule).onBodyUnload();
+		}
+	}
+
+	public void setUp() {
+		setState(stateAsync);
+		for (IModule currModule : modules) {
+			if (currModule instanceof ILifecycleModule)
+				((ILifecycleModule) currModule).onSetUp();
+		}
+	}
+
+	public void start() {
+		for (IModule currModule : modules) {
+			if (currModule instanceof ILifecycleModule)
+				((ILifecycleModule) currModule).onStart();
+		}
+	}
+
+	public void close() {
+		for (IModule currModule : modules) {
+			if (currModule instanceof ILifecycleModule)
+				((ILifecycleModule) currModule).onClose();
 		}
 	}
 	

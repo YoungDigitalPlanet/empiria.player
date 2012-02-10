@@ -1,13 +1,18 @@
 package eu.ydp.empiria.player.client.controller.variables;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 
 public abstract class VariablePossessorBase<V extends Variable> extends VariableProviderBase  {
 	
-	public HashMap<String, V> variables = new HashMap<String, V>();
+	public Map<String, V> variables;
+	
+	public VariablePossessorBase(){
+		variables = new HashMap<String, V>();
+	}
 	
 	public V getVariable(String identifier){
 		return variables.get(identifier);
@@ -26,6 +31,10 @@ public abstract class VariablePossessorBase<V extends Variable> extends Variable
 	@Override
 	public Variable getVariableValue(String identifier) {
 		return variables.get(identifier);
+	}
+	
+	public Map<String, V> getVariablesMap(){
+		return variables;
 	}
 
 }

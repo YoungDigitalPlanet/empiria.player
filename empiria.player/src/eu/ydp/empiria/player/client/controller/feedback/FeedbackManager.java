@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -44,7 +45,7 @@ public class FeedbackManager implements InlineFeedbackSocket{
 		return container;
 	}
 	
-	public void process (HashMap<String, Response> responses, HashMap<String, Outcome> outcomes, String senderIdentifier){
+	public void process (Map<String, Response> responses, Map<String, Outcome> outcomes, String senderIdentifier){
 		
 		Variable currVar;
 		

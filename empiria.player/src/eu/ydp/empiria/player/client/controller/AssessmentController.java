@@ -58,8 +58,6 @@ public class AssessmentController implements FlowActivityEventsHandler, Assessme
 	}
 	
 	public void initPage(PageData pageData){
-		if (pageData.type == PageType.SUMMARY)
-			((PageDataSummary)pageData).setAssessmentFeedbackSocket(assessment);
 		pageController.initPage(pageData);
 	}
 	

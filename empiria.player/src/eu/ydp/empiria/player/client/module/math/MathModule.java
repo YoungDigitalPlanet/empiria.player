@@ -98,7 +98,6 @@ public class MathModule implements IInteractionModule {
 		interactionManager = mpm.createMath(element.getChildNodes().toString(), mainPanel);
 		
 		
-		updateResponse(false);
 
 		for (int i = 0 ; i < interactionManager.getGapsCount() ; i ++){
 			interactionManager.getGapAt(i).addChangeHandler(new ChangeHandler() {
@@ -113,6 +112,19 @@ public class MathModule implements IInteractionModule {
 
 	@Override
 	public void onBodyUnload() {
+	}
+
+	@Override
+	public void onSetUp() {
+		updateResponse(false);
+	}
+
+	@Override
+	public void onStart() {
+	}
+
+	@Override
+	public void onClose() {
 	}
 	
 	@Override

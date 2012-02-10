@@ -12,8 +12,6 @@ public interface FlowCommandsListener {
 	public void gotoTest();
 	public void checkPage();
 	public void showAnswers();
-	// REMOVE HIDE_ANSWERS
-	//public void hideAnswers();
 	public void continuePage();
 	public void resetPage();
 	public void lockPage();

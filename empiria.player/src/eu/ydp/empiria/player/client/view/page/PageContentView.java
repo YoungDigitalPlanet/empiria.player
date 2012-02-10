@@ -32,7 +32,6 @@ public class PageContentView implements PageViewSocket {
 		titlePanel.setStyleName("qp-page-title");
 		itemsPanel = new FlowPanel();
 		itemsPanel.setStyleName("qp-page-content");
-		//pagePanel.add(titlePanel);  // removed page title
 		pagePanel.add(itemsPanel);
 	}
 
@@ -127,7 +126,7 @@ public class PageContentView implements PageViewSocket {
 					titleLabel.setStyleName("qp-toc-item-title");
 					titleLabel.addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
-							flowRequestSocket.invokeRequest( new FlowRequest.NavigatePreviewItem(tt) );
+							flowRequestSocket.invokeRequest( new FlowRequest.NavigateGotoItem(tt) );
 						}
 					});
 					titleLabel.addMouseOverHandler(new MouseOverHandler() {
@@ -214,7 +213,6 @@ public class PageContentView implements PageViewSocket {
 				if (todoTotal > 0){
 					donePercent = (doneTotal * 100)/todoTotal;
 				}
-	    	    contentPanel.add(pvc.assessmentFeedbackSocket.getFeedbackView(donePercent));
 				
 	    	    FlowPanel resultScorePanel = new FlowPanel();
 	    	    resultScorePanel.setStyleName("qp-resultpage-score");

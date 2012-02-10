@@ -36,10 +36,13 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.DivMo
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.GroupModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.IdentificationModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ImgModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InfoModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InlineChoiceModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.LinkModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ObjectModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SelectionModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SlideshowPlayerModuleConnectorExtension;
@@ -248,6 +251,9 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new MathModuleConnectorExtension());
 		loadExtension(new ObjectModuleConnectorExtension());
 		loadExtension(new SlideshowPlayerModuleConnectorExtension());
+		loadExtension(new InfoModuleConnectorExtension());
+		loadExtension(new ReportModuleConnectorExtension());
+		loadExtension(new LinkModuleConnectorExtension());
 	}
 	
 	protected void loadLibraryExtensions(){

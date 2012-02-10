@@ -95,6 +95,19 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	public void onBodyUnload() {
 	}
 
+	@Override
+	public void onSetUp() {
+		updateResponse(false);
+	}
+
+	@Override
+	public void onStart() {
+	}
+
+	@Override
+	public void onClose() {
+	}
+
 	// ------------------------ INTERFACES ------------------------ 
 
 

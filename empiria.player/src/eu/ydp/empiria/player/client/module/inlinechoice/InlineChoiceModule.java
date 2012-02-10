@@ -78,6 +78,20 @@ public class InlineChoiceModule  implements IInteractionModule{
 		controller.onBodyUnload();
 	}
 
+	@Override
+	public void onSetUp() {
+		controller.onSetUp();
+	}
+
+	@Override
+	public void onStart() {
+		controller.onStart();
+	}
+
+	@Override
+	public void onClose() {
+	}
+
 	// ------------------------ INTERFACES ------------------------ 
 
 

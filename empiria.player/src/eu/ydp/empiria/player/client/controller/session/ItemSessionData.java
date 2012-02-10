@@ -77,6 +77,9 @@ public class ItemSessionData implements ItemSessionDataSocket {
 		variableStorage.importFromMap(variablesMap);
 	}
 	
+	public Map<String, Outcome> getOutcomeVariablesMap(){
+		return variableStorage.getVariablesMap();
+	}
 	public ItemSessionDataSocket getItemSessionDataSocket(){
 		return this;
 	}

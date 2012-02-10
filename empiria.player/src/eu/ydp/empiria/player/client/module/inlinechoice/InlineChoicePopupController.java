@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.inlinechoice;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -128,13 +129,23 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	
 	@Override
 	public void onBodyLoad() {
-		updateResponse(false);
 	}
 
 	@Override
 	public void onBodyUnload() {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public void onSetUp() {
+		updateResponse(false);
+	}
+
+	@Override
+	public void onStart() {
+	}
+
+	@Override
+	public void onClose() {
 	}
 	
 	@Override
@@ -200,7 +211,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		  String stateString = "";
 		  
 		  if (listBox.getSelectedIndex()-1 >= 0)
-			  stateString = identifiers.get(listBox.getSelectedIndex()-1);
+			  stateString = response.values.get(0);
 		  		  
 		  jsonArr.set(0, new JSONString(stateString));
 		  

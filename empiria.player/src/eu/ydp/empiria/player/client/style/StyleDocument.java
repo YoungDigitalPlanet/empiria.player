@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.style;
 
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
 
@@ -23,9 +25,9 @@ public class StyleDocument {
 		}
 	}
 
-	public JSOModel getDeclarationsForSelector(String selector, JSOModel result){
+	public JSOModel getDeclarationsForSelectors(List<String> selectors, JSOModel result){
 		JsCssModel jsSheet = styleSheet.cast();
-		result = jsSheet.getDeclarationsForSelector(selector, result);
+		result = jsSheet.getDeclarationsForSelectors(selectors, result);
 		JsArrayString keys = result.keys();
 		for (int i = 0; i < keys.length(); i++) {
 			String key = keys.get(i);

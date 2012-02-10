@@ -19,7 +19,7 @@ public class ItemVariableStorageImpl<V extends Variable> extends VariablePossess
 		variables = new HashMap<String, V>();
 	}
 	
-	public HashMap<String, V> getVariablesMap(){
+	public Map<String, V> getVariablesMap(){
 		return variables;
 	}
 	

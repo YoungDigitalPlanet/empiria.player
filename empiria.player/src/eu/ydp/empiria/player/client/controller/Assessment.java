@@ -26,13 +26,10 @@ package eu.ydp.empiria.player.client.controller;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
-
-import eu.ydp.empiria.player.client.controller.feedback.AssessmentFeedbackManager;
-import eu.ydp.empiria.player.client.controller.feedback.AssessmentFeedbackSocket;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
-public class Assessment implements AssessmentFeedbackSocket{
+public class Assessment {
 
 	/** Whole assessment title */
 	private String title;
@@ -41,8 +38,6 @@ public class Assessment implements AssessmentFeedbackSocket{
 	private XMLData xmlData;
 
 	public StyleLinkDeclaration styleDeclaration;
-	
-	private AssessmentFeedbackManager feedbackManager;
 	
 		
 	/**
@@ -60,8 +55,6 @@ public class Assessment implements AssessmentFeedbackSocket{
 		Node rootNode = xmlData.getDocument().getElementsByTagName("assessmentTest").item(0);
 		
 		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
-		
-		feedbackManager = new AssessmentFeedbackManager(xmlData.getDocument().getElementsByTagName("assessmentFeedback"));
 		
 	    title = ((Element)rootNode).getAttribute("title");
 	    
@@ -83,10 +76,6 @@ public class Assessment implements AssessmentFeedbackSocket{
 	 */
 	public String getTitle(){
 		return title;
-	}
-	
-	public Widget getFeedbackView(int percentageScore){
-		return feedbackManager.getView(percentageScore);
 	}
 	
 	

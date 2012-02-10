@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
@@ -12,13 +13,13 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 
 public abstract class VariableProcessor {
 
-	public abstract void ensureVariables(HashMap<String, Response> responses, HashMap<String, Outcome> outcomes);
+	public abstract void ensureVariables(Map<String, Response> responses, Map<String, Outcome> outcomes);
 	
-	public abstract void processResponseVariables(HashMap<String, Response> responses, HashMap<String, Outcome> outcomes, boolean userInteract);
+	public abstract void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract);
 	
-	public abstract void processFlowActivityVariables(HashMap<String, Outcome> outcomes, FlowActivityEvent event);
+	public abstract void processFlowActivityVariables(Map<String, Outcome> outcomes, FlowActivityEvent event);
 	
-	public static void interpretFeedbackAutoMark(Node node, HashMap<String, Response> responses){
+	public static void interpretFeedbackAutoMark(Node node, Map<String, Response> responses){
 		NodeList feedbacks =  ((Element)node).getElementsByTagName("feedbackInline");
 		
 		for (int f = 0 ; f < feedbacks.getLength() ; f ++){

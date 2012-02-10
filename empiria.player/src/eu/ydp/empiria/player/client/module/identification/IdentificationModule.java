@@ -53,12 +53,24 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 
 	@Override
 	public void onBodyLoad() {
-		updateResponse(false);
 	}
 
 
 	@Override
 	public void onBodyUnload() {
+	}
+
+	@Override
+	public void onSetUp() {
+		updateResponse(false);
+	}
+
+	@Override
+	public void onStart() {
+	}
+
+	@Override
+	public void onClose() {
 	}
 
 
