@@ -223,6 +223,20 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public void onSetUp() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onStart() {
+		}
+
+		@Override
+		public void onClose() {
+		}
 		
 	}
 }
