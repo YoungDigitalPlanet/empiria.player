@@ -84,6 +84,18 @@
   <target name="war" depends="build" description="Create a war file">
     <zip destfile="empiriaplayer.war" basedir="war"/>
   </target>
+  
+  <target name="lib" depends="javac, buildnumber" description="Create module library">
+    <mkdir dir="dist/lib" />
+    <copy todir="dist/lib">
+      <fileset dir="war/WEB-INF/classes" includes="**/player/**"/>
+      <fileset dir="src" includes="**/player/**"/>
+    </copy>
+
+	<jar destfile="dist/empiriaplayerlib.jar" basedir="dist/lib"/>
+  	<zip destfile="dist/empiriaplayerlibs.zip" basedir="${lib.static.dir}"/>
+  </target>
+
 
   <target name="clean" description="Cleans this project">
     <delete dir="dist"/>
@@ -151,7 +163,7 @@
   <target name="test.all" depends="test.dev, test.prod">
   </target>
 
-  <target name="dist" depends="clean, build, buildnumber, test.dev" description="Create java script distribution">
+  <target name="dist" depends="clean, build, buildnumber, lib, test.dev" description="Create java script distribution">
     <mkdir dir="dist/build" />
     <copy todir="dist/build/empiria.player">
       <fileset dir="war/empiria.player"/>
