@@ -128,7 +128,7 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 			return new ModuleCreator() {
 				
 				@Override
-				public boolean isInteractionModule() {
+				public boolean isMultiViewModule() {
 					return true;
 				}
 				
