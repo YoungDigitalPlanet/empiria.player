@@ -42,6 +42,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.LinkM
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ObjectModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PromptModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SelectionModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleTextModuleConnectorExtension;
@@ -254,6 +255,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new InfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(new LinkModuleConnectorExtension());
+		loadExtension(new PromptModuleConnectorExtension());
 	}
 	
 	protected void loadLibraryExtensions(){
