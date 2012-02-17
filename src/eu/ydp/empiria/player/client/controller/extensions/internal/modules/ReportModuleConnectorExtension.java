@@ -22,7 +22,7 @@ public class ReportModuleConnectorExtension extends ModuleExtension implements M
 		return new ModuleCreator() {
 			
 			@Override
-			public boolean isInteractionModule() {
+			public boolean isMultiViewModule() {
 				return false;
 			}
 			

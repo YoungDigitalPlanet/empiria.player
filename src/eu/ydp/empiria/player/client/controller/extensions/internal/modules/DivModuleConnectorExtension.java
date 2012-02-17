@@ -14,7 +14,7 @@ public class DivModuleConnectorExtension extends ModuleExtension implements
 		return new ModuleCreator() {
 			
 			@Override
-			public boolean isInteractionModule() {
+			public boolean isMultiViewModule() {
 				return false;
 			}
 			

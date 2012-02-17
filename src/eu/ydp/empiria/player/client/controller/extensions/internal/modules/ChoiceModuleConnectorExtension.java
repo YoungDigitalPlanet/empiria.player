@@ -13,7 +13,7 @@ public class ChoiceModuleConnectorExtension extends ModuleExtension implements
 		return new ModuleCreator() {
 			
 			@Override
-			public boolean isInteractionModule() {
+			public boolean isMultiViewModule() {
 				return true;
 			}
 			
