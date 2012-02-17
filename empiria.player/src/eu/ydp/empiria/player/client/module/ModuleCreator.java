@@ -4,7 +4,7 @@ public interface ModuleCreator {
 
 	public IModule createModule();
 	
-	public boolean isInteractionModule();
+	public boolean isMultiViewModule();
 	
 	public boolean isInlineModule();
 }

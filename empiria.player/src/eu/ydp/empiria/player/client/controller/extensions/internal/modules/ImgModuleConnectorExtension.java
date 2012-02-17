@@ -13,7 +13,7 @@ public class ImgModuleConnectorExtension extends ModuleExtension implements
 		return new ModuleCreator() {
 			
 			@Override
-			public boolean isInteractionModule() {
+			public boolean isMultiViewModule() {
 				// TODO Auto-generated method stub
 				return false;
 			}

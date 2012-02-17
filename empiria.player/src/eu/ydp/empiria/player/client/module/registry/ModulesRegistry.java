@@ -26,7 +26,7 @@ public class ModulesRegistry implements ModulesRegistrySocket {
 	public boolean isMultiViewModule(String nodeName){
 		ModuleCreator currCreator = moduleCreators.get(nodeName);
 		if (currCreator != null){
-			return currCreator.isInteractionModule();
+			return currCreator.isMultiViewModule();
 		}
 		return false;
 	}

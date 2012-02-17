@@ -13,7 +13,7 @@ public class TextInteractionModuleConnectorExtension extends ModuleExtension
 		return new ModuleCreator() {
 			
 			@Override
-			public boolean isInteractionModule() {
+			public boolean isMultiViewModule() {
 				return false;
 			}
 			

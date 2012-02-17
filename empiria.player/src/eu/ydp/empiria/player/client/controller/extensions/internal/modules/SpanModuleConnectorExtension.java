@@ -13,7 +13,7 @@ public class SpanModuleConnectorExtension extends ModuleExtension implements
 		return new ModuleCreator() {
 			
 			@Override
-			public boolean isInteractionModule() {
+			public boolean isMultiViewModule() {
 				return false;
 			}
 			

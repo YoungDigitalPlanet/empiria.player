@@ -12,7 +12,7 @@ public class MathModuleConnectorExtension extends ModuleExtension implements Mod
 		return new ModuleCreator() {
 			
 			@Override
-			public boolean isInteractionModule() {
+			public boolean isMultiViewModule() {
 				return true;
 			}
 			

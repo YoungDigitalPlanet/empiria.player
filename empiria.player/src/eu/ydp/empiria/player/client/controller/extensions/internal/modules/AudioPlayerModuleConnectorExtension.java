@@ -13,7 +13,7 @@ public class AudioPlayerModuleConnectorExtension extends ModuleExtension
 		return new ModuleCreator() {
 			
 			@Override
-			public boolean isInteractionModule() {
+			public boolean isMultiViewModule() {
 				return false;
 			}
 			
