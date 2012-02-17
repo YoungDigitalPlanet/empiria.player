@@ -27,6 +27,7 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
+import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -125,6 +126,11 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		container.add(listBox);
 		
 		placeholders.get(0).add(container);
+
+		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
+		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
+			moduleSocket.addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
+		}
 	}
 	
 	@Override
