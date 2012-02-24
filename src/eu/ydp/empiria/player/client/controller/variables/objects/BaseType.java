@@ -8,7 +8,7 @@ public enum BaseType {
 			return IDENTIFIER;
 		} else if (key.toLowerCase().compareTo("boolean") == 0){
 			return BOOLEAN;
-		} else if (key.toLowerCase().compareTo("interger") == 0){
+		} else if (key.toLowerCase().compareTo("integer") == 0){
 			return INTEGER;
 		} else if (key.toLowerCase().compareTo("float") == 0){
 			return FLOAT;

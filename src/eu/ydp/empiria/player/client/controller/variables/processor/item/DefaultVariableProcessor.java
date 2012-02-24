@@ -325,8 +325,8 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	public void ensureVariables(Map<String, Response> responses, Map<String, Outcome> outcomes) {
 
 			
-		ensureVariable(outcomes, new Outcome("DONE", Cardinality.SINGLE, BaseType.INTEGER));
-		ensureVariable(outcomes, new Outcome("TODO", Cardinality.SINGLE, BaseType.INTEGER));
+		ensureVariable(outcomes, new Outcome("DONE", Cardinality.SINGLE, BaseType.INTEGER, "0"));
+		ensureVariable(outcomes, new Outcome("TODO", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 		ensureVariable(outcomes, new Outcome("DONEHISTORY", Cardinality.MULTIPLE, BaseType.INTEGER));
 		ensureVariable(outcomes, new Outcome("DONECHANGES", Cardinality.MULTIPLE, BaseType.INTEGER));
 		ensureVariable(outcomes, new Outcome("LASTMISTAKEN", Cardinality.SINGLE, BaseType.INTEGER, "0"));
@@ -343,8 +343,8 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				Response currResp = responses.get(responseKeys.next());
 				String cri = currResp.identifier;
 
-				ensureVariable(outcomes, new Outcome(cri+"-DONE", Cardinality.SINGLE, BaseType.INTEGER));
-				ensureVariable(outcomes, new Outcome(cri+"-TODO", Cardinality.SINGLE, BaseType.INTEGER));
+				ensureVariable(outcomes, new Outcome(cri+"-DONE", Cardinality.SINGLE, BaseType.INTEGER, "0"));
+				ensureVariable(outcomes, new Outcome(cri+"-TODO", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 				ensureVariable(outcomes, new Outcome(cri+"-LASTCHANGE", Cardinality.MULTIPLE, BaseType.INTEGER));
 				ensureVariable(outcomes, new Outcome(cri+"-PREVIOUS", Cardinality.MULTIPLE, BaseType.INTEGER));
 				ensureVariable(outcomes, new Outcome(cri+"-LASTMISTAKEN", Cardinality.SINGLE, BaseType.INTEGER, "0"));
