@@ -48,6 +48,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Selec
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SlideshowPlayerModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SpanModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TableModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TextEntryModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TextInteractionModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
@@ -256,6 +257,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(new LinkModuleConnectorExtension());
 		loadExtension(new PromptModuleConnectorExtension());
+		loadExtension(new TableModuleConnectorExtension());
 	}
 	
 	protected void loadLibraryExtensions(){
