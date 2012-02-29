@@ -99,7 +99,7 @@ public class PlayerEntryPoint implements EntryPoint {
 	}
 	
 	/**
-	 * Load assessment from this url
+	 * Load assessment from string data
 	 * 
 	 * @param url
 	 */
