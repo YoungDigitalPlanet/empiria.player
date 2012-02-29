@@ -25,6 +25,12 @@ package eu.ydp.empiria.player.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.XMLParser;
+
+import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
+import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -51,6 +57,9 @@ public class PlayerEntryPoint implements EntryPoint {
 		  var player = @eu.ydp.empiria.player.client.PlayerEntryPoint::createPlayer(Ljava/lang/String;)(id);
 		  player.load = function(url){
 		    @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Ljava/lang/String;)(url);
+		  }
+		  player.loadFromData = function(assessmentData, itemDatas){
+		    @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
 		  }
 		  		  
 		  // ³adowanie rozszerzeñ (pluginów i addonów)
@@ -88,6 +97,37 @@ public class PlayerEntryPoint implements EntryPoint {
 	public static void load(String url) {
 		player.load(url);
 	}
+	
+	/**
+	 * Load assessment from this url
+	 * 
+	 * @param url
+	 */
+	public static void load(JavaScriptObject assessmentData, JavaScriptObject itemDatas) {
+		Document assessmentDoc = XMLParser.parse(decodeXmlDataDocument(assessmentData));
+		XMLData assessmentXmlData = new XMLData(assessmentDoc,  decodeXmlDataBaseURL(assessmentData));
+		
+		JsArray<JavaScriptObject> itemDatasArray = itemDatas.cast();
+		
+		XMLData itemXmlDatas[] = new XMLData[itemDatasArray.length()];	
+		for (int i = 0 ; i < itemDatasArray.length() ; i ++){
+			Document itemDoc = XMLParser.parse(decodeXmlDataDocument(itemDatasArray.get(i)));
+			itemXmlDatas[i] = new XMLData(itemDoc,  decodeXmlDataBaseURL(itemDatasArray.get(i))); 
+		}
+		player.load(assessmentXmlData, itemXmlDatas);
+	}
+	
+	private native static String decodeXmlDataDocument(JavaScriptObject data)/*-{
+		if (typeof data.document == 'string')
+			return data.document;
+		return "";
+	 }-*/;
+	
+	private native static String decodeXmlDataBaseURL(JavaScriptObject data)/*-{
+		if (typeof data.baseURL == 'string')
+			return data.baseURL;
+		return "";
+	 }-*/;
 
 	public static void loadExtension(JavaScriptObject extension){
 		player.loadExtension(extension);
