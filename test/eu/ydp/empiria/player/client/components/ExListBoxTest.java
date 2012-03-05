@@ -21,7 +21,7 @@ public class ExListBoxTest extends GWTTestCase {
 		elb.setSelectedIndex(2);
 		assertEquals(1, elb.getSelectedIndex());
 		elb.setSelectedIndex(-1);
-		assertEquals(1, elb.getSelectedIndex());
+		assertEquals(-1, elb.getSelectedIndex());
 	}
 
 	public void testEnabled(){
@@ -29,12 +29,13 @@ public class ExListBoxTest extends GWTTestCase {
 		elb.addOption(new InlineHTML(), new InlineHTML());
 		elb.addOption(new InlineHTML(), new InlineHTML());
 		elb.setSelectedIndex(0);
-		assertEquals(0, elb.getSelectedIndex());
-		elb.setSelectedIndex(1);
-		assertEquals(1, elb.getSelectedIndex());
-		elb.setSelectedIndex(2);
-		assertEquals(1, elb.getSelectedIndex());
-		elb.setSelectedIndex(-1);
-		assertEquals(1, elb.getSelectedIndex());
+		elb.setEnabled(true);
+		assertTrue(elb.getEnabled());
+		elb.setEnabled(false);
+		assertFalse(elb.getEnabled());
+		elb.setEnabled(true);
+		assertTrue(elb.getEnabled());
+		elb.setEnabled(false);
+		assertFalse(elb.getEnabled());
 	}
 }
