@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PushButton;
@@ -27,6 +28,7 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
+import eu.ydp.empiria.player.client.components.ExListBox.PopupPosition;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
@@ -55,7 +57,10 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	protected boolean shuffle = false;
 	
 	protected List<Integer> identifiersMap;
+	protected boolean showEmptyOption = true;
 	
+	protected ExListBox.PopupPosition popupPosition = ExListBox.PopupPosition.ABOVE;
+		
 	@Override
 	public void initModule(ModuleSocket moduleSocket, ModuleInteractionListener moduleInteractionListener) {
 
@@ -93,13 +98,19 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		}
 		
 		listBox = new ExListBox();
+		listBox.setPopupPosition(popupPosition);
 		listBox.setChangeListener(this);
 		
-		Widget emptyOptionInBody = new InlineHTML();
-		emptyOptionInBody.setStyleName("qp-text-choice-popup-option-empty");
-		Widget emptyOptionInPopup = new InlineHTML();
-		emptyOptionInPopup.setStyleName("qp-text-choice-popup-option-empty");
-		listBox.addOption(emptyOptionInBody, emptyOptionInPopup);
+		if (showEmptyOption){
+			Widget emptyOptionInBody = new InlineHTML();
+			emptyOptionInBody.setStyleName("qp-text-choice-popup-option-empty");
+			Widget emptyOptionInPopup = new InlineHTML();
+			emptyOptionInPopup.setStyleName("qp-text-choice-popup-option-empty");
+			listBox.addOption(emptyOptionInBody, emptyOptionInPopup);
+			listBox.setSelectedIndex(0);
+		} else {
+			listBox.setSelectedIndex(-1);
+		}
 		
 		if (shuffle){
 			RandomizedSet<Integer> randomizedNodes = new RandomizedSet<Integer>();
@@ -158,8 +169,8 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	public void markAnswers(boolean mark) {
 		if (mark){
 			listBox.setEnabled(false);
-			if (listBox.getSelectedIndex() != 0){
-				if (response.isCorrectAnswer(identifiers.get(listBox.getSelectedIndex()-1))){
+			if (listBox.getSelectedIndex() != ((showEmptyOption)?0:-1) ){
+				if (response.isCorrectAnswer(identifiers.get(listBox.getSelectedIndex() - ((showEmptyOption)?1:0) ))){
 					container.setStyleName("qp-text-choice-popup-correct");
 				} else {
 					container.setStyleName("qp-text-choice-popup-wrong");
@@ -176,12 +187,12 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (show  &&  !showingAnswers){
-			int correctAnswerIndex = identifiers.indexOf( response.correctAnswers.get(0) )+1;
+			int correctAnswerIndex = identifiers.indexOf( response.correctAnswers.get(0) ) + ((showEmptyOption)?1:0);
 			listBox.setSelectedIndex(correctAnswerIndex);
 		} else if (!show && showingAnswers){
-			int answerIndex = 0;
+			int answerIndex = ((showEmptyOption)?0:-1) ;
 			if (response.values.size() > 0)
-				answerIndex = identifiers.indexOf( response.values.get(0) )+1;
+				answerIndex = identifiers.indexOf( response.values.get(0) ) + ((showEmptyOption)?1:0);
 			listBox.setSelectedIndex(answerIndex);
 		}
 		showingAnswers = show;
@@ -203,7 +214,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	public void reset() {
 		markAnswers(false);
 		lock(false);
-		listBox.setSelectedIndex(0);
+		listBox.setSelectedIndex( ((showEmptyOption)?0:-1) );
 		updateResponse(false);
 		listBox.setEnabled(true);
 		container.setStyleName("qp-text-choice-popup");
@@ -216,7 +227,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		  
 		  String stateString = "";
 		  
-		  if (listBox.getSelectedIndex()-1 >= 0)
+		  if (listBox.getSelectedIndex() - ((showEmptyOption)?1:0) >= 0)
 			  stateString = response.values.get(0);
 		  		  
 		  jsonArr.set(0, new JSONString(stateString));
@@ -229,7 +240,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 		if (newState != null  &&  newState.size() > 0  &&  newState.get(0).isString() != null){
 			int index = identifiers.indexOf(newState.get(0).isString().stringValue());
-			listBox.setSelectedIndex(index+1);
+			listBox.setSelectedIndex( index + ((showEmptyOption)?1:0) );
 		}
 		
 		
@@ -247,8 +258,8 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 		response.reset();
 		
-		if (listBox.getSelectedIndex() != 0){
-			String lastValue = identifiers.get(listBox.getSelectedIndex()-1);
+		if (listBox.getSelectedIndex() != ((showEmptyOption)?0:-1)){
+			String lastValue = identifiers.get(listBox.getSelectedIndex() - ((showEmptyOption)?1:0));
 			response.add(lastValue);
 		}
 		moduleInteractionListener.onStateChanged(userInteract, this);
@@ -260,6 +271,15 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 			updateResponse(true);
 		}
 		
+	}
+
+	@Override
+	public void setShowEmptyOption(boolean seo) {
+		showEmptyOption = seo;
+	}
+	
+	public void setPopupPosition(ExListBox.PopupPosition pp){
+		popupPosition = pp;
 	}
 
 }

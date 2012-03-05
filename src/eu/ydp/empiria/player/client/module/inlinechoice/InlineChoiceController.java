@@ -4,4 +4,5 @@ import eu.ydp.empiria.player.client.module.IInteractionModule;
 
 public interface InlineChoiceController extends IInteractionModule {
 
+	public void setShowEmptyOption(boolean seo);
 }

@@ -33,10 +33,12 @@ public class ExListBox extends FlowPanel {
 	
 	protected int selectedIndex = 0;
 	protected boolean enabled = true;
+	protected PopupPosition popupPosition = PopupPosition.ABOVE;
+	
+	public static enum PopupPosition {ABOVE, BELOW};
 	
 	protected ExListBoxChangeListener listener;
 
-	
 	public ExListBox(){
 		super();
 		
@@ -124,7 +126,10 @@ public class ExListBox extends FlowPanel {
 		int MARGIN = 8;
 		
 		mountingPointX = baseContainer.getAbsoluteLeft() + baseContainer.getOffsetWidth()/2 - popupContainer.getOffsetWidth()/2;
-		mountingPointY = baseContainer.getAbsoluteTop() - popupContainer.getOffsetHeight();
+		if (popupPosition == PopupPosition.ABOVE)
+			mountingPointY = baseContainer.getAbsoluteTop() - popupContainer.getOffsetHeight();
+		else 
+			mountingPointY = baseContainer.getAbsoluteTop() + baseContainer.getOffsetHeight();
 
 		if (mountingPointX < Window.getScrollLeft() + MARGIN){
 			mountingPointX = Window.getScrollLeft() + MARGIN;
@@ -158,7 +163,7 @@ public class ExListBox extends FlowPanel {
 	}
 	
 	public void setSelectedIndex(int index){
-		if (index >= 0   &&  index < options.size()){
+		if (index >= -1   &&  index < options.size()){
 			selectedIndex = index;
 			setSelectedBaseBody();
 		}
@@ -172,9 +177,18 @@ public class ExListBox extends FlowPanel {
 			addStyleName("qp-exlistbox-disabled");
 		}
 	}
-	
+
 	public boolean getEnabled(){
 		return this.enabled;
+	}
+
+
+	public void setPopupPosition(PopupPosition pp){
+		popupPosition = pp;
+	}
+
+	public PopupPosition getPopupPosition(){
+		return popupPosition;
 	}
 
 }

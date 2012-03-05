@@ -3,35 +3,19 @@ package eu.ydp.empiria.player.client.module.inlinechoice;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.InlineHTML;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
-import eu.ydp.empiria.player.client.util.RandomizedSet;
-import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class InlineChoiceModule  implements IInteractionModule{
 
@@ -54,6 +38,14 @@ public class InlineChoiceModule  implements IInteractionModule{
 			controller = new InlineChoicePopupController();	
 		} else {
 			controller = new InlineChoiceDefaultController();
+		}
+		if (styles != null  &&  styles.containsKey("-empiria-inlinechoice-empty-option")  &&  styles.get("-empiria-inlinechoice-empty-option").toLowerCase().equals("hide")){
+			controller.setShowEmptyOption(false);
+		} else {
+			controller.setShowEmptyOption(true);
+		}
+		if (styles != null  &&  controller instanceof InlineChoicePopupController  &&  styles.containsKey("-empiria-inlinechoice-popup-position")  &&  styles.get("-empiria-inlinechoice-popup-position").toLowerCase().equals("below")){
+			((InlineChoicePopupController)controller).setPopupPosition(ExListBox.PopupPosition.BELOW);
 		}
 		controller.initModule(moduleSocket, moduleInteractionListener);
 	}
