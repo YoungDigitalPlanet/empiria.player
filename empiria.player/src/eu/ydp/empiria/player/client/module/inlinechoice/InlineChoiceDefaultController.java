@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.components.AccessibleListBox;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.IActivity;
@@ -31,10 +32,11 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	private String responseIdentifier;
 	private ModuleInteractionListener moduleInteractionListener;
 	private ModuleSocket moduleSocket;
-	private ListBox  listBox;
+	private AccessibleListBox listBox;
 	private boolean shuffle = false;
 	private String	lastValue = null;
 	private boolean showingAnswers = false;
+	protected boolean showEmptyOption = true;	
 	
 	protected Element moduleElement;
 	
@@ -60,11 +62,16 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		response = moduleSocket.getResponse(responseIdentifier);
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
 		
-		listBox = new ListBox();
+		listBox = new AccessibleListBox();
 		if(shuffle)
 			initRandom(moduleElement);
 		else
 			init(moduleElement);
+		
+		if (showEmptyOption)
+			listBox.setSelectedIndex( 0 );
+		else
+			listBox.setSelectedIndex( -1 );
 
 		listBox.addChangeHandler(new ChangeHandler() {
 			
@@ -123,7 +130,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	public void markAnswers(boolean mark) {
 		if (mark){
 			listBox.setEnabled(false);
-			if (listBox.getSelectedIndex() != 0){
+			if (listBox.getSelectedIndex() != ((showEmptyOption)?0:-1) ){
 				if( response.isCorrectAnswer(lastValue) )
 					container.setStyleName("qp-text-choice-correct");
 				else
@@ -143,7 +150,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	public void reset() {
 		markAnswers(false);
 		lock(false);
-		listBox.setSelectedIndex(0);
+		listBox.setSelectedIndex( ((showEmptyOption)?0:-1) );
 		updateResponse(false);
 	  listBox.setEnabled(true);
 	  container.setStyleName("qp-text-choice");
@@ -225,7 +232,8 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		NodeList nodes = inlineChoiceElement.getChildNodes();
 
 		// Add no answer as first option
-		listBox.addItem("");
+		if (showEmptyOption)
+			listBox.addItem("");
 		
 		for(int i = 0; i < nodes.getLength(); i++){
 			if(nodes.item(i).getNodeName().compareTo("inlineChoice") == 0){
@@ -245,7 +253,8 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		NodeList nodes = inlineChoiceElement.getChildNodes();
 
 		// Add no answer as first option
-		listBox.addItem("");
+		if (showEmptyOption)
+			listBox.addItem("");
 		
 		// Add nodes to temporary list
 		for(int i = 0; i < nodes.getLength(); i++){
@@ -270,6 +279,8 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 			response.remove(lastValue);
 		
 		lastValue = listBox.getValue(listBox.getSelectedIndex());
+		if (lastValue == null)
+			lastValue = "";
 		response.add(lastValue);
 		moduleInteractionListener.onStateChanged(userInteract, this);
 	}
@@ -281,5 +292,10 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	
 	protected void listBoxChanged(){
 		updateResponse(true);
+	}
+
+	@Override
+	public void setShowEmptyOption(boolean seo) {
+		showEmptyOption = seo;
 	}
 }
