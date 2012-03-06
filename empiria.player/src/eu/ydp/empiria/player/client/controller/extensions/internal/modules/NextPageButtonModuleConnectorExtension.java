@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 
-public class NextPageButtonExtension extends NavigationButtonExtension {
+public class NextPageButtonModuleConnectorExtension extends NavigationButtonModuleConnectorExtension {
 	
 	@Override
 	public String getModuleNodeName() {

@@ -14,11 +14,11 @@ import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocke
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.module.IControlModule;
+import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
 
-public abstract class ControllModuleExtension extends ModuleExtension implements
+public abstract class ControlModuleConnectorExtension extends ModuleExtension implements
 		ModuleConnectorExtension, FlowRequestSocketUserExtension,
 		DataSourceDataSocketUserExtension, FlowDataSocketUserExtension,
 		DeliveryEventsListenerExtension {
@@ -64,8 +64,8 @@ public abstract class ControllModuleExtension extends ModuleExtension implements
 	public abstract String getModuleNodeName();
 	
 	protected void initializeModule(IModule module){
-		if(module instanceof IControlModule){
-			IControlModule ctrlModule = (IControlModule)module;
+		if(module instanceof ControlModule){
+			ControlModule ctrlModule = (ControlModule)module;
 			
 			ctrlModule.setDataSourceDataSupplier(dataSourceSupplier);
 			ctrlModule.setFlowDataSupplier(flowDataSupplier);

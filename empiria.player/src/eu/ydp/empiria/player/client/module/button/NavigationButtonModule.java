@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.test.navigation;
+package eu.ydp.empiria.player.client.module.button;
 
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -9,19 +9,18 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
+import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.controls.ControlModule;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
-import eu.ydp.empiria.player.client.style.StyleUtil;
 
-public class NavigationButton extends ControlModule implements ISimpleModule{
+public class NavigationButtonModule extends ControlModule implements ISimpleModule{
 	
 	private PushButton button;
 	
 	private NavigationButtonDirection direction;
 	
-	public NavigationButton(NavigationButtonDirection dir){
+	public NavigationButtonModule(NavigationButtonDirection dir){
 		direction = dir;
 	}
 	
@@ -67,7 +66,7 @@ public class NavigationButton extends ControlModule implements ISimpleModule{
 	}
 	
 	private String getStyleName(){
-		return StyleUtil.getStyleName(NavigationButtonDirection.getName(direction) + "-button");
+		return "qp-" + NavigationButtonDirection.getName(direction) + "-button";
 	}
 	
 	private Boolean isLastPage(){

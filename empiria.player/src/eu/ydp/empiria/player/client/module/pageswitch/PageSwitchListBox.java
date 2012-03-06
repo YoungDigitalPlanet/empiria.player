@@ -1,8 +1,9 @@
-package eu.ydp.empiria.player.client.module.test.navigation.pagesswitch;
+package eu.ydp.empiria.player.client.module.pageswitch;
 
 import com.google.gwt.user.client.ui.ListBox;
 
-public class PagesSwitchListBox extends ListBox implements IPagesSwitchWidget{
+
+public class PageSwitchListBox extends ListBox implements IPageSwitchWidget{
 	
 	@Override
 	public void setItemsCount(Integer itemsCount) {

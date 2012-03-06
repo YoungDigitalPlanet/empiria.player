@@ -41,10 +41,10 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Inlin
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.LinkModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathTextModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ObjectModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PagesSwitchExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageSwitchModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PromptModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SelectionModuleConnectorExtension;
@@ -261,9 +261,9 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new LinkModuleConnectorExtension());
 		loadExtension(new PromptModuleConnectorExtension());
 		loadExtension(new TableModuleConnectorExtension());
-		loadExtension(new NextPageButtonExtension());
-		loadExtension(new PrevPageButtonExtension());
-		loadExtension(new PagesSwitchExtension());
+		loadExtension(new NextPageButtonModuleConnectorExtension());
+		loadExtension(new PrevPageButtonModuleConnectorExtension());
+		loadExtension(new PageSwitchModuleConnectorExtension());
 	}
 	
 	protected void loadLibraryExtensions(){

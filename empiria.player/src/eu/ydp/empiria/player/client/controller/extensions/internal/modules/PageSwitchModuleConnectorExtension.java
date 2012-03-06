@@ -2,10 +2,10 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
-import eu.ydp.empiria.player.client.module.test.navigation.PagesSwitch;
+import eu.ydp.empiria.player.client.module.pageswitch.PageSwitchModule;
 
 
-public class PagesSwitchExtension extends ControllModuleExtension{
+public class PageSwitchModuleConnectorExtension extends ControlModuleConnectorExtension{
 	
 	@Override
 	public ModuleCreator getModuleCreator() {
@@ -23,7 +23,7 @@ public class PagesSwitchExtension extends ControllModuleExtension{
 			
 			@Override
 			public IModule createModule() {
-				PagesSwitch pagesSwitch = new PagesSwitch();
+				PageSwitchModule pagesSwitch = new PageSwitchModule();
 				
 				initializeModule(pagesSwitch);
 				

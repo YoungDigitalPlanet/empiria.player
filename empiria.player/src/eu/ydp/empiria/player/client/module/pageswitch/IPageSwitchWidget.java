@@ -1,9 +1,9 @@
-package eu.ydp.empiria.player.client.module.test.navigation.pagesswitch;
+package eu.ydp.empiria.player.client.module.pageswitch;
 
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 
-public interface IPagesSwitchWidget {
+public interface IPageSwitchWidget {
 	
 	public HandlerRegistration addChangeHandler(ChangeHandler handler);
 	
