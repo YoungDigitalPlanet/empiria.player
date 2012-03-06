@@ -43,6 +43,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathM
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ObjectModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PagesSwitchExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PromptModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
@@ -262,6 +263,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new TableModuleConnectorExtension());
 		loadExtension(new NextPageButtonExtension());
 		loadExtension(new PrevPageButtonExtension());
+		loadExtension(new PagesSwitchExtension());
 	}
 	
 	protected void loadLibraryExtensions(){
