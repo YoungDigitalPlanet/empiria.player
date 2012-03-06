@@ -102,9 +102,9 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		listBox.setChangeListener(this);
 		
 		if (showEmptyOption){
-			Widget emptyOptionInBody = new InlineHTML();
+			Widget emptyOptionInBody = new InlineHTML(" ");
 			emptyOptionInBody.setStyleName("qp-text-choice-popup-option-empty");
-			Widget emptyOptionInPopup = new InlineHTML();
+			Widget emptyOptionInPopup = new InlineHTML(" ");
 			emptyOptionInPopup.setStyleName("qp-text-choice-popup-option-empty");
 			listBox.addOption(emptyOptionInBody, emptyOptionInPopup);
 			listBox.setSelectedIndex(0);

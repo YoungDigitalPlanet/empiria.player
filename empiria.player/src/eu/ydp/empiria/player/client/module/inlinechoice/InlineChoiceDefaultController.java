@@ -233,7 +233,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 		// Add no answer as first option
 		if (showEmptyOption)
-			listBox.addItem("");
+			listBox.addItem(" ");
 		
 		for(int i = 0; i < nodes.getLength(); i++){
 			if(nodes.item(i).getNodeName().compareTo("inlineChoice") == 0){
@@ -254,7 +254,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 		// Add no answer as first option
 		if (showEmptyOption)
-			listBox.addItem("");
+			listBox.addItem(" ");
 		
 		// Add nodes to temporary list
 		for(int i = 0; i < nodes.getLength(); i++){
