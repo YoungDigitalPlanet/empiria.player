@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.test;
+package eu.ydp.empiria.player.client.module.test.navigation;
 
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -7,41 +7,27 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
-import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsListener;
-import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
-import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.controls.ControlModule;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.style.StyleUtil;
 
-public class NavigationButton implements ISimpleModule, DeliveryEventsListener{
-	
-	private FlowRequestInvoker flowRequestInvoker;
+public class NavigationButton extends ControlModule implements ISimpleModule{
 	
 	private PushButton button;
 	
 	private NavigationButtonDirection direction;
 	
-	private DataSourceDataSupplier dataSourceSupplier;
-	
-	private FlowDataSupplier flowDataSupplier;
-	
-	public NavigationButton(FlowRequestInvoker fri, 
-							DataSourceDataSupplier dss, 
-							FlowDataSupplier fds, 
-							NavigationButtonDirection dir){
-		flowRequestInvoker = fri;
-		direction = dir;	
-		flowDataSupplier = fds;
-		dataSourceSupplier = dss;
+	public NavigationButton(NavigationButtonDirection dir){
+		direction = dir;
 	}
 	
 	@Override
 	public void initModule(Element element, ModuleSocket ms,
-			ModuleInteractionListener mil) {
+								ModuleInteractionListener mil) {
 	}
 	
 	@Override
@@ -81,7 +67,7 @@ public class NavigationButton implements ISimpleModule, DeliveryEventsListener{
 	}
 	
 	private String getStyleName(){
-		return "qp-" + NavigationButtonDirection.getName(direction) + "-button";
+		return StyleUtil.getStyleName(NavigationButtonDirection.getName(direction) + "-button");
 	}
 	
 	private Boolean isLastPage(){
@@ -99,5 +85,4 @@ public class NavigationButton implements ISimpleModule, DeliveryEventsListener{
 		
 		return styleName;
 	}
-	
 }
