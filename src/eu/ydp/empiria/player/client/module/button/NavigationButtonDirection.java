@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.test.navigation;
+package eu.ydp.empiria.player.client.module.button;
 
 import static eu.ydp.empiria.player.client.util.MapCreator.m;
 

@@ -7,10 +7,10 @@ import java.util.Map;
 
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
-import eu.ydp.empiria.player.client.module.test.navigation.NavigationButton;
-import eu.ydp.empiria.player.client.module.test.navigation.NavigationButtonDirection;
+import eu.ydp.empiria.player.client.module.button.NavigationButtonModule;
+import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 
-public abstract class NavigationButtonExtension extends ControllModuleExtension{
+public abstract class NavigationButtonModuleConnectorExtension extends ControlModuleConnectorExtension{
 	
 	private static final Map<String, NavigationButtonDirection> NODE2DIRECTION = m(new HashMap<String, NavigationButtonDirection>()).
 			p("nextItemNavigation", NavigationButtonDirection.NEXT).
@@ -33,7 +33,7 @@ public abstract class NavigationButtonExtension extends ControllModuleExtension{
 			@Override
 			public IModule createModule() {
 				NavigationButtonDirection direction =  getDirection(getModuleNodeName());
-				NavigationButton button = new NavigationButton(direction);
+				NavigationButtonModule button = new NavigationButtonModule(direction);
 				
 				initializeModule(button);
 				

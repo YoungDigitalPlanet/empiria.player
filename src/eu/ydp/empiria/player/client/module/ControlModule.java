@@ -1,12 +1,12 @@
-package eu.ydp.empiria.player.client.module.controls;
+package eu.ydp.empiria.player.client.module;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
+import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.module.IControlModule;
 
-public abstract class ControlModule implements IControlModule {
+public abstract class ControlModule implements DeliveryEventsListener {
 	
 	protected FlowRequestInvoker flowRequestInvoker;
 	
@@ -17,17 +17,14 @@ public abstract class ControlModule implements IControlModule {
 	@Override
 	public abstract void onDeliveryEvent(DeliveryEvent flowEvent);
 
-	@Override
 	public void setDataSourceDataSupplier(DataSourceDataSupplier supplier) {
 		dataSourceSupplier = supplier;
 	}
-
-	@Override
+	
 	public void setFlowDataSupplier(FlowDataSupplier supplier) {
 		flowDataSupplier = supplier;
 	}
-
-	@Override
+	
 	public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
 		flowRequestInvoker = fri;
 	}
