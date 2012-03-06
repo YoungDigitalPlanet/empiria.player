@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.test;
+package eu.ydp.empiria.player.client.module.test.navigation;
 
 import static eu.ydp.empiria.player.client.util.MapCreator.m;
 
