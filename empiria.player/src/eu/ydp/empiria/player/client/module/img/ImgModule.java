@@ -53,9 +53,9 @@ public class ImgModule implements ISimpleModule {
 		
 		descriptionPanel = new FlowPanel();
 		descriptionPanel.setStyleName("qp-img-description");
-		
-		containerPanel.add(titlePanel);
+
 		containerPanel.add(contentPanel);
+		containerPanel.add(titlePanel);
 		containerPanel.add(descriptionPanel);
 
 		NodeList titleNodes = element.getElementsByTagName("title");
