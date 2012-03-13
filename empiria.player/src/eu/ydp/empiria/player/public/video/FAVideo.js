@@ -49,8 +49,22 @@ http://www.adobe.com/go/favideo/
  * and listen to events from a Flash video player through Javascript.
  *----------------------------------------------------- */
 	FAVideo = function(divName, videoPath, width, height, options) {
-		this.DEFAULT_SWF_PATH = "empiria.player/video/FAVideo"; // dot swf is added by AC_RunActiveContent
-		this.DEFAULT_SKIN_PATH = "empiria.player/video/skins/ClearExternalAll.swf";
+		var scriptPath = "empiria.player/video";
+		
+		var head = document.getElementsByTagName("head")[0];
+		var headChildren = head.childNodes;
+		for (var i = 0 ; i < headChildren.length ; i ++){
+			if (headChildren[i].nodeName != null  &&  headChildren[i].nodeName.toLowerCase() == 'script'){
+				var src = headChildren[i].getAttribute("src");
+				var searchString = "empiria.player.nocache.js";
+				if (src != null  &&  src.indexOf(searchString, src.length - searchString.length) !== -1){
+					scriptPath = src.substr(0, src.length - searchString.length)+"video";
+					break;
+				}
+			}
+		}
+		this.DEFAULT_SWF_PATH = scriptPath + "/FAVideo"; // dot swf is added by AC_RunActiveContent
+		this.DEFAULT_SKIN_PATH = scriptPath + "/skins/ClearExternalAll.swf";
 		this.DEFAULT_WIDTH = 320;
 		this.DEFAULT_HEIGHT = 240;
 		this.ERROR_DIV_NOT_FOUND = "The specified DIV element was not found.";
