@@ -103,7 +103,6 @@
 	</target>
 	
 	<target name="test.jar" depends="test.build">
-		<jar destfile="build/jar/Test1.jar" basedir="build/classes" includes="**/*.class"/>
 	</target>
 	
 	<target name="test" depends="test.jar">
