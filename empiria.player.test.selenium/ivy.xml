@@ -1,9 +1,12 @@
-<ivy-module version="2.0">
-  <info organisation="eu.ydp" module="empiriaPlayerTest"/>
-	<configurations>
-		<conf name="default"  description="Extension executables"/>
-  </configurations>
-  <dependencies>
-  	<dependency name="seleniumPhpFw" org="eu.ydp" rev="latest.release" conf="default"/>
-  </dependencies>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">    
+		<info organisation="eu.ydp" module="empiria.test.selenium">
+			<ivyauthor name="rrybacki"/>
+		</info>
+		<dependencies>
+	        <dependency name="ant-contrib" org="ant-contrib" transitive="false" conf="default" rev="1.0b3" />
+	        <!--dependency name="selenium-java" org="org.seleniumhq.selenium" transitive="true" conf="default" rev="latest.release" /-->
+	        <dependency name="selenium-java-client-driver" org="org.seleniumhq.selenium.client-drivers" transitive="true" conf="default" rev="latest.release" />
+	        <dependency name="empiriaPlayer" org="eu.ydp" transitive="false" conf="default" rev="1.1+" />
+		</dependencies>
 </ivy-module>
