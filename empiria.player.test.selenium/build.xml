@@ -107,24 +107,37 @@
 	</target>
 	
 	<target name="test" depends="test.jar">
+		<taskdef classpath="${lib.dir}/ant-contrib.jar" resource="net/sf/antcontrib/antcontrib.properties"/>
+		
 		<antcall target="jetty.start"/>
-			
+		
 		<mkdir dir="${report.dir}"/>
-		<junit fork="yes" printsummary="yes" haltonfailure="yes" showoutput="yes">
-			<classpath>
-				<fileset dir="${lib.dir}">
-					<include name="*.jar"/>
-				</fileset>
-			<pathelement location="build/classes" />
-			<pathelement location="libs/junit-4.10.jar" />
-		  </classpath>
-		  <batchtest todir="report">
-			<fileset dir="build/classes" includes="**/*.class"/>
-			  <formatter type="plain" />
-			  <formatter type="xml" />
-		  </batchtest>
-		</junit>
-		<antcall target="jetty.stop"/>
+		
+		<trycatch>
+			<try>
+				<junit fork="yes" printsummary="yes" haltonfailure="yes" showoutput="yes">
+					<classpath>
+						<fileset dir="${lib.dir}">
+							<include name="*.jar"/>
+						</fileset>
+					<pathelement location="build/classes" />
+					<pathelement location="libs/junit-4.10.jar" />
+				  </classpath>
+				  <batchtest todir="report">
+					<fileset dir="build/classes" includes="**/*.class"/>
+					  <formatter type="plain" />
+					  <formatter type="xml" />
+				  </batchtest>
+				</junit>
+			</try>
+			<catch>
+				<echo message="Selenium junit tests failed." />
+			</catch>
+			<finally>
+				<antcall target="jetty.stop"/>
+			</finally>
+		</trycatch>
+		
 	</target>
 	
 	<target name="clean">
