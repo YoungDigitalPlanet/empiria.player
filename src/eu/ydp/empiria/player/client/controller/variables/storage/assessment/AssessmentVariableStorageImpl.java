@@ -34,6 +34,7 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 		ensureVariable("SHOW_ANSWERS");
 		ensureVariable("RESET");
 		ensureVariable("MISTAKES");
+		ensureVariable("VISITED");
 	}
 	
 	private void ensureVariable(String identifier){
