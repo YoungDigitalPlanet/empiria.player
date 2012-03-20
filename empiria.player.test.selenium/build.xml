@@ -22,9 +22,7 @@
 	<property	name="jar.dir" value="${build.dir}/jar" />
 	<property	name="report.dir" value="${base.dir}/report" />
 	<property	name="src.dir" value="${base.dir}/test" />
-	
-	<echo message="${JETTY_HOME}" />
-	
+		
 	<target name="jetty.start">
 		<antcall target="jetty.stop" />
 		<echo message="Starting Jetty at port ${jetty.port}..." />
@@ -123,7 +121,7 @@
 					<pathelement location="libs/junit-4.10.jar" />
 				  </classpath>
 				  <batchtest todir="report">
-					<fileset dir="build/classes" includes="**/*.class"/>
+					<fileset dir="build/classes" includes="**/*TestCase.class"/>
 					  <formatter type="plain" />
 					  <formatter type="xml" />
 				  </batchtest>
