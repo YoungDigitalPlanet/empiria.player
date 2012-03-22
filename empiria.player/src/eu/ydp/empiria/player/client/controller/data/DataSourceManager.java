@@ -255,9 +255,9 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 				builder.setCallback( new RequestCallback() {
 					@Override
 					public void onResponseReceived(Request request, Response response) {
-						styleLoadCounter--;
+						styleLoadCounter--; 
 						try {
-							if (response.getStatusCode()==Response.SC_OK) { 
+							if (response.getStatusCode() == Response.SC_OK || response.getStatusCode() == 0) {
 								getStyleDataSourceManager().addAssessmentStyle( response.getText() , styleURL2 );
 							} else {
 								// TODO add error handling
@@ -290,7 +290,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 						public void onResponseReceived(Request request, Response response) {
 							styleLoadCounter--;
 							try {
-								if (response.getStatusCode()==Response.SC_OK) {
+								if (response.getStatusCode()==Response.SC_OK || response.getStatusCode() == 0) {
 									getStyleDataSourceManager().addItemStyle(ii, response.getText() , styleURL2);
 								} else {
 									// TODO add error handling
