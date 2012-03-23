@@ -1,6 +1,6 @@
 package eu.ydp.empiria.test.selenium.choice;
 
-public class ChoiceAnswerAndResetTestCase extends ChoiceTestCaseBase {
+public class Choice19AnswerAndResetTestCase extends ChoiceTestCaseBase {
 
 	public void testAnswerAndReset1() throws Exception{
 		performTestAnswerAndReset("1", IN_OPTION_1);
@@ -27,18 +27,18 @@ public class ChoiceAnswerAndResetTestCase extends ChoiceTestCaseBase {
 	}
 	
 	private void performTestAnswerAndReset(String testIndex, String selectedOption) throws Exception{
-		openTest(testIndex);
+		openTestSingle(testIndex);
 		waitForPageLoad(0);
 		// select answer
-		clickAndOut(IN_MODULE+selectedOption+OPTION_BUTTON);
+		clickAndOut(IN_MODULE+selectedOption+SINGLE_OPTION_BUTTON);
 		// switch pages
 		clickReset();
 		// check whether the module is unlocked
-		verifyFalse(selenium.isElementPresent(IN_MODULE+IN_ANYWHERE+OPTION_DISABLED));
-		verifyFalse(selenium.isElementPresent(IN_MODULE+IN_ANYWHERE+OPTION_SELECTED_DISABLED));
+		verifyFalse(selenium.isElementPresent(IN_MODULE+IN_ANYWHERE+SINGLE_OPTION_NOTSELECTED_DISABLED));
+		verifyFalse(selenium.isElementPresent(IN_MODULE+IN_ANYWHERE+SINGLE_OPTION_SELECTED_DISABLED));
 		// check whether the first option is selected 
-		verifyTrue(selenium.isElementPresent(IN_MODULE+IN_OPTION_1+OPTION));
-		verifyTrue(selenium.isElementPresent(IN_MODULE+IN_OPTION_2+OPTION));
-		verifyTrue(selenium.isElementPresent(IN_MODULE+IN_OPTION_3+OPTION));
+		verifyTrue(selenium.isElementPresent(IN_MODULE+IN_OPTION_1+SINGLE_OPTION_NOTSELECTED));
+		verifyTrue(selenium.isElementPresent(IN_MODULE+IN_OPTION_2+SINGLE_OPTION_NOTSELECTED));
+		verifyTrue(selenium.isElementPresent(IN_MODULE+IN_OPTION_3+SINGLE_OPTION_NOTSELECTED));
 	}
 }

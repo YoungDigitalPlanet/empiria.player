@@ -1,7 +1,7 @@
 package eu.ydp.empiria.test.selenium.choice;
 
 
-public class ChoiceAnswerAndCheckAndPageSwitchTestCase extends ChoiceTestCaseBase {
+public class Choice13AnswerAndCheckAndPageSwitchTestCase extends ChoiceTestCaseBase {
 
 	public void testAnswerAndCheckAndPageSwitch1() throws Exception{
 		performTestAnswerAndCheckAndPageSwitch(IN_OPTION_1, IN_OPTION_2, IN_OPTION_3);
@@ -16,10 +16,10 @@ public class ChoiceAnswerAndCheckAndPageSwitchTestCase extends ChoiceTestCaseBas
 	}
 	
 	private void performTestAnswerAndCheckAndPageSwitch(String selectedOption, String notSelectedOption1, String notSelectedOption2){
-		openTest("1");
+		openTestSingle("1");
 		waitForPageLoad(0);
 		// select answer
-		click(IN_MODULE+selectedOption+OPTION_BUTTON);
+		click(IN_MODULE+selectedOption+SINGLE_OPTION_BUTTON);
 		// check
 		clickCheck();
 		// switch pages
@@ -28,14 +28,14 @@ public class ChoiceAnswerAndCheckAndPageSwitchTestCase extends ChoiceTestCaseBas
 		navigatePreviousPage();
 		waitForPageLoad(0);
 		// check whether the module is unlocked
-		verifyFalse(selenium.isElementPresent(IN_MODULE+IN_ANYWHERE+OPTION_DISABLED));
+		verifyFalse(selenium.isElementPresent(IN_MODULE+IN_ANYWHERE+SINGLE_OPTION_NOTSELECTED_DISABLED));
 		// check whether there is no disabled option
-		verifyFalse(selenium.isElementPresent(IN_MODULE+IN_ANYWHERE+OPTION_SELECTED_DISABLED));
+		verifyFalse(selenium.isElementPresent(IN_MODULE+IN_ANYWHERE+SINGLE_OPTION_SELECTED_DISABLED));
 		// check whether the first option is selected 
-		verifyTrue(selenium.isElementPresent(IN_MODULE+selectedOption+OPTION_SELECTED));
+		verifyTrue(selenium.isElementPresent(IN_MODULE+selectedOption+SINGLE_OPTION_SELECTED));
 		// check whether the other options are not selected
-		verifyFalse(selenium.isElementPresent(IN_MODULE+notSelectedOption1+OPTION_SELECTED));
-		verifyFalse(selenium.isElementPresent(IN_MODULE+notSelectedOption2+OPTION_SELECTED));
+		verifyFalse(selenium.isElementPresent(IN_MODULE+notSelectedOption1+SINGLE_OPTION_SELECTED));
+		verifyFalse(selenium.isElementPresent(IN_MODULE+notSelectedOption2+SINGLE_OPTION_SELECTED));
 		
 	}
 
