@@ -21,6 +21,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.communication.PageData;
@@ -60,6 +61,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	private LibraryLoader libraryLoader;
 	private DataSourceManagerMode mode;
 	private DataLoaderEventListener listener;
+	private XMLData assesmentXML;
 	
 	public InitialData getInitialData(){
 		InitialData initialData = new InitialData(itemDataCollectionManager.getItemsCount());
@@ -69,7 +71,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		return initialData;
 	}
 	
-	public XMLData getAssessmentData(){
+	public AssessmentData getAssessmentData(){
 		return assessmentDataManager.getAssessmentData();
 	}
 
@@ -111,16 +113,8 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		new eu.ydp.empiria.player.client.util.xml.XMLDocument(resolvedURL, new IDocumentLoaded(){
 
 			public void finishedLoading(Document document, String baseURL) {
-				if (!isItemDocument(document)){
-					assessmentDataManager.setAssessmentData(new XMLData(document, baseURL));
-					if (assessmentDataManager.hasLibrary())
-						loadExtensionsLibrary();
-					else
-						loadItems();
-				} else {
-					assessmentDataManager.setAssessmentDefaultData();
-					loadSingleItemData(new XMLData(document, baseURL));
-				}
+				assesmentXML = new XMLData(document, baseURL);
+				assessmentDataManager.setAssessmentData(assesmentXML);
 			}
 
 			@Override
@@ -232,8 +226,17 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	@Override
 	public void onAssessmentDataLoaded() {
+		if(assessmentDataManager.isDefaultData()){
+			loadSingleItemData(assesmentXML);
+		}else{
+			if (assessmentDataManager.hasLibrary())
+				loadExtensionsLibrary();
+			else
+				loadItems();
+		}
+		
 		getDataLoaderEventListener().onAssessmentLoaded();
-		mode = DataSourceManagerMode.SERVING;		
+		mode = DataSourceManagerMode.SERVING;	
 	}
 	
 	@Override
@@ -355,14 +358,6 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	public DataLoaderEventListener getDataLoaderEventListener() {
 		return listener;
-	}
-
-	private boolean isItemDocument(Document doc){
-		try {
-			return doc.getDocumentElement().getNodeName().equals("assessmentItem");
-		} catch (Exception e) {
-		}
-		return true;
 	}
 	
 	public List<LibraryExtension> getExtensionCreators(){

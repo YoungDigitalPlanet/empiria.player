@@ -2,39 +2,48 @@ package eu.ydp.empiria.player.client.controller.data;
 
 import java.util.Vector;
 
+import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
+import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
+import eu.ydp.empiria.player.client.controller.data.events.SkinDataLoaderListener;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLink;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
-public class AssessmentDataSourceManager {
+public class AssessmentDataSourceManager implements SkinDataLoaderListener{
 
 	public AssessmentDataSourceManager(AssessmentDataLoaderEventListener l){
 		listener = l;
 		itemsCount = -1;
 		errorMessage = "";
+		skinData = new SkinDataSourceManager(this);
 	}
 	
 	private XMLData data;
+	private AssessmentData assessmentData;
 	private AssessmentDataLoaderEventListener listener;
 	private StyleLinkDeclaration styleDeclaration;
 	private int itemsCount;
 	private String errorMessage;
 	private LibraryLink libraryLink;
+	private SkinDataSourceManager skinData;
+	private boolean isDefaultData;
 	
 	public void setAssessmentData(XMLData d){
-		data = d;
-		itemsCount = -1;
-		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
-		libraryLink = new LibraryLink(data.getDocument().getElementsByTagName("extensionsLibrary"), data.getBaseURL());
-		listener.onAssessmentDataLoaded();
+		if(!isItemDocument(d.getDocument())){
+			isDefaultData = false;
+			initializeData(d);
+		}else{
+			isDefaultData = true;
+			initializeDefaultData();
+		}
 	}
 	
 	public void setAssessmentLoadingError(String err){
@@ -44,15 +53,35 @@ public class AssessmentDataSourceManager {
 		errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ASSESSMENT_FAILED_TO_LOAD) + detail;
 	}
 	
-	public void setAssessmentDefaultData(){
+	private void initializeDefaultData(){
 		data = new XMLData(XMLParser.parse("<assessmentTest title=\"\"/>"), "");
 		itemsCount = 1;
 		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
 		listener.onAssessmentDataLoaded();
 	}
 	
-	public XMLData getAssessmentData(){
+	private void initializeData(XMLData d){
+		String skinUrl = getSkinUrl(d.getDocument());
+		
+		data = d;
+		itemsCount = -1;
+		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
+		libraryLink = new LibraryLink(data.getDocument().getElementsByTagName("extensionsLibrary"), data.getBaseURL());
+		
+		if(skinUrl != null){
+			skinUrl = data.getBaseURL().concat(skinUrl);
+			skinData.load(skinUrl);
+		}else{
+			listener.onAssessmentDataLoaded();
+		}
+	}
+	
+	public XMLData getAssessmentXMLData(){
 		return data;
+	}
+	
+	public AssessmentData getAssessmentData(){
+		return assessmentData;
 	}
 	
 	public boolean isError(){
@@ -69,6 +98,10 @@ public class AssessmentDataSourceManager {
 	
 	public String getLibraryLink(){
 		return libraryLink.getLink();
+	}
+	
+	public boolean isDefaultData(){
+		return isDefaultData;
 	}
 	
 	public String getAssessmentTitle(){
@@ -116,8 +149,42 @@ public class AssessmentDataSourceManager {
 	}
 	
 	public Vector<String> getStyleLinksForUserAgent(String userAgent){
+		Vector<String> declarations = new Vector<String>();
+		
 		if (styleDeclaration != null)
-			return styleDeclaration.getStyleLinksForUserAgent(userAgent);
-		return new Vector<String>();
+			declarations.addAll(styleDeclaration.getStyleLinksForUserAgent(userAgent));
+		
+		declarations.addAll(skinData.getStyleLinksForUserAgent(userAgent));
+		
+		return declarations;
+	}
+	
+	public void onSkinLoad() {
+		assessmentData = new AssessmentData(data, skinData.getSkinData());
+		listener.onAssessmentDataLoaded();
+	}
+
+	public void onSkinLoadError() {
+		assessmentData = new AssessmentData(data, null);
+		listener.onAssessmentDataLoaded();		
+	}
+	
+	private String getSkinUrl(Document document){
+		String url = null;
+		
+		try{
+			Node testViewNode = document.getElementsByTagName("testView").item(0);
+			url = testViewNode.getAttributes().getNamedItem("href").getNodeValue();
+		}catch (Exception e) {}
+		
+		return url;
+	}
+	
+	private boolean isItemDocument(Document doc){
+		try {
+			return doc.getDocumentElement().getNodeName().equals("assessmentItem");
+		} catch (Exception e) {
+		}
+		return true;
 	}
 }
