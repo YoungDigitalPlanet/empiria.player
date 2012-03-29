@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.PageData;
 import eu.ydp.empiria.player.client.controller.communication.PageDataSummary;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
@@ -50,9 +51,10 @@ public class AssessmentController implements FlowActivityEventsHandler, Assessme
 		footerViewSocket = fvs;
 	}
 	
-	public void init(XMLData data){
+	public void init(AssessmentData data){
 		if (data != null){
-			assessment = new Assessment(data);
+			assessment = new Assessment(data.getData());
+			createAssessmentBody(data.getSkinData());
 			assessmentViewSocket.setAssessmentViewCarrier(new AssessmentViewCarrier(assessment, headerViewSocket, footerViewSocket));
 		}
 	}
@@ -78,6 +80,12 @@ public class AssessmentController implements FlowActivityEventsHandler, Assessme
 	@Override
 	public JavaScriptObject getJsSocket() {
 		return createJsSocket(pageController.getJsSocket());
+	}
+	
+	private void createAssessmentBody(XMLData data){
+		if(data != null){
+			
+		}
 	}
 	
 	private native JavaScriptObject createJsSocket(JavaScriptObject pageControllerSocket)/*-{
