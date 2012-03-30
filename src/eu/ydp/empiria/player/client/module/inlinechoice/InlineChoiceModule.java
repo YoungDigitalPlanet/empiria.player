@@ -122,7 +122,7 @@ public class InlineChoiceModule  implements IInteractionModule{
    * @see IStateful#getState()
    */
   public JSONArray getState() {
-	  // TODO STATE MUS BE COMMON FOR ALL CONTROLLERS
+	  // TODO STATE MUST BE COMMON FOR ALL CONTROLLERS
 	  return controller.getState();
   }
 

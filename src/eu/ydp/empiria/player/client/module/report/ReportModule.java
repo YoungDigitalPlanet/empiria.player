@@ -24,6 +24,7 @@ import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class ReportModule implements IContainerModule {
 	
@@ -31,6 +32,7 @@ public class ReportModule implements IContainerModule {
 	protected DataSourceDataSupplier dataSourceDataSupplier;
 	protected FlowRequestInvoker flowRequestInvoker;
 	protected String content;
+	private String userClass;
 	
 	protected Panel mainPanel;
 	protected FlexTable table;
@@ -42,7 +44,10 @@ public class ReportModule implements IContainerModule {
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil, BodyGeneratorSocket bgs) {		
+	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil, BodyGeneratorSocket bgs) {
+
+		userClass = XMLUtils.getAttributeAsString(element, "class");
+		
 		String range = "1:-1";
 		Map<String, String> styles = ms.getStyles(element);
 		if (styles.containsKey("-empiria-report-items-include")){
@@ -125,6 +130,8 @@ public class ReportModule implements IContainerModule {
 		
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName("qp-report");
+		if (userClass != null  &&  !"".equals(userClass))
+			mainPanel.addStyleName(userClass);
 		
 		mainPanel.add(table);
 	}

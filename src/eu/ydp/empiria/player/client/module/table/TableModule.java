@@ -27,6 +27,12 @@ public class TableModule implements IContainerModule {
 	
 	@Override
 	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil, BodyGeneratorSocket bgs) {
+
+		String className = element.getAttribute("class");
+		if (className != null  &&  !"".equals(className)  &&  getView() != null){
+			getView().addStyleName(className);
+		}
+		
 		FlexTable table = new FlexTable();
 		table.setStyleName("qp-table-table");
 		
