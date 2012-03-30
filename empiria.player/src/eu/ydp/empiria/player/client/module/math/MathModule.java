@@ -58,6 +58,9 @@ public class MathModule implements IInteractionModule {
 		response = moduleSocket.getResponse(responseIdentifier);
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName("qp-mathinteraction");
+		String userClass = XMLUtils.getAttributeAsString(element, "class");
+		if (userClass != null  &&  !"".equals(userClass))
+			mainPanel.addStyleName(userClass);
 		placeholders.get(0).add(mainPanel);
 	}
 
