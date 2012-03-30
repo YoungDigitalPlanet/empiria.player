@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.delivery;
 
 import java.util.List;
 import java.util.Vector;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNull;
@@ -44,6 +45,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathM
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ObjectModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageInPageModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageSwitchModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PromptModuleConnectorExtension;
@@ -189,7 +191,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		sessionDataManager.init(dataManager.getItemsCount(), dataManager.getInitialData());
 		initExtensions();
 		flowManager.init(dataManager.getItemsCount());
-		assessmentController.init(dataManager.getAssessmentData());
+		assessmentController.init(dataManager.getAssessmentData(), flowManager.getDisplayOptions());
 		getDeliveryEventsListener().onDeliveryEvent(
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
 		getDeliveryEventsListener().onDeliveryEvent(
@@ -266,6 +268,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new NextPageButtonModuleConnectorExtension());
 		loadExtension(new PrevPageButtonModuleConnectorExtension());
 		loadExtension(new PageSwitchModuleConnectorExtension());
+		loadExtension(new PageInPageModuleConnectorExtension());
 	}
 	
 	protected void loadLibraryExtensions(){

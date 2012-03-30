@@ -20,63 +20,142 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
-*/
+ */
 package eu.ydp.empiria.player.client.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
+
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
+import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
+import eu.ydp.empiria.player.client.controller.communication.PageReference;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
 public class Assessment {
 
 	/** Whole assessment title */
 	private String title;
-	
+
 	/** XML DOM of the assessment */
 	private XMLData xmlData;
 
+	private Widget skinView;
+
+	private Panel pageSlot;
+
 	public StyleLinkDeclaration styleDeclaration;
-	
-		
+
+	private StyleSocket styleSocket;
+
+	private ModulesRegistrySocket modulesRegistrySocket;
+
+	private DisplayContentOptions options;
+
 	/**
 	 * C'tor
-	 * @param data XMLData object as data source
+	 * 
+	 * @param data
+	 *            XMLData object as data source
 	 */
-	public Assessment(XMLData data){
-		
-		if (data == null){
-			
-		}
-		
-		xmlData = data;
-		
-		Node rootNode = xmlData.getDocument().getElementsByTagName("assessmentTest").item(0);
-		
-		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
-		
-	    title = ((Element)rootNode).getAttribute("title");
-	    
-	    if (title == null)
-	    	title = "";
-	    
+	public Assessment(AssessmentData data, DisplayContentOptions options,
+			InteractionEventsListener interactionEventsListener,
+			StyleSocket styleSocket, ModulesRegistrySocket modulesRegistrySocket) {
+
+		this.xmlData = data.getData();
+		this.styleSocket = styleSocket;
+		this.modulesRegistrySocket = modulesRegistrySocket;
+		this.options = options;
+
+		Document document = xmlData.getDocument();
+		Document skinDocument = data.getSkinData().getDocument();
+		Element rootNode = (Element) document.getElementsByTagName("assessmentTest").item(0);
+		Element skinBody = (Element) skinDocument.getElementsByTagName("itemBody").item(0);
+
+		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument()
+				.getElementsByTagName("styleDeclaration"), xmlData.getBaseURL());
+		title = rootNode.getAttribute("title");
+
+		initializeBody(skinBody, interactionEventsListener);
 	}
-	
-	
+
+	private void initializeBody(Element bodyNode,
+			InteractionEventsListener interactionEventsListener) {
+
+		AssessmentBody body = new AssessmentBody(options, moduleSocket,
+				interactionEventsListener, modulesRegistrySocket);
+		skinView = body.init(bodyNode);
+		pageSlot = body.getPageSlot();
+	}
+
+	public Widget getSkinView() {
+		return skinView;
+	}
+
+	public Panel getPageSlot() {
+		return pageSlot;
+	}
+
 	/**
 	 * @return number of items in assessment
 	 */
-	public int DEBUGgetAssessmentItemsCount(){
+	public int DEBUGgetAssessmentItemsCount() {
 		return 0;
 	}
 
 	/**
 	 * @return assessment title
 	 */
-	public String getTitle(){
-		return title;
+	public String getTitle() {
+		return (title == null) ? "" : title;
 	}
-	
-	
+
+	private ModuleSocket moduleSocket = new ModuleSocket() {
+
+		private InlineBodyGenerator inlineBodyGenerator;
+
+		public Response getResponse(String id) {
+			return null;
+		}
+
+		@Override
+		public void addInlineFeedback(InlineFeedback inlineFeedback) {
+
+		}
+
+		@Override
+		public Map<String, String> getStyles(Element element) {
+			return (styleSocket != null) ? styleSocket.getStyles(element)
+					: new HashMap<String, String>();
+		}
+
+		public void setCurrentPages(PageReference pr) {
+			if (styleSocket != null) {
+				styleSocket.setCurrentPages(pr);
+			}
+		}
+
+		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
+			if (inlineBodyGenerator == null) {
+				inlineBodyGenerator = new InlineBodyGenerator(
+						modulesRegistrySocket, this, options);
+			}
+			return inlineBodyGenerator;
+		}
+
+	};
+
 }

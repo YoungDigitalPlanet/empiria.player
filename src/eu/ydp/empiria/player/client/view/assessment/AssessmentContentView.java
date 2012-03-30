@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.view.assessment;
 
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 
 import eu.ydp.empiria.player.client.view.page.PageContentView;
+import eu.ydp.empiria.player.client.view.page.PageViewCarrier;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
 
 public class AssessmentContentView implements AssessmentViewSocket {
@@ -35,14 +35,27 @@ public class AssessmentContentView implements AssessmentViewSocket {
 
 
 	@Override
-	public void setAssessmentViewCarrier(AssessmentViewCarrier a) {
-		headerPanel.clear();
-		if (a.getHeaderView() != null)
-			headerPanel.add(a.getHeaderView());
-		navigationPanel.clear();
-		if (a.getFooterView() != null)
-			navigationPanel.add(a.getFooterView());
+	public void setAssessmentViewCarrier(AssessmentViewCarrier viewCarrier) {
+		Panel pageSlot = viewCarrier.getPageSlot();
 		
+		headerPanel.clear();
+		if (viewCarrier.getHeaderView() != null)
+			headerPanel.add(viewCarrier.getHeaderView());
+		navigationPanel.clear();
+		if (viewCarrier.getFooterView() != null)
+			navigationPanel.add(viewCarrier.getFooterView());
+		
+		if(viewCarrier.getSkinView() != null){
+			assessmentPanel.clear();
+			assessmentPanel.add(headerPanel);
+			assessmentPanel.add(viewCarrier.getSkinView());
+			assessmentPanel.add(navigationPanel);
+		}
+		
+		if(pageSlot != null){
+			PageViewCarrier carrier = new PageViewCarrier(pageSlot);
+			pageContentView.setPageViewCarrier(carrier);
+		}
 	}
 
 	@Override
