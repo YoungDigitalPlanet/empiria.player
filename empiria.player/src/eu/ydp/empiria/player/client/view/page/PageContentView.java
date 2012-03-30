@@ -17,7 +17,6 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequestSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
@@ -238,10 +237,15 @@ public class PageContentView implements PageViewSocket {
 	    	    resultScorePanel.add(resultScoreInfoTime);
 
 	    	    contentPanel.setStyleName("qp-summary");
+			}else if(pvc.pageType == PageType.LESSON_SKIN){
+				pagePanel = pvc.getPageSlot();
+				pagePanel.add(itemsPanel);
 			}
 			
-			itemsPanel.clear();
-			itemsPanel.add(contentPanel);
+			if(pvc.pageType != PageType.LESSON_SKIN){
+				itemsPanel.clear();
+				itemsPanel.add(contentPanel);
+			}
 		}
 	}
 

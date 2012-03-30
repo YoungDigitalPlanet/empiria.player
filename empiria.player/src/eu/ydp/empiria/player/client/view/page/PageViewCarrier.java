@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.view.page;
 
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.communication.PageDataError;
@@ -19,6 +20,8 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSo
  */
 public class PageViewCarrier {
 
+	private Panel pageSlot;
+	
 	public PageType pageType;
 		
 	public String[] titles;
@@ -49,12 +52,21 @@ public class PageViewCarrier {
 		errorMessage = p.errorMessage;
 	}
 	
+	public PageViewCarrier(Panel panel){
+		pageSlot = panel;
+		pageType = PageType.LESSON_SKIN;
+	}
+	
 	public Widget getPageTitle(){
 		return new Label("");
 	}
 	
 	public boolean hasContent(){
 		return pageType != PageType.TEST;
+	}
+	
+	public Panel getPageSlot(){
+		return pageSlot;
 	}
 	
 	public Widget getPageContent(){
