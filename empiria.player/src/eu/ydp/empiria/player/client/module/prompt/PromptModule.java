@@ -18,8 +18,11 @@ public class PromptModule implements ISimpleModule {
 
 		String id = element.getAttribute("id");
 		if (id != null  &&  !"".equals(id)  &&  getView() != null){
-			getView().getElement().setId(id);
+			contents.getElement().setId(id);
 		}
+		String cls = element.getAttribute("class");
+		if (cls != null)
+			contents.addStyleName(cls);
 	}
 
 	@Override

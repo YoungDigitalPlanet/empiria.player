@@ -73,6 +73,7 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
+		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
 		multi = response.cardinality == Cardinality.MULTIPLE;
@@ -80,6 +81,8 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 		mainPanel = new FlowPanel();
 		
 		mainPanel.setStyleName("qp-choice-module");
+		if (userClass != null  &&  !"".equals(userClass))
+			mainPanel.addStyleName(userClass);
 		Widget promptWidget = new InlineHTML();
 		promptWidget.setStyleName("qp-prompt");
 		moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstElementWithTagName(moduleElement, "prompt"), promptWidget.getElement());

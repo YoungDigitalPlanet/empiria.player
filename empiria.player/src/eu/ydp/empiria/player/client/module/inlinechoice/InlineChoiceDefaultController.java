@@ -36,7 +36,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	private boolean shuffle = false;
 	private String	lastValue = null;
 	private boolean showingAnswers = false;
-	protected boolean showEmptyOption = true;	
+	protected boolean showEmptyOption = true;
 	
 	protected Element moduleElement;
 	
@@ -61,6 +61,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 		response = moduleSocket.getResponse(responseIdentifier);
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
+		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 		
 		listBox = new AccessibleListBox();
 		if(shuffle)
@@ -86,7 +87,9 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		
 		placeholders.get(0).add(container);
 		
-		container.setStyleName("qp-text-choice");		
+		container.setStyleName("qp-text-choice");	
+		if (userClass != null  &&  !"".equals(userClass))
+			container.addStyleName(userClass);	
 
 		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){

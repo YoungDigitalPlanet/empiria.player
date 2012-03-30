@@ -57,6 +57,11 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName("qp-slideshow");
 		
+		String className = element.getAttribute("class");
+		if (className != null  &&  !"".equals(className)  &&  getView() != null){
+			getView().addStyleName(className);
+		}
+		
 		playButton = new TwoStateButton("qp-slideshow-button-play", "qp-slideshow-button-pause");
 		playButton.addClickHandler(new ClickHandler() {
 			

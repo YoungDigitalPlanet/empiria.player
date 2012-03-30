@@ -94,6 +94,7 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 	public void installViews(List<HasWidgets> placeholders) {
 		
 		options = new Vector<SelectableChoice>();
+		String userClass = "";
 		
 		for (int e = 0 ; e < multiViewElements.size()  &&  e < placeholders.size() ; e ++ ){
 			
@@ -108,6 +109,7 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 		
 				shuffle = XMLUtils.getAttributeAsBoolean(element, "shuffle");
 				maxSelections = XMLUtils.getAttributeAsInt(element, "maxSelections");
+				userClass = XMLUtils.getAttributeAsString(element, "class");
 		
 				responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 				response = moduleSocket.getResponse(responseIdentifier);
@@ -136,6 +138,8 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 					
 			panel = new FlowPanel();
 			panel.setStyleName("qp-identification-module");
+			if (userClass != null  &&  !"".equals(userClass))
+				panel.addStyleName(userClass);
 			for (int i = 0 ; i < currOptions.size() ; i ++){
 				if (fixeds.get(i))
 					panel.add(currOptions.get(i));

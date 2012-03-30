@@ -49,6 +49,9 @@ public class ObjectModule implements ISimpleModule {
 			
 		containerPanel = new FlowPanel();
 		containerPanel.setStyleName("qp-object-container");
+		String cls = element.getAttribute("class");
+		if (cls != null  &&  !"".equals(cls))
+			containerPanel.addStyleName(cls);
 		
 		titlePanel = new FlowPanel();
 		titlePanel.setStyleName("qp-object-title");

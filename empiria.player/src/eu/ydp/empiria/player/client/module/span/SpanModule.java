@@ -23,6 +23,10 @@ public class SpanModule implements ISimpleModule {
 		if (id != null  &&  !"".equals(id)  &&  getView() != null){
 			getView().getElement().setId(id);
 		}
+		String className = element.getAttribute("class");
+		if (className != null  &&  !"".equals(className)  &&  getView() != null){
+			getView().addStyleName(className);
+		}
 	}
 	
 	@Override

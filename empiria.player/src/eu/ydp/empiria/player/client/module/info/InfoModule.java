@@ -47,6 +47,10 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 		mainPanel.setStyleName("qp-info");
 		mainPanel.add(contentPanel);
 		
+		String cls = element.getAttribute("class");
+		if (cls != null)
+			mainPanel.addStyleName(cls);
+		
 		moduleSocket = ms;
 		mainElement = element;
 		

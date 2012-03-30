@@ -83,6 +83,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
+		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 		
 		NodeList optionsNodes = moduleElement.getElementsByTagName("inlineChoice");
 		List<Widget> baseBodies = new ArrayList<Widget>();
@@ -134,7 +135,10 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		
 		container = new FlowPanel();
 		container.setStyleName("qp-text-choice-popup");
+		if (userClass != null  &&  !"".equals(userClass))
+			container.addStyleName(userClass);
 		container.add(listBox);
+		
 		
 		placeholders.get(0).add(container);
 

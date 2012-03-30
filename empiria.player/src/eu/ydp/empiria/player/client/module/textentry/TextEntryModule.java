@@ -73,6 +73,7 @@ public class TextEntryModule implements IInteractionModule{
 		
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier"); 
 		response = moduleSocket.getResponse(responseIdentifier);
+		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 		
 		textBox = new TextBox();
 		if (moduleElement.hasAttribute("expectedLength"))
@@ -102,6 +103,8 @@ public class TextEntryModule implements IInteractionModule{
 		moduleWidget.add(spanContent);
 		moduleWidget.add(spanSufix);
 		moduleWidget.setStyleName("qp-text-textentry");
+		if (userClass != null  &&  !"".equals(userClass))
+			moduleWidget.addStyleName(userClass);
 		
 		placeholders.get(0).add(moduleWidget);
 		

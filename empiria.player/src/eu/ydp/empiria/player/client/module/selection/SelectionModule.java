@@ -80,6 +80,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	public void installViews(List<HasWidgets> placeholders) {
 		
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
+		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 		
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
@@ -97,6 +98,8 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 		panel = new VerticalPanel();
 		panel.setStyleName("qp-selection-module");
+		if (userClass != null  &&  !"".equals(userClass))
+			panel.addStyleName(userClass);
 		panel.add(promptWidget);
 		panel.add(grid);
 		
