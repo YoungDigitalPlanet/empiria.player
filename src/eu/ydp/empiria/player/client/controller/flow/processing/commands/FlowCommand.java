@@ -2,6 +2,9 @@ package eu.ydp.empiria.player.client.controller.flow.processing.commands;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
+import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+
 public abstract class FlowCommand implements IFlowCommand {
 
 	protected String name;
@@ -19,6 +22,8 @@ public abstract class FlowCommand implements IFlowCommand {
 		if (objName == null  ||  objName.equals(""))
 			return null;
 		int objIndex = getJsObjectIndex(commandJsObject);
+		String groupIdentifierString = getJsObjectGroupIdentifier(commandJsObject);
+		GroupIdentifier groupIdentifier = new DefaultGroupIdentifier(groupIdentifierString);
 		
 		IFlowCommand command = null;
 
@@ -41,17 +46,17 @@ public abstract class FlowCommand implements IFlowCommand {
 		} else if (NavigatePreviewItem.NAME.equals(objName)) {
 			command = new NavigatePreviewItem(objIndex);
 		} else if (Continue.NAME.equals(objName)) {
-			command = new Continue();
+			command = new Continue(groupIdentifier);
 		} else if (Check.NAME.equals(objName)) {
-			command = new Check();
+			command = new Check(groupIdentifier);
 		} else if (Reset.NAME.equals(objName)) {
-			command = new Reset();
+			command = new Reset(groupIdentifier);
 		} else if (ShowAnswers.NAME.equals(objName)) {
-			command = new ShowAnswers();
+			command = new ShowAnswers(groupIdentifier);
 		} else if (Lock.NAME.equals(objName)) {
-			command = new Lock();
+			command = new Lock(groupIdentifier);
 		}else if (Unlock.NAME.equals(objName)) {
-			command = new Unlock();
+			command = new Unlock(groupIdentifier);
 		}
 		
 		return command;
@@ -66,6 +71,11 @@ public abstract class FlowCommand implements IFlowCommand {
 		if (typeof obj.index == 'number')
 			return obj.index;
 		return -1;
+	}-*/;
+	private static native String getJsObjectGroupIdentifier(JavaScriptObject obj)/*-{
+		if (typeof obj.groupIdentifier == 'string')
+			return obj.groupIdentifier;
+		return "";
 	}-*/;
 
 	public final static class NavigateNextItem extends FlowCommand{
@@ -165,64 +175,109 @@ public abstract class FlowCommand implements IFlowCommand {
 			listener.previewPage(index);
 		}
 	}
-	public static class Check extends FlowCommand{
+	public abstract static class FlowCommandForGroup extends FlowCommand{
+		public FlowCommandForGroup(String name, GroupIdentifier groupIdentifier){
+			super(name);
+			this.groupIdentifier = groupIdentifier;
+		}
+		protected GroupIdentifier groupIdentifier;
+	}
+	public static class Check extends FlowCommandForGroup{
+		public Check(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Check(){
-			super(NAME);
+			super(NAME, null);
 		}
 		public static final String NAME = "CHECK"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			listener.checkPage();
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+				listener.checkPage();
+			else
+				listener.checkGroup(groupIdentifier);
 		}
 	}
-	public static class Continue extends FlowCommand{
+	public static class Continue extends FlowCommandForGroup{
+		public Continue(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Continue(){
-			super(NAME);
+			super(NAME, null);
 		}
 		public static final String NAME = "CONTINUE"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			listener.continuePage();
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+				listener.continuePage();
+			else
+				listener.continueGroup(groupIdentifier);
+			
 		}
 	}
-	public static class Reset extends FlowCommand{
+	public static class Reset extends FlowCommandForGroup{
+		public Reset(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Reset(){
-			super(NAME);
+			super(NAME, null);
 		}
 		public static final String NAME = "RESET"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			listener.resetPage();
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+				listener.resetPage();
+			else
+				listener.resetGroup(groupIdentifier);
 		}
 	}
-	public static class ShowAnswers extends FlowCommand{
+	public static class ShowAnswers extends FlowCommandForGroup{
+		public ShowAnswers(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public ShowAnswers(){
-			super(NAME);
+			super(NAME, null);
 		}
 		public static final String NAME = "SHOW_ANSWERS"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			listener.showAnswers();
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+				listener.showAnswersPage();
+			else
+				listener.showAnswersGroup(groupIdentifier);
+			
 		}
 	}
-	public static class Lock extends FlowCommand{
+	public static class Lock extends FlowCommandForGroup{
+		public Lock(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Lock(){
-			super(NAME);
+			super(NAME, null);
 		}
 		public static final String NAME = "LOCK"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			listener.lockPage();
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+				listener.lockPage();
+			else
+				listener.lockGroup(groupIdentifier);
 		}
 	}
-	public static class Unlock extends FlowCommand{
+	public static class Unlock extends FlowCommandForGroup{
+		public Unlock(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Unlock(){
-			super(NAME);
+			super(NAME, null);
 		}
 		public static final String NAME = "UNLOCK"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			listener.unlockPage();
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+				listener.unlockPage();
+			else
+				listener.unlockGroup(groupIdentifier);
 		}
 	}
 	

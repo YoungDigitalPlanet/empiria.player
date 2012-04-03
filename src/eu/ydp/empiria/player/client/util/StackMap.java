@@ -2,8 +2,10 @@ package eu.ydp.empiria.player.client.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 
@@ -47,6 +49,10 @@ public class StackMap<K, V>  {
 	public V get(K key){
 		int index = keys.indexOf(key);
 		return values.get(index);
+	}
+	
+	public Set<K> keySet(){
+		return new HashSet<K>(keys);
 	}
 	
 }

@@ -16,6 +16,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEventListener;
+import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventsListener;
 
@@ -70,7 +71,7 @@ public class DeliveryEventsHub implements FlowProcessingEventsListener, Delivery
 		for (FlowActivityEventType currFaet : FlowActivityEventType.values()){
 			if (currFaet.toString().equals(event.getType().toString())){
 				for (FlowActivityEventsHandler currFael : flowActivityEventsListeners){
-					currFael.handleFlowActivityEvent(new FlowActivityEvent(currFaet));
+					currFael.handleFlowActivityEvent(new FlowActivityEvent(currFaet, null));
 				}
 				break;
 			}
@@ -82,24 +83,27 @@ public class DeliveryEventsHub implements FlowProcessingEventsListener, Delivery
 	}
 
 	@Override
-	public void onFlowExecutionEvent(FlowProcessingEvent event) {
-			
+	public void onFlowProcessingEvent(FlowProcessingEvent event) {
+		
 		for (FlowActivityEventType currFaet : FlowActivityEventType.values()){
 			if (currFaet.toString().equals(event.getType().toString())){
 				for (FlowActivityEventsHandler currFael : flowActivityEventsListeners){
-					currFael.handleFlowActivityEvent(new FlowActivityEvent(currFaet));
+					FlowActivityEvent newEvent;
+					if (event instanceof ActivityProcessingEvent){
+						newEvent = new FlowActivityEvent(currFaet, ((ActivityProcessingEvent)event).getGroupIdentifier());
+					} else {
+						newEvent = new FlowActivityEvent(currFaet, null);
+					}
+					currFael.handleFlowActivityEvent(newEvent);
 				}
 				break;
 			}
 		}
 			
-		for (DeliveryEventType currDet : DeliveryEventType.values()){
-			if (currDet.toString().equals(event.getType().toString())){
-				for (DeliveryEventsListener currDel : deliveryEventsListeners){
-					currDel.onDeliveryEvent(new DeliveryEvent(currDet));
-				}
-				break;
-			}
+		for (DeliveryEventsListener currDel : deliveryEventsListeners){
+			DeliveryEvent currDe = DeliveryEvent.fromFlowProcessingEvent(event);
+			if (currDe != null)
+				currDel.onDeliveryEvent(currDe);
 		}
 		
 	}

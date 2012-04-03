@@ -1,20 +1,7 @@
 package eu.ydp.empiria.player.client.controller.flow.processing.commands;
 
-public interface FlowCommandsListener {
+import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 
-	public void nextPage();
-	public void previousPage();
-	public void gotoPage(int index);
-	public void gotoFirstPage();
-	public void gotoLastPage();
-	public void gotoToc();
-	public void gotoSummary();
-	public void gotoTest();
-	public void checkPage();
-	public void showAnswers();
-	public void continuePage();
-	public void resetPage();
-	public void lockPage();
-	public void unlockPage();
-	public void previewPage(int index);
+public interface FlowCommandsListener extends ActivityCommandsListener, NavigationCommandsListener {
+
 }

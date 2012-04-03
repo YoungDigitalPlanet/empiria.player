@@ -24,7 +24,9 @@
 package eu.ydp.empiria.player.client.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
@@ -40,7 +42,11 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.IGroup;
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
+import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
@@ -64,6 +70,8 @@ public class Assessment {
 	private ModulesRegistrySocket modulesRegistrySocket;
 
 	private DisplayContentOptions options;
+	
+	private AssessmentBody body;
 
 	/**
 	 * C'tor
@@ -107,13 +115,6 @@ public class Assessment {
 
 	public Panel getPageSlot() {
 		return pageSlot;
-	}
-
-	/**
-	 * @return number of items in assessment
-	 */
-	public int DEBUGgetAssessmentItemsCount() {
-		return 0;
 	}
 
 	/**
@@ -167,6 +168,42 @@ public class Assessment {
 						modulesRegistrySocket, this, options);
 			}
 			return inlineBodyGenerator;
+		}
+
+		@Override
+		public IModule getParent(IModule module) {
+			return body.getModuleParent(module);
+		}
+
+		@Override
+		public GroupIdentifier getParentGroupIdentifier(IModule module) {
+			IModule currParent = module;
+			while (true){
+				currParent = getParent(currParent);
+				if (currParent == null  ||  currParent instanceof IGroup)
+					break;
+			}
+			if (currParent != null)
+				return ((IGroup)currParent).getGroupIdentifier();
+			return new DefaultGroupIdentifier("");
+		}
+
+		@Override
+		public List<IModule> getChildren(IModule parent) {
+			return body.getModuleChildren(parent);
+		}
+
+		@Override
+		public Stack<IModule> getParentsHierarchy(IModule module) {
+			Stack<IModule> hierarchy = new Stack<IModule>();
+			IModule currParent = module;
+			while (true){
+				currParent = getParent(currParent);
+				if (currParent == null)
+					break;
+				hierarchy.push(currParent);
+			}
+			return hierarchy;
 		}
 
 	};

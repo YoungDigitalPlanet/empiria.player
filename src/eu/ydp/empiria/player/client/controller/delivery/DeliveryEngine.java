@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioPlayerModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ChoiceModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.DivModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.GroupModuleConnectorExtension;
@@ -52,7 +53,9 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageS
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PromptModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SelectionModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SlideshowPlayerModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SpanModuleConnectorExtension;
@@ -279,6 +282,9 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new PrevPageButtonModuleConnectorExtension());
 		loadExtension(new PageSwitchModuleConnectorExtension());
 		loadExtension(new PageInPageModuleConnectorExtension());
+		loadExtension(new CheckButtonModuleConnectorExtension());
+		loadExtension(new ShowAnswersButtonModuleConnectorExtension());
+		loadExtension(new ResetButtonModuleConnectorExtension());
 	}
 	
 	protected void loadLibraryExtensions(){
@@ -385,7 +391,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	}
 
 	@Override
-	public void onFlowExecutionEvent(FlowProcessingEvent event) {
+	public void onFlowProcessingEvent(FlowProcessingEvent event) {
 		if (event.getType() == FlowProcessingEventType.PAGE_LOADED) {
 			PageReference pr = flowManager.getPageReference();
 			PageData pd = dataManager.generatePageData(pr);
@@ -423,7 +429,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 			updatePageStyle();
 		}
-		getFlowExecutionEventsListener().onFlowExecutionEvent(event);
+		getFlowExecutionEventsListener().onFlowProcessingEvent(event);
 	}
 
 	public DeliveryEventsListener getDeliveryEventsListener() {

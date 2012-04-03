@@ -9,9 +9,11 @@ import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMod
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
+import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventType;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventsListener;
+import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.util.config.OptionsReader;
 
 public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier {
@@ -60,7 +62,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	
 	private void doFlow(){
 		if (isInitalized){
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.PAGE_LOADED ) );
+			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.PAGE_LOADED ) );
 		}
 	}
 
@@ -219,20 +221,18 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 				continuePage();
 			}
 			isCheck = true;
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.CHECK ) );
-			//updateNavigation();
+			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.CHECK ) );
 		}
 	}
-
+	
 	@Override
-	public void showAnswers() {
+	public void showAnswersPage() {
 		if (isShowAnswers == false){
 			if (isCheck){
 				continuePage();
 			}
 			isShowAnswers = true;
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.SHOW_ANSWERS ) );
-			//updateNavigation();
+			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.SHOW_ANSWERS ) );
 		}
 		
 	}
@@ -242,7 +242,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		if (isCheck == true  ||  isShowAnswers == true){
 			isCheck = false;
 			isShowAnswers = false;
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.CONTINUE ) );
+			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.CONTINUE ) );
 		}
 
 	}
@@ -251,7 +251,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	public void lockPage() {
 		if (isLock == false){
 			isLock = true;
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.LOCK ) );
+			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.LOCK ) );
 		}
 	}
 
@@ -259,7 +259,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	public void unlockPage() {
 		if (isLock == true){
 			isLock = false;
-			flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.UNLOCK ) );
+			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.UNLOCK ) );
 		}
 	}
 
@@ -267,7 +267,36 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	public void resetPage() {
 		isCheck = false;
 		isShowAnswers = false;
-		flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.RESET ) );
+		flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.RESET ) );
+	}
+	
+	public void checkGroup(GroupIdentifier gi){
+		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.CHECK, gi ) );
+	}
+
+	@Override
+	public void showAnswersGroup(GroupIdentifier gi) {
+		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.SHOW_ANSWERS, gi ) );
+	}
+
+	@Override
+	public void continueGroup(GroupIdentifier gi) {
+		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.CONTINUE, gi ) );
+	}
+
+	@Override
+	public void resetGroup(GroupIdentifier gi) {
+		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.RESET, gi ) );
+	}
+
+	@Override
+	public void lockGroup(GroupIdentifier gi) {
+		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.LOCK, gi ) );
+	}
+
+	@Override
+	public void unlockGroup(GroupIdentifier gi) {
+		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.UNLOCK, gi ) );
 	}
 
 	@Override
@@ -278,7 +307,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	}
 	
 	public void onPageChange(){
-		flowExecutionEventsListener.onFlowExecutionEvent(new FlowProcessingEvent( FlowProcessingEventType.PAGE_CHANGING ) );
+		flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.PAGE_CHANGING ) );
 		isCheck = false;
 		isShowAnswers = false;
 		isLock = false;
@@ -333,6 +362,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 			return itemParametersSocket.getItemParameters();
 		return new ItemParameters();
 	}
+
 	
 	
 }

@@ -13,10 +13,11 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.IContainerModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.containers.ActivityContainerModuleBase;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 
-public class TableModule implements IContainerModule {
+public class TableModule extends ActivityContainerModuleBase {
 
 	protected Panel tablePanel;
 	
@@ -27,7 +28,7 @@ public class TableModule implements IContainerModule {
 	
 	@Override
 	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil, BodyGeneratorSocket bgs) {
-
+		super.initModule(element, ms, mil, bgs);
 		String className = element.getAttribute("class");
 		if (className != null  &&  !"".equals(className)  &&  getView() != null){
 			getView().addStyleName(className);
@@ -61,7 +62,6 @@ public class TableModule implements IContainerModule {
 			}
 		}
 		tablePanel.add(table);
-		
 	}
 
 	@Override

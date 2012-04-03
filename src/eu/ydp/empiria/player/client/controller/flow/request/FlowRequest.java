@@ -2,7 +2,8 @@ package eu.ydp.empiria.player.client.controller.flow.request;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
+import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
+import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 
 
 public abstract class FlowRequest implements IFlowRequest {
@@ -22,6 +23,8 @@ public abstract class FlowRequest implements IFlowRequest {
 		if (objName == null  ||  objName.equals(""))
 			return null;
 		int objIndex = getJsObjectIndex(obj);
+		String groupIdentifierString = getJsObjectGroupIdentifier(obj);
+		GroupIdentifier groupIdentifier = new DefaultGroupIdentifier(groupIdentifierString);
 		
 		IFlowRequest request = null;
 
@@ -44,17 +47,17 @@ public abstract class FlowRequest implements IFlowRequest {
 		} else if (NavigatePreviewItem.NAME.equals(objName)){ 
 			request = new NavigatePreviewItem(objIndex);
 		} else if (Continue.NAME.equals(objName)){ 
-			request = new Continue();
+			request = new Continue(groupIdentifier);
 		} else if (Check.NAME.equals(objName)){ 
-			request = new Check();
+			request = new Check(groupIdentifier);
 		} else if (Reset.NAME.equals(objName)){ 
-			request = new Reset();
+			request = new Reset(groupIdentifier);
 		} else if (ShowAnswers.NAME.equals(objName)){ 
-			request = new ShowAnswers();
+			request = new ShowAnswers(groupIdentifier);
 		} else if (Lock.NAME.equals(objName)){ 
-			request = new Lock();
+			request = new Lock(groupIdentifier);
 		}else if (Unlock.NAME.equals(objName)){ 
-			request = new Unlock();
+			request = new Unlock(groupIdentifier);
 		} else {
 			JavaScriptObject params = getJsObjectParams(obj);
 			request = new Custom(objName, params);
@@ -72,6 +75,11 @@ public abstract class FlowRequest implements IFlowRequest {
 		if (typeof obj.index == 'number')
 			return obj.index;
 		return -1;
+	}-*/;
+	private static native String getJsObjectGroupIdentifier(JavaScriptObject obj)/*-{
+		if (typeof obj.groupIdentifier == 'string')
+			return obj.groupIdentifier;
+		return "";
 	}-*/;
 	private static native JavaScriptObject getJsObjectParams(JavaScriptObject obj)/*-{
 		if (typeof obj.params == 'object')
@@ -168,39 +176,85 @@ public abstract class FlowRequest implements IFlowRequest {
 		}		
 		public static final String NAME = "NAVIGATE_PREVIEW_ITEM"; 
 	}
-	public static class Check extends FlowRequest{
+	public abstract static class FlowRequestForGroup extends FlowRequest{
+		
+		private FlowRequestForGroup(String name, GroupIdentifier groupIdentifier){
+			super(name);
+			this.groupIdentifier = groupIdentifier;
+		}		
+		protected GroupIdentifier groupIdentifier;
+		
+		public GroupIdentifier getGroupIdentifier(){
+			return this.groupIdentifier;
+		}
+
+		@Override
+		public JavaScriptObject toJsObject() {
+			String giString = "";
+			if (getGroupIdentifier() != null)
+				giString = getGroupIdentifier().getIdentifier();
+			return createRequestJsObject(getName(), giString);
+		}
+		
+		private native JavaScriptObject createRequestJsObject(String name, String identifier)/*-{
+			var req = {};
+			req.name = name;
+			req.groupIdentifier = identifier;
+			return req;
+		}-*/;
+		
+	}
+	public static class Check extends FlowRequestForGroup{
+		public Check(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Check(){
-			super(NAME);
+			super(NAME, new DefaultGroupIdentifier(""));
 		}
 		public static final String NAME = "CHECK"; 
 	}
-	public static class Continue extends FlowRequest{
+	public static class Continue extends FlowRequestForGroup{
+		public Continue(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Continue(){
-			super(NAME);
+			super(NAME, new DefaultGroupIdentifier(""));
 		}
 		public static final String NAME = "CONTINUE"; 
 	}
-	public static class Reset extends FlowRequest{
+	public static class Reset extends FlowRequestForGroup{
+		public Reset(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Reset(){
-			super(NAME);
+			super(NAME, new DefaultGroupIdentifier(""));
 		}
 		public static final String NAME = "RESET"; 
 	}
-	public static class ShowAnswers extends FlowRequest{
+	public static class ShowAnswers extends FlowRequestForGroup{
+		public ShowAnswers(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public ShowAnswers() {
-			super(NAME);
+			super(NAME, new DefaultGroupIdentifier(""));
 		}
 		public static final String NAME = "SHOW_ANSWERS"; 
 	}
-	public static class Lock extends FlowRequest{
+	public static class Lock extends FlowRequestForGroup{
+		public Lock(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Lock() {
-			super(NAME);
+			super(NAME, new DefaultGroupIdentifier(""));
 		}
 		public static final String NAME = "LOCK"; 
 	}
-	public static class Unlock extends FlowRequest{
+	public static class Unlock extends FlowRequestForGroup{
+		public Unlock(GroupIdentifier groupIdentifier){
+			super(NAME, groupIdentifier);
+		}
 		public Unlock() {
-			super(NAME);
+			super(NAME, new DefaultGroupIdentifier(""));
 		}
 		public static final String NAME = "UNLOCK"; 
 	}

@@ -50,17 +50,17 @@ public class DefaultFlowRequestProcessor implements IFlowRequestProcessor {
 		} else if (request instanceof FlowRequest.NavigatePreviewItem){
 			command = new FlowCommand.NavigatePreviewItem( ((FlowRequest.NavigatePreviewItem)request).getIndex() );
 		} else if (request instanceof FlowRequest.Check){
-			command = new FlowCommand.Check();
+			command = new FlowCommand.Check( ((FlowRequest.Check)request).getGroupIdentifier() );
 		} else if (request instanceof FlowRequest.Continue){
-			command = new FlowCommand.Continue();
+			command = new FlowCommand.Continue( ((FlowRequest.Continue)request).getGroupIdentifier() );
 		} else if (request instanceof FlowRequest.Reset){
-			command = new FlowCommand.Reset();
+			command = new FlowCommand.Reset( ((FlowRequest.Reset)request).getGroupIdentifier() );
 		} else if (request instanceof FlowRequest.ShowAnswers){
-			command = new FlowCommand.ShowAnswers();
+			command = new FlowCommand.ShowAnswers( ((FlowRequest.ShowAnswers)request).getGroupIdentifier() );
 		} else if (request instanceof FlowRequest.Lock){
-			command = new FlowCommand.Lock();
+			command = new FlowCommand.Lock( ((FlowRequest.Lock)request).getGroupIdentifier() );
 		} else if (request instanceof FlowRequest.Unlock){
-			command = new FlowCommand.Unlock();
+			command = new FlowCommand.Unlock( ((FlowRequest.Unlock)request).getGroupIdentifier() );
 		} 
 		
 		return command;
