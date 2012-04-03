@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
@@ -38,8 +39,12 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.VariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.VariableProcessorTemplate;
+import eu.ydp.empiria.player.client.module.IGroup;
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
+import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
@@ -152,8 +157,46 @@ public class Item implements IStateful, ItemInterferenceSocket {
 			}
 			return inlineBodyGenerator;
 		}
+
+		@Override
+		public IModule getParent(IModule module) {
+			return itemBody.getModuleParent(module);
+		}
+
+		@Override
+		public GroupIdentifier getParentGroupIdentifier(IModule module) {
+			IModule currParent = module;
+			while (true){
+				currParent = getParent(currParent);
+				if (currParent == null  ||  currParent instanceof IGroup)
+					break;
+			}
+			if (currParent != null)
+				return ((IGroup)currParent).getGroupIdentifier();
+			return new DefaultGroupIdentifier("");
+		}
+
+		@Override
+		public List<IModule> getChildren(IModule parent) {
+			return itemBody.getModuleChildren(parent);
+		}
+
+		@Override
+		public Stack<IModule> getParentsHierarchy(IModule module) {
+			Stack<IModule> hierarchy = new Stack<IModule>();
+			IModule currParent = module;
+			while (true){
+				currParent = getParent(currParent);
+				if (currParent == null)
+					break;
+				hierarchy.push(currParent);
+			}
+			return hierarchy;
+		}
 		
 	};
+	
+	
 	
 	public void close(){
 		feedbackManager.hideAllInlineFeedbacks();
@@ -178,19 +221,27 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	public void handleFlowActivityEvent(FlowActivityEvent event){
 		if (event == null)
 			return;
-		if (event.getType() == FlowActivityEventType.CHECK){
-			checkItem();
-		} else if (event.getType() == FlowActivityEventType.CONTINUE){
-			continueItem();
-		} else if (event.getType() == FlowActivityEventType.SHOW_ANSWERS){
-			showAnswers();
-		} else if (event.getType() == FlowActivityEventType.RESET){
-			resetItem();
-		} else if (event.getType() == FlowActivityEventType.LOCK){
-			lockItem(true);
-		} else if (event.getType() == FlowActivityEventType.UNLOCK){
-			lockItem(false);
+		GroupIdentifier groupIdentifier;
+		if (event.getGroupIdentifier() != null){
+			groupIdentifier = event.getGroupIdentifier();
+		}else {
+			groupIdentifier = new DefaultGroupIdentifier(""); 
 		}
+					
+		if (event.getType() == FlowActivityEventType.CHECK){
+			checkGroup(groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.CONTINUE){
+			continueGroup(groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.SHOW_ANSWERS){
+			showAnswersGroup(groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.RESET){
+			resetGroup(groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.LOCK){
+			lockGroup(true, groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.UNLOCK){
+			lockGroup(false, groupIdentifier);
+		}
+	
 		variableProcessor.processFlowActivityVariables(outcomeManager.getVariablesMap(), event);
 	}
 
@@ -213,55 +264,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	public Widget getScoreView(){
 		return scorePanel;
 	}
-		
-	@Deprecated
-	public Result getResult(){
-		
-		Result result;
-		
-		String score = "";
-		Float lowerBound = new Float(0);
-		Float upperBound = new Float(0);
-		
-		if (outcomeManager.getVariable("DONE") != null)
-			if (outcomeManager.getVariable("DONE").values.size() > 0)
-				score = outcomeManager.getVariable("DONE").values.get(0);
-		
-		Iterator<String> iterator = responseManager.getVariablesMap().keySet().iterator();
-		while (iterator.hasNext()){
-			String currKey = iterator.next();
-			
-			if (!responseManager.getVariable(currKey).isModuleAdded())
-				continue;
-			
-			if (responseManager.getVariable(currKey).mapping.lowerBound != null)
-				lowerBound += responseManager.getVariable(currKey).mapping.lowerBound;
-			
-			if (responseManager.getVariable(currKey).mapping.upperBound != null)
-				upperBound += responseManager.getVariable(currKey).mapping.upperBound;
-			else
-				upperBound += 1;
-		}
-		
-		//if (lowerBound == 0  &&  upperBound == 0)
-		//	upperBound = 1.0f;
-			
-		result = new Result(BaseTypeConverter.tryParseFloat(score), lowerBound, upperBound);
-		
-		return result;
-	}
-	
-	@Deprecated
-	public int getMistakesCount(){
-		if (outcomeManager.getVariablesMap().containsKey("LASTMISTAKEN")){
-			if (outcomeManager.getVariable("LASTMISTAKEN").values.size() == 1){
-				int mistakesCount = Integer.parseInt( outcomeManager.getVariable("LASTMISTAKEN").values.get(0) );
-				return mistakesCount; 
-			}
-		}
-		return 0;
-	}
-	
+
 	// -------------------------- NAVIGATION -------------------------------
 	
 	public int getItemModuleCount(){
@@ -273,29 +276,54 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		itemBody.lock(true);
 	}
 	
+	public void checkGroup(GroupIdentifier gi){
+		itemBody.markAnswers(true, gi);
+		itemBody.lock(true, gi);
+	}
+	
 	public void continueItem(){
 		itemBody.showCorrectAnswers(false);
 		itemBody.markAnswers(false);
 		itemBody.lock(false);
 	}
 	
+	public void continueGroup(GroupIdentifier gi){
+		itemBody.showCorrectAnswers(false, gi);
+		itemBody.markAnswers(false, gi);
+		itemBody.lock(false, gi);
+	}
+	
 	public void showAnswers(){
 		itemBody.showCorrectAnswers(true);
 		itemBody.lock(true);
 	}
-
+	
+	public void showAnswersGroup(GroupIdentifier gi){
+		itemBody.showCorrectAnswers(true, gi);
+		itemBody.lock(true, gi);
+	}
 
 	public void resetItem(){
 		itemBody.reset();
+	}
+
+	public void resetGroup(GroupIdentifier gi){
+		itemBody.reset(gi);
 	}
 	
 	public void lockItem(boolean lock){
 		itemBody.lock(lock);
 	}
 	
+	public void lockGroup(boolean lock, GroupIdentifier gi){
+		itemBody.lock(lock, gi);
+	}
+	
 	public boolean isLocked(){
 		return itemBody.isLocked();
 	}
+	
+	
 
 	@Override
 	public JSONArray getState() {

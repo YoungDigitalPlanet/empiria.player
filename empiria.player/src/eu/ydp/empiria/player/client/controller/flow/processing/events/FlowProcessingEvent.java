@@ -7,7 +7,7 @@ public class FlowProcessingEvent {
 	public FlowProcessingEvent(FlowProcessingEventType type){
 		this.type = type;
 	}
-	
+		
 	public FlowProcessingEventType getType(){
 		return type;
 	}

@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.body.ModuleEventsListener;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
+import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
@@ -26,6 +27,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedIn
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.IActivity;
+import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.ILockable;
@@ -34,13 +36,16 @@ import eu.ydp.empiria.player.client.module.IResetable;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.containers.ItemBodyModule;
+import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
-public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
+public class ItemBody implements  WidgetWorkflowListener {
 
 	public List<IModule> modules;
+	
+	protected ParenthoodManager parenthood;
 
 	protected ModuleEventsListener moduleEventsListener;
 	protected DisplayContentOptions options;
@@ -61,6 +66,8 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		this.moduleSocket = moduleSocket;
 		this.options = options;
 		this.modulesRegistrySocket = modulesRegistrySocket;
+		
+		parenthood = new ParenthoodManager();
 
 		moduleEventsListener = new ModuleEventsListener() {
 
@@ -91,13 +98,16 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 
 	public Widget init(Element itemBodyElement) {
 		
-		ModulesInstalator modulesInstalator = new ModulesInstalator(modulesRegistrySocket, moduleSocket, moduleEventsListener);
+		ModulesInstalator modulesInstalator = new ModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, moduleEventsListener);
 		BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
 		
 		ItemBodyModule itemBodyModule = new ItemBodyModule(); 
+		modulesInstalator.setInitialParent(itemBodyModule);
 		itemBodyModule.initModule(itemBodyElement, moduleSocket, moduleEventsListener, generator);
 		
-		modules = modulesInstalator.installMultiViewUniqueModules();
+		modules = new ArrayList<IModule>();
+		modules.add(itemBodyModule);
+		modules.addAll(modulesInstalator.installMultiViewUniqueModules());
 		modules.addAll(modulesInstalator.getInstalledSingleViewModules());
 
 		for (IModule currModule : modules) {
@@ -161,7 +171,8 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		return modules.size();
 	}
 
-	@Override
+	// ------------------------- ACTIVITY --------------------------------
+
 	public void markAnswers(boolean mark) {
 		if (showingAnswers)
 			showCorrectAnswers(false);
@@ -173,7 +184,13 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 
 	}
 
-	@Override
+	public void markAnswers(boolean mark, GroupIdentifier groupIdentifier) {
+		IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+		if (currGroup != null){
+			currGroup.getGroupFlowProcessor().markAnswers(mark);
+		}
+	}
+	
 	public void showCorrectAnswers(boolean show) {
 		if (markingAnswers)
 			markAnswers(false);
@@ -184,7 +201,13 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		}
 	}
 
-	@Override
+	public void showCorrectAnswers(boolean show, GroupIdentifier groupIdentifier) {
+		IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+		if (currGroup != null){
+			currGroup.getGroupFlowProcessor().showCorrectAnswers(show);
+		}
+	}
+
 	public void reset() {
 		if (showingAnswers)
 			showCorrectAnswers(false);
@@ -199,7 +222,13 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 
 	}
 
-	@Override
+	public void reset(GroupIdentifier groupIdentifier) {
+		IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+		if (currGroup != null){
+			currGroup.getGroupFlowProcessor().reset();
+		}
+	}
+
 	public void lock(boolean l) {
 		locked = l;
 		for (IModule currModule : modules) {
@@ -209,11 +238,32 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 
 	}
 
+	public void lock(boolean lo, GroupIdentifier groupIdentifier) {
+		IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+		if (currGroup != null){
+			currGroup.getGroupFlowProcessor().lock(lo);
+		}
+	}
+
 	public boolean isLocked() {
 		return locked;
 	}
-
-	@Override
+	
+	private IGroup getGroupByGroupIdentifier(GroupIdentifier gi){
+		IGroup lastGroup = null;
+		for (IModule currModule : modules) {
+			if (currModule instanceof IGroup){
+				lastGroup = (IGroup)currModule;
+				if  ( lastGroup.getGroupIdentifier().equals(gi)  ||  ("".equals(gi.getIdentifier()) && lastGroup instanceof ItemBodyModule) ){
+					return lastGroup;
+				}
+			}
+		}
+		return lastGroup;
+	}
+	
+	// ------------------------- STATEFUL --------------------------------
+	
 	public JSONArray getState() {
 
 		JSONObject states = new JSONObject();
@@ -231,7 +281,6 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		return statesArr;
 	}
 
-	@Override
 	public void setState(JSONArray newState) {
 		if (!attached) {
 			stateAsync = newState;
@@ -305,5 +354,13 @@ public class ItemBody implements IActivity, IStateful, WidgetWorkflowListener {
 		}
 		return moduleSockets
 				.toArray(new eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[0]);
+	}
+
+	public IModule getModuleParent(IModule module) {
+		return parenthood.getParent(module);
+	}
+
+	public List<IModule> getModuleChildren(IModule parent) {
+		return parenthood.getChildren(parent);
 	}
 }
