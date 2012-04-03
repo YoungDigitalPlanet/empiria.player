@@ -14,10 +14,17 @@ public class ItemContentView implements ItemViewSocket {
 	public void setItemView(ItemViewCarrier ivc) {
 		itemPanel.clear();
 		if (!ivc.isError()){
-			itemPanel.add(ivc.getTitleView());
-			itemPanel.add(ivc.getContentView());
-			itemPanel.add(ivc.getFeedbackView());
-			itemPanel.add(ivc.getScoreView());
+			if(ivc.getTitleView() != null)
+				itemPanel.add(ivc.getTitleView());
+			
+			if(ivc.getContentView() != null)
+				itemPanel.add(ivc.getContentView());
+			
+			if(ivc.getFeedbackView() != null)
+				itemPanel.add(ivc.getFeedbackView());
+			
+			if(ivc.getScoreView() != null)
+				itemPanel.add(ivc.getScoreView());
 		} else {
 			itemPanel.add(ivc.getErrorView());
 		}

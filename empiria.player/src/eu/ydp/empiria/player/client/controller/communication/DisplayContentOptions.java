@@ -11,10 +11,12 @@ public class DisplayContentOptions {
 		ignoredTags = new ArrayList<String>();
 		ignoredInlineTags = new ArrayList<String>();
 		ignoredInlineTags.add("feedbackInline");
+		useSkin = false;
 	}
 
 	protected List<String> ignoredTags;
 	protected List<String> ignoredInlineTags;
+	protected boolean useSkin;
 	
 	public List<String> getIgnoredTags(){
 		return ignoredTags;
@@ -22,6 +24,14 @@ public class DisplayContentOptions {
 
 	public List<String> getIgnoredInlineTags(){
 		return ignoredInlineTags;
+	}
+	
+	public void useSkin(boolean value){
+		useSkin = value;
+	}
+	
+	public boolean useSkin(){
+		return useSkin;
 	}
 
 }

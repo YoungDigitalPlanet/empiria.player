@@ -15,6 +15,10 @@ public class ItemViewCarrier {
 		errorView = null;
 	}
 	
+	public ItemViewCarrier(Widget _contentView){
+		contentView = _contentView;
+	}
+	
 	public ItemViewCarrier(String err){
 		errorView = new FlowPanel();
 		errorView.setStyleName("qp-item-error");

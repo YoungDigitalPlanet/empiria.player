@@ -59,7 +59,7 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 			itemIndex = data.itemIndex;
 			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex));
 			item.setState(itemSessionSocket.getState(itemIndex));
-			itemViewSocket.setItemView(new ItemViewCarrier(createTitleWidget(String.valueOf(itemIndex+1), item.getTitle()), item.getContentView(), item.getFeedbackView(), item.getScoreView()));
+			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
 			itemSessionSocket.beginItemSession(itemIndex);
 			item.setUp();
 			item.start();
@@ -107,6 +107,21 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 	
 	public ItemInterferenceSocket getItemSocket(){
 		return item;
+	}
+	
+	protected ItemViewCarrier getItemViewCarrier(Item item, ItemData itemData, boolean useSkin){
+		ItemViewCarrier carrier = null;
+		
+		if(useSkin){
+			carrier = new ItemViewCarrier(item.getContentView());
+		}else{
+			String index = String.valueOf(itemData.itemIndex + 1);
+			Widget titleWidget = createTitleWidget(index, item.getTitle());
+			
+			carrier = new ItemViewCarrier(titleWidget, item.getContentView(), item.getFeedbackView(), item.getScoreView());
+		}
+		
+		return carrier;
 	}
 	
 	protected Widget createTitleWidget(String index, String text){
