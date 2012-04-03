@@ -22,7 +22,7 @@ public class MainFlowProcessorTest extends GWTTestCase {
 		MainFlowProcessor mfp = new MainFlowProcessor(new FlowProcessingEventsListener() {
 			
 			@Override
-			public void onFlowExecutionEvent(FlowProcessingEvent event) {
+			public void onFlowProcessingEvent(FlowProcessingEvent event) {
 				lastEvent = event;
 			}
 		});
@@ -90,13 +90,13 @@ public class MainFlowProcessorTest extends GWTTestCase {
 
 	public void testShowAnswers(){
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
-		mfp.showAnswers();
+		mfp.showAnswersPage();
 		assertEquals(true, mfp.getFlowFlagShowAnswers());		
 	}
 	
 	public void testContinue(){
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
-		mfp.showAnswers();
+		mfp.showAnswersPage();
 		mfp.continuePage();
 		assertEquals(false, mfp.getFlowFlagShowAnswers());
 		assertEquals(false, mfp.getFlowFlagCheck());
