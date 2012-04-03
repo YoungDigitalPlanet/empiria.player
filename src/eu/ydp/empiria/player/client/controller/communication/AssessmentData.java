@@ -21,4 +21,8 @@ public class AssessmentData {
 		return skinData;
 	}
 	
+	public boolean useSkin(){
+		return skinData != null;
+	}
+	
 }

@@ -72,6 +72,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener{
 			skinUrl = data.getBaseURL().concat(skinUrl);
 			skinData.load(skinUrl);
 		}else{
+			assessmentData = new AssessmentData(data, null);
 			listener.onAssessmentDataLoaded();
 		}
 	}

@@ -12,12 +12,14 @@ import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.AssessmentController;
+import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageData;
 import eu.ydp.empiria.player.client.controller.communication.PageDataSummary;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
+import eu.ydp.empiria.player.client.controller.data.AssessmentDataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManagerMode;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
@@ -187,11 +189,19 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	@Override
 	public void onDataReady() {
+		AssessmentData assessmentData = dataManager.getAssessmentData();
+		DisplayOptions displayOptions = flowManager.getDisplayOptions();
+		
+		displayOptions.useSkin(assessmentData.useSkin());
+		flowManager.setDisplayOptions(displayOptions);
+		
 		loadLibraryExtensions();
 		sessionDataManager.init(dataManager.getItemsCount(), dataManager.getInitialData());
 		initExtensions();
+		
 		flowManager.init(dataManager.getItemsCount());
-		assessmentController.init(dataManager.getAssessmentData(), flowManager.getDisplayOptions());
+		assessmentController.init(assessmentData, displayOptions);
+		
 		getDeliveryEventsListener().onDeliveryEvent(
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
 		getDeliveryEventsListener().onDeliveryEvent(

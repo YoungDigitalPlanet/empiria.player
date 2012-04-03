@@ -81,9 +81,8 @@ public class Assessment {
 		this.options = options;
 
 		Document document = xmlData.getDocument();
-		Document skinDocument = data.getSkinData().getDocument();
 		Element rootNode = (Element) document.getElementsByTagName("assessmentTest").item(0);
-		Element skinBody = (Element) skinDocument.getElementsByTagName("itemBody").item(0);
+		Element skinBody = getSkinBody(data.getSkinData());
 
 		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument()
 				.getElementsByTagName("styleDeclaration"), xmlData.getBaseURL());
@@ -94,11 +93,12 @@ public class Assessment {
 
 	private void initializeBody(Element bodyNode,
 			InteractionEventsListener interactionEventsListener) {
-
-		AssessmentBody body = new AssessmentBody(options, moduleSocket,
-				interactionEventsListener, modulesRegistrySocket);
-		skinView = body.init(bodyNode);
-		pageSlot = body.getPageSlot();
+		if(bodyNode != null){
+			AssessmentBody body = new AssessmentBody(options, moduleSocket,
+					interactionEventsListener, modulesRegistrySocket);
+			skinView = body.init(bodyNode);
+			pageSlot = body.getPageSlot();
+		}
 	}
 
 	public Widget getSkinView() {
@@ -121,6 +121,19 @@ public class Assessment {
 	 */
 	public String getTitle() {
 		return (title == null) ? "" : title;
+	}
+	
+	protected Element getSkinBody(XMLData skinData){
+		Element skinBody = null;
+		
+		try{
+			Document skinDocument = skinData.getDocument();
+			skinBody = (Element) skinDocument.getElementsByTagName("itemBody").item(0);
+		}catch(Exception e){
+			
+		}
+		
+		return skinBody;				
 	}
 
 	private ModuleSocket moduleSocket = new ModuleSocket() {
