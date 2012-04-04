@@ -45,6 +45,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
@@ -102,7 +103,7 @@ public class Assessment {
 	private void initializeBody(Element bodyNode,
 			InteractionEventsListener interactionEventsListener) {
 		if(bodyNode != null){
-			AssessmentBody body = new AssessmentBody(options, moduleSocket,
+			body = new AssessmentBody(options, moduleSocket,
 					interactionEventsListener, modulesRegistrySocket);
 			skinView = body.init(bodyNode);
 			pageSlot = body.getPageSlot();
@@ -115,6 +116,12 @@ public class Assessment {
 
 	public Panel getPageSlot() {
 		return pageSlot;
+	}
+	
+	public ParenthoodSocket getAssessmentParenthoodSocket(){
+		if (body != null)
+			return body.getParenthoodSocket();
+		return null;
 	}
 
 	/**
@@ -172,7 +179,9 @@ public class Assessment {
 
 		@Override
 		public IModule getParent(IModule module) {
-			return body.getModuleParent(module);
+			if (body != null)
+				return body.getModuleParent(module);
+			return null;
 		}
 
 		@Override
@@ -190,7 +199,9 @@ public class Assessment {
 
 		@Override
 		public List<IModule> getChildren(IModule parent) {
-			return body.getModuleChildren(parent);
+			if (body != null)
+				return body.getModuleChildren(parent);
+			return null;
 		}
 
 		@Override

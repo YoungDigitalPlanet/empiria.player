@@ -36,6 +36,7 @@ import eu.ydp.empiria.player.client.module.IResetable;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
@@ -91,8 +92,6 @@ public class ItemBody implements  WidgetWorkflowListener {
 			}
 
 		};
-		// traceLabel = new Label();
-		// dom.appendChild(traceLabel.getElement());
 
 	}
 
@@ -362,5 +361,9 @@ public class ItemBody implements  WidgetWorkflowListener {
 
 	public List<IModule> getModuleChildren(IModule parent) {
 		return parenthood.getChildren(parent);
+	}
+
+	public void setUpperParenthoodSocket(ParenthoodSocket parenthoodSocket) {
+		parenthood.setUpperLevelParenthood(parenthoodSocket);
 	}
 }

@@ -27,6 +27,7 @@ public class GroupActivityProcessor implements IActivity  {
 	public void lock(boolean lo) {
 		if (lo != locked){
 			activityModule.lock(lo);
+			setLock(lo);
 		}
 	}
 	
@@ -48,9 +49,10 @@ public class GroupActivityProcessor implements IActivity  {
 	@Override
 	public void markAnswers(boolean mark) {
 		if (markingAnswers != mark){
-			if (showingAnswers)
-				showCorrectAnswers(false);
+			activityModule.showCorrectAnswers(false);
+			activityModule.lock(false);
 			activityModule.markAnswers(mark);
+			setMarkAnswers(mark);
 		}
 	}
 	
@@ -61,9 +63,10 @@ public class GroupActivityProcessor implements IActivity  {
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (showingAnswers != show){
-			if (markingAnswers)
-				markAnswers(false);
+			activityModule.markAnswers(false);
+			activityModule.lock(false);
 			activityModule.showCorrectAnswers(show);
+			setShowCorrectAnswers(show);
 		}
 	}
 	

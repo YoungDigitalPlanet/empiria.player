@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
+import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
@@ -42,6 +43,7 @@ public final class PageController implements FlowActivityEventsHandler, PageInte
 	private IFlowSocket flowSocket;
 	private InteractionEventsSocket interactionSocket;
 	private ModulesRegistrySocket modulesRegistrySocket;
+	private ParenthoodSocket parenthoodSocket;
 	private ItemController[] items;
 	
 	private StyleSocket styleSocket;
@@ -73,6 +75,7 @@ public final class PageController implements FlowActivityEventsHandler, PageInte
 				ItemController controller = new ItemController(pageViewSocket.getItemViewSocket(i), flowSocket, interactionSocket, pageSessionSocket.getItemSessionSocket(), modulesRegistrySocket);
 				controller.setStyleSocket( styleSocket );
 				controller.init(pageDataTest.datas[i], pageDataTest.displayOptions);
+				controller.setAssessmentParenthoodSocket(parenthoodSocket);
 				if (pageDataTest.flowOptions.activityMode == ActivityMode.CHECK){
 					controller.checkItem();
 				}
@@ -153,6 +156,10 @@ public final class PageController implements FlowActivityEventsHandler, PageInte
 		}
 		
 		return itemSockets;
+	}
+
+	public void setAssessmentParenthoodSocket(ParenthoodSocket assessmentParenthoodSocket) {
+		parenthoodSocket = assessmentParenthoodSocket;
 	}
 
 	

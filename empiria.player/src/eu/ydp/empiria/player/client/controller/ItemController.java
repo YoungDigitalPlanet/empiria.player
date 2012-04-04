@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
+import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.view.item.ItemViewCarrier;
@@ -134,5 +135,11 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 		titlePanel.add(indexLabel);
 		titlePanel.add(textLabel);
 		return titlePanel;
+	}
+
+	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {
+		if (item != null){
+			item.setAssessmentParenthoodSocket(parenthoodSocket);
+		}
 	}
 }

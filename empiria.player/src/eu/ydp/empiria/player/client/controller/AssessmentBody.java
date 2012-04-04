@@ -16,6 +16,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.AssessmentBodyModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
@@ -91,6 +92,10 @@ public class AssessmentBody {
 
 	public List<IModule> getModuleChildren(IModule parent) {
 		return parenthood.getChildren(parent);
+	}
+
+	public ParenthoodSocket getParenthoodSocket() {
+		return moduleSocket;
 	}
 	
 }
