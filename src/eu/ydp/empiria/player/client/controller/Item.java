@@ -43,6 +43,7 @@ import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
@@ -64,13 +65,13 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	
 	private FeedbackManager feedbackManager;
 	
-	public VariableManager<Response> responseManager;
+	private VariableManager<Response> responseManager;
 	
-	public BindableVariableManager<Outcome> outcomeManager;
+	private BindableVariableManager<Outcome> outcomeManager;
 	
-	public StyleLinkDeclaration styleDeclaration;
+	private StyleLinkDeclaration styleDeclaration;
 	
-	public StyleSocket styleSocket;
+	private StyleSocket styleSocket;
 	
 	protected ModulesRegistrySocket modulesRegistrySocket;
 	
@@ -395,6 +396,10 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	public void start() {
 		itemBody.start();
+	}
+
+	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {
+		itemBody.setUpperParenthoodSocket(parenthoodSocket);
 	}
 	
 	

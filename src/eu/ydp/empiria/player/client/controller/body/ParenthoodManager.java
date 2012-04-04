@@ -8,21 +8,20 @@ import java.util.TreeMap;
 
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
+import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.util.StackMap;
 
-public class ParenthoodManager implements ParenthoodSocket {
+public class ParenthoodManager implements ParenthoodGeneratorSocket {
 
 	protected StackMap<ISingleViewWithBodyModule, List<IModule>> parenthood;
 	protected Stack<ISingleViewWithBodyModule> parentsStack;
+	protected ParenthoodSocket upperLevelParenthoodSocket;
 	
 	public ParenthoodManager(){
 		parenthood = new StackMap<ISingleViewWithBodyModule, List<IModule>>();
 		parentsStack = new Stack<ISingleViewWithBodyModule>();
 	}
 	
-	/**
-	 * Add child to parent's children list
-	 */
 	@Override
 	public void addChild(IModule child){
 		addChildToMap(child);
@@ -35,23 +34,6 @@ public class ParenthoodManager implements ParenthoodSocket {
 		}
 		parenthood.get(parent).add(child);
 	}
-	
-	public ISingleViewWithBodyModule getParent(IModule child){
-		for (ISingleViewWithBodyModule parent : parenthood.keySet()){
-			if (parenthood.get(parent).contains(child)){
-				return parent;
-			}
-		}
-		return null;
-	}
-
-	public List<IModule> getChildren(IModule parent) {
-		if (parent instanceof ISingleViewWithBodyModule){
-			if (parenthood.containsKey((ISingleViewWithBodyModule)parent))
-				return parenthood.get((ISingleViewWithBodyModule)parent);
-		}
-		return new ArrayList<IModule>();
-	}
 
 	@Override
 	public void pushParent(ISingleViewWithBodyModule parent) {
@@ -61,5 +43,31 @@ public class ParenthoodManager implements ParenthoodSocket {
 	@Override
 	public void popParent() {
 		parentsStack.pop();
+	}
+	
+	public IModule getParent(IModule child){
+		for (ISingleViewWithBodyModule parent : parenthood.keySet()){
+			if (parenthood.get(parent).contains(child)){
+				return parent;
+			}
+		}
+		if (upperLevelParenthoodSocket != null){
+			return upperLevelParenthoodSocket.getParent(child);
+		}
+		return null;
+	}
+
+	public List<IModule> getChildren(IModule parent) {
+		if (parent instanceof ISingleViewWithBodyModule){
+			if (parenthood.containsKey((ISingleViewWithBodyModule)parent))
+				return parenthood.get((ISingleViewWithBodyModule)parent);
+			else 
+				return upperLevelParenthoodSocket.getChildren(parent);
+		}
+		return new ArrayList<IModule>();
+	}
+
+	public void setUpperLevelParenthood(ParenthoodSocket ps) {
+		upperLevelParenthoodSocket = ps;
 	}
 }

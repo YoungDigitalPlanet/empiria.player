@@ -25,14 +25,14 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	protected ModulesRegistrySocket registry;
 	protected ModuleSocket moduleSocket;
 	protected ModuleInteractionListener moduleInteractionListener;
-	protected ParenthoodSocket parenthood;
+	protected ParenthoodGeneratorSocket parenthood;
 	protected List<IModule> singleViewModules;
 	
 	protected StackMap<String, StackMap<Element, HasWidgets>> uniqueModulesMap = new StackMap<String, StackMap<Element,HasWidgets>>();
 	protected StackMap<Element, HasWidgets> nonuniqueModulesMap = new StackMap<Element, HasWidgets>();
 	protected StackMap<String, IModule> multiViewModulesMap = new StackMap<String, IModule>();
 	
-	public ModulesInstalator(ParenthoodSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, ModuleInteractionListener mil){
+	public ModulesInstalator(ParenthoodGeneratorSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, ModuleInteractionListener mil){
 		this.registry = reg;
 		this.moduleSocket = ms;
 		this.moduleInteractionListener = mil;
