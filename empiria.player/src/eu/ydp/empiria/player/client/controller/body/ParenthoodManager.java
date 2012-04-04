@@ -61,7 +61,7 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 		if (parent instanceof ISingleViewWithBodyModule){
 			if (parenthood.containsKey((ISingleViewWithBodyModule)parent))
 				return parenthood.get((ISingleViewWithBodyModule)parent);
-			else 
+			else if (upperLevelParenthoodSocket != null)
 				return upperLevelParenthoodSocket.getChildren(parent);
 		}
 		return new ArrayList<IModule>();
