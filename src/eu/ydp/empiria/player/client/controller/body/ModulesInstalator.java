@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
+import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IMultiViewModule;
 import eu.ydp.empiria.player.client.module.ISingleViewModule;
@@ -84,6 +85,8 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 			parenthood.popParent();
 		} else if (module instanceof ISingleViewSimpleModule){
 			((ISingleViewSimpleModule)module).initModule(element, moduleSocket, moduleInteractionListener);			
+		}else if(module instanceof IInlineModule){
+			((IInlineModule) module).initModule(element, moduleSocket);
 		}
 
 		if (((ISingleViewModule)module).getView() instanceof Widget ){
