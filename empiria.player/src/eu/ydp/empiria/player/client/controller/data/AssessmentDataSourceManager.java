@@ -48,7 +48,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener{
 	
 	public void setAssessmentLoadingError(String err){
 		String detail = "";
-		if (err.indexOf(":") != -1)
+		if (err != null  &&  err.indexOf(":") != -1)
 			detail = err.substring(0, err.indexOf(":"));
 		errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ASSESSMENT_FAILED_TO_LOAD) + detail;
 	}
