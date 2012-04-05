@@ -55,6 +55,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Promp
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SelectionModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShapeModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SlideshowPlayerModuleConnectorExtension;
@@ -191,10 +192,11 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	}
 
 	@Override
-	public void onDataReady() {
+	public void onDataReady() {		
 		AssessmentData assessmentData = dataManager.getAssessmentData();
 		DisplayOptions displayOptions = flowManager.getDisplayOptions();
 		
+		if (assessmentData != null)
 		displayOptions.useSkin(assessmentData.useSkin());
 		flowManager.setDisplayOptions(displayOptions);
 		
@@ -285,6 +287,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new CheckButtonModuleConnectorExtension());
 		loadExtension(new ShowAnswersButtonModuleConnectorExtension());
 		loadExtension(new ResetButtonModuleConnectorExtension());
+		loadExtension(new ShapeModuleConnectorExtension());
 	}
 	
 	protected void loadLibraryExtensions(){

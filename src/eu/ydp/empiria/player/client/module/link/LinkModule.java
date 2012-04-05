@@ -83,7 +83,7 @@ public class LinkModule extends ContainerModuleBase {
 
 	@Override
 	public HasWidgets getContainer() {
-		return mainPanel;
+		return panel;
 	}
 	
 	protected void processLink(){
