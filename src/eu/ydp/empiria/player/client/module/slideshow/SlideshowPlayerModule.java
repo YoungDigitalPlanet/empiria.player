@@ -218,7 +218,10 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 	
 	protected void scheduleNextSlide(){
 		if (canScheduleNextSlide()){
-			timer.schedule(slides.get(currSlideIndex+1).getStartTime() - slides.get(currSlideIndex).getStartTime());
+			int delay = slides.get(currSlideIndex+1).getStartTime() - slides.get(currSlideIndex).getStartTime();
+			if (delay <= 0)
+				delay = 1;
+			timer.schedule(delay);
 		}
 	}
 
