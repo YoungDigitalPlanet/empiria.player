@@ -31,7 +31,9 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
+import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
 import eu.ydp.empiria.player.client.module.listener.FeedbackModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
@@ -47,10 +49,11 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	private String responseIdentifier;
 	/** Shuffle answers */
 	private boolean shuffle = false;
+	private boolean multi = false;
 	
 	private VerticalPanel panel;
 	private Grid grid;
-	private Vector<Vector<SingleChoiceButton>> buttons;
+	private Vector<Vector<ChoiceButtonBase>> buttons;
 	private Vector<Vector<String>> buttonIds;
 	private Vector<String> choiceIdentifiers;
 	private Vector<String> itemIdentifiers;
@@ -78,8 +81,9 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		
+
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
+		multi = XMLUtils.getAttributeAsBoolean(moduleElement, "multi");
 		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 		
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
@@ -137,7 +141,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	}
 	
 	private void fillGrid(NodeList choices, NodeList items){
-		buttons = new Vector<Vector<SingleChoiceButton>>();
+		buttons = new Vector<Vector<ChoiceButtonBase>>();
 
 		// header - choices
 		
@@ -196,11 +200,11 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		// body - buttons
 		buttonIds = new Vector<Vector<String>>();
 		for (int i = 0 ; i < items.getLength() ; i ++){
-			buttons.add(new Vector<SingleChoiceButton>());
+			buttons.add(new Vector<ChoiceButtonBase>());
 			buttonIds.add(new Vector<String>());
 			ChoiceGroupController cgc = new ChoiceGroupController();
 			for (int c = 0 ; c < choices.getLength() ; c ++){
-				final SingleChoiceButton scb = new SingleChoiceButton(cgc, "selection");
+				final ChoiceButtonBase scb = (multi)?new MultiChoiceButton("selection-multi") : new SingleChoiceButton(cgc, "selection");
 				
 				scb.addClickHandler(new ClickHandler() {
 					@Override
@@ -253,29 +257,51 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	@Override
 	public void markAnswers(boolean mark) {
 		if (mark){
-			for (int r = 0 ; r < response.correctAnswers.size() ; r ++){
-				String currItemIdentifier = response.correctAnswers.get(r).split(" ")[0];
-				if (itemIdentifiers.indexOf(currItemIdentifier) == -1)
-					continue;
+			for (int ii = 0 ; ii < itemIdentifiers.size() ; ii ++ ){
+				boolean passed = true;
+				
+				for (int r = 0 ; r < response.correctAnswers.size() ; r ++){
+					String currItemIdentifier = response.correctAnswers.get(r).split(" ")[0];
+					if (currItemIdentifier.equals(itemIdentifiers.get(ii))){
+						boolean correct = response.values.contains(response.correctAnswers.get(r));
+						if (!correct){
+							passed = false;
+							break;
+						}
+					}
+				}
+				
+				for (int r = 0 ; r < response.values.size() ; r ++){
+					String currItemIdentifier = response.values.get(r).split(" ")[0];
+					if (currItemIdentifier.equals(itemIdentifiers.get(ii))){
+						boolean correct = response.correctAnswers.contains(response.values.get(r));
+						if (!correct){
+							passed = false;
+							break;
+						}
+					}
+				}
 
 				boolean itemSelected = false;
-				for (SingleChoiceButton btn : buttons.get(itemIdentifiers.indexOf(currItemIdentifier))){
+				for (ChoiceButtonBase btn : buttons.get(ii)){
 					if (btn.isSelected()){
 						itemSelected = true;
 						break;
 					}
 				}
-				
+
 				if (itemSelected){
-					if (response.values.contains(response.correctAnswers.get(r))){
-						grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-correct");
+					if (passed){
+						grid.getWidget(ii+1, 0).setStyleName("qp-selection-item-correct");
 					} else {
-						grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-wrong");
+						grid.getWidget(ii+1, 0).setStyleName("qp-selection-item-wrong");
 					}
 				} else {
-					grid.getWidget(itemIdentifiers.indexOf(currItemIdentifier)+1, 0).setStyleName("qp-selection-item-none");
+					grid.getWidget(ii+1, 0).setStyleName("qp-selection-item-none");
 				}
+				
 			}
+
 		} else {
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
 				grid.getWidget(i+1, 0).setStyleName("qp-selection-item");
@@ -378,7 +404,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		}
 	}
 
-	private void onButtonClick(SingleChoiceButton btn){
+	private void onButtonClick(ChoiceButtonBase btn){
 		btn.setSelected(!btn.isSelected());
 		updateResponse(true);
 	}
