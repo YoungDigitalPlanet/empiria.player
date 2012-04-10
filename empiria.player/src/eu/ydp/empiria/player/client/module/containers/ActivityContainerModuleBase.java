@@ -16,6 +16,9 @@ import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 public abstract class ActivityContainerModuleBase implements IContainerModule, IActivity {
 
 	protected ModuleSocket moduleSocket;
+	
+	private boolean markingAnswers = false;
+	private boolean showingAnswers = false;
 
 	@Override
 	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil, BodyGeneratorSocket bgs) {
@@ -29,7 +32,7 @@ public abstract class ActivityContainerModuleBase implements IContainerModule, I
 			if (child instanceof IActivity){
 				((IActivity)child).lock(lo);
 			}
-		}	
+		}		
 	}
 
 	@Override
@@ -44,21 +47,36 @@ public abstract class ActivityContainerModuleBase implements IContainerModule, I
 
 	@Override
 	public void markAnswers(boolean mark) {
+		if (showingAnswers)
+			showCorrectAnswers(false);
+		doMarkAnswers(mark);
+	}
+	
+	private void doMarkAnswers(boolean mark){
 		List<IModule> children = moduleSocket.getChildren(this);
 		for (IModule child : children){
 			if (child instanceof IActivity){
 				((IActivity)child).markAnswers(mark);
 			}
 		}
+		markingAnswers = mark;
 	}
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
+		if (markingAnswers)
+			markAnswers(false);
+		doShowCorrectAnswers(show);
+	}
+	
+	private void doShowCorrectAnswers(boolean show){
 		List<IModule> children = moduleSocket.getChildren(this);
 		for (IModule child : children){
 			if (child instanceof IActivity){
 				((IActivity)child).showCorrectAnswers(show);
 			}
 		}
+		
+		showingAnswers = show;
 	}
 }

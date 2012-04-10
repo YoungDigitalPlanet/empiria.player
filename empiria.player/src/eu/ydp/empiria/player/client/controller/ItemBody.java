@@ -186,7 +186,7 @@ public class ItemBody implements  WidgetWorkflowListener {
 	public void markAnswers(boolean mark, GroupIdentifier groupIdentifier) {
 		IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
 		if (currGroup != null){
-			currGroup.getGroupFlowProcessor().markAnswers(mark);
+			currGroup.markAnswers(mark);
 		}
 	}
 	
@@ -203,7 +203,7 @@ public class ItemBody implements  WidgetWorkflowListener {
 	public void showCorrectAnswers(boolean show, GroupIdentifier groupIdentifier) {
 		IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
 		if (currGroup != null){
-			currGroup.getGroupFlowProcessor().showCorrectAnswers(show);
+			currGroup.showCorrectAnswers(show);
 		}
 	}
 
@@ -224,7 +224,7 @@ public class ItemBody implements  WidgetWorkflowListener {
 	public void reset(GroupIdentifier groupIdentifier) {
 		IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
 		if (currGroup != null){
-			currGroup.getGroupFlowProcessor().reset();
+			currGroup.reset();
 		}
 	}
 
@@ -240,7 +240,7 @@ public class ItemBody implements  WidgetWorkflowListener {
 	public void lock(boolean lo, GroupIdentifier groupIdentifier) {
 		IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
 		if (currGroup != null){
-			currGroup.getGroupFlowProcessor().lock(lo);
+			currGroup.lock(lo);
 		}
 	}
 
