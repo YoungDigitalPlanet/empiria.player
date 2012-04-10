@@ -63,7 +63,8 @@ public class AssessmentController implements FlowActivityEventsHandler, Assessme
 	
 	public void initPage(PageData pageData){
 		pageController.initPage(pageData);
-		pageController.setAssessmentParenthoodSocket(assessment.getAssessmentParenthoodSocket());
+		if (assessment != null)
+			pageController.setAssessmentParenthoodSocket(assessment.getAssessmentParenthoodSocket());
 	}
 	
 	public void closePage(){
