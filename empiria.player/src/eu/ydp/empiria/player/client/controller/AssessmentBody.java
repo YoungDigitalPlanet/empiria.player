@@ -13,6 +13,8 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
+import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
+import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -21,7 +23,7 @@ import eu.ydp.empiria.player.client.module.containers.AssessmentBodyModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 
-public class AssessmentBody {
+public class AssessmentBody implements WidgetWorkflowListener {
 	
 	protected DisplayContentOptions options;
 	protected ModuleSocket moduleSocket;
@@ -29,6 +31,7 @@ public class AssessmentBody {
 	protected ModuleEventsListener moduleEventsListener;
 	protected Panel pageSlot;
 	protected ParenthoodManager parenthood;
+	protected List<IModule> modules;
 	
 	public AssessmentBody(DisplayContentOptions options, ModuleSocket moduleSocket,
 			final InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket) {
@@ -64,7 +67,9 @@ public class AssessmentBody {
 		instalator.setInitialParent(bodyModule);
 		bodyModule.initModule(assessmentBodyElement, generator);
 		
-		pageSlot = findPageInPage(instalator);
+		modules = instalator.getInstalledSingleViewModules();
+		
+		pageSlot = findPageInPage();
 		
 		return bodyModule.getView();
 	}
@@ -73,10 +78,10 @@ public class AssessmentBody {
 		return pageSlot;
 	}
 	
-	private Panel findPageInPage(ModulesInstalator instalator){
+	private Panel findPageInPage(){
 		Panel pagePanel = null;
 		
-		for(IModule module: instalator.getInstalledSingleViewModules()){
+		for(IModule module: modules){
 			if(module instanceof PageInPageModule){
 				pagePanel = (Panel)((PageInPageModule) module).getView();
 				break;
@@ -96,6 +101,43 @@ public class AssessmentBody {
 
 	public ParenthoodSocket getParenthoodSocket() {
 		return moduleSocket;
+	}
+
+	@Override
+	public void onLoad() {
+		for (IModule currModule : modules) {
+			if (currModule instanceof ILifecycleModule)
+				((ILifecycleModule) currModule).onBodyLoad();
+		}
+	}
+
+	@Override
+	public void onUnload() {
+		for (IModule currModule : modules) {
+			if (currModule instanceof ILifecycleModule)
+				((ILifecycleModule) currModule).onBodyUnload();
+		}
+	}
+
+	public void setUp() {
+		for (IModule currModule : modules) {
+			if (currModule instanceof ILifecycleModule)
+				((ILifecycleModule) currModule).onSetUp();
+		}
+	}
+
+	public void start() {
+		for (IModule currModule : modules) {
+			if (currModule instanceof ILifecycleModule)
+				((ILifecycleModule) currModule).onStart();
+		}
+	}
+
+	public void close() {
+		for (IModule currModule : modules) {
+			if (currModule instanceof ILifecycleModule)
+				((ILifecycleModule) currModule).onClose();
+		}
 	}
 	
 }

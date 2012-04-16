@@ -58,6 +58,8 @@ public class AssessmentController implements FlowActivityEventsHandler, Assessme
 		if (data != null){
 			assessment = new Assessment(data, options, interactionEventsSocket, styleSocket, modulesRegistrySocket);
 			assessmentViewSocket.setAssessmentViewCarrier(new AssessmentViewCarrier(assessment, headerViewSocket, footerViewSocket));
+			assessment.setUp();
+			assessment.start();
 		}
 	}
 	

@@ -51,6 +51,7 @@ import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.view.assessment.AssessmentBodyView;
 
 public class Assessment {
 
@@ -59,8 +60,6 @@ public class Assessment {
 
 	/** XML DOM of the assessment */
 	private XMLData xmlData;
-
-	private Widget skinView;
 
 	private Panel pageSlot;
 
@@ -73,6 +72,8 @@ public class Assessment {
 	private DisplayContentOptions options;
 	
 	private AssessmentBody body;
+	
+	private AssessmentBodyView bodyView;
 
 	/**
 	 * C'tor
@@ -105,17 +106,28 @@ public class Assessment {
 		if(bodyNode != null){
 			body = new AssessmentBody(options, moduleSocket,
 					interactionEventsListener, modulesRegistrySocket);
-			skinView = body.init(bodyNode);
+			bodyView = new AssessmentBodyView(body);
+			bodyView.init( body.init(bodyNode) );
 			pageSlot = body.getPageSlot();
 		}
 	}
 
 	public Widget getSkinView() {
-		return skinView;
+		return bodyView;
 	}
 
 	public Panel getPageSlot() {
 		return pageSlot;
+	}
+	
+	public void setUp() {
+		if (body != null)
+			body.setUp();
+	}
+
+	public void start() {
+		if (body != null)
+			body.start();
 	}
 	
 	public ParenthoodSocket getAssessmentParenthoodSocket(){
