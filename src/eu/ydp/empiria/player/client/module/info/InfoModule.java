@@ -24,19 +24,25 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 
 	protected DataSourceDataSupplier dataSourceDataSupplier;
 	protected SessionDataSupplier sessionDataSupplier;
+	protected FlowDataSupplier flowDataSupplier;
+	protected InfoModuleUnloadListener unloadListener;
 
 	protected Panel mainPanel;
 	protected Panel contentPanel;
 	protected int refItemIndex;
-	protected FlowDataSupplier flowDataSupplier;
 	protected ModuleSocket moduleSocket;
 	protected Element mainElement;
+	protected String contentString;
 
 	public InfoModule(DataSourceDataSupplier dsds, SessionDataSupplier sds, FlowDataSupplier fds){
 		dataSourceDataSupplier = dsds;
 		sessionDataSupplier = sds;
 		flowDataSupplier = fds;
 	}	
+	
+	public void setModuleUnloadListener(InfoModuleUnloadListener imul){
+		unloadListener = imul;
+	}
 	
 	@Override
 	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
@@ -67,6 +73,7 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 
 	@Override
 	public void onBodyUnload() {
+		unloadListener.moduleUnloaded();
 	}
 
 	@Override
@@ -79,23 +86,11 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 
 	@Override
 	public void onStart() {
-		
-		refItemIndex = -1;
-		if (mainElement.hasAttribute("itemIndex")){
-			refItemIndex = IntegerUtils.tryParseInt(mainElement.getAttribute("itemIndex"), -1);
-		} 
-		if (refItemIndex == -1){
-			refItemIndex = flowDataSupplier.getCurrentPageIndex();
-		}
-		
 		Map<String, String> styles = moduleSocket.getStyles(mainElement);
 		if (styles.containsKey("-empiria-info-content")){
-			String contentString = styles.get("-empiria-info-content");
-			String output = replaceTemplates(contentString);
-			InlineHTML html = new InlineHTML(output);
-			html.setStyleName("qp-info-text");
-			contentPanel.add(html);
+			contentString = styles.get("-empiria-info-content");
 		}
+		update();
 	}
 	
 	protected String replaceTemplates(String content){
@@ -177,6 +172,24 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 		if (var != null)
 			value = var.getValuesShort();
 		return value;
+	}
+
+	public void update() {
+		if (contentString != null  &&  contentString.length() > 0){
+			refItemIndex = -1;
+			if (mainElement.hasAttribute("itemIndex")){
+				refItemIndex = IntegerUtils.tryParseInt(mainElement.getAttribute("itemIndex"), -1);
+			} 
+			if (refItemIndex == -1){
+				refItemIndex = flowDataSupplier.getCurrentPageIndex();
+			}
+		
+			String output = replaceTemplates(contentString);
+			InlineHTML html = new InlineHTML(output);
+			html.setStyleName("qp-info-text");
+			contentPanel.clear();
+			contentPanel.add(html);
+		}
 	}
 
 }

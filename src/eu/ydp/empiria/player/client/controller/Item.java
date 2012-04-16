@@ -250,28 +250,27 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		return title;
 	}
 
+	@Deprecated
 	public int getModulesCount(){
 		return itemBody.getModuleCount();
 	}
-	
+
 	public Widget getContentView(){
 		return itemBodyView;
 	}
-	
+
+	@Deprecated
 	public Widget getFeedbackView(){
 		return feedbackManager.getModalFeedbackView();
 	}
 	
+	@Deprecated
 	public Widget getScoreView(){
 		return scorePanel;
 	}
 
 	// -------------------------- NAVIGATION -------------------------------
 	
-	public int getItemModuleCount(){
-		return itemBody.getModuleCount();
-	}
-
 	public void checkItem(){
 		itemBody.markAnswers(true);
 		itemBody.lock(true);

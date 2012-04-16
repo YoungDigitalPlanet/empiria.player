@@ -42,7 +42,7 @@ import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
-public class ItemBody implements  WidgetWorkflowListener {
+public class ItemBody implements WidgetWorkflowListener {
 
 	public List<IModule> modules;
 	
