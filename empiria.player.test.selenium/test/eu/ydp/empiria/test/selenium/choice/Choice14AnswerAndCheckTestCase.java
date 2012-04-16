@@ -1,7 +1,5 @@
 package eu.ydp.empiria.test.selenium.choice;
 
-import static eu.ydp.empiria.test.selenium.choice.*;
-
 public class Choice14AnswerAndCheckTestCase extends ChoiceTestCaseBase {
 
 	public void testCorrectAndCheck1() throws Exception{
