@@ -52,12 +52,11 @@ public class ItemBody implements WidgetWorkflowListener {
 	protected DisplayContentOptions options;
 	protected ModuleSocket moduleSocket;
 	protected ModulesRegistrySocket modulesRegistrySocket;
+	
+	protected ItemBodyModule itemBodyModule;
 
 	private JSONArray stateAsync;
 	private boolean attached = false;
-	private boolean locked = false;
-	private boolean markingAnswers = false;
-	private boolean showingAnswers = false;
 
 	// private Label traceLabel;
 
@@ -100,7 +99,7 @@ public class ItemBody implements WidgetWorkflowListener {
 		ModulesInstalator modulesInstalator = new ModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, moduleEventsListener);
 		BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
 		
-		ItemBodyModule itemBodyModule = new ItemBodyModule(); 
+		itemBodyModule = new ItemBodyModule(); 
 		modulesInstalator.setInitialParent(itemBodyModule);
 		itemBodyModule.initModule(itemBodyElement, moduleSocket, moduleEventsListener, generator);
 		
@@ -131,9 +130,6 @@ public class ItemBody implements WidgetWorkflowListener {
 		}
 
 		attached = true;
-
-		if (locked)
-			markAnswers(true);
 	}
 
 	@Override
@@ -173,13 +169,7 @@ public class ItemBody implements WidgetWorkflowListener {
 	// ------------------------- ACTIVITY --------------------------------
 
 	public void markAnswers(boolean mark) {
-		if (showingAnswers)
-			showCorrectAnswers(false);
-		markingAnswers = mark;
-		for (IModule currModule : modules) {
-			if (currModule instanceof IActivity)
-				((IActivity) currModule).markAnswers(mark);
-		}
+		itemBodyModule.markAnswers(mark);
 
 	}
 
@@ -191,13 +181,7 @@ public class ItemBody implements WidgetWorkflowListener {
 	}
 	
 	public void showCorrectAnswers(boolean show) {
-		if (markingAnswers)
-			markAnswers(false);
-		showingAnswers = show;
-		for (IModule currModule : modules) {
-			if (currModule instanceof IActivity)
-				((IActivity) currModule).showCorrectAnswers(show);
-		}
+		itemBodyModule.showCorrectAnswers(show);
 	}
 
 	public void showCorrectAnswers(boolean show, GroupIdentifier groupIdentifier) {
@@ -208,17 +192,7 @@ public class ItemBody implements WidgetWorkflowListener {
 	}
 
 	public void reset() {
-		if (showingAnswers)
-			showCorrectAnswers(false);
-		if (markingAnswers)
-			markAnswers(false);
-		if (locked)
-			lock(false);
-		for (IModule currModule : modules) {
-			if (currModule instanceof IResetable)
-				((IResetable) currModule).reset();
-		}
-
+		itemBodyModule.reset();
 	}
 
 	public void reset(GroupIdentifier groupIdentifier) {
@@ -228,13 +202,8 @@ public class ItemBody implements WidgetWorkflowListener {
 		}
 	}
 
-	public void lock(boolean l) {
-		locked = l;
-		for (IModule currModule : modules) {
-			if (currModule instanceof ILockable)
-				((ILockable) currModule).lock(l);
-		}
-
+	public void lock(boolean lo) {
+		itemBodyModule.lock(lo);
 	}
 
 	public void lock(boolean lo, GroupIdentifier groupIdentifier) {
@@ -242,10 +211,6 @@ public class ItemBody implements WidgetWorkflowListener {
 		if (currGroup != null){
 			currGroup.lock(lo);
 		}
-	}
-
-	public boolean isLocked() {
-		return locked;
 	}
 	
 	private IGroup getGroupByGroupIdentifier(GroupIdentifier gi){

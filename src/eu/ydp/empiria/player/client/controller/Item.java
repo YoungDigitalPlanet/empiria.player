@@ -319,10 +319,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		itemBody.lock(lock, gi);
 	}
 	
-	public boolean isLocked(){
-		return itemBody.isLocked();
-	}
-	
 	
 
 	@Override
