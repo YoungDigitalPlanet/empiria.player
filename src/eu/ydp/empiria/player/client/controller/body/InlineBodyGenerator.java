@@ -19,71 +19,92 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
 	protected ModulesRegistrySocket modulesRegistrySocket;
 	protected ModuleSocket moduleSocket;
 	protected DisplayContentOptions options;
-	
-	public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket ms, DisplayContentOptions options){
+
+	public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket ms, DisplayContentOptions options) {
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
 		this.moduleSocket = ms;
 	}
 
-	public void generateInlineBody(Node mainNode, com.google.gwt.dom.client.Element parentElement){
-		if (mainNode != null  &&  mainNode.hasChildNodes()  &&  parentElement instanceof com.google.gwt.dom.client.Element)
+	public void generateInlineBody(Node mainNode, com.google.gwt.dom.client.Element parentElement) {
+		if (mainNode != null && mainNode.hasChildNodes() && parentElement instanceof com.google.gwt.dom.client.Element)
 			parseXML(mainNode.getChildNodes(), parentElement);
 	}
-	
 
-	public Widget generateInlineBody(Node mainNode){
+	public Widget generateInlineBody(Node mainNode) {
 		Widget h = new InlineHTML();
 		h.setStyleName("qp-text-inline");
 		parseXML(mainNode.getChildNodes(), h.getElement());
 		return h;
 	}
-	
-	protected com.google.gwt.dom.client.Element parseXML(NodeList nodes, com.google.gwt.dom.client.Element parentElement){
-		
-		for (int i = 0 ; i < nodes.getLength() ; i ++){
-		
-			Node currNode = nodes.item(i);
-			
-			if (currNode.getNodeType() == Node.ELEMENT_NODE){
-				if (options.getIgnoredInlineTags().contains(currNode.getNodeName())){
-					continue;
-				} else if (modulesRegistrySocket.isModuleSupported(currNode.getNodeName())  &&  modulesRegistrySocket.isInlineModule(currNode.getNodeName())){
-					IModule module = modulesRegistrySocket.createModule(currNode.getNodeName());
-					if (module instanceof IInlineModule){
-						((IInlineModule)module).initModule((Element)currNode, moduleSocket);
-						Widget moduleView = ((IInlineModule)module).getView();
-						if (moduleView != null)
-							parentElement.appendChild(moduleView.getElement());
-					}
-				} else {
-					com.google.gwt.dom.client.Element newElement = Document.get().createElement(currNode.getNodeName());
-					parseXMLAttributes((Element)currNode, newElement);
-					parentElement.appendChild(newElement);
-					parseXML(currNode.getChildNodes(), newElement);
+
+	public Widget generateInlineBodyForNode(Node mainNode) {
+		Widget h = new InlineHTML();
+		h.setStyleName("qp-text-inline");
+		parseNode(mainNode, h.getElement());
+		return h;
+	}
+
+	/**
+	 * Parsuje pojedynczy wezel xml-a i generuje reprezentacje w postaci
+	 * widgeta. Widget jest dodawany do parentElement
+	 *
+	 * @param currNode
+	 * @param parentElement
+	 * @return
+	 */
+	protected com.google.gwt.dom.client.Element parseNode(Node currNode, com.google.gwt.dom.client.Element parentElement) {
+		if (currNode.getNodeType() == Node.ELEMENT_NODE) {
+			if (options.getIgnoredInlineTags().contains(currNode.getNodeName())) {
+				return parentElement;
+			} else if (modulesRegistrySocket.isModuleSupported(currNode.getNodeName()) && modulesRegistrySocket.isInlineModule(currNode.getNodeName())) {
+				IModule module = modulesRegistrySocket.createModule(currNode.getNodeName());
+				if (module instanceof IInlineModule) {
+					((IInlineModule) module).initModule((Element) currNode, moduleSocket);
+					Widget moduleView = ((IInlineModule) module).getView();
+					if (moduleView != null)
+						parentElement.appendChild(moduleView.getElement());
 				}
-			} else if(currNode.getNodeType() == Node.TEXT_NODE){
-				Document doc = Document.get();
-				parentElement.appendChild(doc.createTextNode(currNode.getNodeValue()));
+			} else {
+				com.google.gwt.dom.client.Element newElement = Document.get().createElement(currNode.getNodeName());
+				parseXMLAttributes((Element) currNode, newElement);
+				parentElement.appendChild(newElement);
+				parseXML(currNode.getChildNodes(), newElement);
 			}
+		} else if (currNode.getNodeType() == Node.TEXT_NODE) {
+			Document doc = Document.get();
+			parentElement.appendChild(doc.createTextNode(currNode.getNodeValue()));
 		}
-		
 		return parentElement;
 	}
-	
-	private void parseXMLAttributes(com.google.gwt.xml.client.Element srcElement, com.google.gwt.dom.client.Element dstElement){
+
+	/**
+	 * Generuje widgety dla dzieci wskazanego wezla
+	 * @param nodes
+	 * @param parentElement
+	 * @return
+	 */
+	protected com.google.gwt.dom.client.Element parseXML(NodeList nodes, com.google.gwt.dom.client.Element parentElement) {
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node currNode = nodes.item(i);
+			parseNode(currNode, parentElement);
+		}
+		return parentElement;
+	}
+
+	private void parseXMLAttributes(com.google.gwt.xml.client.Element srcElement, com.google.gwt.dom.client.Element dstElement) {
 		NamedNodeMap attributes = srcElement.getAttributes();
-		
-		for(int i = 0; i < attributes.getLength(); i++){
+
+		for (int i = 0; i < attributes.getLength(); i++) {
 			Node attribute = attributes.item(i);
-			if (attribute.getNodeValue().length() > 0){
-				if (attribute.getNodeName().equals("class")){
+			if (attribute.getNodeValue().length() > 0) {
+				if (attribute.getNodeName().equals("class")) {
 					dstElement.addClassName(attribute.getNodeValue());
 				} else {
 					dstElement.setAttribute(attribute.getNodeName(), attribute.getNodeValue());
 				}
 			}
-			
+
 		}
 	}
 }

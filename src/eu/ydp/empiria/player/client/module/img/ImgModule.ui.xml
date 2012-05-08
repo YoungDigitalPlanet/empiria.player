@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+
+			line-weight:1px;
+		}
+		.qp-image-label{
+
+		}
+
+	</ui:style>
+	<g:FlowPanel ui:field="containerPanel" styleName="qp-img-container">
+		<g:FlowPanel ui:field="contentPanel" styleName="qp-img-content" />
+		<g:FlowPanel ui:field="titlePanel" styleName="qp-img-title" />
+		<g:FlowPanel ui:field="descriptionPanel" styleName="qp-img-description" />
+	</g:FlowPanel>
+</ui:UiBinder>
