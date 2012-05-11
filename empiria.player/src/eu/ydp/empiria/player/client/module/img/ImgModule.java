@@ -188,19 +188,19 @@ public class ImgModule extends Composite implements ISimpleModule {
 			img.addStyleName(cls);
 		ms.getStyles(element);
 		RootPanel.get().add(img);
-		imgCanvas.setWidth(img.getWidth() + "px");
-		imgCanvas.setCoordinateSpaceWidth(img.getWidth());
-		imgCanvas.setHeight(img.getHeight() + "px");
-		imgCanvas.setCoordinateSpaceHeight(img.getHeight());
 		img.setVisible(false);
 		img.addLoadHandler(new LoadHandler() {
 
 			@Override
 			public void onLoad(LoadEvent event) {
 				ImageElement imgelement = ImageElement.as(img.getElement());
+				imgCanvas.setWidth(img.getWidth() + "px");
+				imgCanvas.setCoordinateSpaceWidth(img.getWidth());
+				imgCanvas.setHeight(img.getHeight() + "px");
+				imgCanvas.setCoordinateSpaceHeight(img.getHeight());
+				//imgelement.
 				Context2d context2d = imgCanvas.getContext2d();
 				context2d.drawImage(imgelement, 0, 0);
-				context2d.fill();
 				setContextStyle(context2d,ms);
 				NodeList labelList = element.getElementsByTagName("label");
 				for (int x = 0; x < labelList.getLength(); ++x) {
@@ -219,6 +219,7 @@ public class ImgModule extends Composite implements ISimpleModule {
 						parseText(text, anchor, context2d, ms, mainPanel);
 					}
 				}
+				RootPanel.get().remove(img);
 			}
 		});
 	}
