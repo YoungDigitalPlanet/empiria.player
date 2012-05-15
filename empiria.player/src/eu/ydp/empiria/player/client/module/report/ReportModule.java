@@ -81,7 +81,7 @@ public class ReportModule implements IContainerModule {
 						table.getFlexCellFormatter().addStyleName(currRow, currCol, "qp-report-table-col-" + String.valueOf(currCol));
 						table.getRowFormatter().addStyleName(currRow, "qp-report-table-row");
 						table.getRowFormatter().addStyleName(currRow, "qp-report-table-row-" + String.valueOf(currRow));
-						Element el = dataSourceDataSupplier.getItem(currRow-1);
+						Element el = dataSourceDataSupplier.getItem(currRow);
 						if (el != null) {
 							String className = XMLUtils.getAttributeAsString(el, "class");
 							if (className != null) {
@@ -123,7 +123,7 @@ public class ReportModule implements IContainerModule {
 							table.getFlexCellFormatter().addStyleName(currRow, currCol, "qp-report-table-col-" + String.valueOf(currCol));
 							table.getRowFormatter().addStyleName(currRow, "qp-report-table-row");
 							table.getRowFormatter().addStyleName(currRow, "qp-report-table-row-" + String.valueOf(currRow));
-							Element el = dataSourceDataSupplier.getItem(currRow-1);
+							Element el = dataSourceDataSupplier.getItem(currRow);
 							if (el != null) {
 								String className = XMLUtils.getAttributeAsString(el, "class");
 								if (className != null) {
