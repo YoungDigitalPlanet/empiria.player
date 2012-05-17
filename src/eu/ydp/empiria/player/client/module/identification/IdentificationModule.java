@@ -10,7 +10,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
@@ -18,34 +17,33 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.controller.body.ModuleEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IMultiViewModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class IdentificationModule extends Widget implements IInteractionModule{
+public class IdentificationModule extends Widget implements IInteractionModule,Factory<IdentificationModule>{
 
 	private int maxSelections;
 	private boolean locked;
 	private boolean showingCorrectAnswers;
-	
+
 	private String responseIdentifier;
 	private Response response;
-	
+
 	private Vector<SelectableChoice> options;
 	private FlowPanel panel;
-	
+
 	private ModuleInteractionListener moduleListener;
 	protected ModuleSocket moduleSocket;
-	
+
 	protected List<Element> multiViewElements;
-	
+
 	public IdentificationModule(){
 	}
 
@@ -80,7 +78,7 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 		locked = false;
 		showingCorrectAnswers = false;
 		multiViewElements = new ArrayList<Element>();
-		
+
 		moduleListener = moduleInteractionListener;
 		this.moduleSocket = moduleSocket;
 	}
@@ -92,31 +90,31 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		
+
 		options = new Vector<SelectableChoice>();
 		String userClass = "";
-		
+
 		for (int e = 0 ; e < multiViewElements.size()  &&  e < placeholders.size() ; e ++ ){
-			
+
 			Element element = multiViewElements.get(e);
 			HasWidgets currPlaceholder = placeholders.get(e);
 			Vector<SelectableChoice> currOptions = new Vector<SelectableChoice>();
-			
+
 			boolean shuffle = false;
 			String separatorString = "/";
-			
+
 			if (e == 0){
-		
+
 				shuffle = XMLUtils.getAttributeAsBoolean(element, "shuffle");
 				maxSelections = XMLUtils.getAttributeAsInt(element, "maxSelections");
 				userClass = XMLUtils.getAttributeAsString(element, "class");
-		
+
 				responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 				response = moduleSocket.getResponse(responseIdentifier);
-				
+
 				separatorString = XMLUtils.getAttributeAsString(element, "separator");
 			}
-								
+
 			RandomizedSet<SelectableChoice> optionsSet = new RandomizedSet<SelectableChoice>();
 			Vector<Boolean> fixeds = new Vector<Boolean>();
 			NodeList optionNodes = element.getElementsByTagName("simpleChoice");
@@ -126,7 +124,7 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 				if(shuffle  &&  !XMLUtils.getAttributeAsBoolean((Element)optionNodes.item(i), "fixed")){
 					optionsSet.push(sc);
 					fixeds.add(false);
-				} else 
+				} else
 					fixeds.add(true);
 				sc.addDomHandler(new ClickHandler() {
 					@Override
@@ -135,7 +133,7 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 					}
 				}, ClickEvent.getType());
 			}
-					
+
 			panel = new FlowPanel();
 			panel.setStyleName("qp-identification-module");
 			if (userClass != null  &&  !"".equals(userClass))
@@ -151,11 +149,11 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 					panel.add(sep);
 				}
 			}
-			
+
 			currPlaceholder.add(panel);
-			
+
 			options.addAll(currOptions);
-	
+
 			NodeList childNodes = element.getChildNodes();
 			for (int f = 0 ; f < childNodes.getLength() ; f ++){
 				if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
@@ -163,7 +161,7 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 			}
 		}
 	}
-	
+
 
 	@Override
 	public String getIdentifier() {
@@ -215,28 +213,28 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 				}
 			}
 			showingCorrectAnswers = false;
-			
+
 		}
 	}
-		
+
 	public JavaScriptObject getJsSocket(){
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
 
 	@Override
 	public JSONArray getState() {
-		
+
 		JSONArray arr = new JSONArray();
 		for (int i = 0 ; i < options.size() ; i ++){
 			arr.set(i, JSONBoolean.getInstance( response.values.contains(options.get(i).getIdentifier()) ));
 		}
-		
+
 		return arr;
 	}
 
 	@Override
 	public void setState(JSONArray newState) {
-		
+
 		for (int i = 0 ; i < options.size() ; i ++){
 			JSONValue value =  newState.get(i);
 			if (value != null)
@@ -248,15 +246,15 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 	protected void onChoiceClick(SelectableChoice sc){
 
 		if (!locked){
-		
+
 			sc.setSelected(!sc.getSelected());
-			
+
 			int currSelectionsCount = 0;
 			for (int i = 0 ; i < options.size() ; i ++){
 				if (options.get(i).getSelected())
 					currSelectionsCount++;
 			}
-			
+
 			if (currSelectionsCount > maxSelections){
 				for (int i = 0 ; i < options.size() ; i ++){
 					if (options.get(i).getSelected()  &&  sc != options.get(i)){
@@ -268,24 +266,28 @@ public class IdentificationModule extends Widget implements IInteractionModule{
 			updateResponse(true);
 		}
 	}
-	
+
 
 	private void updateResponse(boolean userInteract){
 		if (showingCorrectAnswers)
 			return;
-		
+
 		Vector<String> currResponseValues = new Vector<String>();
-		
+
 		for (SelectableChoice currSC:options){
 			if (currSC.getSelected())
 				currResponseValues.add(currSC.getIdentifier());
 		}
-		
+
 		if (!response.compare(currResponseValues)  ||  !response.isInitialized()){
 			response.set(currResponseValues);
 			moduleListener.onStateChanged(userInteract, this);
 		}
 	}
 
+	@Override
+	public IdentificationModule getNewInstance() {
+		return new IdentificationModule();
+	}
 
 }

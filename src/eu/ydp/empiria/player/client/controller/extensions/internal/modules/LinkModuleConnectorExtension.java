@@ -3,8 +3,10 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
+import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
+import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.link.LinkModule;
 
 public class LinkModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, FlowRequestSocketUserExtension {
@@ -13,18 +15,7 @@ public class LinkModuleConnectorExtension extends ModuleExtension implements Mod
 
 	@Override
 	public ModuleCreator getModuleCreator() {
-		return new ModuleCreator() {
-			
-			@Override
-			public boolean isMultiViewModule() {
-				return false;
-			}
-			
-			@Override
-			public boolean isInlineModule() {
-				return false;
-			}
-			
+		return new AbstractModuleCreator() {
 			@Override
 			public IModule createModule() {
 				return new LinkModule(flowRequestInvoker);
@@ -34,7 +25,7 @@ public class LinkModuleConnectorExtension extends ModuleExtension implements Mod
 
 	@Override
 	public String getModuleNodeName() {
-		return "link";
+		return ModuleTagName.LINK.tagName();
 	}
 
 	@Override

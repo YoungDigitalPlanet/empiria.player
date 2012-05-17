@@ -10,16 +10,15 @@ import com.google.gwt.xml.client.Element;
 import com.mathplayer.player.MathPlayerManager;
 import com.mathplayer.player.geom.Font;
 
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInlineModule;
-import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 
-public class MathTextModule implements IInlineModule {
+public class MathTextModule implements IInlineModule,Factory<MathTextModule> {
 
 	protected Panel mainPanel;
-	
+
 	@Override
 	public void initModule(Element element, ModuleSocket ms) {
 		MathPlayerManager mpm = new MathPlayerManager();
@@ -28,16 +27,16 @@ public class MathTextModule implements IInlineModule {
 		String fontName = "Arial";
 		boolean fontBold = false;
 		boolean fontItalic = false;
-		if (styles.containsKey("-empiria-math-font-size")){			
+		if (styles.containsKey("-empiria-math-font-size")){
 			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-font-size"));
 		}
-		if (styles.containsKey("-empiria-math-font-family")){			
+		if (styles.containsKey("-empiria-math-font-family")){
 			fontName = styles.get("-empiria-math-font-family");
 		}
-		if (styles.containsKey("-empiria-math-font-weight")){			
+		if (styles.containsKey("-empiria-math-font-weight")){
 			fontBold = styles.get("-empiria-math-font-weight").toLowerCase().equals("bold");
 		}
-		if (styles.containsKey("-empiria-math-font-style")){			
+		if (styles.containsKey("-empiria-math-font-style")){
 			fontItalic = styles.get("-empiria-math-font-style").toLowerCase().equals("italic");
 		}
 		Font f = new Font(fontSize, fontName, fontBold, fontItalic);
@@ -53,7 +52,7 @@ public class MathTextModule implements IInlineModule {
 		if (temporaryAttached){
 			mainPanel.removeFromParent();
 		}
-		
+
 	}
 
 	@Override
@@ -61,5 +60,8 @@ public class MathTextModule implements IInlineModule {
 		return mainPanel;
 	}
 
-
+	@Override
+	public MathTextModule getNewInstance() {
+		return new MathTextModule();
+	}
 }

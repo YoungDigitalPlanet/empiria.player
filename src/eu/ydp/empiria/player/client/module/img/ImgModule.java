@@ -32,6 +32,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.components.CanvasArrow;
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
@@ -46,7 +47,7 @@ import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
  * <br/>
  * <br/>
  */
-public class ImgModule extends Composite implements ISimpleModule {
+public class ImgModule extends Composite implements ISimpleModule,Factory<ImgModule> {
 
 	private static IMGModuleUiBinder uiBinder = GWT.create(IMGModuleUiBinder.class);
 
@@ -299,4 +300,8 @@ public class ImgModule extends Composite implements ISimpleModule {
 		return this;
 	}
 
+	@Override
+	public ImgModule getNewInstance() {
+		return new ImgModule();
+	}
 }

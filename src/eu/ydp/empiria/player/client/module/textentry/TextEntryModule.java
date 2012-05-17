@@ -2,18 +2,14 @@ package eu.ydp.empiria.player.client.module.textentry;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.xml.client.Element;
@@ -21,6 +17,7 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IStateful;
@@ -29,7 +26,7 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class TextEntryModule implements IInteractionModule{
+public class TextEntryModule implements IInteractionModule,Factory<TextEntryModule>{
 
 	/** response processing interface */
 	private Response 	response;
@@ -38,7 +35,7 @@ public class TextEntryModule implements IInteractionModule{
 	private ModuleInteractionListener moduleInteractionListener;
 	protected ModuleSocket moduleSocket;
 	/** widget id */
-	private String  id;
+//	private String  id;
 	/** text box control */
 	private TextBox textBox;
 	/** Last selected value */
@@ -47,13 +44,13 @@ public class TextEntryModule implements IInteractionModule{
 
 	protected Element moduleElement;
 	protected Panel moduleWidget;
-	
-	/**	
+
+	/**
 	 * constructor
 	 * @param moduleSocket
 	 */
 	public TextEntryModule(){
-		
+
 	}
 
 	@Override
@@ -70,22 +67,21 @@ public class TextEntryModule implements IInteractionModule{
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		
-		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier"); 
+		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
 		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
-		
+
 		textBox = new TextBox();
 		if (moduleElement.hasAttribute("expectedLength"))
 			textBox.setMaxLength(XMLUtils.getAttributeAsInt(moduleElement, "expectedLength"));
-		
+
 		textBox.addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
 				onTextBoxChange();
 			}
 		});
-		
+
 		if (!response.correctAnswers.get(0).matches(".*[^0-9].*"))
 			textBox.getElement().setAttribute("type", "number");
 
@@ -96,34 +92,34 @@ public class TextEntryModule implements IInteractionModule{
 		Panel spanContent = new FlowPanel();
 		spanContent.setStyleName("qp-text-textentry-content");
 		spanContent.add(textBox);
-		
+
 		moduleWidget = new FlowPanel();
-		
+
 		moduleWidget.add(spanPrefix);
 		moduleWidget.add(spanContent);
 		moduleWidget.add(spanSufix);
 		moduleWidget.setStyleName("qp-text-textentry");
 		if (userClass != null  &&  !"".equals(userClass))
 			moduleWidget.addStyleName(userClass);
-		
+
 		placeholders.get(0).add(moduleWidget);
-		
+
 		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
 			moduleSocket.addInlineFeedback(new InlineFeedback(moduleWidget, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
 		}
 	}
 
-	// ------------------------ INTERFACES ------------------------ 
+	// ------------------------ INTERFACES ------------------------
 
 
 	@Override
-	public void onBodyLoad() {	
+	public void onBodyLoad() {
 	}
 
 	@Override
 	public void onBodyUnload() {
-		
+
 	}
 
 	@Override
@@ -133,18 +129,18 @@ public class TextEntryModule implements IInteractionModule{
 
 	@Override
 	public void onStart() {
-		
+
 	}
 
 	@Override
 	public void onClose() {
 	}
-	
+
 	@Override
 	public void lock(boolean l) {
 		textBox.setEnabled(!l);
 	}
-  
+
 	/**
 	 * @see IActivity#markAnswers()
 	 */
@@ -188,11 +184,11 @@ public class TextEntryModule implements IInteractionModule{
 			showingAnswers = false;
 		}
 	}
-		
+
 	public JavaScriptObject getJsSocket(){
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
-	
+
   /**
    * @see IStateful#getState()
    */
@@ -200,12 +196,12 @@ public class TextEntryModule implements IInteractionModule{
 	  JSONArray jsonArr = new JSONArray();
 
 	  String stateString = "";
-	  
+
 	  if (response.values.size() > 0)
 		  stateString = response.values.get(0);
-	  
+
 	  jsonArr.set(0, new JSONString(stateString));
-	  
+
 	  return jsonArr;
   }
 
@@ -213,9 +209,9 @@ public class TextEntryModule implements IInteractionModule{
    * @see IStateful#setState(Serializable)
    */
   public void setState(JSONArray newState) {
-		
+
 		String state = "";
-	
+
 		if (newState == null){
 		} else if (newState.size() == 0){
 		} else if (newState.get(0).isString() == null){
@@ -223,33 +219,37 @@ public class TextEntryModule implements IInteractionModule{
 			state = newState.get(0).isString().stringValue();
 			lastValue = null;
 		}
-	
+
 		textBox.setText(state);
-		
+
 		updateResponse(false);
-		
+
   }
-	
+
 	private void updateResponse(boolean userInteract){
 		if (showingAnswers)
 			return;
-		
+
 		if(lastValue != null)
 			response.remove(lastValue);
-		
+
 		lastValue = textBox.getText();
 		response.add(lastValue);
 		moduleInteractionListener.onStateChanged(userInteract, this);
-	
+
 	}
 
 	@Override
 	public String getIdentifier() {
 		return responseIdentifier;
 	}
-	
+
 	protected void onTextBoxChange(){
 		updateResponse(true);
 	}
 
+	@Override
+	public TextEntryModule getNewInstance() {
+		return new TextEntryModule();
+	}
 }

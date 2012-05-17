@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
@@ -17,20 +15,18 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.choice.SimpleChoice;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
-import eu.ydp.empiria.player.client.module.listener.FeedbackModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
+public class ChoiceModule implements IInteractionModule, SimpleChoiceListener,Factory<ChoiceModule> {
 	/** response processing interface */
 	private Response response;
 	/** module state changed listener */
@@ -44,23 +40,23 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 	private boolean shuffle = false;
 	/** option widgets */
 	private Vector<SimpleChoice> interactionElements;
-	
+
 	private boolean locked = false;
 	private boolean showingAnswers = false;
-	
+
 	protected ChoiceGroupController groupController;
-	
+
 	protected Element moduleElement;
-	
+
 	protected Panel mainPanel;
-	
-	
+
+
 	public ChoiceModule(){
 	}
 
 	@Override
 	public void initModule(ModuleSocket moduleSocket, ModuleInteractionListener moduleInteractionListener) {
-		
+
 		this.stateListener = moduleInteractionListener;
 		this.moduleSocket = moduleSocket;
 	}
@@ -77,29 +73,29 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
 		multi = response.cardinality == Cardinality.MULTIPLE;
-		
+
 		mainPanel = new FlowPanel();
-		
+
 		mainPanel.setStyleName("qp-choice-module");
 		if (userClass != null  &&  !"".equals(userClass))
 			mainPanel.addStyleName(userClass);
 		Widget promptWidget = new InlineHTML();
 		promptWidget.setStyleName("qp-prompt");
 		moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstElementWithTagName(moduleElement, "prompt"), promptWidget.getElement());
-		
+
 		mainPanel.add(promptWidget);
 		mainPanel.add(getOptionsView(moduleElement, moduleSocket, stateListener));
-		
+
 		NodeList childNodes = moduleElement.getChildNodes();
 		for (int f = 0 ; f < childNodes.getLength() ; f ++){
 			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
 				moduleSocket.addInlineFeedback(new InlineFeedback(mainPanel, childNodes.item(f), moduleSocket, stateListener));
 		}
-		
+
 		placeholders.get(0).add(mainPanel);
 
 	}
-	
+
 
 	  /**
 	   * Get options view
@@ -115,7 +111,7 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 		  interactionElements = new Vector<SimpleChoice>();
 		  for (int el = 0 ; el < optionNodes.getLength() ; el ++)
 			  interactionElements.add(null);
-		  
+
 		  // Add randomized nodes to shuffle table
 		  if(shuffle){
 			  for(int i = 0; i < optionNodes.getLength(); i++){
@@ -126,7 +122,7 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 				  }
 			  }
 		  }
-		  
+
 		  groupController = new ChoiceGroupController();
 
 		  // Create buttons
@@ -171,7 +167,7 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 	}
 
 	@Override
-	public void onStart() {		
+	public void onStart() {
 	}
 
 	@Override
@@ -184,14 +180,14 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 		for (SimpleChoice currSC:interactionElements){
 			currSC.setEnabled(!l);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void markAnswers(boolean mark) {
-		
+
 		Vector<Boolean> evaluation = response.evaluateAnswer();
-		
+
 		if (response.cardinality == Cardinality.SINGLE){
 			for (int i = 0 ; i < interactionElements.size() ; i ++){
 				interactionElements.get(i).markAnswers(mark, evaluation.get(0));
@@ -237,7 +233,7 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 			boolean b1 = response.values.contains(currSC.getIdentifier());
 			state.set(state.size(), JSONBoolean.getInstance(b1));
 		}
-		
+
 		return state;
 	}
 
@@ -245,29 +241,29 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 	public void setState(JSONArray newState) {
 
 		Boolean currSelected;
-		 
+
 		for (int i  = 0 ; i < newState.size() && i < interactionElements.size(); i ++ ){
 			currSelected = newState.get(i).isBoolean().booleanValue();
 			interactionElements.get(i).setSelected(currSelected);
-			
+
 		}
-		
+
 		updateResponse(null, false);
 		//stateListener.onStateChanged(this);
 	}
-	
+
 	private void updateResponse(SimpleChoice target, boolean userInteract){
 		if (showingAnswers)
 			return;
-		
+
 		Vector<String> currResponseValues = new Vector<String>();
-		
+
 		for (SimpleChoice currSC:interactionElements){
 			if (currSC.isSelected()){
 				currResponseValues.add(currSC.getIdentifier());
 			}
 		}
-		
+
 		if (!response.compare(currResponseValues)  ||  !response.isInitialized()){
 			response.set(currResponseValues);
 			stateListener.onStateChanged(userInteract, this);
@@ -292,4 +288,8 @@ public class ChoiceModule implements IInteractionModule, SimpleChoiceListener {
 		}
 	}
 
+	@Override
+	public ChoiceModule getNewInstance() {
+		return new ChoiceModule();
+	}
 }

@@ -17,6 +17,7 @@ import com.mathplayer.player.geom.Font;
 import com.mathplayer.player.interaction.InteractionManager;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -24,18 +25,18 @@ import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class MathModule implements IInteractionModule {
+public class MathModule implements IInteractionModule,Factory<MathModule> {
 
 	protected ModuleSocket moduleSocket;
 	protected ModuleInteractionListener moduleInteractionListener;
-	
+
 	protected Element element;
 	protected FlowPanel mainPanel;
 	protected InteractionManager interactionManager;
-	
+
 	protected String responseIdentifier;
 	protected Response response;
-	
+
 	protected boolean showingAnswer = false;
 	protected boolean markingAnswer = false;
 	protected boolean locked = false;
@@ -65,7 +66,7 @@ public class MathModule implements IInteractionModule {
 	}
 
 	@Override
-	public void onBodyLoad() {		
+	public void onBodyLoad() {
 		MathPlayerManager mpm = new MathPlayerManager();
 		Map<String, String> styles = moduleSocket.getStyles(element);
 		int fontSize = 16;
@@ -74,22 +75,22 @@ public class MathModule implements IInteractionModule {
 		boolean fontItalic = false;
 		Integer gapWidth = null;
 		Integer gapHeight = null;
-		if (styles.containsKey("-empiria-math-font-size")){			
+		if (styles.containsKey("-empiria-math-font-size")){
 			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-font-size"));
 		}
-		if (styles.containsKey("-empiria-math-font-family")){			
+		if (styles.containsKey("-empiria-math-font-family")){
 			fontName = styles.get("-empiria-math-font-family");
 		}
-		if (styles.containsKey("-empiria-math-font-weight")){			
+		if (styles.containsKey("-empiria-math-font-weight")){
 			fontBold = styles.get("-empiria-math-font-weight").toLowerCase().equals("bold");
 		}
-		if (styles.containsKey("-empiria-math-font-style")){			
+		if (styles.containsKey("-empiria-math-font-style")){
 			fontItalic = styles.get("-empiria-math-font-style").toLowerCase().equals("italic");
 		}
-		if (styles.containsKey("-empiria-math-gap-width")){			
+		if (styles.containsKey("-empiria-math-gap-width")){
 			gapWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-width"));
 		}
-		if (styles.containsKey("-empiria-math-gap-height")){			
+		if (styles.containsKey("-empiria-math-gap-height")){
 			gapHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-height"));
 		}
 		Font f = new Font(fontSize, fontName, fontBold, fontItalic);
@@ -99,12 +100,12 @@ public class MathModule implements IInteractionModule {
 		if (gapHeight != null  &&  gapHeight > 0)
 			mpm.setGapHeight(gapHeight);
 		interactionManager = mpm.createMath(element.getChildNodes().toString(), mainPanel);
-		
-		
+
+
 
 		for (int i = 0 ; i < interactionManager.getGapsCount() ; i ++){
 			interactionManager.getGapAt(i).addChangeHandler(new ChangeHandler() {
-				
+
 				@Override
 				public void onChange(ChangeEvent arg0) {
 					updateResponse(true);
@@ -129,12 +130,12 @@ public class MathModule implements IInteractionModule {
 	@Override
 	public void onClose() {
 	}
-	
+
 	@Override
 	public void markAnswers(boolean mark) {
 		if (mark  && !markingAnswer){
 			Vector<Boolean> evaluation = response.evaluateAnswer();
-			
+
 			for (int i = 0 ; i < evaluation.size()  &&  i < interactionManager.getGapsCount() ; i ++){
 				if ("".equals( response.values.get(i)) ){
 					interactionManager.markGap(i, false, false);
@@ -144,10 +145,10 @@ public class MathModule implements IInteractionModule {
 					interactionManager.markGap(i,  false, true);
 				}
 			}
-			
+
 		} else  if (!mark && markingAnswer){
 			for (int i = 0 ; i < interactionManager.getGapsCount() ; i ++){
-				interactionManager.unmarkGap(i);				
+				interactionManager.unmarkGap(i);
 			}
 		}
 		markingAnswer = mark;
@@ -158,11 +159,11 @@ public class MathModule implements IInteractionModule {
 		if (show  &&  !showingAnswer){
 			for (int i = 0 ; i < interactionManager.getGapsCount() && i < response.correctAnswers.size() ; i ++){
 				interactionManager.getGapAt(i).setText( response.correctAnswers.get(i) );
-			}			
+			}
 		} else if (!show  &&  showingAnswer){
 			for (int i = 0 ; i < interactionManager.getGapsCount() && i < response.values.size() ; i ++){
 				interactionManager.getGapAt(i).setText( response.values.get(i) );
-			}						
+			}
 		}
 		showingAnswer = show;
 	}
@@ -212,12 +213,12 @@ public class MathModule implements IInteractionModule {
 	public String getIdentifier() {
 		return responseIdentifier;
 	}
-	
+
 
 	private void updateResponse(boolean userInteract){
 		if (showingAnswer)
 			return;
-		
+
 		response.values.clear();
 		for (int i = 0 ; i < interactionManager.getGapsCount() ; i ++){
 			response.values.add( interactionManager.getGapAt(i).getText() );
@@ -225,4 +226,8 @@ public class MathModule implements IInteractionModule {
 		moduleInteractionListener.onStateChanged(userInteract, this);
 	}
 
+	@Override
+	public MathModule getNewInstance() {
+		return new MathModule();
+	}
 }

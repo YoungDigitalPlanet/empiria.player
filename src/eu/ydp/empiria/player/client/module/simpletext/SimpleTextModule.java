@@ -5,14 +5,15 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
-public class SimpleTextModule implements ISimpleModule {
+public class SimpleTextModule implements ISimpleModule,Factory<SimpleTextModule> {
 
 	protected Widget contents;
-	
+
 	public SimpleTextModule(){
 		contents = new ElementWrapperWidget(Document.get().createPElement());
 		contents.setStyleName("qp-simpletext");
@@ -31,9 +32,14 @@ public class SimpleTextModule implements ISimpleModule {
 			getView().getElement().setId(id);
 		}
 	}
-	
+
 	@Override
 	public Widget getView() {
 		return contents;
+	}
+
+	@Override
+	public SimpleTextModule getNewInstance() {
+		return new SimpleTextModule();
 	}
 }

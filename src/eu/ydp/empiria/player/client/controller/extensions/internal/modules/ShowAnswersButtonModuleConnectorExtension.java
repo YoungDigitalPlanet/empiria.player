@@ -1,26 +1,16 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 
+import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
-import eu.ydp.empiria.player.client.module.button.CheckButtonModule;
+import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.button.ShowAnswersButtonModule;
 
 public class ShowAnswersButtonModuleConnectorExtension extends ControlModuleConnectorExtension {
 
 	@Override
 	public ModuleCreator getModuleCreator() {
-		return new ModuleCreator() {
-			
-			@Override
-			public boolean isMultiViewModule() {
-				return false;
-			}
-			
-			@Override
-			public boolean isInlineModule() {
-				return false;
-			}
-			
+		return new AbstractModuleCreator() {
 			@Override
 			public IModule createModule() {
 				ShowAnswersButtonModule button = new ShowAnswersButtonModule();
@@ -32,7 +22,7 @@ public class ShowAnswersButtonModuleConnectorExtension extends ControlModuleConn
 
 	@Override
 	public String getModuleNodeName() {
-		return "showAnswersButton";
+		return ModuleTagName.SHOW_ANSWERS_BUTTON.tagName();
 	}
 
 }

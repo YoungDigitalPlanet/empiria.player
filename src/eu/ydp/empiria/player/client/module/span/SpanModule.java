@@ -3,14 +3,15 @@ package eu.ydp.empiria.player.client.module.span;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
-public class SpanModule implements ISimpleModule {
+public class SpanModule implements ISimpleModule, Factory<SpanModule> {
 
 	protected Widget contents;
-	
+
 	public SpanModule(){
 	}
 
@@ -28,10 +29,15 @@ public class SpanModule implements ISimpleModule {
 			getView().addStyleName(className);
 		}
 	}
-	
+
 	@Override
 	public Widget getView() {
 		return contents;
+	}
+
+	@Override
+	public SpanModule getNewInstance() {
+		return new SpanModule();
 	}
 
 }

@@ -7,8 +7,10 @@ import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorE
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
+import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.report.ReportModule;
 
 public class ReportModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, DataSourceDataSocketUserExtension, FlowRequestSocketUserExtension, SessionDataSocketUserExtension {
@@ -19,25 +21,14 @@ public class ReportModuleConnectorExtension extends ModuleExtension implements M
 
 	@Override
 	public ModuleCreator getModuleCreator() {
-		return new ModuleCreator() {
-			
-			@Override
-			public boolean isMultiViewModule() {
-				return false;
-			}
-			
-			@Override
-			public boolean isInlineModule() {
-				return false;
-			}
-			
+		return new AbstractModuleCreator(){
 			@Override
 			public IModule createModule() {
 				return new ReportModule(flowRequestInvoker, dataSourceDataSupplier, sessionDataSupplier);
 			}
 		};
 	}
-	
+
 	@Override
 	public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
 		flowRequestInvoker = fri;
@@ -55,7 +46,7 @@ public class ReportModuleConnectorExtension extends ModuleExtension implements M
 
 	@Override
 	public String getModuleNodeName() {
-		return "report";
+		return ModuleTagName.REPORT.tagName();
 	}
 
 }

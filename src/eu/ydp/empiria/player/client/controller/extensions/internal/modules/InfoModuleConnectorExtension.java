@@ -13,8 +13,10 @@ import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorE
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
+import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.info.InfoModule;
 import eu.ydp.empiria.player.client.module.info.InfoModuleUnloadListener;
 
@@ -24,36 +26,25 @@ public class InfoModuleConnectorExtension extends ModuleExtension implements Mod
 	protected SessionDataSupplier sessionDataSupplier;
 	protected FlowDataSupplier flowDataSupplier;
 	protected List<InfoModule> modules;
-	
+
 	public InfoModuleConnectorExtension(){
 		modules = new ArrayList<InfoModule>();
 	}
 
 	@Override
 	public ModuleCreator getModuleCreator() {
-		return new ModuleCreator() {
-			
-			@Override
-			public boolean isMultiViewModule() {
-				return false;
-			}
-			
-			@Override
-			public boolean isInlineModule() {
-				return true;
-			}
-			
+		return new AbstractModuleCreator(false,true) {
 			@Override
 			public IModule createModule() {
 				final InfoModule im = new InfoModule(dataSourceDataSupplier, sessionDataSupplier, flowDataSupplier);
 				im.setModuleUnloadListener(new InfoModuleUnloadListener() {
-					
+
 					@Override
 					public void moduleUnloaded() {
 						modules.remove(im);
 					}
 				});
-				modules.add(im);			
+				modules.add(im);
 				return im;
 			}
 		};
@@ -61,9 +52,9 @@ public class InfoModuleConnectorExtension extends ModuleExtension implements Mod
 
 	@Override
 	public String getModuleNodeName() {
-		return "info";
+		return ModuleTagName.INFO.tagName();
 	}
-	
+
 	@Override
 	public void setDataSourceDataSupplier(DataSourceDataSupplier supplier) {
 		dataSourceDataSupplier = supplier;

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
@@ -19,27 +17,27 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.components.TwoStateButton;
-import eu.ydp.empiria.player.client.module.IResetable;
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ISingleViewSimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class SlideshowPlayerModule implements ISingleViewSimpleModule {
+public class SlideshowPlayerModule implements ISingleViewSimpleModule,Factory<SlideshowPlayerModule> {
 
 	protected List<SlideWidget> slides;
 	protected int currSlideIndex;
-	
+
 	protected Panel titlePanel;
 	protected Panel slidesPanel;
 	protected Panel buttonsPanel;
 	protected Panel mainPanel;
-	
+
 	protected TwoStateButton playButton;
 	protected PushButton stopButton;
 	protected PushButton nextButton;
 	protected PushButton previousButton;
-	
+
 	protected Timer timer;
 
 	@Override
@@ -47,7 +45,7 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 
 		titlePanel = new FlowPanel();
 		titlePanel.setStyleName("qp-slideshow-title-panel");
-		
+
 		slidesPanel = new FlowPanel();
 		slidesPanel.setStyleName("qp-slideshow-slides-panel");
 
@@ -56,15 +54,15 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName("qp-slideshow");
-		
+
 		String className = element.getAttribute("class");
 		if (className != null  &&  !"".equals(className)  &&  getView() != null){
 			getView().addStyleName(className);
 		}
-		
+
 		playButton = new TwoStateButton("qp-slideshow-button-play", "qp-slideshow-button-pause");
 		playButton.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				onPlayClick();
@@ -96,34 +94,34 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 				showPreviousSlide();
 			}
 		});
-		
+
 		buttonsPanel.add(playButton);
 		buttonsPanel.add(stopButton);
-		buttonsPanel.add(previousButton);	
-		buttonsPanel.add(nextButton);	
-		
+		buttonsPanel.add(previousButton);
+		buttonsPanel.add(nextButton);
+
 		mainPanel.add(titlePanel);
 		mainPanel.add(slidesPanel);
-		mainPanel.add(buttonsPanel);	
-		
-		
+		mainPanel.add(buttonsPanel);
+
+
 		slides = new ArrayList<SlideWidget>();
-		
-		timer = new Timer() {			
+
+		timer = new Timer() {
 			@Override
 			public void run() {
 				switchNextSlide();
 			}
 		};
-		
+
 		Element slideshowElement = XMLUtils.getFirstElementWithTagName(element, "slideshow");
 		if (slideshowElement != null){
 			Element titleElement = XMLUtils.getFirstElementWithTagName(slideshowElement, "title");
 			if (titleElement != null){
-				Widget titleWidget = ms.getInlineBodyGeneratorSocket().generateInlineBody(titleElement);		
+				Widget titleWidget = ms.getInlineBodyGeneratorSocket().generateInlineBody(titleElement);
 				titlePanel.add(titleWidget);
 			}
-			
+
 			NodeList slideNodes = element.getElementsByTagName("slide");
 			for (int i = 0 ; i < slideNodes.getLength() ; i ++){
 				if (slideNodes.item(i).getNodeType() == Node.ELEMENT_NODE){
@@ -131,7 +129,7 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 					slides.add(slide);
 				}
 			}
-			
+
 			Collections.sort(slides, new Comparator<SlideWidget>() {
 				@Override
 				public int compare(SlideWidget o1, SlideWidget o2) {
@@ -141,7 +139,7 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 		}
 		initSlideshow();
 	}
-	
+
 	@Override
 	public Widget getView() {
 		return mainPanel;
@@ -159,20 +157,20 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 		playButton.setStateDown(false);
 		stopSlideshow();
 	}
-	
+
 	protected void playSlideshow(){
 		if (!canScheduleNextSlide())
 			initSlideshow();
 		if (canScheduleNextSlide())
 			scheduleNextSlide();
 		else
-			playButton.setStateDown(false);			
+			playButton.setStateDown(false);
 	}
-	
+
 	protected void pauseSlideshow(){
 		timer.cancel();
 	}
-	
+
 	protected void stopSlideshow(){
 		timer.cancel();
 		initSlideshow();
@@ -182,40 +180,40 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 		currSlideIndex = 0;
 		showSlide(currSlideIndex);
 	}
-	
+
 	protected void showSlide(int index){
 		slidesPanel.clear();
 		if (index < slides.size())
 			slidesPanel.add(slides.get(index));
-		
+
 		previousButton.setEnabled(index > 0);
 		nextButton.setEnabled(index < slides.size()-1);
 	}
-	
+
 	protected void switchNextSlide(){
 		showNextSlide();
 		if (canScheduleNextSlide())
 			scheduleNextSlide();
 		else
-			playButton.setStateDown(false);	
+			playButton.setStateDown(false);
 	}
-	
+
 	protected void showNextSlide(){
 		if (currSlideIndex+1 < slides.size())
 			currSlideIndex++;
-		showSlide(currSlideIndex);		
+		showSlide(currSlideIndex);
 	}
-	
+
 	protected void showPreviousSlide(){
 		if (currSlideIndex > 0)
 			currSlideIndex--;
-		showSlide(currSlideIndex);		
+		showSlide(currSlideIndex);
 	}
-	
+
 	protected boolean canScheduleNextSlide(){
 		return (currSlideIndex+1 < slides.size());
 	}
-	
+
 	protected void scheduleNextSlide(){
 		if (canScheduleNextSlide()){
 			int delay = slides.get(currSlideIndex+1).getStartTime() - slides.get(currSlideIndex).getStartTime();
@@ -225,4 +223,8 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule {
 		}
 	}
 
+	@Override
+	public SlideshowPlayerModule getNewInstance() {
+		return new SlideshowPlayerModule();
+	}
 }
