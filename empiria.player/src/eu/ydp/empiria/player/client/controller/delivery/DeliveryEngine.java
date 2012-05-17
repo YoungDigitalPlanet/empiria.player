@@ -19,7 +19,6 @@ import eu.ydp.empiria.player.client.controller.communication.PageData;
 import eu.ydp.empiria.player.client.controller.communication.PageDataSummary;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
-import eu.ydp.empiria.player.client.controller.data.AssessmentDataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManagerMode;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
@@ -34,35 +33,16 @@ import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioPlayerModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ChoiceModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.DivModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.GroupModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.IdentificationModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ImgModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InfoModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InlineChoiceModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.LinkModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.MathTextModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ObjectModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageInPageModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageSwitchModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PromptModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SelectionModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShapeModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleTextModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SlideshowPlayerModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SpanModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TableModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TextEntryModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.TextInteractionModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
@@ -87,7 +67,29 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProces
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
+import eu.ydp.empiria.player.client.module.ModuleTagName;
+import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
+import eu.ydp.empiria.player.client.module.containers.DivModule;
+import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
+import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
+import eu.ydp.empiria.player.client.module.html.SimpleHTMLTagModule;
+import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
+import eu.ydp.empiria.player.client.module.img.ImgModule;
+import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
+import eu.ydp.empiria.player.client.module.math.MathModule;
+import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
+import eu.ydp.empiria.player.client.module.object.ObjectModule;
+import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
+import eu.ydp.empiria.player.client.module.prompt.PromptModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
+import eu.ydp.empiria.player.client.module.selection.SelectionModule;
+import eu.ydp.empiria.player.client.module.shape.ShapeModule;
+import eu.ydp.empiria.player.client.module.simpletext.SimpleTextModule;
+import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
+import eu.ydp.empiria.player.client.module.span.SpanModule;
+import eu.ydp.empiria.player.client.module.table.TableModule;
+import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
@@ -97,9 +99,9 @@ import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
  * Responsible for: - loading the content, - managing the content, - delivering
  * content to player, - managing state, results and reports about the
  * assessments.
- * 
+ *
  * @author Rafal Rybacki
- * 
+ *
  */
 public class DeliveryEngine implements DataLoaderEventListener,
 		FlowProcessingEventsListener, DeliveryEngineSocket {
@@ -123,11 +125,11 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	private AssessmentController assessmentController;
 
 	private StyleSocket styleSocket;
-	
+
 	private ModulesRegistry modulesRegistry;
 
 	protected JavaScriptObject playerJsObject;
-	
+
 	protected String stateAsync;
 
 	/**
@@ -168,7 +170,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		deliveryEventsHub.addFlowActivityEventsListener(assessmentController);
 
 		playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
-		
+
 		loadPredefinedExtensions();
 	}
 
@@ -192,21 +194,21 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	}
 
 	@Override
-	public void onDataReady() {		
+	public void onDataReady() {
 		AssessmentData assessmentData = dataManager.getAssessmentData();
 		DisplayOptions displayOptions = flowManager.getDisplayOptions();
-		
+
 		if (assessmentData != null)
 		displayOptions.useSkin(assessmentData.useSkin());
 		flowManager.setDisplayOptions(displayOptions);
-		
+
 		loadLibraryExtensions();
 		sessionDataManager.init(dataManager.getItemsCount(), dataManager.getInitialData());
 		initExtensions();
-		
+
 		flowManager.init(dataManager.getItemsCount());
 		assessmentController.init(assessmentData, displayOptions);
-		
+
 		getDeliveryEventsListener().onDeliveryEvent(
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
 		getDeliveryEventsListener().onDeliveryEvent(
@@ -217,21 +219,21 @@ public class DeliveryEngine implements DataLoaderEventListener,
 				new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		updatePageStyle();
 	}
-	
+
 	protected void initFlow(){
 
 		if (stateAsync != null){
 			try {
 				JSONArray deState = (JSONArray) JSONParser.parse(stateAsync);
-	
+
 				assessmentController.reset();
-	
+
 				sessionDataManager.setState((JSONArray) deState.get(1));
-	
+
 				extensionsManager.setState(deState.get(2).isArray());
-	
+
 				flowManager.deinitFlow();
-	
+
 				if (deState.get(0).isNumber() != null) {
 					flowManager.invokeFlowRequest(new FlowRequest.NavigateGotoItem(
 							(int) deState.get(0).isNumber().doubleValue()));
@@ -245,9 +247,9 @@ public class DeliveryEngine implements DataLoaderEventListener,
 						flowManager
 								.invokeFlowRequest(new FlowRequest.NavigateSummary());
 				}
-	
+
 				flowManager.initFlow();
-	
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -259,37 +261,39 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	protected void loadPredefinedExtensions() {
 		loadExtension(new PlayerCoreApiExtension());
 		loadExtension(new ScormSupportExtension());
-		loadExtension(new DivModuleConnectorExtension());
-		loadExtension(new GroupModuleConnectorExtension());
-		loadExtension(new SpanModuleConnectorExtension());
-		loadExtension(new TextInteractionModuleConnectorExtension());
-		loadExtension(new ImgModuleConnectorExtension());
-		loadExtension(new ChoiceModuleConnectorExtension());
-		loadExtension(new SelectionModuleConnectorExtension());
-		loadExtension(new IdentificationModuleConnectorExtension());
-		loadExtension(new TextEntryModuleConnectorExtension());
-		loadExtension(new InlineChoiceModuleConnectorExtension());
-		loadExtension(new SimpleTextModuleConnectorExtension());
-		loadExtension(new AudioPlayerModuleConnectorExtension());
-		loadExtension(new MathTextModuleConnectorExtension());
-		loadExtension(new MathModuleConnectorExtension());
-		loadExtension(new ObjectModuleConnectorExtension());
-		loadExtension(new SlideshowPlayerModuleConnectorExtension());
+		loadExtension(new SimpleConnectorExtension(new DivModule(), ModuleTagName.DIV));
+		loadExtension(new SimpleConnectorExtension(new GroupModule(), ModuleTagName.GROUP));
+		loadExtension(new SimpleConnectorExtension(new SpanModule(), ModuleTagName.SPAN));
+		loadExtension(new SimpleConnectorExtension(new TextInteractionModule(), ModuleTagName.TEXT_INTERACTION));
+		loadExtension(new SimpleConnectorExtension(new ImgModule(), ModuleTagName.IMG));
+		loadExtension(new SimpleConnectorExtension(new ChoiceModule(), ModuleTagName.CHOICE_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(new SelectionModule(), ModuleTagName.SELECTION_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(new IdentificationModule(), ModuleTagName.IDENTYFICATION_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(new TextEntryModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(new InlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(new SimpleTextModule(), ModuleTagName.SIMPLE_TEXT));
+		loadExtension(new SimpleConnectorExtension(new SimpleHTMLTagModule(), ModuleTagName.SUB));
+		loadExtension(new SimpleConnectorExtension(new SimpleHTMLTagModule(), ModuleTagName.SUP));
+		loadExtension(new SimpleConnectorExtension(new AudioPlayerModule(), ModuleTagName.AUDIO_PLAYER, true));
+		loadExtension(new SimpleConnectorExtension(new MathTextModule(), ModuleTagName.MATH_TEXT, false, true));
+		loadExtension(new SimpleConnectorExtension(new MathModule(), ModuleTagName.MATH_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(new ObjectModule(), ModuleTagName.OBJECT));
+		loadExtension(new SimpleConnectorExtension(new SlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER));
 		loadExtension(new InfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(new LinkModuleConnectorExtension());
-		loadExtension(new PromptModuleConnectorExtension());
-		loadExtension(new TableModuleConnectorExtension());
+		loadExtension(new SimpleConnectorExtension(new PromptModule(), ModuleTagName.PROMPT));
+		loadExtension(new SimpleConnectorExtension(new TableModule(), ModuleTagName.TABLE));
 		loadExtension(new NextPageButtonModuleConnectorExtension());
 		loadExtension(new PrevPageButtonModuleConnectorExtension());
 		loadExtension(new PageSwitchModuleConnectorExtension());
-		loadExtension(new PageInPageModuleConnectorExtension());
+		loadExtension(new SimpleConnectorExtension(new PageInPageModule(), ModuleTagName.PAGE_IN_PAGE));
 		loadExtension(new CheckButtonModuleConnectorExtension());
 		loadExtension(new ShowAnswersButtonModuleConnectorExtension());
 		loadExtension(new ResetButtonModuleConnectorExtension());
-		loadExtension(new ShapeModuleConnectorExtension());
+		loadExtension(new SimpleConnectorExtension(new ShapeModule(), ModuleTagName.SHAPE));
 	}
-	
+
 	protected void loadLibraryExtensions(){
 		List<LibraryExtension> extCreators = dataManager.getExtensionCreators();
 		for (LibraryExtension ext : extCreators){
@@ -365,7 +369,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 			}
 		}
 	}
-	
+
 	protected void initExtensions(){
 		extensionsManager.init();
 		employExtensions();
@@ -376,7 +380,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 			employExtension(currExtension);
 		}
 	}
-	
+
 	protected void employExtension(Extension extension){
 		if (extension instanceof FlowRequestProcessorExtension) {
 			flowManager
@@ -390,7 +394,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 			assessmentController
 					.setFooterViewSocket(((AssessmentFooterViewExtension) extension).getAssessmentFooterViewSocket());
 		}
-		
+
 	}
 
 	@Override

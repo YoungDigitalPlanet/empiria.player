@@ -9,7 +9,7 @@ public enum ModuleTagName {
 	OBJECT("object"), SLIDESHOW_PLAYER("slideshowPlayer"), PROMPT("prompt"), TABLE("table"),
 	PAGE_IN_PAGE("pageInPage"), SHAPE("shape"), INFO("info"), REPORT("report"), LINK("link"),
 	NEXT_ITEM_NAVIGATION("nextItemNavigation"), PREV_ITEM_NAVIGATION("prevItemNavigation"), PAGES_SWITCH_BOX("pagesSwitchBox"),
-	MARK_ALL_BUTTON("markAllButton"), SHOW_ANSWERS_BUTTON("showAnswersButton"), RESET_BUTTON("resetButton");
+	MARK_ALL_BUTTON("markAllButton"), SHOW_ANSWERS_BUTTON("showAnswersButton"), RESET_BUTTON("resetButton"), SUB("sub"), SUP("sup");
 
 	String name = null;
 	private ModuleTagName(String name){

@@ -9,13 +9,13 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
-public class GroupModuleBase extends ContainerModuleBase implements IGroup {
-	
+public abstract class GroupModuleBase<T> extends ContainerModuleBase<T> implements IGroup {
+
 	protected GroupIdentifier groupIdentifier;
-	
+
 	public GroupModuleBase(){
 	}
-	
+
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, ModuleInteractionListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
 		bodyGeneratorSocket.generateBody(element, getContainer());
@@ -29,13 +29,13 @@ public class GroupModuleBase extends ContainerModuleBase implements IGroup {
 			id = Document.get().createUniqueId();
 		}
 		if (getView() != null){
-			getView().getElement().setId(id);			
+			getView().getElement().setId(id);
 		}
 		groupIdentifier = new DefaultGroupIdentifier(id);
 		super.moduleSocket = moduleSocket;
-		
+
 	}
-	
+
 	@Override
 	public GroupIdentifier getGroupIdentifier() {
 		return groupIdentifier;

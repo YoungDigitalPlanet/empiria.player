@@ -1,12 +1,15 @@
 package eu.ydp.empiria.player.client.module.containers;
 
-import com.google.gwt.user.client.ui.FlowPanel;
 
+public class GroupModule extends ContainerModuleBase<GroupModule> {
 
-public class GroupModule extends ContainerModuleBase {
-
-	public GroupModule(){
+	public GroupModule() {
 		super();
 		panel.setStyleName("qp-group");
+	}
+
+	@Override
+	public GroupModule getNewInstance() {
+		return new GroupModule();
 	}
 }

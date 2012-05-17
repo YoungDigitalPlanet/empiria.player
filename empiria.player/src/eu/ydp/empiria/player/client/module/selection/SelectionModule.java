@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -24,10 +23,9 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.controller.body.ModuleEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedbackSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -35,12 +33,11 @@ import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonB
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
-import eu.ydp.empiria.player.client.module.listener.FeedbackModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class SelectionModule extends Composite implements IInteractionModule {
+public class SelectionModule extends Composite implements IInteractionModule, Factory<SelectionModule> {
 	/** response processing interface */
 	private Response response;
 	/** module state changed listener */
@@ -50,7 +47,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	/** Shuffle answers */
 	private boolean shuffle = false;
 	private boolean multi = false;
-	
+
 	private VerticalPanel panel;
 	private Grid grid;
 	private Vector<Vector<ChoiceButtonBase>> buttons;
@@ -60,7 +57,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 	private boolean showingAnswers = false;
 	private boolean locked = false;
-	
+
 	protected Element moduleElement;
 	protected ModuleSocket moduleSocket;
 
@@ -85,13 +82,13 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
 		multi = XMLUtils.getAttributeAsBoolean(moduleElement, "multi");
 		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
-		
+
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
-		
+
 		NodeList choices = moduleElement.getElementsByTagName("simpleChoice");
 		NodeList items = moduleElement.getElementsByTagName("item");
-		
+
 		grid = new Grid(items.getLength()+1, choices.getLength()+1);
 		grid.setStyleName("qp-selection-table");
 		fillGrid(choices, items);
@@ -106,7 +103,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 			panel.addStyleName(userClass);
 		panel.add(promptWidget);
 		panel.add(grid);
-		
+
 		placeholders.get(0).add(panel);
 
 		NodeList childNodes = moduleElement.getChildNodes();
@@ -119,7 +116,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 	@Override
 	public void onBodyLoad() {
-		
+
 	}
 
 	@Override
@@ -133,25 +130,25 @@ public class SelectionModule extends Composite implements IInteractionModule {
 
 	@Override
 	public void onStart() {
-		
+
 	}
 
 	@Override
 	public void onClose() {
 	}
-	
+
 	private void fillGrid(NodeList choices, NodeList items){
 		buttons = new Vector<Vector<ChoiceButtonBase>>();
 
 		// header - choices
-		
+
 		choiceIdentifiers = new Vector<String>();
 		for (int c = 0 ; c < choices.getLength() ; c ++){
 			Widget choiceView = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody((Element)choices.item(c));
 			choiceView.setStyleName("qp-selection-choice");
-			
+
 			grid.setWidget(0, c+1, choiceView);
-			
+
 			choiceIdentifiers.add( ((Element)choices.item(c)).getAttribute("identifier") );
 
 			NodeList inlineFeedbackNodes = ((Element)choices.item(c)).getElementsByTagName("feedbackInline");
@@ -159,7 +156,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 				moduleSocket.addInlineFeedback(new InlineFeedback(choiceView, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
 			}
 		}
-		
+
 		// body - items
 		Vector<Node> itemNodes = new Vector<Node>();
 		if (shuffle){
@@ -181,14 +178,14 @@ public class SelectionModule extends Composite implements IInteractionModule {
 				itemNodes.add(items.item(i));
 			}
 		}
-		
+
 		itemIdentifiers = new Vector<String>();
 		for (int i = 0 ; i < itemNodes.size() ; i ++){
 			Widget itemView = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody((Element)itemNodes.get(i));
 			itemView.setStyleName("qp-selection-item");
-			
+
 			grid.setWidget(i+1, 0, itemView);
-			
+
 			itemIdentifiers.add( ((Element)itemNodes.get(i)).getAttribute("identifier") );
 
 			NodeList inlineFeedbackNodes = ((Element)itemNodes.get(i)).getElementsByTagName("feedbackInline");
@@ -196,7 +193,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 				moduleSocket.addInlineFeedback(new InlineFeedback(itemView, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
 			}
 		}
-		
+
 		// body - buttons
 		buttonIds = new Vector<Vector<String>>();
 		for (int i = 0 ; i < items.getLength() ; i ++){
@@ -205,7 +202,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 			ChoiceGroupController cgc = new ChoiceGroupController();
 			for (int c = 0 ; c < choices.getLength() ; c ++){
 				final ChoiceButtonBase scb = (multi)?new MultiChoiceButton("selection-multi") : new SingleChoiceButton(cgc, "selection");
-				
+
 				scb.addClickHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
@@ -218,23 +215,23 @@ public class SelectionModule extends Composite implements IInteractionModule {
 						scb.setMouseOver(true);
 					}
 				});
-				scb.addMouseOutHandler(new MouseOutHandler() {					
+				scb.addMouseOutHandler(new MouseOutHandler() {
 					@Override
 					public void onMouseOut(MouseOutEvent event) {
 						scb.setMouseOver(false);
 					}
 				});
-				
+
 				String buttonId = Document.get().createUniqueId();
 				scb.getElement().setId(buttonId);
 				buttonIds.get(i).add(buttonId);
-				
+
 				grid.setWidget(i+1, c+1, scb);
 				buttons.get(i).add(scb);
 			}
 		}
 	}
-	
+
 	@Override
 	public String getIdentifier() {
 		return responseIdentifier;
@@ -249,7 +246,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 					buttons.get(i).get(c).setEnabled(!locked);
 				}
 			}
-			
+
 		}
 
 	}
@@ -259,7 +256,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		if (mark){
 			for (int ii = 0 ; ii < itemIdentifiers.size() ; ii ++ ){
 				boolean passed = true;
-				
+
 				for (int r = 0 ; r < response.correctAnswers.size() ; r ++){
 					String currItemIdentifier = response.correctAnswers.get(r).split(" ")[0];
 					if (currItemIdentifier.equals(itemIdentifiers.get(ii))){
@@ -270,7 +267,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 						}
 					}
 				}
-				
+
 				for (int r = 0 ; r < response.values.size() ; r ++){
 					String currItemIdentifier = response.values.get(r).split(" ")[0];
 					if (currItemIdentifier.equals(itemIdentifiers.get(ii))){
@@ -299,7 +296,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 				} else {
 					grid.getWidget(ii+1, 0).setStyleName("qp-selection-item-none");
 				}
-				
+
 			}
 
 		} else {
@@ -316,7 +313,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		clearAnswers();
 		updateResponse(false);
 	}
-	
+
 	private void clearAnswers(){
 
 		for (int i = 0 ; i < buttons.size() ; i ++){
@@ -340,7 +337,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 						buttons.get(i).get(c).setSelected(true);
 				}
 			}
-				
+
 		} else if (!show  &&  showingAnswers) {
 			clearAnswers();
 
@@ -354,7 +351,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		}
 
 	}
-		
+
 	public JavaScriptObject getJsSocket(){
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
@@ -362,7 +359,7 @@ public class SelectionModule extends Composite implements IInteractionModule {
 	@Override
 	public JSONArray getState() {
 		JSONArray newState = new JSONArray();
-		
+
 		for (int r = 0 ; r < response.values.size() ; r ++){
 			newState.set(newState.size(), new JSONString(response.values.get(r)) );
 		}
@@ -377,24 +374,24 @@ public class SelectionModule extends Composite implements IInteractionModule {
 			if (components.length == 2  &&  itemIdentifiers.indexOf(components[0]) != -1  &&  choiceIdentifiers.indexOf(components[1]) != -1){
 				buttons.get(itemIdentifiers.indexOf(components[0])).get(choiceIdentifiers.indexOf(components[1])).setSelected(true);
 			}
-			
+
 		}
 		updateResponse(false);
 
 	}
-	
+
 	private void updateResponse(boolean userInteract){
 		if (showingAnswers)
 			return;
 
 		Vector<String> currResponseValues = new Vector<String>();
-		
+
 		for (int i = 0 ; i < buttons.size() ; i ++){
-			
+
 			for (int c = 0 ; c < buttons.get(i).size() ; c ++){
 				if (buttons.get(i).get(c).isSelected()){
 					currResponseValues.add(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c));
-				}					
+				}
 			}
 		}
 
@@ -409,4 +406,8 @@ public class SelectionModule extends Composite implements IInteractionModule {
 		updateResponse(true);
 	}
 
+	@Override
+	public SelectionModule getNewInstance() {
+		return new SelectionModule();
+	}
 }

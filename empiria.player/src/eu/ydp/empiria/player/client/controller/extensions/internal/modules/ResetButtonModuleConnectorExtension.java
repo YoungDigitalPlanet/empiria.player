@@ -1,25 +1,16 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 
+import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
+import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.button.ResetButtonModule;
 
 public class ResetButtonModuleConnectorExtension extends ControlModuleConnectorExtension {
 
 	@Override
 	public ModuleCreator getModuleCreator() {
-		return new ModuleCreator() {
-			
-			@Override
-			public boolean isMultiViewModule() {
-				return false;
-			}
-			
-			@Override
-			public boolean isInlineModule() {
-				return false;
-			}
-			
+		 	return new AbstractModuleCreator() {
 			@Override
 			public IModule createModule() {
 				ResetButtonModule button = new ResetButtonModule();
@@ -31,7 +22,7 @@ public class ResetButtonModuleConnectorExtension extends ControlModuleConnectorE
 
 	@Override
 	public String getModuleNodeName() {
-		return "resetButton";
+		return ModuleTagName.RESET_BUTTON.tagName();
 	}
 
 }

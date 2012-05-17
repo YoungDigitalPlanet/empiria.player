@@ -2,8 +2,6 @@ package eu.ydp.empiria.player.client.module.containers;
 
 import java.util.List;
 
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
@@ -16,7 +14,7 @@ import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 public abstract class ActivityContainerModuleBase implements IContainerModule, IActivity {
 
 	protected ModuleSocket moduleSocket;
-	
+
 	private boolean markingAnswers = false;
 	private boolean showingAnswers = false;
 
@@ -32,7 +30,7 @@ public abstract class ActivityContainerModuleBase implements IContainerModule, I
 			if (child instanceof IActivity){
 				((IActivity)child).lock(lo);
 			}
-		}		
+		}
 	}
 
 	@Override
@@ -51,7 +49,7 @@ public abstract class ActivityContainerModuleBase implements IContainerModule, I
 			showCorrectAnswers(false);
 		doMarkAnswers(mark);
 	}
-	
+
 	private void doMarkAnswers(boolean mark){
 		List<IModule> children = moduleSocket.getChildren(this);
 		for (IModule child : children){
@@ -68,7 +66,7 @@ public abstract class ActivityContainerModuleBase implements IContainerModule, I
 			markAnswers(false);
 		doShowCorrectAnswers(show);
 	}
-	
+
 	private void doShowCorrectAnswers(boolean show){
 		List<IModule> children = moduleSocket.getChildren(this);
 		for (IModule child : children){
@@ -76,7 +74,7 @@ public abstract class ActivityContainerModuleBase implements IContainerModule, I
 				((IActivity)child).showCorrectAnswers(show);
 			}
 		}
-		
+
 		showingAnswers = show;
 	}
 }

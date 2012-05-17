@@ -11,18 +11,19 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
-public class InlineChoiceModule  implements IInteractionModule{
+public class InlineChoiceModule  implements IInteractionModule,Factory<InlineChoiceModule>{
 
 	private ModuleInteractionListener moduleInteractionListener;
 	private ModuleSocket moduleSocket;
 	InlineChoiceController controller;
-	
+
 
 	public InlineChoiceModule(){
 
@@ -35,7 +36,7 @@ public class InlineChoiceModule  implements IInteractionModule{
 		this.moduleSocket = moduleSocket;
 		Map<String, String> styles = moduleSocket.getStyles(XMLParser.createDocument().createElement("inlinechoiceinteraction"));
 		if (styles != null  &&  styles.containsKey("-empiria-inlinechoice-type")  &&  styles.get("-empiria-inlinechoice-type").toLowerCase().equals("popup")){
-			controller = new InlineChoicePopupController();	
+			controller = new InlineChoicePopupController();
 		} else {
 			controller = new InlineChoiceDefaultController();
 		}
@@ -84,7 +85,7 @@ public class InlineChoiceModule  implements IInteractionModule{
 	public void onClose() {
 	}
 
-	// ------------------------ INTERFACES ------------------------ 
+	// ------------------------ INTERFACES ------------------------
 
 
 	@Override
@@ -113,11 +114,11 @@ public class InlineChoiceModule  implements IInteractionModule{
 
 		controller.showCorrectAnswers(show);
 	}
-		
+
 	public JavaScriptObject getJsSocket(){
 		return controller.getJsSocket();
 	}
-	
+
   /**
    * @see IStateful#getState()
    */
@@ -126,19 +127,24 @@ public class InlineChoiceModule  implements IInteractionModule{
 	  return controller.getState();
   }
 
-  
+
   	/**
  	 * @see IStateful#setState(Serializable)
  	 */
   	public void setState(JSONArray newState) {
-	
+
 		controller.setState(newState);
   }
-  
+
 
 	@Override
 	public String getIdentifier() {
 		return controller.getIdentifier();
 	}
-	
+
+	@Override
+	public InlineChoiceModule getNewInstance() {
+		return new InlineChoiceModule();
+	}
+
 }

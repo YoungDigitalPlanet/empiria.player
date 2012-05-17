@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
@@ -15,15 +16,15 @@ import eu.ydp.empiria.player.client.module.object.impl.AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.VideoImpl;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class ObjectModule implements ISimpleModule {
+public class ObjectModule implements ISimpleModule,Factory<ObjectModule> {
 
 	protected Widget widget;
-	
+
 	protected Panel containerPanel;
 	protected Panel titlePanel;
 	protected Panel descriptionPanel;
 	protected Panel contentPanel;
-	
+
 	@Override
 	public Widget getView() {
 		return containerPanel;
@@ -31,11 +32,11 @@ public class ObjectModule implements ISimpleModule {
 
 	@Override
 	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
-			
+
 		String html;
 		String src = XMLUtils.getAttributeAsString(element, "data");
 		String type = XMLUtils.getAttributeAsString(element, "type");
-		  
+
 		if(type.startsWith("video")){
 			VideoImpl video = GWT.create(VideoImpl.class);
 			video.setSrc(src);
@@ -46,21 +47,21 @@ public class ObjectModule implements ISimpleModule {
 			html = audio.getHTML(src);
 			widget = new HTML(html);
 		}
-			
+
 		containerPanel = new FlowPanel();
 		containerPanel.setStyleName("qp-object-container");
 		String cls = element.getAttribute("class");
 		if (cls != null  &&  !"".equals(cls))
 			containerPanel.addStyleName(cls);
-		
+
 		titlePanel = new FlowPanel();
 		titlePanel.setStyleName("qp-object-title");
-		
+
 		contentPanel = new FlowPanel();
 		contentPanel.setStyleName("qp-object-content");
 		if (widget != null)
 			contentPanel.add(widget);
-		
+
 		descriptionPanel = new FlowPanel();
 		descriptionPanel.setStyleName("qp-object-description");
 
@@ -82,7 +83,11 @@ public class ObjectModule implements ISimpleModule {
 				descriptionPanel.add(descriptionWidget);
 			}
 		}
-		
+
+	}
+	@Override
+	public ObjectModule getNewInstance() {
+		return new ObjectModule();
 	}
 
 }
