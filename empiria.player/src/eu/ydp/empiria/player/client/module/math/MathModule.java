@@ -154,7 +154,7 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 		interactionManager = mpm.createMath(element.getChildNodes().toString(), mainPanel);
 		
 		listBoxesLayer = new AbsolutePanel();
-		listBoxesLayer.setStyleName("qp-mathinteraction-listboxes");
+		listBoxesLayer.setStyleName("qp-mathinteraction-gaps");
 		listBoxesLayer.setWidth(String.valueOf(mainPanel.getOffsetWidth()) + "px");
 		listBoxesLayer.setHeight(String.valueOf(mainPanel.getOffsetHeight()) + "px");
 		outerPanel.add(listBoxesLayer);
