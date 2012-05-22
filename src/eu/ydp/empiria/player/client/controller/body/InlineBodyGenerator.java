@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.body;
 
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Widget;
@@ -32,14 +33,18 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
 	}
 
 	public Widget generateInlineBody(Node mainNode) {
-		Widget h = new InlineHTML();
+		DivElement de = Document.get().createDivElement();
+		Document.get().getBody().appendChild(de);
+		Widget h = InlineHTML.wrap(de);
 		h.setStyleName("qp-text-inline");
 		parseXML(mainNode.getChildNodes(), h.getElement());
 		return h;
 	}
 
 	public Widget generateInlineBodyForNode(Node mainNode) {
-		Widget h = new InlineHTML();
+		DivElement de = Document.get().createDivElement();
+		Document.get().getBody().appendChild(de);
+		Widget h = InlineHTML.wrap(de);
 		h.setStyleName("qp-text-inline");
 		parseNode(mainNode, h.getElement());
 		return h;
@@ -73,7 +78,10 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
 			}
 		} else if (currNode.getNodeType() == Node.TEXT_NODE) {
 			Document doc = Document.get();
-			parentElement.appendChild(doc.createTextNode(currNode.getNodeValue()));
+			com.google.gwt.dom.client.SpanElement e =  doc.createSpanElement();
+			e.appendChild(doc.createTextNode(currNode.getNodeValue()));
+			e.setClassName("qp-text");
+			parentElement.appendChild(e);
 		}
 		return parentElement;
 	}
