@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
@@ -59,6 +60,18 @@ public class TableModule extends ActivityContainerModuleBase implements Factory<
 				dPanel.setStyleName("qp-table-cell");
 				bgs.generateBody(tdNodes.item(d), dPanel);
 				table.setWidget(r, d, dPanel);
+				
+				int colspan = 1;
+				if (tdNodes.item(d).getNodeType() == Node.ELEMENT_NODE  &&  ((Element)tdNodes.item(d)).hasAttribute("colspan"))
+					colspan = IntegerUtils.tryParseInt(((Element)tdNodes.item(d)).getAttribute("colspan"), 1);
+				if (colspan > 1)
+					table.getFlexCellFormatter().setColSpan(r, d, colspan);
+				
+				int rowspan = 1;
+				if (tdNodes.item(d).getNodeType() == Node.ELEMENT_NODE  &&  ((Element)tdNodes.item(d)).hasAttribute("rowspan"))
+					rowspan = IntegerUtils.tryParseInt(((Element)tdNodes.item(d)).getAttribute("rowspan"), 1);
+				if (rowspan > 1)
+					table.getFlexCellFormatter().setRowSpan(r, d, rowspan);
 			}
 		}
 		tablePanel.add(table);
