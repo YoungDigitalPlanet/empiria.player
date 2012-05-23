@@ -14,7 +14,6 @@ import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataS
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ISingleViewSimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
@@ -38,28 +37,28 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 		dataSourceDataSupplier = dsds;
 		sessionDataSupplier = sds;
 		flowDataSupplier = fds;
-	}	
-	
+	}
+
 	public void setModuleUnloadListener(InfoModuleUnloadListener imul){
 		unloadListener = imul;
 	}
-	
+
 	@Override
 	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
 		contentPanel = new FlowPanel();
 		contentPanel.setStyleName("qp-info-content");
-		
+
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName("qp-info");
 		mainPanel.add(contentPanel);
-		
+
 		String cls = element.getAttribute("class");
 		if (cls != null)
 			mainPanel.addStyleName(cls);
-		
+
 		moduleSocket = ms;
 		mainElement = element;
-		
+
 	}
 
 	@Override
@@ -92,15 +91,22 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 		}
 		update();
 	}
-	
+
 	protected String replaceTemplates(String content){
 		if (content.contains("$[item.title]")){
 			content = content.replaceAll("\\$\\[item.title]", dataSourceDataSupplier.getItemTitle(refItemIndex));
 		}
-		
+
 		VariableProviderSocket itemVps = sessionDataSupplier.getItemSessionDataSocket(refItemIndex).getVariableProviderSocket();
 		if (content.contains("$[item.index]")){
 			content = content.replaceAll("\\$\\[item.index]", String.valueOf(refItemIndex+1) );
+		}
+
+		if (content.contains("$[item.page_num]")){
+			content = content.replaceAll("\\$\\[item.page_num]", String.valueOf(refItemIndex+1) );
+		}
+		if (content.contains("$[item.page_count]")){
+			content = content.replaceAll("\\$\\[item.page_count]", String.valueOf(dataSourceDataSupplier.getItemsCount()) );
 		}
 		if (content.contains("$[item.todo]")){
 			content = content.replaceAll("\\$\\[item.todo]", getVariableValue(itemVps, "TODO", "0") );
@@ -133,7 +139,7 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 		if (content.contains("$[test.title]")){
 			content = content.replaceAll("\\$\\[test.title]", dataSourceDataSupplier.getAssessmentTitle());
 		}
-		
+
 		VariableProviderSocket assessmentVps = sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket();
 		if (content.contains("$[test.todo]")){
 			content = content.replaceAll("\\$\\[test.todo]", getVariableValue(assessmentVps, "TODO", "0") );
@@ -152,7 +158,7 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 		}
 		if (content.contains("$[test.reset]")){
 			content = content.replaceAll("\\$\\[test.reset]", getVariableValue(assessmentVps, "RESET", "0") );
-		}	
+		}
 		if (content.contains("$[test.result]")){
 			int done = IntegerUtils.tryParseInt( getVariableValue(assessmentVps, "DONE", "0") );
 			int todo = IntegerUtils.tryParseInt( getVariableValue(assessmentVps, "TODO", "0") );
@@ -162,10 +168,10 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 			}
 			content = content.replaceAll("\\$\\[test.result]", String.valueOf(result) );
 		}
-		
+
 		return content;
 	}
-	
+
 	protected String getVariableValue(VariableProviderSocket vps, String name, String defaultValue){
 		Variable var = vps.getVariableValue(name);
 		String value = defaultValue;
@@ -179,11 +185,11 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 			refItemIndex = -1;
 			if (mainElement.hasAttribute("itemIndex")){
 				refItemIndex = IntegerUtils.tryParseInt(mainElement.getAttribute("itemIndex"), -1);
-			} 
+			}
 			if (refItemIndex == -1){
 				refItemIndex = flowDataSupplier.getCurrentPageIndex();
 			}
-		
+
 			String output = replaceTemplates(contentString);
 			InlineHTML html = new InlineHTML(output);
 			html.setStyleName("qp-info-text");
