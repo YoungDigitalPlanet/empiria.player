@@ -77,6 +77,22 @@ public class XMLUtils {
       return Integer.parseInt(attribute);
   }
   
+  /**
+   * Helper function for getting element attribute as double
+   * 
+   * @param name Attribute name
+   * @return attribute value or 0 if not found
+   */
+  public static double getAttributeAsDouble(Element element, String name){
+	  String attribute;
+	  
+	  attribute = element.getAttribute(name);
+	  if(attribute == null)
+		  return 0;
+	  else
+		  return Double.parseDouble(attribute);
+  }
+  
   
 	/**
 	 * get all TEXT nodes
