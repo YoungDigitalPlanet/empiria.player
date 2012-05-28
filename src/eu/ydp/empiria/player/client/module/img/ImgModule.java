@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.img;
 
 import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsInt;
+import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsDouble;
 import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsString;
 import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getFirstElementWithTagName;
 import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getText;
@@ -79,7 +80,11 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 	private void parseLine(Element line, Context2d context2d) {
 		NodeList elements = line.getChildNodes();
 		String endPoint = null;
-		int lastX = 0, lastY = 0, startX = 0, startY = 0;
+		String startPoint = null;
+		boolean isStartSet = false;
+		double lastX = 0, lastY = 0, startX = 0, startY = 0;
+		double startBegX = 0, startBegY = 0, startEndX = 0, startEndY = 0;
+		
 		for (int x = 0; x < elements.getLength(); ++x) {
 			Node node = elements.item(x);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -87,11 +92,20 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 				if (!"".equals(getAttributeAsString(e, "x"))) {
 					startX = lastX;
 					startY = lastY;
-					lastX = getAttributeAsInt(e, "x");
-					lastY = getAttributeAsInt(e, "y");
+					lastX = getAttributeAsDouble(e, "x");
+					lastY = getAttributeAsDouble(e, "y");
+					
+					if(!isStartSet && startPoint != null){
+						startBegX = lastX;
+						startBegY = lastY;
+						isStartSet = true;
+					}
 				}
 				if (e.getNodeName().equals("startPoint")) {
 					context2d.moveTo(lastX, lastY);
+					startPoint = getAttributeAsString(e, "type");
+					startEndX = lastX;
+					startEndY = lastY;
 				} else if (e.getNodeName().equals("endPoint")) {
 					endPoint = getText(e);
 				} else if (e.getNodeName().equals("lineTo")) {
@@ -99,7 +113,7 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 					context2d.stroke();
 				} else if (e.getNodeName().equals("lineStyle")) {
 					if (!"".equals(getAttributeAsString(e, "alpha"))) {
-						context2d.setGlobalAlpha(getAttributeAsInt(e, "alpha") * 0.001);
+						context2d.setGlobalAlpha(getAttributeAsInt(e, "alpha"));
 					}
 					// hex itd
 					String color = getAttributeAsString(e, "color");
@@ -113,10 +127,13 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 				}
 			}
 		}
-		if (endPoint != null) {
+		if (endPoint != null){
 			drawShape(endPoint, context2d, lastX, lastY, startX, startY);
 		}
-
+		
+		if(startPoint != null){
+			drawShape(startPoint, context2d, startEndX, startEndY, startBegX, startBegY);
+		}
 	}
 
 	/**
@@ -159,7 +176,7 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 	 * @param startX
 	 * @param startY
 	 */
-	private void drawShape(String shapeName, Context2d context, int centerX, int centerY, int startX, int startY) {
+	private void drawShape(String shapeName, Context2d context, double centerX, double centerY, double startX, double startY) {
 		if (shapeName.equals("dot")) {
 			context.beginPath();
 			context.arc(centerX, centerY, 3, 0, 2 * Math.PI, false);

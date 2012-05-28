@@ -9,12 +9,12 @@ import eu.ydp.empiria.player.client.util.KeyValue;
 
 public class CanvasArrow {
 	private Context2d context2d;
-	private final int startX, endX;
-	private final int startY, endY;
+	private final double startX, endX;
+	private final double startY, endY;
 
 	int[][] arrow = { { 0, 0 }, { -10, -4 }, { -10, 4 } };
 
-	public CanvasArrow(Context2d context2d, int startX, int startY, int endX, int endY) {
+	public CanvasArrow(Context2d context2d, double startX, double startY, double endX, double endY) {
 		this.context2d = context2d;
 		this.startX = startX;
 		this.startY = startY;
@@ -52,7 +52,7 @@ public class CanvasArrow {
 		context2d.closePath();
 	}
 
-	private List<KeyValue<Double, Double>> translateShape(List<KeyValue<Double, Double>> shape, int x, int y) {
+	private List<KeyValue<Double, Double>> translateShape(List<KeyValue<Double, Double>> shape, double x, double y) {
 		List<KeyValue<Double, Double>> retValue = new ArrayList<KeyValue<Double, Double>>();
 		for (KeyValue<Double, Double> p : shape) {
 			retValue.add(new KeyValue<Double, Double>(p.getKey() + x, p.getValue() + y));
