@@ -33,6 +33,7 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
+import gwt.g2d.client.graphics.Color;
 
 public class MathModule implements IInteractionModule,Factory<MathModule> {
 
@@ -106,6 +107,7 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 		String fontName = "Arial";
 		boolean fontBold = false;
 		boolean fontItalic = false;
+		String fontColor = "#000000";
 		Integer textEntryWidth = 36;
 		Integer textEntryHeight = 14;
 		Integer inlineChoiceWidth = 48;
@@ -122,6 +124,9 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 		if (styles.containsKey("-empiria-math-font-style")){
 			fontItalic = styles.get("-empiria-math-font-style").toLowerCase().equals("italic");
 		}
+		if (styles.containsKey("-empiria-math-color")){
+			fontColor = styles.get("-empiria-math-color").toUpperCase();
+		}
 		if (styles.containsKey("-empiria-math-gap-width")){
 			textEntryWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-width"));
 		}
@@ -134,7 +139,8 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 		if (styles.containsKey("-empiria-math-drop-height")){			
 			inlineChoiceHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-drop-height"));
 		}
-		Font f = new Font(fontSize, fontName, fontBold, fontItalic);
+		Integer fontColorInt = IntegerUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
+		Font f = new Font(fontSize, fontName, fontBold, fontItalic, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
 		mpm.setFont(f);
 		
 		TextEntryGap testGap = new TextEntryGap();
