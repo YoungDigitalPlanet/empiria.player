@@ -36,6 +36,8 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
 		DivElement de = Document.get().createDivElement();
 		Document.get().getBody().appendChild(de);
 		Widget h = InlineHTML.wrap(de);
+		//after wrapping, div is removed from main body
+		Document.get().getBody().removeChild(de);
 		h.setStyleName("qp-text-inline");
 		parseXML(mainNode.getChildNodes(), h.getElement());
 		return h;
@@ -45,6 +47,8 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
 		DivElement de = Document.get().createDivElement();
 		Document.get().getBody().appendChild(de);
 		Widget h = InlineHTML.wrap(de);
+		//after wrapping, div is removed from main body
+		Document.get().getBody().removeChild(de);
 		h.setStyleName("qp-text-inline");
 		parseNode(mainNode, h.getElement());
 		return h;
