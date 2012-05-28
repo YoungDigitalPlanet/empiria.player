@@ -17,5 +17,13 @@ public class IntegerUtils {
 		}
 		return defaultValue;
 	}
+	
+	public static int tryParseInt(String s, int radix, int defaultValue){
+		try {
+			return Integer.parseInt(s, radix);
+		} catch (Exception e) {
+		}
+		return defaultValue;
+	}
 
 }

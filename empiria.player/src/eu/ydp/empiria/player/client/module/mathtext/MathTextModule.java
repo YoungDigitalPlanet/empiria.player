@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
+import gwt.g2d.client.graphics.Color;
 
 public class MathTextModule implements IInlineModule,Factory<MathTextModule> {
 
@@ -27,6 +28,7 @@ public class MathTextModule implements IInlineModule,Factory<MathTextModule> {
 		String fontName = "Arial";
 		boolean fontBold = false;
 		boolean fontItalic = false;
+		String fontColor = "#000000";
 		if (styles.containsKey("-empiria-math-font-size")){
 			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-font-size"));
 		}
@@ -39,7 +41,11 @@ public class MathTextModule implements IInlineModule,Factory<MathTextModule> {
 		if (styles.containsKey("-empiria-math-font-style")){
 			fontItalic = styles.get("-empiria-math-font-style").toLowerCase().equals("italic");
 		}
-		Font f = new Font(fontSize, fontName, fontBold, fontItalic);
+		if (styles.containsKey("-empiria-math-color")){
+			fontColor = styles.get("-empiria-math-color").toUpperCase();
+		}
+		Integer fontColorInt = IntegerUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
+		Font f = new Font(fontSize, fontName, fontBold, fontItalic, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
 		mpm.setFont(f);
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName("qp-mathtext");
