@@ -84,7 +84,7 @@ public class ReportModule implements IContainerModule {
 						Element el = dataSourceDataSupplier.getItem(currRow);
 						if (el != null) {
 							String className = XMLUtils.getAttributeAsString(el, "class");
-							if (className != null) {
+							if (className != null  &&  !"".equals(className)) {
 								table.getRowFormatter().addStyleName(currRow,className);
 							}
 						}
@@ -126,7 +126,7 @@ public class ReportModule implements IContainerModule {
 							Element el = dataSourceDataSupplier.getItem(currRow);
 							if (el != null) {
 								String className = XMLUtils.getAttributeAsString(el, "class");
-								if (className != null) {
+								if (className != null  &&  !"".equals(className)) {
 									table.getRowFormatter().addStyleName(currRow,className);
 								}
 							}
