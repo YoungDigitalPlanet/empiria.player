@@ -305,10 +305,12 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	public void resetItem(){
 		itemBody.reset();
+		itemBody.lock(false);
 	}
 
 	public void resetGroup(GroupIdentifier gi){
 		itemBody.reset(gi);
+		itemBody.lock(false, gi);
 	}
 	
 	public void lockItem(boolean lock){
