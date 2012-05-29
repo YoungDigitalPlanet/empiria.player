@@ -70,18 +70,22 @@ public class SoundExecutorSwf implements SoundExecutor {
 	private String getPlayerPathDir(){
 		if (playerPathDir != null)
 			return playerPathDir;
+		playerPathDir = findPlayerPathDir();
+		return playerPathDir;
+	}
+	
+	private String findPlayerPathDir(){
 		NodeList<Element> scriptNodes = Document.get().getElementsByTagName("script");
 		String empiriaPlayerFileName = "/empiria.player.nocache.js";
 		for (int s = 0 ; s < scriptNodes.getLength() ; s ++){
 			if (((Element)scriptNodes.getItem(s)).hasAttribute("src")){
 				String src = ((Element)scriptNodes.getItem(s)).getAttribute("src");				
 				if (src.endsWith(empiriaPlayerFileName)){
-					playerPathDir = src.substring(0, src.indexOf(empiriaPlayerFileName) +1);
-					return playerPathDir;
+					return src.substring(0, src.indexOf(empiriaPlayerFileName) +1);
 				}
 			}
 		}
-		playerPathDir = "";
-		return playerPathDir;
+		return "";
+		
 	}
 }
