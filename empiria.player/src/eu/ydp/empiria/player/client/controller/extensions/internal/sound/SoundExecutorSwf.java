@@ -6,6 +6,9 @@ import com.allen_sauer.gwt.voices.client.SoundController;
 import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
 import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
 import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 
@@ -15,6 +18,7 @@ public class SoundExecutorSwf implements SoundExecutor {
 	protected SoundHandler currSoundHandler;
 	protected boolean playing = false;
 	protected SoundExecutorListener listener;
+	protected String playerPathDir = null;
 	
 	@Override
 	public void play(String src) {
@@ -23,6 +27,7 @@ public class SoundExecutorSwf implements SoundExecutor {
 			stop();
 		
 		SoundController ctrl = new SoundController();
+		ctrl.setGwtVoicesSwfLocation(getPlayerPathDir());
 		currSound = ctrl.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3, src);					
 		currSoundHandler = new SoundHandler() {
 			
@@ -61,5 +66,22 @@ public class SoundExecutorSwf implements SoundExecutor {
 	public void setSoundFinishedListener(SoundExecutorListener listener) {
 		this.listener = listener;
 	}
-
+	
+	private String getPlayerPathDir(){
+		if (playerPathDir != null)
+			return playerPathDir;
+		NodeList<Element> scriptNodes = Document.get().getElementsByTagName("script");
+		String empiriaPlayerFileName = "/empiria.player.nocache.js";
+		for (int s = 0 ; s < scriptNodes.getLength() ; s ++){
+			if (((Element)scriptNodes.getItem(s)).hasAttribute("src")){
+				String src = ((Element)scriptNodes.getItem(s)).getAttribute("src");				
+				if (src.endsWith(empiriaPlayerFileName)){
+					playerPathDir = src.substring(0, src.indexOf(empiriaPlayerFileName) +1);
+					return playerPathDir;
+				}
+			}
+		}
+		playerPathDir = "";
+		return playerPathDir;
+	}
 }
