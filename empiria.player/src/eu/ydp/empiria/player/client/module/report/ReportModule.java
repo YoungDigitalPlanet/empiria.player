@@ -16,7 +16,10 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
+import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
+import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.IContainerModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
@@ -46,10 +49,18 @@ public class ReportModule implements IContainerModule {
 		userClass = XMLUtils.getAttributeAsString(element, "class");
 
 		String range = "1:-1";
+		boolean showNonActivites = true;
+		
 		Map<String, String> styles = ms.getStyles(element);
+		
 		if (styles.containsKey("-empiria-report-items-include")) {
 			range = styles.get("-empiria-report-items-include");
 		}
+		
+		if(styles.containsKey("-empiria-report-show-non-activites")){
+			showNonActivites = Boolean.parseBoolean(styles.get("-empiria-report-show-non-activites"));
+		}
+		
 		List<Integer> itemIndexes = parseRange(range);
 		NodeList rowNodes = element.getChildNodes();
 
@@ -97,6 +108,14 @@ public class ReportModule implements IContainerModule {
 				NodeList cellNodes = rowNodes.item(r).getChildNodes();
 				for (int ir = 0; ir < itemIndexes.size(); ir++) {
 					currCol = 0;
+					
+					int todo = getItemTodoValue(itemIndexes.get(ir));
+					int itemIndex = itemIndexes.get(ir);
+					
+					//hiding pages which are not activites
+					if(todo == 0 && !showNonActivites)
+						continue;
+					
 					for (int d = 0; d < cellNodes.getLength(); d++) {
 						if (cellNodes.item(d).getNodeType() == Node.ELEMENT_NODE && "rd".equals(cellNodes.item(d).getNodeName())) {
 							int colspan = 1;
@@ -145,6 +164,28 @@ public class ReportModule implements IContainerModule {
 			mainPanel.addStyleName(userClass);
 
 		mainPanel.add(table);
+	}
+	
+	private int getItemTodoValue(int itemIndex){
+		int todo = 0;
+		String value = getItemValue(itemIndex, "TODO");
+		
+		if(value != null)
+			todo = Integer.parseInt(value);
+		
+		return todo;
+	}
+	
+	private String getItemValue(int itemIndex, String variableName){
+		String outputValue = null;
+		ItemSessionDataSocket itemDataSocket = sessionDataSupplier.getItemSessionDataSocket(itemIndex);
+		VariableProviderSocket variableSocket = itemDataSocket.getVariableProviderSocket();
+		Variable variable = variableSocket.getVariableValue(variableName);
+		
+		if(variable != null)
+			outputValue = variable.getValuesShort();
+		
+		return outputValue;
 	}
 
 	protected List<Integer> parseRange(String range) {
