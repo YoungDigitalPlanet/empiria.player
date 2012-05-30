@@ -29,7 +29,6 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
-import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
 /**

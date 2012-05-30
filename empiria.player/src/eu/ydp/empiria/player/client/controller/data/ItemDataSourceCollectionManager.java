@@ -2,8 +2,8 @@ package eu.ydp.empiria.player.client.controller.data;
 
 import java.util.Vector;
 
-import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
+import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 

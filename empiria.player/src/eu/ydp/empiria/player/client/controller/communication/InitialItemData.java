@@ -1,11 +1,10 @@
 package eu.ydp.empiria.player.client.controller.communication;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.xml.client.NodeList;
+
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 

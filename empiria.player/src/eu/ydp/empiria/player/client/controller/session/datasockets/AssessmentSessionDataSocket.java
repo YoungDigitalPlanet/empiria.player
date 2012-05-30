@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.controller.session.datasockets;
 
-import com.google.gwt.core.client.JavaScriptObject;
-
-import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 
 public interface AssessmentSessionDataSocket extends SessionDataSocketBase {
 

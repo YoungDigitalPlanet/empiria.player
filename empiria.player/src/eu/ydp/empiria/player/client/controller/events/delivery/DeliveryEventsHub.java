@@ -8,11 +8,9 @@ import java.util.Map;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventsHandler;
-import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEventListner;
-import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
+import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEventListener;
@@ -114,7 +112,7 @@ public class DeliveryEventsHub implements FlowProcessingEventsListener, Delivery
 	}
 
 	@Override
-	public void onFeedbackSound(FeedbackInteractionSoundEvent event) {
+	public void onFeedbackSound(FeedbackInteractionEvent event) {
 		onInteractionEvent(event);
 	}
 

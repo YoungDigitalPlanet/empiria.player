@@ -6,13 +6,13 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.MediaModuleInteractionListener;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class AudioPlayerModule implements ISimpleModule,Factory<AudioPlayerModule> {
@@ -23,16 +23,16 @@ public class AudioPlayerModule implements ISimpleModule,Factory<AudioPlayerModul
 
 	protected PushButton button;
 	protected String address;
-	protected MediaModuleInteractionListener mediaListener;
+	protected InteractionEventsListener mediaListener;
 	protected boolean playing;
 	protected boolean enabled = true;
 
 	protected MediaInteractionSoundEventCallforward callforward;
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
+	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
 
-		mediaListener = mil;
+		mediaListener = iel;
 
 		address = XMLUtils.getAttributeAsString(element, "src");
 		if (address == null  ||  "".equals(address))
@@ -58,7 +58,7 @@ public class AudioPlayerModule implements ISimpleModule,Factory<AudioPlayerModul
 
 	private void play(){
 		enabled = false;
-		mediaListener.onMediaSoundPlay(address, new MediaInteractionSoundEventCallback() {
+		mediaListener.onMediaSound(new MediaInteractionSoundEvent(address, new MediaInteractionSoundEventCallback() {
 
 			@Override
 			public void onStop() {
@@ -74,7 +74,7 @@ public class AudioPlayerModule implements ISimpleModule,Factory<AudioPlayerModul
 			public void setCallforward(MediaInteractionSoundEventCallforward cf) {
 				callforward = cf;
 			}
-		});
+		}));
 	}
 
 	protected void stop(){

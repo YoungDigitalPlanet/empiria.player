@@ -10,16 +10,13 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
 public class PageSwitchModule extends ControlModule implements ISimpleModule, ChangeHandler {
 
 	protected IPageSwitchWidget switchWidget;
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms,
-			ModuleInteractionListener mil) {
+	public void initModule(Element element) {
 	}
 
 	@Override

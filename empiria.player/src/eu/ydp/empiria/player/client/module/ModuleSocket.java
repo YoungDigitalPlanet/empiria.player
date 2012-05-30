@@ -23,11 +23,7 @@
 */
 package eu.ydp.empiria.player.client.module;
 
-import java.util.List;
-import java.util.Stack;
-
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedbackSocket;
-import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.registry.InlineBodyGeneratorSocketProvider;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 

@@ -15,18 +15,18 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.module.IContainerModule;
+import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class ReportModule implements IContainerModule {
+public class ReportModule extends ContainerModuleBase {
 
 	protected SessionDataSupplier sessionDataSupplier;
 	protected DataSourceDataSupplier dataSourceDataSupplier;
@@ -41,12 +41,14 @@ public class ReportModule implements IContainerModule {
 		this.flowRequestInvoker = flowRequestInvoker;
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
 		this.sessionDataSupplier = sessionDataSupplier;
+
+		mainPanel = new FlowPanel();
+		mainPanel.setStyleName("qp-report");
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil, BodyGeneratorSocket bgs) {
-
-		userClass = XMLUtils.getAttributeAsString(element, "class");
+	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
+		super.initModule(element, ms, mil, bgs);
 
 		String range = "1:-1";
 		boolean showNonActivites = true;
@@ -157,11 +159,6 @@ public class ReportModule implements IContainerModule {
 				}
 			}
 		}
-
-		mainPanel = new FlowPanel();
-		mainPanel.setStyleName("qp-report");
-		if (userClass != null && !"".equals(userClass))
-			mainPanel.addStyleName(userClass);
 
 		mainPanel.add(table);
 	}

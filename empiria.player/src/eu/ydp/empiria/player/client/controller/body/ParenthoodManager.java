@@ -2,9 +2,7 @@ package eu.ydp.empiria.player.client.controller.body;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
-import java.util.TreeMap;
 
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;

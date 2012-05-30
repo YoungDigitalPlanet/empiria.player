@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
@@ -13,26 +12,15 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.body.ModuleEventsListener;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEvent;
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
-import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IGroup;
-import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.ILockable;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IResetable;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -48,7 +36,7 @@ public class ItemBody implements WidgetWorkflowListener {
 	
 	protected ParenthoodManager parenthood;
 
-	protected ModuleEventsListener moduleEventsListener;
+	protected InteractionEventsListener interactionEventsListener;
 	protected DisplayContentOptions options;
 	protected ModuleSocket moduleSocket;
 	protected ModulesRegistrySocket modulesRegistrySocket;
@@ -68,40 +56,19 @@ public class ItemBody implements WidgetWorkflowListener {
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		
 		parenthood = new ParenthoodManager();
-
-		moduleEventsListener = new ModuleEventsListener() {
-
-
-			@Override
-			public void onStateChanged(boolean procesFeedback, IUniqueModule sender) {
-				interactionEventsListener
-						.onStateChanged(new StateChangedInteractionEvent(
-								procesFeedback, sender));
-			}
-
-			@Override
-			public void onFeedbackSoundPlay(String url) {
-				interactionEventsListener
-						.onFeedbackSound(new FeedbackInteractionSoundEvent(url));
-			}
-
-			@Override
-			public void onMediaSoundPlay(String url, MediaInteractionSoundEventCallback callback) {
-				interactionEventsListener.onMediaSound(new MediaInteractionSoundEvent(url, callback));
-			}
-
-		};
+		
+		this.interactionEventsListener = interactionEventsListener;
 
 	}
 
 	public Widget init(Element itemBodyElement) {
 		
-		ModulesInstalator modulesInstalator = new ModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, moduleEventsListener);
+		ModulesInstalator modulesInstalator = new ModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
 		BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
 		
 		itemBodyModule = new ItemBodyModule(); 
 		modulesInstalator.setInitialParent(itemBodyModule);
-		itemBodyModule.initModule(itemBodyElement, moduleSocket, moduleEventsListener, generator);
+		itemBodyModule.initModule(itemBodyElement, moduleSocket, interactionEventsListener, generator);
 		
 		modules = new ArrayList<IModule>();
 		modules.add(itemBodyModule);

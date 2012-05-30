@@ -30,6 +30,14 @@ public abstract class InteractionEvent {
 			}
 		}
 		
+		if (type.equals(InteractionEventType.FEEDBACK_MUTE.toString())){
+			try{
+				boolean mute = getJsObjectMute(jsObject);
+				return new FeedbackInteractionMuteEvent(mute);
+			} catch (Exception e) {
+			}
+		}
+		
 		return null;
 	}
 
@@ -52,5 +60,10 @@ public abstract class InteractionEvent {
 		if (typeof obj.url == 'string')
 			return obj.url;
 		return "";
+	}-*/;
+	private static native boolean getJsObjectMute(JavaScriptObject obj)/*-{
+		if (typeof obj.mute == 'boolean')
+			return obj.mute;
+		return false;
 	}-*/;
 }

@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import java.util.Vector;
-
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;

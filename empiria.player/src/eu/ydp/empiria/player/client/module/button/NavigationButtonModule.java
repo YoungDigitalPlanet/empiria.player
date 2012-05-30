@@ -11,9 +11,6 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
-import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class NavigationButtonModule extends ControlModule implements ISimpleModule{
 	
@@ -21,19 +18,12 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 	
 	private NavigationButtonDirection direction;
 	
-	private String userStyleClass;
-	
-	private String moduleId;
-	
 	public NavigationButtonModule(NavigationButtonDirection dir){
 		direction = dir;
 	}
 	
 	@Override
-	public void initModule(Element element, ModuleSocket ms,
-								ModuleInteractionListener mil) {
-		userStyleClass = XMLUtils.getAttributeAsString(element, "class");
-		moduleId = XMLUtils.getAttributeAsString(element, "id");
+	public void initModule(Element element) {
 	}
 	
 	@Override
@@ -60,8 +50,6 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 		if(button == null){
 			button = new PushButton();
 			button.setStyleName(getStyleName());
-			addUserStyle(button);
-			setModuleId(button);
 			button.addClickHandler(new ClickHandler() {
 				
 				@Override
@@ -80,16 +68,6 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 	
 	private Boolean isLastPage(){
 		return (flowDataSupplier.getCurrentPageIndex() == dataSourceSupplier.getItemsCount() - 1);
-	}
-	
-	private void addUserStyle(Widget view){
-		if(userStyleClass != null && userStyleClass.trim().length() > 0)
-			view.addStyleName(userStyleClass);
-	}
-	
-	private void setModuleId(Widget view){
-		if(moduleId != null && moduleId.trim().length() > 0)
-			view.getElement().setId(moduleId);
 	}
 	
 	private String getCurrentStyleName(Boolean isEnabled){

@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.components.choicebutton;
 
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PushButton;
 
 public abstract class ChoiceButtonBase extends PushButton implements ISelectableButton {

@@ -14,14 +14,14 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.containers.ContainerModuleBase;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 
-public class LinkModule extends ContainerModuleBase<LinkModule> {
+public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 
 	protected FlowRequestInvoker flowRequestInvoker;
 
@@ -62,7 +62,7 @@ public class LinkModule extends ContainerModuleBase<LinkModule> {
 
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, ModuleInteractionListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
+	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
 		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
 
 		if (element.hasAttribute("itemIndex")){

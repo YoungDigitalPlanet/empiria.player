@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
@@ -24,26 +23,19 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class SelectionModule extends Composite implements IInteractionModule, Factory<SelectionModule> {
-	/** response processing interface */
-	private Response response;
-	/** module state changed listener */
-	private ModuleInteractionListener moduleInteractionListener;
-	/** response id */
-	private String responseIdentifier;
+public class SelectionModule extends OneViewInteractionModuleBase implements IInteractionModule, Factory<SelectionModule> {
+
 	/** Shuffle answers */
 	private boolean shuffle = false;
 	private boolean multi = false;
@@ -58,36 +50,17 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 	private boolean showingAnswers = false;
 	private boolean locked = false;
 
-	protected Element moduleElement;
-	protected ModuleSocket moduleSocket;
-
 	public SelectionModule(){
-	}
-
-	@Override
-	public void initModule(ModuleSocket moduleSocket, ModuleInteractionListener moduleInteractionListener) {
-		this.moduleInteractionListener = moduleInteractionListener;
-		this.moduleSocket = moduleSocket;
-	}
-
-
-	@Override
-	public void addElement(Element element) {
-		moduleElement = element;
 	}
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 
-		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
-		multi = XMLUtils.getAttributeAsBoolean(moduleElement, "multi");
-		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
+		shuffle = XMLUtils.getAttributeAsBoolean(getModuleElement(), "shuffle");
+		multi = XMLUtils.getAttributeAsBoolean(getModuleElement(), "multi");
 
-		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
-		response = moduleSocket.getResponse(responseIdentifier);
-
-		NodeList choices = moduleElement.getElementsByTagName("simpleChoice");
-		NodeList items = moduleElement.getElementsByTagName("item");
+		NodeList choices = getModuleElement().getElementsByTagName("simpleChoice");
+		NodeList items = getModuleElement().getElementsByTagName("item");
 
 		grid = new Grid(items.getLength()+1, choices.getLength()+1);
 		grid.setStyleName("qp-selection-table");
@@ -95,21 +68,20 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 
 		Widget promptWidget = new InlineHTML();
 		promptWidget.setStyleName("qp-prompt");
-		moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstElementWithTagName(moduleElement, "prompt"), promptWidget.getElement());
+		getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstElementWithTagName(getModuleElement(), "prompt"), promptWidget.getElement());
 
 		panel = new VerticalPanel();
 		panel.setStyleName("qp-selection-module");
-		if (userClass != null  &&  !"".equals(userClass))
-			panel.addStyleName(userClass);
+		applyIdAndClassToView(panel);
 		panel.add(promptWidget);
 		panel.add(grid);
 
 		placeholders.get(0).add(panel);
 
-		NodeList childNodes = moduleElement.getChildNodes();
+		NodeList childNodes = getModuleElement().getChildNodes();
 		for (int f = 0 ; f < childNodes.getLength() ; f ++){
 			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
-				moduleSocket.addInlineFeedback(new InlineFeedback(grid, childNodes.item(f), moduleSocket, moduleInteractionListener));
+				getModuleSocket().addInlineFeedback(new InlineFeedback(grid, childNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
 		}
 	}
 
@@ -144,7 +116,7 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 
 		choiceIdentifiers = new Vector<String>();
 		for (int c = 0 ; c < choices.getLength() ; c ++){
-			Widget choiceView = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody((Element)choices.item(c));
+			Widget choiceView = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody((Element)choices.item(c));
 			choiceView.setStyleName("qp-selection-choice");
 
 			grid.setWidget(0, c+1, choiceView);
@@ -153,7 +125,7 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 
 			NodeList inlineFeedbackNodes = ((Element)choices.item(c)).getElementsByTagName("feedbackInline");
 			for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-				moduleSocket.addInlineFeedback(new InlineFeedback(choiceView, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
+				getModuleSocket().addInlineFeedback(new InlineFeedback(choiceView, inlineFeedbackNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
 			}
 		}
 
@@ -181,7 +153,7 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 
 		itemIdentifiers = new Vector<String>();
 		for (int i = 0 ; i < itemNodes.size() ; i ++){
-			Widget itemView = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody((Element)itemNodes.get(i));
+			Widget itemView = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody((Element)itemNodes.get(i));
 			itemView.setStyleName("qp-selection-item");
 
 			grid.setWidget(i+1, 0, itemView);
@@ -190,7 +162,7 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 
 			NodeList inlineFeedbackNodes = ((Element)itemNodes.get(i)).getElementsByTagName("feedbackInline");
 			for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-				moduleSocket.addInlineFeedback(new InlineFeedback(itemView, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
+				getModuleSocket().addInlineFeedback(new InlineFeedback(itemView, inlineFeedbackNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
 			}
 		}
 
@@ -232,10 +204,6 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 		}
 	}
 
-	@Override
-	public String getIdentifier() {
-		return responseIdentifier;
-	}
 
 	@Override
 	public void lock(boolean l) {
@@ -257,10 +225,10 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 			for (int ii = 0 ; ii < itemIdentifiers.size() ; ii ++ ){
 				boolean passed = true;
 
-				for (int r = 0 ; r < response.correctAnswers.size() ; r ++){
-					String currItemIdentifier = response.correctAnswers.get(r).split(" ")[0];
+				for (int r = 0 ; r < getResponse().correctAnswers.size() ; r ++){
+					String currItemIdentifier = getResponse().correctAnswers.get(r).split(" ")[0];
 					if (currItemIdentifier.equals(itemIdentifiers.get(ii))){
-						boolean correct = response.values.contains(response.correctAnswers.get(r));
+						boolean correct = getResponse().values.contains(getResponse().correctAnswers.get(r));
 						if (!correct){
 							passed = false;
 							break;
@@ -268,10 +236,10 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 					}
 				}
 
-				for (int r = 0 ; r < response.values.size() ; r ++){
-					String currItemIdentifier = response.values.get(r).split(" ")[0];
+				for (int r = 0 ; r < getResponse().values.size() ; r ++){
+					String currItemIdentifier = getResponse().values.get(r).split(" ")[0];
 					if (currItemIdentifier.equals(itemIdentifiers.get(ii))){
-						boolean correct = response.correctAnswers.contains(response.values.get(r));
+						boolean correct = getResponse().correctAnswers.contains(getResponse().values.get(r));
 						if (!correct){
 							passed = false;
 							break;
@@ -333,7 +301,7 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
 				for (int c = 0 ; c < choiceIdentifiers.size() ; c ++){
-					if (response.correctAnswers.contains(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
+					if (getResponse().correctAnswers.contains(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
 						buttons.get(i).get(c).setSelected(true);
 				}
 			}
@@ -343,7 +311,7 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
 				for (int c = 0 ; c < choiceIdentifiers.size() ; c ++){
-					if (response.values.contains(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
+					if (getResponse().values.contains(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
 						buttons.get(i).get(c).setSelected(true);
 				}
 			}
@@ -360,8 +328,8 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 	public JSONArray getState() {
 		JSONArray newState = new JSONArray();
 
-		for (int r = 0 ; r < response.values.size() ; r ++){
-			newState.set(newState.size(), new JSONString(response.values.get(r)) );
+		for (int r = 0 ; r < getResponse().values.size() ; r ++){
+			newState.set(newState.size(), new JSONString(getResponse().values.get(r)) );
 		}
 
 		return newState;
@@ -395,9 +363,9 @@ public class SelectionModule extends Composite implements IInteractionModule, Fa
 			}
 		}
 
-		if (!response.compare(currResponseValues)  ||  !response.isInitialized()){
-			response.set(currResponseValues);
-			moduleInteractionListener.onStateChanged(userInteract, this);
+		if (!getResponse().compare(currResponseValues)  ||  !getResponse().isInitialized()){
+			getResponse().set(currResponseValues);
+			fireStateChanged(userInteract);
 		}
 	}
 

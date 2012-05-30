@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import java.util.Vector;
-
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
@@ -14,13 +12,13 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 
 import eu.ydp.empiria.player.client.components.MouseEventPanel;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.FeedbackModuleInteractionListener;
+import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.registry.InlineBodyGeneratorSocketProvider;
 
 public class InlineFeedback extends PopupPanel implements IItemFeedback {
 
-	public InlineFeedback(Widget _mountingPoint, Node node, InlineBodyGeneratorSocketProvider inlineBodyGeneratorProvider, FeedbackModuleInteractionListener fbkListener){
+	public InlineFeedback(Widget _mountingPoint, Node node, InlineBodyGeneratorSocketProvider inlineBodyGeneratorProvider, InteractionEventsListener fbkListener){
 		super(false, false);
 		
 		this.feedbackListener = fbkListener;
@@ -93,7 +91,7 @@ public class InlineFeedback extends PopupPanel implements IItemFeedback {
 		getElement().setId(Document.get().createUniqueId());
 	}
 
-	private FeedbackModuleInteractionListener feedbackListener;
+	private InteractionEventsListener feedbackListener;
 
 	private String variable;
 	private String value;
@@ -206,7 +204,7 @@ public class InlineFeedback extends PopupPanel implements IItemFeedback {
 		else
 			combinedAddress = baseUrl + soundAddress;
 		
-		feedbackListener.onFeedbackSoundPlay(combinedAddress);
+		feedbackListener.onFeedbackSound(new FeedbackInteractionSoundEvent(combinedAddress));
 	}
 
 	private void updatePosition(){

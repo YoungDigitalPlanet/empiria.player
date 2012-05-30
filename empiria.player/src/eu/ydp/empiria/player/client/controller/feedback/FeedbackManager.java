@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 

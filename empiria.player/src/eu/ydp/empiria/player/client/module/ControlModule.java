@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsLis
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 
-public abstract class ControlModule implements DeliveryEventsListener {
+public abstract class ControlModule extends SimpleModuleBase implements DeliveryEventsListener {
 	
 	protected FlowRequestInvoker flowRequestInvoker;
 	

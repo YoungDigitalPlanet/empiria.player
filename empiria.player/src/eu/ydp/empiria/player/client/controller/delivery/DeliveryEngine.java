@@ -33,6 +33,7 @@ import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InfoModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.LinkModuleConnectorExtension;
@@ -290,6 +291,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new ShowAnswersButtonModuleConnectorExtension());
 		loadExtension(new ResetButtonModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new ShapeModule(), ModuleTagName.SHAPE));
+		loadExtension(new AudioMuteButtonModuleConnectorExtension());
 	}
 
 	protected void loadLibraryExtensions(){

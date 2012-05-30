@@ -10,8 +10,6 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
-
 public class SoundExecutorSwf implements SoundExecutor {
 
 	protected Sound currSound;

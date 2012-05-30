@@ -10,8 +10,8 @@ import eu.ydp.empiria.player.client.controller.flow.execution.MainFlowCommandsEx
 import eu.ydp.empiria.player.client.controller.flow.processing.IFlowRequestProcessor;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCommand;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventsListener;
-import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
+import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.MainFlowRequestInvoker;
 
 public final class FlowManager {

@@ -27,29 +27,21 @@ import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.IInteractionModule;
+import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 import gwt.g2d.client.graphics.Color;
 
-public class MathModule implements IInteractionModule,Factory<MathModule> {
+public class MathModule extends OneViewInteractionModuleBase implements Factory<MathModule> {
 
-	protected ModuleSocket moduleSocket;
-	protected ModuleInteractionListener moduleInteractionListener;
-
-	protected Element element;
 	protected AbsolutePanel outerPanel;
 	protected FlowPanel mainPanel;
 	protected AbsolutePanel listBoxesLayer;
 	protected InteractionManager interactionManager;
 
 	protected List<MathGap> gaps;
-	
-	protected String responseIdentifier;
-	protected Response response;
 
 	protected boolean showingAnswer = false;
 	protected boolean markingAnswer = false;
@@ -70,22 +62,9 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 		public abstract String getName();
 	}
 
-	@Override
-	public void initModule(ModuleSocket moduleSocket, ModuleInteractionListener moduleInteractionListener) {
-		this.moduleSocket = moduleSocket;
-		this.moduleInteractionListener = moduleInteractionListener;
-	}
-
-	@Override
-	public void addElement(Element element) {
-		this.element = element;
-	}
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-
-		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
-		response = moduleSocket.getResponse(responseIdentifier);
 		
 		outerPanel = new AbsolutePanel();
 		outerPanel.setStyleName("qp-mathinteraction");
@@ -93,16 +72,14 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 		mainPanel.setStyleName("qp-mathinteraction-inner");
 		outerPanel.add(mainPanel, 0, 0);
 		
-		String userClass = XMLUtils.getAttributeAsString(element, "class");
-		if (userClass != null  &&  !"".equals(userClass))
-			mainPanel.addStyleName(userClass);
+		applyIdAndClassToView(mainPanel);
 		placeholders.get(0).add(outerPanel);
 	}
 
 	@Override
 	public void onBodyLoad() {
 		MathPlayerManager mpm = new MathPlayerManager();
-		Map<String, String> styles = moduleSocket.getStyles(element);
+		Map<String, String> styles = getModuleSocket().getStyles(getModuleElement());
 		int fontSize = 16;
 		String fontName = "Arial";
 		boolean fontBold = false;
@@ -157,7 +134,7 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 		mpm.setCustomFieldWidth(GapType.INLINE_CHOICE.getName(), inlineChoiceWidth);	
 		mpm.setCustomFieldHeight(GapType.INLINE_CHOICE.getName(), inlineChoiceHeight);		
 		
-		interactionManager = mpm.createMath(element.getChildNodes().toString(), mainPanel);
+		interactionManager = mpm.createMath(getModuleElement().getChildNodes().toString(), mainPanel);
 		
 		listBoxesLayer = new AbsolutePanel();
 		listBoxesLayer.setStyleName("qp-mathinteraction-gaps");
@@ -168,7 +145,7 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 		Vector<Point> customFieldPositions = interactionManager.getCustomFieldPositions();
 		gaps = new ArrayList<MathGap>();
 		
-		NodeList gapNodes = element.getElementsByTagName("gap");
+		NodeList gapNodes = getModuleElement().getElementsByTagName("gap");
 		Iterator<Point> customFieldPositionsIterator = customFieldPositions.iterator();
 		
 		for (int i = 0 ; i < gapNodes.getLength() ; i ++){
@@ -195,8 +172,8 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 				for (int o = 0 ; o < optionNodes.getLength() ; o ++){
 					String currId = ((Element)optionNodes.item(o)).getAttribute("identifier");
 					listBoxIdentifiers.add(currId);
-					Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
-					Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
+					Widget baseBody = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
+					Widget popupBody = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
 					listBox.addOption(baseBody, popupBody);
 				}
 				
@@ -244,10 +221,10 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 	@Override
 	public void markAnswers(boolean mark) {
 		if (mark  && !markingAnswer){
-			Vector<Boolean> evaluation = response.evaluateAnswer();
+			Vector<Boolean> evaluation = getResponse().evaluateAnswer();
 
 			for (int i = 0 ; i < evaluation.size()  &&  i < gaps.size() ; i ++){
-				if ("".equals( response.values.get(i)) ){
+				if ("".equals( getResponse().values.get(i)) ){
 					gaps.get(i).mark(false, false);
 				} else if (evaluation.get(i)){
 					gaps.get(i).mark(true, false);
@@ -268,12 +245,12 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (show  &&  !showingAnswer){
-			for (int i = 0 ; i < response.correctAnswers.size() ; i ++){
-				gaps.get(i).setValue( response.correctAnswers.get(i) );
+			for (int i = 0 ; i < getResponse().correctAnswers.size() ; i ++){
+				gaps.get(i).setValue( getResponse().correctAnswers.get(i) );
 			}
 		} else if (!show  &&  showingAnswer){
-			for (int i = 0 ; i < response.values.size() ; i ++){
-				gaps.get(i).setValue( response.values.get(i) );
+			for (int i = 0 ; i < getResponse().values.size() ; i ++){
+				gaps.get(i).setValue( getResponse().values.get(i) );
 			}
 		}
 		showingAnswer = show;
@@ -298,8 +275,8 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 	@Override
 	public JSONArray getState() {
 		JSONArray arr = new JSONArray();
-		for (int i = 0 ; i < response.values.size() ; i ++){
-			JSONString val = new JSONString(response.values.get(i));
+		for (int i = 0 ; i < getResponse().values.size() ; i ++){
+			JSONString val = new JSONString(getResponse().values.get(i));
 			arr.set(i,  val);
 		}
 		return arr;
@@ -320,21 +297,15 @@ public class MathModule implements IInteractionModule,Factory<MathModule> {
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
 
-	@Override
-	public String getIdentifier() {
-		return responseIdentifier;
-	}
-
-
 	private void updateResponse(boolean userInteract){
 		if (showingAnswer)
 			return;
 
-		response.values.clear();
+		getResponse().values.clear();
 		for (int i = 0 ; i < gaps.size() ; i ++){
-			response.values.add( gaps.get(i).getValue() );
+			getResponse().values.add( gaps.get(i).getValue() );
 		}
-		moduleInteractionListener.onStateChanged(userInteract, this);
+		fireStateChanged(userInteract);
 	}
 
 	@Override

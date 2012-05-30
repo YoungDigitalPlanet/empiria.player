@@ -12,10 +12,10 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.ActivityContainerModuleBase;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 
 public class TableModule extends ActivityContainerModuleBase implements Factory<TableModule> {
@@ -28,12 +28,8 @@ public class TableModule extends ActivityContainerModuleBase implements Factory<
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil, BodyGeneratorSocket bgs) {
+	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
 		super.initModule(element, ms, mil, bgs);
-		String className = element.getAttribute("class");
-		if (className != null  &&  !"".equals(className)  &&  getView() != null){
-			getView().addStyleName(className);
-		}
 
 		FlexTable table = new FlexTable();
 		table.setStyleName("qp-table-table");

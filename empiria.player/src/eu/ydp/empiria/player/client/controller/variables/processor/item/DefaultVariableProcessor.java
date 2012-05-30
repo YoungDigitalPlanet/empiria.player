@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;

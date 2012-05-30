@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller.session;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
@@ -11,12 +10,8 @@ import com.google.gwt.json.client.JSONNull;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
-import eu.ydp.empiria.player.client.controller.session.datasockets.ItemsCollectionSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSocket;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.ItemSessionDataSupplier;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.AssessmentSessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
@@ -25,7 +20,6 @@ import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl;
 import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.util.StringUtils;
 
 public class SessionDataManager implements SessionSocket, IStateful, SessionDataSupplier, SessionDataSocket {
 
