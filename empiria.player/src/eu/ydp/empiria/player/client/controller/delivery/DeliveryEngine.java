@@ -272,8 +272,6 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new SimpleConnectorExtension(new TextEntryModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new InlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new SimpleTextModule(), ModuleTagName.SIMPLE_TEXT));
-		loadExtension(new SimpleConnectorExtension(new SimpleHTMLTagModule(), ModuleTagName.SUB));
-		loadExtension(new SimpleConnectorExtension(new SimpleHTMLTagModule(), ModuleTagName.SUP));
 		loadExtension(new SimpleConnectorExtension(new AudioPlayerModule(), ModuleTagName.AUDIO_PLAYER, false));
 		loadExtension(new SimpleConnectorExtension(new MathTextModule(), ModuleTagName.MATH_TEXT, false, true));
 		loadExtension(new SimpleConnectorExtension(new MathModule(), ModuleTagName.MATH_INTERACTION, true));
