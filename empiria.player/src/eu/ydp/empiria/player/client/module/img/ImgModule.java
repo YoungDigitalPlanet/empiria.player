@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.img;
 
-import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsInt;
 import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsDouble;
+import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsInt;
 import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsString;
 import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getFirstElementWithTagName;
 import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getText;
@@ -18,6 +18,7 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.touch.client.Point;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -160,11 +161,9 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 				}
 			}
 		}
-		Style style = panel.getElement().getStyle();
-		style.setPosition(Position.ABSOLUTE);
-		style.setTop(getAttributeAsInt(anchor, "x"), Unit.PX);
-		style.setLeft(getAttributeAsInt(anchor, "y"), Unit.PX);
+		
 		mainPanel.add(panel);
+		alignWidget(panel, anchor);
 	}
 
 	/**
@@ -261,6 +260,40 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 				context2d.setLineWidth(Double.valueOf(styles.get("line-width").replaceAll("\\D", "")));
 			}catch(Exception e){}
 		}
+	}
+	
+	private void alignWidget(Widget widget, Element anchorElement){
+		String horizontalAlign = getAttributeAsString(
+				getFirstElementWithTagName(anchorElement, "x_anchor"), "anchor");
+		String verticalAlign = getAttributeAsString(
+						getFirstElementWithTagName(anchorElement, "y_anchor"), "anchor");
+		Point anchorPoint = new Point(
+						getAttributeAsDouble(anchorElement, "x"), 
+						getAttributeAsDouble(anchorElement, "y"));
+		
+		alignWidget(widget, anchorPoint, horizontalAlign, verticalAlign);
+	}
+	
+	private void alignWidget(Widget widget, Point anchorPoint, String horizontalAlign, String verticalAlign){
+		Style style = widget.getElement().getStyle();
+		double xPos = anchorPoint.getX();
+		double yPos = anchorPoint.getY();
+		
+		if(horizontalAlign.equals("center")){
+			xPos -= widget.getOffsetWidth()/2;
+		}else if(horizontalAlign.equals("right")){
+			xPos -= widget.getOffsetWidth();
+		}
+		
+		if(verticalAlign.equals("center")){
+			yPos -= widget.getOffsetHeight()/2;
+		}else if(verticalAlign.equals("bottom")){
+			yPos -= widget.getOffsetHeight();
+		}
+		
+		style.setPosition(Position.ABSOLUTE);
+		style.setTop(yPos, Unit.PX);
+		style.setLeft(xPos, Unit.PX);
 	}
 
 	/**
