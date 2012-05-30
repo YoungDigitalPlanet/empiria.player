@@ -17,32 +17,28 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
+import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class IdentificationModule extends Widget implements IInteractionModule,Factory<IdentificationModule>{
+public class IdentificationModule extends InteractionModuleBase implements Factory<IdentificationModule>{
 
 	private int maxSelections;
-	private boolean locked;
-	private boolean showingCorrectAnswers;
-
-	private String responseIdentifier;
-	private Response response;
+	private boolean locked = false;
+	private boolean showingCorrectAnswers = false;
 
 	private Vector<SelectableChoice> options;
 	private FlowPanel panel;
 
-	private ModuleInteractionListener moduleListener;
-	protected ModuleSocket moduleSocket;
-
-	protected List<Element> multiViewElements;
+	protected List<Element> multiViewElements = new ArrayList<Element>();;
 
 	public IdentificationModule(){
 	}
@@ -73,24 +69,13 @@ public class IdentificationModule extends Widget implements IInteractionModule,F
 
 
 	@Override
-	public void initModule(ModuleSocket moduleSocket,ModuleInteractionListener moduleInteractionListener) {
-
-		locked = false;
-		showingCorrectAnswers = false;
-		multiViewElements = new ArrayList<Element>();
-
-		moduleListener = moduleInteractionListener;
-		this.moduleSocket = moduleSocket;
-	}
-
-	@Override
 	public void addElement(Element element) {
 		multiViewElements.add(element);
 	}
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-
+		findResponse(multiViewElements.get(0));
 		options = new Vector<SelectableChoice>();
 		String userClass = "";
 
@@ -109,9 +94,6 @@ public class IdentificationModule extends Widget implements IInteractionModule,F
 				maxSelections = XMLUtils.getAttributeAsInt(element, "maxSelections");
 				userClass = XMLUtils.getAttributeAsString(element, "class");
 
-				responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
-				response = moduleSocket.getResponse(responseIdentifier);
-
 				separatorString = XMLUtils.getAttributeAsString(element, "separator");
 			}
 
@@ -119,7 +101,7 @@ public class IdentificationModule extends Widget implements IInteractionModule,F
 			Vector<Boolean> fixeds = new Vector<Boolean>();
 			NodeList optionNodes = element.getElementsByTagName("simpleChoice");
 			for (int i = 0 ; i < optionNodes.getLength() ; i ++ ){
-				final SelectableChoice sc = new SelectableChoice((Element)optionNodes.item(i), moduleSocket);
+				final SelectableChoice sc = new SelectableChoice((Element)optionNodes.item(i), getModuleSocket());
 				currOptions.add(sc);
 				if(shuffle  &&  !XMLUtils.getAttributeAsBoolean((Element)optionNodes.item(i), "fixed")){
 					optionsSet.push(sc);
@@ -157,15 +139,9 @@ public class IdentificationModule extends Widget implements IInteractionModule,F
 			NodeList childNodes = element.getChildNodes();
 			for (int f = 0 ; f < childNodes.getLength() ; f ++){
 				if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
-					moduleSocket.addInlineFeedback(new InlineFeedback(panel, childNodes.item(f), moduleSocket, moduleListener));
+					getModuleSocket().addInlineFeedback(new InlineFeedback(panel, childNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
 			}
 		}
-	}
-
-
-	@Override
-	public String getIdentifier() {
-		return responseIdentifier;
 	}
 
 	@Override
@@ -177,7 +153,7 @@ public class IdentificationModule extends Widget implements IInteractionModule,F
 	public void markAnswers(boolean mark) {
 
 		for (SelectableChoice currSC:options){
-			currSC.markAnswers(mark, response.correctAnswers.contains(currSC.getIdentifier()) );
+			currSC.markAnswers(mark, getResponse().correctAnswers.contains(currSC.getIdentifier()) );
 		}
 
 	}
@@ -197,7 +173,7 @@ public class IdentificationModule extends Widget implements IInteractionModule,F
 	public void showCorrectAnswers(boolean show) {
 		if (show){
 			for (SelectableChoice sc : options){
-				if (response.correctAnswers.contains(sc.getIdentifier())){
+				if (getResponse().correctAnswers.contains(sc.getIdentifier())){
 					sc.setSelected(true);
 				} else {
 					sc.setSelected(false);
@@ -206,7 +182,7 @@ public class IdentificationModule extends Widget implements IInteractionModule,F
 			showingCorrectAnswers = true;
 		} else {
 			for (SelectableChoice sc : options){
-				if (response.values.contains(sc.getIdentifier())){
+				if (getResponse().values.contains(sc.getIdentifier())){
 					sc.setSelected(true);
 				} else {
 					sc.setSelected(false);
@@ -226,7 +202,7 @@ public class IdentificationModule extends Widget implements IInteractionModule,F
 
 		JSONArray arr = new JSONArray();
 		for (int i = 0 ; i < options.size() ; i ++){
-			arr.set(i, JSONBoolean.getInstance( response.values.contains(options.get(i).getIdentifier()) ));
+			arr.set(i, JSONBoolean.getInstance( getResponse().values.contains(options.get(i).getIdentifier()) ));
 		}
 
 		return arr;
@@ -279,9 +255,9 @@ public class IdentificationModule extends Widget implements IInteractionModule,F
 				currResponseValues.add(currSC.getIdentifier());
 		}
 
-		if (!response.compare(currResponseValues)  ||  !response.isInitialized()){
-			response.set(currResponseValues);
-			moduleListener.onStateChanged(userInteract, this);
+		if (!getResponse().compare(currResponseValues)  ||  !getResponse().isInitialized()){
+			getResponse().set(currResponseValues);
+			fireStateChanged(userInteract);
 		}
 	}
 

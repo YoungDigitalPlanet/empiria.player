@@ -5,8 +5,8 @@ import com.google.gwt.core.client.JavaScriptObject;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
-import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
+import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 
 public class JsFlowRequestSocketUserExtension extends JsExtension implements FlowRequestSocketUserExtension {
 

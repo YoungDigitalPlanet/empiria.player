@@ -3,8 +3,6 @@ package eu.ydp.empiria.player.client.controller.events.interaction;
 import java.util.HashMap;
 import java.util.Map;
 
-import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class StateChangedInteractionEvent extends InteractionEvent {

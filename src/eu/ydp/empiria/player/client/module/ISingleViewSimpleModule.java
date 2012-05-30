@@ -2,10 +2,10 @@ package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 
 public interface ISingleViewSimpleModule extends ISingleViewModule {
 
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil);
+	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel);
 
 }

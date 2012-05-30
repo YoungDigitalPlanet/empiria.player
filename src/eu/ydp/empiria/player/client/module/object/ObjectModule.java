@@ -9,14 +9,12 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.ISimpleModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.object.impl.AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.VideoImpl;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class ObjectModule implements ISimpleModule,Factory<ObjectModule> {
+public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {
 
 	protected Widget widget;
 
@@ -31,7 +29,7 @@ public class ObjectModule implements ISimpleModule,Factory<ObjectModule> {
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
+	public void initModule(Element element) {
 
 		String html;
 		String src = XMLUtils.getAttributeAsString(element, "data");
@@ -71,14 +69,14 @@ public class ObjectModule implements ISimpleModule,Factory<ObjectModule> {
 
 		NodeList titleNodes = element.getElementsByTagName("title");
 		if (titleNodes.getLength() > 0){
-			Widget titleWidget = ms.getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
+			Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
 			if (titleWidget != null){
 				titlePanel.add(titleWidget);
 			}
 		}
 		NodeList descriptionNodes = element.getElementsByTagName("description");
 		if (descriptionNodes.getLength() > 0){
-			Widget descriptionWidget = ms.getInlineBodyGeneratorSocket().generateInlineBody(descriptionNodes.item(0));
+			Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(descriptionNodes.item(0));
 			if (descriptionWidget != null){
 				descriptionPanel.add(descriptionWidget);
 			}

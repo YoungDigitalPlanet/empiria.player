@@ -10,19 +10,19 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.components.AccessibleListBox;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
@@ -30,7 +30,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 	private Response response;
 	private String responseIdentifier;
-	private ModuleInteractionListener moduleInteractionListener;
+	private InteractionEventsListener interactionEventsListener;
 	private ModuleSocket moduleSocket;
 	private AccessibleListBox listBox;
 	private boolean shuffle = false;
@@ -43,9 +43,9 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	protected Panel container;
 
 	@Override
-	public void initModule(ModuleSocket moduleSocket, ModuleInteractionListener moduleInteractionListener) {
+	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
 
-		this.moduleInteractionListener = moduleInteractionListener;
+		this.interactionEventsListener = moduleInteractionListener;
 		this.moduleSocket = moduleSocket;
 	}
 
@@ -93,7 +93,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			moduleSocket.addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
+			moduleSocket.addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), moduleSocket, interactionEventsListener));
 		}
 	}
 
@@ -285,7 +285,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		if (lastValue == null)
 			lastValue = "";
 		response.add(lastValue);
-		moduleInteractionListener.onStateChanged(userInteract, this);
+		interactionEventsListener.onStateChanged(new StateChangedInteractionEvent(userInteract, this));
 	}
 
 	@Override

@@ -8,19 +8,15 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
 public abstract class ActivityButtonModule extends ControlModule implements ISimpleModule {
 
 	protected PushButton button;
-	protected ModuleSocket moduleSocket;
 	protected boolean isEnabled = true;
 	
 	public ActivityButtonModule(){
@@ -36,8 +32,7 @@ public abstract class ActivityButtonModule extends ControlModule implements ISim
 	}
 	
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
-		moduleSocket = ms;
+	public void initModule(Element element) {
 	}
 
 	@Override
@@ -46,11 +41,11 @@ public abstract class ActivityButtonModule extends ControlModule implements ISim
 	}
 	
 	protected GroupIdentifier getCurrentGroupIdentifier(){
-		return moduleSocket.getParentGroupIdentifier(this);
+		return getModuleSocket().getParentGroupIdentifier(this);
 	}
 	
 	protected boolean currentGroupIsConcerned(GroupIdentifier gi){
-		Stack<IModule> parentsHierarchy = moduleSocket.getParentsHierarchy(this);
+		Stack<IModule> parentsHierarchy = getModuleSocket().getParentsHierarchy(this);
 		for (IModule currModule : parentsHierarchy){
 			if (currModule instanceof IGroup){
 				if ( ((IGroup)currModule).getGroupIdentifier().equals(gi) ){

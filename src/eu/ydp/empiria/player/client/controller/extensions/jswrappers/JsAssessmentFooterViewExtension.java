@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
-import eu.ydp.empiria.player.client.controller.extensions.types.ViewExtension;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
 public class JsAssessmentFooterViewExtension extends JsExtension implements AssessmentFooterViewExtension {

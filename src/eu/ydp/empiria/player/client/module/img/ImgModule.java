@@ -34,10 +34,10 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.components.CanvasArrow;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 
 /**
  * Klasa odpowiedzialna za renderwoanie elementu img.
@@ -313,7 +313,7 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
+	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil) {
 		contentPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		if (Canvas.isSupported()) {
 			imgCanvas = Canvas.createIfSupported();

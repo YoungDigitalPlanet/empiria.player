@@ -4,7 +4,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestProcessorExtension;
-import eu.ydp.empiria.player.client.controller.flow.processing.IFlowRequestProcessor;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 
 public class JsFlowRequestProcessorExtension extends JsExtension implements FlowRequestProcessorExtension {

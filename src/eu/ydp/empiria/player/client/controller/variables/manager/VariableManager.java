@@ -1,16 +1,11 @@
 package eu.ydp.empiria.player.client.controller.variables.manager;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.variables.IVariableCreator;
 import eu.ydp.empiria.player.client.controller.variables.VariablePossessorBase;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 
 
 public class VariableManager<V extends Variable> extends VariablePossessorBase<V> {

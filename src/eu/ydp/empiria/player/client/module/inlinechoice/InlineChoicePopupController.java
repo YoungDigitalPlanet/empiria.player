@@ -1,39 +1,27 @@
 package eu.ydp.empiria.player.client.module.inlinechoice;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
-import eu.ydp.empiria.player.client.components.ExListBox.PopupPosition;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
@@ -44,7 +32,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	private String responseIdentifier;
 	protected List<String> identifiers;
 	
-	private ModuleInteractionListener moduleInteractionListener;
+	private InteractionEventsListener interactionEventsListener;
 	private ModuleSocket moduleSocket;
 	
 	protected Element moduleElement;
@@ -62,9 +50,9 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	protected ExListBox.PopupPosition popupPosition = ExListBox.PopupPosition.ABOVE;
 		
 	@Override
-	public void initModule(ModuleSocket moduleSocket, ModuleInteractionListener moduleInteractionListener) {
+	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
 
-		this.moduleInteractionListener = moduleInteractionListener;
+		this.interactionEventsListener = moduleInteractionListener;
 		this.moduleSocket = moduleSocket;
 	}
 	
@@ -144,7 +132,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			moduleSocket.addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), moduleSocket, moduleInteractionListener));
+			moduleSocket.addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), moduleSocket, interactionEventsListener));
 		}
 	}
 	
@@ -266,7 +254,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 			String lastValue = identifiers.get(listBox.getSelectedIndex() - ((showEmptyOption)?1:0));
 			response.add(lastValue);
 		}
-		moduleInteractionListener.onStateChanged(userInteract, this);
+		interactionEventsListener.onStateChanged(new StateChangedInteractionEvent(userInteract, this));
 	}
 
 	@Override

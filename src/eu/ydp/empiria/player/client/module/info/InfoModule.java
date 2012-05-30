@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
@@ -16,10 +17,10 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.ISingleViewSimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 
-public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
+public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 
 	protected DataSourceDataSupplier dataSourceDataSupplier;
 	protected SessionDataSupplier sessionDataSupplier;
@@ -29,7 +30,6 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 	protected Panel mainPanel;
 	protected Panel contentPanel;
 	protected int refItemIndex;
-	protected ModuleSocket moduleSocket;
 	protected Element mainElement;
 	protected String contentString;
 
@@ -44,7 +44,7 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
+	public void initModule(Element element) {
 		contentPanel = new FlowPanel();
 		contentPanel.setStyleName("qp-info-content");
 
@@ -56,7 +56,6 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 		if (cls != null)
 			mainPanel.addStyleName(cls);
 
-		moduleSocket = ms;
 		mainElement = element;
 
 	}
@@ -85,7 +84,7 @@ public class InfoModule implements ISingleViewSimpleModule, ILifecycleModule {
 
 	@Override
 	public void onStart() {
-		Map<String, String> styles = moduleSocket.getStyles(mainElement);
+		Map<String, String> styles = getModuleSocket().getStyles(mainElement);
 		if (styles.containsKey("-empiria-info-content")){
 			contentString = styles.get("-empiria-info-content");
 		}

@@ -2,22 +2,20 @@ package eu.ydp.empiria.player.client.controller.body;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IMultiViewModule;
 import eu.ydp.empiria.player.client.module.ISingleViewModule;
-import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 import eu.ydp.empiria.player.client.module.ISingleViewSimpleModule;
+import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.StackMap;
 
@@ -25,7 +23,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	
 	protected ModulesRegistrySocket registry;
 	protected ModuleSocket moduleSocket;
-	protected ModuleInteractionListener moduleInteractionListener;
+	protected InteractionEventsListener interactionListener;
 	protected ParenthoodGeneratorSocket parenthood;
 	protected List<IModule> singleViewModules;
 	
@@ -33,10 +31,10 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	protected StackMap<Element, HasWidgets> nonuniqueModulesMap = new StackMap<Element, HasWidgets>();
 	protected StackMap<String, IModule> multiViewModulesMap = new StackMap<String, IModule>();
 	
-	public ModulesInstalator(ParenthoodGeneratorSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, ModuleInteractionListener mil){
+	public ModulesInstalator(ParenthoodGeneratorSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, InteractionEventsListener mil){
 		this.registry = reg;
 		this.moduleSocket = ms;
-		this.moduleInteractionListener = mil;
+		this.interactionListener = mil;
 		this.parenthood = pts;
 		singleViewModules = new ArrayList<IModule>();
 	}
@@ -81,10 +79,10 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		
 		if (module instanceof ISingleViewWithBodyModule){
 			parenthood.pushParent((ISingleViewWithBodyModule) module);
-			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, moduleInteractionListener, bodyGeneratorSocket);
+			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, interactionListener, bodyGeneratorSocket);
 			parenthood.popParent();
 		} else if (module instanceof ISingleViewSimpleModule){
-			((ISingleViewSimpleModule)module).initModule(element, moduleSocket, moduleInteractionListener);			
+			((ISingleViewSimpleModule)module).initModule(element, moduleSocket, interactionListener);			
 		}else if(module instanceof IInlineModule){
 			((IInlineModule) module).initModule(element, moduleSocket);
 		}
@@ -115,7 +113,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 				if (currModule == null){
 					currModule = multiViewModulesMap.get(responseIdentifier);
 					if (currModule instanceof IMultiViewModule){
-						((IMultiViewModule)currModule).initModule(moduleSocket, moduleInteractionListener);
+						((IMultiViewModule)currModule).initModule(moduleSocket, interactionListener);
 					}
 				}
 				if (currModule instanceof IMultiViewModule){

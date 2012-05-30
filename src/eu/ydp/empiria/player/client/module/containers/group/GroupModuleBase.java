@@ -4,35 +4,34 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.containers.ContainerModuleBase;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
 
-public abstract class GroupModuleBase<T> extends ContainerModuleBase<T> implements IGroup {
+public abstract class GroupModuleBase<T> extends SimpleContainerModuleBase<T> implements IGroup {
 
 	protected GroupIdentifier groupIdentifier;
+	private String moduleId;
 
 	public GroupModuleBase(){
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, ModuleInteractionListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
-		bodyGeneratorSocket.generateBody(element, getContainer());
+	protected String getModuleId(){
+		if (super.getModuleId() == null  ||  "".equals(super.getModuleId().trim()) ){
+			if (moduleId == null)
+				moduleId = Document.get().createUniqueId();
+			return moduleId;
+		}
+		return super.getModuleId();
+	}
+	
+	@Override
+	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
+		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
 
-		String className = element.getAttribute("class");
-		if (className != null  &&  !"".equals(className)  &&  getView() != null){
-			getView().addStyleName(className);
-		}
-		String id = element.getAttribute("id");
-		if (id == null  ||  "".equals(id)){
-			id = Document.get().createUniqueId();
-		}
-		if (getView() != null){
-			getView().getElement().setId(id);
-		}
-		groupIdentifier = new DefaultGroupIdentifier(id);
-		super.moduleSocket = moduleSocket;
+		groupIdentifier = new DefaultGroupIdentifier(getModuleId());
 
 	}
 

@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.containers;
 
 
-public class GroupModule extends ContainerModuleBase<GroupModule> {
+public class GroupModule extends SimpleContainerModuleBase<GroupModule> {
 
 	public GroupModule() {
 		super();

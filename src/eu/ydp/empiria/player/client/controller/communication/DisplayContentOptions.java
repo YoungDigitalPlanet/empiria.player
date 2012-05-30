@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.controller.communication;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 public class DisplayContentOptions {
 	

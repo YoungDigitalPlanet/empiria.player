@@ -13,28 +13,22 @@ import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
-import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 
-public class InlineChoiceModule  implements IInteractionModule,Factory<InlineChoiceModule>{
+public class InlineChoiceModule extends InteractionModuleBase implements Factory<InlineChoiceModule>{
 
-	private ModuleInteractionListener moduleInteractionListener;
-	private ModuleSocket moduleSocket;
-	InlineChoiceController controller;
+	private InlineChoiceController controller;
+	private boolean moduleInitialized = false;
 
 
 	public InlineChoiceModule(){
 
 	}
 
-	@Override
-	public void initModule(ModuleSocket moduleSocket, ModuleInteractionListener moduleInteractionListener) {
+	public void initModule() {
 
-		this.moduleInteractionListener = moduleInteractionListener;
-		this.moduleSocket = moduleSocket;
-		Map<String, String> styles = moduleSocket.getStyles(XMLParser.createDocument().createElement("inlinechoiceinteraction"));
+		Map<String, String> styles = getModuleSocket().getStyles(XMLParser.createDocument().createElement("inlinechoiceinteraction"));
 		if (styles != null  &&  styles.containsKey("-empiria-inlinechoice-type")  &&  styles.get("-empiria-inlinechoice-type").toLowerCase().equals("popup")){
 			controller = new InlineChoicePopupController();
 		} else {
@@ -48,11 +42,16 @@ public class InlineChoiceModule  implements IInteractionModule,Factory<InlineCho
 		if (styles != null  &&  controller instanceof InlineChoicePopupController  &&  styles.containsKey("-empiria-inlinechoice-popup-position")  &&  styles.get("-empiria-inlinechoice-popup-position").toLowerCase().equals("below")){
 			((InlineChoicePopupController)controller).setPopupPosition(ExListBox.PopupPosition.BELOW);
 		}
-		controller.initModule(moduleSocket, moduleInteractionListener);
+		controller.initModule(getModuleSocket(), getInteractionEventsListener());
 	}
 
 	@Override
 	public void addElement(Element element) {
+		if (!moduleInitialized){
+			moduleInitialized = true;
+			initModule();
+			findResponse(element);
+		}
 		controller.addElement(element);
 	}
 
@@ -123,7 +122,7 @@ public class InlineChoiceModule  implements IInteractionModule,Factory<InlineCho
    * @see IStateful#getState()
    */
   public JSONArray getState() {
-	  // TODO STATE MUST BE COMMON FOR ALL CONTROLLERS
+	  // IMPORTANT: STATE MUST BE COMMON FOR ALL CONTROLLERS
 	  return controller.getState();
   }
 
@@ -135,12 +134,6 @@ public class InlineChoiceModule  implements IInteractionModule,Factory<InlineCho
 
 		controller.setState(newState);
   }
-
-
-	@Override
-	public String getIdentifier() {
-		return controller.getIdentifier();
-	}
 
 	@Override
 	public InlineChoiceModule getNewInstance() {

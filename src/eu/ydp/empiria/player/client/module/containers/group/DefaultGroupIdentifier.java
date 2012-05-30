@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.containers.group;
 
-import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
 
 public class DefaultGroupIdentifier implements GroupIdentifier {
 

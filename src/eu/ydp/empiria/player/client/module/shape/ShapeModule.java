@@ -5,11 +5,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.ISimpleModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 
-public class ShapeModule implements ISimpleModule,Factory<ShapeModule> {
+public class ShapeModule extends SimpleModuleBase implements Factory<ShapeModule> {
 
 	protected PushButton button;
 
@@ -19,15 +17,7 @@ public class ShapeModule implements ISimpleModule,Factory<ShapeModule> {
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
-
-		String cls = element.getAttribute("class");
-		if (cls != null)
-			button.addStyleName(cls);
-		String id = element.getAttribute("id");
-		if (id != null  &&  !"".equals(id)  &&  getView() != null){
-			button.getElement().setId(id);
-		}
+	public void initModule(Element element) {
 	}
 
 	@Override

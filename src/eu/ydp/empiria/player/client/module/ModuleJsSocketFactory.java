@@ -2,8 +2,6 @@ package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import eu.ydp.empiria.player.client.module.IInteractionModule;
-
 public class ModuleJsSocketFactory {
 
 	public static JavaScriptObject createSocketObject(Object module){

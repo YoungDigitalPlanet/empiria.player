@@ -4,26 +4,16 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.ISimpleModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 
-public class PromptModule implements ISimpleModule,Factory<PromptModule> {
+public class PromptModule extends SimpleModuleBase implements Factory<PromptModule> {
 
 	protected Widget contents;
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
-		contents = ms.getInlineBodyGeneratorSocket().generateInlineBody(element);
+	public void initModule(Element element) {
+		contents = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(element);
 		contents.setStyleName("qp-prompt");
-
-		String id = element.getAttribute("id");
-		if (id != null  &&  !"".equals(id)  &&  getView() != null){
-			contents.getElement().setId(id);
-		}
-		String cls = element.getAttribute("class");
-		if (cls != null)
-			contents.addStyleName(cls);
 	}
 
 	@Override

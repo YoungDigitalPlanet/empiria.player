@@ -13,13 +13,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
 public class SimpleChoice extends FlowPanel {
@@ -35,7 +35,7 @@ public class SimpleChoice extends FlowPanel {
 	protected boolean multi;
 
 
-	public SimpleChoice(Element element,  boolean multi, final SimpleChoiceListener listener, ModuleSocket ms, ModuleInteractionListener mil,
+	public SimpleChoice(Element element,  boolean multi, final SimpleChoiceListener listener, ModuleSocket ms, InteractionEventsListener mil,
 			ChoiceGroupController ctrl) {
 
 		this.multi = multi;

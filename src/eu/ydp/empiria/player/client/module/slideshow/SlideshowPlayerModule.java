@@ -18,12 +18,10 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.components.TwoStateButton;
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.ISingleViewSimpleModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
+import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.util.xml.XMLUtils;
 
-public class SlideshowPlayerModule implements ISingleViewSimpleModule,Factory<SlideshowPlayerModule> {
+public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<SlideshowPlayerModule> {
 
 	protected List<SlideWidget> slides;
 	protected int currSlideIndex;
@@ -41,7 +39,7 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule,Factory<Sl
 	protected Timer timer;
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, ModuleInteractionListener mil) {
+	public void initModule(Element element) {
 
 		titlePanel = new FlowPanel();
 		titlePanel.setStyleName("qp-slideshow-title-panel");
@@ -118,14 +116,14 @@ public class SlideshowPlayerModule implements ISingleViewSimpleModule,Factory<Sl
 		if (slideshowElement != null){
 			Element titleElement = XMLUtils.getFirstElementWithTagName(slideshowElement, "title");
 			if (titleElement != null){
-				Widget titleWidget = ms.getInlineBodyGeneratorSocket().generateInlineBody(titleElement);
+				Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleElement);
 				titlePanel.add(titleWidget);
 			}
 
 			NodeList slideNodes = element.getElementsByTagName("slide");
 			for (int i = 0 ; i < slideNodes.getLength() ; i ++){
 				if (slideNodes.item(i).getNodeType() == Node.ELEMENT_NODE){
-					SlideWidget slide = new SlideWidget((Element)slideNodes.item(i), ms.getInlineBodyGeneratorSocket());
+					SlideWidget slide = new SlideWidget((Element)slideNodes.item(i), getModuleSocket().getInlineBodyGeneratorSocket());
 					slides.add(slide);
 				}
 			}

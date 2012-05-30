@@ -14,6 +14,7 @@ public class DefaultSoundProcessorExtension extends InternalExtension implements
 
 	protected SoundExecutor soundExecutor;
 	protected MediaInteractionSoundEventCallback callback;
+	protected boolean muteFeedbacks = false;
 
 	public DefaultSoundProcessorExtension(){
 	}
@@ -34,8 +35,12 @@ public class DefaultSoundProcessorExtension extends InternalExtension implements
 	public void onDeliveryEvent(DeliveryEvent deliveryEvent) {
 		if (deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING){
 			forceStop();
-		}
-		if (deliveryEvent.getType() == DeliveryEventType.FEEDBACK_SOUND  ||  deliveryEvent.getType() == DeliveryEventType.MEDIA_SOUND_PLAY){
+		} else if (deliveryEvent.getType() == DeliveryEventType.FEEDBACK_MUTE){
+			if (deliveryEvent.getParams().containsKey("mute")  &&  deliveryEvent.getParams().get("mute") instanceof Boolean){
+				muteFeedbacks = (Boolean)deliveryEvent.getParams().get("mute");
+			}
+		}		
+		else if ((deliveryEvent.getType() == DeliveryEventType.FEEDBACK_SOUND && !muteFeedbacks) ||  deliveryEvent.getType() == DeliveryEventType.MEDIA_SOUND_PLAY){
 
 			if (deliveryEvent.getParams().containsKey("url")  &&  deliveryEvent.getParams().get("url") instanceof String){
 				String url = (String)deliveryEvent.getParams().get("url");

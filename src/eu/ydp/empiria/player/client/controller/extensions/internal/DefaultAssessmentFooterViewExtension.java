@@ -15,7 +15,6 @@ import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterfe
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
-import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;

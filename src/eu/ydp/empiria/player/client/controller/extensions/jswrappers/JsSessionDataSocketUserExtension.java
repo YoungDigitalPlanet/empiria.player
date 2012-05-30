@@ -4,7 +4,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.AssessmentSessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 
 public class JsSessionDataSocketUserExtension extends JsExtension implements

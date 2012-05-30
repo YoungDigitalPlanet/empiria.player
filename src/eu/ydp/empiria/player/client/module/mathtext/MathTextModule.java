@@ -11,19 +11,18 @@ import com.mathplayer.player.MathPlayerManager;
 import com.mathplayer.player.geom.Font;
 
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.IInlineModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 import gwt.g2d.client.graphics.Color;
 
-public class MathTextModule implements IInlineModule,Factory<MathTextModule> {
+public class MathTextModule extends InlineModuleBase implements Factory<MathTextModule> {
 
 	protected Panel mainPanel;
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms) {
+	public void initModule(Element element) {
 		MathPlayerManager mpm = new MathPlayerManager();
-		Map<String, String> styles = ms.getStyles(element);
+		Map<String, String> styles = getModuleSocket().getStyles(element);
 		int fontSize = 16;
 		String fontName = "Arial";
 		boolean fontBold = false;

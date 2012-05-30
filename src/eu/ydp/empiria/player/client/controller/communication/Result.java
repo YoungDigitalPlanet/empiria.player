@@ -23,7 +23,6 @@
 */
 package eu.ydp.empiria.player.client.controller.communication;
 
-import com.google.gwt.core.client.JavaScriptObject;
 
 public class Result {
 

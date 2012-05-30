@@ -13,6 +13,7 @@ import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ModuleExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
@@ -21,7 +22,6 @@ import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.listener.ModuleInteractionListener;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
 public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
@@ -197,7 +197,7 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 		}
 
 		@Override
-		public void initModule(ModuleSocket moduleSocket, ModuleInteractionListener moduleInteractionListener) {
+		public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
 		}
 
 		@Override

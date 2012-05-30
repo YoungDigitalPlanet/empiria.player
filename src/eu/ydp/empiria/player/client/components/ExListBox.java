@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;

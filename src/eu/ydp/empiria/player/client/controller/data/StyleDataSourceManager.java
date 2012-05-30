@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

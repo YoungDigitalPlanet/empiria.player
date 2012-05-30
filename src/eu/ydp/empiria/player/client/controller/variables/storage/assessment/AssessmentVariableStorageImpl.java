@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.storage.assessment;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.google.gwt.core.client.JavaScriptObject;
+
 import eu.ydp.empiria.player.client.controller.communication.sockets.JsSocketHolder;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemsCollectionSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderBase;
@@ -11,7 +11,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
-import eu.ydp.empiria.player.client.util.StringUtils;
 
 public class AssessmentVariableStorageImpl extends VariableProviderBase  implements JsSocketHolder {
 	
