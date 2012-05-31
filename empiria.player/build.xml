@@ -5,8 +5,10 @@
 	<property file="default.properties" />
 	
 	<dirname property="base.dir" file="${ant.file.empiria.player}" />
+	<property name="src.dir" value="${base.dir}/src"/>
 	<property name="lib.dir" value="${base.dir}/ivy-lib" />	
 	<property name="lib.static.dir" value="${base.dir}/static-lib" />	
+	<property name="version.file" value="${src.dir}/eu/ydp/empiria/player/client/version/version.txt"/>
 	<echo>${lib.dir}</echo>
 	
   <condition property="XstartOnFirstThread" value="-XstartOnFirstThread">
@@ -24,7 +26,7 @@
     <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
   </path>
 
-  <target name="resolve" description="--> retrieve dependencies with ivy">
+  <target name="resolve" depends="version.file" description="--> retrieve dependencies with ivy">
   	<ivy:retrieve pattern="${lib.dir}/[artifact].[ext]" />
   </target>
     
@@ -101,6 +103,7 @@
     <delete dir="dist"/>
     <delete dir="war/WEB-INF/classes" failonerror="false" />
     <delete dir="war/empiria.player" failonerror="false" />
+  	<delete file="${version.file}"/>
   </target>
   
   <target name="buildnumber" description="Update build number">
@@ -191,5 +194,9 @@
 			</filterchain>
 		</copy>
 	</target>  
+	
+	<target name="version.file">
+		<echo file="${version.file}">${revision}</echo>
+	</target>
 
 </project>

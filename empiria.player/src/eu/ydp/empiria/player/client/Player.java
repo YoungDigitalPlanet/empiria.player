@@ -32,6 +32,7 @@ import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.version.Version;
 import eu.ydp.empiria.player.client.view.ViewEngine;
 /**
  * Main class with player API
@@ -47,6 +48,10 @@ public class Player {
   
   /** View engine maintains the view tasks */
   private ViewEngine viewEngine;
+  
+  {
+	 logVersion();
+  }
 
 	/**
 	 * constructor
@@ -105,5 +110,16 @@ public class Player {
 	public String getEngineMode(){
   		return deliveryEngine.getEngineMode();
 	}
+	
+	private void logVersion(){
+		 String version = Version.getVersion();
+		 String versionMessage = "EmpiriaPlayer ver. " + version;
+		 log(versionMessage);
+		 System.out.println(versionMessage);
+	}
+	
+	private native void log(String message)/*-{
+		console.log(message);
+	 }-*/;
 
 }
