@@ -1,21 +1,21 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
+import com.google.gwt.dom.client.MediaElement;
+import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
 
+public class HTML5VideoImpl extends Composite implements VideoImpl {
 
-public class HTML5VideoImpl extends Composite implements VideoImpl{
+	protected Video video;
 
-	protected HTML html;
-	
-	public HTML5VideoImpl(){
-		
-		html = new HTML();
-		
-		initWidget(html);
+	public HTML5VideoImpl() {
+		video = Video.createIfSupported();
+		video.setControls(true);
+		video.setPreload(MediaElement.PRELOAD_METADATA);
+		initWidget(video);
 	}
-	
-	public void setSrc(String src){
-		html.setHTML("<video src='" + src + "' controls='true'>Video not supported!</video>");;
+
+	public void setSrc(String src) {
+		video.setSrc(src);
 	}
 }
