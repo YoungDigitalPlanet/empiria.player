@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.7.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/1.7.0/distro-source/core/src/gwt-module.dtd">
 <module rename-to='empiria.player'>
 
 	<!-- Inherit the core Web Toolkit stuff. -->
@@ -9,14 +8,14 @@
 	<inherits name="com.google.gwt.xml.XML" />
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name='com.allen_sauer.gwt.voices.gwt-voices' />
-	<inherits name='gwt.g2d.g2d'/>
-	<inherits name='com.mathplayer.Math_player'/>
-	
+	<inherits name='gwt.g2d.g2d' />
+	<inherits name='com.mathplayer.Math_player' />
 	<!-- google gin -->
-	<inherits name="com.google.gwt.inject.Inject"/>
-	
+	<inherits name="com.google.gwt.inject.Inject" />
+
 	<set-property name="compiler.emulatedStack" value="true" />
-	<set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true" />
+	<set-configuration-property name="compiler.emulatedStack.recordFileNames"
+		value="true" />
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint' />
@@ -27,6 +26,13 @@
 	<!-- Flash player as default value -->
 	<script src="video/AC_RunActiveContent.js" />
 	<script src="video/FAVideo.js" />
+	<define-property name="mobile.user.agent" values="android23" />
+	<extend-property name="mobile.user.agent" values="android3" />
+	<extend-property name="mobile.user.agent" values="android321" />
+	<extend-property name="mobile.user.agent" values="android4" />
+	<extend-property name="mobile.user.agent" values="unknown" />
+
+	<property-provider name="mobile.user.agent" generator="eu.ydp.empiria.player.user.rebind.MobileUserAgentPropertyGenerator"/>
 
 	<replace-with
 		class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
@@ -42,8 +48,24 @@
 		<any>
 			<when-property-is name="user.agent" value="safari" />
 		</any>
-	</replace-with>
 
+	</replace-with>
+	<replace-with
+		class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroidImpl">
+		<when-type-is
+			class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+		<any>
+			<when-property-is name="mobile.user.agent" value="android23" />
+			<when-property-is name="mobile.user.agent" value="android321" />
+			<when-property-is name="mobile.user.agent" value="android4" />
+		</any>
+	</replace-with>
+	<replace-with
+		class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroid3Impl">
+		<when-type-is
+			class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+			<when-property-is name="mobile.user.agent" value="android3" />
+	</replace-with>
 	<!-- link as default value for audio -->
 	<replace-with
 		class="eu.ydp.empiria.player.client.module.object.impl.EmbedAudioImpl">
