@@ -72,6 +72,7 @@ import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.containers.DivModule;
+import eu.ydp.empiria.player.client.module.containers.HtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.html.SimpleHTMLTagModule;
@@ -292,6 +293,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new ResetButtonModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new ShapeModule(), ModuleTagName.SHAPE));
 		loadExtension(new AudioMuteButtonModuleConnectorExtension());
+		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
+		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
 	}
 
 	protected void loadLibraryExtensions(){

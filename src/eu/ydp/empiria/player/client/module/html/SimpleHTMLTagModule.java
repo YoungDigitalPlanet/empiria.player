@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 
-public class SimpleHTMLTagModule extends SimpleModuleBase implements ISimpleModule,Factory<SimpleHTMLTagModule>{
+public class SimpleHTMLTagModule extends SimpleModuleBase implements Factory<SimpleHTMLTagModule>{
 	
 	HTMLPanel htmlElement;
 	
