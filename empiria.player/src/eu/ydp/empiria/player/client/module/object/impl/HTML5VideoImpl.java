@@ -18,4 +18,15 @@ public class HTML5VideoImpl extends Composite implements VideoImpl {
 	public void setSrc(String src) {
 		video.setSrc(src);
 	}
+
+	@Override
+	public void setWidth(int width) {
+		video.setWidth(width+"px");
+
+	}
+
+	@Override
+	public void setHeight(int height) {
+		video.setHeight(height+"px");
+	}
 }

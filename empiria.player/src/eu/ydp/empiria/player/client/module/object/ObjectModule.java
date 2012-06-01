@@ -38,6 +38,14 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 		if(type.startsWith("video")){
 			VideoImpl video = GWT.create(VideoImpl.class);
 			video.setSrc(src);
+			int width = XMLUtils.getAttributeAsInt(element, "width");
+			int height = XMLUtils.getAttributeAsInt(element, "height");
+			if(width>0){
+				video.setWidth(width);
+			}
+			if(height>0){
+				video.setHeight(height);
+			}
 			widget = video.asWidget();
 		}
 		else{
