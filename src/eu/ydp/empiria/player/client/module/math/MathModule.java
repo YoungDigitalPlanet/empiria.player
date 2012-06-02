@@ -19,20 +19,17 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.mathplayer.player.MathPlayerManager;
+import com.mathplayer.player.geom.Color;
 import com.mathplayer.player.geom.Font;
 import com.mathplayer.player.geom.Point;
 import com.mathplayer.player.interaction.InteractionManager;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
-import eu.ydp.empiria.player.client.util.xml.XMLUtils;
-import gwt.g2d.client.graphics.Color;
 
 public class MathModule extends OneViewInteractionModuleBase implements Factory<MathModule> {
 
