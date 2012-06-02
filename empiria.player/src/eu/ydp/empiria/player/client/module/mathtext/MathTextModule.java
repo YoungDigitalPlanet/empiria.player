@@ -8,12 +8,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.mathplayer.player.MathPlayerManager;
+import com.mathplayer.player.geom.Color;
 import com.mathplayer.player.geom.Font;
 
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
-import gwt.g2d.client.graphics.Color;
 
 public class MathTextModule extends InlineModuleBase implements Factory<MathTextModule> {
 
