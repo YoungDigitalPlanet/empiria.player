@@ -33,13 +33,13 @@ public class FlashVideoImpl extends Composite implements VideoImpl{
 
 	@Override
 	public void setWidth(int width) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void setHeight(int height) {
-		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void setPoster(String url) {
 	}
 }
