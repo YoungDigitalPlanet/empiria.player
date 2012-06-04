@@ -119,7 +119,8 @@ public class Player {
 	}
 	
 	private native void log(String message)/*-{
-		console.log(message);
+		if (typeof console == 'object')
+			console.log(message);
 	 }-*/;
 
 }
