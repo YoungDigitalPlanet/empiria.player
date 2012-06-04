@@ -30,21 +30,29 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 
 	@Override
 	public void initModule(Element element) {
-
 		String html;
 		String src = XMLUtils.getAttributeAsString(element, "data");
 		String type = XMLUtils.getAttributeAsString(element, "type");
-
+		if(src.length()==0){
+			Element source = XMLUtils.getFirstElementWithTagName(element, "source");
+			if(source!=null){
+				src = XMLUtils.getAttributeAsString(source, "src");
+			}
+		}
 		if(type.startsWith("video")){
 			VideoImpl video = GWT.create(VideoImpl.class);
 			video.setSrc(src);
 			int width = XMLUtils.getAttributeAsInt(element, "width");
 			int height = XMLUtils.getAttributeAsInt(element, "height");
+			String poster = XMLUtils.getAttributeAsString(element, "poster");
 			if(width>0){
 				video.setWidth(width);
 			}
 			if(height>0){
 				video.setHeight(height);
+			}
+			if(poster.length()>0){
+				video.setPoster(poster);
 			}
 			widget = video.asWidget();
 		}

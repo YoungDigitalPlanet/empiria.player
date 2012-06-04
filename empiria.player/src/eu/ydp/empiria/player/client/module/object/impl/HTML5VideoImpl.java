@@ -29,4 +29,10 @@ public class HTML5VideoImpl extends Composite implements VideoImpl {
 	public void setHeight(int height) {
 		video.setHeight(height+"px");
 	}
+
+	@Override
+	public void setPoster(String url) {
+		//TODO na ktoryms ios-ie jest blad z posterem sprawdzic i zrobic implementacje dla niego
+		video.setPoster(url);
+	}
 }
