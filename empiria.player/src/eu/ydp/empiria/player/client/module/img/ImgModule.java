@@ -85,7 +85,7 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 		boolean isStartSet = false;
 		double lastX = 0, lastY = 0, startX = 0, startY = 0;
 		double startBegX = 0, startBegY = 0, startEndX = 0, startEndY = 0;
-		
+
 		for (int x = 0; x < elements.getLength(); ++x) {
 			Node node = elements.item(x);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -95,7 +95,7 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 					startY = lastY;
 					lastX = getAttributeAsDouble(e, "x");
 					lastY = getAttributeAsDouble(e, "y");
-					
+
 					if(!isStartSet && startPoint != null){
 						startBegX = lastX;
 						startBegY = lastY;
@@ -131,7 +131,7 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 		if (endPoint != null){
 			drawShape(endPoint, context2d, lastX, lastY, startX, startY);
 		}
-		
+
 		if(startPoint != null){
 			drawShape(startPoint, context2d, startEndX, startEndY, startBegX, startBegY);
 		}
@@ -161,7 +161,7 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 				}
 			}
 		}
-		
+
 		mainPanel.add(panel);
 		alignWidget(panel, anchor);
 	}
@@ -201,7 +201,7 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 		if (alt != null)
 			img.setAltText(alt);
 		String cls = element.getAttribute("class");
-		if (cls != null)
+		if (cls != null && cls.trim().length()>0)
 			img.addStyleName(cls);
 		ms.getStyles(element);
 		RootPanel.get().add(img);
@@ -261,36 +261,36 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 			}catch(Exception e){}
 		}
 	}
-	
+
 	private void alignWidget(Widget widget, Element anchorElement){
 		String horizontalAlign = getAttributeAsString(
 				getFirstElementWithTagName(anchorElement, "x_anchor"), "anchor");
 		String verticalAlign = getAttributeAsString(
 						getFirstElementWithTagName(anchorElement, "y_anchor"), "anchor");
 		Point anchorPoint = new Point(
-						getAttributeAsDouble(anchorElement, "x"), 
+						getAttributeAsDouble(anchorElement, "x"),
 						getAttributeAsDouble(anchorElement, "y"));
-		
+
 		alignWidget(widget, anchorPoint, horizontalAlign, verticalAlign);
 	}
-	
+
 	private void alignWidget(Widget widget, Point anchorPoint, String horizontalAlign, String verticalAlign){
 		Style style = widget.getElement().getStyle();
 		double xPos = anchorPoint.getX();
 		double yPos = anchorPoint.getY();
-		
+
 		if(horizontalAlign.equals("center")){
 			xPos -= widget.getOffsetWidth()/2;
 		}else if(horizontalAlign.equals("right")){
 			xPos -= widget.getOffsetWidth();
 		}
-		
+
 		if(verticalAlign.equals("center")){
 			yPos -= widget.getOffsetHeight()/2;
 		}else if(verticalAlign.equals("bottom")){
 			yPos -= widget.getOffsetHeight();
 		}
-		
+
 		style.setPosition(Position.ABSOLUTE);
 		style.setTop(yPos, Unit.PX);
 		style.setLeft(xPos, Unit.PX);
@@ -308,7 +308,7 @@ public class ImgModule extends Composite implements ISimpleModule,Factory<ImgMod
 		if (alt != null)
 			img.setAltText(alt);
 		String cls = element.getAttribute("class");
-		if (cls != null)
+		if (cls != null && cls.trim().length()>0)
 			img.addStyleName(cls);
 	}
 
