@@ -5,16 +5,17 @@ import java.util.List;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 
+import eu.ydp.canvasadapter.client.Context2dAdapter;
 import eu.ydp.empiria.player.client.util.KeyValue;
 
 public class CanvasArrow {
-	private Context2d context2d;
+	private Context2dAdapter context2d;
 	private final double startX, endX;
 	private final double startY, endY;
 
 	int[][] arrow = { { 0, 0 }, { -10, -4 }, { -10, 4 } };
 
-	public CanvasArrow(Context2d context2d, double startX, double startY, double endX, double endY) {
+	public CanvasArrow(Context2dAdapter context2d, double startX, double startY, double endX, double endY) {
 		this.context2d = context2d;
 		this.startX = startX;
 		this.startY = startY;

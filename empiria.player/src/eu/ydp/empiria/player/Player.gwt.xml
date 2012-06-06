@@ -8,8 +8,9 @@
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name='com.allen_sauer.gwt.voices.gwt-voices' />
 	<inherits name='com.mathplayer.Math_player' />
+	<inherits name='eu.ydp.canvasadapter.canvasadapter' />
 	<!-- google gin -->
-	<inherits name="com.google.gwt.inject.Inject" />
+	<inherits name="com.google.gwt.inject.Inject" /> 
 
 	<set-property name="compiler.emulatedStack" value="true" />
 	<set-configuration-property name="compiler.emulatedStack.recordFileNames"
@@ -31,7 +32,7 @@
 	<extend-property name="mobile.user.agent" values="unknown" />
 
 	<property-provider name="mobile.user.agent" generator="eu.ydp.empiria.player.user.rebind.MobileUserAgentPropertyGenerator"/>
-
+	
 	<replace-with
 		class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
 		<when-type-is
