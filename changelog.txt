@@ -1,2 +1,2 @@
 == EMPIRIA PLAYER CHANGELOG ==
-  - added three operation modes (default, labelled, explorable) in imgModule
+  - added three operation modes (default, labelled, explorable) in imgModule (task 64644, rrybacki)
