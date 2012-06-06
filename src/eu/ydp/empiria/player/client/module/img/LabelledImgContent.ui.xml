@@ -1,0 +1,12 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.canvasadapter.client">
+	<ui:style>
+		
+	</ui:style>
+	<g:AbsolutePanel styleName="qp-img-labelled-panel" ui:field="mainPanel">
+		<g:Image styleName="qp-img-labelled-image" ui:field="image" />
+		<c:CanvasAdapter styleName="qp-img-labelled-canvas" ui:field="canvas"/>
+		<g:AbsolutePanel styleName="qp-img-labelled-text" ui:field="textPanel"/>
+	</g:AbsolutePanel>
+</ui:UiBinder> 
