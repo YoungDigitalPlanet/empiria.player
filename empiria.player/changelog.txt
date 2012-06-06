@@ -1,18 +1,2 @@
 == EMPIRIA PLAYER CHANGELOG ==
-  - author: Rafal Rybacki rrybacki@ydp.com.pl
-
-= DONE =
-  - create and implement extensions concept
-  - add access to player's internal processings (variables, flow) for internal and external extensions
-  - remove SessionDataCarrier and other occurences of reporting - replace them with operiations on variables
-  - change xmlconverter into multiple target converter
-  - styling feedbacks through CSS
-  - assessment variable processor
-   - move modules out from the player core and treat them as internal extensions
-  - new architecture for modules - separate view from logic (multiple views for single module available)
-  - remove assessment feedback
-  - remove or update math module
-  
-= TODO =
-  - add Activity Mode manager (and add Activity Master Mode to determine the deafault Activity Mode)
-  - change path resolution from static for a page to dynamic for modules
+  - added three operation modes (default, labelled, explorable) in imgModule
