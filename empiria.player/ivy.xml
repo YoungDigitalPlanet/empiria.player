@@ -21,5 +21,6 @@
     <dependency org="com.google.gwt" name="gwt-dev" rev="2.4.0" conf="*->default"/> 
 	<dependency org="com.google.gwt.inject" name="gin" rev="1.5.0"  conf="*->default"/>
 	<dependency org="eu.ydp" name="mathPlayer" rev="latest.release"  conf="*->default"/>
+	<dependency org="eu.ydp" name="canvasadapter" rev="latest.release"  conf="*->default"/>
   </dependencies>
 </ivy-module>
