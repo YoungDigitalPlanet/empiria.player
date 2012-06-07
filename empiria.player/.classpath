@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="static-lib/gwt-g2d-r119.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/canvasadapter.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/mathplayer.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/jsfilerequest.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
