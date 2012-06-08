@@ -81,7 +81,7 @@ public class ExplorableImgContent extends Composite implements ImgContent {
 			
 			@Override
 			public void run() {
-				zoomTimer.scheduleRepeating(300);
+				zoomTimer.scheduleRepeating(200);
 					
 			}
 		};
@@ -104,6 +104,7 @@ public class ExplorableImgContent extends Composite implements ImgContent {
 			public void onLoad(LoadEvent event) {
 				originalImageWidth = image.getWidth();
 				originalImageHeight = image.getHeight();
+				centerImage();
 			}
 		});
 		
@@ -181,6 +182,15 @@ public class ExplorableImgContent extends Composite implements ImgContent {
 			}
 		});
 	}
+	
+	private void centerImage(){
+		double windowWidth = windowPanel.getOffsetWidth();
+		double windowHeight = windowPanel.getOffsetHeight();
+		double scrollWidth = windowPanel.getElement().getScrollWidth();
+		double scrollHeight = windowPanel.getElement().getScrollHeight();
+		windowPanel.getElement().setScrollLeft( (int)(scrollWidth - windowWidth) /2);
+		windowPanel.getElement().setScrollTop( (int)(scrollHeight - windowHeight) /2);
+	}
 
 	@UiHandler("zoominButton")
 	public void zoomInButtonMouseDownHandler(MouseDownEvent event){
@@ -228,12 +238,12 @@ public class ExplorableImgContent extends Composite implements ImgContent {
 	
 	private void zoomIn(){
 		doZoom(true);
-		startZoomTimer.schedule(750);
+		startZoomTimer.schedule(500);
 	}
 	
 	private void zoomOut(){
 		doZoom(false);
-		startZoomTimer.schedule(750);
+		startZoomTimer.schedule(500);
 	}
 	
 	private void cancelZoomTimers(){
