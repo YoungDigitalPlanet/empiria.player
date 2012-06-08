@@ -9,8 +9,9 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
 
-public class DefaultSoundProcessorExtension extends InternalExtension implements DeliveryEventsListenerExtension, SoundExecutorListener {
+public class DefaultSoundProcessorExtension extends InternalExtension implements SoundProcessorExtension, SoundExecutorListener {
 
 	protected SoundExecutor soundExecutor;
 	protected MediaInteractionSoundEventCallback callback;

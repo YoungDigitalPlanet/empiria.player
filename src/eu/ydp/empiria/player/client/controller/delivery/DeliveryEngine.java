@@ -33,6 +33,7 @@ import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InfoModuleConnectorExtension;
@@ -44,6 +45,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Repor
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultSoundProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
@@ -59,6 +61,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorE
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.processing.DefaultFlowRequestProcessor;
@@ -128,6 +131,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	private StyleSocket styleSocket;
 
 	private ModulesRegistry modulesRegistry;
+	
+	private SoundProcessorManagerExtension soundProcessorManager;
 
 	protected JavaScriptObject playerJsObject;
 
@@ -156,6 +161,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		extensionsManager = new ExtensionsManager();
 
 		deliveryEventsHub = new DeliveryEventsHub();
+		
+		soundProcessorManager = new SoundProcessorManagerExtension();
 
 		flowManager = new FlowManager(this);
 		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(
@@ -262,6 +269,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	protected void loadPredefinedExtensions() {
 		loadExtension(new PlayerCoreApiExtension());
 		loadExtension(new ScormSupportExtension());
+		loadExtension(soundProcessorManager);
 		loadExtension(new SimpleConnectorExtension(new DivModule(), ModuleTagName.DIV));
 		loadExtension(new SimpleConnectorExtension(new GroupModule(), ModuleTagName.GROUP));
 		loadExtension(new SimpleConnectorExtension(new SpanModule(), ModuleTagName.SPAN));
@@ -294,6 +302,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new AudioMuteButtonModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
+		loadExtension(new DefaultSoundProcessorExtension());
 	}
 
 	protected void loadLibraryExtensions(){
@@ -311,16 +320,14 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	}
 
 	public void loadExtension(JavaScriptObject extension) {
-		List<Extension> currExtensions = extensionsManager
-				.addExtension(extension);
+		List<Extension> currExtensions = extensionsManager.addExtension(extension);
 		for (Extension currExtension : currExtensions) {
 			integrateExtension(currExtension);
 		}
 	}
 
 	public void loadExtension(String extensionName) {
-		Extension currExtension = extensionsManager
-				.getInternaleExtensionByName(extensionName);
+		Extension currExtension = extensionsManager.getInternaleExtensionByName(extensionName);
 		if (currExtension != null) {
 			loadExtension(currExtension);
 		}
@@ -365,6 +372,9 @@ public class DeliveryEngine implements DataLoaderEventListener,
 			}
 			if (extension instanceof PlayerJsObjectModifierExtension) {
 				((PlayerJsObjectModifierExtension) extension).setPlayerJsObject(playerJsObject);
+			}
+			if (extension instanceof SoundProcessorExtension) {
+				soundProcessorManager.setSoundProcessorExtension( (SoundProcessorExtension) extension );
 			}
 			if (extension instanceof ModuleConnectorExtension) {
 				modulesRegistry.registerModuleCreator(((ModuleConnectorExtension) extension).getModuleNodeName(), ((ModuleConnectorExtension) extension).getModuleCreator());
