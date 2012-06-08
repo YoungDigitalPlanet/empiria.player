@@ -1,2 +1,7 @@
-== EMPIRIA PLAYER CHANGELOG ==
+== EMPIRIA PLAYER 1.3 CHANGELOG ==
   - added three operation modes (default, labelled, explorable) in imgModule (task 64644, rrybacki)
+  - loading web documents via jsfilerequest library (task 64796, rrybacki)
+  - added custom xsiframescripts linker (task 64796, rrybacki)
+  - compile soft permutations for mobile.user.agent (task 64796, rrybacki)
+  - fixed JavaScript template for xsiframe linker (task 64796, rrybacki)
+  - fixed typo in cssparser.js which caused player load fail in IE7 (task 64796, rrybacki)
