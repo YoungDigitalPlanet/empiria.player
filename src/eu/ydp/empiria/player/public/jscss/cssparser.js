@@ -3186,7 +3186,7 @@ jscsspWhitespace.prototype = {
   htmlText: function() {
     return this.cssText().replace( / /g , "&nbsp;")
                          .replace( /\n/g , "<br>");
-  },
+  }
 };
 
 /* kJscsspIMPORT_RULE */
