@@ -11,17 +11,17 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
-import eu.ydp.empiria.player.client.util.xml.XMLDocument;
-import eu.ydp.empiria.player.client.util.xml.document.IDocumentLoaded;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
+import eu.ydp.empiria.player.client.util.file.xml.XmlDocumentLoadCallback;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class DirectLoadInterfaceTest implements EntryPoint {
 
-	private XMLData assessmentData;
-	private XMLData[] itemDatas;
+	private XmlData assessmentData;
+	private XmlData[] itemDatas;
 	private int itemLoadingCounter = 0;;
 	
 	public void onModuleLoad() {
@@ -44,10 +44,10 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 			resolvedURL = GWT.getHostPageBaseURL() + url;
 		}
 
-		new eu.ydp.empiria.player.client.util.xml.XMLDocument(resolvedURL, new IDocumentLoaded(){
+		new eu.ydp.empiria.player.client.util.file.xml.XmlDocument(resolvedURL, new XmlDocumentLoadCallback(){
 
 			public void finishedLoading(Document document, String baseURL) {
-				assessmentData = new XMLData(document, baseURL);
+				assessmentData = new XmlData(document, baseURL);
 				loadItems();
 			}
 
@@ -80,15 +80,15 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 	public void loadItems(){
 		String[] urls = getItemUrls();
 		
-		itemDatas = new XMLData[urls.length];
+		itemDatas = new XmlData[urls.length];
 		
 		for (int i = 0 ; i < urls.length ; i ++){
 			final int ii = i;
 			
-			new XMLDocument(urls[ii], new IDocumentLoaded(){
+			new XmlDocument(urls[ii], new XmlDocumentLoadCallback(){
 
 				public void finishedLoading(Document document, String baseURL) {
-					itemDatas[ii] = new XMLData(document, baseURL);
+					itemDatas[ii] = new XmlData(document, baseURL);
 					onItemLoaded();
 				}
 

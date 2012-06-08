@@ -24,7 +24,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
-import eu.ydp.empiria.player.client.util.xml.XMLUtils;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class ReportModule extends ContainerModuleBase {
 

@@ -50,7 +50,7 @@ import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifi
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentBodyView;
 
 public class Assessment {
@@ -59,7 +59,7 @@ public class Assessment {
 	private String title;
 
 	/** XML DOM of the assessment */
-	private XMLData xmlData;
+	private XmlData xmlData;
 
 	private Panel pageSlot;
 
@@ -143,7 +143,7 @@ public class Assessment {
 		return (title == null) ? "" : title;
 	}
 	
-	protected Element getSkinBody(XMLData skinData){
+	protected Element getSkinBody(XmlData skinData){
 		Element skinBody = null;
 		
 		try{

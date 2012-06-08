@@ -29,7 +29,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -104,14 +104,14 @@ public class PlayerEntryPoint implements EntryPoint {
 	 */
 	public static void load(JavaScriptObject assessmentData, JavaScriptObject itemDatas) {
 		Document assessmentDoc = XMLParser.parse(decodeXmlDataDocument(assessmentData));
-		XMLData assessmentXmlData = new XMLData(assessmentDoc,  decodeXmlDataBaseURL(assessmentData));
+		XmlData assessmentXmlData = new XmlData(assessmentDoc,  decodeXmlDataBaseURL(assessmentData));
 		
 		JsArray<JavaScriptObject> itemDatasArray = itemDatas.cast();
 		
-		XMLData itemXmlDatas[] = new XMLData[itemDatasArray.length()];	
+		XmlData itemXmlDatas[] = new XmlData[itemDatasArray.length()];	
 		for (int i = 0 ; i < itemDatasArray.length() ; i ++){
 			Document itemDoc = XMLParser.parse(decodeXmlDataDocument(itemDatasArray.get(i)));
-			itemXmlDatas[i] = new XMLData(itemDoc,  decodeXmlDataBaseURL(itemDatasArray.get(i))); 
+			itemXmlDatas[i] = new XmlData(itemDoc,  decodeXmlDataBaseURL(itemDatasArray.get(i))); 
 		}
 		player.load(assessmentXmlData, itemXmlDatas);
 	}

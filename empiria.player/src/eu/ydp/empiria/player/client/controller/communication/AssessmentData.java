@@ -1,23 +1,23 @@
 package eu.ydp.empiria.player.client.controller.communication;
 
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class AssessmentData {
 	
-	private XMLData data;
+	private XmlData data;
 	
-	private XMLData skinData;
+	private XmlData skinData;
 	
-	public AssessmentData(XMLData data, XMLData skinData){
+	public AssessmentData(XmlData data, XmlData skinData){
 		this.data = data;
 		this.skinData = skinData;
 	}
 	
-	public XMLData getData(){
+	public XmlData getData(){
 		return data;
 	}
 	
-	public XMLData getSkinData(){
+	public XmlData getSkinData(){
 		return skinData;
 	}
 	

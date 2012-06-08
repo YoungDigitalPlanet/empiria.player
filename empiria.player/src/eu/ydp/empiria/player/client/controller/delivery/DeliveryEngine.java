@@ -92,7 +92,7 @@ import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 
@@ -180,7 +180,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		dataManager.loadMainDocument(url);
 	}
 
-	public void load(XMLData assessmentData, XMLData[] itemsData) {
+	public void load(XmlData assessmentData, XmlData[] itemsData) {
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADING));
 		dataManager.loadData(assessmentData, itemsData);
 	}

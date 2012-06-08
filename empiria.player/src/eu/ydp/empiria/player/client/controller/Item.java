@@ -40,7 +40,7 @@ import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifi
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 public class Item implements IStateful, ItemInterferenceSocket {
@@ -69,9 +69,9 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	
 	private String title;
 
-	private XMLData xmlData;
+	private XmlData xmlData;
 			
-	public Item(XMLData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket ss, ModulesRegistrySocket mrs, Map<String, Outcome> outcomeVariables){
+	public Item(XmlData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket ss, ModulesRegistrySocket mrs, Map<String, Outcome> outcomeVariables){
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;

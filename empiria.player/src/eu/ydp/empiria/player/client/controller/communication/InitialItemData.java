@@ -6,13 +6,13 @@ import java.util.Map;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class InitialItemData {
 
 	protected Map<String, Outcome> outcomes;
 	
-	public InitialItemData(XMLData itemData){
+	public InitialItemData(XmlData itemData){
 
 		NodeList outcomeDeclarationNodes = null;
 		

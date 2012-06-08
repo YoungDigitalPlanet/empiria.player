@@ -10,7 +10,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class LibraryLoader {
 
@@ -26,7 +26,7 @@ public class LibraryLoader {
 		awaitingExtensions = false;
 	}
 	
-	public void load(XMLData data){
+	public void load(XmlData data){
 		NodeList importNodes = data.getDocument().getElementsByTagName("import");
 		
 		List<String> srcs = new ArrayList<String>();

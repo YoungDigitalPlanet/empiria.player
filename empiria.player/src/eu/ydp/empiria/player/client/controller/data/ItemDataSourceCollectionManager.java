@@ -5,7 +5,7 @@ import java.util.Vector;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class ItemDataSourceCollectionManager {
 	public ItemDataSourceCollectionManager(ItemDataCollectionLoaderEventListener l){
@@ -21,7 +21,7 @@ public class ItemDataSourceCollectionManager {
 		itemsLoadCounter = 0;
 	}
 	
-	public void setItemData(int index, XMLData d){
+	public void setItemData(int index, XmlData d){
 		items[index] = new ItemDataSource(d);
 		itemsLoadCounter++;
 		if (itemsLoadCounter == items.length)
@@ -35,7 +35,7 @@ public class ItemDataSourceCollectionManager {
 			listener.onItemCollectionLoaded();
 	}
 	
-	public void setItemDataCollection(XMLData[] ds){
+	public void setItemDataCollection(XmlData[] ds){
 		items = new ItemDataSource[ds.length];
 		for ( int i = 0 ; i < items.length ; i ++){
 			items[i] = new ItemDataSource(ds[i]);

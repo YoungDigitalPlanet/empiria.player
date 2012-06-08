@@ -24,7 +24,7 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
-import eu.ydp.empiria.player.client.util.xml.XMLUtils;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class ChoiceModule extends OneViewInteractionModuleBase implements  SimpleChoiceListener,Factory<ChoiceModule> {
 

@@ -24,7 +24,7 @@ import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
-import eu.ydp.empiria.player.client.util.xml.XMLUtils;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class InlineChoiceDefaultController implements InlineChoiceController {
 

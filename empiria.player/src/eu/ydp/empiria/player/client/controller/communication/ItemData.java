@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.controller.communication;
 
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class ItemData {
 
-	public ItemData(int index, XMLData d){
+	public ItemData(int index, XmlData d){
 		itemIndex = index;
 		data = d;
 		errorMessage = "";
@@ -17,7 +17,7 @@ public class ItemData {
 	
 	public int itemIndex;
 	public String errorMessage;
-	public XMLData data;
+	public XmlData data;
 	public ItemActivityOptions activityOptions;
 
 }

@@ -19,7 +19,7 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.components.TwoStateButton;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
-import eu.ydp.empiria.player.client.util.xml.XMLUtils;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<SlideshowPlayerModule> {
 

@@ -9,6 +9,7 @@
 	<inherits name='com.allen_sauer.gwt.voices.gwt-voices' />
 	<inherits name='com.mathplayer.Math_player' />
 	<inherits name='eu.ydp.canvasadapter.canvasadapter' />
+	<inherits name='eu.ydp.jsfilerequest.jsfilerequest' />
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject" /> 
 
@@ -20,11 +21,10 @@
 	<entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint' />
 
 	<!-- css parser -->
-	<script src="jscss/cssparser.js" />
 
-	<!-- Flash player as default value -->
 	<script src="video/AC_RunActiveContent.js" />
 	<script src="video/FAVideo.js" />
+	<script src="jscss/cssparser.js" />
 	<define-property name="mobile.user.agent" values="android23" />
 	<extend-property name="mobile.user.agent" values="android3" />
 	<extend-property name="mobile.user.agent" values="android321" />
@@ -32,6 +32,8 @@
 	<extend-property name="mobile.user.agent" values="unknown" />
 
 	<property-provider name="mobile.user.agent" generator="eu.ydp.empiria.player.user.rebind.MobileUserAgentPropertyGenerator"/>
+	
+	<collapse-property name="mobile.user.agent" values="*" />
 	
 	<replace-with
 		class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
@@ -98,5 +100,8 @@
 			<when-property-is name="user.agent" value="safari" />
 		</any>
 	</replace-with>
-
+	
+	<define-linker name="xsiframescripts" class="eu.ydp.empiria.player.core.linker.CrossSizeIframeWithScriptsLinker"/>
+	<add-linker name="xsiframescripts"/>
+	
 </module>

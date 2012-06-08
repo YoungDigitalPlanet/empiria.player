@@ -32,7 +32,7 @@ import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupCo
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
-import eu.ydp.empiria.player.client.util.xml.XMLUtils;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class SelectionModule extends OneViewInteractionModuleBase implements IInteractionModule, Factory<SelectionModule> {
 

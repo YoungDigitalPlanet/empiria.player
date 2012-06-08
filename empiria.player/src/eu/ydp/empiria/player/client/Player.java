@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.version.Version;
 import eu.ydp.empiria.player.client.view.ViewEngine;
 /**
@@ -88,7 +88,7 @@ public class Player {
 		deliveryEngine.load(url);
 	}
 
-	public void load(XMLData assessmentData, XMLData[] itemsData){
+	public void load(XmlData assessmentData, XmlData[] itemsData){
 		deliveryEngine.load(assessmentData, itemsData);
 	}
   

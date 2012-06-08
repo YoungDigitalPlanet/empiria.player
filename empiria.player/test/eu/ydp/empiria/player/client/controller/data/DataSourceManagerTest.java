@@ -7,7 +7,7 @@ import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class DataSourceManagerTest extends GWTTestCase {
 
@@ -142,11 +142,11 @@ public class DataSourceManagerTest extends GWTTestCase {
 
 		String assessmentXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><assessmentTest xmlns=\"http://www.ydp.eu/empiria\" identifier=\"RTEST-13\" title=\"Show player supported functionality\"><testPart><assessmentSection identifier=\"sectionA\" title=\"Section A\" visible=\"true\"><assessmentItemRef identifier=\"inline_choice\" href=\"demo/inline_choice.xml\"/></assessmentSection></testPart></assessmentTest>";
 		Document assessmentDoc = XMLParser.parse(assessmentXml);
-		XMLData assessmentData = new XMLData(assessmentDoc, "");
+		XmlData assessmentData = new XmlData(assessmentDoc, "");
 		
 		Document itemDoc = XMLParser.parse(itemXml);
-		XMLData itemData = new XMLData(itemDoc, "");
-		XMLData[] itemDatas = new XMLData[1];
+		XmlData itemData = new XmlData(itemDoc, "");
+		XmlData[] itemDatas = new XmlData[1];
 		itemDatas[0] = itemData;
 		
 		dsm.loadData(assessmentData, itemDatas);

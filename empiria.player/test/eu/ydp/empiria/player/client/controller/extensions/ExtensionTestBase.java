@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.DeliveryEngineSocketUserExtensionTest.MockDeliveryEngineSocketUserExtension;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public abstract class ExtensionTestBase extends GWTTestCase {
 
@@ -45,21 +45,21 @@ public abstract class ExtensionTestBase extends GWTTestCase {
 		return de;
 	}
 	
-	protected XMLData getAssessmentXMLData(){
+	protected XmlData getAssessmentXMLData(){
 
 		String assessmentXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><assessmentTest xmlns=\"http://www.ydp.eu/empiria\" identifier=\"RTEST-13\" title=\"Show player supported functionality\"><testPart><assessmentSection identifier=\"sectionA\" title=\"Section A\" visible=\"true\"><assessmentItemRef identifier=\"inline_choice\" href=\"demo/inline_choice.xml\"/><assessmentItemRef identifier=\"inline_choice\" href=\"demo/inline_choice2.xml\"/></assessmentSection></testPart></assessmentTest>";
 		Document assessmentDoc = XMLParser.parse(assessmentXml);
-		return new XMLData(assessmentDoc, "");
+		return new XmlData(assessmentDoc, "");
 	}
 
-	protected XMLData[] getItemXMLDatas(){
+	protected XmlData[] getItemXMLDatas(){
 	
 		Document itemDoc = XMLParser.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
-		XMLData itemData = new XMLData(itemDoc, "");
+		XmlData itemData = new XmlData(itemDoc, "");
 		Document itemDoc2 = XMLParser.parse("<assessmentItem identifier=\"inlineChoice2\" title=\"Interactive text 2\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
-		XMLData itemData2 = new XMLData(itemDoc, "");
+		XmlData itemData2 = new XmlData(itemDoc, "");
 		
-		XMLData[] itemDatas = new XMLData[2];
+		XmlData[] itemDatas = new XmlData[2];
 		itemDatas[0] = itemData;
 		itemDatas[1] = itemData2;
 		
