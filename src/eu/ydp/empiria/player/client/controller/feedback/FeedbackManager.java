@@ -56,7 +56,7 @@ public class FeedbackManager implements InlineFeedbackSocket{
 				currVar = outcomes.get(currFeedback.getVariableIdentifier());
 			else
 				continue;
-						
+			
 			boolean condition = false;
 			boolean validated = (currFeedback.getValue().compareTo("") != 0);
 			
@@ -78,7 +78,7 @@ public class FeedbackManager implements InlineFeedbackSocket{
 					
 				} catch (Exception e) {	}
 				
-			} else if ( currFeedback.getValue().contains(".")  || 
+			} else if ( currFeedback.getValue().contains(".")  ||
 						currFeedback.getValue().contains("*")  ||
 						currFeedback.getValue().contains("[")  ||
 						currFeedback.getValue().contains("(")  ||
@@ -88,12 +88,9 @@ public class FeedbackManager implements InlineFeedbackSocket{
 						currFeedback.getValue().contains("]")  ||
 						currFeedback.getValue().contains("|")  ||
 						currFeedback.getValue().contains(")")){
-				String currVarValues = currVar.getValuesShort();
 				try {
-					condition = currVarValues.matches(currFeedback.getValue());
-					//alert("regexp: " + currVarValues + " vs " + currFeedback.getValue());
+					condition = currVar.matchFirstValue(currFeedback.getValue().split(";"));
 				} catch (Exception e) {
-					//alert("regexp: " + currVarValues + " vs " + currFeedback.getValue());
 				}
 			} else {
 				condition = currVar.compareValues(currFeedback.getValue().split(";"));
