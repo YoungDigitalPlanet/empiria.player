@@ -8,9 +8,9 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
 
-public class JsSoundProcessorExtension extends JsExtension implements
-		DeliveryEventsListenerExtension {
+public class JsSoundProcessorExtension extends JsExtension implements SoundProcessorExtension {
 
 	protected boolean playing;
 	protected JavaScriptObject socketJs;

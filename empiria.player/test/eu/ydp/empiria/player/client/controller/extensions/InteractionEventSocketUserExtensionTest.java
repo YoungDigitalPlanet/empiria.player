@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
+import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
@@ -14,6 +15,7 @@ import eu.ydp.empiria.player.client.controller.extensions.FlowRequestProcessorEx
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
@@ -25,7 +27,7 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 	protected InteractionEventsListener iel;
 	
 	public void testStateChangedEvent(){
-		de = initDeliveryEngine(new MockInteractionEventSocketUserExtension(), false);
+		de = initDeliveryEngine(new MockInteractionStateChangedEventSocketUserExtension(), false);
 		test = "testStateChangedEvent";
 		iel.onStateChanged(new StateChangedInteractionEvent(true, new IUniqueModule() {
 			
@@ -38,14 +40,14 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 	}
 	
 	public void testFeedbackInteractionSoundEvent(){
-		de = initDeliveryEngine(new MockInteractionEventSocketUserExtension(), false);
+		de = initDeliveryEngine(new MockInteractionSoundEventSocketUserExtension(), false);
 		test = "testFeedbackInteractionSoundEvent";
 		iel.onFeedbackSound(new FeedbackInteractionSoundEvent("http://www.ydp.eu./xxx.mp3"));
 		assertEquals(1, counter);		
 	}
 	
 	public void testMediaInteractionSoundEvent(){
-		de = initDeliveryEngine(new MockInteractionEventSocketUserExtension(), false);
+		de = initDeliveryEngine(new MockInteractionSoundEventSocketUserExtension(), false);
 		test = "testMediaInteractionSoundEvent";
 		iel.onMediaSound(new MediaInteractionSoundEvent("http://www.ydp.eu./xxx.mp3", new MediaInteractionSoundEventCallback() {
 			
@@ -96,9 +98,9 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 			counter++;
 		}
 	}
+
 	
-	
-	protected class MockInteractionEventSocketUserExtension extends InternalExtension implements DeliveryEventsListenerExtension, InteractionEventSocketUserExtension{
+	protected class MockInteractionEventSocketUserExtension extends InternalExtension implements DeliveryEventsListener, InteractionEventSocketUserExtension{
 
 		@Override
 		public void init() {
@@ -116,5 +118,13 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 			iel = listener;
 		}
 		
+	}
+	
+	protected class MockInteractionStateChangedEventSocketUserExtension extends MockInteractionEventSocketUserExtension implements DeliveryEventsListenerExtension{
+	
+	}
+	
+	protected class MockInteractionSoundEventSocketUserExtension extends MockInteractionEventSocketUserExtension implements SoundProcessorExtension{
+
 	}
 }
