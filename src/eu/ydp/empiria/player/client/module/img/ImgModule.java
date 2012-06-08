@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.img;
 
+import java.util.Map;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -15,7 +17,7 @@ public class ImgModule extends SimpleModuleBase implements Factory<ImgModule> {
 
 	protected ImgContent content;
 	
-	protected ImgModuleView view; 
+	protected ImgModuleView view;
 
 	public ImgModule() {
 		view = new ImgModuleView();
@@ -25,12 +27,17 @@ public class ImgModule extends SimpleModuleBase implements Factory<ImgModule> {
 	@Override
 	protected void initModule(Element element) {
 
-		if ("labelled".equals(element.getAttribute("mode"))  ||  element.getElementsByTagName("label").getLength() > 0){
+		
+		
+		if (element.getElementsByTagName("label").getLength() > 0){
 			content = new LabelledImgContent();
-		} else if ("explorable".equals(element.getAttribute("mode"))){
-			content = new ExplorableImgContent();
 		} else {
-			content = new DefaultImgContent();
+			Map<String, String> styles = getModuleSocket().getStyles(element);
+			if (styles.containsKey("-empiria-img-mode")  &&  styles.get("-empiria-img-mode").equalsIgnoreCase("explorable")){
+				content = new ExplorableImgContent();
+			} else {
+				content = new DefaultImgContent();
+			}
 		}
 		
 		content.init(element, getModuleSocket());

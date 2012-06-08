@@ -231,16 +231,16 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 	 * @param ms
 	 */
 	private void setContextStyle(Context2dAdapter context2d, ModuleSocket ms){
-		if(styles.containsKey("-empiria-img-line-color")){
+		if(styles.containsKey("-empiria-img-label-line-color")){
 			try{
-				context2d.setStrokeStyle(CssColor.make(styles.get("-empiria-img-line-color")).value());
+				context2d.setStrokeStyle(CssColor.make(styles.get("-empiria-img-label-line-color")).value());
 			}catch(Exception e){
 				e.fillInStackTrace();
 			}
 		}
-		if(styles.containsKey("line-width")){
+		if(styles.containsKey("-empiria-img-label-line-thickness")){
 			try{
-				context2d.setLineWidth(Double.valueOf(styles.get("line-width").replaceAll("\\D", "")));
+				context2d.setLineWidth(Double.valueOf(styles.get("-empiria-img-label-line-thickness").replaceAll("\\D", "")));
 			}catch(Exception e){}
 		}
 	}
