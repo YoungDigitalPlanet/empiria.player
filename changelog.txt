@@ -5,3 +5,5 @@
   - compile soft permutations for mobile.user.agent (task 64796, rrybacki)
   - fixed JavaScript template for xsiframe linker (task 64796, rrybacki)
   - fixed typo in cssparser.js which caused player load fail in IE7 (task 64796, rrybacki)
+  - added SoundProcessorManagerExtension which stores one instance of SoundProcessorExtension at a time (task 64968, rrybacki)
+  - loading DefaultSoundProcessorExtension by default (task 64968, rrybacki) 
