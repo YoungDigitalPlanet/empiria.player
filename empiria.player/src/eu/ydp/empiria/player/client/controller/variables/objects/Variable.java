@@ -50,9 +50,9 @@ public abstract class Variable {
 		Vector<String> vec = new Vector<String>();
 		for (int i = 0 ; i < testValues.length ; i ++)
 			vec.add(testValues[i]);
-		return compareValues(vec);
-		
+		return compareValues(vec);	
 	}
+	
 	public boolean compareValues(Vector<String> testValues){
 		
 		if (values.size() != testValues.size())
@@ -73,7 +73,17 @@ public abstract class Variable {
 		}
 		return true;
 	}
+	
+	public boolean matchFirstValue(String[] testValues) {
+		String value = this.values.firstElement();
 
+		for (String testValue : testValues)
+				if (value.matches(testValue))
+					return true;
+		
+		return false;
+	}
+	
 	public abstract JSONValue toJSON();
 	public abstract void fromJSON(JSONValue value);
 }
