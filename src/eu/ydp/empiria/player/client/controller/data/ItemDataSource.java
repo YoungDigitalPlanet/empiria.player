@@ -6,13 +6,13 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
 public class ItemDataSource {
 
-	public ItemDataSource(XMLData d){
+	public ItemDataSource(XmlData d){
 		data = d;
 		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
 		Node rootNode = data.getDocument().getElementsByTagName("assessmentItem").item(0);
@@ -27,12 +27,12 @@ public class ItemDataSource {
 		errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ITEM_FAILED_TO_LOAD) + detail;
 	}
 	
-	private XMLData data;
+	private XmlData data;
 	private StyleLinkDeclaration styleDeclaration;
 	private String title;
 	private String errorMessage;
 
-	public XMLData getItemData(){
+	public XmlData getItemData(){
 		return data;
 	}
 	

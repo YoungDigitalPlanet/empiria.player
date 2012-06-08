@@ -15,9 +15,9 @@ import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderE
 import eu.ydp.empiria.player.client.controller.data.events.SkinDataLoaderListener;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLink;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
 
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
@@ -28,7 +28,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		skinData = new SkinDataSourceManager(this);
 	}
 
-	private XMLData data;
+	private XmlData data;
 	private AssessmentData assessmentData;
 	private AssessmentDataLoaderEventListener listener;
 	private StyleLinkDeclaration styleDeclaration;
@@ -39,7 +39,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	private boolean isDefaultData;
 	private List<Element> items = null;
 
-	public void setAssessmentData(XMLData d) {
+	public void setAssessmentData(XmlData d) {
 		if (!isItemDocument(d.getDocument())) {
 			isDefaultData = false;
 			initializeData(d);
@@ -57,13 +57,13 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	}
 
 	private void initializeDefaultData() {
-		data = new XMLData(XMLParser.parse("<assessmentTest title=\"\"/>"), "");
+		data = new XmlData(XMLParser.parse("<assessmentTest title=\"\"/>"), "");
 		itemsCount = 1;
 		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
 		listener.onAssessmentDataLoaded();
 	}
 
-	private void initializeData(XMLData d) {
+	private void initializeData(XmlData d) {
 		String skinUrl = getSkinUrl(d.getDocument());
 
 		data = d;
@@ -80,7 +80,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		}
 	}
 
-	public XMLData getAssessmentXMLData() {
+	public XmlData getAssessmentXMLData() {
 		return data;
 	}
 

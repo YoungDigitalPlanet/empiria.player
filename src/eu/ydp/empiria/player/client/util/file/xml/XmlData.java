@@ -1,12 +1,12 @@
-package eu.ydp.empiria.player.client.util.xml.document;
+package eu.ydp.empiria.player.client.util.file.xml;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
-public class XMLData {
+public class XmlData {
 
-	public XMLData(Document doc, String url){
+	public XmlData(Document doc, String url){
 		document = doc;
 		baseURL = url;
 		fix(doc, url);

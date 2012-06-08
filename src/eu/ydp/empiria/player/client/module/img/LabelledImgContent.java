@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.module.img;
 
-import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsDouble;
-import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsInt;
-import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getAttributeAsString;
-import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getFirstElementWithTagName;
-import static eu.ydp.empiria.player.client.util.xml.XMLUtils.getText;
+import static eu.ydp.empiria.player.client.util.XMLUtils.getAttributeAsDouble;
+import static eu.ydp.empiria.player.client.util.XMLUtils.getAttributeAsInt;
+import static eu.ydp.empiria.player.client.util.XMLUtils.getAttributeAsString;
+import static eu.ydp.empiria.player.client.util.XMLUtils.getFirstElementWithTagName;
+import static eu.ydp.empiria.player.client.util.XMLUtils.getText;
 
 import java.util.Map;
 

@@ -21,11 +21,11 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-package eu.ydp.empiria.player.client.util.xml.document;
+package eu.ydp.empiria.player.client.util.file.xml;
 
 import com.google.gwt.xml.client.Document;
 
-public interface IDocumentLoaded {
+public interface XmlDocumentLoadCallback {
 
   /** 
    * Document loaded. Ready to use 

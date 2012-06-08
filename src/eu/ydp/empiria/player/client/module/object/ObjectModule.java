@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.object.impl.AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.VideoImpl;
-import eu.ydp.empiria.player.client.util.xml.XMLUtils;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {
 

@@ -21,7 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-package eu.ydp.empiria.player.client.util.xml;
+package eu.ydp.empiria.player.client.util;
 
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;

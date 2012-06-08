@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.util.xml.document.XMLData;
+import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 
@@ -93,18 +93,18 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 	}
 
 
-	protected XMLData getAssessmentXMLData(){
+	protected XmlData getAssessmentXMLData(){
 
 		String assessmentXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><assessmentTest xmlns=\"http://www.ydp.eu/empiria\" identifier=\"RTEST-13\" title=\"Show player supported functionality\"><testPart><assessmentSection identifier=\"sectionA\" title=\"Section A\" visible=\"true\"><assessmentItemRef identifier=\"inline_choice\" href=\"demo/inline_choice.xml\"/></assessmentSection></testPart></assessmentTest>";
 		Document assessmentDoc = XMLParser.parse(assessmentXml);
-		return new XMLData(assessmentDoc, "");
+		return new XmlData(assessmentDoc, "");
 	}
-	protected XMLData[] getItemXMLDatas(){
+	protected XmlData[] getItemXMLDatas(){
 	
 		Document itemDoc = XMLParser.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody><testModule8273629297347 responseIdentifier=\"RESPONSE1\"/></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
-		XMLData itemData = new XMLData(itemDoc, "");
+		XmlData itemData = new XmlData(itemDoc, "");
 		
-		XMLData[] itemDatas = new XMLData[1];
+		XmlData[] itemDatas = new XmlData[1];
 		itemDatas[0] = itemData;
 		
 		return itemDatas;
