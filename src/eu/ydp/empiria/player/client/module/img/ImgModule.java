@@ -34,7 +34,7 @@ public class ImgModule extends SimpleModuleBase implements Factory<ImgModule> {
 		} else {
 			Map<String, String> styles = getModuleSocket().getStyles(element);
 			if (styles.containsKey("-empiria-img-mode")  &&  styles.get("-empiria-img-mode").equalsIgnoreCase("explorable")){
-				content = new ExplorableImgContent();
+				content = new ExplorableCanvasImgContent();
 			} else {
 				content = new DefaultImgContent();
 			}
