@@ -96,7 +96,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 				textPanel.setHeight(image.getHeight() + "px");
 				//imgelement.
 				Context2dAdapter context2d = canvas.getContext2d();
-				setContextStyle(context2d,ms);
+				setContextStyle(context2d);
 				NodeList labelList = element.getElementsByTagName("label");
 				for (int x = 0; x < labelList.getLength(); ++x) {
 					Element label = (Element) labelList.item(x);
@@ -230,7 +230,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 	 * @param context2d
 	 * @param ms
 	 */
-	private void setContextStyle(Context2dAdapter context2d, ModuleSocket ms){
+	private void setContextStyle(Context2dAdapter context2d){
 		if(styles.containsKey("-empiria-img-label-line-color")){
 			try{
 				context2d.setStrokeStyle(CssColor.make(styles.get("-empiria-img-label-line-color")).value());

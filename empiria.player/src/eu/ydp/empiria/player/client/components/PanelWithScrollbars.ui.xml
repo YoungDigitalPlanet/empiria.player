@@ -1,0 +1,23 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:AbsolutePanel styleName="qp-panelwithscrollbars-panel" ui:field="mainPanel">
+		<g:AbsolutePanel styleName="qp-panelwithscrollbars-horizontal-panel" ui:field="horizontalScrollPanel" visible="false">
+			<g:AbsolutePanel styleName="qp-panelwithscrollbars-horizontal-scroll" ui:field="horizontalScrollSlider">	
+				<g:FlowPanel styleName="qp-panelwithscrollbars-horizontal-scroll-head" />
+				<g:FlowPanel styleName="qp-panelwithscrollbars-horizontal-scroll-body" />
+				<g:FlowPanel styleName="qp-panelwithscrollbars-horizontal-scroll-tail" />			
+			</g:AbsolutePanel>
+		</g:AbsolutePanel>
+		<g:AbsolutePanel styleName="qp-panelwithscrollbars-vertical-panel" ui:field="verticalScrollPanel" visible="false">
+			<g:AbsolutePanel styleName="qp-panelwithscrollbars-vertical-scroll" ui:field="verticalScrollSlider">		
+				<g:FlowPanel styleName="qp-panelwithscrollbars-vertical-scroll-head" />
+				<g:FlowPanel styleName="qp-panelwithscrollbars-vertical-scroll-body" />
+				<g:FlowPanel styleName="qp-panelwithscrollbars-vertical-scroll-tail" />			
+			</g:AbsolutePanel>
+		</g:AbsolutePanel>
+	</g:AbsolutePanel>
+</ui:UiBinder> 
