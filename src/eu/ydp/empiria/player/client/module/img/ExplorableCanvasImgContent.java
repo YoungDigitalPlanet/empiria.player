@@ -129,6 +129,7 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 				originalImageAspectRatio = (double)originalImageWidth / (double)originalImageHeight;
 				if (windowHeight/originalImageHeight  <  windowWidth/originalImageWidth)
 					scaleMin = 100.0d * (double)originalImageWidth / (double)originalImageHeight;
+				centerImage();
 				redraw(false);
 			}
 		});
@@ -281,6 +282,13 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 		
 		if (imgY < 0)
 			imgY = 0;	
+	}
+	
+	private void centerImage(){
+		double scaleNormalized = scale/100.0d;
+
+		imgX = (originalImageWidth - windowWidth * scaleNormalized)/2 / scaleNormalized;
+		imgY = (originalImageHeight - windowHeight * scaleNormalized)/2 / scaleNormalized; 
 	}
 	
 	private void redraw(boolean showScrollbars){
