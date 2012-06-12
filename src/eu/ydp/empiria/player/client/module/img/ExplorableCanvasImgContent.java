@@ -74,7 +74,7 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 	private Context2dAdapter context2d;
 	private final int REDRAW_INTERVAL_MIN = 50;
 	private FocusWidget focusCanvas;
-	private double scale = 100.0d;
+	private double scale = 200.0d;
 	private double scaleMin = 100.0d;
 	private final double ZOOM_MAX = 8;
 	private final double SCALE_STEP = 1.2d;
