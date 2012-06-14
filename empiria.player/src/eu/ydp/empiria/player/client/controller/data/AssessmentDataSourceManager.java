@@ -168,7 +168,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
 			}
 		}
-		if (items != null && index < items.size() - 1 && index > -1) {
+		if (items != null && index < items.size() && index > -1) {
 			return items.get(index);
 		}
 		return null;

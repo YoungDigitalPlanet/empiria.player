@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.module.report;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -50,20 +52,21 @@ public class ReportModule extends ContainerModuleBase {
 	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
 		super.initModule(element, ms, mil, bgs);
 
-		String range = "1:-1";
+		String range ="";//= "1, 1, 1, 1, 1, 1, 5, 20, 20, 20";
 		boolean showNonActivites = true;
-		
+
 		Map<String, String> styles = ms.getStyles(element);
-		
+
 		if (styles.containsKey("-empiria-report-items-include")) {
 			range = styles.get("-empiria-report-items-include");
 		}
-		
+
 		if(styles.containsKey("-empiria-report-show-non-activites")){
 			showNonActivites = Boolean.parseBoolean(styles.get("-empiria-report-show-non-activites"));
 		}
-		
+
 		List<Integer> itemIndexes = parseRange(range);
+		GWT.log(itemIndexes.toString());
 		NodeList rowNodes = element.getChildNodes();
 
 		table = new FlexTable();
@@ -110,14 +113,14 @@ public class ReportModule extends ContainerModuleBase {
 				NodeList cellNodes = rowNodes.item(r).getChildNodes();
 				for (int ir = 0; ir < itemIndexes.size(); ir++) {
 					currCol = 0;
-					
+
 					int todo = getItemTodoValue(itemIndexes.get(ir));
 					int itemIndex = itemIndexes.get(ir);
-					
+
 					//hiding pages which are not activites
 					if(todo == 0 && !showNonActivites)
 						continue;
-					
+
 					for (int d = 0; d < cellNodes.getLength(); d++) {
 						if (cellNodes.item(d).getNodeType() == Node.ELEMENT_NODE && "rd".equals(cellNodes.item(d).getNodeName())) {
 							int colspan = 1;
@@ -128,12 +131,12 @@ public class ReportModule extends ContainerModuleBase {
 							NodeList linkNodes = ((Element) dNode).getElementsByTagName("link");
 							for (int in = 0; in < linkNodes.getLength(); in++) {
 								if (!((Element) linkNodes.item(in)).hasAttribute("itemIndex") && !((Element) linkNodes.item(in)).hasAttribute("url"))
-									((Element) linkNodes.item(in)).setAttribute("itemIndex", itemIndexes.get(ir).toString());
+									((Element) linkNodes.item(in)).setAttribute("itemIndex", String.valueOf(itemIndex));
 							}
 							NodeList infoNodes = ((Element) dNode).getElementsByTagName("info");
 							for (int in = 0; in < infoNodes.getLength(); in++) {
 								if (!((Element) infoNodes.item(in)).hasAttribute("itemIndex"))
-									((Element) infoNodes.item(in)).setAttribute("itemIndex", itemIndexes.get(ir).toString());
+									((Element) infoNodes.item(in)).setAttribute("itemIndex",  String.valueOf(itemIndex));
 							}
 							Panel cellPanel = new FlowPanel();
 							cellPanel.setStyleName("qp-report-cell");
@@ -144,13 +147,14 @@ public class ReportModule extends ContainerModuleBase {
 							table.getFlexCellFormatter().addStyleName(currRow, currCol, "qp-report-table-col-" + String.valueOf(currCol));
 							table.getRowFormatter().addStyleName(currRow, "qp-report-table-row");
 							table.getRowFormatter().addStyleName(currRow, "qp-report-table-row-" + String.valueOf(currRow));
-							Element el = dataSourceDataSupplier.getItem(currRow);
+							Element el = dataSourceDataSupplier.getItem(itemIndex);
 							if (el != null) {
 								String className = XMLUtils.getAttributeAsString(el, "class");
 								if (className != null  &&  !"".equals(className)) {
 									table.getRowFormatter().addStyleName(currRow,className);
 								}
 							}
+							table.getRowFormatter().addStyleName(currRow, "qp-report-table-row-page-" + String.valueOf(itemIndex));
 							currCol++;
 
 						}
@@ -162,26 +166,26 @@ public class ReportModule extends ContainerModuleBase {
 
 		mainPanel.add(table);
 	}
-	
+
 	private int getItemTodoValue(int itemIndex){
 		int todo = 0;
 		String value = getItemValue(itemIndex, "TODO");
-		
+
 		if(value != null)
 			todo = Integer.parseInt(value);
-		
+
 		return todo;
 	}
-	
+
 	private String getItemValue(int itemIndex, String variableName){
 		String outputValue = null;
 		ItemSessionDataSocket itemDataSocket = sessionDataSupplier.getItemSessionDataSocket(itemIndex);
 		VariableProviderSocket variableSocket = itemDataSocket.getVariableProviderSocket();
 		Variable variable = variableSocket.getVariableValue(variableName);
-		
+
 		if(variable != null)
 			outputValue = variable.getValuesShort();
-		
+
 		return outputValue;
 	}
 
