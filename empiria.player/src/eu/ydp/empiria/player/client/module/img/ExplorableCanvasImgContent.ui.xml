@@ -18,9 +18,5 @@
 			<g:PushButton styleName="qp-img-explorable-zoomin" ui:field="zoominButton" />
 			<g:PushButton styleName="qp-img-explorable-zoomout" ui:field="zoomoutButton" />
 		</g:FlowPanel>
-		<g:Label ui:field="consoleLabel"></g:Label>
-		<g:FlowPanel ui:field="tempPanel">
-			<g:Image ui:field="tempImage"/>
-		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 
