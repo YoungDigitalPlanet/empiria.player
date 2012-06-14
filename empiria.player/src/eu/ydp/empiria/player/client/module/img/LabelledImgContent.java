@@ -8,7 +8,6 @@ import static eu.ydp.empiria.player.client.util.XMLUtils.getText;
 
 import java.util.Map;
 
-import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
@@ -23,16 +22,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
-import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.canvasadapter.client.CanvasAdapter;
 import eu.ydp.canvasadapter.client.Context2dAdapter;
@@ -61,11 +56,11 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 	Image image;
 	@UiField
 	CanvasAdapter canvas;
-	
+
 	private Map<String, String> styles;
-	
-	
-	
+
+
+
 	@Override
 	public void init(Element element, ModuleSocket ms) {
 		fillCanvas(element, ms);
@@ -79,7 +74,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 	 */
 	private void fillCanvas(final Element element, final ModuleSocket ms) {
 
-		image.setUrl(element.getAttribute("src"));		
+		image.setUrl(element.getAttribute("src"));
 		styles = ms.getStyles(element);
 		image.addLoadHandler(new LoadHandler() {
 
@@ -132,7 +127,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 		boolean isStartSet = false;
 		double lastX = 0, lastY = 0, startX = 0, startY = 0;
 		double startBegX = 0, startBegY = 0, startEndX = 0, startEndY = 0;
-		
+
 		for (int x = 0; x < elements.getLength(); ++x) {
 			Node node = elements.item(x);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -142,7 +137,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 					startY = lastY;
 					lastX = getAttributeAsDouble(e, "x");
 					lastY = getAttributeAsDouble(e, "y");
-					
+
 					if(!isStartSet && startPoint != null){
 						startBegX = lastX;
 						startBegY = lastY;
@@ -178,7 +173,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 		if (endPoint != null){
 			drawShape(endPoint, context2d, lastX, lastY, startX, startY);
 		}
-		
+
 		if(startPoint != null){
 			drawShape(startPoint, context2d, startEndX, startEndY, startBegX, startBegY);
 		}
@@ -199,7 +194,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 		if (widget != null) {
 			panel.add(widget);
 		}
-		
+
 		alignWidget(panel, anchor);
 		return panel;
 	}
@@ -244,36 +239,36 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 			}catch(Exception e){}
 		}
 	}
-	
+
 	private void alignWidget(Widget widget, Element anchorElement){
 		String horizontalAlign = getAttributeAsString(
 				getFirstElementWithTagName(anchorElement, "x_anchor"), "anchor");
 		String verticalAlign = getAttributeAsString(
 						getFirstElementWithTagName(anchorElement, "y_anchor"), "anchor");
 		Point anchorPoint = new Point(
-						getAttributeAsDouble(anchorElement, "x"), 
+						getAttributeAsDouble(anchorElement, "x"),
 						getAttributeAsDouble(anchorElement, "y"));
-		
+
 		alignWidget(widget, anchorPoint, horizontalAlign, verticalAlign);
 	}
-	
+
 	private void alignWidget(Widget widget, Point anchorPoint, String horizontalAlign, String verticalAlign){
 		Style style = widget.getElement().getStyle();
 		double xPos = anchorPoint.getX();
 		double yPos = anchorPoint.getY();
-		
+
 		if(horizontalAlign.equals("center")){
 			xPos -= widget.getOffsetWidth()/2;
 		}else if(horizontalAlign.equals("right")){
 			xPos -= widget.getOffsetWidth();
 		}
-		
+
 		if(verticalAlign.equals("center")){
 			yPos -= widget.getOffsetHeight()/2;
 		}else if(verticalAlign.equals("bottom")){
 			yPos -= widget.getOffsetHeight();
 		}
-		
+
 		style.setPosition(Position.ABSOLUTE);
 		style.setTop(yPos, Unit.PX);
 		style.setLeft(xPos, Unit.PX);

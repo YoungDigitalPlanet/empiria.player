@@ -1,10 +1,8 @@
 package eu.ydp.empiria.player.client.module;
 
-import com.google.gwt.core.client.GWT;
 
 /**
  * Prosta implementacja ModuleCreator<br/>
- * createModule poprzez {@link GWT#create(Class)}
  *
  */
 public class SimpleModuleCreator<T extends IModule> implements ModuleCreator {

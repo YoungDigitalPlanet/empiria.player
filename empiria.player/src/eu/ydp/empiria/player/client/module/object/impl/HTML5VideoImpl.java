@@ -4,13 +4,11 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.ui.Composite;
 
-public class HTML5VideoImpl extends Composite implements VideoImpl {
+public class HTML5VideoImpl extends Composite implements VideoImpl, OggVideoImpl {
 
 	protected Video video;
-
 	public HTML5VideoImpl() {
 		video = Video.createIfSupported();
-		video.setControls(true);
 		video.setPreload(MediaElement.PRELOAD_METADATA);
 		initWidget(video);
 	}
@@ -19,6 +17,10 @@ public class HTML5VideoImpl extends Composite implements VideoImpl {
 		video.setSrc(src);
 	}
 
+	@Override
+	public void addSrc(String src, String type) {
+		video.addSource(src, type);
+	}
 	@Override
 	public void setWidth(int width) {
 		video.setWidth(width+"px");
@@ -34,5 +36,14 @@ public class HTML5VideoImpl extends Composite implements VideoImpl {
 	public void setPoster(String url) {
 		//TODO na ktoryms ios-ie jest blad z posterem sprawdzic i zrobic implementacje dla niego
 		video.setPoster(url);
+	}
+
+	@Override
+	public void setShowNativeControls(boolean show) {
+		video.setControls(show);
+	}
+	@Override
+	public Video getMedia() {
+		return video;
 	}
 }
