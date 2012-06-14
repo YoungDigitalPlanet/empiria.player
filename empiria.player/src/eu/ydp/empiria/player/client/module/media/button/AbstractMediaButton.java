@@ -5,7 +5,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.object.impl.VideoImpl;
+import eu.ydp.empiria.player.client.module.object.impl.Video;
 import eu.ydp.empiria.player.client.util.UserAgentChecker.MobileUserAgent;
 
 /**
@@ -122,7 +122,7 @@ public abstract class AbstractMediaButton<T> extends MediaController<T>  {
 	}
 
 	public void setMedia(MediaBase media) {
-		if (media instanceof VideoImpl) {
+		if (media instanceof Video) {
 			mediaType = MediaType.VIDEO;
 		}
 		this.media = media;

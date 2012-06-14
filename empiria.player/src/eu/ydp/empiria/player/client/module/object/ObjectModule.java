@@ -13,9 +13,10 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
-import eu.ydp.empiria.player.client.module.object.impl.AudioImpl;
-import eu.ydp.empiria.player.client.module.object.impl.OggVideoImpl;
-import eu.ydp.empiria.player.client.module.object.impl.VideoImpl;
+import eu.ydp.empiria.player.client.module.object.impl.Audio;
+import eu.ydp.empiria.player.client.module.object.impl.OggAudio;
+import eu.ydp.empiria.player.client.module.object.impl.OggVideo;
+import eu.ydp.empiria.player.client.module.object.impl.Video;
 import eu.ydp.empiria.player.client.util.KeyValue;
 import eu.ydp.empiria.player.client.util.UserAgentChecker;
 import eu.ydp.empiria.player.client.util.UserAgentChecker.MobileUserAgent;
@@ -59,6 +60,19 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	}
 
 	/**
+	 * sprawdza czy w elementach soirce mamy pliki typu ogg
+	 * @param sources
+	 * @return
+	 */
+	private boolean containsOgg(List<KeyValue<String, String>> sources){
+		for (KeyValue<String, String> src : sources) {
+			if (src.getValue().matches(".*ogv|.*ogg")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
 	 * tworzy element video
 	 *
 	 * @param element
@@ -67,21 +81,14 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	 */
 	private void createVideo(Element element, boolean template) {
 		List<KeyValue<String, String>> sources = getSource(element, "video");
-		boolean containsOgg = false;
-		VideoImpl video = null;
+		Video video = null;
 		if (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX)) {
-			for (KeyValue<String, String> src : sources) {
-				if (src.getValue().matches(".*ogv|.*ogg")) {
-					containsOgg = true;
-					break;
-				}
-			}
-			if (containsOgg) {
-				video = GWT.create(OggVideoImpl.class);
+			if (containsOgg(sources)) {
+				video = GWT.create(OggVideo.class);
 			}
 		}
 		if (video == null) {
-			video = GWT.create(VideoImpl.class);
+			video = GWT.create(Video.class);
 		}
 
 		video.setShowNativeControls(!template);
@@ -112,8 +119,21 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	 *            czy bedzie urzywana skorka
 	 */
 	private void createAudio(Element element, boolean template) {
-		AudioImpl audio = GWT.create(AudioImpl.class);
-		audio.setSource(getSource(element, "audio").get(0).getKey());
+		List<KeyValue<String, String>> sources = getSource(element, "audio");
+		Audio audio = null;
+		if (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX)) {
+			if(containsOgg(sources)){
+				audio = GWT.create(OggAudio.class);
+			}
+		}
+		if(audio==null){
+			audio = GWT.create(Audio.class);
+		}
+		audio.setShowNativeControls(!template);
+		for (KeyValue<String, String> src : sources) {
+			audio.addSource(src.getKey(),src.getValue());
+		}
+
 		media = audio.getMedia();
 		widget = audio.asWidget();
 	}
