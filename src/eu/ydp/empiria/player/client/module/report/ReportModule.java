@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -65,7 +64,6 @@ public class ReportModule extends ContainerModuleBase {
 		}
 
 		List<Integer> itemIndexes = parseRange(range);
-		GWT.log(itemIndexes.toString());
 		NodeList rowNodes = element.getChildNodes();
 
 		table = new FlexTable();

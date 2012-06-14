@@ -1,13 +1,13 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
-import com.google.gwt.media.client.Audio;
+import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.Composite;
 
-public class HTML5AudioImpl extends Composite implements AudioImpl {
-	Audio audio = null;
+public class HTML5AudioImpl extends Composite implements Audio {
+	com.google.gwt.media.client.Audio audio = null;
 
 	public HTML5AudioImpl() {
-		audio = Audio.createIfSupported();
+		audio = com.google.gwt.media.client.Audio.createIfSupported();
 		initWidget(audio);
 	}
 
@@ -21,7 +21,12 @@ public class HTML5AudioImpl extends Composite implements AudioImpl {
 	}
 
 	@Override
-	public Audio getMedia() {
+	public MediaBase getMedia() {
 		return audio;
+	}
+
+	@Override
+	public void addSource(String src, String type) {
+		audio.addSource(src, type);
 	}
 }

@@ -1,14 +1,14 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
 import com.google.gwt.dom.client.MediaElement;
-import com.google.gwt.media.client.Video;
+import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.Composite;
 
-public class HTML5VideoImpl extends Composite implements VideoImpl, OggVideoImpl {
+public class HTML5VideoImpl extends Composite implements Video, OggVideo {
 
-	protected Video video;
+	protected com.google.gwt.media.client.Video video;
 	public HTML5VideoImpl() {
-		video = Video.createIfSupported();
+		video = com.google.gwt.media.client.Video.createIfSupported();
 		video.setPreload(MediaElement.PRELOAD_METADATA);
 		initWidget(video);
 	}
@@ -43,7 +43,7 @@ public class HTML5VideoImpl extends Composite implements VideoImpl, OggVideoImpl
 		video.setControls(show);
 	}
 	@Override
-	public Video getMedia() {
+	public MediaBase getMedia() {
 		return video;
 	}
 }

@@ -14,6 +14,7 @@
 	<inherits name="com.google.gwt.inject.Inject" />
 
 	<set-property name="compiler.emulatedStack" value="true" />
+	<set-property name="compiler.stackMode" value="strip" />
 	<set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true" />
 
 	<!-- Specify the app entry point class. -->
@@ -24,37 +25,38 @@
 	<script src="video/AC_RunActiveContent.js" />
 	<script src="video/FAVideo.js" />
 	<script src="jscss/cssparser.js" />
-	<set-property name="compiler.stackMode" value="strip" />
+
 	<define-property name="mobile.user.agent" values="android23" />
 	<extend-property name="mobile.user.agent" values="android3" />
 	<extend-property name="mobile.user.agent" values="android321" />
 	<extend-property name="mobile.user.agent" values="android4" />
 	<extend-property name="mobile.user.agent" values="firefox" />
 	<extend-property name="mobile.user.agent" values="chrome" />
+	<extend-property name="mobile.user.agent" values="safari" />
 	<extend-property name="mobile.user.agent" values="unknown" />
 
 	<property-provider name="mobile.user.agent" generator="eu.ydp.empiria.player.user.rebind.MobileUserAgentPropertyGenerator" />
 
 	<collapse-property name="mobile.user.agent" values="*" />
-
+	<!-- VIDEO -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 	</replace-with>
 
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggVideoImpl" />
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggVideo" />
 	</replace-with>
 
 	<!-- Use video tag for iphone browser -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 		<any>
 			<when-property-is name="user.agent" value="safari" />
 		</any>
 	</replace-with>
 
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroidImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 		<any>
 			<when-property-is name="mobile.user.agent" value="android23" />
 			<when-property-is name="mobile.user.agent" value="android321" />
@@ -62,7 +64,7 @@
 		</any>
 	</replace-with>
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroidImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggVideoImpl" />
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggVideo" />
 		<any>
 			<when-property-is name="mobile.user.agent" value="android23" />
 			<when-property-is name="mobile.user.agent" value="android321" />
@@ -70,13 +72,14 @@
 		</any>
 	</replace-with>
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroid3Impl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.VideoImpl" />
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 		<when-property-is name="mobile.user.agent" value="android3" />
 	</replace-with>
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroid3Impl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggVideoImpl" />
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggVideo" />
 		<when-property-is name="mobile.user.agent" value="android3" />
 	</replace-with>
+	<!-- END VIDEO -->
 
 	<!-- Progressbar dla androida w media -->
 	<replace-with class="eu.ydp.empiria.player.client.module.media.button.MediaProgressBarImpl">
@@ -93,18 +96,24 @@
 	</replace-with>
 	<!-- end progressbar -->
 
+	<!-- AUDIO -->
 	<!-- link as default value for audio -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.EmbedAudioImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.AudioImpl" />
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Audio" />
+	</replace-with>
+
+	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl">
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggAudio" />
 	</replace-with>
 
 	<!-- Use audio tag for iphone browser -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.AudioImpl" />
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Audio" />
 		<any>
 			<when-property-is name="user.agent" value="safari" />
 		</any>
 	</replace-with>
+	<!-- END AUDIO -->
 
 	<!-- default implementation of sound executor -->
 	<replace-with class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorSwf">

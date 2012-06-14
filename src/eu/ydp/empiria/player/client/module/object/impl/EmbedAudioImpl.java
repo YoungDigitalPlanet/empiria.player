@@ -1,10 +1,11 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
-import com.google.gwt.media.client.Audio;
+
+import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 
-public class EmbedAudioImpl extends Composite implements AudioImpl {
+public class EmbedAudioImpl extends Composite implements Audio {
 	HTML audio = null;
 
 	public EmbedAudioImpl() {
@@ -21,7 +22,12 @@ public class EmbedAudioImpl extends Composite implements AudioImpl {
 	}
 
 	@Override
-	public Audio getMedia() {
+	public MediaBase getMedia() {
 		return null;
+	}
+
+	@Override
+	public void addSource(String src, String type) {
+		setSource(src);
 	}
 }

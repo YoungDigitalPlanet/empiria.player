@@ -1,11 +1,11 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.media.client.Video;
+import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 
-public class FlashVideoImpl extends Composite implements VideoImpl {
+public class FlashVideoImpl extends Composite implements Video {
 
 	protected String id;
 	protected String src;
@@ -56,7 +56,7 @@ public class FlashVideoImpl extends Composite implements VideoImpl {
 	}
 
 	@Override
-	public Video getMedia() {
+	public MediaBase getMedia() {
 		return null;
 	}
 
