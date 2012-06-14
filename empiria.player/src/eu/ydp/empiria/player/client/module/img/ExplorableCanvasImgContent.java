@@ -7,6 +7,8 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -131,6 +133,13 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 					scaleMin = 100.0d * (double)originalImageWidth / (double)originalImageHeight;
 				centerImage();
 				redraw(false);
+				RootPanel.get().remove(tempImage);
+			}
+		});
+		tempImage.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
 				RootPanel.get().remove(tempImage);
 			}
 		});
