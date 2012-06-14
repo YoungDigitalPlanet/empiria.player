@@ -3,10 +3,8 @@ package eu.ydp.empiria.player.client.module.img;
 import java.util.Date;
 import java.util.Map;
 
-import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
@@ -29,13 +27,11 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.Navigator;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -73,8 +69,8 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 	private Context2dAdapter context2d;
 	private final int REDRAW_INTERVAL_MIN = 50;
 	private FocusWidget focusCanvas;
-	private double scale = 200.0d;
-	private double scaleMin = 100.0d;
+	private double scale = 2.0d;
+	private double scaleMin = 1.0d;
 	private final double ZOOM_MAX = 8;
 	private final double SCALE_STEP = 1.2d;
 	private double imgX = 0;
@@ -117,20 +113,22 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 
 	@Override
 	public void init(Element element, ModuleSocket ms) {
-		tempImage = new Image();
-		tempImage.setUrl(element.getAttribute("src"));
+		tempImage = new Image(element.getAttribute("src"));
 		RootPanel.get().add(tempImage);
-		tempImage.setVisible(false);
+		// TODO: try to put img on a div with visibility:hidden
+		// see http://gwt-image-loader.googlecode.com/svn/trunk/src/com/reveregroup/gwt/imagepreloader/ImagePreloader.java
+		if (!Navigator.getUserAgent().contains("MSIE"))
+			tempImage.setVisible(false);
 		tempImage.addLoadHandler(new LoadHandler() {
 			
 			@Override
-			public void onLoad(LoadEvent event) {
+			public void onLoad(LoadEvent event) {				
 				imageLoaded = true;
 				originalImageWidth = tempImage.getWidth();
 				originalImageHeight = tempImage.getHeight();
 				originalImageAspectRatio = (double)originalImageWidth / (double)originalImageHeight;
 				if (windowHeight/originalImageHeight  <  windowWidth/originalImageWidth)
-					scaleMin = 100.0d * (double)originalImageWidth / (double)originalImageHeight;
+					scaleMin = 1.0d * (double)originalImageWidth / (double)originalImageHeight;
 				centerImage();
 				redraw(false);
 				RootPanel.get().remove(tempImage);
@@ -147,7 +145,7 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 		styles = ms.getStyles(element);
 
 		if (styles.containsKey("-empiria-img-explorable-scale-initial")){
-			scale = (double)(IntegerUtils.tryParseInt(styles.get("-empiria-img-explorable-scale-initial").replaceAll("\\D", ""), 100));
+			scale = (double)(IntegerUtils.tryParseInt(styles.get("-empiria-img-explorable-scale-initial").replaceAll("\\D", ""), 100))/100.0d;
 		}
 		if (styles.containsKey("-empiria-img-explorable-window-width")){
 			windowWidth = IntegerUtils.tryParseInt(styles.get("-empiria-img-explorable-window-width").replaceAll("\\D", ""), 300);
@@ -267,7 +265,7 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 	}
 	
 	private double getZoom(){
-		return (double)windowWidth/ (double)originalImageWidth * (scale/100.0d) ;
+		return (double)windowWidth/ (double)originalImageWidth * (scale) ;
 	}
 	
 	private void onMoveEnd(){
@@ -276,16 +274,14 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 	}
 	
 	private void checkImageCoords(){
-		
-		double scaleNormalized = scale/100.0d;
 
-		if (imgX + originalImageWidth / scaleNormalized > originalImageWidth)
-			imgX = originalImageWidth - (int)(originalImageWidth / scaleNormalized) - 1;	
+		if (imgX + originalImageWidth / scale > originalImageWidth)
+			imgX = originalImageWidth - (int)(originalImageWidth / scale) - 1;	
 		
 		double h = (originalImageWidth * windowHeight / windowWidth);
 		
-		if (imgY + h / scaleNormalized > originalImageHeight)
-			imgY = originalImageHeight - (int)(h / scaleNormalized) - 1; 
+		if (imgY + h / scale > originalImageHeight)
+			imgY = originalImageHeight - (int)(h / scale) - 1; 
 		
 		if (imgX < 0)
 			imgX = 0;
@@ -295,17 +291,16 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 	}
 	
 	private void centerImage(){
-		double scaleNormalized = scale/100.0d;
 
-		imgX = (originalImageWidth - windowWidth * scaleNormalized)/2 / scaleNormalized;
-		imgY = (originalImageHeight - windowHeight * scaleNormalized)/2 / scaleNormalized; 
+		imgX = (originalImageWidth - windowWidth * scale)/2 / scale;
+		imgY = (originalImageHeight - windowHeight * scale)/2 / scale; 
 	}
 	
 	private void redraw(boolean showScrollbars){
 		
 		checkImageCoords();
 		
-		double scaleNormalized = scale/100.0d;
+		double scaleNormalized = scale;
 		
 		double sourceX = imgX;
 		double sourceY = imgY;
@@ -406,13 +401,13 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 	private void scaleBy(double dScale){
 		double newScale;
 		if (getZoom()*dScale > ZOOM_MAX)
-			newScale = (double)originalImageWidth / (double)windowWidth * (ZOOM_MAX*100.0d);
+			newScale = (double)originalImageWidth / (double)windowWidth * (ZOOM_MAX);
 		else if (scale * dScale > scaleMin)
 			newScale = scale*dScale;
 		else
 			newScale = scaleMin;
 		
-		double realDScaleNormalized = 100.0d/scale - 100.0d/newScale;
+		double realDScaleNormalized = 1.0d/scale - 1.0d/newScale;
 		
 		imgX += originalImageWidth * (realDScaleNormalized/2);
 		imgY += originalImageHeight * (realDScaleNormalized/2);
