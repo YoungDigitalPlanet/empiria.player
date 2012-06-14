@@ -35,6 +35,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
@@ -63,13 +64,9 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 	@UiField
 	PushButton zoomoutButton;
 	@UiField
-	Label consoleLabel;
-	@UiField
-	Image tempImage;
-	@UiField
-	Panel tempPanel;
-	@UiField
 	PanelWithScrollbars scrollbarsPanel;
+
+	private Image tempImage;
 	
 	private Context2dAdapter context2d;
 	private final int REDRAW_INTERVAL_MIN = 50;
@@ -90,6 +87,7 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 	private double prevDistance = -1;
 	private Map<String, String> styles;
 	private long lastRedrawTime = -1;
+	private boolean imageLoaded = false;
 
 	private Timer startZoomTimer;
 	private Timer zoomTimer;	
@@ -117,20 +115,23 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 
 	@Override
 	public void init(Element element, ModuleSocket ms) {
-		tempPanel.setSize("5px", "5px");
-		tempPanel.getElement().getStyle().setOverflow(Overflow.HIDDEN);
+		tempImage = new Image();
 		tempImage.setUrl(element.getAttribute("src"));
+		RootPanel.get().add(tempImage);
+		tempImage.setVisible(false);
 		tempImage.addLoadHandler(new LoadHandler() {
 			
 			@Override
 			public void onLoad(LoadEvent event) {
-				originalImageWidth = tempImage.getOffsetWidth();
-				originalImageHeight = tempImage.getOffsetHeight();
+				imageLoaded = true;
+				originalImageWidth = tempImage.getWidth();
+				originalImageHeight = tempImage.getHeight();
 				originalImageAspectRatio = (double)originalImageWidth / (double)originalImageHeight;
 				if (windowHeight/originalImageHeight  <  windowWidth/originalImageWidth)
 					scaleMin = 100.0d * (double)originalImageWidth / (double)originalImageHeight;
 				centerImage();
 				redraw(false);
+				RootPanel.get().remove(tempImage);
 			}
 		});
 		
@@ -320,7 +321,8 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 		}
 		
 		if ((new Date()).getTime() - lastRedrawTime > REDRAW_INTERVAL_MIN){
-			context2d.drawImage(ImageElement.as(tempImage.getElement()), sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
+			if (imageLoaded)
+				context2d.drawImage(ImageElement.as(tempImage.getElement()), sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
 			lastRedrawTime = (new Date()).getTime();
 			updateScrollbars(showScrollbars);
 		}
