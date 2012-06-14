@@ -1,11 +1,27 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
+import com.google.gwt.media.client.Audio;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 
+public class EmbedAudioImpl extends Composite implements AudioImpl {
+	HTML audio = null;
 
-public class EmbedAudioImpl implements AudioImpl{
+	public EmbedAudioImpl() {
+		audio = new HTML();
+		initWidget(audio);
+	}
 
-  public String getHTML(String src){
+	public void setSource(String src) {
+		audio.setHTML("<embed src='" + src + "' autostart='false' controller='true'></embed>");
+	}
 
-    return "<embed src='" + src + "' autostart='false' controller='true'></embed>";
-  }
+	@Override
+	public void setShowNativeControls(boolean show) {
+	}
+
+	@Override
+	public Audio getMedia() {
+		return null;
+	}
 }

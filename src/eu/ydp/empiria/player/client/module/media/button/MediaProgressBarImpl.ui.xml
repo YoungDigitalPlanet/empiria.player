@@ -1,0 +1,14 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:eu.ydp.empiria.player.client.module.media.button">
+	<g:FlowPanel ui:field="progressBar" styleName="qp-media-progressbar">
+		<g:FlowPanel styleName="qp-media-progressbar-left"/>
+		<g:FlowPanel ui:field="mainProgressDiv" styleName="qp-media-progressbar-center">
+			<g:FlowPanel styleName="qp-media-progressbar-center-info" />
+			<g:FlowPanel ui:field="beforeButton" styleName="qp-media-progressbar-center-button-before" />
+			<b:SimpleMediaButton ui:field="button" styleName="qp-media-progressbar-center-button" />
+			<g:FlowPanel ui:field="afterButton" styleName="qp-media-progressbar-center-button-after" />
+		</g:FlowPanel>
+		<g:FlowPanel styleName="qp-media-progressbar-right" />
+	</g:FlowPanel>
+</ui:UiBinder>
