@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.report;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +51,7 @@ public class ReportModule extends ContainerModuleBase {
 	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
 		super.initModule(element, ms, mil, bgs);
 
-		String range ="";//= "1, 1, 1, 1, 1, 1, 5, 20, 20, 20";
+		String range ="1:-1";
 		boolean showNonActivites = true;
 
 		Map<String, String> styles = ms.getStyles(element);
