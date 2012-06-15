@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
-import static eu.ydp.empiria.player.client.util.UserAgentChecker.MobileUserAgent.*;
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent.*;
 
 public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 

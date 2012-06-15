@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
-import eu.ydp.empiria.player.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 public abstract class AbstractMediaScroll<T> extends MediaController<T> {
 	private boolean pressed = false;

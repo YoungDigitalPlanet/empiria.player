@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.media.button;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
-import static  eu.ydp.empiria.player.client.util.UserAgentChecker.MobileUserAgent.*;
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent.*;
 
 /**
  * Przycisk mute
