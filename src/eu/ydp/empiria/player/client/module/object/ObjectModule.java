@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.object;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.media.client.MediaBase;
@@ -13,6 +14,7 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.object.impl.Audio;
 import eu.ydp.empiria.player.client.module.object.impl.OggAudio;
 import eu.ydp.empiria.player.client.module.object.impl.OggVideo;
@@ -27,7 +29,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 
 	protected Widget widget;
 	protected MediaBase media;
-	ObjectModuleView moduleView = new ObjectModuleView();
+	Widget moduleView = null;
 
 	BodyGeneratorSocket bodyGeneratorSocket = null;
 
@@ -61,10 +63,11 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 
 	/**
 	 * sprawdza czy w elementach soirce mamy pliki typu ogg
+	 *
 	 * @param sources
 	 * @return
 	 */
-	private boolean containsOgg(List<KeyValue<String, String>> sources){
+	private boolean containsOgg(List<KeyValue<String, String>> sources) {
 		for (KeyValue<String, String> src : sources) {
 			if (src.getValue().matches(".*ogv|.*ogg")) {
 				return true;
@@ -72,6 +75,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 		}
 		return false;
 	}
+
 	/**
 	 * tworzy element video
 	 *
@@ -122,16 +126,16 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 		List<KeyValue<String, String>> sources = getSource(element, "audio");
 		Audio audio = null;
 		if (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX)) {
-			if(containsOgg(sources)){
+			if (containsOgg(sources)) {
 				audio = GWT.create(OggAudio.class);
 			}
 		}
-		if(audio==null){
+		if (audio == null) {
 			audio = GWT.create(Audio.class);
 		}
 		audio.setShowNativeControls(!template);
 		for (KeyValue<String, String> src : sources) {
-			audio.addSource(src.getKey(),src.getValue());
+			audio.addSource(src.getKey(), src.getValue());
 		}
 
 		media = audio.getMedia();
@@ -147,35 +151,45 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	public void initModule(Element element) {
 		String type = XMLUtils.getAttributeAsString(element, "type");
 		Element template = XMLUtils.getFirstElementWithTagName(element, "template");
-		if (type.startsWith("video")) {
-			createVideo(element, template != null);
+		Map<String, String> styles = getModuleSocket().getStyles(element);
+		String playerType = styles.get("-player-" + type + "-skin");
+		GWT.log(styles.toString()+" "+playerType+" "+element.getNodeName());
+		if ("audioPlayer".equals(element.getNodeName()) && ((template == null && !"native".equals(playerType))||("old".equals(playerType)))) {
+			AudioPlayerModule player = new AudioPlayerModule();
+			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
+			this.moduleView =  player.getView();
 		} else {
-			createAudio(element, template != null);
-		}
-
-		String cls = element.getAttribute("class");
-		if (cls != null && !"".equals(cls))
-			moduleView.getContainerPanel().addStyleName(cls);
-
-		if (widget != null)
-			moduleView.getContainerPanel().add(widget);
-
-		if (template != null && media!=null) {
-			parseTemplate(template, moduleView.getContainerPanel());
-		}
-		NodeList titleNodes = element.getElementsByTagName("title");
-		if (titleNodes.getLength() > 0) {
-			Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
-			if (titleWidget != null) {
-				moduleView.getTitlePanel().add(titleWidget);
+			if (type.startsWith("video")) {
+				createVideo(element, template != null && !"native".equals(playerType));
+			} else {
+				createAudio(element, template != null && !"native".equals(playerType));
 			}
-		}
-		NodeList descriptionNodes = element.getElementsByTagName("description");
-		if (descriptionNodes.getLength() > 0) {
-			Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(descriptionNodes.item(0));
-			if (descriptionWidget != null) {
-				moduleView.getDescriptionPanel().add(descriptionWidget);
+			ObjectModuleView moduleView = new ObjectModuleView();
+			String cls = element.getAttribute("class");
+			if (cls != null && !"".equals(cls))
+				moduleView.getContainerPanel().addStyleName(cls);
+
+			if (widget != null)
+				moduleView.getContainerPanel().add(widget);
+
+			if (template != null && media != null) {
+				parseTemplate(template, moduleView.getContainerPanel());
 			}
+			NodeList titleNodes = element.getElementsByTagName("title");
+			if (titleNodes.getLength() > 0) {
+				Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
+				if (titleWidget != null) {
+					moduleView.getTitlePanel().add(titleWidget);
+				}
+			}
+			NodeList descriptionNodes = element.getElementsByTagName("description");
+			if (descriptionNodes.getLength() > 0) {
+				Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(descriptionNodes.item(0));
+				if (descriptionWidget != null) {
+					moduleView.getDescriptionPanel().add(descriptionWidget);
+				}
+			}
+			this.moduleView = moduleView;
 		}
 	}
 
