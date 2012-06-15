@@ -23,5 +23,6 @@
 	<dependency org="eu.ydp" name="mathPlayer" rev="latest.release"  conf="*->default"/>
 	<dependency org="eu.ydp" name="canvasadapter" rev="latest.release"  conf="*->default"/>
 	<dependency org="eu.ydp" name="jsfilerequest" rev="latest.release"  conf="*->default"/>
+	<dependency org="eu.ydp" name="ydpgwtutils" rev="latest.release"  conf="*->default"/>
   </dependencies>
 </ivy-module>
