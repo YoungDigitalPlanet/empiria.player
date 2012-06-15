@@ -8,8 +8,8 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.Composite;
 
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.util.UserAgentChecker;
-import eu.ydp.empiria.player.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 /**
  * Kontroler mediow

@@ -3,10 +3,8 @@ package eu.ydp.empiria.player.client.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.canvas.dom.client.Context2d;
-
 import eu.ydp.canvasadapter.client.Context2dAdapter;
-import eu.ydp.empiria.player.client.util.KeyValue;
+import eu.ydp.gwtutil.client.util.KeyValue;
 
 public class CanvasArrow {
 	private Context2dAdapter context2d;

@@ -19,11 +19,11 @@ import eu.ydp.empiria.player.client.module.object.impl.Audio;
 import eu.ydp.empiria.player.client.module.object.impl.OggAudio;
 import eu.ydp.empiria.player.client.module.object.impl.OggVideo;
 import eu.ydp.empiria.player.client.module.object.impl.Video;
-import eu.ydp.empiria.player.client.util.KeyValue;
-import eu.ydp.empiria.player.client.util.UserAgentChecker;
-import eu.ydp.empiria.player.client.util.UserAgentChecker.MobileUserAgent;
-import eu.ydp.empiria.player.client.util.UserAgentChecker.UserAgent;
 import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.util.KeyValue;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
 public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {
 

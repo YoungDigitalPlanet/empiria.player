@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.object.impl.Video;
-import eu.ydp.empiria.player.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 /**
  * bazowy przycisk dla kontrolerow multimediow
