@@ -38,6 +38,29 @@
 	<property-provider name="mobile.user.agent" generator="eu.ydp.empiria.player.user.rebind.MobileUserAgentPropertyGenerator" />
 
 	<collapse-property name="mobile.user.agent" values="*" />
+	
+	<!-- Debug -->
+	<define-property name="application.debug" values="off" />
+	<extend-property name="application.debug" values="on" />
+	<set-property name="application.debug" value="on" />
+	
+	<replace-with class="eu.ydp.empiria.player.client.debug.LoggerDesktop">
+		<when-type-is class="eu.ydp.empiria.player.client.debug.Logger" />
+	</replace-with>
+	
+	<replace-with class="eu.ydp.empiria.player.client.debug.LoggerMobile">
+		<when-type-is class="eu.ydp.empiria.player.client.debug.Logger" />
+		<when-property-is name="application.debug" value="on" />
+		<any>
+			<when-property-is name="mobile.user.agent" value="android23" />
+			<when-property-is name="mobile.user.agent" value="android3" />
+			<when-property-is name="mobile.user.agent" value="android321" />
+			<when-property-is name="mobile.user.agent" value="android4" />
+			<when-property-is name="mobile.user.agent" value="firefox" />
+			<when-property-is name="mobile.user.agent" value="chrome" />
+		</any>
+	</replace-with>
+	
 	<!-- VIDEO -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
