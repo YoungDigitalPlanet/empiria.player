@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.imagearea{
+			cursor: move;
+		}		
+	</ui:style>
+	<g:FlowPanel addStyleNames='qp-img-explorable-image-img-window' ui:field="windowPanel" >
+		<g:FlowPanel addStyleNames='qp-img-explorable-image-img-panel {style.imagearea}' ui:field="imagePanel" >
+			<g:Image styleName="qp-img-explorable-image-img-img" ui:field="image" />
+		</g:FlowPanel>
+	</g:FlowPanel>
+	
+</ui:UiBinder> 

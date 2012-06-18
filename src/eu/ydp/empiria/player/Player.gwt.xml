@@ -116,6 +116,18 @@
 			<when-property-is name="user.agent" value="safari" />
 		</any>
 	</replace-with>
+	
+	<replace-with class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindowCanvas">
+		<when-type-is class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindow" />
+	</replace-with>
+	
+	<replace-with class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindowImg">
+		<when-type-is class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindow" />
+		<any>
+			<when-property-is name="user.agent" value="ie6" />
+			<when-property-is name="user.agent" value="ie8" />
+		</any>
+	</replace-with>
 
 	<define-linker name="xsiframescripts" class="eu.ydp.empiria.player.core.linker.CrossSizeIframeWithScriptsLinker" />
 	<add-linker name="xsiframescripts" />

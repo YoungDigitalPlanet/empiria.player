@@ -78,6 +78,7 @@ import eu.ydp.empiria.player.client.module.containers.DivModule;
 import eu.ydp.empiria.player.client.module.containers.HtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
+import eu.ydp.empiria.player.client.module.flash.FlashModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
@@ -286,6 +287,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new SimpleConnectorExtension(new MathModule(), ModuleTagName.MATH_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new ObjectModule(), ModuleTagName.OBJECT));
 		loadExtension(new SimpleConnectorExtension(new SlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER));
+		loadExtension(new SimpleConnectorExtension(new FlashModule(), ModuleTagName.FLASH));
 		loadExtension(new InfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(new LinkModuleConnectorExtension());
