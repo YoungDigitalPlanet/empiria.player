@@ -13,9 +13,9 @@ public abstract class ExplorableImgWindowBase extends Composite implements Explo
 	protected final double SCALE_STEP = 1.2d;
 	
 	protected void findScaleMinAndOriginalAspectRatio(){
-		if (windowHeight/originalImageHeight  <  windowWidth/originalImageWidth)
-			scaleMin = 1.0d * (double)originalImageWidth / (double)originalImageHeight;
 		originalAspectRatio = (double)originalImageWidth / (double)originalImageHeight;
+		if (windowHeight/originalImageHeight  <  windowWidth/originalImageWidth)
+			scaleMin = (originalAspectRatio * (double)windowHeight) / (double)windowWidth;
 	}
 	
 	protected double getOriginalAspectRatio(){
@@ -78,6 +78,10 @@ public abstract class ExplorableImgWindowBase extends Composite implements Explo
 
 	protected double getZoom(){
 		return (double)windowWidth/ (double)originalImageWidth * (scale) ;
+	}
+	
+	protected double getZoom(double newScale){
+		return (double)windowWidth/ (double)originalImageWidth * (newScale) ;
 	}
 
 }

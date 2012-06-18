@@ -154,7 +154,7 @@ public class ExplorableImgWindowImg extends ExplorableImgWindowBase {
 		setScale(newScale);
 
 		double newImageWidth = getWindowWidth() * getScale();
-		double newImageheight = getWindowHeight() * getScale() * 1.0d / getOriginalAspectRatio();
+		double newImageheight = newImageWidth / getOriginalAspectRatio();
 		
 		image.setSize(String.valueOf((int)newImageWidth) + "px", String.valueOf((int)newImageheight) + "px");
 		

@@ -55,7 +55,6 @@ public class ExplorableImgWindowCanvas extends ExplorableImgWindowBase {
 	private double imgY = 0;
 	private FocusWidget focusCanvas;
 	
-	private double scaleMin = 1.0d;
 	private double prevX, prevY;
 	private boolean moving = false;
 	private double prevDistance = -1;
@@ -64,13 +63,11 @@ public class ExplorableImgWindowCanvas extends ExplorableImgWindowBase {
 
 	private Image tempImage;
 	
-	
 	public ExplorableImgWindowCanvas() {
 		initWidget(uiBinder.createAndBindUi(this));
 		context2d = imageCanvas.getContext2d();
 	}
-
-
+	
 	@Override
 	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale) {
 		setWindowWidth(wndWidth);
@@ -185,7 +182,7 @@ public class ExplorableImgWindowCanvas extends ExplorableImgWindowBase {
 		prevX = x;
 		prevY = y;
 	}
-
+	
 	private void onMoveScale(int x1, int y1, int x2, int y2) {
 		double currDistance= Math.sqrt(
 				Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)
@@ -224,7 +221,6 @@ public class ExplorableImgWindowCanvas extends ExplorableImgWindowBase {
 		moving = false;
 		prevDistance = -1;
 	}
-
 	
 	private void redraw(boolean showScrollbars){
 		
@@ -273,15 +269,22 @@ public class ExplorableImgWindowCanvas extends ExplorableImgWindowBase {
 		double newScale;
 		if (getZoom()*dScale > ZOOM_MAX)
 			newScale = (double)getOriginalImageWidth() / (double)getWindowWidth() * (ZOOM_MAX);
-		else if (getScale() * dScale > scaleMin)
+		else if (getScale() * dScale > getScaleMin())
 			newScale = getScale()*dScale;
 		else
-			newScale = scaleMin;
+			newScale = getScaleMin();
 		
-		double realDScaleNormalized = 1.0d/getScale() - 1.0d/newScale;
+		double lastCenterX = imgX*getZoom() + getWindowWidth()/2;
+		double lastCenterY = imgY*getZoom() + getWindowHeight()/2;
 		
-		imgX += getOriginalImageWidth() * (realDScaleNormalized/2);
-		imgY += getOriginalImageHeight() * (realDScaleNormalized/2);
+		double newCenterX = lastCenterX * newScale/getScale();
+		double newCenterY = lastCenterY * newScale/getScale();
+		
+		int newImgX = (int)(newCenterX - getWindowWidth()/2);
+		int newImgY = (int)(newCenterY - getWindowHeight()/2);
+		
+		imgX = newImgX/getZoom(newScale);
+		imgY = newImgY/getZoom(newScale);
 		
 		setScale(newScale);
 		
@@ -309,15 +312,13 @@ public class ExplorableImgWindowCanvas extends ExplorableImgWindowBase {
 		imgX = (getOriginalImageWidth() - getWindowWidth() * getScale())/2 / getScale();
 		imgY = (getOriginalImageHeight() - getWindowHeight() * getScale())/2 / getScale(); 
 	}
-
-
+	
 	@Override
 	public void zoomIn() {
 		scaleBy(SCALE_STEP);
 		redraw(true);
 	}
-
-
+	
 	@Override
 	public void zoomOut() {
 		scaleBy(1.0d/SCALE_STEP);
