@@ -24,7 +24,6 @@ import eu.ydp.empiria.player.client.module.media.button.PlayPauseMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.StopMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.VolumeMediaButton;
 import eu.ydp.empiria.player.client.module.media.info.PositionInMediaStream;
-import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class TemplateParser {
 	Map<String, MediaController<?>> controllers = new HashMap<String, MediaController<?>>();
@@ -63,7 +62,7 @@ public class TemplateParser {
 		for (int x = 0; x < nodes.getLength(); ++x) {
 			Node node = nodes.item(x);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				String moduleName = XMLUtils.getAttributeAsString((Element) node, moduleAttribute);
+				String moduleName = node.getNodeName();
 				if (moduleName.trim().length() > 0 && controllers.containsKey(moduleName)) {
 					MediaController<?> mc = (MediaController<?>) controllers.get(moduleName).getNewInstance();
 
