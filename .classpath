@@ -13,11 +13,11 @@
 	<classpathentry kind="lib" path="ivy-lib/javax.inject.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/validation-api.jar"/>
 	<classpathentry kind="lib" path="static-lib/junit.jar"/>
-	<classpathentry kind="lib" path="static-lib/gwt-voices-2.1.6.jar"/>
 	<classpathentry kind="lib" path="static-lib/gwt-g2d-r119.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/canvasadapter.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/jsfilerequest.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/mathplayer.jar"/>
-	<classpathentry kind="lib" path="ivy-lib/ydpgwtutils.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ydpGwtUtils"/>
+	<classpathentry kind="lib" path="static-lib/gwt-voices-1.7.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

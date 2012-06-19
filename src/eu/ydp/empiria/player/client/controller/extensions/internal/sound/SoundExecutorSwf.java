@@ -25,8 +25,7 @@ public class SoundExecutorSwf implements SoundExecutor {
 			stop();
 		
 		SoundController ctrl = new SoundController();
-		ctrl.setGwtVoicesSwfLocation(getPlayerPathDir());
-		currSound = ctrl.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3, src);					
+		currSound = ctrl.createSound(Sound.MIME_TYPE_AUDIO_MPEG, src);					
 		currSoundHandler = new SoundHandler() {
 			
 			@Override
@@ -65,25 +64,4 @@ public class SoundExecutorSwf implements SoundExecutor {
 		this.listener = listener;
 	}
 	
-	private String getPlayerPathDir(){
-		if (playerPathDir != null)
-			return playerPathDir;
-		playerPathDir = findPlayerPathDir();
-		return playerPathDir;
-	}
-	
-	private String findPlayerPathDir(){
-		NodeList<Element> scriptNodes = Document.get().getElementsByTagName("script");
-		String empiriaPlayerFileName = "/empiria.player.nocache.js";
-		for (int s = 0 ; s < scriptNodes.getLength() ; s ++){
-			if (((Element)scriptNodes.getItem(s)).hasAttribute("src")){
-				String src = ((Element)scriptNodes.getItem(s)).getAttribute("src");				
-				if (src.endsWith(empiriaPlayerFileName)){
-					return src.substring(0, src.indexOf(empiriaPlayerFileName) +1);
-				}
-			}
-		}
-		return "";
-		
-	}
 }
