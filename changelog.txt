@@ -1,5 +1,5 @@
 == EMPIRIA PLAYER 1.3 CHANGELOG ==
-  - added three operation modes (default, labelled, explorable) in imgModule (task 64644, rrybacki)
+  - in imgModule added three operation modes (default, labelled, explorable) (task 64644, rrybacki)
   - loading web documents via jsfilerequest library (task 64796, rrybacki)
   - added custom xsiframescripts linker (task 64796, rrybacki)
   - compile soft permutations for mobile.user.agent (task 64796, rrybacki)
@@ -7,3 +7,4 @@
   - fixed typo in cssparser.js which caused player load fail in IE7 (task 64796, rrybacki)
   - added SoundProcessorManagerExtension which stores one instance of SoundProcessorExtension at a time (task 64968, rrybacki)
   - loading DefaultSoundProcessorExtension by default (task 64968, rrybacki) 
+  - added ydpGwtUtils to dependencies (task 65202, rrybacki)
