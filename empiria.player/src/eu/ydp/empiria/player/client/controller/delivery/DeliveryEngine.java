@@ -72,7 +72,6 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
-import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.containers.DivModule;
 import eu.ydp.empiria.player.client.module.containers.HtmlContainerModule;
@@ -86,6 +85,7 @@ import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
+import eu.ydp.empiria.player.client.module.pageswitch.TouchPageSwitch;
 import eu.ydp.empiria.player.client.module.prompt.PromptModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
@@ -138,6 +138,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	protected JavaScriptObject playerJsObject;
 
 	protected String stateAsync;
+
+	TouchPageSwitch pageSwitch = new TouchPageSwitch();
 
 	/**
 	 * C'tor.
@@ -305,6 +307,9 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
 		loadExtension(new DefaultSoundProcessorExtension());
+		pageSwitch.setDataSourceDataSupplier(dataManager);
+		pageSwitch.setFlowRequestsInvoker(flowManager.getFlowRequestInvoker());
+		pageSwitch.setFlowDataSupplier(flowManager.getFlowDataSupplier());
 	}
 
 	protected void loadLibraryExtensions(){
