@@ -34,6 +34,7 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.TouchPageSwitch;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InfoModuleConnectorExtension;
@@ -85,7 +86,6 @@ import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
-import eu.ydp.empiria.player.client.module.pageswitch.TouchPageSwitch;
 import eu.ydp.empiria.player.client.module.prompt.PromptModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
@@ -138,8 +138,6 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	protected JavaScriptObject playerJsObject;
 
 	protected String stateAsync;
-
-	TouchPageSwitch pageSwitch = new TouchPageSwitch();
 
 	/**
 	 * C'tor.
@@ -307,9 +305,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
 		loadExtension(new DefaultSoundProcessorExtension());
-		pageSwitch.setDataSourceDataSupplier(dataManager);
-		pageSwitch.setFlowRequestsInvoker(flowManager.getFlowRequestInvoker());
-		pageSwitch.setFlowDataSupplier(flowManager.getFlowDataSupplier());
+		loadExtension(new TouchPageSwitch());
 	}
 
 	protected void loadLibraryExtensions(){

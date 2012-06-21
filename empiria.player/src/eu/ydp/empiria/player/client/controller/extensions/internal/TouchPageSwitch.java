@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.pageswitch;
+package eu.ydp.empiria.player.client.controller.extensions.internal;
 
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Touch;
@@ -10,20 +10,19 @@ import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
-import eu.ydp.empiria.player.client.module.ControlModule;
+import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-public class TouchPageSwitch extends ControlModule {
+public class TouchPageSwitch extends InternalExtension implements FlowRequestSocketUserExtension {
 	int start = 0;
 	int end = 0;
 	int startY = 0, endY = 0;
 	final int swipeLength = 220;
 	final int stackAndroidSwipeLength = 20;
+	private FlowRequestInvoker flowRequestInvoker;
 
 	public TouchPageSwitch() {
 		RootPanel.get().addDomHandler(new TouchEndHandler() {
@@ -31,14 +30,14 @@ public class TouchPageSwitch extends ControlModule {
 			public void onTouchEnd(TouchEndEvent event) {
 				JsArray<Touch> touches = event.getChangedTouches();
 				if (touches != null) {
-					for (int x = 0; x < touches.length(); ++x) {
+					for (int x = 0; x < touches.length();) {
 						Touch t = touches.get(x);
 						end = t.getPageX();
 						endY = t.getScreenY();
 						break;
 					}
 				}
-				if (end > 0 && (Window.getClientHeight()/2.5) > (startY > endY ? startY - endY : endY - startY)) {
+				if (end > 0 && (Window.getClientHeight() / 2.5) > (startY > endY ? startY - endY : endY - startY)) {
 					switchPage(swipeLength);
 				}
 			}
@@ -91,17 +90,14 @@ public class TouchPageSwitch extends ControlModule {
 	}
 
 	@Override
-	public Widget getView() {
-		return null;
-	}
-
-	@Override
-	public void onDeliveryEvent(DeliveryEvent flowEvent) {
+	public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
+		flowRequestInvoker = fri;
 
 	}
 
 	@Override
-	protected void initModule(Element element) {
+	public void init() {
+		// TODO Auto-generated method stub
 
 	}
 
