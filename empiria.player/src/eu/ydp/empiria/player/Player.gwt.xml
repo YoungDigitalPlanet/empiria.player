@@ -21,15 +21,31 @@
 	<!-- Specify the app entry point class. -->
 	<entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint' />
 
-	<!-- css parser -->
-
+	<define-property name="run.local" values="false,true" />
+	<collapse-property name="run.local" values="*"/>
+	<property-provider name="run.local"><![CDATA[
+	  {
+		if (window.location.href.indexOf("file://") == 0)
+			return "true"
+		return "false";
+	  }
+	]]></property-provider>
+	
 	<script src="video/AC_RunActiveContent.js" />
 	<script src="video/FAVideo.js" />
 	<script src="jscss/cssparser.js" />
+	<script src="swfobject/swfobject.js" />
 
 	<!-- VIDEO -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
+	</replace-with>
+	
+	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashLocalVideoImpl">
+		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
+		<any>
+			<when-property-is name="run.local" value="true" />
+		</any>
 	</replace-with>
 
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
@@ -41,6 +57,7 @@
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 		<any>
 			<when-property-is name="user.agent" value="safari" />
+			<when-property-is name="user.agent" value="ie9" />
 		</any>
 	</replace-with>
 
@@ -100,6 +117,7 @@
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Audio" />
 		<any>
 			<when-property-is name="user.agent" value="safari" />
+			<when-property-is name="user.agent" value="ie9" />
 		</any>
 	</replace-with>
 	<!-- END AUDIO -->
@@ -114,6 +132,7 @@
 		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
 		<any>
 			<when-property-is name="user.agent" value="safari" />
+			<when-property-is name="user.agent" value="ie9" />
 		</any>
 	</replace-with>
 	
