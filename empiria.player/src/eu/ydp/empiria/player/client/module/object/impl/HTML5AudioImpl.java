@@ -11,7 +11,7 @@ public class HTML5AudioImpl extends Composite implements Audio {
 		initWidget(audio);
 	}
 
-	public void setSource(String src) {
+	public void setSrc(String src) {
 		audio.setSrc(src);
 	}
 
@@ -26,7 +26,7 @@ public class HTML5AudioImpl extends Composite implements Audio {
 	}
 
 	@Override
-	public void addSource(String src, String type) {
+	public void addSrc(String src, String type) {
 		audio.addSource(src, type);
 	}
 }

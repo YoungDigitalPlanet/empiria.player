@@ -135,7 +135,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 		}
 		audio.setShowNativeControls(!template);
 		for (KeyValue<String, String> src : sources) {
-			audio.addSource(src.getKey(), src.getValue());
+			audio.addSrc(src.getKey(), src.getValue());
 		}
 
 		media = audio.getMedia();
@@ -155,7 +155,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 		String playerType = styles.get("-player-" + type + "-skin");
 		GWT.log(styles.toString()+" "+playerType+" "+element.getNodeName());
 		if ("audioPlayer".equals(element.getNodeName()) && ((template == null && !"native".equals(playerType))||("old".equals(playerType)))) {
-			AudioPlayerModule player = new AudioPlayerModule();
+			AudioPlayerModule player = GWT.create(AudioPlayerModule.class);
 			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
 			this.moduleView =  player.getView();
 		} else {
