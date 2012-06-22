@@ -10,47 +10,28 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.util.PathUtil;
 
-public class FlashLocalVideoImpl extends Composite implements Video {
+public class FlashLocalVideoImpl extends FlashLocalMediaImpl implements Video {
 
-	protected String id;
-	protected String src;
-	protected FlowPanel panelMain;
-	protected FlowPanel panelContent;
 	private int width = 320;
 	private int height = 240;
 	
 	public FlashLocalVideoImpl(){
-		id = Document.get().createUniqueId();
-		panelMain = new FlowPanel();
-		panelMain.setStyleName("qp-video-flash-local");
-		panelContent = new FlowPanel();
-		panelContent.getElement().setId(id);
-		panelMain.add(panelContent);
+		super("video");
+	}
 
-		initWidget(panelMain);		
-	}
 	
-	@Override
-	public void onLoad() {
-		String swfSrc = PathUtil.getPlayerPathDir() + "flvplayer/flvplayer.swf";
-		String installSrc = PathUtil.getPlayerPathDir() + "swfobject/expressInstall.swf"; 
-		loadFlvPlayerThroughSwfobject(id, swfSrc, installSrc, src, width, height);
-	}
-	
-	private native void loadFlvPlayerThroughSwfobject(String id, String swfSrc, String installSrc, String videoSrc, int width, int height)/*-{
+	protected native void loadFlvPlayerThroughSwfobject(String id, String swfSrc, String installSrc, String videoSrc, int width, int height)/*-{
 		var flashvars = {video:videoSrc, sizeMode:"1"};
 		$wnd.swfobject.embedSWF(swfSrc, id, width, height, "9", installSrc, flashvars);
 	}-*/;
 
-	@Override
-	public void setSrc(String src) {
-		this.src = src;
-	}
 
 	@Override
-	public void addSrc(String src, String type) {
-		setSrc(src);
+	protected String getSwfSrc() {
+		String swfSrc = PathUtil.getPlayerPathDir() + "flvplayer/flvplayer.swf"; 
+		return swfSrc;
 	}
+
 
 	@Override
 	public void setWidth(int width) {
@@ -63,16 +44,34 @@ public class FlashLocalVideoImpl extends Composite implements Video {
 	}
 
 	@Override
-	public void setPoster(String url) {
+	public void addSrc(String src, String type) {
+		if (this.src == null)
+			setSrc(src);
 	}
+	
+	@Override
+	public void setPoster(String url) { }
 
 	@Override
-	public void setShowNativeControls(boolean show) {
-	}
+	public void setShowNativeControls(boolean show) { }
 
 	@Override
 	public MediaBase getMedia() {
 		return null;
 	}
+
+
+
+	@Override
+	protected int getWidth() {
+		return width;
+	}
+
+
+	@Override
+	protected int getHeight() {
+		return height;
+	}
+
 
 }

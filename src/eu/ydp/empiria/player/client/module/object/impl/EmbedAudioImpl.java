@@ -13,7 +13,7 @@ public class EmbedAudioImpl extends Composite implements Audio {
 		initWidget(audio);
 	}
 
-	public void setSource(String src) {
+	public void setSrc(String src) {
 		audio.setHTML("<embed src='" + src + "' autostart='false' controller='true'></embed>");
 	}
 
@@ -27,7 +27,7 @@ public class EmbedAudioImpl extends Composite implements Audio {
 	}
 
 	@Override
-	public void addSource(String src, String type) {
-		setSource(src);
+	public void addSrc(String src, String type) {
+		setSrc(src);
 	}
 }
