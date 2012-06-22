@@ -16,9 +16,6 @@ public class DefaultSoundProcessorExtension extends InternalExtension implements
 	protected SoundExecutor soundExecutor;
 	protected MediaInteractionSoundEventCallback callback;
 	protected boolean muteFeedbacks = false;
-
-	public DefaultSoundProcessorExtension(){
-	}
 	
 	@Override
 	public void init() {

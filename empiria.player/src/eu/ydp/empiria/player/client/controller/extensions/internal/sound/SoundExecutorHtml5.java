@@ -28,7 +28,7 @@ public class SoundExecutorHtml5 implements SoundExecutor {
 		}
 	}
 	
-	protected native void addEndedListener(Element audioElement)/*-{
+	private native void addEndedListener(Element audioElement)/*-{
 		var instance = this;
 		audioElement.addEventListener('ended', function(){
 				instance.@eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorHtml5::onEnded2()();
