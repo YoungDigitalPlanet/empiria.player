@@ -148,6 +148,14 @@
 		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
 	</replace-with>
 
+	<!-- swf simple implementation of sound executor -->
+	<replace-with class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorSwfSimple">
+		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
+		<any>
+			<when-property-is name="run.local" value="true" />
+		</any>
+	</replace-with>
+
 	<!-- html5 implementation of sound executor -->
 	<replace-with class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorHtml5">
 		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
