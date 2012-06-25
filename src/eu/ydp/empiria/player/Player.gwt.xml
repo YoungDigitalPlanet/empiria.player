@@ -34,7 +34,6 @@
 	<script src="video/AC_RunActiveContent.js" />
 	<script src="video/FAVideo.js" />
 	<script src="jscss/cssparser.js" />
-	<script src="swfobject/swfobject.js" />
 
 	<!-- VIDEO -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
