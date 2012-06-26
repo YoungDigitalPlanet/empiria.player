@@ -114,7 +114,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 			inlineChoiceHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-drop-height"));
 		}
 		Integer fontColorInt = IntegerUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
-		Font f = new Font(fontSize, fontName, fontBold, fontItalic, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
+		Font f = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
 		mpm.setFont(f);
 		
 		TextEntryGap testGap = new TextEntryGap();

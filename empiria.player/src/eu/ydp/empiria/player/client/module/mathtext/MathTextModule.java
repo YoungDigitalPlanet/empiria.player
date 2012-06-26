@@ -44,7 +44,7 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 			fontColor = styles.get("-empiria-math-color").toUpperCase();
 		}
 		Integer fontColorInt = IntegerUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
-		Font f = new Font(fontSize, fontName, fontBold, fontItalic, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
+		Font f = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
 		mpm.setFont(f);
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName("qp-mathtext");
