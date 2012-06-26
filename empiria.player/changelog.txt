@@ -8,3 +8,7 @@
   - added SoundProcessorManagerExtension which stores one instance of SoundProcessorExtension at a time (task 64968, rrybacki)
   - loading DefaultSoundProcessorExtension by default (task 64968, rrybacki) 
   - added ydpGwtUtils to dependencies (task 65202, rrybacki)
+  - removed gwt-voices, replaced with GwtFlashAudio (task 65800, rrybacki)
+  - removed dependency on swfobject (has been moved to ydpGwtUtils) (task 65800, rrybacki)
+
+  
