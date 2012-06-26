@@ -6,9 +6,9 @@
 	<inherits name="com.google.gwt.http.HTTP" />
 	<inherits name="com.google.gwt.xml.XML" />
 	<inherits name="com.google.gwt.json.JSON" />
-	<inherits name='com.allen_sauer.gwt.voices.gwt-voices' />
 	<inherits name='com.mathplayer.Math_player' />
 	<inherits name='eu.ydp.gwtutil.YdpGwtUtil' />
+	<inherits name='eu.ydp.empiria.flash.gwtflashaudio.GwtFlashAudio' />
 	<inherits name='eu.ydp.canvasadapter.canvasadapter' />
 	<inherits name='eu.ydp.jsfilerequest.jsfilerequest' />
 	<!-- google gin -->
