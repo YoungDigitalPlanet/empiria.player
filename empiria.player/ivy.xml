@@ -24,5 +24,6 @@
 	<dependency org="eu.ydp" name="canvasadapter" rev="latest.integration"  conf="*->default"/>
 	<dependency org="eu.ydp" name="jsfilerequest" rev="latest.integration"  conf="*->default"/>
 	<dependency org="eu.ydp" name="ydpgwtutils" rev="latest.integration"  conf="*->default"/>
+	<dependency org="eu.ydp" name="gwtFlashAudio" rev="latest.integration"  conf="*->default"/>
   </dependencies>
 </ivy-module>

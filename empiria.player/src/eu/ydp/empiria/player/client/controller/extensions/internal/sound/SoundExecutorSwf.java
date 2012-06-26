@@ -1,22 +1,22 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import com.allen_sauer.gwt.voices.client.Sound;
-import com.allen_sauer.gwt.voices.client.Sound.LoadState;
-import com.allen_sauer.gwt.voices.client.SoundController;
-import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
-import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
-import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
+import eu.ydp.empiria.flash.gwtflashaudio.client.FlashSound;
+import eu.ydp.empiria.flash.gwtflashaudio.client.FlashSoundFactory;
+import eu.ydp.empiria.flash.gwtflashaudio.client.event.FlashSoundCompleteEvent;
+import eu.ydp.empiria.flash.gwtflashaudio.client.event.FlashSoundCompleteHandler;
+import eu.ydp.empiria.flash.gwtflashaudio.client.event.FlashSoundPlayEvent;
+import eu.ydp.empiria.flash.gwtflashaudio.client.event.FlashSoundPlayHandler;
 
 public class SoundExecutorSwf implements SoundExecutor {
 
-	protected Sound currSound;
-	protected SoundHandler currSoundHandler;
+	protected FlashSound currSound;
 	protected boolean playing = false;
 	protected SoundExecutorListener listener;
 	protected String playerPathDir = null;
+	
+	public SoundExecutorSwf(){
+		FlashSoundFactory.init();
+	}
 	
 	@Override
 	public void play(String src) {
@@ -24,28 +24,27 @@ public class SoundExecutorSwf implements SoundExecutor {
 		if (playing)
 			stop();
 		
-		SoundController ctrl = new SoundController();
-		currSound = ctrl.createSound(Sound.MIME_TYPE_AUDIO_MPEG, src);					
-		currSoundHandler = new SoundHandler() {
-			
-			@Override
-			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-				if (event.getLoadState() == LoadState.LOAD_STATE_SUPPORTED_AND_READY  ||  event.getLoadState() == LoadState.LOAD_STATE_SUPPORTED_MAYBE_READY){
-					if (listener != null)
-						listener.onPlay();
-					playing = true;
-				}
-			}
-			
-			@Override
-			public void onPlaybackComplete(PlaybackCompleteEvent event) {
-				playing = false;
-				listener.onSoundFinished();
-			}
-		};
+		currSound = FlashSoundFactory.createSound(src);
 		
-		currSound.addEventHandler(currSoundHandler);
-		currSound.play();
+		currSound.addFlashSoundPlayHandler(new FlashSoundPlayHandler() {
+			
+			@Override
+			public void onFlashSoundPlay(FlashSoundPlayEvent event) {
+				if (listener != null)
+					listener.onPlay();
+				playing = true;
+			}
+		});
+		
+		currSound.addFlashSoundCompleteHandler(new FlashSoundCompleteHandler() {
+			
+			@Override
+			public void onFlashSoundComplete(FlashSoundCompleteEvent event) {
+				onSoundStop();
+			}
+		});
+		
+		currSound.playSound();
 
 	}
 
@@ -53,10 +52,16 @@ public class SoundExecutorSwf implements SoundExecutor {
 	public void stop() {
 		if (playing){
 			if (currSound != null)
-				currSound.stop();
-			if (currSoundHandler != null)
-				currSoundHandler.onPlaybackComplete(null);
+				currSound.stopSound();
+			onSoundStop();
 		}
+	}
+	
+	private void onSoundStop(){
+		playing = false;
+		if (listener != null)
+			listener.onSoundFinished();
+		currSound.freeSound();
 	}
 
 	@Override
