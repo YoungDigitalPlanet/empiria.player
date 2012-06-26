@@ -101,6 +101,7 @@
 
   <target name="clean" description="Cleans this project">
     <delete dir="dist"/>
+	<delete dir="${lib.dir}"/>
     <delete dir="war/WEB-INF/classes" failonerror="false" />
     <delete dir="war/empiria.player" failonerror="false" />
   	<delete file="${version.file}"/>
