@@ -1,11 +1,11 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import eu.ydp.empiria.flash.gwtflashaudio.client.FlashSound;
-import eu.ydp.empiria.flash.gwtflashaudio.client.FlashSoundFactory;
-import eu.ydp.empiria.flash.gwtflashaudio.client.event.FlashSoundCompleteEvent;
-import eu.ydp.empiria.flash.gwtflashaudio.client.event.FlashSoundCompleteHandler;
-import eu.ydp.empiria.flash.gwtflashaudio.client.event.FlashSoundPlayEvent;
-import eu.ydp.empiria.flash.gwtflashaudio.client.event.FlashSoundPlayHandler;
+import eu.ydp.empiria.gwtflashmedia.client.FlashSound;
+import eu.ydp.empiria.gwtflashmedia.client.FlashSoundFactory;
+import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaCompleteEvent;
+import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaCompleteHandler;
+import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaPlayEvent;
+import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaPlayHandler;
 
 public class SoundExecutorSwf implements SoundExecutor {
 
@@ -26,25 +26,25 @@ public class SoundExecutorSwf implements SoundExecutor {
 		
 		currSound = FlashSoundFactory.createSound(src);
 		
-		currSound.addFlashSoundPlayHandler(new FlashSoundPlayHandler() {
+		currSound.addFlashMediaPlayHandler(new FlashMediaPlayHandler() {
 			
 			@Override
-			public void onFlashSoundPlay(FlashSoundPlayEvent event) {
+			public void onFlashSoundPlay(FlashMediaPlayEvent event) {
 				if (listener != null)
 					listener.onPlay();
 				playing = true;
 			}
 		});
 		
-		currSound.addFlashSoundCompleteHandler(new FlashSoundCompleteHandler() {
+		currSound.addFlashMediaCompleteHandler(new FlashMediaCompleteHandler() {
 			
 			@Override
-			public void onFlashSoundComplete(FlashSoundCompleteEvent event) {
+			public void onFlashSoundComplete(FlashMediaCompleteEvent event) {
 				onSoundStop();
 			}
 		});
 		
-		currSound.playSound();
+		currSound.play();
 
 	}
 
@@ -52,7 +52,7 @@ public class SoundExecutorSwf implements SoundExecutor {
 	public void stop() {
 		if (playing){
 			if (currSound != null)
-				currSound.stopSound();
+				currSound.stop();
 			onSoundStop();
 		}
 	}
@@ -61,7 +61,7 @@ public class SoundExecutorSwf implements SoundExecutor {
 		playing = false;
 		if (listener != null)
 			listener.onSoundFinished();
-		currSound.freeSound();
+		currSound.free();
 	}
 
 	@Override
