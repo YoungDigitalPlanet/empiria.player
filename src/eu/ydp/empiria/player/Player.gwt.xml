@@ -8,7 +8,7 @@
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name='com.mathplayer.Math_player' />
 	<inherits name='eu.ydp.gwtutil.YdpGwtUtil' />
-	<inherits name='eu.ydp.empiria.flash.gwtflashmedia.GwtFlashMedia' />
+	<inherits name='eu.ydp.empiria.gwtflashmedia.GwtFlashMedia' />
 	<inherits name='eu.ydp.canvasadapter.canvasadapter' />
 	<inherits name='eu.ydp.jsfilerequest.jsfilerequest' />
 	<!-- google gin -->
