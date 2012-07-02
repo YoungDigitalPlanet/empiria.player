@@ -14,10 +14,10 @@
 	<classpathentry kind="lib" path="ivy-lib/validation-api.jar"/>
 	<classpathentry kind="lib" path="static-lib/junit.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/canvasadapter.jar"/>
-	<classpathentry kind="lib" path="ivy-lib/jsfilerequest.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/mathplayer.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/ydpgwtutils.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/gwt-g2d.jar"/>
-	<classpathentry kind="lib" path="ivy-lib/gwtFlashAudio.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/jsfilerequest.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/gwtFlashMedia.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
