@@ -29,6 +29,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 		}
 	}
 	@Override
+	@SuppressWarnings(value = { "all" })
 	public void onMediaEvent(MediaEvent event) {
 		SoundExecutor<?> executor = executors.get(event.getMediaWrapper());
 		if(executor==null){
