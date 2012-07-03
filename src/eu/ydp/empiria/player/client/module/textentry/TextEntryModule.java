@@ -58,10 +58,6 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 			}
 		});
 
-		
-		if (!getResponse().correctAnswers.get(0).matches(".*[^0-9].*"))
-			textBox.getElement().setAttribute("type", "number");
-
 		Panel spanPrefix = new FlowPanel();
 		spanPrefix.setStyleName("qp-text-textentry-prefix");
 		Panel spanSufix = new FlowPanel();
