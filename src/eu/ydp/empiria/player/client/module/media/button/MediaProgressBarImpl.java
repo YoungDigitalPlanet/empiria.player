@@ -1,11 +1,7 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import java.util.Iterator;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Unit;
@@ -15,9 +11,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
+import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarImpl> implements MediaProgressBar {
 
@@ -41,6 +39,8 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	@UiField
 	FlowPanel afterButton;
 
+	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
 	public MediaProgressBarImpl() {
 		super();
 		initWidget(uiBinder.createAndBindUi(this));
@@ -60,6 +60,11 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 		return new MediaProgressBarImpl();
 	}
 
+	@Override
+	public boolean isSupported() {
+		return getMediaAvailableOptions().isSeekSupported();
+	}
+
 	/**
 	 * dlugosc paska postepu
 	 *
@@ -73,45 +78,40 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	public void init() {
 		super.init();
 		if (isSupported()) {
-			final ScheduledCommand command = new ScheduledCommand() {
-				int lastTime = 0;
+			AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
+				//-1 aby przy pierwszym zdarzeniu pokazal sie timer
+				int lastTime = -1;
 
 				@Override
-				public void execute() {
+				public void onMediaEvent(MediaEvent event) {
 					if (isMediaReady() && !isPressed()) {
-						if (getMedia().getCurrentTime() > lastTime + 1 || getMedia().getCurrentTime() < lastTime - 1) {
+						if (getMediaWrapper().getCurrentTime() > lastTime + 1 || getMediaWrapper().getCurrentTime() < lastTime - 1) {
 							// przeskakujemy co sekunde
-							lastTime = (int) getMedia().getCurrentTime();
-							double steep = getScrollWidth() / getMedia().getDuration();
-							moveScroll((int) (steep * getMedia().getCurrentTime()));
+							lastTime = (int) getMediaWrapper().getCurrentTime();
+							double steep = getScrollWidth() / getMediaWrapper().getDuration();
+							moveScroll((int) (steep * getMediaWrapper().getCurrentTime()));
 						}
 					}
 				}
 			};
-			getMedia().addBitlessDomHandler(new HTML5MediaEventHandler() {
-				@Override
-				public void onEvent(HTML5MediaEvent t) {
-					Scheduler.get().scheduleDeferred(command);
-				}
-			}, HTML5MediaEvent.getType(HTML5MediaEventsType.timeupdate));
-
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler);
 			// nie zawsze zostanie wyzwolony timeupdate ze wzgledu na
 			// ograniczenie
 			// na 1s postepu wiec robimy to tu
-			getMedia().addBitlessDomHandler(new HTML5MediaEventHandler() {
+			handler = new AbstractMediaEventHandler() {
 				@Override
-				public void onEvent(HTML5MediaEvent event) {
-					double steep = getScrollWidth() / getMedia().getDuration();
-					moveScroll((int) (steep * getMedia().getCurrentTime()));
-					getMedia().pause();
+				public void onMediaEvent(MediaEvent event) {
+					double steep = getScrollWidth() / getMediaWrapper().getDuration();
+					moveScroll((int) (steep * getMediaWrapper().getCurrentTime()));
+					eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, getMediaWrapper()),getMediaWrapper());
 				}
-			}, HTML5MediaEvent.getType(HTML5MediaEventsType.ended));
+			};
+			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler);
+
 		} else {
 			progressBar.setStyleName(progressBar.getStyleName() + unsupportedSuffx);
-			Iterator<Widget> iter = progressBar.iterator();
-			while (iter.hasNext()) {
-				iter.next().removeFromParent();
-			}
+			progressBar.clear();
 		}
 	}
 
@@ -135,9 +135,11 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	protected void seekInMedia(int positionX) {
 		if (isAttached()) {
 			int scrollSize = getScrollWidth();
-			double steep = getMedia().getDuration() / scrollSize;
+			double steep = getMediaWrapper().getDuration() / scrollSize;
 			double time = steep * positionX;
-			getMedia().setCurrentTime(time > getMedia().getDuration() ? getMedia().getDuration() : time);
+			double position = time > getMediaWrapper().getDuration() ? getMediaWrapper().getDuration() : time;
+			//TODO dodac schedulera dla zdarzen aby ograniczyc ilosc wykonywanych
+			eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, getMediaWrapper(), position),getMediaWrapper());
 		}
 	}
 

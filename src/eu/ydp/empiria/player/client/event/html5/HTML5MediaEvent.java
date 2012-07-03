@@ -14,6 +14,10 @@ public class HTML5MediaEvent extends DomEvent<HTML5MediaEventHandler> {
 		this.type = type;
 	}
 
+	public HTML5MediaEventsType getType() {
+		return type;
+	}
+
 	private static void checkIsPresent(HTML5MediaEventsType type){
 		if(!types.containsKey(type)){
 			types.put(type, new Type<HTML5MediaEventHandler>(type.name(), new HTML5MediaEvent(type)));

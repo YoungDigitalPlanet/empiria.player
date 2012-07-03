@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.object;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
@@ -11,27 +10,53 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
-import eu.ydp.empiria.player.client.module.object.impl.Audio;
-import eu.ydp.empiria.player.client.module.object.impl.OggAudio;
-import eu.ydp.empiria.player.client.module.object.impl.OggVideo;
-import eu.ydp.empiria.player.client.module.object.impl.Video;
+import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
+import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.XMLUtils;
-import eu.ydp.gwtutil.client.util.KeyValue;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.debug.Debug;
 
 public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {
+	private class MediaWrapperHandler implements CallbackRecevier {
+		Element element;
+
+		boolean template = false;
+
+		@Override
+		public void setCallbackReturnObject(Object o) {
+			if (o instanceof MediaWrapper<?>) {
+				createMedia(element, template, (MediaWrapper<?>) o);
+			}
+		}
+
+		public void setElement(Element element) {
+			this.element = element;
+		}
+
+		public void setTemplate(boolean template) {
+			this.template = template;
+		}
+	}
 
 	protected Widget widget;
 	protected MediaBase media;
+	boolean flashPlayer = false;
 	Widget moduleView = null;
-
 	BodyGeneratorSocket bodyGeneratorSocket = null;
+	MediaWrapper<?> mediaWrapper = null;
+	MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
+	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	@Override
 	public Widget getView() {
@@ -44,106 +69,56 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	 * @param element
 	 * @return
 	 */
-	private List<KeyValue<String, String>> getSource(Element element, String mediaType) {
+	private Map<String, String> getSource(Element element, String mediaType) {
 		NodeList sources = element.getElementsByTagName("source");
 		String src = XMLUtils.getAttributeAsString(element, "data");
-		List<KeyValue<String, String>> retValue = new ArrayList<KeyValue<String, String>>();
+		Map<String, String> retValue = new HashMap<String, String>();
 		if (sources.getLength() > 0) {
 			for (int x = 0; x < sources.getLength(); ++x) {
 				src = XMLUtils.getAttributeAsString((Element) sources.item(x), "src");
 				String type = XMLUtils.getAttributeAsString((Element) sources.item(x), "type");
-				retValue.add(new KeyValue<String, String>(src, type));
+				retValue.put(src, type);
 			}
 		} else {
 			String[] type = src.split("[.]");
-			retValue.add(new KeyValue<String, String>(src, mediaType + "/" + type[type.length - 1]));
+			retValue.put(src, mediaType + "/" + type[type.length - 1]);
 		}
 		return retValue;
 	}
 
-	/**
-	 * sprawdza czy w elementach soirce mamy pliki typu ogg
-	 *
-	 * @param sources
-	 * @return
-	 */
-	private boolean containsOgg(List<KeyValue<String, String>> sources) {
-		for (KeyValue<String, String> src : sources) {
-			if (src.getValue().matches(".*ogv|.*ogg")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * tworzy element video
-	 *
-	 * @param element
-	 * @param template
-	 *            czy bedzie urzywana skorka
-	 */
-	private void createVideo(Element element, boolean template) {
-		List<KeyValue<String, String>> sources = getSource(element, "video");
-		Video video = null;
-		if (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX)) {
-			if (containsOgg(sources)) {
-				video = GWT.create(OggVideo.class);
-			}
-		}
-		if (video == null) {
-			video = GWT.create(Video.class);
-		}
-
-		video.setShowNativeControls(!template);
-		for (KeyValue<String, String> src : sources) {
-			video.addSrc(src.getKey(), src.getValue());
-		}
+	public void getMediaWrapper(Element element, boolean template, String type) {
+		callbackHandler.setElement(element);
+		callbackHandler.setTemplate(template);
 		int width = XMLUtils.getAttributeAsInt(element, "width");
 		int height = XMLUtils.getAttributeAsInt(element, "height");
+		if (width == 0 || height == 0) {
+			width = 320;
+			height = 240;
+		}
 		String poster = XMLUtils.getAttributeAsString(element, "poster");
-		if (width > 0) {
-			video.setWidth(width);
-		}
-		if (height > 0) {
-			video.setHeight(height);
-		}
-		if (poster.length() > 0) {
-			video.setPoster(poster);
-		}
-		media = video.getMedia();
-		widget = video.asWidget();
+		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width);
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, callbackHandler, bmc));
 	}
 
 	/**
-	 * tworzy element audio
+	 * tworzy element
 	 *
 	 * @param element
 	 * @param template
 	 *            czy bedzie urzywana skorka
 	 */
-	private void createAudio(Element element, boolean template) {
-		List<KeyValue<String, String>> sources = getSource(element, "audio");
-		Audio audio = null;
-		if (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX)) {
-			if (containsOgg(sources)) {
-				audio = GWT.create(OggAudio.class);
-			}
+	private void createMedia(Element element, boolean template, MediaWrapper<?> mediaWrapper) {
+		Object media = mediaWrapper.getMediaObject();
+		if (media instanceof MediaBase) {
+			((MediaBase) media).setControls(!template);
 		}
-		if (audio == null) {
-			audio = GWT.create(Audio.class);
-		}
-		audio.setShowNativeControls(!template);
-		for (KeyValue<String, String> src : sources) {
-			audio.addSrc(src.getKey(), src.getValue());
-		}
-
-		media = audio.getMedia();
-		widget = audio.asWidget();
+		widget = mediaWrapper.getMediaObject();
+		this.mediaWrapper = mediaWrapper;
 	}
 
 	private void parseTemplate(Element template, FlowPanel parent) {
-		TemplateParser parser = new TemplateParser(media);
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		TemplateParser<?> parser = new TemplateParser(mediaWrapper);
 		parser.parse(template, parent);
 	}
 
@@ -153,27 +128,25 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 		Element template = XMLUtils.getFirstElementWithTagName(element, "template");
 		Map<String, String> styles = getModuleSocket().getStyles(element);
 		String playerType = styles.get("-player-" + type + "-skin");
-		GWT.log(styles.toString()+" "+playerType+" "+element.getNodeName());
-		if ("audioPlayer".equals(element.getNodeName()) && ((template == null && !"native".equals(playerType))||("old".equals(playerType)))) {
+		if ("audioPlayer".equals(element.getNodeName()) && ((template == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
 			AudioPlayerModule player = GWT.create(AudioPlayerModule.class);
 			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
-			this.moduleView =  player.getView();
+			this.moduleView = player.getView();
 		} else {
-			if (type.startsWith("video")) {
-				createVideo(element, template != null && !"native".equals(playerType));
-			} else {
-				createAudio(element, template != null && !"native".equals(playerType));
-			}
+			getMediaWrapper(element, template != null && !"native".equals(playerType), type);
 			ObjectModuleView moduleView = new ObjectModuleView();
 			String cls = element.getAttribute("class");
 			if (cls != null && !"".equals(cls))
 				moduleView.getContainerPanel().addStyleName(cls);
-
 			if (widget != null)
 				moduleView.getContainerPanel().add(widget);
 
-			if (template != null && media != null) {
+			if (template != null && widget != null && !flashPlayer) {
 				parseTemplate(template, moduleView.getContainerPanel());
+			}
+
+			if (mediaWrapper != null) {
+				eventsBus.fireEvent(new MediaEvent(MediaEventTypes.MEDIA_ATTACHED, mediaWrapper));
 			}
 			NodeList titleNodes = element.getElementsByTagName("title");
 			if (titleNodes.getLength() > 0) {

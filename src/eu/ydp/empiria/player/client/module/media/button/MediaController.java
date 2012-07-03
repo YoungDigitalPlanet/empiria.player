@@ -1,15 +1,10 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.Composite;
 
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 /**
  * Kontroler mediow
@@ -17,35 +12,41 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
  * @param <T>
  */
 public abstract class MediaController<T> extends Composite implements Factory<T>, SupportedAction<T> {
-	private Set<MobileUserAgent> supportedMobileAgents = new HashSet<MobileUserAgent>();
 	protected final static String clickSuffix = "-click";
 	protected final static String hoverSuffx = "-hover";
 	protected final static String unsupportedSuffx = "-unsupported";
-
+	private MediaAvailableOptions availableOptions;
+	private MediaWrapper<?> mediaWrapper = null;
 	/**
 	 * przekazuje obiekt multimediow na jakim ma pracowac kontrolka
 	 *
-	 * @param media
+	 * @param mediaDescriptor
 	 */
-	public abstract void setMedia(MediaBase media);
+	public  void setMediaDescriptor(MediaWrapper<?> mediaDescriptor){
+		this.mediaWrapper = mediaDescriptor;
+		availableOptions = mediaDescriptor.getMediaAvailableOptions();
+	}
 
 	/**
 	 * inicjalizacja kontrolki
 	 */
 	public abstract void init();
 
-	@Override
-	public boolean isSupported() {
-		//tylko mobilne
-		if (supportedMobileAgents.size() > 0 && UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN) {
-			return supportedMobileAgents.contains(UserAgentChecker.getMobileUserAgent());
-		}
-		return true;
+	/**
+	 * obiekt opisujacy funkcje dostepne dla podlaczonego zasobu
+	 * @return
+	 */
+	public MediaAvailableOptions getMediaAvailableOptions() {
+		return availableOptions;
 	}
 
-	public void setSupportedMobileAgents(MobileUserAgent... userAgents) {
-		if (userAgents != null && userAgents.length > 0) {
-			supportedMobileAgents.addAll(Arrays.asList(userAgents));
-		}
+	/**
+	 * Zwraca
+	 * @return
+	 */
+	public MediaWrapper<?> getMediaWrapper() {
+		return mediaWrapper;
 	}
+
+
 }

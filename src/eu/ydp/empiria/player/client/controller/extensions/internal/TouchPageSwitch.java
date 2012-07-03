@@ -14,16 +14,19 @@ import com.google.gwt.user.client.ui.RootPanel;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-public class TouchPageSwitch extends InternalExtension implements FlowRequestSocketUserExtension {
+public class TouchPageSwitch extends InternalExtension implements FlowRequestSocketUserExtension,PlayerEventHandler {
 	int start = 0;
 	int end = 0;
 	int startY = 0, endY = 0;
 	final int swipeLength = 220;
 	final int stackAndroidSwipeLength = 20;
 	private FlowRequestInvoker flowRequestInvoker;
-
+	private boolean touchReservation = false;
 	public TouchPageSwitch() {
 		RootPanel.get().addDomHandler(new TouchEndHandler() {
 			@Override
@@ -76,11 +79,15 @@ public class TouchPageSwitch extends InternalExtension implements FlowRequestSoc
 						break;
 					}
 				}
+				touchReservation = false;
 			}
 		}, TouchStartEvent.getType());
 	}
 
 	private void switchPage(int swipeLength) {
+		if(touchReservation){
+			return;
+		}
 		if (end > start && swipeLength < end - start) {
 			flowRequestInvoker.invokeRequest(NavigationButtonDirection.getRequest(NavigationButtonDirection.PREVIOUS));
 		} else if (start > end && swipeLength < start - end) {
@@ -98,6 +105,15 @@ public class TouchPageSwitch extends InternalExtension implements FlowRequestSoc
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onPlayerEvent(PlayerEvent event) {
+		//patrzymy czy jakis widget nie chce przejac tego zdarzenia na wylacznosc
+		if(event.getType()==PlayerEventTypes.TOUCH_EVENT_RESERVATION){
+			touchReservation = true;
+		}
 
 	}
 

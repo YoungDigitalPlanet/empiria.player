@@ -4,7 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 
-public abstract class JsExtension extends Extension {
+public abstract class JsExtension implements Extension {
 
 	protected JavaScriptObject extensionJsObject;
 

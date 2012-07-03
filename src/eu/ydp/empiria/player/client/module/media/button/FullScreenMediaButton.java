@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.util.HTML5FullScreen.FullScreenEvent;
 import eu.ydp.empiria.player.client.util.HTML5FullScreen.FullScreenEventHandler;
 
 /**
- * Przycisk przełączania pomiedzy trybem pełnoekranowym a zwyklym
+ * Przycisk przelaczania pomiedzy trybem pelnoekranowym a zwyklym
  *
  *
  */
@@ -23,7 +23,7 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 	protected void onClick() {
 		super.onClick();
 		if (!HTML5FullScreen.isInFullScreen()) {
-			HTML5FullScreen.requestFullScreen(getMedia().getParent().getElement());
+	//		HTML5FullScreen.requestFullScreen(getMedia().getParent().getElement());
 		} else {
 			HTML5FullScreen.exitFullScreen();
 		}

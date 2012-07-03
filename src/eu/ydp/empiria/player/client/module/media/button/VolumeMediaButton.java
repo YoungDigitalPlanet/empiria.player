@@ -16,6 +16,7 @@ public class VolumeMediaButton extends AbstractMediaButton<VolumeMediaButton> {
 	}
 
 	VolumeScrollBar volumeScrollBar = new VolumeScrollBar();
+	boolean attached = false;
 
 	@Override
 	public VolumeMediaButton getNewInstance() {
@@ -24,14 +25,15 @@ public class VolumeMediaButton extends AbstractMediaButton<VolumeMediaButton> {
 
 	@Override
 	public void init() {
+		super.init();
 		if (isSupported()) {
-			volumeScrollBar.setMedia(getMedia());
+			volumeScrollBar.setMediaDescriptor(getMediaWrapper());
 			volumeScrollBar.init();
 			volumeScrollBar.setVisible(false);
 
 		}
 	}
-	boolean attached = false;
+
 	@Override
 	protected void onClick() {
 		if(!attached){
@@ -52,5 +54,10 @@ public class VolumeMediaButton extends AbstractMediaButton<VolumeMediaButton> {
 		}else{
 			volumeScrollBar.setVisible(false);
 		}
+	}
+
+	@Override
+	public boolean isSupported() {
+		return getMediaAvailableOptions().isVolumeChangeSupported();
 	}
 }
