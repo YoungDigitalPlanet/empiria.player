@@ -95,8 +95,10 @@ public class JsSoundProcessorExtension extends JsExtension implements SoundProce
 	}
 
 	@Override
+	@SuppressWarnings(value = { "all" })
 	public void onMediaEvent(MediaEvent event) {
 		// emulujemy play poprzez deliveryevent
+
 		switch (((MediaEventTypes) event.getAssociatedType().getType())) {
 		case PLAY:
 			Map<String, Object> params = new HashMap<String, Object>();
