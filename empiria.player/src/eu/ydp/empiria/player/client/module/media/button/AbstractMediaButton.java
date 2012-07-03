@@ -1,12 +1,9 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.object.impl.Video;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 /**
  * bazowy przycisk dla kontrolerow multimediow
@@ -14,46 +11,46 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
  * @param <T>
  *            typ przycisku dla {@link Factory}
  */
-public abstract class AbstractMediaButton<T> extends MediaController<T>  {
-	public enum MediaType {
-		AUDIO, VIDEO
-	}
-
-
+public abstract class AbstractMediaButton<T> extends MediaController<T> {
 	private String baseStyleName;
 	private String onClickStyleName;
 	private String hoverStyleName;
 	protected boolean clicked = false;
 	private FlowPanel divElement = new FlowPanel();
-	private MediaBase media;
-	protected MediaType mediaType = MediaType.AUDIO;
 	private boolean singleClick = true;
+
 
 	/**
 	 * bazowy przycisk dla kontrolerow multimediow
 	 *
 	 * @param baseStyleName
 	 * @param singleClick
-	 *            czy element jest zwyklym przyciskiem i mousup jest ignorowany wartosc true<br/>
+	 *            czy element jest zwyklym przyciskiem i mousup jest ignorowany
+	 *            wartosc true<br/>
 	 *            false wywoluje ponownie akcje na mouseup
 	 */
-	public AbstractMediaButton(String baseStyleName, boolean singleClick, MobileUserAgent... supportedUserAgents) {
+	public AbstractMediaButton(String baseStyleName, boolean singleClick) {
 		this.baseStyleName = baseStyleName;
 		this.onClickStyleName = baseStyleName + clickSuffix;
 		this.hoverStyleName = baseStyleName + hoverSuffx;
 		this.singleClick = singleClick;
-		setSupportedMobileAgents(supportedUserAgents);
 		initWidget(divElement);
-		if(isSupported()){
-			sinkEvents(Event.MOUSEEVENTS | Event.TOUCHEVENTS);
-			this.setStyleName(this.baseStyleName);
-		}else{
-			this.setStyleName(this.baseStyleName+unsupportedSuffx);
-		}
+
 	}
 
-	public AbstractMediaButton(String baseStyleName, MobileUserAgent... supportedUserAgents) {
-		this(baseStyleName, true,supportedUserAgents);
+	@Override
+	public void init() {
+		if (isSupported()) {
+			sinkEvents(Event.MOUSEEVENTS | Event.TOUCHEVENTS);
+			this.setStyleName(this.baseStyleName);
+		} else {
+			this.setStyleName(this.baseStyleName + unsupportedSuffx);
+		}
+
+	}
+
+	public AbstractMediaButton(String baseStyleName) {
+		this(baseStyleName, true);
 	}
 
 	@Override
@@ -77,7 +74,6 @@ public abstract class AbstractMediaButton<T> extends MediaController<T>  {
 			onMouseOut();
 			break;
 		}
-		super.onBrowserEvent(event);
 	}
 
 	/**
@@ -120,20 +116,4 @@ public abstract class AbstractMediaButton<T> extends MediaController<T>  {
 			divElement.getElement().removeClassName(hoverStyleName);
 		}
 	}
-
-	public void setMedia(MediaBase media) {
-		if (media instanceof Video) {
-			mediaType = MediaType.VIDEO;
-		}
-		this.media = media;
-	}
-
-	public MediaType getMediaType() {
-		return mediaType;
-	}
-
-	public MediaBase getMedia() {
-		return media;
-	}
-
 }

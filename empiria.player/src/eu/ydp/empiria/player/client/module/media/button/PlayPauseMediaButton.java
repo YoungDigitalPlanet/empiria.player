@@ -1,18 +1,21 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
-
-
+import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 /**
  *
  * przycisk playPause
+ *
  * @author plelakowski
  *
  */
-public class PlayPauseMediaButton extends AbstractMediaButton<PlayPauseMediaButton>{
+public class PlayPauseMediaButton extends AbstractMediaButton<PlayPauseMediaButton> {
+	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
 	public PlayPauseMediaButton() {
 		super("qp-media-play-pause");
 	}
@@ -20,27 +23,32 @@ public class PlayPauseMediaButton extends AbstractMediaButton<PlayPauseMediaButt
 	@Override
 	protected void onClick() {
 		super.onClick();
-		if(clicked){
-			getMedia().play();
-		}else{
-			getMedia().pause();
+		if (clicked) {
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, getMediaWrapper()), getMediaWrapper());
+		} else {
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, getMediaWrapper()), getMediaWrapper());
 		}
 	}
 
 	@Override
 	public void init() {
-		HTML5MediaEventHandler handler = new HTML5MediaEventHandler() {
-
+		super.init();
+		AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
 			@Override
-			public void onEvent(HTML5MediaEvent event) {
+			public void onMediaEvent(MediaEvent event) {
 				clicked = true;
 				changeStyleForClick();
 				clicked = false;
 			}
 		};
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PAUSE), getMediaWrapper(), handler);
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler);
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler);
+	}
 
-		getMedia().addBitlessDomHandler(handler, HTML5MediaEvent.getType(HTML5MediaEventsType.pause));
-		getMedia().addBitlessDomHandler(handler, HTML5MediaEvent.getType(HTML5MediaEventsType.ended));
+	@Override
+	public boolean isSupported() {
+		return getMediaAvailableOptions().isPlaySupported() && getMediaAvailableOptions().isPauseSupported();
 	}
 
 	@Override

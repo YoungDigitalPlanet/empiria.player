@@ -17,6 +17,12 @@ public class SimpleMediaButton extends AbstractMediaButton<SimpleMediaButton> {
 
 	@Override
 	public void init() {
+
+	}
+
+	@Override
+	public boolean isSupported() {
+		return true;
 	}
 
 }

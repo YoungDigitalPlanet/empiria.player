@@ -11,7 +11,9 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
+import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -46,7 +48,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Repor
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultSoundProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
@@ -96,6 +98,9 @@ import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
@@ -139,6 +144,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	protected String stateAsync;
 
+	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	/**
 	 * C'tor.
 	 */
@@ -304,8 +310,10 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new AudioMuteButtonModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
-		loadExtension(new DefaultSoundProcessorExtension());
+		loadExtension(new DefaultMediaProcessorExtension());
 		loadExtension(new TouchPageSwitch());
+		loadExtension(new Page());
+	//	loadExtension(new MediaManager());
 	}
 
 	protected void loadLibraryExtensions(){
@@ -415,6 +423,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	@Override
 	public void onFlowProcessingEvent(FlowProcessingEvent event) {
 		if (event.getType() == FlowProcessingEventType.PAGE_LOADED) {
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED));
 			PageReference pr = flowManager.getPageReference();
 			PageData pd = dataManager.generatePageData(pr);
 

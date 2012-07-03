@@ -1,9 +1,10 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
-import static eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent.*;
+import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 /**
  * Przycisk mute
@@ -13,29 +14,37 @@ import static eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent.*;
  */
 public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
 	public MuteMediaButton() {
-		super("qp-media-mute",FIREFOX, CHROME);
+		super("qp-media-mute");
 	}
+	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	@Override
 	protected void onClick() {
 		super.onClick();
-		getMedia().setMuted(clicked);
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.MUTE,getMediaWrapper()), getMediaWrapper());
 	}
 
 	@Override
 	public void init() {
-		getMedia().addBitlessDomHandler(new HTML5MediaEventHandler() {
+		super.init();
+		AbstractMediaEventHandler eventHandler = new AbstractMediaEventHandler() {
 			@Override
-			public void onEvent(HTML5MediaEvent event) {
-				if (getMedia().getVolume() == 0) {
-					//onClick();
+			public void onMediaEvent(MediaEvent event) {
+				if (event.getMediaWrapper().getVolume() == 0) {
+					// onClick();
 				}
 			}
-		}, HTML5MediaEvent.getType(HTML5MediaEventsType.volumechange));
+		};
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), eventHandler);
 	}
 
 	@Override
 	public MuteMediaButton getNewInstance() {
 		return new MuteMediaButton();
+	}
+
+	@Override
+	public boolean isSupported() {
+		return getMediaAvailableOptions().isMuteSupported();
 	}
 }

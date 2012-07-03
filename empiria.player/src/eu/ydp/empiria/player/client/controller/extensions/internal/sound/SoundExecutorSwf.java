@@ -1,72 +1,64 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import eu.ydp.empiria.gwtflashmedia.client.FlashSound;
 import eu.ydp.empiria.gwtflashmedia.client.FlashSoundFactory;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaCompleteEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaCompleteHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaPlayEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaPlayHandler;
+import eu.ydp.empiria.gwtflashmedia.client.event.HasFlashMediaHandlers;
+import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
+import eu.ydp.empiria.player.client.util.SourceUtil;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-public class SoundExecutorSwf implements SoundExecutor {
+public class SoundExecutorSwf extends ExecutorSwf {
 
-	protected FlashSound currSound;
-	protected boolean playing = false;
-	protected SoundExecutorListener listener;
 	protected String playerPathDir = null;
-	
-	public SoundExecutorSwf(){
-		FlashSoundFactory.init();
-	}
-	
-	@Override
-	public void play(String src) {
 
-		if (playing)
-			stop();
-		
-		currSound = FlashSoundFactory.createSound(src);
-		
-		currSound.addFlashMediaPlayHandler(new FlashMediaPlayHandler() {
-			
+	@Override
+	public void stop() {
+		pause = false;
+		if (flashMedia != null)
+			flashMedia.stop();
+		onSoundStop();
+
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_STOP, getMediaWrapper()), getMediaWrapper());
+	}
+
+	private void onSoundStop() {
+		playing = false;
+		if (soundExecutorListener != null)
+			soundExecutorListener.onSoundFinished();
+	}
+
+	@Override
+	public void init() {
+		flashMedia = FlashSoundFactory.createSound(source);
+		((HasFlashMediaHandlers) flashMedia).addFlashMediaPlayHandler(new FlashMediaPlayHandler() {
+
 			@Override
 			public void onFlashSoundPlay(FlashMediaPlayEvent event) {
-				if (listener != null)
-					listener.onPlay();
+				if (soundExecutorListener != null)
+					soundExecutorListener.onPlay();
 				playing = true;
+
 			}
 		});
-		
-		currSound.addFlashMediaCompleteHandler(new FlashMediaCompleteHandler() {
-			
+
+		((HasFlashMediaHandlers) flashMedia).addFlashMediaCompleteHandler(new FlashMediaCompleteHandler() {
 			@Override
 			public void onFlashSoundComplete(FlashMediaCompleteEvent event) {
 				onSoundStop();
 			}
 		});
-		
-		currSound.play();
 
-	}
-
-	@Override
-	public void stop() {
-		if (playing){
-			if (currSound != null)
-				currSound.stop();
-			onSoundStop();
-		}
-	}
-	
-	private void onSoundStop(){
-		playing = false;
-		if (listener != null)
-			listener.onSoundFinished();
-		currSound.free();
+		super.init();
 	}
 
 	@Override
-	public void setSoundFinishedListener(SoundExecutorListener listener) {
-		this.listener = listener;
+	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {
+		super.setBaseMediaConfiguration(baseMediaConfiguration);
+		source = SourceUtil.getMpegSource(baseMediaConfiguration.getSources());
 	}
-	
+
 }

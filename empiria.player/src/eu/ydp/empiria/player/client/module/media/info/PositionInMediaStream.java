@@ -1,69 +1,54 @@
 package eu.ydp.empiria.player.client.module.media.info;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.media.client.MediaBase;
 
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
-import eu.ydp.empiria.player.client.module.media.button.AbstractMediaButton;
+import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-public class PositionInMediaStream extends AbstractMediaButton<PositionInMediaStream> {
+/**
+ * Widget wyswietlajacy pozycje w strumieniu oraz dlugosc calego strumienia
+ *
+ */
+public class PositionInMediaStream extends AbstractMediaTime<PositionInMediaStream> {
 	NumberFormat formatter = NumberFormat.getFormat("##00");
+	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	public PositionInMediaStream() {
 		super("qp-media-positioninstream");
 	}
 
 	@Override
-	protected void onClick() {
-	}
-
-	private void setInnerText(double currentTime,double duration) {
-		double timeModulo = currentTime % 60;
-		StringBuilder innerText = new StringBuilder(formatter.format((currentTime - timeModulo) / 60f));
-		innerText.append(":");
-		innerText.append(formatter.format(timeModulo));
-		innerText.append(" / ");
-		timeModulo = duration % 60;
-		innerText.append(formatter.format((duration - timeModulo) / 60f));
-		innerText.append(":");
-		innerText.append(formatter.format(timeModulo));
-		getElement().setInnerText(innerText.toString());
-	}
-
-	@Override
 	public void init() {
-		final ScheduledCommand command = new ScheduledCommand() {
-			int lastTime = 0;
-			MediaBase media;
+		AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
+			//-1 aby przy pierwszym zdarzeniu pokazal sie timer
+			int lastTime = -1;
+
 			@Override
-			public void execute() {
-				media = getMedia();
-				double currentTime = media.getCurrentTime();
+			public void onMediaEvent(MediaEvent event) {
+				double currentTime = getMediaWrapper().getCurrentTime();
 				if (currentTime > lastTime + 1 || currentTime < lastTime - 1) {
 					lastTime = (int) currentTime;
-					setInnerText(currentTime,media.getDuration());
+					double timeModulo = currentTime % 60;
+					String innerText = getInnerText((currentTime - timeModulo) / 60f, timeModulo);
+					innerText += " / ";
+					double duration = getMediaWrapper().getDuration();
+					timeModulo = duration % 60;
+					innerText += getInnerText((duration - timeModulo) / 60f, timeModulo);
+					getElement().setInnerText(innerText);
 				}
 			}
 		};
-		HTML5MediaEventHandler handler = new HTML5MediaEventHandler() {
-			@Override
-			public void onEvent(HTML5MediaEvent event) {
-				Scheduler.get().scheduleDeferred(command);
-			}
-		};
-
-		getMedia().addBitlessDomHandler(handler, HTML5MediaEvent.getType(HTML5MediaEventsType.timeupdate));
-		getMedia().addBitlessDomHandler(handler, HTML5MediaEvent.getType(HTML5MediaEventsType.durationchange));
-		getElement().setInnerText("00:00 / 00:00");
+		if (isSupported()) {
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler);
+		}
 	}
 
 	@Override
 	public PositionInMediaStream getNewInstance() {
 		return new PositionInMediaStream();
 	}
-
 }

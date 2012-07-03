@@ -8,16 +8,17 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.Touch;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
-import static eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent.*;
+import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 
@@ -39,16 +40,22 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 
 	@UiField
 	FlowPanel afterButton;
+
 	HandlerRegistration durationchangeHandlerRegistration;
+	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	public VolumeScrollBar() {
-		super(FIREFOX, CHROME);
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override
 	public VolumeScrollBar getNewInstance() {
 		return new VolumeScrollBar();
+	}
+
+	@Override
+	public boolean isSupported() {
+		return getMediaAvailableOptions().isVolumeChangeSupported();
 	}
 
 	/**
@@ -73,23 +80,25 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	public void init() {
 		super.init();
 		if (isSupported()) {
-			getMedia().addBitlessDomHandler(new HTML5MediaEventHandler() {
+			AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
 				@Override
-				public void onEvent(HTML5MediaEvent event) {
-					if (getMedia().isMuted()) {
+				public void onMediaEvent(MediaEvent event) {
+					if (getMediaWrapper().isMuted()) {
 						moveScroll(getScrollLength());
 					}
 				}
-			}, HTML5MediaEvent.getType(HTML5MediaEventsType.volumechange));
-
-			durationchangeHandlerRegistration = getMedia().addBitlessDomHandler(new HTML5MediaEventHandler() {
+			};
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler);
+			handler = new AbstractMediaEventHandler() {
 				@Override
-				public void onEvent(HTML5MediaEvent event) {
-					double volume = getMedia().getVolume();
+				public void onMediaEvent(MediaEvent event) {
+					double volume = getMediaWrapper().getVolume();
 					moveScroll((int) (getScrollLength() * volume));
 					durationchangeHandlerRegistration.removeHandler();
 				}
-			}, HTML5MediaEvent.getType(HTML5MediaEventsType.durationchange));
+			};
+			durationchangeHandlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler);
+
 		} else {
 			progressBar.setStyleName(progressBar.getStyleName() + unsupportedSuffx);
 			Iterator<Widget> iter = progressBar.iterator();
@@ -113,7 +122,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	}
 
 	protected void setVolume(double value) {
-		getMedia().setVolume(value);
+		eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.CHANGE_VOLUME, getMediaWrapper(), value), getMediaWrapper());
 	}
 
 	@Override
