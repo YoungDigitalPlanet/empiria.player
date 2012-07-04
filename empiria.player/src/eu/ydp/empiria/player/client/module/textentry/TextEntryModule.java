@@ -4,28 +4,29 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 public class TextEntryModule extends OneViewInteractionModuleBase implements Factory<TextEntryModule>{
 
@@ -57,6 +58,23 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 				onTextBoxChange();
 			}
 		});
+		if (UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN){
+			textBox.addFocusHandler(new FocusHandler() {
+				
+				@Override
+				public void onFocus(FocusEvent event) {
+					Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+						
+						@Override
+						public void execute() {
+							if (textBox.getText().length() > 0)
+								textBox.setSelectionRange(0, textBox.getText().length());
+						}
+					});
+				}
+			});
+		}
+				
 
 		Panel spanPrefix = new FlowPanel();
 		spanPrefix.setStyleName("qp-text-textentry-prefix");
