@@ -25,7 +25,6 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.debug.Debug;
 
 public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {
 	private class MediaWrapperHandler implements CallbackRecevier {
@@ -96,7 +95,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 			height = 240;
 		}
 		String poster = XMLUtils.getAttributeAsString(element, "poster");
-		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width);
+		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width, template);
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, callbackHandler, bmc));
 	}
 
@@ -108,10 +107,6 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	 *            czy bedzie urzywana skorka
 	 */
 	private void createMedia(Element element, boolean template, MediaWrapper<?> mediaWrapper) {
-		Object media = mediaWrapper.getMediaObject();
-		if (media instanceof MediaBase) {
-			((MediaBase) media).setControls(!template);
-		}
 		widget = mediaWrapper.getMediaObject();
 		this.mediaWrapper = mediaWrapper;
 	}
@@ -133,13 +128,17 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
 			this.moduleView = player.getView();
 		} else {
+			if(element.getNodeName().equals("audioPlayer")){
+				type="audio";
+			}
 			getMediaWrapper(element, template != null && !"native".equals(playerType), type);
 			ObjectModuleView moduleView = new ObjectModuleView();
 			String cls = element.getAttribute("class");
 			if (cls != null && !"".equals(cls))
 				moduleView.getContainerPanel().addStyleName(cls);
-			if (widget != null)
+			if (widget != null){
 				moduleView.getContainerPanel().add(widget);
+			}
 
 			if (template != null && widget != null && !flashPlayer) {
 				parseTemplate(template, moduleView.getContainerPanel());
