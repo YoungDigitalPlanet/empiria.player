@@ -14,6 +14,10 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.LocalSwfMediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.LocalSwfMediaWrapper;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -24,7 +28,6 @@ import eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.gwtutil.client.debug.Debug;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
@@ -43,6 +46,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 		super.init();
 		soundExecutor = GWT.create(SoundExecutor.class);
 		soundExecutor.setSoundFinishedListener(this);
+		executors.put(null, soundExecutor);
 	}
 
 	public void getSoundExecutor() {
@@ -58,7 +62,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	public void onDeliveryEvent(DeliveryEvent deliveryEvent) {
 		if (deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING) {
 			forceStop(false);
-			if(soundExecutor instanceof ExecutorSwf){
+			if (soundExecutor instanceof ExecutorSwf) {
 				((ExecutorSwf) soundExecutor).free();
 			}
 		} else if (deliveryEvent.getType() == DeliveryEventType.FEEDBACK_MUTE) {
@@ -70,7 +74,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			if (deliveryEvent.getParams().containsKey("url") && deliveryEvent.getParams().get("url") instanceof String) {
 				String url = (String) deliveryEvent.getParams().get("url");
 				forceStop(false);
-				if(soundExecutor instanceof ExecutorSwf){
+				if (soundExecutor instanceof ExecutorSwf) {
 					((ExecutorSwf) soundExecutor).free();
 				}
 				callback = null;
@@ -83,7 +87,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 						@Override
 						public void stop() {
 							forceStop(false);
-							if(soundExecutor instanceof ExecutorSwf){
+							if (soundExecutor instanceof ExecutorSwf) {
 								((ExecutorSwf) soundExecutor).free();
 							}
 						}
@@ -105,17 +109,16 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 
 	protected void forceStop(boolean pause, MediaWrapper<?> mw) {
 		for (SoundExecutor<?> se : executors.values()) {
-			if (se.getMediaWrapper().equals(mw)) {
+			if (se.getMediaWrapper() !=null && se.getMediaWrapper().equals(mw)) {
 				continue;
 			}
-			if (se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported() && pause) {
+			if (se.getMediaWrapper() !=null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported() && pause) {
 				se.pause();
 			} else {
 				se.stop();
 			}
 		}
 		if (executors.size() == 0) {
-			Debug.log("sound stop");
 			soundExecutor.stop();
 		}
 	}
@@ -139,32 +142,45 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	 *
 	 * @param event
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void createMediaWrapper(PlayerEvent event) {
 		if (event.getValue() != null && event.getValue() instanceof BaseMediaConfiguration) {
 			BaseMediaConfiguration bmc = (BaseMediaConfiguration) event.getValue();
 			Media mb = null;
-
+			//lecim z koksem :D
 			if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported()) {
-				mb = GWT.create(eu.ydp.empiria.player.client.module.object.impl.OggVideo.class);
+				mb = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
 			} else if (Audio.isSupported()) {
 				mb = new HTML5AudioImpl();
 			}
 			if (!containsOgg(bmc.getSources()) && (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX))) {
 				mb = null;
 			}
+
 			SoundExecutor<?> executor;
 			if (mb != null) {
 				HTML5MediaExecutor ex = new HTML5MediaExecutor();
 				ex.setMediaWrapper(new HTML5MediaWrapper(mb));
 				executor = ex;
-			} else if (bmc.getMediaType() == MediaType.VIDEO) {
-				VideoExecutorSwf ex = new VideoExecutorSwf();
-				ex.setMediaWrapper(new SwfMediaWrapper());
-				executor = ex;
+			} else if (!UserAgentChecker.isLocal()) {
+				if (bmc.isTemplate()) {
+					if (bmc.getMediaType() == MediaType.VIDEO) {
+						VideoExecutorSwf ex = new VideoExecutorSwf();
+						ex.setMediaWrapper(new SwfMediaWrapper());
+						executor = ex;
+					} else {
+						SoundExecutorSwf ex = new SoundExecutorSwf();
+						ex.setMediaWrapper(new SwfMediaWrapper());
+						executor = ex;
+					}
+				} else {
+					OldSwfMediaExecutor ex = new OldSwfMediaExecutor();
+					ex.setMediaWrapper(new OldSwfMediaWrapper());
+					executor = ex;
+				}
 			} else {
-				SoundExecutorSwf ex = new SoundExecutorSwf();
-				ex.setMediaWrapper(new SwfMediaWrapper());
-				executor = ex;
+				executor = new LocalSwfMediaExecutor();
+				executor.setMediaWrapper((MediaWrapper) new LocalSwfMediaWrapper());
 			}
 			executor.setBaseMediaConfiguration(bmc);
 			executor.init();
@@ -172,7 +188,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			if (event.getSource() instanceof CallbackRecevier) {
 				((CallbackRecevier) event.getSource()).setCallbackReturnObject(executor.getMediaWrapper());
 			}
-			soundExecutor = executor;
+			//soundExecutor = executor;
 		}
 	}
 

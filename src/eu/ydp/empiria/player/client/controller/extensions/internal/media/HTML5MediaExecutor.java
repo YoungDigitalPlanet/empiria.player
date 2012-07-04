@@ -47,6 +47,7 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 				media.addSource(entry.getKey(), entry.getValue());
 			}
 			media.setPreload(MediaElement.PRELOAD_METADATA);
+			media.setControls(!baseMediaConfiguration.isTemplate());
 		}
 	}
 

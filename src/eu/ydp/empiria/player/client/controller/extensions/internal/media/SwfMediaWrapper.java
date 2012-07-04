@@ -15,7 +15,6 @@ import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.gwtutil.client.debug.Debug;
 
 /**
  * Wrapper dla mediow swf

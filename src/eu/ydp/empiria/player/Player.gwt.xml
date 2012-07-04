@@ -30,7 +30,7 @@
 		return "false";
 	  }
 	]]></property-provider>
-	
+
 	<script src="video/AC_RunActiveContent.js" />
 	<script src="video/FAVideo.js" />
 	<script src="jscss/cssparser.js" />
@@ -39,16 +39,12 @@
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 	</replace-with>
-	
+
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashLocalVideoImpl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 		<any>
 			<when-property-is name="run.local" value="true" />
 		</any>
-	</replace-with>
-
-	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggVideo" />
 	</replace-with>
 
 	<!-- Use video tag for iphone browser -->
@@ -68,22 +64,12 @@
 			<when-property-is name="mobile.user.agent" value="android4" />
 		</any>
 	</replace-with>
-	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroidImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggVideo" />
-		<any>
-			<when-property-is name="mobile.user.agent" value="android23" />
-			<when-property-is name="mobile.user.agent" value="android321" />
-			<when-property-is name="mobile.user.agent" value="android4" />
-		</any>
-	</replace-with>
+
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroid3Impl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 		<when-property-is name="mobile.user.agent" value="android3" />
 	</replace-with>
-	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroid3Impl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.OggVideo" />
-		<when-property-is name="mobile.user.agent" value="android3" />
-	</replace-with>
+
 	<!-- END VIDEO -->
 
 	<!-- Progressbar dla androida w media -->
@@ -100,13 +86,13 @@
 		</any>
 	</replace-with>
 	<!-- end progressbar -->
-	
-	
+
+
 	<!-- AUDIO - OLD -->
 	<replace-with class="eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule">
 		<when-type-is class="eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule" />
 	</replace-with>
-	
+
 	<replace-with class="eu.ydp.empiria.player.client.module.audioplayer.FlashAudioPlayerModule">
 		<when-type-is class="eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule" />
 		<any>
@@ -120,7 +106,7 @@
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.EmbedAudioImpl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Audio" />
 	</replace-with>
-	
+
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashLocalAudioImpl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Audio" />
 		<any>
@@ -163,11 +149,11 @@
 			<when-property-is name="user.agent" value="ie9" />
 		</any>
 	</replace-with>
-	
+
 	<replace-with class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindowCanvas">
 		<when-type-is class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindow" />
 	</replace-with>
-	
+
 	<replace-with class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindowImg">
 		<when-type-is class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindow" />
 		<any>

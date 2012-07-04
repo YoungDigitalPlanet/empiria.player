@@ -4,7 +4,7 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-public class HTML5VideoImpl extends FlowPanel implements Video, OggVideo {
+public class HTML5VideoImpl extends FlowPanel implements Video {
 
 	protected com.google.gwt.media.client.Video video;
 	public HTML5VideoImpl() {
