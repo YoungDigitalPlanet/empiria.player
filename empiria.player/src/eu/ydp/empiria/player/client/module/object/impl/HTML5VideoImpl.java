@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.object.impl;
 
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class HTML5VideoImpl extends FlowPanel implements Video, OggVideo {
