@@ -7,8 +7,8 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.Event;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class MediaEvent extends  Event<MediaEventHandler> {
-	public static Map<MediaEventTypes, Type<MediaEventHandler>> types = new HashMap<MediaEventTypes, Event.Type<MediaEventHandler>>();
+public class MediaEvent extends  Event<MediaEventHandler,MediaEventTypes> {
+	public static Map<MediaEventTypes, Type<MediaEventHandler,MediaEventTypes>> types = new HashMap<MediaEventTypes, Event.Type<MediaEventHandler,MediaEventTypes>>();
 
 	MediaEventTypes type = null;
 
@@ -40,11 +40,11 @@ public class MediaEvent extends  Event<MediaEventHandler> {
 
 	private static void checkIsPresent(MediaEventTypes type){
 		if(!types.containsKey(type)){
-			types.put(type, new Type<MediaEventHandler>(type,new CurrentPageScope()));
+			types.put(type, new Type<MediaEventHandler,MediaEventTypes>(type,new CurrentPageScope()));
 		}
 	}
 	@Override
-	public Event.Type<MediaEventHandler> getAssociatedType() {
+	public Event.Type<MediaEventHandler,MediaEventTypes> getAssociatedType() {
 		checkIsPresent(type);
 		return types.get(type);
 	}
@@ -54,7 +54,7 @@ public class MediaEvent extends  Event<MediaEventHandler> {
 		handler.onMediaEvent(this);
 	}
 
-	public static Type<MediaEventHandler> getType(MediaEventTypes type) {
+	public static Type<MediaEventHandler,MediaEventTypes> getType(MediaEventTypes type) {
 		checkIsPresent(type);
 		return types.get(type);
 	}

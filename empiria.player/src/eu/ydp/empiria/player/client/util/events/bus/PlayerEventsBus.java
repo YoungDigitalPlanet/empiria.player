@@ -13,62 +13,48 @@ import eu.ydp.empiria.player.client.util.events.Event.Type;
 import eu.ydp.empiria.player.client.util.events.EventHandler;
 import eu.ydp.empiria.player.client.util.events.command.FireCommand;
 
-public class PlayerEventsBus implements EventsBus {
-	private final Map<Event.Type<?>, Map<Object, List<?>>> syncMap = new HashMap<Event.Type<?>, Map<Object, List<?>>>();
-	private final Map<Event.Type<?>, Map<Object, List<?>>> asyncMap = new HashMap<Event.Type<?>, Map<Object, List<?>>>();
+public class PlayerEventsBus implements EventsBus{
+	private final Map<Event.Type<?,?>, Map<Object, List<?>>> syncMap = new HashMap<Event.Type<?,?>, Map<Object, List<?>>>();
+	private final Map<Event.Type<?,?>, Map<Object, List<?>>> asyncMap = new HashMap<Event.Type<?,?>, Map<Object, List<?>>>();
 	private Scheduler scheduler = Scheduler.get();
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.util.events.bus.EventsBus#addHandler(eu.
-	 * ydp.empiria.player.client.util.events.Event.Type, H)
+
+	/* (non-Javadoc)
+	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#addHandler(eu.ydp.empiria.player.client.util.events.Event.Type, H)
 	 */
 	@Override
-	public <H extends EventHandler> HandlerRegistration addHandler(Type<H> type, H handler) {
+	public <H extends EventHandler,T extends Enum<T>> HandlerRegistration addHandler(Type<H,T> type, H handler) {
 		return doAdd(type, null, handler, false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.util.events.bus.EventsBus#addHandlerToSource
-	 * (eu.ydp.empiria.player.client.util.events.Event.Type, java.lang.Object,
-	 * H)
+
+	/* (non-Javadoc)
+	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#addHandlerToSource(eu.ydp.empiria.player.client.util.events.Event.Type, java.lang.Object, H)
 	 */
 	@Override
-	public <H extends EventHandler> HandlerRegistration addHandlerToSource(Type<H> type, Object source, H handler) {
+	public <H extends EventHandler,T extends Enum<T>> HandlerRegistration addHandlerToSource(Type<H,T> type, Object source, H handler) {
 		return doAdd(type, source, handler, false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.util.events.bus.EventsBus#addAsyncHandler
-	 * (eu.ydp.empiria.player.client.util.events.Event.Type, H)
+
+	/* (non-Javadoc)
+	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#addAsyncHandler(eu.ydp.empiria.player.client.util.events.Event.Type, H)
 	 */
 	@Override
-	public <H extends EventHandler> HandlerRegistration addAsyncHandler(Type<H> type, H handler) {
+	public <H extends EventHandler,T extends Enum<T>> HandlerRegistration addAsyncHandler(Type<H,T> type, H handler) {
 		return doAdd(type, null, handler, true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#
-	 * addAsyncHandlerToSource
-	 * (eu.ydp.empiria.player.client.util.events.Event.Type, java.lang.Object,
-	 * H)
+
+	/* (non-Javadoc)
+	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#addAsyncHandlerToSource(eu.ydp.empiria.player.client.util.events.Event.Type, java.lang.Object, H)
 	 */
 	@Override
-	public <H extends EventHandler> HandlerRegistration addAsyncHandlerToSource(Type<H> type, Object source, H handler) {
+	public <H extends EventHandler,T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(Type<H,T> type, Object source, H handler) {
 		return doAdd(type, source, handler, true);
 	}
 
-	private <H extends EventHandler> void doRemove(Type<H> type, Object source, H handler, boolean async) {
+	private <H extends EventHandler,T extends Enum<T>> void doRemove(Type<H,T> type, Object source, H handler, boolean async) {
 		// TODO sprawdzic
 		Map<Object, List<?>> handlerMap = async ? asyncMap.get(type) : syncMap.get(type);
 		if (handlerMap != null) {
@@ -80,7 +66,7 @@ public class PlayerEventsBus implements EventsBus {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private <H extends EventHandler> HandlerRegistration doAdd(final Type<H> type, final Object source, final H handler, final boolean async) {
+	private <H extends EventHandler,T extends Enum<T>> HandlerRegistration doAdd(final Type<H,T> type, final Object source, final H handler, final boolean async) {
 		if (type == null) {
 			throw new NullPointerException("Cannot add a handler with a null type");
 		}
@@ -113,83 +99,72 @@ public class PlayerEventsBus implements EventsBus {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
+
+	/* (non-Javadoc)
 	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#fireEvent(E)
 	 */
 	@Override
-	public <H extends EventHandler, E extends Event<H>> void fireEvent(E event) {
+	public <H extends EventHandler,T extends Enum<T>, E extends Event<H,T>> void fireEvent(E event) {
 		fireEvent(event, null, false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.util.events.bus.EventsBus#fireEventWithCallback
-	 * (E)
+
+	/* (non-Javadoc)
+	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#fireEventWithCallback(E)
 	 */
 	@Override
-	public <H extends EventHandler, E extends Event<H>> void fireEventWithCallback(E event) {
+	public <H extends EventHandler,T extends Enum<T>, E extends Event<H,T>> void fireEventWithCallback(E event) {
 		fireEvent(event, null, false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.util.events.bus.EventsBus#fireEventFromSource
-	 * (E, java.lang.Object)
+
+	/* (non-Javadoc)
+	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#fireEventFromSource(E, java.lang.Object)
 	 */
 	@Override
-	public <H extends EventHandler, E extends Event<H>> void fireEventFromSource(E event, Object source) {
+	public <H extends EventHandler,T extends Enum<T>, E extends Event<H,T>> void fireEventFromSource(E event, Object source) {
 		fireEvent(event, source, false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.util.events.bus.EventsBus#fireAsyncEvent(E)
+
+	/* (non-Javadoc)
+	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#fireAsyncEvent(E)
 	 */
 	@Override
-	public <H extends EventHandler, E extends Event<H>> void fireAsyncEvent(E event) {
+	public <H extends EventHandler,T extends Enum<T>, E extends Event<H,T>> void fireAsyncEvent(E event) {
 		fireEvent(event, null, true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#
-	 * fireAsyncEventFromSource(E, java.lang.Object)
+
+	/* (non-Javadoc)
+	 * @see eu.ydp.empiria.player.client.util.events.bus.EventsBus#fireAsyncEventFromSource(E, java.lang.Object)
 	 */
 	@Override
-	public <H extends EventHandler, E extends Event<H>> void fireAsyncEventFromSource(E event, Object source) {
+	public <H extends EventHandler,T extends Enum<T>, E extends Event<H,T>> void fireAsyncEventFromSource(E event, Object source) {
 		fireEvent(event, source, true);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <H extends EventHandler, E extends Event<H>> void fireEventAsync(E event, Object source, Map<Object, List<?>> map) {
+	private <H extends EventHandler,T extends Enum<T>, E extends Event<H,T>> void fireEventAsync(E event, Object source, Map<Object, List<?>> map) {
 		if (map != null) {
 			List<H> handler = (List<H>) map.get(source);
 			if (handler != null && source != null) {
 				for (H e : handler) {
-					scheduler.scheduleDeferred(new FireCommand<H, Event<H>>(e, event));
+					scheduler.scheduleDeferred(new FireCommand<H, Event<H,T>>(e, event));
 				}
 			}
 			// handlery bez okreslonego obiektu source
 			handler = (List<H>) map.get(null);
 			if (handler != null) {
 				for (H e : handler) {
-					scheduler.scheduleDeferred(new FireCommand<H, Event<H>>(e, event));
+					scheduler.scheduleDeferred(new FireCommand<H, Event<H,T>>(e, event));
 				}
 			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private <H extends EventHandler, E extends Event<H>> void fireEvent(E event, Object source, Map<Object, List<?>> map) {
+	private <H extends EventHandler,T extends Enum<T>, E extends Event<H,T>> void fireEvent(E event, Object source, Map<Object, List<?>> map) {
 		if (map != null) {
 			List<H> handler = (List<H>) map.get(source);
 			if (handler != null && source != null) {
@@ -207,7 +182,7 @@ public class PlayerEventsBus implements EventsBus {
 		}
 	}
 
-	private <H extends EventHandler, E extends Event<H>> void fireEvent(E event, Object source, boolean async) {
+	private <H extends EventHandler,T extends Enum<T>, E extends Event<H,T>> void fireEvent(E event, Object source, boolean async) {
 		if (async) {
 			fireEventAsync(event, source, getHandlersList(event, asyncMap));
 			fireEventAsync(event, source, getHandlersList(event, syncMap));
@@ -217,7 +192,7 @@ public class PlayerEventsBus implements EventsBus {
 		}
 	}
 
-	private <H extends EventHandler> Map<Object, List<?>> getHandlersList(Event<H> type, Map<Event.Type<?>, Map<Object, List<?>>> map) {
+	private <H extends EventHandler,T extends Enum<T>> Map<Object, List<?>> getHandlersList(Event<H,T> type, Map<Event.Type<?,?>, Map<Object, List<?>>> map) {
 		return map.get(type.getAssociatedType());
 	}
 

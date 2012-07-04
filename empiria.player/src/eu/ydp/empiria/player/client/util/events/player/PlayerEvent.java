@@ -6,8 +6,8 @@ import java.util.Map;
 import eu.ydp.empiria.player.client.util.events.Event;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class PlayerEvent extends Event<PlayerEventHandler> {
-	public static Map<PlayerEventTypes, Type<PlayerEventHandler>> types = new HashMap<PlayerEventTypes, Event.Type<PlayerEventHandler>>();
+public class PlayerEvent extends Event<PlayerEventHandler,PlayerEventTypes> {
+	public static Map<PlayerEventTypes, Type<PlayerEventHandler,PlayerEventTypes>> types = new HashMap<PlayerEventTypes, Event.Type<PlayerEventHandler,PlayerEventTypes>>();
 
 	PlayerEventTypes type = null;
 
@@ -33,12 +33,12 @@ public class PlayerEvent extends Event<PlayerEventHandler> {
 
 	private static void checkIsPresent(PlayerEventTypes type) {
 		if (!types.containsKey(type)) {
-			types.put(type, new Type<PlayerEventHandler>(type, new CurrentPageScope()));
+			types.put(type, new Type<PlayerEventHandler,PlayerEventTypes>(type, new CurrentPageScope()));
 		}
 	}
 
 	@Override
-	public Event.Type<PlayerEventHandler> getAssociatedType() {
+	public Event.Type<PlayerEventHandler,PlayerEventTypes> getAssociatedType() {
 		checkIsPresent(type);
 		return types.get(type);
 	}
@@ -48,7 +48,7 @@ public class PlayerEvent extends Event<PlayerEventHandler> {
 		handler.onPlayerEvent(this);
 	}
 
-	public static Type<PlayerEventHandler> getType(PlayerEventTypes type) {
+	public static Type<PlayerEventHandler,PlayerEventTypes> getType(PlayerEventTypes type) {
 		checkIsPresent(type);
 		return types.get(type);
 	}
