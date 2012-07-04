@@ -460,6 +460,9 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 			updatePageStyle();
 		}
+		if(event.getType()==FlowProcessingEventType.CHECK){
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CHECK_ANSWERS));
+		}
 		getFlowExecutionEventsListener().onFlowProcessingEvent(event);
 	}
 

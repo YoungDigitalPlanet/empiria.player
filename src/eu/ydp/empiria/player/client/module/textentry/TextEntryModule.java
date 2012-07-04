@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.Factory;
@@ -25,25 +26,29 @@ import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
-public class TextEntryModule extends OneViewInteractionModuleBase implements Factory<TextEntryModule>{
+public class TextEntryModule extends OneViewInteractionModuleBase implements Factory<TextEntryModule>,PlayerEventHandler{
 
 	/** text box control */
 	private TextBox textBox;
 	/** Last selected value */
 	private String	lastValue = null;
 	private boolean showingAnswers = false;
-
 	protected Panel moduleWidget;
-
+	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	/**
 	 * constructor
 	 * @param moduleSocket
 	 */
-	public TextEntryModule(){
 
+	public TextEntryModule(){
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CHECK_ANSWERS), this);
 	}
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
@@ -236,5 +241,14 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	@Override
 	public TextEntryModule getNewInstance() {
 		return new TextEntryModule();
+	}
+	@Override
+	public void onPlayerEvent(PlayerEvent event) {
+		if(event.getType()==PlayerEventTypes.CHECK_ANSWERS){
+			if(textBox!=null){
+				onTextBoxChange();
+			}
+		}
+
 	}
 }
