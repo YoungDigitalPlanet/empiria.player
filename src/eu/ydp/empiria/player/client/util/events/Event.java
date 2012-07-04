@@ -9,30 +9,30 @@ import eu.ydp.empiria.player.client.util.events.scope.EventScope;
  * @param <H>
  *            interface implemented by handlers of this kind of event
  */
-public abstract class Event<H> {
+public abstract class Event<H,T extends Enum<T>> {
 	/**
 	 * Type class used to register events with an {@link PlayerEventsBus}.
 	 *
 	 * @param <H>
 	 *            handler type
 	 */
-	public static class Type<H> {
+	public static class Type<H,T extends Enum<T>> {
 		private static int nextHashCode;
 		private final int index;
-		private Enum<?> type;
+		private Enum<T> type;
 		private EventScope<?> eventScope = null;
 
 		/**
 		 * Constructor.
 		 */
-		public Type(Enum<?> type, EventScope<?> eventScope) {
+		public Type(Enum<T> type, EventScope<?> eventScope) {
 			nextHashCode += type.ordinal();
 			index = ++nextHashCode;
 			this.type = type;
 			this.eventScope = eventScope;
 		}
 
-		public Enum<?> getType() {
+		public Enum<T> getType() {
 			return type;
 		}
 
@@ -66,7 +66,7 @@ public abstract class Event<H> {
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			Type<?> other = (Type<?>) obj;
+			Type<?,?> other = (Type<?,?>) obj;
 			if (type == null) {
 				if (other.type != null)
 					return false;
@@ -90,7 +90,7 @@ public abstract class Event<H> {
 	 *
 	 * @return the type
 	 */
-	public abstract Type<H> getAssociatedType();
+	public abstract Type<H,T> getAssociatedType();
 
 	/**
 	 * Returns the source for this event. The type and meaning of the source is
