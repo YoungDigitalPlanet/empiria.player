@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
@@ -23,6 +24,7 @@ import com.mathplayer.player.geom.Color;
 import com.mathplayer.player.geom.Font;
 import com.mathplayer.player.geom.Point;
 import com.mathplayer.player.interaction.InteractionManager;
+import com.mathplayer.player.model.interaction.CustomFieldDescription;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
@@ -84,41 +86,78 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 		String fontColor = "#000000";
 		Integer textEntryWidth = 36;
 		Integer textEntryHeight = 14;
+		Integer textEntryFontSize = 18;
+		Integer textEntrySubSupWidth;
+		Integer textEntrySubSupHeight;
+		Integer textEntrySubSupFontSize;
 		Integer inlineChoiceWidth = 48;
 		Integer inlineChoiceHeight = 24;
+		
 		if (styles.containsKey("-empiria-math-font-size")){
 			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-font-size"));
 		}
+		
 		if (styles.containsKey("-empiria-math-font-family")){
 			fontName = styles.get("-empiria-math-font-family");
 		}
+		
 		if (styles.containsKey("-empiria-math-font-weight")){
 			fontBold = styles.get("-empiria-math-font-weight").toLowerCase().equals("bold");
 		}
+		
 		if (styles.containsKey("-empiria-math-font-style")){
 			fontItalic = styles.get("-empiria-math-font-style").toLowerCase().equals("italic");
 		}
+		
 		if (styles.containsKey("-empiria-math-color")){
 			fontColor = styles.get("-empiria-math-color").toUpperCase();
 		}
+		
 		if (styles.containsKey("-empiria-math-gap-width")){
 			textEntryWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-width"));
 		}
+		
 		if (styles.containsKey("-empiria-math-gap-height")){
 			textEntryHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-height"));
 		}
+		
+		if (styles.containsKey("-empiria-math-gap-font-size")){
+			textEntryFontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-font-size"));
+		}
+		
+		if (styles.containsKey("-empiria-math-gap-subsup-width")){
+			textEntrySubSupWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-width"));
+		} else {
+			textEntrySubSupWidth = (int) (textEntryWidth * 0.7);
+		}
+			
+		if (styles.containsKey("-empiria-math-gap-subsup-height")){
+			textEntrySubSupHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-height"));
+		} else {
+			textEntrySubSupHeight = (int) (textEntryHeight * 0.7);
+		}
+		
+		if (styles.containsKey("-empiria-math-gap-subsup-font-size")){
+			textEntrySubSupFontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-font-size"));
+		} else {
+			textEntrySubSupFontSize = (int) (textEntryFontSize * 0.7);
+		}
+		
 		if (styles.containsKey("-empiria-math-drop-width")){			
 			inlineChoiceWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-drop-width"));
 		}
+		
 		if (styles.containsKey("-empiria-math-drop-height")){			
 			inlineChoiceHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-drop-height"));
 		}
+		
 		Integer fontColorInt = IntegerUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
 		Font f = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
 		mpm.setFont(f);
 		
 		TextEntryGap testGap = new TextEntryGap();
 		RootPanel.get().add(testGap);
+		
 		testGap.getTextBox().setWidth(String.valueOf(textEntryWidth)+"px");
 		testGap.getTextBox().setHeight(String.valueOf(textEntryHeight)+"px");
 		Integer actualTextEntryWidth = testGap.getTextBox().getOffsetWidth();
@@ -139,16 +178,16 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 		listBoxesLayer.setHeight(String.valueOf(mainPanel.getOffsetHeight()) + "px");
 		outerPanel.add(listBoxesLayer);
 		
-		Vector<Point> customFieldPositions = interactionManager.getCustomFieldPositions();
+		Vector<CustomFieldDescription> customFieldDescriptions = interactionManager.getCustomFieldDescriptions();
 		gaps = new ArrayList<MathGap>();
 		
 		NodeList gapNodes = getModuleElement().getElementsByTagName("gap");
-		Iterator<Point> customFieldPositionsIterator = customFieldPositions.iterator();
+		Iterator<CustomFieldDescription> customFieldDescriptionsIterator = customFieldDescriptions.iterator();
 		
 		for (int i = 0 ; i < gapNodes.getLength() ; i ++){
 			Element currElement = (Element)gapNodes.item(i);
 			
-			if (currElement.hasAttribute("type")  &&  GapType.INLINE_CHOICE.getName().equals( currElement.getAttribute("type") )  &&  customFieldPositionsIterator.hasNext()){
+			if (currElement.hasAttribute("type")  &&  GapType.INLINE_CHOICE.getName().equals( currElement.getAttribute("type") )  &&  customFieldDescriptionsIterator.hasNext()){
 
 				ExListBox listBox = new ExListBox();
 				listBox.setSelectedIndex(-1);
@@ -175,10 +214,10 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 				}
 				
 				gaps.add(new InlineChoiceGap(listBox, listBoxIdentifiers));
-				Point position = customFieldPositionsIterator.next();
+				Point position = customFieldDescriptionsIterator.next().getPosition();
 				listBoxesLayer.add(gaps.get(gaps.size()-1).getContainer(), position.x, position.y);
 				
-			} else if (currElement.hasAttribute("type")  &&  GapType.TEXT_ENTRY.getName().equals( currElement.getAttribute("type") )  &&  customFieldPositionsIterator.hasNext()){
+			} else if (currElement.hasAttribute("type")  &&  GapType.TEXT_ENTRY.getName().equals( currElement.getAttribute("type") )  &&  customFieldDescriptionsIterator.hasNext()){
 				
 				TextEntryGap teg = new TextEntryGap();
 				teg.getTextBox().addChangeHandler(new ChangeHandler() {
@@ -188,12 +227,23 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 						updateResponse(true);
 					}
 				});
-				gaps.add(teg);
-				Point position = customFieldPositionsIterator.next();
-				listBoxesLayer.add(teg.getContainer(), position.x, position.y);
-				teg.setGapWidth(String.valueOf(textEntryWidth) + "px");
-				teg.setGapHeight(String.valueOf(textEntryHeight) + "px");
 				
+				gaps.add(teg);
+				CustomFieldDescription customFieldDescription = customFieldDescriptionsIterator.next();
+				Point position = customFieldDescription.getPosition();
+				
+				if (customFieldDescription.isSubSup()) {
+					int yShift = (textEntryHeight - textEntrySubSupHeight) / 2;
+					listBoxesLayer.add(teg.getContainer(), position.x, position.y + yShift);
+					teg.setGapWidth(String.valueOf(textEntrySubSupWidth) + "px");
+					teg.setGapHeight(String.valueOf(textEntrySubSupHeight) + "px");
+					teg.getElement().getStyle().setFontSize(textEntrySubSupFontSize, Unit.PX);
+				} else {
+					listBoxesLayer.add(teg.getContainer(), position.x, position.y);
+					teg.setGapWidth(String.valueOf(textEntryWidth) + "px");
+					teg.setGapHeight(String.valueOf(textEntryHeight) + "px");
+					teg.getElement().getStyle().setFontSize(textEntryFontSize, Unit.PX);					
+				}
 			}
 		}
 	}
