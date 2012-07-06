@@ -100,7 +100,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 			durationchangeHandlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler);
 
 		} else {
-			progressBar.setStyleName(progressBar.getStyleName() + unsupportedSuffx);
+			progressBar.setStyleName(progressBar.getStyleName() + UNSUPPORTED_SUFFIX);
 			Iterator<Widget> iter = progressBar.iterator();
 			while (iter.hasNext()) {
 				iter.next().removeFromParent();

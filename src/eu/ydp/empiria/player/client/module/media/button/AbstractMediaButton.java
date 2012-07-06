@@ -31,8 +31,8 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 	 */
 	public AbstractMediaButton(String baseStyleName, boolean singleClick) {
 		this.baseStyleName = baseStyleName;
-		this.onClickStyleName = baseStyleName + clickSuffix;
-		this.hoverStyleName = baseStyleName + hoverSuffx;
+		this.onClickStyleName = baseStyleName + CLICK_SUFFIX;
+		this.hoverStyleName = baseStyleName + HOVER_SUFFIX;
 		this.singleClick = singleClick;
 		initWidget(divElement);
 
@@ -44,7 +44,7 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 			sinkEvents(Event.MOUSEEVENTS | Event.TOUCHEVENTS);
 			this.setStyleName(this.baseStyleName);
 		} else {
-			this.setStyleName(this.baseStyleName + unsupportedSuffx);
+			this.setStyleName(this.baseStyleName + UNSUPPORTED_SUFFIX);
 		}
 
 	}

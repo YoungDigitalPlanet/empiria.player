@@ -110,7 +110,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler);
 
 		} else {
-			progressBar.setStyleName(progressBar.getStyleName() + unsupportedSuffx);
+			progressBar.setStyleName(progressBar.getStyleName() + UNSUPPORTED_SUFFIX);
 			progressBar.clear();
 		}
 	}
