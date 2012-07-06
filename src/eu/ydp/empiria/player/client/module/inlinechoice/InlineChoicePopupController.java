@@ -20,6 +20,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
@@ -31,31 +32,31 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	private Response response;
 	private String responseIdentifier;
 	protected List<String> identifiers;
-	
+
 	private InteractionEventsListener interactionEventsListener;
 	private ModuleSocket moduleSocket;
-	
+
 	protected Element moduleElement;
-	
+
 	protected ExListBox listBox;
 	protected Panel container;
-	
+
 	protected boolean showingAnswers = false;
 	protected boolean locked = false;
 	protected boolean shuffle = false;
-	
+
 	protected List<Integer> identifiersMap;
 	protected boolean showEmptyOption = true;
-	
+
 	protected ExListBox.PopupPosition popupPosition = ExListBox.PopupPosition.ABOVE;
-		
+
 	@Override
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
 
 		this.interactionEventsListener = moduleInteractionListener;
 		this.moduleSocket = moduleSocket;
 	}
-	
+
 	@Override
 	public String getIdentifier() {
 		return responseIdentifier;
@@ -72,12 +73,12 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		response = moduleSocket.getResponse(responseIdentifier);
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
 		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
-		
+
 		NodeList optionsNodes = moduleElement.getElementsByTagName("inlineChoice");
 		List<Widget> baseBodies = new ArrayList<Widget>();
 		List<Widget> popupBodies = new ArrayList<Widget>();
 		List<String> identifiersTemp = new ArrayList<String>();
-				
+
 		for (int i = 0 ; i < optionsNodes.getLength() ; i ++){
 			Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionsNodes.item(i));
 			baseBodies.add(baseBody);
@@ -85,11 +86,11 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 			popupBodies.add(popupBody);
 			identifiersTemp.add(((Element)optionsNodes.item(i)).getAttribute("identifier"));
 		}
-		
+
 		listBox = new ExListBox();
 		listBox.setPopupPosition(popupPosition);
 		listBox.setChangeListener(this);
-		
+
 		if (showEmptyOption){
 			Widget emptyOptionInBody = new InlineHTML("&nbsp;");
 			emptyOptionInBody.setStyleName("qp-text-choice-popup-option-empty");
@@ -100,7 +101,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		} else {
 			listBox.setSelectedIndex(-1);
 		}
-		
+
 		if (shuffle){
 			RandomizedSet<Integer> randomizedNodes = new RandomizedSet<Integer>();
 			for (int i = 0 ; i < identifiersTemp.size() ; i ++){
@@ -112,22 +113,22 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 				identifiers.add(identifiersTemp.get(currIndex));
 				listBox.addOption(baseBodies.get(currIndex), popupBodies.get(currIndex));
 			}
-			
+
 		} else {
 			identifiers = identifiersTemp;
 			for (int i = 0 ; i < baseBodies.size()  &&  i < popupBodies.size() ; i ++){
 				listBox.addOption(baseBodies.get(i), popupBodies.get(i));
 			}
 		}
-		
-		
+
+
 		container = new FlowPanel();
 		container.setStyleName("qp-text-choice-popup");
 		if (userClass != null  &&  !"".equals(userClass))
 			container.addStyleName(userClass);
 		container.add(listBox);
-		
-		
+
+
 		placeholders.get(0).add(container);
 
 		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
@@ -135,7 +136,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 			moduleSocket.addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), moduleSocket, interactionEventsListener));
 		}
 	}
-	
+
 	@Override
 	public void onBodyLoad() {
 	}
@@ -156,7 +157,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	@Override
 	public void onClose() {
 	}
-	
+
 	@Override
 	public void markAnswers(boolean mark) {
 		if (mark){
@@ -199,7 +200,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		} else {
 			container.removeStyleName("qp-text-choice-popup-disabled");
 		}
-		
+
 	}
 
 	@Override
@@ -214,16 +215,16 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 	@Override
 	public JSONArray getState() {
-		  
+
 		  JSONArray jsonArr = new JSONArray();
-		  
+
 		  String stateString = "";
-		  
+
 		  if (listBox.getSelectedIndex() - ((showEmptyOption)?1:0) >= 0)
 			  stateString = response.values.get(0);
-		  		  
+
 		  jsonArr.set(0, new JSONString(stateString));
-		  
+
 		  return jsonArr;
 	}
 
@@ -234,8 +235,8 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 			int index = identifiers.indexOf(newState.get(0).isString().stringValue());
 			listBox.setSelectedIndex( index + ((showEmptyOption)?1:0) );
 		}
-		
-		
+
+
 		updateResponse(false);
 	}
 
@@ -243,13 +244,13 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	public JavaScriptObject getJsSocket() {
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
-		
+
 	private void updateResponse(boolean userInteract){
 		if (showingAnswers)
 			return;
 
 		response.reset();
-		
+
 		if (listBox.getSelectedIndex() != ((showEmptyOption)?0:-1)){
 			String lastValue = identifiers.get(listBox.getSelectedIndex() - ((showEmptyOption)?1:0));
 			response.add(lastValue);
@@ -262,16 +263,20 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		if (!showingAnswers  &&  !locked){
 			updateResponse(true);
 		}
-		
+
 	}
 
 	@Override
 	public void setShowEmptyOption(boolean seo) {
 		showEmptyOption = seo;
 	}
-	
+
 	public void setPopupPosition(ExListBox.PopupPosition pp){
 		popupPosition = pp;
 	}
 
+	@Override
+	public HasParent getParentModule() {
+		return moduleSocket.getParent(this);
+	}
 }

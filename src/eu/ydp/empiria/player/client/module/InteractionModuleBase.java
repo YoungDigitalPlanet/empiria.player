@@ -11,7 +11,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
 	private InteractionEventsListener interactionEventsListener;
 	private ModuleSocket moduleSocket;
-	
+
 	private Response response;
 	private String responseIdentifier;
 
@@ -25,12 +25,12 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 	public final String getIdentifier() {
 		return responseIdentifier;
 	}
-		
+
 	protected final void findResponse(Element element){
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 		response = moduleSocket.getResponse(responseIdentifier);
 	}
-	
+
 	protected final Response getResponse(){
 		return response;
 	}
@@ -41,9 +41,14 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 	protected final ModuleSocket getModuleSocket() {
 		return moduleSocket;
 	}
-	
+
 	protected void fireStateChanged(boolean userInteract){
 		getInteractionEventsListener().onStateChanged(new StateChangedInteractionEvent(userInteract, this));
+	}
+
+	@Override
+	public HasParent getParentModule() {
+		return moduleSocket.getParent(this);
 	}
 
 }

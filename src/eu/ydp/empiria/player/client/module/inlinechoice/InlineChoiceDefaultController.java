@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
@@ -37,9 +38,9 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	private String	lastValue = null;
 	private boolean showingAnswers = false;
 	protected boolean showEmptyOption = true;
-	
+
 	protected Element moduleElement;
-	
+
 	protected Panel container;
 
 	@Override
@@ -57,39 +58,39 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 
-		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier"); 
+		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
 
 		response = moduleSocket.getResponse(responseIdentifier);
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
 		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
-		
+
 		listBox = new AccessibleListBox();
 		if(shuffle)
 			initRandom(moduleElement);
 		else
 			init(moduleElement);
-		
+
 		if (showEmptyOption)
 			listBox.setSelectedIndex( 0 );
 		else
 			listBox.setSelectedIndex( -1 );
 
 		listBox.addChangeHandler(new ChangeHandler() {
-			
+
 			@Override
 			public void onChange(ChangeEvent event) {
 				listBoxChanged();
 			}
 		});
-		
+
 		container = new FlowPanel();
 		container.add(listBox);
-		
+
 		placeholders.get(0).add(container);
-		
-		container.setStyleName("qp-text-choice");	
+
+		container.setStyleName("qp-text-choice");
 		if (userClass != null  &&  !"".equals(userClass))
-			container.addStyleName(userClass);	
+			container.addStyleName(userClass);
 
 		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
@@ -98,7 +99,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	}
 
 	@Override
-	public void onBodyLoad() {		
+	public void onBodyLoad() {
 	}
 
 	@Override
@@ -118,13 +119,13 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	public void onClose() {
 	}
 
-	// ------------------------ INTERFACES ------------------------ 
+	// ------------------------ INTERFACES ------------------------
 
 
 	@Override
 	public void lock(boolean l) {
 		  listBox.setEnabled(!l);
-		
+
 	}
 
 	/**
@@ -165,7 +166,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	public void showCorrectAnswers(boolean show) {
 
 		if (show  &&  !showingAnswers){
-			showingAnswers = true;	
+			showingAnswers = true;
 			for(int i = 0; i < listBox.getItemCount(); i++){
 				if( listBox.getValue(i).compareTo(response.correctAnswers.get(0)) == 0){
 					listBox.setSelectedIndex(i);
@@ -183,41 +184,41 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 			showingAnswers = false;
 		}
 	}
-		
+
 	public JavaScriptObject getJsSocket(){
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
-	
+
   /**
    * @see IStateful#getState()
    */
   public JSONArray getState() {
-	  
+
 	  JSONArray jsonArr = new JSONArray();
-	  
+
 	  String stateString = "";
-	  
+
 	  if (lastValue != null)
 		  stateString = lastValue;
-	  
+
 	  jsonArr.set(0, new JSONString(stateString));
-	  
+
 	  return jsonArr;
   }
 
-  
+
   	/**
  	 * @see IStateful#setState(Serializable)
  	 */
   	public void setState(JSONArray newState) {
-	
+
 		String state = "";
-	
+
 		if (newState != null  &&  newState.size() > 0  &&  newState.get(0).isString() != null){
 			state = newState.get(0).isString().stringValue();
 			lastValue = null;
 		}
-	
+
 		for(int i = 0; i < listBox.getItemCount(); i++){
 			if( listBox.getValue(i).compareTo(state) == 0){
 				listBox.setSelectedIndex(i);
@@ -226,7 +227,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		}
 		updateResponse(false);
   }
-  
+
 	/**
 	 * init widget view
 	 * @param element
@@ -237,16 +238,16 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		// Add no answer as first option
 		if (showEmptyOption)
 			listBox.addItem(" ");
-		
+
 		for(int i = 0; i < nodes.getLength(); i++){
 			if(nodes.item(i).getNodeName().compareTo("inlineChoice") == 0){
 				Element choiceElement = (Element)nodes.item(i);
-				listBox.addItem(XMLUtils.getText(choiceElement), 
+				listBox.addItem(XMLUtils.getText(choiceElement),
 				    XMLUtils.getAttributeAsString(choiceElement, "identifier"));
 			}
 		}
 	}
-	
+
 	/**
 	 * init widget view. Randomize options
 	 * @param element
@@ -258,29 +259,29 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		// Add no answer as first option
 		if (showEmptyOption)
 			listBox.addItem(" ");
-		
+
 		// Add nodes to temporary list
 		for(int i = 0; i < nodes.getLength(); i++){
 			if(nodes.item(i).getNodeName().compareTo("inlineChoice") == 0){
 				randomizedNodes.push((Element)nodes.item(i));
 			}
 		}
-		
+
 		while(randomizedNodes.hasMore()){
 			Element choiceElement = randomizedNodes.pull();
-      listBox.addItem(XMLUtils.getText(choiceElement), 
+      listBox.addItem(XMLUtils.getText(choiceElement),
           XMLUtils.getAttributeAsString(choiceElement, "identifier"));
 		}
-		
+
 	}
-	
+
 	private void updateResponse(boolean userInteract){
 		if (showingAnswers)
 			return;
 
 		if(lastValue != null)
 			response.remove(lastValue);
-		
+
 		lastValue = listBox.getValue(listBox.getSelectedIndex());
 		if (lastValue == null)
 			lastValue = "";
@@ -292,7 +293,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	public String getIdentifier() {
 		return responseIdentifier;
 	}
-	
+
 	protected void listBoxChanged(){
 		updateResponse(true);
 	}
@@ -300,5 +301,10 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Override
 	public void setShowEmptyOption(boolean seo) {
 		showEmptyOption = seo;
+	}
+
+	@Override
+	public HasParent getParentModule() {
+		return moduleSocket.getParent(this);
 	}
 }

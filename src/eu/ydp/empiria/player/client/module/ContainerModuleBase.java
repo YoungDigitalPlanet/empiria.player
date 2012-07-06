@@ -20,4 +20,9 @@ public abstract class ContainerModuleBase extends ModuleBase implements IContain
 		return moduleSocket;
 	}
 
+	@Override
+	public HasParent getParentModule() {
+		return moduleSocket.getParent(this);
+	}
+
 }
