@@ -23,33 +23,33 @@ import com.google.gwt.core.linker.CrossSiteIframeLinker;
 public class CrossSizeIframeWithScriptsLinker extends CrossSiteIframeLinker {
 
 	  @Override
-	  protected String fillSelectionScriptTemplate(StringBuffer ss, TreeLogger logger,
+	  protected String fillSelectionScriptTemplate(StringBuffer sBuffer, TreeLogger logger,
 	      LinkerContext context, ArtifactSet artifacts, CompilationResult result)
 	      throws UnableToCompleteException {
 
 	    if (shouldUseSelfForWindowAndDocument(context)) {
-	      replaceAll(ss, "__WINDOW_DEF__", "self");
-	      replaceAll(ss, "__DOCUMENT_DEF__", "self");
+	      replaceAll(sBuffer, "__WINDOW_DEF__", "self");
+	      replaceAll(sBuffer, "__DOCUMENT_DEF__", "self");
 	    } else {
-	      replaceAll(ss, "__WINDOW_DEF__", "window");
-	      replaceAll(ss, "__DOCUMENT_DEF__", "document");
+	      replaceAll(sBuffer, "__WINDOW_DEF__", "window");
+	      replaceAll(sBuffer, "__DOCUMENT_DEF__", "document");
 	    }
 
 	    // Must do installScript before installLocation and waitForBodyLoaded
-	    includeJs(ss, logger, getJsInstallScript(context), "__INSTALL_SCRIPT__");
-	    includeJs(ss, logger, getJsInstallLocation(context), "__INSTALL_LOCATION__");
+	    includeJs(sBuffer, logger, getJsInstallScript(context), "__INSTALL_SCRIPT__");
+	    includeJs(sBuffer, logger, getJsInstallLocation(context), "__INSTALL_LOCATION__");
 
 	    // Must do waitForBodyLoaded before isBodyLoaded
-	    includeJs(ss, logger, getJsWaitForBodyLoaded(context), "__WAIT_FOR_BODY_LOADED__");
-	    includeJs(ss, logger, getJsIsBodyLoaded(context), "__IS_BODY_LOADED__");
+	    includeJs(sBuffer, logger, getJsWaitForBodyLoaded(context), "__WAIT_FOR_BODY_LOADED__");
+	    includeJs(sBuffer, logger, getJsIsBodyLoaded(context), "__IS_BODY_LOADED__");
 
 	    // Must do permutations before providers
-	    includeJs(ss, logger, getJsPermutations(context), "__PERMUTATIONS__");
-	    includeJs(ss, logger, getJsProperties(context), "__PROPERTIES__");
-	    includeJs(ss, logger, getJsProcessMetas(context), "__PROCESS_METAS__");
-	    includeJs(ss, logger, getJsComputeScriptBase(context), "__COMPUTE_SCRIPT_BASE__");
-	    includeJs(ss, logger, getJsComputeUrlForResource(context), "__COMPUTE_URL_FOR_RESOURCE__");
-	    includeJs(ss, logger, getJsLoadExternalStylesheets(context), "__LOAD_STYLESHEETS__");
+	    includeJs(sBuffer, logger, getJsPermutations(context), "__PERMUTATIONS__");
+	    includeJs(sBuffer, logger, getJsProperties(context), "__PROPERTIES__");
+	    includeJs(sBuffer, logger, getJsProcessMetas(context), "__PROCESS_METAS__");
+	    includeJs(sBuffer, logger, getJsComputeScriptBase(context), "__COMPUTE_SCRIPT_BASE__");
+	    includeJs(sBuffer, logger, getJsComputeUrlForResource(context), "__COMPUTE_URL_FOR_RESOURCE__");
+	    includeJs(sBuffer, logger, getJsLoadExternalStylesheets(context), "__LOAD_STYLESHEETS__");
 
 	    // This Linker does support <script> tags in the gwt.xml rrybacki@ydp.com.pl
 	    SortedSet<ScriptReference> scripts = artifacts.find(ScriptReference.class);
@@ -64,41 +64,41 @@ public class CrossSizeIframeWithScriptsLinker extends CrossSiteIframeLinker {
 			scriptsString.append(text);
 		}
 
-	    includeJs(ss, logger, scriptsString.toString(), "__LOAD_SCRIPTS__");
+	    includeJs(sBuffer, logger, scriptsString.toString(), "__LOAD_SCRIPTS__");
 	    
 	    
-	    ss = ResourceInjectionUtil.injectStylesheets(ss, artifacts);
-	    ss = permutationsUtil.addPermutationsJs(ss, logger, context);
+	    sBuffer = ResourceInjectionUtil.injectStylesheets(sBuffer, artifacts);
+	    sBuffer = permutationsUtil.addPermutationsJs(sBuffer, logger, context);
 
 	    if (result != null) {
-	      replaceAll(ss, "__KNOWN_PROPERTIES__", PropertiesUtil.addKnownPropertiesJs(logger, result));
+	      replaceAll(sBuffer, "__KNOWN_PROPERTIES__", PropertiesUtil.addKnownPropertiesJs(logger, result));
 	    }
-	    replaceAll(ss, "__MODULE_FUNC__", context.getModuleFunctionName());
-	    replaceAll(ss, "__MODULE_NAME__", context.getModuleName());
-	    replaceAll(ss, "__HOSTED_FILENAME__", getHostedFilenameFull(context));
+	    replaceAll(sBuffer, "__MODULE_FUNC__", context.getModuleFunctionName());
+	    replaceAll(sBuffer, "__MODULE_NAME__", context.getModuleName());
+	    replaceAll(sBuffer, "__HOSTED_FILENAME__", getHostedFilenameFull(context));
 
 	    if (context.isOutputCompact()) {
-	      replaceAll(ss, "__START_OBFUSCATED_ONLY__", "");
-	      replaceAll(ss, "__END_OBFUSCATED_ONLY__", "");
+	      replaceAll(sBuffer, "__START_OBFUSCATED_ONLY__", "");
+	      replaceAll(sBuffer, "__END_OBFUSCATED_ONLY__", "");
 	    } else {
-	      replaceAll(ss, "__START_OBFUSCATED_ONLY__", "/*");
-	      replaceAll(ss, "__END_OBFUSCATED_ONLY__", "*/");
+	      replaceAll(sBuffer, "__START_OBFUSCATED_ONLY__", "/*");
+	      replaceAll(sBuffer, "__END_OBFUSCATED_ONLY__", "*/");
 	    }
 
 	    String jsModuleFunctionErrorCatch = getJsModuleFunctionErrorCatch(context);
 	    if (jsModuleFunctionErrorCatch != null) {
-	      replaceAll(ss, "__BEGIN_TRY_BLOCK__", "try {");
-	      replaceAll(ss, "__END_TRY_BLOCK_AND_START_CATCH__", "} catch (moduleError) {");
-	      includeJs(ss, logger, jsModuleFunctionErrorCatch, "__MODULE_FUNC_ERROR_CATCH__");
-	      replaceAll(ss, "__END_CATCH_BLOCK__", "}");
+	      replaceAll(sBuffer, "__BEGIN_TRY_BLOCK__", "try {");
+	      replaceAll(sBuffer, "__END_TRY_BLOCK_AND_START_CATCH__", "} catch (moduleError) {");
+	      includeJs(sBuffer, logger, jsModuleFunctionErrorCatch, "__MODULE_FUNC_ERROR_CATCH__");
+	      replaceAll(sBuffer, "__END_CATCH_BLOCK__", "}");
 	    } else {
-	      replaceAll(ss, "__BEGIN_TRY_BLOCK__", "");
-	      replaceAll(ss, "__END_TRY_BLOCK_AND_START_CATCH__", "");
-	      replaceAll(ss, "__MODULE_FUNC_ERROR_CATCH__", "");
-	      replaceAll(ss, "__END_CATCH_BLOCK__", "");
+	      replaceAll(sBuffer, "__BEGIN_TRY_BLOCK__", "");
+	      replaceAll(sBuffer, "__END_TRY_BLOCK_AND_START_CATCH__", "");
+	      replaceAll(sBuffer, "__MODULE_FUNC_ERROR_CATCH__", "");
+	      replaceAll(sBuffer, "__END_CATCH_BLOCK__", "");
 	    }
 
-	    return ss.toString();
+	    return sBuffer.toString();
 	  }
 	  
 

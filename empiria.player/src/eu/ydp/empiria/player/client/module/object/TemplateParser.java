@@ -30,7 +30,7 @@ import eu.ydp.empiria.player.client.module.media.info.PositionInMediaStream;
 public class TemplateParser<T extends Widget> {
 	Map<String, MediaController<?>> controllers = new HashMap<String, MediaController<?>>();
 	MediaWrapper<T> mediaDescriptor = null;
-	private final static String moduleAttribute = "module";
+	private final static String MODULE_ATTRIBUTE = "module";
 	public TemplateParser(MediaWrapper<T> mediaDescriptor) {
 		this.mediaDescriptor = mediaDescriptor;
 		controllers.put(ModuleTagName.MEDIA_PLAY_PAUSE_BUTTON.tagName(), new PlayPauseMediaButton());
@@ -51,7 +51,7 @@ public class TemplateParser<T extends Widget> {
 			if (attribute.getNodeValue().length() > 0) {
 				if (attribute.getNodeName().equals("class")) {
 					dstElement.addClassName(attribute.getNodeValue());
-				} else if (!moduleAttribute.equals(attribute.getNodeName())) {
+				} else if (!MODULE_ATTRIBUTE.equals(attribute.getNodeName())) {
 					dstElement.setAttribute(attribute.getNodeName(), attribute.getNodeValue());
 				}
 			}

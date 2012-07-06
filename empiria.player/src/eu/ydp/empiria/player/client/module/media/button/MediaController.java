@@ -12,9 +12,9 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
  * @param <T>
  */
 public abstract class MediaController<T> extends Composite implements Factory<T>, SupportedAction<T> {
-	protected final static String clickSuffix = "-click";
-	protected final static String hoverSuffx = "-hover";
-	protected final static String unsupportedSuffx = "-unsupported";
+	protected final static String CLICK_SUFFIX = "-click";
+	protected final static String HOVER_SUFFIX = "-hover";
+	protected final static String UNSUPPORTED_SUFFIX = "-unsupported";
 	private MediaAvailableOptions availableOptions;
 	private MediaWrapper<?> mediaWrapper = null;
 	/**
