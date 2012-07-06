@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ModuleExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
+import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
@@ -29,7 +30,7 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 	protected DeliveryEngine de;
 	protected PageInterferenceSocket pis;
 	protected String lastAction = "";
-	
+
 	public void testGetJsSocket(){
 		ModuleInterferenceSocket mis = initTests();
 		mis.getJsSocket();
@@ -37,57 +38,57 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 	}
 	public void testGetState(){
 		ModuleInterferenceSocket mis = initTests();
-		
+
 		mis.getState();
 		assertEquals("getState", lastAction);
 
 	}
 	public void testLock(){
 		ModuleInterferenceSocket mis = initTests();
-		
+
 		mis.lock(false);
 		assertEquals("lock", lastAction);
 
 	}
 	public void testMarkAnswers(){
 		ModuleInterferenceSocket mis = initTests();
-		
+
 		mis.markAnswers(false);
 		assertEquals("markAnswers", lastAction);
 
 	}
 	public void testReset(){
 		ModuleInterferenceSocket mis = initTests();
-		
+
 		mis.reset();
 		assertEquals("reset", lastAction);
 
 	}
 	public void testSetState(){
 		ModuleInterferenceSocket mis = initTests();
-		
+
 		mis.setState(new JSONArray());
 		assertEquals("setState", lastAction);
 
 	}
 	public void testShowCorrectAnswers(){
 		ModuleInterferenceSocket mis = initTests();
-		
+
 		mis.showCorrectAnswers(false);
 		assertEquals("showCorrectAnswers", lastAction);
 	}
-	
+
 	protected ModuleInterferenceSocket initTests(){
 		List<Extension> exts = new ArrayList<Extension>();
 		exts.add(new MockPageInterferenceSocketUserExtension());
 		exts.add(new MockModuleExtension());
 		de = initDeliveryEngine(exts, false);
-		
+
 		assertNotNull(pis.getItemSockets());
 		assertEquals(1, pis.getItemSockets().length);
 		assertNotNull(pis.getItemSockets()[0].getModuleSockets());
 		assertEquals(1, pis.getItemSockets()[0].getModuleSockets().length);
-		
+
 		ModuleInterferenceSocket mis = pis.getItemSockets()[0].getModuleSockets()[0];
 		return mis;
 	}
@@ -100,43 +101,43 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 		return new XmlData(assessmentDoc, "");
 	}
 	protected XmlData[] getItemXMLDatas(){
-	
+
 		Document itemDoc = XMLParser.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody><testModule8273629297347 responseIdentifier=\"RESPONSE1\"/></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 		XmlData itemData = new XmlData(itemDoc, "");
-		
+
 		XmlData[] itemDatas = new XmlData[1];
 		itemDatas[0] = itemData;
-		
+
 		return itemDatas;
 	}
-		
+
 	protected class MockPageInterferenceSocketUserExtension extends InternalExtension implements PageInterferenceSocketUserExtension{
 		@Override
 		public void init() {
 		}
-		
+
 		@Override
 		public void setPageInterferenceSocket(PageInterferenceSocket socket) {
 			pis = socket;
-		}		
+		}
 	}
-	
+
 	protected class MockModuleExtension extends ModuleExtension implements ModuleConnectorExtension{
 
 		@Override
 		public ModuleCreator getModuleCreator() {
 			return new ModuleCreator() {
-				
+
 				@Override
 				public boolean isMultiViewModule() {
 					return true;
 				}
-				
+
 				@Override
 				public boolean isInlineModule() {
 					return false;
 				}
-				
+
 				@Override
 				public IModule createModule() {
 					return new MockModule();
@@ -149,9 +150,9 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 			// TODO Auto-generated method stub
 			return "testModule8273629297347";
 		}
-		
+
 	}
-	
+
 	protected class MockModule implements IInteractionModule{
 
 		@Override
@@ -203,31 +204,31 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 		@Override
 		public void addElement(Element element) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void installViews(List<HasWidgets> placeholders) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void onBodyLoad() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void onBodyUnload() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void onSetUp() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -237,6 +238,11 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 		@Override
 		public void onClose() {
 		}
-		
+
+		@Override
+		public HasParent getParentModule() {
+			return null;
+		}
+
 	}
 }
