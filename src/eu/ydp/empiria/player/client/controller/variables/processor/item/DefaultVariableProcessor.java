@@ -49,10 +49,10 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	@Override
 	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract) {
 
@@ -64,15 +64,15 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		boolean passed;
 		while (iter.hasNext()){
 			currKey = iter.next();
-			
+
 			if (!responses.get(currKey).isModuleAdded())
 				continue;
-			
+
 			passed = processSingleResponse(responses.get(currKey));
-				
+
 			if (passed)
 				points++;
-				
+
 			// MAKRO PROCESSING
 			if (outcomes.containsKey(currKey+"-DONE")){
 				outcomes.get(currKey+"-DONE").values.clear();
@@ -82,7 +82,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					outcomes.get(currKey+"-DONE").values.add("0");
 			}
 			if (outcomes.containsKey(currKey+"-TODO")){
-				outcomes.get(currKey+"-TODO").values.add("1");				
+				outcomes.get(currKey+"-TODO").values.add("1");
 			}
 			if (outcomes.containsKey(currKey+"-DONEHISTORY")){
 				if (passed)
@@ -127,15 +127,15 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		}
 
 		if (outcomes.containsKey("DONE")){
-			outcomes.get("DONE").values.clear();		
+			outcomes.get("DONE").values.clear();
 			outcomes.get("DONE").values.add(points.toString());
 		}
 
 		if (outcomes.containsKey("TODO")){
-			outcomes.get("TODO").values.clear();		
-			outcomes.get("TODO").values.add( (new Integer(responses.size())).toString() );
+			outcomes.get("TODO").values.clear();
+			outcomes.get("TODO").values.add(String.valueOf(responses.size()));
 		}
-		
+
 		if (outcomes.containsKey("DONEHISTORY")){
 			outcomes.get("DONEHISTORY").values.add(points.toString());
 		}
@@ -159,7 +159,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					}
 				}
 				outcomes.get("LASTMISTAKEN").values.set(0, lastMistakes.toString());
-				
+
 				if (outcomes.containsKey("MISTAKES")){
 					if (outcomes.get("MISTAKES").values.size() == 0)
 						outcomes.get("MISTAKES").values.add("0");
@@ -169,25 +169,25 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 		}
-		
+
 		// MACRO PROCESSING
-		
+
 		iter = responses.keySet().iterator();
 		while (iter.hasNext()){
 			currKey = iter.next();
-			
+
 		}
 	}
-	
+
 	private boolean processSingleResponse(Response response ){
-		
+
 		Vector<String> correctAnswers = response.correctAnswers;
-		
+
 		Vector<String> userAnswers = response.values;
-		
+
 		boolean answerFound;
 		boolean passed = true;
-		
+
 		if (response.cardinality == Cardinality.ORDERED){
 			if (correctAnswers.size() != userAnswers.size()) {
 				passed = false;
@@ -199,7 +199,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					}
 				}
 			}
-			
+
 		} else if (response.cardinality == Cardinality.COMMUTATIVE){
 			if (correctAnswers.size() != userAnswers.size()) {
 				passed = false;
@@ -209,9 +209,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				for (int g = 0 ; g < correctAnswers.size() ; g ++ ){
 					used.add(false);
 				}
-				
+
 				for (int correct = 0 ; correct < correctAnswers.size() ; correct ++){
-					
+
 					int groupIndex = -1;
 					for (int g = 0 ; g < response.groups.size() ; g ++ ){
 						if (response.groups.get(g).contains(correct)){
@@ -219,9 +219,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 							break;
 						}
 					}
-					
+
 					String currUserAnswer = userAnswers.get(correct);
-					
+
 					if (groupIndex == -1){
 						if (correctAnswers.get(correct).compareTo(currUserAnswer) != 0){
 							passed = false;
@@ -249,81 +249,81 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				passed = false;
 			} else {
 				for (int correct = 0 ; correct < correctAnswers.size() ; correct ++){
-					
+
 					answerFound = false;
-					
+
 					for (int user = 0 ; user < userAnswers.size() ; user ++){
 						if (correctAnswers.get(correct).compareTo(userAnswers.get(user)) == 0){
 							answerFound = true;
 							break;
 						}
 					}
-					
+
 					if (!answerFound){
 						passed = false;
 					}
 				}
 			}
 		}
-		
+
 		return passed;
-		
+
 	}
-	
+
 	private int processCheckMistakes(Response response, Outcome moduleLastChange){
-		
+
 		int mistakesCounter = 0;
 
 		if (response.cardinality == Cardinality.SINGLE  ||  response.cardinality == Cardinality.MULTIPLE){
-			
+
 			for (int v = 0 ; v < moduleLastChange.values.size() ; v ++){
 				String currVal = moduleLastChange.values.get(v);
 				if (currVal.startsWith("+"))
 					currVal = currVal.substring(1);
 				else
 					continue;
-				
-					
+
+
 					boolean answerFound = false;
-					
+
 					for (int correct = 0 ; correct < response.correctAnswers.size() ; correct ++){
 						if (response.correctAnswers.get(correct).compareTo(currVal) == 0){
 							answerFound = true;
 							break;
 						}
 					}
-					
+
 					if (!answerFound){
 						mistakesCounter++;
 					}
-					
+
 			}
 		} else if (response.cardinality == Cardinality.ORDERED){
-			
+
 			for (int v = 0 ; v < response.correctAnswers.size()  &&  v < moduleLastChange.values.size() ; v ++){
 				String currAnswer = response.correctAnswers.get(v);
 				String[] changeSplited = moduleLastChange.values.get(v).split("->");
-				
+
 				if (changeSplited.length != 2)
 					continue;
-				
-				if (changeSplited[0].compareTo(currAnswer) == 0  &&  
+
+				if (changeSplited[0].compareTo(currAnswer) == 0  &&
 					changeSplited[1].compareTo(currAnswer) != 0){
 					mistakesCounter++;
 					break;
 				}
-					
+
 			}
-			
+
 		}
-		
+
 		return mistakesCounter;
 	}
 
 	@Override
 	public void ensureVariables(Map<String, Response> responses, Map<String, Outcome> outcomes) {
 
-			
+
 		ensureVariable(outcomes, new Outcome("DONE", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 		ensureVariable(outcomes, new Outcome("TODO", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 		ensureVariable(outcomes, new Outcome("DONEHISTORY", Cardinality.MULTIPLE, BaseType.INTEGER));
@@ -335,9 +335,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		ensureVariable(outcomes, new Outcome("MISTAKES", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 
 		if (responses.keySet().size() > 0){
-			
+
 			Iterator<String> responseKeys = responses.keySet().iterator();
-			
+
 			while (responseKeys.hasNext()){
 				Response currResp = responses.get(responseKeys.next());
 				String cri = currResp.identifier;
@@ -350,12 +350,12 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				ensureVariable(outcomes, new Outcome(cri+"-DONEHISTORY", Cardinality.MULTIPLE, BaseType.INTEGER));
 				ensureVariable(outcomes, new Outcome(cri+"-DONECHANGES", Cardinality.MULTIPLE, BaseType.INTEGER));
 				ensureVariable(outcomes, new Outcome(cri+"-MISTAKES", Cardinality.SINGLE, BaseType.INTEGER, "0"));
-				
+
 			}
 		}
-		
+
 	}
-	
+
 	private void ensureVariable(Map<String, Outcome> outcomes, Outcome variable){
 		if (!outcomes.containsKey(variable.identifier)){
 			outcomes.put(variable.identifier, variable);
