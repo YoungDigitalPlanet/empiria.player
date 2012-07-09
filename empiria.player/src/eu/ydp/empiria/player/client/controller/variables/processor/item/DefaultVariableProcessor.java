@@ -244,6 +244,10 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					}
 				}
 			}
+		} else if (response.cardinality == Cardinality.SINGLE){
+			if (userAnswers.size() > 0)
+				if (!correctAnswers.contains(userAnswers.get(0)))
+					passed = false;
 		} else {
 			if (correctAnswers.size() != userAnswers.size()){
 				passed = false;
