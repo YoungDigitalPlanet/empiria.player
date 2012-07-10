@@ -136,4 +136,21 @@ public class XMLUtils {
 
 	}
 
+  public static Element getFirstChildElement(Element element){
+	  for (int i = 0 ; i < element.getChildNodes().getLength() ; i ++){
+		  if (element.getChildNodes().item(i) instanceof Element){
+			  return (Element)element.getChildNodes().item(i);
+		  }
+	  }
+	  return null;
+  }
+  
+  public static boolean hasParentWithNodeName(Element element, String parentNodeName, String searchUpToNodeName){
+	  if (element != null  &&  element.getNodeName().equals(parentNodeName))
+		  return true;
+	  if (element == null  ||  element.getNodeName().equals(searchUpToNodeName)  ||  !(element.getParentNode() instanceof Element))
+		  return false;
+	  return hasParentWithNodeName((Element)element.getParentNode(), parentNodeName, searchUpToNodeName);	  
+  }
+  
 }
