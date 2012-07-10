@@ -11,6 +11,7 @@ public class HTML5VideoImpl extends FlowPanel implements Video {
 		video = com.google.gwt.media.client.Video.createIfSupported();
 		video.setPreload(MediaElement.PRELOAD_METADATA);
 		add(video);
+
 	}
 
 	public void setSrc(String src) {

@@ -48,7 +48,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Repor
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
@@ -120,7 +119,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	private StyleLinkManager styleManager;
 
-	private DataSourceManager dataManager;
+	private final DataSourceManager dataManager;
 
 	private ExtensionsManager extensionsManager;
 
@@ -130,11 +129,11 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	private DeliveryEventsHub deliveryEventsHub;
 
-	private PlayerViewSocket playerViewSocket;
+	private final PlayerViewSocket playerViewSocket;
 
 	private AssessmentController assessmentController;
 
-	private StyleSocket styleSocket;
+	private final StyleSocket styleSocket;
 
 	private ModulesRegistry modulesRegistry;
 
@@ -213,8 +212,9 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		AssessmentData assessmentData = dataManager.getAssessmentData();
 		DisplayOptions displayOptions = flowManager.getDisplayOptions();
 
-		if (assessmentData != null)
-		displayOptions.useSkin(assessmentData.useSkin());
+		if (assessmentData != null) {
+			displayOptions.useSkin(assessmentData.useSkin());
+		}
 		flowManager.setDisplayOptions(displayOptions);
 
 		loadLibraryExtensions();
@@ -239,7 +239,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 		if (stateAsync != null){
 			try {
-				JSONArray deState = (JSONArray) JSONParser.parse(stateAsync);
+				JSONArray deState = (JSONArray) JSONParser.parseLenient(stateAsync);
 
 				assessmentController.reset();
 
@@ -254,13 +254,14 @@ public class DeliveryEngine implements DataLoaderEventListener,
 							(int) deState.get(0).isNumber().doubleValue()));
 				} else if (deState.get(0).isString() != null) {
 					if (deState.get(0).isString().stringValue()
-							.equals(PageType.TOC.toString()))
+							.equals(PageType.TOC.toString())) {
 						flowManager
 								.invokeFlowRequest(new FlowRequest.NavigateToc());
-					else if (deState.get(0).isString().stringValue()
-							.equals(PageType.SUMMARY.toString()))
+					} else if (deState.get(0).isString().stringValue()
+							.equals(PageType.SUMMARY.toString())) {
 						flowManager
 								.invokeFlowRequest(new FlowRequest.NavigateSummary());
+					}
 				}
 
 				flowManager.initFlow();
@@ -310,7 +311,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new AudioMuteButtonModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
-		loadExtension(new DefaultMediaProcessorExtension());
+		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
 		loadExtension(new TouchPageSwitch());
 		loadExtension(new Page());
 	//	loadExtension(new MediaManager());
@@ -442,21 +443,25 @@ public class DeliveryEngine implements DataLoaderEventListener,
 			// via HandlerManager or other event bus
 			styleSocket.setCurrentPages(pr);
 
-			if (pd.type == PageType.SUMMARY)
+			if (pd.type == PageType.SUMMARY) {
 				((PageDataSummary) pd).setAssessmentSessionData(sessionDataManager
 						.getAssessmentSessionDataSocket());
+			}
 			assessmentController.initPage(pd);
-			if (pd.type == PageType.SUMMARY)
+			if (pd.type == PageType.SUMMARY) {
 				getDeliveryEventsListener()
 						.onDeliveryEvent(
 								new DeliveryEvent(
 										DeliveryEventType.SUMMARY_PAGE_LOADED));
-			if (pd.type == PageType.TOC)
+			}
+			if (pd.type == PageType.TOC) {
 				getDeliveryEventsListener().onDeliveryEvent(
 						new DeliveryEvent(DeliveryEventType.TOC_PAGE_LOADED));
-			if (pd.type == PageType.TEST)
+			}
+			if (pd.type == PageType.TEST) {
 				getDeliveryEventsListener().onDeliveryEvent(
 						new DeliveryEvent(DeliveryEventType.TEST_PAGE_LOADED));
+			}
 
 			updatePageStyle();
 		}
@@ -474,40 +479,47 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		return deliveryEventsHub;
 	}
 
+	@Override
 	public String getStateString() {
 		JSONArray deState = new JSONArray();
-		if (flowManager.getCurrentPageType() == PageType.TEST)
+		if (flowManager.getCurrentPageType() == PageType.TEST) {
 			deState.set(0, new JSONNumber(flowManager.getCurrentPageIndex()));
-		else if (flowManager.getCurrentPageType() == PageType.TOC
-				|| flowManager.getCurrentPageType() == PageType.SUMMARY)
+		} else if (flowManager.getCurrentPageType() == PageType.TOC
+				|| flowManager.getCurrentPageType() == PageType.SUMMARY) {
 			deState.set(0, new JSONString(flowManager.getCurrentPageType()
 					.toString()));
-		else
+		} else {
 			deState.set(0, JSONNull.getInstance());
+		}
 		deState.set(1, sessionDataManager.getState());
 		deState.set(2, extensionsManager.getState());
 		return deState.toString();
 	}
 
+	@Override
 	public void setStateString(String state) {
 		stateAsync = state;
 	}
 
+	@Override
 	public String getEngineMode() {
-		if (dataManager.getMode() == DataSourceManagerMode.NONE)
+		if (dataManager.getMode() == DataSourceManagerMode.NONE) {
 			return EngineMode.NONE.toString();
-		else if (dataManager.getMode() == DataSourceManagerMode.LOADING_ASSESSMENT)
+		} else if (dataManager.getMode() == DataSourceManagerMode.LOADING_ASSESSMENT) {
 			return EngineMode.ASSESSMENT_LOADING.toString();
-		else if (dataManager.getMode() == DataSourceManagerMode.LOADING_ITEMS)
+		} else if (dataManager.getMode() == DataSourceManagerMode.LOADING_ITEMS) {
 			return EngineMode.ITEM_LOADING.toString();
+		}
 
 		return EngineMode.RUNNING.toString();
 	}
 
+	@Override
 	public void setFlowOptions(FlowOptions o) {
 		flowManager.setFlowOptions(o);
 	}
 
+	@Override
 	public void setDisplayOptions(DisplayOptions o) {
 		flowManager.setDisplayOptions(o);
 	}
