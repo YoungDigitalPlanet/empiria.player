@@ -14,47 +14,47 @@ public class JsMediaAvaliableOptions extends JavaScriptObject implements MediaAv
 	}
 
 	@Override
-	public native boolean isPlaySupported() /*-{
+	public native final boolean isPlaySupported() /*-{
 		return this.playSupported ? true : false;
 	}-*/;
 
 	@Override
-	public native boolean isPauseSupported() /*-{
+	public native final boolean isPauseSupported() /*-{
 		return this.pauseSupported ? true : false;
 	}-*/;
 
 	@Override
-	public native boolean isMuteSupported() /*-{
+	public native final boolean isMuteSupported() /*-{
 		return this.muteSupported ? true : false;
 	}-*/;
 
 	@Override
-	public native boolean isVolumeChangeSupported() /*-{
+	public native final boolean isVolumeChangeSupported() /*-{
 		return this.volumeChangeSupported ? true : false;
 	}-*/;
 
 	@Override
-	public native boolean isStopSupported() /*-{
+	public native final boolean isStopSupported() /*-{
 		return this.stopSupported ? true : false;
 	}-*/;
 
 	@Override
-	public native boolean isSeekSupported() /*-{
+	public native final boolean isSeekSupported() /*-{
 		return this.seekSupported ? true : false;
 	}-*/;
 
 	@Override
-	public native boolean isFullScreenSupported() /*-{
+	public native final boolean isFullScreenSupported() /*-{
 		return this.fullScreenSupported ? true : false;
 	}-*/;
 
 	@Override
-	public native boolean isMediaMetaAvailable() /*-{
+	public native final boolean isMediaMetaAvailable() /*-{
 		return this.mediaMetaAvailable ? true : false;
 	}-*/;
 
 	@Override
-	public native boolean isTemplateSupported() /*-{
+	public native final boolean isTemplateSupported() /*-{
 		return this.templateSupported ? true : false;
 	}-*/;
 }
