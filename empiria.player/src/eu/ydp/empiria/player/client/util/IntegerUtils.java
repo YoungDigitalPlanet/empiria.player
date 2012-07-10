@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.util;
 
 public class IntegerUtils {
 	
-	public static int tryParseInt(String s){
+	public static Integer tryParseInt(String s){
 		try {
 			return Integer.parseInt(s);
 		} catch (Exception e) {
@@ -10,7 +10,7 @@ public class IntegerUtils {
 		return 0;
 	}
 	
-	public static int tryParseInt(String s, int defaultValue){
+	public static Integer tryParseInt(String s, Integer defaultValue){
 		try {
 			return Integer.parseInt(s);
 		} catch (Exception e) {
@@ -18,7 +18,7 @@ public class IntegerUtils {
 		return defaultValue;
 	}
 	
-	public static int tryParseInt(String s, int radix, int defaultValue){
+	public static Integer tryParseInt(String s, int radix, Integer defaultValue){
 		try {
 			return Integer.parseInt(s, radix);
 		} catch (Exception e) {

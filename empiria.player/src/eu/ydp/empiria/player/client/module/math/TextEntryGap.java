@@ -5,8 +5,11 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+
+import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class TextEntryGap extends Composite implements MathGap {
 
@@ -88,4 +91,21 @@ public class TextEntryGap extends Composite implements MathGap {
 		textBox.setHeight(height);
 	}
 
+	public static Size getTextEntryGapActualSize(Size orgSize){
+		return getTextEntryGapActualSize(orgSize, null);
+	}
+	
+	public static Size getTextEntryGapActualSize(Size orgSize, String textBoxClassName){
+		TextEntryGap testGap = new TextEntryGap();
+		RootPanel.get().add(testGap);		
+		if (textBoxClassName != null  &&  !"".equals(textBoxClassName)){
+			testGap.getTextBox().getElement().setClassName(textBoxClassName);
+		}
+		testGap.getTextBox().setWidth(String.valueOf(orgSize.getWidth())+"px");
+		testGap.getTextBox().setHeight(String.valueOf(orgSize.getHeight())+"px");
+		Integer actualTextEntryWidth = testGap.getTextBox().getOffsetWidth();
+		Integer actualTextEntryHeight = testGap.getTextBox().getOffsetHeight();
+		RootPanel.get().remove(testGap);
+		return new Size(actualTextEntryWidth, actualTextEntryHeight);
+	}
 }
