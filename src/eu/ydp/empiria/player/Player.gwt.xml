@@ -36,23 +36,15 @@
 	<script src="jscss/cssparser.js" />
 
 	<!-- VIDEO -->
-	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl">
+	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 	</replace-with>
+
 
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashLocalVideoImpl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
 		<any>
 			<when-property-is name="run.local" value="true" />
-		</any>
-	</replace-with>
-
-	<!-- Use video tag for iphone browser -->
-	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
-		<any>
-			<when-property-is name="user.agent" value="safari" />
-			<when-property-is name="user.agent" value="ie9" />
 		</any>
 	</replace-with>
 
