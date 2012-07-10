@@ -14,26 +14,30 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.debug.Debug;
 
-public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler,PlayerEventHandler {
+public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler {
 	protected Map<MediaWrapper<?>, SoundExecutor<?>> executors = new HashMap<MediaWrapper<?>, SoundExecutor<?>>();
 	protected MediaInteractionSoundEventCallback callback;
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
 	public AbstractMediaProcessor() {
 
 	}
+
 	@Override
-	public void init(){
+	public void init() {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), this);
-		for(MediaEventTypes type : MediaEventTypes.values()){
+		for (MediaEventTypes type : MediaEventTypes.values()) {
 			eventsBus.addHandler(MediaEvent.getType(type), this);
 		}
 	}
+
 	@Override
 	public void onMediaEvent(MediaEvent event) {
 		SoundExecutor<?> executor = executors.get(event.getMediaWrapper());
-		if(executor==null){
-			//Debug.log("Executor is null for "+event.getMediaWrapper());
+		if (executor == null) {
+			Debug.log("Executor is null for " + event.getMediaWrapper());
 			return;
 		}
 
@@ -43,7 +47,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			break;
 		case STOP:
 			executor.stop();
-			if(callback!=null){
+			if (callback != null) {
 				callback.onStop();
 			}
 			break;
@@ -54,14 +58,25 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			executor.setCurrentTime(event.getValue());
 			break;
 		case PLAY:
-			pause(executor.getMediaWrapper());
 			executor.play();
-			if(callback!=null){
+			break;
+		case ON_PLAY:
+			pause(executor.getMediaWrapper());
+			if (callback != null) {
 				callback.onPlay();
 			}
 			break;
 		case MUTE:
 			executor.setMuted(!(executor.getMediaWrapper().isMuted()));
+			break;
+		case ENDED:
+		case ON_END:
+			if (executor.getMediaWrapper().getMediaAvailableOptions().isPauseSupported()) {
+				executor.pause();
+			} else {
+				executor.stop();
+			}
+			executor.setCurrentTime(0);
 			break;
 
 		}
@@ -78,6 +93,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 		}
 	}
 
-	 abstract void createMediaWrapper(PlayerEvent event);
-	 abstract void pause(MediaWrapper<?> mw);
+	abstract void createMediaWrapper(PlayerEvent event);
+
+	abstract void pause(MediaWrapper<?> mw);
 }

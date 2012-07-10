@@ -6,9 +6,9 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentHeaderViewExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsDataSourceDataSocketUserExtension;
@@ -47,8 +47,9 @@ public class ExtensionsManager implements IStateful  {
 		String extType = getFieldType(extensionJsObject);
 		List<Extension> currExtensions = new ArrayList<Extension>();
 
-		if (extType == null)
+		if (extType == null) {
 			return currExtensions;
+		}
 
 		String[] extTypes = extType.split(",");
 
@@ -127,12 +128,15 @@ public class ExtensionsManager implements IStateful  {
 	}
 
 	public Extension getInternaleExtensionByName(String name){
-		if ("DefaultAssessmentHeaderViewExtension".equals(name))
+		if ("DefaultAssessmentHeaderViewExtension".equals(name)) {
 			return new DefaultAssessmentHeaderViewExtension();
-		if ("DefaultAssessmentFooterViewExtension".equals(name))
+		}
+		if ("DefaultAssessmentFooterViewExtension".equals(name)) {
 			return new DefaultAssessmentFooterViewExtension();
-		if ("DefaultSoundProcessorExtension".equals(name))
-			return new DefaultMediaProcessorExtension();
+		}
+		if ("DefaultSoundProcessorExtension".equals(name)) {
+			return PlayerGinjector.INSTANCE.getDefaultMediaExtension();
+		}
 		return null;
 	}
 
