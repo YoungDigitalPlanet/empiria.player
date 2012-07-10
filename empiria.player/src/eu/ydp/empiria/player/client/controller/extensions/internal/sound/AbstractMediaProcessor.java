@@ -22,6 +22,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 	public AbstractMediaProcessor() {
 
 	}
+	@Override
 	public void init(){
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), this);
 		for(MediaEventTypes type : MediaEventTypes.values()){
@@ -62,6 +63,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 		case MUTE:
 			executor.setMuted(!(executor.getMediaWrapper().isMuted()));
 			break;
+
 		}
 	}
 

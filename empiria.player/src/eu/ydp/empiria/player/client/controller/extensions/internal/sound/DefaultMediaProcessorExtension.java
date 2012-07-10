@@ -125,8 +125,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 
 	@Override
 	public void onSoundFinished() {
-		if (callback != null)
+		if (callback != null) {
 			callback.onStop();
+		}
 
 	}
 
@@ -142,19 +143,21 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	 *
 	 * @param event
 	 */
+	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void createMediaWrapper(PlayerEvent event) {
 		if (event.getValue() != null && event.getValue() instanceof BaseMediaConfiguration) {
 			BaseMediaConfiguration bmc = (BaseMediaConfiguration) event.getValue();
 			Media mb = null;
+			boolean geckoSupport = true;
 			//lecim z koksem :D
-			if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported()) {
-				mb = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
-			} else if (Audio.isSupported()) {
-				mb = new HTML5AudioImpl();
-			}
 			if (!containsOgg(bmc.getSources()) && (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX))) {
-				mb = null;
+				geckoSupport = false;
+			}
+			if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported() && geckoSupport) {
+				mb = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
+			} else if (Audio.isSupported() && geckoSupport) {
+				mb = new HTML5AudioImpl();
 			}
 
 			SoundExecutor<?> executor;
