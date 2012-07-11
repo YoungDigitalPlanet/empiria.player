@@ -46,12 +46,12 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	@Override
 	public void init() {
 		if (!initialized) {
-			super.init();
-			soundExecutor = GWT.create(SoundExecutor.class);
-			soundExecutor.setSoundFinishedListener(this);
-			executors.put(null, soundExecutor);
+		super.init();
+		soundExecutor = GWT.create(SoundExecutor.class);
+		soundExecutor.setSoundFinishedListener(this);
+		executors.put(null, soundExecutor);
 			initialized = true;
-		}
+	}
 	}
 
 	public void getSoundExecutor() {
@@ -114,10 +114,10 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 
 	protected void forceStop(boolean pause, MediaWrapper<?> mw) {
 		for (SoundExecutor<?> se : executors.values()) {
-			if (se.getMediaWrapper() != null && se.getMediaWrapper().equals(mw)) {
+			if (se.getMediaWrapper() !=null && se.getMediaWrapper().equals(mw)) {
 				continue;
 			}
-			if (se.getMediaWrapper() != null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported() && pause) {
+			if (se.getMediaWrapper() !=null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported() && pause) {
 				se.pause();
 			} else {
 				se.stop();
@@ -155,8 +155,8 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			BaseMediaConfiguration bmc = (BaseMediaConfiguration) event.getValue();
 			Media mb = null;
 			boolean geckoSupport = true;
-			// lecim z koksem :D
-			if (!containsOgg(bmc.getSources()) && (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX))) {
+			
+			if (!containsOgg(bmc.getSources()) && (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isUserAgent(UserAgent.OPERA) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX))) {
 				geckoSupport = false;
 			}
 			if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported() && geckoSupport) {
@@ -196,7 +196,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			if (event.getSource() instanceof CallbackRecevier) {
 				((CallbackRecevier) event.getSource()).setCallbackReturnObject(executor.getMediaWrapper());
 			}
-			// soundExecutor = executor;
+			//soundExecutor = executor;
 		}
 	}
 
