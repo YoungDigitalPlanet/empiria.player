@@ -41,10 +41,10 @@ public class PathUtil {
 	}
 	
 	public static String normalizePath(String path){
-		while (path.matches(".*\\[.]{2}.*")){
+		while (path.matches(".*\\\\[^\\\\]*\\\\[.]{2}.*")){
 			path = path.replaceAll("\\\\[^\\\\]*\\\\[.]{2}", "");
 		}
-		while (path.matches(".*/[.]{2}.*")){
+		while (path.matches(".*/[^/]*/[.]{2}.*")){
 			path = path.replaceAll("/[^/]*/[.]{2}", "");
 		}
 		return path;
