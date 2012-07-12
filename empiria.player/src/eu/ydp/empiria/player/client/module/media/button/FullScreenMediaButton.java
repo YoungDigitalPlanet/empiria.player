@@ -21,7 +21,6 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 
 	@Override
 	protected void onClick() {
-		super.onClick();
 		if (!HTML5FullScreen.isInFullScreen()) {
 	//		HTML5FullScreen.requestFullScreen(getMedia().getParent().getElement());
 		} else {
@@ -35,7 +34,7 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 			@Override
 			public void handleEvent(FullScreenEvent event) {
 				if (event.isInFullScreen()) {
-					clicked = true;
+					setActive(true);
 					onClick();
 				}
 			}

@@ -20,7 +20,6 @@ public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
 
 	@Override
 	protected void onClick() {
-		super.onClick();
 		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.MUTE,getMediaWrapper()), getMediaWrapper());
 	}
 
@@ -30,9 +29,12 @@ public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
 		AbstractMediaEventHandler eventHandler = new AbstractMediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
-				if (event.getMediaWrapper().getVolume() == 0) {
-					// onClick();
+				if (event.getMediaWrapper().isMuted()) {
+					setActive(true);
+				}else{
+					setActive(false);
 				}
+				changeStyleForClick();
 			}
 		};
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), eventHandler);

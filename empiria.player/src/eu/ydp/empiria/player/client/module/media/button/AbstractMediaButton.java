@@ -15,8 +15,8 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 	private String baseStyleName;
 	private String onClickStyleName;
 	private String hoverStyleName;
-	protected boolean clicked = false;
-	private FlowPanel divElement = new FlowPanel();
+	private boolean active = false;
+	private final FlowPanel divElement = new FlowPanel();
 	private boolean singleClick = true;
 
 
@@ -79,19 +79,21 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 	/**
 	 * zdarzenie click
 	 */
-	protected void onClick() {
-		if (hoverStyleName.trim().length() == 0) {
-			return;
-		}
-		changeStyleForClick();
-		clicked = !clicked;
+	protected abstract void onClick();
+
+	protected boolean isActive(){
+		return active;
+	}
+
+	protected void setActive(boolean active){
+		this.active = active;
 	}
 
 	/**
 	 * zmiana stylu elementu dla zdarzenia click
 	 */
 	protected void changeStyleForClick() {
-		if (!clicked) {
+		if (active) {
 			divElement.getElement().addClassName(onClickStyleName);
 		} else {
 			divElement.getElement().removeClassName(onClickStyleName);

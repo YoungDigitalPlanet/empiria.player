@@ -22,8 +22,7 @@ public class PlayPauseMediaButton extends AbstractMediaButton<PlayPauseMediaButt
 
 	@Override
 	protected void onClick() {
-		super.onClick();
-		if (clicked) {
+		if (!isActive()) {
 			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, getMediaWrapper()), getMediaWrapper());
 		} else {
 			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, getMediaWrapper()), getMediaWrapper());
@@ -36,14 +35,18 @@ public class PlayPauseMediaButton extends AbstractMediaButton<PlayPauseMediaButt
 		AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
-				clicked = true;
+				if (event.getType() == MediaEventTypes.ON_PLAY) {
+					setActive(true);
+				}else{
+					setActive(false);
+				}
 				changeStyleForClick();
-				clicked = false;
 			}
 		};
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PAUSE), getMediaWrapper(), handler);
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler);
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler);
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), getMediaWrapper(), handler);
 	}
 
 	@Override
