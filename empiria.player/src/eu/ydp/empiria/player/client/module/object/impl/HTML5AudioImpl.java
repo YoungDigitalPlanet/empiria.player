@@ -4,10 +4,10 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class HTML5AudioImpl extends FlowPanel implements Audio {
-	com.google.gwt.media.client.Audio audio = null;
+	eu.ydp.empiria.player.client.media.Audio audio = null;
 
 	public HTML5AudioImpl() {
-		audio = com.google.gwt.media.client.Audio.createIfSupported();
+		audio = new eu.ydp.empiria.player.client.media.Audio();
 		add(audio);
 	}
 
