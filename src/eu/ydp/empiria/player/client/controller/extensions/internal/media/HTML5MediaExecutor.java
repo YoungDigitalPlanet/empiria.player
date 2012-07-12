@@ -25,6 +25,7 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 	protected SoundExecutorListener listener;
 	private BaseMediaConfiguration baseMediaConfiguration;
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
 	@Override
 	public void init() {
 		if (media != null) {
@@ -112,8 +113,13 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 
 	@Override
 	public void stop() {
-		media.pause();
-		media.setCurrentTime(0);
+		try {
+			media.pause();
+			media.setCurrentTime(0);
+		} catch (Exception e) {
+			//chrome podczas przeladowania strony lekcji
+			//generowal bledy
+		}
 	}
 
 	@Override
