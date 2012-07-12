@@ -4,11 +4,18 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
+
 public class HTML5VideoImpl extends FlowPanel implements Video {
 
 	protected com.google.gwt.media.client.Video video;
 	public HTML5VideoImpl() {
-		video = com.google.gwt.media.client.Video.createIfSupported();
+		if(UserAgentChecker.isUserAgent(UserAgent.IE9)){
+			video = new com.google.gwt.media.client.Video("");
+		}else{
+			video = com.google.gwt.media.client.Video.createIfSupported();
+		}
 		video.setPreload(MediaElement.PRELOAD_METADATA);
 		add(video);
 
@@ -20,6 +27,9 @@ public class HTML5VideoImpl extends FlowPanel implements Video {
 
 	@Override
 	public void addSrc(String src, String type) {
+		if(type.contains("mp") && UserAgentChecker.isUserAgent(UserAgent.IE9)){
+			setSrc(src);
+		}
 		video.addSource(src, type);
 	}
 	@Override
