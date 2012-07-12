@@ -21,7 +21,7 @@ public class StopMediaButton extends AbstractMediaButton<StopMediaButton> {
 
 	@Override
 	protected void onClick() {
-		super.onClick();
+		changeStyleForClick();
 		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP,getMediaWrapper()),getMediaWrapper());
 	}
 

@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
 public class SimpleMediaButton extends AbstractMediaButton<SimpleMediaButton> {
-	private String styleName;
-	private boolean singleClick;
+	private final String styleName;
+	private final boolean singleClick;
 
 	public SimpleMediaButton(String styleName, boolean singleClick) {
 		super(styleName, singleClick);
@@ -20,6 +20,11 @@ public class SimpleMediaButton extends AbstractMediaButton<SimpleMediaButton> {
 
 	}
 
+	@Override
+	protected void onClick() {
+		setActive(!isActive());
+		changeStyleForClick();
+	}
 	@Override
 	public boolean isSupported() {
 		return true;
