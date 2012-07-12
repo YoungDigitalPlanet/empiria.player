@@ -7,7 +7,7 @@ import com.google.gwt.dom.client.Element;
 
 /**
  * Klasa pomocnicza do obslugi trybu pelnoekranowego w przegladarkach
- * 
+ *
  */
 public class HTML5FullScreen {
 
@@ -16,7 +16,7 @@ public class HTML5FullScreen {
 	public interface FullScreenEvent {
 		/**
 		 * zwraca true jesli przegladarka jest w trybie pelnoekranowym
-		 * 
+		 *
 		 * @return
 		 */
 		public boolean isInFullScreen();
@@ -28,12 +28,13 @@ public class HTML5FullScreen {
 
 	/**
 	 * Dodaje handlera nasluchujacego na zmiany trybu pelnoekranowego
-	 * 
+	 *
 	 * @param handler
 	 */
 	public static void addFullScreenEventHandler(FullScreenEventHandler handler) {
-		if (handler == null)
+		if (handler == null) {
 			return;
+		}
 		if (eventHandlers.size() == 0) {
 			addFullScreenChangeHandler();
 		}
@@ -42,7 +43,7 @@ public class HTML5FullScreen {
 
 	/**
 	 * probuje wyswietlic podany element w trybie fullScreen
-	 * 
+	 *
 	 * @param element
 	 * @return true jezeli sie uda false w przeciwnym razie
 	 */
@@ -70,7 +71,7 @@ public class HTML5FullScreen {
 
 	/**
 	 * Probuje opuscic tryb fullScreen
-	 * 
+	 *
 	 * @param element
 	 * @return
 	 */
@@ -116,7 +117,7 @@ public class HTML5FullScreen {
 
 	/**
 	 * Czy w danym momencie jest aktywny tryb pelnoekranowy
-	 * @return 
+	 * @return
 	 */
 	public static native boolean isInFullScreen()/*-{
 		try {
@@ -129,6 +130,7 @@ public class HTML5FullScreen {
 	}-*/;
 
 	private static native void addFullScreenChangeHandler()/*-{
+	try{
 		$doc
 				.addEventListener(
 						"fullscreenchange",
@@ -144,7 +146,9 @@ public class HTML5FullScreen {
 						"webkitfullscreenchange",
 						@eu.ydp.empiria.player.client.util.HTML5FullScreen::handleEvent(),
 						false);
+	}catch(e){
 
+	}
 	}-*/;
 
 }
