@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.isMobileUserAgent;
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.isUserAgent;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -155,13 +158,13 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			BaseMediaConfiguration bmc = (BaseMediaConfiguration) event.getValue();
 			Media mb = null;
 			boolean geckoSupport = true;
-			
-			if (!containsOgg(bmc.getSources()) && (UserAgentChecker.isUserAgent(UserAgent.GECKO1_8) || UserAgentChecker.isUserAgent(UserAgent.OPERA) || UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX))) {
+
+			if (!containsOgg(bmc.getSources()) && (isUserAgent(UserAgent.GECKO1_8) || isUserAgent(UserAgent.OPERA) || isMobileUserAgent(MobileUserAgent.FIREFOX))) {
 				geckoSupport = false;
 			}
-			if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported() && geckoSupport) {
+			if (bmc.getMediaType() == MediaType.VIDEO && (Video.isSupported() || isUserAgent(UserAgent.IE9)) && geckoSupport) {
 				mb = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
-			} else if (Audio.isSupported() && geckoSupport) {
+			} else if ((Audio.isSupported() || isUserAgent(UserAgent.IE9)) && geckoSupport) {
 				mb = new HTML5AudioImpl();
 			}
 
