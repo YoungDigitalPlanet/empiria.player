@@ -10,7 +10,6 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.gwtutil.client.debug.Debug;
 
 /**
  * Klasa zarzadcy mediow.
@@ -18,7 +17,7 @@ import eu.ydp.gwtutil.client.debug.Debug;
  */
 public class MediaManager extends AbstractMediaEventHandler implements Extension {
 
-	Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
+	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	public MediaManager() {
 		eventsBus.addAsyncHandler(MediaEvent.getType(MediaEventTypes.MEDIA_ATTACHED), this);
@@ -32,11 +31,14 @@ public class MediaManager extends AbstractMediaEventHandler implements Extension
 			mediaSet.add(event.getMediaWrapper());
 			break;
 		case PLAY:
+			MediaEvent mEvent = new MediaEvent(MediaEventTypes.PAUSE);
 			for(MediaWrapper<?> media : mediaSet){
 				if(!media.equals(event.getMediaWrapper())){
-					eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE),media);
+					eventsBus.fireEventFromSource(mEvent,media);
 				}
 			}
+			break;
+		default:
 			break;
 		}
 	}
