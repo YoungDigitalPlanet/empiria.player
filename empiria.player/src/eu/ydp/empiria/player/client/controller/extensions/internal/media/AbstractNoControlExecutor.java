@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundEx
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
-public abstract class NoControlExecutor implements SoundExecutor<Widget> {
+public abstract class AbstractNoControlExecutor implements SoundExecutor<Widget> {
 
 	protected MediaWrapper<Widget> mediaWrapper;
 	protected BaseMediaConfiguration bmc;
@@ -33,37 +33,27 @@ public abstract class NoControlExecutor implements SoundExecutor<Widget> {
 	@Override
 	@Deprecated
 	public void play(String src) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void play() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void setMuted(boolean mute) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void setVolume(double volume) {
-		// TODO Auto-generated method stub
 
 	}
 

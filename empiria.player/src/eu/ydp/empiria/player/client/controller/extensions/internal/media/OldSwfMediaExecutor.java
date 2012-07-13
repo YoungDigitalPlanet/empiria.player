@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 
 
-public class OldSwfMediaExecutor extends  NoControlExecutor {
+public class OldSwfMediaExecutor extends  AbstractNoControlExecutor {
 	@Override
 	public void init() {
 		Widget widget = null;
