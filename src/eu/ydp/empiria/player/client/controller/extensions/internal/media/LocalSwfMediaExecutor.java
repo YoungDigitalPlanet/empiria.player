@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.util.SourceUtil;
  * @author plelakowski
  *
  */
-public class LocalSwfMediaExecutor extends NoControlExecutor {
+public class LocalSwfMediaExecutor extends AbstractNoControlExecutor {
 
 
 	@Override
