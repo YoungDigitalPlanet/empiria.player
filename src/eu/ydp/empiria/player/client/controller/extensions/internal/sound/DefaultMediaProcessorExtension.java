@@ -154,9 +154,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			if (!containsOgg(bmc.getSources()) && (isUserAgent(UserAgent.GECKO1_8) || isUserAgent(UserAgent.OPERA) || isMobileUserAgent(MobileUserAgent.FIREFOX))) {
 				geckoSupport = false;
 			}
-			if (bmc.getMediaType() == MediaType.VIDEO && (Video.isSupported() || isUserAgent(UserAgent.IE9)) && geckoSupport) {
+			if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported() && geckoSupport) {
 				mb = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
-			} else if ((Audio.isSupported() || isUserAgent(UserAgent.IE9)) && geckoSupport) {
+			} else if (Audio.isSupported() && geckoSupport) {
 				mb = new HTML5AudioImpl();
 			}
 
