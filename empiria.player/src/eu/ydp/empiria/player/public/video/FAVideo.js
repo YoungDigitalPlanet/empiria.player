@@ -56,10 +56,16 @@ http://www.adobe.com/go/favideo/
 		for (var i = 0 ; i < headChildren.length ; i ++){
 			if (headChildren[i].nodeName != null  &&  headChildren[i].nodeName.toLowerCase() == 'script'){
 				var src = headChildren[i].getAttribute("src");
-				var searchString = "empiria.player.nocache.js";
-				if (src != null  &&  src.indexOf(searchString, src.length - searchString.length) !== -1){
-					scriptPath = src.substr(0, src.length - searchString.length)+"video";
-					break;
+				if (src != null){
+					var searchString = "empiria.player.nocache.js";
+					var searchString2 = "empiria.player.nocache.js?";
+					if(src.indexOf(searchString, src.length - searchString.length) !== -1){
+						scriptPath = src.substr(0, src.length - searchString.length)+"video";
+						break;
+					} else if(src.indexOf(searchString2) !== -1){
+						scriptPath = src.substr(0, src.indexOf(searchString2))+"video";						
+						break;
+					}
 				}
 			}
 		}
