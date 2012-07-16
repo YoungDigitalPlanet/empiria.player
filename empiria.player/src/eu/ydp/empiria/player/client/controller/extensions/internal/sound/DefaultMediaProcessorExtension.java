@@ -70,9 +70,6 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	public void onDeliveryEvent(DeliveryEvent deliveryEvent) {
 		if (deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING) {
 			forceStop(false);
-			if (soundExecutor instanceof ExecutorSwf) {
-				((ExecutorSwf) soundExecutor).free();
-			}
 		} else if (deliveryEvent.getType() == DeliveryEventType.FEEDBACK_MUTE) {
 			if (deliveryEvent.getParams().containsKey("mute") && deliveryEvent.getParams().get("mute") instanceof Boolean) {
 				muteFeedbacks = (Boolean) deliveryEvent.getParams().get("mute");
@@ -82,9 +79,6 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			if (deliveryEvent.getParams().containsKey("url") && deliveryEvent.getParams().get("url") instanceof String) {
 				String url = (String) deliveryEvent.getParams().get("url");
 				forceStop(false);
-				if (soundExecutor instanceof ExecutorSwf) {
-					((ExecutorSwf) soundExecutor).free();
-				}
 				callback = null;
 				if (deliveryEvent.getParams().containsKey("callback") && deliveryEvent.getParams().get("callback") instanceof MediaInteractionSoundEventCallback) {
 					callback = ((MediaInteractionSoundEventCallback) deliveryEvent.getParams().get("callback"));
@@ -95,9 +89,6 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 						@Override
 						public void stop() {
 							forceStop(false);
-							if (soundExecutor instanceof ExecutorSwf) {
-								((ExecutorSwf) soundExecutor).free();
-							}
 						}
 					});
 				}
