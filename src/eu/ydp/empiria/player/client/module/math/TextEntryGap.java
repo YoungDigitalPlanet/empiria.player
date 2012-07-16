@@ -1,6 +1,9 @@
 package eu.ydp.empiria.player.client.module.math;
 
+import java.util.Map;
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -8,10 +11,23 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.binding.Bindable;
+import eu.ydp.empiria.player.client.module.binding.BindingGroupIdentifier;
+import eu.ydp.empiria.player.client.module.binding.BindingType;
+import eu.ydp.empiria.player.client.module.binding.BindingUtil;
+import eu.ydp.empiria.player.client.module.binding.BindingValue;
+import eu.ydp.empiria.player.client.module.binding.DefaultBindingGroupIdentifier;
+import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingContext;
+import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue;
+import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
+import eu.ydp.empiria.player.client.util.IntegerUtils;
 import eu.ydp.empiria.player.client.util.geom.Size;
 
-public class TextEntryGap extends Composite implements MathGap {
+public class TextEntryGap extends Composite implements MathGap, Bindable {
 
 	private static TextEntryGapUiBinder uiBinder = GWT
 			.create(TextEntryGapUiBinder.class);
@@ -23,12 +39,83 @@ public class TextEntryGap extends Composite implements MathGap {
 	Panel markPanel;
 	@UiField
 	TextBox textBox;
+	private BindingGroupIdentifier gapWidthGroupId;
+	private Integer gapOwnWidth;
+	private Integer gapWidth = 36;
+	private Integer gapHeight = 14;
+	private GapWidthMode gapWidthMode;
+	private GapWidthBindingContext gapWidthBindingContext;
+	private String correctAnswer;
+	private int fontSize;
+	private String uid;
+	
 	
 
 	public TextEntryGap() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
+	public void init(Element element, ModuleSocket moduleSocket,IModule parentModule, String correctAnswer, int longestAnswerLength, int defaultFontSize) {
+		this.correctAnswer = correctAnswer;
+		this.fontSize = defaultFontSize;
+		
+		if (element.hasAttribute("class")){
+			textBox.getElement().setAttribute("class", element.getAttribute("class") );
+		}
+		
+		if (element.hasAttribute("widthBindingGroup")){
+			gapWidthGroupId = new DefaultBindingGroupIdentifier(element.getAttribute("widthBindingGroup"));
+		} else {
+			gapWidthGroupId = new DefaultBindingGroupIdentifier("");
+		}
+		
+		if (element.hasAttribute("uid")){
+			uid = element.getAttribute("uid");
+		} else {
+			uid = "";
+		}
+		
+		Map<String, String> styles = moduleSocket.getStyles(element);
+		
+		if (styles.containsKey("-empiria-math-gap-width")){
+			gapOwnWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-width"), null);
+		}
+		
+		if (styles.containsKey("-empiria-math-gap-font-size")){
+			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-font-size"), null);
+		}
+		
+		textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
+		
+		gapWidthMode = GapWidthMode.NORMAL;
+		if (styles.containsKey("-empiria-math-gap-width-align")){
+			try{
+				gapWidthMode = GapWidthMode.valueOf(styles.get("-empiria-math-gap-width-align").toUpperCase());
+			}catch (Exception e) { }
+		}	
+		
+		if (gapOwnWidth != null){
+			textBox.setWidth(gapOwnWidth + "px");			
+		} else if ( gapWidthMode == GapWidthMode.GAP  &&  gapOwnWidth == null){
+			gapOwnWidth = defaultFontSize * longestAnswerLength;
+			textBox.setWidth(gapOwnWidth  + "px");					
+		} else if (gapWidthMode == GapWidthMode.GROUP){
+			gapWidthBindingContext = (GapWidthBindingContext) BindingUtil.register(BindingType.GAP_WIDTHS, this, parentModule);
+		}
+	}
+	
+	public void updateGapWidth(){
+		if (gapWidthBindingContext != null){
+			int len = gapWidthBindingContext.getGapWidthBindingOutcomeValue().getGapCharactersCount();
+			gapOwnWidth = len * fontSize;
+			textBox.setWidth(len * fontSize + "px");
+		}
+	}
+	
+	public String getUid(){
+		return uid;
+	}
+	
 	public TextBox getTextBox(){
 		return textBox;
 	}
@@ -83,13 +170,46 @@ public class TextEntryGap extends Composite implements MathGap {
 	}
 
 
-	public void setGapWidth(String width) {
-		textBox.setWidth(width);
+	public void setGapWidth(int width) {
+		if (gapOwnWidth == null){
+			gapWidth = width;
+			textBox.setWidth(width + "px");
+		}
+	}
+	
+	public Integer getGapWidth(){
+		if (gapOwnWidth == null)
+			return gapOwnWidth;
+		return gapWidth;
 	}
 
-	public void setGapHeight(String height) {
-		textBox.setHeight(height);
+	public void setGapHeight(int height) {
+		gapHeight = height;
+		textBox.setHeight(height + "px");
 	}
+	
+	public Integer getGapHeight(){
+		return gapHeight;
+	}
+
+	@Override
+	public BindingValue getBindingValue(BindingType bindingType) {
+		if (bindingType == BindingType.GAP_WIDTHS){
+			return new GapWidthBindingValue(correctAnswer.length());
+		}
+		return null;
+	}
+
+
+	@Override
+	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
+		if (bindingType == BindingType.GAP_WIDTHS){
+			return gapWidthGroupId;
+		}
+		return null;
+	}
+	
+
 
 	public static Size getTextEntryGapActualSize(Size orgSize){
 		return getTextEntryGapActualSize(orgSize, null);
@@ -108,4 +228,5 @@ public class TextEntryGap extends Composite implements MathGap {
 		RootPanel.get().remove(testGap);
 		return new Size(actualTextEntryWidth, actualTextEntryHeight);
 	}
+
 }

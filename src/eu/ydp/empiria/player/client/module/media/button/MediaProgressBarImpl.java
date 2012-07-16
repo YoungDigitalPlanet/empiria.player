@@ -85,7 +85,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 				@Override
 				public void onMediaEvent(MediaEvent event) {
 					if (isMediaReady() && !isPressed()) {
-						if (getMediaWrapper().getCurrentTime() > lastTime + 1 || getMediaWrapper().getCurrentTime() < lastTime - 1) {
+						if (getMediaWrapper().getCurrentTime() > lastTime + 1 || getMediaWrapper().getCurrentTime() < lastTime - 1  ||  event.getType() == MediaEventTypes.ON_STOP) {
 							// przeskakujemy co sekunde
 							lastTime = (int) getMediaWrapper().getCurrentTime();
 							double steep = getScrollWidth() / getMediaWrapper().getDuration();
@@ -96,6 +96,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			};
 			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler);
 			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler);
 			// nie zawsze zostanie wyzwolony timeupdate ze wzgledu na
 			// ograniczenie
 			// na 1s postepu wiec robimy to tu

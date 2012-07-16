@@ -71,5 +71,9 @@ public class InlineChoiceGap implements MathGap {
 	public Widget getContainer() {
 		return container;
 	}
+	
+	public ExListBox getListBox(){
+		return listBox;
+	}
 
 }

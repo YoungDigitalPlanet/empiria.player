@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.containers.group;
 
+import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
+
 public class ItemBodyModule extends GroupModuleBase<ItemBodyModule> {
 
 	public ItemBodyModule(){
@@ -10,5 +12,10 @@ public class ItemBodyModule extends GroupModuleBase<ItemBodyModule> {
 	@Override
 	public ItemBodyModule getNewInstance() {
 		return new ItemBodyModule();
+	}
+
+	@Override
+	protected GapWidthBindingManager createGapWidthBindingManager(){
+		return new GapWidthBindingManager(true);
 	}
 }
