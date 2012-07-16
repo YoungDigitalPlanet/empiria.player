@@ -122,6 +122,7 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 			((HasFlashMediaHandlers) flashMedia).addFlashMediaMetadataHandler((FlashMediaMetadataHandler) mediaWrapper);
 			((HasFlashMediaHandlers) flashMedia).addFlashMediaMuteChangeHandler((FlashMediaMuteChangeHandler) mediaWrapper);
 			((HasFlashMediaHandlers) flashMedia).addFlashMediaVolumeChangeHandler((FlashMediaVolumeChangeHandler) mediaWrapper);
+			((HasFlashMediaHandlers) flashMedia).addFlashMediaStopHandler((FlashMediaStopHandler) mediaWrapper);
 		}
 	}
 
