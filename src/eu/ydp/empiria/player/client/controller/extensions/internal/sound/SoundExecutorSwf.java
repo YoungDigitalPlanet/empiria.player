@@ -55,10 +55,4 @@ public class SoundExecutorSwf extends ExecutorSwf {
 		super.init();
 	}
 
-	@Override
-	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {
-		super.setBaseMediaConfiguration(baseMediaConfiguration);
-		source = SourceUtil.getMpegSource(baseMediaConfiguration.getSources());
-	}
-
 }

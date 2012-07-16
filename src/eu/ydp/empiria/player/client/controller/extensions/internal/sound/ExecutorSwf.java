@@ -41,7 +41,6 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 	protected boolean pause;
 	protected boolean playing = false;
 	protected String source = null;
-	protected boolean isFree = true;
 	@Override
 	public void init() {
 		// Mapujemy wszystkie eventy flasha na mediaevent
@@ -108,7 +107,7 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 		((HasFlashMediaHandlers) flashMedia).addFlashMediaStopHandler(new FlashMediaStopHandler() {
 			@Override
 			public void onFlashSoundStop(FlashMediaStopEvent event) {
-				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP, getMediaWrapper()), getMediaWrapper());
+				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_STOP, getMediaWrapper()), getMediaWrapper());
 			}
 		});
 		((HasFlashMediaHandlers) flashMedia).addFlashMediaPositionChangeHandler(new FlashMediaPlayheadUpdateHandler() {
@@ -129,6 +128,7 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 	@Override
 	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {
 		this.baseMediaConfiguration = baseMediaConfiguration;
+		source = SourceUtil.getMpegSource(baseMediaConfiguration.getSources());
 	}
 
 	@Override
@@ -163,36 +163,38 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 
 	@Override
 	public void play(String src) {
+		play(src, true);
+	}
+
+	@Override
+	public void play() {
+		play(source, false);
+	}
+
+	
+	private void play(String src, boolean free){
+		if (flashMedia != null  &&  free)
+			free();
 		source = src;
 		if (playing && !pause){
 			stop();
 		}
 		if (flashMedia == null) {
 			init();
-			isFree = false;
-		}
-		if(isFree){
-			flashMedia.setSrc(source);
-			flashMedia.load();
 		}
 		flashMedia.play();
+		
 	}
-
 	@Override
 	public void pause() {
 		pause = true;
 		flashMedia.pause();
 	}
 
-	@Override
-	public void play() {
-		play(SourceUtil.getMpegSource(baseMediaConfiguration.getSources()));
-	}
-
-	public void free() {
+	private void free() {
 		if (flashMedia != null) {
 			flashMedia.free();
-			isFree = true;
+			flashMedia = null;
 		}
 	}
 }
