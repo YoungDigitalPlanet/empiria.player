@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.math;
 import com.google.gwt.user.client.ui.Widget;
 
 public interface MathGap {
-
+	
 	public String getValue();
 	public void setValue(String v);
 	public void setEnabled(boolean enabled);
