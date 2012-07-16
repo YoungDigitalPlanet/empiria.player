@@ -9,6 +9,8 @@ import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaMuteChangeEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaMuteChangeHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaPlayheadUpdateEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaPlayheadUpdateHandler;
+import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaStopEvent;
+import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaStopHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaVolumeChangeEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaVolumeChangeHandler;
 import eu.ydp.empiria.player.client.PlayerGinjector;
@@ -21,7 +23,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
  *
  */
 public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayheadUpdateHandler, FlashMediaMuteChangeHandler, FlashMediaVolumeChangeHandler,
-		FlashMediaMetadataHandler {
+		FlashMediaMetadataHandler, FlashMediaStopHandler {
 
 	MediaAvailableOptions swfOptions = new SwfMediaAvailableOptions();
 	double duration = 0;
@@ -104,6 +106,11 @@ public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayhead
 	@Override
 	public void onFlashMediaMetadataEvent(FlashMediaMetadataEvent event) {
 		duration = event.getDuration() * .001f;
+	}
+
+	@Override
+	public void onFlashSoundStop(FlashMediaStopEvent event) {
+		currentTime = event.getPlayheadTime() * .001f;		
 	}
 
 }

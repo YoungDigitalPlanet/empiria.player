@@ -47,9 +47,6 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			break;
 		case STOP:
 			executor.stop();
-			if (callback != null) {
-				callback.onStop();
-			}
 			break;
 		case PAUSE:
 			executor.pause();
@@ -62,9 +59,6 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			break;
 		case ON_PLAY:
 			pauseAllOthers(executor.getMediaWrapper());
-			if (callback != null) {
-				callback.onPlay();
-			}
 			break;
 		case MUTE:
 			executor.setMuted(!(executor.getMediaWrapper().isMuted()));
