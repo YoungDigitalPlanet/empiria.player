@@ -49,7 +49,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	@Override
 	public void init() {
 		if (!initialized) {
-		super.init();
+			super.init();
 		soundExecutor = GWT.create(SoundExecutor.class);
 		soundExecutor.setSoundFinishedListener(this);
 		executors.put(null, soundExecutor);
@@ -69,7 +69,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	@Override
 	public void onDeliveryEvent(DeliveryEvent deliveryEvent) {
 		if (deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING) {
-			forceStop(false);
+			forceStop(true, true);
 		} else if (deliveryEvent.getType() == DeliveryEventType.FEEDBACK_MUTE) {
 			if (deliveryEvent.getParams().containsKey("mute") && deliveryEvent.getParams().get("mute") instanceof Boolean) {
 				muteFeedbacks = (Boolean) deliveryEvent.getParams().get("mute");
@@ -78,7 +78,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 
 			if (deliveryEvent.getParams().containsKey("url") && deliveryEvent.getParams().get("url") instanceof String) {
 				String url = (String) deliveryEvent.getParams().get("url");
-				forceStop(false);
+				forceStop(true, true);
 				callback = null;
 				if (deliveryEvent.getParams().containsKey("callback") && deliveryEvent.getParams().get("callback") instanceof MediaInteractionSoundEventCallback) {
 					callback = ((MediaInteractionSoundEventCallback) deliveryEvent.getParams().get("callback"));
@@ -88,7 +88,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 					callback.setCallforward(new MediaInteractionSoundEventCallforward() {
 						@Override
 						public void stop() {
-							forceStop(false);
+							forceStop(true, true);
 						}
 					});
 				}
@@ -98,27 +98,27 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	}
 
 	@Override
-	void pause(MediaWrapper<?> mw) {
-		forceStop(true, mw);
+	void pauseAllOthers(MediaWrapper<?> mw) {
+		forceStop(true, mw, false);
 	}
 
-	protected void forceStop(boolean pause) {
-		forceStop(pause, null);
+	protected void forceStop(boolean pause, boolean stopDefaultSoundExecutor) {
+		forceStop(pause, null, stopDefaultSoundExecutor);
 	}
 
-	protected void forceStop(boolean pause, MediaWrapper<?> mw) {
+	protected void forceStop(boolean pause, MediaWrapper<?> mw, boolean stopDefaultSoundExecutor) {
 		for (SoundExecutor<?> se : executors.values()) {
 			if (se.getMediaWrapper() !=null && se.getMediaWrapper().equals(mw)) {
 				continue;
 			}
 			if (se.getMediaWrapper() !=null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported() && pause) {
 				se.pause();
-			} else {
+			} else if (se.getMediaWrapper() != null  ||  (se.getMediaWrapper() == null  &&  mw != null)  ||  stopDefaultSoundExecutor) {
 				se.stop();
 			}
 		}
-		if (executors.size() == 0) {
-			soundExecutor.stop();
+		if (mw != null){
+			callback = null;
 		}
 	}
 
@@ -126,6 +126,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	public void onSoundFinished() {
 		if (callback != null) {
 			callback.onStop();
+			callback = null;
 		}
 
 	}

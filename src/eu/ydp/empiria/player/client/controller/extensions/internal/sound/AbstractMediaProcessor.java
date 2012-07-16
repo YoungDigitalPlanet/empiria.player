@@ -61,7 +61,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			executor.play();
 			break;
 		case ON_PLAY:
-			pause(executor.getMediaWrapper());
+			pauseAllOthers(executor.getMediaWrapper());
 			if (callback != null) {
 				callback.onPlay();
 			}
@@ -95,5 +95,5 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 
 	abstract void createMediaWrapper(PlayerEvent event);
 
-	abstract void pause(MediaWrapper<?> mw);
+	abstract void pauseAllOthers(MediaWrapper<?> mw);
 }
