@@ -4,6 +4,7 @@ import com.google.gwt.media.client.Video;
 
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
+import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 
 /**
  * domyslna implementacja dla androida
@@ -28,8 +29,6 @@ public class HTML5VideoAndroidImpl extends HTML5VideoImpl {
 
 	public HTML5VideoAndroidImpl() {
 		super();
-		// niestety ta poprawka powoduje problemy w trybie fullscreen
-		// video.addBitlessDomHandler(new MP4ErrorHandler(video),
-		// HTML5MediaEvent.getType(HTML5MediaEventsType.ended));
+		video.addBitlessDomHandler(new MP4ErrorHandler(video), HTML5MediaEvent.getType(HTML5MediaEventsType.ended));
 	}
 }
