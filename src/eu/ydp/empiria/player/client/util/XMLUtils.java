@@ -27,8 +27,10 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
-public class XMLUtils {
+public final class XMLUtils {
 
+	private XMLUtils() {
+	}
 	/**
 	 * Helper function for getting element attribute as string
 	 *
@@ -37,13 +39,8 @@ public class XMLUtils {
 	 * @return attribute text or empty string if not found
 	 */
 	public static String getAttributeAsString(Element element, String name) {
-		String attribute;
-
-		attribute = element.getAttribute(name);
-		if (attribute == null)
-			return "";
-		else
-			return attribute;
+		String attribute = element.getAttribute(name);
+		return attribute == null ? "" : attribute;
 	}
 
 	/**
@@ -54,13 +51,8 @@ public class XMLUtils {
 	 * @return attribute value or false if not found
 	 */
 	public static boolean getAttributeAsBoolean(Element element, String name) {
-		String attribute;
-
-		attribute = element.getAttribute(name);
-		if (attribute == null)
-			return false;
-		else
-			return (attribute.compareTo("true") == 0);
+		String attribute = element.getAttribute(name);
+		return "true".compareTo(attribute) == 0;
 	}
 
 	/**
@@ -71,13 +63,8 @@ public class XMLUtils {
 	 * @return attribute value or 0 if not found
 	 */
 	public static int getAttributeAsInt(Element element, String name) {
-		String attribute;
-
-		attribute = element.getAttribute(name);
-		if (attribute == null)
-			return 0;
-		else
-			return Integer.parseInt(attribute);
+		String attribute = element.getAttribute(name);
+		return attribute == null ? 0 : Integer.parseInt(attribute);
 	}
 
 	/**
@@ -88,13 +75,8 @@ public class XMLUtils {
 	 * @return attribute value or 0 if not found
 	 */
 	public static double getAttributeAsDouble(Element element, String name) {
-		String attribute;
-
-		attribute = element.getAttribute(name);
-		if (attribute == null)
-			return 0;
-		else
-			return Double.parseDouble(attribute);
+		String attribute = element.getAttribute(name);
+		return attribute == null ? 0 : Double.parseDouble(attribute);
 	}
 
 	/**
@@ -136,21 +118,23 @@ public class XMLUtils {
 
 	}
 
-  public static Element getFirstChildElement(Element element){
-	  for (int i = 0 ; i < element.getChildNodes().getLength() ; i ++){
-		  if (element.getChildNodes().item(i) instanceof Element){
-			  return (Element)element.getChildNodes().item(i);
-		  }
-	  }
-	  return null;
-  }
-  
-  public static boolean hasParentWithNodeName(Element element, String parentNodeName, String searchUpToNodeName){
-	  if (element != null  &&  element.getNodeName().equals(parentNodeName))
-		  return true;
-	  if (element == null  ||  element.getNodeName().equals(searchUpToNodeName)  ||  !(element.getParentNode() instanceof Element))
-		  return false;
-	  return hasParentWithNodeName((Element)element.getParentNode(), parentNodeName, searchUpToNodeName);	  
-  }
-  
+	public static Element getFirstChildElement(Element element) {
+		for (int i = 0; i < element.getChildNodes().getLength(); i++) {
+			if (element.getChildNodes().item(i) instanceof Element) {
+				return (Element) element.getChildNodes().item(i);
+			}
+		}
+		return null;
+	}
+
+	public static boolean hasParentWithNodeName(Element element, String parentNodeName, String searchUpToNodeName) {
+		if (element != null && element.getNodeName().equals(parentNodeName)) {
+			return true;
+		}
+		if (element == null || element.getNodeName().equals(searchUpToNodeName) || !(element.getParentNode() instanceof Element)) {
+			return false;
+		}
+		return hasParentWithNodeName((Element) element.getParentNode(), parentNodeName, searchUpToNodeName);
+	}
+
 }
