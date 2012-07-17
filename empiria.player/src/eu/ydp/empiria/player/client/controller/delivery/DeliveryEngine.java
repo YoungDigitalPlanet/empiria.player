@@ -424,6 +424,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	@Override
 	public void onFlowProcessingEvent(FlowProcessingEvent event) {
 		if (event.getType() == FlowProcessingEventType.PAGE_LOADED) {
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_UNLOADED));
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED));
 			PageReference pr = flowManager.getPageReference();
 			PageData pd = dataManager.generatePageData(pr);

@@ -36,8 +36,6 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
 public class DefaultMediaProcessorExtension extends AbstractMediaProcessor implements SoundProcessorExtension, SoundExecutorListener {
-
-	protected SoundExecutor<?> soundExecutor;
 	protected boolean muteFeedbacks = false;
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
 	protected boolean initialized = false;
@@ -50,9 +48,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	public void init() {
 		if (!initialized) {
 			super.init();
-		soundExecutor = GWT.create(SoundExecutor.class);
-		soundExecutor.setSoundFinishedListener(this);
-		executors.put(null, soundExecutor);
+		feedbackSoundExecutor = GWT.create(SoundExecutor.class);
+		feedbackSoundExecutor.setSoundFinishedListener(this);
+		executors.put(null, feedbackSoundExecutor);
 			initialized = true;
 	}
 	}
@@ -92,7 +90,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 						}
 					});
 				}
-				soundExecutor.play(url);
+				feedbackSoundExecutor.play(url);
 			}
 		}
 	}
