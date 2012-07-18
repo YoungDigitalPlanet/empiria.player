@@ -6,8 +6,8 @@ import eu.ydp.empiria.player.client.module.binding.BindingType;
 
 public class GapWidthBindingManager extends BindingManagerBase {
 
-	public GapWidthBindingManager(boolean acceptEmptyGroupIdentifier) {
-		super(acceptEmptyGroupIdentifier);
+	public GapWidthBindingManager(boolean acceptOnlyEmptyGroupIdentifier) {
+		super(acceptOnlyEmptyGroupIdentifier);
 	}
 
 	@Override
