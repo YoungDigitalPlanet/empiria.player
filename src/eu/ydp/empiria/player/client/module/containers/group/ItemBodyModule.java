@@ -16,6 +16,6 @@ public class ItemBodyModule extends GroupModuleBase<ItemBodyModule> {
 
 	@Override
 	protected GapWidthBindingManager createGapWidthBindingManager(){
-		return new GapWidthBindingManager(true);
+		return new GapWidthBindingManager(false);
 	}
 }

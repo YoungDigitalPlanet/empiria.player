@@ -6,11 +6,11 @@ import java.util.Map;
 public abstract class BindingManagerBase implements BindingManager {
 
 	private Map<BindingGroupIdentifier, BindingContext> contexts;
-	private boolean acceptEmptyGroupIdentifier;
+	private boolean acceptOnlyEmptyGroupIdentifier;
 	
-	public BindingManagerBase(boolean acceptEmptyGroupIdentifier){
+	public BindingManagerBase(boolean acceptOnlyEmptyGroupIdentifier){
 		contexts = new HashMap<BindingGroupIdentifier, BindingContext>();
-		this.acceptEmptyGroupIdentifier = acceptEmptyGroupIdentifier;
+		this.acceptOnlyEmptyGroupIdentifier = acceptOnlyEmptyGroupIdentifier;
 	}
 	
 	@Override
@@ -22,8 +22,9 @@ public abstract class BindingManagerBase implements BindingManager {
 				return contexts.get(gi);
 			}
 		}
-		if (groupIdentifier.isEmptyGroupIdentifier()  &&  !acceptEmptyGroupIdentifier)
+		if (!groupIdentifier.isEmptyGroupIdentifier()  &&  acceptOnlyEmptyGroupIdentifier){
 			return null;
+		}
 		BindingContext newContext = createNewBindingContext();
 		contexts.put(groupIdentifier, newContext);
 		return newContext;

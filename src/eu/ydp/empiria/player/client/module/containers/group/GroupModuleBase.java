@@ -55,7 +55,7 @@ public abstract class GroupModuleBase<T> extends SimpleContainerModuleBase<T> im
 	}
 	
 	protected GapWidthBindingManager createGapWidthBindingManager(){
-		return new GapWidthBindingManager(false);
+		return new GapWidthBindingManager(true);
 	}
 
 }
