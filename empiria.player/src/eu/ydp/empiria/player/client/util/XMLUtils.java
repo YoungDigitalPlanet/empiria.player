@@ -52,7 +52,7 @@ public final class XMLUtils {
 	 */
 	public static boolean getAttributeAsBoolean(Element element, String name) {
 		String attribute = element.getAttribute(name);
-		return "true".compareTo(attribute) == 0;
+		return "true".equals(attribute);
 	}
 
 	/**
