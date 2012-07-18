@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.math;
 
 import java.util.List;
-import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -66,8 +65,6 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 		
 		helper.initStyles();
 		
-		helper.calculateGapsAnswersLengths();
-		
 		helper.initGapsProperties();
 		
 		gaps = helper.initGaps();
@@ -126,7 +123,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	@Override
 	public void markAnswers(boolean mark) {
 		if (mark  && !markingAnswer){
-			Vector<Boolean> evaluation = getResponse().evaluateAnswer();
+			List<Boolean> evaluation = getModuleSocket().evaluateResponse(getResponse());
 
 			for (int i = 0 ; i < evaluation.size()  &&  i < gaps.size() ; i ++){
 				if ("".equals( getResponse().values.get(i)) ){

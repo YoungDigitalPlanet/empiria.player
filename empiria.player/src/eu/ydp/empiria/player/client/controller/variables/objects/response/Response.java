@@ -23,6 +23,10 @@
 */
 package eu.ydp.empiria.player.client.controller.variables.objects.response;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import com.google.gwt.json.client.JSONValue;
@@ -33,14 +37,13 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.util.StringUtils;
 
 
 public class Response extends Variable {
 
 	/** List of correct responses */
 	public Vector<String> 	correctAnswers;
-	public Vector<Vector<Integer>> groups;
+	public Map<String, List<Integer>> groups;
 	/** Determines whether the module corresponding to the response variable exists in the document*/
 	private boolean isModuleAdded = false;
 	private boolean initialized = false;
@@ -59,7 +62,7 @@ public class Response extends Variable {
 		
 		values = new Vector<String>();
 		
-		groups = new Vector<Vector<Integer>>();
+		groups = new HashMap<String, List<Integer>>();
 		Vector<String> groupsNames = new Vector<String>();
 
 		identifier = ((Element)responseDeclarationNode).getAttribute("identifier");
@@ -75,14 +78,14 @@ public class Response extends Variable {
 			else
 				nodeValue = "";
 			correctAnswers.add( nodeValue );
-			if ( ((Element)nodes.item(i)).hasAttribute("group") ){
-				int currIndex = groupsNames.indexOf( ((Element)nodes.item(i)).getAttribute("group") ); 
-				if (currIndex == -1){
-					groupsNames.add( ((Element)nodes.item(i)).getAttribute("group"));
-					groups.add(new Vector<Integer>());
-					currIndex = groupsNames.size()-1; 
+			Element valueElement = ((Element)nodes.item(i));
+			if (valueElement.hasAttribute("group")  &&  (!valueElement.hasAttribute("groupMode")  ||  (valueElement.getAttribute("groupMode").equals("groupItem"))) ){
+				String currGroupName = ((Element)nodes.item(i)).getAttribute("group"); 
+				if (!groupsNames.contains(currGroupName)){
+					groupsNames.add(currGroupName );
+					groups.put(currGroupName, new ArrayList<Integer>());
 				}
-				groups.get(currIndex).add(i);
+				groups.get(currGroupName).add(i);
 			}
 		}
 		
@@ -191,107 +194,6 @@ public class Response extends Variable {
 		return isModuleAdded;
 	}
 	
-	public Vector<Boolean> evaluateAnswer(){
-		
-		Vector<Boolean> evaluation = new Vector<Boolean>();
-		
-		if (cardinality == Cardinality.SINGLE){
-			
-			if (values.size() == 1)
-				evaluation.add(values.get(0).equals(correctAnswers.get(0)));
-			else
-				evaluation.add(false);
-		
-		} if (cardinality == Cardinality.MULTIPLE){
-			
-			Vector<Boolean> used = new Vector<Boolean>();
-			
-			for (int a = 0 ; a < correctAnswers.size() ; a ++){
-				used.add(false);
-			}
-			
-			for (int a = 0 ; a < values.size() ; a ++){
-				
-				int correctAnswerIndex = -1;
-				
-				for (int i = 0 ; i < correctAnswers.size() ; i ++){
-					if (!used.get(i)  && (
-							correctAnswers.get(i).equals(values.get(a))  ||
-							(baseType.equals(BaseType.PAIR)  &&  correctAnswers.get(i).equals( StringUtils.reverse(values.get(a))) )
-						)){
-						correctAnswerIndex = i;
-						break;
-					}
-				}
-				
-				if (correctAnswerIndex == -1){
-					evaluation.add(false);
-				} else {
-					evaluation.add(true);
-					used.set(correctAnswerIndex, true);
-				}
-			} 
-		
-		} if (cardinality == Cardinality.ORDERED){
-			
-			for (int a = 0 ; a < values.size()  &&  a < correctAnswers.size() ; a ++){
-				if (values.get(a).equals(correctAnswers.get(a))){
-					evaluation.add(true);
-				} else {
-					evaluation.add(false);
-				}
-			} 
-		
-		} else if (cardinality == Cardinality.COMMUTATIVE){
-
-			Vector<Boolean> used = new Vector<Boolean>();
-			for (int g = 0 ; g < correctAnswers.size() ; g ++ ){
-				used.add(false);
-			}
-			
-			for (int correct = 0 ; correct < correctAnswers.size() ; correct ++){
-				
-				boolean passed = true;
-				
-				int groupIndex = -1;
-				for (int g = 0 ; g < groups.size() ; g ++ ){
-					if (groups.get(g).contains(correct)){
-						groupIndex = g;
-						break;
-					}
-				}
-				
-				String currUserAnswer = values.get(correct);
-
-				if (groupIndex == -1){
-					if (correctAnswers.get(correct).compareTo(currUserAnswer) != 0){
-						passed = false;
-					}
-				} else {
-					boolean answerFound = false;
-					for (int a = 0 ; a < groups.get(groupIndex).size() ; a ++){
-						int answerIndex = groups.get(groupIndex).get(a);
-						if (correctAnswers.get(answerIndex).compareTo(currUserAnswer) == 0  &&  used.get(answerIndex) == false){
-							answerFound = true;
-							used.set(answerIndex, true);
-							break;
-						}
-					}
-					if (!answerFound){
-						passed = false;
-					}
-				}
-				
-				if (passed)
-					evaluation.add(true);
-				else
-					evaluation.add(false);
-			}
-		}
-		
-		return evaluation;
-	}
-
 	@Override
 	public JSONValue toJSON() {
 		// TODO Auto-generated method stub

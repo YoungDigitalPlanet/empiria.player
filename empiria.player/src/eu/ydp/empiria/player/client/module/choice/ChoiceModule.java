@@ -17,7 +17,6 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -162,7 +161,7 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 	@Override
 	public void markAnswers(boolean mark) {
 
-		Vector<Boolean> evaluation = getResponse().evaluateAnswer();
+		List<Boolean> evaluation = getModuleSocket().evaluateResponse(getResponse());
 
 		if (getResponse().cardinality == Cardinality.SINGLE){
 			for (int i = 0 ; i < interactionElements.size() ; i ++){

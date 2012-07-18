@@ -165,6 +165,11 @@ public class Assessment {
 		}
 
 		@Override
+		public List<Boolean> evaluateResponse(Response response) {
+			return null;
+		}
+
+		@Override
 		public void addInlineFeedback(InlineFeedback inlineFeedback) {
 
 		}

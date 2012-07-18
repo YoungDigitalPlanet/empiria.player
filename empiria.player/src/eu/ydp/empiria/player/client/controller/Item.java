@@ -128,6 +128,11 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		}
 
 		@Override
+		public List<Boolean> evaluateResponse(Response response) {
+			return variableProcessor.evaluateAnswer(response);
+		}
+
+		@Override
 		public void addInlineFeedback(InlineFeedback inlineFeedback) {
 			feedbackManager.addInlineFeedback(inlineFeedback);
 		}
