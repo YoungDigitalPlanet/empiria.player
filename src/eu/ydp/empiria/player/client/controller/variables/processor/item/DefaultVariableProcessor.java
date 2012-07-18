@@ -1,7 +1,11 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
@@ -13,6 +17,9 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 
 public class DefaultVariableProcessor extends VariableProcessor {
 
+	private Map<String, List<String>> groupsCorrectAnswers;
+	private Map<String, List<Boolean>> groupsAnswersUsed;
+	private Map<String, List<Boolean>> responsesAnswersEvaluation;
 
 	@Override
 	public void processFlowActivityVariables(Map<String, Outcome> outcomes, FlowActivityEvent event) {
@@ -56,6 +63,12 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	@Override
 	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract) {
 
+		responsesAnswersEvaluation = new HashMap<String, List<Boolean>>();
+		
+		if (groupsCorrectAnswers == null)
+			prepareGroupsCorrectAnswers(responses);
+		
+		prepareGroupsAnswersUsedMap();
 
 		Integer points = 0;
 		String currKey;
@@ -68,7 +81,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			if (!responses.get(currKey).isModuleAdded())
 				continue;
 
-			passed = processSingleResponse(responses.get(currKey));
+			passed = processSingleResponse(responses.get(currKey), responses);
 
 			if (passed)
 				points++;
@@ -169,86 +182,103 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 		}
-
-		// MACRO PROCESSING
-
-		iter = responses.keySet().iterator();
-		while (iter.hasNext()){
-			currKey = iter.next();
-
-		}
 	}
 
-	private boolean processSingleResponse(Response response ){
+	private void prepareGroupsCorrectAnswers(Map<String, Response> responses) {
+		groupsCorrectAnswers = new TreeMap<String, List<String>>();
+		
+		for (Response currResponse : responses.values()){
+			for (String currResponseGroupName : currResponse.groups.keySet()){
+				if (!groupsCorrectAnswers.containsKey(currResponseGroupName)){
+					groupsCorrectAnswers.put(currResponseGroupName, new ArrayList<String>());
+				}
+				for (Integer currResponseAnswerIndex : currResponse.groups.get(currResponseGroupName)){
+					groupsCorrectAnswers.get(currResponseGroupName).add(currResponse.correctAnswers.get(currResponseAnswerIndex));
+				}
+			}
+		}
+		
+	}
+
+	private void prepareGroupsAnswersUsedMap() {
+		groupsAnswersUsed = new TreeMap<String, List<Boolean>>();
+		
+		for (String currGroupName : groupsCorrectAnswers.keySet()){
+			ArrayList<Boolean> currUsed = new ArrayList<Boolean>();
+			for (int i = 0 ; i < groupsCorrectAnswers.get(currGroupName).size() ; i ++){
+				currUsed.add(false);
+			}
+			groupsAnswersUsed.put(currGroupName, currUsed);
+		}
+	}
+	
+	private boolean processSingleResponse(Response response, Map<String, Response> responses){
 
 		Vector<String> correctAnswers = response.correctAnswers;
 
 		Vector<String> userAnswers = response.values;
+		
+		ArrayList<Boolean> answersEvaluation = new ArrayList<Boolean>();
 
 		boolean answerFound;
 		boolean passed = true;
 
-		if (response.cardinality == Cardinality.ORDERED){
-			if (correctAnswers.size() != userAnswers.size()) {
-				passed = false;
-			} else{
-				for (int correct = 0 ; correct < correctAnswers.size() ; correct ++){
-					if (correctAnswers.get(correct).compareTo(userAnswers.get(correct)) != 0){
-						passed = false;
-						break;
-					}
-				}
-			}
-
-		} else if (response.cardinality == Cardinality.COMMUTATIVE){
+		if (response.cardinality == Cardinality.COMMUTATIVE  ||  response.cardinality == Cardinality.ORDERED  ||  
+				(response.cardinality == Cardinality.SINGLE  &&  response.groups.size() > 0)){
 			if (correctAnswers.size() != userAnswers.size()) {
 				passed = false;
 			} else{
 
-				Vector<Boolean> used = new Vector<Boolean>();
-				for (int g = 0 ; g < correctAnswers.size() ; g ++ ){
-					used.add(false);
-				}
 
 				for (int correct = 0 ; correct < correctAnswers.size() ; correct ++){
 
-					int groupIndex = -1;
-					for (int g = 0 ; g < response.groups.size() ; g ++ ){
-						if (response.groups.get(g).contains(correct)){
-							groupIndex = g;
+					String groupName = null;
+					for (String currGroupName : response.groups.keySet()){
+						if (response.groups.get(currGroupName).contains(correct)){
+							groupName = currGroupName;
 							break;
 						}
 					}
-
+					
 					String currUserAnswer = userAnswers.get(correct);
-
-					if (groupIndex == -1){
-						if (correctAnswers.get(correct).compareTo(currUserAnswer) != 0){
+					
+					if (groupName == null){
+						if (!correctAnswers.get(correct).equals(currUserAnswer)){
 							passed = false;
-							break;
+							answersEvaluation.add(false);
+						} else {
+							answersEvaluation.add(true);
 						}
 					} else {
+						List<String> currGroupCorrectAnswers = groupsCorrectAnswers.get(groupName);
+						List<Boolean> currGroupAnswersUsed = groupsAnswersUsed.get(groupName);
+						
 						answerFound = false;
-						for (int a = 0 ; a < response.groups.get(groupIndex).size() ; a ++){
-							int answerIndex = response.groups.get(groupIndex).get(a);
-							if (correctAnswers.get(answerIndex).compareTo(currUserAnswer) == 0  &&  used.get(answerIndex) == false){
+						for (int a = 0 ; a < currGroupCorrectAnswers.size() ; a ++){
+							if (currGroupAnswersUsed.get(a))
+								continue;
+							if (currGroupCorrectAnswers.get(a).equals(currUserAnswer)){
+								currGroupAnswersUsed.set(a, true);
 								answerFound = true;
-								used.set(answerIndex, true);
 								break;
 							}
 						}
-						if (!answerFound){
+						if (!answerFound  &&  passed){
 							passed = false;
-							break;
 						}
+						answersEvaluation.add(answerFound);
 					}
+					
 				}
 			}
 		} else if (response.cardinality == Cardinality.SINGLE){
-			if (userAnswers.size() > 0)
-				if (!correctAnswers.contains(userAnswers.get(0)))
-					passed = false;
-		} else {
+			if (userAnswers.size() == 0  ||  !correctAnswers.contains(userAnswers.get(0))){
+				passed = false;
+				answersEvaluation.add(false);
+			} else {
+				answersEvaluation.add(true);
+			}
+		} else if (response.cardinality == Cardinality.MULTIPLE) {
 			if (correctAnswers.size() != userAnswers.size()){
 				passed = false;
 			} else {
@@ -266,9 +296,13 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					if (!answerFound){
 						passed = false;
 					}
+					
+					answersEvaluation.add(answerFound);
 				}
 			}
 		}
+		
+		responsesAnswersEvaluation.put(response.identifier, answersEvaluation);
 
 		return passed;
 
@@ -323,6 +357,11 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 		return mistakesCounter;
 	}
+	
+	@Override
+	public List<Boolean> evaluateAnswer(Response currResponse){		
+		return responsesAnswersEvaluation.get(currResponse.identifier);
+	}
 
 	@Override
 	public void ensureVariables(Map<String, Response> responses, Map<String, Outcome> outcomes) {
@@ -367,5 +406,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			outcomes.get(variable.identifier).values.addAll(variable.values);
 		}
 	}
+
+
 
 }

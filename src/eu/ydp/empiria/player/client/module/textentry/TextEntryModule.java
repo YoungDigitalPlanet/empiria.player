@@ -112,9 +112,14 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 				}
 			}
 		}
-		if (widthMode == GapWidthMode.GAP &&  fontSize != null){
-			int longestAnswerLength = getLongestAnswerLength();
-			textBox.setWidth((longestAnswerLength*fontSize) + "px");
+		if (widthMode == GapWidthMode.GAP){
+			if (getResponse().groups.size() > 0) {
+				widthBindingIdentifier = new DefaultBindingGroupIdentifier(getResponse().groups.keySet().iterator().next());
+			} else if (fontSize != null) {
+				int longestAnswer = getLongestAnswerLength();
+				textBox.setWidth((longestAnswer * fontSize) + "px");
+			}
+				
 		}
 
 		Panel spanPrefix = new FlowPanel();
@@ -186,7 +191,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		if (mark){
 			textBox.setEnabled(false);
 			if (textBox.getText().length() > 0){
-				if( getResponse().isCorrectAnswer(lastValue) )
+				if( getModuleSocket().evaluateResponse(getResponse()).get(0) )
 					moduleWidget.setStyleName("qp-text-textentry-correct");
 				else
 					moduleWidget.setStyleName("qp-text-textentry-wrong");
@@ -289,7 +294,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	public void onPlayerEvent(PlayerEvent event) {
 		if(event.getType()==PlayerEventTypes.CHECK_ANSWERS){
 			if(textBox!=null){
-				onTextBoxChange();
+				updateResponse(false);
 			}
 		}
 

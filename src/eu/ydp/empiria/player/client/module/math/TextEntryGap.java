@@ -40,6 +40,7 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 	@UiField
 	TextBox textBox;
 	private BindingGroupIdentifier gapWidthGroupId;
+	private BindingGroupIdentifier answerGroupId;
 	private Integer gapOwnWidth;
 	private Integer gapWidth = 36;
 	private Integer gapHeight = 14;
@@ -55,7 +56,7 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public void init(Element element, ModuleSocket moduleSocket,IModule parentModule, String correctAnswer, int longestAnswerLength, int defaultFontSize) {
+	public void init(Element element, ModuleSocket moduleSocket,IModule parentModule, String correctAnswer, String answerGroupName, int defaultFontSize) {
 		this.correctAnswer = correctAnswer;
 		this.fontSize = defaultFontSize;
 		
@@ -67,6 +68,10 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 			gapWidthGroupId = new DefaultBindingGroupIdentifier(element.getAttribute("widthBindingGroup"));
 		} else {
 			gapWidthGroupId = new DefaultBindingGroupIdentifier("");
+		}
+		
+		if (answerGroupName != null){
+			answerGroupId = new DefaultBindingGroupIdentifier(answerGroupName);
 		}
 		
 		if (element.hasAttribute("uid")){
@@ -96,11 +101,8 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 		
 		if (gapOwnWidth != null){
 			textBox.setWidth(gapOwnWidth + "px");			
-		} else if ( gapWidthMode == GapWidthMode.GAP  &&  gapOwnWidth == null){
-			gapOwnWidth = defaultFontSize * longestAnswerLength;
-			textBox.setWidth(gapOwnWidth  + "px");					
-		} else if (gapWidthMode == GapWidthMode.GROUP){
-			gapWidthBindingContext = (GapWidthBindingContext) BindingUtil.register(BindingType.GAP_WIDTHS, this, parentModule);
+		} else if ((gapWidthMode == GapWidthMode.GAP  ||  gapWidthMode == GapWidthMode.GROUP)  &&  gapOwnWidth == null){
+			gapWidthBindingContext = (GapWidthBindingContext) BindingUtil.register(BindingType.GAP_WIDTHS, this, parentModule);	
 		}
 	}
 	
@@ -204,7 +206,11 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 	@Override
 	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
 		if (bindingType == BindingType.GAP_WIDTHS){
-			return gapWidthGroupId;
+			if (gapWidthMode == GapWidthMode.GROUP){
+				return gapWidthGroupId;
+			} else if (gapWidthMode == GapWidthMode.GAP  &&  answerGroupId != null){
+				return answerGroupId;
+			}
 		}
 		return null;
 	}

@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.xml.client.Element;
@@ -15,6 +16,8 @@ public abstract class VariableProcessor {
 	public abstract void ensureVariables(Map<String, Response> responses, Map<String, Outcome> outcomes);
 	
 	public abstract void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract);
+	
+	public abstract List<Boolean> evaluateAnswer(Response currResponse);
 	
 	public abstract void processFlowActivityVariables(Map<String, Outcome> outcomes, FlowActivityEvent event);
 	

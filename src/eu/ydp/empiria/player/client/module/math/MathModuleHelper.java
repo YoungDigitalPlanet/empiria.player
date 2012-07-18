@@ -52,8 +52,6 @@ public class MathModuleHelper {
 	private Integer textEntrySubSupFontSize;
 	private Integer inlineChoiceWidth = 48;
 	private Integer inlineChoiceHeight = 24;	
-
-	private List<Integer> longestAnswerCharsCounts; 
 	
 	private MathPlayerManager mpm = new MathPlayerManager();
 	private InteractionManager interactionManager;
@@ -82,38 +80,6 @@ public class MathModuleHelper {
 		
 		};
 		public abstract String getName();
-	}
-
-	
-	public void calculateGapsAnswersLengths(){
-		
-		longestAnswerCharsCounts = new ArrayList<Integer>();
-		NodeList gapNodes = moduleElement.getElementsByTagName("gap");
-		
-		for (int a = 0 ; a < response.correctAnswers.size()  &&  a < gapNodes.getLength() ; a ++){
-			if (((Element)gapNodes.item(a)).hasAttribute("type")  &&  ((Element)gapNodes.item(a)).getAttribute("type").equals(GapType.TEXT_ENTRY.getName())){
-				String currAnswer = response.correctAnswers.get(a);
-				longestAnswerCharsCounts.add(currAnswer.length());
-			} else {
-				longestAnswerCharsCounts.add(-1);
-			}
-		}
-		
-		for (int g = 0 ; g < response.groups.size() ; g ++){
-			Vector<Integer> currGroup = response.groups.get(g);
-			int longest = -1;
-			for (Integer a : currGroup){
-				String currAnswer = response.correctAnswers.get(a);
-				if (currAnswer.length() > longest){
-					longest = currAnswer.length();
-				}
-			}
-			if (longest != -1){
-				for (Integer a : currGroup){
-					longestAnswerCharsCounts.set(a, longest);
-				}
-			}
-		}
 	}
 	
 	public List<MathGap> initGaps(){
@@ -159,7 +125,14 @@ public class MathModuleHelper {
 					gapWidth = textEntrySubSupWidth;
 					gapHeight = textEntrySubSupHeight;
 				}
-				teg.init(currElement, moduleSocket, module, response.correctAnswers.get(i), longestAnswerCharsCounts.get(i), fontSize);
+				String groupName = null;
+				for (String currGroupName : response.groups.keySet()){
+					if (response.groups.get(currGroupName).contains(i)){
+						groupName = currGroupName;
+						break;
+					}
+				}
+				teg.init(currElement, moduleSocket, module, response.correctAnswers.get(i), groupName, fontSize);
 				teg.setGapWidth(gapWidth);
 				teg.setGapHeight(gapHeight);
 				gaps.add(teg);

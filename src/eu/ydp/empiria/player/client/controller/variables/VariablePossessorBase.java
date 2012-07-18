@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.controller.variables;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 
@@ -11,7 +11,7 @@ public abstract class VariablePossessorBase<V extends Variable> extends Variable
 	public Map<String, V> variables;
 	
 	public VariablePossessorBase(){
-		variables = new HashMap<String, V>();
+		variables = new TreeMap<String, V>();
 	}
 	
 	public V getVariable(String identifier){
