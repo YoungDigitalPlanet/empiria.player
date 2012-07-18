@@ -6,6 +6,7 @@ import com.google.gwt.inject.client.Ginjector;
 
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.view.ViewEngine;
 
@@ -17,4 +18,5 @@ public interface PlayerGinjector extends Ginjector {
 	DeliveryEngine getDeliveryEngine();
 	EventsBus getEventsBus();
 	DefaultMediaProcessorExtension getDefaultMediaExtension();
+	StyleNameConstants getStyleNameConstants();
 }

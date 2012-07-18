@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
@@ -29,6 +30,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(DataSourceManager.class);
 		bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class);
 		bind(DefaultMediaProcessorExtension.class).in(Singleton.class);
+		bind(StyleNameConstants.class).in(Singleton.class);
 	}
 
 }
