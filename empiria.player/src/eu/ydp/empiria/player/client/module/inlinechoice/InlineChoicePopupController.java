@@ -221,7 +221,8 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		  String stateString = "";
 
 		  if (listBox.getSelectedIndex() - ((showEmptyOption)?1:0) >= 0)
-			  stateString = response.values.get(0);
+			  if (response.values.size() > 0)
+				  stateString = response.values.get(0);
 
 		  jsonArr.set(0, new JSONString(stateString));
 
