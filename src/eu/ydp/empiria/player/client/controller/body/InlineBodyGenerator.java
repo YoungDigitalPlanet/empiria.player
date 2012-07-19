@@ -101,9 +101,6 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 	 * @return
 	 */
 	protected com.google.gwt.dom.client.Element parseNode(Node currNode, com.google.gwt.dom.client.Element parentElement) {
-		if (currNode.getNodeName().equals("img")) {
-			System.currentTimeMillis();
-		}
 		if (currNode.getNodeType() == Node.ELEMENT_NODE) {
 			if (options.getIgnoredInlineTags().contains(currNode.getNodeName())) {
 				return parentElement; // NOPMD

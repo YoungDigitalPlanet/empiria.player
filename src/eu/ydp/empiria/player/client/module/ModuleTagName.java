@@ -23,7 +23,7 @@ public enum ModuleTagName {
 		return name;
 	}
 
-	public ModuleTagName getTag(String name){
+	public static ModuleTagName getTag(String name){
 		for(ModuleTagName tag : ModuleTagName.values()){
 			if(tag.name.equals(name)){
 				return tag;
