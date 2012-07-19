@@ -29,4 +29,18 @@ public interface InlineBodyGeneratorSocket {
 	 * @return
 	 */
 	public Widget generateInlineBodyForNode(Node mainNode);
+	/**
+	 * generuje htmla dla dzieci wskazanego wezla w postaci hierarchi widgetow
+	 *
+	 * @param mainNode
+	 * @return
+	 */
+	Widget generateInlineBodyForNode(Node mainNode, boolean allAsWidget);
+	/**
+	 * Generuje htmla dla wskazanego wezla  w postaci hierarchi widgetow
+	 *
+	 * @param mainNode
+	 * @return
+	 */
+	Widget generateInlineBody(Node mainNode, boolean allAsWidget);
 }
