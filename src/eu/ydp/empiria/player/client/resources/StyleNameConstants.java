@@ -2,9 +2,14 @@ package eu.ydp.empiria.player.client.resources;
 
 import com.google.gwt.i18n.client.Constants;
 
+@SuppressWarnings("PMD")
 public interface StyleNameConstants extends Constants {
+
 	@DefaultStringValue("qp-body")
 	public String QP_BODY();
+
+	@DefaultStringValue("qp-choice-module")
+	public String QP_CHOICE_MODULE();
 
 	@DefaultStringValue("qp-footer")
 	public String QP_FOOTER();
@@ -102,6 +107,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-page-title")
 	public String QP_PAGE_TITLE();
 
+	@DefaultStringValue("qp-prompt")
+	public String QP_PROMPT();
+
 	@DefaultStringValue("qp-resultpage-items")
 	public String QP_RESULTPAGE_ITEMS();
 
@@ -119,6 +127,12 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();
+
+	@DefaultStringValue("qp-text")
+	public String QP_TEXT();
+
+	@DefaultStringValue("qp-text-inline")
+	public String QP_TEXT_INLINE();
 
 	@DefaultStringValue("qp-toc")
 	public String QP_TOC();
