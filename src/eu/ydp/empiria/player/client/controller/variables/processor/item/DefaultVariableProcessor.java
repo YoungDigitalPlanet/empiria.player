@@ -13,11 +13,13 @@ import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 
 public class DefaultVariableProcessor extends VariableProcessor {
 
-	private Map<String, List<String>> groupsCorrectAnswers;
+	private Map<String, List<ResponseValue>> groupsCorrectAnswers;
 	private Map<String, List<Boolean>> groupsAnswersUsed;
 	private Map<String, List<Boolean>> responsesAnswersEvaluation;
 
@@ -185,15 +187,15 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	}
 
 	private void prepareGroupsCorrectAnswers(Map<String, Response> responses) {
-		groupsCorrectAnswers = new TreeMap<String, List<String>>();
+		groupsCorrectAnswers = new TreeMap<String, List<ResponseValue>>();
 		
 		for (Response currResponse : responses.values()){
 			for (String currResponseGroupName : currResponse.groups.keySet()){
 				if (!groupsCorrectAnswers.containsKey(currResponseGroupName)){
-					groupsCorrectAnswers.put(currResponseGroupName, new ArrayList<String>());
+					groupsCorrectAnswers.put(currResponseGroupName, new ArrayList<ResponseValue>());
 				}
 				for (Integer currResponseAnswerIndex : currResponse.groups.get(currResponseGroupName)){
-					groupsCorrectAnswers.get(currResponseGroupName).add(currResponse.correctAnswers.get(currResponseAnswerIndex));
+					groupsCorrectAnswers.get(currResponseGroupName).add(currResponse.correctAnswers.getResponseValue(currResponseAnswerIndex));
 				}
 			}
 		}
@@ -214,7 +216,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	
 	private boolean processSingleResponse(Response response, Map<String, Response> responses){
 
-		Vector<String> correctAnswers = response.correctAnswers;
+		CorrectAnswers correctAnswers = response.correctAnswers;
 
 		Vector<String> userAnswers = response.values;
 		
@@ -225,12 +227,12 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 		if (response.cardinality == Cardinality.COMMUTATIVE  ||  response.cardinality == Cardinality.ORDERED  ||  
 				(response.cardinality == Cardinality.SINGLE  &&  response.groups.size() > 0)){
-			if (correctAnswers.size() != userAnswers.size()) {
+			if (correctAnswers.getResponseValuesCount() != userAnswers.size()) {
 				passed = false;
 			} else{
 
 
-				for (int correct = 0 ; correct < correctAnswers.size() ; correct ++){
+				for (int correct = 0 ; correct < correctAnswers.getResponseValuesCount() ; correct ++){
 
 					String groupName = null;
 					for (String currGroupName : response.groups.keySet()){
@@ -243,21 +245,21 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					String currUserAnswer = userAnswers.get(correct);
 					
 					if (groupName == null){
-						if (!correctAnswers.get(correct).equals(currUserAnswer)){
+						if (!correctAnswers.getResponseValue(correct).getAnswers().contains(currUserAnswer)){
 							passed = false;
 							answersEvaluation.add(false);
 						} else {
 							answersEvaluation.add(true);
 						}
 					} else {
-						List<String> currGroupCorrectAnswers = groupsCorrectAnswers.get(groupName);
+						List<ResponseValue> currGroupCorrectAnswers = groupsCorrectAnswers.get(groupName);
 						List<Boolean> currGroupAnswersUsed = groupsAnswersUsed.get(groupName);
 						
 						answerFound = false;
 						for (int a = 0 ; a < currGroupCorrectAnswers.size() ; a ++){
 							if (currGroupAnswersUsed.get(a))
 								continue;
-							if (currGroupCorrectAnswers.get(a).equals(currUserAnswer)){
+							if (currGroupCorrectAnswers.get(a).getAnswers().contains(currUserAnswer)){
 								currGroupAnswersUsed.set(a, true);
 								answerFound = true;
 								break;
@@ -272,25 +274,29 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 		} else if (response.cardinality == Cardinality.SINGLE){
-			if (userAnswers.size() == 0  ||  !correctAnswers.contains(userAnswers.get(0))){
+			if (userAnswers.size() == 0  ||  !correctAnswers.containsAnswer(userAnswers.get(0))){
 				passed = false;
 				answersEvaluation.add(false);
 			} else {
 				answersEvaluation.add(true);
 			}
 		} else if (response.cardinality == Cardinality.MULTIPLE) {
-			if (correctAnswers.size() != userAnswers.size()){
+			if (correctAnswers.getResponseValuesCount() != userAnswers.size()){
 				passed = false;
 			} else {
-				for (int correct = 0 ; correct < correctAnswers.size() ; correct ++){
+				for (int correct = 0 ; correct < correctAnswers.getResponseValuesCount() ; correct ++){
 
 					answerFound = false;
 
 					for (int user = 0 ; user < userAnswers.size() ; user ++){
-						if (correctAnswers.get(correct).compareTo(userAnswers.get(user)) == 0){
-							answerFound = true;
-							break;
+						for (String currCorrectAnswerValue : correctAnswers.getResponseValue(correct).getAnswers()){
+							if (currCorrectAnswerValue.equals(userAnswers.get(user))){
+								answerFound = true;
+								break;
+							}
 						}
+						if (answerFound)
+							break;
 					}
 
 					if (!answerFound){
@@ -324,11 +330,8 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 					boolean answerFound = false;
 
-					for (int correct = 0 ; correct < response.correctAnswers.size() ; correct ++){
-						if (response.correctAnswers.get(correct).compareTo(currVal) == 0){
-							answerFound = true;
-							break;
-						}
+					if (response.correctAnswers.containsAnswer(currVal)){
+						answerFound = true;
 					}
 
 					if (!answerFound){
@@ -338,21 +341,23 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			}
 		} else if (response.cardinality == Cardinality.ORDERED){
 
-			for (int v = 0 ; v < response.correctAnswers.size()  &&  v < moduleLastChange.values.size() ; v ++){
-				String currAnswer = response.correctAnswers.get(v);
+			for (int v = 0 ; v < response.correctAnswers.getResponseValuesCount()  &&  v < moduleLastChange.values.size() ; v ++){
+				
 				String[] changeSplited = moduleLastChange.values.get(v).split("->");
-
-				if (changeSplited.length != 2)
-					continue;
-
-				if (changeSplited[0].compareTo(currAnswer) == 0  &&
-					changeSplited[1].compareTo(currAnswer) != 0){
-					mistakesCounter++;
-					break;
+				
+				for (String currAnswer : response.correctAnswers.getResponseValue(v).getAnswers()){	
+					if (changeSplited.length != 2)
+						continue;
+	
+					if (changeSplited[0].equals(currAnswer)  &&
+						!changeSplited[1].equals(currAnswer)){
+						mistakesCounter++;
+						break;
+					}
 				}
-
+				if (mistakesCounter > 0)
+					break;
 			}
-
 		}
 
 		return mistakesCounter;

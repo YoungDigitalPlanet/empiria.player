@@ -168,7 +168,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		if (show  &&  !showingAnswers){
 			showingAnswers = true;
 			for(int i = 0; i < listBox.getItemCount(); i++){
-				if( listBox.getValue(i).compareTo(response.correctAnswers.get(0)) == 0){
+				if( listBox.getValue(i).equals(response.correctAnswers.getSingleAnswer())){
 					listBox.setSelectedIndex(i);
 					break;
 				}

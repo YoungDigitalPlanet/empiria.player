@@ -37,12 +37,13 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.util.IntegerUtils;
 
 
 public class Response extends Variable {
 
 	/** List of correct responses */
-	public Vector<String> 	correctAnswers;
+	public CorrectAnswers 	correctAnswers;
 	public Map<String, List<Integer>> groups;
 	/** Determines whether the module corresponding to the response variable exists in the document*/
 	private boolean isModuleAdded = false;
@@ -55,10 +56,8 @@ public class Response extends Variable {
 	 * @param item associated with this processing
 	 */
 	public Response(Node responseDeclarationNode){
-    
-		NodeList nodes = ((Element)responseDeclarationNode).getElementsByTagName("value");
 
-		correctAnswers = new Vector<String>();
+		correctAnswers = new CorrectAnswers();
 		
 		values = new Vector<String>();
 		
@@ -70,22 +69,36 @@ public class Response extends Variable {
 		cardinality = Cardinality.fromString( ((Element)responseDeclarationNode).getAttribute("cardinality") );
 		
 		baseType = BaseType.fromString( ((Element)responseDeclarationNode).getAttribute("baseType") );
+	    
+		NodeList nodes = ((Element)responseDeclarationNode).getElementsByTagName("value");
 		
 		for(int i = 0; i < nodes.getLength(); i++){
+			Element valueElement = ((Element)nodes.item(i));
 			String nodeValue;
 			if (nodes.item(i).hasChildNodes())
 				nodeValue = nodes.item(i).getFirstChild().getNodeValue();
 			else
 				nodeValue = "";
-			correctAnswers.add( nodeValue );
-			Element valueElement = ((Element)nodes.item(i));
+			int forIndex = correctAnswers.getResponseValuesCount();
+			if (valueElement.hasAttribute("forIndex")){
+				Integer forIndex2 = IntegerUtils.tryParseInt(valueElement.getAttribute("forIndex"), null);
+				if (forIndex2 != null){
+					forIndex = forIndex2;
+				}
+			}
+			if (correctAnswers.getResponseValuesCount() > forIndex){
+				correctAnswers.add(nodeValue, forIndex);
+			} else {
+				correctAnswers.add(new ResponseValue(nodeValue));
+			}
 			if (valueElement.hasAttribute("group")  &&  (!valueElement.hasAttribute("groupMode")  ||  (valueElement.getAttribute("groupMode").equals("groupItem"))) ){
 				String currGroupName = ((Element)nodes.item(i)).getAttribute("group"); 
 				if (!groupsNames.contains(currGroupName)){
 					groupsNames.add(currGroupName );
 					groups.put(currGroupName, new ArrayList<Integer>());
 				}
-				groups.get(currGroupName).add(i);
+				if (!groups.get(currGroupName).contains(forIndex))
+					groups.get(currGroupName).add(forIndex);
 			}
 		}
 		
@@ -104,18 +117,19 @@ public class Response extends Variable {
 	 */
 	public boolean isCorrectAnswer(String key) {
 
-		return correctAnswers.contains(key);
+		return correctAnswers.containsAnswer(key);
 	}
 	
 	public String getCorrectAnswersValuesShort(){
 		
 		String output = "";
 		
-		for (int i = 0 ; i < correctAnswers.size() ; i ++ ){
-			output += correctAnswers.get(i);
-			if (i < correctAnswers.size()-1)
-				output += ";";
+		for (int i = 0 ; i < correctAnswers.getResponseValuesCount() ; i ++ ){
+			for (String answer : correctAnswers.getResponseValue(i).getAnswers()){
+				output += answer + ";";
+			}
 		}
+		output = output.substring(0, output.length()-1);
 		
 		return output;
 	}
@@ -125,9 +139,6 @@ public class Response extends Variable {
 	 * @param key
 	 */
 	public void add(String key) {
-		for (String currValue:values)
-			if (currValue.equals(key))
-				return;
 		
 		if (cardinality == Cardinality.SINGLE)
 			values.clear();

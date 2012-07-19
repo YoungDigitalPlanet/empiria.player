@@ -132,7 +132,7 @@ public class MathModuleHelper {
 						break;
 					}
 				}
-				teg.init(currElement, moduleSocket, module, response.correctAnswers.get(i), groupName, fontSize);
+				teg.init(currElement, moduleSocket, module, response.correctAnswers.getResponseValue(i).getAnswers(), groupName, fontSize);
 				teg.setGapWidth(gapWidth);
 				teg.setGapHeight(gapHeight);
 				gaps.add(teg);
@@ -242,7 +242,7 @@ public class MathModuleHelper {
 				TextEntryGap teg = (TextEntryGap)gaps.get(i);
 				((TextEntryGap)gaps.get(i)).updateGapWidth();
 				if (!"".equals(teg.getUid())){
-					actualSizes.put(teg.getUid(), new Size(teg.getTextBox().getOffsetWidth(), teg.getTextBox().getOffsetHeight()));
+					actualSizes.put(teg.getUid(), new Size(teg.getOffsetWidth(), teg.getOffsetHeight()));
 				}
 			}
 		}

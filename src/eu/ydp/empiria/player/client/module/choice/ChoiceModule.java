@@ -17,6 +17,7 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -169,7 +170,10 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 			}
 		} else if (getResponse().cardinality == Cardinality.MULTIPLE){
 			for (SimpleChoice currSC:interactionElements){
-				boolean correct = getResponse().correctAnswers.contains(currSC.getIdentifier());
+				boolean correct = false;
+				if (getResponse().correctAnswers.containsAnswer(currSC.getIdentifier())){
+					correct = true;
+				}
 				boolean ok = (correct && currSC.isSelected())  ||  (!correct && !currSC.isSelected());
 				currSC.markAnswers(mark,  ok);
 			}
@@ -181,7 +185,7 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 		if (show  &&  !showingAnswers){
 			showingAnswers = true;
 			for (SimpleChoice currSC:interactionElements){
-				currSC.setSelected(getResponse().correctAnswers.contains(currSC.getIdentifier()) );
+				currSC.setSelected(getResponse().correctAnswers.containsAnswer(currSC.getIdentifier()) );
 			}
 		} else if (!show  &&  showingAnswers) {
 			for (SimpleChoice currSC:interactionElements){

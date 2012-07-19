@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.math;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
@@ -46,7 +47,7 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 	private Integer gapHeight = 14;
 	private GapWidthMode gapWidthMode;
 	private GapWidthBindingContext gapWidthBindingContext;
-	private String correctAnswer;
+	private List<String> correctAnswers;
 	private int fontSize;
 	private String uid;
 	
@@ -56,8 +57,8 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public void init(Element element, ModuleSocket moduleSocket,IModule parentModule, String correctAnswer, String answerGroupName, int defaultFontSize) {
-		this.correctAnswer = correctAnswer;
+	public void init(Element element, ModuleSocket moduleSocket,IModule parentModule, List<String> correctAnswers, String answerGroupName, int defaultFontSize) {
+		this.correctAnswers = correctAnswers;
 		this.fontSize = defaultFontSize;
 		
 		if (element.hasAttribute("class")){
@@ -197,7 +198,13 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 	@Override
 	public BindingValue getBindingValue(BindingType bindingType) {
 		if (bindingType == BindingType.GAP_WIDTHS){
-			return new GapWidthBindingValue(correctAnswer.length());
+			int length = 0;
+			for (String currCorrectAnswer : correctAnswers){
+				if (currCorrectAnswer.length() > length){
+					length = currCorrectAnswer.length();
+				}
+			}
+			return new GapWidthBindingValue(length);
 		}
 		return null;
 	}
@@ -229,8 +236,8 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 		}
 		testGap.getTextBox().setWidth(String.valueOf(orgSize.getWidth())+"px");
 		testGap.getTextBox().setHeight(String.valueOf(orgSize.getHeight())+"px");
-		Integer actualTextEntryWidth = testGap.getTextBox().getOffsetWidth();
-		Integer actualTextEntryHeight = testGap.getTextBox().getOffsetHeight();
+		Integer actualTextEntryWidth = testGap.getOffsetWidth();
+		Integer actualTextEntryHeight = testGap.getOffsetHeight();
 		RootPanel.get().remove(testGap);
 		return new Size(actualTextEntryWidth, actualTextEntryHeight);
 	}

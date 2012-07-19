@@ -50,6 +50,14 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 		}
 		
 		helper = new MathModuleHelper(getModuleElement(), getModuleSocket(), getResponse(), this);
+		
+		helper.initStyles();
+		
+		helper.initGapsProperties();
+		
+		gaps = helper.initGaps();
+		
+		initGapListeners();
 	}
 
 	@Override
@@ -62,14 +70,6 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 
 	@Override
 	public void onSetUp() {
-		
-		helper.initStyles();
-		
-		helper.initGapsProperties();
-		
-		gaps = helper.initGaps();
-		
-		initGapListeners();
 		
 		listBoxesLayer = new AbsolutePanel();
 		listBoxesLayer.setStyleName("qp-mathinteraction-gaps");
@@ -147,8 +147,8 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (show  &&  !showingAnswer){
-			for (int i = 0 ; i < getResponse().correctAnswers.size() ; i ++){
-				gaps.get(i).setValue( getResponse().correctAnswers.get(i) );
+			for (int i = 0 ; i < getResponse().correctAnswers.getResponseValuesCount() ; i ++){
+				gaps.get(i).setValue( getResponse().correctAnswers.getResponseValue(i).getAnswers().get(0) );
 			}
 		} else if (!show  &&  showingAnswer){
 			for (int i = 0 ; i < getResponse().values.size() ; i ++){
