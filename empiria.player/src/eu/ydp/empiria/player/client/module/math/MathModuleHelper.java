@@ -214,28 +214,32 @@ public class MathModuleHelper {
 			
 			Node node = currElement.getParentNode();
 			Node prevNode = currElement;
-			boolean uidFound = false;
+			boolean subsupParentFound = false;
 			
-			while (node != null  &&  !node.getNodeName().equals(ModuleTagName.MATH_INTERACTION.tagName())){
-				if (node.getNodeName().equals("msub")  ||  node.getNodeName().equals("msup") ||  node.getNodeName().equals("msubsup") ||  node.getNodeName().equals("mmultiscripts")){
-					if (!XMLUtils.getFirstChildElement((Element)node).equals(prevNode)){
-						subsups.add(true);
-						uidFound = true;
-						break;
+			if (currElement.hasAttribute("uid")){			
+				while (node != null  &&  !node.getNodeName().equals(ModuleTagName.MATH_INTERACTION.tagName())){
+					if (node.getNodeName().equals("msub")  ||  node.getNodeName().equals("msup") ||  node.getNodeName().equals("msubsup") ||  node.getNodeName().equals("mmultiscripts")){
+						if (!XMLUtils.getFirstChildElement((Element)node).equals(prevNode)){						
+							subsupParentFound = true;
+							break;
+						}
 					}
+					prevNode = node;
+					node = node.getParentNode();
 				}
-				prevNode = node;
-				node = node.getParentNode();
 			}
-			if (!uidFound)
+			
+			if (!subsupParentFound)
 				subsups.add(false);
+			else
+				subsups.add(true);
 				
 		}		
 	}
 	
 	public void calculateActualSizes(){
 		
-				actualSizes = new HashMap<String, Size>();
+		actualSizes = new HashMap<String, Size>();
 		
 		for (int i = 0 ; i < gaps.size() ; i ++){
 			if (gaps.get(i) instanceof TextEntryGap){

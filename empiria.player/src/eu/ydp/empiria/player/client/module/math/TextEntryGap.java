@@ -49,7 +49,7 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 	private GapWidthMode gapWidthMode;
 	private GapWidthBindingContext gapWidthBindingContext;
 	private List<String> correctAnswers;
-	private int fontSize;
+	private Integer fontSize;
 	private String uid;
 	
 	
@@ -58,7 +58,7 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public void init(Element element, ModuleSocket moduleSocket,IModule parentModule, List<String> correctAnswers, String answerGroupName, int defaultFontSize) {
+	public void init(Element element, ModuleSocket moduleSocket,IModule parentModule, List<String> correctAnswers, String answerGroupName, Integer defaultFontSize) {
 		this.correctAnswers = correctAnswers;
 		this.fontSize = defaultFontSize;
 		
@@ -109,7 +109,7 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 	}
 	
 	public void updateGapWidth(){
-		if (gapWidthBindingContext != null){
+		if (gapWidthBindingContext != null  &&  fontSize != null  &&  !"".equals(uid)){
 			int len = gapWidthBindingContext.getGapWidthBindingOutcomeValue().getGapCharactersCount();
 			gapOwnWidth = len * fontSize;
 			textBox.setWidth(len * fontSize + "px");
