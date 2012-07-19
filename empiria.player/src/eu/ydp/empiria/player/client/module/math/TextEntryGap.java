@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -230,6 +231,7 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 	
 	public static Size getTextEntryGapActualSize(Size orgSize, String textBoxClassName){
 		TextEntryGap testGap = new TextEntryGap();
+		testGap.getElement().getStyle().setPosition(Position.ABSOLUTE);
 		RootPanel.get().add(testGap);		
 		if (textBoxClassName != null  &&  !"".equals(textBoxClassName)){
 			testGap.getTextBox().getElement().setClassName(textBoxClassName);
