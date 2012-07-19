@@ -221,7 +221,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	public void showCorrectAnswers(boolean show) {
 		if (show  &&  !showingAnswers){
 			showingAnswers = true;
-			textBox.setText(getResponse().correctAnswers.get(0));
+			textBox.setText(getResponse().correctAnswers.getSingleAnswer());
 		} else if (!show  &&  showingAnswers) {
 			textBox.setText((getResponse().values.size()>0) ? getResponse().values.get(0) : "");
 			showingAnswers = false;
@@ -310,7 +310,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	
 	private int getLongestAnswerLength(){
 		int longestLength = 0;
-		for (String a : getResponse().correctAnswers){
+		for (String a : getResponse().correctAnswers.getResponseValue(0).getAnswers()){
 			if (a.length() > longestLength)
 				longestLength = a.length();
 		}

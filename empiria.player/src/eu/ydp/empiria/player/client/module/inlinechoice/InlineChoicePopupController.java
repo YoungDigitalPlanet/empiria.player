@@ -180,7 +180,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (show  &&  !showingAnswers){
-			int correctAnswerIndex = identifiers.indexOf( response.correctAnswers.get(0) ) + ((showEmptyOption)?1:0);
+			int correctAnswerIndex = identifiers.indexOf( response.correctAnswers.getSingleAnswer() ) + ((showEmptyOption)?1:0);
 			listBox.setSelectedIndex(correctAnswerIndex);
 		} else if (!show && showingAnswers){
 			int answerIndex = ((showEmptyOption)?0:-1) ;

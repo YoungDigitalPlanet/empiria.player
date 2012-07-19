@@ -17,6 +17,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
@@ -147,7 +148,11 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	public void markAnswers(boolean mark) {
 
 		for (SelectableChoice currSC:options){
-			currSC.markAnswers(mark, getResponse().correctAnswers.contains(currSC.getIdentifier()) );
+			boolean correct = false;
+			if (getResponse().correctAnswers.containsAnswer(currSC.getIdentifier())){
+				correct = true;
+			}
+			currSC.markAnswers(mark, correct );
 		}
 
 	}
@@ -167,7 +172,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	public void showCorrectAnswers(boolean show) {
 		if (show){
 			for (SelectableChoice sc : options){
-				if (getResponse().correctAnswers.contains(sc.getIdentifier())){
+				if (getResponse().correctAnswers.containsAnswer(sc.getIdentifier())){
 					sc.setSelected(true);
 				} else {
 					sc.setSelected(false);

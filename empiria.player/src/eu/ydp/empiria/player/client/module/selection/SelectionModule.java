@@ -23,6 +23,7 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
@@ -225,10 +226,10 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 			for (int ii = 0 ; ii < itemIdentifiers.size() ; ii ++ ){
 				boolean passed = true;
 
-				for (int r = 0 ; r < getResponse().correctAnswers.size() ; r ++){
-					String currItemIdentifier = getResponse().correctAnswers.get(r).split(" ")[0];
+				for (int r = 0 ; r < getResponse().correctAnswers.getResponseValuesCount() ; r ++){
+					String currItemIdentifier = getResponse().correctAnswers.getResponseValue(r).getAnswers().get(0).split(" ")[0];
 					if (currItemIdentifier.equals(itemIdentifiers.get(ii))){
-						boolean correct = getResponse().values.contains(getResponse().correctAnswers.get(r));
+						boolean correct = getResponse().values.contains(getResponse().correctAnswers.getResponseValue(r).getAnswers().get(0));
 						if (!correct){
 							passed = false;
 							break;
@@ -239,8 +240,7 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 				for (int r = 0 ; r < getResponse().values.size() ; r ++){
 					String currItemIdentifier = getResponse().values.get(r).split(" ")[0];
 					if (currItemIdentifier.equals(itemIdentifiers.get(ii))){
-						boolean correct = getResponse().correctAnswers.contains(getResponse().values.get(r));
-						if (!correct){
+						if (!getResponse().correctAnswers.containsAnswer(getResponse().values.get(r))){
 							passed = false;
 							break;
 						}
@@ -301,7 +301,7 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
 				for (int c = 0 ; c < choiceIdentifiers.size() ; c ++){
-					if (getResponse().correctAnswers.contains(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
+					if (getResponse().correctAnswers.containsAnswer(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
 						buttons.get(i).get(c).setSelected(true);
 				}
 			}

@@ -30,7 +30,7 @@ public abstract class Variable {
 		String output = "";
 		
 		for (int i = 0 ; i < values.size() ; i ++ ){
-			output += escapeCSV (values.get(i) );
+			output += escapeCSV (values.get(i));
 			if (i < values.size()-1)
 				output += ";";
 		}
