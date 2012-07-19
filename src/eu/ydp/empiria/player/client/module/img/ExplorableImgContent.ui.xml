@@ -3,13 +3,14 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.canvasadapter.client" xmlns:components="urn:import:eu.ydp.empiria.player.client.components" xmlns:i="urn:import:eu.ydp.empiria.player.client.module.img">
 	<ui:style>
 	</ui:style>
-	<g:FlowPanel styleName="qp-img-explorable" ui:field="mainPanel">
-		<g:FlowPanel styleName="qp-img-explorable-window" ui:field="windowPanel">
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+	<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE}" ui:field="mainPanel">
+		<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE_WINDOW}" ui:field="windowPanel">
 			<i:ExplorableImgWindow ui:field="window"/>
 		</g:FlowPanel>
-		<g:FlowPanel styleName="qp-img-explorable-toolbox">
-			<g:PushButton styleName="qp-img-explorable-zoomin" ui:field="zoominButton" />
-			<g:PushButton styleName="qp-img-explorable-zoomout" ui:field="zoomoutButton" />
+		<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE_TOOLBOX}">
+			<g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMIN}" ui:field="zoominButton" />
+			<g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMOUT}" ui:field="zoomoutButton" />
 		</g:FlowPanel>
 	</g:FlowPanel>
-</ui:UiBinder> 
+</ui:UiBinder>

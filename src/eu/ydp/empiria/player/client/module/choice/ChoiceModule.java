@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
@@ -23,6 +24,7 @@ import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.XMLUtils;
 
@@ -41,7 +43,7 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 	protected ChoiceGroupController groupController;
 
 	protected Panel mainPanel;
-
+	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 
 	public ChoiceModule(){
 	}
@@ -53,10 +55,10 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 
 		mainPanel = new FlowPanel();
 
-		mainPanel.setStyleName("qp-choice-module");
+		mainPanel.setStyleName(styleNames.QP_CHOICE_MODULE());
 		applyIdAndClassToView(mainPanel);
 		Widget promptWidget = new InlineHTML();
-		promptWidget.setStyleName("qp-prompt");
+		promptWidget.setStyleName(styleNames.QP_PROMPT());
 		getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstElementWithTagName(getModuleElement(), "prompt"), promptWidget.getElement());
 
 		mainPanel.add(promptWidget);
@@ -64,8 +66,9 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 
 		NodeList childNodes = getModuleElement().getChildNodes();
 		for (int f = 0 ; f < childNodes.getLength() ; f ++){
-			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
+			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0) {
 				getModuleSocket().addInlineFeedback(new InlineFeedback(mainPanel, childNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
+			}
 		}
 
 		placeholders.get(0).add(mainPanel);
@@ -85,8 +88,9 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 		  RandomizedSet<Integer> randomizedIndices = new RandomizedSet<Integer>();
 
 		  interactionElements = new Vector<SimpleChoice>();
-		  for (int el = 0 ; el < optionNodes.getLength() ; el ++)
-			  interactionElements.add(null);
+		  for (int el = 0 ; el < optionNodes.getLength() ; el ++) {
+			interactionElements.add(null);
+		}
 
 		  // Add randomized nodes to shuffle table
 		  if(shuffle){
@@ -231,8 +235,9 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 	}
 
 	private void updateResponse(SimpleChoice target, boolean userInteract){
-		if (showingAnswers)
+		if (showingAnswers) {
 			return;
+		}
 
 		Vector<String> currResponseValues = new Vector<String>();
 

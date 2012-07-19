@@ -18,8 +18,8 @@ public class DefaultImgContent extends Composite implements ImgContent {
 	}
 
 	@UiField
-	Image image;
-	
+	protected Image image;
+
 	public DefaultImgContent() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -28,6 +28,6 @@ public class DefaultImgContent extends Composite implements ImgContent {
 	public void init(Element element, ModuleSocket moduleSocket) {
 		image.setUrl(element.getAttribute("src"));
 	}
-	
+
 
 }

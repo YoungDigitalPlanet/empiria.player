@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.img;
 
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_COLOR;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_THICKNESS;
 import static eu.ydp.empiria.player.client.util.XMLUtils.getAttributeAsDouble;
 import static eu.ydp.empiria.player.client.util.XMLUtils.getAttributeAsInt;
 import static eu.ydp.empiria.player.client.util.XMLUtils.getAttributeAsString;
@@ -31,15 +33,17 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.canvasadapter.client.CanvasAdapter;
 import eu.ydp.canvasadapter.client.Context2dAdapter;
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-
-public class LabelledImgContent extends Composite  implements ImgContent{
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 
 	private static LabelledImgContentUiBinder uiBinder = GWT.create(LabelledImgContentUiBinder.class);
 
 	interface LabelledImgContentUiBinder extends UiBinder<Widget, LabelledImgContent> {
 	}
+
 
 	public LabelledImgContent() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -49,33 +53,31 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 	}
 
 	@UiField
-	AbsolutePanel mainPanel;
+	protected AbsolutePanel mainPanel;
 	@UiField
-	AbsolutePanel textPanel;
+	protected AbsolutePanel textPanel;
 	@UiField
-	Image image;
+	protected Image image;
 	@UiField
-	CanvasAdapter canvas;
+	protected CanvasAdapter canvas;
+
+	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 
 	private Map<String, String> styles;
 
-
-
 	@Override
-	public void init(Element element, ModuleSocket ms) {
-		fillCanvas(element, ms);
+	public void init(Element element, ModuleSocket modulesocket) {
+		fillCanvas(element, modulesocket);
 	}
 
 	/**
 	 * Tworzy obiekt html5/canvas
 	 *
 	 * @param element
-	 * @param ms
+	 * @param moduleSocket
 	 */
-	private void fillCanvas(final Element element, final ModuleSocket ms) {
-
-		image.setUrl(element.getAttribute("src"));
-		styles = ms.getStyles(element);
+	private void fillCanvas(final Element element, final ModuleSocket moduleSocket) {
+		styles = moduleSocket.getStyles(element);
 		image.addLoadHandler(new LoadHandler() {
 
 			@Override
@@ -89,7 +91,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 				mainPanel.setHeight(image.getHeight() + "px");
 				textPanel.setWidth(image.getWidth() + "px");
 				textPanel.setHeight(image.getHeight() + "px");
-				//imgelement.
+				// imgelement.
 				Context2dAdapter context2d = canvas.getContext2d();
 				setContextStyle(context2d);
 				NodeList labelList = element.getElementsByTagName("label");
@@ -106,13 +108,13 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 						parseLine(line, context2d);
 					}
 					if (text != null && anchor != null) {
-						textPanel.add(parseText(text, anchor, context2d, ms));
+						textPanel.add(parseText(text, anchor, context2d, moduleSocket));
 					}
 				}
 			}
 		});
+		image.setUrl(element.getAttribute("src"));
 	}
-
 
 	/**
 	 * rysuje linie
@@ -120,7 +122,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 	 * @param line
 	 * @param context2d
 	 */
-	private void parseLine(Element line, Context2dAdapter context2d) {
+	private void parseLine(Element line, Context2dAdapter context2d) {//NOPMD
 		NodeList elements = line.getChildNodes();
 		String endPoint = null;
 		String startPoint = null;
@@ -131,66 +133,67 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 		for (int x = 0; x < elements.getLength(); ++x) {
 			Node node = elements.item(x);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				Element e = (Element) node;
-				if (!"".equals(getAttributeAsString(e, "x"))) {
+				Element element = (Element) node;
+				if (!"".equals(getAttributeAsString(element, "x"))) {
 					startX = lastX;
 					startY = lastY;
-					lastX = getAttributeAsDouble(e, "x");
-					lastY = getAttributeAsDouble(e, "y");
+					lastX = getAttributeAsDouble(element, "x");
+					lastY = getAttributeAsDouble(element, "y");
 
-					if(!isStartSet && startPoint != null){
+					if (!isStartSet && startPoint != null) {
 						startBegX = lastX;
 						startBegY = lastY;
 						isStartSet = true;
 					}
 				}
-				if (e.getNodeName().equals("startPoint")) {
+				if (element.getNodeName().equals("startPoint")) {
 					context2d.moveTo(lastX, lastY);
-					startPoint = getAttributeAsString(e, "type");
+					startPoint = getAttributeAsString(element, "type");
 					startEndX = lastX;
 					startEndY = lastY;
-				} else if (e.getNodeName().equals("endPoint")) {
-					endPoint = getText(e);
-				} else if (e.getNodeName().equals("lineTo")) {
+				} else if (element.getNodeName().equals("endPoint")) {
+					endPoint = getText(element);
+				} else if (element.getNodeName().equals("lineTo")) {
 					context2d.lineTo(lastX, lastY);
 					context2d.stroke();
-				} else if (e.getNodeName().equals("lineStyle")) {
-					if (!"".equals(getAttributeAsString(e, "alpha"))) {
-						context2d.setGlobalAlpha(getAttributeAsInt(e, "alpha"));
+				} else if (element.getNodeName().equals("lineStyle")) {
+					if (!"".equals(getAttributeAsString(element, "alpha"))) {
+						context2d.setGlobalAlpha(getAttributeAsInt(element, "alpha"));
 					}
 					// hex itd
-					String color = getAttributeAsString(e, "color");
+					String color = getAttributeAsString(element, "color");
 					if (color != null) {
 						context2d.setStrokeStyle(color);
 					}
 					// liczba
-					if (!"".equals(getAttributeAsString(e, "width"))) {
-						getAttributeAsInt(e, "width");
+					if (!"".equals(getAttributeAsString(element, "width"))) {
+						getAttributeAsInt(element, "width");
 					}
 				}
 			}
 		}
-		if (endPoint != null){
+		if (endPoint != null) {
 			drawShape(endPoint, context2d, lastX, lastY, startX, startY);
 		}
 
-		if(startPoint != null){
+		if (startPoint != null) {
 			drawShape(startPoint, context2d, startEndX, startEndY, startBegX, startBegY);
 		}
 	}
 
 	/**
 	 * Parsuje element text i generuje odpowiednie widgety
+	 *
 	 * @param text
 	 * @param anchor
 	 * @param context2d
-	 * @param ms
+	 * @param moduleSocket
 	 * @param mainPanel
 	 */
-	private Panel parseText(Element text, Element anchor, Context2dAdapter context2d, ModuleSocket ms) {
+	private Panel parseText(Element text, Element anchor, Context2dAdapter context2d, ModuleSocket moduleSocket) {
 		Panel panel = new FlowPanel();
-		panel.setStyleName("qp-img-labelled-text-panel");
-		Widget widget = ms.getInlineBodyGeneratorSocket().generateInlineBody(text);
+		panel.setStyleName(styleNames.QP_IMG_LABELLED_TEXT_PANEL());
+		Widget widget = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(text);
 		if (widget != null) {
 			panel.add(widget);
 		}
@@ -201,6 +204,7 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 
 	/**
 	 * Rysuje zakonczenie linii
+	 *
 	 * @param shapeName
 	 * @param context
 	 * @param centerX
@@ -209,63 +213,61 @@ public class LabelledImgContent extends Composite  implements ImgContent{
 	 * @param startY
 	 */
 	private void drawShape(String shapeName, Context2dAdapter context, double centerX, double centerY, double startX, double startY) {
-		if (shapeName.equals("dot")) {
+		if ("dot".equals(shapeName)) {
 			context.beginPath();
 			context.arc(centerX, centerY, 3, 0, 2 * Math.PI, false);
 			context.closePath();
 			context.fill();
-		} else if (shapeName.equals("arrow")) {
-			CanvasArrow ca = new CanvasArrow(context, startX, startY, centerX, centerY);
-			ca.draw();
+		} else if ("arrow".equals(shapeName)) {
+			CanvasArrow canvas = new CanvasArrow(context, startX, startY, centerX, centerY);
+			canvas.draw();
 		}
 	}
 
 	/**
 	 * ustawia style dla context
+	 *
 	 * @param context2d
 	 * @param ms
 	 */
-	private void setContextStyle(Context2dAdapter context2d){
-		if(styles.containsKey("-empiria-img-label-line-color")){
-			try{
-				context2d.setStrokeStyle(CssColor.make(styles.get("-empiria-img-label-line-color")).value());
-			}catch(Exception e){
+	private void setContextStyle(Context2dAdapter context2d) {
+		if (styles.containsKey(EMPIRIA_IMG_LABEL_LINE_COLOR)) {
+			try {
+				context2d.setStrokeStyle(CssColor.make(styles.get(EMPIRIA_IMG_LABEL_LINE_COLOR)).value());
+			} catch (Exception e) {
 				e.fillInStackTrace();
 			}
 		}
-		if(styles.containsKey("-empiria-img-label-line-thickness")){
-			try{
-				context2d.setLineWidth(Double.valueOf(styles.get("-empiria-img-label-line-thickness").replaceAll("\\D", "")));
-			}catch(Exception e){}
+		if (styles.containsKey(EMPIRIA_IMG_LABEL_LINE_THICKNESS)) {
+			try {
+				context2d.setLineWidth(Double.valueOf(styles.get(EMPIRIA_IMG_LABEL_LINE_THICKNESS).replaceAll("\\D", "")));
+			} catch (Exception e) {
+			}
 		}
 	}
 
-	private void alignWidget(Widget widget, Element anchorElement){
-		String horizontalAlign = getAttributeAsString(
-				getFirstElementWithTagName(anchorElement, "x_anchor"), "anchor");
-		String verticalAlign = getAttributeAsString(
-						getFirstElementWithTagName(anchorElement, "y_anchor"), "anchor");
-		Point anchorPoint = new Point(
-						getAttributeAsDouble(anchorElement, "x"),
-						getAttributeAsDouble(anchorElement, "y"));
+	private void alignWidget(Widget widget, Element anchorElement) {
+		String horizontalAlign = getAttributeAsString(getFirstElementWithTagName(anchorElement, "x_anchor"), "anchor");
+		String verticalAlign = getAttributeAsString(getFirstElementWithTagName(anchorElement, "y_anchor"), "anchor");
+		Point anchorPoint = new Point(getAttributeAsDouble(anchorElement, "x"), getAttributeAsDouble(anchorElement, "y"));
 
 		alignWidget(widget, anchorPoint, horizontalAlign, verticalAlign);
 	}
 
-	private void alignWidget(Widget widget, Point anchorPoint, String horizontalAlign, String verticalAlign){
+	private void alignWidget(Widget widget, Point anchorPoint, String horizontalAlign, String verticalAlign) {
 		Style style = widget.getElement().getStyle();
 		double xPos = anchorPoint.getX();
 		double yPos = anchorPoint.getY();
 
-		if(horizontalAlign.equals("center")){
-			xPos -= widget.getOffsetWidth()/2;
-		}else if(horizontalAlign.equals("right")){
+		if ("center".equals(horizontalAlign)) {
+			xPos -= widget.getOffsetWidth() / 2;
+		} else if ("right".equals(horizontalAlign)) {
 			xPos -= widget.getOffsetWidth();
 		}
 
-		if(verticalAlign.equals("center")){
-			yPos -= widget.getOffsetHeight()/2;
-		}else if(verticalAlign.equals("bottom")){
+		if ("center".equals(verticalAlign)) {
+			yPos -= widget.getOffsetHeight() / 2;
+		} else if ("bottom".equals(verticalAlign)) {
 			yPos -= widget.getOffsetHeight();
 		}
 

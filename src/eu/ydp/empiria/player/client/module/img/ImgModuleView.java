@@ -13,7 +13,7 @@ public class ImgModuleView extends Composite {
 	private static ImgModuleViewUiBinder uiBinder = GWT.create(ImgModuleViewUiBinder.class);
 
 	interface ImgModuleViewUiBinder extends UiBinder<Widget, ImgModuleView> { }
-	
+
 	@UiField
 	protected Panel containerPanel;
 	@UiField
@@ -30,14 +30,18 @@ public class ImgModuleView extends Composite {
 	public void setContent(IsWidget content){
 		contentPanel.add(content);
 	}
-	
+
 	public void setTitle(IsWidget title){
 		titlePanel.add(title);
 	}
-	
+
 	public void setDescription(IsWidget description){
 		descriptionPanel.add(description);
 	}
-	
+
+	public Panel getContainerPanel() {
+		return containerPanel;
+	}
+
 
 }

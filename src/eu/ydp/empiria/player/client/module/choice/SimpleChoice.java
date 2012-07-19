@@ -27,15 +27,15 @@ public class SimpleChoice extends FlowPanel {
 	public String identifier;
 
 	private ChoiceButtonBase button;
-	private AbsolutePanel cover;
-	private AbsolutePanel container;
-	private Panel optionPanel;
-	private Panel labelPanel;
-	private Panel markAnswersPanel;
+	private final AbsolutePanel cover;
+	private final AbsolutePanel container;
+	private final Panel optionPanel;
+	private final Panel labelPanel;
+	private final Panel markAnswersPanel;
 	protected boolean multi;
 
 
-	public SimpleChoice(Element element,  boolean multi, final SimpleChoiceListener listener, ModuleSocket ms, InteractionEventsListener mil,
+	public SimpleChoice(Element element,  boolean multi, final SimpleChoiceListener listener, ModuleSocket moduleSocket, InteractionEventsListener mil,//NOPMD
 			ChoiceGroupController ctrl) {
 
 		this.multi = multi;
@@ -45,43 +45,50 @@ public class SimpleChoice extends FlowPanel {
 		setStyleName("qp-choice-option-box");
 
 		// button
-		if (multi)
+		if (multi) {
 			button = new MultiChoiceButton("choice-multi");
-		else
+		} else {
 			button = new SingleChoiceButton(ctrl, "choice-single");
+		}
 
 		button.addMouseOverHandler(new MouseOverHandler() {
+			@Override
 			public void onMouseOver(MouseOverEvent event) {
 				setMouseOver();
 			}
 		});
 		button.addMouseOutHandler(new MouseOutHandler() {
+			@Override
 			public void onMouseOut(MouseOutEvent event) {
 				setMouseOut();
 			}
 		});
 		final SimpleChoice instance = this;
 		button.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				listener.onSimpleChoiceClick(instance);
 			}
 		});
 
-		Widget contentWidget = ms.getInlineBodyGeneratorSocket().generateInlineBody(element);
+		Widget contentWidget = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(element,true);
 
 		cover = new AbsolutePanel();
 		cover.setStyleName("qp-choice-option-cover");
 		cover.addDomHandler(new MouseOverHandler() {
+			@Override
 			public void onMouseOver(MouseOverEvent event) {
 				setMouseOver();
 			}
 		}, MouseOverEvent.getType());
 		cover.addDomHandler(new MouseOutHandler() {
+			@Override
 			public void onMouseOut(MouseOutEvent event) {
 				setMouseOut();
 			}
 		}, MouseOutEvent.getType());
 		cover.addDomHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				listener.onSimpleChoiceClick(instance);
 			}
@@ -98,10 +105,11 @@ public class SimpleChoice extends FlowPanel {
 
 		markAnswersPanel = new FlowPanel();
 		String buttonTypeName;
-		if (multi)
+		if (multi) {
 			buttonTypeName = "multi";
-		else
+		} else {
 			buttonTypeName = "single";
+		}
 		markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
 
 		optionPanel = new FlowPanel();
@@ -116,7 +124,7 @@ public class SimpleChoice extends FlowPanel {
 
 		NodeList inlineFeedbackNodes = element.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			ms.addInlineFeedback(new InlineFeedback(labelPanel, inlineFeedbackNodes.item(f), ms, mil));
+			moduleSocket.addInlineFeedback(new InlineFeedback(labelPanel, inlineFeedbackNodes.item(f), moduleSocket, mil));
 		}
 
 
@@ -139,10 +147,11 @@ public class SimpleChoice extends FlowPanel {
 			markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
 		} else {
 			if (isSelected()){
-				if( correct )
+				if( correct ) {
 					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-correct");
-				else
+				} else {
 					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-wrong");
+				}
 			} else {
 				markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-none");
 			}
