@@ -4,14 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
-import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
@@ -27,36 +25,23 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {
+public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {//NOPMD
+
 	private class MediaWrapperHandler implements CallbackRecevier {
-		Element element;
-
-		boolean template = false;
-
 		@Override
-		public void setCallbackReturnObject(Object o) {
-			if (o instanceof MediaWrapper<?>) {
-				createMedia(element, template, (MediaWrapper<?>) o);
+		public void setCallbackReturnObject(Object object) {
+			if (object instanceof MediaWrapper<?>) {
+				createMedia((MediaWrapper<?>) object);
 			}
-		}
-
-		public void setElement(Element element) {
-			this.element = element;
-		}
-
-		public void setTemplate(boolean template) {
-			this.template = template;
 		}
 	}
 
-	protected Widget widget;
-	protected MediaBase media;
-	boolean flashPlayer = false;
-	Widget moduleView = null;
-	BodyGeneratorSocket bodyGeneratorSocket = null;
-	MediaWrapper<?> mediaWrapper = null;
-	MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private Widget widget;
+	private final boolean flashPlayer = false; //NOPMD
+	private Widget moduleView = null;
+	private MediaWrapper<?> mediaWrapper = null;
+	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
+	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	@Override
 	public Widget getView() {
@@ -87,8 +72,6 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	}
 
 	public void getMediaWrapper(Element element, boolean template, String type) {
-		callbackHandler.setElement(element);
-		callbackHandler.setTemplate(template);
 		int width = XMLUtils.getAttributeAsInt(element, "width");
 		int height = XMLUtils.getAttributeAsInt(element, "height");
 		if (width == 0 || height == 0) {
@@ -96,7 +79,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 			height = 240;
 		}
 		String poster = XMLUtils.getAttributeAsString(element, "poster");
-		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width, template);
+		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width, template);//NOPMD
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, callbackHandler, bmc));
 	}
 
@@ -104,22 +87,19 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	 * tworzy element
 	 *
 	 * @param element
-	 * @param template
-	 *            czy bedzie urzywana skorka
 	 */
-	private void createMedia(Element element, boolean template, MediaWrapper<?> mediaWrapper) {
+	private void createMedia(MediaWrapper<?> mediaWrapper) {
 		widget = mediaWrapper.getMediaObject();
 		this.mediaWrapper = mediaWrapper;
 	}
 
 	private void parseTemplate(Element template, FlowPanel parent) {
-		@SuppressWarnings({ "rawtypes", "unchecked" })
 		ObjectTemplateParser<?> parser = new ObjectTemplateParser(mediaWrapper);
 		parser.parse(template, parent);
 	}
 
 	@Override
-	public void initModule(Element element) {
+	public void initModule(Element element) {//NOPMD
 		String type = XMLUtils.getAttributeAsString(element, "type");
 		Element template = XMLUtils.getFirstElementWithTagName(element, "template");
 		Map<String, String> styles = getModuleSocket().getStyles(element);

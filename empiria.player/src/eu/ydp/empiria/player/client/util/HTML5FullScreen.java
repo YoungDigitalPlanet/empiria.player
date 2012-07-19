@@ -5,6 +5,8 @@ import java.util.Set;
 
 import com.google.gwt.dom.client.Element;
 
+import eu.ydp.gwtutil.client.debug.Debug;
+
 /**
  * Klasa pomocnicza do obslugi trybu pelnoekranowego w przegladarkach
  *
@@ -97,11 +99,14 @@ public class HTML5FullScreen {
 		}
 		return false;
 	}-*/;
-
+	public static native boolean isInFullScrean(Element e)/*-{
+	return !!e.webkitDisplayingFullscreen || !!e.webkitIsFullScreen;
+	}-*/;
 	/**
 	 * metoda wywolywana z poziomu jsni dla obslugi zdarzen fullScreen
 	 */
 	protected static void handleEvent() {
+		Debug.log(" FULL SCREEN "+isInFullScreen());
 		final boolean inFullScreen = isInFullScreen();
 		FullScreenEvent fse = new FullScreenEvent() {
 
@@ -121,9 +126,10 @@ public class HTML5FullScreen {
 	 */
 	public static native boolean isInFullScreen()/*-{
 		try {
-			return $doc.fullscreen || $doc.mozFullScreen
-					|| $doc.webkitIsFullScreen ? true : false;
+			return !!$doc.fullscreen || !!$doc.mozFullScreen
+					|| !!$doc.webkitIsFullScreen || !!$doc.webkitDisplayingFullscreen ? true : false;
 		} catch (e) {
+			alert(e);
 			//console.log(e);
 		}
 		return false;
