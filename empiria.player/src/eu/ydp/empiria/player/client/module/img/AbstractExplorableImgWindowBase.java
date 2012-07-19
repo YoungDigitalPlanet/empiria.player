@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.img;
 
 import com.google.gwt.user.client.ui.Composite;
 
-public abstract class ExplorableImgWindowBase extends Composite implements ExplorableImgWindow {
+public abstract class AbstractExplorableImgWindowBase extends Composite implements ExplorableImgWindow {
 
 	private double originalImageWidth, originalImageHeight;
 	private double originalAspectRatio;
@@ -11,17 +11,18 @@ public abstract class ExplorableImgWindowBase extends Composite implements Explo
 	private double scaleMin = 1.0d;
 	protected final double ZOOM_MAX = 8;
 	protected final double SCALE_STEP = 1.2d;
-	
+
 	protected void findScaleMinAndOriginalAspectRatio(){
-		originalAspectRatio = (double)originalImageWidth / (double)originalImageHeight;
-		if (windowHeight/originalImageHeight  <  windowWidth/originalImageWidth)
-			scaleMin = (originalAspectRatio * (double)windowHeight) / (double)windowWidth;
+		originalAspectRatio = originalImageWidth / originalImageHeight;
+		if (windowHeight/originalImageHeight  <  windowWidth/originalImageWidth) {
+			scaleMin = (originalAspectRatio * windowHeight) / windowWidth;
+		}
 	}
-	
+
 	protected double getOriginalAspectRatio(){
 		return originalAspectRatio;
 	}
-	
+
 	protected double getScaleMin(){
 		return scaleMin;
 	}
@@ -77,11 +78,11 @@ public abstract class ExplorableImgWindowBase extends Composite implements Explo
 
 
 	protected double getZoom(){
-		return (double)windowWidth/ (double)originalImageWidth * (scale) ;
+		return windowWidth/ originalImageWidth * (scale) ;
 	}
-	
+
 	protected double getZoom(double newScale){
-		return (double)windowWidth/ (double)originalImageWidth * (newScale) ;
+		return windowWidth/ originalImageWidth * (newScale) ;
 	}
 
 }

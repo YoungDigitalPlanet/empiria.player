@@ -112,8 +112,7 @@ import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
  * @author Rafal Rybacki
  *
  */
-public class DeliveryEngine implements DataLoaderEventListener,
-		FlowProcessingEventsListener, DeliveryEngineSocket {
+public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket {
 
 	public EngineModeManager mode;
 
@@ -144,17 +143,16 @@ public class DeliveryEngine implements DataLoaderEventListener,
 	protected String stateAsync;
 
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
 	/**
 	 * C'tor.
 	 */
 	@Inject
-	public DeliveryEngine(PlayerViewSocket pvs, DataSourceManager dsm,
-			StyleSocket ss) {
-
+	public DeliveryEngine(PlayerViewSocket pvs, DataSourceManager dsm, StyleSocket styleSocket) {
 		playerViewSocket = pvs;
 		dataManager = dsm;
 		dsm.setDataLoaderEventListener(this);
-		styleSocket = ss;
+		this.styleSocket = styleSocket;
 	}
 
 	public void init(JavaScriptObject playerJsObject) {
@@ -171,14 +169,11 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		soundProcessorManager = new SoundProcessorManagerExtension();
 
 		flowManager = new FlowManager(this);
-		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(
-				flowManager.getFlowCommandsExecutor()));
+		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(flowManager.getFlowCommandsExecutor()));
 		sessionDataManager = new SessionDataManager(deliveryEventsHub);
 
-		assessmentController = new AssessmentController(
-				playerViewSocket.getAssessmentViewSocket(),
-				flowManager.getFlowSocket(),
-				deliveryEventsHub.getInteractionSocket(), sessionDataManager, modulesRegistry);
+		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(), deliveryEventsHub.getInteractionSocket(),
+				sessionDataManager, modulesRegistry);
 		assessmentController.setStyleSocket(styleSocket);
 
 		deliveryEventsHub.addFlowActivityEventsListener(assessmentController);
@@ -224,20 +219,17 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		flowManager.init(dataManager.getItemsCount());
 		assessmentController.init(assessmentData, displayOptions);
 
-		getDeliveryEventsListener().onDeliveryEvent(
-				new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
-		getDeliveryEventsListener().onDeliveryEvent(
-				new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTING));
+		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
+		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTING));
 		updateAssessmentStyle();
 		initFlow();
-		getDeliveryEventsListener().onDeliveryEvent(
-				new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
+		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		updatePageStyle();
 	}
 
-	protected void initFlow(){
+	protected void initFlow() {
 
-		if (stateAsync != null){
+		if (stateAsync != null) {
 			try {
 				JSONArray deState = (JSONArray) JSONParser.parseLenient(stateAsync);
 
@@ -250,17 +242,12 @@ public class DeliveryEngine implements DataLoaderEventListener,
 				flowManager.deinitFlow();
 
 				if (deState.get(0).isNumber() != null) {
-					flowManager.invokeFlowRequest(new FlowRequest.NavigateGotoItem(
-							(int) deState.get(0).isNumber().doubleValue()));
+					flowManager.invokeFlowRequest(new FlowRequest.NavigateGotoItem((int) deState.get(0).isNumber().doubleValue()));
 				} else if (deState.get(0).isString() != null) {
-					if (deState.get(0).isString().stringValue()
-							.equals(PageType.TOC.toString())) {
-						flowManager
-								.invokeFlowRequest(new FlowRequest.NavigateToc());
-					} else if (deState.get(0).isString().stringValue()
-							.equals(PageType.SUMMARY.toString())) {
-						flowManager
-								.invokeFlowRequest(new FlowRequest.NavigateSummary());
+					if (deState.get(0).isString().stringValue().equals(PageType.TOC.toString())) {
+						flowManager.invokeFlowRequest(new FlowRequest.NavigateToc());
+					} else if (deState.get(0).isString().stringValue().equals(PageType.SUMMARY.toString())) {
+						flowManager.invokeFlowRequest(new FlowRequest.NavigateSummary());
 					}
 				}
 
@@ -282,7 +269,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(new SimpleConnectorExtension(new GroupModule(), ModuleTagName.GROUP));
 		loadExtension(new SimpleConnectorExtension(new SpanModule(), ModuleTagName.SPAN));
 		loadExtension(new SimpleConnectorExtension(new TextInteractionModule(), ModuleTagName.TEXT_INTERACTION));
-		loadExtension(new SimpleConnectorExtension(new ImgModule(), ModuleTagName.IMG));
+		loadExtension(new SimpleConnectorExtension(new ImgModule(), ModuleTagName.IMG, false, true));
 		loadExtension(new SimpleConnectorExtension(new ChoiceModule(), ModuleTagName.CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new SelectionModule(), ModuleTagName.SELECTION_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new IdentificationModule(), ModuleTagName.IDENTYFICATION_INTERACTION, true));
@@ -314,19 +301,19 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
 		loadExtension(new TouchPageSwitch());
 		loadExtension(new Page());
-	//	loadExtension(new MediaManager());
+		// loadExtension(new MediaManager());
 	}
 
-	protected void loadLibraryExtensions(){
+	protected void loadLibraryExtensions() {
 		List<LibraryExtension> extCreators = dataManager.getExtensionCreators();
-		for (LibraryExtension ext : extCreators){
-			if (ext instanceof LibraryExternalExtension){
-				JavaScriptObject extInstance = ((LibraryExternalExtension)ext).getExtensionInstance();
-				if (extInstance != null){
+		for (LibraryExtension ext : extCreators) {
+			if (ext instanceof LibraryExternalExtension) {
+				JavaScriptObject extInstance = ((LibraryExternalExtension) ext).getExtensionInstance();
+				if (extInstance != null) {
 					loadExtension(extInstance);
 				}
-			} else if (ext instanceof LibraryInternalExtension){
-				loadExtension(((LibraryInternalExtension)ext).getName());
+			} else if (ext instanceof LibraryInternalExtension) {
+				loadExtension(((LibraryInternalExtension) ext).getName());
 			}
 		}
 	}
@@ -386,7 +373,7 @@ public class DeliveryEngine implements DataLoaderEventListener,
 				((PlayerJsObjectModifierExtension) extension).setPlayerJsObject(playerJsObject);
 			}
 			if (extension instanceof SoundProcessorExtension) {
-				soundProcessorManager.setSoundProcessorExtension( (SoundProcessorExtension) extension );
+				soundProcessorManager.setSoundProcessorExtension((SoundProcessorExtension) extension);
 			}
 			if (extension instanceof ModuleConnectorExtension) {
 				modulesRegistry.registerModuleCreator(((ModuleConnectorExtension) extension).getModuleNodeName(), ((ModuleConnectorExtension) extension).getModuleCreator());
@@ -394,29 +381,26 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		}
 	}
 
-	protected void initExtensions(){
+	protected void initExtensions() {
 		extensionsManager.init();
 		employExtensions();
 	}
 
-	protected void employExtensions(){
+	protected void employExtensions() {
 		for (Extension currExtension : extensionsManager.getExtensions()) {
 			employExtension(currExtension);
 		}
 	}
 
-	protected void employExtension(Extension extension){
+	protected void employExtension(Extension extension) {
 		if (extension instanceof FlowRequestProcessorExtension) {
-			flowManager
-					.addCommandProcessor(((FlowRequestProcessorExtension) extension));
+			flowManager.addCommandProcessor(((FlowRequestProcessorExtension) extension));
 		}
 		if (extension instanceof AssessmentHeaderViewExtension) {
-			assessmentController
-					.setHeaderViewSocket(((AssessmentHeaderViewExtension) extension).getAssessmentHeaderViewSocket());
+			assessmentController.setHeaderViewSocket(((AssessmentHeaderViewExtension) extension).getAssessmentHeaderViewSocket());
 		}
 		if (extension instanceof AssessmentFooterViewExtension) {
-			assessmentController
-					.setFooterViewSocket(((AssessmentFooterViewExtension) extension).getAssessmentFooterViewSocket());
+			assessmentController.setFooterViewSocket(((AssessmentFooterViewExtension) extension).getAssessmentFooterViewSocket());
 		}
 
 	}
@@ -429,44 +413,35 @@ public class DeliveryEngine implements DataLoaderEventListener,
 			PageReference pr = flowManager.getPageReference();
 			PageData pd = dataManager.generatePageData(pr);
 
-			getDeliveryEventsListener().onDeliveryEvent(
-					new DeliveryEvent(DeliveryEventType.PAGE_UNLOADING));
+			getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.PAGE_UNLOADING));
 
 			assessmentController.closePage();
 
-			getDeliveryEventsListener().onDeliveryEvent(
-					new DeliveryEvent(DeliveryEventType.PAGE_UNLOADED));
+			getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.PAGE_UNLOADED));
 
-			getDeliveryEventsListener().onDeliveryEvent(
-					new DeliveryEvent(DeliveryEventType.PAGE_LOADING));
+			getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.PAGE_LOADING));
 
 			// TODO style provider should listen directly to navigation events
 			// via HandlerManager or other event bus
 			styleSocket.setCurrentPages(pr);
 
 			if (pd.type == PageType.SUMMARY) {
-				((PageDataSummary) pd).setAssessmentSessionData(sessionDataManager
-						.getAssessmentSessionDataSocket());
+				((PageDataSummary) pd).setAssessmentSessionData(sessionDataManager.getAssessmentSessionDataSocket());
 			}
 			assessmentController.initPage(pd);
 			if (pd.type == PageType.SUMMARY) {
-				getDeliveryEventsListener()
-						.onDeliveryEvent(
-								new DeliveryEvent(
-										DeliveryEventType.SUMMARY_PAGE_LOADED));
+				getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.SUMMARY_PAGE_LOADED));
 			}
 			if (pd.type == PageType.TOC) {
-				getDeliveryEventsListener().onDeliveryEvent(
-						new DeliveryEvent(DeliveryEventType.TOC_PAGE_LOADED));
+				getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.TOC_PAGE_LOADED));
 			}
 			if (pd.type == PageType.TEST) {
-				getDeliveryEventsListener().onDeliveryEvent(
-						new DeliveryEvent(DeliveryEventType.TEST_PAGE_LOADED));
+				getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.TEST_PAGE_LOADED));
 			}
 
 			updatePageStyle();
 		}
-		if(event.getType()==FlowProcessingEventType.CHECK){
+		if (event.getType() == FlowProcessingEventType.CHECK) {
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CHECK_ANSWERS));
 		}
 		getFlowExecutionEventsListener().onFlowProcessingEvent(event);
@@ -485,10 +460,8 @@ public class DeliveryEngine implements DataLoaderEventListener,
 		JSONArray deState = new JSONArray();
 		if (flowManager.getCurrentPageType() == PageType.TEST) {
 			deState.set(0, new JSONNumber(flowManager.getCurrentPageIndex()));
-		} else if (flowManager.getCurrentPageType() == PageType.TOC
-				|| flowManager.getCurrentPageType() == PageType.SUMMARY) {
-			deState.set(0, new JSONString(flowManager.getCurrentPageType()
-					.toString()));
+		} else if (flowManager.getCurrentPageType() == PageType.TOC || flowManager.getCurrentPageType() == PageType.SUMMARY) {
+			deState.set(0, new JSONString(flowManager.getCurrentPageType().toString()));
 		} else {
 			deState.set(0, JSONNull.getInstance());
 		}
@@ -527,15 +500,13 @@ public class DeliveryEngine implements DataLoaderEventListener,
 
 	public void updateAssessmentStyle() {
 		String userAgent = styleManager.getUserAgent();
-		Vector<String> links = dataManager
-				.getAssessmentStyleLinksForUserAgent(userAgent);
+		Vector<String> links = dataManager.getAssessmentStyleLinksForUserAgent(userAgent);
 		styleManager.registerAssessmentStyles(links);
 	}
 
 	public void updatePageStyle() {
 		String userAgent = styleManager.getUserAgent();
-		Vector<String> links = dataManager.getPageStyleLinksForUserAgent(
-				flowManager.getPageReference(), userAgent);
+		Vector<String> links = dataManager.getPageStyleLinksForUserAgent(flowManager.getPageReference(), userAgent);
 		styleManager.registerItemStyles(links);
 	}
 

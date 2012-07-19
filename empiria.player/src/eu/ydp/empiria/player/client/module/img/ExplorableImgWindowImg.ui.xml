@@ -4,12 +4,13 @@
 	<ui:style>
 		.imagearea{
 			cursor: move;
-		}		
+		}
 	</ui:style>
-	<g:FlowPanel addStyleNames='qp-img-explorable-image-img-window' ui:field="windowPanel" >
-		<g:FlowPanel addStyleNames='qp-img-explorable-image-img-panel {style.imagearea}' ui:field="imagePanel" >
-			<g:Image styleName="qp-img-explorable-image-img-img" ui:field="image" />
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
+	<g:FlowPanel addStyleNames='{res.QP_IMG_EXPLORABLE_IMAGE_IMG_WINDOW}' ui:field="windowPanel" >
+		<g:FlowPanel addStyleNames='{res.QP_IMG_EXPLORABLE_IMAGE_IMG_PANEL} {style.imagearea}' ui:field="imagePanel" >
+			<g:Image styleName="{res.QP_IMG_EXPLORABLE_IMAGE_IMG_IMG}" ui:field="image" />
 		</g:FlowPanel>
 	</g:FlowPanel>
-	
-</ui:UiBinder> 
+
+</ui:UiBinder>

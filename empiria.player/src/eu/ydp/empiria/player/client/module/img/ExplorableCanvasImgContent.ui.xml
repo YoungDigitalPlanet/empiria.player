@@ -6,17 +6,18 @@
 			cursor: move;
 		}
 	</ui:style>
-	<g:FlowPanel styleName="qp-img-explorable" ui:field="mainPanel">
-		<g:FlowPanel styleName="qp-img-explorable-window" ui:field="windowPanel">
-			<g:FlowPanel addStyleNames='qp-img-explorable-image-panel {style.imagearea}' ui:field="imagePanel" >
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+	<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE}" ui:field="mainPanel">
+		<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE_WINDOW}" ui:field="windowPanel">
+			<g:FlowPanel addStyleNames='{res.QP_IMG_EXPLORABLE_IMAGE_PANEL} {style.imagearea}' ui:field="imagePanel" >
 				<components:PanelWithScrollbars ui:field="scrollbarsPanel">
-					<c:CanvasAdapter styleName="qp-img-explorable-image-canvas" ui:field="imageCanvas" />
+					<c:CanvasAdapter styleName="{res.QP_IMG_EXPLORABLE_IMAGE_CANVAS}" ui:field="imageCanvas" />
 				</components:PanelWithScrollbars>
 			</g:FlowPanel>
 		</g:FlowPanel>
-		<g:FlowPanel styleName="qp-img-explorable-toolbox">
-			<g:PushButton styleName="qp-img-explorable-zoomin" ui:field="zoominButton" />
-			<g:PushButton styleName="qp-img-explorable-zoomout" ui:field="zoomoutButton" />
+		<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE_TOOLBOX}">
+			<g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMIN}" ui:field="zoominButton" />
+			<g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMOUT}" ui:field="zoomoutButton" />
 		</g:FlowPanel>
 	</g:FlowPanel>
-</ui:UiBinder> 
+</ui:UiBinder>
