@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.util.XMLUtils;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
@@ -113,7 +114,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 
 	private void parseTemplate(Element template, FlowPanel parent) {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		TemplateParser<?> parser = new TemplateParser(mediaWrapper);
+		ObjectTemplateParser<?> parser = new ObjectTemplateParser(mediaWrapper);
 		parser.parse(template, parent);
 	}
 
@@ -134,8 +135,9 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 			getMediaWrapper(element, template != null && !"native".equals(playerType), type);
 			ObjectModuleView moduleView = new ObjectModuleView();
 			String cls = element.getAttribute("class");
-			if (cls != null && !"".equals(cls))
+			if (cls != null && !"".equals(cls)) {
 				moduleView.getContainerPanel().addStyleName(cls);
+			}
 			if (widget != null){
 				moduleView.getContainerPanel().add(widget);
 			}
