@@ -10,13 +10,13 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.binding.BindingProxy;
 import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
+import eu.ydp.empiria.player.client.module.containers.BindingContainerModule;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
 
-public abstract class GroupModuleBase<T> extends SimpleContainerModuleBase<T> implements IGroup, BindingProxy {
+public abstract class GroupModuleBase<T> extends BindingContainerModule<T> implements IGroup {
 
 	protected GroupIdentifier groupIdentifier;
 	private String moduleId;
-	private GapWidthBindingManager gapWidthBindingManager;
 
 	public GroupModuleBase(){
 	}
@@ -42,20 +42,6 @@ public abstract class GroupModuleBase<T> extends SimpleContainerModuleBase<T> im
 	@Override
 	public GroupIdentifier getGroupIdentifier() {
 		return groupIdentifier;
-	}
-
-	@Override
-	public GapWidthBindingManager getBindingManager(BindingType bindingType) {
-		if (bindingType == BindingType.GAP_WIDTHS){
-			if (gapWidthBindingManager == null)
-				gapWidthBindingManager = createGapWidthBindingManager();
-			return gapWidthBindingManager;
-		}
-		return null;
-	}
-	
-	protected GapWidthBindingManager createGapWidthBindingManager(){
-		return new GapWidthBindingManager(true);
 	}
 
 }
