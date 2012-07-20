@@ -31,7 +31,6 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 	@UiField
 	protected Image image;
 
-	private boolean imageLoaded = false;
 	private int prevX = -1, prevY = -1;
 
 	public ExplorableImgWindowImg() {
@@ -39,22 +38,20 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 	}
 
 	@Override
-	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale) {
+	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale,String title) {
 		setWindowWidth(wndWidth);
 		setWindowHeight(wndHeight);
 		setScale(initialScale);
 
-		windowPanel.setSize(String.valueOf(getWindowWidth()) + "px", String.valueOf(getWindowHeight()) + "px");
+		windowPanel.setSize(getWindowWidth() + "px",getWindowHeight() + "px");
 		windowPanel.getElement().getStyle().setOverflow(Overflow.AUTO);
 
 		image.setUrl(imageUrl);
-
+		image.setAltText(title);
 		image.addLoadHandler(new LoadHandler() {
 
 			@Override
 			public void onLoad(LoadEvent event) {
-				imageLoaded = true;
-
 				setOriginalImageWidth(image.getWidth());
 				setOriginalImageHeight( image.getHeight());
 

@@ -66,7 +66,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	}
 
 	@Override
-	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale) {//NOPMD
+	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale,String title) {//NOPMD
 		setWindowWidth(wndWidth);
 		setWindowHeight(wndHeight);
 		setScale(initialScale);
@@ -109,6 +109,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		imageCanvas.setCoordinateSpaceHeight(getWindowHeight());
 		imageCanvas.setWidth(getWindowWidth() + "px");
 		imageCanvas.setHeight(getWindowHeight() + "px");
+		imageCanvas.setTitle(title);
 		scrollbarsPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
 		focusCanvas = (FocusWidget)imageCanvas.asWidget();
 		focusCanvas.addTouchStartHandler(new TouchStartHandler() {
@@ -181,7 +182,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		prevY = y;
 	}
 
-	private void onMoveScale(int x1, int y1, int x2, int y2) {
+	private void onMoveScale(int x1, int y1, int x2, int y2) {//NOPMD
 		double currDistance= Math.sqrt(
 				Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)
 				);

@@ -31,6 +31,7 @@ public final class XMLUtils {
 
 	private XMLUtils() {
 	}
+
 	/**
 	 * Helper function for getting element attribute as string
 	 *
@@ -85,18 +86,38 @@ public final class XMLUtils {
 	 * @return contents of tag
 	 */
 	public static String getText(Element element) {
+		return getText(element, false);
+	}
+
+	/**
+	 * zwraca tekst z elementow {@link Node.TEXT_NODE} wszystkich podelementow elementu
+	 * @param element przeszukiwany obiekt
+	 * @return
+	 */
+	public static String getTextFromChilds(Element element) {
+		return getText(element, true);
+	}
+
+	/**
+	 * Zwraca tekst z dzieci typu {@link Node.TEXT_NODE} dla element
+	 * @param element rodzic z którego pobieramy teksty
+	 * @param allChilds czy przechodzimy rekurencyjnie przez wszystkie dzieci
+	 * @return
+	 */
+	private static String getText(Element element, boolean allChilds) {
 		StringBuilder text = new StringBuilder();
 		NodeList nodes = element.getChildNodes();
-
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node node = nodes.item(i);
-
 			if (node.getNodeType() == Node.TEXT_NODE) {
 				text.append(node.getNodeValue());
+				text.append(' ');
+			} else if (allChilds && node.getNodeType() == Node.ELEMENT_NODE) {
+				text.append(getText((Element) node, allChilds));
+				text.append(' ');
 			}
 		}
-
-		return text.toString();
+		return text.toString().trim();
 	}
 
 	/**
@@ -121,12 +142,13 @@ public final class XMLUtils {
 	public static Element getFirstChildElement(Element element) {
 		for (int i = 0; i < element.getChildNodes().getLength(); i++) {
 			if (element.getChildNodes().item(i) instanceof Element) {
-				return (Element) element.getChildNodes().item(i);
+				return (Element) element.getChildNodes().item(i);//NOPMD
 			}
 		}
 		return null;
 	}
 
+	@SuppressWarnings("PMD")
 	public static boolean hasParentWithNodeName(Element element, String parentNodeName, String searchUpToNodeName) {
 		if (element != null && element.getNodeName().equals(parentNodeName)) {
 			return true;

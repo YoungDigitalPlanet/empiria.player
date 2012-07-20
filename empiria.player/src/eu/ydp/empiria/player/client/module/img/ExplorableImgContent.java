@@ -22,6 +22,7 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class ExplorableImgContent extends Composite implements ImgContent {
 	private static final String ZOOMOUT_BUTTON = "zoomoutButton";
@@ -87,8 +88,9 @@ public class ExplorableImgContent extends Composite implements ImgContent {
 		if (styles.containsKey(EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT)){
 			windowHeight = IntegerUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT).replaceAll(toReplace, ""), 300);
 		}
-
-		window.init(windowWidth, windowHeight, element.getAttribute("src"), scale);
+		Element titleNodes = XMLUtils.getFirstElementWithTagName(element, "title");
+		final String title  =XMLUtils.getTextFromChilds(titleNodes);
+		window.init(windowWidth, windowHeight, element.getAttribute("src"), scale,title);
 	}
 
 

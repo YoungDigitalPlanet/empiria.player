@@ -37,6 +37,7 @@ import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 
 	private static LabelledImgContentUiBinder uiBinder = GWT.create(LabelledImgContentUiBinder.class);
@@ -78,7 +79,9 @@ public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 	 */
 	private void fillCanvas(final Element element, final ModuleSocket moduleSocket) {
 		styles = moduleSocket.getStyles(element);
-		image.addLoadHandler(new LoadHandler() {
+		Element titleNodes = XMLUtils.getFirstElementWithTagName(element, "title");
+		 final String title  =XMLUtils.getTextFromChilds(titleNodes);
+		 image.addLoadHandler(new LoadHandler() {
 
 			@Override
 			public void onLoad(LoadEvent event) {
@@ -87,6 +90,7 @@ public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 				canvas.setCoordinateSpaceWidth(image.getWidth());
 				canvas.setHeight(image.getHeight() + "px");
 				canvas.setCoordinateSpaceHeight(image.getHeight());
+				canvas.setTitle(title);
 				mainPanel.setWidth(image.getWidth() + "px");
 				mainPanel.setHeight(image.getHeight() + "px");
 				textPanel.setWidth(image.getWidth() + "px");

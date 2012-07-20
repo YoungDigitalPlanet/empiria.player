@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class DefaultImgContent extends Composite implements ImgContent {
 
@@ -26,8 +27,10 @@ public class DefaultImgContent extends Composite implements ImgContent {
 
 	@Override
 	public void init(Element element, ModuleSocket moduleSocket) {
+		Element titleNodes = XMLUtils.getFirstElementWithTagName(element, "title");
+		final String title = XMLUtils.getTextFromChilds(titleNodes);
+		image.setAltText(title);
 		image.setUrl(element.getAttribute("src"));
 	}
-
 
 }
