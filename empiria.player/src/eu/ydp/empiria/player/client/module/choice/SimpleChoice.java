@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -20,6 +21,7 @@ import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonB
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class SimpleChoice extends FlowPanel {
@@ -32,7 +34,10 @@ public class SimpleChoice extends FlowPanel {
 	private final Panel optionPanel;
 	private final Panel labelPanel;
 	private final Panel markAnswersPanel;
+	private final Panel buttonPanel;
 	protected boolean multi;
+	
+	private StyleNameConstants styleNameConstants = PlayerGinjector.INSTANCE.getStyleNameConstants();
 
 
 	public SimpleChoice(Element element,  boolean multi, final SimpleChoiceListener listener, ModuleSocket moduleSocket, InteractionEventsListener mil,//NOPMD
@@ -111,6 +116,9 @@ public class SimpleChoice extends FlowPanel {
 			buttonTypeName = "single";
 		}
 		markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
+		
+		buttonPanel = new FlowPanel();
+		buttonPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-container");
 
 		optionPanel = new FlowPanel();
 		optionPanel.setStyleName("qp-choice-option");
@@ -145,21 +153,33 @@ public class SimpleChoice extends FlowPanel {
 		String buttonTypeName = getButtonType();
 		if (!mark){
 			markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
-			optionPanel.removeStyleDependentName("markanswers-correct");
-			optionPanel.removeStyleDependentName("markanswers-wrong");
-			optionPanel.removeStyleDependentName("markanswers-none");
+			markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
+			buttonPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
+			buttonPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+			buttonPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+			buttonPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
+			labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
+			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
+			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
+			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
 		} else {
 			if (isSelected()){
 				if( correct ) {
 					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-correct");
-					optionPanel.addStyleDependentName("markanswers-correct");
+					markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
+					buttonPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+					labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
 				} else {
 					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-wrong");
-					optionPanel.addStyleDependentName("markanswers-wrong");
+					markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
+					buttonPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+					labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
 				}
 			} else {
 				markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-none");
-				optionPanel.addStyleDependentName("markanswers-none");
+				markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_NONE());
+				buttonPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
+				labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
 			}
 		}
 		setEnabled(!mark);
