@@ -160,4 +160,42 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
+	@DefaultStringValue("qp-markanswsers-label-correct")
+	public String QP_MARKANSWERS_LABEL_CORRECT();
+
+	@DefaultStringValue("qp-markanswsers-label-wrong")
+	public String QP_MARKANSWERS_LABEL_WRONG();
+
+	@DefaultStringValue("qp-markanswsers-label-none")
+	public String QP_MARKANSWERS_LABEL_NONE();
+
+	@DefaultStringValue("qp-markanswsers-label-inactive")
+	public String QP_MARKANSWERS_LABEL_INACTIVE();
+
+	@DefaultStringValue("qp-markanswsers-button-correct")
+	public String QP_MARKANSWERS_BUTTON_CORRECT();
+
+	@DefaultStringValue("qp-markanswsers-button-wrong")
+	public String QP_MARKANSWERS_BUTTON_WRONG();
+
+	@DefaultStringValue("qp-markanswsers-button-none")
+	public String QP_MARKANSWERS_BUTTON_NONE();
+
+	@DefaultStringValue("qp-markanswsers-button-inactive")
+	public String QP_MARKANSWERS_BUTTON_INACTIVE();
+
+	@DefaultStringValue("qp-markanswsers-marker-correct")
+	public String QP_MARKANSWERS_MARKER_CORRECT();
+
+	@DefaultStringValue("qp-markanswsers-marker-wrong")
+	public String QP_MARKANSWERS_MARKER_WRONG();
+
+	@DefaultStringValue("qp-markanswsers-marker-none")
+	public String QP_MARKANSWERS_MARKER_NONE();
+
+	@DefaultStringValue("qp-markanswsers-marker-inactive")
+	public String QP_MARKANSWERS_MARKER_INACTIVE();
+	
+	
+
 }
