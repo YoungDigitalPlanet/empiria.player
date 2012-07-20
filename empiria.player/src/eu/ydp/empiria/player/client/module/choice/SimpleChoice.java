@@ -145,15 +145,21 @@ public class SimpleChoice extends FlowPanel {
 		String buttonTypeName = getButtonType();
 		if (!mark){
 			markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
+			optionPanel.removeStyleDependentName("markanswers-correct");
+			optionPanel.removeStyleDependentName("markanswers-wrong");
+			optionPanel.removeStyleDependentName("markanswers-none");
 		} else {
 			if (isSelected()){
 				if( correct ) {
 					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-correct");
+					optionPanel.addStyleDependentName("markanswers-correct");
 				} else {
 					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-wrong");
+					optionPanel.addStyleDependentName("markanswers-wrong");
 				}
 			} else {
 				markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-none");
+				optionPanel.addStyleDependentName("markanswers-none");
 			}
 		}
 		setEnabled(!mark);
