@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.containers;
 
 
-public class TextInteractionModule extends SimpleContainerModuleBase<TextInteractionModule> {
+public class TextInteractionModule extends BindingContainerModule<TextInteractionModule> {
 
 	public TextInteractionModule(){
 		super();

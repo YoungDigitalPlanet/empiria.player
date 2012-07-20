@@ -297,7 +297,7 @@ public class MathModuleHelper {
 				
 			} else  if (gaps.get(i) instanceof TextEntryGap){
 				TextEntryGap teg = (TextEntryGap)gaps.get(i);
-				listBoxesLayer.add(teg.getContainer());
+				listBoxesLayer.add(teg.getContainer(), 0, 0);
 			}
 		}
 	}

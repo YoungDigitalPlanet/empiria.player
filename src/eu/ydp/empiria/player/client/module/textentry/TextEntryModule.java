@@ -109,6 +109,8 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 			if (widthMode == GapWidthMode.GROUP){
 				if (getModuleElement().hasAttribute("widthBindingGroup")){
 					widthBindingIdentifier = new DefaultBindingGroupIdentifier(getModuleElement().getAttribute("widthBindingGroup"));
+				} else {
+					widthBindingIdentifier = new DefaultBindingGroupIdentifier("");
 				}
 			}
 		}
