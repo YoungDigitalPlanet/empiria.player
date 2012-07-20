@@ -150,7 +150,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 				if (parent instanceof ComplexPanel) {
 					((Panel) parent).add(panel);
 					parseXMLAttributes((Element) node, panel.getElement());
-					parseNode(node, panel);
+					parseXML(node.getChildNodes(), panel);
 				}
 			}
 		} else if (node.getNodeType() == Node.TEXT_NODE) {
