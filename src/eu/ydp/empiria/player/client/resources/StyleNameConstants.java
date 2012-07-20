@@ -107,6 +107,18 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-page-title")
 	public String QP_PAGE_TITLE();
 
+	@DefaultStringValue("qp-player")
+	public String QP_PLAYER();
+
+	@DefaultStringValue("qp-player-body")
+	public String QP_PLAYER_BODY();
+
+	@DefaultStringValue("qp-player-footer")
+	public String QP_PLAYER_FOOTER();
+
+	@DefaultStringValue("qp-player-header")
+	public String QP_PLAYER_HEADER();
+
 	@DefaultStringValue("qp-prompt")
 	public String QP_PROMPT();
 
@@ -148,5 +160,4 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
-
 }
