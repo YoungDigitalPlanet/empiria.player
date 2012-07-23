@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.selection;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -13,17 +15,19 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
@@ -32,6 +36,7 @@ import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonB
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.XMLUtils;
 
@@ -44,12 +49,16 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 	private VerticalPanel panel;
 	private Grid grid;
 	private Vector<Vector<ChoiceButtonBase>> buttons;
+	private List<List<Widget>> buttonsPanels;
 	private Vector<Vector<String>> buttonIds;
 	private Vector<String> choiceIdentifiers;
 	private Vector<String> itemIdentifiers;
+	private List<Widget> itemLabels;
 
 	private boolean showingAnswers = false;
 	private boolean locked = false;
+
+	private StyleNameConstants styleNameConstants = PlayerGinjector.INSTANCE.getStyleNameConstants();
 
 	public SelectionModule(){
 	}
@@ -112,13 +121,13 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 
 	private void fillGrid(NodeList choices, NodeList items){
 		buttons = new Vector<Vector<ChoiceButtonBase>>();
-
+		buttonsPanels = new ArrayList<List<Widget>>();
 		// header - choices
 
 		choiceIdentifiers = new Vector<String>();
 		for (int c = 0 ; c < choices.getLength() ; c ++){
 			Widget choiceView = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody((Element)choices.item(c));
-			choiceView.setStyleName("qp-selection-choice");
+			choiceView.setStyleName(styleNameConstants.QP_SELECTION_CHOICE());
 
 			grid.setWidget(0, c+1, choiceView);
 
@@ -132,6 +141,7 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 
 		// body - items
 		Vector<Node> itemNodes = new Vector<Node>();
+		itemLabels = new ArrayList<Widget>();
 		if (shuffle){
 			RandomizedSet<Node> randomizedItemNodes = new RandomizedSet<Node>();
 			for (int i = 0 ; i < items.getLength() ; i ++){
@@ -155,9 +165,16 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 		itemIdentifiers = new Vector<String>();
 		for (int i = 0 ; i < itemNodes.size() ; i ++){
 			Widget itemView = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody((Element)itemNodes.get(i));
-			itemView.setStyleName("qp-selection-item");
+			itemView.setStyleName(styleNameConstants.QP_SELECTION_ITEM_LABEL());
+			itemView.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
+			Panel itemContainer = new FlowPanel();
+			itemContainer.setStyleName(styleNameConstants.QP_SELECTION_ITEM());
+			itemContainer.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
+			itemContainer.add(itemView);
+			
+			itemLabels.add(itemView);
 
-			grid.setWidget(i+1, 0, itemView);
+			grid.setWidget(i+1, 0, itemContainer);
 
 			itemIdentifiers.add( ((Element)itemNodes.get(i)).getAttribute("identifier") );
 
@@ -171,6 +188,7 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 		buttonIds = new Vector<Vector<String>>();
 		for (int i = 0 ; i < items.getLength() ; i ++){
 			buttons.add(new Vector<ChoiceButtonBase>());
+			buttonsPanels.add(new ArrayList<Widget>());
 			buttonIds.add(new Vector<String>());
 			ChoiceGroupController cgc = new ChoiceGroupController();
 			for (int c = 0 ; c < choices.getLength() ; c ++){
@@ -198,9 +216,14 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 				String buttonId = Document.get().createUniqueId();
 				scb.getElement().setId(buttonId);
 				buttonIds.get(i).add(buttonId);
+				
+				Panel buttonPanel = new FlowPanel();
+				buttonPanel.setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());				
+				buttonPanel.add(scb);
 
-				grid.setWidget(i+1, c+1, scb);
+				grid.setWidget(i+1, c+1, buttonPanel);
 				buttons.get(i).add(scb);
+				buttonsPanels.get(i).add(buttonPanel);
 			}
 		}
 	}
@@ -225,15 +248,20 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 		if (mark){
 			for (int ii = 0 ; ii < itemIdentifiers.size() ; ii ++ ){
 				boolean passed = true;
+				
+				List<Boolean> buttonsCorrectness = new ArrayList<Boolean>();
+				for (String c : choiceIdentifiers)
+					buttonsCorrectness.add(false);
 
 				for (int r = 0 ; r < getResponse().correctAnswers.getResponseValuesCount() ; r ++){
 					String currItemIdentifier = getResponse().correctAnswers.getResponseValue(r).getAnswers().get(0).split(" ")[0];
+					String currChoiceIdentifier = getResponse().correctAnswers.getResponseValue(r).getAnswers().get(0).split(" ")[1];
 					if (currItemIdentifier.equals(itemIdentifiers.get(ii))){
 						boolean correct = getResponse().values.contains(getResponse().correctAnswers.getResponseValue(r).getAnswers().get(0));
 						if (!correct){
 							passed = false;
-							break;
 						}
+						buttonsCorrectness.set(choiceIdentifiers.indexOf(currChoiceIdentifier), correct);
 					}
 				}
 
@@ -245,6 +273,7 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 							break;
 						}
 					}
+					
 				}
 
 				boolean itemSelected = false;
@@ -257,19 +286,44 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 
 				if (itemSelected){
 					if (passed){
-						grid.getWidget(ii+1, 0).setStyleName("qp-selection-item-correct");
+						grid.getWidget(ii+1, 0).setStyleName(styleNameConstants.QP_SELECTION_ITEM_CORRECT());
+						grid.getWidget(ii+1, 0).addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
+						itemLabels.get(ii).setStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
 					} else {
-						grid.getWidget(ii+1, 0).setStyleName("qp-selection-item-wrong");
+						grid.getWidget(ii+1, 0).setStyleName(styleNameConstants.QP_SELECTION_ITEM_WRONG());
+						grid.getWidget(ii+1, 0).addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
+						itemLabels.get(ii).setStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
 					}
 				} else {
-					grid.getWidget(ii+1, 0).setStyleName("qp-selection-item-none");
+					grid.getWidget(ii+1, 0).setStyleName(styleNameConstants.QP_SELECTION_ITEM_NONE());
+					grid.getWidget(ii+1, 0).addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_NONE());
+					itemLabels.get(ii).setStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
+				}
+				
+				for (int i = 0 ; i < buttonsCorrectness.size() ; i ++){
+					if (buttonsCorrectness.get(i)) {
+						buttonsPanels.get(ii).get(i).setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+					} else if (buttons.get(ii).get(i).isSelected()) {
+						buttonsPanels.get(ii).get(i).setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+					} else {
+						buttonsPanels.get(ii).get(i).setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
+					}
+					
 				}
 
 			}
 
 		} else {
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
-				grid.getWidget(i+1, 0).setStyleName("qp-selection-item");
+				grid.getWidget(i+1, 0).setStyleName(styleNameConstants.QP_SELECTION_ITEM());
+				grid.getWidget(i+1, 0).addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
+				itemLabels.get(i).setStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
+			}
+			
+			for (int i = 0 ; i < buttonsPanels.size() ; i ++){
+				for (int c = 0 ; c < buttonsPanels.get(i).size() ; c ++){
+					buttonsPanels.get(i).get(c).setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
+				}
 			}
 		}
 

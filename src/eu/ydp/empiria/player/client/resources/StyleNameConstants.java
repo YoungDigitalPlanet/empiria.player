@@ -8,8 +8,23 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-body")
 	public String QP_BODY();
 
+	@DefaultStringValue("qp-choice-label")
+	public String QP_CHOICE_LABEL();
+
 	@DefaultStringValue("qp-choice-module")
 	public String QP_CHOICE_MODULE();
+
+	@DefaultStringValue("qp-choice-option")
+	public String QP_CHOICE_OPTION();
+
+	@DefaultStringValue("qp-choice-option-box")
+	public String QP_CHOICE_OPTION_BOX();
+
+	@DefaultStringValue("qp-choice-option-container")
+	public String QP_CHOICE_OPTION_CONTAINER();
+
+	@DefaultStringValue("qp-choice-option-cover")
+	public String QP_CHOICE_OPTION_COVER();
 
 	@DefaultStringValue("qp-footer")
 	public String QP_FOOTER();
@@ -145,7 +160,6 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-player")
 	public String QP_PLAYER();
-
 	@DefaultStringValue("qp-player-body")
 	public String QP_PLAYER_BODY();
 
@@ -160,6 +174,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-resultpage-items")
 	public String QP_RESULTPAGE_ITEMS();
+
 	@DefaultStringValue("qp-resultpage-percents")
 	public String QP_RESULTPAGE_PERCENTS();
 
@@ -171,6 +186,24 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-resultpage-time")
 	public String QP_RESULTPAGE_TIME();
+
+	@DefaultStringValue("qp-selection-choice")
+	public String QP_SELECTION_CHOICE();
+
+	@DefaultStringValue("qp-selection-item")
+	public String QP_SELECTION_ITEM();
+
+	@DefaultStringValue("qp-selection-item-correct")
+	public String QP_SELECTION_ITEM_CORRECT();
+
+	@DefaultStringValue("qp-selection-item-label")
+	public String QP_SELECTION_ITEM_LABEL();
+
+	@DefaultStringValue("qp-selection-item-none")
+	public String QP_SELECTION_ITEM_NONE();
+
+	@DefaultStringValue("qp-selection-item-wrong")
+	public String QP_SELECTION_ITEM_WRONG();
 
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();
@@ -196,6 +229,4 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
 	
-	
-
 }
