@@ -43,6 +43,7 @@ public class XmlData {
 		fixLinks(document, baseUrl, "audioPlayer", "src");
 		fixLinks(document, baseUrl, "vocaItem", "src");
 		fixLinks(document, baseUrl, "flash", "src");
+		fixLinks(document, baseUrl, "simulationPlayer", "src");
 	}
 	
 	/**

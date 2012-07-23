@@ -92,6 +92,7 @@ import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
 import eu.ydp.empiria.player.client.module.shape.ShapeModule;
 import eu.ydp.empiria.player.client.module.simpletext.SimpleTextModule;
+import eu.ydp.empiria.player.client.module.simulation.SimulationModule;
 import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
@@ -282,6 +283,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new ObjectModule(), ModuleTagName.OBJECT));
 		loadExtension(new SimpleConnectorExtension(new SlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER));
 		loadExtension(new SimpleConnectorExtension(new FlashModule(), ModuleTagName.FLASH));
+		loadExtension(new SimpleConnectorExtension(new SimulationModule(), ModuleTagName.SIMULATION_PLAYER));
 		loadExtension(new InfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(new LinkModuleConnectorExtension());
