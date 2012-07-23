@@ -25,5 +25,6 @@
 	<dependency org="eu.ydp" name="jsfilerequest" rev="latest.integration"  conf="*->default"/>
 	<dependency org="eu.ydp" name="ydpgwtutils" rev="latest.integration"  conf="*->default"/>
 	<dependency org="eu.ydp" name="gwtFlashMedia" rev="latest.integration"  conf="*->default"/>
+	<dependency org="eu.ydp" name="gwtCreateJs" rev="latest.integration" conf="*->default"/>
   </dependencies>
 </ivy-module>

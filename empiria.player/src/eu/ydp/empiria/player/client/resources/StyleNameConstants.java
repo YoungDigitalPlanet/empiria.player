@@ -98,6 +98,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-img-title")
 	public String QP_IMG_TITLE();
 
+	@DefaultStringValue("qp-simulation")
+	public String QP_SIMULATION();
+
 	@DefaultStringValue("qp-markanswsers-button-correct")
 	public String QP_MARKANSWERS_BUTTON_CORRECT();
 
@@ -160,6 +163,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-player")
 	public String QP_PLAYER();
+
 	@DefaultStringValue("qp-player-body")
 	public String QP_PLAYER_BODY();
 
@@ -228,5 +232,5 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
-	
+
 }
