@@ -34,7 +34,6 @@ public class SimpleChoice extends FlowPanel {
 	private final Panel optionPanel;
 	private final Panel labelPanel;
 	private final Panel markAnswersPanel;
-	private final Panel buttonPanel;
 	protected boolean multi;
 	
 	private StyleNameConstants styleNameConstants = PlayerGinjector.INSTANCE.getStyleNameConstants();
@@ -47,7 +46,7 @@ public class SimpleChoice extends FlowPanel {
 
 		identifier = XMLUtils.getAttributeAsString(element, "identifier");
 
-		setStyleName("qp-choice-option-box");
+		setStyleName(styleNameConstants.QP_CHOICE_OPTION_BOX());
 
 		// button
 		if (multi) {
@@ -79,7 +78,7 @@ public class SimpleChoice extends FlowPanel {
 		Widget contentWidget = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(element,true);
 
 		cover = new AbsolutePanel();
-		cover.setStyleName("qp-choice-option-cover");
+		cover.setStyleName(styleNameConstants.QP_CHOICE_OPTION_COVER());
 		cover.addDomHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
@@ -100,12 +99,13 @@ public class SimpleChoice extends FlowPanel {
 		}, ClickEvent.getType());
 
 		container = new AbsolutePanel();
-		container.setStyleName("qp-choice-option-container");
+		container.setStyleName(styleNameConstants.QP_CHOICE_OPTION_CONTAINER());
 		container.add(contentWidget, 0, 0);
 		container.add(cover, 0, 0);
 
 		labelPanel = new FlowPanel();
-		labelPanel.setStyleName("qp-choice-label");
+		labelPanel.setStyleName(styleNameConstants.QP_CHOICE_LABEL());
+		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
 		labelPanel.add(container);
 
 		markAnswersPanel = new FlowPanel();
@@ -116,12 +116,11 @@ public class SimpleChoice extends FlowPanel {
 			buttonTypeName = "single";
 		}
 		markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
-		
-		buttonPanel = new FlowPanel();
-		buttonPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-container");
+		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
 
 		optionPanel = new FlowPanel();
-		optionPanel.setStyleName("qp-choice-option");
+		optionPanel.setStyleName(styleNameConstants.QP_CHOICE_OPTION());
+		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
 		optionPanel.add(markAnswersPanel);
 		optionPanel.add(button);
 		optionPanel.add(labelPanel); // tmp
@@ -154,31 +153,33 @@ public class SimpleChoice extends FlowPanel {
 		if (!mark){
 			markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
 			markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
-			buttonPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
-			buttonPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
-			buttonPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
-			buttonPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
+			optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
+			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
 			labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
 			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
 			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
 			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
 		} else {
+			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
+			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
 			if (isSelected()){
 				if( correct ) {
 					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-correct");
 					markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
-					buttonPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+					optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
 					labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
 				} else {
 					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-wrong");
 					markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
-					buttonPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+					optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
 					labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
 				}
 			} else {
 				markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-none");
 				markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_NONE());
-				buttonPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
+				optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
 				labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
 			}
 		}
