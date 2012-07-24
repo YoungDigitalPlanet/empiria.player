@@ -25,19 +25,19 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	private static MediaProgressBarUiBinder uiBinder = GWT.create(MediaProgressBarUiBinder.class);
 
 	@UiField(provided = true)
-	SimpleMediaButton button = new SimpleMediaButton("qp-media-center-progress-button", false);
+	protected SimpleMediaButton button = new SimpleMediaButton(styleNames.QP_MEDIA_CENTER_PROGRESS_BUTTON(), false);
 
 	@UiField
-	FlowPanel progressBar;
+	protected FlowPanel progressBar;
 
 	@UiField
-	FlowPanel mainProgressDiv;
+	protected FlowPanel mainProgressDiv;
 
 	@UiField
-	FlowPanel beforeButton;
+	protected FlowPanel beforeButton;
 
 	@UiField
-	FlowPanel afterButton;
+	protected FlowPanel afterButton;
 
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
@@ -85,7 +85,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 				@Override
 				public void onMediaEvent(MediaEvent event) {
 					if (isMediaReady() && !isPressed()) {
-						if (getMediaWrapper().getCurrentTime() > lastTime + 1 || getMediaWrapper().getCurrentTime() < lastTime - 1  ||  event.getType() == MediaEventTypes.ON_STOP) {
+						if (getMediaWrapper().getCurrentTime() > lastTime + 1 || getMediaWrapper().getCurrentTime() < lastTime - 1  ||  event.getType() == MediaEventTypes.ON_STOP) {//NOPMD
 							// przeskakujemy co sekunde
 							lastTime = (int) getMediaWrapper().getCurrentTime();
 							double steep = getScrollWidth() / getMediaWrapper().getDuration();
@@ -121,7 +121,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	 *
 	 * @param positionX
 	 */
-	protected void moveScroll(int positionX) {
+	protected void moveScroll(int positionX) {//NOPMD
 		int scrollSize = getScrollWidth();
 		positionX = positionX > scrollSize ? scrollSize : positionX;
 		button.getElement().getStyle().setLeft(positionX, Unit.PX);
@@ -148,8 +148,8 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 		JsArray<Touch> touches = event.getChangedTouches();
 		int positionX = 0;
 		if (touches != null && touches.length() == 1) {
-			Touch t = touches.get(0);
-			positionX = t.getRelativeX(mainProgressDiv.getElement());
+			Touch touch = touches.get(0);
+			positionX = touch.getRelativeX(mainProgressDiv.getElement());
 		} else {
 			Element target = mainProgressDiv.getElement();
 			positionX = event.getClientX() - target.getAbsoluteLeft() + target.getScrollLeft() + target.getOwnerDocument().getScrollLeft();

@@ -98,8 +98,23 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-img-title")
 	public String QP_IMG_TITLE();
 
-	@DefaultStringValue("qp-simulation")
-	public String QP_SIMULATION();
+	@DefaultStringValue("qp-info")
+	public String QP_INFO();
+
+	@DefaultStringValue("qp-info-content")
+	public String QP_INFO_CONTENT();
+
+	@DefaultStringValue("qp-info-text")
+	public String QP_INFO_TEXT();
+
+	@DefaultStringValue("qp-item-title")
+	public String QP_ITEM_TITLE();
+
+	@DefaultStringValue("qp-item-title-index")
+	public String QP_ITEM_TITLE_INDEX();
+
+	@DefaultStringValue("qp-item-title-text")
+	public String QP_ITEM_TITLE_TEXT();
 
 	@DefaultStringValue("qp-markanswsers-button-correct")
 	public String QP_MARKANSWERS_BUTTON_CORRECT();
@@ -137,14 +152,23 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-markanswsers-marker-wrong")
 	public String QP_MARKANSWERS_MARKER_WRONG();
 
+	@DefaultStringValue("qp-media-center-progress-button")
+	public String QP_MEDIA_CENTER_PROGRESS_BUTTON();
+
 	@DefaultStringValue("qp-media-description")
 	public String QP_MEDIA_DESCRIPTION();
 
 	@DefaultStringValue("qp-media-fullscreen-button")
 	public String QP_MEDIA_FULLSCREEN_BUTTON();
 
+	@DefaultStringValue("qp-media-play-pause")
+	public String QP_MEDIA_PLAY_PAUSE();
+
 	@DefaultStringValue("qp-media-title")
 	public String QP_MEDIA_TITLE();
+
+	@DefaultStringValue("qp-media-volume-scrollbar-button")
+	public String QP_MEDIA_VOLUME_SCROLLBAR_BUTTON();
 
 	@DefaultStringValue("qp-page-content")
 	public String QP_PAGE_CONTENT();
@@ -208,6 +232,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-selection-item-wrong")
 	public String QP_SELECTION_ITEM_WRONG();
+
+	@DefaultStringValue("qp-simulation")
+	public String QP_SIMULATION();
 
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();

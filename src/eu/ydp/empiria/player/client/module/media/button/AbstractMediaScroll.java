@@ -19,8 +19,9 @@ public abstract class AbstractMediaScroll<T> extends MediaController<T> {
 	private boolean pressed = false;
 	private boolean mediaReady = false;
 	private boolean initialized;
-	HandlerRegistration durationchangeHandlerRegistration ;
+	HandlerRegistration durationchangeHandlerRegistration ; //NOPMD
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
 	/**
 	 * metoda wywolywana gdy pojawi sie jedno z obslugiwanych zdarzen
 	 *
@@ -46,6 +47,8 @@ public abstract class AbstractMediaScroll<T> extends MediaController<T> {
 		case Event.ONTOUCHMOVE:
 		case Event.ONMOUSEMOVE:
 			setPosition(event);
+		default:
+			break;
 		}
 		super.onBrowserEvent(event);
 	}
