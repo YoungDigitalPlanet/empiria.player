@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.controller.style.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.Assert;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -13,7 +16,9 @@ import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
+import eu.ydp.empiria.player.client.controller.data.CssParser;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
+import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.util.js.JSOModel;
 
 public class CssParserTest extends GWTTestCase {
@@ -57,12 +62,13 @@ public class CssParserTest extends GWTTestCase {
 		doc = XMLParser.parse("<customselector />");
 		e = doc.getDocumentElement();
 
-		sdsm.addAssessmentStyle(css1, "");
-		sdsm.addItemStyle(0, css2, "");
+		sdsm.addAssessmentStyle(new StyleDocument(CssParser.parseCss(css1), "") );
+		sdsm.addItemStyle(0, new StyleDocument(CssParser.parseCss(css2), "") );
+		sdsm.setCurrentPages(new PageReference(PageType.TEST, new int[]{0}, new FlowOptions(), new DisplayOptions()));
 		JSOModel styles = sdsm.getStyleProperties( e );
 		JsArrayString keys = styles.keys();
 		
-		Assert.assertEquals("customProperty has properties only from assessement style",2,keys.length());
+		Assert.assertEquals("customProperty has properties only from assessement style",3,keys.length());
 		Assert.assertFalse("StyleDataSourceManager returns correct style values", styles.hasKey("nonExistingStyle") );
 		Assert.assertTrue("style names are converted to lower case", styles.hasKey("customproperty") );
 		Assert.assertFalse("style names are converted to lower case", styles.hasKey("customProperty") );
@@ -89,9 +95,9 @@ public class CssParserTest extends GWTTestCase {
 	
 	public void testStylesForDifferentPages() {
 		StyleDataSourceManager sdsm = new StyleDataSourceManager();
-		sdsm.addAssessmentStyle(css1, "");
-		sdsm.addItemStyle(0, css2, "");
-		sdsm.addItemStyle(1, css3, "");
+		sdsm.addAssessmentStyle(new StyleDocument( CssParser.parseCss(css1), "") );
+		sdsm.addItemStyle(0, new StyleDocument( CssParser.parseCss(css2), ""));
+		sdsm.addItemStyle(1, new StyleDocument( CssParser.parseCss(css3), ""));
 		
 		sdsm.setCurrentPages( new PageReference(PageType.TEST, new int[]{0}, null , null) );
 		Document doc = XMLParser.parse("<h2 />");
