@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -14,6 +15,7 @@ import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.js.JSOModel;
+import eu.ydp.gwtutil.client.util.QueueSet;
 
 /**
  * Requires that jscssp.js script is added to module xml file
@@ -24,59 +26,49 @@ import eu.ydp.empiria.player.client.util.js.JSOModel;
 public class StyleDataSourceManager implements StyleSocket {
 
 	// style declarations for assessment
-	List<StyleDocument> assessmentStyle;
+	QueueSet<StyleDocument> assessmentStyle;
 
 	// style declarations for all items
 	// TODO consider using WeakHashMap to avoid problems with vector size at lines 50, 96
-	Vector<List<StyleDocument>> itemStyle;
+	Vector<QueueSet<StyleDocument>> itemStyle;
 
 	/**
 	 * Style declarations that should be searched for styles. When player
 	 * changes displayed page activeItemStyles should be rebuild.
 	 */
-	Vector<List<StyleDocument>> activeItemStyles;
+	QueueSet<StyleDocument> currentStyles;
 
 	public StyleDataSourceManager() {
-		assessmentStyle = new ArrayList<StyleDocument>();
+		assessmentStyle = new QueueSet<StyleDocument>();
 
-		itemStyle = new Vector<List<StyleDocument>>();
-		activeItemStyles = new Vector<List<StyleDocument>>();
+		itemStyle = new Vector<QueueSet<StyleDocument>>();
+		currentStyles = new QueueSet<StyleDocument>();
 	}
 	
-	public void addAssessmentStyle(String css, String basePath) {
-		assessmentStyle.add(new StyleDocument( parseCss(css) , basePath ) );
+	public void addAssessmentStyle(StyleDocument styleDocument) {
+		assessmentStyle.append( styleDocument );
 	}
 
-	public void addItemStyle(int i, String css, String basePath) {
+	public void addItemStyle(int i, StyleDocument styleDocument) {
 		if (i >= itemStyle.size()) {
 			itemStyle.setSize(i + 1);
 		}
-		List<StyleDocument> styles = itemStyle.get(i);
+		QueueSet<StyleDocument> styles = itemStyle.get(i);
 		if (styles == null) {
-			styles = new ArrayList<StyleDocument>();
+			styles = new QueueSet<StyleDocument>();
 			itemStyle.set(i, styles);
 		}
-		styles.add( new StyleDocument( parseCss(css) , basePath ) );
+		styles.append( styleDocument );
 	}
 
 	public JSOModel getStyleProperties(Element element) {
 		List<String> selectors = getElementSelectors(element);
 		JSOModel result = JavaScriptObject.createObject().cast();
-		for (StyleDocument sheet : assessmentStyle) {
+		
+		for (StyleDocument sheet : currentStyles){
 			result = sheet.getDeclarationsForSelectors(selectors, result);
-			//JsCssModel cssModel = sheet.cast();
-			//cssModel.getDeclarationsForSelector(selector, result);
 		}
-		for (List<StyleDocument> styles : activeItemStyles) {
-			if (styles == null) {
-				continue;
-			}
-			for (StyleDocument sheet : styles) {
-				result = sheet.getDeclarationsForSelectors(selectors, result);
-				//JsCssModel cssModel = sheet.cast();
-				//result = cssModel.getDeclarationsForSelector(selector, result);
-			}
-		}
+		
 		return result;
 	}
 
@@ -128,16 +120,19 @@ public class StyleDataSourceManager implements StyleSocket {
 	
 	@Override
 	public void setCurrentPages(PageReference pr) {
-		activeItemStyles = new Vector<List<StyleDocument>>( pr.pageIndices.length );
+		Vector<QueueSet<StyleDocument>> activeItemStyles = new Vector<QueueSet<StyleDocument>>( pr.pageIndices.length );
 		for (int pageIndex : pr.pageIndices) {
 			if (pageIndex < itemStyle.size())
 				activeItemStyles.add( itemStyle.get(pageIndex) );
 		}
+		currentStyles.clear();
+		
+		for (StyleDocument sheet : assessmentStyle) {
+			currentStyles.append(sheet);
+		}
+		for (Set<StyleDocument> styles : activeItemStyles) {
+			currentStyles.appendAll(styles);
+		}
 	}
-
-	private native JavaScriptObject parseCss(String css) /*-{
-		var parser = new $wnd.CSSParser();
-		return parser.parse(css, false, true);
-	}-*/;
 
 }

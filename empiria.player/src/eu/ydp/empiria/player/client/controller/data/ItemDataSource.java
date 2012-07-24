@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import java.util.Set;
 import java.util.Vector;
 
 import com.google.gwt.xml.client.Element;
@@ -9,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
+import eu.ydp.gwtutil.client.util.QueueSet;
 
 public class ItemDataSource {
 
@@ -36,10 +38,10 @@ public class ItemDataSource {
 		return data;
 	}
 	
-	public Vector<String> getStyleLinksForUserAgent(String userAgent){
+	public QueueSet<String> getStyleLinksForUserAgent(String userAgent){
 		if (styleDeclaration != null)
 			return styleDeclaration.getStyleLinksForUserAgent(userAgent);
-		return new Vector<String>();
+		return new QueueSet<String>();
 	}
 
 	public boolean isError(){

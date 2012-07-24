@@ -1,38 +1,56 @@
 package eu.ydp.empiria.player.client.controller.style;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
+
+import eu.ydp.gwtutil.client.util.QueueSet;
 
 public class StyleLinkManager {
 
 	public StyleLinkManager(){
-		currentAssessmentStyles = new Vector<JavaScriptObject>();
-		currentItemStyles = new Vector<JavaScriptObject>();
+		solidStyles = new HashMap<String, JavaScriptObject>();
+		removableStyles = new ArrayList<JavaScriptObject>();
 	}
 	
-	private Vector<JavaScriptObject> currentAssessmentStyles;
-	private Vector<JavaScriptObject> currentItemStyles;
+	private Map<String, JavaScriptObject> solidStyles;
+	private List<JavaScriptObject> removableStyles;
 
-	public void registerAssessmentStyles(Vector<String> styleLinks){
-		registerStyleLinks(styleLinks, currentAssessmentStyles);
+	public void registerAssessmentStyles(QueueSet<String> styleLinks){
+		doRegisterStyleLinks(styleLinks, false);
 	}
 
-	public void registerItemStyles(Vector<String> styleLinks){
-		registerStyleLinks(styleLinks, currentItemStyles);
+	public void registerItemStyles(QueueSet<String> styleLinks){
+		doRegisterStyleLinks(styleLinks, true);
 	}
 	
-	private void registerStyleLinks(Vector<String> styleLinks, Vector<JavaScriptObject> storedLinks){
-
-		while (storedLinks.size() > 0){
-			removeStyleLink(storedLinks.get(0));
-			storedLinks.remove(0);
+	private void doRegisterStyleLinks(QueueSet<String> styleLinks, boolean areRemovable){
+		
+		if (areRemovable){
+			for (JavaScriptObject currLink : removableStyles){
+				removeStyleLink(currLink);
+			}
+			removableStyles.clear();
 		}
 		
-		for (int s = 0 ; s < styleLinks.size() ; s ++){
-			JavaScriptObject newLink = appendStyleLink(styleLinks.get(s));
-			storedLinks.add(newLink);
+		for (String link : styleLinks){
+			if (solidStyles.containsKey(link)){
+				removeStyleLink(solidStyles.get(link));
+				solidStyles.remove(link);
+				JavaScriptObject newLink = appendStyleLink(link);
+				solidStyles.put(link, newLink);
+			} else if (!areRemovable) {
+				JavaScriptObject newLink = appendStyleLink(link);
+				solidStyles.put(link, newLink);
+			} else {
+				JavaScriptObject newLink = appendStyleLink(link);
+				removableStyles.add(newLink);
+			}
 		}
+		
 	}
 	
 	public native String getUserAgent() /*-{

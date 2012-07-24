@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
-import eu.ydp.empiria.player.client.util.file.xml.XmlDocumentLoadCallback;
+import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -44,7 +44,7 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 			resolvedURL = GWT.getHostPageBaseURL() + url;
 		}
 
-		new eu.ydp.empiria.player.client.util.file.xml.XmlDocument(resolvedURL, new XmlDocumentLoadCallback(){
+		new eu.ydp.empiria.player.client.util.file.xml.XmlDocument(resolvedURL, new DocumentLoadCallback<Document>(){
 
 			public void finishedLoading(Document document, String baseURL) {
 				assessmentData = new XmlData(document, baseURL);
@@ -52,7 +52,7 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 			}
 
 			@Override
-			public void loadingErrorHandler(String error) {
+			public void loadingError(String error) {
 			}
 		});
 	}
@@ -73,7 +73,6 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 			} catch (Exception e) {	}
 		}
 		
-		//TODO
 		return itemUrls;
 	}
 	
@@ -85,7 +84,7 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 		for (int i = 0 ; i < urls.length ; i ++){
 			final int ii = i;
 			
-			new XmlDocument(urls[ii], new XmlDocumentLoadCallback(){
+			new XmlDocument(urls[ii], new DocumentLoadCallback<Document>(){
 
 				public void finishedLoading(Document document, String baseURL) {
 					itemDatas[ii] = new XmlData(document, baseURL);
@@ -93,7 +92,7 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 				}
 
 				@Override
-				public void loadingErrorHandler(String error) {
+				public void loadingError(String error) {
 				}
 			});
 		}
