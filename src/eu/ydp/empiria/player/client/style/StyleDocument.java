@@ -45,5 +45,9 @@ public class StyleDocument {
 		}
 		return result;
 	}
+	
+	public String getBasePath(){
+		return basePath;
+	}
 
 }

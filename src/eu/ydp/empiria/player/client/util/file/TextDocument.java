@@ -9,11 +9,11 @@ import eu.ydp.jsfilerequest.client.FileResponse;
 
 public class TextDocument {
 
-	private TextDocumentLoadCallback callback;
+	private DocumentLoadCallback<String> callback;
 	private String url;
 	private String baseUrl;
 
-	public TextDocument(String u, TextDocumentLoadCallback c){
+	public TextDocument(String u, DocumentLoadCallback<String> c){
 
 		this.callback = c;
 		this.url = u;

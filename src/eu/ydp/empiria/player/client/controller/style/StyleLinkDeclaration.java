@@ -5,6 +5,9 @@ import java.util.Vector;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.util.PathUtil;
+import eu.ydp.gwtutil.client.util.QueueSet;
+
 public class StyleLinkDeclaration {
 
 	public StyleLinkDeclaration(NodeList styleNodes, String pbaseUrl){
@@ -34,13 +37,13 @@ public class StyleLinkDeclaration {
 	private Vector<StyleLink> styles;
 	private String baseUrl;
 	
-	public Vector<String> getStyleLinksForUserAgent(String userAgent){
+	public QueueSet<String> getStyleLinksForUserAgent(String userAgent){
 		
-		Vector<String> links = new Vector<String>();
+		QueueSet<String> links = new QueueSet<String>();
 		
 		for (int s = 0 ; s < styles.size() ; s ++){
 			if (userAgent.matches(styles.get(s).userAgent)){
-				links.add( createAbsolutePath(styles.get(s).href) );
+				links.append( PathUtil.normalizePath( createAbsolutePath(styles.get(s).href) ) );
 			}
 		}
 		

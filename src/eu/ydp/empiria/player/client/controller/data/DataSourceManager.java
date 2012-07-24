@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.data;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import com.google.gwt.core.client.GWT;
@@ -28,12 +29,12 @@ import eu.ydp.empiria.player.client.controller.data.library.LibraryLoader;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoaderListener;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
+import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.file.TextDocument;
-import eu.ydp.empiria.player.client.util.file.TextDocumentLoadCallback;
+import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
-import eu.ydp.empiria.player.client.util.file.xml.XmlDocumentLoadCallback;
+import eu.ydp.gwtutil.client.util.QueueSet;
 
 public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier, LibraryLoaderListener {
 
@@ -42,6 +43,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		assessmentDataManager = new AssessmentDataSourceManager(this);
 		itemDataCollectionManager = new ItemDataSourceCollectionManager(this);
 		libraryLoader = new LibraryLoader(this);
+		styleDataSourceLoader = new StyleDataSourceLoader();
 	}
 
 	private StyleDataSourceManager styleDataSourceManager;
@@ -53,6 +55,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	private DataSourceManagerMode mode;
 	private DataLoaderEventListener listener;
 	private XmlData assesmentXML;
+	private StyleDataSourceLoader styleDataSourceLoader;
 
 	public InitialData getInitialData(){
 		InitialData initialData = new InitialData(itemDataCollectionManager.getItemsCount());
@@ -111,7 +114,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 			resolvedURL = GWT.getHostPageBaseURL() + url;
 		}
 
-		new eu.ydp.empiria.player.client.util.file.xml.XmlDocument(resolvedURL, new XmlDocumentLoadCallback(){
+		new eu.ydp.empiria.player.client.util.file.xml.XmlDocument(resolvedURL, new DocumentLoadCallback<Document>(){
 
 			public void finishedLoading(Document document, String baseURL) {
 				assesmentXML = new XmlData(document, baseURL);
@@ -119,7 +122,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 			}
 
 			@Override
-			public void loadingErrorHandler(String error) {
+			public void loadingError(String error) {
 				assessmentDataManager.setAssessmentLoadingError(error);
 				onLoadFinished();
 			}
@@ -129,7 +132,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	public void loadExtensionsLibrary(){
 		String libraryUrl = assessmentDataManager.getLibraryLink();
 
-		new XmlDocument(libraryUrl, new XmlDocumentLoadCallback() {
+		new XmlDocument(libraryUrl, new DocumentLoadCallback<Document>() {
 
 			@Override
 			public void finishedLoading(Document document, String baseURL) {
@@ -137,7 +140,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 			}
 
 			@Override
-			public void loadingErrorHandler(String error) {
+			public void loadingError(String error) {
 				onExtensionsLoadFinished();
 			}
 		});
@@ -164,14 +167,14 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		for (int i = 0 ; i < urls.length ; i ++){
 			final int ii = i;
 
-			new XmlDocument(urls[ii], new XmlDocumentLoadCallback(){
+			new XmlDocument(urls[ii], new DocumentLoadCallback<Document>(){
 
 				public void finishedLoading(Document document, String baseURL) {
 					itemDataCollectionManager.setItemData(ii, new XmlData(document, baseURL));
 				}
 
 				@Override
-				public void loadingErrorHandler(String error) {
+				public void loadingError(String error) {
 					itemDataCollectionManager.setItemData(ii, error);
 				}
 			});
@@ -214,13 +217,13 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		return pd;
 	}
 
-	public Vector<String> getAssessmentStyleLinksForUserAgent(String userAgent){
+	public QueueSet<String> getAssessmentStyleLinksForUserAgent(String userAgent){
 		return assessmentDataManager.getStyleLinksForUserAgent(userAgent);
 	}
 
-	public Vector<String> getPageStyleLinksForUserAgent(PageReference ref, String userAgent){
+	public QueueSet<String> getPageStyleLinksForUserAgent(PageReference ref, String userAgent){
 		if (ref.pageIndices.length == 0)
-			return new Vector<String>();
+			return new QueueSet<String>();
 
 		return itemDataCollectionManager.getStyleLinksForUserAgent(ref.pageIndices[0], userAgent);
 	}
@@ -250,50 +253,49 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		mode = DataSourceManagerMode.LOADING_STYLES;
 		String userAgent = Navigator.getUserAgent();
 		// load assesment styles
-		List<String> aStyles = assessmentDataManager.getStyleLinksForUserAgent(userAgent);
+		Set<String> aStyles = assessmentDataManager.getStyleLinksForUserAgent(userAgent);
 		for (String styleURL : aStyles) {
-			final String styleURL2 = styleURL;
 			
 			styleLoadCounter++;
 			
-			new TextDocument(styleURL2, new TextDocumentLoadCallback() {
-				
+			styleDataSourceLoader.load(styleURL, new DocumentLoadCallback<StyleDocument>() {
+
+				@Override
+				public void finishedLoading(StyleDocument value, String baseUrl) {
+					styleLoadCounter--;
+					getStyleDataSourceManager().addAssessmentStyle( value );
+					checkLoadFinished();
+				}
+
 				@Override
 				public void loadingError(String message) {
 					styleLoadCounter--;
 					checkLoadFinished();
 				}
-				
-				@Override
-				public void finishedLoading(String text, String baseUrl) {
-					getStyleDataSourceManager().addAssessmentStyle( text , styleURL2 );
-					styleLoadCounter--;
-					checkLoadFinished();
-				}
 			});
+			
 		}
 		// load item styles
 		int itemCount = itemDataCollectionManager.getItemsCount();
 		for (int i=itemCount-1;i>=0;i--) {
-			List<String> iStyles = itemDataCollectionManager.getStyleLinksForUserAgent(i, userAgent);
+			QueueSet<String> iStyles = itemDataCollectionManager.getStyleLinksForUserAgent(i, userAgent);
 			for (String styleURL : iStyles) {
 				final int ii = i;
-				final String styleURL2 = styleURL;
 
 				styleLoadCounter++;
+				
+				styleDataSourceLoader.load(styleURL, new DocumentLoadCallback<StyleDocument>() {
 
-				new TextDocument(styleURL2, new TextDocumentLoadCallback() {
-					
+					@Override
+					public void finishedLoading(StyleDocument value, String baseUrl) {
+						styleLoadCounter--;
+						getStyleDataSourceManager().addItemStyle( ii, value );
+						checkLoadFinished();
+					}
+
 					@Override
 					public void loadingError(String message) {
 						styleLoadCounter--;
-						checkLoadFinished();
-					}
-					
-					@Override
-					public void finishedLoading(String text, String baseUrl) {
-						styleLoadCounter--;
-						getStyleDataSourceManager().addItemStyle(ii, text , styleURL2);
 						checkLoadFinished();
 					}
 				});

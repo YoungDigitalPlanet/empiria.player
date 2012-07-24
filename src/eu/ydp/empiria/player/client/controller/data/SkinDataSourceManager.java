@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import java.util.Set;
 import java.util.Vector;
 
 import com.google.gwt.xml.client.Document;
@@ -9,7 +10,8 @@ import eu.ydp.empiria.player.client.controller.data.events.SkinDataLoaderListene
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
-import eu.ydp.empiria.player.client.util.file.xml.XmlDocumentLoadCallback;
+import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
+import eu.ydp.gwtutil.client.util.QueueSet;
 
 public class SkinDataSourceManager {
 	
@@ -24,10 +26,10 @@ public class SkinDataSourceManager {
 	}
 	
 	public void load(String url){
-		new XmlDocument(url, new XmlDocumentLoadCallback() {
+		new XmlDocument(url, new DocumentLoadCallback<Document>() {
 			
 			@Override
-			public void loadingErrorHandler(String error) {
+			public void loadingError(String error) {
 				loadListener.onSkinLoadError();
 			}
 			
@@ -46,10 +48,10 @@ public class SkinDataSourceManager {
 		return skinData;
 	}
 	
-	public Vector<String> getStyleLinksForUserAgent(String userAgent){
+	public QueueSet<String> getStyleLinksForUserAgent(String userAgent){
 		if(styleDeclaration != null)
 			return styleDeclaration.getStyleLinksForUserAgent(userAgent);
-		return new Vector<String>();
+		return new QueueSet<String>();
 	}
 	
 	private void prepareSkin(XmlData data){

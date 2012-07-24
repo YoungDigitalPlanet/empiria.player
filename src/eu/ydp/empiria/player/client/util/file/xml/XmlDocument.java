@@ -27,13 +27,13 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 
+import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.TextDocument;
-import eu.ydp.empiria.player.client.util.file.TextDocumentLoadCallback;
 
 
 public class XmlDocument {
 
-	private XmlDocumentLoadCallback callback;
+	private DocumentLoadCallback<Document> callback;
 	private String url;
 
 	/**
@@ -42,16 +42,16 @@ public class XmlDocument {
 	 * @param u Document URL
 	 * @param c Callback with on success and on error handlers
 	 */
-	public XmlDocument(String u, XmlDocumentLoadCallback c){
+	public XmlDocument(String u, DocumentLoadCallback<Document> c){
 		
 		this.callback = c;
 		this.url = u;
 
-		new TextDocument(url, new TextDocumentLoadCallback() {
+		new TextDocument(url, new DocumentLoadCallback<String>() {
 			
 			@Override
 			public void loadingError(String message) {
-				callback.loadingErrorHandler(message);
+				callback.loadingError(message);
 			}
 			
 			@Override
@@ -61,7 +61,7 @@ public class XmlDocument {
 					callback.finishedLoading(dom, baseUrl);
 				} catch (DOMParseException e) {
 					e.printStackTrace();
-					callback.loadingErrorHandler("Could not parse file: " + url);
+					callback.loadingError("Could not parse file: " + url);
 				}
 			}
 		});

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import com.google.gwt.xml.client.Document;
@@ -18,6 +19,7 @@ import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
+import eu.ydp.gwtutil.client.util.QueueSet;
 
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
@@ -181,11 +183,11 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		return itemsCount;
 	}
 
-	public Vector<String> getStyleLinksForUserAgent(String userAgent) {
-		Vector<String> declarations = new Vector<String>();
+	public QueueSet<String> getStyleLinksForUserAgent(String userAgent) {
+		QueueSet<String> declarations = new QueueSet<String>();
 
 		if (styleDeclaration != null)
-			declarations.addAll(styleDeclaration.getStyleLinksForUserAgent(userAgent));
+			declarations.appendAll(styleDeclaration.getStyleLinksForUserAgent(userAgent));
 
 		declarations.addAll(skinData.getStyleLinksForUserAgent(userAgent));
 

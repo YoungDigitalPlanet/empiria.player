@@ -1,11 +1,12 @@
 package eu.ydp.empiria.player.client.controller.style;
 
+
 public class StyleLink {
 
-	public StyleLink(String phref, String puserAgent){
+	public StyleLink(String href, String userAgent){
 
-		href = phref;
-		userAgent = puserAgent;
+		this.href = href;
+		this.userAgent = userAgent;
 		
 	}
 	
