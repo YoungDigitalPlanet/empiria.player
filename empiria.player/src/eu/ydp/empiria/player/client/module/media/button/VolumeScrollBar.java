@@ -28,20 +28,20 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	}
 
 	@UiField(provided = true)
-	SimpleMediaButton button = new SimpleMediaButton("qp-media-volume-scrollbar-button", false);
+	protected SimpleMediaButton button = new SimpleMediaButton(styleNames.QP_MEDIA_VOLUME_SCROLLBAR_BUTTON(), false);
 	@UiField
-	FlowPanel progressBar;
+	protected FlowPanel progressBar;
 
 	@UiField
-	FlowPanel mainProgressDiv;
+	protected FlowPanel mainProgressDiv;
 
 	@UiField
-	FlowPanel beforeButton;
+	protected FlowPanel beforeButton;
 
 	@UiField
-	FlowPanel afterButton;
+	protected FlowPanel afterButton;
 
-	HandlerRegistration durationchangeHandlerRegistration;
+	protected HandlerRegistration durationchangeHandlerRegistration; //NOPMD
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	public VolumeScrollBar() {
@@ -112,8 +112,8 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 		JsArray<Touch> touches = event.getChangedTouches();
 		int positionY = 0;
 		if (touches != null && touches.length() == 1) {
-			Touch t = touches.get(0);
-			positionY = t.getRelativeY(mainProgressDiv.getElement());
+			Touch touch = touches.get(0);
+			positionY = touch.getRelativeY(mainProgressDiv.getElement());
 		} else {
 			Element target = mainProgressDiv.getElement();
 			positionY = event.getClientY() - target.getAbsoluteTop() + target.getScrollTop() + target.getOwnerDocument().getScrollTop();
@@ -126,7 +126,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	}
 
 	@Override
-	protected void setPosition(NativeEvent event) {
+	protected void setPosition(NativeEvent event) {// NOPMD
 		if (isPressed() && ((Element) event.getEventTarget().cast()).getClassName().contains("qp-media-volume-scrollbar-center")) {
 			int positionY = getPositionY(event);
 			positionY = positionY > 0 ? positionY : 0;
@@ -142,7 +142,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	 *
 	 * @param positionY
 	 */
-	protected void moveScroll(int positionY) {
+	protected void moveScroll(int positionY) {// NOPMD
 		int scrollSize = getScrollLength();
 		positionY = positionY > scrollSize ? scrollSize : positionY;
 		button.getElement().getStyle().setTop(positionY, Unit.PX);

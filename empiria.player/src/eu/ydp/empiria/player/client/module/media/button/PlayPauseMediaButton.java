@@ -17,15 +17,15 @@ public class PlayPauseMediaButton extends AbstractMediaButton<PlayPauseMediaButt
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	public PlayPauseMediaButton() {
-		super("qp-media-play-pause");
+		super(styleNames.QP_MEDIA_PLAY_PAUSE());
 	}
 
 	@Override
 	protected void onClick() {
-		if (!isActive()) {
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, getMediaWrapper()), getMediaWrapper());
-		} else {
+		if (isActive()) {
 			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, getMediaWrapper()), getMediaWrapper());
+		} else {
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, getMediaWrapper()), getMediaWrapper());
 		}
 	}
 
