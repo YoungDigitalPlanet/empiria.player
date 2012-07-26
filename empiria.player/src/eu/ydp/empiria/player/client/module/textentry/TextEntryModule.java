@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
-import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
@@ -56,7 +55,6 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	private GapWidthMode widthMode;
 	private DefaultBindingGroupIdentifier widthBindingIdentifier;
 	private Integer fontSize;
-	private Integer gapWidth;
 	private BindingContext widthBindingContext;
 
 	@Override
@@ -107,10 +105,9 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 			textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
 		}
 		if (styles.containsKey("-empiria-textentry-gap-width")){
-			gapWidth = IntegerUtils.tryParseInt(styles.get("-empiria-textentry-gap-width"), null);
+			Integer gapWidth = IntegerUtils.tryParseInt(styles.get("-empiria-textentry-gap-width"), null);
 			textBox.setWidth(gapWidth + "px");
-		}
-		if (styles.containsKey("-empiria-textentry-gap-width-align")){
+		} else if (styles.containsKey("-empiria-textentry-gap-width-align")){
 			try {
 				GapWidthMode wm = GapWidthMode.valueOf(styles.get("-empiria-textentry-gap-width-align").trim().toUpperCase());
 				widthMode = wm;

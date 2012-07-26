@@ -7,14 +7,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.js.JSOModel;
 import eu.ydp.gwtutil.client.util.QueueSet;
 
 /**
@@ -61,12 +58,13 @@ public class StyleDataSourceManager implements StyleSocket {
 		styles.append( styleDocument );
 	}
 
-	public JSOModel getStyleProperties(Element element) {
+	public Map<String, String> getStyleProperties(Element element) {
 		List<String> selectors = getElementSelectors(element);
-		JSOModel result = JavaScriptObject.createObject().cast();
+		Map<String, String> result = new HashMap<String, String>();
 		
 		for (StyleDocument sheet : currentStyles){
-			result = sheet.getDeclarationsForSelectors(selectors, result);
+			Map<String, String> currResult = sheet.getDeclarationsForSelectors(selectors);
+			result.putAll(currResult);
 		}
 		
 		return result;
@@ -108,14 +106,8 @@ public class StyleDataSourceManager implements StyleSocket {
  	
 	@Override
 	public Map<String, String> getStyles(Element element) {
-		Map<String, String> map = new HashMap<String, String>();
-		JSOModel result = getStyleProperties(element);
-		JsArrayString keys = result.keys();
-		for (int i = 0; i < keys.length(); i++) {
-			String key = keys.get(i);
-			map.put(key, result.get(key));
-		}
-		return map;
+		Map<String, String> stylesMap = getStyleProperties(element);
+		return stylesMap;
 	}
 	
 	@Override

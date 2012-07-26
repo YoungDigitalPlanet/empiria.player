@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller.data;
 
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.URL;
