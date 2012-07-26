@@ -39,8 +39,9 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 
 	private MathModuleHelper helper;
 	
-	public MathModule(){
-		super();
+	@Override
+	public void installViews(List<HasWidgets> placeholders) {
+		
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
 			
 			@Override
@@ -50,10 +51,6 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 				}
 			}
 		});
-	}
-
-	@Override
-	public void installViews(List<HasWidgets> placeholders) {
 		
 		outerPanel = new AbsolutePanel();
 		outerPanel.setStyleName("qp-mathinteraction");
