@@ -1,50 +1,65 @@
 package eu.ydp.empiria.player.client.module.button;
 
+import com.google.gwt.xml.client.Element;
+
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
-import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class CheckButtonModule extends ActivityButtonModule  {
+public class CheckButtonModule extends ActivityButtonModule implements PlayerEventHandler {
+
+	@Override
+	public void initModule(Element element) {
+		super.initModule(element);
+		//eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
+	}
 
 	protected boolean isSelected = false;
-	
-	public CheckButtonModule(){
-		super();
-	}
-	
+
 	@Override
 	public void onDeliveryEvent(DeliveryEvent flowEvent) {
-		if (flowEvent.getType().equals(DeliveryEventType.CHECK)  &&  
-				(!flowEvent.getParams().containsKey("groupIdentifier")  ||  
-				 flowEvent.getParams().get("groupIdentifier") == null  ||  
-				 currentGroupIsConcerned( (GroupIdentifier)flowEvent.getParams().get("groupIdentifier") ))
-			){
-			isSelected = true;
-			updateStyleName();
-		} else if ((flowEvent.getType().equals(DeliveryEventType.CONTINUE) || 
-				flowEvent.getType().equals(DeliveryEventType.SHOW_ANSWERS) || 
-				flowEvent.getType().equals(DeliveryEventType.RESET))
-				&&  
-				(!flowEvent.getParams().containsKey("groupIdentifier")  || 
-				 flowEvent.getParams().get("groupIdentifier") == null  ||  
-				 currentGroupIsConcerned( (GroupIdentifier)flowEvent.getParams().get("groupIdentifier") ))  
-				){
-			isSelected = false;
-			updateStyleName();
+		Object groupIdentifier = flowEvent.getParams().get("groupIdentifier");
+		switch (flowEvent.getType()) {
+		case CHECK:
+			if (groupIdentifier == null || currentGroupIsConcerned((GroupIdentifier) groupIdentifier)) {
+				isSelected = true;
+			}
+			break;
+		case CONTINUE:
+		case SHOW_ANSWERS:
+		case RESET:
+			if (groupIdentifier == null || currentGroupIsConcerned((GroupIdentifier) groupIdentifier)) {
+				isSelected = false;
+			}
+			break;
+		default:
+			break;
+		}
+		updateStyleName();
+	}
+
+	@Override
+	public void onPlayerEvent(PlayerEvent event) {
+		if (event.getType() == PlayerEventTypes.PAGE_CHANGE) {
+			flowRequestInvoker.invokeRequest(new FlowRequest.Continue(getCurrentGroupIdentifier()));
 		}
 	}
-	
-	protected void invokeRequest(){
-		if (isSelected)
-			flowRequestInvoker.invokeRequest(new FlowRequest.Continue(getCurrentGroupIdentifier()));
-		else
-			flowRequestInvoker.invokeRequest(new FlowRequest.Check(getCurrentGroupIdentifier()));	
-	}
-	
+
 	@Override
-	protected String getStyleName(){
-		return "qp-" + (isSelected?"continue":"markall") + "-button";
+	protected void invokeRequest() {
+		if (isSelected) {
+			flowRequestInvoker.invokeRequest(new FlowRequest.Continue(getCurrentGroupIdentifier()));
+		} else {
+			flowRequestInvoker.invokeRequest(new FlowRequest.Check(getCurrentGroupIdentifier()));
+		}
+	}
+
+	@Override
+	protected String getStyleName() {
+		return "qp-" + (isSelected ? "continue" : "markall") + "-button";
 	}
 
 }
