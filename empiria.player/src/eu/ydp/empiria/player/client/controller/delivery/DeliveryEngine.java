@@ -444,8 +444,9 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 			updatePageStyle();
 		}
-		if (event.getType() == FlowProcessingEventType.CHECK) {
-			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CHECK_ANSWERS));
+		if (event.getType() == FlowProcessingEventType.PAGE_CHANGING || event.getType() == FlowProcessingEventType.CHECK || 
+				event.getType() == FlowProcessingEventType.SHOW_ANSWERS) {
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.BEFORE_FLOW));
 		}
 		getFlowExecutionEventsListener().onFlowProcessingEvent(event);
 	}
