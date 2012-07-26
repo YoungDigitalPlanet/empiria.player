@@ -10,7 +10,6 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
-import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionTestBase;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
