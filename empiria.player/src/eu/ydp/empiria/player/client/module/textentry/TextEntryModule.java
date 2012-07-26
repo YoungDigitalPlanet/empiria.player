@@ -59,8 +59,9 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	private Integer gapWidth;
 	private BindingContext widthBindingContext;
 
-	public TextEntryModule(){
-		super();
+	@Override
+	public void installViews(List<HasWidgets> placeholders) {
+		
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
 			
 			@Override
@@ -72,9 +73,6 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 				}
 			}
 		});
-	}
-	@Override
-	public void installViews(List<HasWidgets> placeholders) {
 
 		textBox = new TextBox();
 		if (getModuleElement().hasAttribute("expectedLength"))
