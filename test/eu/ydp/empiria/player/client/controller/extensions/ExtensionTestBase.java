@@ -57,7 +57,7 @@ public abstract class ExtensionTestBase extends GWTTestCase {
 		Document itemDoc = XMLParser.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 		XmlData itemData = new XmlData(itemDoc, "");
 		Document itemDoc2 = XMLParser.parse("<assessmentItem identifier=\"inlineChoice2\" title=\"Interactive text 2\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
-		XmlData itemData2 = new XmlData(itemDoc, "");
+		XmlData itemData2 = new XmlData(itemDoc2, "");
 		
 		XmlData[] itemDatas = new XmlData[2];
 		itemDatas[0] = itemData;
