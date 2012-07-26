@@ -1,19 +1,17 @@
 package eu.ydp.empiria.player.client.style;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArrayString;
-
-import eu.ydp.empiria.player.client.util.js.JSOModel;
 
 public class StyleDocument {
 
-	protected JavaScriptObject styleSheet;
+	protected StyleSheet styleSheet;
 	protected String basePath;
 
 	public StyleDocument(JavaScriptObject styleSheet, String basePath) {
-		this.styleSheet = styleSheet;
+		this.styleSheet = new StyleSheet(styleSheet);
 		int index1 = basePath.lastIndexOf('\\');
 		int index2 = basePath.lastIndexOf('/');
 		if (index1 > index2) {
@@ -25,12 +23,9 @@ public class StyleDocument {
 		}
 	}
 
-	public JSOModel getDeclarationsForSelectors(List<String> selectors, JSOModel model) {
-		JsCssModel jsSheet = styleSheet.cast();
-		JSOModel result = jsSheet.getDeclarationsForSelectors(selectors, model);
-		JsArrayString keys = result.keys();
-		for (int i = 0; i < keys.length(); i++) {
-			String key = keys.get(i);
+	public Map<String, String> getDeclarationsForSelectors(List<String> selectors) {
+		Map<String, String> result = styleSheet.getDeclarationsForSelectors(selectors);
+		for (String key : result.keySet()) {
 			String value = result.get(key);
 			if (value.trim().toLowerCase().startsWith("url(")) {
 				String value2 = value.trim().toLowerCase();
@@ -40,7 +35,7 @@ public class StyleDocument {
 					path = path.substring(1, path.length() - 1);
 				}
 				path = basePath + path;
-				result.set(key, path);
+				result.put(key, path);
 			}
 		}
 		return result;
