@@ -11,18 +11,24 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.module.binding.BindingGroupIdentifier;
 import eu.ydp.empiria.player.client.module.binding.DefaultBindingGroupIdentifier;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
 public class MathModule extends OneViewInteractionModuleBase implements Factory<MathModule> {
 
 	protected AbsolutePanel outerPanel;
 	protected FlowPanel mainPanel;
 	protected AbsolutePanel listBoxesLayer;
+	private EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	protected List<MathGap> gaps;
 	protected BindingGroupIdentifier widthBindingIdentifier;
@@ -32,6 +38,19 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	protected boolean locked = false;
 
 	private MathModuleHelper helper;
+	
+	public MathModule(){
+		super();
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
+			
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
+					updateResponse(false);
+				}
+			}
+		});
+	}
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
@@ -202,12 +221,13 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	private void updateResponse(boolean userInteract){
 		if (showingAnswer)
 			return;
-
-		getResponse().values.clear();
-		for (int i = 0 ; i < gaps.size() ; i ++){
-			getResponse().values.add( gaps.get(i).getValue() );
+		if (getResponse() != null){
+			getResponse().values.clear();
+			for (int i = 0 ; i < gaps.size() ; i ++){
+				getResponse().values.add( gaps.get(i).getValue() );
+			}
+			fireStateChanged(userInteract);
 		}
-		fireStateChanged(userInteract);
 	}
 
 	@Override

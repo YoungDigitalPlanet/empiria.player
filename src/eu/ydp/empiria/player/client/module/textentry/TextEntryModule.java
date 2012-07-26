@@ -46,7 +46,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
-public class TextEntryModule extends OneViewInteractionModuleBase implements Factory<TextEntryModule>,PlayerEventHandler, Bindable{
+public class TextEntryModule extends OneViewInteractionModuleBase implements Factory<TextEntryModule>, Bindable{
 
 	private TextBox textBox;
 	private String	lastValue = null;
@@ -60,7 +60,18 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	private BindingContext widthBindingContext;
 
 	public TextEntryModule(){
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CHECK_ANSWERS), this);
+		super();
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
+			
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
+					if(textBox!=null){
+						updateResponse(false);
+					}
+				}
+			}
+		});
 	}
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
@@ -275,12 +286,14 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		if (showingAnswers)
 			return;
 
-		if(lastValue != null)
-			getResponse().remove(lastValue);
-
-		lastValue = textBox.getText();
-		getResponse().add(lastValue);
-		getInteractionEventsListener().onStateChanged(new StateChangedInteractionEvent(userInteract, this));
+		if (getResponse() != null){
+			if(lastValue != null)
+				getResponse().remove(lastValue);
+	
+			lastValue = textBox.getText();
+			getResponse().add(lastValue);
+			fireStateChanged(userInteract);
+		}
 
 	}
 
@@ -292,15 +305,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	public TextEntryModule getNewInstance() {
 		return new TextEntryModule();
 	}
-	@Override
-	public void onPlayerEvent(PlayerEvent event) {
-		if(event.getType()==PlayerEventTypes.CHECK_ANSWERS){
-			if(textBox!=null){
-				updateResponse(false);
-			}
-		}
-
-	}
+	
 	@Override
 	public BindingValue getBindingValue(BindingType bindingType) {
 		if (bindingType == BindingType.GAP_WIDTHS){
