@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.delivery;
 
 import java.util.List;
-import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
@@ -197,6 +196,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	@Override
 	public void onAssessmentLoaded() {
+		updateAssessmentStyle();
 	}
 
 	@Override
@@ -223,7 +223,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTING));
-		updateAssessmentStyle();
 		initFlow();
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		updatePageStyle();
