@@ -32,7 +32,6 @@ public class ReportModule extends ContainerModuleBase {
 	protected DataSourceDataSupplier dataSourceDataSupplier;
 	protected FlowRequestInvoker flowRequestInvoker;
 	protected String content;
-	private String userClass;
 
 	protected Panel mainPanel;
 	protected FlexTable table;

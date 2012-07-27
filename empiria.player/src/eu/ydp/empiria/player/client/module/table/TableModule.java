@@ -15,12 +15,17 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.binding.BindingManager;
+import eu.ydp.empiria.player.client.module.binding.BindingProxy;
+import eu.ydp.empiria.player.client.module.binding.BindingType;
+import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
 import eu.ydp.empiria.player.client.module.containers.ActivityContainerModuleBase;
 import eu.ydp.empiria.player.client.util.IntegerUtils;
 
-public class TableModule extends ActivityContainerModuleBase implements Factory<TableModule> {
+public class TableModule extends ActivityContainerModuleBase implements Factory<TableModule>, BindingProxy {
 
 	protected Panel tablePanel;
+	private GapWidthBindingManager gapWidthBindingManager;
 
 	public TableModule(){
 		tablePanel = new FlowPanel();
@@ -86,5 +91,14 @@ public class TableModule extends ActivityContainerModuleBase implements Factory<
 	@Override
 	public TableModule getNewInstance() {
 		return new TableModule();
+	}
+	@Override
+	public BindingManager getBindingManager(BindingType bindingType) {
+		if (bindingType == BindingType.GAP_WIDTHS){
+			if (gapWidthBindingManager == null)
+				gapWidthBindingManager = new GapWidthBindingManager(true);
+			return gapWidthBindingManager;
+		}
+		return null;
 	}
 }
