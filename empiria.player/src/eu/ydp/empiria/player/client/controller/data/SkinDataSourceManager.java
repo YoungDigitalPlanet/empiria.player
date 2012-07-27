@@ -19,10 +19,13 @@ public class SkinDataSourceManager {
 	
 	private StyleLinkDeclaration styleDeclaration;
 	
+	private MetaDescriptionManager metaDescriptionManager;
+	
 	private XmlData skinData;
 	
 	public SkinDataSourceManager(SkinDataLoaderListener listener){
 		loadListener = listener;
+		metaDescriptionManager = new MetaDescriptionManager();
 	}
 	
 	public void load(String url){
@@ -59,6 +62,7 @@ public class SkinDataSourceManager {
 		
 		skinData = data;
 		styleDeclaration = new StyleLinkDeclaration(document.getElementsByTagName("styleDeclaration"), data.getBaseURL());
+		metaDescriptionManager.processDocument(document);
 		
 		loadListener.onSkinLoad();
 	}
