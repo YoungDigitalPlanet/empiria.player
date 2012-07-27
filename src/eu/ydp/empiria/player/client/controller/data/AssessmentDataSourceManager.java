@@ -26,7 +26,6 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		itemsCount = -1;
 		errorMessage = "";
 		skinData = new SkinDataSourceManager(this);
-		metaDescriptionManager = new MetaDescriptionManager();
 	}
 
 	private XmlData data;
@@ -37,7 +36,6 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	private String errorMessage;
 	private LibraryLink libraryLink;
 	private SkinDataSourceManager skinData;
-	private MetaDescriptionManager metaDescriptionManager;
 	private boolean isDefaultData;
 	private List<Element> items = null;
 
@@ -45,7 +43,6 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		if (!isItemDocument(d.getDocument())) {
 			isDefaultData = false;
 			initializeData(d);
-			metaDescriptionManager.processDocument(d.getDocument().getDocumentElement());
 		} else {
 			isDefaultData = true;
 			initializeDefaultData();
