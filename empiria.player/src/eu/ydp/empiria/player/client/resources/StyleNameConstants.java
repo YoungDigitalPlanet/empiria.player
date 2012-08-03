@@ -5,6 +5,9 @@ import com.google.gwt.i18n.client.Constants;
 @SuppressWarnings("PMD")
 public interface StyleNameConstants extends Constants {
 
+	@DefaultStringValue("qp-assessment-view")
+	public String QP_ASSESSMENT_VIEW();
+
 	@DefaultStringValue("qp-body")
 	public String QP_BODY();
 
@@ -155,20 +158,35 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-media-center-progress-button")
 	public String QP_MEDIA_CENTER_PROGRESS_BUTTON();
 
+	@DefaultStringValue("qp-media-currenttime")
+	public String QP_MEDIA_CURRENTTIME();
+
 	@DefaultStringValue("qp-media-description")
 	public String QP_MEDIA_DESCRIPTION();
 
 	@DefaultStringValue("qp-media-fullscreen-button")
 	public String QP_MEDIA_FULLSCREEN_BUTTON();
 
+	@DefaultStringValue("qp-media-mute")
+	public String QP_MEDIA_MUTE();
+
 	@DefaultStringValue("qp-media-play-pause")
 	public String QP_MEDIA_PLAY_PAUSE();
+
+	@DefaultStringValue("qp-media-positioninstream")
+	public String QP_MEDIA_POSITIONINSTREAM();
 
 	@DefaultStringValue("qp-media-title")
 	public String QP_MEDIA_TITLE();
 
+	@DefaultStringValue("qp-media-totaltime")
+	public String QP_MEDIA_TOTALTIME();
+
 	@DefaultStringValue("qp-media-volume-scrollbar-button")
 	public String QP_MEDIA_VOLUME_SCROLLBAR_BUTTON();
+
+	@DefaultStringValue("qp-page")
+	public String QP_PAGE();
 
 	@DefaultStringValue("qp-page-content")
 	public String QP_PAGE_CONTENT();
@@ -178,6 +196,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-page-error-text")
 	public String QP_PAGE_ERROR_TEXT();
+
+	@DefaultStringValue("qp-page-in-page")
+	public String QP_PAGE_IN_PAGE();
 
 	@DefaultStringValue("qp-page-item")
 	public String QP_PAGE_ITEM();
@@ -199,6 +220,18 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-prompt")
 	public String QP_PROMPT();
+
+	@DefaultStringValue("qp-report")
+	public String QP_REPORT();
+
+	@DefaultStringValue("qp-report-cell")
+	public String QP_REPORT_CELL();
+
+	@DefaultStringValue("qp-report-table")
+	public String QP_REPORT_TABLE();
+
+	@DefaultStringValue("qp-report-table-row")
+	public String QP_REPORT_TABLE_ROW();
 
 	@DefaultStringValue("qp-resultpage-items")
 	public String QP_RESULTPAGE_ITEMS();
