@@ -27,7 +27,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
-public abstract class TextGapFocusOutTest extends ExtensionTestBase {
+public abstract class TextGapFocusOut extends ExtensionTestBase {
 
 	private boolean  passed = false;
 
