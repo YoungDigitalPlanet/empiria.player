@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.module.textgaps;
 
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 
-public class TextGapFocusOutShowAnswers extends TextGapFocusOutTest {
+public class TextGapFocusOutShowAnswers extends TextGapFocusOut {
 	public void testBeforeFlowNotificationOnShowAnswers(){
 		initDeliveryEngine();
 		flowRequestInvoker.invokeRequest(new FlowRequest.ShowAnswers());
