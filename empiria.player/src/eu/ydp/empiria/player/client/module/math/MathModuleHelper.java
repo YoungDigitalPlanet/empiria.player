@@ -26,7 +26,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 import eu.ydp.empiria.player.client.util.XMLUtils;
 import eu.ydp.empiria.player.client.util.geom.Size;
 
@@ -146,7 +146,7 @@ public class MathModuleHelper {
 		styles = moduleSocket.getStyles(moduleElement);
 		
 		if (styles.containsKey("-empiria-math-font-size")){
-			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-font-size"));
+			fontSize = NumberUtils.tryParseInt(styles.get("-empiria-math-font-size"));
 		}
 		
 		if (styles.containsKey("-empiria-math-font-family")){
@@ -166,41 +166,41 @@ public class MathModuleHelper {
 		}
 		
 		if (styles.containsKey("-empiria-math-gap-width")){
-			textEntryGapWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-width"));
+			textEntryGapWidth = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-width"));
 		}
 		
 		if (styles.containsKey("-empiria-math-gap-height")){
-			textEntryGapHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-height"));
+			textEntryGapHeight = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-height"));
 		}
 		
 		if (styles.containsKey("-empiria-math-gap-font-size")){
-			textEntryFontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-font-size"));
+			textEntryFontSize = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-font-size"));
 		}
 		
 		if (styles.containsKey("-empiria-math-gap-subsup-width")){
-			textEntrySubSupWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-width"));
+			textEntrySubSupWidth = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-width"));
 		} else {
 			textEntrySubSupWidth = (int) (textEntryGapWidth * 0.7);
 		}
 			
 		if (styles.containsKey("-empiria-math-gap-subsup-height")){
-			textEntrySubSupHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-height"));
+			textEntrySubSupHeight = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-height"));
 		} else {
 			textEntrySubSupHeight = (int) (textEntryGapHeight * 0.7);
 		}
 		
 		if (styles.containsKey("-empiria-math-gap-subsup-font-size")){
-			textEntrySubSupFontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-font-size"));
+			textEntrySubSupFontSize = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-font-size"));
 		} else {
 			textEntrySubSupFontSize = (int) (textEntryFontSize * 0.7);
 		}
 		
 		if (styles.containsKey("-empiria-math-drop-width")){			
-			inlineChoiceWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-drop-width"));
+			inlineChoiceWidth = NumberUtils.tryParseInt(styles.get("-empiria-math-drop-width"));
 		}
 		
 		if (styles.containsKey("-empiria-math-drop-height")){			
-			inlineChoiceHeight = IntegerUtils.tryParseInt(styles.get("-empiria-math-drop-height"));
+			inlineChoiceHeight = NumberUtils.tryParseInt(styles.get("-empiria-math-drop-height"));
 		}
 	}
 	
@@ -278,7 +278,7 @@ public class MathModuleHelper {
 
 	public void initMath(Panel panel) {
 		
-		Integer fontColorInt = IntegerUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
+		Integer fontColorInt = NumberUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
 		Font f = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
 		mpm.setFont(f);
 		

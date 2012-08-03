@@ -1,18 +1,18 @@
 /*
   The MIT License
-  
+
   Copyright (c) 2009 Krzysztof Langner
-  
+
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
   copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
-  
+
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -42,6 +42,7 @@ public class PlayerEntryPoint implements EntryPoint {
 	/**
 	 * This is the entry point method.
 	 */
+	@Override
 	public void onModuleLoad() {
 		// Define js API
 		initJavaScriptAPI();
@@ -60,7 +61,7 @@ public class PlayerEntryPoint implements EntryPoint {
 		  player.loadFromData = function(assessmentData, itemDatas){
 		    @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
 		  }
-		  		  
+
 		  // ³adowanie rozszerzeñ (pluginów i addonów)
 		  player.loadExtension = function(obj){
 		  	if (typeof obj == 'object')
@@ -74,13 +75,13 @@ public class PlayerEntryPoint implements EntryPoint {
 
 		// Call App loaded function
 		if(typeof $wnd.empiriaPlayerAppLoaded == 'function') {
-		  $wnd.empiriaPlayerAppLoaded();	
+		  $wnd.empiriaPlayerAppLoaded();
 		}
 	}-*/;
 
 	/**
 	 * createPlayer js interface
-	 * 
+	 *
 	 * @param node_id
 	 */
 	public static JavaScriptObject createPlayer(String node_id) {
@@ -90,38 +91,38 @@ public class PlayerEntryPoint implements EntryPoint {
 
 	/**
 	 * Load assessment from this url
-	 * 
+	 *
 	 * @param url
 	 */
 	public static void load(String url) {
 		player.load(url);
 	}
-	
+
 	/**
 	 * Load assessment from string data
-	 * 
+	 *
 	 * @param url
 	 */
 	public static void load(JavaScriptObject assessmentData, JavaScriptObject itemDatas) {
 		Document assessmentDoc = XMLParser.parse(decodeXmlDataDocument(assessmentData));
 		XmlData assessmentXmlData = new XmlData(assessmentDoc,  decodeXmlDataBaseURL(assessmentData));
-		
+
 		JsArray<JavaScriptObject> itemDatasArray = itemDatas.cast();
-		
-		XmlData itemXmlDatas[] = new XmlData[itemDatasArray.length()];	
+
+		XmlData itemXmlDatas[] = new XmlData[itemDatasArray.length()];
 		for (int i = 0 ; i < itemDatasArray.length() ; i ++){
 			Document itemDoc = XMLParser.parse(decodeXmlDataDocument(itemDatasArray.get(i)));
-			itemXmlDatas[i] = new XmlData(itemDoc,  decodeXmlDataBaseURL(itemDatasArray.get(i))); 
+			itemXmlDatas[i] = new XmlData(itemDoc,  decodeXmlDataBaseURL(itemDatasArray.get(i)));
 		}
 		player.load(assessmentXmlData, itemXmlDatas);
 	}
-	
+
 	private native static String decodeXmlDataDocument(JavaScriptObject data)/*-{
 		if (typeof data.document == 'string')
 			return data.document;
 		return "";
 	 }-*/;
-	
+
 	private native static String decodeXmlDataBaseURL(JavaScriptObject data)/*-{
 		if (typeof data.baseURL == 'string')
 			return data.baseURL;
@@ -134,5 +135,5 @@ public class PlayerEntryPoint implements EntryPoint {
 	public static void loadExtension(String extension){
 		player.loadExtension(extension);
 	}
-	
+
 }

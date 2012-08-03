@@ -37,7 +37,7 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 
 
 public class Response extends Variable {
@@ -81,7 +81,7 @@ public class Response extends Variable {
 				nodeValue = "";
 			int forIndex = correctAnswers.getResponseValuesCount();
 			if (valueElement.hasAttribute("forIndex")){
-				Integer forIndex2 = IntegerUtils.tryParseInt(valueElement.getAttribute("forIndex"), null);
+				Integer forIndex2 = NumberUtils.tryParseInt(valueElement.getAttribute("forIndex"), null);
 				if (forIndex2 != null){
 					forIndex = forIndex2;
 				}

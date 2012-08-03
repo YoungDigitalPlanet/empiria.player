@@ -26,7 +26,7 @@ import eu.ydp.empiria.player.client.module.binding.DefaultBindingGroupIdentifier
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingContext;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class TextEntryGap extends Composite implements MathGap, Bindable {
@@ -85,11 +85,11 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 		Map<String, String> styles = moduleSocket.getStyles(element);
 		
 		if (styles.containsKey("-empiria-math-gap-width")){
-			gapOwnWidth = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-width"), null);
+			gapOwnWidth = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-width"), null);
 		}
 		
 		if (styles.containsKey("-empiria-math-gap-font-size")){
-			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-gap-font-size"), null);
+			fontSize = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-font-size"), null);
 		}
 		
 		textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);

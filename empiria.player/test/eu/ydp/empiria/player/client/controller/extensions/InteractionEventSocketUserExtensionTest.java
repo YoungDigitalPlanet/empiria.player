@@ -4,14 +4,12 @@ import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsListener;
-import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.extensions.FlowRequestProcessorExtensionTest.MockFlowRequestProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
@@ -58,7 +56,6 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 
 			@Override
 			public void setCallforward(MediaInteractionSoundEventCallforward callforward) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -109,7 +106,6 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 
 		@Override
 		public void init() {
-			// TODO Auto-generated method stub
 
 		}
 

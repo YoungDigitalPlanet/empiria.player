@@ -1,18 +1,18 @@
 /*
   The MIT License
-  
+
   Copyright (c) 2009 Krzysztof Langner
-  
+
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
   copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
-  
+
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -56,34 +56,33 @@ import eu.ydp.empiria.player.client.view.assessment.AssessmentBodyView;
 public class Assessment {
 
 	/** Whole assessment title */
-	private String title;
+	private final String title;
 
 	/** XML DOM of the assessment */
-	private XmlData xmlData;
+	private final XmlData xmlData;
 
 	private Panel pageSlot;
 
 	public StyleLinkDeclaration styleDeclaration;
 
-	private StyleSocket styleSocket;
+	private final StyleSocket styleSocket;
 
-	private ModulesRegistrySocket modulesRegistrySocket;
+	private final ModulesRegistrySocket modulesRegistrySocket;
 
-	private DisplayContentOptions options;
-	
+	private final DisplayContentOptions options;
+
 	private AssessmentBody body;
-	
+
 	private AssessmentBodyView bodyView;
 
 	/**
 	 * C'tor
-	 * 
+	 *
 	 * @param data
 	 *            XMLData object as data source
 	 */
-	public Assessment(AssessmentData data, DisplayContentOptions options,
-			InteractionEventsListener interactionEventsListener,
-			StyleSocket styleSocket, ModulesRegistrySocket modulesRegistrySocket) {
+	public Assessment(AssessmentData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket styleSocket,
+			ModulesRegistrySocket modulesRegistrySocket) {
 
 		this.xmlData = data.getData();
 		this.styleSocket = styleSocket;
@@ -94,20 +93,17 @@ public class Assessment {
 		Element rootNode = (Element) document.getElementsByTagName("assessmentTest").item(0);
 		Element skinBody = getSkinBody(data.getSkinData());
 
-		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument()
-				.getElementsByTagName("styleDeclaration"), xmlData.getBaseURL());
+		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), xmlData.getBaseURL());
 		title = rootNode.getAttribute("title");
 
 		initializeBody(skinBody, interactionEventsListener);
 	}
 
-	private void initializeBody(Element bodyNode,
-			InteractionEventsListener interactionEventsListener) {
-		if(bodyNode != null){
-			body = new AssessmentBody(options, moduleSocket,
-					interactionEventsListener, modulesRegistrySocket);
+	private void initializeBody(Element bodyNode, InteractionEventsListener interactionEventsListener) {
+		if (bodyNode != null) {
+			body = new AssessmentBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket);
 			bodyView = new AssessmentBodyView(body);
-			bodyView.init( body.init(bodyNode) );
+			bodyView.init( body.init(bodyNode));
 			pageSlot = body.getPageSlot();
 		}
 	}
@@ -119,21 +115,21 @@ public class Assessment {
 	public Panel getPageSlot() {
 		return pageSlot;
 	}
-	
+
 	public void setUp() {
-		if (body != null)
+		if (body != null) {
 			body.setUp();
+		}
 	}
 
 	public void start() {
-		if (body != null)
+		if (body != null) {
 			body.start();
+		}
 	}
-	
-	public ParenthoodSocket getAssessmentParenthoodSocket(){
-		if (body != null)
-			return body.getParenthoodSocket();
-		return null;
+
+	public ParenthoodSocket getAssessmentParenthoodSocket() {
+		return (body == null) ? null : body.getParenthoodSocket(); //NOPMD
 	}
 
 	/**
@@ -142,24 +138,25 @@ public class Assessment {
 	public String getTitle() {
 		return (title == null) ? "" : title;
 	}
-	
-	protected Element getSkinBody(XmlData skinData){
+
+	protected Element getSkinBody(XmlData skinData) {
 		Element skinBody = null;
-		
-		try{
+
+		try {
 			Document skinDocument = skinData.getDocument();
 			skinBody = (Element) skinDocument.getElementsByTagName("itemBody").item(0);
-		}catch(Exception e){
-			
+		} catch (Exception e) {
+
 		}
-		
-		return skinBody;				
+
+		return skinBody;
 	}
 
-	private ModuleSocket moduleSocket = new ModuleSocket() {
+	private final ModuleSocket moduleSocket = new ModuleSocket() {
 
 		private InlineBodyGenerator inlineBodyGenerator;
 
+		@Override
 		public Response getResponse(String id) {
 			return null;
 		}
@@ -176,48 +173,52 @@ public class Assessment {
 
 		@Override
 		public Map<String, String> getStyles(Element element) {
-			return (styleSocket != null) ? styleSocket.getStyles(element)
-					: new HashMap<String, String>();
+			return (styleSocket != null) ? styleSocket.getStyles(element) : new HashMap<String, String>();
 		}
 
+		@Override
 		public void setCurrentPages(PageReference pr) {
 			if (styleSocket != null) {
 				styleSocket.setCurrentPages(pr);
 			}
 		}
 
+		@Override
 		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 			if (inlineBodyGenerator == null) {
-				inlineBodyGenerator = new InlineBodyGenerator(
-						modulesRegistrySocket, this, options);
+				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options);
 			}
 			return inlineBodyGenerator;
 		}
 
 		@Override
 		public IModule getParent(IModule module) {
-			if (body != null)
+			if (body != null) {
 				return body.getModuleParent(module);
+			}
 			return null;
 		}
 
 		@Override
 		public GroupIdentifier getParentGroupIdentifier(IModule module) {
 			IModule currParent = module;
-			while (true){
+			while (true) {
 				currParent = getParent(currParent);
-				if (currParent == null  ||  currParent instanceof IGroup)
+				if (currParent == null || currParent instanceof IGroup) {
 					break;
+				}
 			}
-			if (currParent != null)
-				return ((IGroup)currParent).getGroupIdentifier();
+			if (currParent != null) {
+				return ((IGroup) currParent).getGroupIdentifier();
+			}
 			return new DefaultGroupIdentifier("");
 		}
 
 		@Override
 		public List<IModule> getChildren(IModule parent) {
-			if (body != null)
+			if (body != null) {
 				return body.getModuleChildren(parent);
+			}
 			return null;
 		}
 
@@ -225,10 +226,11 @@ public class Assessment {
 		public Stack<IModule> getParentsHierarchy(IModule module) {
 			Stack<IModule> hierarchy = new Stack<IModule>();
 			IModule currParent = module;
-			while (true){
+			while (true) {
 				currParent = getParent(currParent);
-				if (currParent == null)
+				if (currParent == null) {
 					break;
+				}
 				hierarchy.push(currParent);
 			}
 			return hierarchy;

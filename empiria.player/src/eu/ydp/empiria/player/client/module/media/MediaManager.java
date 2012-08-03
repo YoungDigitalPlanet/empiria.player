@@ -19,6 +19,7 @@ public class MediaManager extends AbstractMediaEventHandler implements Extension
 
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
 	public MediaManager() {
 		eventsBus.addAsyncHandler(MediaEvent.getType(MediaEventTypes.MEDIA_ATTACHED), this);
 		eventsBus.addAsyncHandler(MediaEvent.getType(MediaEventTypes.PLAY), this);
@@ -26,15 +27,15 @@ public class MediaManager extends AbstractMediaEventHandler implements Extension
 
 	@Override
 	public void onMediaEvent(MediaEvent event) {
-		switch(event.getType()){
+		switch (event.getType()) {
 		case MEDIA_ATTACHED:
 			mediaSet.add(event.getMediaWrapper());
 			break;
 		case PLAY:
 			MediaEvent mEvent = new MediaEvent(MediaEventTypes.PAUSE);
-			for(MediaWrapper<?> media : mediaSet){
-				if(!media.equals(event.getMediaWrapper())){
-					eventsBus.fireEventFromSource(mEvent,media);
+			for (MediaWrapper<?> media : mediaSet) {
+				if (!media.equals(event.getMediaWrapper())) {
+					eventsBus.fireEventFromSource(mEvent, media);
 				}
 			}
 			break;
@@ -49,8 +50,7 @@ public class MediaManager extends AbstractMediaEventHandler implements Extension
 	}
 
 	@Override
-	public void init() {
-
+	public void init() {//NOPMD
 
 	}
 

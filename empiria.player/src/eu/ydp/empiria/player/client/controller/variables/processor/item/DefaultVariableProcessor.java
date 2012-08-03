@@ -30,8 +30,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			if (event.getType() == FlowActivityEventType.CHECK){
 				if (outcomes.containsKey("CHECKS")){
 					Integer value = 0;
-					if (outcomes.get("CHECKS").values.size() > 0)
-							value = Integer.parseInt(outcomes.get("CHECKS").values.get(0));
+					if (outcomes.get("CHECKS").values.size() > 0) {
+						value = Integer.parseInt(outcomes.get("CHECKS").values.get(0));
+					}
 					value++;
 					outcomes.get("CHECKS").values.clear();
 					outcomes.get("CHECKS").values.add(value.toString());
@@ -40,8 +41,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			if (event.getType() == FlowActivityEventType.SHOW_ANSWERS){
 				if (outcomes.containsKey("SHOW_ANSWERS")){
 					Integer value = 0;
-					if (outcomes.get("SHOW_ANSWERS").values.size() > 0)
-							value = Integer.parseInt(outcomes.get("SHOW_ANSWERS").values.get(0));
+					if (outcomes.get("SHOW_ANSWERS").values.size() > 0) {
+						value = Integer.parseInt(outcomes.get("SHOW_ANSWERS").values.get(0));
+					}
 					value++;
 					outcomes.get("SHOW_ANSWERS").values.clear();
 					outcomes.get("SHOW_ANSWERS").values.add(value.toString());
@@ -50,8 +52,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			if (event.getType() == FlowActivityEventType.RESET){
 				if (outcomes.containsKey("RESET")){
 					Integer value = 0;
-					if (outcomes.get("RESET").values.size() > 0)
-							value = Integer.parseInt(outcomes.get("RESET").values.get(0));
+					if (outcomes.get("RESET").values.size() > 0) {
+						value = Integer.parseInt(outcomes.get("RESET").values.get(0));
+					}
 					value++;
 					outcomes.get("RESET").values.clear();
 					outcomes.get("RESET").values.add(value.toString());
@@ -66,10 +69,11 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract) {
 
 		responsesAnswersEvaluation = new HashMap<String, List<Boolean>>();
-		
-		if (groupsCorrectAnswers == null)
+
+		if (groupsCorrectAnswers == null) {
 			prepareGroupsCorrectAnswers(responses);
-		
+		}
+
 		prepareGroupsAnswersUsedMap();
 
 		Integer points = 0;
@@ -80,30 +84,34 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		while (iter.hasNext()){
 			currKey = iter.next();
 
-			if (!responses.get(currKey).isModuleAdded())
+			if (!responses.get(currKey).isModuleAdded()) {
 				continue;
+			}
 
 			passed = processSingleResponse(responses.get(currKey), responses);
 
-			if (passed)
+			if (passed) {
 				points++;
+			}
 
 			// MAKRO PROCESSING
 			if (outcomes.containsKey(currKey+"-DONE")){
 				outcomes.get(currKey+"-DONE").values.clear();
-				if (passed)
+				if (passed) {
 					outcomes.get(currKey+"-DONE").values.add("1");
-				else
+				} else {
 					outcomes.get(currKey+"-DONE").values.add("0");
+				}
 			}
 			if (outcomes.containsKey(currKey+"-TODO")){
 				outcomes.get(currKey+"-TODO").values.add("1");
 			}
 			if (outcomes.containsKey(currKey+"-DONEHISTORY")){
-				if (passed)
+				if (passed) {
 					outcomes.get(currKey+"-DONEHISTORY").values.add("1");
-				else
+				} else {
 					outcomes.get(currKey+"-DONEHISTORY").values.add("0");
+				}
 			}
 			if (outcomes.containsKey(currKey+"-DONECHANGES")  &&  outcomes.containsKey(currKey+"-DONEHISTORY")){
 				if (outcomes.get(currKey+"-DONEHISTORY").values.size() == 1) {
@@ -115,10 +123,11 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 			if (outcomes.containsKey(currKey+"-PREVIOUS")  &&  outcomes.containsKey(currKey+"-LASTCHANGE")){
-				if (userInteract)
+				if (userInteract) {
 					outcomes.get(currKey+"-LASTCHANGE").values = DefaultVariableProcessorHelper.getDifference(responses.get(currKey), outcomes.get(currKey+"-PREVIOUS"));
-				else
+				} else {
 					outcomes.get(currKey+"-LASTCHANGE").values.clear();
+				}
 			}
 			if (outcomes.containsKey(currKey+"-PREVIOUS")){
 				outcomes.get(currKey+"-PREVIOUS").values.clear();
@@ -131,8 +140,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					int lastMistakes = processCheckMistakes( responses.get(currKey), outcomes.get(currKey+"-LASTCHANGE") );
 					outcomes.get(currKey+"-LASTMISTAKEN").values.set(0,  String.valueOf(lastMistakes));
 					if (outcomes.containsKey(currKey+"-MISTAKES")){
-						if (outcomes.get(currKey+"-MISTAKES").values.size() == 0)
+						if (outcomes.get(currKey+"-MISTAKES").values.size() == 0) {
 							outcomes.get(currKey+"-MISTAKES").values.add("0");
+						}
 						Integer mistakes = Integer.parseInt( outcomes.get(currKey+"-MISTAKES").values.get(0) );
 						mistakes += Integer.parseInt( outcomes.get(currKey+"-LASTMISTAKEN").values.get(0) );
 						outcomes.get(currKey+"-MISTAKES").values.set(0, mistakes.toString());
@@ -176,8 +186,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				outcomes.get("LASTMISTAKEN").values.set(0, lastMistakes.toString());
 
 				if (outcomes.containsKey("MISTAKES")){
-					if (outcomes.get("MISTAKES").values.size() == 0)
+					if (outcomes.get("MISTAKES").values.size() == 0) {
 						outcomes.get("MISTAKES").values.add("0");
+					}
 					Integer mistakes = Integer.parseInt( outcomes.get("MISTAKES").values.get(0) );
 					mistakes += Integer.parseInt( outcomes.get("LASTMISTAKEN").values.get(0) );
 					outcomes.get("MISTAKES").values.set(0, mistakes.toString());
@@ -188,7 +199,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 	private void prepareGroupsCorrectAnswers(Map<String, Response> responses) {
 		groupsCorrectAnswers = new TreeMap<String, List<ResponseValue>>();
-		
+
 		for (Response currResponse : responses.values()){
 			for (String currResponseGroupName : currResponse.groups.keySet()){
 				if (!groupsCorrectAnswers.containsKey(currResponseGroupName)){
@@ -199,12 +210,12 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 		}
-		
+
 	}
 
 	private void prepareGroupsAnswersUsedMap() {
 		groupsAnswersUsed = new TreeMap<String, List<Boolean>>();
-		
+
 		for (String currGroupName : groupsCorrectAnswers.keySet()){
 			ArrayList<Boolean> currUsed = new ArrayList<Boolean>();
 			for (int i = 0 ; i < groupsCorrectAnswers.get(currGroupName).size() ; i ++){
@@ -213,19 +224,19 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			groupsAnswersUsed.put(currGroupName, currUsed);
 		}
 	}
-	
+
 	private boolean processSingleResponse(Response response, Map<String, Response> responses){
 
 		CorrectAnswers correctAnswers = response.correctAnswers;
 
 		Vector<String> userAnswers = response.values;
-		
+
 		ArrayList<Boolean> answersEvaluation = new ArrayList<Boolean>();
 
 		boolean answerFound;
 		boolean passed = true;
 
-		if (response.cardinality == Cardinality.COMMUTATIVE  ||  response.cardinality == Cardinality.ORDERED  ||  
+		if (response.cardinality == Cardinality.COMMUTATIVE  ||  response.cardinality == Cardinality.ORDERED  ||
 				(response.cardinality == Cardinality.SINGLE  &&  response.groups.size() > 0)){
 			if (correctAnswers.getResponseValuesCount() != userAnswers.size()) {
 				passed = false;
@@ -241,9 +252,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 							break;
 						}
 					}
-					
+
 					String currUserAnswer = userAnswers.get(correct);
-					
+
 					if (groupName == null){
 						if (!correctAnswers.getResponseValue(correct).getAnswers().contains(currUserAnswer)){
 							passed = false;
@@ -254,11 +265,12 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					} else {
 						List<ResponseValue> currGroupCorrectAnswers = groupsCorrectAnswers.get(groupName);
 						List<Boolean> currGroupAnswersUsed = groupsAnswersUsed.get(groupName);
-						
+
 						answerFound = false;
 						for (int a = 0 ; a < currGroupCorrectAnswers.size() ; a ++){
-							if (currGroupAnswersUsed.get(a))
+							if (currGroupAnswersUsed.get(a)) {
 								continue;
+							}
 							if (currGroupCorrectAnswers.get(a).getAnswers().contains(currUserAnswer)){
 								currGroupAnswersUsed.set(a, true);
 								answerFound = true;
@@ -270,7 +282,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 						}
 						answersEvaluation.add(answerFound);
 					}
-					
+
 				}
 			}
 		} else if (response.cardinality == Cardinality.SINGLE){
@@ -295,19 +307,20 @@ public class DefaultVariableProcessor extends VariableProcessor {
 								break;
 							}
 						}
-						if (answerFound)
+						if (answerFound) {
 							break;
+						}
 					}
 
 					if (!answerFound){
 						passed = false;
 					}
-					
+
 					answersEvaluation.add(answerFound);
 				}
 			}
 		}
-		
+
 		responsesAnswersEvaluation.put(response.identifier, answersEvaluation);
 
 		return passed;
@@ -322,10 +335,11 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 			for (int v = 0 ; v < moduleLastChange.values.size() ; v ++){
 				String currVal = moduleLastChange.values.get(v);
-				if (currVal.startsWith("+"))
+				if (currVal.startsWith("+")) {
 					currVal = currVal.substring(1);
-				else
+				} else {
 					continue;
+				}
 
 
 					boolean answerFound = false;
@@ -342,29 +356,31 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		} else if (response.cardinality == Cardinality.ORDERED){
 
 			for (int v = 0 ; v < response.correctAnswers.getResponseValuesCount()  &&  v < moduleLastChange.values.size() ; v ++){
-				
+
 				String[] changeSplited = moduleLastChange.values.get(v).split("->");
-				
-				for (String currAnswer : response.correctAnswers.getResponseValue(v).getAnswers()){	
-					if (changeSplited.length != 2)
+
+				for (String currAnswer : response.correctAnswers.getResponseValue(v).getAnswers()){
+					if (changeSplited.length != 2) {
 						continue;
-	
+					}
+
 					if (changeSplited[0].equals(currAnswer)  &&
 						!changeSplited[1].equals(currAnswer)){
 						mistakesCounter++;
 						break;
 					}
 				}
-				if (mistakesCounter > 0)
+				if (mistakesCounter > 0) {
 					break;
+				}
 			}
 		}
 
 		return mistakesCounter;
 	}
-	
+
 	@Override
-	public List<Boolean> evaluateAnswer(Response currResponse){		
+	public List<Boolean> evaluateAnswer(Response currResponse){
 		return responsesAnswersEvaluation.get(currResponse.identifier);
 	}
 

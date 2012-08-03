@@ -11,9 +11,9 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
+import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
-import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -23,15 +23,16 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 	private XmlData assessmentData;
 	private XmlData[] itemDatas;
 	private int itemLoadingCounter = 0;;
-	
+
+	@Override
 	public void onModuleLoad() {
 		loadAssessment("content/test.xml");
 	}
-	
+
 	public void loadAssessment(String url){
-		
+
 		String resolvedURL;
-		
+
 		if( GWT.getHostPageBaseURL().startsWith("file://") ){
 
 			String localURL = URL.decode( GWT.getHostPageBaseURL() );
@@ -46,6 +47,7 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 
 		new eu.ydp.empiria.player.client.util.file.xml.XmlDocument(resolvedURL, new DocumentLoadCallback<Document>(){
 
+			@Override
 			public void finishedLoading(Document document, String baseURL) {
 				assessmentData = new XmlData(document, baseURL);
 				loadItems();
@@ -56,11 +58,11 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 			}
 		});
 	}
-	
+
 	public String[] getItemUrls(){
-		
+
 		String[] itemUrls = new String[0];
-		
+
 		if (assessmentData != null){
 			try {
 				NodeList nodes = assessmentData.getDocument().getElementsByTagName("assessmentItemRef");
@@ -72,20 +74,20 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 				itemUrls = tmpItemUrls;
 			} catch (Exception e) {	}
 		}
-		
 		return itemUrls;
 	}
-	
+
 	public void loadItems(){
 		String[] urls = getItemUrls();
-		
+
 		itemDatas = new XmlData[urls.length];
-		
+
 		for (int i = 0 ; i < urls.length ; i ++){
 			final int ii = i;
-			
+
 			new XmlDocument(urls[ii], new DocumentLoadCallback<Document>(){
 
+				@Override
 				public void finishedLoading(Document document, String baseURL) {
 					itemDatas[ii] = new XmlData(document, baseURL);
 					onItemLoaded();
@@ -97,18 +99,18 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 			});
 		}
 	}
-	
+
 	public void onItemLoaded(){
 		itemLoadingCounter++;
 		if (itemLoadingCounter == itemDatas.length){
 			createPlayer();
 		}
 	}
-	
+
 	/**
 	 * Having all the XML documents loaded (assessment & items)
 	 * and put into XMLData structure the player should be
-	 * loaded as follows. 
+	 * loaded as follows.
 	 */
 	public void createPlayer(){
 		Player p = new Player("root");

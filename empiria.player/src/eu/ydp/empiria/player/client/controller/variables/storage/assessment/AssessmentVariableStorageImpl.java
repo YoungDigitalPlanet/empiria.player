@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 
 public class AssessmentVariableStorageImpl extends VariableProviderBase  implements JsSocketHolder {
 	
@@ -69,7 +69,7 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 				currValue = currVar.getValuesShort();
 				if (currValue != null  &&  currValue.length() > 0){
 					if (currValue.matches("^[0-9]+$")){
-						currValueInt = IntegerUtils.tryParseInt( currValue );
+						currValueInt = NumberUtils.tryParseInt( currValue );
 						total += currValueInt;
 					} else if ("TRUE".equals(currValue.toUpperCase())){
 						total += 1;

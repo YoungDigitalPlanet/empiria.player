@@ -25,7 +25,7 @@ public class StatefulExtensionTest extends ExtensionTestBase {
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		de.setFlowOptions(new FlowOptions(false, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
-		de.loadExtension(new MockStatefulExtension());		
+		de.loadExtension(new MockStatefulExtension());
 		de.load(getAssessmentXMLData(), getItemXMLDatas());
 		String stateX = de.getStateString();
 		checkGetState(stateX);
@@ -58,7 +58,6 @@ public class StatefulExtensionTest extends ExtensionTestBase {
 
 		@Override
 		public void init() {
-			// TODO Auto-generated method stub
 			
 		}
 		

@@ -18,62 +18,63 @@ public abstract class ActivityButtonModule extends ControlModule implements ISim
 
 	protected PushButton button;
 	protected boolean isEnabled = true;
-	
+
 	public ActivityButtonModule(){
 		button = new PushButton();
 		updateStyleName();
 		button.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				invokeRequest();
 			}
 		});
 	}
-	
+
 	@Override
-	public void initModule(Element element) {
+	public void initModule(Element element) {//NOPMD
 	}
 
 	@Override
 	public Widget getView() {
 		return button;
 	}
-	
+
 	protected GroupIdentifier getCurrentGroupIdentifier(){
 		return getModuleSocket().getParentGroupIdentifier(this);
 	}
-	
-	protected boolean currentGroupIsConcerned(GroupIdentifier gi){
+
+	protected boolean currentGroupIsConcerned(GroupIdentifier groupId){
 		Stack<IModule> parentsHierarchy = getModuleSocket().getParentsHierarchy(this);
 		for (IModule currModule : parentsHierarchy){
 			if (currModule instanceof IGroup){
-				if ( ((IGroup)currModule).getGroupIdentifier().equals(gi) ){
-					return true;
+				if ( ((IGroup)currModule).getGroupIdentifier().equals(groupId) ){//NOPMD
+					return true; //NOPMD
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	protected abstract void invokeRequest();
 
 	protected void updateStyleName(){
 		button.setStyleName(getCurrentStyleName(isEnabled));
 	}
-	
+
 	protected String getCurrentStyleName(boolean isEnabled){
 		String styleName = null;
-		
+
 		if(isEnabled){
 			styleName = getStyleName();
 		}else{
 			styleName = getStyleName() + "-disabled";
 		}
-		
+
 		return styleName;
 	}
 
 	protected abstract String getStyleName();
-	
+
+
 }

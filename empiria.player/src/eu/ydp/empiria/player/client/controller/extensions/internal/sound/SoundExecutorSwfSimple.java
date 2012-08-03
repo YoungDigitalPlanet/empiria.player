@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.util.PathUtil;
 
 public class SoundExecutorSwfSimple implements SoundExecutor<Widget> {
 
-	private FlowPanel panelMain;
+	private final FlowPanel panelMain;
 
 	public SoundExecutorSwfSimple(){
 		panelMain = new FlowPanel();
@@ -23,26 +23,26 @@ public class SoundExecutorSwfSimple implements SoundExecutor<Widget> {
 	public void play(String src) {
 		panelMain.clear();
 		FlowPanel panelEmbed = new FlowPanel();
-		String id = Document.get().createUniqueId();
-		panelEmbed.getElement().setId(id);
+		String htmlId = Document.get().createUniqueId();
+		panelEmbed.getElement().setId(htmlId);
 		panelMain.add(panelEmbed);
 		String installSrc = PathUtil.getPlayerPathDir() + "swfobject/expressInstall.swf";
 		String swfSrc = PathUtil.getPlayerPathDir() + "flashAudioExecutorSimple/flashAudioExecutorSimple.swf";
-		embedSwf(id, swfSrc, installSrc, src);
+		embedSwf(htmlId, swfSrc, installSrc, src);
 	}
 
-	private native void embedSwf(String id, String swfSrc, String installSrc, String soundSrc)/*-{
+	private native void embedSwf(String objectId, String swfSrc, String installSrc, String soundSrc)/*-{
 		var flashvars = {source:soundSrc};
 		$wnd.swfobject.embedSWF(swfSrc, id, 100, 100, "9", installSrc, flashvars);
 
 	}-*/;
 
 	@Override
-	public void stop() {
+	public void stop() {//NOPMD
 	}
 
 	@Override
-	public void setSoundFinishedListener(SoundExecutorListener listener) {
+	public void setSoundFinishedListener(SoundExecutorListener listener) {//NOPMD
 	}
 
 
@@ -52,49 +52,48 @@ public class SoundExecutorSwfSimple implements SoundExecutor<Widget> {
 	}
 
 	@Override
-	public void setMediaWrapper(MediaWrapper<Widget> descriptor) {
-		// TODO Auto-generated method stub
+	public void setMediaWrapper(MediaWrapper<Widget> descriptor) {//NOPMD
 
 	}
 
 	@Override
-	public void init() {
-
-	}
-
-
-	@Override
-	public void play() {
+	public void init() {//NOPMD
 
 	}
 
 
 	@Override
-	public void pause() {
+	public void play() {//NOPMD
 
 	}
 
 
 	@Override
-	public void setMuted(boolean mute) {
+	public void pause() {//NOPMD
 
 	}
 
 
 	@Override
-	public void setVolume(double volume) {
+	public void setMuted(boolean mute) {//NOPMD
 
 	}
 
 
 	@Override
-	public void setCurrentTime(double time) {
+	public void setVolume(double volume) {//NOPMD
 
 	}
 
 
 	@Override
-	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {
+	public void setCurrentTime(double time) {//NOPMD
+
+	}
+
+
+	@Override
+	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {//NOPMD
 
 	}
 

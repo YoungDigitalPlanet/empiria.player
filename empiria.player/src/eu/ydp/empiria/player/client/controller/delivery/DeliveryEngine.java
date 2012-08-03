@@ -35,7 +35,6 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.TouchPageSwitch;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InfoModuleConnectorExtension;
@@ -98,7 +97,11 @@ import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.page.PageEvent;
+import eu.ydp.empiria.player.client.util.events.page.PageEventHandler;
+import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
@@ -113,7 +116,7 @@ import eu.ydp.gwtutil.client.util.QueueSet;
  * @author Rafal Rybacki
  *
  */
-public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket {
+public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
 	public EngineModeManager mode;
 
@@ -154,6 +157,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		dataManager = dsm;
 		dsm.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
+		eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this);
+		eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.values()), this);
 	}
 
 	public void init(JavaScriptObject playerJsObject) {
@@ -169,15 +174,13 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 		soundProcessorManager = new SoundProcessorManagerExtension();
 
-		flowManager = new FlowManager(this);
+		flowManager = new FlowManager();
 		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(flowManager.getFlowCommandsExecutor()));
-		sessionDataManager = new SessionDataManager(deliveryEventsHub);
+		sessionDataManager = new SessionDataManager();
 
 		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(), deliveryEventsHub.getInteractionSocket(),
 				sessionDataManager, modulesRegistry);
 		assessmentController.setStyleSocket(styleSocket);
-
-		deliveryEventsHub.addFlowActivityEventsListener(assessmentController);
 
 		playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
 
@@ -222,11 +225,16 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		assessmentController.init(assessmentData, displayOptions);
 
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_LOADED));
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_LOADED));
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTING));
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTING));
+		updateAssessmentStyle();
 		initFlow();
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTED));
 		updatePageStyle();
 	}
+
 
 	protected void initFlow() {
 
@@ -301,7 +309,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
-		loadExtension(new TouchPageSwitch());
+		loadExtension(PlayerGinjector.INSTANCE.getMultiPageView());
 		loadExtension(new Page());
 		// loadExtension(new MediaManager());
 	}
@@ -410,11 +418,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	@Override
 	public void onFlowProcessingEvent(FlowProcessingEvent event) {
 		if (event.getType() == FlowProcessingEventType.PAGE_LOADED) {
-			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_UNLOADED));
-			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED));
-			PageReference pr = flowManager.getPageReference();
-			PageData pd = dataManager.generatePageData(pr);
-
+			PageReference pageReferance = flowManager.getPageReference();
+			PageData pageData = dataManager.generatePageData(pageReferance);
 			getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.PAGE_UNLOADING));
 
 			assessmentController.closePage();
@@ -425,36 +430,44 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 			// TODO style provider should listen directly to navigation events
 			// via HandlerManager or other event bus
-			styleSocket.setCurrentPages(pr);
+			styleSocket.setCurrentPages(pageReferance);
 
-			if (pd.type == PageType.SUMMARY) {
-				((PageDataSummary) pd).setAssessmentSessionData(sessionDataManager.getAssessmentSessionDataSocket());
+			if (pageData.type == PageType.SUMMARY) {
+				((PageDataSummary) pageData).setAssessmentSessionData(sessionDataManager.getAssessmentSessionDataSocket());
 			}
-			assessmentController.initPage(pd);
-			if (pd.type == PageType.SUMMARY) {
+			assessmentController.initPage(pageData);
+			if (pageData.type == PageType.SUMMARY) {
 				getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.SUMMARY_PAGE_LOADED));
 			}
-			if (pd.type == PageType.TOC) {
+			if (pageData.type == PageType.TOC) {
 				getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.TOC_PAGE_LOADED));
 			}
-			if (pd.type == PageType.TEST) {
+			if (pageData.type == PageType.TEST) {
 				getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.TEST_PAGE_LOADED));
 			}
-
 			updatePageStyle();
 		}
-		if (event.getType() == FlowProcessingEventType.PAGE_CHANGING || event.getType() == FlowProcessingEventType.CHECK || 
+		if (event.getType() == FlowProcessingEventType.PAGE_CHANGING || event.getType() == FlowProcessingEventType.CHECK ||
 				event.getType() == FlowProcessingEventType.SHOW_ANSWERS) {
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.BEFORE_FLOW));
 		}
-		getFlowExecutionEventsListener().onFlowProcessingEvent(event);
+		deliveryEventsHub.onFlowProcessingEvent(event);
+	}
+	@Override
+	public void onPageEvent(PageEvent event) {
+		if(event.getValue() instanceof FlowProcessingEvent) {
+			onFlowProcessingEvent((FlowProcessingEvent) event.getValue());
+		}
 	}
 
+	@Override
+	public void onPlayerEvent(PlayerEvent event) {
+		if(event.getValue() instanceof FlowProcessingEvent){
+			onFlowProcessingEvent((FlowProcessingEvent) event.getValue());
+		}
+
+	}
 	public DeliveryEventsListener getDeliveryEventsListener() {
-		return deliveryEventsHub;
-	}
-
-	public FlowProcessingEventsListener getFlowExecutionEventsListener() {
 		return deliveryEventsHub;
 	}
 

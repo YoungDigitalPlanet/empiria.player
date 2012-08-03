@@ -18,13 +18,9 @@ import eu.ydp.gwtutil.client.debug.Debug;
 
 public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler {
 	protected Map<MediaWrapper<?>, SoundExecutor<?>> executors = new HashMap<MediaWrapper<?>, SoundExecutor<?>>();
-	protected SoundExecutor<?> feedbackSoundExecutor = null;
+	protected SoundExecutor<?> feedbackSoundExecutor = null;//NOPMD
 	protected MediaInteractionSoundEventCallback callback;
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-
-	public AbstractMediaProcessor() {
-
-	}
 
 	@Override
 	public void init() {
@@ -74,7 +70,8 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			}
 			executor.setCurrentTime(0);
 			break;
-
+		default:
+			break;
 		}
 	}
 
@@ -85,7 +82,8 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			createMediaWrapper(event);
 			break;
 		case PAGE_UNLOADED:
-			removeUnusedExecutors();
+			//FIXME scope for executors
+		//	removeUnusedExecutors();
 			break;
 		default:
 			break;
@@ -97,7 +95,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 		executors.put(null, feedbackSoundExecutor);
 	}
 
-	abstract void createMediaWrapper(PlayerEvent event);
+	protected abstract void createMediaWrapper(PlayerEvent event);
 
-	abstract void pauseAllOthers(MediaWrapper<?> mw);
+	protected abstract void pauseAllOthers(MediaWrapper<?> mediaWrapper);
 }

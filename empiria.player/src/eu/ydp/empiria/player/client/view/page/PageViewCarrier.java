@@ -34,22 +34,22 @@ public class PageViewCarrier {
 		pageType = PageType.TEST;
 	}
 
-	public PageViewCarrier(PageDataToC p, IFlowRequestSocket frs){
+	public PageViewCarrier(PageDataToC pageDataToc, IFlowRequestSocket frs){
 		pageType = PageType.TOC;
-		titles = p.titles;
+		titles = pageDataToc.titles;
 		flowRequestSocket = frs;
 	}
 
-	public PageViewCarrier(PageDataSummary p, IFlowRequestSocket frs){
+	public PageViewCarrier(PageDataSummary pageDataSummary, IFlowRequestSocket frs){
 		pageType = PageType.SUMMARY;
-		titles = p.titles;
-		sessionDataSocket = p.sessionData;
+		titles = pageDataSummary.titles;
+		sessionDataSocket = pageDataSummary.sessionData;
 		flowRequestSocket = frs;
 	}
 
-	public PageViewCarrier(PageDataError p){
+	public PageViewCarrier(PageDataError pageDataError){
 		pageType = PageType.ERROR;
-		errorMessage = p.errorMessage;
+		errorMessage = pageDataError.errorMessage;
 	}
 	
 	public PageViewCarrier(Panel panel){

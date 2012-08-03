@@ -21,8 +21,8 @@ import eu.ydp.gwtutil.client.util.QueueSet;
 
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
-	public AssessmentDataSourceManager(AssessmentDataLoaderEventListener l) {
-		listener = l;
+	public AssessmentDataSourceManager(AssessmentDataLoaderEventListener loader) {
+		listener = loader;
 		itemsCount = -1;
 		errorMessage = "";
 		skinData = new SkinDataSourceManager(this);
@@ -30,29 +30,31 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
 	private XmlData data;
 	private AssessmentData assessmentData;
-	private AssessmentDataLoaderEventListener listener;
+	private final AssessmentDataLoaderEventListener listener;
 	private StyleLinkDeclaration styleDeclaration;
 	private int itemsCount;
 	private String errorMessage;
 	private LibraryLink libraryLink;
-	private SkinDataSourceManager skinData;
+	private final SkinDataSourceManager skinData;
 	private boolean isDefaultData;
 	private List<Element> items = null;
 
-	public void setAssessmentData(XmlData d) {
-		if (!isItemDocument(d.getDocument())) {
-			isDefaultData = false;
-			initializeData(d);
-		} else {
+
+	public void setAssessmentData(XmlData data) {
+		if (isItemDocument(data.getDocument())) {
 			isDefaultData = true;
 			initializeDefaultData();
+		} else {
+			isDefaultData = false;
+			initializeData(data);
 		}
 	}
 
 	public void setAssessmentLoadingError(String err) {
 		String detail = "";
-		if (err != null && err.indexOf(":") != -1)
-			detail = err.substring(0, err.indexOf(":"));
+		if (err != null && err.indexOf(':') != -1) {
+			detail = err.substring(0, err.indexOf(':'));
+		}
 		errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ASSESSMENT_FAILED_TO_LOAD) + detail;
 	}
 
@@ -63,20 +65,20 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		listener.onAssessmentDataLoaded();
 	}
 
-	private void initializeData(XmlData d) {
-		String skinUrl = getSkinUrl(d.getDocument());
+	private void initializeData(XmlData xmlData) {
+		String skinUrl = getSkinUrl(xmlData.getDocument());
 
-		data = d;
+		data = xmlData;
 		itemsCount = -1;
 		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
 		libraryLink = new LibraryLink(data.getDocument().getElementsByTagName("extensionsLibrary"), data.getBaseURL());
 
-		if (skinUrl != null) {
-			skinUrl = data.getBaseURL().concat(skinUrl);
-			skinData.load(skinUrl);
-		} else {
+		if (skinUrl == null) {
 			assessmentData = new AssessmentData(data, null);
 			listener.onAssessmentDataLoaded();
+		} else {
+			skinUrl = data.getBaseURL().concat(skinUrl);
+			skinData.load(skinUrl);
 		}
 	}
 
@@ -132,17 +134,18 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 				for (int i = 0; i < nodes.getLength(); i++) {
 					Node itemRefNode = nodes.item(i);
 
-					if (((Element) itemRefNode).getAttribute("href").startsWith("http"))
-						tmpItemUrls[i] = ((Element) itemRefNode).getAttribute("href");
-					else
-						tmpItemUrls[i] = data.getBaseURL() + ((Element) itemRefNode).getAttribute("href");
+					String name = "href";
+					if (((Element) itemRefNode).getAttribute(name).startsWith("http")) {
+						tmpItemUrls[i] = ((Element) itemRefNode).getAttribute(name);
+					} else {
+						tmpItemUrls[i] = data.getBaseURL() + ((Element) itemRefNode).getAttribute(name);
+					}
 				}
 				itemUrls = tmpItemUrls;
-			} catch (Exception e) {
+			} catch (Exception e) {//NOPMD
 			}
 		}
 
-		// TODO
 		return itemUrls;
 	}
 
@@ -175,8 +178,9 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	}
 
 	public int getItemsCount() {
-		if (itemsCount == -1)
+		if (itemsCount == -1) {
 			itemsCount = getItemUrls().length;
+		}
 
 		return itemsCount;
 	}
@@ -184,19 +188,22 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	public QueueSet<String> getStyleLinksForUserAgent(String userAgent) {
 		QueueSet<String> declarations = new QueueSet<String>();
 
-		if (styleDeclaration != null)
+		if (styleDeclaration != null) {
 			declarations.appendAll(styleDeclaration.getStyleLinksForUserAgent(userAgent));
+		}
 
 		declarations.addAll(skinData.getStyleLinksForUserAgent(userAgent));
 
 		return declarations;
 	}
 
+	@Override
 	public void onSkinLoad() {
 		assessmentData = new AssessmentData(data, skinData.getSkinData());
 		listener.onAssessmentDataLoaded();
 	}
 
+	@Override
 	public void onSkinLoadError() {
 		assessmentData = new AssessmentData(data, null);
 		listener.onAssessmentDataLoaded();

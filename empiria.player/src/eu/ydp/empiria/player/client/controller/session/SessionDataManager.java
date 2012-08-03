@@ -7,8 +7,8 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNull;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSocket;
@@ -20,29 +20,32 @@ import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl;
 import eu.ydp.empiria.player.client.module.IStateful;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 
 public class SessionDataManager implements SessionSocket, IStateful, SessionDataSupplier, SessionDataSocket {
 
 	private ItemSessionData[] itemSessionDatas;
-	private InteractionEventsListener listener;
-	private AssessmentVariableStorageImpl variableProvider;
-	
-	public SessionDataManager(InteractionEventsListener l){
-		listener = l;
+	private final AssessmentVariableStorageImpl variableProvider;
+	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
+	public SessionDataManager() {
 		variableProvider = new AssessmentVariableStorageImpl();
 	}
-	
-	public void init(int itemsCount, InitialData data){
+
+	public void init(int itemsCount, InitialData data) {
 		if (itemSessionDatas == null) {
 			itemSessionDatas = new ItemSessionData[itemsCount];
-			for (int i = 0 ; i < itemsCount ; i ++){
+			for (int i = 0; i < itemsCount; i++) {
 				itemSessionDatas[i] = new ItemSessionData();
 				updateItemVariables(i, data.getItemInitialData(i).getOutcomes());
 			}
 		}
 		variableProvider.init(this);
-	}	
-	
+	}
+
 	@Override
 	public ItemSessionSocket getItemSessionSocket() {
 		return this;
@@ -53,50 +56,51 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 		return this;
 	}
 
-
 	@Override
 	public JSONArray getState(int itemIndex) {
-		if (itemSessionDatas[itemIndex] != null)
+		if (itemSessionDatas[itemIndex] != null) {
 			return itemSessionDatas[itemIndex].getItemBodyState();
-		else
+		} else {
 			return new JSONArray();
+		}
 	}
 
 	@Override
 	public void setState(int itemIndex, JSONArray st) {
-		if (itemSessionDatas[itemIndex] == null)
+		if (itemSessionDatas[itemIndex] == null) {
 			itemSessionDatas[itemIndex] = new ItemSessionData();
+		}
 		itemSessionDatas[itemIndex].setItemBodyState(st);
-		
+
 	}
 
 	public void updateItemVariables(int itemIndex, Map<String, Outcome> variablesMap) {
-		if (itemSessionDatas[itemIndex] != null)
+		if (itemSessionDatas[itemIndex] != null) {
 			itemSessionDatas[itemIndex].updateVariables(variablesMap);
+		}
 	}
-
-
 
 	@Override
 	public Map<String, Outcome> getOutcomeVariablesMap(int itemIndex) {
-		if (itemSessionDatas[itemIndex] != null)
+		if (itemSessionDatas[itemIndex] != null) {
 			return itemSessionDatas[itemIndex].getOutcomeVariablesMap();
+		}
 		return new HashMap<String, Outcome>();
 	}
-	
+
 	@Override
 	public void setState(JSONArray statesArr) {
-		try {			  
-			JSONArray itemStates = (JSONArray)statesArr.get(0);
-			for (int i = 0 ; i < itemSessionDatas.length ; i ++ ){
-				if (itemStates.get(i).isArray() instanceof JSONArray){
-					itemSessionDatas[i] = new ItemSessionData();  
+		try {
+			JSONArray itemStates = (JSONArray) statesArr.get(0);
+			for (int i = 0; i < itemSessionDatas.length; i++) {
+				if (itemStates.get(i).isArray() instanceof JSONArray) {
+					itemSessionDatas[i] = new ItemSessionData();
 					itemSessionDatas[i].setState(itemStates.get(i));
-			  	} else {
-			  		itemSessionDatas[i] = null;
-			  	}
+				} else {
+					itemSessionDatas[i] = null;
+				}
 			}
-			listener.onStateChanged(new StateChangedInteractionEvent(false, null));
+			eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(false, null)), new CurrentPageScope());
 		} catch (Exception e) {
 		}
 	}
@@ -105,101 +109,96 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 	public JSONArray getState() {
 		JSONArray itemStates = new JSONArray();
 		int counter = 0;
-		for (ItemSessionData isd : itemSessionDatas){
-			if (isd != null)
+		for (ItemSessionData isd : itemSessionDatas) {
+			if (isd != null) {
 				itemStates.set(counter++, isd.getState());
-			else
+			} else {
 				itemStates.set(counter++, JSONNull.getInstance());
+			}
 		}
 		JSONArray mainState = new JSONArray();
 		mainState.set(0, itemStates);
 		return mainState;
 	}
-	
-	private int tryParseInt(String s){
-		try {
-			return Integer.parseInt(s);
-		} catch (Exception e) {
-		}
-		return 0;
-	}
 
 	@Override
 	public void beginItemSession(int itemIndex) {
-		if (itemSessionDatas[itemIndex] == null)
+		if (itemSessionDatas[itemIndex] == null) {
 			itemSessionDatas[itemIndex] = new ItemSessionData();
+		}
 		itemSessionDatas[itemIndex].begin();
-		
+
 	}
 
 	@Override
 	public void endItemSession(int itemIndex) {
 		itemSessionDatas[itemIndex].end();
-		
+
 	}
 
 	@Override
-	public int getTimeAssessmentTotal(){
-		if (itemSessionDatas == null)
+	public int getTimeAssessmentTotal() {
+		if (itemSessionDatas == null) {
 			return 0;
-		
+		}
+
 		int count = 0;
-		
-		for (int i = 0 ; i < itemSessionDatas.length ; i ++){
-			if (itemSessionDatas[i] != null){
+
+		for (int i = 0; i < itemSessionDatas.length; i++) {
+			if (itemSessionDatas[i] != null) {
 				count += itemSessionDatas[i].getActualTime();
 			}
 		}
-		
+
 		return count;
 	}
+
 	/*
-	public int getAssessmentTotalVariableSum(String name){
-		
-		int value = 0;
-		
-		for (int i = 0 ; i < itemSessionDatas.length ; i ++){
-			try{
-				Integer currValue = tryParseInt( itemSessionDatas[i].getStoredVariableValue0(name) );
-				value += currValue;
-			} catch (Exception e) {
-			}
-		}
-		
-		return value;
-		
-	}
+	 * public int getAssessmentTotalVariableSum(String name){
+	 *
+	 * int value = 0;
+	 *
+	 * for (int i = 0 ; i < itemSessionDatas.length ; i ++){ try{ Integer
+	 * currValue = tryParseInt(
+	 * itemSessionDatas[i].getStoredVariableValue0(name) ); value += currValue;
+	 * } catch (Exception e) { } }
+	 *
+	 * return value;
+	 *
+	 * }
 	 */
 
 	@Override
 	public JavaScriptObject getJsSocket() {
 		return createAssessmentSessionDataJsSocket();
 	}
-	
+
 	private native JavaScriptObject createAssessmentSessionDataJsSocket()/*-{
 		var socket = [];
 		var instance = this;
-		socket.getVariableManagerSocket = function(){
+		socket.getVariableManagerSocket = function() {
 			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getVariableProviderJsSocket()();
 		}
-		socket.getTime = function(){
+		socket.getTime = function() {
 			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getTimeAssessmentTotal()();
 		}
 		return socket
 	}-*/;
-	
-	private JavaScriptObject getVariableProviderJsSocket(){
+
+	private JavaScriptObject getVariableProviderJsSocket() {
 		return variableProvider.getJsSocket();
 	}
-	
-	public SessionDataSocket getAssessmentSessionDataSocket(){
+
+	@Override
+	public SessionDataSocket getAssessmentSessionDataSocket() {
 		return this;
 	}
 
 	@Override
 	public ItemSessionDataSocket getItemSessionDataSocket(int index) {
-		if (index < itemSessionDatas.length)
+		if (index < itemSessionDatas.length) {
 			return itemSessionDatas[index].getItemSessionDataSocket();
+		}
 		return null;
 	}
 
@@ -212,6 +211,5 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 	public VariableProviderSocket getVariableProviderSocket() {
 		return variableProvider;
 	}
-
 
 }

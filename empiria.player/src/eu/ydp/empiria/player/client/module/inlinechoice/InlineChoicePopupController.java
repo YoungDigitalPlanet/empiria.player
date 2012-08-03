@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
@@ -25,6 +26,10 @@ import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.RandomizedSet;
 import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 
 public class InlineChoicePopupController implements InlineChoiceController, ExListBoxChangeListener {
 
@@ -47,7 +52,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 	protected List<Integer> identifiersMap;
 	protected boolean showEmptyOption = true;
-
+	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	protected ExListBox.PopupPosition popupPosition = ExListBox.PopupPosition.ABOVE;
 
 	@Override
@@ -124,8 +129,9 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 		container = new FlowPanel();
 		container.setStyleName("qp-text-choice-popup");
-		if (userClass != null  &&  !"".equals(userClass))
+		if (userClass != null  &&  !"".equals(userClass)) {
 			container.addStyleName(userClass);
+		}
 		container.add(listBox);
 
 
@@ -184,8 +190,9 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 			listBox.setSelectedIndex(correctAnswerIndex);
 		} else if (!show && showingAnswers){
 			int answerIndex = ((showEmptyOption)?0:-1) ;
-			if (response.values.size() > 0)
+			if (response.values.size() > 0) {
 				answerIndex = identifiers.indexOf( response.values.get(0) ) + ((showEmptyOption)?1:0);
+			}
 			listBox.setSelectedIndex(answerIndex);
 		}
 		showingAnswers = show;
@@ -220,9 +227,11 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 		  String stateString = "";
 
-		  if (listBox.getSelectedIndex() - ((showEmptyOption)?1:0) >= 0)
-			  if (response.values.size() > 0)
-				  stateString = response.values.get(0);
+		  if (listBox.getSelectedIndex() - ((showEmptyOption)?1:0) >= 0) {
+			if (response.values.size() > 0) {
+				stateString = response.values.get(0);
+			}
+		}
 
 		  jsonArr.set(0, new JSONString(stateString));
 
@@ -247,8 +256,9 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	}
 
 	private void updateResponse(boolean userInteract){
-		if (showingAnswers)
+		if (showingAnswers) {
 			return;
+		}
 
 		response.reset();
 
@@ -256,7 +266,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 			String lastValue = identifiers.get(listBox.getSelectedIndex() - ((showEmptyOption)?1:0));
 			response.add(lastValue);
 		}
-		interactionEventsListener.onStateChanged(new StateChangedInteractionEvent(userInteract, this));
+		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, this)), new CurrentPageScope());
 	}
 
 	@Override

@@ -2,10 +2,15 @@ package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 
 public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule {
 
@@ -14,7 +19,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
 	private Response response;
 	private String responseIdentifier;
-
+	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	@Override
 	public final void initModule(ModuleSocket moduleSocket, InteractionEventsListener interactionEventsListener) {
 		this.interactionEventsListener = interactionEventsListener;
@@ -38,12 +43,13 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		return interactionEventsListener;
 	}
 
+
 	protected final ModuleSocket getModuleSocket() {
 		return moduleSocket;
 	}
 
 	protected void fireStateChanged(boolean userInteract){
-		getInteractionEventsListener().onStateChanged(new StateChangedInteractionEvent(userInteract, this));
+		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, this)), new CurrentPageScope());
 	}
 
 	@Override

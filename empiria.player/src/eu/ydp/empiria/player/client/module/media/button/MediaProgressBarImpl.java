@@ -16,6 +16,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarImpl> implements MediaProgressBar {
 
@@ -79,13 +80,13 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 		super.init();
 		if (isSupported()) {
 			AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
-				//-1 aby przy pierwszym zdarzeniu pokazal sie timer
+				// -1 aby przy pierwszym zdarzeniu pokazal sie timer
 				int lastTime = -1;
 
 				@Override
 				public void onMediaEvent(MediaEvent event) {
 					if (isMediaReady() && !isPressed()) {
-						if (getMediaWrapper().getCurrentTime() > lastTime + 1 || getMediaWrapper().getCurrentTime() < lastTime - 1  ||  event.getType() == MediaEventTypes.ON_STOP) {//NOPMD
+						if (getMediaWrapper().getCurrentTime() > lastTime + 1 || getMediaWrapper().getCurrentTime() < lastTime - 1 || event.getType() == MediaEventTypes.ON_STOP) {// NOPMD
 							// przeskakujemy co sekunde
 							lastTime = (int) getMediaWrapper().getCurrentTime();
 							double steep = getScrollWidth() / getMediaWrapper().getDuration();
@@ -94,9 +95,10 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 					}
 				}
 			};
-			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler);
-			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler);
-			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler);
+			CurrentPageScope scope = new CurrentPageScope();
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler,scope);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler,scope);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler,scope);
 			// nie zawsze zostanie wyzwolony timeupdate ze wzgledu na
 			// ograniczenie
 			// na 1s postepu wiec robimy to tu
@@ -105,10 +107,10 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 				public void onMediaEvent(MediaEvent event) {
 					double steep = getScrollWidth() / getMediaWrapper().getDuration();
 					moveScroll((int) (steep * getMediaWrapper().getCurrentTime()));
-					eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, getMediaWrapper()),getMediaWrapper());
+					eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, getMediaWrapper()), getMediaWrapper());
 				}
 			};
-			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler);
+			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler, new CurrentPageScope());
 
 		} else {
 			progressBar.setStyleName(progressBar.getStyleName() + UNSUPPORTED_SUFFIX);
@@ -121,7 +123,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	 *
 	 * @param positionX
 	 */
-	protected void moveScroll(int positionX) {//NOPMD
+	protected void moveScroll(int positionX) {// NOPMD
 		int scrollSize = getScrollWidth();
 		positionX = positionX > scrollSize ? scrollSize : positionX;
 		button.getElement().getStyle().setLeft(positionX, Unit.PX);
@@ -139,8 +141,9 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			double steep = getMediaWrapper().getDuration() / scrollSize;
 			double time = steep * positionX;
 			double position = time > getMediaWrapper().getDuration() ? getMediaWrapper().getDuration() : time;
-			//TODO dodac schedulera dla zdarzen aby ograniczyc ilosc wykonywanych
-			eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, getMediaWrapper(), position),getMediaWrapper());
+			// TODO dodac schedulera dla zdarzen aby ograniczyc ilosc
+			// wykonywanych
+			eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, getMediaWrapper(), position), getMediaWrapper());
 		}
 	}
 

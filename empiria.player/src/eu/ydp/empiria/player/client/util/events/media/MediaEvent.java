@@ -1,52 +1,39 @@
 package eu.ydp.empiria.player.client.util.events.media;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.Event;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.AbstractEvent;
+import eu.ydp.empiria.player.client.util.events.EventTypes;
 
-public class MediaEvent extends  Event<MediaEventHandler,MediaEventTypes> {
-	public static Map<MediaEventTypes, Type<MediaEventHandler,MediaEventTypes>> types = new HashMap<MediaEventTypes, Event.Type<MediaEventHandler,MediaEventTypes>>();
+public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes> {
+	public static EventTypes<MediaEventHandler, MediaEventTypes> types = new EventTypes<MediaEventHandler, MediaEventTypes>();
 
-	MediaEventTypes type = null;
+	private final double value;
 
-	private double value;
 	public MediaEvent(MediaEventTypes type) {
 		this(type, null, 0);
 	}
-	public MediaEvent(MediaEventTypes type, MediaWrapper<?> source) {
+
+	public MediaEvent(MediaEventTypes type, Object source) {
 		this(type, source, 0);
 	}
 
-	public MediaEvent(MediaEventTypes type, MediaWrapper<?> source,double value) {
-		this.type = type;
+	public MediaEvent(MediaEventTypes type, Object source, double value) {
+		super(type, source);
 		this.value = value;
-		setSource(source);
+
 	}
 
-	public MediaWrapper<?> getMediaWrapper(){
-		return (MediaWrapper<?>) super.getSource();
+	public MediaWrapper<?> getMediaWrapper() {
+		return (super.getSource() instanceof MediaWrapper<?>) ? (MediaWrapper<?>) super.getSource() : null;// NOPMD
 	}
 
 	public double getValue() {
 		return value;
 	}
 
-	public MediaEventTypes getType(){
-		return type;
-	}
-
-	private static void checkIsPresent(MediaEventTypes type){
-		if(!types.containsKey(type)){
-			types.put(type, new Type<MediaEventHandler,MediaEventTypes>(type,new CurrentPageScope()));
-		}
-	}
 	@Override
-	public Event.Type<MediaEventHandler,MediaEventTypes> getAssociatedType() {
-		checkIsPresent(type);
-		return types.get(type);
+	protected EventTypes<MediaEventHandler, MediaEventTypes> getTypes() {
+		return types;
 	}
 
 	@Override
@@ -54,21 +41,19 @@ public class MediaEvent extends  Event<MediaEventHandler,MediaEventTypes> {
 		handler.onMediaEvent(this);
 	}
 
-	public static Type<MediaEventHandler,MediaEventTypes> getType(MediaEventTypes type) {
-		checkIsPresent(type);
-		return types.get(type);
+	public static Type<MediaEventHandler, MediaEventTypes> getType(MediaEventTypes type) {
+		return types.getType(type);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("MediaEvent [type=");
-		builder.append(type);
+		builder.append(getType());
 		builder.append(", value=");
 		builder.append(value);
 		builder.append("]");
 		return builder.toString();
 	}
-
 
 }

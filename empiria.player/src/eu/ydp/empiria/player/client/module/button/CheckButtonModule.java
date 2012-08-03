@@ -14,7 +14,7 @@ public class CheckButtonModule extends ActivityButtonModule implements PlayerEve
 	@Override
 	public void initModule(Element element) {
 		super.initModule(element);
-		//eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
 	}
 
 	protected boolean isSelected = false;

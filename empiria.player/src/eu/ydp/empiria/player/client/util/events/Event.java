@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.util.events;
 
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.EventScope;
 
 /**
  * Base Event object.
@@ -9,6 +8,7 @@ import eu.ydp.empiria.player.client.util.events.scope.EventScope;
  * @param <H>
  *            interface implemented by handlers of this kind of event
  */
+@SuppressWarnings("PMD")
 public abstract class Event<H,T extends Enum<T>> {
 	/**
 	 * Type class used to register events with an {@link PlayerEventsBus}.
@@ -19,26 +19,21 @@ public abstract class Event<H,T extends Enum<T>> {
 	public static class Type<H,T extends Enum<T>> {
 		private static int nextHashCode;
 		private final int index;
-		private Enum<T> type;
-		private EventScope<?> eventScope = null;
+		private final Enum<T> type;
 
 		/**
 		 * Constructor.
 		 */
-		public Type(Enum<T> type, EventScope<?> eventScope) {
+		public Type(Enum<T> type) {
 			nextHashCode += type.ordinal();
 			index = ++nextHashCode;
 			this.type = type;
-			this.eventScope = eventScope;
 		}
 
 		public Enum<T> getType() {
 			return type;
 		}
 
-		public EventScope<?> getEventScope() {
-			return eventScope;
-		}
 
 		@Override
 		public int hashCode() {
@@ -52,26 +47,30 @@ public abstract class Event<H,T extends Enum<T>> {
 			builder.append(index);
 			builder.append(", type=");
 			builder.append(type);
-			builder.append(", eventScope=");
-			builder.append(eventScope);
 			builder.append("]");
 			return builder.toString();
 		}
 
+		@SuppressWarnings("PMD")
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj)
+			if (this == obj) {
 				return true;
-			if (obj == null)
+			}
+			if (obj == null) {
 				return false;
-			if (getClass() != obj.getClass())
+			}
+			if (getClass() != obj.getClass()) {
 				return false;
+			}
 			Type<?,?> other = (Type<?,?>) obj;
 			if (type == null) {
-				if (other.type != null)
+				if (other.type != null) {
 					return false;
-			} else if (!type.equals(other.type))
+				}
+			} else if (!type.equals(other.type)) {
 				return false;
+			}
 			return true;
 		}
 	}
@@ -81,7 +80,7 @@ public abstract class Event<H,T extends Enum<T>> {
 	/**
 	 * Constructor.
 	 */
-	protected Event() {
+	protected Event() { //NOPMD
 	}
 
 	/**
@@ -118,7 +117,7 @@ public abstract class Event<H,T extends Enum<T>> {
 	 */
 	public String toDebugString() {
 		String name = this.getClass().getName();
-		name = name.substring(name.lastIndexOf(".") + 1);
+		name = name.substring(name.lastIndexOf(".") + 1);//NOPMD
 		return "event: " + name + ":";
 	}
 

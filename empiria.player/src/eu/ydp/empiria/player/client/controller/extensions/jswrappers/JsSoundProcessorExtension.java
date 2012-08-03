@@ -35,9 +35,8 @@ public class JsSoundProcessorExtension extends JsExtension implements SoundProce
 
 	@Override
 	public void onDeliveryEvent(DeliveryEvent deliveryEvent) {
-		if (deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING) {
-			if (playing)
-				soundStop();
+		if (deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING && playing) {
+			soundStop();
 		}
 		if (deliveryEvent.getType() == DeliveryEventType.FEEDBACK_SOUND || deliveryEvent.getType() == DeliveryEventType.MEDIA_SOUND_PLAY) {
 
@@ -48,8 +47,9 @@ public class JsSoundProcessorExtension extends JsExtension implements SoundProce
 					callback = ((MediaInteractionSoundEventCallback) deliveryEvent.getParams().get("callback"));
 				}
 
-				if (playing)
+				if (playing) {
 					soundStop();
+				}
 
 				if (callback != null) {
 					currCallback = callback;
@@ -75,8 +75,9 @@ public class JsSoundProcessorExtension extends JsExtension implements SoundProce
 
 	protected void soundFinished() {
 		playing = false;
-		if (currCallback != null)
+		if (currCallback != null) {
 			currCallback.onStop();
+		}
 	}
 
 	@Override
@@ -99,31 +100,25 @@ public class JsSoundProcessorExtension extends JsExtension implements SoundProce
 	public void onMediaEvent(MediaEvent event) {
 		// emulujemy play poprzez deliveryevent
 
-		switch (((MediaEventTypes) event.getAssociatedType().getType())) {
-		case PLAY:
+		if (event.getAssociatedType().getType() == MediaEventTypes.PLAY) {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("url", sources.get(event.getSource()));
-			DeliveryEvent e = new DeliveryEvent(DeliveryEventType.MEDIA_SOUND_PLAY, params);
-			onDeliveryEvent(e);
-			break;
+			DeliveryEvent dEvent = new DeliveryEvent(DeliveryEventType.MEDIA_SOUND_PLAY, params);
+			onDeliveryEvent(dEvent);
 		}
 	}
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		switch (event.getType()) {
-		case CREATE_MEDIA_WRAPPER:
-			if (event.getValue() != null && event.getValue() instanceof BaseMediaConfiguration) {
+		if (event.getType() == PlayerEventTypes.CREATE_MEDIA_WRAPPER) {
+			if (event.getValue() instanceof BaseMediaConfiguration) {// NOPMD
 				BaseMediaConfiguration bmc = (BaseMediaConfiguration) event.getValue();
 				JsMediaWrapper mediaWrapper = new JsMediaWrapper();
 				sources.put(mediaWrapper, SourceUtil.getMpegSource(bmc.getSources()));
-				if (event.getSource() instanceof CallbackRecevier) {
+				if (event.getSource() instanceof CallbackRecevier) {// NOPMD
 					((CallbackRecevier) event.getSource()).setCallbackReturnObject(mediaWrapper);
 				}
 			}
-			break;
-		default:
-			break;
 		}
 	}
 

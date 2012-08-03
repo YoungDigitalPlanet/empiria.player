@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -12,24 +13,31 @@ import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowComm
 import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventType;
-import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventsListener;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.util.config.OptionsReader;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.page.PageEvent;
+import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier {
+public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier, PlayerEventHandler {
 
-	public MainFlowProcessor(FlowProcessingEventsListener feel){
-		flowExecutionEventsListener = feel;
+	public MainFlowProcessor() {
+		// flowExecutionEventsListener = feel;
 		flowOptions = OptionsReader.getFlowOptions();
 		displayOptions = new DisplayOptions();
 		isCheck = false;
 		isShowAnswers = false;
 		isInitalized = false;
 	}
-	
-	private FlowProcessingEventsListener flowExecutionEventsListener;
-	private ItemParametersSocket itemParametersSocket;
-	
+
+	// private final FlowProcessingEventsListener flowExecutionEventsListener;
+	// // NOPMD
+	private ItemParametersSocket itemParametersSocket; // NOPMD
+	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private int currentPageIndex;
 	private PageType currentPageType;
 	private int itemsCount;
@@ -40,161 +48,158 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	private boolean isLock;
 	private boolean isInitalized;
 
-	public void init(int _itemsCount){
+	public void init(int _itemsCount) {
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), this);
 		itemsCount = _itemsCount;
 		currentPageIndex = 0;
-		if (flowOptions.showToC)
+		if (flowOptions.showToC) {
 			currentPageType = PageType.TOC;
-		else 
+		} else {
 			currentPageType = PageType.TEST;
+		}
 	}
 
-	public void initFlow(){
-		if (!isInitalized){
+	public void initFlow() {
+		if (!isInitalized) {
 			isInitalized = true;
 			doFlow();
 		}
 	}
 
-	public void deinitFlow(){
+	public void deinitFlow() {
 		isInitalized = false;
 	}
-	
-	private void doFlow(){
-		if (isInitalized){
-			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.PAGE_LOADED ) );
+
+	private void doFlow() {
+		if (isInitalized) {
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.LOAD_PAGE_VIEW, currentPageIndex, this));
 		}
 	}
 
-	public void setFlowOptions(FlowOptions o){
-		flowOptions = o;
-		if (currentPageType == PageType.TOC  &&  !flowOptions.showToC){
+	@Override
+	public void onPlayerEvent(PlayerEvent event) {
+		if (event.getType() == PlayerEventTypes.PAGE_VIEW_LOADED) {
+			if (isInitalized) {
+				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, currentPageIndex, this));
+				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED, new FlowProcessingEvent(FlowProcessingEventType.PAGE_LOADED), this));
+			}
+		}
+	}
+
+	public void setFlowOptions(FlowOptions options) {
+		flowOptions = options;
+		if (currentPageType == PageType.TOC && !flowOptions.showToC) {
 			currentPageType = PageType.TEST;
 			currentPageIndex = 0;
-		} else if (currentPageType == PageType.SUMMARY  &&  !flowOptions.showSummary){
+		} else if (currentPageType == PageType.SUMMARY && !flowOptions.showSummary) {
 			currentPageType = PageType.TEST;
 			currentPageIndex = 0;
 		}
 	}
-	
-	public FlowOptions getFlowOptions(){
+
+	@Override
+	public FlowOptions getFlowOptions() {
 		return flowOptions;
 	}
-	
-	public void setDisplayOptions(DisplayOptions o){
-		displayOptions = o;
+
+	public void setDisplayOptions(DisplayOptions options) {
+		displayOptions = options;
 	}
-	
-	public DisplayOptions getDisplayOptions(){
+
+	public DisplayOptions getDisplayOptions() {
 		return displayOptions;
 	}
-	
+
 	@Override
 	public void gotoPage(int index) {
-		if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL){
-			if (index == 0){
+		if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL) {
+			if (index == 0) {
 				onPageChange();
 				currentPageType = PageType.TEST;
 				currentPageIndex = index;
 				doFlow();
 			}
-		} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE){
-			if (index >= 0  &&  index < itemsCount){
+		} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE) {
+			if (index >= 0 && index < itemsCount) {// NOPMD
 				onPageChange();
 				currentPageType = PageType.TEST;
 				currentPageIndex = index;
 				doFlow();
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void gotoSummary() {
-		if (currentPageType != PageType.SUMMARY  &&  flowOptions.showSummary){
+		if (currentPageType != PageType.SUMMARY && flowOptions.showSummary) {
 			onPageChange();
 			flowOptions.activityMode = ActivityMode.NORMAL;
-			//displayOptions.setPreviewMode(false);
+			// displayOptions.setPreviewMode(false);
 			currentPageType = PageType.SUMMARY;
 			currentPageIndex = 0;
 			doFlow();
 		}
-		
+
 	}
 
 	@Override
 	public void gotoToc() {
-		if (currentPageType != PageType.TOC  &&  flowOptions.showToC){
+		if (currentPageType != PageType.TOC && flowOptions.showToC) {
 			onPageChange();
 			currentPageType = PageType.TOC;
 			currentPageIndex = 0;
 			doFlow();
 		}
-		
+
 	}
 
 	@Override
 	public void gotoTest() {
-		if (currentPageType != PageType.TEST){
-			if (itemsCount > 0){
-				onPageChange();
-				gotoPage(0);
-			}
+		if (currentPageType != PageType.TEST && itemsCount > 0) {
+			onPageChange();
+			gotoPage(0);
 		}
-		
 	}
 
 	@Override
 	public void nextPage() {
-		if (currentPageType == PageType.SUMMARY){
-
-		} else if (currentPageType == PageType.TOC){
-			if (0 < itemsCount){
+		if (currentPageType == PageType.TOC) {
+			if (0 < itemsCount) {
 				gotoPage(0);
 			}
-		} else if (currentPageType == PageType.TEST){
-			
-			if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL){
-				
-			} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE){
-				if (currentPageIndex+1 >= 0  &&  currentPageIndex+1 < itemsCount){
-					gotoPage(currentPageIndex+1);
+		} else if (currentPageType == PageType.TEST) {
+			if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE) {// NOPMD
+				if (currentPageIndex + 1 >= 0 && currentPageIndex + 1 < itemsCount) {// NOPMD
+					gotoPage(currentPageIndex + 1);
 				}
 			}
 		}
-		
-		
+
 	}
 
 	@Override
 	public void previousPage() {
-		if (currentPageType == PageType.SUMMARY){
-			
-		} else if (currentPageType == PageType.TOC){
-			
-		} else if (currentPageType == PageType.TEST){
-			
-			if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL){
-				
-			} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE){
-				if (currentPageIndex-1 >= 0  &&  currentPageIndex-1 < itemsCount){
-					gotoPage(currentPageIndex-1);
-				} else if (currentPageIndex == 0){
+		if (currentPageType == PageType.TEST) {
+			if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE) {// NOPMD
+				if (currentPageIndex - 1 >= 0 && currentPageIndex - 1 < itemsCount) {
+					gotoPage(currentPageIndex - 1);
+				} else if (currentPageIndex == 0) {
 					gotoToc();
 				}
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void gotoFirstPage() {
-		if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL){
-			if (0 < itemsCount){
+		if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL) {
+			if (0 < itemsCount) {// NOPMD
 				gotoPage(0);
 			}
-		} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE){
-			if (0 < itemsCount){
+		} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE) {
+			if (0 < itemsCount) {// NOPMD
 				gotoPage(0);
 			}
 		}
@@ -202,64 +207,64 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 
 	@Override
 	public void gotoLastPage() {
-		if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL){
-			if (0 < itemsCount){
+		if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL) {
+			if (0 < itemsCount) {// NOPMD
 				gotoPage(0);
 			}
-		} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE){
-			if (itemsCount > 0){
-				gotoPage(itemsCount-1);
+		} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE) {
+			if (itemsCount > 0) {// NOPMD
+				gotoPage(itemsCount - 1);
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void checkPage() {
-		if (isCheck == false){
-			if (isShowAnswers){
+		if (!isCheck) {
+			if (isShowAnswers) {
 				continuePage();
 			}
 			isCheck = true;
-			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.CHECK ) );
+			eventsBus.fireEvent(new PageEvent(PageEventTypes.CHECK, new FlowProcessingEvent(FlowProcessingEventType.CHECK), this), new CurrentPageScope());
 		}
 	}
-	
+
 	@Override
 	public void showAnswersPage() {
-		if (isShowAnswers == false){
-			if (isCheck){
+		if (!isShowAnswers) {
+			if (isCheck) {
 				continuePage();
 			}
 			isShowAnswers = true;
-			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.SHOW_ANSWERS ) );
+			eventsBus.fireEvent(new PageEvent(PageEventTypes.CHECK, new FlowProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS), this), new CurrentPageScope());
 		}
-		
+
 	}
 
 	@Override
 	public void continuePage() {
-		if (isCheck == true  ||  isShowAnswers == true){
+		if (isCheck || isShowAnswers) {
 			isCheck = false;
 			isShowAnswers = false;
-			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.CONTINUE ) );
+			eventsBus.fireEvent(new PageEvent(PageEventTypes.CONTINUE, new FlowProcessingEvent(FlowProcessingEventType.CONTINUE), this), new CurrentPageScope());
 		}
 
 	}
 
 	@Override
 	public void lockPage() {
-		if (isLock == false){
+		if (!isLock) {
 			isLock = true;
-			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.LOCK ) );
+			eventsBus.fireEvent(new PageEvent(PageEventTypes.LOCK, new FlowProcessingEvent(FlowProcessingEventType.LOCK), this), new CurrentPageScope());
 		}
 	}
 
 	@Override
 	public void unlockPage() {
-		if (isLock == true){
+		if (isLock) {
 			isLock = false;
-			flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.UNLOCK ) );
+			eventsBus.fireEvent(new PageEvent(PageEventTypes.UNLOCK, new FlowProcessingEvent(FlowProcessingEventType.UNLOCK), this), new CurrentPageScope());
 		}
 	}
 
@@ -267,36 +272,37 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	public void resetPage() {
 		isCheck = false;
 		isShowAnswers = false;
-		flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.RESET ) );
-	}
-	
-	public void checkGroup(GroupIdentifier gi){
-		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.CHECK, gi ) );
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.RESET, new FlowProcessingEvent(FlowProcessingEventType.RESET), this), new CurrentPageScope());
 	}
 
 	@Override
-	public void showAnswersGroup(GroupIdentifier gi) {
-		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.SHOW_ANSWERS, gi ) );
+	public void checkGroup(GroupIdentifier groupId) {
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.CHECK, new ActivityProcessingEvent(FlowProcessingEventType.CHECK, groupId), this), new CurrentPageScope());
 	}
 
 	@Override
-	public void continueGroup(GroupIdentifier gi) {
-		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.CONTINUE, gi ) );
+	public void showAnswersGroup(GroupIdentifier groupId) {
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.SHOW_ANSWERS, new ActivityProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS, groupId), this), new CurrentPageScope());
 	}
 
 	@Override
-	public void resetGroup(GroupIdentifier gi) {
-		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.RESET, gi ) );
+	public void continueGroup(GroupIdentifier groupId) {
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.CONTINUE, new ActivityProcessingEvent(FlowProcessingEventType.CONTINUE, groupId), this), new CurrentPageScope());
 	}
 
 	@Override
-	public void lockGroup(GroupIdentifier gi) {
-		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.LOCK, gi ) );
+	public void resetGroup(GroupIdentifier groupId) {
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.RESET, new ActivityProcessingEvent(FlowProcessingEventType.RESET, groupId), this), new CurrentPageScope());
 	}
 
 	@Override
-	public void unlockGroup(GroupIdentifier gi) {
-		flowExecutionEventsListener.onFlowProcessingEvent(new ActivityProcessingEvent( FlowProcessingEventType.UNLOCK, gi ) );
+	public void lockGroup(GroupIdentifier groupId) {
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.LOCK, new ActivityProcessingEvent(FlowProcessingEventType.LOCK, groupId), this), new CurrentPageScope());
+	}
+
+	@Override
+	public void unlockGroup(GroupIdentifier groupId) {
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.UNLOCK, new ActivityProcessingEvent(FlowProcessingEventType.UNLOCK, groupId), this), new CurrentPageScope());
 	}
 
 	@Override
@@ -305,64 +311,70 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		flowOptions.activityMode = ActivityMode.CHECK;
 		gotoPage(index);
 	}
-	
-	public void onPageChange(){
-		flowExecutionEventsListener.onFlowProcessingEvent(new FlowProcessingEvent( FlowProcessingEventType.PAGE_CHANGING ) );
+
+	public void onPageChange() {
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_UNLOADED));
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGING, new FlowProcessingEvent(FlowProcessingEventType.PAGE_CHANGING), this));
 		isCheck = false;
 		isShowAnswers = false;
 		isLock = false;
 	}
-	
-	public boolean getFlowFlagCheck(){
+
+	@Override
+	public boolean getFlowFlagCheck() {// NOPMD
 		return isCheck;
 	}
-	
-	public boolean getFlowFlagShowAnswers(){
+
+	@Override
+	public boolean getFlowFlagShowAnswers() {// NOPMD
 		return isShowAnswers;
 	}
-	
-	public boolean getFlowFlagLock(){
+
+	@Override
+	public boolean getFlowFlagLock() {// NOPMD
 		return isLock;
 	}
-	
-	public PageReference getPageReference(){
-		int[] currentPageItemsIndices = null;
-		if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE){
+
+	public PageReference getPageReference() {
+		int[] currentPageItemsIndices = null; // NOPMD
+		if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ONE) {
 			currentPageItemsIndices = new int[1];
 			currentPageItemsIndices[0] = currentPageIndex;
-		} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL){
+		} else if (flowOptions.itemsDisplayMode == PageItemsDisplayMode.ALL) {
 			currentPageItemsIndices = new int[itemsCount];
-			for (int i = 0 ; i < itemsCount ; i ++){
+			for (int i = 0; i < itemsCount; i++) {
 				currentPageItemsIndices[i] = i;
 			}
 		}
-		PageReference pr = new PageReference(currentPageType, currentPageItemsIndices, flowOptions, displayOptions);
-		
-		return pr;
+		return new PageReference(currentPageType, currentPageItemsIndices, flowOptions, displayOptions);
 	}
-	
-	public PageType getPageType(){
+
+	public PageType getPageType() {
 		return currentPageType;
 	}
-	
-	public ActivityMode getActivityMode(){
+
+	@Override
+	public ActivityMode getActivityMode() {
 		return flowOptions.activityMode;
 	}
 
-	public int getCurrentPageIndex(){
+	@Override
+	public int getCurrentPageIndex() {
 		return currentPageIndex;
 	}
-	public PageType getCurrentPageType(){
+
+	@Override
+	public int getPageCount() {
+		return itemsCount;
+	}
+
+	@Override
+	public PageType getCurrentPageType() {
 		return currentPageType;
 	}
 
-
 	public ItemParameters getItemParamters() {
-		if (itemParametersSocket != null)
-			return itemParametersSocket.getItemParameters();
-		return new ItemParameters();
+		return (itemParametersSocket == null) ? new ItemParameters() : itemParametersSocket.getItemParameters();
 	}
 
-	
-	
 }

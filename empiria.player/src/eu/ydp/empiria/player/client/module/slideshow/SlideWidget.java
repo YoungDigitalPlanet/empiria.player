@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class SlideWidget extends Composite {
@@ -23,7 +23,7 @@ public class SlideWidget extends Composite {
 	public SlideWidget(Element slideElement, InlineBodyGeneratorSocket inlineBodyGeneratorSocket){
 		String startTimeString = slideElement.getAttribute("startTime");
 		if (startTimeString != null)
-			startTime = IntegerUtils.tryParseInt(startTimeString);
+			startTime = NumberUtils.tryParseInt(startTimeString);
 		
 		String src = null;
 		Element sourceElement = XMLUtils.getFirstElementWithTagName(slideElement, "source");

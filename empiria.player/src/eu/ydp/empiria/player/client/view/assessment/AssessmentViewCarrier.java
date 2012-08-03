@@ -7,36 +7,32 @@ import eu.ydp.empiria.player.client.controller.Assessment;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
 public class AssessmentViewCarrier {
-	
-	private Assessment assessment;
 
-	public AssessmentViewCarrier(Assessment a, ViewSocket hvs, ViewSocket fvs){
+	private final Assessment assessment;
+
+	public AssessmentViewCarrier(Assessment assessment, ViewSocket hvs, ViewSocket fvs) {
 		headerViewSocket = hvs;
 		footerViewSocket = fvs;
-		assessment = a;
+		this.assessment = assessment;
 	}
-	
-	private ViewSocket headerViewSocket;
-	private ViewSocket footerViewSocket;
-	
-	public Widget getHeaderView(){
-		if (headerViewSocket != null)
-			return headerViewSocket.getView();
-		return null;
+
+	private final ViewSocket headerViewSocket;
+	private final ViewSocket footerViewSocket;
+
+	public Widget getHeaderView() {
+		return (headerViewSocket == null) ? null : headerViewSocket.getView(); //NOPMD
 	}
-	
-	public Panel getPageSlot(){
+
+	public Panel getPageSlot() {
 		return assessment.getPageSlot();
 	}
-	
-	public Widget getSkinView(){
-		return assessment.getSkinView(); 
+
+	public Widget getSkinView() {
+		return assessment.getSkinView();
 	}
-	
-	public Widget getFooterView(){
-		if (footerViewSocket != null)
-			return footerViewSocket.getView();
-		return null;
+
+	public Widget getFooterView() {
+		return (footerViewSocket == null) ? null : footerViewSocket.getView(); //NOPMD
 	}
-	
+
 }

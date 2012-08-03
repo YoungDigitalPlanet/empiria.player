@@ -7,22 +7,22 @@ import eu.ydp.empiria.player.client.view.player.PlayerContentView;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 
 public class ViewEngine {
-	
+
 	@Inject
 	public ViewEngine(PlayerContentView pcv){
 		playerView = pcv;
 	}
-	
+
 	public void mountView(ComplexPanel container){
-		container.add(playerView.getView());
+		container.add(playerView);
 	}
-	
-	private PlayerContentView playerView;
-	
+
+	private final PlayerContentView playerView;
+
 	public PlayerViewSocket getPlayerViewSocket(){
 		return playerView;
 	}
-	
-	
-	
+
+
+
 }

@@ -5,6 +5,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
  * Przycisk mute
@@ -14,7 +15,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
  */
 public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
 	public MuteMediaButton() {
-		super("qp-media-mute");
+		super(styleNames.QP_MEDIA_MUTE());
 	}
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
@@ -37,7 +38,7 @@ public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
 				changeStyleForClick();
 			}
 		};
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), eventHandler);
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), eventHandler, new CurrentPageScope());
 	}
 
 	@Override

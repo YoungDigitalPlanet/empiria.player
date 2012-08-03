@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.view.player;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
@@ -7,34 +11,25 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentContentView;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentViewSocket;
 
-public class PlayerContentView implements PlayerViewSocket {
+public class PlayerContentView extends Composite implements PlayerViewSocket {
+	private static PlayerContentViewUiBinder uiBinder = GWT.create(PlayerContentViewUiBinder.class);
 
-	public PlayerContentView(){
-		playerPanel = new FlowPanel();
-		playerPanel.setStyleName("qp-player");
-		headerPanel = new FlowPanel();
-		headerPanel.setStyleName("qp-player-header");
-		assessmentPanel = new FlowPanel();
-		assessmentPanel.setStyleName("qp-player-body");
-		footerPanel = new FlowPanel();
-		footerPanel.setStyleName("qp-player-footer");
-		
-		playerPanel.add(headerPanel);
-		playerPanel.add(assessmentPanel);
-		playerPanel.add(footerPanel);
-		
+	interface PlayerContentViewUiBinder extends UiBinder<Widget, PlayerContentView> {
+	}
+
+	private final AssessmentContentView assessmentContentView; // NOPMD
+
+	@UiField
+	protected Panel headerPanel;
+	@UiField
+	protected FlowPanel assessmentPanel = null;
+	@UiField
+	protected Panel footerPanel;
+
+	public PlayerContentView() {
+		initWidget(uiBinder.createAndBindUi(this));
 		assessmentContentView = new AssessmentContentView(assessmentPanel);
 	}
-
-	public Widget getView(){
-		return playerPanel;
-	}
-
-	private AssessmentContentView assessmentContentView;
-	private Panel playerPanel;
-	private Panel headerPanel;
-	private Panel assessmentPanel;
-	private Panel footerPanel;
 
 	@Override
 	public void setPlayerViewCarrier(PlayerViewCarrier pvd) {
@@ -42,7 +37,7 @@ public class PlayerContentView implements PlayerViewSocket {
 		headerPanel.add(pvd.getHeaderView());
 		footerPanel.clear();
 		footerPanel.add(pvd.getFooterView());
-		
+
 	}
 
 	@Override

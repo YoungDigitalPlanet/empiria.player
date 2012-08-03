@@ -94,12 +94,14 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 	}
 
 
+	@Override
 	protected XmlData getAssessmentXMLData(){
 
 		String assessmentXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><assessmentTest xmlns=\"http://www.ydp.eu/empiria\" identifier=\"RTEST-13\" title=\"Show player supported functionality\"><testPart><assessmentSection identifier=\"sectionA\" title=\"Section A\" visible=\"true\"><assessmentItemRef identifier=\"inline_choice\" href=\"demo/inline_choice.xml\"/></assessmentSection></testPart></assessmentTest>";
 		Document assessmentDoc = XMLParser.parse(assessmentXml);
 		return new XmlData(assessmentDoc, "");
 	}
+	@Override
 	protected XmlData[] getItemXMLDatas(){
 
 		Document itemDoc = XMLParser.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody><testModule8273629297347 responseIdentifier=\"RESPONSE1\"/></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
@@ -147,7 +149,6 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 
 		@Override
 		public String getModuleNodeName() {
-			// TODO Auto-generated method stub
 			return "testModule8273629297347";
 		}
 
@@ -203,31 +204,26 @@ public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 
 		@Override
 		public void addElement(Element element) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void installViews(List<HasWidgets> placeholders) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void onBodyLoad() {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void onBodyUnload() {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void onSetUp() {
-			// TODO Auto-generated method stub
 
 		}
 
