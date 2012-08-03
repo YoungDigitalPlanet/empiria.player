@@ -237,7 +237,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 				continuePage();
 			}
 			isShowAnswers = true;
-			eventsBus.fireEvent(new PageEvent(PageEventTypes.CHECK, new FlowProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS), this), new CurrentPageScope());
+			eventsBus.fireEvent(new PageEvent(PageEventTypes.SHOW_ANSWERS, new FlowProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS), this), new CurrentPageScope());
 		}
 
 	}
