@@ -32,47 +32,47 @@ public abstract class PageInterferenceSocketUserExtensionTest extends ExtensionT
 	protected PageInterferenceSocket pis;
 	protected String lastAction = "";
 
-	public void testGetJsSocket(){
+	protected void testGetJsSocket(){
 		ModuleInterferenceSocket mis = initTests();
 		mis.getJsSocket();
 		assertEquals("getJsSocket", lastAction);
 	}
-	public void testGetState(){
+	protected void testGetState(){
 		ModuleInterferenceSocket mis = initTests();
 
 		mis.getState();
 		assertEquals("getState", lastAction);
 
 	}
-	public void testLock(){
+	protected void testLock(){
 		ModuleInterferenceSocket mis = initTests();
 
 		mis.lock(false);
 		assertEquals("lock", lastAction);
 
 	}
-	public void testMarkAnswers(){
+	protected void testMarkAnswers(){
 		ModuleInterferenceSocket mis = initTests();
 
 		mis.markAnswers(false);
 		assertEquals("markAnswers", lastAction);
 
 	}
-	public void testReset(){
+	protected void testReset(){
 		ModuleInterferenceSocket mis = initTests();
 
 		mis.reset();
 		assertEquals("reset", lastAction);
 
 	}
-	public void testSetState(){
+	protected void testSetState(){
 		ModuleInterferenceSocket mis = initTests();
 
 		mis.setState(new JSONArray());
 		assertEquals("setState", lastAction);
 
 	}
-	public void testShowCorrectAnswers(){
+	protected void testShowCorrectAnswers(){
 		ModuleInterferenceSocket mis = initTests();
 
 		mis.showCorrectAnswers(false);
