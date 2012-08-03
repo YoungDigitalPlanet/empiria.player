@@ -16,7 +16,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ModuleExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -28,56 +27,42 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
-public class TextGapFocusOutTest extends ExtensionTestBase {
-	
-	private boolean passed = false;
+public abstract class TextGapFocusOutTest extends ExtensionTestBase {
 
-	private FlowRequestInvoker flowRequestInvoker;
-	
+	private boolean  passed = false;
+
+	protected FlowRequestInvoker flowRequestInvoker;
+
 	protected void initDeliveryEngine(){
 		List<Extension> exts = new ArrayList<Extension>();
 		exts.add(new MockModuleConnectorExtension());
 		exts.add(new FlowRequestInvokerExtension());
 		super.initDeliveryEngine(exts, false);
 	}
-	
-	public void testBeforeFlowNotificationOnCheck(){
-		initDeliveryEngine(); 
-		flowRequestInvoker.invokeRequest(new FlowRequest.Check());
-		assertTrue("Before flow notification on check", passed);
-	}
-	
-	public void testBeforeFlowNotificationOnShowAnswers(){
-		initDeliveryEngine();
-		flowRequestInvoker.invokeRequest(new FlowRequest.ShowAnswers());
-		assertTrue("Before flow notification on check", passed);
-	}
-	
-	public void testBeforeFlowNotificationOnPageSwitch(){
-		initDeliveryEngine();
-		flowRequestInvoker.invokeRequest(new FlowRequest.NavigateNextItem());
-		assertTrue("Before flow notification on check", passed);
-	}
-	
+
 	protected void setPassed(){
 		passed = true;
 	}
 
+	public boolean isPassed() {
+		return passed;
+	}
+
 	@Override
 	protected XmlData[] getItemXMLDatas(){
-	
+
 		Document itemDoc = XMLParser.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody><mockInteraction responseIdentifier=\"x\"/></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 		XmlData itemData = new XmlData(itemDoc, "");
 		Document itemDoc2 = XMLParser.parse("<assessmentItem identifier=\"inlineChoice2\" title=\"Interactive text 2\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 		XmlData itemData2 = new XmlData(itemDoc2, "");
-		
+
 		XmlData[] itemDatas = new XmlData[2];
 		itemDatas[0] = itemData;
 		itemDatas[1] = itemData2;
-		
+
 		return itemDatas;
 	}
-	
+
 	protected class FlowRequestInvokerExtension extends InternalExtension implements FlowRequestSocketUserExtension{
 
 		@Override
@@ -88,7 +73,7 @@ public class TextGapFocusOutTest extends ExtensionTestBase {
 		public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
 			flowRequestInvoker = fri;
 		}
-		
+
 	}
 
 	protected class MockModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension {
@@ -96,17 +81,17 @@ public class TextGapFocusOutTest extends ExtensionTestBase {
 		@Override
 		public ModuleCreator getModuleCreator() {
 			return new ModuleCreator() {
-				
+
 				@Override
 				public boolean isMultiViewModule() {
 					return true;
 				}
-				
+
 				@Override
 				public boolean isInlineModule() {
 					return false;
 				}
-				
+
 				@Override
 				public IModule createModule() {
 					return new MockModule();
@@ -118,13 +103,13 @@ public class TextGapFocusOutTest extends ExtensionTestBase {
 		public String getModuleNodeName() {
 			return "mockInteraction";
 		}
-		
+
 	}
-	
+
 	protected class MockModule extends OneViewInteractionModuleBase implements Factory<MockModule>{
-		
-		private EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-		
+
+		private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
 		public MockModule(){
 		}
 
@@ -141,7 +126,7 @@ public class TextGapFocusOutTest extends ExtensionTestBase {
 		}
 
 		@Override
-		public void reset() {			
+		public void reset() {
 		}
 
 		@Override
@@ -151,7 +136,7 @@ public class TextGapFocusOutTest extends ExtensionTestBase {
 
 		@Override
 		public void setState(JSONArray newState) {
-			
+
 		}
 
 		@Override
@@ -162,7 +147,7 @@ public class TextGapFocusOutTest extends ExtensionTestBase {
 		@Override
 		public void installViews(List<HasWidgets> placeholders) {
 			eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
-				
+
 				@Override
 				public void onPlayerEvent(PlayerEvent event) {
 					if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
@@ -196,6 +181,6 @@ public class TextGapFocusOutTest extends ExtensionTestBase {
 		public MockModule getNewInstance() {
 			return new MockModule();
 		}
-		
+
 	}
 }
