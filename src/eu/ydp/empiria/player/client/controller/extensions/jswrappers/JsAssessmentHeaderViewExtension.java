@@ -18,28 +18,28 @@ public class JsAssessmentHeaderViewExtension extends JsExtension implements
 	}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
+	public void init() {//NOPMD
 
 	}
 
 	@Override
 	public ViewSocket getAssessmentHeaderViewSocket() {
-		Element e = getViewJs(extensionJsObject);
-		Widget w = null;
-		if (e != null)
-			w = new ElementWrapperWidget(e);
-		
-		final Widget w2 = w;
-		
+		Element element = getViewJs(extensionJsObject);
+		Widget widget = null;
+		if (element != null) {
+			widget = new ElementWrapperWidget(element);
+		}
+
+		final Widget widget2 = widget;
+
 		return new ViewSocket() {
 			@Override
 			public Widget getView() {
-				return w2;
+				return widget2;
 			}
 		};
 	}
-	
+
 	private native Element getViewJs(JavaScriptObject extension)/*-{
 		if (typeof extension.getAssessmentHeaderView == 'function')
 			return extension.getAssessmentHeaderView();

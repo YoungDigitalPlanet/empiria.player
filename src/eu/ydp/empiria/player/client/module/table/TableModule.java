@@ -20,7 +20,7 @@ import eu.ydp.empiria.player.client.module.binding.BindingProxy;
 import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
 import eu.ydp.empiria.player.client.module.containers.ActivityContainerModuleBase;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 
 public class TableModule extends ActivityContainerModuleBase implements Factory<TableModule>, BindingProxy {
 
@@ -42,13 +42,13 @@ public class TableModule extends ActivityContainerModuleBase implements Factory<
 		Map<String, String> styles = ms.getStyles(element);
 
 		if (styles.containsKey("-empiria-table-cellpadding")){
-			int padding = IntegerUtils.tryParseInt(styles.get("-empiria-table-cellpadding"), -1);
+			int padding = NumberUtils.tryParseInt(styles.get("-empiria-table-cellpadding"), -1);
 			if (padding != -1)
 				table.setCellPadding(padding);
 		}
 
 		if (styles.containsKey("-empiria-table-cellspacing")){
-			int spacing = IntegerUtils.tryParseInt(styles.get("-empiria-table-cellspacing"), -1);
+			int spacing = NumberUtils.tryParseInt(styles.get("-empiria-table-cellspacing"), -1);
 			if (spacing != -1)
 				table.setCellSpacing(spacing);
 		}
@@ -64,13 +64,13 @@ public class TableModule extends ActivityContainerModuleBase implements Factory<
 				
 				int colspan = 1;
 				if (tdNodes.item(d).getNodeType() == Node.ELEMENT_NODE  &&  ((Element)tdNodes.item(d)).hasAttribute("colspan"))
-					colspan = IntegerUtils.tryParseInt(((Element)tdNodes.item(d)).getAttribute("colspan"), 1);
+					colspan = NumberUtils.tryParseInt(((Element)tdNodes.item(d)).getAttribute("colspan"), 1);
 				if (colspan > 1)
 					table.getFlexCellFormatter().setColSpan(r, d, colspan);
 				
 				int rowspan = 1;
 				if (tdNodes.item(d).getNodeType() == Node.ELEMENT_NODE  &&  ((Element)tdNodes.item(d)).hasAttribute("rowspan"))
-					rowspan = IntegerUtils.tryParseInt(((Element)tdNodes.item(d)).getAttribute("rowspan"), 1);
+					rowspan = NumberUtils.tryParseInt(((Element)tdNodes.item(d)).getAttribute("rowspan"), 1);
 				if (rowspan > 1)
 					table.getFlexCellFormatter().setRowSpan(r, d, rowspan);
 			}

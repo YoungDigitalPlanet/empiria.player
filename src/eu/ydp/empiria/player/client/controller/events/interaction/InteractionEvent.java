@@ -7,12 +7,12 @@ import com.google.gwt.core.client.JavaScriptObject;
 public abstract class InteractionEvent {
 
 	public abstract InteractionEventType getType();
-	
+
 	public abstract Map<String, Object> getParams();
-	
+
 	public static InteractionEvent fromJsObject(JavaScriptObject jsObject){
 		String type = getJsObjectType(jsObject);
-		
+
 		if (type.equals(InteractionEventType.STATE_CHANGED.toString())){
 			try{
 				boolean userInteract = getJsObjectUserInteract(jsObject);
@@ -21,7 +21,7 @@ public abstract class InteractionEvent {
 			} catch (Exception e) {
 			}
 		}
-		
+
 		if (type.equals(InteractionEventType.FEEDBACK_SOUND.toString())){
 			try{
 				String url = getJsObjectUrl(jsObject);
@@ -29,7 +29,7 @@ public abstract class InteractionEvent {
 			} catch (Exception e) {
 			}
 		}
-		
+
 		if (type.equals(InteractionEventType.FEEDBACK_MUTE.toString())){
 			try{
 				boolean mute = getJsObjectMute(jsObject);
@@ -37,7 +37,7 @@ public abstract class InteractionEvent {
 			} catch (Exception e) {
 			}
 		}
-		
+
 		return null;
 	}
 

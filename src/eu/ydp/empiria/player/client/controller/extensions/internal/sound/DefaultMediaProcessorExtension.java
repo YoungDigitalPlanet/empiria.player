@@ -40,9 +40,6 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
 	protected boolean initialized = false;
 
-	public DefaultMediaProcessorExtension() {
-
-	}
 
 	@Override
 	public void init() {
@@ -96,8 +93,8 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	}
 
 	@Override
-	void pauseAllOthers(MediaWrapper<?> mw) {
-		forceStop(true, mw, false);
+	protected void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
+		forceStop(true, mediaWrapper, false);
 	}
 
 	protected void forceStop(boolean pause, boolean stopDefaultSoundExecutor) {

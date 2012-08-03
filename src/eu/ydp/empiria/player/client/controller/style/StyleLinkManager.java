@@ -15,9 +15,9 @@ public class StyleLinkManager {
 		solidStyles = new HashMap<String, JavaScriptObject>();
 		removableStyles = new ArrayList<JavaScriptObject>();
 	}
-	
-	private Map<String, JavaScriptObject> solidStyles;
-	private List<JavaScriptObject> removableStyles;
+
+	private final Map<String, JavaScriptObject> solidStyles;
+	private final List<JavaScriptObject> removableStyles;
 
 	public void registerAssessmentStyles(QueueSet<String> styleLinks){
 		doRegisterStyleLinks(styleLinks, false);
@@ -26,16 +26,16 @@ public class StyleLinkManager {
 	public void registerItemStyles(QueueSet<String> styleLinks){
 		doRegisterStyleLinks(styleLinks, true);
 	}
-	
+
 	private void doRegisterStyleLinks(QueueSet<String> styleLinks, boolean areRemovable){
-		
+
 		if (areRemovable){
 			for (JavaScriptObject currLink : removableStyles){
-				removeStyleLink(currLink);
+				//removeStyleLink(currLink);
 			}
 			removableStyles.clear();
 		}
-		
+
 		for (String link : styleLinks){
 			if (solidStyles.containsKey(link)){
 				removeStyleLink(solidStyles.get(link));
@@ -50,15 +50,15 @@ public class StyleLinkManager {
 				removableStyles.add(newLink);
 			}
 		}
-		
+
 	}
-	
+
 	public native String getUserAgent() /*-{
 		return navigator.userAgent;
 	}-*/;
 
 	private native JavaScriptObject appendStyleLink(String link) /*-{
-		var headID = $wnd.document.getElementsByTagName("head")[0];         
+		var headID = $wnd.document.getElementsByTagName("head")[0];
 		var cssNode = $wnd.document.createElement('link');
 		cssNode.type = 'text/css';
 		cssNode.rel = 'stylesheet';
@@ -66,15 +66,15 @@ public class StyleLinkManager {
 		cssNode.media = 'screen';
 		headID.appendChild(cssNode);
 		return cssNode;
-	}-*/; 
+	}-*/;
 
 	private native void removeStyleLink(JavaScriptObject cssNode) /*-{
 		try {
-			var headID = $wnd.document.getElementsByTagName("head")[0];        
+			var headID = $wnd.document.getElementsByTagName("head")[0];
 			headID.removeChild(cssNode);
         } catch (e) {
 			cssNode.parentNode.removeChild(cssNode);
-		} 
-	}-*/; 
-	
+		}
+	}-*/;
+
 }

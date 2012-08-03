@@ -19,12 +19,13 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
+@SuppressWarnings("PMD")
 public class TouchPageSwitch extends InternalExtension implements FlowRequestSocketUserExtension,PlayerEventHandler {
-	int start = 0;
-	int end = 0;
-	int startY = 0, endY = 0;
-	final int swipeLength = 220;
-	final int stackAndroidSwipeLength = 20;
+	private int start = 0;
+	private int end = 0;
+	private int startY = 0, endY = 0;
+	private final int swipeLength = 220;
+	private final int stackAndroidSwipeLength = 20;
 	private FlowRequestInvoker flowRequestInvoker;
 	private boolean touchReservation = false;
 	public TouchPageSwitch() {
@@ -34,9 +35,9 @@ public class TouchPageSwitch extends InternalExtension implements FlowRequestSoc
 				JsArray<Touch> touches = event.getChangedTouches();
 				if (touches != null) {
 					for (int x = 0; x < touches.length();) {
-						Touch t = touches.get(x);
-						end = t.getPageX();
-						endY = t.getScreenY();
+						Touch touch = touches.get(x);
+						end = touch.getPageX();
+						endY = touch.getScreenY();
 						break;
 					}
 				}
@@ -51,16 +52,14 @@ public class TouchPageSwitch extends InternalExtension implements FlowRequestSoc
 				JsArray<Touch> touches = event.getTouches();
 				if (touches != null) {
 					for (int x = 0; x < touches.length();) {
-						Touch t = touches.get(x);
-						end = t.getPageX();
-						endY = t.getScreenY();
+						Touch touch = touches.get(x);
+						end = touch.getPageX();
+						endY = touch.getScreenY();
 						break;
 					}
 				}
-				if (UserAgentChecker.isStackAndroidBrowser()) {
-					if (end > 0) {
+				if (UserAgentChecker.isStackAndroidBrowser() && end > 0) {
 						switchPage(stackAndroidSwipeLength);
-					}
 				}
 
 			}
@@ -72,9 +71,9 @@ public class TouchPageSwitch extends InternalExtension implements FlowRequestSoc
 				JsArray<Touch> touches = event.getTouches();
 				if (touches != null) {
 					for (int x = 0; x < touches.length();) {
-						Touch t = touches.get(x);
-						start = t.getPageX();
-						startY = t.getScreenY();
+						Touch touch = touches.get(x);
+						start = touch.getPageX();
+						startY = touch.getScreenY();
 						end = -1;
 						break;
 					}
@@ -103,8 +102,7 @@ public class TouchPageSwitch extends InternalExtension implements FlowRequestSoc
 	}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
+	public void init() {//NOPMD
 
 	}
 

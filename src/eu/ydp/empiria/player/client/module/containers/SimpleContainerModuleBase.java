@@ -22,10 +22,10 @@ public abstract class SimpleContainerModuleBase<T> extends ActivityContainerModu
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
 		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
-		
+
 		readAttributes(element);
 		applyIdAndClassToView(getView());
-		
+
 		bodyGeneratorSocket.generateBody(element, getContainer());
 	}
 

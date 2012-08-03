@@ -16,7 +16,7 @@ public class ShowAnswersButtonModule extends ActivityButtonModule implements Pla
 	@Override
 	public void initModule(Element element) {
 		super.initModule(element);
-		//eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
 	}
 
 	@Override

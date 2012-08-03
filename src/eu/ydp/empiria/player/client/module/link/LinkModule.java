@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 
 public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 
@@ -66,7 +66,7 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
 
 		if (element.hasAttribute("itemIndex")){
-			itemIndex = IntegerUtils.tryParseInt( element.getAttribute("itemIndex"), -1);
+			itemIndex = NumberUtils.tryParseInt( element.getAttribute("itemIndex"), -1);
 		}
 		if (itemIndex == -1  &&   element.hasAttribute("url")){
 			url = element.getAttribute("url");

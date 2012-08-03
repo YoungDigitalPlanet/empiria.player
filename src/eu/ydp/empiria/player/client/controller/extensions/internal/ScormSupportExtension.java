@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSo
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 
 public class ScormSupportExtension extends InternalExtension implements PlayerJsObjectModifierExtension, SessionDataSocketUserExtension, DataSourceDataSocketUserExtension {
 
@@ -66,23 +66,23 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 
 	protected int getScore(){
 		String valueString = sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket().getVariableValue("DONE").getValuesShort();
-		int value = IntegerUtils.tryParseInt(valueString, 0);
+		int value = NumberUtils.tryParseInt(valueString, 0);
 		return value;
 	}
 
 	protected int getScoreMax(){
 		String valueString = sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket().getVariableValue("TODO").getValuesShort();
-		int value = IntegerUtils.tryParseInt(valueString, 0);
+		int value = NumberUtils.tryParseInt(valueString, 0);
 		return value;
 	}
 	
 	protected String getLessonStatus(){
 		String valueString = sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket().getVariableValue("DONE").getValuesShort();
-		int done = IntegerUtils.tryParseInt(valueString, 0);
+		int done = NumberUtils.tryParseInt(valueString, 0);
 		valueString = sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket().getVariableValue("TODO").getValuesShort();
-		int todo = IntegerUtils.tryParseInt(valueString, 0);
+		int todo = NumberUtils.tryParseInt(valueString, 0);
 		valueString = sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket().getVariableValue("VISITED").getValuesShort();
-		int visited = IntegerUtils.tryParseInt(valueString, 0);
+		int visited = NumberUtils.tryParseInt(valueString, 0);
 		int items = dataSourceDataSupplier.getItemsCount();
 		String status;
 		if (visited == items){

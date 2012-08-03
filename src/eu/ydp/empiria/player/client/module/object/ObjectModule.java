@@ -80,7 +80,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 		}
 		String poster = XMLUtils.getAttributeAsString(element, "poster");
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width, template);//NOPMD
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, callbackHandler, bmc));
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
 	}
 
 	/**

@@ -8,14 +8,14 @@ public class Page extends InternalExtension implements
 		FlowDataSocketUserExtension {
 
 	private static FlowDataSupplier supplier;
-	boolean isInitialized = false;
-
-	public Page() {
-	}
+	protected boolean isInitialized = false;
 
 	public static int getCurrentPageNumber() {
-		return supplier != null ? supplier.getCurrentPageIndex() : 0;
+		return supplier == null ? 0 : supplier.getCurrentPageIndex();
+	}
 
+	public static int getPageCount(){
+		return supplier == null ? 0 : supplier.getPageCount();
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class Page extends InternalExtension implements
 	}
 
 	@Override
-	public void init() {
+	public void init() {//NOPMD
 
 	}
 }

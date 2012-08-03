@@ -36,12 +36,13 @@ import eu.ydp.empiria.player.client.module.binding.DefaultBindingGroupIdentifier
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingContext;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 import eu.ydp.empiria.player.client.util.XMLUtils;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
@@ -51,7 +52,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	private String	lastValue = null;
 	private boolean showingAnswers = false;
 	private Panel moduleWidget;
-	private EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private GapWidthMode widthMode;
 	private DefaultBindingGroupIdentifier widthBindingIdentifier;
 	private Integer fontSize;
@@ -59,9 +60,9 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		
+
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
-			
+
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
 				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
@@ -70,12 +71,13 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 					}
 				}
 			}
-		});
+		},new CurrentPageScope());
 
 		textBox = new TextBox();
-		if (getModuleElement().hasAttribute("expectedLength"))
+		if (getModuleElement().hasAttribute("expectedLength")) {
 			textBox.setMaxLength(XMLUtils.getAttributeAsInt(getModuleElement(), "expectedLength"));
-		
+		}
+
 		textBox.addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -84,15 +86,16 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		});
 		if (UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN){
 			textBox.addFocusHandler(new FocusHandler() {
-				
+
 				@Override
 				public void onFocus(FocusEvent event) {
 					Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-						
+
 						@Override
 						public void execute() {
-							if (textBox.getText().length() > 0)
+							if (textBox.getText().length() > 0) {
 								textBox.setSelectionRange(0, textBox.getText().length());
+							}
 						}
 					});
 				}
@@ -101,11 +104,11 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 
 		Map<String, String> styles = getModuleSocket().getStyles(getModuleElement());
 		if (styles.containsKey("-empiria-textentry-gap-font-size")){
-			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-textentry-gap-font-size"), null);
+			fontSize = NumberUtils.tryParseInt(styles.get("-empiria-textentry-gap-font-size"), null);
 			textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
 		}
 		if (styles.containsKey("-empiria-textentry-gap-width")){
-			Integer gapWidth = IntegerUtils.tryParseInt(styles.get("-empiria-textentry-gap-width"), null);
+			Integer gapWidth = NumberUtils.tryParseInt(styles.get("-empiria-textentry-gap-width"), null);
 			textBox.setWidth(gapWidth + "px");
 		} else if (styles.containsKey("-empiria-textentry-gap-width-align")){
 			try {
@@ -127,7 +130,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 				int longestAnswer = getLongestAnswerLength();
 				textBox.setWidth((longestAnswer * fontSize) + "px");
 			}
-				
+
 		}
 
 		Panel spanPrefix = new FlowPanel();
@@ -152,7 +155,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
 			getModuleSocket().addInlineFeedback(new InlineFeedback(moduleWidget, inlineFeedbackNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
 		}
-		
+
 	}
 
 	// ------------------------ INTERFACES ------------------------
@@ -170,8 +173,9 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	@Override
 	public void onSetUp() {
 		updateResponse(false);
-		if (widthBindingIdentifier != null)
+		if (widthBindingIdentifier != null) {
 			widthBindingContext = BindingUtil.register(BindingType.GAP_WIDTHS, this, this);
+		}
 	}
 
 	@Override
@@ -195,14 +199,16 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	/**
 	 * @see IActivity#markAnswers()
 	 */
+	@Override
 	public void markAnswers(boolean mark) {
 		if (mark){
 			textBox.setEnabled(false);
 			if (textBox.getText().length() > 0){
-				if( getModuleSocket().evaluateResponse(getResponse()).get(0) )
+				if( getModuleSocket().evaluateResponse(getResponse()).get(0) ) {
 					moduleWidget.setStyleName("qp-text-textentry-correct");
-				else
+				} else {
 					moduleWidget.setStyleName("qp-text-textentry-wrong");
+				}
 			} else {
 				moduleWidget.setStyleName("qp-text-textentry-none");
 			}
@@ -215,6 +221,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	/**
 	 * @see IActivity#reset()
 	 */
+	@Override
 	public void reset() {
 		markAnswers(false);
 		showCorrectAnswers(false);
@@ -226,6 +233,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	/**
 	 * @see IActivity#showCorrectAnswers()
 	 */
+	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (show  &&  !showingAnswers){
 			showingAnswers = true;
@@ -236,6 +244,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		}
 	}
 
+	@Override
 	public JavaScriptObject getJsSocket(){
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
@@ -243,13 +252,15 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
   /**
    * @see IStateful#getState()
    */
-  public JSONArray getState() {
+  @Override
+public JSONArray getState() {
 	  JSONArray jsonArr = new JSONArray();
 
 	  String stateString = "";
 
-	  if (getResponse().values.size() > 0)
-		  stateString = getResponse().values.get(0);
+	  if (getResponse().values.size() > 0) {
+		stateString = getResponse().values.get(0);
+	}
 
 	  jsonArr.set(0, new JSONString(stateString));
 
@@ -259,7 +270,8 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
   /**
    * @see IStateful#setState(Serializable)
    */
-  public void setState(JSONArray newState) {
+  @Override
+public void setState(JSONArray newState) {
 
 		String state = "";
 
@@ -278,18 +290,19 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
   }
 
 	private void updateResponse(boolean userInteract){
-		if (showingAnswers)
+		if (showingAnswers) {
 			return;
+		}
 
 		if (getResponse() != null){
-			if(lastValue != null)
+			if(lastValue != null) {
 				getResponse().remove(lastValue);
-	
+			}
+
 			lastValue = textBox.getText();
 			getResponse().add(lastValue);
 			fireStateChanged(userInteract);
 		}
-
 	}
 
 	protected void onTextBoxChange(){
@@ -300,7 +313,6 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	public TextEntryModule getNewInstance() {
 		return new TextEntryModule();
 	}
-	
 	@Override
 	public BindingValue getBindingValue(BindingType bindingType) {
 		if (bindingType == BindingType.GAP_WIDTHS){
@@ -309,16 +321,17 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		}
 		return null;
 	}
-	
+
 	private int getLongestAnswerLength(){
 		int longestLength = 0;
 		for (String a : getResponse().correctAnswers.getResponseValue(0).getAnswers()){
-			if (a.length() > longestLength)
+			if (a.length() > longestLength) {
 				longestLength = a.length();
+			}
 		}
 		return longestLength;
 	}
-	
+
 	@Override
 	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
 		if (bindingType == BindingType.GAP_WIDTHS){

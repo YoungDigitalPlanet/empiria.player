@@ -13,7 +13,7 @@ import com.mathplayer.player.geom.Font;
 
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 
 public class MathTextModule extends InlineModuleBase implements Factory<MathTextModule> {
 
@@ -29,7 +29,7 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 		boolean fontItalic = false;
 		String fontColor = "#000000";
 		if (styles.containsKey("-empiria-math-font-size")){
-			fontSize = IntegerUtils.tryParseInt(styles.get("-empiria-math-font-size"));
+			fontSize = NumberUtils.tryParseInt(styles.get("-empiria-math-font-size"));
 		}
 		if (styles.containsKey("-empiria-math-font-family")){
 			fontName = styles.get("-empiria-math-font-family");
@@ -43,7 +43,7 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 		if (styles.containsKey("-empiria-math-color")){
 			fontColor = styles.get("-empiria-math-color").toUpperCase();
 		}
-		Integer fontColorInt = IntegerUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
+		Integer fontColorInt = NumberUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
 		Font f = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
 		mpm.setFont(f);
 		mainPanel = new FlowPanel();

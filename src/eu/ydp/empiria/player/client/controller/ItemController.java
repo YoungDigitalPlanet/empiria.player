@@ -5,58 +5,70 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
-import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventsHandler;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventType;
+import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEventListener;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
+import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.page.PageEvent;
+import eu.ydp.empiria.player.client.util.events.page.PageEventHandler;
+import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.empiria.player.client.view.item.ItemViewCarrier;
 import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 
-public class ItemController implements StateChangedInteractionEventListener, FlowActivityEventsHandler {
+public class ItemController implements PageEventHandler, StateChangeEventHandler {
 
-	public ItemController(ItemViewSocket ivs, IFlowSocket fs, InteractionEventsSocket is, ItemSessionSocket iss, ModulesRegistrySocket mrs){
+	@SuppressWarnings("PMD")
+	public ItemController(ItemViewSocket ivs, IFlowSocket fs, InteractionEventsSocket is, ItemSessionSocket iss, ModulesRegistrySocket mrs) {
 		itemViewSocket = ivs;
-		flowSocket = fs;
 		itemSessionSocket = iss;
 		interactionSocket = is;
 		modulesRegistrySocket = mrs;
-		
 	}
-	
-	private Item item;
-	
-	private int itemIndex;
-	
-	private ItemViewSocket itemViewSocket;
-	private ItemSessionSocket itemSessionSocket;
-	private IFlowSocket flowSocket;
-	private InteractionEventsSocket interactionSocket;
-	private ModulesRegistrySocket modulesRegistrySocket;
 
+	private Item item;
+
+	private int itemIndex;
+
+	private final ItemViewSocket itemViewSocket;
+	private final ItemSessionSocket itemSessionSocket;
+	private final InteractionEventsSocket interactionSocket;
+	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
+	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private StyleSocket styleSocket;
-	public void setStyleSocket( StyleSocket ss) {
-		styleSocket = ss;
+
+	public void setStyleSocket(StyleSocket styleSocket) {
+		this.styleSocket = styleSocket;
 	}
-	
-	//private ItemActivityIncidentsStats activityIncidentsStats;
-	
-	public void init(ItemData data, DisplayContentOptions options){
+
+	// private ItemActivityIncidentsStats activityIncidentsStats;
+
+	public void init(ItemData data, DisplayContentOptions options) {
 		try {
-			if (data.data == null)
-				throw new Exception("Item data is null");
-			interactionSocket.addStateChangedInteractionEventsListener(this);
+			// Rejestrowanie na wszystkie eventy Page dawniej FLOW
+			eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this, new CurrentPageScope());
+			eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.STATE_CHANGED), this,new CurrentPageScope());
+			if (data.data == null) {
+				throw new Exception("Item data is null");// NOPMD
+			}
 			itemIndex = data.itemIndex;
 			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex));
 			item.setState(itemSessionSocket.getState(itemIndex));
@@ -66,80 +78,89 @@ public class ItemController implements StateChangedInteractionEventListener, Flo
 			item.start();
 		} catch (Exception e) {
 			item = null;
-			itemViewSocket.setItemView(new ItemViewCarrier(data.errorMessage.length() > 0 ? data.errorMessage : e.getClass().getName() + "<br/>" + e.getMessage() + "<br/>" + e.getStackTrace()));
-			e.printStackTrace();
+			itemViewSocket.setItemView(new ItemViewCarrier(data.errorMessage.length() > 0 ? data.errorMessage : e.getClass().getName() + "<br/>" + e.getMessage() + "<br/>"
+					+ e.getStackTrace()));
+			// e.printStackTrace();
 			OperationLogManager.logEvent(OperationLogEvent.DISPLAY_ITEM_FAILED);
 		}
-		
+
 	}
-	
-	public void close(){
-		if (item != null){
+
+	public void close() {
+		if (item != null) {
 			item.close();
 			itemSessionSocket.setState(itemIndex, item.getState());
-			itemSessionSocket.endItemSession(itemIndex);		
-			interactionSocket.removeStateChangedInteractionEventsListener(this);	
+			itemSessionSocket.endItemSession(itemIndex);
+			//FIXME dorobic derejestracje ? czy mechanizm na poziomie eventsBus
+			//interactionSocket.removeStateChangedInteractionEventsListener(this);
 		}
 
 	}
 
 	@Override
-	public void onStateChanged(StateChangedInteractionEvent event) {
-		if (event.getType() == InteractionEventType.STATE_CHANGED  &&  event instanceof StateChangedInteractionEvent){
-			StateChangedInteractionEvent scie = (StateChangedInteractionEvent)event;
-			item.process(scie.isUserInteract(), scie.getSender() != null ? scie.getSender().getIdentifier() : "");
+	public void onStateChange(StateChangeEvent event) {
+		if (event.getType() == StateChangeEventTypes.STATE_CHANGED && event.getValue() instanceof StateChangedInteractionEvent) {
+			StateChangedInteractionEvent scie = (StateChangedInteractionEvent) event.getValue();
+			item.process(scie.isUserInteract(), scie.getSender() == null ? "" : scie.getSender().getIdentifier());
 			// STATE
-			itemSessionSocket.setState(itemIndex, item.getState());		
-			
-			//item.updateItemSession(itemIndex, itemSessionSocket);
+			itemSessionSocket.setState(itemIndex, item.getState());
+			// item.updateItemSession(itemIndex, itemSessionSocket);
 		}
 	}
-	
-	public void handleFlowActivityEvent(FlowActivityEvent event){
-		if (item != null){
-			item.handleFlowActivityEvent(event);
-		}
-	}
-	
-	public void checkItem(){
-		if(item != null)
+
+	public void checkItem() {
+		if (item != null) {
 			item.checkItem();
+		}
 	}
-	
-	public ItemInterferenceSocket getItemSocket(){
+
+	public ItemInterferenceSocket getItemSocket() {
 		return item;
 	}
-	
-	protected ItemViewCarrier getItemViewCarrier(Item item, ItemData itemData, boolean useSkin){
+
+	protected ItemViewCarrier getItemViewCarrier(Item item, ItemData itemData, boolean useSkin) {
 		ItemViewCarrier carrier = null;
-		
-		if(useSkin){
+
+		if (useSkin) {
 			carrier = new ItemViewCarrier(item.getContentView());
-		}else{
+		} else {
 			String index = String.valueOf(itemData.itemIndex + 1);
 			Widget titleWidget = createTitleWidget(index, item.getTitle());
-			
+
 			carrier = new ItemViewCarrier(titleWidget, item.getContentView(), item.getFeedbackView(), item.getScoreView());
 		}
-		
+
 		return carrier;
 	}
-	
-	protected Widget createTitleWidget(String index, String text){
+
+	protected Widget createTitleWidget(String index, String text) {
 		Panel titlePanel = new FlowPanel();
-		titlePanel.setStyleName("qp-item-title");
-		Label indexLabel = new Label(index+". ");
-		indexLabel.setStyleName("qp-item-title-index");
+		titlePanel.setStyleName(styleNames.QP_ITEM_TITLE());
+		Label indexLabel = new Label(index + ". ");
+		indexLabel.setStyleName(styleNames.QP_ITEM_TITLE_INDEX());
 		Label textLabel = new Label(text);
-		textLabel.setStyleName("qp-item-title-text");
+		textLabel.setStyleName(styleNames.QP_ITEM_TITLE_TEXT());
 		titlePanel.add(indexLabel);
 		titlePanel.add(textLabel);
 		return titlePanel;
 	}
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {
-		if (item != null){
+		if (item != null) {
 			item.setAssessmentParenthoodSocket(parenthoodSocket);
 		}
+	}
+
+	@Override
+	public void onPageEvent(PageEvent event) {
+		//wymuszone kompatibilnoscia wsteczna
+		FlowActivityEvent newEvent;
+		if (event.getValue() instanceof ActivityProcessingEvent) {
+			newEvent = new FlowActivityEvent(FlowActivityEventType.valueOf(event.getType().name()), ((ActivityProcessingEvent) event.getValue()).getGroupIdentifier());
+		} else {
+			newEvent = new FlowActivityEvent(FlowActivityEventType.valueOf(event.getType().name()), null);
+		}
+		item.handleFlowActivityEvent(newEvent);
+
 	}
 }

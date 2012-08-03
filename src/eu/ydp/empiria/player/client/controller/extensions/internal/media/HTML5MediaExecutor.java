@@ -59,12 +59,12 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 	}
 
 	@Override
-	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {
+	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {// NOPMD
 		this.baseMediaConfiguration = baseMediaConfiguration;
 	}
 
 	@Override
-	public void onEvent(HTML5MediaEvent event) {
+	public void onEvent(HTML5MediaEvent event) {//NOPMD
 		switch (event.getType()) {
 		case durationchange:
 			eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_DURATION_CHANGE, mediaDescriptor), mediaDescriptor);
@@ -93,6 +93,8 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 				listener.onPlay();
 			}
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -116,9 +118,9 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 		try {
 			media.pause();
 			media.setCurrentTime(0);
-		} catch (Exception e) {
-			//chrome podczas przeladowania strony lekcji
-			//generowal bledy
+		} catch (Exception e) {//NOPMD
+			// chrome podczas przeladowania strony lekcji
+			// generowal bledy
 		}
 	}
 

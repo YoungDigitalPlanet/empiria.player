@@ -8,19 +8,20 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.ISingleViewSimpleModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 
 public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
+
 
 	protected DataSourceDataSupplier dataSourceDataSupplier;
 	protected SessionDataSupplier sessionDataSupplier;
@@ -32,7 +33,7 @@ public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 	protected int refItemIndex;
 	protected Element mainElement;
 	protected String contentString;
-
+	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	public InfoModule(DataSourceDataSupplier dsds, SessionDataSupplier sds, FlowDataSupplier fds){
 		dataSourceDataSupplier = dsds;
 		sessionDataSupplier = sds;
@@ -46,15 +47,16 @@ public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 	@Override
 	public void initModule(Element element) {
 		contentPanel = new FlowPanel();
-		contentPanel.setStyleName("qp-info-content");
+		contentPanel.setStyleName(styleNames.QP_INFO_CONTENT());
 
 		mainPanel = new FlowPanel();
-		mainPanel.setStyleName("qp-info");
+		mainPanel.setStyleName(styleNames.QP_INFO());
 		mainPanel.add(contentPanel);
 
 		String cls = element.getAttribute("class");
-		if (cls != null)
+		if (cls != null) {
 			mainPanel.addStyleName(cls);
+		}
 
 		mainElement = element;
 
@@ -66,7 +68,7 @@ public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 	}
 
 	@Override
-	public void onBodyLoad() {
+	public void onBodyLoad() {//NOPMD
 	}
 
 	@Override
@@ -75,23 +77,23 @@ public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 	}
 
 	@Override
-	public void onSetUp() {
+	public void onSetUp() {//NOPMD
 	}
 
 	@Override
-	public void onClose() {
+	public void onClose() {//NOPMD
 	}
 
 	@Override
 	public void onStart() {
 		Map<String, String> styles = getModuleSocket().getStyles(mainElement);
-		if (styles.containsKey("-empiria-info-content")){
-			contentString = styles.get("-empiria-info-content");
+		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT)){
+			contentString = styles.get(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT);
 		}
 		update();
 	}
 
-	protected String replaceTemplates(String content){
+	protected String replaceTemplates(String content){//NOPMD
 		if (content.contains("$[item.title]")){
 			content = content.replaceAll("\\$\\[item.title]", dataSourceDataSupplier.getItemTitle(refItemIndex));
 		}
@@ -126,8 +128,8 @@ public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 			content = content.replaceAll("\\$\\[item.reset]", getVariableValue(itemVps, "RESET", "0") );
 		}
 		if (content.contains("$[item.result]")){
-			int done = IntegerUtils.tryParseInt( getVariableValue(itemVps, "DONE", "0") );
-			int todo = IntegerUtils.tryParseInt( getVariableValue(itemVps, "TODO", "0") );
+			int done = NumberUtils.tryParseInt( getVariableValue(itemVps, "DONE", "0") );
+			int todo = NumberUtils.tryParseInt( getVariableValue(itemVps, "TODO", "0") );
 			int result = 0;
 			if (todo != 0){
 				result = done*100/todo;
@@ -159,8 +161,8 @@ public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 			content = content.replaceAll("\\$\\[test.reset]", getVariableValue(assessmentVps, "RESET", "0") );
 		}
 		if (content.contains("$[test.result]")){
-			int done = IntegerUtils.tryParseInt( getVariableValue(assessmentVps, "DONE", "0") );
-			int todo = IntegerUtils.tryParseInt( getVariableValue(assessmentVps, "TODO", "0") );
+			int done = NumberUtils.tryParseInt( getVariableValue(assessmentVps, "DONE", "0") );
+			int todo = NumberUtils.tryParseInt( getVariableValue(assessmentVps, "TODO", "0") );
 			int result = 0;
 			if (todo != 0){
 				result = done*100/todo;
@@ -174,8 +176,9 @@ public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 	protected String getVariableValue(VariableProviderSocket vps, String name, String defaultValue){
 		Variable var = vps.getVariableValue(name);
 		String value = defaultValue;
-		if (var != null)
+		if (var != null) {
 			value = var.getValuesShort();
+		}
 		return value;
 	}
 
@@ -183,7 +186,7 @@ public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 		if (contentString != null  &&  contentString.length() > 0){
 			refItemIndex = -1;
 			if (mainElement.hasAttribute("itemIndex")){
-				refItemIndex = IntegerUtils.tryParseInt(mainElement.getAttribute("itemIndex"), -1);
+				refItemIndex = NumberUtils.tryParseInt(mainElement.getAttribute("itemIndex"), -1);
 			}
 			if (refItemIndex == -1){
 				refItemIndex = flowDataSupplier.getCurrentPageIndex();
@@ -191,7 +194,7 @@ public class InfoModule extends SimpleModuleBase implements  ILifecycleModule {
 
 			String output = replaceTemplates(contentString);
 			InlineHTML html = new InlineHTML(output);
-			html.setStyleName("qp-info-text");
+			html.setStyleName(styleNames.QP_INFO_TEXT());
 			contentPanel.clear();
 			contentPanel.add(html);
 		}

@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 
 public class PanelWithScrollbars implements IsWidget, HasWidgets {
 
@@ -50,8 +50,8 @@ public class PanelWithScrollbars implements IsWidget, HasWidgets {
 	
 	public void setSize(String width, String height){
 		mainPanel.setSize(width, height);
-		mainPanelHeight = IntegerUtils.tryParseInt(height.replaceAll("\\D", ""), 0);
-		mainPanelWidth = IntegerUtils.tryParseInt(width.replaceAll("\\D", ""), 0);		
+		mainPanelHeight = NumberUtils.tryParseInt(height.replaceAll("\\D", ""), 0);
+		mainPanelWidth = NumberUtils.tryParseInt(width.replaceAll("\\D", ""), 0);		
 	}
 	
 	public void setHorizontalPosition(double position, double sizeCurrent, double sizeAll, boolean showScrolls){

@@ -30,7 +30,6 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.NumberUtils;
 import eu.ydp.empiria.player.client.util.XMLUtils;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class ReportModule extends ContainerModuleBase {
 
@@ -42,7 +41,6 @@ public class ReportModule extends ContainerModuleBase {
 	protected Panel mainPanel;
 	protected FlexTable table;
 	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
-	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private Map<String, String> styles;
 	private Element element;
 

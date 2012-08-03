@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 
@@ -88,7 +89,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 					}
 				}
 			};
-			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler,new CurrentPageScope());
 			handler = new AbstractMediaEventHandler() {
 				@Override
 				public void onMediaEvent(MediaEvent event) {

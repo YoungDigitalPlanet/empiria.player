@@ -18,11 +18,10 @@ public class HTML5VideoAndroidImpl extends HTML5VideoImpl {
 			this.video = video;
 		}
 
-		// dla androida 2.3.x, 4.x obejscie problemow gdy mp4 jest i player sie
-		// zawiesza
-		// uszkodzony
+		// dla androida 2.3.x, 4.x obejscie problemow gdy mp4 jest uszkodzony i
+		// player sie zawiesza
 		@Override
-		public void onEvent(HTML5MediaEvent t) {
+		public void onEvent(HTML5MediaEvent html5Event) {
 			video.load();
 		}
 	}

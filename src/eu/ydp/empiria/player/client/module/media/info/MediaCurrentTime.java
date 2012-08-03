@@ -3,14 +3,16 @@ package eu.ydp.empiria.player.client.module.media.info;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
- * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1 sekunda
+ * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1
+ * sekunda
  *
  */
 public class MediaCurrentTime extends AbstractMediaTime<MediaCurrentTime> {
 	public MediaCurrentTime() {
-		super("qp-media-currenttime");
+		super(styleNames.QP_MEDIA_CURRENTTIME());
 	}
 
 	@Override
@@ -21,7 +23,7 @@ public class MediaCurrentTime extends AbstractMediaTime<MediaCurrentTime> {
 	@Override
 	public void init() {
 		AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
-			//-1 aby przy pierwszym zdarzeniu pokazal sie timer
+			// -1 aby przy pierwszym zdarzeniu pokazal sie timer
 			int lastTime = -1;
 
 			@Override
@@ -35,7 +37,7 @@ public class MediaCurrentTime extends AbstractMediaTime<MediaCurrentTime> {
 			}
 		};
 		if (isSupported()) {
-			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler, new CurrentPageScope());
 		}
 	}
 }

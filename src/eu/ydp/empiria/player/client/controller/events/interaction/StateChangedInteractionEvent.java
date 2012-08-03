@@ -9,7 +9,7 @@ public class StateChangedInteractionEvent extends InteractionEvent {
 
 	protected boolean userInteract;
 	protected IUniqueModule sender;
-	
+
 	public StateChangedInteractionEvent(boolean userInteract, IUniqueModule sender){
 		this.userInteract = userInteract;
 		this.sender = sender;

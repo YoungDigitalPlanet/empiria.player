@@ -45,7 +45,7 @@ import eu.ydp.canvasadapter.client.Context2dAdapter;
 import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.PanelWithScrollbars;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.util.IntegerUtils;
+import eu.ydp.empiria.player.client.util.NumberUtils;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -155,13 +155,13 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 
 		String toReplace = "\\D";
 		if (styles.containsKey(EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL)){
-			scale = (double)(IntegerUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL).replaceAll(toReplace, ""), 100))/100.0d;
+			scale = (double)(NumberUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL).replaceAll(toReplace, ""), 100))/100.0d;
 		}
 		if (styles.containsKey(EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH)){
-			windowWidth = IntegerUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH).replaceAll(toReplace, ""), 300);
+			windowWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH).replaceAll(toReplace, ""), 300);
 		}
 		if (styles.containsKey(EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT)){
-			windowHeight = IntegerUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT).replaceAll(toReplace, ""), 300);
+			windowHeight = NumberUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT).replaceAll(toReplace, ""), 300);
 		}
 
 		imageCanvas.setCoordinateSpaceWidth((int)windowWidth);
