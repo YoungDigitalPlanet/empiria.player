@@ -25,7 +25,8 @@ import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
-public class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
+//Do przerobienia caly test na innej zasadzie dzialaja teraz PageControlery.
+public abstract class PageInterferenceSocketUserExtensionTest extends ExtensionTestBase {
 
 	protected DeliveryEngine de;
 	protected PageInterferenceSocket pis;
