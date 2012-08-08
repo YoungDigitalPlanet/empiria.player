@@ -107,32 +107,24 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	}
 
 	public void loadMainDocument(String url) {
-		Boolean isPreloaderExist = false;
-		
-		if (RootPanel.get(MAIN_PRELOADER_ID) != null)
-		{
-			isPreloaderExist = true;
+		if (RootPanel.get(MAIN_PRELOADER_ID) != null) {
 			setMainPreloader(Image.wrap(RootPanel.get(MAIN_PRELOADER_ID).getElement()));
 		}
-		else
-		{
+		else {
 			ProgressBundle progressBundle = GWT.create(ProgressBundle.class);
 			setMainPreloader(new Image(progressBundle.getProgressImage()));
 		}
 		
-		loadMainDocument(url, RootPanel.get(), isPreloaderExist, getMainPreloader());
+		loadMainDocument(url, RootPanel.get(), getMainPreloader());
 	}
 	
-	public void loadMainDocument(String url, ForIsWidget rootPanel, Boolean isPreloaderExist, IsWidget mainPreloader)
-	{
-		if (!isPreloaderExist)
-			rootPanel.add(mainPreloader);
+	public void loadMainDocument(String url, ForIsWidget rootPanel, IsWidget mainPreloader) {
+		rootPanel.add(mainPreloader);
 		
 		if (mode == DataSourceManagerMode.LOADING_ASSESSMENT  ||  mode == DataSourceManagerMode.LOADING_ITEMS || url == "")
 			return;
 		
-		if (!isPreloaderExist)
-			centerMainPreloader(Window.getClientWidth() / 2, Window.getClientHeight() / 2, getMainPreloader().getElement());
+		centerMainPreloader(Window.getClientWidth() / 2, Window.getClientHeight() / 2, getMainPreloader().getElement());
 		
 		//OperationLogManager.logEvent(OperationLogEvent.LOADING_STARTED);
 		
@@ -357,12 +349,12 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 			onLoadFinished();
 	}
 
-	public void onLoadFinished(){
+	public void onLoadFinished() {
 		ForIsWidget rootPanel = RootPanel.get();
 		onLoadFinished(getMainPreloader(), rootPanel);
 	}
 	
-	public void onLoadFinished(IsWidget mainPreloader, ForIsWidget rootPanel){
+	public void onLoadFinished(IsWidget mainPreloader, ForIsWidget rootPanel) {
 		int preloaderIndex = rootPanel.getWidgetIndex(mainPreloader);
 		
 		if (preloaderIndex >= 0)
