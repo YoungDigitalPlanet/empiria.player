@@ -51,7 +51,6 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	}
 	
 	protected final String MAIN_PRELOADER_ID = "mainPreloader";
-	protected final String MAIN_PRELOADER_URL = "player/preloader/preloader.gif";
 
 	private StyleDataSourceManager styleDataSourceManager;
 	private int styleLoadCounter;
@@ -117,7 +116,8 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		}
 		else
 		{
-			setMainPreloader(new Image(MAIN_PRELOADER_URL));
+			ProgressBundle progressBundle = GWT.create(ProgressBundle.class);
+			setMainPreloader(new Image(progressBundle.getProgressImage()));
 		}
 		
 		loadMainDocument(url, RootPanel.get(), isPreloaderExist, getMainPreloader());
