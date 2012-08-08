@@ -17,7 +17,7 @@ public class DataSourceManagerJUnitTest extends TestCase{
 		ForIsWidget mockRootPanel = mock(ForIsWidget.class);
 		IsWidget mockImage = mock(IsWidget.class);
 		
-		dsm.loadMainDocument("", mockRootPanel, false, mockImage);
+		dsm.loadMainDocument("", mockRootPanel, mockImage);
 		verify(mockRootPanel).add(any(IsWidget.class));
 		
 		DataLoaderEventListener mockListener = mock(DataLoaderEventListener.class);
