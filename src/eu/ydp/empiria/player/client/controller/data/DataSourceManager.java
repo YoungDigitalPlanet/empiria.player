@@ -4,8 +4,15 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Navigator;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.InsertPanel.ForIsWidget;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -26,8 +33,6 @@ import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoa
 import eu.ydp.empiria.player.client.controller.data.library.LibraryExtension;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoader;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoaderListener;
-import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
-import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
@@ -44,6 +49,9 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		libraryLoader = new LibraryLoader(this);
 		styleDataSourceLoader = new StyleDataSourceLoader();
 	}
+	
+	protected final String MAIN_PRELOADER_ID = "mainPreloader";
+	protected final String MAIN_PRELOADER_URL = "player/preloader/preloader.gif";
 
 	private StyleDataSourceManager styleDataSourceManager;
 	private int styleLoadCounter;
@@ -55,7 +63,8 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	private DataLoaderEventListener listener;
 	private XmlData assesmentXML;
 	private StyleDataSourceLoader styleDataSourceLoader;
-
+	private Image mainPreloader;
+	
 	public InitialData getInitialData(){
 		InitialData initialData = new InitialData(itemDataCollectionManager.getItemsCount());
 		for (int i = 0 ; i < itemDataCollectionManager.getItemsCount() ; i ++){
@@ -89,14 +98,44 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	public Element getItem(int itemIndex) {
 		return assessmentDataManager.getItem(itemIndex);
 	}
+	
+	public Image getMainPreloader() {
+		return this.mainPreloader;
+	}
+	
+	public void setMainPreloader(Image mainPreloader) {
+		this.mainPreloader = mainPreloader;
+	}
 
-	public void loadMainDocument(String url){
-
-		if (mode == DataSourceManagerMode.LOADING_ASSESSMENT  ||  mode == DataSourceManagerMode.LOADING_ITEMS)
+	public void loadMainDocument(String url) {
+		Boolean isPreloaderExist = false;
+		
+		if (RootPanel.get(MAIN_PRELOADER_ID) != null)
+		{
+			isPreloaderExist = true;
+			setMainPreloader(Image.wrap(RootPanel.get(MAIN_PRELOADER_ID).getElement()));
+		}
+		else
+		{
+			setMainPreloader(new Image(MAIN_PRELOADER_URL));
+		}
+		
+		loadMainDocument(url, RootPanel.get(), isPreloaderExist, getMainPreloader());
+	}
+	
+	public void loadMainDocument(String url, ForIsWidget rootPanel, Boolean isPreloaderExist, IsWidget mainPreloader)
+	{
+		if (!isPreloaderExist)
+			rootPanel.add(mainPreloader);
+		
+		if (mode == DataSourceManagerMode.LOADING_ASSESSMENT  ||  mode == DataSourceManagerMode.LOADING_ITEMS || url == "")
 			return;
-
-		OperationLogManager.logEvent(OperationLogEvent.LOADING_STARTED);
-
+		
+		if (!isPreloaderExist)
+			centerMainPreloader(Window.getClientWidth() / 2, Window.getClientHeight() / 2, getMainPreloader().getElement());
+		
+		//OperationLogManager.logEvent(OperationLogEvent.LOADING_STARTED);
+		
 		mode = DataSourceManagerMode.LOADING_ASSESSMENT;
 
 		String resolvedURL;
@@ -119,7 +158,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 				assesmentXML = new XmlData(document, baseURL);
 				assessmentDataManager.setAssessmentData(assesmentXML);
 			}
-
+			
 			@Override
 			public void loadingError(String error) {
 				assessmentDataManager.setAssessmentLoadingError(error);
@@ -127,7 +166,15 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 			}
 		});
 	}
-
+	
+	protected void centerMainPreloader(int x, int y, com.google.gwt.dom.client.Element preloaderElement)
+	{
+		preloaderElement.setId(MAIN_PRELOADER_ID);
+		preloaderElement.getStyle().setPosition(Position.ABSOLUTE);
+		preloaderElement.getStyle().setLeft(x - preloaderElement.getOffsetWidth() / 2, Unit.PX);
+		preloaderElement.getStyle().setTop(y - preloaderElement.getOffsetHeight() / 2, Unit.PX);
+	}
+	
 	public void loadExtensionsLibrary(){
 		String libraryUrl = assessmentDataManager.getLibraryLink();
 
@@ -311,11 +358,22 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	}
 
 	public void onLoadFinished(){
+		ForIsWidget rootPanel = RootPanel.get();
+		onLoadFinished(getMainPreloader(), rootPanel);
+	}
+	
+	public void onLoadFinished(IsWidget mainPreloader, ForIsWidget rootPanel){
+		int preloaderIndex = rootPanel.getWidgetIndex(mainPreloader);
+		
+		if (preloaderIndex >= 0)
+			rootPanel.remove(preloaderIndex);
+		
 		mode = DataSourceManagerMode.SERVING;
-		OperationLogManager.logEvent(OperationLogEvent.LOADING_FINISHED);
+		//OperationLogManager.logEvent(OperationLogEvent.LOADING_FINISHED);
+		
 		getDataLoaderEventListener().onDataReady();
 	}
-
+	
 	public DataSourceManagerMode getMode(){
 		return mode;
 	}
