@@ -41,8 +41,6 @@ public class PageEvents implements TouchStartHandler, TouchCancelHandler, TouchE
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		view.onEvent(event.getNativeEvent());
-
-
 	}
 
 	@Override

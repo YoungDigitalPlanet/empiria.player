@@ -206,8 +206,24 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-page-item")
 	public String QP_PAGE_ITEM();
 
+
+	@DefaultStringValue("qp-page-next")
+	public String QP_PAGE_NEXT();
+
+	@DefaultStringValue("qp-page-preloader")
+	public String QP_PAGE_PRELOADER();
+
+	@DefaultStringValue("qp-page-prev")
+	public String QP_PAGE_PREV();
+
+	@DefaultStringValue("qp-page-selected")
+	public String QP_PAGE_SELECTED();
+
 	@DefaultStringValue("qp-page-title")
 	public String QP_PAGE_TITLE();
+
+	@DefaultStringValue("qp-page-unselected")
+	public String QP_PAGE_UNSELECTED();
 
 	@DefaultStringValue("qp-player")
 	public String QP_PLAYER();
