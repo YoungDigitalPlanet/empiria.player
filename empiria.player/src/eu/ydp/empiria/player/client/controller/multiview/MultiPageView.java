@@ -44,6 +44,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 
 	private class ResizeTimer extends Timer {
 		protected int lastSize = 0;
+
 		protected MultiPageView pageView;
 
 		public ResizeTimer(MultiPageView pageview) {
@@ -72,14 +73,8 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	private final static int ACTIVE_PAGE_COUNT = 3;
 	private int currentVisiblePage = -1; // NOPMD
 	private final Map<Integer, KeyValue<FlowPanel, FlowPanel>> panels = new TreeMap<Integer, KeyValue<FlowPanel, FlowPanel>>(Collections.reverseOrder());
-	/**
-	 * ktore strony zostaly zaladowane
-	 */
-
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	protected final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
-	// private final static String SELECTED_PANEL_STYLE_NAME_SUFFIX =
-	// "-selected"; // NOPMD
 	private int start;
 	private int lastEnd = 0;
 	private int end = 0;
@@ -88,7 +83,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	private final static float WIDTH = 100;
 	private final static int DEFAULT_ANIMATION_TIME = 500; // NOPMD
 	private final static int QUICK_ANIMATION_TIME = 150; // NOPMD
-	private int TOUCH_START_TIME = 100;
+	private final int TOUCH_START_TIME;
 	private float currentPosition;
 	private FlowRequestInvoker flowRequestInvoker; // NOPMD
 	private boolean touchReservation = false;
@@ -97,21 +92,25 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	private final FlowPanel mainPanel = new FlowPanel();
 	private final Set<Integer> measuredPanels = new HashSet<Integer>();
 	private final Set<Integer> detachedPages = new HashSet<Integer>();
+	/**
+	 * ktore strony zostaly zaladowane
+	 */
 	private final Set<Integer> loadedPages = new HashSet<Integer>();
 	private final Scheduler scheduler = Scheduler.get();
 	private final static int VISBLE_PAGE_COUNT = 3;
 	private int pageProgressBar = -1;
+	private final ResizeTimer resizeTimer;
+
 	private final Timer timer = new Timer() {
 
 		@Override
 		public void run() {
-			if(Math.abs(startY-endY) < Math.abs(start-end)){
+			if (Math.abs(startY - endY) < Math.abs(start - end)) {
 				swipeStarted = true;
+				setStylesForPages(swipeStarted);
 			}
 		}
 	};
-
-	private final ResizeTimer resizeTimer;
 
 	public MultiPageView() {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW), this);
@@ -121,6 +120,8 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), this);
 		if (UserAgentChecker.isStackAndroidBrowser()) {
 			TOUCH_START_TIME = 250;
+		}else{
+			TOUCH_START_TIME = 100;
 		}
 		resizeTimer = new ResizeTimer(this);
 		add(mainPanel);
@@ -128,9 +129,34 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 		Window.addResizeHandler(this);
 	}
 
+	private void setStylesForPages(boolean swipeStarted) {
+		if (swipeStarted) {
+			Panel selectedPanel = panels.get(currentVisiblePage).getKey();
+			selectedPanel.setStyleName(styleNames.QP_PAGE_SELECTED());
+			for (Map.Entry<Integer, KeyValue<FlowPanel, FlowPanel>> panel : panels.entrySet()) {
+				if (panel.getKey() != currentVisiblePage) {
+					panel.getValue().getKey().addStyleName(styleNames.QP_PAGE_UNSELECTED());
+					if (panel.getKey() == currentVisiblePage - 1) {
+						panel.getValue().getKey().addStyleName(styleNames.QP_PAGE_PREV());
+					} else if (panel.getKey() == currentVisiblePage + 1) {
+						panel.getValue().getKey().addStyleName(styleNames.QP_PAGE_NEXT());
+					}
+				}
+			}
+		} else {
+			for (Map.Entry<Integer, KeyValue<FlowPanel, FlowPanel>> panel : panels.entrySet()) {
+				FlowPanel flowPanel = panel.getValue().getKey();
+				flowPanel.removeStyleName(styleNames.QP_PAGE_UNSELECTED());
+				flowPanel.removeStyleName(styleNames.QP_PAGE_SELECTED());
+				flowPanel.removeStyleName(styleNames.QP_PAGE_PREV());
+				flowPanel.removeStyleName(styleNames.QP_PAGE_NEXT());
+			}
+		}
+	}
+
 	private int getHeightForPage(int pageNumber) {
 		FlowPanel flowPanel = (FlowPanel) getViewForPage(pageNumber).getParent();
-		Debug.log(pageNumber + " page height "+(flowPanel == null ? 0 : flowPanel.getOffsetHeight()));
+		Debug.log(pageNumber + " page height " + (flowPanel == null ? 0 : flowPanel.getOffsetHeight()));
 		return flowPanel == null ? 0 : flowPanel.getOffsetHeight();
 	}
 
@@ -140,10 +166,11 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 
 	@Override
 	protected void onAttach() {
-		mainPanel.getElement().getStyle().setWidth(WIDTH, Unit.PCT);
-		mainPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
-		mainPanel.getElement().getStyle().setTop(0, Unit.PX);
-		mainPanel.getElement().getStyle().setLeft(0, Unit.PX);
+		Style style = mainPanel.getElement().getStyle();
+		style.setWidth(WIDTH, Unit.PCT);
+		style.setPosition(Position.ABSOLUTE);
+		style.setTop(0, Unit.PX);
+		style.setLeft(0, Unit.PX);
 		this.getElement().getStyle().setPosition(Position.RELATIVE);
 		setSwipeLength();
 		super.onAttach();
@@ -174,9 +201,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 				} else {
 					animatePageSwitch(getPositionLeft(), -pageNumber * WIDTH, null, DEFAULT_ANIMATION_TIME, false);
 				}
-			} /*
-			 * else { this.clear(); this.add(getViewForPage(pageNumber)); }
-			 */
+			}
 		}
 		hideProgressBarForPage(pageNumber);
 
@@ -203,9 +228,11 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 					}
 				}
 			}
+			panel.getKey().addStyleName(styleNames.QP_PAGE_UNSELECTED());
+			panel.getKey().addStyleName(pageNumber > currentVisiblePage ? styleNames.QP_PAGE_NEXT() : styleNames.QP_PAGE_PREV());
 			showProgressBarForPage(pageNumber);
-			loadedPages.add(pageNumber);
 		}
+		loadedPages.add(pageNumber);
 		return panel.getValue();
 	}
 
@@ -299,7 +326,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	 */
 	private void animatePageSwitch(float from, final float to, final NavigationButtonDirection direction, int duration, final boolean onlyPositionReset) {// NOPMD
 		if (Math.abs(from - to) > 1) {
-			if(!onlyPositionReset){
+			if (!onlyPositionReset) {
 				Window.scrollTo(0, 0);
 			}
 			PageSwitchAnimation animation = new PageSwitchAnimation(mainPanel, from, to) {
@@ -310,6 +337,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 					scheduler.scheduleDeferred(new ScheduledCommand() {
 						@Override
 						public void execute() {
+							setStylesForPages(false);
 							if (direction != null) {
 								flowRequestInvoker.invokeRequest(NavigationButtonDirection.getRequest(direction));
 							}
@@ -376,10 +404,12 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 		touchReservation = false;
 		swipeStarted = false;
 		swipeRight = false;
+		setStylesForPages(swipeStarted);
 
 	}
 
 	public void onEvent(NativeEvent event) {
+		Debug.log(event.getType());
 		switch (Event.getTypeInt(event.getType())) {
 		case Event.ONMOUSEDOWN:
 		case Event.ONTOUCHSTART:
@@ -456,7 +486,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 		boolean multiTouch = false;
 		if (touches == null) {
 			lastEnd = start = event.getScreenX();
-			multiTouch = true;
+			multiTouch = false;
 		} else {
 			for (int x = 0; x < touches.length();) {
 				Touch touch = touches.get(x);
