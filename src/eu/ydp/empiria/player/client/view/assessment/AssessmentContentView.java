@@ -32,7 +32,6 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
 
 	@Override
 	public void setAssessmentViewCarrier(AssessmentViewCarrier viewCarrier) {
-		Panel pageSlot = viewCarrier.getPageSlot();
 		headerPanel.clear();
 		if (viewCarrier.getHeaderView() != null) {
 			headerPanel.add(viewCarrier.getHeaderView());
@@ -47,18 +46,10 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
 			assessmentPanel.add(viewCarrier.getSkinView());
 			assessmentPanel.add(navigationPanel);
 		}
-
-		if (pageSlot != null ) {
-	//		PageViewCarrier carrier = new PageViewCarrier(pageSlot);
-		//	PageViewSocket pageContentView = pageViewCache.get(Page.getCurrentPageNumber()).getKey();
-		//	pageContentView.setPageViewCarrier(carrier);
-		}
 	}
 
 	@Override
 	public PageViewSocket getPageViewSocket() {
-		// FIXME poprawa zwracanego pageview to jest w controlerze
-		// FIXME do sprawdzenia czy zwraca dabra referencje do pagecontrollera
 		return pageViewCache.get(Page.getCurrentPageNumber()).getKey();
 	}
 

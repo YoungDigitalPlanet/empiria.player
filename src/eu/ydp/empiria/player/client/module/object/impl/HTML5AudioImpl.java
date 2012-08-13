@@ -29,4 +29,9 @@ public class HTML5AudioImpl extends FlowPanel implements Audio {
 	public void addSrc(String src, String type) {
 		audio.addSource(src, type);
 	}
+
+	@Override
+	public void setEventBusSourceObject(Object object) {
+
+	}
 }

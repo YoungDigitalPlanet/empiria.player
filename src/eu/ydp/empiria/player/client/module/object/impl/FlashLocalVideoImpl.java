@@ -14,6 +14,7 @@ public class FlashLocalVideoImpl extends FlashLocalMediaImpl implements Video {
 	}
 
 
+	@Override
 	protected native void loadFlvPlayerThroughSwfobject(String id, String swfSrc, String installSrc, String videoSrc, int width, int height)/*-{
 		var flashvars = {video:videoSrc, sizeMode:"1"};
 		$wnd.swfobject.embedSWF(swfSrc, id, width, height, "9", installSrc, flashvars);
@@ -22,8 +23,7 @@ public class FlashLocalVideoImpl extends FlashLocalMediaImpl implements Video {
 
 	@Override
 	protected String getSwfSrc() {
-		String swfSrc = PathUtil.getPlayerPathDir() + "flvplayer/flvplayer.swf";
-		return swfSrc;
+		return  PathUtil.getPlayerPathDir() + "flvplayer/flvplayer.swf";
 	}
 
 
@@ -39,8 +39,9 @@ public class FlashLocalVideoImpl extends FlashLocalMediaImpl implements Video {
 
 	@Override
 	public void addSrc(String src, String type) {
-		if (this.src == null)
+		if (this.src == null) {
 			setSrc(src);
+		}
 	}
 
 	@Override
@@ -49,6 +50,8 @@ public class FlashLocalVideoImpl extends FlashLocalMediaImpl implements Video {
 	@Override
 	public void setShowNativeControls(boolean show) { }
 
+	@Override
+	public void setEventBusSourceObject(Object object) {}
 	@Override
 	public MediaBase getMedia() {
 		return null;

@@ -176,6 +176,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-media-positioninstream")
 	public String QP_MEDIA_POSITIONINSTREAM();
 
+	@DefaultStringValue("qp-media-text-track")
+	public String QP_MEDIA_TEXT_TRACK();
+
 	@DefaultStringValue("qp-media-title")
 	public String QP_MEDIA_TITLE();
 

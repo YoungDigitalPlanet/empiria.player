@@ -7,12 +7,12 @@ import com.google.gwt.user.client.ui.HTML;
 
 public class FlashVideoImpl extends Composite implements Video {
 
-	protected String id;
+	protected String elementId;
 	protected String src;
 
 	public FlashVideoImpl() {
-		id = Document.get().createUniqueId();
-		HTML html = new HTML("<div id='" + id + "' class='qp-video'></div>");
+		elementId = Document.get().createUniqueId();
+		HTML html = new HTML("<div id='" + elementId + "' class='qp-video'></div>");
 
 		initWidget(html);
 	}
@@ -23,10 +23,10 @@ public class FlashVideoImpl extends Composite implements Video {
 
 	@Override
 	public void onLoad() {
-		initFAV(id, src);
+		initFAV(elementId, src);
 	}
 
-	private native void initFAV(String id, String src)/*-{
+	private native void initFAV(String elementId, String src)/*-{
 		if (typeof $wnd.FAVideo == 'function')
 			var vp = new $wnd.FAVideo(id, src, 0, 0, {
 				autoLoad : true,
@@ -53,6 +53,10 @@ public class FlashVideoImpl extends Composite implements Video {
 
 	@Override
 	public void setShowNativeControls(boolean show) {
+	}
+
+	@Override
+	public void setEventBusSourceObject(Object object) {
 	}
 
 	@Override

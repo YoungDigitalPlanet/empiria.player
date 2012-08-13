@@ -5,8 +5,11 @@ import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 
+import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
+import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElement;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.button.FullScreenMediaButton;
@@ -20,6 +23,7 @@ import eu.ydp.empiria.player.client.module.media.info.MediaCurrentTime;
 import eu.ydp.empiria.player.client.module.media.info.MediaTotalTime;
 import eu.ydp.empiria.player.client.module.media.info.PositionInMediaStream;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
+import eu.ydp.empiria.player.client.util.XMLUtils;
 
 public class ObjectTemplateParser<T extends Widget> extends AbstractTemplateParser {
 	protected Map<String, MediaController<?>> controllers = new HashMap<String, MediaController<?>>();
@@ -39,13 +43,26 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 	}
 
 	@Override
-	protected MediaController<?> getMediaControllerNewInstance(String moduleName,Node node) {
-		MediaController<?> controller = controllers.get(moduleName);
-		if(controller!=null){
-		 	controller = (MediaController<?>) controller.getNewInstance();
-		 	controller.setMediaDescriptor(mediaDescriptor);
+	protected MediaController<?> getMediaControllerNewInstance(String moduleName, Node node) {
+		MediaController<?> controller = null;
+		if (ModuleTagName.MEDIA_TEXT_TRACK.tagName().equals(moduleName)) {
+			String kind = XMLUtils.getAttributeAsString((Element) node, "kind", TextTrackKind.SUBTITLES.name());
+			TextTrackKind trackKind = TextTrackKind.SUBTITLES;
+			try {
+				trackKind = TextTrackKind.valueOf(kind);
+			} catch (IllegalArgumentException exception) { //NOPMD
+
+			}
+			controller = new VideoTextTrackElement(trackKind);
+		} else {
+			controller = controllers.get(moduleName);
 		}
- 		return controller;
+		if (controller != null) {
+			controller = (MediaController<?>) controller.getNewInstance();
+			controller.setMediaDescriptor(mediaDescriptor);
+		}
+
+		return controller;
 	}
 
 	@Override

@@ -11,11 +11,11 @@ import eu.ydp.empiria.player.client.module.object.impl.Media;
  *
  */
 public class HTML5MediaWrapper implements MediaWrapper<MediaBase> {
-	MediaBase mediaBase;
-	String uniqId = null;
-	HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
-	public HTML5MediaWrapper(Media mb) {
-		this.mediaBase = mb.getMedia();
+	protected MediaBase mediaBase;
+	protected String uniqId = null;
+	protected HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
+	public HTML5MediaWrapper(Media media) {
+		this.mediaBase = media.getMedia();
 	}
 
 	@Override
@@ -37,31 +37,6 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase> {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result +  getMediaUniqId().hashCode();
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		HTML5MediaWrapper other = (HTML5MediaWrapper) obj;
-		if (getMediaUniqId() == null) {
-			if (other.getMediaUniqId() != null)
-				return false;
-		} else if (!getMediaUniqId().equals(other.getMediaUniqId()))
-			return false;
-		return true;
-	}
-
-	@Override
 	public double getCurrentTime() {
 		return mediaBase.getCurrentTime();
 	}
@@ -79,5 +54,36 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase> {
 	@Override
 	public double getVolume() {
 		return mediaBase.getVolume();
+	}
+
+	@Override
+	public int hashCode() {
+		int prime = 31;
+		int result = 1;
+		result = prime * result +  getMediaUniqId().hashCode();
+		return result;
+	}
+
+	@Override
+	@SuppressWarnings("PMD")
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		HTML5MediaWrapper other = (HTML5MediaWrapper) obj;
+		if (getMediaUniqId() == null) {
+			if (other.getMediaUniqId() != null) {
+				return false;
+			}
+		} else if (!getMediaUniqId().equals(other.getMediaUniqId())) {
+			return false;
+		}
+		return true;
 	}
 }

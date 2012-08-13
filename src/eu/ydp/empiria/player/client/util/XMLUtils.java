@@ -40,8 +40,20 @@ public final class XMLUtils {
 	 * @return attribute text or empty string if not found
 	 */
 	public static String getAttributeAsString(Element element, String name) {
+		return getAttributeAsString(element, name, "");
+	}
+
+	/**
+	 * Helper function for getting element attribute as string
+	 *
+	 * @param name
+	 *            Attribute name
+	 * @param defaultValue wartosc domyslna zwracana jezeli atrybut nie istnieje
+	 * @return attribute text or empty string if not found
+	 */
+	public static String getAttributeAsString(Element element, String name, String defaultValue) {
 		String attribute = element.getAttribute(name);
-		return attribute == null ? "" : attribute;
+		return attribute == null ? defaultValue : attribute;
 	}
 
 	/**

@@ -4,11 +4,17 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+
 public class HTML5VideoImpl extends FlowPanel implements Video {
 
-	protected com.google.gwt.media.client.Video video;
+	protected eu.ydp.empiria.player.client.media.Video video;
+	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private Object eventBusSource;
+
 	public HTML5VideoImpl() {
-		video = com.google.gwt.media.client.Video.createIfSupported();
+		video = eu.ydp.empiria.player.client.media.Video.createIfSupported();
 		video.setPreload(MediaElement.PRELOAD_METADATA);
 		add(video);
 
@@ -22,20 +28,22 @@ public class HTML5VideoImpl extends FlowPanel implements Video {
 	public void addSrc(String src, String type) {
 		video.addSource(src, type);
 	}
+
 	@Override
 	public void setWidth(int width) {
-		video.setWidth(width+"px");
+		video.setWidth(width + "px");
 
 	}
 
 	@Override
 	public void setHeight(int height) {
-		video.setHeight(height+"px");
+		video.setHeight(height + "px");
 	}
 
 	@Override
 	public void setPoster(String url) {
-		//TODO na ktoryms ios-ie jest blad z posterem sprawdzic i zrobic implementacje dla niego
+		// TODO na ktoryms ios-ie jest blad z posterem sprawdzic i zrobic
+		// implementacje dla niego
 		video.setPoster(url);
 	}
 
@@ -43,8 +51,19 @@ public class HTML5VideoImpl extends FlowPanel implements Video {
 	public void setShowNativeControls(boolean show) {
 		video.setControls(show);
 	}
+
 	@Override
 	public MediaBase getMedia() {
 		return video;
+	}
+
+	@Override
+	public void setEventBusSourceObject(Object object) {
+		this.eventBusSource = object;
+		video.setEventBusSourceObject(object);
+	}
+
+	public Object getEventBusSourceObject() {
+		return eventBusSource;
 	}
 }
