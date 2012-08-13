@@ -19,7 +19,6 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 	private final FlowPanel divElement = new FlowPanel();
 	private boolean singleClick = true;
 
-
 	/**
 	 * bazowy przycisk dla kontrolerow multimediow
 	 *
@@ -73,6 +72,8 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 		case Event.ONMOUSEOUT:
 			onMouseOut();
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -81,11 +82,11 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 	 */
 	protected abstract void onClick();
 
-	protected boolean isActive(){
+	protected boolean isActive() {
 		return active;
 	}
 
-	protected void setActive(boolean active){
+	protected void setActive(boolean active) {
 		this.active = active;
 	}
 

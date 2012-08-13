@@ -75,10 +75,11 @@ public class Response extends Variable {
 		for(int i = 0; i < nodes.getLength(); i++){
 			Element valueElement = ((Element)nodes.item(i));
 			String nodeValue;
-			if (nodes.item(i).hasChildNodes())
+			if (nodes.item(i).hasChildNodes()) {
 				nodeValue = nodes.item(i).getFirstChild().getNodeValue();
-			else
+			} else {
 				nodeValue = "";
+			}
 			int forIndex = correctAnswers.getResponseValuesCount();
 			if (valueElement.hasAttribute("forIndex")){
 				Integer forIndex2 = NumberUtils.tryParseInt(valueElement.getAttribute("forIndex"), null);
@@ -92,13 +93,14 @@ public class Response extends Variable {
 				correctAnswers.add(new ResponseValue(nodeValue));
 			}
 			if (valueElement.hasAttribute("group")  &&  (!valueElement.hasAttribute("groupMode")  ||  (valueElement.getAttribute("groupMode").equals("groupItem"))) ){
-				String currGroupName = ((Element)nodes.item(i)).getAttribute("group"); 
+				String currGroupName = ((Element)nodes.item(i)).getAttribute("group");
 				if (!groupsNames.contains(currGroupName)){
 					groupsNames.add(currGroupName );
 					groups.put(currGroupName, new ArrayList<Integer>());
 				}
-				if (!groups.get(currGroupName).contains(forIndex))
+				if (!groups.get(currGroupName).contains(forIndex)) {
 					groups.get(currGroupName).add(forIndex);
+				}
 			}
 		}
 		
@@ -140,8 +142,9 @@ public class Response extends Variable {
 	 */
 	public void add(String key) {
 		
-		if (cardinality == Cardinality.SINGLE)
+		if (cardinality == Cardinality.SINGLE) {
 			values.clear();
+		}
 		
 		values.add(key);
 		
@@ -169,12 +172,14 @@ public class Response extends Variable {
 	}
 	
 	public boolean compare(Vector<String> test){
-		if (values.size() != test.size())
+		if (values.size() != test.size()) {
 			return false;
+		}
 		
 		for (int i = 0 ; i < values.size() ; i ++){
-			if (values.get(i).compareTo(test.get(i)) != 0)
+			if (values.get(i).compareTo(test.get(i)) != 0) {
 				return false;
+			}
 		}
 		
 		return true;
@@ -188,13 +193,15 @@ public class Response extends Variable {
 	/**
 	 * Reset results
 	 */
+	@Override
 	public void reset() {
 		values.clear();
 	}
 	
+	@Override
 	public String toString(){
 		
-		return "Id: " + identifier + "\n" + correctAnswers; 
+		return "Id: " + identifier + "\n" + correctAnswers;
 	}
 	
 	public void setModuleAdded(){
@@ -207,14 +214,11 @@ public class Response extends Variable {
 	
 	@Override
 	public JSONValue toJSON() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void fromJSON(JSONValue value) {
-		// TODO Auto-generated method stub
-		
 	}
 
 

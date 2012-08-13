@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.util.events.EventTypes;
 public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes> {
 	public static EventTypes<MediaEventHandler, MediaEventTypes> types = new EventTypes<MediaEventHandler, MediaEventTypes>();
 
-	private final double value;
+	private final Object value;
 
 	public MediaEvent(MediaEventTypes type) {
 		this(type, null, 0);
@@ -17,7 +17,7 @@ public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes
 		this(type, source, 0);
 	}
 
-	public MediaEvent(MediaEventTypes type, Object source, double value) {
+	public MediaEvent(MediaEventTypes type, Object source, Object value) {
 		super(type, source);
 		this.value = value;
 
@@ -27,7 +27,7 @@ public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes
 		return (super.getSource() instanceof MediaWrapper<?>) ? (MediaWrapper<?>) super.getSource() : null;// NOPMD
 	}
 
-	public double getValue() {
+	public Object getValue() {
 		return value;
 	}
 

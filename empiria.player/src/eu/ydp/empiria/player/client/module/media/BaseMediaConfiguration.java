@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.media;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class BaseMediaConfiguration {
@@ -8,12 +7,12 @@ public class BaseMediaConfiguration {
 		AUDIO, VIDEO
 	}
 
-	Map<String, String> sources = new HashMap<String, String>();
-	MediaType mediaType = MediaType.AUDIO;
-	private int width;
-	private int height;
-	private String poster;
-	private boolean hasTemplate = false;
+	private final Map<String, String> sources;
+	private final MediaType mediaType;
+	private final int width;
+	private final int height;
+	private final String poster;
+	private final boolean hasTemplate;
 
 	public BaseMediaConfiguration(Map<String, String> sources, MediaType mediaType, String poster, int height, int width, boolean hasTemplate) {
 		super();
@@ -24,6 +23,7 @@ public class BaseMediaConfiguration {
 		this.width = width;
 		this.hasTemplate = hasTemplate;
 	}
+
 
 	public Map<String, String> getSources() {
 		return sources;

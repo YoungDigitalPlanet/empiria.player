@@ -1,21 +1,21 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class HTML5VideoAndroid3Impl extends HTML5VideoAndroidImpl {
-	boolean videoReady = false;
+	private boolean videoReady = false;
 
 	public HTML5VideoAndroid3Impl() {
 		super();
-		video.addBitlessDomHandler(new HTML5MediaEventHandler() {
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getEventBusSourceObject(), new MediaEventHandler() {
 			int stopTime = 300; // zatrzymujemy 300ms przed koncem niestety na
-								// galaxytabie ponizej nie zalapie
 
-			// dla androida 3.2x obejscie komunikatu bledu podczas odtwarzania
+			// galaxytabie ponizej nie zalapie
 			@Override
-			public void onEvent(HTML5MediaEvent t) {
+			public void onMediaEvent(MediaEvent event) {
 				// 300ms przed koncem filmu
 				if (videoReady) {
 					double currentTime = video.getCurrentTime();
@@ -25,15 +25,18 @@ public class HTML5VideoAndroid3Impl extends HTML5VideoAndroidImpl {
 						video.setCurrentTime(0);
 					}
 				}
+
 			}
-		}, HTML5MediaEvent.getType(HTML5MediaEventsType.timeupdate));
+		}, new CurrentPageScope());
 
 		// czekamy na informacje na temat dlugosci utworu
-		video.addBitlessDomHandler(new HTML5MediaEventHandler() {
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getEventBusSourceObject(), new MediaEventHandler() {
+
 			@Override
-			public void onEvent(HTML5MediaEvent event) {
+			public void onMediaEvent(MediaEvent event) {
 				videoReady = true;
 			}
-		}, HTML5MediaEvent.getType(HTML5MediaEventsType.durationchange));
+		}, new CurrentPageScope());
+
 	}
 }

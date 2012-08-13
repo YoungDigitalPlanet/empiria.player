@@ -60,7 +60,6 @@ public abstract class PlayerEventsBusOld implements EventsBus,PlayerEventHandler
 	}
 
 	private <H extends EventHandler,T extends Enum<T>> void doRemove(Type<H,T> type, Object source, H handler, boolean async) {
-		// TODO sprawdzic
 		Map<Object, List<?>> handlerMap = async ? asyncMap.get(type) : syncMap.get(type);
 		if (handlerMap != null) {
 			List<?> handlers = handlerMap.get(source);

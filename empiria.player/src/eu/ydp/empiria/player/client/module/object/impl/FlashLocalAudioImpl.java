@@ -6,8 +6,8 @@ import eu.ydp.empiria.player.client.util.PathUtil;
 
 public class FlashLocalAudioImpl extends FlashLocalMediaImpl implements Audio {
 
-	
-	public FlashLocalAudioImpl(){	
+
+	public FlashLocalAudioImpl(){
 		super("audio");
 	}
 
@@ -16,25 +16,28 @@ public class FlashLocalAudioImpl extends FlashLocalMediaImpl implements Audio {
 	protected native void loadFlvPlayerThroughSwfobject(String id, String swfSrc, String installSrc, String mediaSrc, int width, int height) /*-{
 		var flashvars = {soundFile:mediaSrc, playerID:id, animation:"no", noinfo:"yes"};
 		$wnd.swfobject.embedSWF(swfSrc, id, width, height, "9", installSrc, flashvars);
-		
+
 	}-*/;
 
 
 	@Override
 	protected String getSwfSrc() {
-		String swfSrc = PathUtil.getPlayerPathDir() + "wpaudioplayer/wpaudioplayer.swf"; 
-		return swfSrc;
+		return  PathUtil.getPlayerPathDir() + "wpaudioplayer/wpaudioplayer.swf";
 	}
-	
+
 
 	@Override
 	public void addSrc(String src, String type) {
-		if (this.src == null)
+		if (this.src == null) {
 			setSrc(src);
+		}
 	}
 
 	@Override
 	public void setShowNativeControls(boolean show) {}
+
+	@Override
+	public void setEventBusSourceObject(Object object) {}
 
 	@Override
 	public MediaBase getMedia() {

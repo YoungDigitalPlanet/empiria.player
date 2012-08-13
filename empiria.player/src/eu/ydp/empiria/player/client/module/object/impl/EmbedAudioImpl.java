@@ -30,4 +30,9 @@ public class EmbedAudioImpl extends Composite implements Audio {
 	public void addSrc(String src, String type) {
 		setSrc(src);
 	}
+
+	@Override
+	public void setEventBusSourceObject(Object object) {
+
+	}
 }
