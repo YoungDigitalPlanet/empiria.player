@@ -97,7 +97,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
 	public void closePage() {
 		if (pageController != null) {
-			//pageController.close();
+			pageController.close();
 		}
 	}
 
