@@ -5,6 +5,8 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+
 public class FlashVideoImpl extends Composite implements Video {
 
 	protected String elementId;
@@ -56,7 +58,7 @@ public class FlashVideoImpl extends Composite implements Video {
 	}
 
 	@Override
-	public void setEventBusSourceObject(Object object) {
+	public void setEventBusSourceObject(MediaWrapper<?> object) {
 	}
 
 	@Override

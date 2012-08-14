@@ -13,8 +13,9 @@ public class BaseMediaConfiguration {
 	private final int height;
 	private final String poster;
 	private final boolean hasTemplate;
+	private final String narrationText;
 
-	public BaseMediaConfiguration(Map<String, String> sources, MediaType mediaType, String poster, int height, int width, boolean hasTemplate) {
+	public BaseMediaConfiguration(Map<String, String> sources, MediaType mediaType, String poster, int height, int width, boolean hasTemplate, String narrationText) {
 		super();
 		this.sources = sources;
 		this.mediaType = mediaType;
@@ -22,6 +23,7 @@ public class BaseMediaConfiguration {
 		this.height = height;
 		this.width = width;
 		this.hasTemplate = hasTemplate;
+		this.narrationText = narrationText;
 	}
 
 
@@ -47,5 +49,9 @@ public class BaseMediaConfiguration {
 
 	public boolean isTemplate() {
 		return hasTemplate;
+	}
+
+	public String getNarrationText() {
+		return narrationText;
 	}
 }

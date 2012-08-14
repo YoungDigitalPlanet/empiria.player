@@ -56,20 +56,20 @@ public class VideoTextTrackElement extends MediaController<VideoTextTrackElement
 	private void showHideText(TextTrackCue textTrackCue) {
 		if (textTrackCue.getEndTime() < getMediaWrapper().getCurrentTime()) {
 			text.getElement().setInnerText("");
-		} else if (textTrackCue.getStartTime() > getMediaWrapper().getCurrentTime()) {
+		} else if (textTrackCue.getStartTime() < getMediaWrapper().getCurrentTime()) {
 			text.getElement().setInnerText(textTrackCue.getText());
 		}
 	}
 
 	@Override
 	public void onMediaEvent(MediaEvent event) {
-		if (event.getType() == MediaEventTypes.TEXT_TRACK_UPDATE && event.getValue() instanceof TextTrackCue) {
-			TextTrackCue trackCue = (TextTrackCue) event.getValue();
+		if (event.getType() == MediaEventTypes.TEXT_TRACK_UPDATE && event.getTextTrackCue() != null) {
+			TextTrackCue trackCue = event.getTextTrackCue();
 			if (trackCue.getTextTrack().getKind() == kind) {
 				textTrackCue = trackCue;
 				showHideText(trackCue);
 			}
-		} else if (event.getType() == MediaEventTypes.ON_TIME_UPDATE) {
+		} else if (event.getType() == MediaEventTypes.ON_TIME_UPDATE && textTrackCue != null) {
 			showHideText(textTrackCue);
 		}
 	}

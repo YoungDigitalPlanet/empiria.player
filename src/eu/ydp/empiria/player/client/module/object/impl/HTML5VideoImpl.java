@@ -5,6 +5,7 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class HTML5VideoImpl extends FlowPanel implements Video {
@@ -58,7 +59,7 @@ public class HTML5VideoImpl extends FlowPanel implements Video {
 	}
 
 	@Override
-	public void setEventBusSourceObject(Object object) {
+	public void setEventBusSourceObject(MediaWrapper<?> object) {
 		this.eventBusSource = object;
 		video.setEventBusSourceObject(object);
 	}

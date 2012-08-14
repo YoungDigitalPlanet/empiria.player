@@ -3,6 +3,8 @@ package eu.ydp.empiria.player.client.module.object;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.w3c.dom.Node;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -25,7 +27,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {//NOPMD
+public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {// NOPMD
 
 	private class MediaWrapperHandler implements CallbackRecevier {
 		@Override
@@ -37,7 +39,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	}
 
 	private Widget widget;
-	private final boolean flashPlayer = false; //NOPMD
+	private final boolean flashPlayer = false; // NOPMD
 	private Widget moduleView = null;
 	private MediaWrapper<?> mediaWrapper = null;
 	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
@@ -79,8 +81,20 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 			height = 240;
 		}
 		String poster = XMLUtils.getAttributeAsString(element, "poster");
-		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width, template);//NOPMD
+		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width, template,getNarrationText(element));// NOPMD
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
+	}
+
+	public String getNarrationText(Element element) {
+		StringBuilder builder = new StringBuilder();
+		NodeList nodeList = element.getElementsByTagName("narrationScript");
+		for (int x = 0; x < nodeList.getLength(); ++x) {
+			if (nodeList.item(x).getNodeType() == Node.ELEMENT_NODE) {
+				builder.append(XMLUtils.getText((Element) nodeList.item(x)));
+				builder.append(' ');
+			}
+		}
+		return builder.toString();
 	}
 
 	/**
@@ -99,7 +113,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	}
 
 	@Override
-	public void initModule(Element element) {//NOPMD
+	public void initModule(Element element) {// NOPMD
 		String type = XMLUtils.getAttributeAsString(element, "type");
 		Element template = XMLUtils.getFirstElementWithTagName(element, "template");
 		Map<String, String> styles = getModuleSocket().getStyles(element);
@@ -109,8 +123,8 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
 			this.moduleView = player.getView();
 		} else {
-			if(element.getNodeName().equals("audioPlayer")){
-				type="audio";
+			if (element.getNodeName().equals("audioPlayer")) {
+				type = "audio";
 			}
 			getMediaWrapper(element, template != null && !"native".equals(playerType), type);
 			ObjectModuleView moduleView = new ObjectModuleView();
@@ -118,7 +132,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 			if (cls != null && !"".equals(cls)) {
 				moduleView.getContainerPanel().addStyleName(cls);
 			}
-			if (widget != null){
+			if (widget != null) {
 				moduleView.getContainerPanel().add(widget);
 			}
 

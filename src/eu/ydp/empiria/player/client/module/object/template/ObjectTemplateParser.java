@@ -40,6 +40,7 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 		controllers.put(ModuleTagName.MEDIA_VOLUME_BAR.tagName(), new VolumeMediaButton());
 		controllers.put(ModuleTagName.MEDIA_CURRENT_TIME.tagName(), new MediaCurrentTime());
 		controllers.put(ModuleTagName.MEDIA_TOTAL_TIME.tagName(), new MediaTotalTime());
+		controllers.put(ModuleTagName.MEDIA_TEXT_TRACK.tagName(), null);
 	}
 
 	@Override
@@ -49,16 +50,16 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 			String kind = XMLUtils.getAttributeAsString((Element) node, "kind", TextTrackKind.SUBTITLES.name());
 			TextTrackKind trackKind = TextTrackKind.SUBTITLES;
 			try {
-				trackKind = TextTrackKind.valueOf(kind);
+				trackKind = TextTrackKind.valueOf(kind.toUpperCase());
 			} catch (IllegalArgumentException exception) { //NOPMD
 
 			}
 			controller = new VideoTextTrackElement(trackKind);
 		} else {
 			controller = controllers.get(moduleName);
+			controller = (MediaController<?>) controller.getNewInstance();
 		}
 		if (controller != null) {
-			controller = (MediaController<?>) controller.getNewInstance();
 			controller.setMediaDescriptor(mediaDescriptor);
 		}
 

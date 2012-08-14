@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media;
 
 import java.util.Map;
 
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
-import com.google.gwt.media.client.Video;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor;
@@ -12,6 +12,10 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundEx
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
+import eu.ydp.empiria.player.client.media.Video;
+import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
+import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
+import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -43,6 +47,11 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 				if (baseMediaConfiguration.getHeight() > 0) {
 					((Video) media).setHeight(baseMediaConfiguration.getHeight() + "px");
 				}
+
+				if (baseMediaConfiguration.getNarrationText().trim().length() > 0) {
+					TextTrack textTrack = ((Video) media).addTrack(TextTrackKind.SUBTITLES);
+					textTrack.addCue(new TextTrackCue(Document.get().createUniqueId(), 0, 1000, baseMediaConfiguration.getNarrationText()));
+				}
 			}
 			for (Map.Entry<String, String> entry : baseMediaConfiguration.getSources().entrySet()) {
 				media.addSource(entry.getKey(), entry.getValue());
@@ -64,7 +73,7 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 	}
 
 	@Override
-	public void onEvent(HTML5MediaEvent event) {//NOPMD
+	public void onEvent(HTML5MediaEvent event) {// NOPMD
 		switch (event.getType()) {
 		case durationchange:
 			eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_DURATION_CHANGE, mediaDescriptor), mediaDescriptor);
@@ -118,7 +127,7 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 		try {
 			media.pause();
 			media.setCurrentTime(0);
-		} catch (Exception e) {//NOPMD
+		} catch (Exception e) {// NOPMD
 			// chrome podczas przeladowania strony lekcji
 			// generowal bledy
 		}
