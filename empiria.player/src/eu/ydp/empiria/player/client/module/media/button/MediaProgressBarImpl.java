@@ -141,9 +141,9 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			double steep = getMediaWrapper().getDuration() / scrollSize;
 			double time = steep * positionX;
 			double position = time > getMediaWrapper().getDuration() ? getMediaWrapper().getDuration() : time;
-			// TODO dodac schedulera dla zdarzen aby ograniczyc ilosc
-			// wykonywanych
-			eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, getMediaWrapper(), position), getMediaWrapper());
+			MediaEvent event = new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, getMediaWrapper());
+			event.setCurrentTime(position);
+			eventsBus.fireAsyncEventFromSource(event, getMediaWrapper());
 		}
 	}
 

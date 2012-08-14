@@ -37,14 +37,17 @@ public class TextTrack {
 
 	public void addCue(TextTrackCue textTrackCue){
 		cues.add(textTrackCue);
+		textTrackCue.setTextTrack(this);
 	}
 
 	@SuppressWarnings("PMD")
 	public void setCurrentTime(double time){
 		for(TextTrackCue cue : cues){
 			if(!cue.equals(activeCue)){
-				if(cue.getStartTime() >= time && cue.getEndTime()< time){
-					eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.TEXT_TRACK_UPDATE, eventBusSource, cue), eventBusSource, new CurrentPageScope());
+				if(cue.getStartTime() <= time && cue.getEndTime() > time){
+					MediaEvent event = new MediaEvent(MediaEventTypes.TEXT_TRACK_UPDATE, eventBusSource);
+					event.setTextTrackCue(cue);
+					eventsBus.fireAsyncEventFromSource(event, eventBusSource, new CurrentPageScope());
 					activeCue = cue;
 				}
 			}

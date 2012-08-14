@@ -47,8 +47,9 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 		((HasFlashMediaHandlers) flashMedia).addFlashMediaPlayHandler(new FlashMediaPlayHandler() {
 			@Override
 			public void onFlashSoundPlay(FlashMediaPlayEvent event) {
-				if (soundExecutorListener != null)
+				if (soundExecutorListener != null) {
 					soundExecutorListener.onPlay();
+				}
 				playing = true;
 				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_PLAY, getMediaWrapper()), getMediaWrapper());
 			}
@@ -114,7 +115,9 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 
 			@Override
 			public void onFlashSoundPositionChange(FlashMediaPlayheadUpdateEvent event) {
-				eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_TIME_UPDATE, getMediaWrapper(), event.getPlayheadTime() * .01f), getMediaWrapper());
+				MediaEvent mediaEvent = new MediaEvent(MediaEventTypes.ON_TIME_UPDATE, getMediaWrapper());
+				mediaEvent.setCurrentTime( event.getPlayheadTime() * .01d);
+				eventsBus.fireAsyncEventFromSource(mediaEvent, getMediaWrapper());
 			}
 		});
 		if (mediaWrapper != null) {
@@ -124,6 +127,7 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 			((HasFlashMediaHandlers) flashMedia).addFlashMediaVolumeChangeHandler((FlashMediaVolumeChangeHandler) mediaWrapper);
 			((HasFlashMediaHandlers) flashMedia).addFlashMediaStopHandler((FlashMediaStopHandler) mediaWrapper);
 		}
+
 	}
 
 	@Override
@@ -172,10 +176,11 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 		play(source, false);
 	}
 
-	
+
 	private void play(String src, boolean free){
-		if (flashMedia != null  &&  free)
+		if (flashMedia != null  &&  free) {
 			free();
+		}
 		source = src;
 		if (playing && !pause){
 			stop();
@@ -184,7 +189,7 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 			init();
 		}
 		flashMedia.play();
-		
+
 	}
 	@Override
 	public void pause() {

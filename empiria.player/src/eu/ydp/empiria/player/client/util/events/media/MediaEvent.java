@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.util.events.media;
 
+import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.EventTypes;
@@ -7,28 +8,46 @@ import eu.ydp.empiria.player.client.util.events.EventTypes;
 public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes> {
 	public static EventTypes<MediaEventHandler, MediaEventTypes> types = new EventTypes<MediaEventHandler, MediaEventTypes>();
 
-	private final Object value;
+	private Double currentTime;
+
+	private TextTrackCue textTrackCue;
+
+	private double volume;
 
 	public MediaEvent(MediaEventTypes type) {
-		this(type, null, 0);
+		this(type, null);
 	}
 
 	public MediaEvent(MediaEventTypes type, Object source) {
-		this(type, source, 0);
-	}
-
-	public MediaEvent(MediaEventTypes type, Object source, Object value) {
 		super(type, source);
-		this.value = value;
-
 	}
 
 	public MediaWrapper<?> getMediaWrapper() {
 		return (super.getSource() instanceof MediaWrapper<?>) ? (MediaWrapper<?>) super.getSource() : null;// NOPMD
 	}
 
-	public Object getValue() {
-		return value;
+	public void setCurrentTime(Double position) {
+		this.currentTime = position;
+	}
+
+	public Double getCurrentTime() {
+		return currentTime;
+	}
+
+	public void setTextTrackCue(TextTrackCue textTrackCue) {
+		this.textTrackCue = textTrackCue;
+	}
+
+	public TextTrackCue getTextTrackCue() {
+		return textTrackCue;
+	}
+
+	public double getVolume() {
+		return volume;
+	}
+
+	public void setVolume(double value) {
+		this.volume = value;
 	}
 
 	@Override
@@ -50,8 +69,6 @@ public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes
 		StringBuilder builder = new StringBuilder();
 		builder.append("MediaEvent [type=");
 		builder.append(getType());
-		builder.append(", value=");
-		builder.append(value);
 		builder.append("]");
 		return builder.toString();
 	}

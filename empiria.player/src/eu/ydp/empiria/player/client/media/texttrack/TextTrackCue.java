@@ -5,16 +5,19 @@ public class TextTrackCue implements Comparable<TextTrackCue>{
 	private final String text;
 	private final double endTime;
 	private final double startTime;
-	private final TextTrack textTrack;
-	public TextTrackCue(String elementId, String startTime, String endTime, String text, TextTrack textTrack) {
-		this(elementId, Double.valueOf(startTime), Double.valueOf(endTime), text,textTrack);
+	private  TextTrack textTrack;
+	public TextTrackCue(String elementId, String startTime, String endTime, String text) {
+		this(elementId, Double.valueOf(startTime), Double.valueOf(endTime), text);
 	}
 
-	public TextTrackCue(String elementId, double startTime, double endTime, String text, TextTrack textTrack) {
+	public TextTrackCue(String elementId, double startTime, double endTime, String text) {
 		this.elementId = elementId;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.text=text;
+	}
+
+	protected void setTextTrack(TextTrack textTrack) {
 		this.textTrack = textTrack;
 	}
 

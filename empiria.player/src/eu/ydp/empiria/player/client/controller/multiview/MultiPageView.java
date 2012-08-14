@@ -36,7 +36,6 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.debug.Debug;
 import eu.ydp.gwtutil.client.util.KeyValue;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
@@ -156,7 +155,6 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 
 	private int getHeightForPage(int pageNumber) {
 		FlowPanel flowPanel = (FlowPanel) getViewForPage(pageNumber).getParent();
-		Debug.log(pageNumber + " page height " + (flowPanel == null ? 0 : flowPanel.getOffsetHeight()));
 		return flowPanel == null ? 0 : flowPanel.getOffsetHeight();
 	}
 
@@ -293,7 +291,6 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 				}
 			});
 			detachedPages.add(page);
-			Debug.log(this.getClass(), "Detach content for page :" + page);
 		}
 
 		activePanels.clear();
@@ -310,7 +307,6 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 					}
 				});
 				detachedPages.remove(page);
-				Debug.log(this.getClass(), "Attach content for page :" + page);
 			}
 		}
 	}
@@ -409,7 +405,6 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	}
 
 	public void onEvent(NativeEvent event) {
-		Debug.log(event.getType());
 		switch (Event.getTypeInt(event.getType())) {
 		case Event.ONMOUSEDOWN:
 		case Event.ONTOUCHSTART:

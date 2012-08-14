@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.object.impl;
 
 import com.google.gwt.media.client.MediaBase;
 
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.PathUtil;
 
 public class FlashLocalAudioImpl extends FlashLocalMediaImpl implements Audio {
@@ -37,7 +38,7 @@ public class FlashLocalAudioImpl extends FlashLocalMediaImpl implements Audio {
 	public void setShowNativeControls(boolean show) {}
 
 	@Override
-	public void setEventBusSourceObject(Object object) {}
+	public void setEventBusSourceObject(MediaWrapper<?> object) {}
 
 	@Override
 	public MediaBase getMedia() {

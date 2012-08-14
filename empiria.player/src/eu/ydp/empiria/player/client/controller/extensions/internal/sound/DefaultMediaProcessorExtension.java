@@ -160,6 +160,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 				HTML5MediaExecutor ex = new HTML5MediaExecutor();
 				ex.setMediaWrapper(new HTML5MediaWrapper(mb));
 				executor = ex;
+				mb.setEventBusSourceObject(executor.getMediaWrapper());
 			} else if (!UserAgentChecker.isLocal()) {
 				if (bmc.isTemplate()) {
 					if (bmc.getMediaType() == MediaType.VIDEO) {

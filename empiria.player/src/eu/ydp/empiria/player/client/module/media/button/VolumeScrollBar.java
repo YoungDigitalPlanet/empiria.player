@@ -123,7 +123,9 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	}
 
 	protected void setVolume(double value) {
-		eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.CHANGE_VOLUME, getMediaWrapper(), value), getMediaWrapper());
+		MediaEvent event = new MediaEvent(MediaEventTypes.CHANGE_VOLUME, getMediaWrapper());
+		event.setVolume(value);
+		eventsBus.fireAsyncEventFromSource(event, getMediaWrapper());
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package eu.ydp.empiria.player.client.module.object.impl;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+
 public class HTML5AudioImpl extends FlowPanel implements Audio {
 	eu.ydp.empiria.player.client.media.Audio audio = null;
 
@@ -31,7 +33,7 @@ public class HTML5AudioImpl extends FlowPanel implements Audio {
 	}
 
 	@Override
-	public void setEventBusSourceObject(Object object) {
+	public void setEventBusSourceObject(MediaWrapper<?> object) {
 
 	}
 }

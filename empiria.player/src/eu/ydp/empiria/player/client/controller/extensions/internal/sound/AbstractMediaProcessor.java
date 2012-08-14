@@ -41,7 +41,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 
 		switch (((MediaEventTypes) event.getAssociatedType().getType())) {
 		case CHANGE_VOLUME:
-			executor.setVolume((Double) event.getValue());
+			executor.setVolume( event.getVolume());
 			break;
 		case STOP:
 			executor.stop();
@@ -50,7 +50,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			executor.pause();
 			break;
 		case SET_CURRENT_TIME:
-			executor.setCurrentTime((Double) event.getValue());
+			executor.setCurrentTime(event.getCurrentTime());
 			break;
 		case PLAY:
 			executor.play();

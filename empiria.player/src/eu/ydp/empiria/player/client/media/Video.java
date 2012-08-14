@@ -8,6 +8,7 @@ import com.google.gwt.dom.client.VideoElement;
 import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
@@ -18,7 +19,7 @@ public class Video extends com.google.gwt.media.client.Video implements MediaEve
 	private final List<TextTrack> textTracks = new ArrayList<TextTrack>();
 	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private boolean initialized = false;
-	private Object eventBusSource = null;
+	private MediaWrapper<?> eventBusSource = null;
 
 	protected Video(VideoElement element) {
 		super(element);
@@ -47,7 +48,7 @@ public class Video extends com.google.gwt.media.client.Video implements MediaEve
 		return video;
 	}
 
-	public void setEventBusSourceObject(Object object) {
+	public void setEventBusSourceObject(MediaWrapper<?> object) {
 		eventBusSource = object;
 	}
 
@@ -55,7 +56,7 @@ public class Video extends com.google.gwt.media.client.Video implements MediaEve
 	public void onMediaEvent(MediaEvent event) {
 		if (event.getType() == MediaEventTypes.ON_TIME_UPDATE) {
 			for (TextTrack track : textTracks) {
-				track.setCurrentTime((Double) event.getValue());
+				track.setCurrentTime(eventBusSource.getCurrentTime());
 			}
 		}
 	}
