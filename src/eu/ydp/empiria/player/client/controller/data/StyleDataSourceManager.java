@@ -43,7 +43,8 @@ public class StyleDataSourceManager implements StyleSocket {
 	}
 
 	public void addAssessmentStyle(StyleDocument styleDocument) {
-		assessmentStyle.append( styleDocument );
+		assessmentStyle.append(styleDocument);
+		currentStyles.append(styleDocument);
 	}
 
 	public void addItemStyle(int index, StyleDocument styleDocument) {
@@ -56,6 +57,11 @@ public class StyleDataSourceManager implements StyleSocket {
 			itemStyle.set(index, styles);
 		}
 		styles.append( styleDocument );
+	}
+	
+	@Override
+	public Map<String, String> getStyles(Element element) {
+		return getStyleProperties(element);
 	}
 
 	public Map<String, String> getStyleProperties(Element element) {
@@ -102,11 +108,6 @@ public class StyleDataSourceManager implements StyleSocket {
 		}
 
 		return selectors;
-	}
-
-	@Override
-	public Map<String, String> getStyles(Element element) {
-		return getStyleProperties(element);
 	}
 
 	@Override
