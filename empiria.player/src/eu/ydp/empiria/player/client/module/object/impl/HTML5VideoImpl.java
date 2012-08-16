@@ -12,7 +12,7 @@ public class HTML5VideoImpl extends FlowPanel implements Video {
 
 	protected eu.ydp.empiria.player.client.media.Video video;
 	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	private Object eventBusSource;
+	private MediaWrapper<?> eventBusSource;
 
 	public HTML5VideoImpl() {
 		video = eu.ydp.empiria.player.client.media.Video.createIfSupported();
@@ -64,7 +64,7 @@ public class HTML5VideoImpl extends FlowPanel implements Video {
 		video.setEventBusSourceObject(object);
 	}
 
-	public Object getEventBusSourceObject() {
+	public MediaWrapper<?> getEventBusSourceObject() {
 		return eventBusSource;
 	}
 }

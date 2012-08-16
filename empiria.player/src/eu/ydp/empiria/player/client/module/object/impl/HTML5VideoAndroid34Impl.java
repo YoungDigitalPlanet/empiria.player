@@ -1,15 +1,17 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class HTML5VideoAndroid3Impl extends HTML5VideoAndroidImpl {
+public class HTML5VideoAndroid34Impl extends HTML5VideoAndroidImpl {
 	private boolean videoReady = false;
 
-	public HTML5VideoAndroid3Impl() {
-		super();
+	@Override
+	public void setEventBusSourceObject(MediaWrapper<?> object) {
+		super.setEventBusSourceObject(object);
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getEventBusSourceObject(), new MediaEventHandler() {
 			int stopTime = 300; // zatrzymujemy 300ms przed koncem niestety na
 
@@ -18,9 +20,10 @@ public class HTML5VideoAndroid3Impl extends HTML5VideoAndroidImpl {
 			public void onMediaEvent(MediaEvent event) {
 				// 300ms przed koncem filmu
 				if (videoReady) {
-					double currentTime = video.getCurrentTime();
-					double duration = video.getDuration();
-					if (currentTime >= 1000 && currentTime * 1000 > duration * 1000 - stopTime) {
+					double currentTime = video.getCurrentTime() * 1000;
+					double duration = video.getDuration() * 1000;
+
+					if (currentTime >= 1000 && currentTime > duration - stopTime) {
 						video.pause();
 						video.setCurrentTime(0);
 					}
@@ -37,6 +40,5 @@ public class HTML5VideoAndroid3Impl extends HTML5VideoAndroidImpl {
 				videoReady = true;
 			}
 		}, new CurrentPageScope());
-
 	}
 }

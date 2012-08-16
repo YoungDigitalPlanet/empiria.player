@@ -12,7 +12,7 @@
 	<inherits name='eu.ydp.canvasadapter.canvasadapter' />
 	<inherits name='eu.ydp.jsfilerequest.jsfilerequest' />
 	<inherits name="eu.ydp.gwtcreatejs.GwtCreateJs" />
-	
+
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject" />
 
@@ -24,7 +24,7 @@
 	<entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint' />
 
 	<define-property name="run.local" values="false,true" />
-	<collapse-property name="run.local" values="*"/>
+	<collapse-property name="run.local" values="*" />
 	<property-provider name="run.local"><![CDATA[
 	  {
 		if (window.location.href.indexOf("file://") == 0)
@@ -51,9 +51,12 @@
 		</any>
 	</replace-with>
 
-	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroid3Impl">
+	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoAndroid34Impl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
-		<when-property-is name="mobile.user.agent" value="android3" />
+		<any>
+			<when-property-is name="mobile.user.agent" value="android3" />
+			<when-property-is name="mobile.user.agent" value="android4" />
+		</any>
 	</replace-with>
 
 	<!-- END VIDEO -->
