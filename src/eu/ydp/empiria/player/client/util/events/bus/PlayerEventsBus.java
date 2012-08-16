@@ -133,10 +133,10 @@ public final class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	private <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEventAsync(E event, Object source, Map<Object, Map<EventScope<?>, List<?>>> map,
 			EventScope<?> eventScope) {
 		if (map != null) {
-			Map<EventScope<?>, List<?>> handler = map.get(source);
-			if (handler != null && source != null) {
+			Map<EventScope<?>, List<?>> handler = null;
+			if ((handler = map.get(source)) != null) {
 				for (Map.Entry<EventScope<?>, List<?>> entry : handler.entrySet()) {
-					if (eventScope == null || entry.getKey()==null || eventScope.equals(entry.getKey())) {
+					if (eventScope == null || entry.getKey() == null || eventScope.equals(entry.getKey())) {
 						for (Object e : entry.getValue()) {
 							scheduler.scheduleDeferred(new FireCommand<H, Event<H, T>>((H) e, event));
 						}
@@ -144,10 +144,9 @@ public final class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 				}
 			}
 			// handlery bez okreslonego obiektu source
-			handler = map.get(null);
-			if (handler != null) {
+			if (source != null && (handler = map.get(null)) != null) {
 				for (Map.Entry<EventScope<?>, List<?>> entry : handler.entrySet()) {
-					if (eventScope == null || entry.getKey()==null || eventScope.equals(entry.getKey())) {
+					if (eventScope == null || entry.getKey() == null || eventScope.equals(entry.getKey())) {
 						for (Object e : entry.getValue()) {
 							scheduler.scheduleDeferred(new FireCommand<H, Event<H, T>>((H) e, event));
 						}
@@ -164,7 +163,7 @@ public final class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 			Map<EventScope<?>, List<?>> handler = null;
 			if ((handler = map.get(source)) != null) {
 				for (Map.Entry<EventScope<?>, List<?>> entry : handler.entrySet()) {
-					if (eventScope == null || entry.getKey()==null || eventScope.equals(entry.getKey())) {
+					if (eventScope == null || entry.getKey() == null || eventScope.equals(entry.getKey())) {
 						for (Object e : entry.getValue()) {
 							event.dispatch((H) e);
 						}
@@ -174,7 +173,7 @@ public final class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 			// handlery bez okreslonego obiektu source
 			if (source != null && (handler = map.get(null)) != null) {
 				for (Map.Entry<EventScope<?>, List<?>> entry : handler.entrySet()) {
-					if (eventScope == null || entry.getKey()==null || eventScope.equals(entry.getKey())) {
+					if (eventScope == null || entry.getKey() == null || eventScope.equals(entry.getKey())) {
 						for (Object e : entry.getValue()) {
 							event.dispatch((H) e);
 						}

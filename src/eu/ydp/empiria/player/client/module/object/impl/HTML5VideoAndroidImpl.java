@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.object.impl;
 
 import com.google.gwt.media.client.Video;
 
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
@@ -27,8 +28,9 @@ public class HTML5VideoAndroidImpl extends HTML5VideoImpl {
 		}
 	}
 
-	public HTML5VideoAndroidImpl() {
-		super();
+	@Override
+	public void setEventBusSourceObject(MediaWrapper<?> object) {
+		super.setEventBusSourceObject(object);
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END),getEventBusSourceObject(),new MP4ErrorHandler(video),new CurrentPageScope());
 	}
 }

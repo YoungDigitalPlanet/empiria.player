@@ -495,7 +495,6 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 		// Czekamy zanima rozpoczniemy przesuwanie
 		if (!multiTouch) {
 			timer.schedule(TOUCH_START_TIME);
-			touchReservation = false;
 		}
 	}
 

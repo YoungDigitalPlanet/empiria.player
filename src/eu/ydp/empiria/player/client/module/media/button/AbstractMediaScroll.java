@@ -63,9 +63,11 @@ public abstract class AbstractMediaScroll<T> extends MediaController<T> {
 				RootPanel.get().addDomHandler(new MouseUpHandler() {
 					@Override
 					public void onMouseUp(MouseUpEvent event) {
-						pressed = false;
-						setPosition(event.getNativeEvent());
-						event.stopPropagation();
+						if(isPressed()){
+							pressed = false;
+							setPosition(event.getNativeEvent());
+							event.stopPropagation();
+						}
 					}
 				}, MouseUpEvent.getType());
 			}
