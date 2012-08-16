@@ -11,6 +11,9 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_INFO_CONTENT = "-empiria-info-content";
 	public static final String EMPIRIA_REPORT_SHOW_NON_ACTIVITES = "-empiria-report-show-non-activites";
 	public static final String EMPIRIA_REPORT_ITEMS_INCLUDE = "-empiria-report-items-include";
+	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN = "-empiria-textentry-gap-width-align";
+	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH = "-empiria-textentry-gap-width";
+	public static final String EMPIRIA_TEXTENTRY_GAP_FONT_SIZE = "-empiria-textentry-gap-font-size";
 	private EmpiriaStyleNameConstants() {
 	}
 }

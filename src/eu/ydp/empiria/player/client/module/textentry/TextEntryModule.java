@@ -1,6 +1,9 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import java.io.Serializable;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_FONT_SIZE;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
+
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +39,7 @@ import eu.ydp.empiria.player.client.module.binding.DefaultBindingGroupIdentifier
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingContext;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.NumberUtils;
 import eu.ydp.empiria.player.client.util.XMLUtils;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -45,8 +49,8 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
-
 public class TextEntryModule extends OneViewInteractionModuleBase implements Factory<TextEntryModule>, Bindable{
+
 
 	private TextBox textBox;
 	private String	lastValue = null;
@@ -57,7 +61,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	private DefaultBindingGroupIdentifier widthBindingIdentifier;
 	private Integer fontSize;
 	private BindingContext widthBindingContext;
-
+	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 
@@ -68,6 +72,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
 					if(textBox!=null){
 						updateResponse(false);
+						textBox.getElement().blur();
 					}
 				}
 			}
@@ -103,17 +108,17 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		}
 
 		Map<String, String> styles = getModuleSocket().getStyles(getModuleElement());
-		if (styles.containsKey("-empiria-textentry-gap-font-size")){
-			fontSize = NumberUtils.tryParseInt(styles.get("-empiria-textentry-gap-font-size"), null);
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE)){
+			fontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE), null);
 			textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
 		}
-		if (styles.containsKey("-empiria-textentry-gap-width")){
-			Integer gapWidth = NumberUtils.tryParseInt(styles.get("-empiria-textentry-gap-width"), null);
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH)){
+			Integer gapWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH), null);
 			textBox.setWidth(gapWidth + "px");
-		} else if (styles.containsKey("-empiria-textentry-gap-width-align")){
+		} else if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN)){
 			try {
-				GapWidthMode wm = GapWidthMode.valueOf(styles.get("-empiria-textentry-gap-width-align").trim().toUpperCase());
-				widthMode = wm;
+				GapWidthMode widthm = GapWidthMode.valueOf(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN).trim().toUpperCase());
+				widthMode = widthm;
 			} catch (Exception e) {	}
 			if (widthMode == GapWidthMode.GROUP){
 				if (getModuleElement().hasAttribute("widthBindingGroup")){
@@ -134,11 +139,11 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		}
 
 		Panel spanPrefix = new FlowPanel();
-		spanPrefix.setStyleName("qp-text-textentry-prefix");
+		spanPrefix.setStyleName(styleNames.QP_TEXT_TEXTENTRY_PREFIX());
 		Panel spanSufix = new FlowPanel();
-		spanSufix.setStyleName("qp-text-textentry-sufix");
+		spanSufix.setStyleName(styleNames.QP_TEXT_TEXTENTRY_SUFIX());
 		Panel spanContent = new FlowPanel();
-		spanContent.setStyleName("qp-text-textentry-content");
+		spanContent.setStyleName(styleNames.QP_TEXT_TEXTENTRY_CONTENT());
 		spanContent.add(textBox);
 
 		moduleWidget = new FlowPanel();
@@ -146,7 +151,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		moduleWidget.add(spanPrefix);
 		moduleWidget.add(spanContent);
 		moduleWidget.add(spanSufix);
-		moduleWidget.setStyleName("qp-text-textentry");
+		moduleWidget.setStyleName(styleNames.QP_TEXT_TEXTENTRY());
 		applyIdAndClassToView(moduleWidget);
 
 		placeholders.get(0).add(moduleWidget);
@@ -192,8 +197,8 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	}
 
 	@Override
-	public void lock(boolean l) {
-		textBox.setEnabled(!l);
+	public void lock(boolean lock) {
+		textBox.setEnabled(!lock);
 	}
 
 	/**
@@ -205,16 +210,16 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 			textBox.setEnabled(false);
 			if (textBox.getText().length() > 0){
 				if( getModuleSocket().evaluateResponse(getResponse()).get(0) ) {
-					moduleWidget.setStyleName("qp-text-textentry-correct");
+					moduleWidget.setStyleName(styleNames.QP_TEXT_TEXTENTRY_CORRECT());
 				} else {
-					moduleWidget.setStyleName("qp-text-textentry-wrong");
+					moduleWidget.setStyleName(styleNames.QP_TEXT_TEXTENTRY_WRONG());
 				}
 			} else {
-				moduleWidget.setStyleName("qp-text-textentry-none");
+				moduleWidget.setStyleName(styleNames.QP_TEXT_TEXTENTRY_NONE());
 			}
 		} else {
 			textBox.setEnabled(true);
-			moduleWidget.setStyleName("qp-text-textentry");
+			moduleWidget.setStyleName(styleNames.QP_TEXT_TEXTENTRY());
 		}
 	}
 
