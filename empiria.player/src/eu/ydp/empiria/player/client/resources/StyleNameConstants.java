@@ -206,7 +206,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-page-item")
 	public String QP_PAGE_ITEM();
 
-
 	@DefaultStringValue("qp-page-next")
 	public String QP_PAGE_NEXT();
 
@@ -296,6 +295,27 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-text-inline")
 	public String QP_TEXT_INLINE();
+
+	@DefaultStringValue("qp-text-textentry")
+	public String QP_TEXT_TEXTENTRY();
+
+	@DefaultStringValue("qp-text-textentry-content")
+	public String QP_TEXT_TEXTENTRY_CONTENT();
+
+	@DefaultStringValue("qp-text-textentry-correct")
+	public String QP_TEXT_TEXTENTRY_CORRECT();
+
+	@DefaultStringValue("qp-text-textentry-none")
+	public String QP_TEXT_TEXTENTRY_NONE();
+
+	@DefaultStringValue("qp-text-textentry-prefix")
+	public String QP_TEXT_TEXTENTRY_PREFIX();
+
+	@DefaultStringValue("qp-text-textentry-sufix")
+	public String QP_TEXT_TEXTENTRY_SUFIX();
+
+	@DefaultStringValue("qp-text-textentry-wrong")
+	public String QP_TEXT_TEXTENTRY_WRONG();
 
 	@DefaultStringValue("qp-toc")
 	public String QP_TOC();
