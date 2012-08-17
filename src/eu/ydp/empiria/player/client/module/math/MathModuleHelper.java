@@ -1,5 +1,19 @@
 package eu.ydp.empiria.player.client.module.math;
 
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_COLOR;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_FONT_FAMILY;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_FONT_SIZE;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_FONT_STYLE;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_FONT_WEIGHT;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_FONT_SIZE;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_HEIGHT;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_WIDTH;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,13 +46,13 @@ import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class MathModuleHelper {
 
-	private Element moduleElement;
-	private ModuleSocket moduleSocket;
-	private Response response;
+	private final Element moduleElement;
+	private final ModuleSocket moduleSocket;
+	private final Response response;
 	private List<MathGap> gaps;
 	private Map<String, String> styles;
-	private List<Boolean> subsups = new ArrayList<Boolean>();
-	
+	private final List<Boolean> subsups = new ArrayList<Boolean>();
+
 	private int fontSize = 16;
 	private String fontName = "Arial";
 	private boolean fontBold = false;
@@ -51,83 +65,83 @@ public class MathModuleHelper {
 	private Integer textEntrySubSupHeight;
 	private Integer textEntrySubSupFontSize;
 	private Integer inlineChoiceWidth = 48;
-	private Integer inlineChoiceHeight = 24;	
-	
-	private MathPlayerManager mpm = new MathPlayerManager();
+	private Integer inlineChoiceHeight = 24;
+
+	private final MathPlayerManager mpm = new MathPlayerManager();
 	private InteractionManager interactionManager;
-	
+
 	private Size actualTextEntryGapSize;
-	private IModule module;
+	private final IModule module;
 	private Map<String, Size> actualSizes;
 
-	public MathModuleHelper(Element moduleElement, ModuleSocket moduleSocket, Response response, IModule module){
+	public MathModuleHelper(Element moduleElement, ModuleSocket moduleSocket, Response response, IModule module) {
 		this.moduleElement = moduleElement;
 		this.moduleSocket = moduleSocket;
 		this.response = response;
-		this.module = module; 
+		this.module = module;
 	}
-	
-	private enum GapType{
-		TEXT_ENTRY(){
-			public String getName(){
+
+	private enum GapType {
+		TEXT_ENTRY() {
+			@Override
+			public String getName() {
 				return "text-entry";
 			}
-		}, 
-		INLINE_CHOICE(){
-			public String getName(){
+		},
+		INLINE_CHOICE() {
+			@Override
+			public String getName() {
 				return "inline-choice";
 			}
-		
+
 		};
 		public abstract String getName();
 	}
-	
-	public List<MathGap> initGaps(){
-		
+
+	public List<MathGap> initGaps() {
+
 		NodeList gapNodes = moduleElement.getElementsByTagName("gap");
 		gaps = new ArrayList<MathGap>();
-		
-		for (int i = 0 ; i < gapNodes.getLength() ; i ++){
-			Element currElement = (Element)gapNodes.item(i);
-			
-			if (currElement.hasAttribute("type")  &&  GapType.INLINE_CHOICE.getName().equals( currElement.getAttribute("type") )){
+
+		for (int i = 0; i < gapNodes.getLength(); i++) {
+			Element currElement = (Element) gapNodes.item(i);
+
+			if (currElement.hasAttribute("type") && GapType.INLINE_CHOICE.getName().equals(currElement.getAttribute("type"))) {
 
 				ExListBox listBox = new ExListBox();
 				listBox.setSelectedIndex(-1);
-								
-				
+
 				NodeList optionNodes = currElement.getElementsByTagName("inlineChoice");
 				ArrayList<String> listBoxIdentifiers = new ArrayList<String>();
-				
-				for (int o = 0 ; o < optionNodes.getLength() ; o ++){
-					String currId = ((Element)optionNodes.item(o)).getAttribute("identifier");
+
+				for (int o = 0; o < optionNodes.getLength(); o++) {
+					String currId = ((Element) optionNodes.item(o)).getAttribute("identifier");
 					listBoxIdentifiers.add(currId);
 					Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
 					Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
 					listBox.addOption(baseBody, popupBody);
 				}
-				
+
 				gaps.add(new InlineChoiceGap(listBox, listBoxIdentifiers));
-				
-				
-			} else if (currElement.hasAttribute("type")  &&  GapType.TEXT_ENTRY.getName().equals( currElement.getAttribute("type") )){
-				
-				TextEntryGap teg = new TextEntryGap();	
+
+			} else if (currElement.hasAttribute("type") && GapType.TEXT_ENTRY.getName().equals(currElement.getAttribute("type"))) {
+
+				TextEntryGap teg = new TextEntryGap();
 				int fontSize;
 				int gapWidth;
 				int gapHeight;
-				if (!subsups.get(i)){
-					fontSize = textEntryFontSize;
-					gapWidth = textEntryGapWidth;
-					gapHeight = textEntryGapHeight;
-				}else {
+				if (subsups.get(i)) {
 					fontSize = textEntrySubSupFontSize;
 					gapWidth = textEntrySubSupWidth;
 					gapHeight = textEntrySubSupHeight;
+				} else {
+					fontSize = textEntryFontSize;
+					gapWidth = textEntryGapWidth;
+					gapHeight = textEntryGapHeight;
 				}
 				String groupName = null;
-				for (String currGroupName : response.groups.keySet()){
-					if (response.groups.get(currGroupName).contains(i)){
+				for (String currGroupName : response.groups.keySet()) {
+					if (response.groups.get(currGroupName).contains(i)) {
 						groupName = currGroupName;
 						break;
 					}
@@ -140,86 +154,86 @@ public class MathModuleHelper {
 		}
 		return gaps;
 	}
-	
-	public void initStyles(){
-		
+
+	public void initStyles() {
+
 		styles = moduleSocket.getStyles(moduleElement);
-		
-		if (styles.containsKey("-empiria-math-font-size")){
-			fontSize = NumberUtils.tryParseInt(styles.get("-empiria-math-font-size"));
+
+		if (styles.containsKey(EMPIRIA_MATH_FONT_SIZE)) {
+			fontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_FONT_SIZE));
 		}
-		
-		if (styles.containsKey("-empiria-math-font-family")){
-			fontName = styles.get("-empiria-math-font-family");
+
+		if (styles.containsKey(EMPIRIA_MATH_FONT_FAMILY)) {
+			fontName = styles.get(EMPIRIA_MATH_FONT_FAMILY);
 		}
-		
-		if (styles.containsKey("-empiria-math-font-weight")){
-			fontBold = styles.get("-empiria-math-font-weight").toLowerCase().equals("bold");
+
+		if (styles.containsKey(EMPIRIA_MATH_FONT_WEIGHT)) {
+			fontBold = styles.get(EMPIRIA_MATH_FONT_WEIGHT).equalsIgnoreCase("bold");
 		}
-		
-		if (styles.containsKey("-empiria-math-font-style")){
-			fontItalic = styles.get("-empiria-math-font-style").toLowerCase().equals("italic");
+
+		if (styles.containsKey(EMPIRIA_MATH_FONT_STYLE)) {
+			fontItalic = styles.get(EMPIRIA_MATH_FONT_STYLE).equalsIgnoreCase("italic");
 		}
-		
-		if (styles.containsKey("-empiria-math-color")){
-			fontColor = styles.get("-empiria-math-color").toUpperCase();
+
+		if (styles.containsKey(EMPIRIA_MATH_COLOR)) {
+			fontColor = styles.get(EMPIRIA_MATH_COLOR).toUpperCase();
 		}
-		
-		if (styles.containsKey("-empiria-math-gap-width")){
-			textEntryGapWidth = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-width"));
+
+		if (styles.containsKey(EMPIRIA_MATH_GAP_WIDTH)) {
+			textEntryGapWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_GAP_WIDTH));
 		}
-		
-		if (styles.containsKey("-empiria-math-gap-height")){
-			textEntryGapHeight = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-height"));
+
+		if (styles.containsKey(EMPIRIA_MATH_GAP_HEIGHT)) {
+			textEntryGapHeight = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_GAP_HEIGHT));
 		}
-		
-		if (styles.containsKey("-empiria-math-gap-font-size")){
-			textEntryFontSize = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-font-size"));
+
+		if (styles.containsKey(EMPIRIA_MATH_GAP_FONT_SIZE)) {
+			textEntryFontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_GAP_FONT_SIZE));
 		}
-		
-		if (styles.containsKey("-empiria-math-gap-subsup-width")){
-			textEntrySubSupWidth = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-width"));
+
+		if (styles.containsKey(EMPIRIA_MATH_GAP_SUBSUP_WIDTH)) {
+			textEntrySubSupWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_GAP_SUBSUP_WIDTH));
 		} else {
 			textEntrySubSupWidth = (int) (textEntryGapWidth * 0.7);
 		}
-			
-		if (styles.containsKey("-empiria-math-gap-subsup-height")){
-			textEntrySubSupHeight = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-height"));
+
+		if (styles.containsKey(EMPIRIA_MATH_GAP_SUBSUP_HEIGHT)) {
+			textEntrySubSupHeight = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_GAP_SUBSUP_HEIGHT));
 		} else {
 			textEntrySubSupHeight = (int) (textEntryGapHeight * 0.7);
 		}
-		
-		if (styles.containsKey("-empiria-math-gap-subsup-font-size")){
-			textEntrySubSupFontSize = NumberUtils.tryParseInt(styles.get("-empiria-math-gap-subsup-font-size"));
+
+		if (styles.containsKey(EMPIRIA_MATH_GAP_SUBSUP_FONT_SIZE)) {
+			textEntrySubSupFontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_GAP_SUBSUP_FONT_SIZE));
 		} else {
 			textEntrySubSupFontSize = (int) (textEntryFontSize * 0.7);
 		}
-		
-		if (styles.containsKey("-empiria-math-drop-width")){			
-			inlineChoiceWidth = NumberUtils.tryParseInt(styles.get("-empiria-math-drop-width"));
+
+		if (styles.containsKey(EMPIRIA_MATH_DROP_WIDTH)) {
+			inlineChoiceWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_DROP_WIDTH));
 		}
-		
-		if (styles.containsKey("-empiria-math-drop-height")){			
-			inlineChoiceHeight = NumberUtils.tryParseInt(styles.get("-empiria-math-drop-height"));
+
+		if (styles.containsKey(EMPIRIA_MATH_DROP_HEIGHT)) {
+			inlineChoiceHeight = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_DROP_HEIGHT));
 		}
 	}
-	
-	
-	public void initGapsProperties(){
-		
+
+	public void initGapsProperties() {
+
 		NodeList gapNodes = moduleElement.getElementsByTagName("gap");
-		
-		for (int i = 0 ; i < gapNodes.getLength() ; i ++){
-			Element currElement = (Element)gapNodes.item(i);
-			
+
+		for (int i = 0; i < gapNodes.getLength(); i++) {
+			Element currElement = (Element) gapNodes.item(i);
+
 			Node node = currElement.getParentNode();
 			Node prevNode = currElement;
 			boolean subsupParentFound = false;
-			
-			if (currElement.hasAttribute("uid")){			
-				while (node != null  &&  !node.getNodeName().equals(ModuleTagName.MATH_INTERACTION.tagName())){
-					if (node.getNodeName().equals("msub")  ||  node.getNodeName().equals("msup") ||  node.getNodeName().equals("msubsup") ||  node.getNodeName().equals("mmultiscripts")){
-						if (!XMLUtils.getFirstChildElement((Element)node).equals(prevNode)){						
+
+			if (currElement.hasAttribute("uid")) {
+				while (node != null && !node.getNodeName().equals(ModuleTagName.MATH_INTERACTION.tagName())) {
+					if (node.getNodeName().equals("msub") || node.getNodeName().equals("msup") || node.getNodeName().equals("msubsup")
+							|| node.getNodeName().equals("mmultiscripts")) {
+						if (!XMLUtils.getFirstChildElement((Element) node).equals(prevNode)) {
 							subsupParentFound = true;
 							break;
 						}
@@ -228,92 +242,88 @@ public class MathModuleHelper {
 					node = node.getParentNode();
 				}
 			}
-			
-			if (!subsupParentFound)
-				subsups.add(false);
-			else
-				subsups.add(true);
-				
-		}		
+			subsups.add(subsupParentFound);
+		}
 	}
-	
-	public void calculateActualSizes(){
-		
+
+	public void calculateActualSizes() {
+
 		actualSizes = new HashMap<String, Size>();
-		
-		for (int i = 0 ; i < gaps.size() ; i ++){
-			if (gaps.get(i) instanceof TextEntryGap){
-				TextEntryGap teg = (TextEntryGap)gaps.get(i);
-				((TextEntryGap)gaps.get(i)).updateGapWidth();
-				if (!"".equals(teg.getUid())){
+
+		for (int i = 0; i < gaps.size(); i++) {
+			if (gaps.get(i) instanceof TextEntryGap) {
+				TextEntryGap teg = (TextEntryGap) gaps.get(i);
+				((TextEntryGap) gaps.get(i)).updateGapWidth();
+				if (!"".equals(teg.getUid())) {
 					actualSizes.put(teg.getUid(), new Size(teg.getOffsetWidth(), teg.getOffsetHeight()));
 				}
 			}
 		}
-		
+
 	}
-	
-	public void setSizes(){
-		
-		for (int i = 0 ; i < gaps.size() ; i ++){
-			if (gaps.get(i) instanceof TextEntryGap){
-				TextEntryGap teg = (TextEntryGap)gaps.get(i); 
-				if ( !"".equals(teg.getUid())){
+
+	public void setSizes() {
+
+		for (int i = 0; i < gaps.size(); i++) {
+			if (gaps.get(i) instanceof TextEntryGap) {
+				TextEntryGap teg = (TextEntryGap) gaps.get(i);
+				if (!"".equals(teg.getUid())) {
 					mpm.setCustomFieldWidth(GapIdentifier.createIdIdentifier(teg.getUid()), actualSizes.get(teg.getUid()).getWidth());
-					if (subsups.get(i)){
+					if (subsups.get(i)) {
 						mpm.setCustomFieldHeight(GapIdentifier.createIdIdentifier(teg.getUid()), actualSizes.get(teg.getUid()).getHeight());
 					}
 				}
 			}
 		}
-		
+
 		actualTextEntryGapSize = TextEntryGap.getTextEntryGapActualSize(new Size(textEntryGapWidth, textEntryGapHeight));
-				
+
 		mpm.setCustomFieldWidth(GapIdentifier.createTypeIdentifier(GapType.TEXT_ENTRY.getName()), actualTextEntryGapSize.getWidth());
 		mpm.setCustomFieldHeight(GapIdentifier.createTypeIdentifier(GapType.TEXT_ENTRY.getName()), actualTextEntryGapSize.getHeight());
 
-		mpm.setCustomFieldWidth(GapIdentifier.createTypeIdentifier(GapType.INLINE_CHOICE.getName()), inlineChoiceWidth);	
+		mpm.setCustomFieldWidth(GapIdentifier.createTypeIdentifier(GapType.INLINE_CHOICE.getName()), inlineChoiceWidth);
 		mpm.setCustomFieldHeight(GapIdentifier.createTypeIdentifier(GapType.INLINE_CHOICE.getName()), inlineChoiceHeight);
 	}
 
 	public void initMath(Panel panel) {
-		
-		Integer fontColorInt = NumberUtils.tryParseInt(fontColor.trim().substring(1), 16, 0); 
-		Font f = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
-		mpm.setFont(f);
-		
+
+		Integer fontColorInt = NumberUtils.tryParseInt(fontColor.trim().substring(1), 16, 0);
+		Font font = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
+		mpm.setFont(font);
+
 		interactionManager = mpm.createMath(moduleElement.getChildNodes().toString(), panel);
-		
+
 	}
 
 	public void placeGaps(AbsolutePanel listBoxesLayer) {
 
-		for (int i = 0 ; i < gaps.size() ; i ++){
-			if (gaps.get(i) instanceof InlineChoiceGap){
-				InlineChoiceGap icg = (InlineChoiceGap)gaps.get(i);
-				icg.getListBox().setWidth(String.valueOf(inlineChoiceWidth) + "px");
-				icg.getListBox().setHeight(String.valueOf(inlineChoiceHeight) + "px");
+		for (int i = 0; i < gaps.size(); i++) {
+			if (gaps.get(i) instanceof InlineChoiceGap) {
+				InlineChoiceGap icg = (InlineChoiceGap) gaps.get(i);
+				icg.getListBox().setWidth(inlineChoiceWidth + "px");
+				icg.getListBox().setHeight(inlineChoiceHeight + "px");
 				listBoxesLayer.add(icg.getContainer());
-				
-			} else  if (gaps.get(i) instanceof TextEntryGap){
-				TextEntryGap teg = (TextEntryGap)gaps.get(i);
+
+			} else if (gaps.get(i) instanceof TextEntryGap) {
+				TextEntryGap teg = (TextEntryGap) gaps.get(i);
 				listBoxesLayer.add(teg.getContainer(), 0, 0);
 			}
 		}
 	}
 
 	public void positionGaps(AbsolutePanel listBoxesLayer) {
-		
-		Vector<CustomFieldDescription> customFieldDescriptions = interactionManager.getCustomFieldDescriptions();		
+
+		Vector<CustomFieldDescription> customFieldDescriptions = interactionManager.getCustomFieldDescriptions();
 		Iterator<CustomFieldDescription> customFieldDescriptionsIterator = customFieldDescriptions.iterator();
 
-		for (int i = 0 ; i < gaps.size() ; i ++){
-			if (!customFieldDescriptionsIterator.hasNext())
+		for (int i = 0; i < gaps.size(); i++) {
+			if (!customFieldDescriptionsIterator.hasNext()) {
 				break;
+			}
 			Point position = customFieldDescriptionsIterator.next().getPosition();
-			if (gaps.get(i) instanceof InlineChoiceGap){
-				listBoxesLayer.setWidgetPosition(gaps.get(i).getContainer(), position.x, position.y);				
-			} else  if (gaps.get(i) instanceof TextEntryGap){
+			if (gaps.get(i) instanceof InlineChoiceGap) {
+				listBoxesLayer.setWidgetPosition(gaps.get(i).getContainer(), position.x, position.y);
+			} else if (gaps.get(i) instanceof TextEntryGap) {
 				listBoxesLayer.setWidgetPosition(gaps.get(i).getContainer(), position.x, position.y);
 			}
 
