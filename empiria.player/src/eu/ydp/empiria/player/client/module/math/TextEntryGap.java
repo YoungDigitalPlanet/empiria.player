@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.math;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH_ALIGN;
 
@@ -90,10 +89,6 @@ public class TextEntryGap extends Composite implements MathGap, Bindable {
 
 		if (styles.containsKey(EMPIRIA_MATH_GAP_WIDTH)) {
 			gapOwnWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_GAP_WIDTH), null);
-		}
-
-		if (styles.containsKey(EMPIRIA_MATH_GAP_FONT_SIZE)) {
-			fontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_MATH_GAP_FONT_SIZE), null);
 		}
 
 		textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
