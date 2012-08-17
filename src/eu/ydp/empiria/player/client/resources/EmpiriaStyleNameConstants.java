@@ -14,6 +14,9 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN = "-empiria-textentry-gap-width-align";
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH = "-empiria-textentry-gap-width";
 	public static final String EMPIRIA_TEXTENTRY_GAP_FONT_SIZE = "-empiria-textentry-gap-font-size";
+	public static final String EMPIRIA_MATH_GAP_WIDTH_ALIGN = "-empiria-math-gap-width-align";
+	public static final String EMPIRIA_MATH_GAP_FONT_SIZE = "-empiria-math-gap-font-size";
+	public static final String EMPIRIA_MATH_GAP_WIDTH = "-empiria-math-gap-width";
 	private EmpiriaStyleNameConstants() {
 	}
 }

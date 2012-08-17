@@ -155,6 +155,15 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-markanswsers-marker-wrong")
 	public String QP_MARKANSWERS_MARKER_WRONG();
 
+	@DefaultStringValue("qp-mathinteraction")
+	public String QP_MATHINTERACTION();
+
+	@DefaultStringValue("qp-mathinteraction-gaps")
+	public String QP_MATHINTERACTION_GAPS();
+
+	@DefaultStringValue("qp-mathinteraction-inner")
+	public String QP_MATHINTERACTION_INNER();
+
 	@DefaultStringValue("qp-media-center-progress-button")
 	public String QP_MEDIA_CENTER_PROGRESS_BUTTON();
 
@@ -331,5 +340,4 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
-
 }
