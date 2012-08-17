@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.module.binding.BindingGroupIdentifier;
 import eu.ydp.empiria.player.client.module.binding.DefaultBindingGroupIdentifier;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -28,7 +29,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	protected AbsolutePanel outerPanel;
 	protected FlowPanel mainPanel;
 	protected AbsolutePanel listBoxesLayer;
-	private EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	protected List<MathGap> gaps;
 	protected BindingGroupIdentifier widthBindingIdentifier;
@@ -36,14 +37,14 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	protected boolean showingAnswer = false;
 	protected boolean markingAnswer = false;
 	protected boolean locked = false;
-
+	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	private MathModuleHelper helper;
-	
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		
+
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
-			
+
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
 				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
@@ -51,28 +52,28 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 				}
 			}
 		});
-		
+
 		outerPanel = new AbsolutePanel();
-		outerPanel.setStyleName("qp-mathinteraction");
+		outerPanel.setStyleName(styleNames.QP_MATHINTERACTION());
 		mainPanel = new FlowPanel();
-		mainPanel.setStyleName("qp-mathinteraction-inner");
+		mainPanel.setStyleName(styleNames.QP_MATHINTERACTION_INNER());
 		outerPanel.add(mainPanel, 0, 0);
-		
+
 		applyIdAndClassToView(mainPanel);
-		placeholders.get(0).add(outerPanel);		
+		placeholders.get(0).add(outerPanel);
 
 		if (getModuleElement().hasAttribute("widthBindingGroup")){
 			widthBindingIdentifier = new DefaultBindingGroupIdentifier(getModuleElement().getAttribute("widthBindingGroup"));
 		}
-		
+
 		helper = new MathModuleHelper(getModuleElement(), getModuleSocket(), getResponse(), this);
-		
+
 		helper.initStyles();
-		
+
 		helper.initGapsProperties();
-		
+
 		gaps = helper.initGaps();
-		
+
 		initGapListeners();
 	}
 
@@ -86,12 +87,12 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 
 	@Override
 	public void onSetUp() {
-		
+
 		listBoxesLayer = new AbsolutePanel();
-		listBoxesLayer.setStyleName("qp-mathinteraction-gaps");
-		outerPanel.add(listBoxesLayer);		
+		listBoxesLayer.setStyleName(styleNames.QP_MATHINTERACTION_GAPS());
+		outerPanel.add(listBoxesLayer);
 		helper.placeGaps(listBoxesLayer);
-		
+
 		updateResponse(false);
 	}
 
@@ -99,7 +100,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 		for (MathGap gap : gaps){
 			if (gap instanceof TextEntryGap){
 				((TextEntryGap)gap).getTextBox().addChangeHandler(new ChangeHandler() {
-					
+
 					@Override
 					public void onChange(ChangeEvent event) {
 						updateResponse(true);
@@ -107,7 +108,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 				});
 			} else if (gap instanceof InlineChoiceGap){
 				((InlineChoiceGap)gap).getListBox().setChangeListener(new ExListBoxChangeListener() {
-					
+
 					@Override
 					public void onChange() {
 						updateResponse(true);
@@ -116,20 +117,20 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 			}
 		}
 	}
-	
+
 	@Override
 	public void onStart() {
-		
+
 		helper.calculateActualSizes();
-		
+
 		helper.setSizes();
-		
+
 		helper.initMath(mainPanel);
 
-		listBoxesLayer.setWidth(String.valueOf(mainPanel.getOffsetWidth()) + "px");
-		listBoxesLayer.setHeight(String.valueOf(mainPanel.getOffsetHeight()) + "px");
+		listBoxesLayer.setWidth(mainPanel.getOffsetWidth() + "px");
+		listBoxesLayer.setHeight(mainPanel.getOffsetHeight() + "px");
 
-		helper.positionGaps(listBoxesLayer);	
+		helper.positionGaps(listBoxesLayer);
 	}
 
 	@Override
@@ -175,10 +176,10 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	}
 
 	@Override
-	public void lock(boolean lk) {
-		locked = lk;
+	public void lock(boolean lock) {
+		locked = lock;
 		for (int i = 0 ; i < gaps.size() ; i ++){
-			gaps.get(i).setEnabled(!lk);
+			gaps.get(i).setEnabled(!lock);
 		}
 	}
 
@@ -186,6 +187,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	public void reset() {
 		for (int i = 0 ; i < gaps.size() ; i ++){
 			gaps.get(i).reset();
+			gaps.get(i).unmark();
 		}
 		updateResponse(false);
 	}
@@ -216,8 +218,9 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	}
 
 	private void updateResponse(boolean userInteract){
-		if (showingAnswer)
+		if (showingAnswer) {
 			return;
+		}
 		if (getResponse() != null){
 			getResponse().values.clear();
 			for (int i = 0 ; i < gaps.size() ; i ++){
@@ -231,5 +234,5 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	public MathModule getNewInstance() {
 		return new MathModule();
 	}
-	
+
 }
