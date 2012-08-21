@@ -1,10 +1,11 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-import eu.ydp.empiria.player.client.util.PathUtil;
+import eu.ydp.gwtutil.client.PathUtil;
 
 public abstract class FlashLocalMediaImpl extends Composite {
 
@@ -27,7 +28,7 @@ public abstract class FlashLocalMediaImpl extends Composite {
 	@Override
 	public void onLoad() {
 		String swfSrc = getSwfSrc();
-		String installSrc = PathUtil.getPlayerPathDir() + "swfobject/expressInstall.swf";
+		String installSrc = GWT.getModuleBaseURL() + "swfobject/expressInstall.swf";
 		String srcNormalized = PathUtil.normalizePath(src);
 		loadFlvPlayerThroughSwfobject(elementId, swfSrc, installSrc, srcNormalized, getWidth(), getHeight());
 	}

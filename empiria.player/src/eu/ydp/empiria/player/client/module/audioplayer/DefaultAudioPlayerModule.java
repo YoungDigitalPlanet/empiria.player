@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class DefaultAudioPlayerModule implements AudioPlayerModule {
 

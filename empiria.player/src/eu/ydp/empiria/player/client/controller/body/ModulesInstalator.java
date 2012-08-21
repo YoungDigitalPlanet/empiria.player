@@ -17,7 +17,7 @@ import eu.ydp.empiria.player.client.module.ISingleViewSimpleModule;
 import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.util.StackMap;
+import eu.ydp.gwtutil.client.collections.StackMap;
 
 public class ModulesInstalator implements ModulesInstalatorSocket {
 

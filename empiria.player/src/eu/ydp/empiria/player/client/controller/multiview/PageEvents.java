@@ -18,7 +18,7 @@ import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.ui.RootPanel;
 
-import eu.ydp.gwtutil.client.debug.Debug;
+import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 public class PageEvents implements TouchStartHandler, TouchCancelHandler, TouchEndHandler, TouchMoveHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler {
 	private final MultiPageView view;

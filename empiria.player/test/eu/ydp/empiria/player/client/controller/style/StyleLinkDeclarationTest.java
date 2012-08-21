@@ -4,7 +4,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
-import eu.ydp.gwtutil.client.util.QueueSet;
+import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class StyleLinkDeclarationTest extends GWTTestCase {
 

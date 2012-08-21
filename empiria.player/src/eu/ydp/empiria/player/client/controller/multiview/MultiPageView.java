@@ -31,12 +31,12 @@ import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocke
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.NumberUtils;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.util.KeyValue;
+import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public class MultiPageView extends FlowPanel implements PlayerEventHandler, FlowRequestSocketUserExtension, Extension, ResizeHandler {

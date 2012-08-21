@@ -37,7 +37,7 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.util.NumberUtils;
+import eu.ydp.gwtutil.client.NumberUtils;
 
 
 public class Response extends Variable {

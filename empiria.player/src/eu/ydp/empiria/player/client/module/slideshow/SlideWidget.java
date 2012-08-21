@@ -7,8 +7,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.util.NumberUtils;
-import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class SlideWidget extends Composite {
 

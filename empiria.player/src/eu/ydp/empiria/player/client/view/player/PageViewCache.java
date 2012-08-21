@@ -4,7 +4,7 @@ import eu.ydp.empiria.player.client.controller.multiview.MultiPageView;
 import eu.ydp.empiria.player.client.view.page.PageContentView;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
 import eu.ydp.empiria.player.client.view.page.PageViewSocketImpl;
-import eu.ydp.gwtutil.client.util.KeyValue;
+import eu.ydp.gwtutil.client.collections.KeyValue;
 
 public class PageViewCache extends AbstractElementCache<KeyValue<PageViewSocket, PageContentView>> {
 	protected final MultiPageView multiPageView = injector.getMultiPageView();

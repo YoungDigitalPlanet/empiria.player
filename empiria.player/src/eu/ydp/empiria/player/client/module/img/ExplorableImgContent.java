@@ -21,8 +21,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.util.NumberUtils;
-import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ExplorableImgContent extends Composite implements ImgContent {
 	private static final String ZOOMOUT_BUTTON = "zoomoutButton";

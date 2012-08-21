@@ -2,11 +2,11 @@ package eu.ydp.empiria.player.client.module.img;
 
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_COLOR;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_THICKNESS;
-import static eu.ydp.empiria.player.client.util.XMLUtils.getAttributeAsDouble;
-import static eu.ydp.empiria.player.client.util.XMLUtils.getAttributeAsInt;
-import static eu.ydp.empiria.player.client.util.XMLUtils.getAttributeAsString;
-import static eu.ydp.empiria.player.client.util.XMLUtils.getFirstElementWithTagName;
-import static eu.ydp.empiria.player.client.util.XMLUtils.getText;
+import static eu.ydp.gwtutil.client.xml.XMLUtils.getAttributeAsDouble;
+import static eu.ydp.gwtutil.client.xml.XMLUtils.getAttributeAsInt;
+import static eu.ydp.gwtutil.client.xml.XMLUtils.getAttributeAsString;
+import static eu.ydp.gwtutil.client.xml.XMLUtils.getFirstElementWithTagName;
+import static eu.ydp.gwtutil.client.xml.XMLUtils.getText;
 
 import java.util.Map;
 
@@ -37,7 +37,7 @@ import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 
 	private static LabelledImgContentUiBinder uiBinder = GWT.create(LabelledImgContentUiBinder.class);

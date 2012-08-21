@@ -20,7 +20,7 @@ import eu.ydp.empiria.player.client.module.binding.BindingProxy;
 import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
 import eu.ydp.empiria.player.client.module.containers.ActivityContainerModuleBase;
-import eu.ydp.empiria.player.client.util.NumberUtils;
+import eu.ydp.gwtutil.client.NumberUtils;
 
 public class TableModule extends ActivityContainerModuleBase implements Factory<TableModule>, BindingProxy {
 

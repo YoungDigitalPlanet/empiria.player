@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.data.library;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.util.PathUtil;
+import eu.ydp.gwtutil.client.PathUtil;
 
 public class LibraryLink {
 

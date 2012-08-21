@@ -29,8 +29,8 @@ import eu.ydp.empiria.player.client.module.binding.DefaultBindingGroupIdentifier
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingContext;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
-import eu.ydp.empiria.player.client.util.NumberUtils;
 import eu.ydp.empiria.player.client.util.geom.Size;
+import eu.ydp.gwtutil.client.NumberUtils;
 
 public class TextEntryGap extends Composite implements MathGap, Bindable {
 

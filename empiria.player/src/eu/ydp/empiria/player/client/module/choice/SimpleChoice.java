@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupCo
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class SimpleChoice extends FlowPanel {
 

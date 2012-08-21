@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.util.NumberUtils;
+import eu.ydp.gwtutil.client.NumberUtils;
 
 public class PanelWithScrollbars implements IsWidget, HasWidgets {
 

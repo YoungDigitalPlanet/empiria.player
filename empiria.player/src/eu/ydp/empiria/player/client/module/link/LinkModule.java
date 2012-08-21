@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
-import eu.ydp.empiria.player.client.util.NumberUtils;
+import eu.ydp.gwtutil.client.NumberUtils;
 
 public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 

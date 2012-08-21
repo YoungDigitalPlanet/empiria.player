@@ -12,7 +12,7 @@ import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.gwtutil.client.util.QueueSet;
+import eu.ydp.gwtutil.client.collections.QueueSet;
 
 /**
  * Requires that jscssp.js script is added to module xml file

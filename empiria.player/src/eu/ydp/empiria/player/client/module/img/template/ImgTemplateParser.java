@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.module.img.LabelledImgContent;
 import eu.ydp.empiria.player.client.module.media.button.FullScreenMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
-import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ImgTemplateParser extends AbstractTemplateParser {
 	protected Set<String> controllers = new HashSet<String>();

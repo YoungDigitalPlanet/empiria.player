@@ -5,8 +5,8 @@ import java.util.Vector;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.util.PathUtil;
-import eu.ydp.gwtutil.client.util.QueueSet;
+import eu.ydp.gwtutil.client.PathUtil;
+import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class StyleLinkDeclaration {
 

@@ -11,7 +11,7 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.img.template.ImgTemplateParser;
-import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 /**
  * Klasa odpowiedzialna za renderwoanie elementu img.

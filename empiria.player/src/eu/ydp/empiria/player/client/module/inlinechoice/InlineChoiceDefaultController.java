@@ -25,12 +25,12 @@ import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.util.RandomizedSet;
-import eu.ydp.empiria.player.client.util.XMLUtils;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
+import eu.ydp.gwtutil.client.collections.RandomizedSet;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class InlineChoiceDefaultController implements InlineChoiceController {
 

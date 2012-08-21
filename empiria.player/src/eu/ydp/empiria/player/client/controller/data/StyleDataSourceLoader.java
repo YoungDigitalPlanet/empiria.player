@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import eu.ydp.empiria.player.client.style.StyleDocument;
-import eu.ydp.empiria.player.client.util.PathUtil;
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.TextDocument;
+import eu.ydp.gwtutil.client.PathUtil;
 
 public class StyleDataSourceLoader {
 

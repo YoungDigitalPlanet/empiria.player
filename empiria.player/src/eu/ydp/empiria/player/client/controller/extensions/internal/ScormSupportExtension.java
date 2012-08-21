@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSo
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.util.NumberUtils;
+import eu.ydp.gwtutil.client.NumberUtils;
 
 public class ScormSupportExtension extends InternalExtension implements PlayerJsObjectModifierExtension, SessionDataSocketUserExtension, DataSourceDataSocketUserExtension {
 

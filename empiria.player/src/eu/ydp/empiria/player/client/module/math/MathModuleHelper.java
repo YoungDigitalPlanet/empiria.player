@@ -40,9 +40,9 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
-import eu.ydp.empiria.player.client.util.NumberUtils;
-import eu.ydp.empiria.player.client.util.XMLUtils;
 import eu.ydp.empiria.player.client.util.geom.Size;
+import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class MathModuleHelper {
 

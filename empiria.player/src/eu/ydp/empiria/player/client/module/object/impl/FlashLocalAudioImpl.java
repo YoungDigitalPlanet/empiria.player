@@ -1,9 +1,10 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.media.client.MediaBase;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.PathUtil;
+import eu.ydp.gwtutil.client.PathUtil;
 
 public class FlashLocalAudioImpl extends FlashLocalMediaImpl implements Audio {
 
@@ -23,7 +24,7 @@ public class FlashLocalAudioImpl extends FlashLocalMediaImpl implements Audio {
 
 	@Override
 	protected String getSwfSrc() {
-		return  PathUtil.getPlayerPathDir() + "wpaudioplayer/wpaudioplayer.swf";
+		return  GWT.getModuleBaseURL() + "wpaudioplayer/wpaudioplayer.swf";
 	}
 
 

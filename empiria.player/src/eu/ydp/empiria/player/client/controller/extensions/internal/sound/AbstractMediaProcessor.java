@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.debug.Debug;
+import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler {
 	protected Map<MediaWrapper<?>, SoundExecutor<?>> executors = new HashMap<MediaWrapper<?>, SoundExecutor<?>>();
