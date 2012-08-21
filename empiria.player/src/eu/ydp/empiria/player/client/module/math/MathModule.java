@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.math;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
@@ -54,6 +55,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 		});
 
 		outerPanel = new AbsolutePanel();
+		outerPanel.getElement().getStyle().setOverflow(Overflow.VISIBLE);
 		outerPanel.setStyleName(styleNames.QP_MATHINTERACTION());
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName(styleNames.QP_MATHINTERACTION_INNER());
@@ -89,6 +91,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	public void onSetUp() {
 
 		listBoxesLayer = new AbsolutePanel();
+		listBoxesLayer.getElement().getStyle().setOverflow(Overflow.VISIBLE);
 		listBoxesLayer.setStyleName(styleNames.QP_MATHINTERACTION_GAPS());
 		outerPanel.add(listBoxesLayer);
 		helper.placeGaps(listBoxesLayer);
