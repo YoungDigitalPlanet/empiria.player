@@ -21,8 +21,8 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
-import eu.ydp.empiria.player.client.util.RandomizedSet;
-import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.collections.RandomizedSet;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class IdentificationModule extends InteractionModuleBase implements Factory<IdentificationModule>{
 

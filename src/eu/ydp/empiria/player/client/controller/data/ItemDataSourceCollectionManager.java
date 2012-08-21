@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
-import eu.ydp.gwtutil.client.util.QueueSet;
+import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class ItemDataSourceCollectionManager {
 	public ItemDataSourceCollectionManager(ItemDataCollectionLoaderEventListener l){

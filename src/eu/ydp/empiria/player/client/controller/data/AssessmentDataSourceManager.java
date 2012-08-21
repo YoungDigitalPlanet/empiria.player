@@ -17,7 +17,7 @@ import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
-import eu.ydp.gwtutil.client.util.QueueSet;
+import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 

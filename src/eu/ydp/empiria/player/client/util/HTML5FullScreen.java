@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.google.gwt.dom.client.Element;
 
-import eu.ydp.gwtutil.client.debug.Debug;
+import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 /**
  * Klasa pomocnicza do obslugi trybu pelnoekranowego w przegladarkach

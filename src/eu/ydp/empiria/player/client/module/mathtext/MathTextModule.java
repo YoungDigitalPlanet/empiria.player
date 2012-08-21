@@ -13,7 +13,7 @@ import com.mathplayer.player.geom.Font;
 
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
-import eu.ydp.empiria.player.client.util.NumberUtils;
+import eu.ydp.gwtutil.client.NumberUtils;
 
 public class MathTextModule extends InlineModuleBase implements Factory<MathTextModule> {
 

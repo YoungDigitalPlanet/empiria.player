@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.module.media.info.MediaCurrentTime;
 import eu.ydp.empiria.player.client.module.media.info.MediaTotalTime;
 import eu.ydp.empiria.player.client.module.media.info.PositionInMediaStream;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
-import eu.ydp.empiria.player.client.util.XMLUtils;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ObjectTemplateParser<T extends Widget> extends AbstractTemplateParser {
 	protected Map<String, MediaController<?>> controllers = new HashMap<String, MediaController<?>>();

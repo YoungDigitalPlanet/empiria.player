@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -7,7 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.PathUtil;
+import eu.ydp.gwtutil.client.PathUtil;
 
 public class SoundExecutorSwfSimple implements SoundExecutor<Widget> {
 
@@ -26,8 +27,8 @@ public class SoundExecutorSwfSimple implements SoundExecutor<Widget> {
 		String htmlId = Document.get().createUniqueId();
 		panelEmbed.getElement().setId(htmlId);
 		panelMain.add(panelEmbed);
-		String installSrc = PathUtil.getPlayerPathDir() + "swfobject/expressInstall.swf";
-		String swfSrc = PathUtil.getPlayerPathDir() + "flashAudioExecutorSimple/flashAudioExecutorSimple.swf";
+		String installSrc = GWT.getModuleBaseURL() + "swfobject/expressInstall.swf";
+		String swfSrc = GWT.getModuleBaseURL() + "flashAudioExecutorSimple/flashAudioExecutorSimple.swf";
 		embedSwf(htmlId, swfSrc, installSrc, src);
 	}
 

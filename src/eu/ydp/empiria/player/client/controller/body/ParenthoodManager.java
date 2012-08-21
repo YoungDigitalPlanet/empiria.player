@@ -7,7 +7,7 @@ import java.util.Stack;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
-import eu.ydp.empiria.player.client.util.StackMap;
+import eu.ydp.gwtutil.client.collections.StackMap;
 
 public class ParenthoodManager implements ParenthoodGeneratorSocket {
 

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import eu.ydp.gwtutil.client.util.QueueSet;
+import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class StyleLinkManager {
 

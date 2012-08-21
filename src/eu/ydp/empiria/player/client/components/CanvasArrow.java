@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.ydp.canvasadapter.client.Context2dAdapter;
-import eu.ydp.gwtutil.client.util.KeyValue;
+import eu.ydp.gwtutil.client.collections.KeyValue;
 
 public class CanvasArrow {
 	private Context2dAdapter context2d;
