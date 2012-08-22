@@ -200,6 +200,8 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 					animatePageSwitch(getPositionLeft(), -pageNumber * WIDTH, null, DEFAULT_ANIMATION_TIME, false);
 				}
 			}
+		}else{
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
 		}
 		hideProgressBarForPage(pageNumber);
 
