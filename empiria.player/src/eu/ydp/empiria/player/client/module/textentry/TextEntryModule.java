@@ -10,6 +10,8 @@ import java.util.Map;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -89,7 +91,15 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 				onTextBoxChange();
 			}
 		});
+
 		if (UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN){
+			textBox.addBlurHandler(new BlurHandler() {
+				@Override
+				public void onBlur(BlurEvent event) {
+					updateResponse(true);
+				}
+			});
+
 			textBox.addFocusHandler(new FocusHandler() {
 
 				@Override
