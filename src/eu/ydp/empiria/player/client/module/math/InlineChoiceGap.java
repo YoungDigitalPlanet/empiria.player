@@ -10,9 +10,12 @@ import eu.ydp.empiria.player.client.components.ExListBox;
 
 public class InlineChoiceGap implements MathGap {
 
-	private ExListBox listBox;
-	private List<String> options;
-	private Panel container;
+	private static final String WRONG = "wrong";
+	private static final String CORRECT = "correct";
+	private static final String NONE = "none";
+	private final ExListBox listBox;
+	private final List<String> options;
+	private final Panel container;
 
 	public InlineChoiceGap(ExListBox listBox, List<String> options){
 		this.listBox = listBox;
@@ -22,26 +25,27 @@ public class InlineChoiceGap implements MathGap {
 		container.setStyleName("qp-mathinteraction-inlinechoicegap");
 		container.add(listBox);
 	}
-	
+
 	@Override
 	public String getValue() {
-		int v = listBox.getSelectedIndex();
-		if (v >= 0)
-			return options.get(v);
+		int value = listBox.getSelectedIndex();
+		if (value >= 0) {
+			return options.get(value);
+		}
 		return "";
 	}
 
 	@Override
-	public void setValue(String v) {
-		int i = options.indexOf(v);
-		listBox.setSelectedIndex(i);
+	public void setValue(String value) {
+		listBox.setSelectedIndex(options.indexOf(value));
 	}
-	
+
 	@Override
 	public void setEnabled(boolean enabled){
 		listBox.setEnabled(enabled);
-		if (enabled)
+		if (enabled) {
 			container.setStyleDependentName("disabled", !enabled);
+		}
 	}
 
 	@Override
@@ -52,26 +56,26 @@ public class InlineChoiceGap implements MathGap {
 	@Override
 	public void mark(boolean correct, boolean wrong){
 		if (!correct && !wrong){
-			container.setStyleDependentName("none", true);
+			container.setStyleDependentName(NONE, true);
 		} else  if (correct){
-			container.setStyleDependentName("correct", true);
+			container.setStyleDependentName(CORRECT, true);
 		} else  if (wrong){
-			container.setStyleDependentName("wrong", true);
+			container.setStyleDependentName(WRONG, true);
 		}
 	}
 
 	@Override
 	public void unmark() {
-		container.setStyleDependentName("none", false);
-		container.setStyleDependentName("correct", false);
-		container.setStyleDependentName("wrong", false);
+		container.setStyleDependentName(NONE, false);
+		container.setStyleDependentName(CORRECT, false);
+		container.setStyleDependentName(WRONG, false);
 	}
 
 	@Override
 	public Widget getContainer() {
 		return container;
 	}
-	
+
 	public ExListBox getListBox(){
 		return listBox;
 	}

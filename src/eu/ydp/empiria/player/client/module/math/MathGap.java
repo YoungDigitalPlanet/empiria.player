@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.Widget;
 public interface MathGap {
 	
 	public String getValue();
-	public void setValue(String v);
+	public void setValue(String value);
 	public void setEnabled(boolean enabled);
 	public Widget getContainer();
 	public void reset();

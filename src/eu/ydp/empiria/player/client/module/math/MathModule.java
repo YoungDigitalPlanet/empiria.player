@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
@@ -99,13 +101,21 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 		updateResponse(false);
 	}
 
+	@SuppressWarnings("PMD")
 	private void initGapListeners(){
-		for (MathGap gap : gaps){
+		for (final MathGap gap : gaps){
 			if (gap instanceof TextEntryGap){
 				((TextEntryGap)gap).getTextBox().addChangeHandler(new ChangeHandler() {
 
 					@Override
 					public void onChange(ChangeEvent event) {
+						updateResponse(true);
+					}
+				});
+				((TextEntryGap)gap).getTextBox().addBlurHandler(new BlurHandler() {
+
+					@Override
+					public void onBlur(BlurEvent event) {
 						updateResponse(true);
 					}
 				});
