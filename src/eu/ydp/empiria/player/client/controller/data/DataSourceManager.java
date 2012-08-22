@@ -38,6 +38,7 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
+import eu.ydp.gwtutil.client.PathUtil;
 import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier, LibraryLoaderListener {
@@ -130,29 +131,19 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		
 		mode = DataSourceManagerMode.LOADING_ASSESSMENT;
 
-		String resolvedURL;
-
-		if( GWT.getHostPageBaseURL().startsWith("file://") ){
-
-			String localURL = URL.decode( GWT.getHostPageBaseURL() );
-			resolvedURL = localURL + url;
-		}
-		else if( url.contains("://") || url.startsWith("/") ){
-			resolvedURL = url;
-		}
-		else{
-			resolvedURL = GWT.getHostPageBaseURL() + url;
-		}
+		String resolvedURL;		
+		
+		resolvedURL = PathUtil.resolvePath(url,GWT.getHostPageBaseURL());
 
 		new eu.ydp.empiria.player.client.util.file.xml.XmlDocument(resolvedURL, new DocumentLoadCallback<Document>(){
 
-			public void finishedLoading(Document document, String baseURL) {
+			public void finishedLoading(Document document, String baseURL) {				
 				assesmentXML = new XmlData(document, baseURL);
 				assessmentDataManager.setAssessmentData(assesmentXML);
 			}
 			
 			@Override
-			public void loadingError(String error) {
+			public void loadingError(String error) {			
 				assessmentDataManager.setAssessmentLoadingError(error);
 				onLoadFinished();
 			}
@@ -195,6 +186,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	private void loadItems(String[] urls){
 
+		
 		mode = DataSourceManagerMode.LOADING_ITEMS;
 
 		itemDataCollectionManager.initItemDataCollection(urls.length);
@@ -207,12 +199,12 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 			new XmlDocument(urls[ii], new DocumentLoadCallback<Document>(){
 
-				public void finishedLoading(Document document, String baseURL) {
+				public void finishedLoading(Document document, String baseURL) {					
 					itemDataCollectionManager.setItemData(ii, new XmlData(document, baseURL));
 				}
 
 				@Override
-				public void loadingError(String error) {
+				public void loadingError(String error) {					
 					itemDataCollectionManager.setItemData(ii, error);
 				}
 			});
@@ -292,21 +284,20 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		String userAgent = Navigator.getUserAgent();
 		// load assesment styles
 		Set<String> aStyles = assessmentDataManager.getStyleLinksForUserAgent(userAgent);
-		for (String styleURL : aStyles) {
-			
+		for (String styleURL : aStyles) {			
 			styleLoadCounter++;
 			
 			styleDataSourceLoader.load(styleURL, new DocumentLoadCallback<StyleDocument>() {
 
 				@Override
-				public void finishedLoading(StyleDocument value, String baseUrl) {
+				public void finishedLoading(StyleDocument value, String baseUrl) {					
 					styleLoadCounter--;
 					getStyleDataSourceManager().addAssessmentStyle( value );
 					checkLoadFinished();
 				}
 
 				@Override
-				public void loadingError(String message) {
+				public void loadingError(String message) {					
 					styleLoadCounter--;
 					checkLoadFinished();
 				}
@@ -325,14 +316,14 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 				styleDataSourceLoader.load(styleURL, new DocumentLoadCallback<StyleDocument>() {
 
 					@Override
-					public void finishedLoading(StyleDocument value, String baseUrl) {
+					public void finishedLoading(StyleDocument value, String baseUrl) {						
 						styleLoadCounter--;
 						getStyleDataSourceManager().addItemStyle( ii, value );
 						checkLoadFinished();
 					}
 
 					@Override
-					public void loadingError(String message) {
+					public void loadingError(String message) {						
 						styleLoadCounter--;
 						checkLoadFinished();
 					}
@@ -354,7 +345,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		onLoadFinished(getMainPreloader(), rootPanel);
 	}
 	
-	public void onLoadFinished(IsWidget mainPreloader, ForIsWidget rootPanel) {
+	public void onLoadFinished(IsWidget mainPreloader, ForIsWidget rootPanel) {		
 		int preloaderIndex = rootPanel.getWidgetIndex(mainPreloader);
 		
 		if (preloaderIndex >= 0)
