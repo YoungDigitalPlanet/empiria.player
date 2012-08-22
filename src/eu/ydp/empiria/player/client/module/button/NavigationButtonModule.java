@@ -8,7 +8,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
-import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -28,13 +27,16 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 
 	@Override
 	public void initModule(Element element) {
-		eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.PAGE_LOADED, PlayerEventTypes.BEFORE_FLOW), this, new CurrentPageScope());
+		eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.PAGE_LOADED, PlayerEventTypes.BEFORE_FLOW, PlayerEventTypes.PAGE_CHANGE), this, new CurrentPageScope());
 	}
 
+	private boolean isFirstPage(){
+		return (flowDataSupplier.getCurrentPageIndex() == 0);
+	}
 	private boolean isEnd() {
 		boolean retValue = false;
 		if (direction.equals(NavigationButtonDirection.PREVIOUS)) {
-			retValue = (flowDataSupplier.getCurrentPageIndex() == 0);
+			retValue = isFirstPage();
 		} else if (direction.equals(NavigationButtonDirection.NEXT)) {
 			retValue = isLastPage();
 		}
@@ -50,12 +52,14 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 
 	@Override
 	public void onDeliveryEvent(DeliveryEvent flowEvent) {
-		if (flowEvent.getType().equals(DeliveryEventType.ASSESSMENT_STARTED)) {
+		switch (flowEvent.getType()) {
+		case ASSESSMENT_STARTED:
 			setEnabled(!isEnd());
+		case TEST_PAGE_LOADED:
 			setStyleName();
-		}
-		if (flowEvent.getType().equals(DeliveryEventType.TEST_PAGE_LOADED)) {
-			setStyleName();
+			break;
+		default:
+			break;
 		}
 	}
 
