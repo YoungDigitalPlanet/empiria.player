@@ -73,7 +73,7 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 	}
 
 	protected void onDeliveryEventMain(DeliveryEvent deliveryEvent){
-		if (test.equals("testStateChangedEvent")){
+		if (test.equals("testStateChangedEvent") && deliveryEvent.getType() == DeliveryEventType.STATE_CHANGED){
 			assertEquals(DeliveryEventType.STATE_CHANGED, deliveryEvent.getType());
 			assertEquals(2, deliveryEvent.getParams().size());
 			assertTrue(deliveryEvent.getParams().containsKey("userInteract"));
@@ -82,7 +82,7 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 			assertTrue(deliveryEvent.getParams().get("sender") instanceof IUniqueModule);
 			assertEquals(((IUniqueModule)deliveryEvent.getParams().get("sender")).getIdentifier(), "RESPONSE1");
 			counter = 1;
-		} else if (test.equals("testFeedbackInteractionSoundEvent")){
+		} else if (test.equals("testFeedbackInteractionSoundEvent") && deliveryEvent.getType() == DeliveryEventType.FEEDBACK_SOUND){
 			assertEquals(DeliveryEventType.FEEDBACK_SOUND, deliveryEvent.getType());
 			assertEquals(1, deliveryEvent.getParams().size());
 			assertTrue(deliveryEvent.getParams().containsKey("url"));
