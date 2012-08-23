@@ -19,5 +19,7 @@
 	<classpathentry kind="lib" path="ivy-lib/gwt-g2d.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/jsfilerequest.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/gwtFlashMedia.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/gwtcreatejs.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/mockito-all.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
