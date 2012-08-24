@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.view.player;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -29,6 +30,7 @@ public class PlayerContentView extends Composite implements PlayerViewSocket {
 	public PlayerContentView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		assessmentContentView = new AssessmentContentView(assessmentPanel);
+		assessmentPanel.getElement().getStyle().setOverflow(Overflow.HIDDEN);
 	}
 
 	@Override
@@ -37,7 +39,6 @@ public class PlayerContentView extends Composite implements PlayerViewSocket {
 		headerPanel.add(pvd.getHeaderView());
 		footerPanel.clear();
 		footerPanel.add(pvd.getFooterView());
-
 	}
 
 	@Override

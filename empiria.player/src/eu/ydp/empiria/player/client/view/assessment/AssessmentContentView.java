@@ -12,12 +12,12 @@ import eu.ydp.empiria.player.client.view.player.PageViewCache;
 
 public class AssessmentContentView extends Composite implements AssessmentViewSocket {
 
+	protected Panel assessmentPanel;
 	protected FlowPanel headerPanel;
 	protected FlowPanel navigationPanel;
-	protected PageViewCache pageViewCache = PlayerGinjector.INSTANCE.getPageViewCache();
-	protected Panel assessmentPanel;
 	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
-
+	protected PageViewCache pageViewCache = PlayerGinjector.INSTANCE.getPageViewCache();
+	
 	private void createView() {
 		headerPanel = new FlowPanel();
 		headerPanel.setStyleName(styleNames.QP_HEADER());
@@ -36,10 +36,12 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
 		if (viewCarrier.getHeaderView() != null) {
 			headerPanel.add(viewCarrier.getHeaderView());
 		}
+		
 		navigationPanel.clear();
 		if (viewCarrier.getFooterView() != null) {
 			navigationPanel.add(viewCarrier.getFooterView());
 		}
+		
 		if (viewCarrier.getSkinView() != null) {
 			assessmentPanel.clear();
 			assessmentPanel.add(headerPanel);
