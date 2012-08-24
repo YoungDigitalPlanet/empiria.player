@@ -32,6 +32,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
@@ -92,7 +93,11 @@ public class Assessment {
 		Document document = xmlData.getDocument();
 		Element rootNode = (Element) document.getElementsByTagName("assessmentTest").item(0);
 		Element skinBody = getSkinBody(data.getSkinData());
-
+		
+		if (skinBody == null) {
+			skinBody = XMLParser.parse("<itemBody><pageInPage /></itemBody>").getDocumentElement();
+		}
+		
 		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), xmlData.getBaseURL());
 		title = rootNode.getAttribute("title");
 
@@ -103,7 +108,7 @@ public class Assessment {
 		if (bodyNode != null) {
 			body = new AssessmentBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket);
 			bodyView = new AssessmentBodyView(body);
-			bodyView.init( body.init(bodyNode));
+			bodyView.init( body.init(bodyNode) );
 			pageSlot = body.getPageSlot();
 		}
 	}
@@ -146,7 +151,7 @@ public class Assessment {
 			Document skinDocument = skinData.getDocument();
 			skinBody = (Element) skinDocument.getElementsByTagName("itemBody").item(0);
 		} catch (Exception e) {
-
+			System.out.println("Skin body didn't load properly.");
 		}
 
 		return skinBody;
