@@ -7,7 +7,6 @@
 	<dirname property="base.dir" file="${ant.file.empiria.player}" />
 	<property name="src.dir" value="${base.dir}/src"/>
 	<property name="lib.dir" value="${base.dir}/ivy-lib" />	
-	<property name="lib.static.dir" value="${base.dir}/static-lib" />	
 	<property name="version.file" value="${src.dir}/eu/ydp/empiria/player/client/version/version.txt"/>
 	<echo>${lib.dir}</echo>
 	
@@ -22,7 +21,6 @@
   <path id="project.class.path">
     <pathelement location="war/WEB-INF/classes"/>
     <fileset dir="${lib.dir}" includes="**/*.jar"/>
-    <fileset dir="${lib.static.dir}" includes="**/*.jar"/>
     <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
   </path>
 
@@ -34,7 +32,6 @@
     <mkdir dir="war/WEB-INF/lib" />
     <copy todir="war/WEB-INF/lib">
 		<fileset dir="${lib.dir}" includes="**/*.jar"/> 
-		<fileset dir="${lib.static.dir}" includes="**/*.jar"/>  
 	</copy>
     <!-- Add any additional server libs that need to be copied -->
   </target>
@@ -95,7 +92,9 @@
     </copy>
 
 	<jar destfile="dist/empiriaplayerlib.jar" basedir="dist/lib"/>
-  	<zip destfile="dist/empiriaplayerlibs.zip" basedir="${lib.static.dir}"/>
+	<mkdir dir="emptydir"/>
+  	<zip destfile="dist/empiriaplayerlibs.zip" whenempty="create" basedir="emptydir"/>
+	<delete dir="emptydir"/>
   </target>
 
 
@@ -116,7 +115,6 @@
     <javac srcdir="test" includes="**" encoding="utf-8"
       source="1.5" target="1.5" nowarn="true"
       debug="true" debuglevel="lines,vars,source">
-      <classpath location="${lib.static.dir}/junit.jar"/>
       <classpath refid="project.class.path"/>
     </javac>
   </target>
@@ -131,7 +129,6 @@
       	<pathelement location="src" />
       	<pathelement location="test" />
         <path refid="project.class.path" />
-        <pathelement location="${lib.static.dir}/junit.jar" />
       </classpath>
       <batchtest todir="reports/htmlunit.dev" >
         <fileset dir="test" >
@@ -153,7 +150,6 @@
         <pathelement location="src" />
         <pathelement location="test" />
         <path refid="project.class.path" />
-        <pathelement location="${lib.static.dir}/junit.jar" />
       </classpath>
       <batchtest todir="reports/htmlunit.prod" >
         <fileset dir="test" >
