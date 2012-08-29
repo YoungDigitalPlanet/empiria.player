@@ -44,6 +44,9 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		playerJsObject.getScoreMax = function(){
 			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getScoreMax()();
 		}
+		playerJsObject.getErrors = function(){
+			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getErrors()();
+		}
 		playerJsObject.getLessonStatus = function(){
 			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getLessonStatus()();
 		}
@@ -72,6 +75,12 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 
 	protected int getScoreMax(){
 		String valueString = sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket().getVariableValue("TODO").getValuesShort();
+		int value = NumberUtils.tryParseInt(valueString, 0);
+		return value;
+	}
+
+	protected int getErrors(){
+		String valueString = sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket().getVariableValue("ERRORS").getValuesShort();
 		int value = NumberUtils.tryParseInt(valueString, 0);
 		return value;
 	}

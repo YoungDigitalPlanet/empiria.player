@@ -29,6 +29,7 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 	protected void ensureVariables(){
 		ensureVariable("DONE");
 		ensureVariable("TODO");
+		ensureVariable("ERRORS");
 		ensureVariable("CHECKS");
 		ensureVariable("SHOW_ANSWERS");
 		ensureVariable("RESET");

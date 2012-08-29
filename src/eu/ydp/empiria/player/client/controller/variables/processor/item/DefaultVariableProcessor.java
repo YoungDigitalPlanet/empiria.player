@@ -16,6 +16,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
+import eu.ydp.gwtutil.client.collections.CollectionsUtil;
 
 public class DefaultVariableProcessor extends VariableProcessor {
 
@@ -61,8 +62,6 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 		}
-
-
 	}
 
 	@Override
@@ -77,6 +76,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		prepareGroupsAnswersUsedMap();
 
 		Integer points = 0;
+		Integer errors = 0;
 		String currKey;
 
 		Iterator<String> iter = responses.keySet().iterator();
@@ -104,35 +104,40 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 			if (outcomes.containsKey(currKey+"-TODO")){
+				outcomes.get(currKey+"-TODO").values.clear();
 				outcomes.get(currKey+"-TODO").values.add("1");
 			}
 			if (outcomes.containsKey(currKey+"-DONEHISTORY")){
-				if (passed) {
-					outcomes.get(currKey+"-DONEHISTORY").values.add("1");
-				} else {
-					outcomes.get(currKey+"-DONEHISTORY").values.add("0");
+				if (userInteract){
+					if (passed) {
+						outcomes.get(currKey+"-DONEHISTORY").values.add("1");
+					} else {
+						outcomes.get(currKey+"-DONEHISTORY").values.add("0");
+					}
 				}
 			}
 			if (outcomes.containsKey(currKey+"-DONECHANGES")  &&  outcomes.containsKey(currKey+"-DONEHISTORY")){
-				if (outcomes.get(currKey+"-DONEHISTORY").values.size() == 1) {
-					outcomes.get(currKey+"-DONECHANGES").values.add(outcomes.get(currKey+"-DONEHISTORY").values.get(0));
-				} else {
-					int currModuleScore = Integer.parseInt( outcomes.get(currKey+"-DONEHISTORY").values.get(outcomes.get(currKey+"-DONEHISTORY").values.size()-1) );
-					int prevModuleScore = Integer.parseInt( outcomes.get(currKey+"-DONEHISTORY").values.get(outcomes.get(currKey+"-DONEHISTORY").values.size()-2) );
-					outcomes.get(currKey+"-DONECHANGES").values.add( String.valueOf(currModuleScore - prevModuleScore) );
+				if (userInteract){
+					if (outcomes.get(currKey+"-DONEHISTORY").values.size() == 1) {
+						outcomes.get(currKey+"-DONECHANGES").values.add(outcomes.get(currKey+"-DONEHISTORY").values.get(0));
+					} else {
+						int currModuleScore = Integer.parseInt( outcomes.get(currKey+"-DONEHISTORY").values.get(outcomes.get(currKey+"-DONEHISTORY").values.size()-1) );
+						int prevModuleScore = Integer.parseInt( outcomes.get(currKey+"-DONEHISTORY").values.get(outcomes.get(currKey+"-DONEHISTORY").values.size()-2) );
+						outcomes.get(currKey+"-DONECHANGES").values.add( String.valueOf(currModuleScore - prevModuleScore) );
+					}
 				}
 			}
 			if (outcomes.containsKey(currKey+"-PREVIOUS")  &&  outcomes.containsKey(currKey+"-LASTCHANGE")){
 				if (userInteract) {
 					outcomes.get(currKey+"-LASTCHANGE").values = DefaultVariableProcessorHelper.getDifference(responses.get(currKey), outcomes.get(currKey+"-PREVIOUS"));
-				} else {
-					outcomes.get(currKey+"-LASTCHANGE").values.clear();
 				}
 			}
 			if (outcomes.containsKey(currKey+"-PREVIOUS")){
-				outcomes.get(currKey+"-PREVIOUS").values.clear();
-				for (int a = 0 ; a < responses.get(currKey).values.size() ; a ++ ){
-					outcomes.get(currKey+"-PREVIOUS").values.add(responses.get(currKey).values.get(a));
+				if (userInteract) {
+					outcomes.get(currKey+"-PREVIOUS").values.clear();
+					for (int a = 0 ; a < responses.get(currKey).values.size() ; a ++ ){
+						outcomes.get(currKey+"-PREVIOUS").values.add(responses.get(currKey).values.get(a));
+					}
 				}
 			}
 			if (outcomes.containsKey(currKey+"-LASTCHANGE")  &&  outcomes.containsKey(currKey+"-LASTMISTAKEN")){
@@ -149,6 +154,13 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					}
 				}
 			}
+			if (outcomes.containsKey(currKey+"-ERRORS")){
+				outcomes.get(currKey+"-ERRORS").values.clear();
+				boolean userHasInteracted = (outcomes.containsKey(currKey+"-DONEHISTORY")  &&  outcomes.get(currKey+"-DONEHISTORY").values.size() > 0);
+				Integer currErrors = findSingleResponseErrors(responses.get(currKey), passed, userHasInteracted);
+				outcomes.get(currKey+"-ERRORS").values.add(currErrors.toString());
+				errors += currErrors;
+			}
 		}
 
 		if (outcomes.containsKey("DONE")){
@@ -161,16 +173,25 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			outcomes.get("TODO").values.add(String.valueOf(responses.size()));
 		}
 
+		if (outcomes.containsKey("ERRORS")){
+			outcomes.get("ERRORS").values.clear();
+			outcomes.get("ERRORS").values.add(errors.toString());
+		}
+
 		if (outcomes.containsKey("DONEHISTORY")){
-			outcomes.get("DONEHISTORY").values.add(points.toString());
+			if (userInteract){
+				outcomes.get("DONEHISTORY").values.add(points.toString());
+			}
 		}
 		if (outcomes.containsKey("DONEHISTORY")  &&  outcomes.containsKey("DONECHANGES")){
-			if (outcomes.get("DONEHISTORY").values.size() == 1) {
-				outcomes.get("DONECHANGES").values.add(outcomes.get("DONEHISTORY").values.get(0));
-			} else {
-				int currModuleScore = Integer.parseInt( outcomes.get("DONEHISTORY").values.get(outcomes.get("DONEHISTORY").values.size()-1) );
-				int prevModuleScore = Integer.parseInt( outcomes.get("DONEHISTORY").values.get(outcomes.get("DONEHISTORY").values.size()-2) );
-				outcomes.get("DONECHANGES").values.add( String.valueOf(currModuleScore - prevModuleScore) );
+			if (userInteract){
+				if (outcomes.get("DONEHISTORY").values.size() == 1) {
+					outcomes.get("DONECHANGES").values.add(outcomes.get("DONEHISTORY").values.get(0));
+				} else {
+					int currModuleScore = Integer.parseInt( outcomes.get("DONEHISTORY").values.get(outcomes.get("DONEHISTORY").values.size()-1) );
+					int prevModuleScore = Integer.parseInt( outcomes.get("DONEHISTORY").values.get(outcomes.get("DONEHISTORY").values.size()-2) );
+					outcomes.get("DONECHANGES").values.add( String.valueOf(currModuleScore - prevModuleScore) );
+				}
 			}
 		}
 		if (outcomes.containsKey("LASTMISTAKEN")){
@@ -210,7 +231,6 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 		}
-
 	}
 
 	private void prepareGroupsAnswersUsedMap() {
@@ -223,6 +243,27 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			}
 			groupsAnswersUsed.put(currGroupName, currUsed);
 		}
+	}
+	
+	int findSingleResponseErrors(Response response, boolean isCorrect, boolean userHasInteracted){
+		if (!isCorrect){
+			if (response.cardinality == Cardinality.SINGLE  &&  
+				(response.values.size() == 0  ||  response.values.get(0).equals(""))){
+				return 0;
+			}
+			if ((response.cardinality == Cardinality.COMMUTATIVE  ||  response.cardinality == Cardinality.MULTIPLE)  && 
+				(response.values.size() == 0  ||  CollectionsUtil.indexOfNot(response.values, "") == -1)
+				){
+				return 0;
+				}
+			if (response.cardinality == Cardinality.ORDERED  &&  
+				(!userHasInteracted  ||  response.values.size() == 0  ||  CollectionsUtil.indexOfNot(response.values, "") == -1)
+				){
+				return 0;
+				}
+			return 1;
+		}
+		return 0;
 	}
 
 	private boolean processSingleResponse(Response response, Map<String, Response> responses){
@@ -390,6 +431,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 		ensureVariable(outcomes, new Outcome("DONE", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 		ensureVariable(outcomes, new Outcome("TODO", Cardinality.SINGLE, BaseType.INTEGER, "0"));
+		ensureVariable(outcomes, new Outcome("ERRORS", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 		ensureVariable(outcomes, new Outcome("DONEHISTORY", Cardinality.MULTIPLE, BaseType.INTEGER));
 		ensureVariable(outcomes, new Outcome("DONECHANGES", Cardinality.MULTIPLE, BaseType.INTEGER));
 		ensureVariable(outcomes, new Outcome("LASTMISTAKEN", Cardinality.SINGLE, BaseType.INTEGER, "0"));
@@ -408,6 +450,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 				ensureVariable(outcomes, new Outcome(cri+"-DONE", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 				ensureVariable(outcomes, new Outcome(cri+"-TODO", Cardinality.SINGLE, BaseType.INTEGER, "0"));
+				ensureVariable(outcomes, new Outcome(cri+"-ERRORS", Cardinality.SINGLE, BaseType.INTEGER, "0"));
 				ensureVariable(outcomes, new Outcome(cri+"-LASTCHANGE", Cardinality.MULTIPLE, BaseType.INTEGER));
 				ensureVariable(outcomes, new Outcome(cri+"-PREVIOUS", Cardinality.MULTIPLE, BaseType.INTEGER));
 				ensureVariable(outcomes, new Outcome(cri+"-LASTMISTAKEN", Cardinality.SINGLE, BaseType.INTEGER, "0"));
