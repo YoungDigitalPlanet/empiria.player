@@ -56,7 +56,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 			} else {
 				pageController = new PageController(assessmentViewSocket.getPageViewSocket(), flowSocket, interactionEventsSocket, assessmentSessionSocket.getPageSessionSocket(),
 						modulesRegistrySocket);
-				//controllerCache.put(pageNumber, pageController);
+				controllerCache.put(pageNumber, pageController);
 			}
 		}
 		return isInCache;
