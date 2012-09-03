@@ -194,7 +194,10 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 	@Override
 	public void pause() {
 		pause = true;
-		flashMedia.pause();
+		try{
+			flashMedia.pause();
+		}catch(Exception exception){//NOPMD
+		}
 	}
 
 	private void free() {
