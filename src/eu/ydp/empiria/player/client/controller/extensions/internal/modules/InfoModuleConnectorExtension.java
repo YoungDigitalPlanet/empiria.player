@@ -36,16 +36,16 @@ public class InfoModuleConnectorExtension extends ModuleExtension implements Mod
 		return new AbstractModuleCreator(false,true) {
 			@Override
 			public IModule createModule() {
-				final InfoModule im = new InfoModule(dataSourceDataSupplier, sessionDataSupplier, flowDataSupplier);
-				im.setModuleUnloadListener(new InfoModuleUnloadListener() {
+				final InfoModule infoModule = new InfoModule(dataSourceDataSupplier, sessionDataSupplier, flowDataSupplier);
+				infoModule.setModuleUnloadListener(new InfoModuleUnloadListener() {
 
 					@Override
 					public void moduleUnloaded() {
-						modules.remove(im);
+						modules.remove(infoModule);
 					}
 				});
-				modules.add(im);
-				return im;
+				modules.add(infoModule);
+				return infoModule;
 			}
 		};
 	}
