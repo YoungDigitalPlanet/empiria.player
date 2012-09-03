@@ -70,7 +70,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	};
 
 	private final static int ACTIVE_PAGE_COUNT = 3;
-	private int currentVisiblePage = -1; // NOPMD
+	private int currentVisiblePage = -1;
 	private final Map<Integer, KeyValue<FlowPanel, FlowPanel>> panels = new TreeMap<Integer, KeyValue<FlowPanel, FlowPanel>>(Collections.reverseOrder());
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	protected final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
@@ -80,11 +80,11 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	private int startY = 0, endY = 0;
 	private int swipeLength = 220;
 	private final static float WIDTH = 100;
-	private final static int DEFAULT_ANIMATION_TIME = 500; // NOPMD
-	private final static int QUICK_ANIMATION_TIME = 150; // NOPMD
+	private final static int DEFAULT_ANIMATION_TIME = 500;
+	private final static int QUICK_ANIMATION_TIME = 150;
 	private final int TOUCH_START_TIME;
 	private float currentPosition;
-	private FlowRequestInvoker flowRequestInvoker; // NOPMD
+	private FlowRequestInvoker flowRequestInvoker;
 	private boolean touchReservation = false;
 	private boolean swipeStarted = false;
 	private boolean swipeRight = false;
