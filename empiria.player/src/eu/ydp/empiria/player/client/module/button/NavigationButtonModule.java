@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.module.button;
 
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.BEFORE_FLOW;
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_CHANGE;
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_LOADED;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
@@ -12,7 +16,6 @@ import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class NavigationButtonModule extends ControlModule implements ISimpleModule, PlayerEventHandler {
@@ -27,7 +30,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 
 	@Override
 	public void initModule(Element element) {
-		eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.PAGE_LOADED, PlayerEventTypes.BEFORE_FLOW, PlayerEventTypes.PAGE_CHANGE), this, new CurrentPageScope());
+		eventsBus.addHandler(PlayerEvent.getTypes(PAGE_LOADED, BEFORE_FLOW, PAGE_CHANGE), this, new CurrentPageScope());
 	}
 
 	private boolean isFirstPage(){
@@ -54,6 +57,9 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 	public void onDeliveryEvent(DeliveryEvent flowEvent) {
 		switch (flowEvent.getType()) {
 		case ASSESSMENT_STARTED:
+		case CONTINUE:
+		case CHECK:
+		case SHOW_ANSWERS:
 			setEnabled(!isEnd());
 		case TEST_PAGE_LOADED:
 			setStyleName();
@@ -112,7 +118,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		if (event.getType() == PlayerEventTypes.PAGE_LOADED) {
+		if (event.getType() == PAGE_LOADED) {
 			Timer timer = new Timer() {
 				@Override
 				public void run() {
@@ -121,7 +127,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 				}
 			};
 			timer.schedule(300);
-		} else if (event.getType() == PlayerEventTypes.BEFORE_FLOW) {
+		} else if (event.getType() == BEFORE_FLOW) {
 			setEnabled(false);
 			setStyleName();
 		}
