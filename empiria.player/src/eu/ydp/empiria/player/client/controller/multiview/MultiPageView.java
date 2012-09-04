@@ -300,12 +300,16 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 			activePanels.add(page);
 		}
 		for (Integer page : activePanels) {
+			final int pageNumber = page;
 			if (panels.containsKey(page) && detachedPages.contains(page)) {
 				final KeyValue<FlowPanel, FlowPanel> pair = panels.get(page);
 				scheduler.scheduleDeferred(new ScheduledCommand() {
 					@Override
 					public void execute() {
 						pair.getKey().add(pair.getValue());
+						if(pageNumber == currentVisiblePage){
+							setHeight(getHeightForPage(currentVisiblePage));
+						}
 					}
 				});
 				detachedPages.remove(page);
