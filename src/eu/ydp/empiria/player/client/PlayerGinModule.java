@@ -1,8 +1,10 @@
 package eu.ydp.empiria.player.client;
 
+
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
+import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
@@ -12,6 +14,8 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
+import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
+import eu.ydp.empiria.player.client.util.scheduler.SchedulerImpl;
 import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.empiria.player.client.view.player.PageViewCache;
 import eu.ydp.empiria.player.client.view.player.PlayerContentView;
@@ -39,6 +43,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(PageControllerCache.class).in(Singleton.class);
 		bind(StyleNameConstants.class).in(Singleton.class);
 		bind(MainFlowProcessor.class).in(Singleton.class);
+		bind(Scheduler.class).to(SchedulerImpl.class).in(Singleton.class);
+		bind(Page.class).in(Singleton.class);
 	}
 
 }

@@ -12,7 +12,6 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
-import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -310,7 +309,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
 		loadExtension(PlayerGinjector.INSTANCE.getMultiPageView());
-		loadExtension(new Page());
+		loadExtension(PlayerGinjector.INSTANCE.getPage());
 		// loadExtension(new MediaManager());
 	}
 

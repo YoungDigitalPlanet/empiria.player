@@ -99,7 +99,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	private final static int VISBLE_PAGE_COUNT = 3;
 	private int pageProgressBar = -1;
 	private final ResizeTimer resizeTimer;
-
+	private final Page page = PlayerGinjector.INSTANCE.getPage();
 	private final Timer timer = new Timer() {
 
 		@Override
@@ -378,7 +378,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	}
 
 	private void showProgressBarForPage(int pageIndex) {
-		if (!loadedPages.contains(pageIndex) && pageProgressBar != pageIndex && pageIndex < Page.getPageCount() - 1 && pageIndex >= 0) {
+		if (!loadedPages.contains(pageIndex) && pageProgressBar != pageIndex && pageIndex < page.getPageCount() - 1 && pageIndex >= 0) {
 			Panel panel = getViewForPage(Integer.valueOf(pageIndex));
 			panel.add(new ProgressPanel());
 			pageProgressBar = pageIndex;
@@ -386,7 +386,7 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 	}
 
 	private void hideProgressBarForPage(int pageIndex) {
-		if (pageIndex < Page.getPageCount() - 1) {
+		if (pageIndex < page.getPageCount() - 1) {
 			FlowPanel panel = getViewForPage(Integer.valueOf(pageIndex));
 			for (int x = 0; x < panel.getWidgetCount(); ++x) {
 				if (panel.getWidget(x) instanceof ProgressPanel) {
@@ -522,9 +522,9 @@ public class MultiPageView extends FlowPanel implements PlayerEventHandler, Flow
 			NavigationButtonDirection direction = getDirection();
 			float percent = (float) swipeLength / RootPanel.get().getOffsetWidth() * 100;
 			if (direction != null) {
-				if (direction == NavigationButtonDirection.PREVIOUS && Page.getCurrentPageNumber() > 0) {
+				if (direction == NavigationButtonDirection.PREVIOUS && page.getCurrentPageNumber() > 0) {
 					animatePageSwitch(getPositionLeft(), getPositionLeft() + (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
-				} else if (direction == NavigationButtonDirection.NEXT && Page.getCurrentPageNumber() < Page.getPageCount() - 1) {
+				} else if (direction == NavigationButtonDirection.NEXT && page.getCurrentPageNumber() < page.getPageCount() - 1) {
 					animatePageSwitch(getPositionLeft(), getPositionLeft() - (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
 				} else {
 					animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
