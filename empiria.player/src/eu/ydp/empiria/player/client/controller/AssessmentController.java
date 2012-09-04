@@ -32,7 +32,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private final PageControllerCache controllerCache = PlayerGinjector.INSTANCE.getPageControllerCache();
 	private final IFlowSocket flowSocket;
 	private final AssessmentViewSocket assessmentViewSocket; // NOPMD
-
+	private final Page page = PlayerGinjector.INSTANCE.getPage();
 	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket, AssessmentSessionSocket ass, ModulesRegistrySocket mrs) {
 		assessmentViewSocket = avs;
 		assessmentSessionSocket = ass;
@@ -84,7 +84,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	}
 
 	public void initPage(PageData pageData) {
-		if (!loadPageController(Page.getCurrentPageNumber())) {
+		if (!loadPageController(page.getCurrentPageNumber())) {
 			pageController.setStyleSocket(styleSocket);
 			pageController.initPage(pageData);
 		}

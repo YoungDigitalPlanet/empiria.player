@@ -17,7 +17,7 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
 	protected FlowPanel navigationPanel;
 	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	protected PageViewCache pageViewCache = PlayerGinjector.INSTANCE.getPageViewCache();
-	
+	private final Page page = PlayerGinjector.INSTANCE.getPage();
 	private void createView() {
 		headerPanel = new FlowPanel();
 		headerPanel.setStyleName(styleNames.QP_HEADER());
@@ -36,12 +36,12 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
 		if (viewCarrier.getHeaderView() != null) {
 			headerPanel.add(viewCarrier.getHeaderView());
 		}
-		
+
 		navigationPanel.clear();
 		if (viewCarrier.getFooterView() != null) {
 			navigationPanel.add(viewCarrier.getFooterView());
 		}
-		
+
 		if (viewCarrier.getSkinView() != null) {
 			assessmentPanel.clear();
 			assessmentPanel.add(headerPanel);
@@ -52,7 +52,7 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
 
 	@Override
 	public PageViewSocket getPageViewSocket() {
-		return pageViewCache.get(Page.getCurrentPageNumber()).getKey();
+		return pageViewCache.get(page.getCurrentPageNumber()).getKey();
 	}
 
 }

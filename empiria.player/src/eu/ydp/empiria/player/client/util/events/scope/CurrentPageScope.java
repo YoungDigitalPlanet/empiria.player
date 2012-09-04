@@ -1,20 +1,28 @@
 package eu.ydp.empiria.player.client.util.events.scope;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.Page;
 
 public class CurrentPageScope implements EventScope<CurrentPageScope> {
-	protected int pageIndex = -1;
+	private int pageIndex = -1;
 	protected Scope scope = Scope.PAGE;
+
 	public CurrentPageScope() {
-		pageIndex = Page.getCurrentPageNumber();
+		pageIndex = PlayerGinjector.INSTANCE.getPage().getCurrentPageNumber();
+	}
+
+	public CurrentPageScope(Page page) {
+		pageIndex = page.getCurrentPageNumber();
+	}
+
+	protected CurrentPageScope(int pageIndex) {
+		this.pageIndex = pageIndex;
 	}
 
 	@Override
 	public Scope getScope() {
 		return scope;
 	}
-
-
 
 	public int getPageIndex() {
 		return pageIndex;
@@ -60,7 +68,7 @@ public class CurrentPageScope implements EventScope<CurrentPageScope> {
 		if (obj == null) {
 			return false;
 		}
-		if (getClass() != obj.getClass()) {
+		if (!(obj instanceof CurrentPageScope)) {
 			return false;
 		}
 		CurrentPageScope other = (CurrentPageScope) obj;

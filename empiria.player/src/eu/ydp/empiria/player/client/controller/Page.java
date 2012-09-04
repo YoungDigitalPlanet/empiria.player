@@ -4,17 +4,16 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 
-public class Page extends InternalExtension implements
-		FlowDataSocketUserExtension {
+public class Page extends InternalExtension implements FlowDataSocketUserExtension {
 
 	private static FlowDataSupplier supplier;
 	protected boolean isInitialized = false;
 
-	public static int getCurrentPageNumber() {
+	public int getCurrentPageNumber() {
 		return supplier == null ? 0 : supplier.getCurrentPageIndex();
 	}
 
-	public static int getPageCount(){
+	public int getPageCount() {
 		return supplier == null ? 0 : supplier.getPageCount();
 	}
 
@@ -27,7 +26,7 @@ public class Page extends InternalExtension implements
 	}
 
 	@Override
-	public void init() {//NOPMD
+	public void init() {// NOPMD
 
 	}
 }
