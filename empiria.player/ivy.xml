@@ -8,6 +8,7 @@
 		<conf name="default"  description="Player executables"/>
 		<conf name="lib"  description="Player as library"/>
 		<conf name="test" visibility="private" description="Test conf"/>
+		<conf name="coverage" visibility="private" description="Coverage"/>
   </configurations>
   
   <publications>
@@ -17,16 +18,18 @@
   </publications>
 
   <dependencies>
-    <dependency org="com.google.gwt" name="gwt-servlet" rev="2.4.0" conf="*->default"/>
-    <dependency org="com.google.gwt" name="gwt-user" rev="2.4.0" conf="*->default"/>  
-    <dependency org="com.google.gwt" name="gwt-dev" rev="2.4.0" conf="*->default"/> 
-	<dependency org="com.google.gwt.inject" name="gin" rev="1.5.0"  conf="*->default"/>
-	<dependency org="eu.ydp" name="mathPlayer" rev="latest.integration"  conf="*->default"/>
-	<dependency org="eu.ydp" name="canvasadapter" rev="latest.integration"  conf="*->default"/>
-	<dependency org="eu.ydp" name="jsfilerequest" rev="latest.integration"  conf="*->default"/>
-	<dependency org="eu.ydp" name="ydpgwtutils" rev="latest.integration"  conf="*->default"/>
-	<dependency org="eu.ydp" name="gwtFlashMedia" rev="latest.integration"  conf="*->default"/>
-	<dependency org="eu.ydp" name="gwtCreateJs" rev="latest.integration" conf="*->default"/>
+    <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4.1" conf="coverage->default"/> 
+    
+    <dependency org="com.google.gwt" name="gwt-servlet" rev="2.4.0" conf="default, lib, test->default"/>
+    <dependency org="com.google.gwt" name="gwt-user" rev="2.4.0" conf="default, lib, test->default"/>  
+    <dependency org="com.google.gwt" name="gwt-dev" rev="2.4.0" conf="default, lib, test->default"/> 
+	<dependency org="com.google.gwt.inject" name="gin" rev="1.5.0"  conf="default, lib, test->default"/>
+	<dependency org="eu.ydp" name="mathPlayer" rev="latest.integration"  conf="default, lib, test->default"/>
+	<dependency org="eu.ydp" name="canvasadapter" rev="latest.integration"  conf="default, lib, test->default"/>
+	<dependency org="eu.ydp" name="jsfilerequest" rev="latest.integration"  conf="default, lib, test->default"/>
+	<dependency org="eu.ydp" name="ydpgwtutils" rev="latest.integration"  conf="default, lib, test->default"/>
+	<dependency org="eu.ydp" name="gwtFlashMedia" rev="latest.integration"  conf="default, lib, test->default"/>
+	<dependency org="eu.ydp" name="gwtCreateJs" rev="latest.integration" conf="default, lib, test->default"/>
 	<dependency org="org.hamcrest" name="hamcrest-library" rev="1.3"  conf="test->default"/>
 	<dependency org="org.mockito" name="mockito-all" rev="1.9.0" conf="test->default"/>
 	<dependency name="junit" transitive="false" rev="4.10" org="junit" conf="test->default" />

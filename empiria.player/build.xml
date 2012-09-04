@@ -5,8 +5,14 @@
 	<property file="default.properties" />
 	
 	<dirname property="base.dir" file="${ant.file.empiria.player}" />
+	<property name="bin.dir" value="${base.dir}/war/WEB-INF/classes"/>
+	<property name="bin.test.dir" value="${base.dir}/bin.test"/>
 	<property name="src.dir" value="${base.dir}/src"/>
+	
+	<property name="test.reports.dev.dir" value="${base.dir}/reports/htmlunit.dev" />
+	
 	<property name="lib.dir" value="${base.dir}/ivy-lib" />	
+	<property name="lib.coverage.dir" value="${base.dir}/ivy-lib-coverage" />	
 	<property name="version.file" value="${src.dir}/eu/ydp/empiria/player/client/version/version.txt"/>
 	<echo>${lib.dir}</echo>
 	
@@ -19,14 +25,18 @@
   </condition>
 
   <path id="project.class.path">
-    <pathelement location="war/WEB-INF/classes"/>
+    <pathelement location="${bin.dir}"/>
     <fileset dir="${lib.dir}" includes="**/*.jar"/>
     <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
   </path>
 
   <target name="resolve" depends="version.file" description="--> retrieve dependencies with ivy">
-  	<ivy:retrieve pattern="${lib.dir}/[artifact].[ext]" />
+  	<ivy:retrieve pattern="${lib.dir}/[artifact].[ext]" conf="default, lib, test" />
   </target>
+
+	  <target name="resolve-coverage" depends="resolve" description="--> retrieve dependencies with ivy">
+	  	<ivy:retrieve pattern="${lib.coverage.dir}/[artifact].[ext]" conf="coverage" />
+	  </target>
     
   <target name="libs" depends="resolve" description="Copy libs to WEB-INF/lib">
     <mkdir dir="war/WEB-INF/lib" />
@@ -37,14 +47,14 @@
   </target>
 
   <target name="javac" depends="libs" description="Compile java source">
-    <mkdir dir="war/WEB-INF/classes"/>
+    <mkdir dir="${bin.dir}"/>
     <javac srcdir="src" includes="**" encoding="utf-8"
-        destdir="war/WEB-INF/classes"
+        destdir="${bin.dir}"
         source="1.5" target="1.5" nowarn="true"
         debug="true" debuglevel="lines,vars,source">
       <classpath refid="project.class.path"/>
     </javac>
-    <copy todir="war/WEB-INF/classes">
+    <copy todir="${bin.dir}">
       <fileset dir="src" excludes="**/*.java"/>
     </copy>
   </target>
@@ -87,7 +97,7 @@
   <target name="lib" depends="javac, buildnumber" description="Create module library">
     <mkdir dir="dist/lib" />
     <copy todir="dist/lib">
-      <fileset dir="war/WEB-INF/classes" includes="**/player/**"/>
+      <fileset dir="${bin.dir}" includes="**/player/**"/>
       <fileset dir="src" includes="**/player/**"/>
     </copy>
 
@@ -101,36 +111,80 @@
   <target name="clean" description="Cleans this project">
     <delete dir="dist"/>
 	<delete dir="${lib.dir}"/>
-    <delete dir="war/WEB-INF/classes" failonerror="false" />
+    <delete dir="${bin.dir}" failonerror="false" />
+    <delete dir="${bin.test.dir}" failonerror="false" />
     <delete dir="war/empiria.player" failonerror="false" />
   	<delete file="${version.file}"/>
   	<delete file="${base.dir}/metadata.xml"/>
+  	<delete dir="${test.reports.dev.dir}" />
+
+  	<delete dir="${lib.coverage.dir}"/>
+    <delete dir="${instrumented.dir}" />
+    <delete dir="${cobertura.report.dir}" />
+    <delete file="${cobertura.datafile}"  />
   </target>
   
   <target name="buildnumber" description="Update build number">
 	<ivy:buildnumber organisation="eu.ydp" module="empiriaplayer" />
   </target>
+	
+    <property name="cobertura.dir" value="${lib.coverage.dir}" />
+    <property name="instrumented.dir" value="${base.dir}/bin.cobertura" />
+    <property name="cobertura.report.dir" value="${base.dir}/cobertura-report" />
+    <property name="cobertura.report.type" value="xml" />
+    <property name="cobertura.datafile" value="${cobertura.report.dir}/cobertura.ser" />
+
+  <path id="cobertura.classpath">
+      <fileset dir="${lib.coverage.dir}">
+          <include name="*.jar" />
+          <exclude name="ant*.jar" />
+      </fileset>
+  </path>
+	
+	
+  <target name="cobertura-instrument" depends="javac.tests, resolve-coverage">
+  	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+  	
+  	<delete file="${cobertura.datafile}" />
+
+  	<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+  	    <fileset dir="${bin.dir}">
+  	        <include name="**/*.class" />
+  	        <exclude name="**/*Test.class" />
+  	    </fileset>
+  	</cobertura-instrument>
+  </target>
+	
   
   <target name="javac.tests" depends="javac" description="Compiles test code">
+  	<mkdir dir="${bin.test.dir}"/>
+  	
     <javac srcdir="test" includes="**" encoding="utf-8"
-      source="1.5" target="1.5" nowarn="true"
+      source="1.5" target="1.5" nowarn="true" destdir="${bin.test.dir}"
       debug="true" debuglevel="lines,vars,source">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
   
-  <target name="test.dev" depends="javac.tests" description="Run development mode tests">
-    <mkdir dir="reports/htmlunit.dev" />
+  <target name="test.dev" depends="javac.tests, cobertura-instrument" description="Run development mode tests">
+  	<delete dir="${test.reports.dev.dir}" />
+    <mkdir dir="${test.reports.dev.dir}" />
     <junit fork="yes" printsummary="yes" haltonfailure="yes">
       <jvmarg line="-Xmx256m" />
       <sysproperty key="gwt.args" value="-logLevel WARN" />
       <sysproperty key="java.awt.headless" value="true" />
+        <sysproperty key="net.sourceforge.cobertura.datafile"
+      		file="${cobertura.datafile}" />
       <classpath>
       	<pathelement location="src" />
       	<pathelement location="test" />
+      	
+      	<pathelement location="${bin.test.dir}" />
+        <path refid="cobertura.classpath" />
+      	<pathelement location="${instrumented.dir}" />
         <path refid="project.class.path" />
       </classpath>
-      <batchtest todir="reports/htmlunit.dev" >
+      <batchtest todir="${test.reports.dev.dir}" >
         <fileset dir="test" >
           <include name="**/*Test.java" />
         </fileset>
@@ -138,6 +192,12 @@
       <formatter type="plain" />
       <formatter type="xml" />
     </junit>
+  	
+  	<cobertura-report
+  		format="${cobertura.report.type}"
+  		destdir="${cobertura.report.dir}"
+		srcdir="${src.dir}"
+  		datafile="${cobertura.datafile}"/>
   </target>
 
   <target name="test.prod" depends="javac.tests" description="Run production mode tests">
