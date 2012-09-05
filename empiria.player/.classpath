@@ -12,7 +12,6 @@
 	<classpathentry kind="lib" path="ivy-lib/guice.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/javax.inject.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/validation-api.jar"/>
-	<classpathentry kind="lib" path="static-lib/junit.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/canvasadapter.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/mathplayer.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/ydpgwtutils.jar"/>
@@ -21,5 +20,8 @@
 	<classpathentry kind="lib" path="ivy-lib/gwtFlashMedia.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/gwtcreatejs.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/mockito-all.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="ivy-lib/hamcrest-library.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/hamcrest-core.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
