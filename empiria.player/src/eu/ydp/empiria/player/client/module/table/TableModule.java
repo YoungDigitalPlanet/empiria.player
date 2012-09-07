@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.table;
 
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TABLE_CELLPADDING;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TABLE_CELLSPACING;
+
 import java.util.Map;
 
 import com.google.gwt.user.client.ui.FlexTable;
@@ -11,6 +14,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.Factory;
@@ -20,37 +24,39 @@ import eu.ydp.empiria.player.client.module.binding.BindingProxy;
 import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
 import eu.ydp.empiria.player.client.module.containers.ActivityContainerModuleBase;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
-
 public class TableModule extends ActivityContainerModuleBase implements Factory<TableModule>, BindingProxy {
 
 	protected Panel tablePanel;
 	private GapWidthBindingManager gapWidthBindingManager;
-
+	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	public TableModule(){
 		tablePanel = new FlowPanel();
-		tablePanel.setStyleName("qp-table");
+		tablePanel.setStyleName(styleNames.QP_TABLE());
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
-		super.initModule(element, ms, mil, bgs);
+	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
+		super.initModule(element, moduleSocket, mil, bgs);
 
 		FlexTable table = new FlexTable();
-		table.setStyleName("qp-table-table");
+		table.setStyleName(styleNames.QP_TABLE_TABLE());
 
-		Map<String, String> styles = ms.getStyles(element);
+		Map<String, String> styles = moduleSocket.getStyles(element);
 
-		if (styles.containsKey("-empiria-table-cellpadding")){
-			int padding = NumberUtils.tryParseInt(styles.get("-empiria-table-cellpadding"), -1);
-			if (padding != -1)
+		if (styles.containsKey(EMPIRIA_TABLE_CELLPADDING)){
+			int padding = NumberUtils.tryParseInt(styles.get(EMPIRIA_TABLE_CELLPADDING), -1);
+			if (padding != -1) {
 				table.setCellPadding(padding);
+			}
 		}
 
-		if (styles.containsKey("-empiria-table-cellspacing")){
-			int spacing = NumberUtils.tryParseInt(styles.get("-empiria-table-cellspacing"), -1);
-			if (spacing != -1)
+		if (styles.containsKey(EMPIRIA_TABLE_CELLSPACING)){
+			int spacing = NumberUtils.tryParseInt(styles.get(EMPIRIA_TABLE_CELLSPACING), -1);
+			if (spacing != -1) {
 				table.setCellSpacing(spacing);
+			}
 		}
 
 		NodeList trNodes = element.getElementsByTagName("tr");
@@ -58,21 +64,25 @@ public class TableModule extends ActivityContainerModuleBase implements Factory<
 			NodeList tdNodes = ((Element)trNodes.item(r)).getElementsByTagName("td");
 			for (int d = 0 ; d < tdNodes.getLength() ; d ++){
 				Panel dPanel = new FlowPanel();
-				dPanel.setStyleName("qp-table-cell");
+				dPanel.setStyleName(styleNames.QP_TABLE_CELL());
 				bgs.generateBody(tdNodes.item(d), dPanel);
 				table.setWidget(r, d, dPanel);
-				
+
 				int colspan = 1;
-				if (tdNodes.item(d).getNodeType() == Node.ELEMENT_NODE  &&  ((Element)tdNodes.item(d)).hasAttribute("colspan"))
+				if (tdNodes.item(d).getNodeType() == Node.ELEMENT_NODE  &&  ((Element)tdNodes.item(d)).hasAttribute("colspan")) {
 					colspan = NumberUtils.tryParseInt(((Element)tdNodes.item(d)).getAttribute("colspan"), 1);
-				if (colspan > 1)
+				}
+				if (colspan > 1) {
 					table.getFlexCellFormatter().setColSpan(r, d, colspan);
-				
+				}
+
 				int rowspan = 1;
-				if (tdNodes.item(d).getNodeType() == Node.ELEMENT_NODE  &&  ((Element)tdNodes.item(d)).hasAttribute("rowspan"))
+				if (tdNodes.item(d).getNodeType() == Node.ELEMENT_NODE  &&  ((Element)tdNodes.item(d)).hasAttribute("rowspan")) {
 					rowspan = NumberUtils.tryParseInt(((Element)tdNodes.item(d)).getAttribute("rowspan"), 1);
-				if (rowspan > 1)
+				}
+				if (rowspan > 1) {
 					table.getFlexCellFormatter().setRowSpan(r, d, rowspan);
+				}
 			}
 		}
 		tablePanel.add(table);
@@ -95,8 +105,9 @@ public class TableModule extends ActivityContainerModuleBase implements Factory<
 	@Override
 	public BindingManager getBindingManager(BindingType bindingType) {
 		if (bindingType == BindingType.GAP_WIDTHS){
-			if (gapWidthBindingManager == null)
+			if (gapWidthBindingManager == null) {
 				gapWidthBindingManager = new GapWidthBindingManager(true);
+			}
 			return gapWidthBindingManager;
 		}
 		return null;

@@ -28,7 +28,8 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_TEXTENTRY_GAP_FONT_SIZE = "-empiria-textentry-gap-font-size";
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH = "-empiria-textentry-gap-width";
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN = "-empiria-textentry-gap-width-align";
-
+	public static final String EMPIRIA_TABLE_CELLSPACING = "-empiria-table-cellspacing";
+	public static final String EMPIRIA_TABLE_CELLPADDING = "-empiria-table-cellpadding";
 	private EmpiriaStyleNameConstants() {
 	}
 }
