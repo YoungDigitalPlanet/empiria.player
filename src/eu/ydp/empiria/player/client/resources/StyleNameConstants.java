@@ -26,6 +26,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-choice-option-container")
 	public String QP_CHOICE_OPTION_CONTAINER();
 
+	@DefaultStringValue("qp-table")
+	public String QP_TABLE();
+
 	@DefaultStringValue("qp-choice-option-cover")
 	public String QP_CHOICE_OPTION_COVER();
 
@@ -298,6 +301,12 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();
+
+	@DefaultStringValue("qp-table-cell")
+	public String QP_TABLE_CELL();
+
+	@DefaultStringValue("qp-table-table")
+	public String QP_TABLE_TABLE();
 
 	@DefaultStringValue("qp-text")
 	public String QP_TEXT();
