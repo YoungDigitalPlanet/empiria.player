@@ -51,8 +51,9 @@ public class SimulationModule extends SimpleModuleBase implements Factory<Simula
 
 	@Override
 	public void onClose() {
-		if(loader != null)
-			loader.unload();
+		if(loader != null){
+			loader.stopSounds();
+		}
 	}
 
 	@Override
