@@ -28,89 +28,95 @@ import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSock
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
 import eu.ydp.empiria.player.client.module.IStateful;
 
-public class ExtensionsManager implements IStateful  {
+public class ExtensionsManager implements IStateful {
 
 	public List<Extension> extensions;
 
-	public ExtensionsManager(){
+	public ExtensionsManager() {
 		extensions = new ArrayList<Extension>();
 	}
 
-	public void init(){
+	public void init() {
 
-		for (Extension ext : extensions){
+		for (Extension ext : extensions) {
 			ext.init();
 		}
 	}
 
-	public List<Extension> addExtension(JavaScriptObject extensionJsObject){
+	private Extension getExtensionInstance(ExtensionType exType) {
+		Extension currExt = null;
+		switch (exType) {
+		case EXTENSION_PROCESSOR_FLOW_REQUEST:
+			currExt = new JsFlowRequestProcessorExtension();
+			break;
+		case EXTENSION_PROCESSOR_SOUND:
+			currExt = new JsSoundProcessorExtension();
+			break;
+		case EXTENSION_LISTENER_DELIVERY_EVENTS:
+			currExt = new JsDeliveryEventsListenerExtension();
+			break;
+		case EXTENSION_SOCKET_USER_STYLE_CLIENT:
+			currExt = new JsStyleSocketUserExtension();
+			break;
+		case EXTENSION_SOCKET_USER_SESSION_DATA_CLIENT:
+			currExt = new JsSessionDataSocketUserExtension();
+			break;
+		case EXTENSION_SOCKET_USER_DATA_SOURCE_DATA_CLIENT:
+			currExt = new JsDataSourceDataSocketUserExtension();
+			break;
+		case EXTENSION_SOCKET_USER_FLOW_DATA_CLIENT:
+			currExt = new JsFlowDataSocketUserExtension();
+			break;
+		case EXTENSION_SOCKET_USER_FLOW_COMMAND:
+			currExt = new JsFlowCommandSocketUserExtension();
+			break;
+		case EXTENSION_SOCKET_USER_FLOW_REQUEST:
+			currExt = new JsFlowRequestSocketUserExtension();
+			break;
+		case EXTENSION_SOCKET_USER_INTERFERENCE_PAGE:
+			currExt = new JsPageInterferenceSocketUserExtension();
+			break;
+		case EXTENSION_SOCKET_USER_INTERACTION_EVENT:
+			currExt = new JsInteractionEventSocketUserExtension();
+			break;
+		case EXTENSION_VIEW_ASSESSMENT_HEADER:
+			currExt = new JsAssessmentHeaderViewExtension();
+			break;
+		case EXTENSION_VIEW_ASSESSMENT_FOOTER:
+			currExt = new JsAssessmentFooterViewExtension();
+			break;
+		case EXTENSION_CLIENT_STATEFUL:
+			currExt = new JsStatefulExtension();
+			break;
+		case EXTENSION_PLAYER_JS_OBJECT_USER:
+			currExt = new JsPlayerJsObjectUserExtension();
+			break;
+		default:
+			break;
+		}
+		return currExt;
+	}
+
+	public List<Extension> addExtension(JavaScriptObject extensionJsObject) {
 		String extType = getFieldType(extensionJsObject);
 		List<Extension> currExtensions = new ArrayList<Extension>();
+		if (extType != null) {
+			String[] extTypes = extType.split(",");
 
-		if (extType == null) {
-			return currExtensions;
-		}
-
-		String[] extTypes = extType.split(",");
-
-		for (String currExtTypeString : extTypes){
-
-			Extension currExt = null;
-			ExtensionType currExtType = ExtensionType.fromString(currExtTypeString.trim());
-
-			if ( currExtType == ExtensionType.EXTENSION_PROCESSOR_FLOW_REQUEST ){
-				currExt = new JsFlowRequestProcessorExtension();
-			} else if ( currExtType == ExtensionType.EXTENSION_PROCESSOR_SOUND ){
-				currExt = new JsSoundProcessorExtension();
-			}
-
-			else if ( currExtType == ExtensionType.EXTENSION_LISTENER_DELIVERY_EVENTS ){
-				currExt = new JsDeliveryEventsListenerExtension();
-			}
-
-			else if ( currExtType == ExtensionType.EXTENSION_SOCKET_USER_STYLE_CLIENT ){
-				currExt = new JsStyleSocketUserExtension();
-			} else if ( currExtType == ExtensionType.EXTENSION_SOCKET_USER_SESSION_DATA_CLIENT){
-				currExt = new JsSessionDataSocketUserExtension();
-			} else if ( currExtType == ExtensionType.EXTENSION_SOCKET_USER_DATA_SOURCE_DATA_CLIENT){
-				currExt = new JsDataSourceDataSocketUserExtension();
-			} else if ( currExtType == ExtensionType.EXTENSION_SOCKET_USER_FLOW_DATA_CLIENT){
-				currExt = new JsFlowDataSocketUserExtension();
-			}
-
-			else if ( currExtType == ExtensionType.EXTENSION_SOCKET_USER_FLOW_COMMAND ){
-				currExt = new JsFlowCommandSocketUserExtension();
-			} else if ( currExtType == ExtensionType.EXTENSION_SOCKET_USER_FLOW_REQUEST ){
-				currExt = new JsFlowRequestSocketUserExtension();
-			} else if ( currExtType == ExtensionType.EXTENSION_SOCKET_USER_INTERFERENCE_PAGE){
-				currExt = new JsPageInterferenceSocketUserExtension();
-			} else if ( currExtType == ExtensionType.EXTENSION_SOCKET_USER_INTERACTION_EVENT ){
-				currExt = new JsInteractionEventSocketUserExtension();
-			}
-
-			else if (currExtType == ExtensionType.EXTENSION_VIEW_ASSESSMENT_HEADER){
-				currExt = new JsAssessmentHeaderViewExtension();
-			} else if (currExtType == ExtensionType.EXTENSION_VIEW_ASSESSMENT_FOOTER){
-				currExt = new JsAssessmentFooterViewExtension();
-			}
-
-			else if ( currExtType == ExtensionType.EXTENSION_CLIENT_STATEFUL ){
-				currExt = new JsStatefulExtension();
-			} else if ( currExtType == ExtensionType.EXTENSION_PLAYER_JS_OBJECT_USER){
-				currExt = new JsPlayerJsObjectUserExtension();
-			}
-
-
-			if (currExt != null  &&  currExt instanceof JsExtension){
-				((JsExtension)currExt).initJs(extensionJsObject);
-				extensions.add(currExt);
-				currExtensions.add(currExt);
+			for (String currExtTypeString : extTypes) {
+				ExtensionType currExtType = ExtensionType.fromString(currExtTypeString.trim());
+				Extension currExt = getExtensionInstance(currExtType);
+				if (currExt instanceof JsExtension) {
+					((JsExtension) currExt).initJs(extensionJsObject);
+					extensions.add(currExt);
+					currExtensions.add(currExt);
+				}
 			}
 		}
 		return currExtensions;
 	}
 
-	public Extension addExtension(Extension extension){
+	public Extension addExtension(Extension extension) {
 		extensions.add(extension);
 		return extension;
 
@@ -122,30 +128,30 @@ public class ExtensionsManager implements IStateful  {
 		return null;
 	}-*/;
 
-
-	public List<Extension> getExtensions(){
+	public List<Extension> getExtensions() {
 		return extensions;
 	}
 
-	public Extension getInternaleExtensionByName(String name){
+	public Extension getInternaleExtensionByName(String name) {
+		Extension retValue = null;
 		if ("DefaultAssessmentHeaderViewExtension".equals(name)) {
-			return new DefaultAssessmentHeaderViewExtension();
+			retValue = new DefaultAssessmentHeaderViewExtension();
 		}
 		if ("DefaultAssessmentFooterViewExtension".equals(name)) {
-			return new DefaultAssessmentFooterViewExtension();
+			retValue = new DefaultAssessmentFooterViewExtension();
 		}
 		if ("DefaultSoundProcessorExtension".equals(name)) {
-			return PlayerGinjector.INSTANCE.getDefaultMediaExtension();
+			retValue = PlayerGinjector.INSTANCE.getDefaultMediaExtension();
 		}
-		return null;
+		return retValue;
 	}
 
 	@Override
 	public JSONArray getState() {
 		JSONArray arr = new JSONArray();
-		for (Extension ext : extensions){
-			if (ext instanceof StatefulExtension){
-				arr.set(arr.size(), ((StatefulExtension)ext).getState());
+		for (Extension ext : extensions) {
+			if (ext instanceof StatefulExtension) {
+				arr.set(arr.size(), ((StatefulExtension) ext).getState());
 			}
 		}
 		return arr;
@@ -154,9 +160,9 @@ public class ExtensionsManager implements IStateful  {
 	@Override
 	public void setState(JSONArray newState) {
 		int counter = 0;
-		for (Extension ext : extensions){
-			if (ext instanceof StatefulExtension){
-				((StatefulExtension)ext).setState(newState.get(counter).isArray());
+		for (Extension ext : extensions) {
+			if (ext instanceof StatefulExtension) {
+				((StatefulExtension) ext).setState(newState.get(counter).isArray());
 				counter++;
 			}
 		}
