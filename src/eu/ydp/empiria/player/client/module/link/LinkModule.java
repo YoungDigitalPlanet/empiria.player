@@ -13,12 +13,14 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
@@ -29,13 +31,13 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 
 	protected int itemIndex = -1;
 	protected String url;
-
+	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	public LinkModule(FlowRequestInvoker flowRequestInvoker) {
 		super();
 		this.flowRequestInvoker = flowRequestInvoker;
-		panel.setStyleName("qp-link-content");
+		panel.setStyleName(styleNames.QP_LINK_CONTENT());
 		mainPanel = new FlowPanel();
-		mainPanel.setStyleName("qp-link");
+		mainPanel.setStyleName(styleNames.QP_LINK());
 		mainPanel.add(panel);
 
 		mainPanel.addDomHandler(new ClickHandler() {
@@ -49,13 +51,13 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 		mainPanel.addDomHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				mainPanel.setStyleName("qp-link-over");
+				mainPanel.setStyleName(styleNames.QP_LINK_OVER());
 			}
 		}, MouseOverEvent.getType());
 		mainPanel.addDomHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-				mainPanel.setStyleName("qp-link");
+				mainPanel.setStyleName(styleNames.QP_LINK());
 			}
 		}, MouseOutEvent.getType());
 	}

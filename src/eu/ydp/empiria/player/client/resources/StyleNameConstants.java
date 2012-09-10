@@ -26,9 +26,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-choice-option-container")
 	public String QP_CHOICE_OPTION_CONTAINER();
 
-	@DefaultStringValue("qp-table")
-	public String QP_TABLE();
-
 	@DefaultStringValue("qp-choice-option-cover")
 	public String QP_CHOICE_OPTION_COVER();
 
@@ -121,6 +118,15 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-item-title-text")
 	public String QP_ITEM_TITLE_TEXT();
+
+	@DefaultStringValue("qp-link")
+	public String QP_LINK();
+
+	@DefaultStringValue("qp-link-content")
+	public String QP_LINK_CONTENT();
+
+	@DefaultStringValue("qp-link-over")
+	public String QP_LINK_OVER();
 
 	@DefaultStringValue("qp-markanswsers-button-correct")
 	public String QP_MARKANSWERS_BUTTON_CORRECT();
@@ -301,6 +307,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();
+
+	@DefaultStringValue("qp-table")
+	public String QP_TABLE();
 
 	@DefaultStringValue("qp-table-cell")
 	public String QP_TABLE_CELL();

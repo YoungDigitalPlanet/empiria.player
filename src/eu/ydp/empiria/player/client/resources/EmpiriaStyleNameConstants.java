@@ -9,6 +9,9 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_IMG_LABEL_LINE_THICKNESS = "-empiria-img-label-line-thickness";
 	public static final String EMPIRIA_IMG_MODE = "-empiria-img-mode";
 	public static final String EMPIRIA_INFO_CONTENT = "-empiria-info-content";
+	public static final String EMPIRIA_INLINECHOICE_EMPTY_OPTION = "-empiria-inlinechoice-empty-option";
+	public static final String EMPIRIA_INLINECHOICE_POPUP_POSITION = "-empiria-inlinechoice-popup-position";
+	public static final String EMPIRIA_INLINECHOICE_TYPE = "-empiria-inlinechoice-type";
 	public static final String EMPIRIA_MATH_COLOR = "-empiria-math-color";
 	public static final String EMPIRIA_MATH_DROP_HEIGHT = "-empiria-math-drop-height";
 	public static final String EMPIRIA_MATH_DROP_WIDTH = "-empiria-math-drop-width";
@@ -25,11 +28,11 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_MATH_GAP_WIDTH_ALIGN = "-empiria-math-gap-width-align";
 	public static final String EMPIRIA_REPORT_ITEMS_INCLUDE = "-empiria-report-items-include";
 	public static final String EMPIRIA_REPORT_SHOW_NON_ACTIVITES = "-empiria-report-show-non-activites";
+	public static final String EMPIRIA_TABLE_CELLPADDING = "-empiria-table-cellpadding";
+	public static final String EMPIRIA_TABLE_CELLSPACING = "-empiria-table-cellspacing";
 	public static final String EMPIRIA_TEXTENTRY_GAP_FONT_SIZE = "-empiria-textentry-gap-font-size";
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH = "-empiria-textentry-gap-width";
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN = "-empiria-textentry-gap-width-align";
-	public static final String EMPIRIA_TABLE_CELLSPACING = "-empiria-table-cellspacing";
-	public static final String EMPIRIA_TABLE_CELLPADDING = "-empiria-table-cellpadding";
 	private EmpiriaStyleNameConstants() {
 	}
 }
