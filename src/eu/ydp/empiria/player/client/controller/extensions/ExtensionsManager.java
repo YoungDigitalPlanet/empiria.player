@@ -45,54 +45,56 @@ public class ExtensionsManager implements IStateful {
 
 	private Extension getExtensionInstance(ExtensionType exType) {
 		Extension currExt = null;
-		switch (exType) {
-		case EXTENSION_PROCESSOR_FLOW_REQUEST:
-			currExt = new JsFlowRequestProcessorExtension();
-			break;
-		case EXTENSION_PROCESSOR_SOUND:
-			currExt = new JsSoundProcessorExtension();
-			break;
-		case EXTENSION_LISTENER_DELIVERY_EVENTS:
-			currExt = new JsDeliveryEventsListenerExtension();
-			break;
-		case EXTENSION_SOCKET_USER_STYLE_CLIENT:
-			currExt = new JsStyleSocketUserExtension();
-			break;
-		case EXTENSION_SOCKET_USER_SESSION_DATA_CLIENT:
-			currExt = new JsSessionDataSocketUserExtension();
-			break;
-		case EXTENSION_SOCKET_USER_DATA_SOURCE_DATA_CLIENT:
-			currExt = new JsDataSourceDataSocketUserExtension();
-			break;
-		case EXTENSION_SOCKET_USER_FLOW_DATA_CLIENT:
-			currExt = new JsFlowDataSocketUserExtension();
-			break;
-		case EXTENSION_SOCKET_USER_FLOW_COMMAND:
-			currExt = new JsFlowCommandSocketUserExtension();
-			break;
-		case EXTENSION_SOCKET_USER_FLOW_REQUEST:
-			currExt = new JsFlowRequestSocketUserExtension();
-			break;
-		case EXTENSION_SOCKET_USER_INTERFERENCE_PAGE:
-			currExt = new JsPageInterferenceSocketUserExtension();
-			break;
-		case EXTENSION_SOCKET_USER_INTERACTION_EVENT:
-			currExt = new JsInteractionEventSocketUserExtension();
-			break;
-		case EXTENSION_VIEW_ASSESSMENT_HEADER:
-			currExt = new JsAssessmentHeaderViewExtension();
-			break;
-		case EXTENSION_VIEW_ASSESSMENT_FOOTER:
-			currExt = new JsAssessmentFooterViewExtension();
-			break;
-		case EXTENSION_CLIENT_STATEFUL:
-			currExt = new JsStatefulExtension();
-			break;
-		case EXTENSION_PLAYER_JS_OBJECT_USER:
-			currExt = new JsPlayerJsObjectUserExtension();
-			break;
-		default:
-			break;
+		if (exType != null) {
+			switch (exType) {
+			case EXTENSION_PROCESSOR_FLOW_REQUEST:
+				currExt = new JsFlowRequestProcessorExtension();
+				break;
+			case EXTENSION_PROCESSOR_SOUND:
+				currExt = new JsSoundProcessorExtension();
+				break;
+			case EXTENSION_LISTENER_DELIVERY_EVENTS:
+				currExt = new JsDeliveryEventsListenerExtension();
+				break;
+			case EXTENSION_SOCKET_USER_STYLE_CLIENT:
+				currExt = new JsStyleSocketUserExtension();
+				break;
+			case EXTENSION_SOCKET_USER_SESSION_DATA_CLIENT:
+				currExt = new JsSessionDataSocketUserExtension();
+				break;
+			case EXTENSION_SOCKET_USER_DATA_SOURCE_DATA_CLIENT:
+				currExt = new JsDataSourceDataSocketUserExtension();
+				break;
+			case EXTENSION_SOCKET_USER_FLOW_DATA_CLIENT:
+				currExt = new JsFlowDataSocketUserExtension();
+				break;
+			case EXTENSION_SOCKET_USER_FLOW_COMMAND:
+				currExt = new JsFlowCommandSocketUserExtension();
+				break;
+			case EXTENSION_SOCKET_USER_FLOW_REQUEST:
+				currExt = new JsFlowRequestSocketUserExtension();
+				break;
+			case EXTENSION_SOCKET_USER_INTERFERENCE_PAGE:
+				currExt = new JsPageInterferenceSocketUserExtension();
+				break;
+			case EXTENSION_SOCKET_USER_INTERACTION_EVENT:
+				currExt = new JsInteractionEventSocketUserExtension();
+				break;
+			case EXTENSION_VIEW_ASSESSMENT_HEADER:
+				currExt = new JsAssessmentHeaderViewExtension();
+				break;
+			case EXTENSION_VIEW_ASSESSMENT_FOOTER:
+				currExt = new JsAssessmentFooterViewExtension();
+				break;
+			case EXTENSION_CLIENT_STATEFUL:
+				currExt = new JsStatefulExtension();
+				break;
+			case EXTENSION_PLAYER_JS_OBJECT_USER:
+				currExt = new JsPlayerJsObjectUserExtension();
+				break;
+			default:
+				break;
+			}
 		}
 		return currExt;
 	}
