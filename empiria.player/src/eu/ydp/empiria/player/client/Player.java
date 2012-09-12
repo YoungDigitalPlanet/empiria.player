@@ -1,18 +1,18 @@
 /*
   The MIT License
-  
+
   Copyright (c) 2009 Krzysztof Langner
-  
+
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
   copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
-  
+
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,7 +23,6 @@
 */
 package eu.ydp.empiria.player.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -41,14 +40,14 @@ import eu.ydp.empiria.player.client.view.ViewEngine;
 public class Player {
 
   /** JavaScript object representing this java object */
-  private JavaScriptObject	jsObject;
-  
+  private final JavaScriptObject	jsObject;
+
   /** Delivery engine do manage the assessment content */
   public DeliveryEngine deliveryEngine;
-  
+
   /** View engine maintains the view tasks */
-  private ViewEngine viewEngine;
-  
+  private final ViewEngine viewEngine;
+
   {
 	 logVersion();
   }
@@ -59,7 +58,7 @@ public class Player {
 	 */
 	public Player(String id){
 		this.jsObject = JavaScriptObject.createFunction();
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
 		viewEngine = injector.getViewEngine();
 		RootPanel root = RootPanel.get(id);
 		viewEngine.mountView(root);
@@ -68,8 +67,8 @@ public class Player {
 	}
 
 	public Player(ComplexPanel container){
-		this.jsObject = JavaScriptObject.createFunction();		
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
+		this.jsObject = JavaScriptObject.createFunction();
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
 		viewEngine = injector.getViewEngine();
 		viewEngine.mountView(container);
 		deliveryEngine = injector.getDeliveryEngine();
@@ -83,7 +82,7 @@ public class Player {
 	public void loadExtension(String extension){
 		deliveryEngine.loadExtension(extension);
 	}
-	
+
 	public void load(String url){
 		deliveryEngine.load(url);
 	}
@@ -91,7 +90,7 @@ public class Player {
 	public void load(XmlData assessmentData, XmlData[] itemsData){
 		deliveryEngine.load(assessmentData, itemsData);
 	}
-  
+
 	 /**
 	 * @return js object representing this player
 	 */
@@ -102,22 +101,22 @@ public class Player {
 	public void setFlowOptions(FlowOptions o){
 		deliveryEngine.setFlowOptions(o);
 	}
-	
+
 	public void setDisplayOptions(DisplayOptions o){
 		deliveryEngine.setDisplayOptions(o);
 	}
-	
+
 	public String getEngineMode(){
   		return deliveryEngine.getEngineMode();
 	}
-	
+
 	private void logVersion(){
 		 String version = Version.getVersion();
 		 String versionMessage = "EmpiriaPlayer ver. " + version;
 		 log(versionMessage);
 		 System.out.println(versionMessage);
 	}
-	
+
 	private native void log(String message)/*-{
 		if (typeof console == 'object')
 			console.log(message);
