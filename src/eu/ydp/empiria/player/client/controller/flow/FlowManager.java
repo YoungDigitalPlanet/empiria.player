@@ -94,6 +94,10 @@ public final class FlowManager {
 	public DisplayOptions getDisplayOptions(){
 		return flowProcessor.getDisplayOptions();
 	}
+	
+	public void gotoPage(int index){
+		flowProcessor.gotoPage(index);
+	}
 
 	public IFlowSocket getFlowSocket(){
 		return new IFlowSocket() {

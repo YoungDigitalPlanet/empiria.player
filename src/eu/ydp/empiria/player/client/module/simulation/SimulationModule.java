@@ -60,12 +60,13 @@ public class SimulationModule extends SimpleModuleBase implements Factory<Simula
 	protected void initModule(Element element) {
 		String src = element.getAttribute("src");
 		
-		initializeLoader();
+		initializeLoader(src);
 		loader.load(src);
 	}
 	
-	protected void initializeLoader(){
+	protected void initializeLoader(String resourceSrc){
 		loader = new CreateJsLoader();
+		loader.setLibraryURL(getLibraryURL(resourceSrc));
 		loader.addCompleteHandler(new CompleteHandler() {
 			
 			@Override
@@ -81,5 +82,13 @@ public class SimulationModule extends SimpleModuleBase implements Factory<Simula
 		if (parentView != null) {
 			parentView.add(child);
 		}
+	}
+	
+	protected String getLibraryURL(String resourceSrc){
+		String libraryURL = resourceSrc.substring(0, resourceSrc.lastIndexOf('/') + 1);
+		
+		//FIXME path to libraries should be given from extension
+		libraryURL += "../../../common/jslibs/";
+		return libraryURL;
 	}
 }

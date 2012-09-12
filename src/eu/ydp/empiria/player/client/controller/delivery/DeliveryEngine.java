@@ -232,6 +232,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTED));
 		updatePageStyle();
+		//flowManager.gotoPage(4);
 	}
 
 
