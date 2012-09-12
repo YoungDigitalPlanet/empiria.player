@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.util.SchedulerImpl;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
-import eu.ydp.gwtutil.client.test.AbstractTestModule;
+import eu.ydp.gwtutil.test.AbstractTestModule;
 
 public class TestGuiceModule extends AbstractTestModule{
 
