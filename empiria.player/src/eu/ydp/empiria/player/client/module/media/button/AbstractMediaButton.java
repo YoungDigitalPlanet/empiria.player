@@ -4,6 +4,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 import eu.ydp.empiria.player.client.module.Factory;
+import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 /**
  * bazowy przycisk dla kontrolerow multimediow
@@ -106,7 +107,7 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 	 * zmiana stylu elementu dla zdarzenia onMouseOver
 	 */
 	protected void onMouseOver() {
-		if (hoverStyleName.trim().length() > 0) {
+		if (hoverStyleName.trim().isEmpty()) {
 			divElement.getElement().addClassName(hoverStyleName);
 		}
 	}
@@ -114,8 +115,8 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 	/**
 	 * zmiana stylu elementu dla zdarzenia onMouseOut
 	 */
-	void onMouseOut() {
-		if (hoverStyleName.trim().length() > 0) {
+	protected void onMouseOut() {
+		if (hoverStyleName.trim().isEmpty()) {
 			divElement.getElement().removeClassName(hoverStyleName);
 		}
 	}
