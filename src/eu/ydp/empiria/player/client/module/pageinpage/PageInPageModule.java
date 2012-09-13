@@ -21,7 +21,7 @@ public class PageInPageModule extends SimpleModuleBase implements Factory<PageIn
 	@Override
 	public Widget getView() {
 		if (pagePanel == null) {
-			pagePanel = PlayerGinjector.INSTANCE.getMultiPageView();
+			pagePanel = PlayerGinjector.INSTANCE.getMultiPage().getView();
 			pagePanel.setStyleName(styleNames.QP_PAGE_IN_PAGE());
 		}
 		return pagePanel;

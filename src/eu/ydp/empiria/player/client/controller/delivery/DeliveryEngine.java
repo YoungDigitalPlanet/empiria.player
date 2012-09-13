@@ -309,7 +309,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
-		loadExtension(PlayerGinjector.INSTANCE.getMultiPageView());
+		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
 		loadExtension(PlayerGinjector.INSTANCE.getPage());
 		// loadExtension(new MediaManager());
 	}

@@ -21,11 +21,9 @@ public class PageSwitchAnimation extends Animation {
 		this.to = to;
 		this.animationLength = Math.abs(from - to);
 		this.currentPosition = NumberUtils.tryParseInt(style.getLeft().replaceAll("[a-z%]+$", ""));
-	//	Debug.log(currentPosition + " " + from + " " + to + " " + animationLength);
 	}
 
 	private void setPosition(double position) {
-	//	Debug.log(this.getClass(), position);
 		style.setLeft(position, Unit.PCT);
 	}
 
