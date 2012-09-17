@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 import eu.ydp.empiria.player.client.view.page.PageViewCarrier;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
 
-public final class PageController implements PageInterferenceSocket {
+public class PageController implements PageInterferenceSocket {
 	private Page page;
 	private final PageViewSocket pageViewSocket;
 	private final PageSessionSocket pageSessionSocket;
@@ -31,7 +31,7 @@ public final class PageController implements PageInterferenceSocket {
 	private final InteractionEventsSocket interactionSocket;
 	private final ModulesRegistrySocket modulesRegistrySocket;
 	private ParenthoodSocket parenthoodSocket;
-	private ItemController[] items;
+	protected ItemController[] items;
 	private final boolean isInitialized = false;
 	private StyleSocket styleSocket;
 
@@ -153,4 +153,17 @@ public final class PageController implements PageInterferenceSocket {
 		parenthoodSocket = assessmentParenthoodSocket;
 	}
 
+	public boolean hasInteractiveModules() {
+		boolean foundInteractive = false; 
+		if (items != null) {			
+			for (ItemController item : items) {
+				if (item != null && item.hasInteractiveModules()) {
+					foundInteractive = true;
+					break;
+				}				
+			}
+		}		
+		return foundInteractive;
+	}
+	
 }

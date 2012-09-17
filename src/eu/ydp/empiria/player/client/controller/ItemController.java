@@ -43,7 +43,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		modulesRegistrySocket = mrs;
 	}
 
-	private Item item;
+	protected Item item;
 
 	private int itemIndex;
 
@@ -162,5 +162,14 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		}
 		item.handleFlowActivityEvent(newEvent);
 
+	}
+
+	/**
+	 * Checks whether the item body contains at least one interactive module
+	 * 
+	 * @return boolean
+	 */	
+	public boolean hasInteractiveModules() {		
+		return (item != null && item.hasInteractiveModules());
 	}
 }

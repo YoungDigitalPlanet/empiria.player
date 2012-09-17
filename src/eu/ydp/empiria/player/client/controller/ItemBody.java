@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.IGroup;
+import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
@@ -133,6 +134,24 @@ public class ItemBody implements WidgetWorkflowListener {
 		return modules.size();
 	}
 
+	/**
+	 * Checks whether the item body contains at least one interactive module
+	 * 
+	 * @return boolean
+	 */
+	public boolean hasInteractiveModules() {
+		boolean foundInteractive = false;
+		if (modules != null) {
+			for (IModule currModule : modules) {
+				if (currModule instanceof IInteractionModule){
+					foundInteractive = true;
+					break;
+				}
+			}
+		}
+		return foundInteractive;		
+	}
+	
 	// ------------------------- ACTIVITY --------------------------------
 
 	public void markAnswers(boolean mark) {
