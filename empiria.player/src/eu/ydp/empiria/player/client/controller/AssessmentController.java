@@ -24,7 +24,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private ViewSocket footerViewSocket;
 
 	private Assessment assessment;
-	private PageController pageController;
+	protected PageController pageController;
 	private int controllerPageNumber = -1; // NOPMD
 	private StyleSocket styleSocket;
 	private final InteractionEventsSocket interactionEventsSocket; // NOPMD
@@ -33,6 +33,8 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private final IFlowSocket flowSocket;
 	private final AssessmentViewSocket assessmentViewSocket; // NOPMD
 	private final Page page = PlayerGinjector.INSTANCE.getPage();
+	private final IItemProperties itemProperties = createItemProperties();
+	
 	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket, AssessmentSessionSocket ass, ModulesRegistrySocket mrs) {
 		assessmentViewSocket = avs;
 		assessmentSessionSocket = ass;
@@ -76,7 +78,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
 	public void init(AssessmentData data, DisplayContentOptions options) {
 		if (data != null) {
-			assessment = new Assessment(data, options, interactionEventsSocket, styleSocket, modulesRegistrySocket);
+			assessment = new Assessment(data, options, interactionEventsSocket, styleSocket, modulesRegistrySocket, itemProperties);						
 			assessmentViewSocket.setAssessmentViewCarrier(new AssessmentViewCarrier(assessment, headerViewSocket, footerViewSocket));
 			assessment.setUp();
 			assessment.start();
@@ -125,5 +127,15 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	@Override
 	public PageInterferenceSocket getPageControllerSocket() {
 		return pageController;
+	}	
+	
+	protected IItemProperties createItemProperties() {
+		return new IItemProperties() {
+			
+			@Override
+			public boolean hasInteractiveModules() {		
+				return (pageController != null && pageController.hasInteractiveModules());
+			}
+		};
 	}
 }

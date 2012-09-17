@@ -189,6 +189,11 @@ public class Item implements IStateful, ItemInterferenceSocket {
 			}
 			return hierarchy;
 		}
+
+		@Override
+		public boolean hasInteractiveModules() {
+			return Item.this.hasInteractiveModules();
+		}
 		
 	};
 	
@@ -392,6 +397,15 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {
 		itemBody.setUpperParenthoodSocket(parenthoodSocket);
+	}
+
+	/**
+	 * Checks whether the item body contains at least one interactive module
+	 * 
+	 * @return boolean
+	 */	
+	public boolean hasInteractiveModules() {
+		return itemBody.hasInteractiveModules();
 	}
 	
 	

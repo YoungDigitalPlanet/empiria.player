@@ -77,18 +77,24 @@ public class Assessment {
 	private AssessmentBodyView bodyView;
 
 	/**
+	 * Properties instance prepared by assessmentController (based on item body properties through the page controller) 
+	 */
+	private final IItemProperties itemProperties;
+
+	/**
 	 * C'tor
 	 *
 	 * @param data
 	 *            XMLData object as data source
 	 */
 	public Assessment(AssessmentData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket styleSocket,
-			ModulesRegistrySocket modulesRegistrySocket) {
+			ModulesRegistrySocket modulesRegistrySocket, IItemProperties itemProperties) {
 
 		this.xmlData = data.getData();
 		this.styleSocket = styleSocket;
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.options = options;
+		this.itemProperties = itemProperties;
 
 		Document document = xmlData.getDocument();
 		Element rootNode = (Element) document.getElementsByTagName("assessmentTest").item(0);
@@ -239,6 +245,11 @@ public class Assessment {
 				hierarchy.push(currParent);
 			}
 			return hierarchy;
+		}
+
+		@Override
+		public boolean hasInteractiveModules() {
+			return itemProperties.hasInteractiveModules();
 		}
 
 	};
