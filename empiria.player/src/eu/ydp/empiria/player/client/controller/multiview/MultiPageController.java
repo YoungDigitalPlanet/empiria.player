@@ -205,7 +205,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			this.touchReservation = true;
 			break;
 		case LOAD_PAGE_VIEW:
-		case ASSESSMENT_STARTED:
 			setVisiblePanels((Integer) (event.getValue() == null ? 0 : event.getValue()));
 			break;
 		case PAGE_VIEW_LOADED:
