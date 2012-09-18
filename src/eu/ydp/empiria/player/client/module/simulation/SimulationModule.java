@@ -1,12 +1,19 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtcreatejs.client.handler.CompleteHandler;
 import eu.ydp.gwtcreatejs.client.loader.CreateJsLoader;
 
@@ -15,6 +22,8 @@ public class SimulationModule extends SimpleModuleBase implements Factory<Simula
 	protected SimulationModuleView view;
 	
 	protected CreateJsLoader loader;
+	
+	private EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus(); 
 
 	@Override
 	public SimulationModule getNewInstance() {
@@ -71,9 +80,21 @@ public class SimulationModule extends SimpleModuleBase implements Factory<Simula
 			
 			@Override
 			public void onComplete() {
-				addChildView(loader.getContent().getCanvas());
+				initializeCanvas(loader.getContent().getCanvas());
 			}
 		});
+	}
+	
+	protected void initializeCanvas(Canvas canvas){
+		canvas.addTouchStartHandler(new TouchStartHandler() {
+			
+			@Override
+			public void onTouchStart(TouchStartEvent event) {
+				eventBus.fireAsyncEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+			}
+		});
+		
+		addChildView(canvas);
 	}
 
 	protected void addChildView(IsWidget child) {
