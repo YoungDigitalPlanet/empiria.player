@@ -145,6 +145,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	protected void setVisiblePanels(int pageNumber) {
 		showProgressBarForPage(pageNumber);
 		if (!measuredPanels.contains(pageNumber)) {
+			resizeTimer.cancel();
 			resizeTimer.schedule(350);
 		}
 		if (currentVisiblePage != pageNumber && pageNumber >= 0) {
