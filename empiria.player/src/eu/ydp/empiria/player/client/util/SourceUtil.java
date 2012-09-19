@@ -14,4 +14,13 @@ public final class SourceUtil {
 		}
 		return null;
 	}
+
+	public static boolean containsOgg(Map<String, String> sources) {
+		for (Map.Entry<String, String> src : sources.entrySet()) {
+			if (src.getValue().matches(".*ogv|.*ogg")) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

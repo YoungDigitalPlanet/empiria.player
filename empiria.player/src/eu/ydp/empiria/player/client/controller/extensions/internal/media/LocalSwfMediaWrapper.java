@@ -49,4 +49,9 @@ public class LocalSwfMediaWrapper implements MediaWrapper<Widget> {
 		return 0;
 	}
 
+	@Override
+	public boolean canPlay() {
+		return true;
+	}
+
 }

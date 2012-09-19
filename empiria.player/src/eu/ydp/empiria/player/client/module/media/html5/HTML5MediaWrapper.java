@@ -1,21 +1,35 @@
 package eu.ydp.empiria.player.client.module.media.html5;
 
+import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
  * Wrapper dla elemntow audio i video html5
  *
  */
-public class HTML5MediaWrapper implements MediaWrapper<MediaBase> {
+public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHandler {
 	protected MediaBase mediaBase;
 	protected String uniqId = null;
+	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	protected HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
+	protected boolean ready = false;
+	protected HandlerRegistration handlerRegistration;
+
 	public HTML5MediaWrapper(Media media) {
 		this.mediaBase = media.getMedia();
+		mediaBase.setPreload(MediaElement.PRELOAD_METADATA);
+		handlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, new CurrentPageScope());
 	}
 
 	@Override
@@ -57,10 +71,23 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase> {
 	}
 
 	@Override
+	public boolean canPlay() {
+		return ready || mediaBase.getReadyState() != MediaElement.HAVE_NOTHING;
+	}
+
+	@Override
+	public void onMediaEvent(MediaEvent event) {
+		if (event.getType() == MediaEventTypes.ON_DURATION_CHANGE) {
+			ready = true;
+			handlerRegistration.removeHandler();
+		}
+	}
+
+	@Override
 	public int hashCode() {
 		int prime = 31;
 		int result = 1;
-		result = prime * result +  getMediaUniqId().hashCode();
+		result = prime * result + getMediaUniqId().hashCode();
 		return result;
 	}
 
@@ -86,4 +113,5 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase> {
 		}
 		return true;
 	}
+
 }

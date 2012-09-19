@@ -42,6 +42,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
+
 	public MediaProgressBarImpl() {
 		super();
 		initWidget(uiBinder.createAndBindUi(this));
@@ -113,7 +114,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler, new CurrentPageScope());
 
 		} else {
-			progressBar.setStyleName(progressBar.getStyleName() + UNSUPPORTED_SUFFIX);
+			progressBar.setStyleName(styleNames.QP_MEDIA_PROGRESSBAR() + UNSUPPORTED_SUFFIX);
 			progressBar.clear();
 		}
 	}
@@ -167,6 +168,14 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			seekInMedia(positionX > 0 ? positionX : 0);
 			positionX -= (getButtonWidth() / 2);
 			moveScroll(positionX > 0 ? positionX : 0);
+		}
+	}
+
+	@Override
+	public void setStyleNames() {
+		if(fullScreen){
+			progressBar.removeStyleName(styleNames.QP_MEDIA_PROGRESSBAR());
+			progressBar.addStyleName(styleNames.QP_MEDIA_PROGRESSBAR()+FULL_SCREEN_SUFFIX);
 		}
 	}
 }

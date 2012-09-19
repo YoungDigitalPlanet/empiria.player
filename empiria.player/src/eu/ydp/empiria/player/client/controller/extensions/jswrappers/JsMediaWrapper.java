@@ -46,4 +46,9 @@ public class JsMediaWrapper implements MediaWrapper<Widget> {
 		return 1;
 	}
 
+	@Override
+	public boolean canPlay() {
+		return true;
+	}
+
 }

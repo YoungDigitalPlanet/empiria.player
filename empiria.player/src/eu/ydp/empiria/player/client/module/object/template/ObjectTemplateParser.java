@@ -1,46 +1,50 @@
 package eu.ydp.empiria.player.client.module.object.template;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
-import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElement;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
+import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.button.FullScreenMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
-import eu.ydp.empiria.player.client.module.media.button.MediaProgressBar;
-import eu.ydp.empiria.player.client.module.media.button.MuteMediaButton;
-import eu.ydp.empiria.player.client.module.media.button.PlayPauseMediaButton;
-import eu.ydp.empiria.player.client.module.media.button.StopMediaButton;
-import eu.ydp.empiria.player.client.module.media.button.VolumeMediaButton;
-import eu.ydp.empiria.player.client.module.media.info.MediaCurrentTime;
-import eu.ydp.empiria.player.client.module.media.info.MediaTotalTime;
-import eu.ydp.empiria.player.client.module.media.info.PositionInMediaStream;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ObjectTemplateParser<T extends Widget> extends AbstractTemplateParser {
-	protected Map<String, MediaController<?>> controllers = new HashMap<String, MediaController<?>>();
-	protected MediaWrapper<T> mediaDescriptor = null;
+	protected Set<String> controllers = new HashSet<String>();
+	protected MediaWrapper<?> mediaDescriptor = null;
+	protected MediaWrapper<?> fullScreenMediaWrapper = null;
 
-	public ObjectTemplateParser(MediaWrapper<T> mediaDescriptor) {
+	protected MediaControllerFactory factory;
+	private Element fullScreenTemplate;
+	private  boolean fullScreen = false;
+
+	public ObjectTemplateParser() {
+		controllers.add(ModuleTagName.MEDIA_PLAY_PAUSE_BUTTON.tagName());
+		controllers.add(ModuleTagName.MEDIA_STOP_BUTTON.tagName());
+		controllers.add(ModuleTagName.MEDIA_MUTE_BUTTON.tagName());
+		controllers.add(ModuleTagName.MEDIA_PROGRESS_BAR.tagName());
+		controllers.add(ModuleTagName.MEDIA_FULL_SCREEN_BUTTON.tagName());
+		controllers.add(ModuleTagName.MEDIA_POSITION_IN_STREAM.tagName());
+		controllers.add(ModuleTagName.MEDIA_VOLUME_BAR.tagName());
+		controllers.add(ModuleTagName.MEDIA_CURRENT_TIME.tagName());
+		controllers.add(ModuleTagName.MEDIA_TOTAL_TIME.tagName());
+		controllers.add(ModuleTagName.MEDIA_TEXT_TRACK.tagName());
+	}
+
+	public void setMediaWrapper(MediaWrapper<?> mediaDescriptor) {
 		this.mediaDescriptor = mediaDescriptor;
-		controllers.put(ModuleTagName.MEDIA_PLAY_PAUSE_BUTTON.tagName(), new PlayPauseMediaButton());
-		controllers.put(ModuleTagName.MEDIA_STOP_BUTTON.tagName(), new StopMediaButton());
-		controllers.put(ModuleTagName.MEDIA_MUTE_BUTTON.tagName(), new MuteMediaButton());
-		controllers.put(ModuleTagName.MEDIA_PROGRESS_BAR.tagName(), (MediaController<?>) GWT.create(MediaProgressBar.class));
-		controllers.put(ModuleTagName.MEDIA_FULL_SCREEN_BUTTON.tagName(), new FullScreenMediaButton());
-		controllers.put(ModuleTagName.MEDIA_POSITION_IN_STREAM.tagName(), new PositionInMediaStream());
-		controllers.put(ModuleTagName.MEDIA_VOLUME_BAR.tagName(), new VolumeMediaButton());
-		controllers.put(ModuleTagName.MEDIA_CURRENT_TIME.tagName(), new MediaCurrentTime());
-		controllers.put(ModuleTagName.MEDIA_TOTAL_TIME.tagName(), new MediaTotalTime());
-		controllers.put(ModuleTagName.MEDIA_TEXT_TRACK.tagName(), null);
+	}
+
+	public void setFullScreenMediaWrapper(MediaWrapper<?> fullScreenMediaWrapper) {
+		this.fullScreenMediaWrapper = fullScreenMediaWrapper;
 	}
 
 	@Override
@@ -50,17 +54,21 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 			String kind = XMLUtils.getAttributeAsString((Element) node, "kind", TextTrackKind.SUBTITLES.name());
 			TextTrackKind trackKind = TextTrackKind.SUBTITLES;
 			try {
-				trackKind = TextTrackKind.valueOf(kind.toUpperCase());
-			} catch (IllegalArgumentException exception) { //NOPMD
+				trackKind = TextTrackKind.valueOf(kind.toUpperCase()); // NOPMD
+			} catch (IllegalArgumentException exception) { // NOPMD
 
 			}
-			controller = new VideoTextTrackElement(trackKind);
+			controller = factory.get(ModuleTagName.MEDIA_TEXT_TRACK, trackKind);
 		} else {
-			controller = controllers.get(moduleName);
-			controller = (MediaController<?>) controller.getNewInstance();
+			controller = factory.get(ModuleTagName.getTag(moduleName));
 		}
 		if (controller != null) {
 			controller.setMediaDescriptor(mediaDescriptor);
+			controller.setFullScreen(fullScreen);
+		}
+		if (controller instanceof FullScreenMediaButton) {
+			((FullScreenMediaButton) controller).setFullScreenTemplate(fullScreenTemplate);
+			((FullScreenMediaButton) controller).setFullScreenMediaWrapper(fullScreenMediaWrapper);
 		}
 
 		return controller;
@@ -68,7 +76,19 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 
 	@Override
 	protected boolean isModuleSupported(String moduleName) {
-		return controllers.containsKey(moduleName);
+		return controllers.contains(moduleName);
 	}
 
+	@Inject
+	public void setFactory(MediaControllerFactory factory) {
+		this.factory = factory;
+	}
+
+	public void setFullScreenTemplate(Element fullScreenTemplate) {
+		this.fullScreenTemplate = fullScreenTemplate;
+	}
+
+	public void setFullScreen(boolean fullScreen) {
+		this.fullScreen = fullScreen;
+	}
 }

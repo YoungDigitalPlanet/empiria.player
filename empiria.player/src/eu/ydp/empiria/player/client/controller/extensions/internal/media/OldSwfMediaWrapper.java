@@ -51,4 +51,9 @@ public class OldSwfMediaWrapper implements MediaWrapper<Widget> {
 		return 0;
 	}
 
+	@Override
+	public boolean canPlay() {
+		return true;
+	}
+
 }

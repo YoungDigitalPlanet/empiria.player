@@ -185,6 +185,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-media-fullscreen-button")
 	public String QP_MEDIA_FULLSCREEN_BUTTON();
 
+	@DefaultStringValue("qp-media-fullscreen-container")
+	public String QP_MEDIA_FULLSCREEN_CONTAINER();
+
+	@DefaultStringValue("qp-media-fullscreen-controls")
+	public String QP_MEDIA_FULLSCREEN_CONTROLS();
+
 	@DefaultStringValue("qp-media-mute")
 	public String QP_MEDIA_MUTE();
 
@@ -358,4 +364,11 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
+
+	@DefaultStringValue("qp-media-progressbar")
+	public String QP_MEDIA_PROGRESSBAR();
+
+	@DefaultStringValue("qp-media-volume-scrollbar")
+	public String QP_MEDIA_VOLUME_SCROLLBAR();
+
 }

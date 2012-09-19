@@ -43,5 +43,11 @@ public interface MediaWrapper<T extends Widget> {
 	 */
 	double getVolume();
 
+	/**
+	 * Czy audio jest gotowe do odtwarzania
+	 * @return
+	 */
+	boolean canPlay();
+
 
 }

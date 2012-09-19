@@ -4,7 +4,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 /**
  * bazowy przycisk dla kontrolerow multimediow
@@ -12,13 +11,15 @@ import eu.ydp.gwtutil.client.debug.logger.Debug;
  * @param <T>
  *            typ przycisku dla {@link Factory}
  */
-public abstract class AbstractMediaButton<T> extends MediaController<T> {
+public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> {
 	private String baseStyleName;
 	private String onClickStyleName;
 	private String hoverStyleName;
+	private String originalStyleName;
 	private boolean active = false;
 	private final FlowPanel divElement = new FlowPanel();
 	private boolean singleClick = true;
+
 
 	/**
 	 * bazowy przycisk dla kontrolerow multimediow
@@ -30,12 +31,21 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 	 *            false wywoluje ponownie akcje na mouseup
 	 */
 	public AbstractMediaButton(String baseStyleName, boolean singleClick) {
-		this.baseStyleName = baseStyleName;
-		this.onClickStyleName = baseStyleName + CLICK_SUFFIX;
-		this.hoverStyleName = baseStyleName + HOVER_SUFFIX;
+		this.originalStyleName = baseStyleName;
+		setStyleNames();
 		this.singleClick = singleClick;
 		initWidget(divElement);
+	}
 
+	@Override
+	public final void setStyleNames() {
+		String toAdd = "";
+		if (fullScreen) {
+			toAdd = FULL_SCREEN_SUFFIX;
+		}
+		this.baseStyleName = this.originalStyleName + toAdd;
+		this.onClickStyleName = baseStyleName + toAdd + CLICK_SUFFIX;
+		this.hoverStyleName = baseStyleName + toAdd + HOVER_SUFFIX;
 	}
 
 	@Override
@@ -100,7 +110,6 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 		} else {
 			divElement.getElement().removeClassName(onClickStyleName);
 		}
-
 	}
 
 	/**
@@ -120,4 +129,6 @@ public abstract class AbstractMediaButton<T> extends MediaController<T> {
 			divElement.getElement().removeClassName(hoverStyleName);
 		}
 	}
+
+
 }

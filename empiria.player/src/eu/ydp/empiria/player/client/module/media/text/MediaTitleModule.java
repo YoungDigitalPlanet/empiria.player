@@ -6,15 +6,19 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.module.media.button.MediaController;
+import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 /**
  * Modul wyswietlajacy tytul
+ *
  * @author plelakowski
  *
  */
-public class MediaTitleModule extends MediaController<MediaTitleModule>  {
+public class MediaTitleModule extends AbstractMediaController<MediaTitleModule> {
 	private static ImgTitleModuleUiBinder uiBinder = GWT.create(ImgTitleModuleUiBinder.class);
+	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 
 	interface ImgTitleModuleUiBinder extends UiBinder<Widget, MediaTitleModule> {
 	}
@@ -37,8 +41,16 @@ public class MediaTitleModule extends MediaController<MediaTitleModule>  {
 	}
 
 	@Override
-	public void init() {//NOPMD
+	public void init() {// NOPMD
 
+	}
+
+	@Override
+	public void setStyleNames() {
+		if (fullScreen) {
+			text.removeStyleName(styleNames.QP_MEDIA_TITLE());
+			text.addStyleName(styleNames.QP_MEDIA_TITLE() + FULL_SCREEN_SUFFIX);
+		}
 	}
 
 }

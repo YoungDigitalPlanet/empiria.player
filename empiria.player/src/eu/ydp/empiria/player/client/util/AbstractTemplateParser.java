@@ -38,16 +38,16 @@ public abstract class AbstractTemplateParser {
 			Node node = nodes.item(x);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				String moduleName = node.getNodeName();
-				if (moduleName.trim().length() > 0 && isModuleSupported(moduleName)) {
-					MediaController<?> mc = getMediaControllerNewInstance(moduleName,node);
-					mc.init();
-					parseXMLAttributes((Element) node, mc.getElement());
+				if (!moduleName.trim().isEmpty() && isModuleSupported(moduleName)) {
+					MediaController<?> mediaController = getMediaControllerNewInstance(moduleName,node);
+					mediaController.init();
+					parseXMLAttributes((Element) node, mediaController.getElement());
 					if (parent instanceof ComplexPanel) {
-						((Panel) parent).add(mc);
-						parse(node, mc);
+						((Panel) parent).add(mediaController);
+						parse(node, (Widget) mediaController);
 					}
 				} else {
-					HTMLPanel panel = new HTMLPanel(((Element) node).getNodeName(), "");
+					HTMLPanel panel = new HTMLPanel(((Element) node).getNodeName(), ""); //NOPMD
 					if (parent instanceof ComplexPanel) {
 						((Panel) parent).add(panel);
 						parseXMLAttributes((Element) node, panel.getElement());

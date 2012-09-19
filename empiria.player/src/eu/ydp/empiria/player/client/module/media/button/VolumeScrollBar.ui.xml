@@ -1,11 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:eu.ydp.empiria.player.client.module.media.button">
-	<ui:style>
-		.important {
-			font-weight: bold;
-		}
-	</ui:style>
-	<g:FlowPanel ui:field="progressBar" styleName="qp-media-volume-scrollbar">
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
+	<g:FlowPanel ui:field="progressBar" styleName="{res.QP_MEDIA_VOLUME_SCROLLBAR}">
 		<g:FlowPanel styleName="qp-media-volume-scrollbar-top" />
 		<g:FlowPanel ui:field="mainProgressDiv" styleName="qp-media-volume-scrollbar-center">
 			<g:FlowPanel styleName="qp-media-volume-scrollbar-center-info" />

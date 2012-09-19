@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public abstract class AbstractMediaScroll<T> extends MediaController<T> {
+public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> {
 	private boolean pressed = false;
 	private boolean mediaReady = false;
 	private boolean initialized;
@@ -63,7 +63,7 @@ public abstract class AbstractMediaScroll<T> extends MediaController<T> {
 				RootPanel.get().addDomHandler(new MouseUpHandler() {
 					@Override
 					public void onMouseUp(MouseUpEvent event) {
-						if(isPressed()){
+						if(isPressed()){ //NOPMD
 							pressed = false;
 							setPosition(event.getNativeEvent());
 							event.stopPropagation();
@@ -99,6 +99,6 @@ public abstract class AbstractMediaScroll<T> extends MediaController<T> {
 	 * @return
 	 */
 	public boolean isMediaReady() {
-		return mediaReady;
+		return mediaReady || getMediaWrapper().canPlay();
 	}
 }

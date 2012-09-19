@@ -11,6 +11,8 @@ import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PageEventsHandler;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
+import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.view.ViewEngine;
@@ -38,4 +40,6 @@ public interface PlayerGinjector extends Ginjector {
 	PanelCache getPanelCache();
 	GWTPanelFactory getPanelFactory();
 	PageEventsHandler getPageEvents();
+	ObjectTemplateParser<?>  getObjectTemplateParser();
+	VideoFullScreenHelper getVideoFullScreenHelper();
 }

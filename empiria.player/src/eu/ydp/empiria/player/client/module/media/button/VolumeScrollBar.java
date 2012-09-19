@@ -42,7 +42,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	@UiField
 	protected FlowPanel afterButton;
 
-	protected HandlerRegistration durationchangeHandlerRegistration; //NOPMD
+	protected HandlerRegistration durationchangeHandlerRegistration; // NOPMD
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	public VolumeScrollBar() {
@@ -89,7 +89,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 					}
 				}
 			};
-			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler,new CurrentPageScope());
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler, new CurrentPageScope());
 			handler = new AbstractMediaEventHandler() {
 				@Override
 				public void onMediaEvent(MediaEvent event) {
@@ -101,7 +101,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 			durationchangeHandlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler);
 
 		} else {
-			progressBar.setStyleName(progressBar.getStyleName() + UNSUPPORTED_SUFFIX);
+			progressBar.setStyleName(styleNames.QP_MEDIA_VOLUME_SCROLLBAR() + UNSUPPORTED_SUFFIX);
 			Iterator<Widget> iter = progressBar.iterator();
 			while (iter.hasNext()) {
 				iter.next().removeFromParent();
@@ -152,5 +152,13 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 		beforeButton.getElement().getStyle().setHeight(positionY, Unit.PX);
 		afterButton.getElement().getStyle().setTop(positionY + getButtonLength(), Unit.PX);
 		afterButton.getElement().getStyle().setHeight(getScrollLength() - positionY, Unit.PX);
+	}
+
+	@Override
+	public void setStyleNames() {
+		if (fullScreen) {
+			progressBar.removeStyleName(styleNames.QP_MEDIA_VOLUME_SCROLLBAR());
+			progressBar.addStyleName(styleNames.QP_MEDIA_VOLUME_SCROLLBAR() + FULL_SCREEN_SUFFIX);
+		}
 	}
 }

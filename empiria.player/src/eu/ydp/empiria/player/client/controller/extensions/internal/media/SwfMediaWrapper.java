@@ -3,6 +3,9 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.gwtflashmedia.client.FlashMedia;
+import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaLoadedEvent;
+import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaLoadedHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaMetadataEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaMetadataHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaMuteChangeEvent;
@@ -23,14 +26,16 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
  *
  */
 public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayheadUpdateHandler, FlashMediaMuteChangeHandler, FlashMediaVolumeChangeHandler,
-		FlashMediaMetadataHandler, FlashMediaStopHandler {
+		FlashMediaMetadataHandler, FlashMediaStopHandler,FlashMediaLoadedHandler {
 
-	MediaAvailableOptions swfOptions = new SwfMediaAvailableOptions();
-	double duration = 0;
-	double currentTime = 0;
-	double volume = 0;
-	boolean muted = false;
-	Widget mediaWidget = new FlowPanel();
+	protected MediaAvailableOptions swfOptions = new SwfMediaAvailableOptions();
+	protected double duration = 0;
+	protected double currentTime = 0;
+	protected double volume = 0;
+	protected boolean muted = false;
+	protected Widget mediaWidget = new FlowPanel();
+	protected FlashMedia flashMedia;
+	protected boolean ready =false;
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	@Override
@@ -41,6 +46,14 @@ public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayhead
 	@Override
 	public Widget getMediaObject() {
 		return mediaWidget;
+	}
+
+	public void setFlashMedia(FlashMedia flashMedia) {
+		this.flashMedia = flashMedia;
+	}
+
+	public FlashMedia getFlashMedia() {
+		return flashMedia;
 	}
 
 	public void setMediaWidget(Widget mediaWidget) {
@@ -83,7 +96,10 @@ public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayhead
 	public double getVolume() {
 		return volume;
 	}
-
+	@Override
+	public boolean canPlay() {
+		return ready;
+	}
 	public void setVolume(double volume) {
 		this.volume = volume;
 	}
@@ -110,7 +126,13 @@ public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayhead
 
 	@Override
 	public void onFlashSoundStop(FlashMediaStopEvent event) {
-		currentTime = event.getPlayheadTime() * .001f;		
+		currentTime = event.getPlayheadTime() * .001f;
+	}
+
+
+	@Override
+	public void onFlashSoundLoaded(FlashMediaLoadedEvent event) {
+		ready = true;
 	}
 
 }

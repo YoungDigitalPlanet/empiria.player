@@ -10,6 +10,9 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
+import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
+import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -50,6 +53,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		// bind(HTML5FullScreenHelper.class).in(Singleton.class);
 		bind(DOMTreeWalker.class);
 		bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class).in(Singleton.class);
+		bind(MediaControllerFactory.class).to(MediaControllerFactoryImpl.class).in(Singleton.class);
+		bind(VideoFullScreenHelper.class).in(Singleton.class);
 	}
 
 

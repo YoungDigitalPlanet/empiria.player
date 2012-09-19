@@ -14,8 +14,9 @@ public class BaseMediaConfiguration {
 	private final String poster;
 	private final boolean hasTemplate;
 	private final String narrationText;
+	private final boolean fullScreenTemplate;
 
-	public BaseMediaConfiguration(Map<String, String> sources, MediaType mediaType, String poster, int height, int width, boolean hasTemplate, String narrationText) {
+	public BaseMediaConfiguration(Map<String, String> sources, MediaType mediaType, String poster, int height, int width, boolean hasTemplate, boolean fullScreenTemplate, String narrationText) {
 		super();
 		this.sources = sources;
 		this.mediaType = mediaType;
@@ -24,6 +25,7 @@ public class BaseMediaConfiguration {
 		this.width = width;
 		this.hasTemplate = hasTemplate;
 		this.narrationText = narrationText;
+		this.fullScreenTemplate = fullScreenTemplate;
 	}
 
 
@@ -49,6 +51,10 @@ public class BaseMediaConfiguration {
 
 	public boolean isTemplate() {
 		return hasTemplate;
+	}
+
+	public boolean isFullScreenTemplate() {
+		return fullScreenTemplate;
 	}
 
 	public String getNarrationText() {
