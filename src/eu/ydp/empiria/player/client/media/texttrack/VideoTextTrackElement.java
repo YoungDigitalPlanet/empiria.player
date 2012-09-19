@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
-import eu.ydp.empiria.player.client.module.media.button.MediaController;
+import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class VideoTextTrackElement extends MediaController<VideoTextTrackElement> implements MediaEventHandler {
+public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrackElement> implements MediaEventHandler {
 
 	private static VideoTextTrackElementUiBinder uiBinder = GWT.create(VideoTextTrackElementUiBinder.class);
 
@@ -33,8 +33,17 @@ public class VideoTextTrackElement extends MediaController<VideoTextTrackElement
 	public VideoTextTrackElement(TextTrackKind kind) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.kind = kind;
-		text.setStyleName(styleNames.QP_MEDIA_TEXT_TRACK());
-		text.addStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + "-" + kind.name().toLowerCase());
+		setStyleNames();
+	}
+
+	@Override
+	public final void setStyleNames() {
+		String toAdd = "";
+		if (fullScreen) {
+			toAdd = FULL_SCREEN_SUFFIX;
+		}
+		text.setStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd);
+		text.addStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd + "-" + kind.name().toLowerCase());
 	}
 
 	@Override

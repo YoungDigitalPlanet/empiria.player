@@ -6,9 +6,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.module.media.button.MediaController;
+import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
 
-public class ModuleWrapper extends MediaController<ModuleWrapper> {
+public class ModuleWrapper extends AbstractMediaController<ModuleWrapper> {
 
 	private static ImgScreenModuleUiBinder uiBinder = GWT.create(ImgScreenModuleUiBinder.class);
 
@@ -16,13 +16,12 @@ public class ModuleWrapper extends MediaController<ModuleWrapper> {
 	}
 
 	@UiField
-	HTMLPanel container;
+	protected HTMLPanel container;
 
 	public ModuleWrapper(Widget widget) {
 		initWidget(uiBinder.createAndBindUi(this));
 		container.add(widget);
 	}
-
 
 	@Override
 	public ModuleWrapper getNewInstance() {
@@ -39,4 +38,8 @@ public class ModuleWrapper extends MediaController<ModuleWrapper> {
 
 	}
 
+	@Override
+	public void setStyleNames() {
+
+	}
 }

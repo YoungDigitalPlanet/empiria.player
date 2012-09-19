@@ -4,7 +4,6 @@ import static eu.ydp.gwtutil.client.util.UserAgentChecker.isMobileUserAgent;
 import static eu.ydp.gwtutil.client.util.UserAgentChecker.isUserAgent;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
@@ -26,9 +25,11 @@ import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorEx
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
 import eu.ydp.empiria.player.client.module.media.html5.HTML5MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
+import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
@@ -40,16 +41,15 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
 	protected boolean initialized = false;
 
-
 	@Override
 	public void init() {
 		if (!initialized) {
 			super.init();
-		feedbackSoundExecutor = GWT.create(SoundExecutor.class);
-		feedbackSoundExecutor.setSoundFinishedListener(this);
-		executors.put(null, feedbackSoundExecutor);
+			feedbackSoundExecutor = GWT.create(SoundExecutor.class);
+			feedbackSoundExecutor.setSoundFinishedListener(this);
+			executors.put(null, feedbackSoundExecutor);
 			initialized = true;
-	}
+		}
 	}
 
 	public void getSoundExecutor() {
@@ -103,16 +103,16 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 
 	protected void forceStop(boolean pause, MediaWrapper<?> mw, boolean stopDefaultSoundExecutor) {
 		for (SoundExecutor<?> se : executors.values()) {
-			if (se.getMediaWrapper() !=null && se.getMediaWrapper().equals(mw)) {
+			if (se.getMediaWrapper() != null && se.getMediaWrapper().equals(mw)) {
 				continue;
 			}
-			if (se.getMediaWrapper() !=null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported() && pause) {
+			if (se.getMediaWrapper() != null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported() && pause) {
 				se.pause();
-			} else if (se.getMediaWrapper() != null  ||  (se.getMediaWrapper() == null  &&  mw != null)  ||  stopDefaultSoundExecutor) {
+			} else if (se.getMediaWrapper() != null || (se.getMediaWrapper() == null && mw != null) || stopDefaultSoundExecutor) {
 				se.stop();
 			}
 		}
-		if (mw != null){
+		if (mw != null) {
 			callback = null;
 		}
 	}
@@ -141,54 +141,99 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void createMediaWrapper(PlayerEvent event) {
-		if (event.getValue() != null && event.getValue() instanceof BaseMediaConfiguration) {
+		if (event.getValue() instanceof BaseMediaConfiguration) {
 			BaseMediaConfiguration bmc = (BaseMediaConfiguration) event.getValue();
-			Media mb = null;
-			boolean geckoSupport = true;
+			Media defaultMedia = null;
+			Media fullScreenMedia = null;
+			boolean geckoSupport = isGeckoSupport(bmc);
 
-			if (!containsOgg(bmc.getSources()) && (isUserAgent(UserAgent.GECKO1_8) || isUserAgent(UserAgent.OPERA) || isMobileUserAgent(MobileUserAgent.FIREFOX))) {
-				geckoSupport = false;
-			}
 			if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported() && geckoSupport) {
-				mb = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
+				defaultMedia = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
+				if (bmc.isFullScreenTemplate()) {
+					fullScreenMedia = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
+				}
 			} else if (Audio.isSupported() && geckoSupport) {
-				mb = new HTML5AudioImpl();
+				defaultMedia = new HTML5AudioImpl();
 			}
 
 			SoundExecutor<?> executor;
-			if (mb != null) {
-				HTML5MediaExecutor ex = new HTML5MediaExecutor();
-				ex.setMediaWrapper(new HTML5MediaWrapper(mb));
-				executor = ex;
-				mb.setEventBusSourceObject(executor.getMediaWrapper());
-			} else if (!UserAgentChecker.isLocal()) {
+			SoundExecutor<?> fullScreenExecutor = null;
+			if (!UserAgentChecker.isLocal() && defaultMedia == null) {
 				if (bmc.isTemplate()) {
 					if (bmc.getMediaType() == MediaType.VIDEO) {
-						VideoExecutorSwf ex = new VideoExecutorSwf();
-						ex.setMediaWrapper(new SwfMediaWrapper());
-						executor = ex;
+						executor = createSWFVideoMediaExecutor();
+						if (bmc.isFullScreenTemplate()) {
+							fullScreenExecutor = createSWFVideoMediaExecutor();
+						}
 					} else {
-						SoundExecutorSwf ex = new SoundExecutorSwf();
-						ex.setMediaWrapper(new SwfMediaWrapper());
-						executor = ex;
+						executor = createSWFSoundMediaExecutor();
 					}
 				} else {
-					OldSwfMediaExecutor ex = new OldSwfMediaExecutor();
-					ex.setMediaWrapper(new OldSwfMediaWrapper());
-					executor = ex;
+					OldSwfMediaExecutor exc = new OldSwfMediaExecutor();
+					exc.setMediaWrapper(new OldSwfMediaWrapper());
+					executor = exc;
 				}
-			} else {
+			} else if (defaultMedia == null && UserAgentChecker.isLocal()) {
 				executor = new LocalSwfMediaExecutor();
 				executor.setMediaWrapper((MediaWrapper) new LocalSwfMediaWrapper());
+			} else {
+				executor = createHTML5MediaExecutor(defaultMedia);
+				fullScreenExecutor = createHTML5MediaExecutor(fullScreenMedia);
 			}
-			executor.setBaseMediaConfiguration(bmc);
+
+			initExecutor(executor, bmc);
+			initExecutor(fullScreenExecutor, bmc);
+			fireCallback(event, executor, fullScreenExecutor);
+		}
+	}
+
+	private void fireCallback(PlayerEvent event, SoundExecutor<?> defaultMediaExecutor, SoundExecutor<?> fullScreenMediaExecutor) {
+		if (event.getSource() instanceof CallbackRecevier) {
+			if (fullScreenMediaExecutor == null) {
+				((CallbackRecevier) event.getSource()).setCallbackReturnObject(defaultMediaExecutor.getMediaWrapper());
+			} else {
+				((CallbackRecevier) event.getSource()).setCallbackReturnObject(new MediaWrappersPair(defaultMediaExecutor.getMediaWrapper(), fullScreenMediaExecutor
+						.getMediaWrapper()));
+			}
+		}
+	}
+
+	private boolean isGeckoSupport(BaseMediaConfiguration bmc) {
+		boolean geckoSupport = true;
+		if (!SourceUtil.containsOgg(bmc.getSources()) && (isUserAgent(UserAgent.GECKO1_8) || isUserAgent(UserAgent.OPERA) || isMobileUserAgent(MobileUserAgent.FIREFOX))) {
+			geckoSupport = false;
+		}
+		return geckoSupport;
+	}
+
+	private void initExecutor(SoundExecutor<?> executor, BaseMediaConfiguration mediaConfiguration) {
+		if (executor != null) {
+			executor.setBaseMediaConfiguration(mediaConfiguration);
 			executor.init();
 			executors.put(executor.getMediaWrapper(), executor);
-			if (event.getSource() instanceof CallbackRecevier) {
-				((CallbackRecevier) event.getSource()).setCallbackReturnObject(executor.getMediaWrapper());
-			}
-			//soundExecutor = executor;
 		}
+	}
+
+	private SoundExecutor<?> createHTML5MediaExecutor(Media media) {
+		HTML5MediaExecutor executor = null;
+		if (media != null) {
+			executor = new HTML5MediaExecutor();
+			executor.setMediaWrapper(new HTML5MediaWrapper(media));
+			media.setEventBusSourceObject(executor.getMediaWrapper());
+		}
+		return executor;
+	}
+
+	private SoundExecutor<?> createSWFVideoMediaExecutor() {
+		VideoExecutorSwf executor = new VideoExecutorSwf();
+		executor.setMediaWrapper(new SwfMediaWrapper());
+		return executor;
+	}
+
+	private SoundExecutor<?> createSWFSoundMediaExecutor() {
+		SoundExecutorSwf executor = new SoundExecutorSwf();
+		executor.setMediaWrapper(new SwfMediaWrapper());
+		return executor;
 	}
 
 	/**
@@ -197,12 +242,5 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	 * @param sources
 	 * @return
 	 */
-	private boolean containsOgg(Map<String, String> sources) {
-		for (Map.Entry<String, String> src : sources.entrySet()) {
-			if (src.getValue().matches(".*ogv|.*ogg")) {
-				return true;
-			}
-		}
-		return false;
-	}
+
 }

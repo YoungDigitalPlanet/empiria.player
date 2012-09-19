@@ -25,6 +25,7 @@ import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaVolumeChangeEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaVolumeChangeHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.HasFlashMediaHandlers;
 import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.SourceUtil;
@@ -41,6 +42,7 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 	protected boolean pause;
 	protected boolean playing = false;
 	protected String source = null;
+
 	@Override
 	public void init() {
 		// Mapujemy wszystkie eventy flasha na mediaevent
@@ -116,7 +118,7 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 			@Override
 			public void onFlashSoundPositionChange(FlashMediaPlayheadUpdateEvent event) {
 				MediaEvent mediaEvent = new MediaEvent(MediaEventTypes.ON_TIME_UPDATE, getMediaWrapper());
-				mediaEvent.setCurrentTime( event.getPlayheadTime() * .01d);
+				mediaEvent.setCurrentTime(event.getPlayheadTime() * .01d);
 				eventsBus.fireAsyncEventFromSource(mediaEvent, getMediaWrapper());
 			}
 		});
@@ -126,6 +128,8 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 			((HasFlashMediaHandlers) flashMedia).addFlashMediaMuteChangeHandler((FlashMediaMuteChangeHandler) mediaWrapper);
 			((HasFlashMediaHandlers) flashMedia).addFlashMediaVolumeChangeHandler((FlashMediaVolumeChangeHandler) mediaWrapper);
 			((HasFlashMediaHandlers) flashMedia).addFlashMediaStopHandler((FlashMediaStopHandler) mediaWrapper);
+			((HasFlashMediaHandlers) flashMedia).addFlashMediaLoadedHandler((FlashMediaLoadedHandler) mediaWrapper);
+			((SwfMediaWrapper) mediaWrapper).setFlashMedia(flashMedia);
 		}
 
 	}
@@ -176,13 +180,12 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 		play(source, false);
 	}
 
-
-	private void play(String src, boolean free){
-		if (flashMedia != null  &&  free) {
+	private void play(String src, boolean free) {
+		if (flashMedia != null && free) {
 			free();
 		}
 		source = src;
-		if (playing && !pause){
+		if (playing && !pause) {
 			stop();
 		}
 		if (flashMedia == null) {
@@ -191,12 +194,13 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 		flashMedia.play();
 
 	}
+
 	@Override
 	public void pause() {
 		pause = true;
-		try{
+		try {
 			flashMedia.pause();
-		}catch(Exception exception){//NOPMD
+		} catch (Exception exception) {// NOPMD
 		}
 	}
 

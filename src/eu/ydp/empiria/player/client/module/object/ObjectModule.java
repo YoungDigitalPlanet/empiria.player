@@ -3,12 +3,11 @@ package eu.ydp.empiria.player.client.module.object;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.w3c.dom.Node;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
@@ -18,6 +17,7 @@ import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
@@ -33,7 +33,11 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 		@Override
 		public void setCallbackReturnObject(Object object) {
 			if (object instanceof MediaWrapper<?>) {
-				createMedia((MediaWrapper<?>) object);
+				createMedia((MediaWrapper<?>) object,null);
+			}
+
+			if(object instanceof MediaWrappersPair){
+				createMedia(((MediaWrappersPair) object).getDefaultMediaWrapper(), ((MediaWrappersPair) object).getFullScreanMediaWrapper());
 			}
 		}
 	}
@@ -44,6 +48,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	private MediaWrapper<?> mediaWrapper = null;
 	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private MediaWrapper<?> fullScreenMediaWrapper;
 
 	@Override
 	public Widget getView() {
@@ -73,7 +78,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 		return retValue;
 	}
 
-	public void getMediaWrapper(Element element, boolean template, String type) {
+	public void getMediaWrapper(Element element, boolean defaultTemplate, boolean fullScreenTemplate, String type) {
 		int width = XMLUtils.getAttributeAsInt(element, "width");
 		int height = XMLUtils.getAttributeAsInt(element, "height");
 		if (width == 0 || height == 0) {
@@ -81,7 +86,8 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 			height = 240;
 		}
 		String poster = XMLUtils.getAttributeAsString(element, "poster");
-		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width, template,getNarrationText(element));// NOPMD
+		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width, defaultTemplate,
+				fullScreenTemplate, getNarrationText(element));// NOPMD
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
 	}
 
@@ -102,23 +108,37 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 	 *
 	 * @param element
 	 */
-	private void createMedia(MediaWrapper<?> mediaWrapper) {
+	private void createMedia(MediaWrapper<?> mediaWrapper,MediaWrapper<?> fullScreenMediaWrapper) {
 		widget = mediaWrapper.getMediaObject();
+		this.fullScreenMediaWrapper = fullScreenMediaWrapper;
 		this.mediaWrapper = mediaWrapper;
 	}
 
-	private void parseTemplate(Element template, FlowPanel parent) {
-		ObjectTemplateParser<?> parser = new ObjectTemplateParser(mediaWrapper);
+	private void parseTemplate(Element template, Element fullScreenTemplate, FlowPanel parent) {
+		ObjectTemplateParser<?> parser = PlayerGinjector.INSTANCE.getObjectTemplateParser();
+		parser.setMediaWrapper(mediaWrapper);
+		parser.setFullScreenMediaWrapper(fullScreenMediaWrapper);
+		parser.setFullScreenTemplate(fullScreenTemplate);
 		parser.parse(template, parent);
 	}
 
 	@Override
 	public void initModule(Element element) {// NOPMD
 		String type = XMLUtils.getAttributeAsString(element, "type");
-		Element template = XMLUtils.getFirstElementWithTagName(element, "template");
+		Element defaultTemplate = null, fullScreenTemplate = null;
+		NodeList templateList = element.getElementsByTagName("template");
+		for (int x = 0; x < templateList.getLength(); ++x) {
+			Element node = (Element) templateList.item(x);
+			String templateType = XMLUtils.getAttributeAsString(node, "type", "default");
+			if ("default".equalsIgnoreCase(templateType)) {
+				defaultTemplate = node;
+			} else if ("fullscreen".equalsIgnoreCase(templateType)) {
+				fullScreenTemplate = node;
+			}
+		}
 		Map<String, String> styles = getModuleSocket().getStyles(element);
 		String playerType = styles.get("-player-" + type + "-skin");
-		if ("audioPlayer".equals(element.getNodeName()) && ((template == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
+		if ("audioPlayer".equals(element.getNodeName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
 			AudioPlayerModule player = GWT.create(AudioPlayerModule.class);
 			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
 			this.moduleView = player.getView();
@@ -126,7 +146,7 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 			if (element.getNodeName().equals("audioPlayer")) {
 				type = "audio";
 			}
-			getMediaWrapper(element, template != null && !"native".equals(playerType), type);
+			getMediaWrapper(element, defaultTemplate != null && !"native".equals(playerType), fullScreenTemplate != null, type);
 			ObjectModuleView moduleView = new ObjectModuleView();
 			String cls = element.getAttribute("class");
 			if (cls != null && !"".equals(cls)) {
@@ -136,8 +156,8 @@ public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModu
 				moduleView.getContainerPanel().add(widget);
 			}
 
-			if (template != null && widget != null && !flashPlayer) {
-				parseTemplate(template, moduleView.getContainerPanel());
+			if (defaultTemplate != null && widget != null && !flashPlayer) {
+				parseTemplate(defaultTemplate, fullScreenTemplate, moduleView.getContainerPanel());
 			}
 
 			if (mediaWrapper != null) {
