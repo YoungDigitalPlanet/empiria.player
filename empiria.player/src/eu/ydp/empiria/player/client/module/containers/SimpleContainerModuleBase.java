@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
-public abstract class SimpleContainerModuleBase<T> extends ActivityContainerModuleBase implements Factory<T>{
+public abstract class SimpleContainerModuleBase<T> extends AbstractActivityContainerModuleBase implements Factory<T>{
 
 	protected Panel panel;
 

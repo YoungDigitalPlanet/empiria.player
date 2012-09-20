@@ -36,7 +36,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		response = moduleSocket.getResponse(responseIdentifier);
 	}
 
-	protected final Response getResponse(){
+	protected Response getResponse(){
 		return response;
 	}
 	protected final InteractionEventsListener getInteractionEventsListener() {

@@ -18,7 +18,6 @@ import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -35,7 +34,7 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 	/** Shuffle? */
 	private boolean shuffle = false;
 	/** option widgets */
-	private Vector<SimpleChoice> interactionElements;
+	Vector<SimpleChoice> interactionElements;
 
 	private boolean locked = false;
 	private boolean showingAnswers = false;
@@ -234,7 +233,7 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 		updateResponse(null, false);
 	}
 
-	private void updateResponse(SimpleChoice target, boolean userInteract){
+	void updateResponse(SimpleChoice target, boolean userInteract){
 		if (showingAnswers) {
 			return;
 		}

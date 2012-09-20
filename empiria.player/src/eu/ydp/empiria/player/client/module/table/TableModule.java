@@ -23,10 +23,10 @@ import eu.ydp.empiria.player.client.module.binding.BindingManager;
 import eu.ydp.empiria.player.client.module.binding.BindingProxy;
 import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
-import eu.ydp.empiria.player.client.module.containers.ActivityContainerModuleBase;
+import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
-public class TableModule extends ActivityContainerModuleBase implements Factory<TableModule>, BindingProxy {
+public class TableModule extends AbstractActivityContainerModuleBase implements Factory<TableModule>, BindingProxy {
 
 	protected Panel tablePanel;
 	private GapWidthBindingManager gapWidthBindingManager;
