@@ -28,12 +28,12 @@ public class SimpleChoice extends FlowPanel {
 
 	public String identifier;
 
-	private ChoiceButtonBase button;
+	ChoiceButtonBase button;
 	private final AbsolutePanel cover;
 	private final AbsolutePanel container;
 	private final Panel optionPanel;
 	private final Panel labelPanel;
-	private final Panel markAnswersPanel;
+	Panel markAnswersPanel;
 	protected boolean multi;
 	
 	private StyleNameConstants styleNameConstants = PlayerGinjector.INSTANCE.getStyleNameConstants();
