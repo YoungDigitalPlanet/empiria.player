@@ -24,6 +24,8 @@ import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
+import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
+import eu.ydp.empiria.player.client.controller.multiview.animation.AnimationEndCallback;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -58,7 +60,8 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	protected MultiPageView view;
 	@Inject
 	protected StyleSocket styleSocket;
-
+	@Inject
+	protected Animation animation;
 	private static int activePageCount = 3;
 	private int currentVisiblePage = -1;
 	private int start;
@@ -86,7 +89,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private int pageProgressBar = -1;
 
 	private ResizeTimer resizeTimer;
-
+	private AnimationEndCallback animationCallback = null;
 	private boolean swipeDisabled = false;
 	private final Timer timer = new Timer() {
 
@@ -274,16 +277,18 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	 *            absolutna pozycja elementu cel
 	 * @param direction
 	 */
+
 	private void animatePageSwitch(float from, final float to, final NavigationButtonDirection direction, int duration, final boolean onlyPositionReset) {// NOPMD
 		if (Math.abs(from - to) > 1) {
 			if (!onlyPositionReset) {
 				Window.scrollTo(0, 0);
 			}
-			PageSwitchAnimation animation = new PageSwitchAnimation(mainPanel, from, to) {
+
+			animation.removeAnimationEndCallback(animationCallback);
+			animationCallback = new AnimationEndCallback() {
 				@Override
-				protected void onComplete() {
-					super.onComplete();
-					// ominiecia laga nakoncu animacji
+				public void onComplate() {
+
 					scheduler.scheduleDeferred(new ScheduledCommand() {
 						@Override
 						public void execute() {
@@ -297,11 +302,10 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 							currentPosition = to;
 						}
 					});
-
 				}
 			};
-
-			animation.run(duration);
+			animation.addAnimationEndCallback(animationCallback);
+			animation.goTo(mainPanel, (int)to, duration);
 		} else if (!onlyPositionReset) {
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
 		}
@@ -528,7 +532,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		panelsCache.setSwipeDisabled(isSwipeDisabled());
 		view.setController(this);
 		view.add(mainPanel);
-		visblePageCount = 1;
 
 	}
 

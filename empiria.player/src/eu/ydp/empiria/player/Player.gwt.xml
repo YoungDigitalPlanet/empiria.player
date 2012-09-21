@@ -130,17 +130,17 @@
 		</any>
 	</replace-with>
 
-	<!-- html5 implementation of sound executor -->	
+	<!-- html5 implementation of sound executor -->
 	<replace-with class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorHtml5">
-		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />		
-			<any>
-				<when-property-is name="user.agent" value="safari" />
-				<when-property-is name="user.agent" value="ie9" />
-			</any>		
-			<none>
-				<when-property-is name="mobile.user.agent" value="air" />
-			</none>							
-	</replace-with>		
+		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
+		<any>
+			<when-property-is name="user.agent" value="safari" />
+			<when-property-is name="user.agent" value="ie9" />
+		</any>
+		<none>
+			<when-property-is name="mobile.user.agent" value="air" />
+		</none>
+	</replace-with>
 
 	<replace-with class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindowCanvas">
 		<when-type-is class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindow" />
@@ -154,6 +154,9 @@
 		</any>
 	</replace-with>
 
+	<replace-with class="eu.ydp.empiria.player.client.controller.multiview.animation.AnimationBase">
+		<when-type-is class="eu.ydp.empiria.player.client.controller.multiview.animation.Animation" />
+	</replace-with>
 	<define-linker name="xsiframescripts" class="eu.ydp.empiria.player.core.linker.CrossSizeIframeWithScriptsLinker" />
 	<add-linker name="xsiframescripts" />
 
