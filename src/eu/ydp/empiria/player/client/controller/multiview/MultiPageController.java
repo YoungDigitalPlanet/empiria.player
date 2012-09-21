@@ -22,7 +22,9 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
+import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
 import eu.ydp.empiria.player.client.controller.multiview.animation.AnimationEndCallback;
@@ -40,7 +42,7 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-public class MultiPageController implements PlayerEventHandler, FlowRequestSocketUserExtension, Extension, TouchHandler {
+public class MultiPageController implements PlayerEventHandler, FlowRequestSocketUserExtension, FlowDataSocketUserExtension,Extension, TouchHandler {
 
 	@Inject
 	protected EventsBus eventsBus;
@@ -101,6 +103,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			}
 		}
 	};
+	private FlowDataSupplier flowDataSupplier;
 
 	private void setStylesForPages(boolean swipeStarted) {
 		if (swipeStarted) {
@@ -208,6 +211,9 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		case TOUCH_EVENT_RESERVATION:
 			this.touchReservation = true;
 			break;
+		case ASSESSMENT_STARTED:
+			onAssesmentStart();
+			break;
 		case LOAD_PAGE_VIEW:
 			setVisiblePanels((Integer) (event.getValue() == null ? 0 : event.getValue()));
 			break;
@@ -217,6 +223,10 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		default:
 			break;
 		}
+	}
+
+	private void onAssesmentStart() {
+		setSwipeDisabled(flowDataSupplier.getPageCount() < 2);		
 	}
 
 	private void scheduleDeferedRemoveFromParent(final int page) {
@@ -500,7 +510,11 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	@Override
 	public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
 		flowRequestInvoker = fri;
-
+	}
+	
+	@Override
+	public void setFlowDataSupplier(FlowDataSupplier supplier) {
+		flowDataSupplier = supplier;
 	}
 
 	private void configure() {
@@ -526,10 +540,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			touchStartTime = 100;
 		}
 		resizeTimer = new ResizeTimer(this);
-		if (!isSwipeDisabled()) {
-			pageEvents.setTouchHandler(this);
-		}
-		panelsCache.setSwipeDisabled(isSwipeDisabled());
 		view.setController(this);
 		view.add(mainPanel);
 
@@ -546,6 +556,12 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	public void setSwipeDisabled(boolean swipeDisabled) {
 		this.swipeDisabled = swipeDisabled;
+		if (!swipeDisabled) {
+			pageEvents.setTouchHandler(this);
+		}else{
+			pageEvents.removeTouchHandler(this);
+		}
+		panelsCache.setSwipeDisabled(swipeDisabled);
 	}
 
 	public int getCurrentVisiblePage() {
