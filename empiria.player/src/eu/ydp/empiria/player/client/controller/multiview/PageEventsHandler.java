@@ -43,6 +43,12 @@ public class PageEventsHandler implements TouchStartHandler, TouchCancelHandler,
 	public void setTouchHandler(TouchHandler handler) {
 		this.handler = handler;
 	}
+	
+	public void removeTouchHandler(TouchHandler handler){
+		if(handler.equals(this.handler)){
+			this.handler = null;
+		}
+	}
 
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
