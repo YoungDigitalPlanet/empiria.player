@@ -39,6 +39,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.KeyValue;
+import eu.ydp.gwtutil.client.debug.logger.Debug;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
@@ -229,7 +230,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	}
 
 	private void onAssesmentStart() {
-		setSwipeDisabled(flowDataSupplier.getPageCount() < 2);		
+		setSwipeDisabled(flowDataSupplier.getPageCount() < 2);
 	}
 
 	private void scheduleDeferedRemoveFromParent(final int page) {
@@ -376,9 +377,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	}
 
 	private void resetPostionValues() {
-		start = 0;
-		end = 0;
-		lastEnd = 0;
+		lastEnd = start = end;
 	}
 
 	public native int getInnerWidth()/*-{
@@ -390,7 +389,8 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		if (UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX)) {
 			zoomed = Window.getScrollLeft() != 0;
 		} else {
-			zoomed = getInnerWidth() != Window.getClientWidth();
+			Debug.log(getInnerWidth()+" "+Window.getClientWidth()+" "+Window.getClientHeight()+" sss");
+			zoomed = getInnerWidth() != Window.getClientWidth() && getInnerWidth()-1 !=Window.getClientWidth();
 		}
 		return zoomed;
 	}
@@ -428,7 +428,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 				if (!isZoomed()) {
 					swipeStarted = true;
 					setStylesForPages(swipeStarted);
-					if (lastEnd != end) {
+					if (lastEnd != end && lastEnd > 0) {
 						swipeRight = (lastEnd > end);
 						move(swipeRight, ((float) Math.abs(lastEnd - end) / RootPanel.get().getOffsetWidth()) * 100);
 						lastEnd = end;
@@ -536,7 +536,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
 		flowRequestInvoker = fri;
 	}
-	
+
 	@Override
 	public void setFlowDataSupplier(FlowDataSupplier supplier) {
 		flowDataSupplier = supplier;
