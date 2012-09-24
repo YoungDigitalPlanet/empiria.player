@@ -5,6 +5,7 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
@@ -25,11 +26,15 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	protected HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
 	protected boolean ready = false;
 	protected HandlerRegistration handlerRegistration;
-
+	protected HTML5MediaExecutor mediaExecutor;
 	public HTML5MediaWrapper(Media media) {
 		this.mediaBase = media.getMedia();
 		mediaBase.setPreload(MediaElement.PRELOAD_METADATA);
 		handlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, new CurrentPageScope());
+	}
+	
+	public void setMediaExecutor(HTML5MediaExecutor mediaExecutor) {
+		this.mediaExecutor = mediaExecutor;
 	}
 
 	@Override

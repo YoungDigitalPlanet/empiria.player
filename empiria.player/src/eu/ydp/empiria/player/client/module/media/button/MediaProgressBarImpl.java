@@ -1,5 +1,17 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_DURATION_CHANGE;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_END;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_FULL_SCREEN_SHOW_CONTROLS;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_STOP;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_TIME_UPDATE;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.PAUSE;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.SET_CURRENT_TIME;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Element;
@@ -42,7 +54,6 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
-
 	public MediaProgressBarImpl() {
 		super();
 		initWidget(uiBinder.createAndBindUi(this));
@@ -50,7 +61,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * wielkosc przycisku wyswietlanego na pasku postepu
-	 *
+	 * 
 	 * @return
 	 */
 	protected int getButtonWidth() {
@@ -69,7 +80,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * dlugosc paska postepu
-	 *
+	 * 
 	 * @return
 	 */
 	protected int getScrollWidth() {
@@ -83,11 +94,12 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
 				// -1 aby przy pierwszym zdarzeniu pokazal sie timer
 				int lastTime = -1;
+				Set<MediaEventTypes> fastUpdateEvents = new HashSet<MediaEventTypes>(Arrays.asList(new MediaEventTypes[]{ON_FULL_SCREEN_SHOW_CONTROLS,ON_STOP}));
 
 				@Override
 				public void onMediaEvent(MediaEvent event) {
 					if (isMediaReady() && !isPressed()) {
-						if (getMediaWrapper().getCurrentTime() > lastTime + 1 || getMediaWrapper().getCurrentTime() < lastTime - 1 || event.getType() == MediaEventTypes.ON_STOP) {// NOPMD
+						if (getMediaWrapper().getCurrentTime() > lastTime + 1 || getMediaWrapper().getCurrentTime() < lastTime - 1 || fastUpdateEvents.contains(event.getType())) {// NOPMD
 							// przeskakujemy co sekunde
 							lastTime = (int) getMediaWrapper().getCurrentTime();
 							double steep = getScrollWidth() / getMediaWrapper().getDuration();
@@ -97,9 +109,11 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 				}
 			};
 			CurrentPageScope scope = new CurrentPageScope();
-			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler,scope);
-			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler,scope);
-			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler,scope);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_TIME_UPDATE), getMediaWrapper(), handler, scope);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_DURATION_CHANGE), getMediaWrapper(), handler, scope);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_STOP), getMediaWrapper(), handler, scope);
+			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_FULL_SCREEN_SHOW_CONTROLS), getMediaWrapper(), handler, scope);
+			
 			// nie zawsze zostanie wyzwolony timeupdate ze wzgledu na
 			// ograniczenie
 			// na 1s postepu wiec robimy to tu
@@ -108,11 +122,11 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 				public void onMediaEvent(MediaEvent event) {
 					double steep = getScrollWidth() / getMediaWrapper().getDuration();
 					moveScroll((int) (steep * getMediaWrapper().getCurrentTime()));
-					eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, getMediaWrapper()), getMediaWrapper());
+					eventsBus.fireEventFromSource(new MediaEvent(PAUSE, getMediaWrapper()), getMediaWrapper());
 				}
 			};
-			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler, new CurrentPageScope());
-
+			eventsBus.addHandlerToSource(MediaEvent.getType(ON_END), getMediaWrapper(), handler, new CurrentPageScope());
+			
 		} else {
 			progressBar.setStyleName(styleNames.QP_MEDIA_PROGRESSBAR() + UNSUPPORTED_SUFFIX);
 			progressBar.clear();
@@ -121,16 +135,27 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * ustawia suwak na odpowiedniej pozycji
-	 *
+	 * 
 	 * @param positionX
 	 */
 	protected void moveScroll(int positionX) {// NOPMD
-		int scrollSize = getScrollWidth();
-		positionX = positionX > scrollSize ? scrollSize : positionX;
-		button.getElement().getStyle().setLeft(positionX, Unit.PX);
-		beforeButton.getElement().getStyle().setWidth(positionX, Unit.PX);
-		afterButton.getElement().getStyle().setLeft(positionX + getButtonWidth(), Unit.PX);
-		afterButton.getElement().getStyle().setWidth(getScrollWidth() - positionX, Unit.PX);
+		moveScroll(positionX, false);
+	}
+
+	/**
+	 * ustawia suwak na odpowiedniej pozycji
+	 * 
+	 * @param positionX
+	 */
+	protected void moveScroll(int positionX, boolean force) {// NOPMD
+		if (!isPressed() || force) {
+			int scrollSize = getScrollWidth();
+			positionX = positionX > scrollSize ? scrollSize : positionX;
+			button.getElement().getStyle().setLeft(positionX, Unit.PX);
+			beforeButton.getElement().getStyle().setWidth(positionX, Unit.PX);
+			afterButton.getElement().getStyle().setLeft(positionX + getButtonWidth(), Unit.PX);
+			afterButton.getElement().getStyle().setWidth(getScrollWidth() - positionX, Unit.PX);
+		}
 	}
 
 	/**
@@ -142,7 +167,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			double steep = getMediaWrapper().getDuration() / scrollSize;
 			double time = steep * positionX;
 			double position = time > getMediaWrapper().getDuration() ? getMediaWrapper().getDuration() : time;
-			MediaEvent event = new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, getMediaWrapper());
+			MediaEvent event = new MediaEvent(SET_CURRENT_TIME, getMediaWrapper());
 			event.setCurrentTime(position);
 			eventsBus.fireAsyncEventFromSource(event, getMediaWrapper());
 		}
@@ -163,19 +188,19 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	@Override
 	protected void setPosition(NativeEvent event) {
-		if (isPressed()) {
+		if (isPressed() && isAttached()) {
 			int positionX = getPositionX(event);
 			seekInMedia(positionX > 0 ? positionX : 0);
 			positionX -= (getButtonWidth() / 2);
-			moveScroll(positionX > 0 ? positionX : 0);
+			moveScroll(positionX > 0 ? positionX : 0, true);
 		}
 	}
 
 	@Override
 	public void setStyleNames() {
-		if(fullScreen){
+		if (fullScreen) {
 			progressBar.removeStyleName(styleNames.QP_MEDIA_PROGRESSBAR());
-			progressBar.addStyleName(styleNames.QP_MEDIA_PROGRESSBAR()+FULL_SCREEN_SUFFIX);
+			progressBar.addStyleName(styleNames.QP_MEDIA_PROGRESSBAR() + FULL_SCREEN_SUFFIX);
 		}
 	}
 }

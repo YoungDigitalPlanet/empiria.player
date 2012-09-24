@@ -11,10 +11,13 @@ public class MediaProgressBarAndroid extends MediaProgressBarImpl {
 
 	@Override
 	protected void setPosition(NativeEvent event) {
-		int positionX = getPositionX(event);
-		moveScroll(positionX > 0 ? positionX : 0);
-		if (!isPressed()) {// robimy seeka tylko gdy zakonczono dotyk
-			seekInMedia(positionX > 0 ? positionX : 0);
+		if (isAttached()) {
+			event.preventDefault();
+			int positionX = getPositionX(event);
+			moveScroll(positionX > 0 ? positionX : 0, true);
+			if (!isPressed()) {// robimy seeka tylko gdy zakonczono dotyk
+				seekInMedia(positionX > 0 ? positionX : 0);
+			}
 		}
 	}
 }

@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.media;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.dom.client.VideoElement;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
@@ -14,12 +15,14 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public class Video extends com.google.gwt.media.client.Video implements MediaEventHandler {
 	private final List<TextTrack> textTracks = new ArrayList<TextTrack>();
 	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private boolean initialized = false;
 	private MediaWrapper<?> eventBusSource = null;
+	private boolean forcePreload = false;
 
 	protected Video(VideoElement element) {
 		super(element);
@@ -29,6 +32,19 @@ public class Video extends com.google.gwt.media.client.Video implements MediaEve
 		if (!initialized) {
 			initialized = true;
 			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), eventBusSource, this, new CurrentPageScope());
+		}
+	}
+	
+	@Override
+	protected void onUnload() {
+		pause();
+	}
+	
+	@Override
+	public void setPreload(String preload) {
+		super.setPreload(preload);
+		if (UserAgentChecker.isMobileUserAgent() && (MediaElement.PRELOAD_AUTO.equals(preload) || MediaElement.PRELOAD_METADATA.equals(preload))) {
+			forcePreload = true;
 		}
 	}
 
