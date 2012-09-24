@@ -579,6 +579,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			pageEvents.removeTouchHandler(this);
 		}
 		panelsCache.setSwipeDisabled(swipeDisabled);
+		view.setSwipeDisabled(swipeDisabled);
 	}
 
 	public int getCurrentVisiblePage() {
