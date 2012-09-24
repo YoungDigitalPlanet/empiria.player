@@ -41,6 +41,7 @@ import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 public class MultiPageController implements PlayerEventHandler, FlowRequestSocketUserExtension, FlowDataSocketUserExtension,Extension, TouchHandler {
 
@@ -71,15 +72,16 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private int end = 0;
 	private int startY = 0, endY = 0;
 	private int swipeLength = 220;
-	private final static float WIDTH = 100;
+	private final static int WIDTH = 100;
 	private final static int DEFAULT_ANIMATION_TIME = 500;
 	private final static int QUICK_ANIMATION_TIME = 150;
-	private int touchStartTime;
+	private final static int TOUCH_END_TIMER_TIME = 800;
 	private float currentPosition;
 	private FlowRequestInvoker flowRequestInvoker;
 	private boolean touchReservation = false;
 	private boolean swipeStarted = false;
 	private boolean swipeRight = false;
+	private boolean touchLock = false;
 	private FlowPanel mainPanel;
 	private final Set<Integer> measuredPanels = new HashSet<Integer>();
 	private final Set<Integer> detachedPages = new HashSet<Integer>();
@@ -93,14 +95,13 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private ResizeTimer resizeTimer;
 	private AnimationEndCallback animationCallback = null;
 	private boolean swipeDisabled = false;
-	private final Timer timer = new Timer() {
+	private final Timer touchEndTimer = new Timer() {
 
 		@Override
 		public void run() {
-			if (Math.abs(startY - endY) < Math.abs(start - end)) {
-				swipeStarted = true;
-				setStylesForPages(swipeStarted);
-			}
+			animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
+			swipeStarted = false;
+			resetPostionValues();
 		}
 	};
 	private FlowDataSupplier flowDataSupplier;
@@ -209,6 +210,8 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	public void onPlayerEvent(PlayerEvent event) {
 		switch (event.getType()) {
 		case TOUCH_EVENT_RESERVATION:
+			reset();
+			resetPostionValues();
 			this.touchReservation = true;
 			break;
 		case ASSESSMENT_STARTED:
@@ -293,7 +296,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			if (!onlyPositionReset) {
 				Window.scrollTo(0, 0);
 			}
-
 			animation.removeAnimationEndCallback(animationCallback);
 			animationCallback = new AnimationEndCallback() {
 				@Override
@@ -315,7 +317,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 				}
 			};
 			animation.addAnimationEndCallback(animationCallback);
-			animation.goTo(mainPanel, (int)to, duration);
+			animation.goTo(mainPanel, Math.round((to / WIDTH)) * WIDTH, duration);
 		} else if (!onlyPositionReset) {
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
 		}
@@ -364,27 +366,49 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	}
 
 	private void reset() {
-		timer.cancel();
+		touchEndTimer.cancel();
 		touchReservation = false;
 		swipeStarted = false;
 		swipeRight = false;
+		touchLock = false;
 		setStylesForPages(swipeStarted);
 
+	}
+
+	private void resetPostionValues() {
+		start = 0;
+		end = 0;
+		lastEnd = 0;
+	}
+
+	public native int getInnerWidth()/*-{
+		return $wnd.innerWidth;
+	}-*/;
+
+	public boolean isZoomed() {
+		boolean zoomed = false;
+		if (UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX)) {
+			zoomed = Window.getScrollLeft() != 0;
+		} else {
+			zoomed = getInnerWidth() != Window.getClientWidth();
+		}
+		return zoomed;
+	}
+
+	private boolean isHorizontalSwipe(){
+		return Math.abs(startY - endY) < Math.abs(start - end);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.controller.multiview.TouchHandler#onTouchMove
-	 * (com.google.gwt.dom.client.NativeEvent)
+	 * @see eu.ydp.empiria.player.client.controller.multiview.TouchHandler#onTouchMove (com.google.gwt.dom.client.NativeEvent)
 	 */
 	@Override
 	public void onTouchMove(NativeEvent event) {
-		if (swipeStarted) {
-			event.preventDefault();
-		}
-		if (!touchReservation && swipeStarted) {
+		// nie zawsze wystepuje event touchend na androidzie - emulacja zachownaia
+		touchEndTimer.cancel();
+		if (!touchReservation && !touchLock && !animation.isRunning()) {
 			JsArray<Touch> touches = event.getTouches();
 			if (touches == null) {
 				end = event.getScreenX();
@@ -396,25 +420,32 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 					break;
 				}
 			}
-			if (lastEnd != end) {
-				swipeRight = (lastEnd > end);
-				move(swipeRight, ((float) Math.abs(lastEnd - end) / RootPanel.get().getOffsetWidth()) * 100);
-				lastEnd = end;
+			if (!isZoomed() && isHorizontalSwipe()) {
+				event.preventDefault();
 			}
-
+			if (isHorizontalSwipe()) {
+				touchEndTimer.schedule(TOUCH_END_TIMER_TIME);
+				if (!isZoomed()) {
+					swipeStarted = true;
+					setStylesForPages(swipeStarted);
+					if (lastEnd != end) {
+						swipeRight = (lastEnd > end);
+						move(swipeRight, ((float) Math.abs(lastEnd - end) / RootPanel.get().getOffsetWidth()) * 100);
+						lastEnd = end;
+					}
+				}
+			}
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.controller.multiview.TouchHandler#onTouchEnd
-	 * (com.google.gwt.dom.client.NativeEvent)
+	 * @see eu.ydp.empiria.player.client.controller.multiview.TouchHandler#onTouchEnd (com.google.gwt.dom.client.NativeEvent)
 	 */
 	@Override
 	public void onTouchEnd(NativeEvent event) {
-		timer.cancel();
+		touchEndTimer.cancel();
 		if (swipeStarted) {
 			event.preventDefault();
 		}
@@ -433,28 +464,27 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			}
 			if (end > 0 && (Window.getClientHeight() / 2.5) > (startY > endY ? startY - endY : endY - startY)) {
 				switchPage(swipeLength);
+			} else {
+				animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 			}
 		} else {
 			reset();
 		}
+		resetPostionValues();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.controller.multiview.TouchHandler#onTouchStart
-	 * (com.google.gwt.dom.client.NativeEvent)
+	 * @see eu.ydp.empiria.player.client.controller.multiview.TouchHandler#onTouchStart (com.google.gwt.dom.client.NativeEvent)
 	 */
 	@Override
 	public void onTouchStart(NativeEvent event) {
-		if (!touchReservation) {
+		if (!touchReservation && !animation.isRunning()) {
 			reset();
 			JsArray<Touch> touches = event.getTouches();
-			boolean multiTouch = false;
 			if (touches == null) {
 				lastEnd = start = event.getScreenX();
-				multiTouch = false;
 			} else {
 				for (int x = 0; x < touches.length();) {
 					Touch touch = touches.get(x);
@@ -463,11 +493,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 					end = -1;
 					break;
 				}
-				multiTouch = touches.length() > 1;
-			}
-			// Czekamy zanima rozpoczniemy przesuwanie
-			if (!multiTouch) {
-				timer.schedule(touchStartTime);
+				touchLock = touches.length() > 1;
 			}
 		}
 	}
@@ -489,7 +515,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			return;
 		}
 		int swipeLength = Math.abs(start - end);
-
 		if (swipeLength >= minSwipeLength) {
 			NavigationButtonDirection direction = getDirection();
 			float percent = (float) swipeLength / RootPanel.get().getOffsetWidth() * 100;
@@ -516,8 +541,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	public void setFlowDataSupplier(FlowDataSupplier supplier) {
 		flowDataSupplier = supplier;
 	}
-
-	private void configure() {
+		private void configure() {
 		String xml = "<root><swipeoptions class=\"qp-swipe-options\"/></root>";
 		Map<String, String> styles = styleSocket.getStyles((Element) XMLParser.parse(xml).getDocumentElement().getFirstChild());
 		if (styles.get(EmpiriaStyleNameConstants.EMPIRIA_SWIPE_DISABLE_ANIMATION) != null) {
@@ -534,11 +558,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), this);
 		mainPanel = panelFactory.getFlowPanel();
-		if (UserAgentChecker.isStackAndroidBrowser()) {
-			touchStartTime = 250;
-		} else {
-			touchStartTime = 100;
-		}
 		resizeTimer = new ResizeTimer(this);
 		view.setController(this);
 		view.add(mainPanel);

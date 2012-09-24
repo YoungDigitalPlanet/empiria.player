@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 public class AnimationBase implements Animation {
 	protected final Set<AnimationEndCallback> callbacks = new HashSet<AnimationEndCallback>();
 	private int xPosition;
-
+	private boolean running = false;
 	@Override
 	public void addAnimationEndCallback(AnimationEndCallback endCallback) {
 		callbacks.add(endCallback);
@@ -18,6 +18,7 @@ public class AnimationBase implements Animation {
 
 	@Override
 	public void goTo(FlowPanel toAnimate, int xPosition, double duration) {
+		running = true;
 		this.xPosition = xPosition;
 		PageSwitchAnimation pageAnimation = new PageSwitchAnimation(toAnimate, xPosition) {
 			@Override
@@ -26,6 +27,7 @@ public class AnimationBase implements Animation {
 				for (AnimationEndCallback callback : callbacks) {
 					callback.onComplate();
 				}
+				running = false;
 			}
 		};
 		pageAnimation.run((int) duration);
@@ -40,6 +42,11 @@ public class AnimationBase implements Animation {
 	@Override
 	public double getPositionX() {
 		return xPosition;
+	}
+	
+	@Override
+	public boolean isRunning() {
+		return running;
 	}
 
 }

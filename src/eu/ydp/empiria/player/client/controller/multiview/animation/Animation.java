@@ -8,5 +8,6 @@ public interface Animation {
 	public void addAnimationEndCallback(AnimationEndCallback endCallback);
 	public void removeAnimationEndCallback(AnimationEndCallback endCallback);
 	public double getPositionX();
+	public boolean isRunning();
 
 }

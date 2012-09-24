@@ -15,7 +15,7 @@ public class PageSwitchAnimation extends Animation {
 	private final float animationLength;
 	private double currentPosition = 0;
 
-	public PageSwitchAnimation(FlowPanel element, float to) { // NOPMD
+	public PageSwitchAnimation(FlowPanel element, int to) { // NOPMD
 		this.style = element.getElement().getStyle();
 		this.from = NumberUtils.tryParseFloat(style.getLeft().replaceAll("[a-z%]+$", ""));
 		this.to = to;
