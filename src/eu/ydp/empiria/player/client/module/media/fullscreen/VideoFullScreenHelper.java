@@ -71,7 +71,6 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 		style.setLeft(0, Unit.PX);
 		style.setWidth(100, Unit.PCT);
 		style.setHeight(100, Unit.PCT);
-		style.setBackgroundColor("black");
 	}
 
 	private VideoFullScreenViewImpl getFullScreenView() {

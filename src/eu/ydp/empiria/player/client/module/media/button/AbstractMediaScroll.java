@@ -15,12 +15,13 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> {
 	private boolean pressed = false;
 	private boolean mediaReady = false;
 	private boolean initialized;
-	HandlerRegistration durationchangeHandlerRegistration ; //NOPMD
+	protected HandlerRegistration durationchangeHandlerRegistration ; //NOPMD
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	/**
@@ -59,7 +60,11 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
 		if (!initialized) {
 			initialized = true;
 			if (isSupported()) {
-				sinkEvents(Event.TOUCHEVENTS | Event.ONMOUSEMOVE | Event.ONMOUSEDOWN | Event.ONMOUSEUP);
+				if(UserAgentChecker.isMobileUserAgent()){
+					sinkEvents(Event.TOUCHEVENTS);
+				}else{	
+					sinkEvents(Event.ONMOUSEMOVE | Event.ONMOUSEDOWN | Event.ONMOUSEUP);
+				}
 				RootPanel.get().addDomHandler(new MouseUpHandler() {
 					@Override
 					public void onMouseUp(MouseUpEvent event) {

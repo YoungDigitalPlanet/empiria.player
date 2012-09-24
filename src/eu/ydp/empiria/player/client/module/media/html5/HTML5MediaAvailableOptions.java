@@ -42,7 +42,7 @@ public class HTML5MediaAvailableOptions implements MediaAvailableOptions {
 
 	@Override
 	public boolean isFullScreenSupported() {
-		return false;
+		return true;
 	}
 
 	@Override

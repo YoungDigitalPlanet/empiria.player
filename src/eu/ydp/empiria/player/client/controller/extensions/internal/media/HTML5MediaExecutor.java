@@ -1,9 +1,12 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.MediaElement;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.media.client.MediaBase;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
@@ -18,6 +21,7 @@ import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.html5.HTML5MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
@@ -29,13 +33,17 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 	protected SoundExecutorListener listener;
 	private BaseMediaConfiguration baseMediaConfiguration;
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private final Set<HandlerRegistration> allEventsRegistration = new HashSet<HandlerRegistration>();
 
 	@Override
 	public void init() {
 		if (media != null) {
 			// bindujemy evnty
+			for(HandlerRegistration registration : allEventsRegistration){
+				registration.removeHandler();
+			}
 			for (HTML5MediaEventsType event : HTML5MediaEventsType.values()) {
-				media.addBitlessDomHandler(this, HTML5MediaEvent.getType(event));
+				allEventsRegistration.add(media.addBitlessDomHandler(this, HTML5MediaEvent.getType(event)));
 			}
 			if (baseMediaConfiguration != null && media instanceof Video) {
 				if (baseMediaConfiguration.getPoster() != null && baseMediaConfiguration.getPoster().trim().length() > 0) {
@@ -65,6 +73,9 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 	public void setMediaWrapper(MediaWrapper<MediaBase> descriptor) {
 		this.mediaDescriptor = descriptor;
 		media = descriptor.getMediaObject();
+		if(mediaDescriptor instanceof HTML5MediaWrapper){
+			((HTML5MediaWrapper) mediaDescriptor).setMediaExecutor(this);
+		}
 	}
 
 	@Override
