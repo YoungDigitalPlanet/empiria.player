@@ -202,24 +202,24 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
 
-  /**
-   * @see IStateful#getState()
-   */
-  @Override
-public JSONArray getState() {
+	/**
+	 * @see IStateful#getState()
+	 */
+	@Override
+	public JSONArray getState() {
 
-	  JSONArray jsonArr = new JSONArray();
+		JSONArray jsonArr = new JSONArray();
 
-	  String stateString = "";
+		String stateString = "";
 
-	  if (lastValue != null) {
-		stateString = lastValue;
+		if (lastValue != null) {
+			stateString = lastValue;
+		}
+
+		jsonArr.set(0, new JSONString(stateString));
+
+		return jsonArr;
 	}
-
-	  jsonArr.set(0, new JSONString(stateString));
-
-	  return jsonArr;
-  }
 
 
   	/**
@@ -242,7 +242,7 @@ public JSONArray getState() {
 			}
 		}
 		updateResponse(false);
-  }
+  	}
 
 	/**
 	 * init widget view
