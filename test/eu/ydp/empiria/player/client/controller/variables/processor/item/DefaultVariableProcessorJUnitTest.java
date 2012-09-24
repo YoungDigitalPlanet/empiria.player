@@ -13,7 +13,6 @@ import java.util.Vector;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
