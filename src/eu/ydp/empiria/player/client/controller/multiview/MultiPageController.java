@@ -39,7 +39,6 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.KeyValue;
-import eu.ydp.gwtutil.client.debug.logger.Debug;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
@@ -389,7 +388,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		if (UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX)) {
 			zoomed = Window.getScrollLeft() != 0;
 		} else {
-			Debug.log(getInnerWidth()+" "+Window.getClientWidth()+" "+Window.getClientHeight()+" sss");
 			zoomed = getInnerWidth() != Window.getClientWidth() && getInnerWidth()-1 !=Window.getClientWidth();
 		}
 		return zoomed;
