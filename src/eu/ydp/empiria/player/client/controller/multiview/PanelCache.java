@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.multiview;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
@@ -19,23 +18,26 @@ public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPan
 	protected GWTPanelFactory panelFactory;
 
 	protected boolean swipeDisabled;
+	
+	private FlowPanel parent;
 
 	private final static float WIDTH = 100;
 
 	@Override
 	protected KeyValue<FlowPanel, FlowPanel> getElement(int index) {
-		FlowPanel parent = panelFactory.getFlowPanel();
+		parent = panelFactory.getFlowPanel();
 		FlowPanel childPanel = panelFactory.getFlowPanel();
 
 		Style style = parent.getElement().getStyle();
-		Element e =parent.getElement();
 		parent.getElement().setId(styleNames.QP_PAGE() + index);
+		
 		if (!swipeDisabled) {
 			style.setPosition(Position.ABSOLUTE);
 			style.setTop(0, Unit.PX);
 			style.setLeft(WIDTH * index, Unit.PCT);
 			style.setWidth(WIDTH, Unit.PCT);
 		}
+		
 		childPanel.setHeight("100%");
 		childPanel.setWidth("100%");
 		parent.add(childPanel);
@@ -44,6 +46,15 @@ public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPan
 
 	public void setSwipeDisabled(boolean swipeDisabled) {
 		this.swipeDisabled = swipeDisabled;
+		Style style = parent.getElement().getStyle();
+		
+		if(swipeDisabled){
+			style.clearTop();
+			style.clearPosition();
+		}else{
+			style.setTop(0, Unit.PX);
+			style.setPosition(Position.ABSOLUTE);
+		}
 	}
 
 }

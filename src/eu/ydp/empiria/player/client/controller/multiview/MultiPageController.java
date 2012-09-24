@@ -573,10 +573,10 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	public void setSwipeDisabled(boolean swipeDisabled) {
 		this.swipeDisabled = swipeDisabled;
-		if (!swipeDisabled) {
-			pageEvents.setTouchHandler(this);
-		}else{
+		if (swipeDisabled) {
 			pageEvents.removeTouchHandler(this);
+		}else{
+			pageEvents.setTouchHandler(this);
 		}
 		panelsCache.setSwipeDisabled(swipeDisabled);
 		view.setSwipeDisabled(swipeDisabled);
