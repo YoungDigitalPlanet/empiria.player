@@ -42,6 +42,7 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 			for(HandlerRegistration registration : allEventsRegistration){
 				registration.removeHandler();
 			}
+			allEventsRegistration.clear();
 			for (HTML5MediaEventsType event : HTML5MediaEventsType.values()) {
 				allEventsRegistration.add(media.addBitlessDomHandler(this, HTML5MediaEvent.getType(event)));
 			}

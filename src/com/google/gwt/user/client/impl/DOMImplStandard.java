@@ -252,6 +252,18 @@ abstract class DOMImplStandard extends DOMImpl {
       case "pause" :
       case "play" :
       case "canplay":
+      case "loadstart":
+      case "emptied":
+      case "ratechange":
+      case "stalled":
+      case "playing":
+      case "suspend":
+      case "loadedmetadata":
+      case "waiting":
+      case "abort":
+      case "loadeddata":
+      case "seeking":
+      case "seeked":
         // First call removeEventListener, so as not to add the same event listener more than once
         elem.removeEventListener(eventTypeName, @com.google.gwt.user.client.impl.DOMImplStandard::dispatchEvent, false);
         elem.addEventListener(eventTypeName, @com.google.gwt.user.client.impl.DOMImplStandard::dispatchEvent, false);

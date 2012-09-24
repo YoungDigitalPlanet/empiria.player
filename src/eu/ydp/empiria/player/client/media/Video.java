@@ -63,6 +63,10 @@ public class Video extends com.google.gwt.media.client.Video implements MediaEve
 		}
 		return video;
 	}
+	
+	public MediaWrapper<?> getEventBusSourceObject() {
+		return eventBusSource;
+	}
 
 	public void setEventBusSourceObject(MediaWrapper<?> object) {
 		eventBusSource = object;
