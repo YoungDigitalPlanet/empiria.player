@@ -27,14 +27,21 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	protected boolean ready = false;
 	protected HandlerRegistration handlerRegistration;
 	protected HTML5MediaExecutor mediaExecutor;
+	protected AttachHandlerImpl attachHandlerImpl; 
+	
 	public HTML5MediaWrapper(Media media) {
-		this.mediaBase = media.getMedia();
-		mediaBase.setPreload(MediaElement.PRELOAD_METADATA);
-		handlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, new CurrentPageScope());
+		setMediaObject(media.getMedia());
+		
+		attachHandlerImpl = new AttachHandlerImpl();
+		attachHandlerImpl.setMediaBase(mediaBase);
+		attachHandlerImpl.setMediaExecutor(mediaExecutor);
+		attachHandlerImpl.setMediaWrapper(this);
+		mediaBase.addAttachHandler(attachHandlerImpl);
 	}
 	
 	public void setMediaExecutor(HTML5MediaExecutor mediaExecutor) {
 		this.mediaExecutor = mediaExecutor;
+		attachHandlerImpl.setMediaExecutor(mediaExecutor);
 	}
 
 	@Override
@@ -45,6 +52,12 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	@Override
 	public MediaBase getMediaObject() {
 		return mediaBase;
+	}
+	
+	public void setMediaObject(MediaBase mediaBase) {
+		this.mediaBase = mediaBase;
+		mediaBase.setPreload(MediaElement.PRELOAD_METADATA);
+		handlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, new CurrentPageScope());
 	}
 
 	@Override
@@ -62,7 +75,12 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 
 	@Override
 	public double getDuration() {
-		return mediaBase.getDuration();
+		double duration = mediaBase.getDuration(); 
+		if (Double.isNaN(duration)) {
+			return 0;
+		} else {
+			return duration;
+		}
 	}
 
 	@Override

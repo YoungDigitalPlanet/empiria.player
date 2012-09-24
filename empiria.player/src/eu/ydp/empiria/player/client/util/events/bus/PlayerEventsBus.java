@@ -18,14 +18,12 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.EventScope;
 import eu.ydp.empiria.player.client.util.events.scope.PageScope;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
-import eu.ydp.gwtutil.client.debug.gwtlogger.ILogger;
-import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
 
 	public final class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 		private final Map<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> syncMap = new HashMap<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
 		private final Map<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> asyncMap = new HashMap<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
-		private final ILogger logger = new Logger();
+		
 		@Inject
 		private Scheduler scheduler;
 
@@ -259,7 +257,6 @@ import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 				Map<EventScope<?>, List<?>> handlers = handlerMap.get(source);
 				if (handlers != null) {
 					boolean remove = handlers.get(scope).remove(handler);
-					logger.info("Handler " + handler + " " + (remove ? " usuniety " : " nie usuniety "));
 				}
 			}
 		}
