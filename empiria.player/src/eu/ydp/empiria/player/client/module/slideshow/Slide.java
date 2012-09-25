@@ -10,13 +10,17 @@ class Slide {
 	private int startTime;
 	
 	private String src;
+	
+	private final Element narration;
 
 	private final Element title;
 	
 	public Slide(Element slideNode){
 		String startTimeString = slideNode.getAttribute("startTime");
 		Element sourceNode = XMLUtils.getFirstElementWithTagName(slideNode, "source");
+		
 		title = XMLUtils.getFirstElementWithTagName(slideNode, "slideTitle");
+		narration = XMLUtils.getFirstElementWithTagName(slideNode, "narration");
 		
 		if (sourceNode != null){
 			src = sourceNode.getAttribute("src");
@@ -37,6 +41,10 @@ class Slide {
 	
 	public Element getTitle(){
 		return title;
+	}
+
+	public Element getNarration() {
+		return narration;
 	}
 	
 }
