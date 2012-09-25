@@ -370,5 +370,17 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-media-volume-scrollbar")
 	public String QP_MEDIA_VOLUME_SCROLLBAR();
+	
+	@DefaultStringValue("qp-slideshow-slide-panel")
+	public String QP_SLIDESHOW_SLIDE_PANEL();
+	
+	@DefaultStringValue("qp-slideshow-slide-image-panel")
+	public String QP_SLIDESHOW_SLIDE_IMAGE_PANEL();
+	
+	@DefaultStringValue("qp-slideshow-slide-title-panel")
+	public String QP_SLIDESHOW_SLIDE_TITLE_PANEL();
+	
+	@DefaultStringValue("qp-slideshow-slide-image")
+	public String QP_SLIDESHOW_SLIDE_IMAGE();
 
 }
