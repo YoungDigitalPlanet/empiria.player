@@ -5,8 +5,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 
@@ -28,28 +30,32 @@ public class SlideWidget extends Composite {
 	@UiField
 	public FlowPanel titlePanel;
 	
+	@UiField
+	public FlowPanel narrationPanel;
+	
 	public SlideWidget(Slide slide, InlineBodyGeneratorSocket inlineBodyGeneratorSocket){
 		initWidget(slideWidgetBinder.createAndBindUi(this));
 		
-		createImage(slide);
-		createTitle(slide, inlineBodyGeneratorSocket);
+		createImage(slide.getSrc());
+		createText(slide.getTitle(), inlineBodyGeneratorSocket, titlePanel);
+		createText(slide.getNarration(), inlineBodyGeneratorSocket, narrationPanel);
 	}
 	
-	private void createImage(Slide slide){		
-		if (slide.getSrc() != null){
-			image.setUrl(slide.getSrc());
+	private void createImage(String src){		
+		if (src != null){
+			image.setUrl(src);
 		}
 	}
 	
-	private void createTitle(Slide slide, InlineBodyGeneratorSocket inlineBodyGeneratorSocket){
-		Widget title = null;
+	private void createText(Element textNode, InlineBodyGeneratorSocket bodyGenerator, HasWidgets parent){
+		Widget textWidget = null;
 		
-		if (slide.getTitle() != null){
-			title = inlineBodyGeneratorSocket.generateInlineBody(slide.getTitle());
+		if (textNode != null){
+			textWidget = bodyGenerator.generateInlineBody(textNode);
 		}
 		
-		if (title != null){
-			titlePanel.add(title);
+		if (textWidget != null){
+			parent.add(textWidget);
 		}
 	}
 }

@@ -371,6 +371,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-media-volume-scrollbar")
 	public String QP_MEDIA_VOLUME_SCROLLBAR();
 	
+	@DefaultStringValue("qp-slideshow")
+	public String QP_SLIDESHOW();
+	
 	@DefaultStringValue("qp-slideshow-slide-panel")
 	public String QP_SLIDESHOW_SLIDE_PANEL();
 	
@@ -380,11 +383,11 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-slideshow-slide-title-panel")
 	public String QP_SLIDESHOW_SLIDE_TITLE_PANEL();
 	
-	@DefaultStringValue("qp-slideshow-slide-image")
-	public String QP_SLIDESHOW_SLIDE_IMAGE();
+	@DefaultStringValue("qp-slideshow-slide-narration-panel")
+	public String QP_SLIDESHOW_SLIDE_NARRATION_PANEL();
 	
-	@DefaultStringValue("qp-slideshow")
-	public String QP_SLIDESHOW(); 
+	@DefaultStringValue("qp-slideshow-slide-image")
+	public String QP_SLIDESHOW_SLIDE_IMAGE(); 
 	
 	@DefaultStringValue("qp-slideshow-title-panel")
 	public String QP_SLIDESHOW_TITLE_PANEL();

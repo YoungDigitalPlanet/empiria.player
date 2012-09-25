@@ -7,8 +7,7 @@
 			<g:Image ui:field="image" styleName="{res.QP_SLIDESHOW_SLIDE_IMAGE}">
 			</g:Image>
 		</g:FlowPanel>
-		<g:FlowPanel ui:field="titlePanel" styleName="{res.QP_SLIDESHOW_SLIDE_TITLE_PANEL}">
-			
-		</g:FlowPanel>
+		<g:FlowPanel ui:field="titlePanel" styleName="{res.QP_SLIDESHOW_SLIDE_TITLE_PANEL}"/>
+		<g:FlowPanel ui:field="narrationPanel" styleName="{res.QP_SLIDESHOW_SLIDE_NARRATION_PANEL}"/>
 	</g:FlowPanel>
 </ui:UiBinder> 
