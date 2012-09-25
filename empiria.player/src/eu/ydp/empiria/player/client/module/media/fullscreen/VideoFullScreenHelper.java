@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -39,6 +40,7 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 	protected VideoFullScreenViewImpl view;
 	protected VideoControlHideTimer controlsHideTimer;
 	protected MediaWrapper<?> lastMediaWrapper = null;
+	
 	/**
 	 * Powiadamia listentery
 	 *
@@ -110,6 +112,10 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 			parseTemplate(mediaWrapper, template, parent.getControls());
 			fireEvent(true, mediaWrapper);
 			RootPanel.get().add(parent);
+			
+			resizeToFullScreen(((Video) lastMediaWrapper.getMediaObject()), Position.FIXED);
+			resizeToFullScreen(view, Position.FIXED);
+			resizeToFullScreen(widget, Position.ABSOLUTE);
 		}
 	}
 
