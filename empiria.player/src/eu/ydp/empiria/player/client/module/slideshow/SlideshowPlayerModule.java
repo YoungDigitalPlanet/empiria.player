@@ -5,79 +5,47 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiFactory;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
-import eu.ydp.empiria.player.client.components.TwoStateButton;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.slideshow.SlideshowPlayerEvent;
+import eu.ydp.empiria.player.client.util.events.slideshow.SlideshowPlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.slideshow.SlideshowPlayerEventType;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<SlideshowPlayerModule> {
-
-	interface SlideshowPlayerModuleUiBinder extends UiBinder<Widget, SlideshowPlayerModule>{};
 	
-	private static SlideshowPlayerModuleUiBinder uiBinder = GWT.create(SlideshowPlayerModuleUiBinder.class);
-	
-	protected List<SlideWidget> slides;
-	
-	private StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	protected List<Slide> slides;
 	
 	protected int currSlideIndex;
 
-	@UiField
-	protected Panel titlePanel;
-	
-	@UiField
-	protected Panel slidesPanel;
-	
-	@UiField
-	protected Panel buttonsPanel;
-	
-	@UiField
-	protected Panel mainPanel;
-
-	@UiField
-	protected TwoStateButton playButton;
-	
-	@UiField
-	protected PushButton stopButton;
-	
-	@UiField
-	protected PushButton nextButton;
-	
-	@UiField
-	protected PushButton previousButton;
-
 	protected Timer timer;
+	
+	private final Presenter presenter;
 	
 	public SlideshowPlayerModule(){
 		super();
-		uiBinder.createAndBindUi(this);
+		presenter = new SlideshowPlayerModulePresenter();
 	}
 
 	@Override
 	public void initModule(Element element) {
-		String className = element.getAttribute("class");
-		if (className != null  &&  !"".equals(className)  &&  getView() != null){
-			getView().addStyleName(className);
-		}
+		SlideshowMediaHandler mediaHandler = new SlideshowMediaHandler();
 		
-		slides = new ArrayList<SlideWidget>();
+		initializeSlideshow(element, getModuleSocket().getInlineBodyGeneratorSocket());
+		
+		mediaHandler.addEventHandler(SlideshowPlayerEventType.ON_NEXT);
+		mediaHandler.addEventHandler(SlideshowPlayerEventType.ON_PREVIOUS);
+		mediaHandler.addEventHandler(SlideshowPlayerEventType.ON_PLAY);
+		mediaHandler.addEventHandler(SlideshowPlayerEventType.ON_STOP);
 
 		timer = new Timer() {
 			@Override
@@ -85,73 +53,36 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 				switchNextSlide();
 			}
 		};
-
-		Element slideshowElement = XMLUtils.getFirstElementWithTagName(element, "slideshow");
 		
-		if (slideshowElement != null){
-			Element titleElement = XMLUtils.getFirstElementWithTagName(slideshowElement, "title");
-			if (titleElement != null){
-				Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleElement);
-				titlePanel.add(titleWidget);
-			}
-
-			createAndRegisterSlideWidgets(slideshowElement, slides);
-		}
-		initSlideshow();
+		reset();
 	}
 
-	@Override
 	public Widget getView() {
-		return mainPanel;
+		return presenter.getView();
 	}
 	
-	@UiHandler("nextButton")
-	protected void onNextButtonClick(ClickEvent event){
-		showNextSlide();
-	}
-	
-	@UiHandler("previousButton")
-	protected void onPreviousButtonClick(ClickEvent event){
-		showPreviousSlide();
-	}
-	
-	@UiHandler("stopButton")
-	protected void onStopButtonClick(ClickEvent event){
-		onStopClick();
-	}
-	
-	@UiHandler("playButton")
-	protected void onPlayPauseButtonClick(ClickEvent event){
-		onPlayClick();
-	}
-	
-	@UiFactory
-	protected TwoStateButton createPlayPauseButton(){
-		return new TwoStateButton(styleNames.QP_SLIDESHOW_BUTTON_PLAY(), styleNames.QP_SLIDESHOW_BUTTON_PAUSE());
-	}
-
-	protected void onPlayClick(){
-		if (playButton.isStateDown()){
+	protected void onPlayEvent(){
+		if (presenter.isPlayButtonDown()){
 			playSlideshow();
 		} else {
 			pauseSlideshow();
 		}
 	}
 
-	protected void onStopClick(){
-		playButton.setStateDown(false);
+	protected void onStopEvent(){
+		presenter.setPlayButtonDown(false);
 		stopSlideshow();
 	}
-
+	
 	protected void playSlideshow(){
 		if (!canScheduleNextSlide()){
-			initSlideshow();
+			reset();
 		}
 		
 		if (canScheduleNextSlide()){
 			scheduleNextSlide();
 		}else{
-			playButton.setStateDown(false);
+			presenter.setPlayButtonDown(false);
 		}
 	}
 
@@ -161,22 +92,21 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 
 	protected void stopSlideshow(){
 		timer.cancel();
-		initSlideshow();
+		reset();
 	}
 
-	protected void initSlideshow(){
+	protected void reset(){
 		currSlideIndex = 0;
 		showSlide(currSlideIndex);
 	}
 
 	protected void showSlide(int index){
-		slidesPanel.clear();
 		if (index < slides.size()){
-			slidesPanel.add(slides.get(index));
+			presenter.showSlide(index);
 		}
-
-		previousButton.setEnabled(index > 0);
-		nextButton.setEnabled(index < slides.size()-1);
+		
+		presenter.setEnabledNextButton(index < slides.size() - 1);
+		presenter.setEnabledPreviousButton(index > 0);
 	}
 
 	protected void switchNextSlide(){
@@ -184,7 +114,7 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 		if (canScheduleNextSlide()){
 			scheduleNextSlide();
 		}else{
-			playButton.setStateDown(false);
+			presenter.setPlayButtonDown(false);
 		}
 	}
 
@@ -205,7 +135,7 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 	}
 
 	protected boolean canScheduleNextSlide(){
-		return (currSlideIndex+1 < slides.size());
+		return (currSlideIndex + 1 < slides.size());
 	}
 
 	protected void scheduleNextSlide(){
@@ -224,24 +154,99 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 		return new SlideshowPlayerModule();
 	}
 	
-	private void createAndRegisterSlideWidgets(Element slideshowNode, List<SlideWidget> slideList){
+	private void initializeSlideshow(Element element, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+		Element slideshowElement = XMLUtils.getFirstElementWithTagName(element, "slideshow");
+		String className = element.getAttribute("class");
+		
+		presenter.setViewClass(className);
+		presenter.setBodyGeneratorSocket(inlineBodyGeneratorSocket);
+		
+		if (slideshowElement != null){
+			Element titleElement = XMLUtils.getFirstElementWithTagName(slideshowElement, "title");
+			
+			slides = createSlidesList(slideshowElement);
+			presenter.setTitle(titleElement);
+			presenter.setSlides(slides);
+		}
+	}
+	
+	private List<Slide> createSlidesList(Element slideshowNode){
+		List<Slide> slidesList = new ArrayList<Slide>();
 		NodeList slideNodes = slideshowNode.getElementsByTagName("slide");
+		
 		for (int i = 0 ; i < slideNodes.getLength() ; i ++){
 			if (slideNodes.item(i).getNodeType() == Node.ELEMENT_NODE){
-				SlideWidget slide = createSlideWidget((Element)slideNodes.item(i), getModuleSocket().getInlineBodyGeneratorSocket());
-				slideList.add(slide);
+				Slide slide = createSlide((Element)slideNodes.item(i));
+				slidesList.add(slide);
 			}
 		}
 
-		Collections.sort(slideList, new Comparator<SlideWidget>() {
+		Collections.sort(slidesList, new Comparator<Slide>() {
 			@Override
-			public int compare(SlideWidget widget1, SlideWidget widget2) {
-				return widget1.getStartTime() - widget2.getStartTime();
+			public int compare(Slide slide1, Slide slide2) {
+				return slide1.getStartTime() - slide2.getStartTime();
 			}
 		});
+		
+		return slidesList;
 	}
 	
-	private SlideWidget createSlideWidget(Element slideNode, InlineBodyGeneratorSocket inlineBodyGeneratorSocket){
-		return new SlideWidget(slideNode, inlineBodyGeneratorSocket);
+	private Slide createSlide(Element slideNode){
+		return new Slide(slideNode);
 	}
+	
+	interface Presenter{
+		
+		void setBodyGeneratorSocket(InlineBodyGeneratorSocket socket);
+		
+		void setTitle(Element titleNode);
+		
+		void setSlides(List<Slide> slidesList);
+		
+		void showSlide(int slideIndex);
+		
+		void setEnabledNextButton(boolean enabled);
+		
+		void setEnabledPreviousButton(boolean enabled);
+		
+		void setPlayButtonDown(boolean down);
+		
+		void setViewClass(String className);
+		
+		boolean isPlayButtonDown();
+		
+		Widget getView();
+	}
+	
+	private class SlideshowMediaHandler implements SlideshowPlayerEventHandler{
+		
+		private final EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus();
+
+		@Override
+		public void onSlideshowPlayerEvent(SlideshowPlayerEvent event) {
+			SlideshowPlayerEventType eventType = event.getType();
+			
+			switch (eventType) {
+				case ON_NEXT:
+					SlideshowPlayerModule.this.showNextSlide();
+					break;
+				case ON_PREVIOUS:
+					SlideshowPlayerModule.this.showPreviousSlide();
+					break;
+				case ON_PLAY:
+					SlideshowPlayerModule.this.onPlayEvent();
+					break;
+				case ON_STOP:
+					SlideshowPlayerModule.this.onStopEvent();
+					break;
+				default:
+					break;
+			}
+		}
+		
+		public void addEventHandler(SlideshowPlayerEventType type){
+			eventBus.addHandlerToSource(SlideshowPlayerEvent.getType(type), presenter, this);
+		}
+		
+	}	
 }
