@@ -7,19 +7,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.gwtutil.client.NumberUtils;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class SlideWidget extends Composite {
 
 	interface SlideWidgetUiBinder extends UiBinder<Widget, SlideWidget>{};
 	
 	private static SlideWidgetUiBinder slideWidgetBinder = GWT.create(SlideWidgetUiBinder.class);
-	
-	private int startTime;
 	
 	@UiField
 	public Image image;
@@ -33,39 +28,24 @@ public class SlideWidget extends Composite {
 	@UiField
 	public FlowPanel titlePanel;
 	
-	public SlideWidget(Element slideElement, InlineBodyGeneratorSocket inlineBodyGeneratorSocket){
+	public SlideWidget(Slide slide, InlineBodyGeneratorSocket inlineBodyGeneratorSocket){
 		initWidget(slideWidgetBinder.createAndBindUi(this));
 		
-		String startTimeString = slideElement.getAttribute("startTime");
-		
-		if (startTimeString != null){
-			startTime = NumberUtils.tryParseInt(startTimeString);
-		}
-		
-		createImage(slideElement);
-		createTitle(slideElement, inlineBodyGeneratorSocket);
+		createImage(slide);
+		createTitle(slide, inlineBodyGeneratorSocket);
 	}
 	
-	public int getStartTime() {
-		return startTime;
-	}
-	
-	private void createImage(Element slideNode){
-		String src = null;
-		Element sourceElement = XMLUtils.getFirstElementWithTagName(slideNode, "source");
-		
-		if (sourceElement != null){
-			src = sourceElement.getAttribute("src");
-			image.setUrl(src);
+	private void createImage(Slide slide){		
+		if (slide.getSrc() != null){
+			image.setUrl(slide.getSrc());
 		}
 	}
 	
-	private void createTitle(Element slideNode, InlineBodyGeneratorSocket inlineBodyGeneratorSocket){
-		Element titleElement = XMLUtils.getFirstElementWithTagName(slideNode, "slideTitle");
+	private void createTitle(Slide slide, InlineBodyGeneratorSocket inlineBodyGeneratorSocket){
 		Widget title = null;
 		
-		if (titleElement != null){
-			title = inlineBodyGeneratorSocket.generateInlineBody(titleElement);
+		if (slide.getTitle() != null){
+			title = inlineBodyGeneratorSocket.generateInlineBody(slide.getTitle());
 		}
 		
 		if (title != null){
