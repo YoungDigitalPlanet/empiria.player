@@ -382,5 +382,31 @@ public interface StyleNameConstants extends Constants {
 	
 	@DefaultStringValue("qp-slideshow-slide-image")
 	public String QP_SLIDESHOW_SLIDE_IMAGE();
-
+	
+	@DefaultStringValue("qp-slideshow")
+	public String QP_SLIDESHOW(); 
+	
+	@DefaultStringValue("qp-slideshow-title-panel")
+	public String QP_SLIDESHOW_TITLE_PANEL();
+	
+	@DefaultStringValue("qp-slideshow-slides-panel")
+	public String QP_SLIDESHOW_SLIDES_PANEL();
+	
+	@DefaultStringValue("qp-slideshow-button-panel")
+	public String QP_SLIDESHOW_BUTTON_PANEL();
+	
+	@DefaultStringValue("qp-slideshow-button-play")
+	public String QP_SLIDESHOW_BUTTON_PLAY();
+	
+	@DefaultStringValue("qp-slideshow-button-pause")
+	public String QP_SLIDESHOW_BUTTON_PAUSE();
+	
+	@DefaultStringValue("qp-slideshow-button-stop")
+	public String QP_SLIDESHOW_BUTTON_STOP();
+	
+	@DefaultStringValue("qp-slideshow-button-previous")
+	public String QP_SLIDESHOW_BUTTON_PREVIOUS();
+	
+	@DefaultStringValue("qp-slideshow-button-next")
+	public String QP_SLIDESHOW_BUTTON_NEXT();
 }
