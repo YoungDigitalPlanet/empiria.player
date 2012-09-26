@@ -41,7 +41,7 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 	protected void onClick() {
 		if (isInfullScreen || fullScreen) {
 			fullScreenHelper.closeFullScreen();
-		} else if(!fullScreen){
+		} else if (!fullScreen) {
 			fullScreenHelper.openFullScreen(fullScreenMediaWrapper, fullScreenTemplate);
 		}
 	}
@@ -55,14 +55,14 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 
 	@Override
 	public boolean isSupported() {
-		return getMediaAvailableOptions().isFullScreenSupported();
+		return getMediaAvailableOptions().isFullScreenSupported() && fullScreenTemplate != null;
 	}
 
 	@Override
 	public void onMediaEvent(MediaEvent event) {
-		if(event.getType() == MediaEventTypes.ON_FULL_SCREEN_OPEN){
+		if (event.getType() == MediaEventTypes.ON_FULL_SCREEN_OPEN) {
 			isInfullScreen = true;
-		}else if(event.getType() == MediaEventTypes.ON_FULL_SCREEN_EXIT){
+		} else if (event.getType() == MediaEventTypes.ON_FULL_SCREEN_EXIT) {
 			isInfullScreen = false;
 		}
 
