@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.resources;
 
+/**
+ * CSS rules may be used to control modules options specific to Empiria.
+ * All Empiria style attributes' names start with "-empiria".
+ */
 @SuppressWarnings("PMD")
 public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL = "-empiria-img-explorable-scale-initial";
@@ -26,6 +30,7 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_MATH_GAP_SUBSUP_WIDTH = "-empiria-math-gap-subsup-width";
 	public static final String EMPIRIA_MATH_GAP_WIDTH = "-empiria-math-gap-width";
 	public static final String EMPIRIA_MATH_GAP_WIDTH_ALIGN = "-empiria-math-gap-width-align";
+	public static final String EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION = "-empiria-math-drop-empty-option";
 	public static final String EMPIRIA_REPORT_ITEMS_INCLUDE = "-empiria-report-items-include";
 	public static final String EMPIRIA_REPORT_SHOW_NON_ACTIVITES = "-empiria-report-show-non-activites";
 	public static final String EMPIRIA_TABLE_CELLPADDING = "-empiria-table-cellpadding";
@@ -34,6 +39,12 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH = "-empiria-textentry-gap-width";
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN = "-empiria-textentry-gap-width-align";
 	public static final String EMPIRIA_SWIPE_DISABLE_ANIMATION = "-empiria-swipe-disable-animation";
+	
+	public static final String VALUE_BOLD = "bold";
+	public static final String VALUE_ITALIC = "italic";
+	public static final String VALUE_SHOW = "show";
+	public static final String VALUE_HIDE = "hide";
+	
 	private EmpiriaStyleNameConstants() {
 	}
 }

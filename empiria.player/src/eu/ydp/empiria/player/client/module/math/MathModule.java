@@ -37,8 +37,6 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	protected List<MathGap> gaps;
 	protected BindingGroupIdentifier widthBindingIdentifier;
 
-	protected boolean showingAnswer = false;
-	protected boolean markingAnswer = false;
 	protected boolean locked = false;
 	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	private MathModuleHelper helper;
@@ -152,55 +150,27 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 
 	@Override
 	public void markAnswers(boolean mark) {
-		if (mark  && !markingAnswer){
-			List<Boolean> evaluation = getModuleSocket().evaluateResponse(getResponse());
-
-			for (int i = 0 ; i < evaluation.size()  &&  i < gaps.size() ; i ++){
-				if ("".equals( getResponse().values.get(i)) ){
-					gaps.get(i).mark(false, false);
-				} else if (evaluation.get(i)){
-					gaps.get(i).mark(true, false);
-				} else {
-					gaps.get(i).mark(false, true);
-				}
-			}
-
-		} else  if (!mark && markingAnswer){
-
-			for (int i = 0 ; i < gaps.size() ; i ++){
-				gaps.get(i).unmark();
-			}
-		}
-		markingAnswer = mark;
+		helper.markAnswers(gaps, mark);
 	}
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
-		if (show  &&  !showingAnswer){
-			for (int i = 0 ; i < getResponse().correctAnswers.getResponseValuesCount() ; i ++){
-				gaps.get(i).setValue( getResponse().correctAnswers.getResponseValue(i).getAnswers().get(0) );
-			}
-		} else if (!show  &&  showingAnswer){
-			for (int i = 0 ; i < getResponse().values.size() ; i ++){
-				gaps.get(i).setValue( getResponse().values.get(i) );
-			}
-		}
-		showingAnswer = show;
+		helper.showCorrectAnswers(gaps, show);
 	}
 
 	@Override
 	public void lock(boolean lock) {
 		locked = lock;
-		for (int i = 0 ; i < gaps.size() ; i ++){
-			gaps.get(i).setEnabled(!lock);
+		for (MathGap mathGap : gaps) {
+			mathGap.setEnabled(!lock);
 		}
 	}
 
 	@Override
-	public void reset() {
-		for (int i = 0 ; i < gaps.size() ; i ++){
-			gaps.get(i).reset();
-			gaps.get(i).unmark();
+	public void reset() {		
+		for (MathGap mathGap : gaps) {
+			mathGap.reset();
+			mathGap.unmark();
 		}
 		updateResponse(false);
 	}
@@ -231,14 +201,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 	}
 
 	private void updateResponse(boolean userInteract){
-		if (showingAnswer) {
-			return;
-		}
-		if (getResponse() != null){
-			getResponse().values.clear();
-			for (int i = 0 ; i < gaps.size() ; i ++){
-				getResponse().values.add( gaps.get(i).getValue() );
-			}
+		if (helper.updateResponse(gaps, userInteract)) {
 			fireStateChanged(userInteract);
 		}
 	}
