@@ -164,6 +164,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-markanswsers-marker-wrong")
 	public String QP_MARKANSWERS_MARKER_WRONG();
 
+	@DefaultStringValue("qp-math-choice-popup-option-empty")
+	public String QP_MATH_CHOICE_POPUP_OPTION_EMPTY();
+
 	@DefaultStringValue("qp-mathinteraction")
 	public String QP_MATHINTERACTION();
 
@@ -200,6 +203,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-media-positioninstream")
 	public String QP_MEDIA_POSITIONINSTREAM();
 
+	@DefaultStringValue("qp-media-progressbar")
+	public String QP_MEDIA_PROGRESSBAR();
+
 	@DefaultStringValue("qp-media-text-track")
 	public String QP_MEDIA_TEXT_TRACK();
 
@@ -208,6 +214,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-media-totaltime")
 	public String QP_MEDIA_TOTALTIME();
+
+	@DefaultStringValue("qp-media-volume-scrollbar")
+	public String QP_MEDIA_VOLUME_SCROLLBAR();
 
 	@DefaultStringValue("qp-media-volume-scrollbar-button")
 	public String QP_MEDIA_VOLUME_SCROLLBAR_BUTTON();
@@ -311,6 +320,48 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-simulation")
 	public String QP_SIMULATION();
 
+	@DefaultStringValue("qp-slideshow")
+	public String QP_SLIDESHOW();
+
+	@DefaultStringValue("qp-slideshow-button-next")
+	public String QP_SLIDESHOW_BUTTON_NEXT();
+
+	@DefaultStringValue("qp-slideshow-button-panel")
+	public String QP_SLIDESHOW_BUTTON_PANEL();
+
+	@DefaultStringValue("qp-slideshow-button-pause")
+	public String QP_SLIDESHOW_BUTTON_PAUSE();
+
+	@DefaultStringValue("qp-slideshow-button-play")
+	public String QP_SLIDESHOW_BUTTON_PLAY();
+
+	@DefaultStringValue("qp-slideshow-button-previous")
+	public String QP_SLIDESHOW_BUTTON_PREVIOUS();
+
+	@DefaultStringValue("qp-slideshow-button-stop")
+	public String QP_SLIDESHOW_BUTTON_STOP();
+
+	@DefaultStringValue("qp-slideshow-slide-image")
+	public String QP_SLIDESHOW_SLIDE_IMAGE();
+
+	@DefaultStringValue("qp-slideshow-slide-image-panel")
+	public String QP_SLIDESHOW_SLIDE_IMAGE_PANEL();
+
+	@DefaultStringValue("qp-slideshow-slide-narration-panel")
+	public String QP_SLIDESHOW_SLIDE_NARRATION_PANEL();
+
+	@DefaultStringValue("qp-slideshow-slide-panel")
+	public String QP_SLIDESHOW_SLIDE_PANEL();
+
+	@DefaultStringValue("qp-slideshow-slide-title-panel")
+	public String QP_SLIDESHOW_SLIDE_TITLE_PANEL();
+
+	@DefaultStringValue("qp-slideshow-slides-panel")
+	public String QP_SLIDESHOW_SLIDES_PANEL();
+
+	@DefaultStringValue("qp-slideshow-title-panel")
+	public String QP_SLIDESHOW_TITLE_PANEL();
+
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();
 
@@ -319,97 +370,49 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-table-cell")
 	public String QP_TABLE_CELL();
-
+	
 	@DefaultStringValue("qp-table-table")
 	public String QP_TABLE_TABLE();
-
+	
 	@DefaultStringValue("qp-text")
 	public String QP_TEXT();
-
+	
 	@DefaultStringValue("qp-text-inline")
 	public String QP_TEXT_INLINE();
-
+	
 	@DefaultStringValue("qp-text-textentry")
 	public String QP_TEXT_TEXTENTRY();
-
+	
 	@DefaultStringValue("qp-text-textentry-content")
 	public String QP_TEXT_TEXTENTRY_CONTENT();
-
+	
 	@DefaultStringValue("qp-text-textentry-correct")
-	public String QP_TEXT_TEXTENTRY_CORRECT();
-
+	public String QP_TEXT_TEXTENTRY_CORRECT(); 
+	
 	@DefaultStringValue("qp-text-textentry-none")
 	public String QP_TEXT_TEXTENTRY_NONE();
-
+	
 	@DefaultStringValue("qp-text-textentry-prefix")
 	public String QP_TEXT_TEXTENTRY_PREFIX();
-
+	
 	@DefaultStringValue("qp-text-textentry-sufix")
 	public String QP_TEXT_TEXTENTRY_SUFIX();
-
+	
 	@DefaultStringValue("qp-text-textentry-wrong")
 	public String QP_TEXT_TEXTENTRY_WRONG();
-
+	
 	@DefaultStringValue("qp-toc")
 	public String QP_TOC();
-
+	
 	@DefaultStringValue("qp-toc-item-title")
 	public String QP_TOC_ITEM_TITLE();
-
+	
 	@DefaultStringValue("qp-toc-item-title-hover")
 	public String QP_TOC_ITEM_TITLE_HOVER();
-
+	
 	@DefaultStringValue("qp-toc-items")
 	public String QP_TOC_ITEMS();
-
+	
 	@DefaultStringValue("qp-toc-title")
-	public String QP_TOC_TITLE();
-
-	@DefaultStringValue("qp-media-progressbar")
-	public String QP_MEDIA_PROGRESSBAR();
-
-	@DefaultStringValue("qp-media-volume-scrollbar")
-	public String QP_MEDIA_VOLUME_SCROLLBAR();
-	
-	@DefaultStringValue("qp-slideshow")
-	public String QP_SLIDESHOW();
-	
-	@DefaultStringValue("qp-slideshow-slide-panel")
-	public String QP_SLIDESHOW_SLIDE_PANEL();
-	
-	@DefaultStringValue("qp-slideshow-slide-image-panel")
-	public String QP_SLIDESHOW_SLIDE_IMAGE_PANEL();
-	
-	@DefaultStringValue("qp-slideshow-slide-title-panel")
-	public String QP_SLIDESHOW_SLIDE_TITLE_PANEL();
-	
-	@DefaultStringValue("qp-slideshow-slide-narration-panel")
-	public String QP_SLIDESHOW_SLIDE_NARRATION_PANEL();
-	
-	@DefaultStringValue("qp-slideshow-slide-image")
-	public String QP_SLIDESHOW_SLIDE_IMAGE(); 
-	
-	@DefaultStringValue("qp-slideshow-title-panel")
-	public String QP_SLIDESHOW_TITLE_PANEL();
-	
-	@DefaultStringValue("qp-slideshow-slides-panel")
-	public String QP_SLIDESHOW_SLIDES_PANEL();
-	
-	@DefaultStringValue("qp-slideshow-button-panel")
-	public String QP_SLIDESHOW_BUTTON_PANEL();
-	
-	@DefaultStringValue("qp-slideshow-button-play")
-	public String QP_SLIDESHOW_BUTTON_PLAY();
-	
-	@DefaultStringValue("qp-slideshow-button-pause")
-	public String QP_SLIDESHOW_BUTTON_PAUSE();
-	
-	@DefaultStringValue("qp-slideshow-button-stop")
-	public String QP_SLIDESHOW_BUTTON_STOP();
-	
-	@DefaultStringValue("qp-slideshow-button-previous")
-	public String QP_SLIDESHOW_BUTTON_PREVIOUS();
-	
-	@DefaultStringValue("qp-slideshow-button-next")
-	public String QP_SLIDESHOW_BUTTON_NEXT();
+	public String QP_TOC_TITLE();	
 }

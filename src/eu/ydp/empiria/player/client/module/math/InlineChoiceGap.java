@@ -16,30 +16,49 @@ public class InlineChoiceGap implements MathGap {
 	private final ExListBox listBox;
 	private final List<String> options;
 	private final Panel container;
+	private final boolean hasEmptyOption;
 
-	public InlineChoiceGap(ExListBox listBox, List<String> options){
+	public InlineChoiceGap(ExListBox listBox, List<String> options, boolean hasEmptyOption) {
 		this.listBox = listBox;
 		this.options = options;
+		this.hasEmptyOption = hasEmptyOption;
 
-		container = new FlowPanel();
+		container = createFlowPanel(); // NOPMD
 		container.setStyleName("qp-mathinteraction-inlinechoicegap");
 		container.add(listBox);
 	}
 
 	@Override
 	public String getValue() {
-		int value = listBox.getSelectedIndex();
-		if (value >= 0) {
-			return options.get(value);
+		String value = "";
+		int valueIndex = indexViewToInternal();
+		if (valueIndex >= 0) {
+			value = options.get(valueIndex);
 		}
-		return "";
+		return value;
 	}
-
+	
 	@Override
-	public void setValue(String value) {
-		listBox.setSelectedIndex(options.indexOf(value));
+	public void setValue(String valueIdentifier) {
+		listBox.setSelectedIndex(indexInternalToView(valueIdentifier));
 	}
 
+	private int indexInternalToView(String valueIdentifier) {
+		int valueIndex = options.indexOf(valueIdentifier);
+		if (hasEmptyOption) {
+			valueIndex++;
+		}
+		return valueIndex;
+	} 
+	
+	private int indexViewToInternal() {
+		int valueIndex = listBox.getSelectedIndex();
+		if (hasEmptyOption) {
+			valueIndex--;
+		}	
+		return valueIndex;		
+	}
+	
 	@Override
 	public void setEnabled(boolean enabled){
 		listBox.setEnabled(enabled);
@@ -50,7 +69,7 @@ public class InlineChoiceGap implements MathGap {
 
 	@Override
 	public void reset() {
-		listBox.setSelectedIndex(-1);
+		listBox.setSelectedIndex((hasEmptyOption) ? 0 : -1);
 	}
 
 	@Override
@@ -80,4 +99,7 @@ public class InlineChoiceGap implements MathGap {
 		return listBox;
 	}
 
+	public FlowPanel createFlowPanel() {
+		return new FlowPanel();
+	}	
 }

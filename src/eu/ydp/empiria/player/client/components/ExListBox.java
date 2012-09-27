@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ExListBox extends FlowPanel {
-
 	
 	protected PopupPanel popupContainer;
 	protected Panel popupOuterContainer;
@@ -181,7 +180,6 @@ public class ExListBox extends FlowPanel {
 		return this.enabled;
 	}
 
-
 	public void setPopupPosition(PopupPosition pp){
 		popupPosition = pp;
 	}
@@ -190,4 +188,15 @@ public class ExListBox extends FlowPanel {
 		return popupPosition;
 	}
 
+    /**
+     * <p>Exposes private methods for unit tests. This class must not be used
+     * for any purpose other than unit testing.</p>
+     */	
+	public final class ExListBoxUnitTestAccess {
+	
+		public void setOptions(ArrayList<ExListBoxOption> options) {
+			ExListBox.this.options = options;
+		}		
+	}
+	
 }
