@@ -7,6 +7,7 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
@@ -18,18 +19,24 @@ import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.module.binding.Bindable;
 import eu.ydp.empiria.player.client.module.binding.BindingContext;
@@ -51,138 +58,55 @@ import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
+
 public class TextEntryModule extends OneViewInteractionModuleBase implements Factory<TextEntryModule>, Bindable{
+	
+	interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModule>{};
+	
+	private final TextEntryModuleUiBinder uiBinder = GWT.create(TextEntryModuleUiBinder.class);
+	
+	@UiField
+	protected TextBox textBox;
+	
+	@UiField
+	protected Panel moduleWidget;
 
+	private String lastValue = null;
 
-	private TextBox textBox;
-	private String	lastValue = null;
 	private boolean showingAnswers = false;
-	private Panel moduleWidget;
+	
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	private GapWidthMode widthMode;
+	
 	private DefaultBindingGroupIdentifier widthBindingIdentifier;
+	
 	private Integer fontSize;
+	
 	private BindingContext widthBindingContext;
+	
 	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
+		uiBinder.createAndBindUi(this);
+		
+		addPlayerEventHandlers(textBox);
+		addTextBoxHandlers(textBox);
+		setDimensions(textBox, getModuleElement());
 
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
-
-			@Override
-			public void onPlayerEvent(PlayerEvent event) {
-				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
-					if(textBox!=null){
-						updateResponse(false);
-						textBox.getElement().blur();
-					}
-				}
-			}
-		},new CurrentPageScope());
-
-		textBox = new TextBox();
-		if (getModuleElement().hasAttribute("expectedLength")) {
-			textBox.setMaxLength(XMLUtils.getAttributeAsInt(getModuleElement(), "expectedLength"));
-		}
-
-		textBox.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent event) {
-				onTextBoxChange();
-			}
-		});
-
-		if (UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN){
-			textBox.addBlurHandler(new BlurHandler() {
-				@Override
-				public void onBlur(BlurEvent event) {
-					updateResponse(true);
-				}
-			});
-
-			textBox.addFocusHandler(new FocusHandler() {
-
-				@Override
-				public void onFocus(FocusEvent event) {
-					Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-						@Override
-						public void execute() {
-							if (textBox.getText().length() > 0) {
-								textBox.setSelectionRange(0, textBox.getText().length());
-							}
-						}
-					});
-				}
-			});
-		}
-
-		Map<String, String> styles = getModuleSocket().getStyles(getModuleElement());
-		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE)){
-			fontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE), null);
-			textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
-		}
-		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH)){
-			Integer gapWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH), null);
-			textBox.setWidth(gapWidth + "px");
-		} else if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN)){
-			try {
-				GapWidthMode widthm = GapWidthMode.valueOf(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN).trim().toUpperCase());
-				widthMode = widthm;
-			} catch (Exception e) {	}
-			if (widthMode == GapWidthMode.GROUP){
-				if (getModuleElement().hasAttribute("widthBindingGroup")){
-					widthBindingIdentifier = new DefaultBindingGroupIdentifier(getModuleElement().getAttribute("widthBindingGroup"));
-				} else {
-					widthBindingIdentifier = new DefaultBindingGroupIdentifier("");
-				}
-			}
-		}
-		if (widthMode == GapWidthMode.GAP){
-			if (getResponse().groups.size() > 0) {
-				widthBindingIdentifier = new DefaultBindingGroupIdentifier(getResponse().groups.keySet().iterator().next());
-			} else if (fontSize != null) {
-				int longestAnswer = getLongestAnswerLength();
-				textBox.setWidth((longestAnswer * fontSize) + "px");
-			}
-
-		}
-
-		Panel spanPrefix = new FlowPanel();
-		spanPrefix.setStyleName(styleNames.QP_TEXT_TEXTENTRY_PREFIX());
-		Panel spanSufix = new FlowPanel();
-		spanSufix.setStyleName(styleNames.QP_TEXT_TEXTENTRY_SUFIX());
-		Panel spanContent = new FlowPanel();
-		spanContent.setStyleName(styleNames.QP_TEXT_TEXTENTRY_CONTENT());
-		spanContent.add(textBox);
-
-		moduleWidget = new FlowPanel();
-
-		moduleWidget.add(spanPrefix);
-		moduleWidget.add(spanContent);
-		moduleWidget.add(spanSufix);
-		moduleWidget.setStyleName(styleNames.QP_TEXT_TEXTENTRY());
-		applyIdAndClassToView(moduleWidget);
-
-		placeholders.get(0).add(moduleWidget);
-
-		NodeList inlineFeedbackNodes = getModuleElement().getElementsByTagName("feedbackInline");
-		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			getModuleSocket().addInlineFeedback(new InlineFeedback(moduleWidget, inlineFeedbackNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
-		}
-
+		installViewPanel(placeholders.get(0), moduleWidget);
+		createFeedbacks(moduleWidget, getModuleElement(), getModuleSocket(), getInteractionEventsListener());
 	}
 
 	// ------------------------ INTERFACES ------------------------
-
-
+	
 	@Override
 	public void onBodyLoad() {
+		//eu.ydp.empiria.player.client.module.ILifeCycle.onBodyLoad
 	}
 
 	@Override
 	public void onBodyUnload() {
-
+		//eu.ydp.empiria.player.client.module.ILifeCycle.onBodyUnload
 	}
 
 	@Override
@@ -204,6 +128,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 
 	@Override
 	public void onClose() {
+		//eu.ydp.empiria.player.client.module.ILifeCycle.onClose
 	}
 
 	@Override
@@ -227,7 +152,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 			} else {
 				moduleWidget.setStyleName(styleNames.QP_TEXT_TEXTENTRY_NONE());
 			}
-		} else {
+		} else { 
 			textBox.setEnabled(true);
 			moduleWidget.setStyleName(styleNames.QP_TEXT_TEXTENTRY());
 		}
@@ -264,51 +189,45 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
 
-  /**
-   * @see IStateful#getState()
-   */
-  @Override
-public JSONArray getState() {
-	  JSONArray jsonArr = new JSONArray();
+	/**
+	 * @see IStateful#getState()
+	 */
+	@Override
+	public JSONArray getState() {
+		JSONArray jsonArr = new JSONArray();
 
-	  String stateString = "";
+		String stateString = "";
 
-	  if (getResponse().values.size() > 0) {
-		stateString = getResponse().values.get(0);
+		if (getResponse().values.size() > 0) {
+			stateString = getResponse().values.get(0);
+		}
+
+		jsonArr.set(0, new JSONString(stateString));
+
+		return jsonArr;
 	}
 
-	  jsonArr.set(0, new JSONString(stateString));
-
-	  return jsonArr;
-  }
-
-  /**
-   * @see IStateful#setState(Serializable)
-   */
-  @Override
-public void setState(JSONArray newState) {
-
+	/**
+	 * @see IStateful#setState(Serializable)
+	 */
+	@Override
+	public void setState(JSONArray newState) {
 		String state = "";
 
-		if (newState == null){
-		} else if (newState.size() == 0){
-		} else if (newState.get(0).isString() == null){
-		} else {
+		if (newState != null && newState.size() > 0 && newState.get(0).isString() != null) {
 			state = newState.get(0).isString().stringValue();
 			lastValue = null;
 		}
 
 		textBox.setText(state);
-
 		updateResponse(false);
-
-  }
+	}
 
 	private void updateResponse(boolean userInteract){
 		if (showingAnswers) {
 			return;
 		}
-
+		
 		if (getResponse() != null){
 			if(lastValue != null) {
 				getResponse().remove(lastValue);
@@ -330,11 +249,24 @@ public void setState(JSONArray newState) {
 	}
 	@Override
 	public BindingValue getBindingValue(BindingType bindingType) {
+		BindingValue bindingValue = null;
+		
 		if (bindingType == BindingType.GAP_WIDTHS){
 			int longestLength = getLongestAnswerLength();
-			return new GapWidthBindingValue(longestLength);
+			bindingValue = new GapWidthBindingValue(longestLength);
 		}
-		return null;
+		
+		return bindingValue;
+	}
+	
+	@Override
+	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
+		BindingGroupIdentifier groupIndentifier = null;
+		
+		if (bindingType == BindingType.GAP_WIDTHS){
+			groupIndentifier = widthBindingIdentifier;
+		}
+		return groupIndentifier;
 	}
 
 	private int getLongestAnswerLength(){
@@ -346,12 +278,116 @@ public void setState(JSONArray newState) {
 		}
 		return longestLength;
 	}
-
-	@Override
-	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
-		if (bindingType == BindingType.GAP_WIDTHS){
-			return widthBindingIdentifier;
+	
+	private void createFeedbacks(Panel parentPanel, Element moduleElement, ModuleSocket moduleSocket, InteractionEventsListener eventListener){
+		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
+		
+		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
+			InlineFeedback inlineFeedback = createInlineFeedback(parentPanel, inlineFeedbackNodes.item(f), moduleSocket, eventListener);
+			moduleSocket.addInlineFeedback(inlineFeedback);
 		}
-		return null;
+	}
+	
+	private InlineFeedback createInlineFeedback(Panel parent, Node feedbackNode, ModuleSocket moduleSocket, InteractionEventsListener eventListener){
+		return new InlineFeedback(parent, feedbackNode, moduleSocket, eventListener);
+	}
+	
+	private void addPlayerEventHandlers(final TextBox textBox){
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
+
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				if(event.getType()==PlayerEventTypes.BEFORE_FLOW && textBox != null){
+					updateResponse(false);
+					textBox.getElement().blur();
+				}
+			}
+		},new CurrentPageScope());
+	}
+	
+	private void addTextBoxHandlers(final TextBox textBox){
+		textBox.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				onTextBoxChange();
+			}
+		});
+
+		if (UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN){
+			textBox.addBlurHandler(new BlurHandler() {
+				@Override
+				public void onBlur(BlurEvent event) {
+					updateResponse(true);
+				}
+			});
+
+			textBox.addFocusHandler(new FocusHandler() {
+
+				@Override
+				public void onFocus(FocusEvent event) {
+					Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+						@Override
+						public void execute() {
+							if (textBox.getText().length() > 0) {
+								textBox.setSelectionRange(0, textBox.getText().length());
+							}
+						}
+					});
+				}
+			});
+		}
+	}
+	
+	private void installViewPanel(HasWidgets placeholder, Panel viewPanel){
+		applyIdAndClassToView(viewPanel);
+		placeholder.add(viewPanel);
+	}
+	
+	private void setDimensions(TextBox textBox, Element moduleElement){
+		Map<String, String> styles = getModuleSocket().getStyles(moduleElement);
+		
+		if (moduleElement.hasAttribute("expectedLength")) {
+			textBox.setMaxLength(XMLUtils.getAttributeAsInt(moduleElement, "expectedLength"));
+		}
+		
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE)){
+			fontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE), null);
+			textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
+		}
+		
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH)){
+			Integer gapWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH), null);
+			textBox.setWidth(gapWidth + "px");
+		} 
+		
+		GapWidthMode widthMode = getGapWidthMode(styles);
+		
+		if (widthMode == GapWidthMode.GROUP){
+			if (moduleElement.hasAttribute("widthBindingGroup")){
+				widthBindingIdentifier = new DefaultBindingGroupIdentifier(moduleElement.getAttribute("widthBindingGroup"));
+			} else {
+				widthBindingIdentifier = new DefaultBindingGroupIdentifier("");
+			}
+		}else if(widthMode == GapWidthMode.GAP){
+			if (getResponse().groups.size() > 0) {
+				widthBindingIdentifier = new DefaultBindingGroupIdentifier(getResponse().groups.keySet().iterator().next());
+			} else if (fontSize != null) {
+				int longestAnswer = getLongestAnswerLength();
+				textBox.setWidth((longestAnswer * fontSize) + "px");
+			}
+		}
+	}
+	
+	private GapWidthMode getGapWidthMode(Map<String, String> styles){
+		GapWidthMode widthMode = null;
+		
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN)){
+			try {
+				widthMode = GapWidthMode.valueOf(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN).trim().toUpperCase());
+			} catch (Exception e) {	} // NOPMD by MKaldonek on 27.09.12 08:23
+		}
+		
+		return widthMode;
 	}
 }
