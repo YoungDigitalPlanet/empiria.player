@@ -55,7 +55,7 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 
 	@Override
 	public boolean isSupported() {
-		return getMediaAvailableOptions().isFullScreenSupported() && fullScreenTemplate != null;
+		return getMediaAvailableOptions().isFullScreenSupported() && (fullScreenTemplate != null || fullScreen);
 	}
 
 	@Override
