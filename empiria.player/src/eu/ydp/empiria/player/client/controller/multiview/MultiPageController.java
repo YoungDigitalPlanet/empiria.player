@@ -95,6 +95,9 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private ResizeTimer resizeTimer;
 	private AnimationEndCallback animationCallback = null;
 	private boolean swipeDisabled = false;
+	private FlowDataSupplier flowDataSupplier;
+
+	/*
 	private final Timer touchEndTimer = new Timer() {
 
 		@Override
@@ -104,8 +107,20 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			resetPostionValues();
 		}
 	};
-	private FlowDataSupplier flowDataSupplier;
+	*/
+	
+	private final Timer touchEndTimer = new Timer() {
+		@Override
+		public void run() {
+			if(UserAgentChecker.isStackAndroidBrowser()) {
+				animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
+				swipeStarted = false;
+				resetPostionValues();
+			}
+		}
+	};
 
+	
 	private void setStylesForPages(boolean swipeStarted) {
 		if (swipeStarted) {
 			Panel selectedPanel = panelsCache.get(currentVisiblePage).getKey();
@@ -370,7 +385,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		touchReservation = false;
 		swipeStarted = false;
 		swipeRight = false;
-		touchLock = false;
 		setStylesForPages(swipeStarted);
 
 	}
@@ -411,6 +425,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			if (touches == null) {
 				end = event.getScreenX();
 			} else {
+				touchLock = touches.length() > 1;
 				for (int x = 0; x < touches.length();) {
 					Touch touch = touches.get(x);
 					end = touch.getPageX();
@@ -447,7 +462,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		if (swipeStarted) {
 			event.preventDefault();
 		}
-		if (!touchReservation && swipeStarted) {
+		if (!touchReservation && swipeStarted && !touchLock) {
 			reset();
 			JsArray<Touch> touches = event.getChangedTouches();
 			if (touches == null) {
@@ -479,6 +494,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	@Override
 	public void onTouchStart(NativeEvent event) {
 		if (!touchReservation && !animation.isRunning()) {
+			touchLock=false;
 			reset();
 			JsArray<Touch> touches = event.getTouches();
 			if (touches == null) {
