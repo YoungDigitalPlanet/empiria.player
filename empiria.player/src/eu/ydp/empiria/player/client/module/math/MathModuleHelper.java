@@ -287,26 +287,43 @@ public class MathModuleHelper {
 
 		for (int i = 0; i < gapNodes.getLength(); i++) {
 			Element currElement = (Element) gapNodes.item(i);
-
-			Node node = currElement.getParentNode();
-			Node prevNode = currElement;
-			boolean subsupParentFound = false;
-
-			if (currElement.hasAttribute(EmpiriaTagConstants.ATTR_UID)) {
-				while (node != null && !node.getNodeName().equals(ModuleTagName.MATH_INTERACTION.tagName())) {
-					if (node.getNodeName().equals("msub") || node.getNodeName().equals("msup") || node.getNodeName().equals("msubsup")
-							|| node.getNodeName().equals("mmultiscripts")) {
-						if (!XMLUtils.getFirstChildElement((Element) node).equals(prevNode)) {
-							subsupParentFound = true;
-							break;
-						}
-					}
-					prevNode = node;
-					node = node.getParentNode();
-				}
-			}
-			subsups.add(subsupParentFound);
+			boolean isSubOrSupParent = isParentOfSubOrSup(currElement);
+			
+			subsups.add(isSubOrSupParent);
 		}
+	}
+	
+	private boolean isSubOrSupElement(Node node) {
+		return node.getNodeName().equals("msub")
+				|| node.getNodeName().equals("msup")
+				|| node.getNodeName().equals("msubsup")
+				|| node.getNodeName().equals("mmultiscripts");
+	}
+	
+	private boolean isMathInteractionNode(Node node) {
+		return node.getNodeName().equals(
+				ModuleTagName.MATH_INTERACTION.tagName());
+	}
+	
+	private boolean isParentOfSubOrSup(Element node){
+		Node parentNode = node.getParentNode();
+		Node prevNode = node;
+		boolean subsupParentFound = false;
+
+		if (node.hasAttribute("uid")) {
+			while (parentNode != null && !isMathInteractionNode(parentNode)) {
+				if (isSubOrSupElement(parentNode)
+						&& !XMLUtils.getFirstChildElement(
+								(Element) parentNode).equals(prevNode)) {
+					subsupParentFound = true;
+					break;
+				}
+				prevNode = parentNode;
+				parentNode = parentNode.getParentNode();
+			}
+		}
+		
+		return subsupParentFound;
 	}
 
 	public void calculateActualSizes() {
