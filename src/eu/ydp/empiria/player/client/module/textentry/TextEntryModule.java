@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.textentry;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_FONT_SIZE;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
 
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,8 @@ import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.BindingUtil;
 import eu.ydp.empiria.player.client.module.binding.BindingValue;
 import eu.ydp.empiria.player.client.module.binding.DefaultBindingGroupIdentifier;
+import eu.ydp.empiria.player.client.module.binding.gapmaxlength.GapMaxlengthBindingContext;
+import eu.ydp.empiria.player.client.module.binding.gapmaxlength.GapMaxlengthBindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingContext;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
@@ -79,11 +82,17 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	
 	private DefaultBindingGroupIdentifier widthBindingIdentifier;
 	
+	private DefaultBindingGroupIdentifier maxlengthBindingIdentifier;
+	
 	private Integer fontSize;
 	
 	private BindingContext widthBindingContext;
 	
+	private BindingContext maxlengthBindingContext;
+	
 	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	
+	String maxLength = "";
 	
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
@@ -112,17 +121,27 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	@Override
 	public void onSetUp() {
 		updateResponse(false);
+		
 		if (widthBindingIdentifier != null) {
 			widthBindingContext = BindingUtil.register(BindingType.GAP_WIDTHS, this, this);
+		}
+		
+		if (maxlengthBindingIdentifier != null) {
+			maxlengthBindingContext = BindingUtil.register(BindingType.GAP_MAXLENGHTS, this, this);
 		}
 	}
 
 	@Override
 	public void onStart() {
-		if (widthBindingContext != null  &&  fontSize != null){
-			int longestAnswerLength = ((GapWidthBindingContext)widthBindingContext).getGapWidthBindingOutcomeValue().getGapCharactersCount();
+		if (widthBindingContext != null  &&  fontSize != null) {
+			int longestAnswerLength = ((GapWidthBindingContext) widthBindingContext).getGapWidthBindingOutcomeValue().getGapCharactersCount();
 			int textBoxWidth = longestAnswerLength * fontSize;
 			textBox.setWidth(textBoxWidth + "px");
+		}
+		
+		if (maxlengthBindingContext != null) {
+			int longestAnswerLength = ((GapMaxlengthBindingContext) maxlengthBindingContext).getGapMaxlengthBindingOutcomeValue().getGapCharactersCount();
+			textBox.setMaxLength(longestAnswerLength);
 		}
 	}
 
@@ -251,11 +270,19 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	public BindingValue getBindingValue(BindingType bindingType) {
 		BindingValue bindingValue = null;
 		
-		if (bindingType == BindingType.GAP_WIDTHS){
+		if (bindingType == BindingType.GAP_WIDTHS) {
 			int longestLength = getLongestAnswerLength();
 			bindingValue = new GapWidthBindingValue(longestLength);
 		}
 		
+		if (bindingType == BindingType.GAP_MAXLENGHTS) {
+			if (maxLength.matches("ANSWER")) {
+				bindingValue = new GapMaxlengthBindingValue(getLongestAnswerLength());
+			} else {
+				bindingValue = new GapMaxlengthBindingValue(Integer.parseInt(maxLength));
+			}
+		}
+			
 		return bindingValue;
 	}
 	
@@ -266,6 +293,11 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		if (bindingType == BindingType.GAP_WIDTHS){
 			groupIndentifier = widthBindingIdentifier;
 		}
+		
+		if (bindingType == BindingType.GAP_MAXLENGHTS) {
+			groupIndentifier = maxlengthBindingIdentifier;
+		}
+		
 		return groupIndentifier;
 	}
 
@@ -347,7 +379,11 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	private void setDimensions(TextBox textBox, Element moduleElement){
 		Map<String, String> styles = getModuleSocket().getStyles(moduleElement);
 		
-		if (moduleElement.hasAttribute("expectedLength")) {
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH)) {
+			maxlengthBindingIdentifier = new DefaultBindingGroupIdentifier("");
+			maxLength = styles.get(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH).trim().toUpperCase();
+		}
+		else if (moduleElement.hasAttribute("expectedLength")) {
 			textBox.setMaxLength(XMLUtils.getAttributeAsInt(moduleElement, "expectedLength"));
 		}
 		
