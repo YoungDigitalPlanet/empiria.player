@@ -6,6 +6,7 @@ import com.google.gwt.xml.client.NodeList;
 
 public class XmlData {
 
+	@Deprecated // cala historia z fixowaniem linku jest od czapki
 	public XmlData(Document doc, String url){
 		document = doc;
 		baseURL = url;
@@ -30,12 +31,14 @@ public class XmlData {
 		return true;
 	}
 
+	@Deprecated
 	private void fix(Document document, String baseUrl){
 
 		fixLinks(document, baseUrl, "img", "src");
 		fixLinks(document, baseUrl, "embed", "src");
 		fixLinks(document, baseUrl, "sound", "src");
 		fixLinks(document, baseUrl, "video", "src");
+		fixLinks(document, baseUrl, "object", "poster");
 		fixLinks(document, baseUrl, "source", "src");
 		fixLinks(document, baseUrl, "a", "href");
 		fixLinks(document, baseUrl, "object", "data");
