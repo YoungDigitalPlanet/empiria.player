@@ -39,10 +39,7 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 
 	@Override
 	public final void setStyleNames() {
-		String toAdd = "";
-		if (fullScreen) {
-			toAdd = FULL_SCREEN_SUFFIX;
-		}
+		String toAdd = getSuffixToAdd();
 		this.baseStyleName = this.originalStyleName + toAdd;
 		this.onClickStyleName = baseStyleName + toAdd + CLICK_SUFFIX;
 		this.hoverStyleName = baseStyleName + toAdd + HOVER_SUFFIX;

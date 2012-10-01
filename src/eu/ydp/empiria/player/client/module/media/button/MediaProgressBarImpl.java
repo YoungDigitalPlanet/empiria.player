@@ -61,7 +61,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * wielkosc przycisku wyswietlanego na pasku postepu
-	 * 
+	 *
 	 * @return
 	 */
 	protected int getButtonWidth() {
@@ -80,7 +80,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * dlugosc paska postepu
-	 * 
+	 *
 	 * @return
 	 */
 	protected int getScrollWidth() {
@@ -113,7 +113,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_DURATION_CHANGE), getMediaWrapper(), handler, scope);
 			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_STOP), getMediaWrapper(), handler, scope);
 			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_FULL_SCREEN_SHOW_CONTROLS), getMediaWrapper(), handler, scope);
-			
+
 			// nie zawsze zostanie wyzwolony timeupdate ze wzgledu na
 			// ograniczenie
 			// na 1s postepu wiec robimy to tu
@@ -126,7 +126,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 				}
 			};
 			eventsBus.addHandlerToSource(MediaEvent.getType(ON_END), getMediaWrapper(), handler, new CurrentPageScope());
-			
+
 		} else {
 			progressBar.setStyleName(styleNames.QP_MEDIA_PROGRESSBAR() + UNSUPPORTED_SUFFIX);
 			progressBar.clear();
@@ -135,7 +135,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * ustawia suwak na odpowiedniej pozycji
-	 * 
+	 *
 	 * @param positionX
 	 */
 	protected void moveScroll(int positionX) {// NOPMD
@@ -144,7 +144,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * ustawia suwak na odpowiedniej pozycji
-	 * 
+	 *
 	 * @param positionX
 	 */
 	protected void moveScroll(int positionX, boolean force) {// NOPMD
@@ -198,7 +198,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	@Override
 	public void setStyleNames() {
-		if (fullScreen) {
+		if (isInFullScreen()) {
 			progressBar.removeStyleName(styleNames.QP_MEDIA_PROGRESSBAR());
 			progressBar.addStyleName(styleNames.QP_MEDIA_PROGRESSBAR() + FULL_SCREEN_SUFFIX);
 		}

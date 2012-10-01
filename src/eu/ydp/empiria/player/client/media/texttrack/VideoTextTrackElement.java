@@ -38,10 +38,7 @@ public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrac
 
 	@Override
 	public final void setStyleNames() {
-		String toAdd = "";
-		if (fullScreen) {
-			toAdd = FULL_SCREEN_SUFFIX;
-		}
+		String toAdd = getSuffixToAdd();
 		text.setStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd);
 		text.addStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd + "-" + kind.name().toLowerCase());
 	}

@@ -38,7 +38,7 @@ public class MediaDescriptionModule extends AbstractMediaController<MediaDescrip
 
 	@Override
 	public void setStyleNames() {
-		if (fullScreen) {
+		if (isInFullScreen()) {
 			text.removeStyleName(styleNames.QP_MEDIA_DESCRIPTION());
 			text.addStyleName(styleNames.QP_MEDIA_DESCRIPTION() + FULL_SCREEN_SUFFIX);
 		}

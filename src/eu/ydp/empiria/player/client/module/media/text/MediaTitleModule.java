@@ -47,7 +47,7 @@ public class MediaTitleModule extends AbstractMediaController<MediaTitleModule> 
 
 	@Override
 	public void setStyleNames() {
-		if (fullScreen) {
+		if (isInFullScreen()) {
 			text.removeStyleName(styleNames.QP_MEDIA_TITLE());
 			text.addStyleName(styleNames.QP_MEDIA_TITLE() + FULL_SCREEN_SUFFIX);
 		}

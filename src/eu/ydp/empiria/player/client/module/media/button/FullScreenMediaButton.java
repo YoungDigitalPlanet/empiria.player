@@ -20,7 +20,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaButton> implements MediaEventHandler {
 	private final VideoFullScreenHelper fullScreenHelper = PlayerGinjector.INSTANCE.getVideoFullScreenHelper();
 	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	private boolean isInfullScreen = false;
+	private boolean fullScreenOpen = false;
 	private Element fullScreenTemplate;
 	private MediaWrapper<?> fullScreenMediaWrapper;
 
@@ -39,9 +39,9 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 
 	@Override
 	protected void onClick() {
-		if (isInfullScreen || fullScreen) {
+		if (fullScreenOpen || isInFullScreen()) {
 			fullScreenHelper.closeFullScreen();
-		} else if (!fullScreen) {
+		} else if (!isInFullScreen()) {
 			fullScreenHelper.openFullScreen(fullScreenMediaWrapper, fullScreenTemplate);
 		}
 	}
@@ -55,15 +55,15 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 
 	@Override
 	public boolean isSupported() {
-		return getMediaAvailableOptions().isFullScreenSupported() && (fullScreenTemplate != null || fullScreen);
+		return getMediaAvailableOptions().isFullScreenSupported() && (fullScreenTemplate != null || isInFullScreen());
 	}
 
 	@Override
 	public void onMediaEvent(MediaEvent event) {
 		if (event.getType() == MediaEventTypes.ON_FULL_SCREEN_OPEN) {
-			isInfullScreen = true;
+			fullScreenOpen = true;
 		} else if (event.getType() == MediaEventTypes.ON_FULL_SCREEN_EXIT) {
-			isInfullScreen = false;
+			fullScreenOpen = false;
 		}
 
 	}

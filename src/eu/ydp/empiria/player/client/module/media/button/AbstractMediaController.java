@@ -7,21 +7,25 @@ import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-public abstract class AbstractMediaController<T> extends Composite implements  MediaController<T> {
+public abstract class AbstractMediaController<T> extends Composite implements MediaController<T> {
 	protected final static String CLICK_SUFFIX = "-click";
 	protected final static String HOVER_SUFFIX = "-hover";
 	protected final static String FULL_SCREEN_SUFFIX = "-fullscreen";
 	protected final static String UNSUPPORTED_SUFFIX = "-unsupported";
-	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); //NOPMD
+	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
 	private MediaAvailableOptions availableOptions;
 	private MediaWrapper<?> mediaWrapper = null;
-	protected boolean fullScreen = false;
+	private boolean infullScreen = false;
 
-	/* (non-Javadoc)
-	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController#setMediaDescriptor(eu.ydp.empiria.player.client.module.media.MediaWrapper)
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController#
+	 * setMediaDescriptor
+	 * (eu.ydp.empiria.player.client.module.media.MediaWrapper)
 	 */
 	@Override
-	public  void setMediaDescriptor(MediaWrapper<?> mediaDescriptor){
+	public void setMediaDescriptor(MediaWrapper<?> mediaDescriptor) {
 		this.mediaWrapper = mediaDescriptor;
 		availableOptions = mediaDescriptor.getMediaAvailableOptions();
 	}
@@ -32,16 +36,22 @@ public abstract class AbstractMediaController<T> extends Composite implements  M
 	@Override
 	public abstract void init();
 
-	/* (non-Javadoc)
-	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController#getMediaAvailableOptions()
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController#
+	 * getMediaAvailableOptions()
 	 */
 	@Override
 	public MediaAvailableOptions getMediaAvailableOptions() {
 		return availableOptions;
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController#getMediaWrapper()
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController#
+	 * getMediaWrapper()
 	 */
 	@Override
 	public MediaWrapper<?> getMediaWrapper() {
@@ -50,8 +60,24 @@ public abstract class AbstractMediaController<T> extends Composite implements  M
 
 	@Override
 	public void setFullScreen(boolean fullScreen) {
-		this.fullScreen = fullScreen;
+		this.infullScreen = fullScreen;
 		setStyleNames();
+	}
+
+	/**
+	 * Czy modu renderowny jest w trybie fullscreen
+	 * @return
+	 */
+	public boolean isInFullScreen() {
+		return infullScreen;
+	}
+
+	/**
+	 * Zwraca suffix dla danego trybu dzialania np fullscreen
+	 * @return
+	 */
+	public String getSuffixToAdd() {
+		return isInFullScreen() ? FULL_SCREEN_SUFFIX : "";
 	}
 
 	public abstract void setStyleNames();
