@@ -8,9 +8,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.mathplayer.player.MathPlayerManager;
@@ -22,7 +20,6 @@ import com.mathplayer.player.interaction.InteractionManager;
 import com.mathplayer.player.model.interaction.CustomFieldDescription;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
-import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -34,7 +31,6 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 public class MathModuleHelper {
 		
-	public static final String INLINE_HTML_NBSP = "&nbsp;";
 	private final Element moduleElement;
 	private final ModuleSocket moduleSocket;
 	private final Response response;
@@ -45,9 +41,6 @@ public class MathModuleHelper {
 	private boolean fontBold = false;
 	private boolean fontItalic = false;
 	private String fontColor = "#000000";
-	private Integer inlineChoiceWidth = 48;
-	private Integer inlineChoiceHeight = 24;
-	boolean inlineCholiceGapShowEmptyOption = false;
 	
 	private final MathPlayerManager mpm = createMathPlayerManager();
 	
@@ -65,6 +58,8 @@ public class MathModuleHelper {
 		this.moduleSocket = moduleSocket;
 		this.response = response;
 		this.module = module;
+		
+		initStyles();
 	}
 
 	enum GapType {
@@ -81,56 +76,42 @@ public class MathModuleHelper {
 			}
 
 		};
+		
 		public abstract String getName();
+		
+		public static GapType getByName(String searchedName){
+			GapType searchedType = null;
+			
+			for(GapType typeValue: values()){
+				if(typeValue.getName().equals(searchedName)){
+					searchedType = typeValue;
+					break;
+				}
+			}
+			
+			return searchedType;
+		}
 	}
 
 	public List<MathGap> initGaps() {
-
 		NodeList gapNodes = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_GAP);
 		gaps = new ArrayList<MathGap>();
 
 		for (int i = 0; i < gapNodes.getLength(); i++) {
 			Element currElement = (Element) gapNodes.item(i);
-
-			if (currElement.hasAttribute(EmpiriaTagConstants.ATTR_TYPE) && GapType.INLINE_CHOICE.getName().equals(currElement.getAttribute(EmpiriaTagConstants.ATTR_TYPE))) {
-
-				ExListBox listBox = createExListBox();
-
-				if (inlineCholiceGapShowEmptyOption){
-					Widget emptyOptionInBody = createInlineHTML(INLINE_HTML_NBSP);
-					emptyOptionInBody.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
-					Widget emptyOptionInPopup = createInlineHTML(INLINE_HTML_NBSP);
-					emptyOptionInPopup.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
-					listBox.addOption(emptyOptionInBody, emptyOptionInPopup);
-					listBox.setSelectedIndex(0);
-				} else {
-					listBox.setSelectedIndex(-1);
-				}				
-				
-				NodeList optionNodes = currElement.getElementsByTagName(EmpiriaTagConstants.NAME_INLINE_CHOICE);
-				ArrayList<String> listBoxIdentifiers = new ArrayList<String>();
-
-				for (int o = 0; o < optionNodes.getLength(); o++) {
-					String currId = ((Element) optionNodes.item(o)).getAttribute(EmpiriaTagConstants.ATTR_IDENTIFIER);
-					listBoxIdentifiers.add(currId);
-					Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
-					Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
-					listBox.addOption(baseBody, popupBody);
-				}
-
-				gaps.add(createInlineChoiceGap(listBox, listBoxIdentifiers, inlineCholiceGapShowEmptyOption));
-
-			} else if (currElement.hasAttribute(EmpiriaTagConstants.ATTR_TYPE) && GapType.TEXT_ENTRY.getName().equals(currElement.getAttribute(EmpiriaTagConstants.ATTR_TYPE))) {
+			GapType gapType = getGapType(currElement);
+			Map<String, String> styles = moduleSocket.getStyles(moduleElement);
+			
+			if (gapType == GapType.INLINE_CHOICE) {
+				InlineChoiceGap icg = createInlineChoiceGap(currElement, moduleSocket, styles); 
+				gaps.add(icg);
+			} else if (gapType == GapType.TEXT_ENTRY) {
 				TextEntryGap teg = new TextEntryGap();
-				teg.init(currElement, moduleSocket, module, response, i, moduleSocket.getStyles(moduleElement));
+				teg.init(currElement, moduleSocket, module, response, i, styles);
 				gaps.add(teg);
 			}
 		}
 		return gaps;
-	}
-
-	public InlineHTML createInlineHTML(String html) {
-		return new InlineHTML(html);
 	}
 
 	public void markAnswers(List<MathGap> gaps, boolean mark) {
@@ -181,6 +162,71 @@ public class MathModuleHelper {
 		}
 		return updated;
 	}	
+
+	public void calculateActualSizes() {
+		actualSizes = new HashMap<String, Size>();
+
+		for (int i = 0; i < gaps.size(); i++) {
+			if (gaps.get(i) instanceof TextEntryGap) {
+				TextEntryGap teg = (TextEntryGap) gaps.get(i);
+				((TextEntryGap) gaps.get(i)).updateGapWidth();
+				if (!"".equals(teg.getUid())) {
+					actualSizes.put(teg.getUid(), new Size(teg.getOffsetWidth(), teg.getOffsetHeight()));
+				}
+			}
+		}
+		
+		setSizes();
+	}
+
+	public void initMath(Panel panel) {
+		Integer fontColorInt = NumberUtils.tryParseInt(fontColor.trim().substring(1), 16, 0);
+		Font font = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
+		mpm.setFont(font);
+
+		interactionManager = mpm.createMath(moduleElement.getChildNodes().toString(), panel);
+	}
+
+	public void placeGaps(AbsolutePanel listBoxesLayer) {
+		for (int i = 0; i < gaps.size(); i++) {
+			if (gaps.get(i) instanceof InlineChoiceGap) {
+				InlineChoiceGap icg = (InlineChoiceGap) gaps.get(i);
+				listBoxesLayer.add(icg.getContainer());
+			} else if (gaps.get(i) instanceof TextEntryGap) {
+				TextEntryGap teg = (TextEntryGap) gaps.get(i);
+				listBoxesLayer.add(teg.getContainer(), 0, 0);
+			}
+		}
+	}
+
+	public void positionGaps(AbsolutePanel listBoxesLayer) {
+		Vector<CustomFieldDescription> customFieldDescriptions = interactionManager.getCustomFieldDescriptions();
+		Iterator<CustomFieldDescription> customFieldDescriptionsIterator = customFieldDescriptions.iterator();
+
+		for (int i = 0; i < gaps.size(); i++) {
+			if (!customFieldDescriptionsIterator.hasNext()) {
+				break;
+			}
+			Point position = customFieldDescriptionsIterator.next().getPosition();
+			if (gaps.get(i) instanceof InlineChoiceGap) {
+				listBoxesLayer.setWidgetPosition(gaps.get(i).getContainer(), position.x, position.y);
+			} else if (gaps.get(i) instanceof TextEntryGap) {
+				listBoxesLayer.setWidgetPosition(gaps.get(i).getContainer(), position.x, position.y);
+			}
+		}
+	}
+	
+	public MathPlayerManager createMathPlayerManager() {
+		return new MathPlayerManager();
+	}
+
+	public InlineChoiceGap createInlineChoiceGap(Element moduleElement, ModuleSocket moduleSocket, Map<String, String> styles) {
+		return new InlineChoiceGap(moduleElement, moduleSocket, styles);
+	}
+	
+	protected PlayerGinjector getPlayerGinjectorInstance() {
+		return PlayerGinjector.INSTANCE;
+	}
 	
 	public void initStyles() {		
 		Map<String, String> styles = moduleSocket.getStyles(moduleElement);
@@ -203,41 +249,16 @@ public class MathModuleHelper {
 
 		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_COLOR)) {
 			fontColor = styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_COLOR).toUpperCase();
-		}
-
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
-			inlineChoiceWidth = NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH));
-		}
-
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
-			inlineChoiceHeight = NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT));
-		}
-		
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
-			inlineCholiceGapShowEmptyOption = styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(EmpiriaStyleNameConstants.VALUE_SHOW);
 		}		
 	}
-
-	public void calculateActualSizes() {
-		actualSizes = new HashMap<String, Size>();
-
-		for (int i = 0; i < gaps.size(); i++) {
-			if (gaps.get(i) instanceof TextEntryGap) {
-				TextEntryGap teg = (TextEntryGap) gaps.get(i);
-				((TextEntryGap) gaps.get(i)).updateGapWidth();
-				if (!"".equals(teg.getUid())) {
-					actualSizes.put(teg.getUid(), new Size(teg.getOffsetWidth(), teg.getOffsetHeight()));
-				}
-			}
-		}
-	}
-
-	public void setSizes() {
+	
+	private void setSizes() {
 		Size actualTextEntryGapSize = null;
+		Size actualInlineChoiceGapSize = null;
 		
-		for (int i = 0; i < gaps.size(); i++) {
-			if (gaps.get(i) instanceof TextEntryGap) {
-				TextEntryGap teg = (TextEntryGap) gaps.get(i);
+		for(MathGap gap: gaps){
+			if (gap instanceof TextEntryGap) {
+				TextEntryGap teg = (TextEntryGap) gap;
 				
 				if(actualTextEntryGapSize == null){
 					actualTextEntryGapSize = TextEntryGap.getTextEntryGapActualSize(new Size(teg.getGapWidth(), teg.getGapHeight()));
@@ -248,6 +269,12 @@ public class MathModuleHelper {
 					if(teg.isSubOrSupParent()){
 						mpm.setCustomFieldHeight(GapIdentifier.createIdIdentifier(teg.getUid()), actualSizes.get(teg.getUid()).getHeight());
 					}
+				}
+			}else if(gap instanceof InlineChoiceGap){
+				InlineChoiceGap icg = (InlineChoiceGap) gap;
+				
+				if(actualInlineChoiceGapSize == null){
+					actualInlineChoiceGapSize = new Size(icg.getGapWidth(), icg.getGapHeight());
 				}
 			}
 		}
@@ -260,67 +287,21 @@ public class MathModuleHelper {
 			mpm.setCustomFieldHeight(GapIdentifier.createTypeIdentifier(GapType.TEXT_ENTRY.getName()), actualTextEntryGapSize.getHeight());
 		}
 		
-
-		mpm.setCustomFieldWidth(GapIdentifier.createTypeIdentifier(GapType.INLINE_CHOICE.getName()), inlineChoiceWidth);
-		mpm.setCustomFieldHeight(GapIdentifier.createTypeIdentifier(GapType.INLINE_CHOICE.getName()), inlineChoiceHeight);
-	}
-
-	public void initMath(Panel panel) {
-		Integer fontColorInt = NumberUtils.tryParseInt(fontColor.trim().substring(1), 16, 0);
-		Font font = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
-		mpm.setFont(font);
-
-		interactionManager = mpm.createMath(moduleElement.getChildNodes().toString(), panel);
-	}
-
-	public void placeGaps(AbsolutePanel listBoxesLayer) {
-		for (int i = 0; i < gaps.size(); i++) {
-			if (gaps.get(i) instanceof InlineChoiceGap) {
-				InlineChoiceGap icg = (InlineChoiceGap) gaps.get(i);
-				icg.getListBox().setWidth(inlineChoiceWidth + "px");
-				icg.getListBox().setHeight(inlineChoiceHeight + "px");
-				listBoxesLayer.add(icg.getContainer());
-
-			} else if (gaps.get(i) instanceof TextEntryGap) {
-				TextEntryGap teg = (TextEntryGap) gaps.get(i);
-				listBoxesLayer.add(teg.getContainer(), 0, 0);
-			}
-		}
-	}
-
-	public void positionGaps(AbsolutePanel listBoxesLayer) {
-		Vector<CustomFieldDescription> customFieldDescriptions = interactionManager.getCustomFieldDescriptions();
-		Iterator<CustomFieldDescription> customFieldDescriptionsIterator = customFieldDescriptions.iterator();
-
-		for (int i = 0; i < gaps.size(); i++) {
-			if (!customFieldDescriptionsIterator.hasNext()) {
-				break;
-			}
-			Point position = customFieldDescriptionsIterator.next().getPosition();
-			if (gaps.get(i) instanceof InlineChoiceGap) {
-				listBoxesLayer.setWidgetPosition(gaps.get(i).getContainer(), position.x, position.y);
-			} else if (gaps.get(i) instanceof TextEntryGap) {
-				listBoxesLayer.setWidgetPosition(gaps.get(i).getContainer(), position.x, position.y);
-			}
-
+		if(actualInlineChoiceGapSize != null){
+			mpm.setCustomFieldWidth(GapIdentifier.createTypeIdentifier(GapType.INLINE_CHOICE.getName()), actualInlineChoiceGapSize.getWidth());
+			mpm.setCustomFieldHeight(GapIdentifier.createTypeIdentifier(GapType.INLINE_CHOICE.getName()), actualInlineChoiceGapSize.getHeight());
 		}
 	}
 	
-	public MathPlayerManager createMathPlayerManager() {
-		return new MathPlayerManager();
-	}
-
-	public ExListBox createExListBox() {
-		return new ExListBox();
-	}
-
-	public InlineChoiceGap createInlineChoiceGap(ExListBox listBox,
-			ArrayList<String> listBoxIdentifiers, boolean inlineCholiceGapShowEmptyOption) {
-		return new InlineChoiceGap(listBox, listBoxIdentifiers, inlineCholiceGapShowEmptyOption);
-	}
-	
-	protected PlayerGinjector getPlayerGinjectorInstance() {
-		return PlayerGinjector.INSTANCE;
+	private GapType getGapType(Element element){
+		GapType gapType = null;
+		String attrTypeValue = element.getAttribute(EmpiriaTagConstants.ATTR_TYPE);
+		
+		if(attrTypeValue != null){
+			gapType = GapType.getByName(attrTypeValue);
+		}
+		
+		return gapType;
 	}
 		
 }

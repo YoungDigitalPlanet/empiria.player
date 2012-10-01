@@ -69,9 +69,6 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 		}
 
 		helper = new MathModuleHelper(getModuleElement(), getModuleSocket(), getResponse(), this);
-
-		helper.initStyles();
-
 		gaps = helper.initGaps();
 
 		initGapListeners();
@@ -129,11 +126,7 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 
 	@Override
 	public void onStart() {
-
 		helper.calculateActualSizes();
-
-		helper.setSizes();
-
 		helper.initMath(mainPanel);
 
 		listBoxesLayer.setWidth(mainPanel.getOffsetWidth() + "px");
