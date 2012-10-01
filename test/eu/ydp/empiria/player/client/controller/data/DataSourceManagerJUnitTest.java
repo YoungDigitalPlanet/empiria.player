@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListen
 
 import junit.framework.TestCase;
 
-public class DataSourceManagerJUnitTest extends TestCase{
+public class DataSourceManagerJUnitTest extends TestCase {
 	
 	public void testMainPreloaderAddedAndRemoved() {
 		DataSourceManager dsm = new DataSourceManager();
