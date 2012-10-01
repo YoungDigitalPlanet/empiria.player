@@ -157,7 +157,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 
 	@Override
 	public void setStyleNames() {
-		if (fullScreen) {
+		if (isInFullScreen()) {
 			progressBar.removeStyleName(styleNames.QP_MEDIA_VOLUME_SCROLLBAR());
 			progressBar.addStyleName(styleNames.QP_MEDIA_VOLUME_SCROLLBAR() + FULL_SCREEN_SUFFIX);
 		}
