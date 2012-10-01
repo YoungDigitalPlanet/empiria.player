@@ -72,8 +72,6 @@ public class MathModule extends OneViewInteractionModuleBase implements Factory<
 
 		helper.initStyles();
 
-		helper.initGapsProperties();
-
 		gaps = helper.initGaps();
 
 		initGapListeners();

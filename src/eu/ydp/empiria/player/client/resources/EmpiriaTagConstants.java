@@ -10,6 +10,8 @@ public final class EmpiriaTagConstants {
 	public static final String ATTR_TYPE = "type";
 	public static final String ATTR_UID = "uid";
 	public static final String ATTR_IDENTIFIER = "identifier";
+	public static final String ATTR_CLASS = "class";
+	public static final String ATTR_WIDTH_BINDING_GROUP = "widthBindingGroup";
 	
 	private EmpiriaTagConstants() {
 	}
