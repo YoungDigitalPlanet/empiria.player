@@ -1,35 +1,9 @@
 package eu.ydp.empiria.player.client.module.math;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.VALUE_SHOW;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.List;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NodeList;
-
-import eu.ydp.empiria.player.client.components.ExListBox;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.math.MathModuleHelper.GapType;
-import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
 public class MathModuleHelperJUnitTest {
 	
-	@Test
+	/*@Test
 	public void inlineCholiceGapShowEmptyOption() {
 		MathModuleHelper helper = mockHelper(true);
 		
@@ -91,18 +65,18 @@ public class MathModuleHelperJUnitTest {
 
     @BeforeClass
     public static void prepareTestEnviroment() {
-    	/**
+    	*//**
     	 * disable GWT.create() behavior for pure JUnit testing
-    	 */
+    	 *//*
     	GWTMockUtilities.disarm();    	
     }
     
     @AfterClass
     public static void restoreEnviroment() {
-    	/**
+    	*//**
     	 * restore GWT.create() behavior
-    	 */
+    	 *//*
     	GWTMockUtilities.restore();
-    }
+    }*/
 	
 }

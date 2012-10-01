@@ -1,31 +1,104 @@
 package eu.ydp.empiria.player.client.module.math;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.ExListBox;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
+import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.gwtutil.client.NumberUtils;
 
 public class InlineChoiceGap implements MathGap {
-
+	public static final String INLINE_HTML_NBSP = "&nbsp;";
 	private static final String WRONG = "wrong";
 	private static final String CORRECT = "correct";
 	private static final String NONE = "none";
-	private final ExListBox listBox;
-	private final List<String> options;
+	
 	private final Panel container;
-	private final boolean hasEmptyOption;
+	
+	private List<String> options;
+	
+	protected boolean hasEmptyOption = false;
+	
+	private ExListBox listBox;
+	
+	private Integer gapWidth = 48;
+	private Integer gapHeight = 24;
+	
+	protected StyleNameConstants styleNames = getStyleNameConstants();
 
-	public InlineChoiceGap(ExListBox listBox, List<String> options, boolean hasEmptyOption) {
-		this.listBox = listBox;
-		this.options = options;
-		this.hasEmptyOption = hasEmptyOption;
+	public InlineChoiceGap(Element moduleElement, ModuleSocket moduleSocket, Map<String, String> styles) {
+		initStyles(styles);
+		
+		this.listBox = createExListBox();
+
+		if (hasEmptyOption){
+			Widget emptyOptionInBody = createInlineHTML(INLINE_HTML_NBSP);
+			emptyOptionInBody.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
+			Widget emptyOptionInPopup = createInlineHTML(INLINE_HTML_NBSP);
+			emptyOptionInPopup.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
+			listBox.addOption(emptyOptionInBody, emptyOptionInPopup);
+			listBox.setSelectedIndex(0);
+		} else {
+			listBox.setSelectedIndex(-1);
+		}	
+		
+		options = createOptions(moduleElement, moduleSocket);
+		
+		listBox.setWidth(gapWidth + "px");
+		listBox.setHeight(gapHeight + "px");
 
 		container = createFlowPanel(); // NOPMD
 		container.setStyleName("qp-mathinteraction-inlinechoicegap");
 		container.add(listBox);
+	}
+	
+	List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket){
+		NodeList optionNodes = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_INLINE_CHOICE);
+		List<String> options = new ArrayList<String>();
+		
+		for (int o = 0; o < optionNodes.getLength(); o++) {
+			String currId = ((Element) optionNodes.item(o)).getAttribute(EmpiriaTagConstants.ATTR_IDENTIFIER);
+			options.add(currId);
+			Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
+			Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
+			listBox.addOption(baseBody, popupBody);
+		}
+		
+		return options;
+	}
+	
+	private void initStyles(Map<String, String> styles){
+		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
+			gapWidth = NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH));
+		}
+
+		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
+			gapHeight = NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT));
+		}
+		
+		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
+			hasEmptyOption = styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(EmpiriaStyleNameConstants.VALUE_SHOW);
+		}
+	}
+	
+	public InlineHTML createInlineHTML(String html) {
+		return new InlineHTML(html);
+	}
+	
+	public ExListBox createExListBox() {
+		return new ExListBox();
 	}
 
 	@Override
@@ -101,5 +174,17 @@ public class InlineChoiceGap implements MathGap {
 
 	public FlowPanel createFlowPanel() {
 		return new FlowPanel();
+	}
+
+	public int getGapWidth() {
+		return gapWidth;
+	}
+
+	public int getGapHeight() {
+		return gapHeight;
 	}	
+	
+	protected StyleNameConstants getStyleNameConstants(){
+		return PlayerGinjector.INSTANCE.getStyleNameConstants();
+	}
 }

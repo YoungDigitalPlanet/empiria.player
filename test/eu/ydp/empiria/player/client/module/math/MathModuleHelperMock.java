@@ -1,26 +1,13 @@
 package eu.ydp.empiria.player.client.module.math;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.InlineHTML;
-import com.google.gwt.xml.client.Element;
-import com.mathplayer.player.MathPlayerManager;
-
-import eu.ydp.empiria.player.client.PlayerGinjector;
-import eu.ydp.empiria.player.client.components.ExListBox;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class MathModuleHelperMock extends MathModuleHelper {
 	
-	public MathModuleHelperMock(Element moduleElement,
+	public MathModuleHelperMock(){
+		super(null, null, null, null);
+	}
+	
+	/*public MathModuleHelperMock(Element moduleElement,
 			ModuleSocket moduleSocket, Response response, IModule module) {
 		super(moduleElement, moduleSocket, response, module);
 	}
@@ -66,5 +53,5 @@ public class MathModuleHelperMock extends MathModuleHelper {
 			return mock(FlowPanel.class);
 		}
 		
-	}	
+	}*/	
 }
