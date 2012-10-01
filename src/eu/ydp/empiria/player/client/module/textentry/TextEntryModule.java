@@ -84,7 +84,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	
 	private DefaultBindingGroupIdentifier maxlengthBindingIdentifier;
 	
-	private Integer fontSize;
+	private Integer fontSize = 16;
 	
 	private BindingContext widthBindingContext;
 	
@@ -133,7 +133,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 
 	@Override
 	public void onStart() {
-		if (widthBindingContext != null  &&  fontSize != null) {
+		if (widthBindingContext != null) {
 			int longestAnswerLength = ((GapWidthBindingContext) widthBindingContext).getGapWidthBindingOutcomeValue().getGapCharactersCount();
 			int textBoxWidth = longestAnswerLength * fontSize;
 			textBox.setWidth(textBoxWidth + "px");
@@ -389,8 +389,9 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE)){
 			fontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE), null);
-			textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
 		}
+		
+		textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
 		
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH)){
 			Integer gapWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH), null);
@@ -408,7 +409,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		}else if(widthMode == GapWidthMode.GAP){
 			if (getResponse().groups.size() > 0) {
 				widthBindingIdentifier = new DefaultBindingGroupIdentifier(getResponse().groups.keySet().iterator().next());
-			} else if (fontSize != null) {
+			} else {
 				int longestAnswer = getLongestAnswerLength();
 				textBox.setWidth((longestAnswer * fontSize) + "px");
 			}
