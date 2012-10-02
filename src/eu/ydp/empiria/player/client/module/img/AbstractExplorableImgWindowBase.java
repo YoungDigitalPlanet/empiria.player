@@ -7,23 +7,23 @@ public abstract class AbstractExplorableImgWindowBase extends Composite implemen
 	private double originalImageWidth, originalImageHeight;
 	private double originalAspectRatio;
 	private int windowWidth, windowHeight;
-	private double scale = 2.0d;
-	private double scaleMin = 1.0d;
-	protected final double ZOOM_MAX = 8;
-	protected final double SCALE_STEP = 1.2d;
+	private double scale = ExplorableImageConst.ZOOM_SCALE;
+	private double scaleMin = ExplorableImageConst.ZOOM_SCALE_MIN;
+	private double zoomMax = ExplorableImageConst.ZOOM_SCALE_MAX;
+	private double scaleStep = ExplorableImageConst.ZOOM_SCALE_STEP;
 
-	protected void findScaleMinAndOriginalAspectRatio(){
+	protected void findScaleMinAndOriginalAspectRatio() {
 		originalAspectRatio = originalImageWidth / originalImageHeight;
 		if (windowHeight/originalImageHeight  <  windowWidth/originalImageWidth) {
 			scaleMin = (originalAspectRatio * windowHeight) / windowWidth;
 		}
 	}
 
-	protected double getOriginalAspectRatio(){
+	protected double getOriginalAspectRatio() {
 		return originalAspectRatio;
 	}
 
-	protected double getScaleMin(){
+	protected double getScaleMin() {
 		return scaleMin;
 	}
 
@@ -77,12 +77,28 @@ public abstract class AbstractExplorableImgWindowBase extends Composite implemen
 	}
 
 
-	protected double getZoom(){
+	protected double getZoom() {
 		return windowWidth/ originalImageWidth * (scale) ;
 	}
 
-	protected double getZoom(double newScale){
+	protected double getZoom(double newScale) {
 		return windowWidth/ originalImageWidth * (newScale) ;
+	}
+
+	public double getScaleStep() {
+		return scaleStep;
+	}
+
+	public void setScaleStep(double scaleStep) {
+		this.scaleStep = scaleStep;
+	}
+
+	public double getZoomMax() {
+		return zoomMax;
+	}
+
+	public void setZoomMax(double zoomMax) {
+		this.zoomMax = zoomMax;
 	}
 
 }

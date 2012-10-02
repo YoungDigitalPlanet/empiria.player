@@ -38,12 +38,14 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 	}
 
 	@Override
-	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale,String title) {
+	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale, double scaleStep, double zoomMax, String title) {
 		setWindowWidth(wndWidth);
 		setWindowHeight(wndHeight);
 		setScale(initialScale);
+		setScaleStep(scaleStep);
+		setZoomMax(zoomMax);
 
-		windowPanel.setSize(getWindowWidth() + "px",getWindowHeight() + "px");
+		windowPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
 		windowPanel.getElement().getStyle().setOverflow(Overflow.AUTO);
 
 		image.setUrl(imageUrl);
@@ -110,12 +112,12 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 
 	@Override
 	public void zoomIn() {
-		scaleBy(SCALE_STEP);
+		scaleBy(getScaleStep());
 	}
 
 	@Override
 	public void zoomOut() {
-		scaleBy(1.0d/SCALE_STEP);
+		scaleBy(1.0d/getScaleStep());
 	}
 
 	private void centerImage(){
@@ -126,8 +128,8 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 
 	private void scaleBy(double dScale){
 		double newScale;
-		if (getZoom()*dScale > ZOOM_MAX) {
-			newScale = getOriginalImageWidth() / getWindowWidth() * (ZOOM_MAX);
+		if (getZoom()*dScale > getZoomMax()) {
+			newScale = getOriginalImageWidth() / getWindowWidth() * (getZoomMax());
 		} else if (getScale() * dScale > getScaleMin()) {
 			newScale = getScale()*dScale;
 		} else {

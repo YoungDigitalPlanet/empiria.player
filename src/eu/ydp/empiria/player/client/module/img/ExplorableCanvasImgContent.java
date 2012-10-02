@@ -1,11 +1,5 @@
 package eu.ydp.empiria.player.client.module.img;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH;
-
-import java.util.Map;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.ErrorEvent;
@@ -28,14 +22,10 @@ import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window.Navigator;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -48,78 +38,44 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.NumberUtils;
 
-public class ExplorableCanvasImgContent extends Composite implements ImgContent {
-
-
-	private static ExplorableCanvasImgContentUiBinder uiBinder = GWT.create(ExplorableCanvasImgContentUiBinder.class);
-
+public class ExplorableCanvasImgContent extends AbstractExplorableImgContentBase {
+	
+	private static ExplorableCanvasImgContentUiBinder uiBinder = GWT.create(ExplorableCanvasImgContentUiBinder.class);	
 	interface ExplorableCanvasImgContentUiBinder extends UiBinder<Widget, ExplorableCanvasImgContent> {	}
 
-	@UiField
-	protected FlowPanel mainPanel;
-	@UiField
-	protected FlowPanel windowPanel;
 	@UiField
 	protected FlowPanel imagePanel;
 	@UiField
 	protected CanvasAdapter imageCanvas;
 	@UiField
-	protected PushButton zoominButton;
-	@UiField
-	protected PushButton zoomoutButton;
-	@UiField
 	protected PanelWithScrollbars scrollbarsPanel;
 
 	private Image tempImage;
-	private final Context2dAdapter context2d;
-	private final int REDRAW_INTERVAL_MIN = 50;
+	private Context2dAdapter context2d;
+	private static final int REDRAW_INTERVAL_MIN = 50;
 	private FocusWidget focusCanvas;
-	private double scale = 2.0d;
 	private double scaleMin = 1.0d;
-	private final double ZOOM_MAX = 8;
-	private final double SCALE_STEP = 1.2d;
 	private double imgX = 0;
 	private double imgY = 0;
 	private double prevX, prevY;
-	private boolean moving = false;
-	private boolean touchingButtons = false;
-	private boolean zoomInClicked = false;
+	private boolean moving = false;	
 	private double originalImageWidth, originalImageHeight;
-	private double originalImageAspectRatio;
-	private double windowWidth = 300, windowHeight = 300;
-	private double prevDistance = -1;
-	private Map<String, String> styles;
+	private double originalImageAspectRatio;	
+	private double prevDistance = -1;	
 	private long lastRedrawTime = -1;
 	private boolean imageLoaded = false;
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	private final Timer startZoomTimer;
-	private final Timer zoomTimer;
-
-	public ExplorableCanvasImgContent() {
-		initWidget(uiBinder.createAndBindUi(this));
-		context2d = imageCanvas.getContext2d();
-
-		startZoomTimer = new Timer() {
-
-			@Override
-			public void run() {
-				zoomTimer.scheduleRepeating(200);
-			}
-		};
-
-		zoomTimer = new Timer() {
-
-			@Override
-			public void run() {
-				zoom();
-			}
-		};
+	
+	@Override
+	protected void initUiBinder() {
+		initWidget(uiBinder.createAndBindUi(this));		
 	}
 
 	@Override
-	public void init(Element element, ModuleSocket ms) {
+	public void init(Element element, ModuleSocket moduleSocket) {		
+		context2d = imageCanvas.getContext2d();
+		
 		tempImage = new Image(element.getAttribute("src"));
 		RootPanel.get().add(tempImage);
 		// TODO: try to put img on a div with visibility:hidden
@@ -151,18 +107,7 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 			}
 		});
 
-		styles = ms.getStyles(element);
-
-		String toReplace = "\\D";
-		if (styles.containsKey(EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL)){
-			scale = (double)(NumberUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL).replaceAll(toReplace, ""), 100))/100.0d;
-		}
-		if (styles.containsKey(EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH)){
-			windowWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH).replaceAll(toReplace, ""), 300);
-		}
-		if (styles.containsKey(EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT)){
-			windowHeight = NumberUtils.tryParseInt(styles.get(EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT).replaceAll(toReplace, ""), 300);
-		}
+		parseStyles(moduleSocket.getStyles(element));
 
 		imageCanvas.setCoordinateSpaceWidth((int)windowWidth);
 		imageCanvas.setCoordinateSpaceHeight((int)windowHeight);
@@ -256,7 +201,7 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 
 	}
 
-	private void onMoveMove(int x, int y){
+	private void onMoveMove(int x, int y) {
 		if (moving){
 
 			double dx = x - prevX;
@@ -276,16 +221,16 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 		}
 	}
 
-	private double getZoom(){
-		return windowWidth/ originalImageWidth * (scale) ;
+	private double getZoom() {
+		return windowWidth / originalImageWidth * (scale) ;
 	}
 
-	private void onMoveEnd(){
+	private void onMoveEnd() {
 		moving = false;
 		prevDistance = -1;
 	}
 
-	private void checkImageCoords(){
+	private void checkImageCoords() {
 
 		if (imgX + originalImageWidth / scale > originalImageWidth) {
 			imgX = originalImageWidth - (int)(originalImageWidth / scale) - 1;
@@ -306,13 +251,13 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 		}
 	}
 
-	private void centerImage(){
+	private void centerImage() {
 
 		imgX = (originalImageWidth - windowWidth * scale)/2 / scale;
 		imgY = (originalImageHeight - windowHeight * scale)/2 / scale;
 	}
 
-	private void redraw(boolean showScrollbars){
+	private void redraw(boolean showScrollbars) {
 
 		checkImageCoords();
 
@@ -349,78 +294,20 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 		}
 	}
 
-
-	@UiHandler("zoominButton")
-	public void zoomInButtonMouseDownHandler(MouseDownEvent event){
-		if (!touchingButtons) {
-			zoomIn();
-		}
-	}
-
-	@UiHandler("zoominButton")
-	public void zoomInButtonTouchStartHandler(TouchStartEvent event){
-		zoomIn();
-		touchingButtons = true;
-		startZoomTimer.schedule(500);
-	}
-
-	@UiHandler("zoominButton")
-	public void zoomInButtonMouseUpHandler(MouseUpEvent event){
-		cancelZoomTimers();
-	}
-
-	@UiHandler("zoominButton")
-	public void zoomInButtonTouchEndHandler(TouchEndEvent event){
-		cancelZoomTimers();
-	}
-
-	@UiHandler("zoomoutButton")
-	public void zoomOutButtonMouseDownHandler(MouseDownEvent event){
-		if (!touchingButtons) {
-			zoomOut();
-		}
-	}
-
-	@UiHandler("zoomoutButton")
-	public void zoomOutButtonTouchStartHandler(TouchStartEvent event){
-		zoomOut();
-		touchingButtons = true;
-		startZoomTimer.schedule(500);
-	}
-
-	@UiHandler("zoomoutButton")
-	public void zoomOutButtonMouseUpHandler(MouseUpEvent event){
-		cancelZoomTimers();
-	}
-
-	@UiHandler("zoomoutButton")
-	public void zoomOutButtonTouchEndHandler(TouchEndEvent event){
-		cancelZoomTimers();
-	}
-
-	private void zoomIn() {
-		zoomInClicked = true;
-		zoom();
-	}
-
-	private void zoomOut() {
-		zoomInClicked = false;
-		zoom();
-	}
-
-	private void zoom(){
+	@Override
+	protected void zoom() {
 		if (zoomInClicked){
-			scaleBy(SCALE_STEP);
+			scaleBy(scaleStep);
 		} else {
-			scaleBy(1.0d/SCALE_STEP);
+			scaleBy(1.0d/scaleStep);
 		}
 		redraw(true);
 	}
 
-	private void scaleBy(double dScale){
+	private void scaleBy(double dScale) {
 		double newScale;
-		if (getZoom()*dScale > ZOOM_MAX) {
-			newScale = originalImageWidth / windowWidth * (ZOOM_MAX);
+		if (getZoom()*dScale > zoomMax) {
+			newScale = originalImageWidth / windowWidth * (zoomMax);
 		} else if (scale * dScale > scaleMin) {
 			newScale = scale*dScale;
 		} else {
@@ -436,12 +323,7 @@ public class ExplorableCanvasImgContent extends Composite implements ImgContent 
 
 	}
 
-	private void cancelZoomTimers() {
-		zoomTimer.cancel();
-		startZoomTimer.cancel();
-	}
-
-	private void updateScrollbars(boolean showScrollbars){
+	private void updateScrollbars(boolean showScrollbars) {
 		double posX = imgX*getZoom();
 		double posY = imgY*getZoom();
 		scrollbarsPanel.setHorizontalPosition(posX, windowWidth, originalImageWidth*getZoom(), showScrollbars);

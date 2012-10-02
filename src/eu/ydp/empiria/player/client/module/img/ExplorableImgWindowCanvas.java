@@ -50,7 +50,6 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	private final static int REDRAW_INTERVAL_MIN = 50;
 	private double imgX = 0;
 	private double imgY = 0;
-	private FocusWidget focusCanvas;
 
 	private double prevX, prevY;
 	private boolean moving = false;
@@ -66,11 +65,13 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	}
 
 	@Override
-	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale,String title) {//NOPMD
+	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale, double scaleStep, double zoomMax, String title) {//NOPMD		
 		setWindowWidth(wndWidth);
 		setWindowHeight(wndHeight);
 		setScale(initialScale);
-
+		setScaleStep(scaleStep);
+		setZoomMax(zoomMax);
+		
 		tempImage = new Image(imageUrl);
 		RootPanel.get().add(tempImage);
 		// TODO: try to put img on a div with visibility:hidden
@@ -111,7 +112,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		imageCanvas.setHeight(getWindowHeight() + "px");
 		imageCanvas.setTitle(title);
 		scrollbarsPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
-		focusCanvas = (FocusWidget)imageCanvas.asWidget();
+		FocusWidget focusCanvas = (FocusWidget)imageCanvas.asWidget();
 		focusCanvas.addTouchStartHandler(new TouchStartHandler() {
 
 			@Override
@@ -268,8 +269,8 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	private void scaleBy(double dScale){
 		double newScale;
-		if (getZoom()*dScale > ZOOM_MAX) {
-			newScale = getOriginalImageWidth() / getWindowWidth() * (ZOOM_MAX);
+		if (getZoom()*dScale > getZoomMax()) {
+			newScale = getOriginalImageWidth() / getWindowWidth() * (getZoomMax());
 		} else if (getScale() * dScale > getScaleMin()) {
 			newScale = getScale()*dScale;
 		} else {
@@ -321,13 +322,13 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	@Override
 	public void zoomIn() {
-		scaleBy(SCALE_STEP);
+		scaleBy(getScaleStep());
 		redraw(true);
 	}
 
 	@Override
 	public void zoomOut() {
-		scaleBy(1.0d/SCALE_STEP);
+		scaleBy(1.0d/getScaleStep());
 		redraw(true);
 	}
 }
