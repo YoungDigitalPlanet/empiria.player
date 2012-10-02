@@ -29,17 +29,17 @@ public class AbstractExplorableImgContentBaseJUnitTest {
 	@Test
 	public void parseStyles() {
 		Map<String, String> styles = new HashMap<String, String>();
-		styles.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL, "100");
-		styles.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_STEP, "2");
-		styles.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_MAX, "8");
+		styles.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL, "110%");
+		styles.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_STEP, "30%");
+		styles.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_MAX, "500%");
 		styles.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH, "800");
 		styles.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT, "600");
 		
 		explorableImgContent.parseStyles(styles);
 		
-		assertThat(explorableImgContent.scale, equalTo(1d));
-		assertThat(explorableImgContent.scaleStep, equalTo(2d));
-		assertThat(explorableImgContent.zoomMax, equalTo(8d));
+		assertThat(explorableImgContent.scale, equalTo(1.1d));
+		assertThat(explorableImgContent.scaleStep, equalTo(1.3d));
+		assertThat(explorableImgContent.zoomMax, equalTo(5d));
 		assertThat(explorableImgContent.windowWidth, equalTo(800));
 		assertThat(explorableImgContent.windowHeight, equalTo(600));
 	}	
