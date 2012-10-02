@@ -7,6 +7,8 @@ package eu.ydp.empiria.player.client.resources;
 @SuppressWarnings("PMD")
 public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL = "-empiria-img-explorable-scale-initial";
+	public static final String EMPIRIA_IMG_EXPLORABLE_SCALE_STEP = "-empiria-img-explorable-scale-step";
+	public static final String EMPIRIA_IMG_EXPLORABLE_SCALE_MAX = "-empiria-img-explorable-scale-max";
 	public static final String EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT = "-empiria-img-explorable-window-height";
 	public static final String EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH = "-empiria-img-explorable-window-width";
 	public static final String EMPIRIA_IMG_LABEL_LINE_COLOR = "-empiria-img-label-line-color";
