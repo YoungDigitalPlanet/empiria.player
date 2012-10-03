@@ -163,8 +163,9 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 
 	@Override
 	public void setCurrentTime(double time) {
-		media.setCurrentTime(time);
-
+		if ( !Double.isNaN(media.getDuration()) ) {
+			media.setCurrentTime(time);			
+		}
 	}
 
 	@Override

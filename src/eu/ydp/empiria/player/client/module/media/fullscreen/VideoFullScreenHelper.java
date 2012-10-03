@@ -55,10 +55,6 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 		}
 	}
 
-	protected void pauseCurrentVideo() {
-		eventsBus.fireEvent(new MediaEvent(MediaEventTypes.PAUSE));
-	}
-
 	protected FlowPanel parseTemplate(MediaWrapper<?> mediaWrapper, Element template, FlowPanel parent) {
 		parser.setMediaWrapper(mediaWrapper);
 		parser.setFullScreen(true);
@@ -97,7 +93,6 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 
 	public void openFullScreen(MediaWrapper<?> mediaWrapper, Element template) {
 		if (mediaWrapper != null && template != null) {
-			pauseCurrentVideo();
 			clearFullScreenView();
 			lastMediaWrapper = mediaWrapper;
 			VideoFullScreenViewImpl parent = getFullScreenView();

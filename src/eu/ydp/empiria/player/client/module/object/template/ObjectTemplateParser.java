@@ -68,6 +68,7 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 		}
 		if (controller instanceof FullScreenMediaButton) {
 			((FullScreenMediaButton) controller).setFullScreenTemplate(fullScreenTemplate);
+			((FullScreenMediaButton) controller).setMediaWrapper(mediaDescriptor);
 			((FullScreenMediaButton) controller).setFullScreenMediaWrapper(fullScreenMediaWrapper);
 		}
 

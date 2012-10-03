@@ -65,7 +65,11 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	 * @return
 	 */
 	protected int getButtonWidth() {
-		return button.getElement().getAbsoluteRight() - button.getElement().getAbsoluteLeft();
+		int buttonWidth = 0;
+		if (button != null) {
+			buttonWidth = button.getElement().getAbsoluteRight() - button.getElement().getAbsoluteLeft();
+		}
+		return buttonWidth;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
@@ -35,14 +36,14 @@ public class MediaWrappersPair implements MediaEventHandler {
 
 	
 	private void fireSetCurrentTime(MediaWrapper<?> mediaWrapper,double time){
-		MediaEvent event2 = new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, mediaWrapper);
-		event2.setCurrentTime(time);
-		eventsBus.fireAsyncEventFromSource(event2, mediaWrapper);
-
+		MediaEvent event = new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, mediaWrapper);
+		event.setCurrentTime(time);
+		eventsBus.fireAsyncEventFromSource(event, mediaWrapper);
 	}
 	
 	private void setCurrentTimeForMedia(final MediaWrapper<?> toSetMediaWrapper, final MediaWrapper<?> readFromMediaWrapper) {
 		if (toSetMediaWrapper.getMediaObject() instanceof MediaBase) {
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, readFromMediaWrapper), readFromMediaWrapper);
 			MediaBase media = (MediaBase) toSetMediaWrapper.getMediaObject();
 			if (media.getReadyState() != MediaElement.HAVE_NOTHING) {
 				eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), toSetMediaWrapper, new MediaEventHandler() {
@@ -66,6 +67,9 @@ public class MediaWrappersPair implements MediaEventHandler {
 		// synchronizujemy sciezki
 		if (event.getType() == MediaEventTypes.ON_FULL_SCREEN_OPEN) {
 			setCurrentTimeForMedia(fullScreanMediaWrapper, defaultMediaWrapper);
+			Video mediaObject = (Video) defaultMediaWrapper.getMediaObject();
+			Video fullScreenMediaObject = (Video) fullScreanMediaWrapper.getMediaObject();
+			fullScreenMediaObject.setPoster(mediaObject.getPoster());
 		} else if (event.getType() == MediaEventTypes.ON_FULL_SCREEN_EXIT) {
 			setCurrentTimeForMedia(defaultMediaWrapper, fullScreanMediaWrapper);
 		}
