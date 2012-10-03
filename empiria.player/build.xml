@@ -151,6 +151,7 @@
   	    <fileset dir="${bin.dir}">
   	        <include name="**/*.class" />
   	        <exclude name="**/*Test.class" />
+  	        <exclude name="**/com/google/**" />
   	    </fileset>
   	</cobertura-instrument>
   </target>
@@ -264,6 +265,22 @@
 	
 	<target name="version.file">
 		<echo file="${version.file}">${revision}</echo>
+	</target>
+	
+
+	<property name="sonar-build-xml" value="${lib.dir}/sonar-build.xml" />
+
+	<target name="sonar" depends="build,test.dev">
+		<ant target="sonar-java" antfile="${sonar-build-xml}">
+			<property name="sonar.projectName" value="${ant.project.name}" />
+			<property name="sonar.projectVersion" value="${revision}" />
+			<property name="sonar.sources" value="${src.dir}" />
+			<property name="sonar.exclusions" value="ca/**,com/google/**" />
+			<property name="sonar.binaries" value="war/WEB-INF/classes,bin.test" />
+			<property name="sonar.tests" value="${base.dir}/test" />
+			<property name="sonar.surefire.reportsPath" value="reports/htmlunit.dev" />
+			<property name="sonar.cobertura.reportPath" value="${cobertura.report.dir}/coverage.xml" />
+		</ant>
 	</target>
 
 </project>
