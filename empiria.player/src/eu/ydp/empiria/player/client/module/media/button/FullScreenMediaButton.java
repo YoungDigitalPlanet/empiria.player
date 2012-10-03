@@ -3,8 +3,10 @@ package eu.ydp.empiria.player.client.module.media.button;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
+import eu.ydp.empiria.player.client.module.media.html5.HTML5MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
@@ -22,10 +24,15 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private boolean fullScreenOpen = false;
 	private Element fullScreenTemplate;
+	private MediaWrapper<?> mediaWrapper;
 	private MediaWrapper<?> fullScreenMediaWrapper;
 
 	public FullScreenMediaButton() {
 		super(PlayerGinjector.INSTANCE.getStyleNameConstants().QP_MEDIA_FULLSCREEN_BUTTON());
+	}
+	
+	public void setMediaWrapper(MediaWrapper<?> mediaDescriptor) {
+		this.mediaWrapper = mediaDescriptor;
 	}
 
 	public void setFullScreenMediaWrapper(MediaWrapper<?> fullScreenMediaWrapper) {
@@ -43,6 +50,7 @@ public class FullScreenMediaButton extends AbstractMediaButton<FullScreenMediaBu
 			fullScreenHelper.closeFullScreen();
 		} else if (!isInFullScreen()) {
 			fullScreenHelper.openFullScreen(fullScreenMediaWrapper, fullScreenTemplate);
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, fullScreenMediaWrapper), fullScreenMediaWrapper);
 		}
 	}
 
