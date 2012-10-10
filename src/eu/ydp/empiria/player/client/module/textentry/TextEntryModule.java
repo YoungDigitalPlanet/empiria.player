@@ -80,7 +80,7 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 	
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	
-	private DefaultBindingGroupIdentifier widthBindingIdentifier;
+	DefaultBindingGroupIdentifier widthBindingIdentifier;
 	
 	private DefaultBindingGroupIdentifier maxlengthBindingIdentifier;
 	
@@ -376,14 +376,13 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		placeholder.add(viewPanel);
 	}
 	
-	private void setDimensions(TextBox textBox, Element moduleElement){
-		Map<String, String> styles = getModuleSocket().getStyles(moduleElement);
+	void setDimensions(TextBox textBox, Element moduleElement){
+		Map<String, String> styles = getStyles(moduleElement);
 		
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH)) {
 			maxlengthBindingIdentifier = new DefaultBindingGroupIdentifier("");
 			maxLength = styles.get(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH).trim().toUpperCase();
-		}
-		else if (moduleElement.hasAttribute("expectedLength")) {
+		} else if (moduleElement.hasAttribute("expectedLength")) {
 			textBox.setMaxLength(XMLUtils.getAttributeAsInt(moduleElement, "expectedLength"));
 		}
 		
@@ -391,31 +390,43 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 			fontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE), null);
 		}
 		
-		textBox.getElement().getStyle().setFontSize(fontSize, Unit.PX);
-		
-		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH)){
+		setFontSize(fontSize, Unit.PX);
+				
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH)) {
 			Integer gapWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH), null);
 			textBox.setWidth(gapWidth + "px");
-		} 
-		
-		GapWidthMode widthMode = getGapWidthMode(styles);
-		
-		if (widthMode == GapWidthMode.GROUP){
-			if (moduleElement.hasAttribute("widthBindingGroup")){
-				widthBindingIdentifier = new DefaultBindingGroupIdentifier(moduleElement.getAttribute("widthBindingGroup"));
-			} else {
-				widthBindingIdentifier = new DefaultBindingGroupIdentifier("");
-			}
-		}else if(widthMode == GapWidthMode.GAP){
-			if (getResponse().groups.size() > 0) {
-				widthBindingIdentifier = new DefaultBindingGroupIdentifier(getResponse().groups.keySet().iterator().next());
-			} else {
-				int longestAnswer = getLongestAnswerLength();
-				textBox.setWidth((longestAnswer * fontSize) + "px");
+		} else {
+			GapWidthMode widthMode = getGapWidthMode(styles);
+			
+			if (widthMode == GapWidthMode.GROUP) {
+				if (moduleElement.hasAttribute("widthBindingGroup")) {
+					widthBindingIdentifier = new DefaultBindingGroupIdentifier(moduleElement.getAttribute("widthBindingGroup"));
+				} else {
+					widthBindingIdentifier = new DefaultBindingGroupIdentifier("");
+				}
+			} else if (widthMode == GapWidthMode.GAP) {
+				if (getResponse().groups.size() > 0) {
+					widthBindingIdentifier = new DefaultBindingGroupIdentifier(getResponse().groups.keySet().iterator().next());
+				} else {
+					int longestAnswer = getLongestAnswerLength();
+					textBox.setWidth((longestAnswer * fontSize) + "px");
+				}
 			}
 		}
 	}
+
+	/**
+	 * @param moduleElement
+	 * @return
+	 */
+	Map<String, String> getStyles(Element moduleElement) {
+		return getModuleSocket().getStyles(moduleElement);
+	}
 	
+	void setFontSize(Integer value, Unit unit) {
+		textBox.getElement().getStyle().setFontSize(value, unit);
+	}
+
 	private GapWidthMode getGapWidthMode(Map<String, String> styles){
 		GapWidthMode widthMode = null;
 		
@@ -427,4 +438,5 @@ public class TextEntryModule extends OneViewInteractionModuleBase implements Fac
 		
 		return widthMode;
 	}
+	
 }
