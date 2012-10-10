@@ -401,35 +401,30 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	}
 
 	private int processCheckMistakes(Response response, Outcome moduleLastChange){
-
 		int mistakesCounter = 0;
 
 		if (response.cardinality == Cardinality.SINGLE  ||  response.cardinality == Cardinality.MULTIPLE){
-
 			for (int v = 0 ; v < moduleLastChange.values.size() ; v ++){
 				String currVal = moduleLastChange.values.get(v);
+				
 				if (currVal.startsWith("+")) {
 					currVal = currVal.substring(1);
 				} else {
 					continue;
 				}
+				
+				boolean answerFound = false;
 
+				if (response.correctAnswers.containsAnswer(currVal)){
+					answerFound = true;
+				}
 
-					boolean answerFound = false;
-
-					if (response.correctAnswers.containsAnswer(currVal)){
-						answerFound = true;
-					}
-
-					if (!answerFound){
-						mistakesCounter++;
-					}
-
+				if (!answerFound){
+					mistakesCounter++;
+				}
 			}
 		} else if (response.cardinality == Cardinality.ORDERED){
-
 			for (int v = 0 ; v < response.correctAnswers.getResponseValuesCount()  &&  v < moduleLastChange.values.size() ; v ++){
-
 				String[] changeSplited = moduleLastChange.values.get(v).split("->");
 
 				for (String currAnswer : response.correctAnswers.getResponseValue(v).getAnswers()){
@@ -437,12 +432,12 @@ public class DefaultVariableProcessor extends VariableProcessor {
 						continue;
 					}
 
-					if (changeSplited[0].equals(currAnswer)  &&
-						!changeSplited[1].equals(currAnswer)){
+					if ( !changeSplited[1].equals(currAnswer) ) {
 						mistakesCounter++;
 						break;
 					}
 				}
+				
 				if (mistakesCounter > 0) {
 					break;
 				}

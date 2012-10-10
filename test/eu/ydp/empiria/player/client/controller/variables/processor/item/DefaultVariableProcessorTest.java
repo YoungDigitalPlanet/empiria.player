@@ -225,6 +225,48 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		assertEquals("1", outcomes.get("DONE").values.get(0));
 	}
 	
+	public void testCheckingMistakesInOrderedIsWrong() {
+		DefaultVariableProcessor proc = new DefaultVariableProcessor();
+		
+		HashMap<String, Response> responses = new HashMap<String, Response>();
+		HashMap<String, Outcome> outcomes = new HashMap<String, Outcome>();
+		
+		String responseXmlString = "<responseDeclaration baseType='string' cardinality='ordered' identifier='RESPONSE'><correctResponse><value forIndex='0'>ChoiceA</value><value forIndex='1'>ChoiceB</value></correctResponse></responseDeclaration>";
+		Response resp = new Response(XMLParser.parse(responseXmlString).getDocumentElement());
+		resp.setModuleAdded();
+		responses.put("RESPONSE", resp);
+		
+		proc.ensureVariables(responses, outcomes);
+		
+		resp.values.add("ChoiceC");
+		resp.values.add("ChoiceD");
+		outcomes.get("RESPONSE-LASTCHANGE").values = DefaultVariableProcessorHelper.getDifference(responses.get("RESPONSE"), outcomes.get("RESPONSE-PREVIOUS"));
+		proc.processResponseVariables(responses, outcomes, true);
+		assertTrue(outcomes.containsKey("ERRORS"));
+		assertEquals("1", outcomes.get("ERRORS").values.get(0));
+	}
+	
+	public void testCheckingMistakesInOrderedIsCorrect() {
+		DefaultVariableProcessor proc = new DefaultVariableProcessor();
+		
+		HashMap<String, Response> responses = new HashMap<String, Response>();
+		HashMap<String, Outcome> outcomes = new HashMap<String, Outcome>();
+		
+		String responseXmlString = "<responseDeclaration baseType='string' cardinality='ordered' identifier='RESPONSE'><correctResponse><value forIndex='0'>ChoiceA</value><value forIndex='1'>ChoiceB</value></correctResponse></responseDeclaration>";
+		Response resp = new Response(XMLParser.parse(responseXmlString).getDocumentElement());
+		resp.setModuleAdded();
+		responses.put("RESPONSE", resp);
+		
+		proc.ensureVariables(responses, outcomes);
+		
+		resp.values.add("ChoiceA");
+		resp.values.add("ChoiceB");
+		outcomes.get("RESPONSE-LASTCHANGE").values = DefaultVariableProcessorHelper.getDifference(responses.get("RESPONSE"), outcomes.get("RESPONSE-PREVIOUS"));
+		proc.processResponseVariables(responses, outcomes, true);
+		assertTrue(outcomes.containsKey("ERRORS"));
+		assertEquals("0", outcomes.get("ERRORS").values.get(0));
+	}
+	
 	public void testVariableProcessingCommutativeWrong(){
 		DefaultVariableProcessor proc = new DefaultVariableProcessor();
 		
