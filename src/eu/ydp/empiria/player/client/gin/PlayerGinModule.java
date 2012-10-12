@@ -25,8 +25,6 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.empiria.player.client.util.scheduler.SchedulerImpl;
-import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
-import eu.ydp.empiria.player.client.util.style.NativeStyleHelperImpl;
 import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.empiria.player.client.view.player.PageViewCache;
 import eu.ydp.empiria.player.client.view.player.PlayerContentView;
@@ -64,7 +62,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(MediaControllerFactory.class).to(MediaControllerFactoryImpl.class).in(Singleton.class);
 		bind(VideoFullScreenHelper.class).in(Singleton.class);
 		bind(VideoTextTrackElementPresenter.class).to(VideoTextTrackElementView.class);
-		bind(NativeStyleHelper.class).to(NativeStyleHelperImpl.class);
+	//	bind(NativeStyleHelper.class).to(NativeStyleHelperImpl.class);
 		bind(ModuleHandlerManager.class).in(Singleton.class);
 		//factory
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
