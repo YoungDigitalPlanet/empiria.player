@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.media.html5;
 
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
+import com.google.gwt.media.client.Video;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
@@ -32,16 +33,20 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	public HTML5MediaWrapper(Media media) {
 		setMediaObject(media.getMedia());
 		
-		attachHandlerImpl = new AttachHandlerImpl();
-		attachHandlerImpl.setMediaBase(mediaBase);
-		attachHandlerImpl.setMediaExecutor(mediaExecutor);
-		attachHandlerImpl.setMediaWrapper(this);
-		mediaBase.addAttachHandler(attachHandlerImpl);
+		if (media instanceof Video){
+			attachHandlerImpl = new AttachHandlerImpl();
+			attachHandlerImpl.setMediaBase(mediaBase);
+			attachHandlerImpl.setMediaExecutor(mediaExecutor);
+			attachHandlerImpl.setMediaWrapper(this);
+			mediaBase.addAttachHandler(attachHandlerImpl);
+		}
 	}
 	
 	public void setMediaExecutor(HTML5MediaExecutor mediaExecutor) {
 		this.mediaExecutor = mediaExecutor;
-		attachHandlerImpl.setMediaExecutor(mediaExecutor);
+		if (attachHandlerImpl != null){
+			attachHandlerImpl.setMediaExecutor(mediaExecutor);
+		}
 	}
 
 	@Override
