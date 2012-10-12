@@ -18,7 +18,6 @@ import eu.ydp.empiria.player.client.util.SchedulerImpl;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
-import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
 import eu.ydp.gwtutil.test.AbstractTestModule;
@@ -73,10 +72,10 @@ public class TestGuiceModule extends AbstractTestModule {
 		return new GwtPanelFactoryMock();
 	}
 
-	@Provides
-	@Singleton
-	public NativeStyleHelper getNativeStyleHelper(){
-		return mock(NativeStyleHelper.class);
-	}
+//	@Provides
+//	@Singleton
+//	public NativeStyleHelper getNativeStyleHelper(){
+//		return mock(NativeStyleHelper.class);
+//	}
 
 }
