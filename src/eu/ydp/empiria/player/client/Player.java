@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.version.Version;
 import eu.ydp.empiria.player.client.view.ViewEngine;

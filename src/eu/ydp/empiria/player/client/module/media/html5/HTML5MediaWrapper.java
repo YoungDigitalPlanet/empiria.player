@@ -5,8 +5,8 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.media.client.Video;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
@@ -28,11 +28,10 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	protected boolean ready = false;
 	protected HandlerRegistration handlerRegistration;
 	protected HTML5MediaExecutor mediaExecutor;
-	protected AttachHandlerImpl attachHandlerImpl; 
-	
+	protected AttachHandlerImpl attachHandlerImpl;
+
 	public HTML5MediaWrapper(Media media) {
 		setMediaObject(media.getMedia());
-		
 		if (media instanceof Video){
 			attachHandlerImpl = new AttachHandlerImpl();
 			attachHandlerImpl.setMediaBase(mediaBase);
@@ -41,7 +40,7 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 			mediaBase.addAttachHandler(attachHandlerImpl);
 		}
 	}
-	
+
 	public void setMediaExecutor(HTML5MediaExecutor mediaExecutor) {
 		this.mediaExecutor = mediaExecutor;
 		if (attachHandlerImpl != null){
@@ -58,7 +57,7 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	public MediaBase getMediaObject() {
 		return mediaBase;
 	}
-	
+
 	public void setMediaObject(MediaBase mediaBase) {
 		this.mediaBase = mediaBase;
 		mediaBase.setPreload(MediaElement.PRELOAD_METADATA);
@@ -80,7 +79,7 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 
 	@Override
 	public double getDuration() {
-		double duration = mediaBase.getDuration(); 
+		double duration = mediaBase.getDuration();
 		if (Double.isNaN(duration)) {
 			return 0;
 		} else {

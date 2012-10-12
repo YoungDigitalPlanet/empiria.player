@@ -2,13 +2,13 @@ package eu.ydp.empiria.player.client.controller.extensions.jswrappers;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;

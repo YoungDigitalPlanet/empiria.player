@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.dom.client.VideoElement;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -34,12 +34,12 @@ public class Video extends com.google.gwt.media.client.Video implements MediaEve
 			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), eventBusSource, this, new CurrentPageScope());
 		}
 	}
-	
+
 	@Override
 	protected void onUnload() {
 		pause();
 	}
-	
+
 	@Override
 	public void setPreload(String preload) {
 		super.setPreload(preload);
@@ -63,7 +63,7 @@ public class Video extends com.google.gwt.media.client.Video implements MediaEve
 		}
 		return video;
 	}
-	
+
 	public MediaWrapper<?> getEventBusSourceObject() {
 		return eventBusSource;
 	}

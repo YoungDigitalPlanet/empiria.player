@@ -7,7 +7,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;

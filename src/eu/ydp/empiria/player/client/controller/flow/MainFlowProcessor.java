@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -13,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowComm
 import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventType;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.util.config.OptionsReader;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;

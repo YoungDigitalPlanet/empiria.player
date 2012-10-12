@@ -8,12 +8,12 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;

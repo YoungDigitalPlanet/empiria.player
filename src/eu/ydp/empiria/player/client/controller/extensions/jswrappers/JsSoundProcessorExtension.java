@@ -6,13 +6,13 @@ import java.util.Map;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.SourceUtil;

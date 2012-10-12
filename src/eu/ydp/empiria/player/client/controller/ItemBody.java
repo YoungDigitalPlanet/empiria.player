@@ -11,7 +11,6 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
@@ -21,7 +20,6 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
@@ -38,15 +36,15 @@ import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 public class ItemBody implements WidgetWorkflowListener {
 
 	public List<IModule> modules;
-	
+
 	protected ParenthoodManager parenthood;
 
 	protected InteractionEventsListener interactionEventsListener;
 	protected DisplayContentOptions options;
 	protected ModuleSocket moduleSocket;
 	protected ModulesRegistrySocket modulesRegistrySocket;
-	private ModuleHandlerManager moduleHandlerManager;
-	
+	private final ModuleHandlerManager moduleHandlerManager;
+
 	protected ItemBodyModule itemBodyModule;
 
 	private JSONArray stateAsync;
@@ -60,27 +58,27 @@ public class ItemBody implements WidgetWorkflowListener {
 		this.options = options;
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.moduleHandlerManager = moduleHandlerManager;
-		
+
 		parenthood = new ParenthoodManager();
-		
+
 		this.interactionEventsListener = interactionEventsListener;
 
 	}
 
 	public Widget init(Element itemBodyElement) {
-		
+
 		ModulesInstalator modulesInstalator = new ModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
 		BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
-		
-		itemBodyModule = new ItemBodyModule(); 
+
+		itemBodyModule = new ItemBodyModule();
 		modulesInstalator.setInitialParent(itemBodyModule);
 		itemBodyModule.initModule(itemBodyElement, moduleSocket, interactionEventsListener, generator);
-		
+
 		modules = new ArrayList<IModule>();
 		modules.add(itemBodyModule);
 		modules.addAll(modulesInstalator.installMultiViewUniqueModules());
 		modules.addAll(modulesInstalator.getInstalledSingleViewModules());
-		
+
 		for (IModule module : modules){
 			moduleHandlerManager.registerModule(module);
 		}
@@ -88,11 +86,12 @@ public class ItemBody implements WidgetWorkflowListener {
 		for (IModule currModule : modules) {
 			if (currModule instanceof IUniqueModule){
 				Response currResponse = moduleSocket.getResponse( ((IUniqueModule) currModule).getIdentifier() );
-				if (currResponse != null)
+				if (currResponse != null) {
 					currResponse.setModuleAdded();
+				}
 			}
 		}
-		
+
 		return itemBodyModule.getView();
 
 
@@ -100,10 +99,12 @@ public class ItemBody implements WidgetWorkflowListener {
 
 	// ------------------------- EVENTS --------------------------------
 
+	@Override
 	public void onLoad() {
 		for (IModule currModule : modules) {
-			if (currModule instanceof ILifecycleModule)
+			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onBodyLoad();
+			}
 		}
 
 		attached = true;
@@ -112,40 +113,44 @@ public class ItemBody implements WidgetWorkflowListener {
 	@Override
 	public void onUnload() {
 		for (IModule currModule : modules) {
-			if (currModule instanceof ILifecycleModule)
+			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onBodyUnload();
+			}
 		}
 	}
 
 	public void setUp() {
 		setState(stateAsync);
 		for (IModule currModule : modules) {
-			if (currModule instanceof ILifecycleModule)
+			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onSetUp();
+			}
 		}
 	}
 
 	public void start() {
 		for (IModule currModule : modules) {
-			if (currModule instanceof ILifecycleModule)
+			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onStart();
+			}
 		}
 	}
 
 	public void close() {
 		for (IModule currModule : modules) {
-			if (currModule instanceof ILifecycleModule)
+			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onClose();
+			}
 		}
 	}
-	
+
 	public int getModuleCount() {
 		return modules.size();
 	}
 
 	/**
 	 * Checks whether the item body contains at least one interactive module
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasInteractiveModules() {
@@ -158,9 +163,9 @@ public class ItemBody implements WidgetWorkflowListener {
 				}
 			}
 		}
-		return foundInteractive;		
+		return foundInteractive;
 	}
-	
+
 	// ------------------------- ACTIVITY --------------------------------
 
 	public void markAnswers(boolean mark) {
@@ -174,7 +179,7 @@ public class ItemBody implements WidgetWorkflowListener {
 			currGroup.markAnswers(mark);
 		}
 	}
-	
+
 	public void showCorrectAnswers(boolean show) {
 		itemBodyModule.showCorrectAnswers(show);
 	}
@@ -207,7 +212,7 @@ public class ItemBody implements WidgetWorkflowListener {
 			currGroup.lock(lo);
 		}
 	}
-	
+
 	private IGroup getGroupByGroupIdentifier(GroupIdentifier gi){
 		IGroup lastGroup = null;
 		for (IModule currModule : modules) {
@@ -220,18 +225,19 @@ public class ItemBody implements WidgetWorkflowListener {
 		}
 		return lastGroup;
 	}
-	
+
 	// ------------------------- STATEFUL --------------------------------
-	
+
 	public JSONArray getState() {
 
 		JSONObject states = new JSONObject();
 
 		for (IModule currModule : modules) {
 			if (currModule instanceof IStateful
-					&& currModule instanceof IUniqueModule)
+					&& currModule instanceof IUniqueModule) {
 				states.put(((IUniqueModule) currModule).getIdentifier(),
 						((IStateful) currModule).getState());
+			}
 		}
 
 		JSONArray statesArr = new JSONArray();
@@ -250,22 +256,23 @@ public class ItemBody implements WidgetWorkflowListener {
 
 					if (newState.isArray() != null  &&  newState.isArray().size() > 0){
 						JSONObject stateObj = newState.isArray().get(0).isObject();
-	
+
 						for (int i = 0; i < modules.size(); i++) {
 							if (modules.get(i) instanceof IStateful
 									&& modules.get(i) instanceof IUniqueModule) {
 								String curridentifier = ((IUniqueModule) modules
 										.get(i)).getIdentifier();
-	
+
 								if (curridentifier != null && curridentifier != "") {
-	
+
 									if (stateObj.containsKey(curridentifier)) {
 										JSONValue currState = stateObj
 												.get(curridentifier);
 										if (currState != null
-												&& currState.isArray() != null)
+												&& currState.isArray() != null) {
 											((IStateful) modules.get(i))
 													.setState(currState.isArray());
+										}
 									}
 								}
 							}
@@ -287,7 +294,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
 	private native JavaScriptObject createJsSocket()/*-{
 		var socket = {};
-		var instance = this; 
+		var instance = this;
 		socket.getModuleSockets = function(){
 			return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
 		}

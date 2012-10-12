@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client;
+package eu.ydp.empiria.player.client.gin;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.inject.client.GinModules;
@@ -12,10 +12,13 @@ import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PageEventsHandler;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.view.ViewEngine;
 import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.empiria.player.client.view.player.PageViewCache;
@@ -43,5 +46,9 @@ public interface PlayerGinjector extends Ginjector {
 	PageEventsHandler getPageEvents();
 	ObjectTemplateParser<?>  getObjectTemplateParser();
 	VideoFullScreenHelper getVideoFullScreenHelper();
+	MediaControllerFactory getControllerFactory();
+//	ConnectionItemFactory getConnectionItemFactory();
+	PageScopeFactory getPageScopeFactory();
+	PositionHelper getPositionHelper();
 	ModuleHandlerManager getModuleHandlerManager();
 }

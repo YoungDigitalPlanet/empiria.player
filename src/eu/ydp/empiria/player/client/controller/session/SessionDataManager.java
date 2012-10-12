@@ -7,7 +7,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNull;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
@@ -19,6 +18,7 @@ import eu.ydp.empiria.player.client.controller.session.sockets.SessionSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;

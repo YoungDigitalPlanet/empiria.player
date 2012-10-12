@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.util.events.scope;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.controller.Page;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
 public class CurrentPageScope implements EventScope<CurrentPageScope> {
 	private int pageIndex = -1;
@@ -11,6 +13,7 @@ public class CurrentPageScope implements EventScope<CurrentPageScope> {
 		pageIndex = PlayerGinjector.INSTANCE.getPage().getCurrentPageNumber();
 	}
 
+	@Inject
 	public CurrentPageScope(Page page) {
 		pageIndex = page.getCurrentPageNumber();
 	}

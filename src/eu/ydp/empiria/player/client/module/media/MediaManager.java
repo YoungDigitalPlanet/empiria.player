@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.module.media;
 import java.util.HashSet;
 import java.util.Set;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;

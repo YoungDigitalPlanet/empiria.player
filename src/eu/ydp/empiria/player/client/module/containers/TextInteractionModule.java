@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.containers;
 
 import com.google.gwt.user.client.Command;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -11,8 +11,8 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 public class TextInteractionModule extends BindingContainerModule<TextInteractionModule> implements IBookmarkable {
 
 	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
-	private BookmarkingHelper bookmarkingHelper;
-	
+	private final BookmarkingHelper bookmarkingHelper;
+
 	public TextInteractionModule(){
 		super();
 		panel.setStyleName(styleNames.QP_TEXTINTERACTION());
@@ -43,6 +43,6 @@ public class TextInteractionModule extends BindingContainerModule<TextInteractio
 	public String getBookmarkHtmlBody() {
 		return "text interaction fake body";
 	}
-	
+
 
 }

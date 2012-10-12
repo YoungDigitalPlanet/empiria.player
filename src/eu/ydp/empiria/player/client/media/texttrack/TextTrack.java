@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.media.texttrack;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.media.Audio;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;

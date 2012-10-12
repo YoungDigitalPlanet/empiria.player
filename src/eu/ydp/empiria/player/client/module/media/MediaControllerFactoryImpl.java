@@ -1,9 +1,10 @@
 package eu.ydp.empiria.player.client.module.media;
 
 import com.google.gwt.core.client.GWT;
+import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
-import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElement;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
 import eu.ydp.empiria.player.client.module.media.button.FullScreenMediaButton;
@@ -21,7 +22,8 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 
 	//@Inject
 	protected MediaProgressBar mediaProgerssBar;
-
+	@Inject
+	protected VideoTextTrackElementFactory videoTextTrackElementFactory;
 	@Override
 	public AbstractMediaController<?> get(ModuleTagName moduleType) {
 		AbstractMediaController<?> mediaController = null;
@@ -67,7 +69,7 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 		if (args == null || args.length == 0) {
 			controller = get(moduleType);
 		} else if (moduleType == ModuleTagName.MEDIA_TEXT_TRACK && args.length == 1 && args[0] instanceof TextTrackKind) {
-			controller = new VideoTextTrackElement((TextTrackKind) args[0]);
+			controller = videoTextTrackElementFactory.getVideoTextTrackElement((TextTrackKind) args[0]);
 		}
 		return controller;
 	}

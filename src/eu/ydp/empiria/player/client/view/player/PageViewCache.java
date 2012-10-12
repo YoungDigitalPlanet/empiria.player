@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.view.player;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.view.page.PageContentView;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
 import eu.ydp.empiria.player.client.view.page.PageViewSocketImpl;

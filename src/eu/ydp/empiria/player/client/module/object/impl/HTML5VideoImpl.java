@@ -4,7 +4,7 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 

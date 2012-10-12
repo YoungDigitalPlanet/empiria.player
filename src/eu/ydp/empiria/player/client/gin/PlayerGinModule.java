@@ -1,6 +1,7 @@
-package eu.ydp.empiria.player.client;
+package eu.ydp.empiria.player.client.gin;
 
 import com.google.gwt.inject.client.AbstractGinModule;
+import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.controller.Page;
@@ -11,6 +12,10 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
+import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
+import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
@@ -20,6 +25,8 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.empiria.player.client.util.scheduler.SchedulerImpl;
+import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
+import eu.ydp.empiria.player.client.util.style.NativeStyleHelperImpl;
 import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.empiria.player.client.view.player.PageViewCache;
 import eu.ydp.empiria.player.client.view.player.PlayerContentView;
@@ -56,8 +63,14 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class).in(Singleton.class);
 		bind(MediaControllerFactory.class).to(MediaControllerFactoryImpl.class).in(Singleton.class);
 		bind(VideoFullScreenHelper.class).in(Singleton.class);
+		bind(VideoTextTrackElementPresenter.class).to(VideoTextTrackElementView.class);
+		bind(NativeStyleHelper.class).to(NativeStyleHelperImpl.class);
 		bind(ModuleHandlerManager.class).in(Singleton.class);
+		//factory
+		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
+		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
+		//install(new GinFactoryModuleBuilder().build(ConnectionItemViewFactory.class));
+	///	install(new GinFactoryModuleBuilder().build(ConnectionItemFactory.class));
 	}
-
 
 }

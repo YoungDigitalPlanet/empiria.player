@@ -9,12 +9,12 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.media.client.MediaBase;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
@@ -164,7 +164,7 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor
 	@Override
 	public void setCurrentTime(double time) {
 		if ( !Double.isNaN(media.getDuration()) ) {
-			media.setCurrentTime(time);			
+			media.setCurrentTime(time);
 		}
 	}
 

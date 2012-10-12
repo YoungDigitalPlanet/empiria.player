@@ -5,7 +5,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
@@ -19,6 +18,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityPr
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -56,7 +56,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private StyleSocket styleSocket;
-	private ModuleHandlerManager moduleHandlerManager;
+	private final ModuleHandlerManager moduleHandlerManager;
 
 	public void setStyleSocket(StyleSocket styleSocket) {
 		this.styleSocket = styleSocket;
@@ -170,10 +170,10 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 	/**
 	 * Checks whether the item body contains at least one interactive module
-	 * 
+	 *
 	 * @return boolean
-	 */	
-	public boolean hasInteractiveModules() {		
+	 */
+	public boolean hasInteractiveModules() {
 		return (item != null && item.hasInteractiveModules());
 	}
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentFooterViewExtension;
@@ -26,6 +25,7 @@ import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsSoundProc
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStatefulExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.IStateful;
 
 public class ExtensionsManager implements IStateful {
@@ -163,7 +163,7 @@ public class ExtensionsManager implements IStateful {
 	public void setState(JSONArray newState) {
 		int counter = 0;
 		for (Extension ext : extensions) {
-			if (ext instanceof StatefulExtension  &&  counter < newState.size()) {
+			if (ext instanceof StatefulExtension) {
 				((StatefulExtension) ext).setState(newState.get(counter).isArray());
 				counter++;
 			}

@@ -11,12 +11,12 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Command;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleHandlerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
@@ -30,7 +30,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.StackMap;
 
-public class BookmarkProcessorExtension extends InternalExtension implements ModuleHandlerExtension, 
+public class BookmarkProcessorExtension extends InternalExtension implements ModuleHandlerExtension,
 	DataSourceDataSocketUserExtension, PlayerJsObjectModifierExtension, StatefulExtension {
 
 	private DataSourceDataSupplier dataSourceSupplier;
@@ -90,7 +90,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 
 	boolean accepts(IModule module) {
-		return module instanceof IBookmarkable  &&  !parentRegistered(module)  &&  !containsInteraction(module)  &&  
+		return module instanceof IBookmarkable  &&  !parentRegistered(module)  &&  !containsInteraction(module)  &&
 				((IBookmarkable)module).getBookmarkHtmlBody() != null  &&  ((IBookmarkable)module).getBookmarkHtmlBody().length() > 0;
 	}
 
@@ -190,7 +190,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 
 	private native void initJsApi(JavaScriptObject playerJsObject) /*-{
-		var self = this; 
+		var self = this;
 		playerJsObject.bookmarkingStart = function(bookmarkIndex){
 			self.@eu.ydp.empiria.player.client.controller.extensions.internal.BookmarkProcessorExtension::startBookmarking(I)(bookmarkIndex);
 		}
@@ -238,7 +238,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 					module.removeBookmarkingStyleName();
 				}
 			}
-		}		
+		}
 	}
 
 	Integer getBookmarkIndexForModule(IBookmarkable module) {

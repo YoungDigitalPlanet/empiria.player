@@ -23,7 +23,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -36,6 +37,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	}
 
 	private static MediaProgressBarUiBinder uiBinder = GWT.create(MediaProgressBarUiBinder.class);
+	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
 
 	@UiField(provided = true)
 	protected SimpleMediaButton button = new SimpleMediaButton(styleNames.QP_MEDIA_CENTER_PROGRESS_BUTTON(), false);

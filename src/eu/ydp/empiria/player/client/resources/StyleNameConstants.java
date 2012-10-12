@@ -440,6 +440,7 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
 
+
 	@DefaultStringValue("qp-bookmark-selectable")
 	public String QP_BOOKMARK_SELECTABLE();
 
@@ -452,5 +453,7 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-textinteraction")
 	public String QP_TEXTINTERACTION();
 	
-	
+
+	@DefaultStringValue("qp-connection-item-selected")
+	public String QP_CONNECTION_ITEM_SELECTED();
 }

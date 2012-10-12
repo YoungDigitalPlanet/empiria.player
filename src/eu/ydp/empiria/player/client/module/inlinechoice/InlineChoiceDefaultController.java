@@ -14,14 +14,13 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.AccessibleListBox;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;

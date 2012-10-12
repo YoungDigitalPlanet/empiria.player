@@ -15,9 +15,9 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.TwoStateButton;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule.Presenter;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;

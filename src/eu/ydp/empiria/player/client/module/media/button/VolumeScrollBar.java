@@ -3,25 +3,26 @@ package eu.ydp.empiria.player.client.module.media.button;
 import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.dom.client.Touch;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
 public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
+	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
 
 	private static VolumeScrollBarUiBinder uiBinder = GWT.create(VolumeScrollBarUiBinder.class);
 
@@ -44,6 +45,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 
 	protected HandlerRegistration durationchangeHandlerRegistration; // NOPMD
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected PositionHelper positionHelper = PlayerGinjector.INSTANCE.getPositionHelper();
 
 	public VolumeScrollBar() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -109,19 +111,6 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 		}
 	}
 
-	protected int getPositionY(NativeEvent event) {
-		JsArray<Touch> touches = event.getChangedTouches();
-		int positionY = 0;
-		if (touches != null && touches.length() == 1) {
-			Touch touch = touches.get(0);
-			positionY = touch.getRelativeY(mainProgressDiv.getElement());
-		} else {
-			Element target = mainProgressDiv.getElement();
-			positionY = event.getClientY() - target.getAbsoluteTop() + target.getScrollTop() + target.getOwnerDocument().getScrollTop();
-		}
-		return positionY;
-	}
-
 	protected void setVolume(double value) {
 		MediaEvent event = new MediaEvent(MediaEventTypes.CHANGE_VOLUME, getMediaWrapper());
 		event.setVolume(value);
@@ -132,7 +121,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	protected void setPosition(NativeEvent event) {// NOPMD
 		if (isPressed() && ((Element) event.getEventTarget().cast()).getClassName().contains("qp-media-volume-scrollbar-center")) {
 			event.preventDefault();
-			int positionY = getPositionY(event);
+			int positionY = positionHelper.getPositionY(event, mainProgressDiv.getElement());
 			positionY = positionY > 0 ? positionY : 0;
 			double volume = (1f / getScrollLength()) * (getScrollLength() - positionY);
 			setVolume(volume > 1 ? 1 : volume < 0 ? 0 : volume);

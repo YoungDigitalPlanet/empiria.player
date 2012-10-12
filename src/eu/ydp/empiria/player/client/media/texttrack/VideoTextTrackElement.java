@@ -1,46 +1,41 @@
 package eu.ydp.empiria.player.client.media.texttrack;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrackElement> implements MediaEventHandler {
+	private final EventsBus eventsBus;
+	private final StyleNameConstants styleNames;
+	private final VideoTextTrackElementPresenter presenter;
 
-	private static VideoTextTrackElementUiBinder uiBinder = GWT.create(VideoTextTrackElementUiBinder.class);
-
-	interface VideoTextTrackElementUiBinder extends UiBinder<Widget, VideoTextTrackElement> {
-	}
-
-	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	private final TextTrackKind kind;
 	private TextTrackCue textTrackCue;
+	private final PageScopeFactory pageScopeFactory;
 
-	@UiField
-	protected FlowPanel text;
-
-	public VideoTextTrackElement(TextTrackKind kind) {
-		initWidget(uiBinder.createAndBindUi(this));
+	@Inject
+	public VideoTextTrackElement(EventsBus eventsBus, StyleNameConstants styleNames, VideoTextTrackElementPresenter presenter, PageScopeFactory pageScopeFactory, @Assisted TextTrackKind kind) {
 		this.kind = kind;
+		this.eventsBus = eventsBus;
+		this.styleNames = styleNames;
+		this.presenter = presenter;
+		this.pageScopeFactory = pageScopeFactory;
 		setStyleNames();
 	}
 
 	@Override
 	public final void setStyleNames() {
 		String toAdd = getSuffixToAdd();
-		text.setStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd);
-		text.addStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd + "-" + kind.name().toLowerCase());
+		presenter.setStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd);
+		presenter.addStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd + "-" + kind.name().toLowerCase());
 	}
 
 	@Override
@@ -55,15 +50,15 @@ public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrac
 
 	@Override
 	public void init() {
-		eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.TEXT_TRACK_UPDATE), getMediaWrapper(), this, new CurrentPageScope());
-		eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), this, new CurrentPageScope());
+		eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.TEXT_TRACK_UPDATE), getMediaWrapper(), this, pageScopeFactory.getCurrentPageScope());
+		eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), this, pageScopeFactory.getCurrentPageScope());
 	}
 
 	private void showHideText(TextTrackCue textTrackCue) {
 		if (textTrackCue.getEndTime() < getMediaWrapper().getCurrentTime()) {
-			text.getElement().setInnerText("");
+			presenter.setInnerText("");
 		} else if (textTrackCue.getStartTime() < getMediaWrapper().getCurrentTime()) {
-			text.getElement().setInnerText(textTrackCue.getText());
+			presenter.setInnerText(textTrackCue.getText());
 		}
 	}
 
@@ -80,4 +75,8 @@ public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrac
 		}
 	}
 
+	@Override
+	public Widget asWidget() {
+		return (Widget) presenter;
+	}
 }

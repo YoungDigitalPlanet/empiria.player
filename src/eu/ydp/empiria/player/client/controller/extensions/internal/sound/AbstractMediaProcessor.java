@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 import java.util.HashMap;
 import java.util.Map;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;

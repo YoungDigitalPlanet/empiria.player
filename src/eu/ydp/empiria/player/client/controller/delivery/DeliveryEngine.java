@@ -10,7 +10,6 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
@@ -73,6 +72,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProces
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.containers.DivModule;
@@ -150,8 +150,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
-	private ModuleHandlerManager moduleHandlerManager = PlayerGinjector.INSTANCE.getModuleHandlerManager();
-	
+	private final ModuleHandlerManager moduleHandlerManager = PlayerGinjector.INSTANCE.getModuleHandlerManager();
+
 	/**
 	 * C'tor.
 	 */
@@ -237,9 +237,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTED));
 		updatePageStyle();
-		//flowManager.gotoPage(4);
+		// flowManager.gotoPage(4);
 	}
-
 
 	protected void initFlow() {
 
@@ -313,6 +312,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new AudioMuteButtonModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
+	//	loadExtension(new SimpleConnectorExtension(new ConnectionModule(), ModuleTagName.CONNECTION));
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
 		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
 		loadExtension(PlayerGinjector.INSTANCE.getPage());

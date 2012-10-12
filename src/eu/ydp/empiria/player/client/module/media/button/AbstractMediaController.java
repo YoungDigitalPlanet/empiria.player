@@ -2,17 +2,14 @@ package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.gwt.user.client.ui.Composite;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public abstract class AbstractMediaController<T> extends Composite implements MediaController<T> {
 	protected final static String CLICK_SUFFIX = "-click";
 	protected final static String HOVER_SUFFIX = "-hover";
 	protected final static String FULL_SCREEN_SUFFIX = "-fullscreen";
 	protected final static String UNSUPPORTED_SUFFIX = "-unsupported";
-	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
 	private MediaAvailableOptions availableOptions;
 	private MediaWrapper<?> mediaWrapper = null;
 	private boolean infullScreen = false;

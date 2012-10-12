@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.media;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -34,13 +34,13 @@ public class MediaWrappersPair implements MediaEventHandler {
 		return fullScreanMediaWrapper;
 	}
 
-	
+
 	private void fireSetCurrentTime(MediaWrapper<?> mediaWrapper,double time){
 		MediaEvent event = new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, mediaWrapper);
 		event.setCurrentTime(time);
 		eventsBus.fireAsyncEventFromSource(event, mediaWrapper);
 	}
-	
+
 	private void setCurrentTimeForMedia(final MediaWrapper<?> toSetMediaWrapper, final MediaWrapper<?> readFromMediaWrapper) {
 		if (toSetMediaWrapper.getMediaObject() instanceof MediaBase) {
 			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, readFromMediaWrapper), readFromMediaWrapper);

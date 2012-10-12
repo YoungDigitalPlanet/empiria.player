@@ -41,7 +41,7 @@ public abstract class AbstractTemplateParser {
 				if (!moduleName.trim().isEmpty() && isModuleSupported(moduleName)) {
 					MediaController<?> mediaController = getMediaControllerNewInstance(moduleName,node);
 					mediaController.init();
-					parseXMLAttributes((Element) node, mediaController.getElement());
+					parseXMLAttributes((Element) node, mediaController.asWidget().getElement());
 					if (parent instanceof ComplexPanel) {
 						((Panel) parent).add(mediaController);
 						parse(node, (Widget) mediaController);

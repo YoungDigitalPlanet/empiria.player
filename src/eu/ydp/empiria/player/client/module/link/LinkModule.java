@@ -13,11 +13,11 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;

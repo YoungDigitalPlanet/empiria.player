@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;

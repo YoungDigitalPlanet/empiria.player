@@ -5,7 +5,6 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
@@ -16,8 +15,8 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 public class SimpleTextModule extends SimpleModuleBase implements Factory<SimpleTextModule>, IBookmarkable {
 
 	protected Widget contents;
-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
-	private BookmarkingHelper bookmarkingHelper;
+	private final StyleNameConstants styleNames = eu.ydp.empiria.player.client.gin.PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private final BookmarkingHelper bookmarkingHelper;
 
 	public SimpleTextModule(){
 		contents = new ElementWrapperWidget(Document.get().createPElement());

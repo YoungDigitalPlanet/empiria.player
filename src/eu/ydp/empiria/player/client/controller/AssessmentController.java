@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
@@ -12,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterfe
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -39,8 +39,8 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private final AssessmentViewSocket assessmentViewSocket; // NOPMD
 	private final Page page = PlayerGinjector.INSTANCE.getPage();
 	private final IItemProperties itemProperties = createItemProperties();
-	private ModuleHandlerManager moduleHandlerManager;
-	
+	private final ModuleHandlerManager moduleHandlerManager;
+
 	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket, AssessmentSessionSocket ass, ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
 		assessmentViewSocket = avs;
 		assessmentSessionSocket = ass;
@@ -85,7 +85,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
 	public void init(AssessmentData data, DisplayContentOptions options) {
 		if (data != null) {
-			assessment = new Assessment(data, options, interactionEventsSocket, styleSocket, modulesRegistrySocket, itemProperties);						
+			assessment = new Assessment(data, options, interactionEventsSocket, styleSocket, modulesRegistrySocket, itemProperties);
 			assessmentViewSocket.setAssessmentViewCarrier(new AssessmentViewCarrier(assessment, headerViewSocket, footerViewSocket));
 			assessment.setUp();
 			assessment.start();
@@ -135,13 +135,13 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	@Override
 	public PageInterferenceSocket getPageControllerSocket() {
 		return pageController;
-	}	
-	
+	}
+
 	protected IItemProperties createItemProperties() {
 		return new IItemProperties() {
-			
+
 			@Override
-			public boolean hasInteractiveModules() {		
+			public boolean hasInteractiveModules() {
 				return (pageController != null && pageController.hasInteractiveModules());
 			}
 		};

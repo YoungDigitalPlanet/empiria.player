@@ -14,8 +14,8 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;

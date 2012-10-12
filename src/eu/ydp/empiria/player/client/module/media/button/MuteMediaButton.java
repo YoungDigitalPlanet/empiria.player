@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -14,6 +15,8 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
  *
  */
 public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
+	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
+
 	public MuteMediaButton() {
 		super(styleNames.QP_MEDIA_MUTE());
 	}

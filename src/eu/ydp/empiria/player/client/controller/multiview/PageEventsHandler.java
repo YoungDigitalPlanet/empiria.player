@@ -20,8 +20,6 @@ import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.RootPanel;
 
-import eu.ydp.gwtutil.client.debug.logger.Debug;
-
 public class PageEventsHandler implements TouchStartHandler, TouchCancelHandler, TouchEndHandler, TouchMoveHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler,
 		MouseOutHandler {
 	private TouchHandler handler;
@@ -32,18 +30,18 @@ public class PageEventsHandler implements TouchStartHandler, TouchCancelHandler,
 		root.addDomHandler(this, TouchEndEvent.getType());
 		root.addDomHandler(this, TouchCancelEvent.getType());
 		root.addDomHandler(this, TouchMoveEvent.getType());
-		if (Debug.isDebug()) {
-			root.addDomHandler(this, MouseOutEvent.getType());
-			root.addDomHandler(this, MouseDownEvent.getType());
-			root.addDomHandler(this, MouseUpEvent.getType());
-			root.addDomHandler(this, MouseMoveEvent.getType());
-		}
+//		if (Debug.isDebug()) {
+//			root.addDomHandler(this, MouseOutEvent.getType());
+//			root.addDomHandler(this, MouseDownEvent.getType());
+//			root.addDomHandler(this, MouseUpEvent.getType());
+//			root.addDomHandler(this, MouseMoveEvent.getType());
+//		}
 	}
 
 	public void setTouchHandler(TouchHandler handler) {
 		this.handler = handler;
 	}
-	
+
 	public void removeTouchHandler(TouchHandler handler){
 		if(handler.equals(this.handler)){
 			this.handler = null;

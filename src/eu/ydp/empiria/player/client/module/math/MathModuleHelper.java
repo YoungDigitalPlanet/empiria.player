@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.math;
 
+import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,11 +21,12 @@ import com.mathplayer.player.interaction.GapIdentifier;
 import com.mathplayer.player.interaction.InteractionManager;
 import com.mathplayer.player.model.interaction.CustomFieldDescription;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
+import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.geom.Size;

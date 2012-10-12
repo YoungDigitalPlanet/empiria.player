@@ -16,7 +16,7 @@ import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaStopEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaStopHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaVolumeChangeEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaVolumeChangeHandler;
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;

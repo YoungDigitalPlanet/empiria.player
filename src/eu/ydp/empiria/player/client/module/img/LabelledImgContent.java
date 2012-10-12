@@ -33,8 +33,8 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.canvasadapter.client.CanvasAdapter;
 import eu.ydp.canvasadapter.client.Context2dAdapter;
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.xml.XMLUtils;

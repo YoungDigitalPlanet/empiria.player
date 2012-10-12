@@ -2,13 +2,15 @@ package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.gwt.i18n.client.NumberFormat;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaButton;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public abstract class AbstractMediaTime<H> extends AbstractMediaButton<H> {
 	NumberFormat formatter = NumberFormat.getFormat("##00");
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
 
 	public AbstractMediaTime(String baseStyleName) {
 		super(baseStyleName);
@@ -16,7 +18,7 @@ public abstract class AbstractMediaTime<H> extends AbstractMediaButton<H> {
 
 	/**
 	 * zwraca tekst w formacie time1:time2 format liczb ##00
-	 * @param time1 
+	 * @param time1
 	 * @param time2
 	 * @return
 	 */
