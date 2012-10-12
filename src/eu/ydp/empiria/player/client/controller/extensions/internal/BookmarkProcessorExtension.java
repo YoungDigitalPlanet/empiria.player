@@ -90,7 +90,8 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 
 	boolean accepts(IModule module) {
-		return module instanceof IBookmarkable  &&  !parentRegistered(module)  &&  !containsInteraction(module);
+		return module instanceof IBookmarkable  &&  !parentRegistered(module)  &&  !containsInteraction(module)  &&  
+				((IBookmarkable)module).getBookmarkHtmlBody() != null  &&  ((IBookmarkable)module).getBookmarkHtmlBody().length() > 0;
 	}
 
 	boolean containsInteraction(IModule module) {
