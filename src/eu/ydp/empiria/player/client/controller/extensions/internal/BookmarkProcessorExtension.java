@@ -203,10 +203,8 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}-*/;
 	
 	void setClearingMode(boolean clearing){
-		if (clearing){
-			if (bookmarking){
-				bookmarking = false;
-			}
+		if (clearing  &&  bookmarking){
+			bookmarking = false;
 		}
 		this.clearing  = clearing;
 		updateModules();
