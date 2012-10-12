@@ -153,10 +153,49 @@
 			<when-property-is name="user.agent" value="ie8" />
 		</any>
 	</replace-with>
+	<!-- ANIMATIONS -->
 
-	<replace-with class="eu.ydp.empiria.player.client.controller.multiview.animation.AnimationBase">
-		<when-type-is class="eu.ydp.empiria.player.client.controller.multiview.animation.Animation" />
+	<replace-with class="com.google.gwt.user.client.impl.DOMImplMobileSafari">
+		<when-type-is class="com.google.gwt.user.client.impl.DOMImpl" />
+		<all>
+			<when-property-is name="user.agent" value="safari" />
+			<when-property-is name="mobile.user.agent" value="safari" />
+		</all>
 	</replace-with>
+
+	<replace-with class="com.google.gwt.user.client.impl.DOMImplSafariWithTransistion">
+		<when-type-is class="com.google.gwt.user.client.impl.DOMImpl" />
+		<all>
+			<when-property-is name="user.agent" value="safari" />
+		</all>
+	</replace-with>
+
+	<replace-with class="com.google.gwt.user.client.impl.DOMImplMozillaWithTransistions">
+		<when-type-is class="com.google.gwt.user.client.impl.DOMImpl" />
+		<all>
+			<when-property-is name="user.agent" value="gecko1_8" />
+		</all>
+	</replace-with>
+
+	<replace-with class="eu.ydp.empiria.player.client.event.animation.EventTypesDefault">
+		<when-type-is class="eu.ydp.empiria.player.client.event.animation.EventTypes" />
+	</replace-with>
+
+	<replace-with class="eu.ydp.empiria.player.client.event.animation.MozEventTypes">
+		<when-type-is class="eu.ydp.empiria.player.client.event.animation.EventTypes" />
+		<all>
+			<when-property-is name="user.agent" value="gecko1_8" />
+		</all>
+	</replace-with>
+
+	<replace-with class="eu.ydp.empiria.player.client.event.animation.SafariEventTypes">
+		<when-type-is class="eu.ydp.empiria.player.client.event.animation.EventTypes" />
+		<all>
+			<when-property-is name="user.agent" value="safari" />
+		</all>
+	</replace-with>
+
+	<!-- END ANIMATIONS -->
 	<define-linker name="xsiframescripts" class="eu.ydp.empiria.player.core.linker.CrossSizeIframeWithScriptsLinker" />
 	<add-linker name="xsiframescripts" />
 
