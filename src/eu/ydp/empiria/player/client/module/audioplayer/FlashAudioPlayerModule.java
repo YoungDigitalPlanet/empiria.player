@@ -4,11 +4,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.module.HasParent;
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.object.impl.FlashLocalAudioImpl;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
-
+/**
+ * KLASA DO REFAKTORYZACJI - MODUL NIE POWINIEN BYC WIDGETEM
+ */
 public class FlashAudioPlayerModule extends FlashLocalAudioImpl implements
 		AudioPlayerModule {
 
@@ -32,7 +34,7 @@ public class FlashAudioPlayerModule extends FlashLocalAudioImpl implements
 	}
 
 	@Override
-	public HasParent getParentModule() {
+	public HasChildren getParentModule() {
 		return moduleSocket.getParent(this);
 	}
 

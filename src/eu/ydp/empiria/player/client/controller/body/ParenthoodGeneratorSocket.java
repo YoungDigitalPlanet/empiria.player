@@ -1,13 +1,13 @@
 package eu.ydp.empiria.player.client.controller.body;
 
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 
 public interface ParenthoodGeneratorSocket {
 
 	public void addChild(IModule child);
 	
-	public void pushParent(ISingleViewWithBodyModule parent);
+	public void pushParent(HasChildren parent);
 	
 	public void popParent();
 	

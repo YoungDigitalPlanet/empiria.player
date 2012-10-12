@@ -15,15 +15,15 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule {
 
 	private InteractionEventsListener interactionEventsListener;
-	private ModuleSocket moduleSocket;
 
 	private Response response;
 	private String responseIdentifier;
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	
 	@Override
 	public final void initModule(ModuleSocket moduleSocket, InteractionEventsListener interactionEventsListener) {
+		initModule(moduleSocket);
 		this.interactionEventsListener = interactionEventsListener;
-		this.moduleSocket = moduleSocket;
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
 	protected final void findResponse(Element element){
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
-		response = moduleSocket.getResponse(responseIdentifier);
+		response = getModuleSocket().getResponse(responseIdentifier);
 	}
 
 	protected Response getResponse(){
@@ -43,18 +43,8 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		return interactionEventsListener;
 	}
 
-
-	protected final ModuleSocket getModuleSocket() {
-		return moduleSocket;
-	}
-
 	protected void fireStateChanged(boolean userInteract){
 		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, this)), new CurrentPageScope());
-	}
-
-	@Override
-	public HasParent getParentModule() {
-		return moduleSocket.getParent(this);
 	}
 
 }

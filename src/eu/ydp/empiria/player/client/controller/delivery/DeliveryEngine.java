@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
+import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -31,6 +32,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsHub
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsListener;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
+import eu.ydp.empiria.player.client.controller.extensions.internal.BookmarkProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
@@ -57,6 +59,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestProce
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.ModuleHandlerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
@@ -147,6 +150,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
+	private ModuleHandlerManager moduleHandlerManager = PlayerGinjector.INSTANCE.getModuleHandlerManager();
+	
 	/**
 	 * C'tor.
 	 */
@@ -178,7 +183,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		sessionDataManager = new SessionDataManager();
 
 		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(), deliveryEventsHub.getInteractionSocket(),
-				sessionDataManager, modulesRegistry);
+				sessionDataManager, modulesRegistry, moduleHandlerManager);
 		assessmentController.setStyleSocket(styleSocket);
 
 		playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
@@ -311,7 +316,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
 		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
 		loadExtension(PlayerGinjector.INSTANCE.getPage());
-		// loadExtension(new MediaManager());
+		loadExtension(new BookmarkProcessorExtension());
 	}
 
 	protected void loadLibraryExtensions() {
@@ -387,6 +392,9 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			}
 			if (extension instanceof ModuleConnectorExtension) {
 				modulesRegistry.registerModuleCreator(((ModuleConnectorExtension) extension).getModuleNodeName(), ((ModuleConnectorExtension) extension).getModuleCreator());
+			}
+			if (extension instanceof ModuleHandlerExtension){
+				moduleHandlerManager.addModuleHandler((ModuleHandlerExtension)extension);
 			}
 		}
 	}

@@ -20,6 +20,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
@@ -325,7 +326,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	}
 
 	@Override
-	public HasParent getParentModule() {
+	public HasChildren getParentModule() {
 		return moduleSocket.getParent(this);
 	}
 }

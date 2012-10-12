@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.PageData;
 import eu.ydp.empiria.player.client.controller.communication.PageDataError;
@@ -34,13 +35,15 @@ public class PageController implements PageInterferenceSocket {
 	protected ItemController[] items;
 	private final boolean isInitialized = false;
 	private StyleSocket styleSocket;
+	private ModuleHandlerManager moduleHandlerManager;
 
-	public PageController(PageViewSocket pvs, IFlowSocket fs, InteractionEventsSocket is, PageSessionSocket pss, ModulesRegistrySocket mrs) {
+	public PageController(PageViewSocket pvs, IFlowSocket fs, InteractionEventsSocket is, PageSessionSocket pss, ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
 		pageViewSocket = pvs;
 		flowSocket = fs;
 		interactionSocket = is;
 		pageSessionSocket = pss;
 		modulesRegistrySocket = mrs;
+		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
 	public void setStyleSocket(StyleSocket styleSocket) {
@@ -69,7 +72,7 @@ public class PageController implements PageInterferenceSocket {
 
 				for (int i = 0; i < pageDataTest.datas.length; i++) {
 					ItemController controller = new ItemController(pageViewSocket.getItemViewSocket(i), flowSocket, interactionSocket, pageSessionSocket.getItemSessionSocket(),
-							modulesRegistrySocket);
+							modulesRegistrySocket, moduleHandlerManager);
 					controller.setStyleSocket(styleSocket);
 					controller.init(pageDataTest.datas[i], pageDataTest.displayOptions);
 					controller.setAssessmentParenthoodSocket(parenthoodSocket);

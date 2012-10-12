@@ -3,11 +3,15 @@ package eu.ydp.empiria.player.client.module;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-public abstract class ModuleBase implements HasParent {
+public abstract class ModuleBase extends ParentedModuleBase {
 
 	private String moduleId;
 	private String moduleClass;
 
+	protected final void initModule(ModuleSocket moduleSocket){
+		super.initModule(moduleSocket);
+	}
+	
 	protected final void readAttributes(Element element){
 
 		String className = element.getAttribute("class");
@@ -40,7 +44,4 @@ public abstract class ModuleBase implements HasParent {
 				widget.addStyleName(getModuleClass());
 		}
 	}
-
-
-
 }

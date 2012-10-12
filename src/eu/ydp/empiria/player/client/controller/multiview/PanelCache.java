@@ -46,14 +46,16 @@ public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPan
 
 	public void setSwipeDisabled(boolean swipeDisabled) {
 		this.swipeDisabled = swipeDisabled;
-		Style style = parent.getElement().getStyle();
-		
-		if(swipeDisabled){
-			style.clearTop();
-			style.clearPosition();
-		}else{
-			style.setTop(0, Unit.PX);
-			style.setPosition(Position.ABSOLUTE);
+		if (parent != null){
+			Style style = parent.getElement().getStyle();
+			
+			if(swipeDisabled){
+				style.clearTop();
+				style.clearPosition();
+			}else{
+				style.setTop(0, Unit.PX);
+				style.setPosition(Position.ABSOLUTE);
+			}
 		}
 	}
 

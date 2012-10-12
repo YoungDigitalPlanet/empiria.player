@@ -4,12 +4,15 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 
 import java.util.Map;
 
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
+import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
+import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
 import eu.ydp.empiria.player.client.module.img.template.ImgTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
@@ -17,12 +20,15 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
  * Klasa odpowiedzialna za renderwoanie elementu img.
  *
  */
-public class ImgModule extends InlineModuleBase implements Factory<ImgModule> {
+public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, IBookmarkable {
 
 	protected ImgModuleView view;
+	private String imageSource;
+	private BookmarkingHelper bookmarkingHelper;
 
 	public ImgModule() {
 		view = new ImgModuleView();
+		bookmarkingHelper = new BookmarkingHelper(view);
 	}
 
 	/**
@@ -31,6 +37,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule> {
 	 */
 	protected void createOldView(Element element) {
 		ImgContent content;
+		imageSource = element.getAttribute("src");
 		if (element.getElementsByTagName("label").getLength() > 0) {
 			content = new LabelledImgContent();
 		} else {
@@ -88,6 +95,26 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule> {
 	@Override
 	public ImgModule getNewInstance() {
 		return new ImgModule();
+	}
+
+	@Override
+	public void setBookmarkingStyleName(String styleName) {
+		bookmarkingHelper.setBookmarkingStyleName(styleName);
+	}
+
+	@Override
+	public void removeBookmarkingStyleName() {
+		bookmarkingHelper.removeBookmarkingStyleName();
+	}
+
+	@Override
+	public void setClickCommand(final Command command) {
+		bookmarkingHelper.setClickCommand(command);
+	}
+
+	@Override
+	public String getBookmarkHtmlBody() {
+		return "<img src=\"" + imageSource + "\"/>";
 	}
 
 }

@@ -1,20 +1,28 @@
 package eu.ydp.empiria.player.client.module.simpletext;
 
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
+import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-public class SimpleTextModule extends SimpleModuleBase implements Factory<SimpleTextModule> {
+public class SimpleTextModule extends SimpleModuleBase implements Factory<SimpleTextModule>, IBookmarkable {
 
 	protected Widget contents;
+	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private BookmarkingHelper bookmarkingHelper;
 
 	public SimpleTextModule(){
 		contents = new ElementWrapperWidget(Document.get().createPElement());
-		contents.setStyleName("qp-simpletext");
+		contents.setStyleName(styleNames.QP_SIMPLETEXT());
+		bookmarkingHelper = new BookmarkingHelper(contents);
 	}
 
 	@Override
@@ -30,5 +38,25 @@ public class SimpleTextModule extends SimpleModuleBase implements Factory<Simple
 	@Override
 	public SimpleTextModule getNewInstance() {
 		return new SimpleTextModule();
+	}
+
+	@Override
+	public void setBookmarkingStyleName(String styleName) {
+		bookmarkingHelper.setBookmarkingStyleName(styleName);
+	}
+
+	@Override
+	public void removeBookmarkingStyleName() {
+		bookmarkingHelper.removeBookmarkingStyleName();
+	}
+
+	@Override
+	public void setClickCommand(final Command command) {
+		bookmarkingHelper.setClickCommand(command);
+	}
+
+	@Override
+	public String getBookmarkHtmlBody() {
+		return contents.getElement().getInnerHTML();
 	}
 }

@@ -11,13 +11,17 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
+import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.HasChildren;
+import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
@@ -41,20 +45,21 @@ public class ItemBody implements WidgetWorkflowListener {
 	protected DisplayContentOptions options;
 	protected ModuleSocket moduleSocket;
 	protected ModulesRegistrySocket modulesRegistrySocket;
+	private ModuleHandlerManager moduleHandlerManager;
 	
 	protected ItemBodyModule itemBodyModule;
 
 	private JSONArray stateAsync;
 	private boolean attached = false;
 
-	// private Label traceLabel;
 
 	public ItemBody(DisplayContentOptions options, ModuleSocket moduleSocket,
-			final InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket) {
+			final InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModuleHandlerManager moduleHandlerManager) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
 		this.modulesRegistrySocket = modulesRegistrySocket;
+		this.moduleHandlerManager = moduleHandlerManager;
 		
 		parenthood = new ParenthoodManager();
 		
@@ -75,6 +80,10 @@ public class ItemBody implements WidgetWorkflowListener {
 		modules.add(itemBodyModule);
 		modules.addAll(modulesInstalator.installMultiViewUniqueModules());
 		modules.addAll(modulesInstalator.getInstalledSingleViewModules());
+		
+		for (IModule module : modules){
+			moduleHandlerManager.registerModule(module);
+		}
 
 		for (IModule currModule : modules) {
 			if (currModule instanceof IUniqueModule){
@@ -306,7 +315,7 @@ public class ItemBody implements WidgetWorkflowListener {
 				.toArray(new eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[0]);
 	}
 
-	public IModule getModuleParent(IModule module) {
+	public HasChildren getModuleParent(IModule module) {
 		return parenthood.getParent(module);
 	}
 

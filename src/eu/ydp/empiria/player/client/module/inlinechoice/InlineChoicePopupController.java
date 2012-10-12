@@ -21,9 +21,9 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
@@ -31,7 +31,7 @@ import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class InlineChoicePopupController implements InlineChoiceController, ExListBoxChangeListener {
+public class InlineChoicePopupController extends ParentedModuleBase implements InlineChoiceController, ExListBoxChangeListener {
 
 
 	private Response response;
@@ -39,7 +39,6 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	protected List<String> identifiers;
 
 	private InteractionEventsListener interactionEventsListener;
-	private ModuleSocket moduleSocket;
 
 	protected Element moduleElement;
 
@@ -57,9 +56,8 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 	@Override
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
-
+		super.initModule(moduleSocket);
 		this.interactionEventsListener = moduleInteractionListener;
-		this.moduleSocket = moduleSocket;
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
-		response = moduleSocket.getResponse(responseIdentifier);
+		response = getModuleSocket().getResponse(responseIdentifier);
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
 		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 
@@ -85,9 +83,9 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 		List<String> identifiersTemp = new ArrayList<String>();
 
 		for (int i = 0 ; i < optionsNodes.getLength() ; i ++){
-			Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionsNodes.item(i));
+			Widget baseBody = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(optionsNodes.item(i));
 			baseBodies.add(baseBody);
-			Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionsNodes.item(i));
+			Widget popupBody = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(optionsNodes.item(i));
 			popupBodies.add(popupBody);
 			identifiersTemp.add(((Element)optionsNodes.item(i)).getAttribute("identifier"));
 		}
@@ -139,7 +137,7 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			moduleSocket.addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), moduleSocket, interactionEventsListener));
+			getModuleSocket().addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), getModuleSocket(), interactionEventsListener));
 		}
 	}
 
@@ -284,10 +282,5 @@ public class InlineChoicePopupController implements InlineChoiceController, ExLi
 
 	public void setPopupPosition(ExListBox.PopupPosition pp){
 		popupPosition = pp;
-	}
-
-	@Override
-	public HasParent getParentModule() {
-		return moduleSocket.getParent(this);
 	}
 }

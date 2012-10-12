@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import eu.ydp.empiria.player.client.module.HasChildren;
+import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
@@ -11,13 +13,13 @@ import eu.ydp.gwtutil.client.collections.StackMap;
 
 public class ParenthoodManager implements ParenthoodGeneratorSocket {
 
-	protected StackMap<ISingleViewWithBodyModule, List<IModule>> parenthood;
-	protected Stack<ISingleViewWithBodyModule> parentsStack;
+	protected StackMap<HasChildren, List<IModule>> parenthood;
+	protected Stack<HasChildren> parentsStack;
 	protected ParenthoodSocket upperLevelParenthoodSocket;
 	
 	public ParenthoodManager(){
-		parenthood = new StackMap<ISingleViewWithBodyModule, List<IModule>>();
-		parentsStack = new Stack<ISingleViewWithBodyModule>();
+		parenthood = new StackMap<HasChildren, List<IModule>>();
+		parentsStack = new Stack<HasChildren>();
 	}
 	
 	@Override
@@ -26,7 +28,7 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 	}
 
 	protected void addChildToMap(IModule child){
-		ISingleViewWithBodyModule parent = parentsStack.peek();
+		HasChildren parent = parentsStack.peek();
 		if (!parenthood.containsKey(parent)){
 			parenthood.put(parent, new ArrayList<IModule>());
 		}
@@ -34,7 +36,7 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 	}
 
 	@Override
-	public void pushParent(ISingleViewWithBodyModule parent) {
+	public void pushParent(HasChildren parent) {
 		parentsStack.push(parent);
 	}
 
@@ -43,8 +45,8 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 		parentsStack.pop();
 	}
 	
-	public IModule getParent(IModule child){
-		for (ISingleViewWithBodyModule parent : parenthood.keySet()){
+	public HasChildren getParent(IModule child){
+		for (HasChildren parent : parenthood.keySet()){
 			if (parenthood.get(parent).contains(child)){
 				return parent;
 			}
@@ -56,11 +58,11 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 	}
 
 	public List<IModule> getChildren(IModule parent) {
-		if (parent instanceof ISingleViewWithBodyModule){
-			if (parenthood.containsKey((ISingleViewWithBodyModule)parent))
-				return parenthood.get((ISingleViewWithBodyModule)parent);
+		if (parent instanceof HasChildren){
+			if (parenthood.containsKey((HasChildren)parent))
+				return parenthood.get((HasChildren)parent);
 			else if (upperLevelParenthoodSocket != null)
-				return upperLevelParenthoodSocket.getChildren(parent);
+				return upperLevelParenthoodSocket.getChildren((HasChildren)parent);
 		}
 		return new ArrayList<IModule>();
 	}

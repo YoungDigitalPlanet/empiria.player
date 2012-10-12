@@ -4,6 +4,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.controller.Page;
+import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
@@ -55,6 +56,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class).in(Singleton.class);
 		bind(MediaControllerFactory.class).to(MediaControllerFactoryImpl.class).in(Singleton.class);
 		bind(VideoFullScreenHelper.class).in(Singleton.class);
+		bind(ModuleHandlerManager.class).in(Singleton.class);
 	}
 
 

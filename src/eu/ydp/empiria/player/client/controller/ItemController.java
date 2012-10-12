@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
@@ -36,11 +37,12 @@ import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 public class ItemController implements PageEventHandler, StateChangeEventHandler {
 
 	@SuppressWarnings("PMD")
-	public ItemController(ItemViewSocket ivs, IFlowSocket fs, InteractionEventsSocket is, ItemSessionSocket iss, ModulesRegistrySocket mrs) {
+	public ItemController(ItemViewSocket ivs, IFlowSocket fs, InteractionEventsSocket is, ItemSessionSocket iss, ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
 		itemViewSocket = ivs;
 		itemSessionSocket = iss;
 		interactionSocket = is;
 		modulesRegistrySocket = mrs;
+		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
 	protected Item item;
@@ -54,6 +56,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private StyleSocket styleSocket;
+	private ModuleHandlerManager moduleHandlerManager;
 
 	public void setStyleSocket(StyleSocket styleSocket) {
 		this.styleSocket = styleSocket;
@@ -70,7 +73,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 				throw new Exception("Item data is null");// NOPMD
 			}
 			itemIndex = data.itemIndex;
-			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex));
+			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex), moduleHandlerManager);
 			item.setState(itemSessionSocket.getState(itemIndex));
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
 			itemSessionSocket.beginItemSession(itemIndex);
@@ -82,6 +85,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 					+ e.getStackTrace()));
 			// e.printStackTrace();
 			OperationLogManager.logEvent(OperationLogEvent.DISPLAY_ITEM_FAILED);
+			e.printStackTrace();
 		}
 
 	}

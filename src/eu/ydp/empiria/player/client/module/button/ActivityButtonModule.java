@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.module.ControlModule;
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
@@ -45,7 +46,7 @@ public abstract class ActivityButtonModule extends ControlModule implements ISim
 	}
 
 	protected boolean currentGroupIsConcerned(GroupIdentifier groupId){
-		Stack<IModule> parentsHierarchy = getModuleSocket().getParentsHierarchy(this);
+		Stack<HasChildren> parentsHierarchy = getModuleSocket().getParentsHierarchy(this);
 		for (IModule currModule : parentsHierarchy){
 			if (currModule instanceof IGroup){
 				if ( ((IGroup)currModule).getGroupIdentifier().equals(groupId) ){//NOPMD

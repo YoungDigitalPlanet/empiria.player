@@ -14,7 +14,7 @@ public abstract class AbstractActivityContainerModuleBase extends ContainerModul
 
 	@Override
 	public void lock(boolean state) {
-		List<IModule> children = getModuleSocket().getChildren(this);
+		List<? extends IModule> children = getModuleSocket().getChildren(this);
 		for (IModule child : children){
 			if (child instanceof IActivity){
 				((IActivity)child).lock(state);
@@ -26,7 +26,7 @@ public abstract class AbstractActivityContainerModuleBase extends ContainerModul
 	public void reset() {
 		showCorrectAnswers(false);		
 		markAnswers(false);
-		List<IModule> children = getModuleSocket().getChildren(this);
+		List<? extends IModule> children = getModuleSocket().getChildren(this);
 		for (IModule child : children){
 			if (child instanceof IActivity){
 				((IActivity)child).reset();
@@ -43,7 +43,7 @@ public abstract class AbstractActivityContainerModuleBase extends ContainerModul
 	}
 
 	void doMarkAnswers(boolean mark){
-		List<IModule> children = getModuleSocket().getChildren(this);
+		List<? extends IModule> children = getModuleSocket().getChildren(this);
 		for (IModule child : children){
 			if (child instanceof IActivity){
 				((IActivity)child).markAnswers(mark);
@@ -61,7 +61,7 @@ public abstract class AbstractActivityContainerModuleBase extends ContainerModul
 	}
 
 	void doShowCorrectAnswers(boolean show){
-		List<IModule> children = getModuleSocket().getChildren(this);
+		List<? extends IModule> children = getModuleSocket().getChildren(this);
 		for (IModule child : children){
 			if (child instanceof IActivity){
 				((IActivity)child).showCorrectAnswers(show);

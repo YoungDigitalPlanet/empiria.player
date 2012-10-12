@@ -7,8 +7,8 @@ import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 
 public interface ParenthoodSocket {
 
-	public IModule getParent(IModule module);
-	public GroupIdentifier getParentGroupIdentifier(IModule module);
-	public List<IModule> getChildren(IModule parent);
-	Stack<IModule> getParentsHierarchy(IModule module);
+	HasChildren getParent(IModule module);
+	GroupIdentifier getParentGroupIdentifier(IModule module);
+	List<IModule> getChildren(IModule parent);
+	Stack<HasChildren> getParentsHierarchy(IModule module);
 }

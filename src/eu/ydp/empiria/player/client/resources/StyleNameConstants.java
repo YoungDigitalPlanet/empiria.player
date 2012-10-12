@@ -338,6 +338,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-selection-item-wrong")
 	public String QP_SELECTION_ITEM_WRONG();
 
+	@DefaultStringValue("qp-simpletext")
+	public String QP_SIMPLETEXT();
+
 	@DefaultStringValue("qp-simulation")
 	public String QP_SIMULATION();
 
@@ -436,4 +439,18 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
+
+	@DefaultStringValue("qp-bookmark-selectable")
+	public String QP_BOOKMARK_SELECTABLE();
+
+	@DefaultStringValue("qp-bookmark-clearable")
+	public String QP_BOOKMARK_CLEARABLE();
+
+	@DefaultStringValue("qp-bookmark-selected")
+	public String QP_BOOKMARK_SELECTED();
+	
+	@DefaultStringValue("qp-textinteraction")
+	public String QP_TEXTINTERACTION();
+	
+	
 }

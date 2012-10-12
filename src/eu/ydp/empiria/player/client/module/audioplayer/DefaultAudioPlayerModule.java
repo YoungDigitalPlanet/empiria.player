@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
@@ -107,7 +108,7 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 	}
 
 	@Override
-	public HasParent getParentModule() {
+	public HasChildren getParentModule() {
 		return moduleSocket.getParent(this);
 	}
 }

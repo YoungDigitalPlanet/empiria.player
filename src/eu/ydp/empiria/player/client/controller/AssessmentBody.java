@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -74,7 +75,7 @@ public class AssessmentBody implements WidgetWorkflowListener {
 		return pagePanel;
 	}
 
-	public IModule getModuleParent(IModule module) {
+	public HasChildren getModuleParent(IModule module) {
 		return parenthood.getParent(module);
 	}
 

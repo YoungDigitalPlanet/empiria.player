@@ -43,6 +43,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -203,7 +204,7 @@ public class Assessment {
 		}
 
 		@Override
-		public IModule getParent(IModule module) {
+		public HasChildren getParent(IModule module) {
 			if (body != null) {
 				return body.getModuleParent(module);
 			}
@@ -213,11 +214,8 @@ public class Assessment {
 		@Override
 		public GroupIdentifier getParentGroupIdentifier(IModule module) {
 			IModule currParent = module;
-			while (true) {
+			while (currParent != null && !(currParent instanceof IGroup)) {
 				currParent = getParent(currParent);
-				if (currParent == null || currParent instanceof IGroup) {
-					break;
-				}
 			}
 			if (currParent != null) {
 				return ((IGroup) currParent).getGroupIdentifier();
@@ -234,15 +232,12 @@ public class Assessment {
 		}
 
 		@Override
-		public Stack<IModule> getParentsHierarchy(IModule module) {
-			Stack<IModule> hierarchy = new Stack<IModule>();
-			IModule currParent = module;
-			while (true) {
-				currParent = getParent(currParent);
-				if (currParent == null) {
-					break;
-				}
+		public Stack<HasChildren> getParentsHierarchy(IModule module) {
+			Stack<HasChildren> hierarchy = new Stack<HasChildren>();
+			HasChildren currParent = getParent(module);
+			while (currParent != null) {
 				hierarchy.push(currParent);
+				currParent = getParent(currParent);
 			}
 			return hierarchy;
 		}

@@ -18,7 +18,7 @@ public class ItemBodyJUnitTest {
 
 	@Before
 	public void prepare() {
-		itemBody = new ItemBody(null, null, null, null);
+		itemBody = new ItemBody(null, null, null, null, null);
 		
 		/**
 		 * Prepares base list of mock modules that contains only non-interaction one

@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.binding;
 
-import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IModule;
 
 public abstract class BindingUtil {
@@ -8,7 +7,7 @@ public abstract class BindingUtil {
 	private BindingUtil() {}
 
 	public static BindingContext register(BindingType bindingType, Bindable bindable, IModule module){
-		HasParent currModule = module;
+		IModule currModule = module;
 		while (currModule != null){
 			if (currModule instanceof BindingProxy){
 				BindingProxy proxy = (BindingProxy)currModule;

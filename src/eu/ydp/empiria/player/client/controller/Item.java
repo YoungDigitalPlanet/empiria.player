@@ -15,6 +15,7 @@ import com.google.gwt.xml.client.Node;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
@@ -31,6 +32,8 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.VariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.VariableProcessorTemplate;
+import eu.ydp.empiria.player.client.module.HasChildren;
+import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
@@ -71,7 +74,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	private XmlData xmlData;
 			
-	public Item(XmlData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket ss, ModulesRegistrySocket mrs, Map<String, Outcome> outcomeVariables){
+	public Item(XmlData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket ss, ModulesRegistrySocket mrs, Map<String, Outcome> outcomeVariables, ModuleHandlerManager moduleHandlerManager){
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
@@ -102,7 +105,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	    
 	    VariableProcessor.interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
    
-	    itemBody = new ItemBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket);
+	    itemBody = new ItemBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket, moduleHandlerManager);
 	    
 	    itemBodyView = new ItemBodyView( itemBody );
 	    
@@ -155,7 +158,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		}
 
 		@Override
-		public IModule getParent(IModule module) {
+		public HasChildren getParent(IModule module) {
 			return itemBody.getModuleParent(module);
 		}
 
@@ -178,14 +181,12 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		}
 
 		@Override
-		public Stack<IModule> getParentsHierarchy(IModule module) {
-			Stack<IModule> hierarchy = new Stack<IModule>();
-			IModule currParent = module;
-			while (true){
-				currParent = getParent(currParent);
-				if (currParent == null)
-					break;
+		public Stack<HasChildren> getParentsHierarchy(IModule module) {
+			Stack<HasChildren> hierarchy = new Stack<HasChildren>();
+			HasChildren currParent = getParent(module);
+			while (currParent != null){
 				hierarchy.push(currParent);
+				currParent = getParent(currParent);
 			}
 			return hierarchy;
 		}

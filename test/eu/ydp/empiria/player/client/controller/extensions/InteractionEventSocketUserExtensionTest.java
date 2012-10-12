@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
-import eu.ydp.empiria.player.client.module.HasParent;
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
@@ -35,7 +35,7 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 				return "RESPONSE1";
 			}
 			@Override
-			public HasParent getParentModule() {
+			public HasChildren getParentModule() {
 				return null;
 			}
 		}));
@@ -88,7 +88,7 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 			assertTrue(deliveryEvent.getParams().containsKey("url"));
 			assertEquals(deliveryEvent.getParams().get("url"), "http://www.ydp.eu./xxx.mp3");
 			counter = 1;
-		} else if (test.equals("testMediaInteractionSoundEvent")){
+		} else if (test.equals("testMediaInteractionSoundEvent") && deliveryEvent.getType() == DeliveryEventType.MEDIA_SOUND_PLAY){
 			assertEquals(DeliveryEventType.MEDIA_SOUND_PLAY, deliveryEvent.getType());
 			assertEquals(2, deliveryEvent.getParams().size());
 			assertTrue(deliveryEvent.getParams().containsKey("url"));

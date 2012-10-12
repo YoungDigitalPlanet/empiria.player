@@ -9,6 +9,7 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IMultiViewModule;
@@ -38,7 +39,6 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		this.parenthood = pts;
 		singleViewModules = new ArrayList<IModule>();
 	}
-
 
 	@Override
 	public boolean isModuleSupported(String nodeName){
@@ -79,7 +79,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		parenthood.addChild(module);
 
 		if (module instanceof ISingleViewWithBodyModule){
-			parenthood.pushParent((ISingleViewWithBodyModule) module);
+			parenthood.pushParent((HasChildren) module);
 			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, interactionListener, bodyGeneratorSocket);
 			parenthood.popParent();
 		} else if (module instanceof ISingleViewSimpleModule){
@@ -96,7 +96,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 
 	public void installMultiViewNonuniuqeModules(){
 		for (Element currElement : nonuniqueModulesMap.getKeys()){
-
+			
 		}
 	}
 
@@ -115,6 +115,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 					if (currModule instanceof IMultiViewModule){
 						((IMultiViewModule)currModule).initModule(moduleSocket, interactionListener);
 					}
+					//registerModule(currModule);
 				}
 				if (currModule instanceof IMultiViewModule){
 					((IMultiViewModule)currModule).addElement(currElement);
@@ -132,12 +133,12 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		}
 		return modules;
 	}
-
+	
 	public List<IModule> getInstalledSingleViewModules(){
 		return singleViewModules;
 	}
 
-	public void setInitialParent(ISingleViewWithBodyModule parent){
+	public void setInitialParent(HasChildren parent){
 		parenthood.pushParent(parent);
 	}
 
