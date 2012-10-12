@@ -163,7 +163,7 @@ public class ExtensionsManager implements IStateful {
 	public void setState(JSONArray newState) {
 		int counter = 0;
 		for (Extension ext : extensions) {
-			if (ext instanceof StatefulExtension) {
+			if (ext instanceof StatefulExtension  &&  counter < newState.size()) {
 				((StatefulExtension) ext).setState(newState.get(counter).isArray());
 				counter++;
 			}
