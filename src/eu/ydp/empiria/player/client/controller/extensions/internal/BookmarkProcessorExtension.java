@@ -14,11 +14,9 @@ import com.google.gwt.user.client.Command;
 import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleHandlerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
-import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
@@ -32,10 +30,9 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.StackMap;
 
-public class BookmarkProcessorExtension extends InternalExtension implements ModuleHandlerExtension, FlowDataSocketUserExtension, 
+public class BookmarkProcessorExtension extends InternalExtension implements ModuleHandlerExtension, 
 	DataSourceDataSocketUserExtension, PlayerJsObjectModifierExtension, StatefulExtension {
 
-	private FlowDataSupplier flowSupplier;
 	private DataSourceDataSupplier dataSourceSupplier;
 	int currItemIndex = 0;
 	List<List<IBookmarkable>> modules = new LinkedList<List<IBookmarkable>>();
@@ -184,11 +181,6 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	
 	private void registerModuleInList(IBookmarkable module){
 		getModulesForCurrentItem().add(module);
-	}
-
-	@Override
-	public void setFlowDataSupplier(FlowDataSupplier supplier) {
-		this.flowSupplier = supplier;
 	}
 
 	@Override
