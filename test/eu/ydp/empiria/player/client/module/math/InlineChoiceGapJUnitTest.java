@@ -33,121 +33,121 @@ public class InlineChoiceGapJUnitTest {
 	@Test
 	public void properValueAccessWithEmptyOption() {
 		InlineChoiceGap choiceGap = mockChoiceGap(true);
-		
+
 		choiceGap.setValue("MATH_RESPONSE_7_5");
-		String received = choiceGap.getValue();		
-		
-		assertThat(received, equalTo("MATH_RESPONSE_7_5"));		
+		String received = choiceGap.getValue();
+
+		assertThat(received, equalTo("MATH_RESPONSE_7_5"));
 	}
 
 	@Test
 	public void properValueAccessWithoutEmptyOption() {
 		InlineChoiceGap choiceGap = mockChoiceGap(false);
-		
+
 		choiceGap.setValue("MATH_RESPONSE_7_5");
 		String received = choiceGap.getValue();
-				
-		assertThat(received, equalTo("MATH_RESPONSE_7_5"));		
+
+		assertThat(received, equalTo("MATH_RESPONSE_7_5"));
 	}
-	
+
 	@Test
 	public void resetSetsNoItemsWhenChoiceGapWithoutEmptyOption() {
 		InlineChoiceGap choiceGap = mockChoiceGap(false);
-		
+
 		choiceGap.reset();
-		
+
 		assertThat(choiceGap.getListBox().getSelectedIndex(), equalTo(-1));
 	}
-	
+
 	@Test
 	public void resetSetsNoItemsWhenChoiceGapWithEmptyOption() {
 		InlineChoiceGap choiceGap = mockChoiceGap(true);
-		
+
 		choiceGap.reset();
-		
+
 		assertThat(choiceGap.getListBox().getSelectedIndex(), equalTo(0));
-	}	
-	
+	}
+
     @BeforeClass
     public static void prepareTestEnviroment() {
     	/**
     	 * disable GWT.create() behavior for pure JUnit testing
     	 */
-    	GWTMockUtilities.disarm();    	
+    	GWTMockUtilities.disarm();
     }
-    
+
     @AfterClass
     public static void restoreEnviroment() {
     	/**
     	 * restore GWT.create() behavior
     	 */
     	GWTMockUtilities.restore();
-    }	
-    
-	public InlineChoiceGap mockChoiceGap(boolean hasEmptyOption) {		
-		Map<String, String> styles = new HashMap<String, String>();		
-	
-		String styleValue = (hasEmptyOption)? 
+    }
+
+	public InlineChoiceGap mockChoiceGap(boolean hasEmptyOption) {
+		Map<String, String> styles = new HashMap<String, String>();
+
+		String styleValue = (hasEmptyOption)?
 								EmpiriaStyleNameConstants.VALUE_SHOW:
 								EmpiriaStyleNameConstants.VALUE_HIDE;
-		
+
 		styles.put(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION, styleValue);
-		
+
 		return new InlineChoiceGapMock(styles);
-	}    
-    
+	}
+
     private class InlineChoiceGapMock extends InlineChoiceGap {
-    	
+
 		public InlineChoiceGapMock(Map<String, String> styles) {
 			super(null, null, styles);
 		}
 
 		@Override
-		public FlowPanel createFlowPanel() {		
+		public FlowPanel createFlowPanel() {
 			return mock(FlowPanel.class);
 		}
-		
+
 		@Override
 		List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket) {
 			ArrayList<String> mockedListBoxIdentifiers = new ArrayList<String>();
-			mockedListBoxIdentifiers.add("MATH_RESPONSE_7_3");			
+			mockedListBoxIdentifiers.add("MATH_RESPONSE_7_3");
 			mockedListBoxIdentifiers.add("MATH_RESPONSE_7_4");
 			mockedListBoxIdentifiers.add("MATH_RESPONSE_7_5");
-			
+
 			return mockedListBoxIdentifiers;
 		}
-		
+
 		@Override
 		public ExListBox createExListBox() {
 			ExListBox mockedListBox = mock(ExListBox.class);
-			
+
 			ExListBoxUnitTestAccess listBoxPrivateAccess = mockedListBox.new ExListBoxUnitTestAccess();
-			
+
 			ArrayList<ExListBoxOption> options = new ArrayList<ExListBoxOption>();
-			
+
 			if (hasEmptyOption) {
 				options.add(mock(ExListBoxOption.class));
 			}
 			options.add(mock(ExListBoxOption.class));
 			options.add(mock(ExListBoxOption.class));
 			options.add(mock(ExListBoxOption.class));
-			
+
 			listBoxPrivateAccess.setOptions(options);
-			
+
 			doCallRealMethod().when(mockedListBox).setSelectedIndex(anyInt());
 			doCallRealMethod().when(mockedListBox).getSelectedIndex();
-			
+
 			return mockedListBox;
 		}
-		
+
 		@Override
-		public InlineHTML createInlineHTML(String html) {			
+		public InlineHTML createInlineHTML(String html) {
 			return mock(InlineHTML.class);
 		}
-		
+
 		@Override
 		protected StyleNameConstants getStyleNameConstants() {
-			return GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class));
+			return GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class),StyleNameConstants.class);
 		}
     }
 }

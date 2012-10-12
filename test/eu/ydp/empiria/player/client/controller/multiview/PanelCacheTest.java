@@ -5,7 +5,7 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
 @SuppressWarnings("PMD")

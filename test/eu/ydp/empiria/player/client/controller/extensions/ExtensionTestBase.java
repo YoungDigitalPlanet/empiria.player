@@ -9,12 +9,12 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.DeliveryEngineSocketUserExtensionTest.MockDeliveryEngineSocketUserExtension;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public abstract class ExtensionTestBase extends GWTTestCase {

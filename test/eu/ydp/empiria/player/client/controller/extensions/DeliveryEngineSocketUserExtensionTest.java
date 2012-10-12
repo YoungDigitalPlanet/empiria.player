@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.controller.extensions;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
@@ -14,6 +13,7 @@ import eu.ydp.empiria.player.client.controller.extensions.DataSourceDataSocketUs
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
 
 public class DeliveryEngineSocketUserExtensionTest extends ExtensionTestBase {

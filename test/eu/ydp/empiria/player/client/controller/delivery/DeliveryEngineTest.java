@@ -7,7 +7,6 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
@@ -19,6 +18,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsLi
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class DeliveryEngineTest extends GWTTestCase {

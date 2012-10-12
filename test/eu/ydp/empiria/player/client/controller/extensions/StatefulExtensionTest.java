@@ -5,13 +5,13 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 
-import eu.ydp.empiria.player.client.PlayerGinjector;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
 public class StatefulExtensionTest extends ExtensionTestBase {
 
