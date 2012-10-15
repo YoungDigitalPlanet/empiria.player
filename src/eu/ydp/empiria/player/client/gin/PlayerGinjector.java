@@ -48,10 +48,10 @@ public interface PlayerGinjector extends Ginjector {
 	ObjectTemplateParser<?>  getObjectTemplateParser();
 	VideoFullScreenHelper getVideoFullScreenHelper();
 	MediaControllerFactory getControllerFactory();
-	ConnectionItemFactory getConnectionItemFactory();
 	PageScopeFactory getPageScopeFactory();
 	PositionHelper getPositionHelper();
 	ModuleHandlerManager getModuleHandlerManager();
+//	ConnectionItemFactory getConnectionItemFactory();
 //	TextTrackFactory getTextTrackFactory();
 //	ModuleFactory getModuleFactory();
 }
