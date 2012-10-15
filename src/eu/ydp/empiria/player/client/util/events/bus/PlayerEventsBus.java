@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.util.events.scope.EventScope;
 import eu.ydp.empiria.player.client.util.events.scope.PageScope;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 
-public final class PlayerEventsBus implements EventsBus, PlayerEventHandler {
+public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	private final Map<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> syncMap = new HashMap<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
 	private final Map<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> asyncMap = new HashMap<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
 
