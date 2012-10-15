@@ -225,7 +225,7 @@
   <target name="test.all" depends="test.dev, test.prod">
   </target>
 
-  <target name="dist" depends="clean, build, buildnumber, lib, test.dev, metadata.file" description="Create java script distribution">
+  <target name="dist" depends="build, buildnumber, lib, test.dev, metadata.file" description="Create java script distribution">
     <mkdir dir="dist/build" />
     <copy todir="dist/build/empiria.player">
       	<fileset dir="war/empiria.player"/>
@@ -235,7 +235,7 @@
     <zip destfile="dist/empiriaplayer.zip" basedir="dist/build/empiria.player"/>
   </target>
   
-  <target name="publish" depends="dist, project.file" description="Publish artifacts into Ivy repository">  	
+  <target name="publish" depends="dist, project.file, sonar" description="Publish artifacts into Ivy repository">  	
   	<!-- resolve is needed to get organization/module from ivy.xml for publish task !-->
 		<ivy:resolve />
 		<ivy:publish
