@@ -12,7 +12,9 @@ import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PageEventsHandler;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.gin.factory.ConnectionItemFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
@@ -47,8 +49,10 @@ public interface PlayerGinjector extends Ginjector {
 	ObjectTemplateParser<?>  getObjectTemplateParser();
 	VideoFullScreenHelper getVideoFullScreenHelper();
 	MediaControllerFactory getControllerFactory();
-//	ConnectionItemFactory getConnectionItemFactory();
+	ConnectionItemFactory getConnectionItemFactory();
 	PageScopeFactory getPageScopeFactory();
 	PositionHelper getPositionHelper();
 	ModuleHandlerManager getModuleHandlerManager();
+	TextTrackFactory getTextTrackFactory();
+//	ModuleFactory getModuleFactory();
 }
