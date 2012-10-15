@@ -1,268 +1,80 @@
 package eu.ydp.empiria.player.client.module.choice;
 
-import java.util.List;
-import java.util.Vector;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONBoolean;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.InlineHTML;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
-import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
-import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.gwtutil.client.collections.RandomizedSet;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
+import eu.ydp.empiria.player.client.module.AbstractActivityModule;
+import eu.ydp.empiria.player.client.module.ActivityPresenter;
+import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
+import eu.ydp.empiria.player.client.module.choice.structure.ChoiceOption;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEvent;
+import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventHandler;
+import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class ChoiceModule extends OneViewInteractionModuleBase implements  SimpleChoiceListener,Factory<ChoiceModule> {
-
-	/** Work mode single or multiple choice */
-	private boolean multi = false;
-	/** Shuffle? */
-	private boolean shuffle = false;
-	/** option widgets */
-	Vector<SimpleChoice> interactionElements;
-
-	private boolean locked = false;
-	private boolean showingAnswers = false;
-
-	protected ChoiceGroupController groupController;
-
-	protected Panel mainPanel;
-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
-
-	public ChoiceModule(){
-	}
+public class ChoiceModule extends AbstractActivityModule<ChoiceModule> {
+	
+	private ChoiceModulePresesenter presenter;
+	
+	private ChoiceModuleStructure choiceStructure;
 
 	@Override
-	public void installViews(List<HasWidgets> placeholders) {
-		shuffle = XMLUtils.getAttributeAsBoolean(getModuleElement(), "shuffle");
-		multi = getResponse().cardinality == Cardinality.MULTIPLE;
-
-		mainPanel = new FlowPanel();
-
-		mainPanel.setStyleName(styleNames.QP_CHOICE_MODULE());
-		applyIdAndClassToView(mainPanel);
-		Widget promptWidget = new InlineHTML();
-		promptWidget.setStyleName(styleNames.QP_PROMPT());
-		getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstElementWithTagName(getModuleElement(), "prompt"), promptWidget.getElement());
-
-		mainPanel.add(promptWidget);
-		mainPanel.add(getOptionsView(getModuleElement(), getModuleSocket(), getInteractionEventsListener()));
-
-		NodeList childNodes = getModuleElement().getChildNodes();
-		for (int f = 0 ; f < childNodes.getLength() ; f ++){
-			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0) {
-				getModuleSocket().addInlineFeedback(new InlineFeedback(mainPanel, childNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
-			}
-		}
-
-		placeholders.get(0).add(mainPanel);
-
+	protected void initalizeModule() {
+		choiceStructure = new ChoiceModuleStructure();
+		choiceStructure.createFromXml(getModuleElement().toString());
+		
+		choiceStructure.setMulti(isMulti());
+		
+		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
+		presenter.setPrompt(choiceStructure.getPrompt());
+		presenter.setChoices(choiceStructure.getChoiceOptions());
+		
+		addListeners();
 	}
-
-
-	  /**
-	   * Get options view
-	   * @return
-	   */
-	  private Widget getOptionsView(Element element, ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener){
-
-		  Panel panel = new FlowPanel();
-		  NodeList optionNodes = element.getElementsByTagName("simpleChoice");
-		  RandomizedSet<Element> randomizedNodes = new RandomizedSet<Element>();
-		  RandomizedSet<Integer> randomizedIndices = new RandomizedSet<Integer>();
-
-		  interactionElements = new Vector<SimpleChoice>();
-		  for (int el = 0 ; el < optionNodes.getLength() ; el ++) {
-			interactionElements.add(null);
-		}
-
-		  // Add randomized nodes to shuffle table
-		  if(shuffle){
-			  for(int i = 0; i < optionNodes.getLength(); i++){
-				  Element	option = (Element)optionNodes.item(i);
-				  if(!XMLUtils.getAttributeAsBoolean(option, "fixed")){
-					  randomizedNodes.push(option);
-					  randomizedIndices.push(i);
-				  }
-			  }
-		  }
-
-		  groupController = new ChoiceGroupController();
-
-		  // Create buttons
-		  for(int i = 0; i < optionNodes.getLength(); i++){
-			  int optionIndex = i;
-			  Element option = (Element)optionNodes.item(i);
-			  SimpleChoice currInteractionElement;
-
-			  if(shuffle && !XMLUtils.getAttributeAsBoolean(option, "fixed") ){
-				  //option = randomizedNodes.pull();
-				  optionIndex = randomizedIndices.pull();
-				  option = (Element)optionNodes.item(optionIndex);
-			  }
-
-			  currInteractionElement = new SimpleChoice(option, multi, this, moduleSocket, moduleInteractionListener, groupController);
-			  //interactionElements.add(currInteractionElement);
-			  interactionElements.set(optionIndex, currInteractionElement);
-			  panel.add(currInteractionElement);
-		  }
-
-		  return panel;
-	  }
-
-
-	// ------------------------- INTERFACES --------------------------------
-
-
-	@Override
-	public void onBodyLoad() {
-		for (SimpleChoice c:interactionElements){
-			c.onOwnerAttached();
-		}
+	
+	private boolean isMulti(){
+		return getResponse().cardinality == Cardinality.MULTIPLE;
 	}
-
-	@Override
-	public void onBodyUnload() {
+	
+	private void addListeners(){
+		ChoiceModuleListener listener = new ChoiceModuleListener();
+		listener.addEventHandler(ChoiceModuleEventType.ON_CHOICE_CLICK);
 	}
-
+	
 	@Override
-	public void onSetUp() {
-		updateResponse(null, false);
-	}
-
-	@Override
-	public void onStart() {
-	}
-
-	@Override
-	public void onClose() {
-	}
-
-	@Override
-	public void lock(boolean l) {
-		locked = l;
-		for (SimpleChoice currSC:interactionElements){
-			currSC.setEnabled(!l);
-		}
-
-	}
-
-	@Override
-	public void markAnswers(boolean mark) {
-
-		List<Boolean> evaluation = getModuleSocket().evaluateResponse(getResponse());
-
-		if (getResponse().cardinality == Cardinality.SINGLE){
-			for (int i = 0 ; i < interactionElements.size() ; i ++){
-				interactionElements.get(i).markAnswers(mark, evaluation.get(0));
-			}
-		} else if (getResponse().cardinality == Cardinality.MULTIPLE){
-			for (SimpleChoice currSC:interactionElements){
-				boolean correct = false;
-				if (getResponse().correctAnswers.containsAnswer(currSC.getIdentifier())){
-					correct = true;
-				}
-				boolean ok = (correct && currSC.isSelected())  ||  (!correct && !currSC.isSelected());
-				currSC.markAnswers(mark,  ok);
+	protected void initializeAndInstallFeedbacks() {
+		super.initializeAndInstallFeedbacks();
+		
+		//TODO: rewrite to JAXB
+		for(ChoiceOption choiceOption: choiceStructure.getChoiceOptions()){
+			String identifier = choiceOption.getIdentifier();
+			Element feedbackNode = choiceStructure.getSimpleChoiceFeedbackElement(identifier);
+			
+			if(feedbackNode != null){
+				Widget feedbackPlaceholder = presenter.getFeedbackPlaceholderByIdentifier(identifier);
+				createInlineFeedback(feedbackPlaceholder, feedbackNode);
 			}
 		}
 	}
-
-	@Override
-	public void showCorrectAnswers(boolean show) {
-		if (show  &&  !showingAnswers){
-			showingAnswers = true;
-			for (SimpleChoice currSC:interactionElements){
-				currSC.setSelected(getResponse().correctAnswers.containsAnswer(currSC.getIdentifier()) );
-			}
-		} else if (!show  &&  showingAnswers) {
-			for (SimpleChoice currSC:interactionElements){
-				currSC.setSelected(getResponse().values.contains(currSC.getIdentifier()) );
-			}
-			showingAnswers = false;
-		}
-	}
-
-	@Override
-	public void reset() {
-		for (SimpleChoice currSC:interactionElements){
-			currSC.reset();
-		}
-		updateResponse(null, false);
-	}
-
-	@Override
-	public JSONArray getState() {
-		JSONArray  state = new JSONArray();
-
-		for (SimpleChoice currSC:interactionElements){
-			//boolean b1 = currSC.isSelected();
-			boolean b1 = getResponse().values.contains(currSC.getIdentifier());
-			state.set(state.size(), JSONBoolean.getInstance(b1));
-		}
-
-		return state;
-	}
-
-	@Override
-	public void setState(JSONArray newState) {
-
-		Boolean currSelected;
-
-		for (int i  = 0 ; i < newState.size() && i < interactionElements.size(); i ++ ){
-			currSelected = newState.get(i).isBoolean().booleanValue();
-			interactionElements.get(i).setSelected(currSelected);
-
-		}
-
-		updateResponse(null, false);
-	}
-
-	void updateResponse(SimpleChoice target, boolean userInteract){
-		if (showingAnswers) {
-			return;
-		}
-
-		Vector<String> currResponseValues = new Vector<String>();
-
-		for (SimpleChoice currSC:interactionElements){
-			if (currSC.isSelected()){
-				currResponseValues.add(currSC.getIdentifier());
-			}
-		}
-
-		if (!getResponse().compare(currResponseValues)  ||  !getResponse().isInitialized()){
-			getResponse().set(currResponseValues);
-			fireStateChanged(userInteract);
-		}
-	}
-
-
-	@Override
-	public JavaScriptObject getJsSocket() {
-		return ModuleJsSocketFactory.createSocketObject(this);
-	}
-
-	@Override
-	public void onSimpleChoiceClick(SimpleChoice sc) {
+	
+	public void onSimpleChoiceClick(String identifier) {
 		if (!locked){
-			sc.setSelected(!sc.isSelected());
-			updateResponse(null, true);
+			presenter.switchChoiceSelection(identifier);
+			updateResponse(identifier);
+			fireStateChanged(true);
+		}
+	}
+	
+	private void updateResponse(String identifier){
+		boolean selected = presenter.isChoiceSelected(identifier);
+		
+		if(selected){
+			getResponse().add(identifier);
+		}else{
+			getResponse().remove(identifier);
 		}
 	}
 
@@ -270,4 +82,29 @@ public class ChoiceModule extends OneViewInteractionModuleBase implements  Simpl
 	public ChoiceModule getNewInstance() {
 		return new ChoiceModule();
 	}
+
+	@Override
+	protected ActivityPresenter createPresenter() {
+		if(presenter == null){
+			presenter = new ChoiceModulePresenterImpl();
+		}
+		return presenter;
+	}
+	
+	private class ChoiceModuleListener implements ChoiceModuleEventHandler{
+		private final EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus();
+		
+		@Override
+		public void onChoiceModuleEvent(ChoiceModuleEvent event) {
+			if(event.getType().equals(ChoiceModuleEventType.ON_CHOICE_CLICK)){
+				onSimpleChoiceClick(event.getChoiceIdentifier());
+			}
+		}
+		
+		public void addEventHandler(ChoiceModuleEventType type){
+			eventBus.addHandler(ChoiceModuleEvent.getType(type), this, new CurrentPageScope());
+		}
+		
+	}
+	
 }

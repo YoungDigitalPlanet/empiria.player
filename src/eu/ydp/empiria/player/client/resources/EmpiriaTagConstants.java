@@ -14,6 +14,8 @@ public final class EmpiriaTagConstants {
 	public static final String ATTR_WIDTH_BINDING_GROUP = "widthBindingGroup";
 	public static final String NAME_GAP = "gap";
 	public static final String NAME_INLINE_CHOICE = "inlineChoice";
+	public static final String NAME_SIMPLE_CHOICE = "simpleChoice";
+	public static final String NAME_FEEDBACK_INLINE = "feedbackInline";
 	
 	private EmpiriaTagConstants() {
 	}

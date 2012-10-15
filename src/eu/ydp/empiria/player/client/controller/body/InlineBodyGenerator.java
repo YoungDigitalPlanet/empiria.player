@@ -12,6 +12,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NamedNodeMap;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
@@ -203,5 +204,26 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 			}
 
 		}
+	}
+
+	@Override
+	public void generateInlineBody(String node,	com.google.gwt.dom.client.Element parentElement) {
+		
+		
+		generateInlineBody(getElementFromString(node), parentElement);
+	}
+
+	@Override
+	public Widget generateInlineBody(String mainNode, boolean allAsWidget) {
+		return generateInlineBody(getElementFromString(mainNode), allAsWidget);
+	}
+	
+	private Element getElementFromString(String value){
+		com.google.gwt.xml.client.Document doc = XMLParser.createDocument();
+		com.google.gwt.xml.client.Element textElement = doc.createElement("content");
+		
+		textElement.appendChild(doc.createTextNode(value));
+		
+		return textElement;
 	}
 }

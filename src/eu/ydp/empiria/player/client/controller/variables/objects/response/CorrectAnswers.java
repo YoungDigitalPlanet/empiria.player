@@ -39,4 +39,15 @@ public class CorrectAnswers {
 	public String getSingleAnswer(){
 		return values.get(0).getAnswers().get(0);
 	}
+	
+	public List<String> getAllAnswers(){
+		List<String> answers = new ArrayList<String>();
+		
+		for(ResponseValue responseValue: values){
+			answers.addAll(responseValue.getAnswers());
+		}
+		
+		return answers;
+	}
+
 }

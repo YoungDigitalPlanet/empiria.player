@@ -13,6 +13,8 @@ public interface InlineBodyGeneratorSocket {
 	 * @param parentElement
 	 */
 	public void generateInlineBody(Node node, Element parentElement);
+	
+	public void generateInlineBody(String node, Element parentElement);
 
 	/**
 	 * generuje htmla dla dzieci wskazanego wezla
@@ -43,4 +45,6 @@ public interface InlineBodyGeneratorSocket {
 	 * @return
 	 */
 	Widget generateInlineBody(Node mainNode, boolean allAsWidget);
+	
+	Widget generateInlineBody(String mainNode, boolean allAsWidget);
 }

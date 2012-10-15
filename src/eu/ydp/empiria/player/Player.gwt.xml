@@ -12,6 +12,7 @@
 	<inherits name='eu.ydp.canvasadapter.canvasadapter' />
 	<inherits name='eu.ydp.jsfilerequest.jsfilerequest' />
 	<inherits name="eu.ydp.gwtcreatejs.GwtCreateJs" />
+	<inherits name="com.peterfranza.gwt.jaxb.JAXB" />
 
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject" />
