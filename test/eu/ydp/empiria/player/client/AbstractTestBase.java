@@ -10,11 +10,15 @@ public abstract class AbstractTestBase {
 	protected Injector injector;
 
 	@Before
-	public void setUp(){
+	public void setUp() {
 		injector = Guice.createInjector(new TestGuiceModule());
 	}
 
-	public final void setUp(Class<?>... ignoreClasses){
-		injector = Guice.createInjector(new TestGuiceModule(ignoreClasses));
+	public final void setUp(Class<?>... ignoreClasses) {
+		injector = Guice.createInjector(new TestGuiceModule(ignoreClasses, new Class<?>[0], new Class<?>[0]));
+	}
+
+	public final void setUp(Class<?>[] ignoreClasses, Class<?>[] classToMock, Class<?>[] classToSpy) {
+		injector = Guice.createInjector(new TestGuiceModule(ignoreClasses, classToMock, classToSpy));
 	}
 }
