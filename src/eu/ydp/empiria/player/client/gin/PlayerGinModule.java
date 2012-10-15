@@ -13,6 +13,7 @@ import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
@@ -73,7 +74,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
 	//	install(new GinFactoryModuleBuilder().build(ConnectionItemViewFactory.class));
 	//	install(new GinFactoryModuleBuilder().build(ConnectionItemFactory.class));
-	//	install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
+		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
 	//	install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
 		//install(new GinFactoryModuleBuilder().build(TouchRecognitionFactory.class));
 	}

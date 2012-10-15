@@ -3,7 +3,9 @@ package eu.ydp.empiria.player.client.media.texttrack;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import eu.ydp.empiria.player.client.media.Audio;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -20,15 +22,17 @@ public class TextTrack {
 	private final TextTrackKind kind;
 	private final SortedSet<TextTrackCue> cues = new TreeSet<TextTrackCue>();
 	private TextTrackCue activeCue = null;
-	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus;
 	private final Object eventBusSource;
 	/**
 	 * @param kind typ sciezki
 	 * @param eventBusSource
 	 */
-	public TextTrack(TextTrackKind kind, Object eventBusSource) {
+	@Inject
+	public TextTrack(EventsBus eventsBus,@Assisted TextTrackKind kind, @Assisted  Object eventBusSource) {
 		this.kind = kind;
 		this.eventBusSource = eventBusSource;
+		this.eventsBus = eventsBus;
 	}
 
 	public TextTrackKind getKind() {

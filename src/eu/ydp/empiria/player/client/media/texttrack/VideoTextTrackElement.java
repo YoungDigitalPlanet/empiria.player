@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrackElement> implements MediaEventHandler {
 	private final EventsBus eventsBus;
 	private final StyleNameConstants styleNames;
-	private final VideoTextTrackElementPresenter presenter;
+	protected final VideoTextTrackElementPresenter presenter;
 
 	private final TextTrackKind kind;
 	private TextTrackCue textTrackCue;
@@ -54,7 +54,7 @@ public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrac
 		eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), this, pageScopeFactory.getCurrentPageScope());
 	}
 
-	private void showHideText(TextTrackCue textTrackCue) {
+	protected void showHideText(TextTrackCue textTrackCue) {
 		if (textTrackCue.getEndTime() < getMediaWrapper().getCurrentTime()) {
 			presenter.setInnerText("");
 		} else if (textTrackCue.getStartTime() < getMediaWrapper().getCurrentTime()) {

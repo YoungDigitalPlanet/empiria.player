@@ -26,6 +26,7 @@ import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaVolumeChangeHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.HasFlashMediaHandlers;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.SourceUtil;
@@ -39,6 +40,7 @@ public abstract class ExecutorSwf implements SoundExecutor<Widget> {
 	protected SoundExecutorListener soundExecutorListener;
 	protected FlashMedia flashMedia;
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected TextTrackFactory textTrackFactory = PlayerGinjector.INSTANCE.getTextTrackFactory();
 	protected boolean pause;
 	protected boolean playing = false;
 	protected String source = null;

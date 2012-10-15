@@ -26,7 +26,7 @@ public class VideoExecutorSwf extends ExecutorSwf {
 			((SwfMediaWrapper) this.mediaWrapper).setMediaWidget(flowPanel);
 		}
 			if (baseMediaConfiguration.getNarrationText().trim().length() > 0 ) {
-				final TextTrack textTrack = new TextTrack(TextTrackKind.SUBTITLES, mediaWrapper);
+				final TextTrack textTrack = textTrackFactory.getTextTrack(TextTrackKind.SUBTITLES, mediaWrapper);
 				textTrack.addCue(new TextTrackCue(Document.get().createUniqueId(), 0, 10, baseMediaConfiguration.getNarrationText()));
 				eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), mediaWrapper, new MediaEventHandler() {
 

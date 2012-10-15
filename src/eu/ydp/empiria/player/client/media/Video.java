@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.dom.client.VideoElement;
 
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -20,6 +21,7 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 public class Video extends com.google.gwt.media.client.Video implements MediaEventHandler {
 	private final List<TextTrack> textTracks = new ArrayList<TextTrack>();
 	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected final TextTrackFactory textTrackFactory = PlayerGinjector.INSTANCE.getTextTrackFactory();
 	private boolean initialized = false;
 	private MediaWrapper<?> eventBusSource = null;
 	private boolean forcePreload = false;
@@ -50,7 +52,7 @@ public class Video extends com.google.gwt.media.client.Video implements MediaEve
 
 	public TextTrack addTrack(TextTrackKind textTrackKind) {
 		initHandler();
-		TextTrack track = new TextTrack(textTrackKind, eventBusSource);
+		TextTrack track = textTrackFactory.getTextTrack(textTrackKind, eventBusSource);
 		textTracks.add(track);
 		return track;
 	}
