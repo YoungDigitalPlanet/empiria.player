@@ -11,6 +11,54 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-body")
 	public String QP_BODY();
 
+	@DefaultStringValue("qp-bookmark-clearable")
+	public String QP_BOOKMARK_CLEARABLE();
+
+	@DefaultStringValue("qp-bookmark-popup")
+	public String QP_BOOKMARK_POPUP();
+
+	@DefaultStringValue("qp-bookmark-popup-button-cancel")
+	public String QP_BOOKMARK_POPUP_BUTTON_CANCEL();
+
+	@DefaultStringValue("qp-bookmark-popup-button-close")
+	public String QP_BOOKMARK_POPUP_BUTTON_CLOSE();
+
+	@DefaultStringValue("qp-bookmark-popup-button-delete")
+	public String QP_BOOKMARK_POPUP_BUTTON_DELETE();
+
+	@DefaultStringValue("qp-bookmark-popup-button-ok")
+	public String QP_BOOKMARK_POPUP_BUTTON_OK();
+
+	@DefaultStringValue("qp-bookmark-popup-buttons-panel")
+	public String QP_BOOKMARK_POPUP_BUTTONS_PANEL();
+
+	@DefaultStringValue("qp-bookmark-popup-container-inner")
+	public String QP_BOOKMARK_POPUP_CONTAINER_INNER();
+
+	@DefaultStringValue("qp-bookmark-popup-container-inner-inner")
+	public String QP_BOOKMARK_POPUP_CONTAINER_INNER_INNER();
+
+	@DefaultStringValue("qp-bookmark-popup-container-outer")
+	public String QP_BOOKMARK_POPUP_CONTAINER_OUTER();
+
+	@DefaultStringValue("qp-bookmark-popup-contents")
+	public String QP_BOOKMARK_POPUP_CONTENTS();
+
+	@DefaultStringValue("qp-bookmark-popup-glass")
+	public String QP_BOOKMARK_POPUP_GLASS();
+
+	@DefaultStringValue("qp-bookmark-popup-title")
+	public String QP_BOOKMARK_POPUP_TITLE();
+
+	@DefaultStringValue("qp-bookmark-popup-title-panel")
+	public String QP_BOOKMARK_POPUP_TITLE_PANEL();
+
+	@DefaultStringValue("qp-bookmark-selectable")
+	public String QP_BOOKMARK_SELECTABLE();
+
+	@DefaultStringValue("qp-bookmark-selected")
+	public String QP_BOOKMARK_SELECTED();
+
 	@DefaultStringValue("qp-choice-label")
 	public String QP_CHOICE_LABEL();
 
@@ -40,6 +88,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-connection-item-content")
 	public String QP_CONNECTION_ITEM_CONTENT();
+
+	@DefaultStringValue("qp-connection-item-selected")
+	public String QP_CONNECTION_ITEM_SELECTED();
 
 	@DefaultStringValue("qp-connection-item-selection-button")
 	public String QP_CONNECTION_ITEM_SELECTION_BUTTON();
@@ -389,6 +440,7 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();
 
+
 	@DefaultStringValue("qp-table")
 	public String QP_TABLE();
 
@@ -397,7 +449,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-table-table")
 	public String QP_TABLE_TABLE();
-
+	
 	@DefaultStringValue("qp-text")
 	public String QP_TEXT();
 
@@ -406,31 +458,34 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-text-textentry")
 	public String QP_TEXT_TEXTENTRY();
-
+	
 	@DefaultStringValue("qp-text-textentry-content")
 	public String QP_TEXT_TEXTENTRY_CONTENT();
-
+	
 	@DefaultStringValue("qp-text-textentry-correct")
 	public String QP_TEXT_TEXTENTRY_CORRECT();
-
+	
 	@DefaultStringValue("qp-text-textentry-none")
 	public String QP_TEXT_TEXTENTRY_NONE();
 
 	@DefaultStringValue("qp-text-textentry-prefix")
 	public String QP_TEXT_TEXTENTRY_PREFIX();
-
+	
 	@DefaultStringValue("qp-text-textentry-sufix")
 	public String QP_TEXT_TEXTENTRY_SUFIX();
 
 	@DefaultStringValue("qp-text-textentry-wrong")
 	public String QP_TEXT_TEXTENTRY_WRONG();
-
+	
+	@DefaultStringValue("qp-textinteraction")
+	public String QP_TEXTINTERACTION();
+	
 	@DefaultStringValue("qp-toc")
 	public String QP_TOC();
-
+	
 	@DefaultStringValue("qp-toc-item-title")
 	public String QP_TOC_ITEM_TITLE();
-
+	
 	@DefaultStringValue("qp-toc-item-title-hover")
 	public String QP_TOC_ITEM_TITLE_HOVER();
 
@@ -439,21 +494,4 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
-
-
-	@DefaultStringValue("qp-bookmark-selectable")
-	public String QP_BOOKMARK_SELECTABLE();
-
-	@DefaultStringValue("qp-bookmark-clearable")
-	public String QP_BOOKMARK_CLEARABLE();
-
-	@DefaultStringValue("qp-bookmark-selected")
-	public String QP_BOOKMARK_SELECTED();
-	
-	@DefaultStringValue("qp-textinteraction")
-	public String QP_TEXTINTERACTION();
-	
-
-	@DefaultStringValue("qp-connection-item-selected")
-	public String QP_CONNECTION_ITEM_SELECTED();
 }
