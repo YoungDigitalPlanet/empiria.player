@@ -15,39 +15,39 @@ import eu.ydp.empiria.player.client.module.choice.structure.ChoiceOption;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 
 public class ChoiceModulePresenterImpl implements ChoiceModulePresesenter {
-	
+
 	@UiTemplate("ChoiceModuleView.ui.xml")
 	interface ChoiceModuleUiBinder extends UiBinder<Widget, ChoiceModulePresenterImpl> {
 	};
 
-	private ChoiceModuleUiBinder uiBinder = GWT.create(ChoiceModuleUiBinder.class);
-	
+	private final ChoiceModuleUiBinder uiBinder = GWT.create(ChoiceModuleUiBinder.class);
+
 	@UiField
 	Panel mainPanel;
-	
+
 	@UiField
 	Widget promptWidget;
-	
-	@UiField 
+
+	@UiField
 	Panel choicesPanel;
-	
+
 	private List<SimpleChoiceView> choiceViews;
-	
+
 	private InlineBodyGeneratorSocket bodyGenerator;
-	
+
 	@Override
 	public void bindView() {
 		uiBinder.createAndBindUi(this);
 	}
 
 	@Override
-	public Panel getMainPanel() {
+	public Widget asWidget() {
 		return mainPanel;
 	}
 
 	@Override
 	public void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator) {
-		this.bodyGenerator = bodyGenerator;		
+		this.bodyGenerator = bodyGenerator;
 	}
 
 	@Override
@@ -62,16 +62,17 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresesenter {
 		choiceViews = new ArrayList<SimpleChoiceView>();
 		ChoiceGroupController groupController = new ChoiceGroupController();
 
-		for (ChoiceOption choice : choices) {			
+		for (ChoiceOption choice : choices) {
 			SimpleChoiceView choiceView = new SimpleChoiceView(choice, groupController, bodyGenerator);
 			choiceViews.add(choiceView);
 			choicesPanel.add(choiceView.getView());
 		}
 	}
-	
+
+	@Override
 	public void showAnswers(List<String> answers){
 		for(SimpleChoiceView choice: choiceViews){
-			boolean select = answers.contains(choice.getIdentifier()); 
+			boolean select = answers.contains(choice.getIdentifier());
 			choice.setSelected(select);
 		}
 	}
@@ -102,26 +103,26 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresesenter {
 	@Override
 	public boolean isChoiceSelected(String identifier) {
 		boolean selected = false;
-		
+
 		try {
 			selected = getChoiceByIdentifier(identifier).isSelected();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return selected;
 	}
-	
+
 	private SimpleChoiceView getChoiceByIdentifier(String identifier){
 		SimpleChoiceView searchedChoice = null;
-		
+
 		for(SimpleChoiceView choice: choiceViews){
 			if(identifier.equals(choice.getIdentifier())){
 				searchedChoice = choice;
 				break;
 			}
 		}
-		
+
 		return searchedChoice;
 	}
 
@@ -136,14 +137,14 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresesenter {
 	@Override
 	public Widget getFeedbackPlaceholderByIdentifier(String identifier) {
 		Widget placeholder = null;
-		
+
 		for(SimpleChoiceView choice: choiceViews){
 			if(identifier.equals(choice.getIdentifier())){
 				placeholder = choice.getFeedbackPlaceHolder();
 				break;
 			}
 		}
-		
+
 		return placeholder;
 	}
 }

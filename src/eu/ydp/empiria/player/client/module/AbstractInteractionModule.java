@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,59 +16,71 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
-public abstract class AbstractInteractionModule<T> extends OneViewInteractionModuleBase implements Factory<T>{
-	
+public abstract class AbstractInteractionModule<T, H> extends OneViewInteractionModuleBase implements Factory<T> {
+
 	protected boolean locked = false;
-	
+
 	protected boolean showingAnswers = false;
-	
+
 	protected boolean markingAnswers = false;
-	
-	private ActivityPresenter presenter;
-	
+
+	private ActivityPresenter<H> presenter;
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		presenter = createPresenter();
 		presenter.bindView();
-		
+
 		applyIdAndClassToView(getView());
 		initalizeModule();
 		initializeAndInstallFeedbacks();
 		placeholders.get(0).add(getView());
 	}
-	
-	protected void initializeAndInstallFeedbacks(){
+
+	protected void initializeAndInstallFeedbacks() {
 		NodeList childNodes = getModuleElement().getElementsByTagName(EmpiriaTagConstants.NAME_FEEDBACK_INLINE);
-		for (int f = 0 ; f < childNodes.getLength() ; f ++){
+		for (int f = 0; f < childNodes.getLength(); f++) {
 			InlineFeedback feedback = createInlineFeedback(getView(), childNodes.item(f));
 			getModuleSocket().addInlineFeedback(feedback);
 		}
 	}
-	
-	protected InlineFeedback createInlineFeedback(Widget mountingPoint, Node feedbackNode){
+
+	protected InlineFeedback createInlineFeedback(Widget mountingPoint, Node feedbackNode) {
 		return new InlineFeedback(mountingPoint, feedbackNode, getModuleSocket(), getInteractionEventsListener());
 	}
-	
-	protected abstract ActivityPresenter createPresenter();
-	
+
+	protected abstract ActivityPresenter<H> createPresenter();
+
 	protected abstract void initalizeModule();
-	
-	protected Widget getView(){
-		return presenter.getMainPanel();
+
+	protected Widget getView() {
+		return presenter.asWidget();
 	}
-	
-	protected void generateInlineBody(Node node, Widget parentWidget){
+
+	protected void generateInlineBody(Node node, Widget parentWidget) {
 		getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(node, parentWidget.getElement());
 	}
-	
-	protected List<String> getCorrectAnswers(){
-		return getResponse().correctAnswers.getAllAnswers();
+
+	protected List<H> getCorrectAnswers() {
+		return parseResponse(getResponse().correctAnswers.getAllAnswers());
 	}
-	
-	protected List<String> getCurrentAnswers(){
-		return getResponse().values;
+
+	protected List<H> getCurrentAnswers() {
+		return parseResponse(getResponse().values);
 	}
-	
+
+	/**
+	 * Konwertuje odpowiedz z postaci String do typu H. Domyslnie przepakowuje kolekcje dla bardziej zlozonych typow
+	 * powinna powstac implementacja na poziomie modulu i przeciazyc ta.
+	 *
+	 * @param values
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected List<H> parseResponse(Collection<String> values) {
+		return new ArrayList(values);
+	}
+
 	@Override
 	public void markAnswers(boolean mark) {
 		markingAnswers = mark;
@@ -75,16 +89,16 @@ public abstract class AbstractInteractionModule<T> extends OneViewInteractionMod
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
-		List<String> answers = Collections.emptyList();
-		
-		if(show && !showingAnswers){
+		List<H> answers = Collections.emptyList();
+
+		if (show && !showingAnswers) {
 			answers = getCorrectAnswers();
 			showingAnswers = true;
-		}else if(!show && showingAnswers){
+		} else if (!show && showingAnswers) {
 			answers = getCurrentAnswers();
 			showingAnswers = false;
 		}
-		
+
 		presenter.showAnswers(answers);
 	}
 
@@ -104,33 +118,33 @@ public abstract class AbstractInteractionModule<T> extends OneViewInteractionMod
 	@Override
 	public JSONArray getState() {
 		JSONArray state = new JSONArray();
-		
-		for(String responseValue: getResponse().values){
+
+		for (String responseValue : getResponse().values) {
 			state.set(state.size(), createJSONString(responseValue));
 		}
 
 		return state;
 	}
-	
-	private JSONString createJSONString(String value){
+
+	private JSONString createJSONString(String value) {
 		return new JSONString(value);
 	}
 
 	@Override
-	public void setState(JSONArray newState){
+	public void setState(JSONArray newState) {
 		clearResponse();
-		
-		for(int i = 0; i < newState.size(); i++){
+
+		for (int i = 0; i < newState.size(); i++) {
 			String choiceIdentifier = newState.get(i).isString().stringValue();
 			getResponse().add(choiceIdentifier);
 		}
-		
-		presenter.showAnswers(getResponse().values);
+
+		presenter.showAnswers(parseResponse(getResponse().values));
 		fireStateChanged(false);
 	}
 
 	protected void clearResponse() {
-		getResponse().reset();	
+		getResponse().reset();
 	}
 
 	@Override
@@ -140,27 +154,27 @@ public abstract class AbstractInteractionModule<T> extends OneViewInteractionMod
 
 	@Override
 	public void onBodyLoad() { // NOPMD by MKaldonek on 15.10.12 08:30
-		//eu.ydp.empiria.player.client.module.ILifecycleModule.onBodyLoad
+		// eu.ydp.empiria.player.client.module.ILifecycleModule.onBodyLoad
 	}
 
 	@Override
 	public void onBodyUnload() { // NOPMD by MKaldonek on 15.10.12 08:30
-		//eu.ydp.empiria.player.client.module.ILifecycleModule.onBodyUnload
+		// eu.ydp.empiria.player.client.module.ILifecycleModule.onBodyUnload
 	}
 
 	@Override
 	public void onSetUp() { // NOPMD by MKaldonek on 15.10.12 08:30
-		//eu.ydp.empiria.player.client.module.ILifecycleModule.onSetUp
+		// eu.ydp.empiria.player.client.module.ILifecycleModule.onSetUp
 	}
 
 	@Override
 	public void onStart() { // NOPMD by MKaldonek on 15.10.12 08:31
-		//eu.ydp.empiria.player.client.module.ILifecycleModule.onStart
+		// eu.ydp.empiria.player.client.module.ILifecycleModule.onStart
 	}
 
 	@Override
 	public void onClose() { // NOPMD by MKaldonek on 15.10.12 08:31
-		//eu.ydp.empiria.player.client.module.ILifecycleModule.onClose
+		// eu.ydp.empiria.player.client.module.ILifecycleModule.onClose
 	}
 
 }

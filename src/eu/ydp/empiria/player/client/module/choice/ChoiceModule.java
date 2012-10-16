@@ -15,65 +15,65 @@ import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventHandler;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class ChoiceModule extends AbstractInteractionModule<ChoiceModule> {
-	
+public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String> {
+
 	private ChoiceModulePresesenter presenter;
-	
+
 	private ChoiceModuleStructure choiceStructure;
 
 	@Override
 	protected void initalizeModule() {
 		choiceStructure = new ChoiceModuleStructure();
 		choiceStructure.createFromXml(getModuleElement().toString());
-		
+
 		choiceStructure.setMulti(isMulti());
-		
+
 		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
 		presenter.setPrompt(choiceStructure.getPrompt());
 		presenter.setChoices(choiceStructure.getChoiceOptions());
-		
+
 		addListeners();
 	}
-	
-	private boolean isMulti(){
+
+	private boolean isMulti() {
 		return getResponse().cardinality == Cardinality.MULTIPLE;
 	}
-	
-	private void addListeners(){
+
+	private void addListeners() {
 		ChoiceModuleListener listener = new ChoiceModuleListener();
 		listener.addEventHandler(ChoiceModuleEventType.ON_CHOICE_CLICK);
 	}
-	
+
 	@Override
 	protected void initializeAndInstallFeedbacks() {
 		super.initializeAndInstallFeedbacks();
-		
-		//TODO: rewrite to JAXB
-		for(ChoiceOption choiceOption: choiceStructure.getChoiceOptions()){
+
+		// TODO: rewrite to JAXB
+		for (ChoiceOption choiceOption : choiceStructure.getChoiceOptions()) {
 			String identifier = choiceOption.getIdentifier();
 			Element feedbackNode = choiceStructure.getSimpleChoiceFeedbackElement(identifier);
-			
-			if(feedbackNode != null){
+
+			if (feedbackNode != null) {
 				Widget feedbackPlaceholder = presenter.getFeedbackPlaceholderByIdentifier(identifier);
 				createInlineFeedback(feedbackPlaceholder, feedbackNode);
 			}
 		}
 	}
-	
+
 	public void onSimpleChoiceClick(String identifier) {
-		if (!locked){
+		if (!locked) {
 			presenter.switchChoiceSelection(identifier);
 			updateResponse(identifier);
 			fireStateChanged(true);
 		}
 	}
-	
-	private void updateResponse(String identifier){
+
+	private void updateResponse(String identifier) {
 		boolean selected = presenter.isChoiceSelected(identifier);
-		
-		if(selected){
+
+		if (selected) {
 			getResponse().add(identifier);
-		}else{
+		} else {
 			getResponse().remove(identifier);
 		}
 	}
@@ -84,27 +84,27 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule> {
 	}
 
 	@Override
-	protected ActivityPresenter createPresenter() {
-		if(presenter == null){
+	protected ActivityPresenter<String> createPresenter() {
+		if (presenter == null) {
 			presenter = new ChoiceModulePresenterImpl();
 		}
 		return presenter;
 	}
-	
-	private class ChoiceModuleListener implements ChoiceModuleEventHandler{
+
+	private class ChoiceModuleListener implements ChoiceModuleEventHandler {
 		private final EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus();
-		
+
 		@Override
 		public void onChoiceModuleEvent(ChoiceModuleEvent event) {
-			if(event.getType().equals(ChoiceModuleEventType.ON_CHOICE_CLICK)){
+			if (event.getType().equals(ChoiceModuleEventType.ON_CHOICE_CLICK)) {
 				onSimpleChoiceClick(event.getChoiceIdentifier());
 			}
 		}
-		
-		public void addEventHandler(ChoiceModuleEventType type){
+
+		public void addEventHandler(ChoiceModuleEventType type) {
 			eventBus.addHandler(ChoiceModuleEvent.getType(type), this, new CurrentPageScope());
 		}
-		
+
 	}
-	
+
 }
