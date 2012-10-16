@@ -16,9 +16,4 @@ public abstract class ParentedModuleBase implements IModule {
 	public final HasChildren getParentModule() {
 		return moduleSocket.getParent(this);
 	}
-
-	public boolean isChildOf(HasChildren parent){
-		return false;
-	}
-
 }
