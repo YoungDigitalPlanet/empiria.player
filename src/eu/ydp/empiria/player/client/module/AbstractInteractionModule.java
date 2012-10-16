@@ -14,7 +14,7 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
-public abstract class AbstractActivityModule<T> extends OneViewInteractionModuleBase implements Factory<T>{
+public abstract class AbstractInteractionModule<T> extends OneViewInteractionModuleBase implements Factory<T>{
 	
 	protected boolean locked = false;
 	

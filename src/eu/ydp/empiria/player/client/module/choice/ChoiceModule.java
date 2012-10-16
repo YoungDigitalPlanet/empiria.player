@@ -5,7 +5,7 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
-import eu.ydp.empiria.player.client.module.AbstractActivityModule;
+import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceOption;
@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventHandler;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class ChoiceModule extends AbstractActivityModule<ChoiceModule> {
+public class ChoiceModule extends AbstractInteractionModule<ChoiceModule> {
 	
 	private ChoiceModulePresesenter presenter;
 	
