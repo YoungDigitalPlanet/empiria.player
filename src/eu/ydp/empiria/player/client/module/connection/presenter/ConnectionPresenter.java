@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
+import eu.ydp.empiria.player.client.module.connection.structure.MatchInteraction;
 import eu.ydp.empiria.player.client.util.events.connection.ConnectionEventHandler;
 import eu.ydp.empiria.player.client.util.events.connection.ConnectionEventTypes;
 import eu.ydp.gwtutil.client.collections.KeyValue;
@@ -8,7 +9,7 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 public interface ConnectionPresenter extends ActivityPresenter<KeyValue<String, String>> {
 
 	//TODO popraw ten interfejs jak wygenerujesz poprzez jaxb model objektowy connection
-	public void setModel(Object modelInterface);
+	public void setModel(MatchInteraction modelInterface);
 	/**
 	 * Jezeli istnieja jakies polaczenia i zostanie wywolana ta metoda to dla
 	 * wszystkich usunietych polaczen zostana wywolane handlery
