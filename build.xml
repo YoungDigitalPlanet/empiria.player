@@ -11,10 +11,11 @@
 	
 	<property name="test.reports.dev.dir" value="${base.dir}/reports/htmlunit.dev" />
 	
-	<property name="lib.dir" value="${base.dir}/ivy-lib" />	
+	<property name="lib.dir" value="${base.dir}/ivy-lib" />
+	<property name="ivylib.dir" value="${base.dir}/ivy-lib" />	
 	<property name="lib.coverage.dir" value="${base.dir}/ivy-lib-coverage" />	
 	<property name="version.file" value="${src.dir}/eu/ydp/empiria/player/client/version/version.txt"/>
-	<echo>${lib.dir}</echo>
+	<echo>${ivylib.dir}</echo>
 	
   <condition property="XstartOnFirstThread" value="-XstartOnFirstThread">
     <os family="mac"/>
@@ -26,12 +27,13 @@
 
   <path id="project.class.path">
     <pathelement location="${bin.dir}"/>
-    <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    <fileset dir="${lib.dir}"/>
+    <fileset dir="${ivylib.dir}" includes="**/*.jar"/>
     <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
   </path>
 
   <target name="resolve" depends="version.file" description="--> retrieve dependencies with ivy">
-  	<ivy:retrieve pattern="${lib.dir}/[artifact].[ext]" conf="default, lib, test" />
+  	<ivy:retrieve pattern="${ivylib.dir}/[artifact].[ext]" conf="default, lib, test" />
   </target>
 
 	  <target name="resolve-coverage" depends="resolve" description="--> retrieve dependencies with ivy">
@@ -41,7 +43,7 @@
   <target name="libs" depends="resolve" description="Copy libs to WEB-INF/lib">
     <mkdir dir="war/WEB-INF/lib" />
     <copy todir="war/WEB-INF/lib">
-		<fileset dir="${lib.dir}" includes="**/*.jar"/> 
+		<fileset dir="${ivylib.dir}" includes="**/*.jar"/> 
 	</copy>
     <!-- Add any additional server libs that need to be copied -->
   </target>
@@ -110,7 +112,7 @@
 
   <target name="clean" description="Cleans this project">
     <delete dir="dist"/>
-	<delete dir="${lib.dir}"/>
+	<delete dir="${ivylib.dir}"/>
     <delete dir="${bin.dir}" failonerror="false" />
     <delete dir="${bin.test.dir}" failonerror="false" />
     <delete dir="war/empiria.player" failonerror="false" />
@@ -268,7 +270,7 @@
 	</target>
 	
 
-	<property name="sonar-build-xml" value="${lib.dir}/sonar-build.xml" />
+	<property name="sonar-build-xml" value="${ivylib.dir}/sonar-build.xml" />
 
 	<target name="sonar" depends="build,test.dev">
 		<ant target="sonar-java" antfile="${sonar-build-xml}">
