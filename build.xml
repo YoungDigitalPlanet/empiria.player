@@ -11,7 +11,7 @@
 	
 	<property name="test.reports.dev.dir" value="${base.dir}/reports/htmlunit.dev" />
 	
-	<property name="lib.dir" value="${base.dir}/ivy-lib" />
+	<property name="lib.dir" value="${base.dir}/libs" />
 	<property name="ivylib.dir" value="${base.dir}/ivy-lib" />	
 	<property name="lib.coverage.dir" value="${base.dir}/ivy-lib-coverage" />	
 	<property name="version.file" value="${src.dir}/eu/ydp/empiria/player/client/version/version.txt"/>
