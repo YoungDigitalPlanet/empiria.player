@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
-import eu.ydp.empiria.player.client.module.choice.structure.ChoiceOption;
+import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoice;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
@@ -72,14 +72,14 @@ public class SimpleChoiceView{
 
 	private ChoiceButtonBase button;
 
-	public SimpleChoiceView(ChoiceOption option, ChoiceGroupController controller, InlineBodyGeneratorSocket bodyGenerator) {
+	public SimpleChoiceView(SimpleChoice option, ChoiceGroupController controller, InlineBodyGeneratorSocket bodyGenerator) {
 		uiBinder.createAndBindUi(this);
 		this.bodyGenerator = bodyGenerator;
 		
 		installChildren(option, controller);
 	}
 	
-	private void installChildren(ChoiceOption choiceOption, ChoiceGroupController controller){
+	private void installChildren(SimpleChoice choiceOption, ChoiceGroupController controller){
 		isMulti = choiceOption.isMulti();
 		identifier = choiceOption.getIdentifier();
 		
@@ -124,7 +124,7 @@ public class SimpleChoiceView{
 		});
 	}
 	
-	private void createAndInstallContent(ChoiceOption choiceOption){
+	private void createAndInstallContent(SimpleChoice choiceOption){
 		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOption.getContent(),true);
 		contentWidgetPlace.add(contentWidget);
 	}

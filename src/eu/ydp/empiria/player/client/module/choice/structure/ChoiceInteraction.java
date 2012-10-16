@@ -18,15 +18,15 @@ public class ChoiceInteraction {
 	@XmlAttribute
 	private boolean shuffle;
 	@XmlElement(name="simpleChoice")
-	private List<ChoiceOption> simpleChoices;
+	private List<SimpleChoice> simpleChoices;
 	@XmlElement
 	private String prompt;
 	
-	public List<ChoiceOption> getChoiceOptions() {
+	public List<SimpleChoice> getChoiceOptions() {
 		return simpleChoices;
 	}
 
-	public void setSimpleChoices(List<ChoiceOption> simpleChoices) {
+	public void setSimpleChoices(List<SimpleChoice> simpleChoices) {
 		this.simpleChoices = simpleChoices;
 	}
 

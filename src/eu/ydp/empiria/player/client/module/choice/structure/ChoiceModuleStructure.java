@@ -17,7 +17,7 @@ import eu.ydp.gwtutil.client.collections.RandomizedSet;
 
 public class ChoiceModuleStructure {
 
-	ChoiceMouduleJAXBParser parser = GWT.create(ChoiceMouduleJAXBParser.class);
+	ChoiceModuleJAXBParser parser = GWT.create(ChoiceModuleJAXBParser.class);
 	
 	private ChoiceInteraction choiceInteraction;
 	
@@ -72,9 +72,9 @@ public class ChoiceModuleStructure {
 	}
 	
 	private void randomizeChoices(){
-		List<ChoiceOption> simpleChoices = choiceInteraction.getChoiceOptions(); 
+		List<SimpleChoice> simpleChoices = choiceInteraction.getChoiceOptions(); 
 		int optionsLength = simpleChoices.size();
-		List<ChoiceOption> newSimpleChoiceList = createEmptyChoiceOptionList(optionsLength);
+		List<SimpleChoice> newSimpleChoiceList = createEmptyChoiceOptionList(optionsLength);
 		
 		if(choiceInteraction.isShuffle()){
 			fillRandomizedIndices();
@@ -82,7 +82,7 @@ public class ChoiceModuleStructure {
 		
 		for (int i = 0; i < optionsLength; i++) {
 			int optionIndex = i;
-			ChoiceOption choiceOption = simpleChoices.get(i);
+			SimpleChoice choiceOption = simpleChoices.get(i);
 			
 			if(choiceInteraction.isShuffle() && !choiceOption.isFixed()){
 				optionIndex = randomizedIndices.pull();
@@ -95,8 +95,8 @@ public class ChoiceModuleStructure {
 		choiceInteraction.setSimpleChoices(newSimpleChoiceList);
 	}
 	
-	private List<ChoiceOption> createEmptyChoiceOptionList(int size){
-		List<ChoiceOption> choiceOptions = new ArrayList<ChoiceOption>();
+	private List<SimpleChoice> createEmptyChoiceOptionList(int size){
+		List<SimpleChoice> choiceOptions = new ArrayList<SimpleChoice>();
 		
 		for(int i = 0; i < size; i++){
 			choiceOptions.add(null);
@@ -110,7 +110,7 @@ public class ChoiceModuleStructure {
 		randomizedIndices = new RandomizedSet<Integer>();
 		
 		for(int i = 0; i < optionsLength; i++){
-			ChoiceOption choiceOption = choiceInteraction.getChoiceOptions().get(i);
+			SimpleChoice choiceOption = choiceInteraction.getChoiceOptions().get(i);
 			
 			if(!choiceOption.isFixed()){
 				randomizedIndices.push(i);
@@ -119,7 +119,7 @@ public class ChoiceModuleStructure {
 	}
 	
 	public void setMulti(boolean multi){
-		for(ChoiceOption simpleChoice: choiceInteraction.getChoiceOptions()){
+		for(SimpleChoice simpleChoice: choiceInteraction.getChoiceOptions()){
 			simpleChoice.setMulti(multi);
 		}
 	}
@@ -132,7 +132,7 @@ public class ChoiceModuleStructure {
 		return choiceInteraction.getPrompt();
 	}
 	
-	public List<ChoiceOption> getChoiceOptions(){
+	public List<SimpleChoice> getChoiceOptions(){
 		return choiceInteraction.getChoiceOptions();
 	}
 }

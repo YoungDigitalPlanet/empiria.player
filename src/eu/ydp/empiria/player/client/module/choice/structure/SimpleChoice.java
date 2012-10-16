@@ -1,11 +1,14 @@
 package eu.ydp.empiria.player.client.module.choice.structure;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="simpleChoice")
-public class ChoiceOption {
+public class SimpleChoice {
 
 	@XmlAttribute
 	private String identifier;
