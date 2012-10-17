@@ -50,6 +50,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	List<StackMap<Integer, BookmarkProperties>> bookmarks = new LinkedList<StackMap<Integer, BookmarkProperties>>();
 	Mode mode = Mode.IDLE;
 	Integer bookmarkIndex;
+	private JavaScriptObject playerJsObject;
 
 	@Override
 	public void init() {
@@ -155,10 +156,10 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		notifyModeChange();
 	}
 	
-	// TODO to be implemented
 	native void notifyModeChange()/*-{
-		if (typeof $wnd.bookmarkingClearButtons == 'function'){
-			$wnd.bookmarkingClearButtons();
+		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::playerJsObject;
+		if (typeof playerJso == 'object'  &&  typeof playerJso.bookmarkingClearButtons == 'function'){
+			playerJso.bookmarkingClearButtons();
 		}
 	}-*/;
 	
@@ -241,6 +242,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 
 	@Override
 	public void setPlayerJsObject(JavaScriptObject playerJsObject) {
+		this.playerJsObject = playerJsObject;
 		initJsApi(playerJsObject);
 	}
 
