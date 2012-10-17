@@ -49,8 +49,10 @@ public class BookmarkingHelper {
 	public static String getDefaultBookmarkTitle(String moduleText){
 		String outputText = null;
 		if (moduleText.length() > DEFAULT_TITLE_MAX_LENGTH){
-			outputText = moduleText.substring(0, moduleText.lastIndexOf(' ', DEFAULT_TITLE_MAX_LENGTH-3)) + "...";
-			if (outputText.length() == 0){
+			int lastSpaceIndex = moduleText.lastIndexOf(' ', DEFAULT_TITLE_MAX_LENGTH-3);
+			if (lastSpaceIndex > 0){
+				outputText = moduleText.substring(0, lastSpaceIndex) + "...";
+			} else {
 				outputText = moduleText.substring(0, DEFAULT_TITLE_MAX_LENGTH-3) + "...";
 			}
 		} else {
