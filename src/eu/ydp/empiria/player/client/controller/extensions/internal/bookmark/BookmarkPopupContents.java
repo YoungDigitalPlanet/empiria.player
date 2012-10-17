@@ -15,8 +15,7 @@ public class BookmarkPopupContents extends Composite implements IBookmarkPopupCo
 
 	private static BookmarkPopupPanelUiBinder uiBinder = GWT.create(BookmarkPopupPanelUiBinder.class);
 
-	interface BookmarkPopupPanelUiBinder extends UiBinder<Widget, BookmarkPopupContents> {
-	}
+	interface BookmarkPopupPanelUiBinder extends UiBinder<Widget, BookmarkPopupContents> { }
 
 	IBookmarkPopupContentsPresenter presenter;
 
