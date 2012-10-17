@@ -1,0 +1,1832 @@
+Apache Ant version 1.7.1 compiled on June 27 2008
+Buildfile: build.xml
+Adding reference: ant.PropertyHelper
+Detected Java version: 1.6 in: C:\Program Files (x86)\Java\jdk1.6.0_29\jre
+Detected OS: Windows 7
+Adding reference: ant.ComponentHelper
+Setting ro project property: ant.file -> d:\ydp.projects\empiria\player\trunk\empiria.player\build.xml
+Adding reference: ant.projectHelper
+Adding reference: ant.parsing.context
+Adding reference: ant.targets
+parsing buildfile d:\ydp.projects\empiria\player\trunk\empiria.player\build.xml with URI = file:/d:/ydp.projects/empiria/player/trunk/empiria.player/build.xml
+Setting ro project property: ant.project.name -> empiria.player
+Adding reference: empiria.player
+Setting ro project property: ant.file.empiria.player -> d:\ydp.projects\empiria\player\trunk\empiria.player\build.xml
+Project base dir set to: d:\ydp.projects\empiria\player\trunk\empiria.player
+ +Target: 
+ +Target: resolve
+ +Target: resolve-coverage
+ +Target: libs
+ +Target: javac
+ +Target: gwtc
+ +Target: hosted
+ +Target: build
+ +Target: war
+ +Target: lib
+ +Target: clean
+ +Target: buildnumber
+ +Target: cobertura-instrument
+ +Target: javac.tests
+ +Target: test.dev
+ +Target: test.prod
+ +Target: test.all
+ +Target: dist
+ +Target: publish
+ +Target: project.file
+ +Target: metadata.file
+ +Target: version.file
+ +Target: sonar
+[antlib:org.apache.tools.ant] Could not load definitions from resource org/apache/tools/ant/antlib.xml. It could not be found.
+Setting project property: tstamp -> 201210151256
+Setting project property: DSTAMP -> 20121015
+Setting project property: TSTAMP -> 1456
+Setting project property: TODAY -> October 15 2012
+ [property] Loading d:\ydp.projects\empiria\player\trunk\empiria.player\default.properties
+ [property] Unable to find property file: d:\ydp.projects\empiria\player\trunk\empiria.player\default.properties
+Setting project property: base.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player
+Setting project property: bin.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/war/WEB-INF/classes
+Setting project property: bin.test.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/bin.test
+Setting project property: src.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/src
+Setting project property: test.reports.dev.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/reports/htmlunit.dev
+Setting project property: lib.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/ivy-lib
+Setting project property: lib.coverage.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/ivy-lib-coverage
+Setting project property: version.file -> d:\ydp.projects\empiria\player\trunk\empiria.player/src/eu/ydp/empiria/player/client/version/version.txt
+     [echo] d:\ydp.projects\empiria\player\trunk\empiria.player/ivy-lib
+Condition false; not setting XstartOnFirstThread
+Condition true; setting XstartOnFirstThread to 
+Setting project property: XstartOnFirstThread -> 
+Adding reference: project.class.path
+Setting project property: cobertura.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/ivy-lib-coverage
+Setting project property: instrumented.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/bin.cobertura
+Setting project property: cobertura.report.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/cobertura-report
+Setting project property: cobertura.report.type -> xml
+Setting project property: cobertura.datafile -> d:\ydp.projects\empiria\player\trunk\empiria.player/cobertura-report/cobertura.ser
+Adding reference: cobertura.classpath
+Setting project property: sonar-build-xml -> d:\ydp.projects\empiria\player\trunk\empiria.player/ivy-lib/sonar-build.xml
+Attempting to create object of type org.apache.tools.ant.helper.DefaultExecutor
+Adding reference: ant.executor
+Build sequence for target(s) `resolve' is [version.file, resolve]
+Complete build sequence is [version.file, resolve, libs, javac, javac.tests, resolve-coverage, cobertura-instrument, test.dev, test.prod, test.all, buildnumber, lib, gwtc, build, war, project.file, clean, metadata.file, dist, publish, hosted, sonar, ]
+
+version.file:
+Property "revision" has not been set
+
+resolve:
+parsing buildfile jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/ant/antlib.xml with URI = jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/ant/antlib.xml
+Class org.apache.ivy.ant.IvyAntSettings loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:settings org.apache.ivy.ant.IvyAntSettings
+Class org.apache.ivy.ant.IvyConfigure loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:configure org.apache.ivy.ant.IvyConfigure
+Class org.apache.ivy.ant.IvyResolve loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:resolve org.apache.ivy.ant.IvyResolve
+Class org.apache.ivy.ant.IvyRetrieve loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:retrieve org.apache.ivy.ant.IvyRetrieve
+Class org.apache.ivy.ant.IvyDeliver loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:deliver org.apache.ivy.ant.IvyDeliver
+Class org.apache.ivy.ant.IvyPublish loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:publish org.apache.ivy.ant.IvyPublish
+Class org.apache.ivy.ant.IvyExtractFromSources loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:extract org.apache.ivy.ant.IvyExtractFromSources
+Class org.apache.ivy.ant.IvyCachePath loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:cachepath org.apache.ivy.ant.IvyCachePath
+Class org.apache.ivy.ant.IvyCacheFileset loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:cachefileset org.apache.ivy.ant.IvyCacheFileset
+Class org.apache.ivy.ant.IvyReport loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:report org.apache.ivy.ant.IvyReport
+Class org.apache.ivy.ant.IvyRepositoryReport loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:repreport org.apache.ivy.ant.IvyRepositoryReport
+Class org.apache.ivy.ant.IvyVar loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:var org.apache.ivy.ant.IvyVar
+Class org.apache.ivy.ant.IvyCheck loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:check org.apache.ivy.ant.IvyCheck
+Class org.apache.ivy.ant.IvyArtifactProperty loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:artifactproperty org.apache.ivy.ant.IvyArtifactProperty
+Class org.apache.ivy.ant.IvyBuildList loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:buildlist org.apache.ivy.ant.IvyBuildList
+Class org.apache.ivy.ant.IvyInstall loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:install org.apache.ivy.ant.IvyInstall
+Class org.apache.ivy.ant.IvyConvertPom loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:convertpom org.apache.ivy.ant.IvyConvertPom
+Class org.apache.ivy.ant.IvyMakePom loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:makepom org.apache.ivy.ant.IvyMakePom
+Class org.apache.ivy.ant.IvyArtifactReport loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:artifactreport org.apache.ivy.ant.IvyArtifactReport
+Class org.apache.ivy.ant.IvyInfo loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:info org.apache.ivy.ant.IvyInfo
+Class org.apache.ivy.ant.AddPathTask loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:addpath org.apache.ivy.ant.AddPathTask
+Class org.apache.ivy.ant.IvyListModules loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:listmodules org.apache.ivy.ant.IvyListModules
+Class org.apache.ivy.ant.IvyFindRevision loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:findrevision org.apache.ivy.ant.IvyFindRevision
+Class org.apache.ivy.ant.IvyBuildNumber loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:buildnumber org.apache.ivy.ant.IvyBuildNumber
+Class org.apache.ivy.ant.IvyCleanCache loaded from parent loader (parentFirst)
+ +Datatype antlib:org.apache.ivy.ant:cleancache org.apache.ivy.ant.IvyCleanCache
+Setting project property: ivy.version -> 2.1.0-rc2
+[ivy:retrieve] No ivy:settings found for the default reference 'ivy.instance'.  A default instance will be used
+Adding reference: ivy.instance
+[ivy:retrieve] Loading jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivy.properties
+Setting project property: ivy.log.modules.in.use -> false
+Setting project property: ivy.resolver.default.check.modified -> false
+Setting project property: ivy.default.always.check.exact.revision -> false
+Setting project property: ivy.retrieve.pattern -> d:\ydp.projects\empiria\player\trunk\empiria.player/lib/[artifact]-[revision](-[classifier]).[ext]
+Setting project property: ivy.configurations -> *
+Setting project property: ivy.buildlist.ivyfilepath -> ivy.xml
+Setting project property: ivy.status -> integration
+Setting project property: ivy.resolve.default.type.filter -> *
+Setting project property: ivy.project.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player
+Setting project property: ivy.dep.file -> ivy.xml
+Setting project property: ivy.settings.file -> ivysettings.xml
+Setting project property: ivy.report.output.pattern -> [organisation]-[module]-[conf].[ext]
+Setting project property: ivy.cache.ttl.default -> 10s
+Setting project property: ivy.publish.src.artifacts.pattern -> d:\ydp.projects\empiria\player\trunk\empiria.player/distrib/[type]s/[artifact]-[revision](-[classifier]).[ext]
+Setting project property: ivy.deliver.ivy.pattern -> d:\ydp.projects\empiria\player\trunk\empiria.player/distrib/[type]s/[artifact]-[revision](-[classifier]).[ext]
+Setting project property: ivy.build.artifacts.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/build/artifacts
+Setting project property: ivy.checksums -> sha1,md5
+Setting project property: ivy.distrib.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/distrib
+Setting project property: ivy.lib.dir -> d:\ydp.projects\empiria\player\trunk\empiria.player/lib
+[ivy:retrieve] searching settings file: trying d:\ydp.projects\empiria\player\trunk\empiria.player\ivysettings.xml
+[ivy:retrieve] searching settings file: trying d:\ydp.projects\empiria\player\trunk\empiria.player\ivyconf.xml
+[ivy:retrieve] searching settings file: trying ivysettings.xml
+[ivy:retrieve] searching settings file: trying ivyconf.xml
+[ivy:retrieve] no settings file found, using default...
+[ivy:retrieve] :: Ivy 2.1.0-rc2 - 20090704004254 :: http://ant.apache.org/ivy/ ::
+[ivy:retrieve] :: loading settings :: url = jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings.xml
+[ivy:retrieve] setting 'ivy.settings.url' to 'jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings.xml'
+[ivy:retrieve] setting 'ivy.conf.url' to 'jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings.xml'
+[ivy:retrieve] setting 'ivy.settings.dir' to 'jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings'
+[ivy:retrieve] setting 'ivy.conf.dir' to 'jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings'
+[ivy:retrieve] setting 'ivy.default.ivy.user.dir' to 'C:\Users\mkaldonek\.ivy2'
+[ivy:retrieve] setting 'ivy.home' to 'C:\Users\mkaldonek\.ivy2'
+[ivy:retrieve] no default ivy user dir defined: set to C:\Users\mkaldonek\.ivy2
+[ivy:retrieve] setting 'ivy.log.modules.in.use' to 'false'
+[ivy:retrieve] setting 'ivy.resolver.default.check.modified' to 'false'
+[ivy:retrieve] setting 'ivy.default.always.check.exact.revision' to 'false'
+[ivy:retrieve] setting 'ivy.retrieve.pattern' to '${ivy.lib.dir}/[artifact]-[revision](-[classifier]).[ext]'
+[ivy:retrieve] setting 'ivy.configurations' to '*'
+[ivy:retrieve] setting 'ivy.buildlist.ivyfilepath' to 'ivy.xml'
+[ivy:retrieve] setting 'ivy.status' to 'integration'
+[ivy:retrieve] setting 'ivy.resolve.default.type.filter' to '*'
+[ivy:retrieve] setting 'ivy.project.dir' to '${basedir}'
+[ivy:retrieve] setting 'ivy.dep.file' to 'ivy.xml'
+[ivy:retrieve] setting 'ivy.settings.file' to 'ivysettings.xml'
+[ivy:retrieve] setting 'ivy.report.output.pattern' to '[organisation]-[module]-[conf].[ext]'
+[ivy:retrieve] setting 'ivy.cache.ttl.default' to '10s'
+[ivy:retrieve] setting 'ivy.publish.src.artifacts.pattern' to '${ivy.distrib.dir}/[type]s/[artifact]-[revision](-[classifier]).[ext]'
+[ivy:retrieve] setting 'ivy.deliver.ivy.pattern' to '${ivy.distrib.dir}/[type]s/[artifact]-[revision](-[classifier]).[ext]'
+[ivy:retrieve] setting 'ivy.build.artifacts.dir' to '${ivy.project.dir}/build/artifacts'
+[ivy:retrieve] setting 'ivy.checksums' to 'sha1,md5'
+[ivy:retrieve] setting 'ivy.distrib.dir' to '${ivy.project.dir}/distrib'
+[ivy:retrieve] setting 'ivy.lib.dir' to '${ivy.project.dir}/lib'
+[ivy:retrieve] including url: jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
+[ivy:retrieve] setting 'ivy.cache.dir' to 'C:\Users\mkaldonek\.ivy2\cache'
+[ivy:retrieve] no default cache defined: set to C:\Users\mkaldonek\.ivy2\cache
+[ivy:retrieve] public: no namespace defined: using system
+[ivy:retrieve] public: no latest strategy defined: using default
+[ivy:retrieve] including url: jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
+[ivy:retrieve] setting 'ivy.shared.default.root' to 'C:\Users\mkaldonek\.ivy2/shared'
+[ivy:retrieve] setting 'ivy.shared.default.ivy.pattern' to '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+[ivy:retrieve] setting 'ivy.shared.default.artifact.pattern' to '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+[ivy:retrieve] shared: no namespace defined: using system
+[ivy:retrieve] shared: no latest strategy defined: using default
+[ivy:retrieve] public: no namespace defined: using system
+[ivy:retrieve] public: no latest strategy defined: using default
+[ivy:retrieve] including url: jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
+[ivy:retrieve] setting 'ivy.local.default.root' to 'C:\Users\mkaldonek\.ivy2/local'
+[ivy:retrieve] setting 'ivy.local.default.ivy.pattern' to '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+[ivy:retrieve] setting 'ivy.local.default.artifact.pattern' to '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+[ivy:retrieve] shared: no namespace defined: using system
+[ivy:retrieve] shared: no latest strategy defined: using default
+[ivy:retrieve] local: no namespace defined: using system
+[ivy:retrieve] local: no latest strategy defined: using default
+[ivy:retrieve] public: no namespace defined: using system
+[ivy:retrieve] public: no latest strategy defined: using default
+[ivy:retrieve] including url: jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
+[ivy:retrieve] shared: no namespace defined: using system
+[ivy:retrieve] shared: no latest strategy defined: using default
+[ivy:retrieve] local: no namespace defined: using system
+[ivy:retrieve] local: no latest strategy defined: using default
+[ivy:retrieve] public: no namespace defined: using system
+[ivy:retrieve] public: no latest strategy defined: using default
+[ivy:retrieve] main: no namespace defined: using system
+[ivy:retrieve] main: no latest strategy defined: using default
+[ivy:retrieve] including url: jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
+[ivy:retrieve] shared: no namespace defined: using system
+[ivy:retrieve] shared: no latest strategy defined: using default
+[ivy:retrieve] default: no namespace defined: using system
+[ivy:retrieve] default: no latest strategy defined: using default
+[ivy:retrieve] local: no namespace defined: using system
+[ivy:retrieve] local: no latest strategy defined: using default
+[ivy:retrieve] public: no namespace defined: using system
+[ivy:retrieve] public: no latest strategy defined: using default
+[ivy:retrieve] main: no namespace defined: using system
+[ivy:retrieve] main: no latest strategy defined: using default
+[ivy:retrieve] shared: no namespace defined: using system
+[ivy:retrieve] shared: no latest strategy defined: using default
+[ivy:retrieve] default: no namespace defined: using system
+[ivy:retrieve] default: no latest strategy defined: using default
+[ivy:retrieve] local: no namespace defined: using system
+[ivy:retrieve] local: no latest strategy defined: using default
+[ivy:retrieve] public: no namespace defined: using system
+[ivy:retrieve] public: no latest strategy defined: using default
+[ivy:retrieve] main: no namespace defined: using system
+[ivy:retrieve] main: no latest strategy defined: using default
+[ivy:retrieve] setting 'ivy.default.ivy.user.dir' to 'C:\Users\mkaldonek\.ivy2'
+[ivy:retrieve] settings loaded (59ms)
+[ivy:retrieve] 	default cache: C:\Users\mkaldonek\.ivy2\cache
+[ivy:retrieve] 	default resolver: default
+[ivy:retrieve] 	default latest strategy: latest-revision
+[ivy:retrieve] 	default conflict manager: latest-revision
+[ivy:retrieve] 	circular dependency strategy: warn
+[ivy:retrieve] 	validate: true
+[ivy:retrieve] 	check up2date: true
+[ivy:retrieve] 	-- 5 resolvers:
+[ivy:retrieve] 	shared [file]
+[ivy:retrieve] 		cache: null
+[ivy:retrieve] 		m2compatible: false
+[ivy:retrieve] 		ivy patterns:
+[ivy:retrieve] 			C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		artifact patterns:
+[ivy:retrieve] 			C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		repository: shared
+[ivy:retrieve] 	default [chain] [local, main]
+[ivy:retrieve] 		return first: true
+[ivy:retrieve] 		dual: false
+[ivy:retrieve] 		-> local
+[ivy:retrieve] 		-> main
+[ivy:retrieve] 	local [file]
+[ivy:retrieve] 		cache: null
+[ivy:retrieve] 		m2compatible: false
+[ivy:retrieve] 		ivy patterns:
+[ivy:retrieve] 			C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		artifact patterns:
+[ivy:retrieve] 			C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		repository: local
+[ivy:retrieve] 	public [ibiblio]
+[ivy:retrieve] 		cache: null
+[ivy:retrieve] 		m2compatible: true
+[ivy:retrieve] 		ivy patterns:
+[ivy:retrieve] 			http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		artifact patterns:
+[ivy:retrieve] 			http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		repository: public
+[ivy:retrieve] 		root: http://repo1.maven.org/maven2/
+[ivy:retrieve] 		pattern: [organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		usepoms: true
+[ivy:retrieve] 		useMavenMetadata: true
+[ivy:retrieve] 	main [chain] [shared, public]
+[ivy:retrieve] 		return first: false
+[ivy:retrieve] 		dual: true
+[ivy:retrieve] 		-> shared
+[ivy:retrieve] 		-> public
+[ivy:retrieve] 	module settings:
+[ivy:retrieve] 		NONE
+Setting project property: java.vm.version.ivy.instance -> 20.4-b02
+Setting project property: sun.jnu.encoding.ivy.instance -> Cp1250
+Setting project property: java.vendor.url.ivy.instance -> http://java.sun.com/
+Setting project property: java.vm.info.ivy.instance -> mixed mode, sharing
+Setting project property: user.dir.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player
+Setting project property: ivy.conf.dir -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings
+Setting project property: ivy.conf.dir.ivy.instance -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings
+Setting project property: sun.cpu.isalist.ivy.instance -> pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86
+Setting project property: java.awt.graphicsenv.ivy.instance -> sun.awt.Win32GraphicsEnvironment
+Setting project property: ivy.status.ivy.instance -> integration
+Setting project property: ivy.checksums.ivy.instance -> sha1,md5
+Setting project property: sun.os.patch.level.ivy.instance -> Service Pack 1
+Setting project property: ivy.settings.file.ivy.instance -> ivysettings.xml
+Setting project property: ant.library.dir.ivy.instance -> C:\apache-ant-1.7.1\lib
+Setting project property: ivy.local.default.root -> C:\Users\mkaldonek\.ivy2/local
+Setting project property: ivy.local.default.root.ivy.instance -> C:\Users\mkaldonek\.ivy2/local
+Setting project property: user.home.ivy.instance -> C:\Users\mkaldonek
+Setting project property: java.io.tmpdir.ivy.instance -> C:\Users\MKALDO~1\AppData\Local\Temp\
+Setting project property: java.awt.printerjob.ivy.instance -> sun.awt.windows.WPrinterJob
+Setting project property: ivy.project.dir.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player
+Setting project property: java.version.ivy.instance -> 1.6.0_29
+Setting project property: ivy.home -> C:\Users\mkaldonek\.ivy2
+Setting project property: ivy.home.ivy.instance -> C:\Users\mkaldonek\.ivy2
+Setting project property: file.encoding.pkg.ivy.instance -> sun.io
+Setting project property: ivy.configurations.ivy.instance -> *
+Setting project property: java.vendor.url.bug.ivy.instance -> http://java.sun.com/cgi-bin/bugreport.cgi
+Setting project property: ivy.report.output.pattern.ivy.instance -> [organisation]-[module]-[conf].[ext]
+Setting project property: file.encoding.ivy.instance -> Cp1250
+Setting project property: sun.java.command.ivy.instance -> org.apache.tools.ant.launch.Launcher -debug resolve
+Setting project property: line.separator.ivy.instance -> 
+Setting project property: ivy.distrib.dir.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player/distrib
+Setting project property: java.vm.specification.vendor.ivy.instance -> Sun Microsystems Inc.
+Setting project property: ivy.resolve.default.type.filter.ivy.instance -> *
+Setting project property: java.vm.vendor.ivy.instance -> Sun Microsystems Inc.
+Setting project property: ivy.cache.dir -> C:\Users\mkaldonek\.ivy2\cache
+Setting project property: ivy.cache.dir.ivy.instance -> C:\Users\mkaldonek\.ivy2\cache
+Setting project property: java.class.path.ivy.instance -> C:\apache-ant-1.7.1\lib\ant-launcher.jar;C:\apache-ant-1.7.1\lib\ant-antlr.jar;C:\apache-ant-1.7.1\lib\ant-apache-bcel.jar;C:\apache-ant-1.7.1\lib\ant-apache-bsf.jar;C:\apache-ant-1.7.1\lib\ant-apache-log4j.jar;C:\apache-ant-1.7.1\lib\ant-apache-oro.jar;C:\apache-ant-1.7.1\lib\ant-apache-regexp.jar;C:\apache-ant-1.7.1\lib\ant-apache-resolver.jar;C:\apache-ant-1.7.1\lib\ant-commons-logging.jar;C:\apache-ant-1.7.1\lib\ant-commons-net.jar;C:\apache-ant-1.7.1\lib\ant-jai.jar;C:\apache-ant-1.7.1\lib\ant-javamail.jar;C:\apache-ant-1.7.1\lib\ant-jdepend.jar;C:\apache-ant-1.7.1\lib\ant-jmf.jar;C:\apache-ant-1.7.1\lib\ant-jsch.jar;C:\apache-ant-1.7.1\lib\ant-junit.jar;C:\apache-ant-1.7.1\lib\ant-launcher.jar;C:\apache-ant-1.7.1\lib\ant-netrexx.jar;C:\apache-ant-1.7.1\lib\ant-nodeps.jar;C:\apache-ant-1.7.1\lib\ant-starteam.jar;C:\apache-ant-1.7.1\lib\ant-stylebook.jar;C:\apache-ant-1.7.1\lib\ant-swing.jar;C:\apache-ant-1.7.1\lib\ant-testutil.jar;C:\apache-ant-1.7.1\lib\ant-trax.jar;C:\apache-ant-1.7.1\lib\ant-weblogic.jar;C:\apache-ant-1.7.1\lib\ant.jar;C:\apache-ant-1.7.1\lib\apache-ivy.jar;C:\apache-ant-1.7.1\lib\xercesImpl.jar;C:\apache-ant-1.7.1\lib\xml-apis.jar;C:\Program Files (x86)\Java\jdk1.6.0_29\lib\tools.jar
+Setting project property: sun.io.unicode.encoding.ivy.instance -> UnicodeLittle
+Setting project property: user.variant.ivy.instance -> 
+Setting project property: user.language.ivy.instance -> pl
+Setting project property: user.name.ivy.instance -> MKaldonek
+Setting project property: os.arch.ivy.instance -> x86
+Setting project property: ivy.publish.src.artifacts.pattern.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player/distrib/[type]s/[artifact]-[revision](-[classifier]).[ext]
+Setting project property: java.runtime.version.ivy.instance -> 1.6.0_29-b11
+Setting project property: sun.boot.class.path.ivy.instance -> C:\Program Files (x86)\Java\jdk1.6.0_29\jre\lib\resources.jar;C:\Program Files (x86)\Java\jdk1.6.0_29\jre\lib\rt.jar;C:\Program Files (x86)\Java\jdk1.6.0_29\jre\lib\sunrsasign.jar;C:\Program Files (x86)\Java\jdk1.6.0_29\jre\lib\jsse.jar;C:\Program Files (x86)\Java\jdk1.6.0_29\jre\lib\jce.jar;C:\Program Files (x86)\Java\jdk1.6.0_29\jre\lib\charsets.jar;C:\Program Files (x86)\Java\jdk1.6.0_29\jre\lib\modules\jdk.boot.jar;C:\Program Files (x86)\Java\jdk1.6.0_29\jre\classes
+Setting project property: ivy.build.artifacts.dir.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player/build/artifacts
+Setting project property: ivy.settings.dir -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings
+Setting project property: ivy.settings.dir.ivy.instance -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings
+Setting project property: sun.desktop.ivy.instance -> windows
+Setting project property: ivy.cache.ttl.default.ivy.instance -> 10s
+Setting project property: sun.cpu.endian.ivy.instance -> little
+Setting project property: ivy.local.default.artifact.pattern -> [organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+Setting project property: ivy.local.default.artifact.pattern.ivy.instance -> [organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+Setting project property: ivy.local.default.ivy.pattern -> [organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+Setting project property: ivy.local.default.ivy.pattern.ivy.instance -> [organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+Setting project property: awt.toolkit.ivy.instance -> sun.awt.windows.WToolkit
+Setting project property: ivy.log.modules.in.use.ivy.instance -> false
+Setting project property: sun.boot.library.path.ivy.instance -> C:\Program Files (x86)\Java\jdk1.6.0_29\jre\bin
+Setting project property: java.home.ivy.instance -> C:\Program Files (x86)\Java\jdk1.6.0_29\jre
+Setting project property: java.vm.name.ivy.instance -> Java HotSpot(TM) Client VM
+Setting project property: ivy.settings.url -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings.xml
+Setting project property: ivy.settings.url.ivy.instance -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings.xml
+Setting project property: java.endorsed.dirs.ivy.instance -> C:\Program Files (x86)\Java\jdk1.6.0_29\jre\lib\endorsed
+Setting project property: basedir.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player
+Setting project property: ivy.shared.default.ivy.pattern -> [organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+Setting project property: ivy.shared.default.ivy.pattern.ivy.instance -> [organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+Setting project property: sun.management.compiler.ivy.instance -> HotSpot Client Compiler
+Setting project property: java.runtime.name.ivy.instance -> Java(TM) SE Runtime Environment
+Setting project property: ivy.shared.default.root -> C:\Users\mkaldonek\.ivy2/shared
+Setting project property: ivy.shared.default.root.ivy.instance -> C:\Users\mkaldonek\.ivy2/shared
+Setting project property: ant.home.ivy.instance -> C:\apache-ant-1.7.1
+Setting project property: ivy.conf.url -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings.xml
+Setting project property: ivy.conf.url.ivy.instance -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings/ivysettings.xml
+Setting project property: ivy.default.ivy.user.dir -> C:\Users\mkaldonek\.ivy2
+Setting project property: ivy.default.ivy.user.dir.ivy.instance -> C:\Users\mkaldonek\.ivy2
+Setting project property: ivy.retrieve.pattern.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player/lib/[artifact]-[revision](-[classifier]).[ext]
+Setting project property: ivy.shared.default.artifact.pattern -> [organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+Setting project property: ivy.shared.default.artifact.pattern.ivy.instance -> [organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+Setting project property: java.library.path.ivy.instance -> C:\Program Files (x86)\Java\jdk1.6.0_29\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files (x86)\AMD APP\bin\x86_64;C:\Program Files (x86)\AMD APP\bin\x86;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\TortoiseSVN\bin;.
+Setting project property: ivy.basedir -> d:\ydp.projects\empiria\player\trunk\empiria.player
+Setting project property: ivy.basedir.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player
+Setting project property: file.separator.ivy.instance -> \
+Setting project property: ivy.default.conf.dir -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings
+Setting project property: ivy.default.conf.dir.ivy.instance -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings
+Setting project property: ivy.buildlist.ivyfilepath.ivy.instance -> ivy.xml
+Setting project property: java.specification.vendor.ivy.instance -> Sun Microsystems Inc.
+Setting project property: java.vm.specification.version.ivy.instance -> 1.0
+Setting project property: ivy.default.always.check.exact.revision.ivy.instance -> false
+Setting project property: sun.java.launcher.ivy.instance -> SUN_STANDARD
+Setting project property: user.timezone.ivy.instance -> Europe/Belgrade
+Setting project property: os.name.ivy.instance -> Windows 7
+Setting project property: path.separator.ivy.instance -> ;
+Setting project property: java.ext.dirs.ivy.instance -> C:\Program Files (x86)\Java\jdk1.6.0_29\jre\lib\ext;C:\Windows\Sun\Java\lib\ext
+Setting project property: sun.arch.data.model.ivy.instance -> 32
+Setting project property: ivy.resolver.default.check.modified.ivy.instance -> false
+Setting project property: os.version.ivy.instance -> 6.1
+Setting project property: java.specification.name.ivy.instance -> Java Platform API Specification
+Setting project property: ivy.deliver.ivy.pattern.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player/distrib/[type]s/[artifact]-[revision](-[classifier]).[ext]
+Setting project property: ivy.default.settings.dir -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings
+Setting project property: ivy.default.settings.dir.ivy.instance -> jar:file:/C:/apache-ant-1.7.1/lib/apache-ivy.jar!/org/apache/ivy/core/settings
+Setting project property: java.class.version.ivy.instance -> 50.0
+Setting project property: user.country.ivy.instance -> PL
+Setting project property: ivy.lib.dir.ivy.instance -> d:\ydp.projects\empiria\player\trunk\empiria.player/lib
+Setting project property: java.vendor.ivy.instance -> Sun Microsystems Inc.
+Setting project property: java.vm.specification.name.ivy.instance -> Java Virtual Machine Specification
+Setting project property: java.specification.version.ivy.instance -> 1.6
+Setting project property: ivy.dep.file.ivy.instance -> ivy.xml
+[ivy:retrieve] parameter not found: ivy.organisation
+[ivy:retrieve] parameter not found: ivy.module
+[ivy:retrieve] parameter not found: ivy.resolved.file
+[ivy:retrieve] using standard ensure resolved
+[ivy:retrieve] parameter found as attribute value: ivy.resolved.configurations=default, lib, test
+[ivy:retrieve] calculating configurations to resolve
+[ivy:retrieve] module not yet resolved, all confs still need to be resolved
+[ivy:retrieve] no resolved descriptor found: launching default resolve
+Overriding previous definition of property "ivy.version"
+Setting project property: ivy.version -> 2.1.0-rc2
+[ivy:retrieve] parameter found as attribute value: ivy.configurations=default, lib, test
+[ivy:retrieve] parameter found as ivy variable: ivy.resolve.default.type.filter=*
+[ivy:retrieve] parameter found as ivy variable: ivy.dep.file=ivy.xml
+[ivy:retrieve] using ivy parser to parse file:/d:/ydp.projects/empiria/player/trunk/empiria.player/ivy.xml
+[ivy:retrieve] post 1.3 ivy file: using exact as default matcher
+[ivy:retrieve] :: resolving dependencies :: eu.ydp#empiriaPlayer;working@mkaldonek
+[ivy:retrieve] 	confs: [default, lib, test]
+[ivy:retrieve] 	validate = true
+[ivy:retrieve] 	refresh = false
+[ivy:retrieve] resolving dependencies for configuration 'default'
+[ivy:retrieve] == resolving dependencies for eu.ydp#empiriaPlayer;working@mkaldonek [default]
+[ivy:retrieve] loadData of eu.ydp#empiriaPlayer;working@mkaldonek of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [default->default]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=default
+[ivy:retrieve] 	using default to resolve com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] default: Checking cache for: dependency: com.google.gwt#gwt-servlet;2.4.0 {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\com.google.gwt\gwt-servlet\ivy-2.4.0.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for com.google.gwt#gwt-servlet;2.4.0 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\com.google.gwt\gwt-servlet\ivy-2.4.0.xml
+[ivy:retrieve] default: module revision found in cache: com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] 	found com.google.gwt#gwt-servlet;2.4.0 in public
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [default->runtime]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [default->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [default->master]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [default->default]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=default
+[ivy:retrieve] 	using default to resolve com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] default: Checking cache for: dependency: com.google.gwt#gwt-user;2.4.0 {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\com.google.gwt\gwt-user\ivy-2.4.0.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for com.google.gwt#gwt-user;2.4.0 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\com.google.gwt\gwt-user\ivy-2.4.0.xml
+[ivy:retrieve] default: module revision found in cache: com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] 	found com.google.gwt#gwt-user;2.4.0 in public
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [default->runtime]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [default->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [compile->master(*)]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=default
+[ivy:retrieve] 	using default to resolve javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] default: Checking cache for: dependency: javax.validation#validation-api;1.0.0.GA {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\javax.validation\validation-api\ivy-1.0.0.GA.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for javax.validation#validation-api;1.0.0.GA (resolved by public): C:\Users\mkaldonek\.ivy2\cache\javax.validation\validation-api\ivy-1.0.0.GA.xml
+[ivy:retrieve] default: module revision found in cache: javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] 	found javax.validation#validation-api;1.0.0.GA in public
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [compile->compile(*)]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [runtime->runtime(*)]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [runtime->compile]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [default->master]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [default->default]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=default
+[ivy:retrieve] 	using default to resolve com.google.gwt#gwt-dev;2.4.0
+[ivy:retrieve] default: Checking cache for: dependency: com.google.gwt#gwt-dev;2.4.0 {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\com.google.gwt\gwt-dev\ivy-2.4.0.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for com.google.gwt#gwt-dev;2.4.0 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\com.google.gwt\gwt-dev\ivy-2.4.0.xml
+[ivy:retrieve] default: module revision found in cache: com.google.gwt#gwt-dev;2.4.0
+[ivy:retrieve] 	found com.google.gwt#gwt-dev;2.4.0 in public
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [default->runtime]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [default->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [default->master]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [default->default]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=default
+[ivy:retrieve] 	using default to resolve com.google.gwt.inject#gin;1.5.0
+[ivy:retrieve] default: Checking cache for: dependency: com.google.gwt.inject#gin;1.5.0 {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\com.google.gwt.inject\gin\ivy-1.5.0.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for com.google.gwt.inject#gin;1.5.0 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\com.google.gwt.inject\gin\ivy-1.5.0.xml
+[ivy:retrieve] default: module revision found in cache: com.google.gwt.inject#gin;1.5.0
+[ivy:retrieve] 	found com.google.gwt.inject#gin;1.5.0 in public
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [default->runtime]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [default->compile]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [compile->master(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] 	using default to resolve com.google.inject#guice;3.0-rc2
+[ivy:retrieve] default: Checking cache for: dependency: com.google.inject#guice;3.0-rc2 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\com.google.inject\guice\ivy-3.0-rc2.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for com.google.inject#guice;3.0-rc2 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\com.google.inject\guice\ivy-3.0-rc2.xml
+[ivy:retrieve] default: module revision found in cache: com.google.inject#guice;3.0-rc2
+[ivy:retrieve] 	found com.google.inject#guice;3.0-rc2 in public
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [compile->compile(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [compile->master(*)]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=default
+[ivy:retrieve] 	using default to resolve javax.inject#javax.inject;1
+[ivy:retrieve] default: Checking cache for: dependency: javax.inject#javax.inject;1 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\javax.inject\javax.inject\ivy-1.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for javax.inject#javax.inject;1 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\javax.inject\javax.inject\ivy-1.xml
+[ivy:retrieve] default: module revision found in cache: javax.inject#javax.inject;1
+[ivy:retrieve] 	found javax.inject#javax.inject;1 in public
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [compile->compile(*)]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [compile->master(*)]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=default
+[ivy:retrieve] 	using default to resolve aopalliance#aopalliance;1.0
+[ivy:retrieve] default: Checking cache for: dependency: aopalliance#aopalliance;1.0 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\aopalliance\aopalliance\ivy-1.0.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for aopalliance#aopalliance;1.0 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\aopalliance\aopalliance\ivy-1.0.xml
+[ivy:retrieve] default: module revision found in cache: aopalliance#aopalliance;1.0
+[ivy:retrieve] 	found aopalliance#aopalliance;1.0 in public
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [compile->compile(*)]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [compile->master(*)]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=default
+[ivy:retrieve] 	using default to resolve org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] default: Checking cache for: dependency: org.sonatype.sisu.inject#cglib;2.2.1-v20090111 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\org.sonatype.sisu.inject\cglib\ivy-2.2.1-v20090111.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for org.sonatype.sisu.inject#cglib;2.2.1-v20090111 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\org.sonatype.sisu.inject\cglib\ivy-2.2.1-v20090111.xml
+[ivy:retrieve] default: module revision found in cache: org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] 	found org.sonatype.sisu.inject#cglib;2.2.1-v20090111 in public
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [compile->compile(*)]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=default
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [compile->master(*)]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=default
+[ivy:retrieve] 	using default to resolve asm#asm;3.1
+[ivy:retrieve] default: Checking cache for: dependency: asm#asm;3.1 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\asm\asm\ivy-3.1.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for asm#asm;3.1 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\asm\asm\ivy-3.1.xml
+[ivy:retrieve] default: module revision found in cache: asm#asm;3.1
+[ivy:retrieve] 	found asm#asm;3.1 in public
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [compile->compile(*)]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [compile->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [compile->compile]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [runtime->runtime(*)]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [runtime->compile]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [runtime->runtime(*)]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [runtime->compile]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [runtime->runtime(*)]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [runtime->compile]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=default
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [runtime->runtime(*)]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=default
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [runtime->compile]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [compile->master(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=default
+[ivy:retrieve] 	using default to resolve com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] default: Checking cache for: dependency: com.google.inject.extensions#guice-assistedinject;3.0-rc2 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\com.google.inject.extensions\guice-assistedinject\ivy-3.0-rc2.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for com.google.inject.extensions#guice-assistedinject;3.0-rc2 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\com.google.inject.extensions\guice-assistedinject\ivy-3.0-rc2.xml
+[ivy:retrieve] default: module revision found in cache: com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] 	found com.google.inject.extensions#guice-assistedinject;3.0-rc2 in public
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [compile->compile(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [compile->master(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] default is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [compile->compile(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] default is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [compile->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [compile->compile]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] default is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [runtime->compile]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] default is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] default is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [runtime->compile]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=default
+[ivy:retrieve] default is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=default
+[ivy:retrieve] default is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [runtime->compile]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=default
+[ivy:retrieve] default is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.2.0 [runtime->master(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.2.0 of rootConf=default
+[ivy:retrieve] default is evicted.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->master(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.2.0 [runtime->compile(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.2.0 of rootConf=default
+[ivy:retrieve] default is evicted.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->compile(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.2.0 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.2.0 of rootConf=default
+[ivy:retrieve] default is evicted.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=default
+[ivy:retrieve] default is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [default->master]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=default
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#mathPlayer;latest.integration [default->default]
+[ivy:retrieve] loadData of eu.ydp#mathPlayer;latest.integration of rootConf=default
+[ivy:retrieve] 	using default to resolve eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] default: Checking cache for: dependency: eu.ydp#mathPlayer;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/mathPlayer/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/mathPlayer/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/mathPlayer/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#mathPlayer;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/mathPlayer/[revision]/jars/mathPlayer.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/mathPlayer/[revision]/jars/mathPlayer.jar
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/mathPlayer/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#mathPlayer;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	local: no ivy file nor artifact found for eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] main: Checking cache for: dependency: eu.ydp#mathPlayer;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/mathPlayer/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/mathPlayer/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/mathPlayer/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#mathPlayer;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/mathPlayer/[revision]/jars/mathPlayer.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/mathPlayer/[revision]/jars/mathPlayer.jar
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/mathPlayer/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#mathPlayer;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	shared: no ivy file nor artifact found for eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/mathPlayer/[revision]/mathPlayer-[revision].pom
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/mathPlayer/maven-metadata.xml
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/mathPlayer/maven-metadata.xml
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/mathPlayer/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/mathPlayer/[revision]/mathPlayer-[revision].pom
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/mathPlayer/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/mathPlayer/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/mathPlayer/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/mathPlayer/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/mathPlayer/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#mathPlayer;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/mathPlayer/[revision]/mathPlayer-[revision].jar
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/mathPlayer/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/mathPlayer/[revision]/mathPlayer-[revision].jar
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/mathPlayer/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/mathPlayer/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/mathPlayer/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/mathPlayer/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/mathPlayer/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#mathPlayer;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 	public: no ivy file nor artifact found for eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] WARN: 	module not found: eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] WARN: ==== local: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/mathPlayer/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#mathPlayer;latest.integration!mathPlayer.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/mathPlayer/[revision]/jars/mathPlayer.jar
+[ivy:retrieve] WARN: ==== shared: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/mathPlayer/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#mathPlayer;latest.integration!mathPlayer.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/mathPlayer/[revision]/jars/mathPlayer.jar
+[ivy:retrieve] WARN: ==== public: tried
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/mathPlayer/[revision]/mathPlayer-[revision].pom
+[ivy:retrieve] WARN:   -- artifact eu.ydp#mathPlayer;latest.integration!mathPlayer.jar:
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/mathPlayer/[revision]/mathPlayer-[revision].jar
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#canvasadapter;latest.integration [default->default]
+[ivy:retrieve] loadData of eu.ydp#canvasadapter;latest.integration of rootConf=default
+[ivy:retrieve] 	using default to resolve eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] default: Checking cache for: dependency: eu.ydp#canvasadapter;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/canvasadapter/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/canvasadapter/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/canvasadapter/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#canvasadapter;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/canvasadapter/[revision]/jars/canvasadapter.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/canvasadapter/[revision]/jars/canvasadapter.jar
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/canvasadapter/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#canvasadapter;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	local: no ivy file nor artifact found for eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] main: Checking cache for: dependency: eu.ydp#canvasadapter;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/canvasadapter/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/canvasadapter/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/canvasadapter/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#canvasadapter;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/canvasadapter/[revision]/jars/canvasadapter.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/canvasadapter/[revision]/jars/canvasadapter.jar
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/canvasadapter/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#canvasadapter;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	shared: no ivy file nor artifact found for eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/canvasadapter/[revision]/canvasadapter-[revision].pom
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/canvasadapter/maven-metadata.xml
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/canvasadapter/maven-metadata.xml
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/canvasadapter/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/canvasadapter/[revision]/canvasadapter-[revision].pom
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/canvasadapter/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/canvasadapter/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/canvasadapter/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/canvasadapter/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/canvasadapter/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#canvasadapter;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/canvasadapter/[revision]/canvasadapter-[revision].jar
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/canvasadapter/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/canvasadapter/[revision]/canvasadapter-[revision].jar
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/canvasadapter/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/canvasadapter/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/canvasadapter/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/canvasadapter/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/canvasadapter/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#canvasadapter;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 	public: no ivy file nor artifact found for eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] WARN: 	module not found: eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] WARN: ==== local: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/canvasadapter/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#canvasadapter;latest.integration!canvasadapter.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/canvasadapter/[revision]/jars/canvasadapter.jar
+[ivy:retrieve] WARN: ==== shared: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/canvasadapter/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#canvasadapter;latest.integration!canvasadapter.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/canvasadapter/[revision]/jars/canvasadapter.jar
+[ivy:retrieve] WARN: ==== public: tried
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/canvasadapter/[revision]/canvasadapter-[revision].pom
+[ivy:retrieve] WARN:   -- artifact eu.ydp#canvasadapter;latest.integration!canvasadapter.jar:
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/canvasadapter/[revision]/canvasadapter-[revision].jar
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#jsfilerequest;latest.integration [default->default]
+[ivy:retrieve] loadData of eu.ydp#jsfilerequest;latest.integration of rootConf=default
+[ivy:retrieve] 	using default to resolve eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] default: Checking cache for: dependency: eu.ydp#jsfilerequest;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/jsfilerequest/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/jsfilerequest/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/jsfilerequest/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#jsfilerequest;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/jsfilerequest/[revision]/jars/jsfilerequest.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/jsfilerequest/[revision]/jars/jsfilerequest.jar
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/jsfilerequest/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#jsfilerequest;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	local: no ivy file nor artifact found for eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] main: Checking cache for: dependency: eu.ydp#jsfilerequest;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/jsfilerequest/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/jsfilerequest/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/jsfilerequest/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#jsfilerequest;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/jsfilerequest/[revision]/jars/jsfilerequest.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/jsfilerequest/[revision]/jars/jsfilerequest.jar
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/jsfilerequest/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#jsfilerequest;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	shared: no ivy file nor artifact found for eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/[revision]/jsfilerequest-[revision].pom
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/maven-metadata.xml
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/maven-metadata.xml
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/[revision]/jsfilerequest-[revision].pom
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#jsfilerequest;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/[revision]/jsfilerequest-[revision].jar
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/[revision]/jsfilerequest-[revision].jar
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#jsfilerequest;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 	public: no ivy file nor artifact found for eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] WARN: 	module not found: eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] WARN: ==== local: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/jsfilerequest/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#jsfilerequest;latest.integration!jsfilerequest.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/jsfilerequest/[revision]/jars/jsfilerequest.jar
+[ivy:retrieve] WARN: ==== shared: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/jsfilerequest/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#jsfilerequest;latest.integration!jsfilerequest.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/jsfilerequest/[revision]/jars/jsfilerequest.jar
+[ivy:retrieve] WARN: ==== public: tried
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/[revision]/jsfilerequest-[revision].pom
+[ivy:retrieve] WARN:   -- artifact eu.ydp#jsfilerequest;latest.integration!jsfilerequest.jar:
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/[revision]/jsfilerequest-[revision].jar
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#ydpgwtutils;latest.integration [default->default]
+[ivy:retrieve] loadData of eu.ydp#ydpgwtutils;latest.integration of rootConf=default
+[ivy:retrieve] 	using default to resolve eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] default: Checking cache for: dependency: eu.ydp#ydpgwtutils;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/ydpgwtutils/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/ydpgwtutils/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/ydpgwtutils/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#ydpgwtutils;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/ydpgwtutils/[revision]/jars/ydpgwtutils.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/ydpgwtutils/[revision]/jars/ydpgwtutils.jar
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/ydpgwtutils/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#ydpgwtutils;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	local: no ivy file nor artifact found for eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] main: Checking cache for: dependency: eu.ydp#ydpgwtutils;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/ydpgwtutils/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/ydpgwtutils/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/ydpgwtutils/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#ydpgwtutils;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/ydpgwtutils/[revision]/jars/ydpgwtutils.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/ydpgwtutils/[revision]/jars/ydpgwtutils.jar
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/ydpgwtutils/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#ydpgwtutils;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	shared: no ivy file nor artifact found for eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/[revision]/ydpgwtutils-[revision].pom
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/maven-metadata.xml
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/maven-metadata.xml
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/[revision]/ydpgwtutils-[revision].pom
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#ydpgwtutils;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/[revision]/ydpgwtutils-[revision].jar
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/[revision]/ydpgwtutils-[revision].jar
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#ydpgwtutils;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 	public: no ivy file nor artifact found for eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] WARN: 	module not found: eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] WARN: ==== local: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/ydpgwtutils/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#ydpgwtutils;latest.integration!ydpgwtutils.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/ydpgwtutils/[revision]/jars/ydpgwtutils.jar
+[ivy:retrieve] WARN: ==== shared: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/ydpgwtutils/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#ydpgwtutils;latest.integration!ydpgwtutils.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/ydpgwtutils/[revision]/jars/ydpgwtutils.jar
+[ivy:retrieve] WARN: ==== public: tried
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/[revision]/ydpgwtutils-[revision].pom
+[ivy:retrieve] WARN:   -- artifact eu.ydp#ydpgwtutils;latest.integration!ydpgwtutils.jar:
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/[revision]/ydpgwtutils-[revision].jar
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#gwtFlashMedia;latest.integration [default->default]
+[ivy:retrieve] loadData of eu.ydp#gwtFlashMedia;latest.integration of rootConf=default
+[ivy:retrieve] 	using default to resolve eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] default: Checking cache for: dependency: eu.ydp#gwtFlashMedia;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtFlashMedia/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtFlashMedia/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/gwtFlashMedia/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#gwtFlashMedia;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtFlashMedia/[revision]/jars/gwtFlashMedia.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtFlashMedia/[revision]/jars/gwtFlashMedia.jar
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/gwtFlashMedia/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#gwtFlashMedia;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	local: no ivy file nor artifact found for eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] main: Checking cache for: dependency: eu.ydp#gwtFlashMedia;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtFlashMedia/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtFlashMedia/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/gwtFlashMedia/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#gwtFlashMedia;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtFlashMedia/[revision]/jars/gwtFlashMedia.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtFlashMedia/[revision]/jars/gwtFlashMedia.jar
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/gwtFlashMedia/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#gwtFlashMedia;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	shared: no ivy file nor artifact found for eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/[revision]/gwtFlashMedia-[revision].pom
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/maven-metadata.xml
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/maven-metadata.xml
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/[revision]/gwtFlashMedia-[revision].pom
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#gwtFlashMedia;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/[revision]/gwtFlashMedia-[revision].jar
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/[revision]/gwtFlashMedia-[revision].jar
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#gwtFlashMedia;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 	public: no ivy file nor artifact found for eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] WARN: 	module not found: eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] WARN: ==== local: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtFlashMedia/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#gwtFlashMedia;latest.integration!gwtFlashMedia.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtFlashMedia/[revision]/jars/gwtFlashMedia.jar
+[ivy:retrieve] WARN: ==== shared: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtFlashMedia/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#gwtFlashMedia;latest.integration!gwtFlashMedia.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtFlashMedia/[revision]/jars/gwtFlashMedia.jar
+[ivy:retrieve] WARN: ==== public: tried
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/[revision]/gwtFlashMedia-[revision].pom
+[ivy:retrieve] WARN:   -- artifact eu.ydp#gwtFlashMedia;latest.integration!gwtFlashMedia.jar:
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/[revision]/gwtFlashMedia-[revision].jar
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#gwtCreateJs;latest.integration [default->default]
+[ivy:retrieve] loadData of eu.ydp#gwtCreateJs;latest.integration of rootConf=default
+[ivy:retrieve] 	using default to resolve eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] default: Checking cache for: dependency: eu.ydp#gwtCreateJs;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtCreateJs/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtCreateJs/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/gwtCreateJs/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#gwtCreateJs;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtCreateJs/[revision]/jars/gwtCreateJs.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtCreateJs/[revision]/jars/gwtCreateJs.jar
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/gwtCreateJs/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#gwtCreateJs;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	local: no ivy file nor artifact found for eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] main: Checking cache for: dependency: eu.ydp#gwtCreateJs;latest.integration {default=[default], lib=[default], test=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtCreateJs/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtCreateJs/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/gwtCreateJs/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#gwtCreateJs;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtCreateJs/[revision]/jars/gwtCreateJs.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtCreateJs/[revision]/jars/gwtCreateJs.jar
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/gwtCreateJs/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#gwtCreateJs;latest.integration: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	shared: no ivy file nor artifact found for eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/[revision]/gwtCreateJs-[revision].pom
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/maven-metadata.xml
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/maven-metadata.xml
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/[revision]/gwtCreateJs-[revision].pom
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#gwtCreateJs;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/[revision]/gwtCreateJs-[revision].jar
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/[revision]/gwtCreateJs-[revision].jar
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#gwtCreateJs;latest.integration: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 	public: no ivy file nor artifact found for eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] WARN: 	module not found: eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] WARN: ==== local: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtCreateJs/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#gwtCreateJs;latest.integration!gwtCreateJs.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtCreateJs/[revision]/jars/gwtCreateJs.jar
+[ivy:retrieve] WARN: ==== shared: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtCreateJs/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#gwtCreateJs;latest.integration!gwtCreateJs.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtCreateJs/[revision]/jars/gwtCreateJs.jar
+[ivy:retrieve] WARN: ==== public: tried
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/[revision]/gwtCreateJs-[revision].pom
+[ivy:retrieve] WARN:   -- artifact eu.ydp#gwtCreateJs;latest.integration!gwtCreateJs.jar:
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/[revision]/gwtCreateJs-[revision].jar
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#sonar-helper;latest.release [default->default]
+[ivy:retrieve] loadData of eu.ydp#sonar-helper;latest.release of rootConf=default
+[ivy:retrieve] 	using default to resolve eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] default: Checking cache for: dependency: eu.ydp#sonar-helper;latest.release {*=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/sonar-helper/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/sonar-helper/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/sonar-helper/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#sonar-helper;latest.release: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/local/eu.ydp/sonar-helper/[revision]/jars/sonar-helper.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/local/eu.ydp/sonar-helper/[revision]/jars/sonar-helper.jar
+[ivy:retrieve] 	using local to list all in C:/Users/mkaldonek/.ivy2/local/eu.ydp/sonar-helper/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	local: unable to list resources for eu.ydp#sonar-helper;latest.release: pattern=C:\Users\mkaldonek\.ivy2/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	local: no ivy file nor artifact found for eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] main: Checking cache for: dependency: eu.ydp#sonar-helper;latest.release {*=[default]}
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/sonar-helper/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/sonar-helper/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/sonar-helper/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#sonar-helper;latest.release: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 		tried C:\Users\mkaldonek\.ivy2/shared/eu.ydp/sonar-helper/[revision]/jars/sonar-helper.jar
+[ivy:retrieve] 	listing all in C:\Users\mkaldonek\.ivy2/shared/eu.ydp/sonar-helper/[revision]/jars/sonar-helper.jar
+[ivy:retrieve] 	using shared to list all in C:/Users/mkaldonek/.ivy2/shared/eu.ydp/sonar-helper/
+[ivy:retrieve] 		no resources found
+[ivy:retrieve] 	shared: unable to list resources for eu.ydp#sonar-helper;latest.release: pattern=C:\Users\mkaldonek\.ivy2/shared/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]
+[ivy:retrieve] 	shared: no ivy file nor artifact found for eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] default-cache: no cached resolved revision for eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/sonar-helper/[revision]/sonar-helper-[revision].pom
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/sonar-helper/maven-metadata.xml
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/sonar-helper/maven-metadata.xml
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/sonar-helper/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/sonar-helper/[revision]/sonar-helper-[revision].pom
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/sonar-helper/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/sonar-helper/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/sonar-helper/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/sonar-helper/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/sonar-helper/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#sonar-helper;latest.release: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 		tried http://repo1.maven.org/maven2/eu/ydp/sonar-helper/[revision]/sonar-helper-[revision].jar
+[ivy:retrieve] 	maven-metadata not available: http://repo1.maven.org/maven2/eu/ydp/sonar-helper/maven-metadata.xml
+[ivy:retrieve] 	listing all in http://repo1.maven.org/maven2/eu/ydp/sonar-helper/[revision]/sonar-helper-[revision].jar
+[ivy:retrieve] 	using public to list all in http://repo1.maven.org/maven2/eu/ydp/sonar-helper/
+[ivy:retrieve] HTTP response status: 404 url=http://repo1.maven.org/maven2/eu/ydp/sonar-helper/
+[ivy:retrieve] CLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/eu/ydp/sonar-helper/
+[ivy:retrieve] problem while listing resources in http://repo1.maven.org/maven2/eu/ydp/sonar-helper/ with public:
+[ivy:retrieve]   java.io.IOException The HTTP response code for http://repo1.maven.org/maven2/eu/ydp/sonar-helper/ did not indicate a success. See log for more detail.
+[ivy:retrieve] 	public: unable to list resources for eu/ydp#sonar-helper;latest.release: pattern=http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]
+[ivy:retrieve] 	public: no ivy file nor artifact found for eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] WARN: 	module not found: eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] WARN: ==== local: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/sonar-helper/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#sonar-helper;latest.release!sonar-helper.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/local/eu.ydp/sonar-helper/[revision]/jars/sonar-helper.jar
+[ivy:retrieve] WARN: ==== shared: tried
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/sonar-helper/[revision]/ivys/ivy.xml
+[ivy:retrieve] WARN:   -- artifact eu.ydp#sonar-helper;latest.release!sonar-helper.jar:
+[ivy:retrieve] WARN:   C:\Users\mkaldonek\.ivy2/shared/eu.ydp/sonar-helper/[revision]/jars/sonar-helper.jar
+[ivy:retrieve] WARN: ==== public: tried
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/sonar-helper/[revision]/sonar-helper-[revision].pom
+[ivy:retrieve] WARN:   -- artifact eu.ydp#sonar-helper;latest.release!sonar-helper.jar:
+[ivy:retrieve] WARN:   http://repo1.maven.org/maven2/eu/ydp/sonar-helper/[revision]/sonar-helper-[revision].jar
+[ivy:retrieve] resolving dependencies for configuration 'lib'
+[ivy:retrieve] == resolving dependencies for eu.ydp#empiriaPlayer;working@mkaldonek [lib]
+[ivy:retrieve] loadData of eu.ydp#empiriaPlayer;working@mkaldonek of rootConf=lib
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [lib->default]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=lib
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [lib->runtime]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [lib->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [lib->master]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [lib->default]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=lib
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [lib->runtime]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [lib->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [compile->master(*)]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=lib
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [compile->compile(*)]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [runtime->runtime(*)]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [runtime->compile]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [lib->master]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [lib->default]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=lib
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [lib->runtime]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [lib->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [lib->master]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [lib->default]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=lib
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [lib->runtime]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [lib->compile]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [compile->master(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=lib
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [compile->compile(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [compile->master(*)]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=lib
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [compile->compile(*)]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [compile->master(*)]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=lib
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [compile->compile(*)]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [compile->master(*)]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=lib
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [compile->compile(*)]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [compile->master(*)]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=lib
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [compile->compile(*)]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [compile->master(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=lib
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [compile->compile(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [compile->master(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [compile->compile(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [runtime->compile]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [runtime->runtime(*)]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [runtime->compile]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [runtime->runtime(*)]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [runtime->compile]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [runtime->runtime(*)]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [runtime->compile]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [runtime->runtime(*)]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [runtime->compile]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [runtime->compile]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [runtime->compile]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.2.0 [runtime->master(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.2.0 of rootConf=lib
+[ivy:retrieve] lib is evicted.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->master(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.2.0 [runtime->compile(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.2.0 of rootConf=lib
+[ivy:retrieve] lib is evicted.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->compile(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.2.0 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.2.0 of rootConf=lib
+[ivy:retrieve] lib is evicted.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [lib->master]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=lib
+[ivy:retrieve] lib is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#mathPlayer;latest.integration [lib->default]
+[ivy:retrieve] loadData of eu.ydp#mathPlayer;latest.integration of rootConf=lib
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#canvasadapter;latest.integration [lib->default]
+[ivy:retrieve] loadData of eu.ydp#canvasadapter;latest.integration of rootConf=lib
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#jsfilerequest;latest.integration [lib->default]
+[ivy:retrieve] loadData of eu.ydp#jsfilerequest;latest.integration of rootConf=lib
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#ydpgwtutils;latest.integration [lib->default]
+[ivy:retrieve] loadData of eu.ydp#ydpgwtutils;latest.integration of rootConf=lib
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#gwtFlashMedia;latest.integration [lib->default]
+[ivy:retrieve] loadData of eu.ydp#gwtFlashMedia;latest.integration of rootConf=lib
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#gwtCreateJs;latest.integration [lib->default]
+[ivy:retrieve] loadData of eu.ydp#gwtCreateJs;latest.integration of rootConf=lib
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#sonar-helper;latest.release [lib->default]
+[ivy:retrieve] loadData of eu.ydp#sonar-helper;latest.release of rootConf=lib
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] resolving dependencies for configuration 'test'
+[ivy:retrieve] == resolving dependencies for eu.ydp#empiriaPlayer;working@mkaldonek [test]
+[ivy:retrieve] loadData of eu.ydp#empiriaPlayer;working@mkaldonek of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [test->default]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [test->runtime]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [test->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-servlet;2.4.0 [test->master]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [test->default]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [test->runtime]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [test->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [compile->master(*)]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=test
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [compile->compile(*)]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [runtime->runtime(*)]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt#gwt-user;2.4.0->javax.validation#validation-api;1.0.0.GA [runtime->compile]
+[ivy:retrieve] loadData of javax.validation#validation-api;1.0.0.GA of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-user;2.4.0 [test->master]
+[ivy:retrieve] loadData of com.google.gwt#gwt-user;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [test->default]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [test->runtime]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [test->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt#gwt-dev;2.4.0 [test->master]
+[ivy:retrieve] loadData of com.google.gwt#gwt-dev;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [test->default]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [test->runtime]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [test->compile]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [compile->master(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=test
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [compile->compile(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [compile->master(*)]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=test
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [compile->compile(*)]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [compile->master(*)]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=test
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [compile->compile(*)]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [compile->master(*)]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=test
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [compile->compile(*)]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [compile->master(*)]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=test
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [compile->compile(*)]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [compile->master(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=test
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [compile->compile(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [compile->master(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [compile->compile(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject#guice;3.0-rc2 [runtime->compile]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [runtime->runtime(*)]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->javax.inject#javax.inject;1 [runtime->compile]
+[ivy:retrieve] loadData of javax.inject#javax.inject;1 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [runtime->runtime(*)]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->aopalliance#aopalliance;1.0 [runtime->compile]
+[ivy:retrieve] loadData of aopalliance#aopalliance;1.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [runtime->runtime(*)]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject#guice;3.0-rc2->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [runtime->compile]
+[ivy:retrieve] loadData of org.sonatype.sisu.inject#cglib;2.2.1-v20090111 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [runtime->runtime(*)]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [runtime->compile]
+[ivy:retrieve] loadData of asm#asm;3.1 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.inject.extensions#guice-assistedinject;3.0-rc2 [runtime->compile]
+[ivy:retrieve] loadData of com.google.inject.extensions#guice-assistedinject;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.inject.extensions#guice-assistedinject;3.0-rc2->com.google.inject#guice;3.0-rc2 [runtime->compile]
+[ivy:retrieve] loadData of com.google.inject#guice;3.0-rc2 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.2.0 [runtime->master(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.2.0 of rootConf=test
+[ivy:retrieve] test is evicted.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->master(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.2.0 [runtime->compile(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.2.0 of rootConf=test
+[ivy:retrieve] test is evicted.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->compile(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.2.0 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.2.0 of rootConf=test
+[ivy:retrieve] test is evicted.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->runtime(*)]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies com.google.gwt.inject#gin;1.5.0->com.google.gwt#gwt-servlet;2.4.0 [runtime->compile]
+[ivy:retrieve] loadData of com.google.gwt#gwt-servlet;2.4.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->com.google.gwt.inject#gin;1.5.0 [test->master]
+[ivy:retrieve] loadData of com.google.gwt.inject#gin;1.5.0 of rootConf=test
+[ivy:retrieve] test is loaded and no conf to load.  Skip loading
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#mathPlayer;latest.integration [test->default]
+[ivy:retrieve] loadData of eu.ydp#mathPlayer;latest.integration of rootConf=test
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#canvasadapter;latest.integration [test->default]
+[ivy:retrieve] loadData of eu.ydp#canvasadapter;latest.integration of rootConf=test
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#jsfilerequest;latest.integration [test->default]
+[ivy:retrieve] loadData of eu.ydp#jsfilerequest;latest.integration of rootConf=test
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#ydpgwtutils;latest.integration [test->default]
+[ivy:retrieve] loadData of eu.ydp#ydpgwtutils;latest.integration of rootConf=test
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#gwtFlashMedia;latest.integration [test->default]
+[ivy:retrieve] loadData of eu.ydp#gwtFlashMedia;latest.integration of rootConf=test
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#gwtCreateJs;latest.integration [test->default]
+[ivy:retrieve] loadData of eu.ydp#gwtCreateJs;latest.integration of rootConf=test
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->org.hamcrest#hamcrest-library;1.3 [test->default]
+[ivy:retrieve] loadData of org.hamcrest#hamcrest-library;1.3 of rootConf=test
+[ivy:retrieve] 	using default to resolve org.hamcrest#hamcrest-library;1.3
+[ivy:retrieve] default: Checking cache for: dependency: org.hamcrest#hamcrest-library;1.3 {test=[default]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\org.hamcrest\hamcrest-library\ivy-1.3.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for org.hamcrest#hamcrest-library;1.3 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\org.hamcrest\hamcrest-library\ivy-1.3.xml
+[ivy:retrieve] default: module revision found in cache: org.hamcrest#hamcrest-library;1.3
+[ivy:retrieve] 	found org.hamcrest#hamcrest-library;1.3 in public
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->org.hamcrest#hamcrest-library;1.3 [test->runtime]
+[ivy:retrieve] loadData of org.hamcrest#hamcrest-library;1.3 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->org.hamcrest#hamcrest-library;1.3 [test->compile]
+[ivy:retrieve] loadData of org.hamcrest#hamcrest-library;1.3 of rootConf=test
+[ivy:retrieve] == resolving dependencies org.hamcrest#hamcrest-library;1.3->org.hamcrest#hamcrest-core;1.3 [compile->master(*)]
+[ivy:retrieve] loadData of org.hamcrest#hamcrest-core;1.3 of rootConf=test
+[ivy:retrieve] 	using default to resolve org.hamcrest#hamcrest-core;1.3
+[ivy:retrieve] default: Checking cache for: dependency: org.hamcrest#hamcrest-core;1.3 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\org.hamcrest\hamcrest-core\ivy-1.3.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for org.hamcrest#hamcrest-core;1.3 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\org.hamcrest\hamcrest-core\ivy-1.3.xml
+[ivy:retrieve] default: module revision found in cache: org.hamcrest#hamcrest-core;1.3
+[ivy:retrieve] 	found org.hamcrest#hamcrest-core;1.3 in public
+[ivy:retrieve] == resolving dependencies org.hamcrest#hamcrest-library;1.3->org.hamcrest#hamcrest-core;1.3 [compile->compile(*)]
+[ivy:retrieve] loadData of org.hamcrest#hamcrest-core;1.3 of rootConf=test
+[ivy:retrieve] == resolving dependencies org.hamcrest#hamcrest-library;1.3->org.hamcrest#hamcrest-core;1.3 [runtime->runtime(*)]
+[ivy:retrieve] loadData of org.hamcrest#hamcrest-core;1.3 of rootConf=test
+[ivy:retrieve] == resolving dependencies org.hamcrest#hamcrest-library;1.3->org.hamcrest#hamcrest-core;1.3 [runtime->compile]
+[ivy:retrieve] loadData of org.hamcrest#hamcrest-core;1.3 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->org.hamcrest#hamcrest-library;1.3 [test->master]
+[ivy:retrieve] loadData of org.hamcrest#hamcrest-library;1.3 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->org.mockito#mockito-all;1.9.0 [test->default]
+[ivy:retrieve] loadData of org.mockito#mockito-all;1.9.0 of rootConf=test
+[ivy:retrieve] 	using default to resolve org.mockito#mockito-all;1.9.0
+[ivy:retrieve] default: Checking cache for: dependency: org.mockito#mockito-all;1.9.0 {test=[default]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\org.mockito\mockito-all\ivy-1.9.0.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for org.mockito#mockito-all;1.9.0 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\org.mockito\mockito-all\ivy-1.9.0.xml
+[ivy:retrieve] default: module revision found in cache: org.mockito#mockito-all;1.9.0
+[ivy:retrieve] 	found org.mockito#mockito-all;1.9.0 in public
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->org.mockito#mockito-all;1.9.0 [test->runtime]
+[ivy:retrieve] loadData of org.mockito#mockito-all;1.9.0 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->org.mockito#mockito-all;1.9.0 [test->compile]
+[ivy:retrieve] loadData of org.mockito#mockito-all;1.9.0 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->org.mockito#mockito-all;1.9.0 [test->master]
+[ivy:retrieve] loadData of org.mockito#mockito-all;1.9.0 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->junit#junit;4.10 [test->default]
+[ivy:retrieve] loadData of junit#junit;4.10 of rootConf=test
+[ivy:retrieve] 	using default to resolve junit#junit;4.10
+[ivy:retrieve] default: Checking cache for: dependency: junit#junit;4.10 {test=[default]}
+[ivy:retrieve] No entry is found in the ModuleDescriptorCache : C:\Users\mkaldonek\.ivy2\cache\junit\junit\ivy-4.10.xml
+[ivy:retrieve] pre 1.3 ivy file: using exactOrRegexp as default matcher
+[ivy:retrieve] 	found ivy file in cache for junit#junit;4.10 (resolved by public): C:\Users\mkaldonek\.ivy2\cache\junit\junit\ivy-4.10.xml
+[ivy:retrieve] default: module revision found in cache: junit#junit;4.10
+[ivy:retrieve] 	found junit#junit;4.10 in public
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->junit#junit;4.10 [test->runtime]
+[ivy:retrieve] loadData of junit#junit;4.10 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->junit#junit;4.10 [test->compile]
+[ivy:retrieve] loadData of junit#junit;4.10 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->junit#junit;4.10 [test->master]
+[ivy:retrieve] loadData of junit#junit;4.10 of rootConf=test
+[ivy:retrieve] == resolving dependencies eu.ydp#empiriaPlayer;working@mkaldonek->eu.ydp#sonar-helper;latest.release [test->default]
+[ivy:retrieve] loadData of eu.ydp#sonar-helper;latest.release of rootConf=test
+[ivy:retrieve] Node has problem.  Skip loading
+[ivy:retrieve] problem : not found
+[ivy:retrieve] Nbr of module to sort : 15
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-servlet;2.4.0 / Number of dependencies = 2
+[ivy:retrieve] Sort dependencies of : javax.validation#validation-api;1.0.0.GA / Number of dependencies = 0
+[ivy:retrieve] Sort done for : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-user;2.4.0 / Number of dependencies = 2
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-dev;2.4.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-dev;2.4.0
+[ivy:retrieve] Sort dependencies of : com.google.gwt.inject#gin;1.5.0 / Number of dependencies = 4
+[ivy:retrieve] Sort dependencies of : com.google.inject#guice;3.0-rc2 / Number of dependencies = 8
+[ivy:retrieve] Sort dependencies of : javax.inject#javax.inject;1 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : javax.inject#javax.inject;1
+[ivy:retrieve] Sort dependencies of : aopalliance#aopalliance;1.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : aopalliance#aopalliance;1.0
+[ivy:retrieve] Sort dependencies of : org.sonatype.sisu.inject#cglib;2.2.1-v20090111 / Number of dependencies = 5
+[ivy:retrieve] Sort dependencies of : asm#asm;3.1 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : asm#asm;3.1
+[ivy:retrieve] Non matching revision detected when sorting.  org.sonatype.sisu.inject#cglib depends on junit#junit;3.8.2, doesn't match junit#junit;4.10
+[ivy:retrieve] Sort done for : org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] Sort done for : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Sort dependencies of : com.google.inject.extensions#guice-assistedinject;3.0-rc2 / Number of dependencies = 3
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Sort done for : com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] Non matching revision detected when sorting.  com.google.gwt.inject#gin depends on com.google.gwt#gwt-user;2.2.0, doesn't match com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] Non matching revision detected when sorting.  com.google.gwt.inject#gin depends on com.google.gwt#gwt-servlet;2.2.0, doesn't match com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] Sort done for : com.google.gwt.inject#gin;1.5.0
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Module descriptor is processed : com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] Module descriptor is processed : javax.inject#javax.inject;1
+[ivy:retrieve] Module descriptor is processed : aopalliance#aopalliance;1.0
+[ivy:retrieve] Module descriptor is processed : org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] Module descriptor is processed : asm#asm;3.1
+[ivy:retrieve] Sort dependencies of : org.hamcrest#hamcrest-library;1.3 / Number of dependencies = 1
+[ivy:retrieve] Sort dependencies of : org.hamcrest#hamcrest-core;1.3 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : org.hamcrest#hamcrest-core;1.3
+[ivy:retrieve] Sort done for : org.hamcrest#hamcrest-library;1.3
+[ivy:retrieve] Sort dependencies of : org.mockito#mockito-all;1.9.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : org.mockito#mockito-all;1.9.0
+[ivy:retrieve] Sort dependencies of : junit#junit;4.10 / Number of dependencies = 1
+[ivy:retrieve] Non matching revision detected when sorting.  junit#junit depends on org.hamcrest#hamcrest-core;1.1, doesn't match org.hamcrest#hamcrest-core;1.3
+[ivy:retrieve] Sort done for : junit#junit;4.10
+[ivy:retrieve] Module descriptor is processed : org.hamcrest#hamcrest-core;1.3
+[ivy:retrieve] 	resolved ivy file produced in C:\Users\mkaldonek\.ivy2\cache\resolved-eu.ydp-empiriaPlayer-working@mkaldonek.xml
+[ivy:retrieve] :: downloading artifacts ::
+[ivy:retrieve] 	[NOT REQUIRED] com.google.gwt#gwt-servlet;2.4.0!gwt-servlet.jar
+[ivy:retrieve] 	[NOT REQUIRED] com.google.gwt#gwt-user;2.4.0!gwt-user.jar
+[ivy:retrieve] 	[NOT REQUIRED] com.google.gwt#gwt-dev;2.4.0!gwt-dev.jar
+[ivy:retrieve] 	[NOT REQUIRED] com.google.gwt.inject#gin;1.5.0!gin.jar
+[ivy:retrieve] 	[NOT REQUIRED] javax.validation#validation-api;1.0.0.GA!validation-api.jar
+[ivy:retrieve] 	[NOT REQUIRED] com.google.inject#guice;3.0-rc2!guice.jar
+[ivy:retrieve] 	[NOT REQUIRED] com.google.inject.extensions#guice-assistedinject;3.0-rc2!guice-assistedinject.jar
+[ivy:retrieve] 	[NOT REQUIRED] javax.inject#javax.inject;1!javax.inject.jar
+[ivy:retrieve] 	[NOT REQUIRED] aopalliance#aopalliance;1.0!aopalliance.jar
+[ivy:retrieve] 	[NOT REQUIRED] org.sonatype.sisu.inject#cglib;2.2.1-v20090111!cglib.jar
+[ivy:retrieve] 	[NOT REQUIRED] asm#asm;3.1!asm.jar
+[ivy:retrieve] 	[NOT REQUIRED] org.hamcrest#hamcrest-library;1.3!hamcrest-library.jar
+[ivy:retrieve] 	[NOT REQUIRED] org.mockito#mockito-all;1.9.0!mockito-all.jar
+[ivy:retrieve] 	[NOT REQUIRED] junit#junit;4.10!junit.jar
+[ivy:retrieve] 	[NOT REQUIRED] org.hamcrest#hamcrest-core;1.3!hamcrest-core.jar
+[ivy:retrieve] :: resolution report :: resolve 6568ms :: artifacts dl 16ms
+[ivy:retrieve] 	:: evicted modules:
+[ivy:retrieve] 	com.google.gwt#gwt-servlet;2.2.0 by [com.google.gwt#gwt-servlet;2.4.0] in [lib, default, test]
+[ivy:retrieve] 	  in com.google.gwt.inject#gin;1.5.0 with latest-revision
+[ivy:retrieve] 	  in com.google.gwt.inject#gin;1.5.0 with latest-revision
+[ivy:retrieve] 	  in com.google.gwt.inject#gin;1.5.0 with latest-revision
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   19  |   0   |   0   |   1   ||   11  |   0   |
+	|        lib       |   19  |   0   |   0   |   1   ||   11  |   0   |
+	|       test       |   23  |   0   |   0   |   1   ||   15  |   0   |
+	---------------------------------------------------------------------
+[ivy:retrieve] WARN: 	::::::::::::::::::::::::::::::::::::::::::::::
+[ivy:retrieve] WARN: 	::          UNRESOLVED DEPENDENCIES         ::
+[ivy:retrieve] WARN: 	::::::::::::::::::::::::::::::::::::::::::::::
+[ivy:retrieve] WARN: 	:: eu.ydp#mathPlayer;latest.integration: not found
+[ivy:retrieve] WARN: 	:: eu.ydp#canvasadapter;latest.integration: not found
+[ivy:retrieve] WARN: 	:: eu.ydp#jsfilerequest;latest.integration: not found
+[ivy:retrieve] WARN: 	:: eu.ydp#ydpgwtutils;latest.integration: not found
+[ivy:retrieve] WARN: 	:: eu.ydp#gwtFlashMedia;latest.integration: not found
+[ivy:retrieve] WARN: 	:: eu.ydp#gwtCreateJs;latest.integration: not found
+[ivy:retrieve] WARN: 	:: eu.ydp#sonar-helper;latest.release: not found
+[ivy:retrieve] WARN: 	::::::::::::::::::::::::::::::::::::::::::::::
+[ivy:retrieve] Nbr of module to sort : 11
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-servlet;2.4.0 / Number of dependencies = 2
+[ivy:retrieve] Sort dependencies of : javax.validation#validation-api;1.0.0.GA / Number of dependencies = 0
+[ivy:retrieve] Sort done for : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-user;2.4.0 / Number of dependencies = 2
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-dev;2.4.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-dev;2.4.0
+[ivy:retrieve] Sort dependencies of : com.google.gwt.inject#gin;1.5.0 / Number of dependencies = 4
+[ivy:retrieve] Sort dependencies of : com.google.inject#guice;3.0-rc2 / Number of dependencies = 8
+[ivy:retrieve] Sort dependencies of : javax.inject#javax.inject;1 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : javax.inject#javax.inject;1
+[ivy:retrieve] Sort dependencies of : aopalliance#aopalliance;1.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : aopalliance#aopalliance;1.0
+[ivy:retrieve] Sort dependencies of : org.sonatype.sisu.inject#cglib;2.2.1-v20090111 / Number of dependencies = 5
+[ivy:retrieve] Sort dependencies of : asm#asm;3.1 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : asm#asm;3.1
+[ivy:retrieve] Sort done for : org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] Sort done for : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Sort dependencies of : com.google.inject.extensions#guice-assistedinject;3.0-rc2 / Number of dependencies = 3
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Sort done for : com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] Non matching revision detected when sorting.  com.google.gwt.inject#gin depends on com.google.gwt#gwt-user;2.2.0, doesn't match com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] Non matching revision detected when sorting.  com.google.gwt.inject#gin depends on com.google.gwt#gwt-servlet;2.2.0, doesn't match com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] Sort done for : com.google.gwt.inject#gin;1.5.0
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Module descriptor is processed : javax.inject#javax.inject;1
+[ivy:retrieve] Module descriptor is processed : aopalliance#aopalliance;1.0
+[ivy:retrieve] Module descriptor is processed : org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] Module descriptor is processed : asm#asm;3.1
+[ivy:retrieve] Module descriptor is processed : com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] 	report for eu.ydp#empiriaPlayer;working@mkaldonek default produced in C:\Users\mkaldonek\.ivy2\cache\eu.ydp-empiriaPlayer-default.xml
+[ivy:retrieve] Nbr of module to sort : 11
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-servlet;2.4.0 / Number of dependencies = 2
+[ivy:retrieve] Sort dependencies of : javax.validation#validation-api;1.0.0.GA / Number of dependencies = 0
+[ivy:retrieve] Sort done for : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-user;2.4.0 / Number of dependencies = 2
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-dev;2.4.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-dev;2.4.0
+[ivy:retrieve] Sort dependencies of : com.google.gwt.inject#gin;1.5.0 / Number of dependencies = 4
+[ivy:retrieve] Sort dependencies of : com.google.inject#guice;3.0-rc2 / Number of dependencies = 8
+[ivy:retrieve] Sort dependencies of : javax.inject#javax.inject;1 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : javax.inject#javax.inject;1
+[ivy:retrieve] Sort dependencies of : aopalliance#aopalliance;1.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : aopalliance#aopalliance;1.0
+[ivy:retrieve] Sort dependencies of : org.sonatype.sisu.inject#cglib;2.2.1-v20090111 / Number of dependencies = 5
+[ivy:retrieve] Sort dependencies of : asm#asm;3.1 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : asm#asm;3.1
+[ivy:retrieve] Sort done for : org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] Sort done for : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Sort dependencies of : com.google.inject.extensions#guice-assistedinject;3.0-rc2 / Number of dependencies = 3
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Sort done for : com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] Non matching revision detected when sorting.  com.google.gwt.inject#gin depends on com.google.gwt#gwt-user;2.2.0, doesn't match com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] Non matching revision detected when sorting.  com.google.gwt.inject#gin depends on com.google.gwt#gwt-servlet;2.2.0, doesn't match com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] Sort done for : com.google.gwt.inject#gin;1.5.0
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Module descriptor is processed : javax.inject#javax.inject;1
+[ivy:retrieve] Module descriptor is processed : aopalliance#aopalliance;1.0
+[ivy:retrieve] Module descriptor is processed : org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] Module descriptor is processed : asm#asm;3.1
+[ivy:retrieve] Module descriptor is processed : com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] 	report for eu.ydp#empiriaPlayer;working@mkaldonek lib produced in C:\Users\mkaldonek\.ivy2\cache\eu.ydp-empiriaPlayer-lib.xml
+[ivy:retrieve] Nbr of module to sort : 15
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-servlet;2.4.0 / Number of dependencies = 2
+[ivy:retrieve] Sort dependencies of : javax.validation#validation-api;1.0.0.GA / Number of dependencies = 0
+[ivy:retrieve] Sort done for : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-user;2.4.0 / Number of dependencies = 2
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] Module descriptor is processed : javax.validation#validation-api;1.0.0.GA
+[ivy:retrieve] Sort dependencies of : com.google.gwt#gwt-dev;2.4.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : com.google.gwt#gwt-dev;2.4.0
+[ivy:retrieve] Sort dependencies of : com.google.gwt.inject#gin;1.5.0 / Number of dependencies = 4
+[ivy:retrieve] Sort dependencies of : com.google.inject#guice;3.0-rc2 / Number of dependencies = 8
+[ivy:retrieve] Sort dependencies of : javax.inject#javax.inject;1 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : javax.inject#javax.inject;1
+[ivy:retrieve] Sort dependencies of : aopalliance#aopalliance;1.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : aopalliance#aopalliance;1.0
+[ivy:retrieve] Sort dependencies of : org.sonatype.sisu.inject#cglib;2.2.1-v20090111 / Number of dependencies = 5
+[ivy:retrieve] Sort dependencies of : asm#asm;3.1 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : asm#asm;3.1
+[ivy:retrieve] Non matching revision detected when sorting.  org.sonatype.sisu.inject#cglib depends on junit#junit;3.8.2, doesn't match junit#junit;4.10
+[ivy:retrieve] Sort done for : org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] Sort done for : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Sort dependencies of : com.google.inject.extensions#guice-assistedinject;3.0-rc2 / Number of dependencies = 3
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Sort done for : com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] Non matching revision detected when sorting.  com.google.gwt.inject#gin depends on com.google.gwt#gwt-user;2.2.0, doesn't match com.google.gwt#gwt-user;2.4.0
+[ivy:retrieve] Non matching revision detected when sorting.  com.google.gwt.inject#gin depends on com.google.gwt#gwt-servlet;2.2.0, doesn't match com.google.gwt#gwt-servlet;2.4.0
+[ivy:retrieve] Sort done for : com.google.gwt.inject#gin;1.5.0
+[ivy:retrieve] Module descriptor is processed : com.google.inject#guice;3.0-rc2
+[ivy:retrieve] Module descriptor is processed : javax.inject#javax.inject;1
+[ivy:retrieve] Module descriptor is processed : aopalliance#aopalliance;1.0
+[ivy:retrieve] Module descriptor is processed : org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[ivy:retrieve] Module descriptor is processed : asm#asm;3.1
+[ivy:retrieve] Module descriptor is processed : com.google.inject.extensions#guice-assistedinject;3.0-rc2
+[ivy:retrieve] Sort dependencies of : org.hamcrest#hamcrest-library;1.3 / Number of dependencies = 1
+[ivy:retrieve] Sort dependencies of : org.hamcrest#hamcrest-core;1.3 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : org.hamcrest#hamcrest-core;1.3
+[ivy:retrieve] Sort done for : org.hamcrest#hamcrest-library;1.3
+[ivy:retrieve] Module descriptor is processed : org.hamcrest#hamcrest-core;1.3
+[ivy:retrieve] Sort dependencies of : org.mockito#mockito-all;1.9.0 / Number of dependencies = 0
+[ivy:retrieve] Sort done for : org.mockito#mockito-all;1.9.0
+[ivy:retrieve] Sort dependencies of : junit#junit;4.10 / Number of dependencies = 1
+[ivy:retrieve] Non matching revision detected when sorting.  junit#junit depends on org.hamcrest#hamcrest-core;1.1, doesn't match org.hamcrest#hamcrest-core;1.3
+[ivy:retrieve] Sort done for : junit#junit;4.10
+[ivy:retrieve] 	report for eu.ydp#empiriaPlayer;working@mkaldonek test produced in C:\Users\mkaldonek\.ivy2\cache\eu.ydp-empiriaPlayer-test.xml
+[ivy:retrieve] 	resolve done (6568ms resolve - 16ms download)
+[ivy:retrieve] 
+[ivy:retrieve] :: problems summary ::
+[ivy:retrieve] :::: WARNINGS
+[ivy:retrieve] 		module not found: eu.ydp#mathPlayer;latest.integration
+[ivy:retrieve] 	==== local: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/mathPlayer/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#mathPlayer;latest.integration!mathPlayer.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/mathPlayer/[revision]/jars/mathPlayer.jar
+[ivy:retrieve] 	==== shared: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/mathPlayer/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#mathPlayer;latest.integration!mathPlayer.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/mathPlayer/[revision]/jars/mathPlayer.jar
+[ivy:retrieve] 	==== public: tried
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/mathPlayer/[revision]/mathPlayer-[revision].pom
+[ivy:retrieve] 	  -- artifact eu.ydp#mathPlayer;latest.integration!mathPlayer.jar:
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/mathPlayer/[revision]/mathPlayer-[revision].jar
+[ivy:retrieve] 		module not found: eu.ydp#canvasadapter;latest.integration
+[ivy:retrieve] 	==== local: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/canvasadapter/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#canvasadapter;latest.integration!canvasadapter.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/canvasadapter/[revision]/jars/canvasadapter.jar
+[ivy:retrieve] 	==== shared: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/canvasadapter/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#canvasadapter;latest.integration!canvasadapter.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/canvasadapter/[revision]/jars/canvasadapter.jar
+[ivy:retrieve] 	==== public: tried
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/canvasadapter/[revision]/canvasadapter-[revision].pom
+[ivy:retrieve] 	  -- artifact eu.ydp#canvasadapter;latest.integration!canvasadapter.jar:
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/canvasadapter/[revision]/canvasadapter-[revision].jar
+[ivy:retrieve] 		module not found: eu.ydp#jsfilerequest;latest.integration
+[ivy:retrieve] 	==== local: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/jsfilerequest/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#jsfilerequest;latest.integration!jsfilerequest.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/jsfilerequest/[revision]/jars/jsfilerequest.jar
+[ivy:retrieve] 	==== shared: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/jsfilerequest/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#jsfilerequest;latest.integration!jsfilerequest.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/jsfilerequest/[revision]/jars/jsfilerequest.jar
+[ivy:retrieve] 	==== public: tried
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/[revision]/jsfilerequest-[revision].pom
+[ivy:retrieve] 	  -- artifact eu.ydp#jsfilerequest;latest.integration!jsfilerequest.jar:
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/jsfilerequest/[revision]/jsfilerequest-[revision].jar
+[ivy:retrieve] 		module not found: eu.ydp#ydpgwtutils;latest.integration
+[ivy:retrieve] 	==== local: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/ydpgwtutils/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#ydpgwtutils;latest.integration!ydpgwtutils.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/ydpgwtutils/[revision]/jars/ydpgwtutils.jar
+[ivy:retrieve] 	==== shared: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/ydpgwtutils/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#ydpgwtutils;latest.integration!ydpgwtutils.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/ydpgwtutils/[revision]/jars/ydpgwtutils.jar
+[ivy:retrieve] 	==== public: tried
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/[revision]/ydpgwtutils-[revision].pom
+[ivy:retrieve] 	  -- artifact eu.ydp#ydpgwtutils;latest.integration!ydpgwtutils.jar:
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/ydpgwtutils/[revision]/ydpgwtutils-[revision].jar
+[ivy:retrieve] 		module not found: eu.ydp#gwtFlashMedia;latest.integration
+[ivy:retrieve] 	==== local: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtFlashMedia/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#gwtFlashMedia;latest.integration!gwtFlashMedia.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtFlashMedia/[revision]/jars/gwtFlashMedia.jar
+[ivy:retrieve] 	==== shared: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtFlashMedia/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#gwtFlashMedia;latest.integration!gwtFlashMedia.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtFlashMedia/[revision]/jars/gwtFlashMedia.jar
+[ivy:retrieve] 	==== public: tried
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/[revision]/gwtFlashMedia-[revision].pom
+[ivy:retrieve] 	  -- artifact eu.ydp#gwtFlashMedia;latest.integration!gwtFlashMedia.jar:
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/gwtFlashMedia/[revision]/gwtFlashMedia-[revision].jar
+[ivy:retrieve] 		module not found: eu.ydp#gwtCreateJs;latest.integration
+[ivy:retrieve] 	==== local: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtCreateJs/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#gwtCreateJs;latest.integration!gwtCreateJs.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/gwtCreateJs/[revision]/jars/gwtCreateJs.jar
+[ivy:retrieve] 	==== shared: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtCreateJs/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#gwtCreateJs;latest.integration!gwtCreateJs.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/gwtCreateJs/[revision]/jars/gwtCreateJs.jar
+[ivy:retrieve] 	==== public: tried
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/[revision]/gwtCreateJs-[revision].pom
+[ivy:retrieve] 	  -- artifact eu.ydp#gwtCreateJs;latest.integration!gwtCreateJs.jar:
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/gwtCreateJs/[revision]/gwtCreateJs-[revision].jar
+[ivy:retrieve] 		module not found: eu.ydp#sonar-helper;latest.release
+[ivy:retrieve] 	==== local: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/sonar-helper/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#sonar-helper;latest.release!sonar-helper.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/local/eu.ydp/sonar-helper/[revision]/jars/sonar-helper.jar
+[ivy:retrieve] 	==== shared: tried
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/sonar-helper/[revision]/ivys/ivy.xml
+[ivy:retrieve] 	  -- artifact eu.ydp#sonar-helper;latest.release!sonar-helper.jar:
+[ivy:retrieve] 	  C:\Users\mkaldonek\.ivy2/shared/eu.ydp/sonar-helper/[revision]/jars/sonar-helper.jar
+[ivy:retrieve] 	==== public: tried
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/sonar-helper/[revision]/sonar-helper-[revision].pom
+[ivy:retrieve] 	  -- artifact eu.ydp#sonar-helper;latest.release!sonar-helper.jar:
+[ivy:retrieve] 	  http://repo1.maven.org/maven2/eu/ydp/sonar-helper/[revision]/sonar-helper-[revision].jar
+[ivy:retrieve] 		::::::::::::::::::::::::::::::::::::::::::::::
+[ivy:retrieve] 		::          UNRESOLVED DEPENDENCIES         ::
+[ivy:retrieve] 		::::::::::::::::::::::::::::::::::::::::::::::
+[ivy:retrieve] 		:: eu.ydp#mathPlayer;latest.integration: not found
+[ivy:retrieve] 		:: eu.ydp#canvasadapter;latest.integration: not found
+[ivy:retrieve] 		:: eu.ydp#jsfilerequest;latest.integration: not found
+[ivy:retrieve] 		:: eu.ydp#ydpgwtutils;latest.integration: not found
+[ivy:retrieve] 		:: eu.ydp#gwtFlashMedia;latest.integration: not found
+[ivy:retrieve] 		:: eu.ydp#gwtCreateJs;latest.integration: not found
+[ivy:retrieve] 		:: eu.ydp#sonar-helper;latest.release: not found
+[ivy:retrieve] 		::::::::::::::::::::::::::::::::::::::::::::::
+[ivy:retrieve] 
+[ivy:retrieve] 
+[ivy:retrieve] :: USE VERBOSE OR DEBUG MESSAGE LEVEL FOR MORE DETAILS

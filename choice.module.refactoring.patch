@@ -1,0 +1,1355 @@
+### Eclipse Workspace Patch 1.0
+#P empiria.player
+Index: src/eu/ydp/empiria/player/client/module/choice/SimpleChoiceListener.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/SimpleChoiceListener.java	(revision 120760)
++++ src/eu/ydp/empiria/player/client/module/choice/SimpleChoiceListener.java	(working copy)
+@@ -2,6 +2,6 @@
+ 
+ public interface SimpleChoiceListener {
+ 
+-	public void onSimpleChoiceClick(SimpleChoice sc);
++	public void onSimpleChoiceClick(String identifier);
+ 	
+ }
+Index: src/eu/ydp/empiria/player/client/module/choice/ChoiceModule.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/ChoiceModule.java	(revision 120760)
++++ src/eu/ydp/empiria/player/client/module/choice/ChoiceModule.java	(working copy)
+@@ -1,85 +1,60 @@
+ package eu.ydp.empiria.player.client.module.choice;
+ 
++import java.util.Collections;
+ import java.util.List;
+-import java.util.Vector;
+ 
+ import com.google.gwt.core.client.JavaScriptObject;
+ import com.google.gwt.json.client.JSONArray;
+-import com.google.gwt.json.client.JSONBoolean;
+-import com.google.gwt.user.client.ui.FlowPanel;
+-import com.google.gwt.user.client.ui.HasWidgets;
+-import com.google.gwt.user.client.ui.InlineHTML;
+-import com.google.gwt.user.client.ui.Panel;
++import com.google.gwt.json.client.JSONString;
+ import com.google.gwt.user.client.ui.Widget;
+-import com.google.gwt.xml.client.Element;
+-import com.google.gwt.xml.client.NodeList;
+ 
+-import eu.ydp.empiria.player.client.PlayerGinjector;
+-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
+ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+-import eu.ydp.empiria.player.client.module.Factory;
++import eu.ydp.empiria.player.client.module.InteractionModule;
+ import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
+-import eu.ydp.empiria.player.client.module.ModuleSocket;
+-import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
+-import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
+-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+-import eu.ydp.gwtutil.client.collections.RandomizedSet;
+-import eu.ydp.gwtutil.client.xml.XMLUtils;
++import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteraction;
++import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
+ 
+-public class ChoiceModule extends OneViewInteractionModuleBase implements  SimpleChoiceListener,Factory<ChoiceModule> {
++public class ChoiceModule extends InteractionModule<ChoiceModule> implements  SimpleChoiceListener {
++	
++	private ChoiceModulePresesenter presenter;
+ 
+-	/** Work mode single or multiple choice */
+-	private boolean multi = false;
+-	/** Shuffle? */
+-	private boolean shuffle = false;
+-	/** option widgets */
+-	Vector<SimpleChoice> interactionElements;
+-
+ 	private boolean locked = false;
++	
+ 	private boolean showingAnswers = false;
+ 
+-	protected ChoiceGroupController groupController;
+-
+-	protected Panel mainPanel;
+-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+-
+ 	public ChoiceModule(){
++		presenter = new ChoiceModulePresenterImpl();
+ 	}
+ 
+ 	@Override
+-	public void installViews(List<HasWidgets> placeholders) {
+-		shuffle = XMLUtils.getAttributeAsBoolean(getModuleElement(), "shuffle");
+-		multi = getResponse().cardinality == Cardinality.MULTIPLE;
+-
+-		mainPanel = new FlowPanel();
+-
+-		mainPanel.setStyleName(styleNames.QP_CHOICE_MODULE());
+-		applyIdAndClassToView(mainPanel);
+-		Widget promptWidget = new InlineHTML();
+-		promptWidget.setStyleName(styleNames.QP_PROMPT());
+-		getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstElementWithTagName(getModuleElement(), "prompt"), promptWidget.getElement());
+-
+-		mainPanel.add(promptWidget);
+-		mainPanel.add(getOptionsView(getModuleElement(), getModuleSocket(), getInteractionEventsListener()));
+-
+-		NodeList childNodes = getModuleElement().getChildNodes();
+-		for (int f = 0 ; f < childNodes.getLength() ; f ++){
+-			if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0) {
+-				getModuleSocket().addInlineFeedback(new InlineFeedback(mainPanel, childNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
+-			}
+-		}
+-
+-		placeholders.get(0).add(mainPanel);
+-
++	protected void initalizeModule() {
++		ChoiceModuleStructure structure = new ChoiceModuleStructure();
++		ChoiceInteraction choiceInteraction = structure.createFromXml(getModuleElement().toString());
++		
++		structure.setMulti(isMulti());
++		
++		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
++		presenter.setChoiceListener(this);
++		presenter.setPrompt(choiceInteraction.getPrompt());
++		presenter.setChoices(choiceInteraction.getSimpleChoices());
+ 	}
++	
++	private boolean isMulti(){
++		return getResponse().cardinality == Cardinality.MULTIPLE;
++	}
++	
++	@Override
++	public void lock(boolean lock) {
++		locked = lock;
++		presenter.setEnabled(!lock);
++	}
+ 
+ 
+ 	  /**
+ 	   * Get options view
+ 	   * @return
+ 	   */
+-	  private Widget getOptionsView(Element element, ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener){
++	 /* private Widget getOptionsView(Element element, ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener){
+ 
+ 		  Panel panel = new FlowPanel();
+ 		  NodeList optionNodes = element.getElementsByTagName("simpleChoice");
+@@ -123,118 +98,92 @@
+ 		  }
+ 
+ 		  return panel;
+-	  }
++	  }*/
+ 
+ 
+ 	// ------------------------- INTERFACES --------------------------------
+-
+-
+-	@Override
+-	public void onBodyLoad() {
+-		for (SimpleChoice c:interactionElements){
+-			c.onOwnerAttached();
++	
++	
++	public void showCorrectAnswers(boolean show) {
++		List<String> identifiersToSelect = Collections.emptyList();
++		
++		if(show && !showingAnswers){
++			identifiersToSelect = getCorrectAnswers();
++			showingAnswers = true;
++		}else if(!show && showingAnswers){
++			identifiersToSelect = getCurrentAnswers();
++			showingAnswers = false;
+ 		}
++		
++		presenter.selectChoices(identifiersToSelect);
+ 	}
+-
+-	@Override
+-	public void onBodyUnload() {
++	
++	private List<String> getCorrectAnswers(){
++		return getResponse().correctAnswers.getAllAnswers();
+ 	}
+-
+-	@Override
+-	public void onSetUp() {
+-		updateResponse(null, false);
++	
++	private List<String> getCurrentAnswers(){
++		return getResponse().values;
+ 	}
+-
+-	@Override
+-	public void onStart() {
++	
++	public void reset() {
++		presenter.reset();
++		clearResponse();
++		//updateResponse(null, false);
+ 	}
+-
++	
+ 	@Override
+-	public void onClose() {
++	public void onSetUp() {
++		//updateResponse(null, false);
++		clearResponse();
+ 	}
+-
++	
+ 	@Override
+-	public void lock(boolean l) {
+-		locked = l;
+-		for (SimpleChoice currSC:interactionElements){
+-			currSC.setEnabled(!l);
+-		}
+-
+-	}
+-
+-	@Override
+ 	public void markAnswers(boolean mark) {
+-
+-		List<Boolean> evaluation = getModuleSocket().evaluateResponse(getResponse());
+-
+-		if (getResponse().cardinality == Cardinality.SINGLE){
+-			for (int i = 0 ; i < interactionElements.size() ; i ++){
+-				interactionElements.get(i).markAnswers(mark, evaluation.get(0));
+-			}
+-		} else if (getResponse().cardinality == Cardinality.MULTIPLE){
+-			for (SimpleChoice currSC:interactionElements){
+-				boolean correct = false;
+-				if (getResponse().correctAnswers.containsAnswer(currSC.getIdentifier())){
+-					correct = true;
+-				}
+-				boolean ok = (correct && currSC.isSelected())  ||  (!correct && !currSC.isSelected());
+-				currSC.markAnswers(mark,  ok);
+-			}
+-		}
++		presenter.markAnswers(getCorrectAnswers(), mark);
+ 	}
+ 
+ 	@Override
+-	public void showCorrectAnswers(boolean show) {
+-		if (show  &&  !showingAnswers){
+-			showingAnswers = true;
+-			for (SimpleChoice currSC:interactionElements){
+-				currSC.setSelected(getResponse().correctAnswers.containsAnswer(currSC.getIdentifier()) );
+-			}
+-		} else if (!show  &&  showingAnswers) {
+-			for (SimpleChoice currSC:interactionElements){
+-				currSC.setSelected(getResponse().values.contains(currSC.getIdentifier()) );
+-			}
+-			showingAnswers = false;
++	public JSONArray getState() {
++		JSONArray state = new JSONArray();
++		
++		for(String responseValue: getResponse().values){
++			state.set(state.size(), new JSONString(responseValue));
+ 		}
+-	}
+-
+-	@Override
+-	public void reset() {
+-		for (SimpleChoice currSC:interactionElements){
+-			currSC.reset();
+-		}
+-		updateResponse(null, false);
+-	}
+-
+-	@Override
+-	public JSONArray getState() {
+-		JSONArray  state = new JSONArray();
+-
+-		for (SimpleChoice currSC:interactionElements){
++		
++		/*for (SimpleChoice currSC:interactionElements){
+ 			//boolean b1 = currSC.isSelected();
+ 			boolean b1 = getResponse().values.contains(currSC.getIdentifier());
+ 			state.set(state.size(), JSONBoolean.getInstance(b1));
+-		}
++		}*/
+ 
+ 		return state;
+ 	}
+ 
+ 	@Override
+-	public void setState(JSONArray newState) {
++	public void setState(JSONArray newState){
++		clearResponse();
++		
++		for(int i = 0; i < newState.size(); i++){
++			String choiceIdentifier = newState.get(i).isString().stringValue();
++			getResponse().add(choiceIdentifier);
++		}
++		
++		presenter.selectChoices(getResponse().values);
++		//Boolean currSelected;
++		
+ 
+-		Boolean currSelected;
+-
+-		for (int i  = 0 ; i < newState.size() && i < interactionElements.size(); i ++ ){
++		/*for (int i  = 0 ; i < newState.size() && i < interactionElements.size(); i ++ ){
+ 			currSelected = newState.get(i).isBoolean().booleanValue();
+ 			interactionElements.get(i).setSelected(currSelected);
+ 
+-		}
++		}*/
+ 
+-		updateResponse(null, false);
++		//updateResponse(null, false);
+ 	}
+ 
+-	void updateResponse(SimpleChoice target, boolean userInteract){
+-		if (showingAnswers) {
++	private void updateResponse(SimpleChoice target, boolean userInteract){
++		/*if (showingAnswers) {
+ 			return;
+ 		}
+ 
+@@ -249,7 +198,7 @@
+ 		if (!getResponse().compare(currResponseValues)  ||  !getResponse().isInitialized()){
+ 			getResponse().set(currResponseValues);
+ 			fireStateChanged(userInteract);
+-		}
++		}*/
+ 	}
+ 
+ 
+@@ -259,15 +208,34 @@
+ 	}
+ 
+ 	@Override
+-	public void onSimpleChoiceClick(SimpleChoice sc) {
++	public void onSimpleChoiceClick(String identifier) {
+ 		if (!locked){
+-			sc.setSelected(!sc.isSelected());
+-			updateResponse(null, true);
++			presenter.switchChoiceSelection(identifier);
++			boolean selected = presenter.isChoiceSelected(identifier);
++			
++			if(selected){
++				getResponse().add(identifier);
++			}else{
++				getResponse().remove(identifier);
++			}
++			
++			fireStateChanged(true);
+ 		}
+ 	}
++	
++	private void clearResponse(){
++		getResponse().reset();
++		fireStateChanged(false);
++	}
+ 
+ 	@Override
+ 	public ChoiceModule getNewInstance() {
+ 		return new ChoiceModule();
+ 	}
++
++	@Override
++	protected Widget getView() {
++		return presenter.getMainPanel();
++	}
++	
+ }
+Index: src/eu/ydp/empiria/player/client/module/choice/SimpleChoiceView.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/SimpleChoiceView.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/choice/SimpleChoiceView.java	(working copy)
+@@ -0,0 +1,227 @@
++package eu.ydp.empiria.player.client.module.choice;
++
++import com.google.gwt.core.client.GWT;
++import com.google.gwt.event.dom.client.ClickEvent;
++import com.google.gwt.event.dom.client.ClickHandler;
++import com.google.gwt.event.dom.client.MouseOutEvent;
++import com.google.gwt.event.dom.client.MouseOutHandler;
++import com.google.gwt.event.dom.client.MouseOverEvent;
++import com.google.gwt.event.dom.client.MouseOverHandler;
++import com.google.gwt.uibinder.client.UiBinder;
++import com.google.gwt.uibinder.client.UiField;
++import com.google.gwt.user.client.ui.Panel;
++import com.google.gwt.user.client.ui.Widget;
++
++import eu.ydp.empiria.player.client.PlayerGinjector;
++import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
++import eu.ydp.empiria.player.client.module.choice.structure.ChoiceOption;
++import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
++import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
++import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
++import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
++import eu.ydp.empiria.player.client.resources.StyleNameConstants;
++
++public class SimpleChoiceView{
++
++	private static final String TYPE_SINGLE = "single";
++
++	private static final String TYPE_MULTI = "multi";
++
++	private static final String STYLE_CHOICE_SINGLE = "choice-single";
++
++	private static final String STYLE_CHOICE_MULTI = "choice-multi";
++
++	private static SimpleChoiceViewUiBinder uiBinder = GWT.create(SimpleChoiceViewUiBinder.class);
++
++	interface SimpleChoiceViewUiBinder extends UiBinder<Widget, SimpleChoiceView> {
++	}
++	
++	private StyleNameConstants styleNameConstants = PlayerGinjector.INSTANCE.getStyleNameConstants();
++	
++	@UiField
++	Panel optionPanel;
++	
++	@UiField
++	Panel mainPanel;
++	
++	@UiField
++	Panel cover;
++	
++	@UiField
++	Panel contentWidgetPlace;
++	
++	@UiField
++	Panel markAnswersPanel;
++	
++	@UiField
++	Panel labelPanel;
++	
++	@UiField
++	Panel buttonPlace;
++	
++	private boolean isMulti;
++	
++	private String identifier;
++	
++	private InlineBodyGeneratorSocket bodyGenerator;
++
++	private ChoiceButtonBase button;
++
++	private SimpleChoiceListener choiceListener;
++
++	public SimpleChoiceView(ChoiceOption option, ChoiceGroupController controller, InlineBodyGeneratorSocket bodyGenerator, SimpleChoiceListener choiceListener) {
++		uiBinder.createAndBindUi(this);
++		this.choiceListener = choiceListener;
++		this.bodyGenerator = bodyGenerator;
++		
++		installChildren(option, controller);
++	}
++	
++	private void installChildren(ChoiceOption choiceOption, ChoiceGroupController controller){
++		isMulti = choiceOption.isMulti();
++		identifier = choiceOption.getIdentifier();
++		
++		createButton(controller);
++		buttonPlace.add(button);
++		addButtonListeners();
++		
++		createAndInstallContent(choiceOption);
++		
++		markAnswersPanel.addStyleName("qp-choice-button-"+getButtonType()+"-markanswers");
++		addListenersToCover();	
++	}
++	
++	private void createButton(ChoiceGroupController controller){
++		if (isMulti) {
++			button = new MultiChoiceButton(STYLE_CHOICE_MULTI);
++		} else {
++			button = new SingleChoiceButton(controller, STYLE_CHOICE_SINGLE);
++		}
++	}
++	
++	private void addButtonListeners(){
++		button.addMouseOverHandler(new MouseOverHandler() {
++			@Override
++			public void onMouseOver(MouseOverEvent event) {
++				setMouseOver();
++			}
++		});
++		
++		button.addMouseOutHandler(new MouseOutHandler() {
++			@Override
++			public void onMouseOut(MouseOutEvent event) {
++				setMouseOut();
++			}
++		});
++		
++		button.addClickHandler(new ClickHandler() {
++			@Override
++			public void onClick(ClickEvent event) {
++				choiceListener.onSimpleChoiceClick(getIdentifier());
++			}
++		});
++	}
++	
++	private void createAndInstallContent(ChoiceOption choiceOption){
++		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOption.getContent(),true);
++		contentWidgetPlace.add(contentWidget);
++	}
++	
++	private void addListenersToCover(){
++		cover.addDomHandler(new MouseOverHandler() {
++			@Override
++			public void onMouseOver(MouseOverEvent event) {
++				setMouseOver();
++			}
++		}, MouseOverEvent.getType());
++		cover.addDomHandler(new MouseOutHandler() {
++			@Override
++			public void onMouseOut(MouseOutEvent event) {
++				setMouseOut();
++			}
++		}, MouseOutEvent.getType());
++		cover.addDomHandler(new ClickHandler() {
++			@Override
++			public void onClick(ClickEvent event) {
++				choiceListener.onSimpleChoiceClick(getIdentifier());
++			}
++		}, ClickEvent.getType());
++	}
++	
++	public Widget getView(){
++		return mainPanel;
++	}
++	
++	private String getButtonType(){
++		return isMulti ? TYPE_MULTI : TYPE_SINGLE;
++	}
++
++	public String getIdentifier() {
++		return identifier;
++	}
++
++	public void setSelected(boolean select) {
++		button.setSelected(select);
++	}
++	
++	public boolean isSelected(){
++		return button.isSelected();
++	}
++
++	public void setEnabled(boolean enabled) {
++		button.setButtonEnabled(enabled);
++	}
++
++	public void reset() {
++		button.setSelected(false);
++		markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-none");
++	}
++	
++	public void markAnswers(boolean mark, boolean correct) {
++		String buttonTypeName = getButtonType();
++		
++		if (!mark){
++			markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
++			markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
++			optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
++			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
++			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
++			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
++			labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
++			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
++			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
++			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
++		} else {
++			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
++			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
++			
++			if (isSelected()){
++				if( correct ) {
++					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-correct");
++					markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
++					optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
++					labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
++				} else {
++					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-wrong");
++					markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
++					optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
++					labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
++				}
++			} else {
++				markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-none");
++				markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_NONE());
++				optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
++				labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
++			}
++		}
++	}
++	
++	public void setMouseOver(){
++		button.setMouseOver(true);
++	}
++
++	public void setMouseOut(){
++		button.setMouseOver(false);
++	}
++
++}
+Index: src/eu/ydp/empiria/player/client/module/choice/ChoiceModulePresenterImpl.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/ChoiceModulePresenterImpl.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/choice/ChoiceModulePresenterImpl.java	(working copy)
+@@ -0,0 +1,141 @@
++package eu.ydp.empiria.player.client.module.choice;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import com.google.gwt.core.client.GWT;
++import com.google.gwt.uibinder.client.UiBinder;
++import com.google.gwt.uibinder.client.UiField;
++import com.google.gwt.uibinder.client.UiTemplate;
++import com.google.gwt.user.client.ui.Panel;
++import com.google.gwt.user.client.ui.Widget;
++
++import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
++import eu.ydp.empiria.player.client.module.choice.structure.ChoiceOption;
++import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
++
++public class ChoiceModulePresenterImpl implements ChoiceModulePresesenter {
++	
++	@UiTemplate("ChoiceModuleView.ui.xml")
++	interface ChoiceModuleUiBinder extends UiBinder<Widget, ChoiceModulePresenterImpl> {
++	};
++
++	private ChoiceModuleUiBinder uiBinder = GWT.create(ChoiceModuleUiBinder.class);
++	
++	@UiField
++	Panel mainPanel;
++	
++	@UiField
++	Widget promptWidget;
++	
++	@UiField 
++	Panel choicesPanel;
++	
++	private List<SimpleChoiceView> choiceViews;
++	
++	private InlineBodyGeneratorSocket bodyGenerator;
++
++	private SimpleChoiceListener choiceListener;
++
++	public ChoiceModulePresenterImpl(){
++		uiBinder.createAndBindUi(this);
++	}
++
++	@Override
++	public Panel getMainPanel() {
++		return mainPanel;
++	}
++
++	@Override
++	public void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator) {
++		this.bodyGenerator = bodyGenerator;		
++	}
++
++	@Override
++	public void setPrompt(String value) {
++		bodyGenerator.generateInlineBody(value, promptWidget.getElement());
++	}
++
++	@Override
++	public void setChoices(List<ChoiceOption> choices) {
++		choicesPanel.clear();
++
++		choiceViews = new ArrayList<SimpleChoiceView>();
++		ChoiceGroupController groupController = new ChoiceGroupController();
++
++		for (ChoiceOption choice : choices) {			
++			SimpleChoiceView choiceView = new SimpleChoiceView(choice, groupController, bodyGenerator, choiceListener);
++			choiceViews.add(choiceView);
++			choicesPanel.add(choiceView.getView());
++		}
++	}
++	
++	public void selectChoices(List<String> identifiers){
++		for(SimpleChoiceView choice: choiceViews){
++			boolean select = identifiers.contains(choice.getIdentifier()); 
++			choice.setSelected(select);
++		}
++	}
++
++	@Override
++	public void setEnabled(boolean enabled) {
++		for(SimpleChoiceView choice: choiceViews){
++			choice.setEnabled(enabled);
++		}
++	}
++
++	@Override
++	public void reset() {
++		for(SimpleChoiceView choice: choiceViews){
++			choice.reset();
++		}
++	}
++
++	@Override
++	public void switchChoiceSelection(String identifier) {
++		for(SimpleChoiceView choice: choiceViews){
++			if(identifier.equals(choice.getIdentifier())){
++				choice.setSelected(!choice.isSelected());
++			}
++		}
++	}
++
++	@Override
++	public void setChoiceListener(SimpleChoiceListener choiceListener) {
++		this.choiceListener = choiceListener;	
++	}
++
++	@Override
++	public boolean isChoiceSelected(String identifier) {
++		boolean selected = false;
++		
++		try {
++			selected = getChoiceByIdentifier(identifier).isSelected();
++		} catch (Exception e) {
++			e.printStackTrace();
++		}
++		
++		return selected;
++	}
++	
++	private SimpleChoiceView getChoiceByIdentifier(String identifier){
++		SimpleChoiceView searchedChoice = null;
++		
++		for(SimpleChoiceView choice: choiceViews){
++			if(identifier.equals(choice.getIdentifier())){
++				searchedChoice = choice;
++				break;
++			}
++		}
++		
++		return searchedChoice;
++	}
++
++	@Override
++	public void markAnswers(List<String> correctAnswers, boolean mark) {
++		for(SimpleChoiceView choice: choiceViews){
++			boolean markCorrect = correctAnswers.contains(choice.getIdentifier());
++			choice.markAnswers(mark, markCorrect);
++		}
++	}
++}
+Index: .classpath
+===================================================================
+--- .classpath	(revision 120760)
++++ .classpath	(working copy)
+@@ -23,5 +23,6 @@
+ 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+ 	<classpathentry kind="lib" path="ivy-lib/hamcrest-library.jar"/>
+ 	<classpathentry kind="lib" path="ivy-lib/hamcrest-core.jar"/>
++	<classpathentry kind="lib" path="libs/jaxb4gwt-1.0.1.jar"/>
+ 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+ </classpath>
+Index: src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceInteraction.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceInteraction.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceInteraction.java	(working copy)
+@@ -0,0 +1,73 @@
++package eu.ydp.empiria.player.client.module.choice.structure;
++
++import java.util.List;
++
++import javax.xml.bind.annotation.XmlAttribute;
++import javax.xml.bind.annotation.XmlElement;
++import javax.xml.bind.annotation.XmlRootElement;
++
++@XmlRootElement
++public class ChoiceInteraction {
++	
++	@XmlAttribute
++	private String id;
++	@XmlAttribute
++	private int maxChoices;
++	@XmlAttribute
++	private String responseIdentifier;
++	@XmlAttribute
++	private boolean shuffle;
++	@XmlElement(name="simpleChoice")
++	private List<ChoiceOption> simpleChoices;
++	@XmlElement
++	private String prompt;
++	
++	public List<ChoiceOption> getSimpleChoices() {
++		return simpleChoices;
++	}
++
++	public void setSimpleChoices(List<ChoiceOption> simpleChoices) {
++		this.simpleChoices = simpleChoices;
++	}
++
++	public String getId() {
++		return id;
++	}
++	
++	public void setId(String id) {
++		this.id = id;
++	}
++	
++	public int getMaxChoices() {
++		return maxChoices;
++	}
++	
++	public void setMaxChoices(int maxChoices) {
++		this.maxChoices = maxChoices;
++	}
++	
++	public String getResponseIdentifier() {
++		return responseIdentifier;
++	}
++	
++	public void setResponseIdentifier(String responseIdentifier) {
++		this.responseIdentifier = responseIdentifier;
++	}
++	
++	public boolean isShuffle() {
++		return shuffle;
++	}
++	
++	public void setShuffle(boolean shuffle) {
++		this.shuffle = shuffle;
++	}
++
++	public String getPrompt() {
++		return prompt;
++	}
++
++	public void setPrompt(String prompt) {
++		this.prompt = prompt;
++	}	
++	
++}
+Index: src/eu/ydp/empiria/player/Player.gwt.xml
+===================================================================
+--- src/eu/ydp/empiria/player/Player.gwt.xml	(revision 120760)
++++ src/eu/ydp/empiria/player/Player.gwt.xml	(working copy)
+@@ -12,6 +12,7 @@
+ 	<inherits name='eu.ydp.canvasadapter.canvasadapter' />
+ 	<inherits name='eu.ydp.jsfilerequest.jsfilerequest' />
+ 	<inherits name="eu.ydp.gwtcreatejs.GwtCreateJs" />
++	<inherits name="com.peterfranza.gwt.jaxb.JAXB" />
+ 
+ 	<!-- google gin -->
+ 	<inherits name="com.google.gwt.inject.Inject" />
+Index: src/eu/ydp/empiria/player/client/controller/body/InlineBodyGenerator.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/controller/body/InlineBodyGenerator.java	(revision 120760)
++++ src/eu/ydp/empiria/player/client/controller/body/InlineBodyGenerator.java	(working copy)
+@@ -12,6 +12,7 @@
+ import com.google.gwt.xml.client.NamedNodeMap;
+ import com.google.gwt.xml.client.Node;
+ import com.google.gwt.xml.client.NodeList;
++import com.google.gwt.xml.client.XMLParser;
+ 
+ import eu.ydp.empiria.player.client.PlayerGinjector;
+ import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
+@@ -204,4 +205,25 @@
+ 
+ 		}
+ 	}
++
++	@Override
++	public void generateInlineBody(String node,	com.google.gwt.dom.client.Element parentElement) {
++		
++		
++		generateInlineBody(getElementFromString(node), parentElement);
++	}
++
++	@Override
++	public Widget generateInlineBody(String mainNode, boolean allAsWidget) {
++		return generateInlineBody(getElementFromString(mainNode), allAsWidget);
++	}
++	
++	private Element getElementFromString(String value){
++		com.google.gwt.xml.client.Document doc = XMLParser.createDocument();
++		com.google.gwt.xml.client.Element textElement = doc.createElement("content");
++		
++		textElement.appendChild(doc.createTextNode(value));
++		
++		return textElement;
++	}
+ }
+Index: libs/jaxb4gwt-1.0.1.jar
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+Index: libs/jaxb4gwt-1.0.1.jar
+===================================================================
+--- libs/jaxb4gwt-1.0.1.jar	(revision 0)
++++ libs/jaxb4gwt-1.0.1.jar	(working copy)
+
+Property changes on: libs/jaxb4gwt-1.0.1.jar
+___________________________________________________________________
+Added: svn:mime-type
+## -0,0 +1 ##
++application/octet-stream
+\ No newline at end of property
+Index: src/eu/ydp/empiria/player/client/module/choice/ChoiceModuleView.ui.xml
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/ChoiceModuleView.ui.xml	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/choice/ChoiceModuleView.ui.xml	(working copy)
+@@ -0,0 +1,9 @@
++<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
++<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
++	xmlns:g="urn:import:com.google.gwt.user.client.ui">
++	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
++	<g:FlowPanel ui:field="mainPanel" styleName="{res.QP_CHOICE_MODULE}">
++		<g:InlineHTML ui:field="promptWidget" styleName="{res.QP_PROMPT}"/>
++		<g:FlowPanel ui:field="choicesPanel"/>
++	</g:FlowPanel>
++</ui:UiBinder> 
+\ No newline at end of file
+Index: src/eu/ydp/empiria/player/client/module/InteractionModule.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/InteractionModule.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/InteractionModule.java	(working copy)
+@@ -0,0 +1,111 @@
++package eu.ydp.empiria.player.client.module;
++
++import java.util.List;
++
++import com.google.gwt.core.client.JavaScriptObject;
++import com.google.gwt.json.client.JSONArray;
++import com.google.gwt.user.client.ui.HasWidgets;
++import com.google.gwt.user.client.ui.Widget;
++import com.google.gwt.xml.client.Node;
++import com.google.gwt.xml.client.NodeList;
++
++import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
++
++public abstract class InteractionModule<T> extends OneViewInteractionModuleBase implements Factory<T>{
++	
++	@Override
++	public void installViews(List<HasWidgets> placeholders) {
++		applyIdAndClassToView(getView());
++		initalizeModule();
++		initializeAndInstallFeedbacks();
++		placeholders.get(0).add(getView());
++	}
++	
++	protected void initializeAndInstallFeedbacks(){
++		NodeList childNodes = getModuleElement().getElementsByTagName("feedbackInline");
++		for (int f = 0 ; f < childNodes.getLength() ; f ++){
++			getModuleSocket().addInlineFeedback(new InlineFeedback(getView(), childNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
++		}
++	}
++	
++	protected abstract void initalizeModule();
++	
++	protected abstract Widget getView();
++	
++	protected void generateInlineBody(Node node, Widget parentWidget){
++		getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(node, parentWidget.getElement());
++	}
++	
++	@Override
++	public void markAnswers(boolean mark) {
++		// TODO Auto-generated method stub
++
++	}
++
++	@Override
++	public void showCorrectAnswers(boolean show) {
++		// TODO Auto-generated method stub
++
++	}
++
++	@Override
++	public void lock(boolean lo) {
++		// TODO Auto-generated method stub
++
++	}
++
++	@Override
++	public void reset() {
++		// TODO Auto-generated method stub
++
++	}
++
++	@Override
++	public JSONArray getState() {
++		// TODO Auto-generated method stub
++		return null;
++	}
++
++	@Override
++	public void setState(JSONArray newState) {
++		// TODO Auto-generated method stub
++
++	}
++
++	@Override
++	public JavaScriptObject getJsSocket() {
++		// TODO Auto-generated method stub
++		return null;
++	}
++
++	@Override
++	public void onBodyLoad() {
++		// TODO Auto-generated method stub
++
++	}
++
++	@Override
++	public void onBodyUnload() {
++		// TODO Auto-generated method stub
++
++	}
++
++	@Override
++	public void onSetUp() {
++		// TODO Auto-generated method stub
++
++	}
++
++	@Override
++	public void onStart() {
++		// TODO Auto-generated method stub
++
++	}
++
++	@Override
++	public void onClose() {
++		// TODO Auto-generated method stub
++
++	}
++
++}
+Index: src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceOption.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceOption.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceOption.java	(working copy)
+@@ -0,0 +1,52 @@
++package eu.ydp.empiria.player.client.module.choice.structure;
++
++import javax.xml.bind.annotation.XmlAttribute;
++import javax.xml.bind.annotation.XmlRootElement;
++import javax.xml.bind.annotation.XmlValue;
++
++@XmlRootElement(name="simpleChoice")
++public class ChoiceOption {
++
++	@XmlAttribute
++	private String identifier;
++	@XmlAttribute
++	private boolean fixed;
++	@XmlValue
++	private String content;
++	private boolean multi;
++	
++	public String getIdentifier() {
++		return identifier;
++	}
++	
++	public void setIdentifier(String identifier) {
++		this.identifier = identifier;
++	}
++	
++	public String getContent() {
++		return content;
++	}
++	
++	public void setContent(String content) {
++		this.content = content;
++	}
++
++	public boolean isFixed() {
++		return fixed;
++	}
++
++	public void setFixed(boolean fixed) {
++		this.fixed = fixed;
++	}
++
++	public boolean isMulti() {
++		return multi;
++	}
++
++	public void setMulti(boolean multi) {
++		this.multi = multi;
++	}
++	
++	
++	
++}
+Index: src/eu/ydp/empiria/player/client/module/choice/SimpleChoiceView.ui.xml
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/SimpleChoiceView.ui.xml	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/choice/SimpleChoiceView.ui.xml	(working copy)
+@@ -0,0 +1,17 @@
++<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
++<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
++	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.empiria.player.client.module.components.choicebutton">
++	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
++	<g:FlowPanel ui:field="mainPanel" styleName="{res.QP_CHOICE_OPTION_BOX}">
++		<g:FlowPanel ui:field="optionPanel"	styleName="{res.QP_CHOICE_OPTION} {res.QP_MARKANSWERS_BUTTON_INACTIVE}">
++			<g:FlowPanel ui:field="markAnswersPanel" styleName="{res.QP_MARKANSWERS_BUTTON_INACTIVE}"/>
++			<g:FlowPanel ui:field="buttonPlace"/>
++			<g:FlowPanel ui:field="labelPanel" styleName="{res.QP_CHOICE_LABEL} {res.QP_MARKANSWERS_LABEL_INACTIVE}">
++				<g:AbsolutePanel ui:field="container" styleName="{res.QP_CHOICE_OPTION_CONTAINER}">
++					<g:FlowPanel ui:field="contentWidgetPlace"/>
++					<g:AbsolutePanel ui:field="cover" styleName="{res.QP_CHOICE_OPTION_COVER}"/>
++				</g:AbsolutePanel>
++			</g:FlowPanel>
++		</g:FlowPanel>
++	</g:FlowPanel>
++</ui:UiBinder> 
+\ No newline at end of file
+Index: src/eu/ydp/empiria/player/client/controller/body/InlineBodyGeneratorSocket.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/controller/body/InlineBodyGeneratorSocket.java	(revision 120760)
++++ src/eu/ydp/empiria/player/client/controller/body/InlineBodyGeneratorSocket.java	(working copy)
+@@ -13,6 +13,8 @@
+ 	 * @param parentElement
+ 	 */
+ 	public void generateInlineBody(Node node, Element parentElement);
++	
++	public void generateInlineBody(String node, Element parentElement);
+ 
+ 	/**
+ 	 * generuje htmla dla dzieci wskazanego wezla
+@@ -43,4 +45,6 @@
+ 	 * @return
+ 	 */
+ 	Widget generateInlineBody(Node mainNode, boolean allAsWidget);
++	
++	Widget generateInlineBody(String mainNode, boolean allAsWidget);
+ }
+Index: src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceModuleStructure.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceModuleStructure.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceModuleStructure.java	(working copy)
+@@ -0,0 +1,88 @@
++package eu.ydp.empiria.player.client.module.choice.structure;
++
++import com.google.gwt.core.client.GWT;
++import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
++
++public class ChoiceModuleStructure {
++
++	ChoiceMouduleJAXBParser parser = GWT.create(ChoiceMouduleJAXBParser.class);
++	
++	private ChoiceInteraction choiceInteraction;
++
++	public ChoiceInteraction createFromXml(String xml) {
++		choiceInteraction = parse(xml);
++		prepareStructure();
++		
++		return choiceInteraction;
++	}
++	
++	private ChoiceInteraction parse(String xml){
++		return getParser().parse(xml);
++	}
++	
++	private JAXBParser<ChoiceInteraction> getParser(){
++		return parser.create();
++	}
++	
++	private void prepareStructure(){
++		//randomize simpleChoices
++		randomizeChoices();
++	}
++	
++	private void randomizeChoices(){
++		
++	}
++	
++	public void setMulti(boolean multi){
++		for(ChoiceOption simpleChoice: choiceInteraction.getSimpleChoices()){
++			simpleChoice.setMulti(multi);
++		}
++	}
++
++	private void randomizeOLD() {
++		/*Panel panel = new FlowPanel();
++		NodeList optionNodes = element.getElementsByTagName("simpleChoice");
++		RandomizedSet<Element> randomizedNodes = new RandomizedSet<Element>();
++		RandomizedSet<Integer> randomizedIndices = new RandomizedSet<Integer>();
++
++		interactionElements = new Vector<SimpleChoice>();
++		for (int el = 0; el < optionNodes.getLength(); el++) {
++			interactionElements.add(null);
++		}
++
++		// Add randomized nodes to shuffle table
++		if (shuffle) {
++			for (int i = 0; i < optionNodes.getLength(); i++) {
++				Element option = (Element) optionNodes.item(i);
++				if (!XMLUtils.getAttributeAsBoolean(option, "fixed")) {
++					randomizedNodes.push(option);
++					randomizedIndices.push(i);
++				}
++			}
++		}
++
++		groupController = new ChoiceGroupController();
++
++		// Create buttons
++		for (int i = 0; i < optionNodes.getLength(); i++) {
++			int optionIndex = i;
++			Element option = (Element) optionNodes.item(i);
++			SimpleChoice currInteractionElement;
++
++			if (shuffle && !XMLUtils.getAttributeAsBoolean(option, "fixed")) {
++				// option = randomizedNodes.pull();
++				optionIndex = randomizedIndices.pull();
++				option = (Element) optionNodes.item(optionIndex);
++			}
++
++			currInteractionElement = new SimpleChoice(option, multi, this,
++					moduleSocket, moduleInteractionListener, groupController);
++			// interactionElements.add(currInteractionElement);
++			interactionElements.set(optionIndex, currInteractionElement);
++			panel.add(currInteractionElement);
++		}
++
++		return panel;*/
++	}
++
++}
+Index: src/eu/ydp/empiria/player/client/module/choice/SimpleChoice.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/SimpleChoice.java	(revision 120760)
++++ src/eu/ydp/empiria/player/client/module/choice/SimpleChoice.java	(working copy)
+@@ -10,19 +10,15 @@
+ import com.google.gwt.user.client.ui.FlowPanel;
+ import com.google.gwt.user.client.ui.Panel;
+ import com.google.gwt.user.client.ui.Widget;
+-import com.google.gwt.xml.client.Element;
+-import com.google.gwt.xml.client.NodeList;
+ 
+ import eu.ydp.empiria.player.client.PlayerGinjector;
+-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
+-import eu.ydp.empiria.player.client.module.ModuleSocket;
++import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
++import eu.ydp.empiria.player.client.module.choice.structure.ChoiceOption;
+ import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
+ import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
+ import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
+ import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
+ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+-import eu.ydp.gwtutil.client.xml.XMLUtils;
+ 
+ public class SimpleChoice extends FlowPanel {
+ 
+@@ -39,12 +35,12 @@
+ 	private StyleNameConstants styleNameConstants = PlayerGinjector.INSTANCE.getStyleNameConstants();
+ 
+ 
+-	public SimpleChoice(Element element,  boolean multi, final SimpleChoiceListener listener, ModuleSocket moduleSocket, InteractionEventsListener mil,//NOPMD
++	public SimpleChoice(ChoiceOption choice,  final SimpleChoiceListener listener, InlineBodyGeneratorSocket bodyGenerator, //NOPMD
+ 			ChoiceGroupController ctrl) {
+ 
+-		this.multi = multi;
++		multi = choice.isMulti();
+ 
+-		identifier = XMLUtils.getAttributeAsString(element, "identifier");
++		identifier = choice.getIdentifier();
+ 
+ 		setStyleName(styleNameConstants.QP_CHOICE_OPTION_BOX());
+ 
+@@ -71,12 +67,12 @@
+ 		button.addClickHandler(new ClickHandler() {
+ 			@Override
+ 			public void onClick(ClickEvent event) {
+-				listener.onSimpleChoiceClick(instance);
++				listener.onSimpleChoiceClick(null);
+ 			}
+ 		});
++		
++		Widget contentWidget = bodyGenerator.generateInlineBody(choice.getContent(),true);
+ 
+-		Widget contentWidget = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(element,true);
+-
+ 		cover = new AbsolutePanel();
+ 		cover.setStyleName(styleNameConstants.QP_CHOICE_OPTION_COVER());
+ 		cover.addDomHandler(new MouseOverHandler() {
+@@ -94,7 +90,7 @@
+ 		cover.addDomHandler(new ClickHandler() {
+ 			@Override
+ 			public void onClick(ClickEvent event) {
+-				listener.onSimpleChoiceClick(instance);
++				listener.onSimpleChoiceClick(null);
+ 			}
+ 		}, ClickEvent.getType());
+ 
+@@ -129,10 +125,10 @@
+ 
+ 		// feedback
+ 
+-		NodeList inlineFeedbackNodes = element.getElementsByTagName("feedbackInline");
++		/*NodeList inlineFeedbackNodes = element.getElementsByTagName("feedbackInline");
+ 		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
+ 			moduleSocket.addInlineFeedback(new InlineFeedback(labelPanel, inlineFeedbackNodes.item(f), moduleSocket, mil));
+-		}
++		}*/
+ 
+ 
+ 	}
+Index: src/eu/ydp/empiria/player/client/controller/variables/objects/response/CorrectAnswers.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/controller/variables/objects/response/CorrectAnswers.java	(revision 120760)
++++ src/eu/ydp/empiria/player/client/controller/variables/objects/response/CorrectAnswers.java	(working copy)
+@@ -39,4 +39,15 @@
+ 	public String getSingleAnswer(){
+ 		return values.get(0).getAnswers().get(0);
+ 	}
++	
++	public List<String> getAllAnswers(){
++		List<String> answers = new ArrayList<String>();
++		
++		for(ResponseValue responseValue: values){
++			answers.addAll(responseValue.getAnswers());
++		}
++		
++		return answers;
++	}
++
+ }
+Index: src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceMouduleJAXBParser.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceMouduleJAXBParser.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceMouduleJAXBParser.java	(working copy)
+@@ -0,0 +1,9 @@
++package eu.ydp.empiria.player.client.module.choice.structure;
++
++import com.peterfranza.gwt.jaxb.client.parser.JAXBBindings;
++import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
++
++@JAXBBindings(value=ChoiceInteraction.class, objects={ChoiceOption.class})
++public interface ChoiceMouduleJAXBParser extends JAXBParserFactory<ChoiceInteraction> {
++
++}
+Index: src/eu/ydp/empiria/player/client/module/choice/ChoiceModulePresesenter.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/ChoiceModulePresesenter.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/module/choice/ChoiceModulePresesenter.java	(working copy)
+@@ -0,0 +1,24 @@
++package eu.ydp.empiria.player.client.module.choice;
++
++import java.util.List;
++
++import com.google.gwt.user.client.ui.Panel;
++
++import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
++import eu.ydp.empiria.player.client.module.choice.structure.ChoiceOption;
++
++public interface ChoiceModulePresesenter {
++	
++	Panel getMainPanel();
++	void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator);
++	void setPrompt(String value);
++	void setChoices(List<ChoiceOption> choices);
++	void setEnabled(boolean enabled);
++	void selectChoices(List<String> identifiers);
++	void reset();
++	void switchChoiceSelection(String identifier);
++	void setChoiceListener(SimpleChoiceListener choiceListener);
++	boolean isChoiceSelected(String identifier);
++	void markAnswers(List<String> correctAnswers, boolean mark);
++	
++}

@@ -1,0 +1,359 @@
+### Eclipse Workspace Patch 1.0
+#P empiria.player
+Index: src/eu/ydp/empiria/player/client/controller/feedback/InlineFeedbackJAXBParser.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/controller/feedback/InlineFeedbackJAXBParser.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/controller/feedback/InlineFeedbackJAXBParser.java	(working copy)
+@@ -0,0 +1,9 @@
++package eu.ydp.empiria.player.client.controller.feedback;
++
++import com.peterfranza.gwt.jaxb.client.parser.JAXBBindings;
++import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
++
++@JAXBBindings(value=InlineFeedbackBean.class)
++public interface InlineFeedbackJAXBParser extends JAXBParserFactory<InlineFeedbackBean> {
++
++}
+Index: src/eu/ydp/empiria/player/client/controller/feedback/InlineFeedback.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/controller/feedback/InlineFeedback.java	(revision 121189)
++++ src/eu/ydp/empiria/player/client/controller/feedback/InlineFeedback.java	(working copy)
+@@ -1,5 +1,6 @@
+ package eu.ydp.empiria.player.client.controller.feedback;
+ 
++import com.google.gwt.core.client.GWT;
+ import com.google.gwt.dom.client.Document;
+ import com.google.gwt.event.dom.client.MouseUpEvent;
+ import com.google.gwt.event.dom.client.MouseUpHandler;
+@@ -8,7 +9,6 @@
+ import com.google.gwt.user.client.ui.FlowPanel;
+ import com.google.gwt.user.client.ui.PopupPanel;
+ import com.google.gwt.user.client.ui.Widget;
+-import com.google.gwt.xml.client.Element;
+ import com.google.gwt.xml.client.Node;
+ 
+ import eu.ydp.empiria.player.client.components.MouseEventPanel;
+@@ -17,34 +17,47 @@
+ import eu.ydp.empiria.player.client.module.registry.InlineBodyGeneratorSocketProvider;
+ 
+ public class InlineFeedback extends PopupPanel implements IItemFeedback {
++	
++	InlineFeedbackJAXBParser parser = GWT.create(InlineFeedbackJAXBParser.class);
+ 
++	public InlineFeedback(Widget _mountingPoint, InlineFeedbackBean info, InlineBodyGeneratorSocketProvider inlineBodyGeneratorProvider, InteractionEventsListener fbkListener){
++		super(false, false);
++		initialize(_mountingPoint, info, inlineBodyGeneratorProvider, fbkListener);		
++	}
++	
+ 	public InlineFeedback(Widget _mountingPoint, Node node, InlineBodyGeneratorSocketProvider inlineBodyGeneratorProvider, InteractionEventsListener fbkListener){
+ 		super(false, false);
+-		
++		initialize(_mountingPoint, getModel(node), inlineBodyGeneratorProvider, fbkListener);
++	}
++	
++	private void initialize(Widget _mountingPoint, InlineFeedbackBean info, InlineBodyGeneratorSocketProvider inlineBodyGeneratorProvider, InteractionEventsListener fbkListener){
+ 		this.feedbackListener = fbkListener;
+ 		
+ 		mountingPoint = _mountingPoint;
+ 		shown = false;
+ 		closed = false;
+ 		
+-		variable = node.getAttributes().getNamedItem("variableIdentifier").getNodeValue();
++		variable = info.getVariableIdentifier();//node.getAttributes().getNamedItem("variableIdentifier").getNodeValue();
+ 		
+-		if (node.getAttributes().getNamedItem("value") != null)
++		/*if (node.getAttributes().getNamedItem("value") != null)
+ 			value = node.getAttributes().getNamedItem("value").getNodeValue();
+ 		else 
+-			value = "";
++			value = "";*/
++		value = info.getValue();
+ 
+-		if (node.getAttributes().getNamedItem("sound") != null)
++		/*if (node.getAttributes().getNamedItem("sound") != null)
+ 			soundAddress = node.getAttributes().getNamedItem("sound").getNodeValue();
+ 		else 
+-			soundAddress = "";
++			soundAddress = "";*/
++		soundAddress = info.getSound();
+ 
+-		if (node.getAttributes().getNamedItem("senderIdentifier") != null)
++		/*if (node.getAttributes().getNamedItem("senderIdentifier") != null)
+ 			senderIdentifier = node.getAttributes().getNamedItem("senderIdentifier").getNodeValue();
+ 		else 
+-			senderIdentifier = "";
++			senderIdentifier = "";*/
++		senderIdentifier = info.getSenderIdentifier();
+ 
+-		if (node.getAttributes().getNamedItem("mark") != null)
++		/*if (node.getAttributes().getNamedItem("mark") != null)
+ 			mark = FeedbackMark.fromString( node.getAttributes().getNamedItem("mark").getNodeValue() );
+ 		else 
+ 			mark = FeedbackMark.NONE;
+@@ -57,11 +70,12 @@
+ 		if (node.getAttributes().getNamedItem("fadeEffect") != null)
+ 			fadeEffectTime = Integer.parseInt( node.getAttributes().getNamedItem("fadeEffect").getNodeValue() );
+ 		else
+-			fadeEffectTime = 0;
++			fadeEffectTime = 0;*/
+ 		
+-		showHide = (node.getAttributes().getNamedItem("showHide").getNodeValue().toLowerCase().compareTo("show") == 0);
++		/*showHide = (node.getAttributes().getNamedItem("showHide").getNodeValue().toLowerCase().compareTo("show") == 0);*/
++		showHide = (InlineFeedbackBean.SHOW.equals(info.getShowHide()));
+ 		
+-		hasContent = node.getChildNodes().getLength() > 0;
++		/*hasContent = node.getChildNodes().getLength() > 0;*/
+ 
+ 		
+ 		containerPanel = new FlowPanel();
+@@ -70,7 +84,7 @@
+ 		contentsPanel = new MouseEventPanel();
+ 		contentsPanel.setStyleName("qp-feedback-inline-contents");
+ 		
+-		Widget feedbackView = inlineBodyGeneratorProvider.getInlineBodyGeneratorSocket().generateInlineBody((Element)node);
++		Widget feedbackView = null;// = inlineBodyGeneratorProvider.getInlineBodyGeneratorSocket().generateInlineBody((Element)node);
+ 		contentsPanel.add(feedbackView);
+ 		contentsPanel.addMouseUpHandler(new MouseUpHandler() {
+ 			public void onMouseUp(MouseUpEvent event) {
+@@ -90,6 +104,10 @@
+ 		
+ 		getElement().setId(Document.get().createUniqueId());
+ 	}
++	
++	private InlineFeedbackBean getModel(Node node){
++		return (InlineFeedbackBean)parser.create().parse(node.toString());
++	}
+ 
+ 	private InteractionEventsListener feedbackListener;
+ 
+Index: src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceOption.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceOption.java	(revision 121189)
++++ src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceOption.java	(working copy)
+@@ -1,9 +1,12 @@
+ package eu.ydp.empiria.player.client.module.choice.structure;
+ 
++import javax.xml.bind.annotation.XmlAccessType;
++import javax.xml.bind.annotation.XmlAccessorType;
+ import javax.xml.bind.annotation.XmlAttribute;
+ import javax.xml.bind.annotation.XmlRootElement;
+ import javax.xml.bind.annotation.XmlValue;
+ 
++@XmlAccessorType(XmlAccessType.NONE)
+ @XmlRootElement(name="simpleChoice")
+ public class ChoiceOption {
+ 
+Index: src/eu/ydp/empiria/player/client/controller/feedback/InlineFeedbackBean.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/controller/feedback/InlineFeedbackBean.java	(revision 0)
++++ src/eu/ydp/empiria/player/client/controller/feedback/InlineFeedbackBean.java	(working copy)
+@@ -0,0 +1,77 @@
++package eu.ydp.empiria.player.client.controller.feedback;
++
++import javax.xml.bind.annotation.XmlAccessType;
++import javax.xml.bind.annotation.XmlAccessorType;
++import javax.xml.bind.annotation.XmlAttribute;
++import javax.xml.bind.annotation.XmlRootElement;
++import javax.xml.bind.annotation.XmlValue;
++
++@XmlAccessorType(XmlAccessType.NONE)
++@XmlRootElement(name="feedbackInline")
++public class InlineFeedbackBean {
++	
++	public static final String SHOW = "show";
++	
++	public static final String HIDE = "hide";
++	
++	@XmlAttribute
++	private String senderIdentifier = "";
++	@XmlAttribute
++	private String showHide = "";
++	@XmlAttribute
++	private String sound = "";
++	@XmlAttribute
++	private String value = "";
++	@XmlAttribute
++	private String variableIdentifier = "";
++	@XmlValue
++	private String content = "";
++	
++	public String getSenderIdentifier() {
++		return senderIdentifier;
++	}
++	
++	public void setSenderIdentifier(String senderIdentifier) {
++		this.senderIdentifier = senderIdentifier;
++	}
++
++	public String getShowHide() {
++		return showHide;
++	}
++
++	public void setShowHide(String showHide) {
++		this.showHide = showHide;
++	}
++
++	public String getSound() {
++		return sound;
++	}
++
++	public void setSound(String sound) {
++		this.sound = sound;
++	}
++
++	public String getValue() {
++		return value;
++	}
++
++	public void setValue(String value) {
++		this.value = value;
++	}
++
++	public String getVariableIdentifier() {
++		return variableIdentifier;
++	}
++
++	public void setVariableIdentifier(String variableIdentifier) {
++		this.variableIdentifier = variableIdentifier;
++	}
++
++	public String getContent() {
++		return content;
++	}
++
++	public void setContent(String content) {
++		this.content = content;
++	}	
++}
+Index: test/eu/ydp/empiria/player/client/controller/feedback/InlineFeedbackBeanJunitTest.java
+===================================================================
+--- test/eu/ydp/empiria/player/client/controller/feedback/InlineFeedbackBeanJunitTest.java	(revision 0)
++++ test/eu/ydp/empiria/player/client/controller/feedback/InlineFeedbackBeanJunitTest.java	(working copy)
+@@ -0,0 +1,68 @@
++package eu.ydp.empiria.player.client.controller.feedback;
++
++import static org.hamcrest.CoreMatchers.equalTo;
++import static org.hamcrest.CoreMatchers.is;
++import static org.hamcrest.MatcherAssert.assertThat;
++
++import java.io.InputStream;
++
++import javax.xml.bind.JAXBContext;
++import javax.xml.bind.JAXBException;
++import javax.xml.bind.Unmarshaller;
++
++import junit.framework.Assert;
++
++import org.apache.tools.ant.filters.StringInputStream;
++import org.junit.Test;
++
++public class InlineFeedbackBeanJunitTest {
++	
++	@Test
++	public void shouldCreateCorrectFeedbackBean(){		
++		try {			
++			String senderIdentifier = "^CHOICE_RESPONSE_1$";
++			String feedbackValue = "(\\+CHOICE_RESPONSE_1_3.*)|(-(CHOICE_RESPONSE_1_0|CHOICE_RESPONSE_1_1|CHOICE_RESPONSE_1_2|CHOICE_RESPONSE_1_4).*)";
++			String showHide = InlineFeedbackBean.SHOW;
++			String sound = "media/ok.mp3";
++			String variableIdentifier = "CHOICE_RESPONSE_1-LASTCHANGE";
++			
++			InputStream feedbackNode = createFeedbackNode(senderIdentifier, showHide, sound, feedbackValue, variableIdentifier);
++			InlineFeedbackBean inlineFeedback = createInlineFeedback(feedbackNode);
++			
++			assertThat(inlineFeedback.getSenderIdentifier(), is(equalTo(senderIdentifier)));
++			assertThat(inlineFeedback.getShowHide(), is(equalTo(showHide)));
++			assertThat(inlineFeedback.getSound(), is(equalTo(sound)));
++			assertThat(inlineFeedback.getValue(), is(equalTo(feedbackValue)));
++			assertThat(inlineFeedback.getVariableIdentifier(), is(equalTo(variableIdentifier)));
++		} catch (JAXBException e) {
++			Assert.fail(e.getMessage());
++		}
++	}
++	
++	@Test
++	public void shouldCreateContentAsNode(){
++		try{
++			String feedbackNode = "<feedbackInline><span>aaaaa</span>bbbb</feedbackInline>";
++			InlineFeedbackBean inlineFeedback = createInlineFeedback(new StringInputStream(feedbackNode));
++			
++			assertThat(inlineFeedback.getContent(), is(equalTo("<span>aaaaa</span>bbbb")));
++		}catch(JAXBException exception){
++			Assert.fail(exception.getMessage());
++		}
++	}
++	
++	private InlineFeedbackBean createInlineFeedback(InputStream source) throws JAXBException{
++		JAXBContext context = JAXBContext.newInstance(InlineFeedbackBean.class);
++		Unmarshaller unmarshaller = context.createUnmarshaller();
++		return (InlineFeedbackBean)unmarshaller.unmarshal(source);
++	}
++	
++	private InputStream createFeedbackNode(String senderIdentifier, String showHide, String sound, String value, String variableIdentifier){
++		String nodeString = String.format("<feedbackInline senderIdentifier=\"%1$s\" " +
++											"showHide=\"%2$s\" sound=\"%3$s\" " +
++											"value=\"%4$s\" " +
++											"variableIdentifier=\"%5$s\" />", 
++											senderIdentifier, showHide, sound, value, variableIdentifier);
++		return new StringInputStream(nodeString);
++	}
++}
+Index: src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceInteraction.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceInteraction.java	(revision 121189)
++++ src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceInteraction.java	(working copy)
+@@ -2,10 +2,15 @@
+ 
+ import java.util.List;
+ 
++import javax.xml.bind.annotation.XmlAccessType;
++import javax.xml.bind.annotation.XmlAccessorType;
+ import javax.xml.bind.annotation.XmlAttribute;
+ import javax.xml.bind.annotation.XmlElement;
+ import javax.xml.bind.annotation.XmlRootElement;
+ 
++import eu.ydp.empiria.player.client.controller.feedback.InlineFeedbackBean;
++
++@XmlAccessorType(XmlAccessType.NONE)
+ @XmlRootElement
+ public class ChoiceInteraction {
+ 	
+@@ -21,6 +26,8 @@
+ 	private List<ChoiceOption> simpleChoices;
+ 	@XmlElement
+ 	private String prompt;
++	@XmlElement(name="feedbackInline")
++	private List<InlineFeedbackBean> feedbacks;
+ 	
+ 	public List<ChoiceOption> getChoiceOptions() {
+ 		return simpleChoices;
+@@ -68,6 +75,14 @@
+ 
+ 	public void setPrompt(String prompt) {
+ 		this.prompt = prompt;
++	}
++
++	public List<InlineFeedbackBean> getFeedbacks() {
++		return feedbacks;
++	}
++
++	public void setFeedbacks(List<InlineFeedbackBean> feedbacks) {
++		this.feedbacks = feedbacks;
+ 	}	
+ 	
+ }
+Index: src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceMouduleJAXBParser.java
+===================================================================
+--- src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceMouduleJAXBParser.java	(revision 121189)
++++ src/eu/ydp/empiria/player/client/module/choice/structure/ChoiceMouduleJAXBParser.java	(working copy)
+@@ -3,7 +3,9 @@
+ import com.peterfranza.gwt.jaxb.client.parser.JAXBBindings;
+ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
+ 
+-@JAXBBindings(value=ChoiceInteraction.class, objects={ChoiceOption.class})
++import eu.ydp.empiria.player.client.controller.feedback.InlineFeedbackBean;
++
++@JAXBBindings(value=ChoiceInteraction.class, objects={ChoiceOption.class,InlineFeedbackBean.class})
+ public interface ChoiceMouduleJAXBParser extends JAXBParserFactory<ChoiceInteraction> {
+ 
+ }
