@@ -41,7 +41,7 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	}
 	
 	/**
-	 * FIXME: Do przemyslenia. Ponizsze moga zostac przeniesione do jakiegos wspolnego abstracta dla selections i connection.
+	 * FIXME: Do przemyslenia. Ponizsze moga zostac przeniesione do jakiegos wspolnego helpera dla: choice, selection i connection.
 	 * Minimalny refactor bedzie potrzebny - trzeba je tylko zmienic w generyczne i zatrybi w obu miejscach.  
 	 */
 

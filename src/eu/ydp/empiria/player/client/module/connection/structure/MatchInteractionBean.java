@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.ydp.empiria.player.client.module.abstractmodule.structure.IInteractionBean;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.IMultiplePairBean;
 
 @XmlRootElement
@@ -103,6 +102,6 @@ public class MatchInteractionBean implements IMultiplePairBean {
 
 	@Override
 	public List<SimpleAssociableChoiceBean> getSecondChoicesSet() {
-		return (getSimpleMatchSets().get(1) != null) ? getSimpleMatchSets().get(0).getSimpleAssociableChoices() : null;
+		return (getSimpleMatchSets().get(1) != null) ? getSimpleMatchSets().get(1).getSimpleAssociableChoices() : null;
 	}
 }
