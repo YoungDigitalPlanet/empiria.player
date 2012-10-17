@@ -44,6 +44,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	DataSourceDataSupplier dataSourceSupplier;
 	int currItemIndex = 0;
 	IBookmarkable currEditingModule;
+	boolean currBookmarkNewlyCreated;
 	List<List<IBookmarkable>> modules = new LinkedList<List<IBookmarkable>>();
 	List<StackMap<Integer, BookmarkProperties>> bookmarks = new LinkedList<StackMap<Integer, BookmarkProperties>>();
 	Mode mode = Mode.IDLE;
@@ -134,16 +135,26 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 				public void execute() {
 					if (mode == Mode.BOOKMARKING){
 						bookmarkModule(accModule);
-					} else if (mode == Mode.CLEARING){
-						bookmarkModule(accModule, false);
+						resetMode();
+					} if (mode == Mode.CLEARING){
+						if (isModuleBookmarked(accModule, currItemIndex)){
+							bookmarkModule(accModule, false);
+							resetMode();
+						}
 					} else if (mode == Mode.EDITING){
-						editBookmark(accModule);
+						if (isModuleBookmarked(accModule, currItemIndex)){
+							editBookmark(accModule);
+							resetMode();
+						}
 					}
-					setMode(Mode.IDLE);
-					BookmarkProcessorExtension.this.__clearButtons();
 				}
 			});
 		}
+	}
+	
+	void resetMode(){
+		setMode(Mode.IDLE);
+		BookmarkProcessorExtension.this.__clearButtons();
 	}
 	
 	native void __clearButtons()/*-{
@@ -190,8 +201,10 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		if (moduleProps == null){
 			moduleProps = new BookmarkProperties(bookmarkIndex, getDefaultTitleForModule(module));
 			addBookmark(module, moduleProps);
+			currBookmarkNewlyCreated = true;
 		} else {
 			moduleProps.setBookmarkIndex(bookmarkIndex);
+			currBookmarkNewlyCreated = false;
 		}
 		updateBookmarkedModule(module);
 	}
@@ -377,12 +390,22 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 
 	@Override
 	public void applyBookmark() {
+		currBookmarkNewlyCreated = false;
 		getBookmarkPropertiesForModule(currEditingModule).setBookmarkTitle(bookmarkPopup.getBookmarkTitle());
 	}
 
 	@Override
 	public void deleteBookmark() {
+		currBookmarkNewlyCreated = false;
 		removeBookmark(currEditingModule);
+	}
+
+	@Override
+	public void discardBookmarkChanges() {
+		if (currBookmarkNewlyCreated){
+			currBookmarkNewlyCreated = false;
+			removeBookmark(currEditingModule);
+		}
 	}
 	
 	JSONValue exportBookmarks(){

@@ -71,7 +71,8 @@ public class BookmarkPopup implements IBookmarkPopupView, IBookmarkPopupContents
 	}
 
 	@Override
-	public void closePopup() {
+	public void discardChanges() {
 		popup.hide(false);
+		presenter.discardBookmarkChanges();
 	}
 }

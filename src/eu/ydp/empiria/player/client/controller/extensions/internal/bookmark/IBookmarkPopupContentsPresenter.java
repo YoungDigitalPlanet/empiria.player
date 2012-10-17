@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 
-public interface IBookmarkPopupContentsPresenter extends IBookmarkPopupPresenter{
+public interface IBookmarkPopupContentsPresenter{
 
-	void closePopup();
+	void applyBookmark();
+	void deleteBookmark();
+	void discardChanges();
 	
 }

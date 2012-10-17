@@ -4,4 +4,5 @@ public interface IBookmarkPopupPresenter {
 
 	void applyBookmark();
 	void deleteBookmark();
+	void discardBookmarkChanges();
 }

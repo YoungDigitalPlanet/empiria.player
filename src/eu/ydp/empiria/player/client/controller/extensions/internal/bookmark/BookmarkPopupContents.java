@@ -50,7 +50,7 @@ public class BookmarkPopupContents extends Composite implements IBookmarkPopupCo
 	
 	@UiHandler("closeButton")
 	public void closeClickHandler(ClickEvent event){
-		presenter.closePopup();
+		presenter.discardChanges();
 	}
 	
 	@UiHandler("titleTextBox")
@@ -58,7 +58,7 @@ public class BookmarkPopupContents extends Composite implements IBookmarkPopupCo
 		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
 			presenter.applyBookmark();
 		} else if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE){
-			presenter.closePopup();
+			presenter.discardChanges();
 		}
 	}
 
