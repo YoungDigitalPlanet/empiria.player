@@ -41,6 +41,7 @@ public class BookmarkProcessorExtensionTest {
 	public void setUp(){
 		bookmarkProcessor = spy(new BookmarkProcessorExtension());
 		doNothing().when(bookmarkProcessor).initInjection();
+		doNothing().when(bookmarkProcessor).editBookmark(any(IBookmarkable.class));
 		bookmarkProcessor.eventsBus = mock(EventsBus.class);
 		bookmarkProcessor.styleNames = mock(StyleNameConstants.class);		
 		doReturn(SELECTED).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTED();

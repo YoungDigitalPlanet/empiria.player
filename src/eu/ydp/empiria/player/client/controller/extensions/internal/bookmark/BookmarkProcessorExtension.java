@@ -80,6 +80,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 				stopBookmarking();
 				setClearingMode(false);
 				setEditingMode(false);
+				__clearButtons();
 			}
 		});
 	}
@@ -212,7 +213,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		updateNotBookmarkedModule(module);
 	}
 
-	private void editBookmark(IBookmarkable module) {
+	void editBookmark(IBookmarkable module) {
 		currEditingModule = module;
 		BookmarkProperties props = getBookmarkPropertiesForModule(module);
 		bookmarkPopup.setBookmarkTitle(props.getBookmarkTitle());
