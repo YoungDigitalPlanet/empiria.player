@@ -78,10 +78,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
 				currItemIndex = (Integer) event.getValue();
-				stopBookmarking();
-				setClearingMode(false);
-				setEditingMode(false);
-				__clearButtons();
+				resetMode();
 			}
 		});
 	}
@@ -154,10 +151,11 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	
 	void resetMode(){
 		setMode(Mode.IDLE);
-		BookmarkProcessorExtension.this.__clearButtons();
+		notifyModeChange();
 	}
 	
-	native void __clearButtons()/*-{
+	// TODO to be implemented
+	native void notifyModeChange()/*-{
 		if (typeof $wnd.bookmarkingClearButtons == 'function'){
 			$wnd.bookmarkingClearButtons();
 		}
@@ -255,6 +253,9 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		playerJsObject.bookmarkingClearing = function(clearing){
 			self.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::setClearingMode(Z)(clearing);
 		}
+		playerJsObject.bookmarkingClearAll = function(){
+			self.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::clearAll()();
+		}
 		playerJsObject.bookmarkingEditing = function(editing){
 			self.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::setEditingMode(Z)(editing);
 		}
@@ -266,6 +267,12 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		} else if (mode == Mode.CLEARING){
 			setMode(Mode.IDLE);
 		}
+	}
+
+	void clearAll(){
+		getBookmarksForCurrentItem().clear();
+		resetMode();
+		updateModules();
 	}
 	
 	void setEditingMode(boolean editing){
@@ -390,22 +397,26 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 
 	@Override
 	public void applyBookmark() {
-		currBookmarkNewlyCreated = false;
+		onBookmarkPopupClosed();
 		getBookmarkPropertiesForModule(currEditingModule).setBookmarkTitle(bookmarkPopup.getBookmarkTitle());
 	}
 
 	@Override
 	public void deleteBookmark() {
-		currBookmarkNewlyCreated = false;
+		onBookmarkPopupClosed();
 		removeBookmark(currEditingModule);
 	}
 
 	@Override
 	public void discardBookmarkChanges() {
 		if (currBookmarkNewlyCreated){
-			currBookmarkNewlyCreated = false;
+			onBookmarkPopupClosed();
 			removeBookmark(currEditingModule);
 		}
+	}
+	
+	private void onBookmarkPopupClosed(){
+		currBookmarkNewlyCreated = false;		
 	}
 	
 	JSONValue exportBookmarks(){
