@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement
+@XmlRootElement(name="choiceInteraction")
 public class ChoiceInteractionBean {
 	
 	@XmlAttribute
