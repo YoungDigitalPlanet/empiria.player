@@ -19,8 +19,6 @@ import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
-import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionPresenter;
-import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionPresenterImpl;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
@@ -74,7 +72,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(StyleHelper.class);
 		bind(ModuleHandlerManager.class).in(Singleton.class);
 
-		bind(ConnectionPresenter.class).to(ConnectionPresenterImpl.class);
+		//bind(ConnectionPresenter.class).to(ConnectionPresenterImpl.class);
 		//factory
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
