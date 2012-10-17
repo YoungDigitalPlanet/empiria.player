@@ -13,7 +13,7 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-public class ChoiceInteraction {
+public class ChoiceInteractionBean {
 	
 	@XmlAttribute
 	private String id;
@@ -24,22 +24,22 @@ public class ChoiceInteraction {
 	@XmlAttribute
 	private boolean shuffle;
 	@XmlElement(name="simpleChoice")
-	private List<SimpleChoice> simpleChoices;
+	private List<SimpleChoiceBean> simpleChoices;
 	@XmlElement
 	private String prompt;
 	
-	public ChoiceInteraction(){
+	public ChoiceInteractionBean(){
 		id = StringUtils.EMPTY_STRING;
 		responseIdentifier = StringUtils.EMPTY_STRING;
-		simpleChoices = new ArrayList<SimpleChoice>();
+		simpleChoices = new ArrayList<SimpleChoiceBean>();
 		prompt = StringUtils.EMPTY_STRING;
 	}
 	
-	public List<SimpleChoice> getSimpleChoices() {
+	public List<SimpleChoiceBean> getSimpleChoices() {
 		return simpleChoices;
 	}
 
-	public void setSimpleChoices(List<SimpleChoice> simpleChoices) {
+	public void setSimpleChoices(List<SimpleChoiceBean> simpleChoices) {
 		this.simpleChoices = simpleChoices;
 	}
 

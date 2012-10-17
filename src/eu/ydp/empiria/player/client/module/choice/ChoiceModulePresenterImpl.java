@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoice;
+import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 
 public class ChoiceModulePresenterImpl implements ChoiceModulePresesenter {
@@ -56,13 +56,13 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresesenter {
 	}
 
 	@Override
-	public void setChoices(List<SimpleChoice> choices) {
+	public void setChoices(List<SimpleChoiceBean> choices) {
 		choicesPanel.clear();
 
 		choiceViews = new ArrayList<SimpleChoiceView>();
 		ChoiceGroupController groupController = new ChoiceGroupController();
 
-		for (SimpleChoice choice : choices) {
+		for (SimpleChoiceBean choice : choices) {
 			SimpleChoiceView choiceView = new SimpleChoiceView(choice, groupController, bodyGenerator);
 			choiceViews.add(choiceView);
 			choicesPanel.add(choiceView.getView());

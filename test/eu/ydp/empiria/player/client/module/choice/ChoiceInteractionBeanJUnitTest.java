@@ -7,10 +7,10 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
-import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteraction;
+import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.gwtutil.client.StringUtils;
 
-public class ChoiceInteractionJUnitTest extends	AbstractJAXBTestBase<ChoiceInteraction> {
+public class ChoiceInteractionBeanJUnitTest extends	AbstractJAXBTestBase<ChoiceInteractionBean> {
 	
 	@Test
 	public void shouldReturnChoiceInteraction(){
@@ -24,7 +24,7 @@ public class ChoiceInteractionJUnitTest extends	AbstractJAXBTestBase<ChoiceInter
 								"<feedbackInline senderIdentifier=\"^CHOICE_RESPONSE_1$\" showHide=\"show\" sound=\"media/ok.mp3\" value=\"(\\+CHOICE_RESPONSE_1_3.*)|(-(CHOICE_RESPONSE_1_0|CHOICE_RESPONSE_1_1|CHOICE_RESPONSE_1_2|CHOICE_RESPONSE_1_4).*)\" variableIdentifier=\"CHOICE_RESPONSE_1-LASTCHANGE\" />" +
 								"<feedbackInline senderIdentifier=\"^CHOICE_RESPONSE_1$\" showHide=\"show\" sound=\"media/wrong.mp3\" value=\"(-CHOICE_RESPONSE_1_3.*)|(\\+(CHOICE_RESPONSE_1_0|CHOICE_RESPONSE_1_1|CHOICE_RESPONSE_1_2|CHOICE_RESPONSE_1_4).*)\" variableIdentifier=\"CHOICE_RESPONSE_1-LASTCHANGE\" />" +
 							"</choiceInteraction>";
-		ChoiceInteraction choiceInteraction = createBeanFromXMLString(xmlString);
+		ChoiceInteractionBean choiceInteraction = createBeanFromXMLString(xmlString);
 		
 		assertThat(choiceInteraction.getId(), is(equalTo("dummy1_4")));
 		assertThat(choiceInteraction.getMaxChoices(), is(equalTo(1)));
@@ -37,7 +37,7 @@ public class ChoiceInteractionJUnitTest extends	AbstractJAXBTestBase<ChoiceInter
 	@Test
 	public void shouldReturnChoiceInteractionWhen_isEmpty(){
 		String xmlString = "<choiceInteraction/>";
-		ChoiceInteraction choiceInteraction = createBeanFromXMLString(xmlString);
+		ChoiceInteractionBean choiceInteraction = createBeanFromXMLString(xmlString);
 		
 		assertThat(choiceInteraction.getId(), is(equalTo(StringUtils.EMPTY_STRING)));
 		assertThat(choiceInteraction.getId(), is(equalTo(StringUtils.EMPTY_STRING)));

@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
-import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoice;
+import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
 
 public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String> {
@@ -34,7 +34,7 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 
 		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
 		presenter.setPrompt(choiceStructure.getPrompt());
-		presenter.setChoices(choiceStructure.getChoiceOptions());
+		presenter.setChoices(choiceStructure.getSimpleChoices());
 
 		addListeners();
 	}
@@ -53,7 +53,7 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 		super.initializeAndInstallFeedbacks();
 
 		// TODO: rewrite to JAXB
-		for (SimpleChoice choiceOption : choiceStructure.getChoiceOptions()) {
+		for (SimpleChoiceBean choiceOption : choiceStructure.getSimpleChoices()) {
 			String identifier = choiceOption.getIdentifier();
 			Element feedbackNode = choiceStructure.getSimpleChoiceFeedbackElement(identifier);
 

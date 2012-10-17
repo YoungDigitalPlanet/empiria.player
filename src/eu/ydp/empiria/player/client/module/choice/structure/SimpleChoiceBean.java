@@ -10,7 +10,7 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="simpleChoice")
-public class SimpleChoice {
+public class SimpleChoiceBean {
 
 	@XmlAttribute
 	private String identifier;
@@ -20,7 +20,7 @@ public class SimpleChoice {
 	private String content;
 	private boolean multi;
 	
-	public SimpleChoice(){
+	public SimpleChoiceBean(){
 		identifier = StringUtils.EMPTY_STRING;
 		content = StringUtils.EMPTY_STRING;
 	}
