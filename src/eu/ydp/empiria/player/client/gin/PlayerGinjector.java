@@ -7,6 +7,7 @@ import com.google.gwt.inject.client.Ginjector;
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
+import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
@@ -57,4 +58,5 @@ public interface PlayerGinjector extends Ginjector {
 
 //	ConnectionItemFactory getConnectionItemFactory();
 
+	BookmarkProcessorExtension getBookmarkProcessorExtension();
 }

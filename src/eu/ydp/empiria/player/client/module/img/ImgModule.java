@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
 import eu.ydp.empiria.player.client.module.img.template.ImgTemplateParser;
+import eu.ydp.gwtutil.client.geom.Rectangle;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 /**
@@ -115,6 +116,16 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 	@Override
 	public String getBookmarkHtmlBody() {
 		return "<img src=\"" + imageSource + "\"/>";
+	}
+
+	@Override
+	public Rectangle getViewArea() {
+		return bookmarkingHelper.getViewArea();
+	}
+
+	@Override
+	public String getDefaultBookmarkTitle() {
+		return "";
 	}
 
 }

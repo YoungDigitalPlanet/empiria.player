@@ -5,10 +5,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.gwtutil.client.geom.Rectangle;
+
 public class BookmarkingHelper {
 
 	private Widget view;
 	private String bookmarkingStyleName;
+	
+	public static int DEFAULT_TITLE_MAX_LENGTH = 24;
 
 	public BookmarkingHelper(Widget view){
 		this.view = view;
@@ -36,5 +40,22 @@ public class BookmarkingHelper {
 				command.execute();
 			}
 		}, ClickEvent.getType());
+	}
+	
+	public Rectangle getViewArea(){
+		return new Rectangle(view.getAbsoluteLeft(), view.getAbsoluteTop(), view.getOffsetWidth(), view.getOffsetHeight());
+	}
+		
+	public String getDefaultBookmarkTitle(String moduleText){
+		String outputText = null;
+		if (moduleText.length() > DEFAULT_TITLE_MAX_LENGTH){
+			outputText = moduleText.substring(0, moduleText.lastIndexOf(' ', DEFAULT_TITLE_MAX_LENGTH));
+			if (outputText.length() == 0){
+				outputText = moduleText.substring(0, DEFAULT_TITLE_MAX_LENGTH-3) + "...";
+			}
+		} else {
+			outputText = moduleText;
+		}
+		return outputText;
 	}
 }

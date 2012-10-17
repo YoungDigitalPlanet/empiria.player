@@ -494,4 +494,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
+
+	@DefaultStringValue("qp-span")
+	public String QP_SPAN();
 }

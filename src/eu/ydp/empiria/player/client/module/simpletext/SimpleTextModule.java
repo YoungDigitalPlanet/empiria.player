@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public class SimpleTextModule extends SimpleModuleBase implements Factory<SimpleTextModule>, IBookmarkable {
 
@@ -56,6 +57,16 @@ public class SimpleTextModule extends SimpleModuleBase implements Factory<Simple
 
 	@Override
 	public String getBookmarkHtmlBody() {
-		return contents.getElement().getInnerHTML();
+		return contents.getElement().getInnerHTML().trim();
+	}
+
+	@Override
+	public Rectangle getViewArea() {
+		return bookmarkingHelper.getViewArea();
+	}
+
+	@Override
+	public String getDefaultBookmarkTitle() {
+		return bookmarkingHelper.getDefaultBookmarkTitle(getView().getElement().getInnerText());
 	}
 }
