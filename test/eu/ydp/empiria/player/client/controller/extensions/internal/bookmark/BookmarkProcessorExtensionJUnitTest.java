@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
@@ -32,7 +33,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.client.collections.ListCreator;
 import eu.ydp.gwtutil.client.collections.StackMap;
 
-public class BookmarkProcessorExtensionTest {
+public class BookmarkProcessorExtensionJUnitTest {
 	
 	BookmarkProcessorExtension bookmarkProcessor;
 	String SELECTED = "SELECTED";
@@ -160,7 +161,7 @@ public class BookmarkProcessorExtensionTest {
 		bookmarkProcessor.bookmarkIndex = BOOKMARKING_INDEX;
 		bookmarkProcessor.bookmarkModule(b2, bkm);
 	}
-	
+
 	@Test
 	public void setClearingMode(){
 		doNothing().when(bookmarkProcessor).updateModules();
@@ -168,6 +169,16 @@ public class BookmarkProcessorExtensionTest {
 		bookmarkProcessor.setClearingMode(true);
 		assertThat(bookmarkProcessor.mode, is(Mode.CLEARING));
 		verify(bookmarkProcessor).updateModules();
+	}
+	@Test
+	public void setEditingMode(){
+		doNothing().when(bookmarkProcessor).updateModules();
+		bookmarkProcessor.mode = Mode.BOOKMARKING;
+		bookmarkProcessor.setEditingMode(true);
+		assertThat(bookmarkProcessor.mode, is(Mode.EDITING));
+		bookmarkProcessor.setEditingMode(false);
+		assertThat(bookmarkProcessor.mode, is(Mode.IDLE));
+		verify(bookmarkProcessor, times(2)).updateModules();
 	}
 	
 	@Test

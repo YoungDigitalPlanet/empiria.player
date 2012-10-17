@@ -13,7 +13,7 @@ import eu.ydp.gwtutil.junit.runners.ParameterizedMethodsRunner;
 import eu.ydp.gwtutil.junit.runners.ParameterizedMethodsRunner.MethodParameters;
 
 @RunWith(ParameterizedMethodsRunner.class)
-public class BookmarkingHelperTest {
+public class BookmarkingHelperJUnitTest {
 
 	@MethodParameters(forMethod="getDefaultBookmarkTitle")
 	public static List<String[]> getParams(){
