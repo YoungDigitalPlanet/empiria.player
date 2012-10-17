@@ -70,6 +70,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProces
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventType;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
+import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
@@ -152,6 +153,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	protected ModuleFactory moduleFactory = PlayerGinjector.INSTANCE.getModuleFactory();
 
+	protected Integer initialItemIndex;
+	
 	private final ModuleHandlerManager moduleHandlerManager = PlayerGinjector.INSTANCE.getModuleHandlerManager();
 
 	/**
@@ -238,42 +241,50 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		initFlow();
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTED));
-		updatePageStyle();
-		// flowManager.gotoPage(4);
+		updatePageStyle();	
+		//flowManager.gotoPage(4);
 	}
 
 	protected void initFlow() {
-
+		
+		IFlowRequest flowRequest = null;
+		
 		if (stateAsync != null) {
-			try {
-				JSONArray deState = (JSONArray) JSONParser.parseLenient(stateAsync);
+			
+			JSONArray deState = (JSONArray) JSONParser.parseLenient(stateAsync);
 
-				assessmentController.reset();
+			assessmentController.reset();
 
-				sessionDataManager.setState((JSONArray) deState.get(1));
+			sessionDataManager.setState((JSONArray) deState.get(1));
 
-				extensionsManager.setState(deState.get(2).isArray());
+			extensionsManager.setState(deState.get(2).isArray());
 
-				flowManager.deinitFlow();
-
-				if (deState.get(0).isNumber() != null) {
-					flowManager.invokeFlowRequest(new FlowRequest.NavigateGotoItem((int) deState.get(0).isNumber().doubleValue()));
-				} else if (deState.get(0).isString() != null) {
-					if (deState.get(0).isString().stringValue().equals(PageType.TOC.toString())) {
-						flowManager.invokeFlowRequest(new FlowRequest.NavigateToc());
-					} else if (deState.get(0).isString().stringValue().equals(PageType.SUMMARY.toString())) {
-						flowManager.invokeFlowRequest(new FlowRequest.NavigateSummary());
-					}
+			flowManager.deinitFlow();
+			
+			if(initialItemIndex != null){
+				flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);				
+			}				
+			else if (deState.get(0).isNumber() != null) {
+				flowRequest = new FlowRequest.NavigateGotoItem((int) deState.get(0).isNumber().doubleValue());
+			} 
+			else if (deState.get(0).isString() != null) {
+				if (deState.get(0).isString().stringValue().equals(PageType.TOC.toString())) {
+					flowRequest = new FlowRequest.NavigateToc();
+				} else if (deState.get(0).isString().stringValue().equals(PageType.SUMMARY.toString())) {
+					flowRequest = new FlowRequest.NavigateSummary();
 				}
-
-				flowManager.initFlow();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			flowManager.initFlow();
+			}			
+		
+		} 
+		else if (initialItemIndex != null){
+			flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);			
 		}
+		
+		if(flowRequest != null){
+			flowManager.invokeFlowRequest(flowRequest);
+		}
+		
+		flowManager.initFlow();		
 	}
 
 	protected void loadPredefinedExtensions() {
@@ -534,6 +545,12 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		String userAgent = styleManager.getUserAgent();
 		QueueSet<String> links = dataManager.getPageStyleLinksForUserAgent(flowManager.getPageReference(), userAgent);
 		styleManager.registerItemStyles(links);
+	}
+	
+	@Override
+	public void setInitialItemIndex(Integer num) {
+		initialItemIndex = num;
+		
 	}
 
 }

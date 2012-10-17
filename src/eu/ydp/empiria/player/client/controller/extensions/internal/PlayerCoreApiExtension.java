@@ -38,6 +38,7 @@ public class PlayerCoreApiExtension extends
 			setOptions();
 		}
 		if (deliveryEvent.getType() == DeliveryEventType.ASSESSMENT_STARTING){
+			importInitialItemIndex();
 			importState();
 		}
 	}
@@ -92,5 +93,18 @@ public class PlayerCoreApiExtension extends
 		playerJsObject.exportStateString = function(){
 			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension::exportState()();
 		}
+	}-*/;
+	
+	private void importInitialItemIndex(){
+		int importedItemIndex = callImportInitialItemIndex(playerJsObject);
+		Integer itemIndex = (importedItemIndex > -1) ? Integer.valueOf(importedItemIndex) : null;
+		deliveryEngineSocket.setInitialItemIndex(itemIndex);
+	}
+	
+	private native int callImportInitialItemIndex(JavaScriptObject playerJsObject)/*-{
+		if (typeof playerJsObject.importInitialItemIndex == 'function')
+			return playerJsObject.importInitialItemIndex();
+			
+		return -1;		
 	}-*/;
 }
