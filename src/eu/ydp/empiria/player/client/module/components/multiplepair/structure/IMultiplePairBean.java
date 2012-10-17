@@ -1,8 +1,8 @@
-package eu.ydp.empiria.player.client.module.connection.structure;
+package eu.ydp.empiria.player.client.module.components.multiplepair.structure;
 
 import java.util.List;
 
-import eu.ydp.empiria.player.client.module.abstractModule.structure.IInteractionBean;
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.IInteractionBean;
 
 public interface IMultiplePairBean extends IInteractionBean {
 

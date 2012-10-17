@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.abstractModule.structure;
+package eu.ydp.empiria.player.client.module.abstractmodule.structure;
 
 import java.util.HashMap;
 import java.util.Map;

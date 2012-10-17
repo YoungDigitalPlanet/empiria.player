@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.connection.structure;
+package eu.ydp.empiria.player.client.module.components.multiplepair.structure;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;

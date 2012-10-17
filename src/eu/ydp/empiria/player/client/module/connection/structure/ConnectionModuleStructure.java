@@ -7,7 +7,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
-import eu.ydp.empiria.player.client.module.abstractModule.structure.AbstractModuleStructure;
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
 
 public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInteractionBean> {
