@@ -20,7 +20,7 @@ public class SimpleChoice {
 	private String content;
 	private boolean multi;
 	
-	private SimpleChoice(){
+	public SimpleChoice(){
 		identifier = StringUtils.EMPTY_STRING;
 		content = StringUtils.EMPTY_STRING;
 	}
