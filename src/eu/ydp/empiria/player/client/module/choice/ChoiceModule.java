@@ -14,9 +14,11 @@ import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
 
 public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String> {
-
-	private ChoiceModulePresesenter presenter;
-
+	
+	@Inject
+	private ChoiceModulePresenter presenter;
+	
+	@Inject
 	private ChoiceModuleStructure choiceStructure;
 
 	@Inject
@@ -27,7 +29,6 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 
 	@Override
 	protected void initalizeModule() {
-		choiceStructure = choiceModuleFactory.getChoiceModuleStructure();
 		choiceStructure.createFromXml(getModuleElement().toString());
 
 		choiceStructure.setMulti(isMulti());
@@ -88,10 +89,7 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 	}
 
 	@Override
-	protected ActivityPresenter<String> createPresenter() {
-		if (presenter == null) {
-			presenter = new ChoiceModulePresenterImpl();
-		}
+	protected ActivityPresenter<String> createPresenter(){
 		return presenter;
 	}
 

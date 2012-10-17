@@ -16,8 +16,7 @@ import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
 
 public class ChoiceModuleStructure {
-
-	//@Inject
+	
 	protected ChoiceModuleJAXBParser parser = GWT.create(ChoiceModuleJAXBParser.class);
 
 	private ChoiceInteractionBean choiceInteraction;

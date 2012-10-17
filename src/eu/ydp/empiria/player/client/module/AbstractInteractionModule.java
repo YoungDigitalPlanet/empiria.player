@@ -84,7 +84,7 @@ public abstract class AbstractInteractionModule<T, H> extends OneViewInteraction
 	@Override
 	public void markAnswers(boolean mark) {
 		markingAnswers = mark;
-		presenter.markAnswers(getCorrectAnswers(), mark);
+		presenter.markCorrectAnswers();
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public abstract class AbstractInteractionModule<T, H> extends OneViewInteraction
 	@Override
 	public void lock(boolean lock) {
 		locked = lock;
-		presenter.setEnabled(!lock);
+		presenter.setLocked(!lock);
 	}
 
 	@Override

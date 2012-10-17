@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.gin;
+package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
@@ -14,7 +14,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
-import eu.ydp.empiria.player.client.gin.factory.ChoiceModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
@@ -75,14 +74,13 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(ModuleHandlerManager.class).in(Singleton.class);
 		
 		bind(IBookmarkPopupView.class).to(BookmarkPopup.class);
-
+		
 		//bind(ConnectionPresenter.class).to(ConnectionPresenterImpl.class);
 		//factory
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
 		install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
-		install(new GinFactoryModuleBuilder().build(ChoiceModuleFactory.class));
 
 	//	install(new GinFactoryModuleBuilder().build(TouchRecognitionFactory.class));
 	//	install(new GinFactoryModuleBuilder().build(ConnectionItemViewFactory.class));

@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.choice;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -14,6 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
@@ -24,7 +27,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEvent;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
 
-public class SimpleChoiceView{
+public class SimpleChoiceView implements ActivityPresenter<String>{
 
 	private static final String TYPE_SINGLE = "single";
 
@@ -73,7 +76,7 @@ public class SimpleChoiceView{
 	private ChoiceButtonBase button;
 
 	public SimpleChoiceView(SimpleChoiceBean option, ChoiceGroupController controller, InlineBodyGeneratorSocket bodyGenerator) {
-		uiBinder.createAndBindUi(this);
+		bindView();
 		this.bodyGenerator = bodyGenerator;
 		
 		installChildren(option, controller);
@@ -154,10 +157,6 @@ public class SimpleChoiceView{
 		eventBus.fireEvent(new ChoiceModuleEvent(ChoiceModuleEventType.ON_CHOICE_CLICK, getIdentifier()));
 	}
 	
-	public Widget getView(){
-		return mainPanel;
-	}
-	
 	private String getButtonType(){
 		return isMulti ? TYPE_MULTI : TYPE_SINGLE;
 	}
@@ -178,7 +177,7 @@ public class SimpleChoiceView{
 		return labelPanel;
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setLocked(boolean enabled) {
 		button.setButtonEnabled(enabled);
 	}
 
@@ -232,6 +231,41 @@ public class SimpleChoiceView{
 
 	public void setMouseOut(){
 		button.setMouseOver(false);
+	}
+
+	@Override
+	public Widget asWidget() {
+		return mainPanel;
+	}
+
+	@Override
+	public void bindView() {
+		uiBinder.createAndBindUi(this);
+	}
+
+	@Override
+	public void showAnswers(List<String> answers) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void markCorrectAnswers() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void markWrongAnswers() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void unmarkCorrectAnswers() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void unmarkWrongAnswers() {
+		// TODO Auto-generated method stub
 	}
 
 }

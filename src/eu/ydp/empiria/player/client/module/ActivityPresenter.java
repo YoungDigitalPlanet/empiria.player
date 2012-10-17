@@ -6,13 +6,46 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface ActivityPresenter<H> extends IsWidget {
 
+	/**
+	 * Wiąże widok z prezenterem
+	 */
 	void bindView();
 	/**
-	 * Czysci wszystkie powiazania w module
+	 * Czyści wszystkie powiazania w module
 	 */
 	void reset();
-	void setEnabled(boolean enabled);
+	
+	/**
+	 * Blokowanie widoku
+	 * @param locked
+	 */
+	void setLocked(boolean locked);
+	
+	/**
+	 * Ustawianie przekazanych odpowiedzi
+	 * @param answers lista odpowiedzi które mają byc 
+	 * ustawione
+	 */
 	void showAnswers(List<H> answers);
-	void markAnswers(List<H> correctAnswers, boolean mark);
+	
+	/**
+	 * Zaznaczanie poprawnych odpowiedzi
+	 */
+	void markCorrectAnswers();
+	
+	/**
+	 * Zaznaczanie błędnych odpowiedzi
+	 */
+	void markWrongAnswers();
+	
+	/**
+	 * Odznaczanie poprawnych odpowiedzi
+	 */
+	void unmarkCorrectAnswers();
+	
+	/**
+	 * Odznaczanie błędnych odpowiedzi
+	 */
+	void unmarkWrongAnswers();
 
 }
