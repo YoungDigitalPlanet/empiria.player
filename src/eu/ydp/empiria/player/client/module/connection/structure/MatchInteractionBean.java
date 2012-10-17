@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.module.abstractModule.structure.IInteraction
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MatchInteractionBean implements IInteractionBean {
+public class MatchInteractionBean implements IMultiplePairBean {
 
 	@XmlAttribute
 	private String id;
@@ -93,5 +93,15 @@ public class MatchInteractionBean implements IInteractionBean {
 
 	public void setSimpleMatchSets(List<SimpleMatchSetBean> simpleMatchSets) {
 		this.simpleMatchSets = simpleMatchSets;
+	}
+
+	@Override
+	public List<SimpleAssociableChoiceBean> getFirstChoicesSet() {		 
+		return (getSimpleMatchSets().get(0) != null) ? getSimpleMatchSets().get(0).getSimpleAssociableChoices() : null;
+	}
+
+	@Override
+	public List<SimpleAssociableChoiceBean> getSecondChoicesSet() {
+		return (getSimpleMatchSets().get(1) != null) ? getSimpleMatchSets().get(0).getSimpleAssociableChoices() : null;
 	}
 }
