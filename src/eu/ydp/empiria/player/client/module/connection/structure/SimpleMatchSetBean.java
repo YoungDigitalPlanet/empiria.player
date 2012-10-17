@@ -6,16 +6,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="simpleMatchSet")
-public class SimpleMatchSet {
+public class SimpleMatchSetBean {
 	
 	@XmlElement(name="simpleAssociableChoice")
-	private List<SimpleAssociableChoice> simpleAssociableChoices;
+	private List<SimpleAssociableChoiceBean> simpleAssociableChoices;
 
-	public List<SimpleAssociableChoice> getSimpleAssociableChoices() {
+	public List<SimpleAssociableChoiceBean> getSimpleAssociableChoices() {
 		return simpleAssociableChoices;
 	}
 
-	public void setSimpleAssociableChoices(List<SimpleAssociableChoice> simpleAssociableChoices) {
+	public void setSimpleAssociableChoices(List<SimpleAssociableChoiceBean> simpleAssociableChoices) {
 		this.simpleAssociableChoices = simpleAssociableChoices;
 	}
 }

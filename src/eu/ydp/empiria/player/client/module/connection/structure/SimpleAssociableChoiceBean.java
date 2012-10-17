@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 @XmlRootElement(name="simpleAssociableChoice")
-public class SimpleAssociableChoice {
+public class SimpleAssociableChoiceBean {
 	
 	@XmlAttribute
 	private boolean fixed;

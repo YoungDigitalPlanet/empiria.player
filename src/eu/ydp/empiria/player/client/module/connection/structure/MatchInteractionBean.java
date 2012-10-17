@@ -1,13 +1,19 @@
 package eu.ydp.empiria.player.client.module.connection.structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.ydp.empiria.player.client.module.abstractModule.structure.IInteractionBean;
+
 @XmlRootElement
-public class MatchInteraction {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class MatchInteractionBean implements IInteractionBean {
 
 	@XmlAttribute
 	private String id;
@@ -28,7 +34,7 @@ public class MatchInteraction {
 	private boolean shuffle;
 
 	@XmlElement(name = "simpleMatchSet")
-	private List<SimpleMatchSet> simpleMatchSets;
+	private List<SimpleMatchSetBean> simpleMatchSets;
 
 	public String getId() {
 		return id;
@@ -78,11 +84,14 @@ public class MatchInteraction {
 		this.shuffle = shuffle;
 	}
 
-	public List<SimpleMatchSet> getSimpleMatchSets() {
+	public List<SimpleMatchSetBean> getSimpleMatchSets() {		
+		if (simpleMatchSets == null) {
+			simpleMatchSets = new ArrayList<SimpleMatchSetBean>();
+		}
 		return simpleMatchSets;
 	}
 
-	public void setSimpleMatchSets(List<SimpleMatchSet> simpleMatchSets) {
+	public void setSimpleMatchSets(List<SimpleMatchSetBean> simpleMatchSets) {
 		this.simpleMatchSets = simpleMatchSets;
 	}
 }
