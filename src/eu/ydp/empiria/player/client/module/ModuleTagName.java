@@ -14,7 +14,7 @@ public enum ModuleTagName {
 	MEDIA_PROGRESS_BAR("mediaProgressBar"),MEDIA_VOLUME_BAR("mediaVolumeBar"),MEDIA_FULL_SCREEN_BUTTON("mediaFullScreenButton"),
 	MEDIA_POSITION_IN_STREAM("mediaPositinInStream"),MEDIA_CURRENT_TIME("mediaCurrentTime"),MEDIA_TOTAL_TIME("mediaTotalTime"),
 	MEDIA_TITLE("mediaTitle"), MEDIA_DESCRIPTION("mediaDescription"), MEDIA_SCREEN("mediaScreen"), SIMULATION_PLAYER("simulationPlayer"), MEDIA_TEXT_TRACK("mediaTextTrack"),
-	CONNECTION("connection");
+	MATCH_INTERACTION("matchInteraction");
 	String name = null;
 	private ModuleTagName(String name){
 		this.name = name;
