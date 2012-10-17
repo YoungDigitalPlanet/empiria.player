@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -211,6 +212,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		String moduleTitle = module.getDefaultBookmarkTitle();
 		if (moduleTitle == null  ||  "".equals(moduleTitle) ){
 			moduleTitle = dataSourceSupplier.getItemTitle(currItemIndex);
+			moduleTitle = BookmarkingHelper.getDefaultBookmarkTitle(moduleTitle);
 		}
 		return moduleTitle;
 	}

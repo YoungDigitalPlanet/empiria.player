@@ -12,7 +12,7 @@ public class BookmarkingHelper {
 	private Widget view;
 	private String bookmarkingStyleName;
 	
-	public static int DEFAULT_TITLE_MAX_LENGTH = 24;
+	public static int DEFAULT_TITLE_MAX_LENGTH = 30;
 
 	public BookmarkingHelper(Widget view){
 		this.view = view;
@@ -46,10 +46,10 @@ public class BookmarkingHelper {
 		return new Rectangle(view.getAbsoluteLeft(), view.getAbsoluteTop(), view.getOffsetWidth(), view.getOffsetHeight());
 	}
 		
-	public String getDefaultBookmarkTitle(String moduleText){
+	public static String getDefaultBookmarkTitle(String moduleText){
 		String outputText = null;
 		if (moduleText.length() > DEFAULT_TITLE_MAX_LENGTH){
-			outputText = moduleText.substring(0, moduleText.lastIndexOf(' ', DEFAULT_TITLE_MAX_LENGTH));
+			outputText = moduleText.substring(0, moduleText.lastIndexOf(' ', DEFAULT_TITLE_MAX_LENGTH-3)) + "...";
 			if (outputText.length() == 0){
 				outputText = moduleText.substring(0, DEFAULT_TITLE_MAX_LENGTH-3) + "...";
 			}
