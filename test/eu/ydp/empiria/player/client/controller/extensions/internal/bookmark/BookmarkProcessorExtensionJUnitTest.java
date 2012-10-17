@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -12,7 +13,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension.Mode;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
@@ -228,6 +226,24 @@ public class BookmarkProcessorExtensionJUnitTest {
 		verify(b1).removeBookmarkingStyleName();
 		verify(b2, never()).setBookmarkingStyleName(SELECTABLE);
 		verify(b2).removeBookmarkingStyleName();
+	}
+	
+	@Test
+	public void clearAll(){
+		bookmarkProcessor.bookmarks.add((StackMap<Integer, BookmarkProperties>) eu.ydp.gwtutil.client.collections.MapCreator.create(new StackMap<Integer, BookmarkProperties>()).put(1, mock(BookmarkProperties.class))
+				.put(1, mock(BookmarkProperties.class)).put(3, mock(BookmarkProperties.class)).build());
+		bookmarkProcessor.bookmarks.add((StackMap<Integer, BookmarkProperties>) eu.ydp.gwtutil.client.collections.MapCreator.create(new StackMap<Integer, BookmarkProperties>()).put(1, mock(BookmarkProperties.class))
+				.put(1, mock(BookmarkProperties.class)).put(5, mock(BookmarkProperties.class)).build());
+		doNothing().when(bookmarkProcessor).updateModules();
+		doNothing().when(bookmarkProcessor).resetMode();
+		bookmarkProcessor.currItemIndex = 0;
+		bookmarkProcessor.clearAll();
+		assertThat(bookmarkProcessor.bookmarks.get(0).size(), is(0));
+		assertThat(bookmarkProcessor.bookmarks.get(1).size(), is(2));
+		verify(bookmarkProcessor).updateModules();
+		verify(bookmarkProcessor).resetMode();
+		
+		
 	}
 	
 }
