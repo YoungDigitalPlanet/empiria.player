@@ -294,6 +294,9 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		setMode(Mode.BOOKMARKING);
 	}
 	
+	/**
+	 * When the mode is other than target one, the mode is changed and the modules are updated.
+	 */
 	void setMode(Mode newMode){
 		if (mode != newMode){
 			mode = newMode;
@@ -301,12 +304,20 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		}
 	}
 
+	/**
+	 * Updates all modules in all items.
+	 */
 	void updateModules() {
 		for (int i = 0 ; i < modules.size() ; i ++){
 			updateModules(i);
 		}
 	}
 	
+	/**
+	 * Updates all modules for the selected item.
+	 * 
+	 * @param itemIndex selected item index
+	 */
 	void updateModules(int itemIndex){
 		List<IBookmarkable> itemModules = modules.get(itemIndex);
 		for (IBookmarkable module : itemModules){
@@ -316,6 +327,10 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		}
 	}
 	
+	/**
+	 * Updates module with the assumption that the module is currently NOT bookmarked.
+	 * @param module module to update
+	 */
 	void updateNotBookmarkedModule(IBookmarkable module){
 		if (mode == Mode.BOOKMARKING){
 			module.setBookmarkingStyleName(styleNames.QP_BOOKMARK_SELECTABLE());
@@ -323,7 +338,11 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 			module.removeBookmarkingStyleName();
 		}
 	}
-	
+
+	/**
+	 * Updates module with the assumption that the module is currently not bookmarked.
+	 * @param module module to update
+	 */
 	void updateBookmarkedModule(IBookmarkable module){
 		module.setBookmarkingStyleName(styleNames.QP_BOOKMARK_SELECTED() + "-" + bookmarkIndex);
 	}
