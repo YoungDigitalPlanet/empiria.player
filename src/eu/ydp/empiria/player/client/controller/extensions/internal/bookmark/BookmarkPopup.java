@@ -1,11 +1,16 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public class BookmarkPopup implements IBookmarkPopupView, IBookmarkPopupContentsPresenter {
@@ -14,6 +19,7 @@ public class BookmarkPopup implements IBookmarkPopupView, IBookmarkPopupContents
 	PopupPanel popup = new PopupPanel(true, true);
 	
 	@Inject StyleNameConstants styleNameConstants;
+	@Inject EventsBus eventBus;
 	
 	private IBookmarkPopupPresenter presenter;
 
@@ -32,6 +38,13 @@ public class BookmarkPopup implements IBookmarkPopupView, IBookmarkPopupContents
 				}
 			}
 		});
+		popup.addDomHandler(new TouchStartHandler() {
+			
+			@Override
+			public void onTouchStart(TouchStartEvent event) {
+				eventBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+			}
+		}, TouchStartEvent.getType());
 	}
 
 	@Override
