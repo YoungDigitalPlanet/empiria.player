@@ -19,6 +19,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension.Mode;
@@ -44,6 +45,7 @@ public class BookmarkProcessorExtensionTest {
 		doNothing().when(bookmarkProcessor).editBookmark(any(IBookmarkable.class));
 		bookmarkProcessor.eventsBus = mock(EventsBus.class);
 		bookmarkProcessor.styleNames = mock(StyleNameConstants.class);		
+		bookmarkProcessor.dataSourceSupplier = mock(DataSourceDataSupplier.class);
 		doReturn(SELECTED).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTED();
 		doReturn(SELECTABLE).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTABLE();		
 	}
