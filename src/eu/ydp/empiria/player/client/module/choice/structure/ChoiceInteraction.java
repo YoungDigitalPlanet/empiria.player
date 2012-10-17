@@ -1,11 +1,17 @@
 package eu.ydp.empiria.player.client.module.choice.structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.ydp.gwtutil.client.StringUtils;
+
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
 public class ChoiceInteraction {
 	
@@ -22,7 +28,14 @@ public class ChoiceInteraction {
 	@XmlElement
 	private String prompt;
 	
-	public List<SimpleChoice> getChoiceOptions() {
+	public ChoiceInteraction(){
+		id = StringUtils.EMPTY_STRING;
+		responseIdentifier = StringUtils.EMPTY_STRING;
+		simpleChoices = new ArrayList<SimpleChoice>();
+		prompt = StringUtils.EMPTY_STRING;
+	}
+	
+	public List<SimpleChoice> getSimpleChoices() {
 		return simpleChoices;
 	}
 

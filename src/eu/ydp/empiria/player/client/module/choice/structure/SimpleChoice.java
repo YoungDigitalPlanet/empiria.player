@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import eu.ydp.gwtutil.client.StringUtils;
+
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="simpleChoice")
 public class SimpleChoice {
@@ -17,6 +19,11 @@ public class SimpleChoice {
 	@XmlValue
 	private String content;
 	private boolean multi;
+	
+	private SimpleChoice(){
+		identifier = StringUtils.EMPTY_STRING;
+		content = StringUtils.EMPTY_STRING;
+	}
 	
 	public String getIdentifier() {
 		return identifier;

@@ -73,7 +73,7 @@ public class ChoiceModuleStructure {
 	}
 
 	private void randomizeChoices(){
-		List<SimpleChoice> simpleChoices = choiceInteraction.getChoiceOptions();
+		List<SimpleChoice> simpleChoices = choiceInteraction.getSimpleChoices();
 		int optionsLength = simpleChoices.size();
 		List<SimpleChoice> newSimpleChoiceList = createEmptyChoiceOptionList(optionsLength);
 
@@ -107,11 +107,11 @@ public class ChoiceModuleStructure {
 	}
 
 	private void fillRandomizedIndices(){
-		int optionsLength = choiceInteraction.getChoiceOptions().size();
+		int optionsLength = choiceInteraction.getSimpleChoices().size();
 		randomizedIndices = new RandomizedSet<Integer>();
 
 		for(int i = 0; i < optionsLength; i++){
-			SimpleChoice choiceOption = choiceInteraction.getChoiceOptions().get(i);
+			SimpleChoice choiceOption = choiceInteraction.getSimpleChoices().get(i);
 
 			if(!choiceOption.isFixed()){
 				randomizedIndices.push(i);
@@ -120,7 +120,7 @@ public class ChoiceModuleStructure {
 	}
 
 	public void setMulti(boolean multi){
-		for(SimpleChoice simpleChoice: choiceInteraction.getChoiceOptions()){
+		for(SimpleChoice simpleChoice: choiceInteraction.getSimpleChoices()){
 			simpleChoice.setMulti(multi);
 		}
 	}
@@ -134,6 +134,6 @@ public class ChoiceModuleStructure {
 	}
 
 	public List<SimpleChoice> getChoiceOptions(){
-		return choiceInteraction.getChoiceOptions();
+		return choiceInteraction.getSimpleChoices();
 	}
 }
