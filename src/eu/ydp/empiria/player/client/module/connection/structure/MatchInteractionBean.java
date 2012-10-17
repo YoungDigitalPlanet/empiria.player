@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.IMultiplePairBean;
 
-@XmlRootElement
+@XmlRootElement(name="matchInteraction")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MatchInteractionBean implements IMultiplePairBean {
 
