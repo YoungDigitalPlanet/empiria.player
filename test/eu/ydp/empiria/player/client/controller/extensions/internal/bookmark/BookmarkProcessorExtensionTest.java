@@ -46,6 +46,7 @@ public class BookmarkProcessorExtensionTest {
 		bookmarkProcessor.eventsBus = mock(EventsBus.class);
 		bookmarkProcessor.styleNames = mock(StyleNameConstants.class);		
 		bookmarkProcessor.dataSourceSupplier = mock(DataSourceDataSupplier.class);
+		when(bookmarkProcessor.dataSourceSupplier.getItemTitle(any(Integer.class))).thenReturn("Mock title 1");
 		doReturn(SELECTED).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTED();
 		doReturn(SELECTABLE).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTABLE();		
 	}
