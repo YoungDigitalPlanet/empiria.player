@@ -73,8 +73,8 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
-import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.containers.DivModule;
 import eu.ydp.empiria.player.client.module.containers.HtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
@@ -149,6 +149,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	protected String stateAsync;
 
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+
+	protected ModuleFactory moduleFactory = PlayerGinjector.INSTANCE.getModuleFactory();
 
 	private final ModuleHandlerManager moduleHandlerManager = PlayerGinjector.INSTANCE.getModuleHandlerManager();
 
@@ -283,7 +285,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new SpanModule(), ModuleTagName.SPAN));
 		loadExtension(new SimpleConnectorExtension(new TextInteractionModule(), ModuleTagName.TEXT_INTERACTION));
 		loadExtension(new SimpleConnectorExtension(new ImgModule(), ModuleTagName.IMG, false, true));
-		loadExtension(new SimpleConnectorExtension(new ChoiceModule(), ModuleTagName.CHOICE_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(moduleFactory.getChoiceModule(), ModuleTagName.CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new SelectionModule(), ModuleTagName.SELECTION_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new IdentificationModule(), ModuleTagName.IDENTYFICATION_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new TextEntryModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
@@ -312,7 +314,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new AudioMuteButtonModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
-	//	loadExtension(new SimpleConnectorExtension(new ConnectionModule(), ModuleTagName.CONNECTION));
+	//	loadExtension(new SimpleConnectorExtension(moduleFactory.getConnectionModule(), ModuleTagName.CONNECTION));
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
 		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
 		loadExtension(PlayerGinjector.INSTANCE.getPage());

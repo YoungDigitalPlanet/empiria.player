@@ -2,18 +2,16 @@ package eu.ydp.empiria.player.client.module.choice;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.factory.ChoiceModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoice;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEvent;
-import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventHandler;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String> {
 
@@ -21,9 +19,15 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 
 	private ChoiceModuleStructure choiceStructure;
 
+	@Inject
+	protected ModuleFactory moduleFactory;
+
+	@Inject
+	protected ChoiceModuleFactory choiceModuleFactory;
+
 	@Override
 	protected void initalizeModule() {
-		choiceStructure = new ChoiceModuleStructure();
+		choiceStructure = choiceModuleFactory.getChoiceModuleStructure();
 		choiceStructure.createFromXml(getModuleElement().toString());
 
 		choiceStructure.setMulti(isMulti());
@@ -40,7 +44,7 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 	}
 
 	private void addListeners() {
-		ChoiceModuleListener listener = new ChoiceModuleListener();
+		ChoiceModuleListener listener = choiceModuleFactory.getChoiceModuleListener(this);
 		listener.addEventHandler(ChoiceModuleEventType.ON_CHOICE_CLICK);
 	}
 
@@ -80,7 +84,7 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 
 	@Override
 	public ChoiceModule getNewInstance() {
-		return new ChoiceModule();
+		return moduleFactory.getChoiceModule();
 	}
 
 	@Override
@@ -89,22 +93,6 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 			presenter = new ChoiceModulePresenterImpl();
 		}
 		return presenter;
-	}
-
-	private class ChoiceModuleListener implements ChoiceModuleEventHandler {
-		private final EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus();
-
-		@Override
-		public void onChoiceModuleEvent(ChoiceModuleEvent event) {
-			if (event.getType().equals(ChoiceModuleEventType.ON_CHOICE_CLICK)) {
-				onSimpleChoiceClick(event.getChoiceIdentifier());
-			}
-		}
-
-		public void addEventHandler(ChoiceModuleEventType type) {
-			eventBus.addHandler(ChoiceModuleEvent.getType(type), this, new CurrentPageScope());
-		}
-
 	}
 
 }

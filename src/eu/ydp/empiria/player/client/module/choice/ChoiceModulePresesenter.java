@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoice;
 
 public interface ChoiceModulePresesenter extends ActivityPresenter<String>{
-
+	
 	void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator);
 	void setPrompt(String value);
 	void setChoices(List<SimpleChoice> choices);

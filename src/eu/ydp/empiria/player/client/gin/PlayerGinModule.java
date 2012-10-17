@@ -12,11 +12,15 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.gin.factory.ChoiceModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
+import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionPresenter;
+import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionPresenterImpl;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
@@ -69,14 +73,19 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(NativeStyleHelper.class).to(NativeStyleHelperImpl.class);
 		bind(StyleHelper.class);
 		bind(ModuleHandlerManager.class).in(Singleton.class);
+
+		bind(ConnectionPresenter.class).to(ConnectionPresenterImpl.class);
 		//factory
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
+		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
+		install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
+		install(new GinFactoryModuleBuilder().build(ChoiceModuleFactory.class));
+
+	//	install(new GinFactoryModuleBuilder().build(TouchRecognitionFactory.class));
 	//	install(new GinFactoryModuleBuilder().build(ConnectionItemViewFactory.class));
 	//	install(new GinFactoryModuleBuilder().build(ConnectionItemFactory.class));
-		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
-	//	install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
-		//install(new GinFactoryModuleBuilder().build(TouchRecognitionFactory.class));
+
 	}
 
 }
