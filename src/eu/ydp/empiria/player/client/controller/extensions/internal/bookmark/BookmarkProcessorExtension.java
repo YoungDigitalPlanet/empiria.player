@@ -147,7 +147,9 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 	
 	native void __clearButtons()/*-{
-		$wnd.bookmarkingClearButtons();
+		if (typeof $wnd.bookmarkingClearButtons == 'function'){
+			$wnd.bookmarkingClearButtons();
+		}
 	}-*/;
 	
 	void removeChildren(IModule parentModule) {
