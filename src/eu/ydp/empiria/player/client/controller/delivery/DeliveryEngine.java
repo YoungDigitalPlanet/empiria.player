@@ -245,13 +245,13 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		//flowManager.gotoPage(4);
 	}
 
-	protected void initFlow() {
+	protected void initFlow() {		
 		
-		IFlowRequest flowRequest = null;
+		JSONArray deState = null;
 		
 		if (stateAsync != null) {
 			
-			JSONArray deState = (JSONArray) JSONParser.parseLenient(stateAsync);
+			deState = (JSONArray) JSONParser.parseLenient(stateAsync);
 
 			assessmentController.reset();
 
@@ -259,8 +259,22 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 			extensionsManager.setState(deState.get(2).isArray());
 
-			flowManager.deinitFlow();
-			
+			flowManager.deinitFlow();			
+		
+		} 
+		
+		IFlowRequest flowRequest = parseFlowRequest(deState);
+		if(flowRequest != null){
+			flowManager.invokeFlowRequest(flowRequest);
+		}
+		
+		flowManager.initFlow();		
+	}	
+	
+	protected IFlowRequest parseFlowRequest(JSONArray deState){
+		IFlowRequest flowRequest =null;
+		
+		if(deState != null){
 			if(initialItemIndex != null){
 				flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);				
 			}				
@@ -273,18 +287,13 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 				} else if (deState.get(0).isString().stringValue().equals(PageType.SUMMARY.toString())) {
 					flowRequest = new FlowRequest.NavigateSummary();
 				}
-			}			
-		
-		} 
-		else if (initialItemIndex != null){
-			flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);			
+			}
+		}
+		else if(initialItemIndex != null){
+			flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);
 		}
 		
-		if(flowRequest != null){
-			flowManager.invokeFlowRequest(flowRequest);
-		}
-		
-		flowManager.initFlow();		
+		return flowRequest;
 	}
 
 	protected void loadPredefinedExtensions() {
