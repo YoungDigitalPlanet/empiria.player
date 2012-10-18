@@ -271,6 +271,9 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		playerJsObject.bookmarkingEditing = function(editing){
 			self.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::setEditingMode(Z)(editing);
 		}
+		playerJsObject.getBookmarks = function(){
+			return self.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::getState()();
+		}
 	}-*/;
 
 	void setClearingMode(boolean clearing){
@@ -459,11 +462,8 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		currBookmarkNewlyCreated = false;		
 	}
 	
-	JSONValue exportBookmarks(){
-		return null;
-	}
-	
-	void importBookmarks(JSONValue json){
+	void importBookmarks(JSONValue json){		
+		
 	}
 
 }
