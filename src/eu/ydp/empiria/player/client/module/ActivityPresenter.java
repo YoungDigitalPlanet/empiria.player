@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface ActivityPresenter<H> extends IsWidget {
@@ -24,11 +22,15 @@ public interface ActivityPresenter<H> extends IsWidget {
 	void setLocked(boolean locked);
 	
 	/**
-	 * Ustawianie przekazanych odpowiedzi
-	 * @param answers lista odpowiedzi które mają byc 
-	 * ustawione
+	 * Pokazywanie poprawnych odpowiedzi
+	 */	
+	void showCorrectAnswers();
+	
+	/**
+	 * Pokazywanie odpowiedzi zaznaczonych 
+	 * przez użytkownika
 	 */
-	void showAnswers(List<H> answers);
+	void showCurrentAnswers();
 	
 	/**
 	 * Zaznaczanie poprawnych odpowiedzi

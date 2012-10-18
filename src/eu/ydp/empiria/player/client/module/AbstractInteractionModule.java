@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -83,22 +82,23 @@ public abstract class AbstractInteractionModule<T, H> extends OneViewInteraction
 	@Override
 	public void markAnswers(boolean mark) {
 		markingAnswers = mark;
-		presenter.markCorrectAnswers();
+		
+		if(mark){
+			presenter.markCorrectAnswers();
+			presenter.markWrongAnswers();
+		}else{
+			presenter.unmarkCorrectAnswers();
+			presenter.unmarkWrongAnswers();
+		}
 	}
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
-		List<H> answers = Collections.emptyList();
-
-		if (show && !showingAnswers) {
-			answers = getCorrectAnswers();
-			showingAnswers = true;
-		} else if (!show && showingAnswers) {
-			answers = getCurrentAnswers();
-			showingAnswers = false;
+		if(show){
+			presenter.showCorrectAnswers();
+		}else{
+			presenter.showCurrentAnswers();
 		}
-
-		presenter.showAnswers(answers);
 	}
 
 	@Override
@@ -137,8 +137,8 @@ public abstract class AbstractInteractionModule<T, H> extends OneViewInteraction
 			String choiceIdentifier = newState.get(i).isString().stringValue();
 			getResponse().add(choiceIdentifier);
 		}
-
-		presenter.showAnswers(parseResponse(getResponse().values));
+		
+		presenter.showCurrentAnswers();
 		fireStateChanged(false);
 	}
 

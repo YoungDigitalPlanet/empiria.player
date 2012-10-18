@@ -68,8 +68,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			choicesPanel.add(choiceView.asWidget());
 		}
 	}
-
-	@Override
+	
 	public void showAnswers(List<String> answers) {
 		for (SimpleChoiceView choice : choiceViews) {
 			boolean select = answers.contains(choice.getIdentifier());
@@ -165,5 +164,17 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		}
 
 		return placeholder;
+	}
+
+	@Override
+	public void showCorrectAnswers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showCurrentAnswers() {
+		// TODO Auto-generated method stub
+		
 	}
 }

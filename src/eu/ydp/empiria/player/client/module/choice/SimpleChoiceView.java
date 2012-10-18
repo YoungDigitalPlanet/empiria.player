@@ -242,8 +242,7 @@ public class SimpleChoiceView implements ActivityPresenter<String>{
 	public void bindView() {
 		uiBinder.createAndBindUi(this);
 	}
-
-	@Override
+	
 	public void showAnswers(List<String> answers) {
 		// TODO Auto-generated method stub
 	}
@@ -266,6 +265,18 @@ public class SimpleChoiceView implements ActivityPresenter<String>{
 	@Override
 	public void unmarkWrongAnswers() {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void showCorrectAnswers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showCurrentAnswers() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
