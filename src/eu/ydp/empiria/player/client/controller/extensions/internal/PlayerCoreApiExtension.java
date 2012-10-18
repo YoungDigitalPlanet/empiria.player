@@ -102,9 +102,15 @@ public class PlayerCoreApiExtension extends
 	}
 	
 	private native int callImportInitialItemIndex(JavaScriptObject playerJsObject)/*-{
-		if (typeof playerJsObject.importInitialItemIndex == 'function')
-			return playerJsObject.importInitialItemIndex();
-			
-		return -1;		
+		var itemIndex = -1;
+		if (typeof playerJsObject.importInitialItemIndex == 'function'){
+			var importedIndex =  playerJsObject.importInitialItemIndex();
+			if(!isNaN(importedIndex)){
+				itemIndex = parseInt(importedIndex);
+			}			
+		}
+		
+		return itemIndex;		
+				
 	}-*/;
 }
