@@ -6,10 +6,8 @@ import eu.ydp.empiria.player.client.util.events.connection.ConnectionEventHandle
 import eu.ydp.empiria.player.client.util.events.connection.ConnectionEventTypes;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
-public interface ConnectionPresenter extends ActivityPresenter<KeyValue<String, String>> {
-
-	//TODO popraw ten interfejs jak wygenerujesz poprzez jaxb model objektowy connection
-	public void setModel(MatchInteractionBean modelInterface);
+public interface ConnectionPresenter extends ActivityPresenter<KeyValue<String, String>, MatchInteractionBean> {
+	
 	/**
 	 * Jezeli istnieja jakies polaczenia i zostanie wywolana ta metoda to dla
 	 * wszystkich usunietych polaczen zostana wywolane handlery

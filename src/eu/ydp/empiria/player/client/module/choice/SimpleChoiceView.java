@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
@@ -27,7 +28,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEvent;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
 
-public class SimpleChoiceView implements ActivityPresenter<String>{
+public class SimpleChoiceView implements ActivityPresenter<String, SimpleChoiceBean>{
 
 	private static final String TYPE_SINGLE = "single";
 
@@ -275,6 +276,18 @@ public class SimpleChoiceView implements ActivityPresenter<String>{
 
 	@Override
 	public void showCurrentAnswers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setModel(AbstractResponseModel<String> model) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setBean(SimpleChoiceBean bean) {
 		// TODO Auto-generated method stub
 		
 	}

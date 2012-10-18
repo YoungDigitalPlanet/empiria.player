@@ -11,6 +11,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.AbstractResponseModel;
+import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 
@@ -174,6 +176,18 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void showCurrentAnswers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setModel(AbstractResponseModel<String> model) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setBean(ChoiceInteractionBean bean) {
 		// TODO Auto-generated method stub
 		
 	}

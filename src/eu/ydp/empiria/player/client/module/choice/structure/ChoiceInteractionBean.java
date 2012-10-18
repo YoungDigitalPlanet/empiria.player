@@ -9,11 +9,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
 import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="choiceInteraction")
-public class ChoiceInteractionBean {
+public class ChoiceInteractionBean implements ModuleBean{
 	
 	@XmlAttribute
 	private String id;

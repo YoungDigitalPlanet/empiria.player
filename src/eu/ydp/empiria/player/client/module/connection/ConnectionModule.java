@@ -7,11 +7,14 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
+import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
-//import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
+import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
+//import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 
-public class ConnectionModule extends AbstractInteractionModule<ConnectionModule, String> {
+public class ConnectionModule extends AbstractInteractionModule<ConnectionModule, String, MatchInteractionBean> {
 
 	@Inject
 	ConnectionModuleStructure connectionStructure;
@@ -38,9 +41,18 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	}
 
 	@Override
-	protected ActivityPresenter<String> createPresenter() {
-		// TODO to be implemented
+	protected ActivityPresenter<String, MatchInteractionBean> getPresenter() {
 		return null;
+	}
+
+	@Override
+	protected AbstractResponseModel<String> getResponseModel() {
+		return null;
+	}
+
+	@Override
+	protected AbstractModuleStructure<MatchInteractionBean> getStructure() {
+		return connectionStructure;
 	}
 
 }

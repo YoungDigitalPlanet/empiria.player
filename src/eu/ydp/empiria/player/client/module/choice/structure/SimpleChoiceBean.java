@@ -6,11 +6,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
 import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="simpleChoice")
-public class SimpleChoiceBean {
+public class SimpleChoiceBean implements ModuleBean{
 
 	@XmlAttribute
 	private String identifier;

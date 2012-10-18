@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.NodeList;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -22,13 +24,6 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	@Override
 	protected void prepareStructure() {
 		randomizeSets();		
-	}
-
-	@Override
-	protected void prepareFeedbackNodes(String xml) {	
-		super.prepareFeedbackNodes(xml);
-		
-		feedbacks.put(null, null); // TODO: to be implemented using JAXB based on in eu.ydp.empiria.player.client.module.choice.structure.prepareFeedbackNodes()		
 	}
 	
 	private void randomizeSets() {
@@ -91,6 +86,11 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 		}
 
 		return choicesOptions;
+	}
+
+	@Override
+	protected NodeList getParentNodesForFeedbacks(Document xmlDocument) {
+		return null;
 	}
 	
 }

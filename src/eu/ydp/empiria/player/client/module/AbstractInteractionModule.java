@@ -1,21 +1,28 @@
 package eu.ydp.empiria.player.client.module;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
-public abstract class AbstractInteractionModule<T, H> extends OneViewInteractionModuleBase implements Factory<T> {
+/**
+ * 
+ * @author MKaldonek
+ *
+ * @param <T> typ modułu
+ * @param <H> typ odpowiedzi
+ * @param <U> typ beana
+ */
+public abstract class AbstractInteractionModule<T, H, U extends ModuleBean> extends OneViewInteractionModuleBase implements Factory<T> {
 
 	protected boolean locked = false;
 
@@ -23,15 +30,17 @@ public abstract class AbstractInteractionModule<T, H> extends OneViewInteraction
 
 	protected boolean markingAnswers = false;
 
-	private ActivityPresenter<H> presenter;
+	private ActivityPresenter<H, U> presenter;
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		presenter = createPresenter();
-		applyIdAndClassToView(getView());
 		initalizeModule();
+		presenter = getPresenter();
+		presenter.setBean(getStructure().getBean());
+		presenter.setModel(getResponseModel());
 		initializeAndInstallFeedbacks();
 		presenter.bindView();
+		applyIdAndClassToView(getView());
 		placeholders.get(0).add(getView());
 	}
 
@@ -47,9 +56,13 @@ public abstract class AbstractInteractionModule<T, H> extends OneViewInteraction
 		return new InlineFeedback(mountingPoint, feedbackNode, getModuleSocket(), getInteractionEventsListener());
 	}
 
-	protected abstract ActivityPresenter<H> createPresenter();
+	protected abstract ActivityPresenter<H, U> getPresenter();
 
 	protected abstract void initalizeModule();
+	
+	protected abstract AbstractResponseModel<H> getResponseModel();
+	
+	protected abstract AbstractModuleStructure<U> getStructure();
 
 	protected Widget getView() {
 		return presenter.asWidget();
@@ -57,26 +70,6 @@ public abstract class AbstractInteractionModule<T, H> extends OneViewInteraction
 
 	protected void generateInlineBody(Node node, Widget parentWidget) {
 		getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(node, parentWidget.getElement());
-	}
-
-	protected List<H> getCorrectAnswers() {
-		return parseResponse(getResponse().correctAnswers.getAllAnswers());
-	}
-
-	protected List<H> getCurrentAnswers() {
-		return parseResponse(getResponse().values);
-	}
-
-	/**
-	 * Konwertuje odpowiedz z postaci String do typu H. Domyslnie przepakowuje kolekcje dla bardziej zlozonych typow
-	 * powinna powstac implementacja na poziomie modulu i przeciazyc ta.
-	 *
-	 * @param values
-	 * @return
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected List<H> parseResponse(Collection<String> values) {
-		return new ArrayList(values);
 	}
 
 	@Override
@@ -111,22 +104,15 @@ public abstract class AbstractInteractionModule<T, H> extends OneViewInteraction
 	public void reset() {
 		presenter.reset();
 		clearResponse();
+		//delegate to model
 		fireStateChanged(false);
 	}
 
 	@Override
 	public JSONArray getState() {
 		JSONArray state = new JSONArray();
-
-		for (String responseValue : getResponse().values) {
-			state.set(state.size(), createJSONString(responseValue));
-		}
-
+		//TODO: delegate to model
 		return state;
-	}
-
-	private JSONString createJSONString(String value) {
-		return new JSONString(value);
 	}
 
 	@Override
