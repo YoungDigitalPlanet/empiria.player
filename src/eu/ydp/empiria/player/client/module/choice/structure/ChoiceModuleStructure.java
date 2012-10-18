@@ -6,13 +6,12 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
-import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
 
-public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInteractionBean>{
+public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInteractionBean, ChoiceModuleJAXBParser>{
 
 	private RandomizedSet<Integer> randomizedIndices;
 	
@@ -79,7 +78,7 @@ public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInterac
 	}
 
 	@Override
-	protected JAXBParserFactory<ChoiceInteractionBean> createParser() {
+	protected ChoiceModuleJAXBParser createParserFactory() {
 		return GWT.create(ChoiceModuleJAXBParser.class);
 	}
 

@@ -12,9 +12,9 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
-public abstract class AbstractModuleStructure<M extends ModuleBean> {
+public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JAXBParserFactory<M>> {
 	
-	JAXBParserFactory<M> parser = createParser();
+	JAXBParserFactory<M> parserFactory = createParserFactory();
 	
 	protected M bean;
 	
@@ -35,10 +35,10 @@ public abstract class AbstractModuleStructure<M extends ModuleBean> {
 	}	
 		
 	protected JAXBParser<M> getParser() {
-		return parser.create();
+		return parserFactory.create();
 	}
 	
-	protected abstract JAXBParserFactory<M> createParser();
+	protected abstract P createParserFactory();
 		
 	/**
 	 * Operates on interaction field ie. for randomize elements, etc.
@@ -53,7 +53,7 @@ public abstract class AbstractModuleStructure<M extends ModuleBean> {
 	 */
 	protected final void prepareFeedbackNodes(String xml) {
 		feedbacks = new HashMap<String, Element>();
-		Document xmlDocument = XMLParser.parse(xml);
+		Document xmlDocument = parseXML(xml);
 		NodeList nodes = getParentNodesForFeedbacks(xmlDocument);
 		
 		if(nodes != null){
@@ -64,6 +64,14 @@ public abstract class AbstractModuleStructure<M extends ModuleBean> {
 				addFeedbackNode(feedbackNode);
 			}
 		}
+	}
+
+	/**
+	 * @param xml
+	 * @return Document
+	 */
+	protected Document parseXML(String xml) {
+		return XMLParser.parse(xml);
 	}
 	
 	protected abstract NodeList getParentNodesForFeedbacks(Document xmlDocument);

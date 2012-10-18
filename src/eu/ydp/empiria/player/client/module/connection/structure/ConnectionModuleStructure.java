@@ -4,21 +4,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
+import com.google.inject.Inject;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
-import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
 
-public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInteractionBean> {
+public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInteractionBean, ConnectionModuleJAXBParser> {
 	
 	private RandomizedSet<Integer> randomizedIndices;	
 	
+	@Inject
+	ConnectionModuleJAXBParser connectionModuleJAXBParser;  
+	
 	@Override
-	protected JAXBParserFactory<MatchInteractionBean> createParser() {
-		return GWT.create(ConnectionModuleJAXBParser.class);
+	protected ConnectionModuleJAXBParser createParserFactory() {
+		return connectionModuleJAXBParser;
 	}	
 	
 	@Override

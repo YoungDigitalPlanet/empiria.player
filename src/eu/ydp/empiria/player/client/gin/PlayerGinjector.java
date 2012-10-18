@@ -19,6 +19,8 @@ import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.module.ChoiceGinModule;
 import eu.ydp.empiria.player.client.gin.module.ConnectionGinModule;
 import eu.ydp.empiria.player.client.gin.module.PlayerGinModule;
+import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleJAXBParser;
+import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
@@ -59,6 +61,9 @@ public interface PlayerGinjector extends Ginjector {
 	TextTrackFactory getTextTrackFactory();
 	ModuleFactory getModuleFactory();
 
+	ConnectionModuleJAXBParser getConnectionModuleJAXBParser();	
+	ConnectionModuleStructure getConnectionModuleStructure();
+	
 //	ConnectionItemFactory getConnectionItemFactory();
 
 	BookmarkProcessorExtension getBookmarkProcessorExtension();

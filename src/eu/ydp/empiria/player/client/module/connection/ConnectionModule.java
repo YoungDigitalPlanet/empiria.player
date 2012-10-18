@@ -10,9 +10,9 @@ import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
+import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleJAXBParser;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
-//import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 
 public class ConnectionModule extends AbstractInteractionModule<ConnectionModule, ConnectionModuleModel, MatchInteractionBean> {
 
@@ -54,7 +54,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	}
 
 	@Override
-	protected AbstractModuleStructure<MatchInteractionBean> getStructure() {
+	protected AbstractModuleStructure<MatchInteractionBean, ConnectionModuleJAXBParser> getStructure() {
 		return connectionStructure;
 	}
 

@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
+import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleJAXBParser;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 
@@ -70,7 +71,7 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, Choice
 	}
 
 	@Override
-	protected AbstractModuleStructure<ChoiceInteractionBean> getStructure() {
+	protected AbstractModuleStructure<ChoiceInteractionBean, ChoiceModuleJAXBParser> getStructure() {
 		return choiceStructure;
 	}
 

@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -67,7 +68,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	
 	protected abstract H getResponseModel();
 	
-	protected abstract AbstractModuleStructure<U> getStructure();
+	protected abstract AbstractModuleStructure<U, ? extends JAXBParserFactory<U>> getStructure();
 
 	protected Widget getView() {
 		return presenter.asWidget();
