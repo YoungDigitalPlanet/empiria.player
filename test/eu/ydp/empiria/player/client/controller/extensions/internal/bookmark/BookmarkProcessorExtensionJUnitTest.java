@@ -162,40 +162,40 @@ public class BookmarkProcessorExtensionJUnitTest {
 
 	@Test
 	public void setClearingMode(){
-		doNothing().when(bookmarkProcessor).updateModules();
+		doNothing().when(bookmarkProcessor).updateNotBookmarkedModules();
 		bookmarkProcessor.mode = Mode.BOOKMARKING;
 		bookmarkProcessor.setClearingMode(true);
 		assertThat(bookmarkProcessor.mode, is(Mode.CLEARING));
-		verify(bookmarkProcessor).updateModules();
+		verify(bookmarkProcessor).updateNotBookmarkedModules();
 	}
 	@Test
 	public void setEditingMode(){
-		doNothing().when(bookmarkProcessor).updateModules();
+		doNothing().when(bookmarkProcessor).updateNotBookmarkedModules();
 		bookmarkProcessor.mode = Mode.BOOKMARKING;
 		bookmarkProcessor.setEditingMode(true);
 		assertThat(bookmarkProcessor.mode, is(Mode.EDITING));
 		bookmarkProcessor.setEditingMode(false);
 		assertThat(bookmarkProcessor.mode, is(Mode.IDLE));
-		verify(bookmarkProcessor, times(2)).updateModules();
+		verify(bookmarkProcessor, times(2)).updateNotBookmarkedModules();
 	}
 	
 	@Test
 	public void startBookmarking(){
-		doNothing().when(bookmarkProcessor).updateModules();
+		doNothing().when(bookmarkProcessor).updateNotBookmarkedModules();
 		bookmarkProcessor.mode = Mode.CLEARING;
 		bookmarkProcessor.startBookmarking(BOOKMARKING_INDEX);
 		assertThat(bookmarkProcessor.mode, is(Mode.BOOKMARKING));
 		assertThat(bookmarkProcessor.bookmarkIndex, is(BOOKMARKING_INDEX));
-		verify(bookmarkProcessor).updateModules();
+		verify(bookmarkProcessor).updateNotBookmarkedModules();
 	}
 	
 	@Test
 	public void stopBookmarking(){
-		doNothing().when(bookmarkProcessor).updateModules();
+		doNothing().when(bookmarkProcessor).updateNotBookmarkedModules();
 		bookmarkProcessor.mode = Mode.BOOKMARKING;
 		bookmarkProcessor.stopBookmarking();
 		assertThat(bookmarkProcessor.mode, is(Mode.IDLE));
-		verify(bookmarkProcessor).updateModules();
+		verify(bookmarkProcessor).updateNotBookmarkedModules();
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class BookmarkProcessorExtensionJUnitTest {
 		bookmarkProcessor.modules.add(modules);
 		bookmarkProcessor.bookmarks.add(new StackMap<Integer, BookmarkProperties>());
 		bookmarkProcessor.mode = Mode.BOOKMARKING;
-		bookmarkProcessor.updateModules(0);
+		bookmarkProcessor.updateModules(0, false);
 		verify(b1).setBookmarkingStyleName(SELECTABLE);
 		verify(b1, never()).removeBookmarkingStyleName();
 		verify(b2).setBookmarkingStyleName(SELECTABLE);
@@ -221,7 +221,7 @@ public class BookmarkProcessorExtensionJUnitTest {
 		bookmarkProcessor.modules.add(modules);
 		bookmarkProcessor.bookmarks.add(new StackMap<Integer, BookmarkProperties>());
 		bookmarkProcessor.mode = Mode.IDLE;
-		bookmarkProcessor.updateModules(0);
+		bookmarkProcessor.updateModules(0, false);
 		verify(b1, never()).setBookmarkingStyleName(SELECTABLE);
 		verify(b1).removeBookmarkingStyleName();
 		verify(b2, never()).setBookmarkingStyleName(SELECTABLE);
@@ -234,13 +234,13 @@ public class BookmarkProcessorExtensionJUnitTest {
 				.put(1, mock(BookmarkProperties.class)).put(3, mock(BookmarkProperties.class)).build());
 		bookmarkProcessor.bookmarks.add((StackMap<Integer, BookmarkProperties>) eu.ydp.gwtutil.client.collections.MapCreator.create(new StackMap<Integer, BookmarkProperties>()).put(1, mock(BookmarkProperties.class))
 				.put(1, mock(BookmarkProperties.class)).put(5, mock(BookmarkProperties.class)).build());
-		doNothing().when(bookmarkProcessor).updateModules();
+		doNothing().when(bookmarkProcessor).updateNotBookmarkedModules();
 		doNothing().when(bookmarkProcessor).resetMode();
 		bookmarkProcessor.currItemIndex = 0;
 		bookmarkProcessor.clearAll();
 		assertThat(bookmarkProcessor.bookmarks.get(0).size(), is(0));
 		assertThat(bookmarkProcessor.bookmarks.get(1).size(), is(2));
-		verify(bookmarkProcessor).updateModules();
+		verify(bookmarkProcessor).updateNotBookmarkedModules();
 		verify(bookmarkProcessor).resetMode();
 		
 		

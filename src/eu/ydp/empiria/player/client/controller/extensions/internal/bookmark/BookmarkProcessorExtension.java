@@ -83,6 +83,14 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 				resetMode();
 			}
 		});
+		
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_INITIALIZED), new PlayerEventHandler() {
+			
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				updateModules(currItemIndex, true);
+			}
+		});
 	}
 	
 	void initInjection(){
@@ -276,7 +284,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	void clearAll(){
 		getBookmarksForCurrentItem().clear();
 		resetMode();
-		updateModules();
+		updateNotBookmarkedModules();
 	}
 	
 	void setEditingMode(boolean editing){
@@ -302,16 +310,23 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	void setMode(Mode newMode){
 		if (mode != newMode){
 			mode = newMode;
-			updateModules();
+			updateNotBookmarkedModules();
 		}
 	}
 
 	/**
+	 * Updates not bookmarked modules in all items.
+	 */
+	void updateNotBookmarkedModules() {
+		updateModules(false);
+	}
+	
+	/**
 	 * Updates all modules in all items.
 	 */
-	void updateModules() {
+	void updateModules(boolean updateBookmarkedModules) {
 		for (int i = 0 ; i < modules.size() ; i ++){
-			updateModules(i);
+			updateModules(i, updateBookmarkedModules);
 		}
 	}
 	
@@ -320,11 +335,13 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	 * 
 	 * @param itemIndex selected item index
 	 */
-	void updateModules(int itemIndex){
+	void updateModules(int itemIndex, boolean updateBookmarkedModules){
 		List<IBookmarkable> itemModules = modules.get(itemIndex);
 		for (IBookmarkable module : itemModules){
 			if (!isModuleBookmarked(module, itemIndex)){
 				updateNotBookmarkedModule(module);
+			} else if (updateBookmarkedModules){
+				updateBookmarkedModule(module);
 			}
 		}
 	}
@@ -346,7 +363,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	 * @param module module to update
 	 */
 	void updateBookmarkedModule(IBookmarkable module){
-		module.setBookmarkingStyleName(styleNames.QP_BOOKMARK_SELECTED() + "-" + bookmarkIndex);
+		module.setBookmarkingStyleName(styleNames.QP_BOOKMARK_SELECTED() + "-" + getBookmarkPropertiesForModule(module).getBookmarkIndex());
 	}
 
 	BookmarkProperties getBookmarkPropertiesForModule(IBookmarkable module) {
