@@ -7,7 +7,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 public interface ActivityPresenter<H> extends IsWidget {
 
 	/**
-	 * Wiąże widok z prezenterem
+	 * Wiąże widok z prezenterem, w tym momencie 
+	 * prezenter powinien mieć pełną informację 
+	 * o strukturze według, której będzie tworzył widoki
 	 */
 	void bindView();
 	/**

@@ -29,11 +29,10 @@ public abstract class AbstractInteractionModule<T, H> extends OneViewInteraction
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		presenter = createPresenter();
-		presenter.bindView();
-
 		applyIdAndClassToView(getView());
 		initalizeModule();
 		initializeAndInstallFeedbacks();
+		presenter.bindView();
 		placeholders.get(0).add(getView());
 	}
 
