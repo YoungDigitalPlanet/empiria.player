@@ -32,12 +32,12 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	@UiField
 	Panel choicesPanel;
 
-	private List<SimpleChoiceView> choiceViews;
+	private List<SimpleChoicePresenterImpl> choiceViews;
 
 	private InlineBodyGeneratorSocket bodyGenerator;
-	
+
 	private ChoiceInteractionBean bean;
-	
+
 	private ChoiceModuleModel model;
 
 	@Override
@@ -45,23 +45,30 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		uiBinder.createAndBindUi(this);
 		initializePrompt();
 		initializeChoices();
+		initializeListeners();
 	}
-	
+
 	private void initializePrompt() {
 		bodyGenerator.generateInlineBody(bean.getPrompt(), promptWidget.getElement());
 	}
-	
+
 	private void initializeChoices() {
+		SimpleChoiceListener listener = new SimpleChoiceListener();
 		choicesPanel.clear();
 
-		choiceViews = new ArrayList<SimpleChoiceView>();
+		choiceViews = new ArrayList<SimpleChoicePresenterImpl>();
 		ChoiceGroupController groupController = new ChoiceGroupController();
 
 		for (SimpleChoiceBean choice : bean.getSimpleChoices()) {
-			SimpleChoiceView choiceView = new SimpleChoiceView(choice, groupController, bodyGenerator);
+			SimpleChoicePresenterImpl choiceView = new SimpleChoicePresenterImpl(choice, groupController, bodyGenerator);
 			choiceViews.add(choiceView);
 			choicesPanel.add(choiceView.asWidget());
+			choiceView.setListener(listener);
 		}
+	}
+
+	private void initializeListeners() {
+
 	}
 
 	@Override
@@ -73,54 +80,25 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	public void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator) {
 		this.bodyGenerator = bodyGenerator;
 	}
-	
-	public void showAnswers(List<String> answers) {
-		for (SimpleChoiceView choice : choiceViews) {
-			boolean select = answers.contains(choice.getIdentifier());
-			choice.setSelected(select);
-		}
-	}
 
 	@Override
 	public void setLocked(boolean locked) {
-		for (SimpleChoiceView choice : choiceViews) {
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
 			choice.setLocked(locked);
 		}
 	}
 
 	@Override
 	public void reset() {
-		for (SimpleChoiceView choice : choiceViews) {
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
 			choice.reset();
 		}
 	}
 
-	@Override
-	public void switchChoiceSelection(String identifier) {
-		for (SimpleChoiceView choice : choiceViews) {
-			if (identifier.equals(choice.getIdentifier())) {
-				choice.setSelected(!choice.isSelected());
-			}
-		}
-	}
+	private SimpleChoicePresenterImpl getChoiceByIdentifier(String identifier) {
+		SimpleChoicePresenterImpl searchedChoice = null;
 
-	@Override
-	public boolean isChoiceSelected(String identifier) {
-		boolean selected = false;
-
-		try {
-			selected = getChoiceByIdentifier(identifier).isSelected();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return selected;
-	}
-
-	private SimpleChoiceView getChoiceByIdentifier(String identifier) {
-		SimpleChoiceView searchedChoice = null;
-
-		for (SimpleChoiceView choice : choiceViews) {
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
 			if (identifier.equals(choice.getIdentifier())) {
 				searchedChoice = choice;
 				break;
@@ -131,35 +109,10 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	}
 
 	@Override
-	public void markCorrectAnswers() {
-		for (SimpleChoiceView choice : choiceViews) {
-			// boolean markCorrect =
-			// correctAnswers.contains(choice.getIdentifier());
-			// choice.markAnswers(mark, markCorrect);
-		}
-	}
-	
-	@Override
-	public void markWrongAnswers() {
-
-	}
-
-	@Override
-	public void unmarkCorrectAnswers() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void unmarkWrongAnswers() {
-
-	}
-
-	@Override
 	public Widget getFeedbackPlaceholderByIdentifier(String identifier) {
 		Widget placeholder = null;
 
-		for (SimpleChoiceView choice : choiceViews) {
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
 			if (identifier.equals(choice.getIdentifier())) {
 				placeholder = choice.getFeedbackPlaceHolder();
 				break;
@@ -170,13 +123,59 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	}
 
 	@Override
+	public void markCorrectAnswers() {
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
+			boolean isCorrect = model.isCorrectAnswer(choice.getIdentifier());
+			if (isCorrect && choice.isSelected()) {
+				choice.markCorrectAnswers();
+			}
+		}
+	}
+
+	@Override
+	public void markWrongAnswers() {
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
+			boolean isWrong = model.isWrongAnswer(choice.getIdentifier());
+			if(isWrong && choice.isSelected()){
+				choice.markWrongAnswers();
+			}
+		}
+	}
+
+	@Override
+	public void unmarkCorrectAnswers() {
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
+			boolean isCorrect = model.isCorrectAnswer(choice.getIdentifier());
+			if(isCorrect && choice.isSelected()){
+				choice.unmarkCorrectAnswers();
+			}
+		}
+	}
+
+	@Override
+	public void unmarkWrongAnswers() {
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
+			boolean isWrong = model.isWrongAnswer(choice.getIdentifier());
+			if(isWrong && choice.isSelected()){
+				choice.unmarkWrongAnswers();
+			}
+		}
+	}
+
+	@Override
 	public void showCorrectAnswers() {
-		
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
+			boolean isCorrect = model.isCorrectAnswer(choice.getIdentifier());
+			choice.setSelected(isCorrect);
+		}
 	}
 
 	@Override
 	public void showCurrentAnswers() {
-		
+		for (SimpleChoicePresenterImpl choice : choiceViews) {
+			boolean isCurrent = model.isCurrentAnswer(choice.getIdentifier());
+			choice.setSelected(isCurrent);
+		}
 	}
 
 	@Override
@@ -186,7 +185,22 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void setModel(ChoiceModuleModel model) {
-		// TODO Auto-generated method stub
-		
+		this.model = model;
 	}
+	
+	public class SimpleChoiceListener{
+		
+		public void onChoiceClick(SimpleChoicePresenterImpl choice){
+			
+			if(!choice.isSelected()){
+				model.selectResponse(choice.getIdentifier());
+			}else{
+				model.unselectResponse(choice.getIdentifier());
+			}
+			
+			showCurrentAnswers();
+			//fireStateChanged(true);
+		}
+	}
+
 }

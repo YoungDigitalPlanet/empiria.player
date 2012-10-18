@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -12,6 +15,11 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 	@Inject
 	public ConnectionModuleModel(@Assisted Response response) {
 		super(response);
+	}
+
+	@Override
+	protected List<KeyValue<String, String>> parseResponse(Collection<String> values) {
+		return null;
 	}
 	
 }

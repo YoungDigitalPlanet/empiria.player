@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,22 +30,18 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 	}
 	
 	/**
-	 * Konwertuje odpowiedz z postaci String do typu H. Domyslnie przepakowuje kolekcje dla bardziej zlozonych typow
-	 * powinna powstac implementacja na poziomie modulu i przeciazyc ta.
-	 *
+	 * Konwertuje odpowiedz z postaci String do typu H.
 	 * @param values
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected List<T> parseResponse(Collection<String> values) {
-		return new ArrayList(values);
-	}
+	protected abstract List<T> parseResponse(Collection<String> values);
 	
 	@Override
 	public void setState(JSONArray newState) {
 		for (int i = 0; i < newState.size(); i++) {
-			String choiceIdentifier = newState.get(i).isString().stringValue();
-			response.add(choiceIdentifier);
+			String responseValue = newState.get(i).isString().stringValue();
+			response.add(responseValue);
 		}
 	}
 
@@ -57,8 +52,12 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 		for (String responseValue : response.values) {
 			state.set(state.size(), createJSONString(responseValue));
 		}
-
+		
 		return state;
+	}
+	
+	public void reset(){
+		response.reset();
 	}
 	
 	private JSONString createJSONString(String value) {

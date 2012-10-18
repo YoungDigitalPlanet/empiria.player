@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.choice;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -11,23 +9,21 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
-import eu.ydp.empiria.player.client.module.ActivityPresenter;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModulePresenterImpl.SimpleChoiceListener;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEvent;
-import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
 
-public class SimpleChoiceView implements ActivityPresenter<ChoiceModuleModel, SimpleChoiceBean>{
+public class SimpleChoicePresenterImpl{
 
 	private static final String TYPE_SINGLE = "single";
 
@@ -38,11 +34,10 @@ public class SimpleChoiceView implements ActivityPresenter<ChoiceModuleModel, Si
 	private static final String STYLE_CHOICE_MULTI = "choice-multi";
 
 	private static SimpleChoiceViewUiBinder uiBinder = GWT.create(SimpleChoiceViewUiBinder.class);
-
-	interface SimpleChoiceViewUiBinder extends UiBinder<Widget, SimpleChoiceView> {
-	}
 	
-	private EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus();
+	@UiTemplate("SimpleChoiceView.ui.xml")
+	interface SimpleChoiceViewUiBinder extends UiBinder<Widget, SimpleChoicePresenterImpl> {
+	}
 	
 	private StyleNameConstants styleNameConstants = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	
@@ -74,8 +69,10 @@ public class SimpleChoiceView implements ActivityPresenter<ChoiceModuleModel, Si
 	private InlineBodyGeneratorSocket bodyGenerator;
 
 	private ChoiceButtonBase button;
+	
+	private SimpleChoiceListener listener;
 
-	public SimpleChoiceView(SimpleChoiceBean option, ChoiceGroupController controller, InlineBodyGeneratorSocket bodyGenerator) {
+	public SimpleChoicePresenterImpl(SimpleChoiceBean option, ChoiceGroupController controller, InlineBodyGeneratorSocket bodyGenerator) {
 		bindView();
 		this.bodyGenerator = bodyGenerator;
 		
@@ -154,7 +151,7 @@ public class SimpleChoiceView implements ActivityPresenter<ChoiceModuleModel, Si
 	}
 	
 	private void onChoiceClick(){
-		eventBus.fireEvent(new ChoiceModuleEvent(ChoiceModuleEventType.ON_CHOICE_CLICK, getIdentifier()));
+		listener.onChoiceClick(this);
 	}
 	
 	private String getButtonType(){
@@ -186,45 +183,6 @@ public class SimpleChoiceView implements ActivityPresenter<ChoiceModuleModel, Si
 		markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-none");
 	}
 	
-	public void markAnswers(boolean mark, boolean correct) {
-		String buttonTypeName = getButtonType();
-		
-		if (!mark){
-			markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers");
-			markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
-			optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
-			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
-			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
-			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
-			labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
-			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
-			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
-			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
-		} else {
-			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
-			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
-			
-			if (isSelected()){
-				if( correct ) {
-					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-correct");
-					markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
-					optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
-					labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
-				} else {
-					markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-wrong");
-					markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
-					optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
-					labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
-				}
-			} else {
-				markAnswersPanel.setStyleName("qp-choice-button-"+buttonTypeName+"-markanswers-none");
-				markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_NONE());
-				optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
-				labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
-			}
-		}
-	}
-	
 	public void setMouseOver(){
 		button.setMouseOver(true);
 	}
@@ -232,63 +190,58 @@ public class SimpleChoiceView implements ActivityPresenter<ChoiceModuleModel, Si
 	public void setMouseOut(){
 		button.setMouseOver(false);
 	}
-
-	@Override
+	
 	public Widget asWidget() {
 		return mainPanel;
 	}
-
-	@Override
+	
 	public void bindView() {
 		uiBinder.createAndBindUi(this);
 	}
 	
-	public void showAnswers(List<String> answers) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void markCorrectAnswers() {
-		// TODO Auto-generated method stub
+		removeInactiveStyle();
+		markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-correct");
+		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
+		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
 	}
-
-	@Override
+	
 	public void markWrongAnswers() {
-		// TODO Auto-generated method stub
+		removeInactiveStyle();
+		markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-wrong");
+		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
+		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
 	}
-
-	@Override
+	
+	private void removeInactiveStyle(){
+		optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
+		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
+	}
+	
 	public void unmarkCorrectAnswers() {
-		// TODO Auto-generated method stub
+		addInactiveStyle();
+		optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
 	}
 
-	@Override
 	public void unmarkWrongAnswers() {
-		// TODO Auto-generated method stub
+		addInactiveStyle();
+		optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
+	}
+	
+	private void addInactiveStyle(){
+		markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers");
+		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
+		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
+		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
+		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
 	}
 
-	@Override
-	public void showCorrectAnswers() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void showCurrentAnswers() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setModel(ChoiceModuleModel model) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setBean(SimpleChoiceBean bean) {
-		// TODO Auto-generated method stub
-		
+	public void setListener(SimpleChoiceListener listener) {
+		this.listener = listener;
 	}
 
 }

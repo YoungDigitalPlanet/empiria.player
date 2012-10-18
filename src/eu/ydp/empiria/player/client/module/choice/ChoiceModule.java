@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModu
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
-import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
 
 public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
 	
@@ -33,16 +32,10 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, Choice
 	protected void initalizeModule() {
 		choiceStructure.setMulti(isMulti());
 		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
-		addListeners();
 	}
 
 	private boolean isMulti() {
-		return getResponse().cardinality == Cardinality.MULTIPLE;
-	}
-
-	private void addListeners() {
-		ChoiceModuleListener listener = choiceModuleFactory.getChoiceModuleListener(this);
-		listener.addEventHandler(ChoiceModuleEventType.ON_CHOICE_CLICK);
+		return Cardinality.MULTIPLE.equals(getResponse().cardinality);
 	}
 
 	@Override
@@ -58,24 +51,6 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, Choice
 				Widget feedbackPlaceholder = presenter.getFeedbackPlaceholderByIdentifier(identifier);
 				createInlineFeedback(feedbackPlaceholder, feedbackNode);
 			}
-		}
-	}
-
-	public void onSimpleChoiceClick(String identifier) {
-		if (!locked) {
-			presenter.switchChoiceSelection(identifier);
-			updateResponse(identifier);
-			fireStateChanged(true);
-		}
-	}
-
-	private void updateResponse(String identifier) {
-		boolean selected = presenter.isChoiceSelected(identifier);
-
-		if (selected) {
-			getResponse().add(identifier);
-		} else {
-			getResponse().remove(identifier);
 		}
 	}
 

@@ -108,33 +108,25 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	@Override
 	public void reset() {
 		presenter.reset();
-		clearResponse();
-		//delegate to model
+		clearModel();
 		fireStateChanged(false);
 	}
 
 	@Override
 	public JSONArray getState() {
-		JSONArray state = new JSONArray();
-		//TODO: delegate to model
-		return state;
+		return getResponseModel().getState();
 	}
 
 	@Override
 	public void setState(JSONArray newState) {
-		clearResponse();
-
-		for (int i = 0; i < newState.size(); i++) {
-			String choiceIdentifier = newState.get(i).isString().stringValue();
-			getResponse().add(choiceIdentifier);
-		}
-		
+		clearModel();
+		getResponseModel().setState(newState);
 		presenter.showCurrentAnswers();
 		fireStateChanged(false);
 	}
 
-	protected void clearResponse() {
-		getResponse().reset();
+	protected void clearModel() {
+		getResponseModel().reset();
 	}
 
 	@Override
