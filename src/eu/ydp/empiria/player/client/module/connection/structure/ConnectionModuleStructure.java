@@ -32,7 +32,7 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	}
 	
 	private void randomizeSets() {
-		List<SimpleMatchSetBean> simpleMatchSets = interaction.getSimpleMatchSets();
+		List<SimpleMatchSetBean> simpleMatchSets = bean.getSimpleMatchSets();
 		
 		for (Iterator<SimpleMatchSetBean> iterator = simpleMatchSets.iterator(); iterator.hasNext();) {
 			SimpleMatchSetBean simpleMatchSetBean = iterator.next();
@@ -48,7 +48,7 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	private List<SimpleAssociableChoiceBean> randomizeChoices(List<SimpleAssociableChoiceBean> associableChoices) {
 		List<SimpleAssociableChoiceBean> newSimpleChoiceList = createEmptyChoiceOptionList(associableChoices.size());
 		
-		if (interaction.isShuffle()) {
+		if (bean.isShuffle()) {
 			fillRandomizedIndices(associableChoices);
 		}	
 		
@@ -57,7 +57,7 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 			int optionIndex = iterationIndex;
 			SimpleAssociableChoiceBean choiceOption = iterator.next();
 			
-			if (interaction.isShuffle() && !choiceOption.isFixed()) {
+			if (bean.isShuffle() && !choiceOption.isFixed()) {
 				optionIndex = randomizedIndices.pull();
 				choiceOption = associableChoices.get(optionIndex);
 			}			

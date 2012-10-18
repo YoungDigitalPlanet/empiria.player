@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.module.ChoiceGinModule;
+import eu.ydp.empiria.player.client.gin.module.ConnectionGinModule;
 import eu.ydp.empiria.player.client.gin.module.PlayerGinModule;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
@@ -30,7 +31,7 @@ import eu.ydp.empiria.player.client.view.player.PageViewCache;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
-@GinModules(value={PlayerGinModule.class, ChoiceGinModule.class})
+@GinModules(value={PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class})
 public interface PlayerGinjector extends Ginjector {
 	PlayerGinjector INSTANCE  = GWT.create(PlayerGinjector.class);
 

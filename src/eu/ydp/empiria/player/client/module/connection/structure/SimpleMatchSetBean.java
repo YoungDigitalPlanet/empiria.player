@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,11 +15,15 @@ public class SimpleMatchSetBean {
 	@XmlElement(name="simpleAssociableChoice")
 	private List<SimpleAssociableChoiceBean> simpleAssociableChoices;
 
+	public SimpleMatchSetBean() {
+		simpleAssociableChoices = new ArrayList<SimpleAssociableChoiceBean>();
+	}
+	
 	public List<SimpleAssociableChoiceBean> getSimpleAssociableChoices() {
 		return simpleAssociableChoices;
 	}
 
 	public void setSimpleAssociableChoices(List<SimpleAssociableChoiceBean> simpleAssociableChoices) {
 		this.simpleAssociableChoices = simpleAssociableChoices;
-	}
+	}		
 }

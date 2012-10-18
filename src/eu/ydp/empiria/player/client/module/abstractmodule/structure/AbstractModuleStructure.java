@@ -10,29 +10,33 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
-public abstract class AbstractModuleStructure<InteractionBean extends IInteractionBean> {
+public abstract class AbstractModuleStructure<M extends ModuleBean> {
 	
-	JAXBParserFactory<InteractionBean> parser = createParser();
+	JAXBParserFactory<M> parser = createParser();
 	
-	protected InteractionBean interaction;
+	protected M bean;
 	
 	protected Map<String, Element> feedbacks;
 	
 	public void createFromXml(String xml) {
-		interaction = parse(xml);
+		bean = parse(xml);
 		prepareStructure();
 		prepareFeedbackNodes(xml);
 	}	
 	
-	private InteractionBean parse(String xml){
+	public M getBean() {
+		return bean;
+	}
+	
+	private M parse(String xml){
 		return getParser().parse(xml);
 	}	
 		
-	protected JAXBParser<InteractionBean> getParser() {
+	protected JAXBParser<M> getParser() {
 		return parser.create();
 	}
 	
-	protected abstract JAXBParserFactory<InteractionBean> createParser();
+	protected abstract JAXBParserFactory<M> createParser();
 		
 	/**
 	 * Operates on interaction field ie. for randomize elements, etc.

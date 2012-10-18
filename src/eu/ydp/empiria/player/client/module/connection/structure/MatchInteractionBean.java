@@ -9,11 +9,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.ydp.empiria.player.client.module.components.multiplepair.structure.IMultiplePairBean;
+import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
+import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlRootElement(name="matchInteraction")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MatchInteractionBean implements IMultiplePairBean {
+public class MatchInteractionBean implements MultiplePairBean {
 
 	@XmlAttribute
 	private String id;
@@ -36,6 +37,12 @@ public class MatchInteractionBean implements IMultiplePairBean {
 	@XmlElement(name = "simpleMatchSet")
 	private List<SimpleMatchSetBean> simpleMatchSets;
 
+	public MatchInteractionBean() {
+		id = StringUtils.EMPTY_STRING;
+		responseIdentifier = StringUtils.EMPTY_STRING;		
+		simpleMatchSets = new ArrayList<SimpleMatchSetBean>();
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -85,9 +92,6 @@ public class MatchInteractionBean implements IMultiplePairBean {
 	}
 
 	public List<SimpleMatchSetBean> getSimpleMatchSets() {		
-		if (simpleMatchSets == null) {
-			simpleMatchSets = new ArrayList<SimpleMatchSetBean>();
-		}
 		return simpleMatchSets;
 	}
 
@@ -97,11 +101,11 @@ public class MatchInteractionBean implements IMultiplePairBean {
 
 	@Override
 	public List<SimpleAssociableChoiceBean> getFirstChoicesSet() {		 
-		return (getSimpleMatchSets().get(0) != null) ? getSimpleMatchSets().get(0).getSimpleAssociableChoices() : null;
+		return simpleMatchSets.get(0).getSimpleAssociableChoices();
 	}
 
 	@Override
 	public List<SimpleAssociableChoiceBean> getSecondChoicesSet() {
-		return (getSimpleMatchSets().get(1) != null) ? getSimpleMatchSets().get(1).getSimpleAssociableChoices() : null;
+		return simpleMatchSets.get(1).getSimpleAssociableChoices();
 	}
 }
