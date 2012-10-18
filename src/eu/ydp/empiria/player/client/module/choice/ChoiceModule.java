@@ -8,7 +8,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.gin.factory.ChoiceModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
-import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
@@ -16,7 +15,7 @@ import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructur
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.util.events.choice.ChoiceModuleEventType;
 
-public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String, ChoiceInteractionBean> {
+public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
 	
 	@Inject
 	private ChoiceModulePresenter presenter;
@@ -32,13 +31,8 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 
 	@Override
 	protected void initalizeModule() {
-		choiceStructure.createFromXml(getModuleElement().toString());
 		choiceStructure.setMulti(isMulti());
-		/*presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
-		
-		presenter.setPrompt(choiceStructure.getPrompt());
-		presenter.setChoices(choiceStructure.getSimpleChoices());*/
-
+		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
 		addListeners();
 	}
 
@@ -91,12 +85,12 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, String
 	}
 
 	@Override
-	protected ActivityPresenter<String, ChoiceInteractionBean> getPresenter(){
+	protected ActivityPresenter<ChoiceModuleModel, ChoiceInteractionBean> getPresenter(){
 		return presenter;
 	}
 
 	@Override
-	protected AbstractResponseModel<String> getResponseModel() {
+	protected ChoiceModuleModel getResponseModel() {
 		return choiceModuleFactory.getChoiceModuleModel(getResponse());
 	}
 

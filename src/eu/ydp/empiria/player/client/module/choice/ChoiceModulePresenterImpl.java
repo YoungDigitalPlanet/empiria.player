@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
@@ -36,10 +35,33 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	private List<SimpleChoiceView> choiceViews;
 
 	private InlineBodyGeneratorSocket bodyGenerator;
+	
+	private ChoiceInteractionBean bean;
+	
+	private ChoiceModuleModel model;
 
 	@Override
 	public void bindView() {
 		uiBinder.createAndBindUi(this);
+		initializePrompt();
+		initializeChoices();
+	}
+	
+	private void initializePrompt() {
+		bodyGenerator.generateInlineBody(bean.getPrompt(), promptWidget.getElement());
+	}
+	
+	private void initializeChoices() {
+		choicesPanel.clear();
+
+		choiceViews = new ArrayList<SimpleChoiceView>();
+		ChoiceGroupController groupController = new ChoiceGroupController();
+
+		for (SimpleChoiceBean choice : bean.getSimpleChoices()) {
+			SimpleChoiceView choiceView = new SimpleChoiceView(choice, groupController, bodyGenerator);
+			choiceViews.add(choiceView);
+			choicesPanel.add(choiceView.asWidget());
+		}
 	}
 
 	@Override
@@ -50,25 +72,6 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	@Override
 	public void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator) {
 		this.bodyGenerator = bodyGenerator;
-	}
-
-	@Override
-	public void setPrompt(String value) {
-		bodyGenerator.generateInlineBody(value, promptWidget.getElement());
-	}
-
-	@Override
-	public void setChoices(List<SimpleChoiceBean> choices) {
-		choicesPanel.clear();
-
-		choiceViews = new ArrayList<SimpleChoiceView>();
-		ChoiceGroupController groupController = new ChoiceGroupController();
-
-		for (SimpleChoiceBean choice : choices) {
-			SimpleChoiceView choiceView = new SimpleChoiceView(choice, groupController, bodyGenerator);
-			choiceViews.add(choiceView);
-			choicesPanel.add(choiceView.asWidget());
-		}
 	}
 	
 	public void showAnswers(List<String> answers) {
@@ -138,7 +141,6 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	
 	@Override
 	public void markWrongAnswers() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -150,7 +152,6 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void unmarkWrongAnswers() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -170,24 +171,21 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void showCorrectAnswers() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void showCurrentAnswers() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setModel(AbstractResponseModel<String> model) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void setBean(ChoiceInteractionBean bean) {
+		this.bean = bean;
+	}
+
+	@Override
+	public void setModel(ChoiceModuleModel model) {
 		// TODO Auto-generated method stub
 		
 	}

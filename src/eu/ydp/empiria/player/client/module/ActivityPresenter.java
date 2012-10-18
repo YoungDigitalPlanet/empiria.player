@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
  * @param <H> typ odpowiedzi
  * @param <T> typ beana przyjmowanego do utworzenia struktury widoku
  */
-public interface ActivityPresenter<H, T extends ModuleBean> extends IsWidget {
+public interface ActivityPresenter<H extends AbstractResponseModel<?>, T extends ModuleBean> extends IsWidget {
 
 	/**
 	 * Wiąże widok z prezenterem, w tym momencie 
@@ -26,7 +26,7 @@ public interface ActivityPresenter<H, T extends ModuleBean> extends IsWidget {
 	 * Ustawia response model
 	 * @param model
 	 */
-	void setModel(AbstractResponseModel<H> model);
+	void setModel(H model);
 	
 	/**
 	 * Ustawia beana reprezentującego strukturę widoku

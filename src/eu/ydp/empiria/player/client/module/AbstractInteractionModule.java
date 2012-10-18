@@ -19,10 +19,10 @@ import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
  * @author MKaldonek
  *
  * @param <T> typ modułu
- * @param <H> typ odpowiedzi
+ * @param <H> typ modelu
  * @param <U> typ beana
  */
-public abstract class AbstractInteractionModule<T, H, U extends ModuleBean> extends OneViewInteractionModuleBase implements Factory<T> {
+public abstract class AbstractInteractionModule<T extends AbstractInteractionModule<?, ?, ?>, H extends AbstractResponseModel<?>, U extends ModuleBean> extends OneViewInteractionModuleBase implements Factory<T> {
 
 	protected boolean locked = false;
 
@@ -34,14 +34,19 @@ public abstract class AbstractInteractionModule<T, H, U extends ModuleBean> exte
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
+		getStructure().createFromXml(getModuleElement().toString());
 		initalizeModule();
+		initializePresenter();
+		initializeAndInstallFeedbacks();
+		applyIdAndClassToView(getView());
+		placeholders.get(0).add(getView());
+	}
+	
+	private void initializePresenter(){
 		presenter = getPresenter();
 		presenter.setBean(getStructure().getBean());
 		presenter.setModel(getResponseModel());
-		initializeAndInstallFeedbacks();
 		presenter.bindView();
-		applyIdAndClassToView(getView());
-		placeholders.get(0).add(getView());
 	}
 
 	protected void initializeAndInstallFeedbacks() {
@@ -60,7 +65,7 @@ public abstract class AbstractInteractionModule<T, H, U extends ModuleBean> exte
 
 	protected abstract void initalizeModule();
 	
-	protected abstract AbstractResponseModel<H> getResponseModel();
+	protected abstract H getResponseModel();
 	
 	protected abstract AbstractModuleStructure<U> getStructure();
 
