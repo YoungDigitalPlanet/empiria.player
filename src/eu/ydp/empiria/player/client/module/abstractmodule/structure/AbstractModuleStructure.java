@@ -13,54 +13,52 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
 public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JAXBParserFactory<M>> {
-	
-	JAXBParserFactory<M> parserFactory = getParserFactory();
-	
+
 	protected M bean;
-	
+
 	protected Map<String, Element> feedbacks;
-	
+
 	public void createFromXml(String xml) {
 		bean = parse(xml);
 		prepareStructure();
 		prepareFeedbackNodes(xml);
-	}	
-	
+	}
+
 	public M getBean() {
 		return bean;
 	}
-	
+
 	private M parse(String xml){
 		return getParser().parse(xml);
-	}	
-		
-	protected JAXBParser<M> getParser() {
-		return parserFactory.create();
 	}
-	
+
+	protected JAXBParser<M> getParser() {
+		return getParserFactory().create();
+	}
+
 	protected abstract P getParserFactory();
-		
+
 	/**
 	 * Operates on interaction field ie. for randomize elements, etc.
 	 */
 	protected abstract void prepareStructure();
-	
+
 	/**
 	 * Prepares feedbacks map.
 	 * Needs to be extended in inheriting module
-	 * 
+	 *
 	 * @param xml
 	 */
 	protected final void prepareFeedbackNodes(String xml) {
 		feedbacks = new HashMap<String, Element>();
 		Document xmlDocument = parseXML(xml);
 		NodeList nodes = getParentNodesForFeedbacks(xmlDocument);
-		
+
 		if(nodes != null){
 			for(int i = 0; i < nodes.getLength(); i++){
 				Element choiceNode = (Element) nodes.item(i);
 				Element feedbackNode = getInlineFeedbackNode(choiceNode);
-	
+
 				addFeedbackNode(feedbackNode);
 			}
 		}
@@ -73,7 +71,7 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 	protected Document parseXML(String xml) {
 		return XMLParser.parse(xml);
 	}
-	
+
 	protected abstract NodeList getParentNodesForFeedbacks(Document xmlDocument);
 
 	protected final void addFeedbackNode(Element feedbackNode){
@@ -92,9 +90,9 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 		}
 
 		return feedbackElement;
-	}	
-	
+	}
+
 	public Element getFeedbackElement(String identifer){
 		return feedbacks.get(identifer);
-	}	
+	}
 }
