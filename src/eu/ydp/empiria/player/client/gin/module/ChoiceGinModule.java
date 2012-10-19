@@ -4,8 +4,8 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 
 import eu.ydp.empiria.player.client.gin.factory.ChoiceModuleFactory;
-import eu.ydp.empiria.player.client.module.choice.ChoiceModulePresenter;
-import eu.ydp.empiria.player.client.module.choice.ChoiceModulePresenterImpl;
+import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
+import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenterImpl;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
 
 public class ChoiceGinModule extends AbstractGinModule {

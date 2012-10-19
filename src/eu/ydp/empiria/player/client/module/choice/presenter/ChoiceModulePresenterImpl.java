@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.choice;
+package eu.ydp.empiria.player.client.module.choice.presenter;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,6 +14,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;

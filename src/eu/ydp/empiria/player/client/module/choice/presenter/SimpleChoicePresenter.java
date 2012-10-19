@@ -1,6 +1,8 @@
-package eu.ydp.empiria.player.client.module.choice;
+package eu.ydp.empiria.player.client.module.choice.presenter;
 
 import com.google.gwt.user.client.ui.IsWidget;
+
+import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 
 public interface SimpleChoicePresenter extends IsWidget{
 
