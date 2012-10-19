@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.choice;
+package eu.ydp.empiria.player.client.module.choice.structure;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
