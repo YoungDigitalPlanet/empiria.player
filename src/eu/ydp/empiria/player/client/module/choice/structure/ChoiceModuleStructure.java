@@ -78,7 +78,7 @@ public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInterac
 	}
 
 	@Override
-	protected ChoiceModuleJAXBParser createParserFactory() {
+	protected ChoiceModuleJAXBParser getParserFactory() {
 		return GWT.create(ChoiceModuleJAXBParser.class);
 	}
 

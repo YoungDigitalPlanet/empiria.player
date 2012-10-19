@@ -19,7 +19,7 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	ConnectionModuleJAXBParser connectionModuleJAXBParser;  
 	
 	@Override
-	protected ConnectionModuleJAXBParser createParserFactory() {
+	protected ConnectionModuleJAXBParser getParserFactory() {
 		return connectionModuleJAXBParser;
 	}	
 	

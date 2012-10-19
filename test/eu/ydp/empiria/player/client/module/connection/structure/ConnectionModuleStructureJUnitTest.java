@@ -53,7 +53,7 @@ public class ConnectionModuleStructureJUnitTest extends AbstractModuleStructureT
     class ConnectionModuleStructureMock extends ConnectionModuleStructure {
 
     	@Override
-    	public ConnectionModuleJAXBParser createParserFactory() {
+    	public ConnectionModuleJAXBParser getParserFactory() {
     		return mockParserFactory();
     	}
     	

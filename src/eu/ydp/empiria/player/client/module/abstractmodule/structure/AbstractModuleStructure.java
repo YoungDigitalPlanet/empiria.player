@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
 public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JAXBParserFactory<M>> {
 	
-	JAXBParserFactory<M> parserFactory = createParserFactory();
+	JAXBParserFactory<M> parserFactory = getParserFactory();
 	
 	protected M bean;
 	
@@ -38,7 +38,7 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 		return parserFactory.create();
 	}
 	
-	protected abstract P createParserFactory();
+	protected abstract P getParserFactory();
 		
 	/**
 	 * Operates on interaction field ie. for randomize elements, etc.

@@ -45,7 +45,6 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		uiBinder.createAndBindUi(this);
 		initializePrompt();
 		initializeChoices();
-		initializeListeners();
 	}
 
 	private void initializePrompt() {
@@ -60,15 +59,15 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		ChoiceGroupController groupController = new ChoiceGroupController();
 
 		for (SimpleChoiceBean choice : bean.getSimpleChoices()) {
-			SimpleChoicePresenterImpl choiceView = new SimpleChoicePresenterImpl(choice, groupController, bodyGenerator);
+			SimpleChoicePresenterImpl choiceView = createSimpleChoicePresenter(choice, groupController, bodyGenerator);
 			choiceViews.add(choiceView);
 			choicesPanel.add(choiceView.asWidget());
 			choiceView.setListener(listener);
 		}
 	}
-
-	private void initializeListeners() {
-
+	
+	private SimpleChoicePresenterImpl createSimpleChoicePresenter(SimpleChoiceBean choice, ChoiceGroupController groupController, InlineBodyGeneratorSocket bodyGenerator){
+		return new SimpleChoicePresenterImpl(choice, groupController, bodyGenerator);
 	}
 
 	@Override
@@ -93,19 +92,6 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		for (SimpleChoicePresenterImpl choice : choiceViews) {
 			choice.reset();
 		}
-	}
-
-	private SimpleChoicePresenterImpl getChoiceByIdentifier(String identifier) {
-		SimpleChoicePresenterImpl searchedChoice = null;
-
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
-			if (identifier.equals(choice.getIdentifier())) {
-				searchedChoice = choice;
-				break;
-			}
-		}
-
-		return searchedChoice;
 	}
 
 	@Override
@@ -192,10 +178,10 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		
 		public void onChoiceClick(SimpleChoicePresenterImpl choice){
 			
-			if(!choice.isSelected()){
-				model.selectResponse(choice.getIdentifier());
-			}else{
+			if(choice.isSelected()){
 				model.unselectResponse(choice.getIdentifier());
+			}else{
+				model.selectResponse(choice.getIdentifier());
 			}
 			
 			showCurrentAnswers();
