@@ -201,7 +201,6 @@
 
 
 	<!-- END ANIMATIONS -->
-	<define-linker name="xsiframescripts" class="eu.ydp.gwtutil.core.linker.CrossSiteIframeWithScriptsLinker" />
 	<add-linker name="xsiframescripts" />
 
 </module>
