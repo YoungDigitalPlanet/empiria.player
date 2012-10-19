@@ -6,6 +6,7 @@ import eu.ydp.empiria.player.client.module.connection.structure.MatchInteraction
 import eu.ydp.empiria.player.client.util.events.connection.ConnectionEventHandler;
 import eu.ydp.empiria.player.client.util.events.connection.ConnectionEventTypes;
 
+@Deprecated
 public interface ConnectionPresenter extends ActivityPresenter<ConnectionModuleModel, MatchInteractionBean> {
 	
 	/**

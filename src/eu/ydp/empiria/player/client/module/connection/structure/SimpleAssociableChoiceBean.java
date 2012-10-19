@@ -6,11 +6,11 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairChoiceBean;
+import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 
 @XmlRootElement(name="simpleAssociableChoice")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SimpleAssociableChoiceBean implements MultiplePairChoiceBean {  
+public class SimpleAssociableChoiceBean implements PairChoiceBean {  
 
 	@XmlAttribute
 	private String identifier;

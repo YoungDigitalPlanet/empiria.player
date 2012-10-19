@@ -2,16 +2,15 @@ package eu.ydp.empiria.player.client.module.components.multiplepair;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
+import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionPresenter;
-import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 
 public interface MultiplePairModuleView extends IsWidget {
-
-	//TODO popraw ten interfejs jak wygenerujesz poprzez jaxb model objektowy connection
+	
 	public void bindView();
-	public void setModel(MatchInteractionBean modelInterface);
+	public void setBean(MultiplePairBean modelInterface);
 	/**
 	 * Jezeli istnieja jakies polaczenia i zostanie wywolana ta metoda to dla
 	 * wszystkich usunietych polaczen zostana wywolane handlery
@@ -26,7 +25,7 @@ public interface MultiplePairModuleView extends IsWidget {
 
 	/**
 	 * Laczy wskazane elementy wywolanie tej metody jest rownowazne z
-	 * {@link ConnectionPresenter#connect(String, String, ConnectType.NORMAL)}
+	 * {@link ConnectionPresenter#connect(String, String, MultiplePairModuleConnectType.NORMAL)}
 	 * Wykonanie polaczenia musi zostac zakomunikowane poprzez powiadomienie
 	 * {@link PairConnectEventHandler} zarejestrowanych poprzez
 	 * {@link ConnectionPresenter#addConnectionEventHandler(PairConnectEventHandler)}
@@ -35,7 +34,7 @@ public interface MultiplePairModuleView extends IsWidget {
 	 * @param sourceIdentifier
 	 * @param targetIdentifier
 	 */
-	public void connect(String sourceIdentifier, String targetIdentifier);
+	public void connect(String sourceIdentifier, String targetIdentifier, MultiplePairModuleConnectType type);
 
 //	/**
 //	 * Laczy wskazane elementy Wykonanie polaczenia musi zostac zakomunikowane

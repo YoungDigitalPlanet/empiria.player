@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
+//import static org.mockito.Matchers.anyString;
+//import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 
 import org.junit.AfterClass;
