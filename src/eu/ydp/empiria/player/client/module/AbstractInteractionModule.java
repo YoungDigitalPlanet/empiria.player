@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
@@ -58,8 +59,8 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 		}
 	}
 
-	protected InlineFeedback createInlineFeedback(Widget mountingPoint, Node feedbackNode) {
-		return new InlineFeedback(mountingPoint, feedbackNode, getModuleSocket(), getInteractionEventsListener());
+	protected InlineFeedback createInlineFeedback(IsWidget mountingPoint, Node feedbackNode) {
+		return new InlineFeedback((Widget) mountingPoint, feedbackNode, getModuleSocket(), getInteractionEventsListener());
 	}
 
 	protected abstract ActivityPresenter<H, U> getPresenter();

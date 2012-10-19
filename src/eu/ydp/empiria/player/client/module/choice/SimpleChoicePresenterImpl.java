@@ -15,7 +15,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
-import eu.ydp.empiria.player.client.module.choice.ChoiceModulePresenterImpl.SimpleChoiceListener;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
@@ -23,7 +22,7 @@ import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceBu
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-public class SimpleChoicePresenterImpl{
+public class SimpleChoicePresenterImpl implements SimpleChoicePresenter{
 
 	private static final String TYPE_SINGLE = "single";
 
@@ -64,13 +63,11 @@ public class SimpleChoicePresenterImpl{
 	
 	private boolean isMulti;
 	
-	private String identifier;
-	
 	private InlineBodyGeneratorSocket bodyGenerator;
 
 	private ChoiceButtonBase button;
 	
-	private SimpleChoiceListener listener;
+	private ChoiceModuleListener listener;
 
 	public SimpleChoicePresenterImpl(SimpleChoiceBean option, ChoiceGroupController controller, InlineBodyGeneratorSocket bodyGenerator) {
 		bindView();
@@ -81,7 +78,6 @@ public class SimpleChoicePresenterImpl{
 	
 	private void installChildren(SimpleChoiceBean choiceOption, ChoiceGroupController controller){
 		isMulti = choiceOption.isMulti();
-		identifier = choiceOption.getIdentifier();
 		
 		createButton(controller);
 		buttonPlace.add(button);
@@ -156,10 +152,6 @@ public class SimpleChoicePresenterImpl{
 	
 	private String getButtonType(){
 		return isMulti ? TYPE_MULTI : TYPE_SINGLE;
-	}
-
-	public String getIdentifier() {
-		return identifier;
 	}
 
 	public void setSelected(boolean select) {
@@ -240,7 +232,7 @@ public class SimpleChoicePresenterImpl{
 		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
 	}
 
-	public void setListener(SimpleChoiceListener listener) {
+	public void setListener(ChoiceModuleListener listener) {
 		this.listener = listener;
 	}
 

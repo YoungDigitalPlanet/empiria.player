@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.choice;
 
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
@@ -49,7 +49,7 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, Choice
 			Element feedbackNode = choiceStructure.getFeedbackElement(identifier);
 
 			if (feedbackNode != null) {
-				Widget feedbackPlaceholder = presenter.getFeedbackPlaceholderByIdentifier(identifier);
+				IsWidget feedbackPlaceholder = presenter.getFeedbackPlaceholderByIdentifier(identifier);
 				createInlineFeedback(feedbackPlaceholder, feedbackNode);
 			}
 		}

@@ -1,12 +1,15 @@
 package eu.ydp.empiria.player.client.module.choice;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -14,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
+import eu.ydp.gwtutil.client.StringUtils;
 
 public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
@@ -32,13 +36,29 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	@UiField
 	Panel choicesPanel;
 
-	private List<SimpleChoicePresenterImpl> choiceViews;
-
+	private Map<String, SimpleChoicePresenter> id2choices;
+	
 	private InlineBodyGeneratorSocket bodyGenerator;
 
 	private ChoiceInteractionBean bean;
 
 	private ChoiceModuleModel model;
+	
+	private ChoiceModuleListener listener = new ChoiceModuleListener() {
+		
+		@Override
+		public void onChoiceClick(SimpleChoicePresenter choice) {
+			String choiceIdentifier = getChoiceIdentifier(choice);
+			if(choice.isSelected()){
+				model.unselectResponse(choiceIdentifier);
+			}else{
+				model.selectResponse(choiceIdentifier);
+			}
+			
+			showCurrentAnswers();
+			//fireStateChanged(true);
+		}
+	};
 
 	@Override
 	public void bindView() {
@@ -52,21 +72,20 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	}
 
 	private void initializeChoices() {
-		SimpleChoiceListener listener = new SimpleChoiceListener();
 		choicesPanel.clear();
-
-		choiceViews = new ArrayList<SimpleChoicePresenterImpl>();
+		
+		id2choices = new HashMap<String, SimpleChoicePresenter>();
 		ChoiceGroupController groupController = new ChoiceGroupController();
 
 		for (SimpleChoiceBean choice : bean.getSimpleChoices()) {
-			SimpleChoicePresenterImpl choiceView = createSimpleChoicePresenter(choice, groupController, bodyGenerator);
-			choiceViews.add(choiceView);
-			choicesPanel.add(choiceView.asWidget());
-			choiceView.setListener(listener);
+			SimpleChoicePresenter choicePresenter = createSimpleChoicePresenter(choice, groupController, bodyGenerator);
+			id2choices.put(choice.getIdentifier(), choicePresenter);
+			choicesPanel.add(choicePresenter.asWidget());
+			choicePresenter.setListener(listener);
 		}
 	}
 	
-	private SimpleChoicePresenterImpl createSimpleChoicePresenter(SimpleChoiceBean choice, ChoiceGroupController groupController, InlineBodyGeneratorSocket bodyGenerator){
+	private SimpleChoicePresenter createSimpleChoicePresenter(SimpleChoiceBean choice, ChoiceGroupController groupController, InlineBodyGeneratorSocket bodyGenerator){
 		return new SimpleChoicePresenterImpl(choice, groupController, bodyGenerator);
 	}
 
@@ -82,24 +101,29 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void setLocked(boolean locked) {
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
 			choice.setLocked(locked);
 		}
+	}
+	
+	private Collection<SimpleChoicePresenter> getSimpleChoices(){
+		return id2choices.values();
 	}
 
 	@Override
 	public void reset() {
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
 			choice.reset();
 		}
 	}
 
 	@Override
-	public Widget getFeedbackPlaceholderByIdentifier(String identifier) {
-		Widget placeholder = null;
+	public IsWidget getFeedbackPlaceholderByIdentifier(String identifier) {
+		IsWidget placeholder = null;
 
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
-			if (identifier.equals(choice.getIdentifier())) {
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
+			String choiceIdentifier = getChoiceIdentifier(choice);
+			if (identifier.equals(choiceIdentifier)) {
 				placeholder = choice.getFeedbackPlaceHolder();
 				break;
 			}
@@ -107,11 +131,25 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 		return placeholder;
 	}
+	
+	private String getChoiceIdentifier(SimpleChoicePresenter choice){
+		String searchedIdentifier = StringUtils.EMPTY_STRING;
+		
+		for(Entry<String, SimpleChoicePresenter> entry: id2choices.entrySet()){
+			if(choice.equals(entry.getValue())){
+				searchedIdentifier = entry.getKey();
+				break;
+			}
+		}
+		
+		return searchedIdentifier;
+	}
 
 	@Override
 	public void markCorrectAnswers() {
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
-			boolean isCorrect = model.isCorrectAnswer(choice.getIdentifier());
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
+			String choiceIdentifier = getChoiceIdentifier(choice);
+			boolean isCorrect = model.isCorrectAnswer(choiceIdentifier);
 			if (isCorrect && choice.isSelected()) {
 				choice.markCorrectAnswers();
 			}
@@ -120,8 +158,9 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void markWrongAnswers() {
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
-			boolean isWrong = model.isWrongAnswer(choice.getIdentifier());
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
+			String choiceIdentifier = getChoiceIdentifier(choice);
+			boolean isWrong = model.isWrongAnswer(choiceIdentifier);
 			if(isWrong && choice.isSelected()){
 				choice.markWrongAnswers();
 			}
@@ -130,8 +169,9 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void unmarkCorrectAnswers() {
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
-			boolean isCorrect = model.isCorrectAnswer(choice.getIdentifier());
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
+			String choiceIdentifier = getChoiceIdentifier(choice);
+			boolean isCorrect = model.isCorrectAnswer(choiceIdentifier);
 			if(isCorrect && choice.isSelected()){
 				choice.unmarkCorrectAnswers();
 			}
@@ -140,8 +180,9 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void unmarkWrongAnswers() {
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
-			boolean isWrong = model.isWrongAnswer(choice.getIdentifier());
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
+			String choiceIdentifier = getChoiceIdentifier(choice);
+			boolean isWrong = model.isWrongAnswer(choiceIdentifier);
 			if(isWrong && choice.isSelected()){
 				choice.unmarkWrongAnswers();
 			}
@@ -150,16 +191,18 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void showCorrectAnswers() {
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
-			boolean isCorrect = model.isCorrectAnswer(choice.getIdentifier());
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
+			String choiceIdentifier = getChoiceIdentifier(choice);
+			boolean isCorrect = model.isCorrectAnswer(choiceIdentifier);
 			choice.setSelected(isCorrect);
 		}
 	}
 
 	@Override
 	public void showCurrentAnswers() {
-		for (SimpleChoicePresenterImpl choice : choiceViews) {
-			boolean isCurrent = model.isCurrentAnswer(choice.getIdentifier());
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
+			String choiceIdentifier = getChoiceIdentifier(choice);
+			boolean isCurrent = model.isCurrentAnswer(choiceIdentifier);
 			choice.setSelected(isCurrent);
 		}
 	}
@@ -172,21 +215,6 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	@Override
 	public void setModel(ChoiceModuleModel model) {
 		this.model = model;
-	}
-	
-	public class SimpleChoiceListener{
-		
-		public void onChoiceClick(SimpleChoicePresenterImpl choice){
-			
-			if(choice.isSelected()){
-				model.unselectResponse(choice.getIdentifier());
-			}else{
-				model.selectResponse(choice.getIdentifier());
-			}
-			
-			showCurrentAnswers();
-			//fireStateChanged(true);
-		}
 	}
 
 }
