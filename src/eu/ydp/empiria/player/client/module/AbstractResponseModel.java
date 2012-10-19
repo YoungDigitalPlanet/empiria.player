@@ -17,8 +17,11 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 	
 	protected Response response;
 	
-	public AbstractResponseModel(Response response){
+	private ResponseModelChangeListener responseModelChange;
+	
+	public AbstractResponseModel(Response response, ResponseModelChangeListener responseModelChange){
 		this.response = response;
+		this.responseModelChange = responseModelChange;
 	}
 	
 	public List<T> getCorrectAnswers() {
@@ -34,7 +37,6 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 	 * @param values
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected abstract List<T> parseResponse(Collection<String> values);
 	
 	@Override
@@ -58,6 +60,10 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 	
 	public void reset(){
 		response.reset();
+	}
+	
+	protected void onModelChange(){
+		responseModelChange.onResponseModelChange();
 	}
 	
 	private JSONString createJSONString(String value) {

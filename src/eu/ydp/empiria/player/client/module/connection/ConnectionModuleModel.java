@@ -8,13 +8,14 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
+import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
 public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String, String>> {
 
 	@Inject
-	public ConnectionModuleModel(@Assisted Response response) {
-		super(response);
+	public ConnectionModuleModel(@Assisted Response response, @Assisted ResponseModelChangeListener modelChangeListener) {
+		super(response, modelChangeListener);
 	}
 
 	@Override

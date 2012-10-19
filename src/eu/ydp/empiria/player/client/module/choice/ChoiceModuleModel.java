@@ -9,12 +9,13 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
+import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 
 public class ChoiceModuleModel extends AbstractResponseModel<String> {
 	
 	@Inject
-	public ChoiceModuleModel(@Assisted Response response) {
-		super(response);
+	public ChoiceModuleModel(@Assisted Response response, @Assisted ResponseModelChangeListener modelChangeListener) {
+		super(response, modelChangeListener);
 	}
 
 	@Override
@@ -36,9 +37,11 @@ public class ChoiceModuleModel extends AbstractResponseModel<String> {
 	
 	public void selectResponse(String answer){
 		response.add(answer);
+		onModelChange();
 	}
 	
 	public void unselectResponse(String answer){
 		response.remove(answer);
+		onModelChange();
 	}
 }

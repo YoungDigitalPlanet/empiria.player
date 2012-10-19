@@ -50,7 +50,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 
 	@Override
 	protected ConnectionModuleModel getResponseModel() {
-		return connectionModuleFactory.getConnectionModuleModel(getResponse());
+		return connectionModuleFactory.getConnectionModuleModel(getResponse(), this);
 	}
 
 	@Override

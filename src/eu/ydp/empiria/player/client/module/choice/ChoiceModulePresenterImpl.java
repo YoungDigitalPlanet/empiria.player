@@ -56,7 +56,6 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			}
 			
 			showCurrentAnswers();
-			//fireStateChanged(true);
 		}
 	};
 

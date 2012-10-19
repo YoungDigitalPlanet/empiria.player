@@ -24,7 +24,7 @@ import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
  * @param <H> typ modelu
  * @param <U> typ beana
  */
-public abstract class AbstractInteractionModule<T extends AbstractInteractionModule<?, ?, ?>, H extends AbstractResponseModel<?>, U extends ModuleBean> extends OneViewInteractionModuleBase implements Factory<T> {
+public abstract class AbstractInteractionModule<T extends AbstractInteractionModule<?, ?, ?>, H extends AbstractResponseModel<?>, U extends ModuleBean> extends OneViewInteractionModuleBase implements Factory<T>, ResponseModelChangeListener {
 
 	protected boolean locked = false;
 
@@ -129,6 +129,11 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 
 	protected void clearModel() {
 		getResponseModel().reset();
+	}
+	
+	@Override
+	public void onResponseModelChange() {
+		fireStateChanged(true);		
 	}
 
 	@Override

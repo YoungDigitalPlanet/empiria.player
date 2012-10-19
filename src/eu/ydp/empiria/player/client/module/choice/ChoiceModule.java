@@ -67,7 +67,7 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, Choice
 
 	@Override
 	protected ChoiceModuleModel getResponseModel() {
-		return choiceModuleFactory.getChoiceModuleModel(getResponse());
+		return choiceModuleFactory.getChoiceModuleModel(getResponse(), this);
 	}
 
 	@Override
