@@ -1,12 +1,11 @@
 package eu.ydp.empiria.player.client.module.connection.structure;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import com.google.inject.Inject;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
@@ -31,8 +30,7 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	private void randomizeSets() {
 		List<SimpleMatchSetBean> simpleMatchSets = bean.getSimpleMatchSets();
 		
-		for (Iterator<SimpleMatchSetBean> iterator = simpleMatchSets.iterator(); iterator.hasNext();) {
-			SimpleMatchSetBean simpleMatchSetBean = iterator.next();
+		for (SimpleMatchSetBean simpleMatchSetBean : simpleMatchSets) {
 			simpleMatchSetBean.setSimpleAssociableChoices(randomizeChoices(simpleMatchSetBean.getSimpleAssociableChoices()));
 		}
 	}
@@ -49,10 +47,9 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 			fillRandomizedIndices(associableChoices);
 		}	
 		
-		int iterationIndex = 0;
-		for (Iterator<SimpleAssociableChoiceBean> iterator = associableChoices.iterator(); iterator.hasNext();) {
-			int optionIndex = iterationIndex;
-			SimpleAssociableChoiceBean choiceOption = iterator.next();
+		int iterationIndex = 0;		
+		for (SimpleAssociableChoiceBean choiceOption : associableChoices) {
+			int optionIndex = iterationIndex;			
 			
 			if (bean.isShuffle() && !choiceOption.isFixed()) {
 				optionIndex = randomizedIndices.pull();

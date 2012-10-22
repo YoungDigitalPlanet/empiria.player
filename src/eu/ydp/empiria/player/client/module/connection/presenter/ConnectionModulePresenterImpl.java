@@ -59,12 +59,12 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	@Override
 	public void showCorrectAnswers() {
-		// TODO Auto-generated method stub
+		showAnswers(model.getCorrectAnswers(), MultiplePairModuleConnectType.CORRECT);
 	}
 
 	@Override
 	public void showCurrentAnswers() {
-		// TODO Auto-generated method stub
+		showAnswers(model.getCurrentAnswers(), MultiplePairModuleConnectType.CORRECT);
 	}
 
 	@Override
@@ -84,36 +84,8 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	@Override
 	public void unmarkWrongAnswers() {
-		setAnswersMarked(true, MultiplePairModuleConnectType.WRONG);
+		setAnswersMarked(false, MultiplePairModuleConnectType.WRONG);
 	}
-
-	/**
-	 * Marks / unmarks answers
-	 * 
-	 * @param markMode - true: mark, false: unmark
-	 * @param markingType - {@link MultiplePairModuleConnectType#CORRECT} or {@link MultiplePairModuleConnectType#WRONG} 
-	 */
-	private void setAnswersMarked(boolean markMode, MultiplePairModuleConnectType markingType) {
-		List<Boolean> responseEvaluated = evaluateResponse();		
-		List<KeyValue<String, String>> currentAnswers = model.getCurrentAnswers();
-		
-		// TODO: jesli dana pozycja nie jest zaznaczona wcale to wyslac MultiplePairModuleConnectType.NORMAL
-		
-		int responseCnt = 0;
-		for (Boolean isCorrect : responseEvaluated) {
-			MultiplePairModuleConnectType type = (isCorrect) ? MultiplePairModuleConnectType.CORRECT : MultiplePairModuleConnectType.WRONG;			
-			KeyValue<String, String> correctPair = currentAnswers.get(responseCnt);
-			if (markingType.equals(type)) {
-				if (markMode) {
-					moduleView.connect(correctPair.getKey(), correctPair.getValue(), type);
-				} else {
-					moduleView.disconnect(correctPair.getKey(), correctPair.getValue());
-					// TODO: restore user state
-				}
-			}
-			responseCnt++; 
-		}		
-	}	
 	
 	@Override
 	public Widget asWidget() {
@@ -145,10 +117,57 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		
 	}
 
+	/**
+	 * Checks whether connection is possible to be done (i.e. do not connect
+	 * source with another source node, only source node with target node)
+	 * 
+	 * @param sourceItem
+	 * @param targetItem
+	 * @return
+	 */
 	private boolean isConnectionValid(String sourceItem, String targetItem) {
 		// TODO: to be implemented
 		return true;
 	}
+
+	/**
+	 * Sets connections in view using given {@link KeyValue} collection for defined {@link MultiplePairModuleConnectType}
+	 * 
+	 * @param answers 
+	 * @param type
+	 */
+	private void showAnswers(List<KeyValue<String, String>> answers, MultiplePairModuleConnectType type) {		
+		for (KeyValue<String, String> answer : answers) {			
+			moduleView.connect(answer.getKey(), answer.getValue(), type);
+		}				
+	}
+	
+	/**
+	 * Marks / unmarks answers
+	 * 
+	 * @param markMode - {@link Boolean} mark/unmark
+	 * @param markingType - {@link MultiplePairModuleConnectType#CORRECT} or {@link MultiplePairModuleConnectType#WRONG} 
+	 */
+	private void setAnswersMarked(boolean markMode, MultiplePairModuleConnectType markingType) {
+		List<Boolean> responseEvaluated = evaluateResponse();		
+		List<KeyValue<String, String>> currentAnswers = model.getCurrentAnswers();
+				
+		int responseCnt = 0;
+		for (Boolean isCorrect : responseEvaluated) {
+			MultiplePairModuleConnectType type = (isCorrect) ? MultiplePairModuleConnectType.CORRECT : MultiplePairModuleConnectType.WRONG;			
+			KeyValue<String, String> answersPair = currentAnswers.get(responseCnt);
+			if (markingType.equals(type)) {
+				if (markMode) {
+					moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
+					// TODO: jesli dana pozycja nie jest zaznaczona wcale to wyslac MultiplePairModuleConnectType.NONE
+				} else {
+					moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
+					moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL); // TODO: NORMAL
+				}
+			}
+			responseCnt++; 
+		}		
+	}		
 	
 	private List<Boolean> evaluateResponse() {
 		return moduleSocket.evaluateResponse(model.getResponse());
