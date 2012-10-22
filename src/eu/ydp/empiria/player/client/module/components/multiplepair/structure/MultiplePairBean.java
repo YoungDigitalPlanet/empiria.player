@@ -10,9 +10,9 @@ public interface MultiplePairBean extends ModuleBean {
 
 	public String getType();
 
-	public List<? extends PairChoiceBean> getFirstChoicesSet();
+	public List<? extends PairChoiceBean> getSourceChoicesSet();
 	
-	public List<? extends PairChoiceBean> getSecondChoicesSet();
+	public List<? extends PairChoiceBean> getTargetChoicesSet();
 
 	public boolean isShuffle();
 

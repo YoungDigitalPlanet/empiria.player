@@ -106,12 +106,31 @@ public class MatchInteractionBean implements MultiplePairBean {
 	}
 
 	@Override
-	public List<SimpleAssociableChoiceBean> getFirstChoicesSet() {		 
+	public List<SimpleAssociableChoiceBean> getSourceChoicesSet() {		 
 		return simpleMatchSets.get(0).getSimpleAssociableChoices();
 	}
-
+	
+	public List<String> getSourceChoicesIdentifiersSet() {
+		return getChoicesIdentifiersSet(getSourceChoicesSet());
+	}	
+	
 	@Override
-	public List<SimpleAssociableChoiceBean> getSecondChoicesSet() {
+	public List<SimpleAssociableChoiceBean> getTargetChoicesSet() {
 		return simpleMatchSets.get(1).getSimpleAssociableChoices();
 	}
+
+	public List<String> getTargetChoicesIdentifiersSet() {
+		return getChoicesIdentifiersSet(getTargetChoicesSet());
+	}	
+		
+	private List<String> getChoicesIdentifiersSet(List<SimpleAssociableChoiceBean> choices) {
+		ArrayList<String> identifiersSet = new ArrayList<String>(); 
+		
+		for (SimpleAssociableChoiceBean simpleAssociableChoiceBean : choices) {
+			identifiersSet.add(simpleAssociableChoiceBean.getIdentifier());
+		}
+		
+		return identifiersSet;
+	}	 
+	
 }

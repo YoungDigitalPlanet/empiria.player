@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import java.util.List;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -42,6 +41,11 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		moduleView.reset();
 	}
 
+	@Override
+	public void setModuleView(MultiplePairModuleView moduleView) {
+		this.moduleView = moduleView;
+	}
+	
 	@Override
 	public void setModel(ConnectionModuleModel model) {
 		this.model = model;
@@ -91,12 +95,6 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	public Widget asWidget() {
 		return moduleView.asWidget();
 	}
-
-	@Override
-	public IsWidget getFeedbackPlaceholderByIdentifier(String identifier) {
-		// TODO to be implemented
-		return null;
-	}
 	
 	@Override
 	public void onConnectionEvent(PairConnectEvent event) {
@@ -104,6 +102,8 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		case CONNECTED:
 			if (isConnectionValid(event.getSourceItem(), event.getTargetItem())) {
 				model.addAnswer(event.getItemsPair());
+			} else {
+				moduleView.disconnect(event.getSourceItem(), event.getTargetItem());
 			}
 			break;
 		case DISCONNECTED:			
@@ -113,8 +113,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		default:
 			/* TODO: to handle incorrect situation */
 			break;
-		}
-		
+		}		
 	}
 
 	/**
@@ -126,8 +125,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	 * @return
 	 */
 	private boolean isConnectionValid(String sourceItem, String targetItem) {
-		// TODO: to be implemented
-		return true;
+		return (bean.getSourceChoicesIdentifiersSet().contains(sourceItem) && bean.getTargetChoicesIdentifiersSet().contains(targetItem));
 	}
 
 	/**
@@ -140,6 +138,10 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		for (KeyValue<String, String> answer : answers) {			
 			moduleView.connect(answer.getKey(), answer.getValue(), type);
 		}				
+	}
+	
+	private void undoConnection() {
+		//moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
 	}
 	
 	/**

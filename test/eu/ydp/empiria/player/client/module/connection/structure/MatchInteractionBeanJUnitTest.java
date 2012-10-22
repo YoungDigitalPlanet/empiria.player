@@ -37,12 +37,12 @@ public class MatchInteractionBeanJUnitTest extends AbstractJAXBTestBase<MatchInt
 		
 		assertThat(matchInteractionBean.getSimpleMatchSets().size(), is(equalTo(2)));
 		
-		assertThat(matchInteractionBean.getFirstChoicesSet(), notNullValue());
-		assertThat(matchInteractionBean.getSecondChoicesSet(), notNullValue());
+		assertThat(matchInteractionBean.getSourceChoicesSet(), notNullValue());
+		assertThat(matchInteractionBean.getTargetChoicesSet(), notNullValue());
 		
-		assertThat(matchInteractionBean.getFirstChoicesSet().get(0).getIdentifier(), is(equalTo("CONNECTION_RESPONSE_1_0")));
-		assertThat(matchInteractionBean.getFirstChoicesSet().get(0).isFixed(), is(equalTo(false)));
-		assertThat(matchInteractionBean.getFirstChoicesSet().get(0).getMatchMax(), is(equalTo(2)));
-		assertThat(matchInteractionBean.getFirstChoicesSet().get(1).getIdentifier(), is(equalTo("CONNECTION_RESPONSE_1_3")));
+		assertThat(matchInteractionBean.getSourceChoicesSet().get(0).getIdentifier(), is(equalTo("CONNECTION_RESPONSE_1_0")));
+		assertThat(matchInteractionBean.getSourceChoicesSet().get(0).isFixed(), is(equalTo(false)));
+		assertThat(matchInteractionBean.getSourceChoicesSet().get(0).getMatchMax(), is(equalTo(2)));
+		assertThat(matchInteractionBean.getSourceChoicesSet().get(1).getIdentifier(), is(equalTo("CONNECTION_RESPONSE_1_3")));
 	}	
 }
