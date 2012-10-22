@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.connection.structure;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.google.gwt.xml.client.Document;
+import eu.ydp.gwtutil.xml.XMLParser;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBBindings;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 
@@ -30,7 +30,7 @@ public class ConnectionModuleStructureJUnitTest extends AbstractModuleStructureT
 	@Test
 	public void shouldInitializeStructure() {
 		String xmlString = 
-				"<matchInteraction id=\"dummy1\" responseIdentifier=\"CONNECTION_RESPONSE_1\" shuffle=\"false\">" +
+				"<matchInteraction id=\"dummy1\" responseIdentifier=\"CONNECTION_RESPONSE_1\" shuffle=\"true\">" +
 				"<simpleMatchSet>" +
 					"<simpleAssociableChoice fixed=\"false\" identifier=\"CONNECTION_RESPONSE_1_0\" matchMax=\"2\">" +
 						"a	</simpleAssociableChoice>" +
@@ -87,7 +87,7 @@ public class ConnectionModuleStructureJUnitTest extends AbstractModuleStructureT
     	
     	@Override
     	protected Document parseXML(String xml) {    	
-    		return mock(Document.class);
+    		return XMLParser.parse(xml);
     	}
     	
     }	

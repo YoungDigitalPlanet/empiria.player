@@ -20,12 +20,20 @@ public interface MultiplePairModuleView extends IsWidget {
 	 *
 	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#reset()
 	 */
-
 	public void reset();
+	
+	/**
+	 * Blokowanie widoku
+	 * 
+	 * @param locked
+	 *
+	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#setLocked()
+	 */	
+	public void setLocked(boolean locked);
 
 	/**
 	 * Laczy wskazane elementy wywolanie tej metody jest rownowazne z
-	 * {@link ConnectionPresenter#connect(String, String, MultiplePairModuleConnectType.NORMAL)}
+	 * {@link ConnectionPresenter#connect(String, String, MultiplePairModuleConnectType)}
 	 * Wykonanie polaczenia musi zostac zakomunikowane poprzez powiadomienie
 	 * {@link PairConnectEventHandler} zarejestrowanych poprzez
 	 * {@link ConnectionPresenter#addConnectionEventHandler(PairConnectEventHandler)}
@@ -89,4 +97,5 @@ public interface MultiplePairModuleView extends IsWidget {
 	 * @param handler
 	 */
 	public void addPairConnectEventHandler(PairConnectEventHandler handler);
+	
 }

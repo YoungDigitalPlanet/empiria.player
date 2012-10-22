@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,8 +20,44 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 	}
 
 	@Override
-	protected List<KeyValue<String, String>> parseResponse(Collection<String> values) {
-		return null;
+	protected List<KeyValue<String, String>> parseResponse(Collection<String> values) {		
+		ArrayList<KeyValue<String, String>> parsedList = new ArrayList<KeyValue<String,String>>();
+		for (String value : values) {
+			String[] responses = value.split(" ");			
+			if (responses.length == 2) {
+				parsedList.add(new KeyValue<String, String>(responses[0], responses[1]));
+			}
+		}
+		return parsedList;		
 	}
+
+	public Response getResponse() {		
+		return response;
+	}	
+	
+	// ---
+	
+	public void addAnswer(String answer){
+		response.add(answer);
+		onModelChange();
+	}
+	
+	public void removeAnswer(String answer){
+		response.remove(answer);
+		onModelChange();
+	}
+
+	//	public boolean isCorrectAnswer(String answer) {		
+	//		return response.correctAnswers.getAllAnswers().contains(answer);
+	//	}	
+	//	
+	//	@Deprecated
+	//	public boolean isWrongAnswer(String answer) {
+	//		return !isCorrectAnswer(answer);
+	//	}
+	//	
+	//	public boolean isCurrentAnswer(String identifier) {
+	//		return response.values.contains(identifier);
+	//	}
 	
 }

@@ -43,6 +43,7 @@ public class MatchInteractionBean implements MultiplePairBean {
 		simpleMatchSets = new ArrayList<SimpleMatchSetBean>();
 	}
 	
+	@Override	
 	public String getId() {
 		return id;
 	}
@@ -51,6 +52,7 @@ public class MatchInteractionBean implements MultiplePairBean {
 		this.id = id;
 	}
 
+	@Override	
 	public String getType() {
 		return type;
 	}
@@ -59,6 +61,7 @@ public class MatchInteractionBean implements MultiplePairBean {
 		this.type = type;
 	}
 
+	@Override	
 	public int getMatchMax() {
 		return matchMax;
 	}
@@ -67,6 +70,7 @@ public class MatchInteractionBean implements MultiplePairBean {
 		this.matchMax = matchMax;
 	}
 
+	@Override	
 	public int getMaxAssociations() {
 		return maxAssociations;
 	}
@@ -75,6 +79,7 @@ public class MatchInteractionBean implements MultiplePairBean {
 		this.maxAssociations = maxAssociations;
 	}
 
+	@Override	
 	public String getResponseIdentifier() {
 		return responseIdentifier;
 	}
@@ -83,6 +88,7 @@ public class MatchInteractionBean implements MultiplePairBean {
 		this.responseIdentifier = responseIdentifier;
 	}
 
+	@Override
 	public boolean isShuffle() {
 		return shuffle;
 	}

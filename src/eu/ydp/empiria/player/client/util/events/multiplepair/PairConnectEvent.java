@@ -21,6 +21,10 @@ public class PairConnectEvent extends AbstractEvent<PairConnectEventHandler, Pai
 	public String getTargetItem() {
 		return targetItem;
 	}
+	
+	public String getItemsPair() {
+		return getSourceItem() + " " + getTargetItem();
+	}
 
 	public PairConnectEvent(PairConnectEventTypes type) {
 		super(type, null);
