@@ -2,13 +2,14 @@ package eu.ydp.empiria.player.client.module.components.multiplepair;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionPresenter;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 
 public interface MultiplePairModuleView extends IsWidget {
-	
+
 	public void bindView();
 	public void setBean(MultiplePairBean modelInterface);
 	/**
@@ -21,14 +22,14 @@ public interface MultiplePairModuleView extends IsWidget {
 	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#reset()
 	 */
 	public void reset();
-	
+
 	/**
 	 * Blokowanie widoku
-	 * 
+	 *
 	 * @param locked
 	 *
 	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#setLocked()
-	 */	
+	 */
 	public void setLocked(boolean locked);
 
 	/**
@@ -97,5 +98,7 @@ public interface MultiplePairModuleView extends IsWidget {
 	 * @param handler
 	 */
 	public void addPairConnectEventHandler(PairConnectEventHandler handler);
-	
+
+	public void setModuleSocket(ModuleSocket socket);
+
 }
