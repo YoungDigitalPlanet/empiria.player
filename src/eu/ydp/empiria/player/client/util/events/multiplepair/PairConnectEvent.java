@@ -14,6 +14,10 @@ public class PairConnectEvent extends AbstractEvent<PairConnectEventHandler, Pai
 		this.targetItem = target;
 	}
 
+	public PairConnectEvent(PairConnectEventTypes type) {
+		super(type, null);
+	}
+
 	public String getSourceItem() {
 		return sourceItem;
 	}
@@ -21,13 +25,9 @@ public class PairConnectEvent extends AbstractEvent<PairConnectEventHandler, Pai
 	public String getTargetItem() {
 		return targetItem;
 	}
-	
+
 	public String getItemsPair() {
 		return getSourceItem() + " " + getTargetItem();
-	}
-
-	public PairConnectEvent(PairConnectEventTypes type) {
-		super(type, null);
 	}
 
 	@Override
