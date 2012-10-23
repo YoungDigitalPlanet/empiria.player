@@ -29,6 +29,7 @@ public class SimpleAssociableChoiceBean implements PairChoiceBean {
 	@XmlAttribute
 	private boolean fixed;
 
+	@Override
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -37,6 +38,7 @@ public class SimpleAssociableChoiceBean implements PairChoiceBean {
 		this.identifier = identifier;
 	}
 
+	@Override
 	public int getMatchMax() {
 		return matchMax;
 	}
@@ -45,6 +47,7 @@ public class SimpleAssociableChoiceBean implements PairChoiceBean {
 		this.matchMax = matchMax;
 	}
 
+	@Override
 	public XMLContent getXmlContent() {
 		return xmlContent;
 	}
@@ -53,6 +56,7 @@ public class SimpleAssociableChoiceBean implements PairChoiceBean {
 		this.xmlContent = content;
 	}
 
+	@Override
 	public boolean isFixed() {
 		return fixed;
 	}
