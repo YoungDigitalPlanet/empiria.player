@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client;
+package eu.ydp.empiria.player.client.module.abstractmodule.structure;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

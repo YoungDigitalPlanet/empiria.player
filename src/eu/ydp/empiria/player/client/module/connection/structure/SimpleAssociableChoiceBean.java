@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
-import eu.ydp.empiria.player.client.XMLContentTypeAdapter;
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.XMLContentTypeAdapter;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 
 @XmlRootElement(name="simpleAssociableChoice")
