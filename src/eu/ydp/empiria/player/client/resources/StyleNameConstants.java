@@ -101,6 +101,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-connection-right-column")
 	public String QP_CONNECTION_RIGHT_COLUMN();
 
+	@DefaultStringValue("qp-connection-wrong")
+	public String QP_CONNECTION_WRONG();
+
+	@DefaultStringValue("qp-connection-correct")
+	public String QP_CONNECTION_CORRECT();
+
 	@DefaultStringValue("qp-footer")
 	public String QP_FOOTER();
 
@@ -440,7 +446,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();
 
-
 	@DefaultStringValue("qp-table")
 	public String QP_TABLE();
 
@@ -449,7 +454,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-table-table")
 	public String QP_TABLE_TABLE();
-	
+
 	@DefaultStringValue("qp-text")
 	public String QP_TEXT();
 
@@ -458,34 +463,34 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-text-textentry")
 	public String QP_TEXT_TEXTENTRY();
-	
+
 	@DefaultStringValue("qp-text-textentry-content")
 	public String QP_TEXT_TEXTENTRY_CONTENT();
-	
+
 	@DefaultStringValue("qp-text-textentry-correct")
 	public String QP_TEXT_TEXTENTRY_CORRECT();
-	
+
 	@DefaultStringValue("qp-text-textentry-none")
 	public String QP_TEXT_TEXTENTRY_NONE();
 
 	@DefaultStringValue("qp-text-textentry-prefix")
 	public String QP_TEXT_TEXTENTRY_PREFIX();
-	
+
 	@DefaultStringValue("qp-text-textentry-sufix")
 	public String QP_TEXT_TEXTENTRY_SUFIX();
 
 	@DefaultStringValue("qp-text-textentry-wrong")
 	public String QP_TEXT_TEXTENTRY_WRONG();
-	
+
 	@DefaultStringValue("qp-textinteraction")
 	public String QP_TEXTINTERACTION();
-	
+
 	@DefaultStringValue("qp-toc")
 	public String QP_TOC();
-	
+
 	@DefaultStringValue("qp-toc-item-title")
 	public String QP_TOC_ITEM_TITLE();
-	
+
 	@DefaultStringValue("qp-toc-item-title-hover")
 	public String QP_TOC_ITEM_TITLE_HOVER();
 
@@ -494,6 +499,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
+
 
 	@DefaultStringValue("qp-span")
 	public String QP_SPAN();
