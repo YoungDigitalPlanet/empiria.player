@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
@@ -39,15 +40,15 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	Panel choicesPanel;
 
 	private Map<String, SimpleChoicePresenter> id2choices;
-	
+
 	private InlineBodyGeneratorSocket bodyGenerator;
 
 	private ChoiceInteractionBean bean;
 
 	private ChoiceModuleModel model;
-	
-	private ChoiceModuleListener listener = new ChoiceModuleListener() {
-		
+
+	private final ChoiceModuleListener listener = new ChoiceModuleListener() {
+
 		@Override
 		public void onChoiceClick(SimpleChoicePresenter choice) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
@@ -56,7 +57,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			}else{
 				model.selectResponse(choiceIdentifier);
 			}
-			
+
 			showCurrentAnswers();
 		}
 	};
@@ -74,7 +75,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	private void initializeChoices() {
 		choicesPanel.clear();
-		
+
 		id2choices = new HashMap<String, SimpleChoicePresenter>();
 		ChoiceGroupController groupController = new ChoiceGroupController();
 
@@ -85,7 +86,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			choicePresenter.setListener(listener);
 		}
 	}
-	
+
 	private SimpleChoicePresenter createSimpleChoicePresenter(SimpleChoiceBean choice, ChoiceGroupController groupController, InlineBodyGeneratorSocket bodyGenerator){
 		return new SimpleChoicePresenterImpl(choice, groupController, bodyGenerator);
 	}
@@ -106,7 +107,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			choice.setLocked(locked);
 		}
 	}
-	
+
 	private Collection<SimpleChoicePresenter> getSimpleChoices(){
 		return id2choices.values();
 	}
@@ -132,17 +133,17 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 		return placeholder;
 	}
-	
+
 	private String getChoiceIdentifier(SimpleChoicePresenter choice){
 		String searchedIdentifier = StringUtils.EMPTY_STRING;
-		
+
 		for(Entry<String, SimpleChoicePresenter> entry: id2choices.entrySet()){
 			if(choice.equals(entry.getValue())){
 				searchedIdentifier = entry.getKey();
 				break;
 			}
 		}
-		
+
 		return searchedIdentifier;
 	}
 
@@ -216,6 +217,12 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	@Override
 	public void setModel(ChoiceModuleModel model) {
 		this.model = model;
+	}
+
+	@Override
+	public void setModuleSocket(ModuleSocket socket) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

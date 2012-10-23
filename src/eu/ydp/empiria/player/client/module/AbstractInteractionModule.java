@@ -17,7 +17,7 @@ import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
 /**
- * 
+ *
  * @author MKaldonek
  *
  * @param <T> typ modułu
@@ -37,13 +37,14 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		getStructure().createFromXml(getModuleElement().toString());
+		getPresenter().setModuleSocket(getModuleSocket());
 		initalizeModule();
 		initializePresenter();
 		initializeAndInstallFeedbacks();
 		applyIdAndClassToView(getView());
 		placeholders.get(0).add(getView());
 	}
-	
+
 	private void initializePresenter(){
 		presenter = getPresenter();
 		presenter.setBean(getStructure().getBean());
@@ -66,9 +67,9 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	protected abstract ActivityPresenter<H, U> getPresenter();
 
 	protected abstract void initalizeModule();
-	
+
 	protected abstract H getResponseModel();
-	
+
 	protected abstract AbstractModuleStructure<U, ? extends JAXBParserFactory<U>> getStructure();
 
 	protected Widget getView() {
@@ -82,7 +83,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	@Override
 	public void markAnswers(boolean mark) {
 		markingAnswers = mark;
-		
+
 		if(mark){
 			presenter.markCorrectAnswers();
 			presenter.markWrongAnswers();
@@ -130,10 +131,10 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	protected void clearModel() {
 		getResponseModel().reset();
 	}
-	
+
 	@Override
 	public void onResponseModelChange() {
-		fireStateChanged(true);		
+		fireStateChanged(true);
 	}
 
 	@Override
