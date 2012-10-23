@@ -5,22 +5,27 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
+
+import eu.ydp.empiria.player.client.XMLContentTypeAdapter;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 
 @XmlRootElement(name="simpleAssociableChoice")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SimpleAssociableChoiceBean implements PairChoiceBean {  
+public class SimpleAssociableChoiceBean implements PairChoiceBean {
 
 	@XmlAttribute
 	private String identifier;
-	
+
 	@XmlAttribute
 	private int matchMax;
-	
+
 	@XmlValue
-	private String content;
-	
+	@XmlJavaTypeAdapter(value=XMLContentTypeAdapter.class)
+	private XMLContent xmlContent ;
+
 	@XmlAttribute
 	private boolean fixed;
 
@@ -39,15 +44,15 @@ public class SimpleAssociableChoiceBean implements PairChoiceBean {
 	public void setMatchMax(int matchMax) {
 		this.matchMax = matchMax;
 	}
-	
-	public String getContent() {
-		return content;
+
+	public XMLContent getXmlContent() {
+		return xmlContent;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setXmlContent(XMLContent content) {
+		this.xmlContent = content;
 	}
-	
+
 	public boolean isFixed() {
 		return fixed;
 	}
