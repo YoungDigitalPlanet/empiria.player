@@ -83,6 +83,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-connection-center-column")
 	public String QP_CONNECTION_CENTER_COLUMN();
 
+	@DefaultStringValue("qp-connection-correct")
+	public String QP_CONNECTION_CORRECT();
+
 	@DefaultStringValue("qp-connection-item")
 	public String QP_CONNECTION_ITEM();
 
@@ -98,14 +101,17 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-connection-left-column")
 	public String QP_CONNECTION_LEFT_COLUMN();
 
+	@DefaultStringValue("qp-connection-none")
+	public String QP_CONNECTION_NONE();
+
+	@DefaultStringValue("qp-connection-normal")
+	public String QP_CONNECTION_NORMAL();
+
 	@DefaultStringValue("qp-connection-right-column")
 	public String QP_CONNECTION_RIGHT_COLUMN();
 
 	@DefaultStringValue("qp-connection-wrong")
 	public String QP_CONNECTION_WRONG();
-
-	@DefaultStringValue("qp-connection-correct")
-	public String QP_CONNECTION_CORRECT();
 
 	@DefaultStringValue("qp-footer")
 	public String QP_FOOTER();
@@ -443,6 +449,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-slideshow-title-panel")
 	public String QP_SLIDESHOW_TITLE_PANEL();
 
+	@DefaultStringValue("qp-span")
+	public String QP_SPAN();
+
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();
 
@@ -497,10 +506,7 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-toc-items")
 	public String QP_TOC_ITEMS();
 
+
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
-
-
-	@DefaultStringValue("qp-span")
-	public String QP_SPAN();
 }
