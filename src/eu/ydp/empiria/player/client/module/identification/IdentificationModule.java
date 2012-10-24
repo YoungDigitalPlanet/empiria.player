@@ -69,7 +69,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		findResponse(multiViewElements.get(0));
+		setResponseFromElement(multiViewElements.get(0));
 		options = new Vector<SelectableChoice>();
 		String userClass = "";
 

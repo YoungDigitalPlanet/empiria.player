@@ -9,7 +9,7 @@ public abstract class OneViewInteractionModuleBase extends InteractionModuleBase
 	@Override
 	public void addElement(Element element) {
 		moduleElement = element;
-		findResponse();
+		setResponse();
 		readAttributes(element);
 	}
 
@@ -17,8 +17,8 @@ public abstract class OneViewInteractionModuleBase extends InteractionModuleBase
 		return moduleElement;
 	}
 
-	protected final void findResponse(){
-		super.findResponse(moduleElement);
+	protected final void setResponse(){
+		super.setResponseFromElement(moduleElement);
 	}
 
 }

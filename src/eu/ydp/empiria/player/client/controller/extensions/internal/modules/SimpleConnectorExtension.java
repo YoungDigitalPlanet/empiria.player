@@ -43,7 +43,7 @@ public class SimpleConnectorExtension extends ModuleExtension implements ModuleC
 	public SimpleConnectorExtension(Factory< ? extends IModule> clazz, ModuleTagName tagName, boolean isMultiViewModule) {
 		this(clazz, tagName, isMultiViewModule, false);
 	}
-
+	
 	/**
 	 * @param clazz
 	 *            klasa modulu

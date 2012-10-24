@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<g:FlowPanel styleName="qp-mathinteraction-textentrygap">
+	<g:FlowPanel styleName="qp-mathinteraction-textentrygap" ui:field="mainPanel">
 		<g:FlowPanel ui:field="markPanel" styleName="qp-mathinteraction-textentrygap-mark">
 			<g:FlowPanel styleName="qp-mathinteraction-textentrygap-prefix"/>
 			<g:FlowPanel styleName="qp-mathinteraction-textentrygap-body">

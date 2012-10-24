@@ -1,100 +1,65 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.module.binding.BindingType;
+import eu.ydp.empiria.player.client.module.binding.BindingValue;
+import eu.ydp.empiria.player.client.module.binding.gapmaxlength.GapMaxlengthBindingValue;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
+import eu.ydp.gwtutil.xml.XMLParser;
 
 public class TextEntryModuleJUnitTest {
-	
-	private TextEntryModule textEntryModule;
-	private TextBox textBox;
-	private Element moduleElement;
-
 	@Test
     public void setDimensionsPixelWidth() {
-		String testWidth = "60";
 		Map<String, String> styles = new HashMap<String, String>();				
-		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH, testWidth);		
-		mockTextEntryModule(styles);
-		
-		textEntryModule.setDimensions(textBox, moduleElement);
-		
-		Mockito.verify(textBox, Mockito.times(1)).setWidth(testWidth + "px");
-		Mockito.verify(textBox, Mockito.times(1)).setWidth(anyString());
-		assertThat(textEntryModule.maxLength, equalTo(null));
+		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH, "60");		
+		TextEntryModuleMock textEntryModule = mockTextGap(styles);
+		doCallRealMethod().when(textEntryModule.getPresenter()).setWidth(anyDouble(), (Style.Unit) any());
+		textEntryModule.invokeSetDimensions();
+		Mockito.verify(textEntryModule.getPresenter(), Mockito.times(1)).setWidth(Double.parseDouble("60"), Unit.PX);
 	}
 
 	@Test
-    public void setDimensionsMaxlength() {
-		String testMaxNumberOfGaps = "number";
-		Map<String, String> styles = new HashMap<String, String>();				
-		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH, testMaxNumberOfGaps);		
-		mockTextEntryModule(styles);
-		
-		textEntryModule.setDimensions(textBox, moduleElement);
-		
-		assertThat(textEntryModule.maxLength, equalTo(testMaxNumberOfGaps.toUpperCase(Locale.ENGLISH)));
+    public void setMaxlength() {
+		Map<String, String> styles = new HashMap<String, String>();
+		styles.put(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH, "3");
+		TextEntryModuleMock textEntryModule = mockTextGap();
+		textEntryModule.invokeSetMaxlengthBinding(styles);
+		BindingValue bindingValue = textEntryModule.getBindingValue(BindingType.GAP_MAXLENGHTS);
+		int maxlength = ((GapMaxlengthBindingValue) bindingValue).getGapCharactersCount();
+		assertThat(maxlength, is(3));
 	}
 
 	@Test
-    public void setDimensionsSetFontSize() {
-		String fontSize = "12";
+    public void setFontSize() {
 		Map<String, String> styles = new HashMap<String, String>();				
-		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_FONT_SIZE, fontSize);
-		mockTextEntryModule(styles);
-		
-		textEntryModule.setDimensions(textBox, moduleElement);
-		
-		Mockito.verify(textEntryModule, Mockito.times(1)).setFontSize(Integer.parseInt(fontSize), Unit.PX);
+		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_FONT_SIZE, "12");
+		TextEntryModuleMock textEntryModule = mockTextGap(styles);
+		doCallRealMethod().when(textEntryModule.getPresenter()).setFontSize(anyDouble(), (Style.Unit) any());
+		textEntryModule.invokeSetDimensions();
+		Mockito.verify(textEntryModule.getPresenter(), Mockito.times(1)).setFontSize(Double.parseDouble("12"), Unit.PX);
 	}	
-	
-	@Test
-    public void setDimensionsGapWidth() {
-		String gapWidth = "100";
-		Map<String, String> styles = new HashMap<String, String>();				
-		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH, gapWidth);
-		mockTextEntryModule(styles);
-		
-		textEntryModule.setDimensions(textBox, moduleElement);
-		
-		Mockito.verify(textBox, Mockito.times(1)).setWidth(gapWidth + "px");
-		assertThat(textEntryModule.widthBindingIdentifier, equalTo(null));		
-	}		
-	
-    private void mockTextEntryModule(Map<String, String> styles) {
-		textEntryModule = mock(TextEntryModule.class);
-		doCallRealMethod().when(textEntryModule).setDimensions((TextBox)anyObject(), (Element)anyObject());
-		when(textEntryModule.getStyles(moduleElement)).thenReturn(styles);			
-	}
-
-	@Before
-	public void setUp() {
-    	moduleElement = mock(Element.class);
-		textBox = mock(TextBox.class);
-		doCallRealMethod().when(textBox).setMaxLength(anyInt());
-	}
 		
     @BeforeClass
     public static void prepareTestEnviroment() {
@@ -112,4 +77,45 @@ public class TextEntryModuleJUnitTest {
     	GWTMockUtilities.restore();
     }
 
+	public TextEntryModuleMock mockTextGap(Map<String, String> styles) {		
+		return new TextEntryModuleMock(styles);
+	}
+	
+	public TextEntryModuleMock mockTextGap() {		
+		return new TextEntryModuleMock(new HashMap<String, String>());
+	}
+	
+	private class TextEntryModuleMock extends TextEntryModule {
+		
+		public TextEntryModuleMock(Map<String, String> styles) {
+			this.styles = styles;
+		}
+		
+		@Override
+		protected void setPresenter() {
+			presenter = mock(TextEntryModulePresenter.class);
+		}
+		
+		public TextEntryModulePresenter getPresenter() {
+			return (TextEntryModulePresenter) presenter;
+		}
+		
+		@Override
+		protected EventsBus getEventsBus() {
+			return mock(EventsBus.class);
+		}
+		
+		@Override
+		protected StyleNameConstants getStyleNameConstants() {
+			return GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
+		}
+		
+		public void invokeSetDimensions() {
+			setDimensions(styles);
+		}
+		
+		public void invokeSetMaxlengthBinding(Map<String, String> styles) {
+			setMaxlengthBinding(styles, XMLParser.parse("<gap type=\"text-entry\" uid=\"uid_0000\" />").getDocumentElement());
+		}
+	}
 }

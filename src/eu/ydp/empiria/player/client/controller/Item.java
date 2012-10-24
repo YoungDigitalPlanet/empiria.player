@@ -142,7 +142,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		
 		@Override
 		public Map<String,String> getStyles(Element element) {
-			return (styleSocket!=null)? styleSocket.getStyles(element) : new HashMap<String,String>();
+			return (styleSocket != null) ? styleSocket.getStyles(element) : new HashMap<String,String>();
 		}
 		
 		public void setCurrentPages( PageReference pr) {

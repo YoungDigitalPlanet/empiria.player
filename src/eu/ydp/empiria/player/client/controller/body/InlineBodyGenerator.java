@@ -106,7 +106,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 			if (options.getIgnoredInlineTags().contains(currNode.getNodeName())) {
 				return parentElement; // NOPMD
 			} else if (modulesRegistrySocket.isModuleSupported(currNode.getNodeName()) && modulesRegistrySocket.isInlineModule(currNode.getNodeName())) {
-				IModule module = modulesRegistrySocket.createModule(currNode.getNodeName());
+				IModule module = modulesRegistrySocket.createModule((Element) currNode);
 				if (module instanceof IInlineModule) {
 					((IInlineModule) module).initModule((Element) currNode, moduleSocket);
 					Widget moduleView = ((IInlineModule) module).getView();
@@ -137,7 +137,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
 			String moduleName = node.getNodeName();
 			if (modulesRegistrySocket.isModuleSupported(moduleName) && modulesRegistrySocket.isInlineModule(moduleName)) {
-				IModule module = modulesRegistrySocket.createModule(moduleName);
+				IModule module = modulesRegistrySocket.createModule((Element) node);
 				if (module instanceof IInlineModule) {
 					((IInlineModule) module).initModule((Element) node, moduleSocket);
 					Widget moduleView = ((IInlineModule) module).getView();

@@ -46,7 +46,7 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 		if (!moduleInitialized) {
 			moduleInitialized = true;
 			initModule();
-			findResponse(element);
+			setResponseFromElement(element);
 		}
 		controller.addElement(element);
 	}

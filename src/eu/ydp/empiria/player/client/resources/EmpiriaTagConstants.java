@@ -7,6 +7,7 @@ public final class EmpiriaTagConstants {
 
 	public static final String ATTR_CLASS = "class";
 	public static final String ATTR_IDENTIFIER = "identifier";
+	public static final String ATTR_RESPONSE_IDENTIFIER = "responseIdentifier";
 	public static final String ATTR_SRC = "src";
 	public static final String ATTR_TITLE = "title";
 	public static final String ATTR_TYPE = "type";

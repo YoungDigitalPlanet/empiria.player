@@ -340,6 +340,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-page-unselected")
 	public String QP_PAGE_UNSELECTED();
+	
+	@DefaultStringValue("qp-placeholder")
+	public String QP_PLACEHOLDER();
 
 	@DefaultStringValue("qp-player")
 	public String QP_PLAYER();

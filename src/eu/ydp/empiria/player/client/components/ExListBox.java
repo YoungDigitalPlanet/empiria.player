@@ -187,6 +187,10 @@ public class ExListBox extends FlowPanel {
 	public PopupPosition getPopupPosition(){
 		return popupPosition;
 	}
+	
+	public List<ExListBoxOption> getOptions() {
+		return options;
+	}
 
     /**
      * <p>Exposes private methods for unit tests. This class must not be used

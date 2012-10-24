@@ -10,7 +10,7 @@ public abstract class BindingUtil {
 		IModule currModule = module;
 		while (currModule != null){
 			if (currModule instanceof BindingProxy){
-				BindingProxy proxy = (BindingProxy)currModule;
+				BindingProxy proxy = (BindingProxy) currModule;
 				BindingManager manager = proxy.getBindingManager(bindingType);
 				if (manager != null){
 					BindingContext context = manager.getBindingContext(bindable.getBindingGroupIdentifier(bindingType));

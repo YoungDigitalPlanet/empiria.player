@@ -76,6 +76,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
 		modules = new ArrayList<IModule>();
 		modules.add(itemBodyModule);
+		modulesInstalator.installMultiViewNonuniuqeModules();
 		modules.addAll(modulesInstalator.installMultiViewUniqueModules());
 		modules.addAll(modulesInstalator.getInstalledSingleViewModules());
 

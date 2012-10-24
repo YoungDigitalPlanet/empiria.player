@@ -5,4 +5,5 @@ import com.google.gwt.xml.client.Node;
 
 public interface BodyGeneratorSocket {
 	public void generateBody(Node itemBodyNode, HasWidgets viewParent);
+	public void processNode(Node node, HasWidgets viewParent);
 }

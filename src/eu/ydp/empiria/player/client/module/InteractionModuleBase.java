@@ -15,15 +15,18 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule {
 
 	private InteractionEventsListener interactionEventsListener;
+	private ModuleSocket moduleSocket;
 
 	private Response response;
 	private String responseIdentifier;
-	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private final EventsBus eventsBus = getEventsBus();
+	
 	
 	@Override
 	public final void initModule(ModuleSocket moduleSocket, InteractionEventsListener interactionEventsListener) {
 		initModule(moduleSocket);
 		this.interactionEventsListener = interactionEventsListener;
+		this.moduleSocket = moduleSocket;
 	}
 
 	@Override
@@ -31,14 +34,19 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		return responseIdentifier;
 	}
 
-	protected final void findResponse(Element element){
+	protected final void setResponseFromElement(Element element){
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
-		response = getModuleSocket().getResponse(responseIdentifier);
+		response = findResponse();
+	}
+	
+	protected Response findResponse(){
+		return moduleSocket.getResponse(responseIdentifier);
 	}
 
 	protected Response getResponse(){
 		return response;
 	}
+	
 	protected final InteractionEventsListener getInteractionEventsListener() {
 		return interactionEventsListener;
 	}
@@ -47,4 +55,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, this)), new CurrentPageScope());
 	}
 
+	protected EventsBus getEventsBus() {
+		return PlayerGinjector.INSTANCE.getEventsBus();
+	}
 }

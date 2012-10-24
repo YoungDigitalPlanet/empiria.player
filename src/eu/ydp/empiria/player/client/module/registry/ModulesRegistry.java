@@ -3,8 +3,12 @@ package eu.ydp.empiria.player.client.module.registry;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.xml.client.Element;
+
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
+import eu.ydp.empiria.player.client.module.ModuleTagName;
+import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
 public class ModulesRegistry implements ModulesRegistrySocket {
 
@@ -19,11 +23,18 @@ public class ModulesRegistry implements ModulesRegistrySocket {
 	}
 	
 	public boolean isModuleSupported(String nodeName){
-		return moduleCreators.keySet().contains(nodeName);
+		if(EmpiriaTagConstants.NAME_GAP.equals(nodeName)){
+			return true;
+		}else{
+			return moduleCreators.keySet().contains(nodeName);
+		}
 	}
 
 	@Override
 	public boolean isMultiViewModule(String nodeName){
+		if(EmpiriaTagConstants.NAME_GAP.equals(nodeName)){
+			return true;
+		}
 		ModuleCreator currCreator = moduleCreators.get(nodeName);
 		if (currCreator != null){
 			return currCreator.isMultiViewModule();
@@ -40,14 +51,20 @@ public class ModulesRegistry implements ModulesRegistrySocket {
 		return false;
 	}
 	
-	public IModule createModule(String nodeName){
-		ModuleCreator currCreator = moduleCreators.get(nodeName);
-		if (currCreator != null){
-			return currCreator.createModule();
+	public IModule createModule(Element node){
+		String nodeName = node.getNodeName();
+		
+		if (node.hasAttribute(EmpiriaTagConstants.ATTR_TYPE)) {
+			nodeName = ModuleTagName.getTagNameWithType(nodeName, node.getAttribute(EmpiriaTagConstants.ATTR_TYPE));
 		}
-		return null;		
+		
+		ModuleCreator currCreator = moduleCreators.get(nodeName);
+		
+		IModule module = null;
+		if (currCreator != null) {
+			module = currCreator.createModule();
+		}
+		
+		return module;
 	}
-	
-	
-	
 }

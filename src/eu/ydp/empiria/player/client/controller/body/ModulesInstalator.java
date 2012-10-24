@@ -29,7 +29,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	protected List<IModule> singleViewModules;
 
 	protected StackMap<String, StackMap<Element, HasWidgets>> uniqueModulesMap = new StackMap<String, StackMap<Element,HasWidgets>>();
-	protected StackMap<Element, HasWidgets> nonuniqueModulesMap = new StackMap<Element, HasWidgets>();
+	protected StackMap<Element, StackMap<IModule, HasWidgets>> nonuniqueModulesMap = new StackMap<Element, StackMap<IModule,HasWidgets>>();
 	protected StackMap<String, IModule> multiViewModulesMap = new StackMap<String, IModule>();
 
 	public ModulesInstalator(ParenthoodGeneratorSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, InteractionEventsListener mil){
@@ -62,41 +62,59 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 				uniqueModulesMap.put(responseIdentifier, new StackMap<Element, HasWidgets>());
 			}
 			if (!multiViewModulesMap.containsKey(responseIdentifier)){
-				IModule currModule = registry.createModule(element.getNodeName());
+				IModule currModule = registry.createModule(element);
 				multiViewModulesMap.put(responseIdentifier, currModule);
 				parenthood.addChild(currModule);
 			}
 			uniqueModulesMap.get(responseIdentifier).put(element, placeholder);
 		} else {
-			nonuniqueModulesMap.put(element, placeholder);
+			if(!nonuniqueModulesMap.containsKey(element)){
+				nonuniqueModulesMap.put(element, new StackMap<IModule, HasWidgets>());
+			}
+			
+			IModule currModule = registry.createModule(element);
+			nonuniqueModulesMap.get(element).put(currModule, placeholder);		
+			parenthood.addChild(currModule);
 		}
 	}
 
 	@Override
 	public void createSingleViewModule(Element element, HasWidgets parent,BodyGeneratorSocket bodyGeneratorSocket) {
-		IModule module = registry.createModule(element.getNodeName());
+		IModule module = registry.createModule(element);
 
-		parenthood.addChild(module);
-
-		if (module instanceof ISingleViewWithBodyModule){
-			parenthood.pushParent((HasChildren) module);
-			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, interactionListener, bodyGeneratorSocket);
-			parenthood.popParent();
-		} else if (module instanceof ISingleViewSimpleModule){
-			((ISingleViewSimpleModule)module).initModule(element, moduleSocket, interactionListener);
-		}else if(module instanceof IInlineModule){
-			((IInlineModule) module).initModule(element, moduleSocket);
+		if (module != null) {
+			parenthood.addChild(module);
+	
+			if (module instanceof ISingleViewWithBodyModule){
+				parenthood.pushParent((ISingleViewWithBodyModule) module);
+				((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, interactionListener, bodyGeneratorSocket);
+				parenthood.popParent();
+			} else if (module instanceof ISingleViewSimpleModule){
+				((ISingleViewSimpleModule)module).initModule(element, moduleSocket, interactionListener);
+			}else if(module instanceof IInlineModule){
+				((IInlineModule) module).initModule(element, moduleSocket);
+			}
+			if (((ISingleViewModule)module).getView() instanceof Widget ){
+				parent.add( ((ISingleViewModule)module).getView() );
+			}
+	
+			singleViewModules.add(module);
 		}
-		if (((ISingleViewModule)module).getView() instanceof Widget ){
-			parent.add( ((ISingleViewModule)module).getView() );
-		}
-
-		singleViewModules.add(module);
 	}
 
 	public void installMultiViewNonuniuqeModules(){
 		for (Element currElement : nonuniqueModulesMap.getKeys()){
+			StackMap<IModule, HasWidgets> moduleMap = nonuniqueModulesMap.get(currElement);
+			IModule module = moduleMap.getKeys().get(0);
 			
+			if(module instanceof IMultiViewModule){
+				IMultiViewModule multiViewModule = (IMultiViewModule) module;
+				List<HasWidgets> placeholders = moduleMap.getValues();
+				
+				multiViewModule.initModule(moduleSocket, interactionListener);
+				multiViewModule.addElement(currElement);
+				multiViewModule.installViews(placeholders);
+			}
 		}
 	}
 
