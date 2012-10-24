@@ -14,7 +14,7 @@ public enum ModuleTagName {
 	MEDIA_PROGRESS_BAR("mediaProgressBar"),MEDIA_VOLUME_BAR("mediaVolumeBar"),MEDIA_FULL_SCREEN_BUTTON("mediaFullScreenButton"),
 	MEDIA_POSITION_IN_STREAM("mediaPositinInStream"),MEDIA_CURRENT_TIME("mediaCurrentTime"),MEDIA_TOTAL_TIME("mediaTotalTime"),
 	MEDIA_TITLE("mediaTitle"), MEDIA_DESCRIPTION("mediaDescription"), MEDIA_SCREEN("mediaScreen"), SIMULATION_PLAYER("simulationPlayer"), MEDIA_TEXT_TRACK("mediaTextTrack"),
-	MATH_GAP_TEXT_ENTRY_TYPE("gap_text-entry"), MATH_GAP_INLINE_CHOICE_TYPE("gap_inline-choice");
+	MATH_GAP_TEXT_ENTRY_TYPE("gap_text-entry"), MATH_GAP_INLINE_CHOICE_TYPE("gap_inline-choice"),MATCH_INTERACTION("matchInteraction");
 	String name = null;
 	private ModuleTagName(String name){
 		this.name = name;
@@ -32,16 +32,16 @@ public enum ModuleTagName {
 		}
 		return null;
 	}
-	
+
 	public static String getTagNameWithType(String tagName, String type) {
 		String tagNameWithType = "";
-		
+
 		if ( tagName.equals("gap") && type.equals("text-entry") ) {
 			tagNameWithType = MATH_GAP_TEXT_ENTRY_TYPE.toString();
 		} else if ( tagName.equals("gap") && type.equals("inline-choice") ) {
 			tagNameWithType = MATH_GAP_INLINE_CHOICE_TYPE.toString();
 		}
-		
+
 		return tagNameWithType;
 	}
 
