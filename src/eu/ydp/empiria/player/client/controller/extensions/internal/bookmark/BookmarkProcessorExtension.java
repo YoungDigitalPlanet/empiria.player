@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
@@ -419,12 +420,32 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 
 	@Override
-	public void setState(JSONArray newState) {
+	public void setState(JSONArray newState) {		
+		
+		String externalBookmarks = getExternalBookmarks();
+		JSONArray externalState = null;
+		if(externalBookmarks != null){
+			externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks);
+		}
+		
+		JSONArray state = externalState == null ? newState : externalState;
+		
 		bookmarks.clear();
-		for (int i = 0 ; i < newState.size() ; i ++ ){
-			bookmarks.add( decodeItemState(newState.get(i).isObject()) );
+		for (int i = 0 ; i < state.size() ; i ++ ){
+			bookmarks.add( decodeItemState(state.get(i).isObject()) );
 		}
 	}
+	
+	private native String getExternalBookmarks()/*-{
+		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::playerJsObject;
+		if (typeof playerJso == 'object'  &&  typeof playerJso.getExternalBookmarks == 'function'){
+			return playerJso.getExternalBookmarks();
+		}
+		else{
+			return null;
+		}		
+		
+	}-*/;
 
 	private StackMap<Integer, BookmarkProperties> decodeItemState(JSONObject object) {
 		StackMap<Integer, BookmarkProperties> map = new StackMap<Integer, BookmarkProperties>();
