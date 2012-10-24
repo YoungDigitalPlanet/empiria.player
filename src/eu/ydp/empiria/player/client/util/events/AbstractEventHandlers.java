@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.util.events.Event.Type;
 public abstract class AbstractEventHandlers<H extends EventHandler, E extends Enum<E>, EV extends Event<H, E>> {
 	private final Map<Type<H, E>, Set<H>> handlers = new HashMap<Type<H, E>, Set<H>>();
 
-	public HandlerRegistration addHandler(final H handler, final Type<H, E> event) {
+	protected HandlerRegistration addHandler(final H handler, final Type<H, E> event) {
 		final Set<H> eventHandlers = getHandlers(event);
 		eventHandlers.add(handler);
 		HandlerRegistration registration = new HandlerRegistration() {

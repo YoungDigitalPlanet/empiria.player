@@ -41,6 +41,10 @@ public class TouchEvent extends AbstractEvent<TouchHandler, TouchTypes> {
 		return nativeEvent;
 	}
 
+	public void preventDefault(){
+		nativeEvent.preventDefault();
+	}
+
 
 
 }
