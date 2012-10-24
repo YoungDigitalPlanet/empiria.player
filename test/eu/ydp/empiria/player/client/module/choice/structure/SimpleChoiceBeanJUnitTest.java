@@ -18,7 +18,6 @@ public class SimpleChoiceBeanJUnitTest extends AbstractJAXBTestBase<SimpleChoice
 		SimpleChoiceBean simpleChoice = createBeanFromXMLString(nodeString);
 		
 		assertThat(simpleChoice.getIdentifier(), is(equalTo("CHOICE_RESPONSE_1_2")));
-		assertThat(simpleChoice.getContent(), is(equalTo("The Pyrenees")));
 	}
 	
 	@Test
@@ -27,6 +26,5 @@ public class SimpleChoiceBeanJUnitTest extends AbstractJAXBTestBase<SimpleChoice
 		SimpleChoiceBean simpleChoice = createBeanFromXMLString(nodeString);
 		
 		assertThat(simpleChoice.getIdentifier(), is(equalTo(StringUtils.EMPTY_STRING)));
-		assertThat(simpleChoice.getContent(), is(equalTo(StringUtils.EMPTY_STRING)));
 	}
 }

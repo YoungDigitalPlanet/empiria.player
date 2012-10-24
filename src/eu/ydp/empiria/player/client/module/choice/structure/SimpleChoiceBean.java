@@ -5,8 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
+import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapter;
 import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -18,12 +22,13 @@ public class SimpleChoiceBean implements ModuleBean{
 	@XmlAttribute
 	private boolean fixed;
 	@XmlValue
-	private String content;
+	@XmlJavaTypeAdapter(value=XMLContentTypeAdapter.class)
+	private XMLContent content;
 	private boolean multi;
 	
 	public SimpleChoiceBean(){
 		identifier = StringUtils.EMPTY_STRING;
-		content = StringUtils.EMPTY_STRING;
+		//content = StringUtils.EMPTY_STRING;
 	}
 	
 	public String getIdentifier() {
@@ -34,11 +39,11 @@ public class SimpleChoiceBean implements ModuleBean{
 		this.identifier = identifier;
 	}
 	
-	public String getContent() {
+	public XMLContent getContent() {
 		return content;
 	}
 	
-	public void setContent(String content) {
+	public void setContent(XMLContent content) {
 		this.content = content;
 	}
 

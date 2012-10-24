@@ -122,7 +122,7 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter{
 	}
 	
 	private void createAndInstallContent(SimpleChoiceBean choiceOption){
-		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOption.getContent(),true);
+		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOption.getContent().getValue(),true);
 		contentWidgetPlace.add(contentWidget);
 	}
 	
