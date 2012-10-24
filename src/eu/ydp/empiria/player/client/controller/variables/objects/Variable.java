@@ -9,16 +9,13 @@ public abstract class Variable {
 	public Variable(){
 		values = new Vector<String>();
 		identifier = "";
-		cardinality = Cardinality.SINGLE;		
-		evaluate = Evaluate.DEFAULT; 
+		cardinality = Cardinality.SINGLE;
 		baseType = BaseType.STRING;
 	}
 	
 	public String identifier;
 
 	public Cardinality cardinality;
-	
-	public Evaluate evaluate;
 	
 	public BaseType baseType;
 	

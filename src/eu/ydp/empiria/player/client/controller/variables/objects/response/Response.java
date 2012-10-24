@@ -50,6 +50,8 @@ public class Response extends Variable {
 	private boolean isModuleAdded = false;
 	private boolean initialized = false;
 	
+	public Evaluate evaluate;
+
 	public Mapping mapping;
 	
 	/**

@@ -312,51 +312,57 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		boolean passed = true;
 
 		if (response.cardinality == Cardinality.COMMUTATIVE  ||  response.cardinality == Cardinality.ORDERED  ||
-				(response.cardinality == Cardinality.SINGLE  &&  response.groups.size() > 0)){
-			if (correctAnswers.getResponseValuesCount() != userAnswers.size()) {
-				passed = false;
+				(response.cardinality == Cardinality.SINGLE  &&  response.groups.size() > 0)) {
+
+			if (Evaluate.CORRECT.equals(response.evaluate)) {
+				throw new UnsupportedOperationException();
 			} else {
-
-				for (int correct = 0 ; correct < correctAnswers.getResponseValuesCount() ; correct ++){
-
-					String groupName = null;
-					for (String currGroupName : response.groups.keySet()){
-						if (response.groups.get(currGroupName).contains(correct)){
-							groupName = currGroupName;
-							break;
-						}
-					}
-
-					String currUserAnswer = userAnswers.get(correct);
-
-					if (groupName == null){
-						if (!correctAnswers.getResponseValue(correct).getAnswers().contains(currUserAnswer)){
-							passed = false;
-							answersEvaluation.add(false);
-						} else {
-							answersEvaluation.add(true);
-						}
-					} else {
-						List<ResponseValue> currGroupCorrectAnswers = groupsCorrectAnswers.get(groupName);
-						List<Boolean> currGroupAnswersUsed = groupsAnswersUsed.get(groupName);
-
-						answerFound = false;
-						for (int a = 0 ; a < currGroupCorrectAnswers.size() ; a ++){
-							if (currGroupAnswersUsed.get(a)) {
-								continue;
-							}
-							if (currGroupCorrectAnswers.get(a).getAnswers().contains(currUserAnswer)){
-								currGroupAnswersUsed.set(a, true);
-								answerFound = true;
+				// DEFAULT is a case Evaluate.USER
+					
+				if (correctAnswers.getResponseValuesCount() != userAnswers.size()) {
+					passed = false;
+				} else {
+	
+					for (int correct = 0 ; correct < correctAnswers.getResponseValuesCount() ; correct ++){
+	
+						String groupName = null;
+						for (String currGroupName : response.groups.keySet()){
+							if (response.groups.get(currGroupName).contains(correct)){
+								groupName = currGroupName;
 								break;
 							}
 						}
-						if (!answerFound  &&  passed){
-							passed = false;
-						}
-						answersEvaluation.add(answerFound);
+	
+						String currUserAnswer = userAnswers.get(correct);
+	
+						if (groupName == null){
+							if (!correctAnswers.getResponseValue(correct).getAnswers().contains(currUserAnswer)){
+								passed = false;
+								answersEvaluation.add(false);
+							} else {
+								answersEvaluation.add(true);
+							}
+						} else {
+							List<ResponseValue> currGroupCorrectAnswers = groupsCorrectAnswers.get(groupName);
+							List<Boolean> currGroupAnswersUsed = groupsAnswersUsed.get(groupName);
+	
+							answerFound = false;
+							for (int a = 0 ; a < currGroupCorrectAnswers.size() ; a ++){
+								if (currGroupAnswersUsed.get(a)) {
+									continue;
+								}
+								if (currGroupCorrectAnswers.get(a).getAnswers().contains(currUserAnswer)){
+									currGroupAnswersUsed.set(a, true);
+									answerFound = true;
+									break;
+								}
+							}
+							if (!answerFound  &&  passed){
+								passed = false;
+							}
+							answersEvaluation.add(answerFound);
+						}	
 					}
-
 				}
 			}
 		} else if (response.cardinality == Cardinality.SINGLE) {
@@ -375,17 +381,11 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
 
 		boolean passed = true;
-
-		if (Evaluate.USER.equals(response.evaluate)) {
-			throw new UnsupportedOperationException();
+		if (userAnswers.size() == 0 || !correctAnswers.containsAnswer(userAnswers.get(0))) {
+			passed = false;
+			answersEvaluation.add(false);
 		} else {
-			// case Evaluate.CORRECT
-			if (userAnswers.size() == 0 || !correctAnswers.containsAnswer(userAnswers.get(0))) {
-				passed = false;
-				answersEvaluation.add(false);
-			} else {
-				answersEvaluation.add(true);
-			}
+			answersEvaluation.add(true);
 		}
 		return passed;
 	}
@@ -404,6 +404,11 @@ public class DefaultVariableProcessor extends VariableProcessor {
 						answerFound = true;
 					}
 				}
+				
+				if (!answerFound) {
+					passed = false;
+				}
+				
 				answersEvaluation.add(answerFound);
 			}
 		} else {

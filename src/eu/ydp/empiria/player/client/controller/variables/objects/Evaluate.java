@@ -11,8 +11,12 @@ public enum Evaluate {
 		
 		Evaluate evaluate = DEFAULT;
 		
-		if (key.toLowerCase().compareTo("user") == 0) {
-			evaluate = USER;
+		if (key != null) { 
+			if (key.toLowerCase().compareTo("user") == 0) {
+				evaluate = USER;
+			} else if (key.toLowerCase().compareTo("correct") == 0) {
+				evaluate = CORRECT;
+			}
 		}
 		
 		return evaluate;
