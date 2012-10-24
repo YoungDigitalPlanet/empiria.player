@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
+import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
@@ -39,6 +40,7 @@ import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactoryImpl;
+import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class PlayerGinModule extends AbstractGinModule {
 
@@ -72,9 +74,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(NativeStyleHelper.class).to(NativeStyleHelperImpl.class);
 		bind(StyleHelper.class);
 		bind(ModuleHandlerManager.class).in(Singleton.class);
-		
 		bind(IBookmarkPopupView.class).to(BookmarkPopup.class);
-		
+		bind(XMLParser.class);
 		//bind(ConnectionPresenter.class).to(ConnectionPresenterImpl.class);
 		//factory
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
@@ -82,9 +83,9 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
 		install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
 
-	//	install(new GinFactoryModuleBuilder().build(TouchRecognitionFactory.class));
-	//	install(new GinFactoryModuleBuilder().build(ConnectionItemViewFactory.class));
-	//	install(new GinFactoryModuleBuilder().build(ConnectionItemFactory.class));
+		install(new GinFactoryModuleBuilder().build(TouchRecognitionFactory.class));
+
+
 
 	}
 
