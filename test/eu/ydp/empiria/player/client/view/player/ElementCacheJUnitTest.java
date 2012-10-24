@@ -15,7 +15,7 @@ public class ElementCacheJUnitTest {
 
 	class SimpleCache extends AbstractElementCache<String> {
 		@Override
-		protected String getElement(int index) {
+		protected String getElement(Integer index) {
 			return null;
 		}
 	}

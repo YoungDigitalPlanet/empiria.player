@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.controller.PageController;
 public class PageControllerCache extends AbstractElementCache<PageController> {
 
 	@Override
-	protected PageController getElement(int index) {
+	protected PageController getElement(Integer index) {
 		return null;
 	}
 

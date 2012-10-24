@@ -18,26 +18,26 @@ public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPan
 	protected GWTPanelFactory panelFactory;
 
 	protected boolean swipeDisabled;
-	
+
 	private FlowPanel parent;
 
 	private final static float WIDTH = 100;
 
 	@Override
-	protected KeyValue<FlowPanel, FlowPanel> getElement(int index) {
+	protected KeyValue<FlowPanel, FlowPanel> getElement(Integer index) {
 		parent = panelFactory.getFlowPanel();
 		FlowPanel childPanel = panelFactory.getFlowPanel();
 
 		Style style = parent.getElement().getStyle();
-		parent.getElement().setId(styleNames.QP_PAGE() + index);
-		
+		parent.getElement().setId(styleNames.QP_PAGE() + index.intValue());
+
 		if (!swipeDisabled) {
 			style.setPosition(Position.ABSOLUTE);
 			style.setTop(0, Unit.PX);
 			style.setLeft(WIDTH * index, Unit.PCT);
 			style.setWidth(WIDTH, Unit.PCT);
 		}
-		
+
 		childPanel.setHeight("100%");
 		childPanel.setWidth("100%");
 		parent.add(childPanel);
@@ -48,7 +48,7 @@ public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPan
 		this.swipeDisabled = swipeDisabled;
 		if (parent != null){
 			Style style = parent.getElement().getStyle();
-			
+
 			if(swipeDisabled){
 				style.clearTop();
 				style.clearPosition();
