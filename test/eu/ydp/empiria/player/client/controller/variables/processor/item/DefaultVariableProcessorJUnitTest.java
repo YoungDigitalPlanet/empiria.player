@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.contains;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,10 +16,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.gwtutil.client.collections.ListCreator;
+import eu.ydp.gwtutil.xml.XMLParser;
 
 public class DefaultVariableProcessorJUnitTest {
 
@@ -67,6 +70,51 @@ public class DefaultVariableProcessorJUnitTest {
 		assertThat(outcomes.get(DefaultVariableProcessor.TODO).getValuesShort(), equalTo("1"));
 	}
 	
+	@Test
+	public void processCardinalityMultipleEvaluateUser() {
+		Response mockResponse = mockMultiplePairResponse(Evaluate.USER);		
+		mockResponse.add("CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1");
+		mockResponse.add("CONNECTION_RESPONSE_1_2 CONNECTION_RESPONSE_1_1");
+		mockResponse.add("CONNECTION_RESPONSE_1_4 CONNECTION_RESPONSE_1_3");
+		mockResponse.add("CONNECTION_RESPONSE_1_4 CONNECTION_RESPONSE_1_5");
+		mockResponse.add("CONNECTION_RESPONSE_1_6 CONNECTION_RESPONSE_1_3");
+		
+		variableProcessor.processSingleResponse(mockResponse);
+		List<Boolean> result = variableProcessor.evaluateAnswer(mockResponse);
+		
+		assertThat(result, contains(true, false, false, true, false));		
+	}
+	
+	@Test
+	public void processCardinalityMultipleEvaluateCorrect() {
+		Response mockResponse = mockMultiplePairResponse(Evaluate.CORRECT);		
+		mockResponse.add("CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1");
+		mockResponse.add("CONNECTION_RESPONSE_1_2 CONNECTION_RESPONSE_1_1");
+		mockResponse.add("CONNECTION_RESPONSE_1_4 CONNECTION_RESPONSE_1_3");
+		mockResponse.add("CONNECTION_RESPONSE_1_4 CONNECTION_RESPONSE_1_5");
+		mockResponse.add("CONNECTION_RESPONSE_1_6 CONNECTION_RESPONSE_1_3");
+		
+		variableProcessor.processSingleResponse(mockResponse);
+		List<Boolean> result = variableProcessor.evaluateAnswer(mockResponse);
+		
+		assertThat(result, contains(true, false, true, false));		
+	}	
+	
+	private Response mockMultiplePairResponse(Evaluate evaluateType) {
+		String evaluate = Evaluate.USER.equals(evaluateType) ? "evaluate=\"user\" " : "";
+		StringBuilder sb = new StringBuilder();
+		sb.append("<responseDeclaration baseType=\"directedPair\" cardinality=\"multiple\" " + evaluate + "identifier=\"CONNECTION_RESPONSE_1\">");
+		sb.append("		<correctResponse>");
+		sb.append("			<value>CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
+		sb.append("			<value>CONNECTION_RESPONSE_1_2 CONNECTION_RESPONSE_1_3</value>");
+		sb.append("			<value>CONNECTION_RESPONSE_1_4 CONNECTION_RESPONSE_1_5</value>");
+		sb.append("			<value>CONNECTION_RESPONSE_1_6 CONNECTION_RESPONSE_1_7</value>");
+		sb.append("		</correctResponse>");
+		sb.append("</responseDeclaration>");
+		
+		return new Response(XMLParser.parse(sb.toString()).getDocumentElement());
+	}	
+	
 	private Outcome mockOutcome() {
 		Outcome mockedOutcome = new Outcome();
 		mockedOutcome.values = new Vector<String>();
@@ -84,4 +132,6 @@ public class DefaultVariableProcessorJUnitTest {
 		
 		return mockedResponse;
 	}	
+		
+	
 }

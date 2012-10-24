@@ -17,7 +17,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	
 	private MatchInteractionBean bean;
 	
-	private ConnectionModuleModel model;
+	ConnectionModuleModel model;
 
 	private MultiplePairModuleView moduleView;
 	
@@ -139,11 +139,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 			moduleView.connect(answer.getKey(), answer.getValue(), type);
 		}				
 	}
-	
-	private void undoConnection() {
-		//moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
-	}
-	
+
 	/**
 	 * Marks / unmarks answers
 	 * 
@@ -171,7 +167,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		}		
 	}		
 	
-	private List<Boolean> evaluateResponse() {
+	List<Boolean> evaluateResponse() {
 		return moduleSocket.evaluateResponse(model.getResponse());
 	}
 	

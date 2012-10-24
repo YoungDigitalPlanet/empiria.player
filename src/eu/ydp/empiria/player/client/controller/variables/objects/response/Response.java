@@ -36,6 +36,7 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.gwtutil.client.NumberUtils;
 
@@ -67,6 +68,8 @@ public class Response extends Variable {
 		identifier = ((Element)responseDeclarationNode).getAttribute("identifier");
 
 		cardinality = Cardinality.fromString( ((Element)responseDeclarationNode).getAttribute("cardinality") );
+		
+		evaluate = Evaluate.fromString(((Element)responseDeclarationNode).getAttribute("evaluate"));
 		
 		baseType = BaseType.fromString( ((Element)responseDeclarationNode).getAttribute("baseType") );
 	    

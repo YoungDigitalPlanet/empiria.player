@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -22,7 +23,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		
 	private Map<String, List<ResponseValue>> groupsCorrectAnswers;
 	private Map<String, List<Boolean>> groupsAnswersUsed;
-	private Map<String, List<Boolean>> responsesAnswersEvaluation;
+	private Map<String, List<Boolean>> responsesAnswersEvaluation = new HashMap<String, List<Boolean>>();
 
 	public static final String MISTAKES = "MISTAKES";
 	public static final String LASTMISTAKEN = "LASTMISTAKEN";
@@ -80,7 +81,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	@Override
 	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract) {
 
-		responsesAnswersEvaluation = new HashMap<String, List<Boolean>>();
+		responsesAnswersEvaluation.clear();
 
 		if (groupsCorrectAnswers == null) {
 			prepareGroupsCorrectAnswers(responses);
@@ -95,14 +96,14 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 		Iterator<String> iter = responses.keySet().iterator();
 		boolean passed;
-		while (iter.hasNext()){
+		while (iter.hasNext()) {
 			currKey = iter.next();
 
 			if (!responses.get(currKey).isModuleAdded()) {
 				continue;
 			}
 
-			passed = processSingleResponse(responses.get(currKey), responses);
+			passed = processSingleResponse(responses.get(currKey));
 
 			if (passed) {
 				points++;
@@ -299,7 +300,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		return 0;
 	}
 
-	private boolean processSingleResponse(Response response, Map<String, Response> responses){
+	boolean processSingleResponse(Response response) {
 
 		CorrectAnswers correctAnswers = response.correctAnswers;
 
@@ -358,46 +359,79 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 				}
 			}
-		} else if (response.cardinality == Cardinality.SINGLE){
-			if (userAnswers.size() == 0  ||  !correctAnswers.containsAnswer(userAnswers.get(0))){
-				passed = false;
-				answersEvaluation.add(false);
-			} else {
-				answersEvaluation.add(true);
-			}
-		} else if (response.cardinality == Cardinality.MULTIPLE) {
-			if (correctAnswers.getResponseValuesCount() != userAnswers.size()){
-				passed = false;
-			} else {
-				for (int correct = 0 ; correct < correctAnswers.getResponseValuesCount() ; correct ++){
-
-					answerFound = false;
-
-					for (int user = 0 ; user < userAnswers.size() ; user ++){
-						for (String currCorrectAnswerValue : correctAnswers.getResponseValue(correct).getAnswers()){
-							if (currCorrectAnswerValue.equals(userAnswers.get(user))){
-								answerFound = true;
-								break;
-							}
-						}
-						if (answerFound) {
-							break;
-						}
-					}
-
-					if (!answerFound){
-						passed = false;
-					}
-
-					answersEvaluation.add(answerFound);
-				}
-			}
+		} else if (response.cardinality == Cardinality.SINGLE) {
+			passed = processSingleResponseCardinalitySingle(response, correctAnswers, userAnswers, answersEvaluation);
+		} else if (response.cardinality == Cardinality.MULTIPLE) {			
+			passed = processSingleResponseCardinalityMultiple(response, correctAnswers, userAnswers, answersEvaluation);
 		}
 
 		responsesAnswersEvaluation.put(response.identifier, answersEvaluation);
 
 		return passed;
 
+	}
+
+	private boolean processSingleResponseCardinalitySingle(Response response, CorrectAnswers correctAnswers,
+			Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
+
+		boolean passed = true;
+
+		if (Evaluate.USER.equals(response.evaluate)) {
+			throw new UnsupportedOperationException();
+		} else {
+			// case Evaluate.CORRECT
+			if (userAnswers.size() == 0 || !correctAnswers.containsAnswer(userAnswers.get(0))) {
+				passed = false;
+				answersEvaluation.add(false);
+			} else {
+				answersEvaluation.add(true);
+			}
+		}
+		return passed;
+	}
+
+	private boolean processSingleResponseCardinalityMultiple(Response response, CorrectAnswers correctAnswers,
+			Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
+
+		boolean passed = true;
+
+		boolean answerFound;
+		if (Evaluate.USER.equals(response.evaluate)) {
+			for (String userAnswer : userAnswers) {
+				answerFound = false;
+				for (int correct = 0; correct < correctAnswers.getResponseValuesCount(); correct++) {
+					if (correctAnswers.getResponseValue(correct).getAnswers().contains(userAnswer)) {
+						answerFound = true;
+					}
+				}
+				answersEvaluation.add(answerFound);
+			}
+		} else {
+			// case Evaluate.CORRECT
+			for (int correct = 0; correct < correctAnswers.getResponseValuesCount(); correct++) {
+
+				answerFound = false;
+
+				for (int user = 0; user < userAnswers.size(); user++) {
+					for (String currCorrectAnswerValue : correctAnswers.getResponseValue(correct).getAnswers()) {
+						if (currCorrectAnswerValue.equals(userAnswers.get(user))) {
+							answerFound = true;
+							break;
+						}
+					}
+					if (answerFound) {
+						break;
+					}
+				}
+
+				if (!answerFound) {
+					passed = false;
+				}
+
+				answersEvaluation.add(answerFound);
+			}
+		}
+		return passed;
 	}
 
 	private int processCheckMistakes(Response response, Outcome moduleLastChange){
@@ -448,7 +482,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	}
 
 	@Override
-	public List<Boolean> evaluateAnswer(Response currResponse){
+	public List<Boolean> evaluateAnswer(Response currResponse) {
 		return responsesAnswersEvaluation.get(currResponse.identifier);
 	}
 
