@@ -22,7 +22,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	ConnectionModuleModel model;
 
 	@Inject
-	private MultiplePairModuleView<SimpleAssociableChoiceBean> moduleView;
+	private MultiplePairModuleView moduleView;
 
 	private ModuleSocket moduleSocket;
 
