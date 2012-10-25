@@ -18,7 +18,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	private ConnectionModulePresenter presenter;
 
 	@Inject
-	ConnectionModuleStructure connectionStructure;
+	private ConnectionModuleStructure connectionStructure;
 
 	@Inject
 	protected ModuleFactory moduleFactory;
@@ -26,13 +26,15 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	@Inject
 	private ConnectionModuleFactory connectionModuleFactory;
 
+	private ConnectionModuleModel connectionModel; 
+	
 	@Override
 	protected void initalizeModule() {
-
+		connectionModel = connectionModuleFactory.getConnectionModuleModel(getResponse(), this);
+		connectionModel.setModuleSocket(getModuleSocket());
+		
 		// TODO: feedbacks
 	}
-
-
 
 	@Override
 	public ConnectionModule getNewInstance() {
@@ -46,7 +48,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 
 	@Override
 	protected ConnectionModuleModel getResponseModel() {
-		return connectionModuleFactory.getConnectionModuleModel(getResponse(), this);
+		return connectionModel;
 	}
 
 	@Override

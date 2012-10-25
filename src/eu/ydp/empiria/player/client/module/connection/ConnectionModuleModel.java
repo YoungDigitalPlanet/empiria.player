@@ -9,10 +9,13 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
 public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String, String>> {
+
+	private ModuleSocket moduleSocket;
 
 	@Inject
 	public ConnectionModuleModel(@Assisted Response response, @Assisted ResponseModelChangeListener modelChangeListener) {
@@ -57,5 +60,14 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 	
 	public int getCurrentOverallPairingsNumber() {
 		return getCurrentAnswers().size();
-	}	
+	}
+
+	public void setModuleSocket(ModuleSocket moduleSocket) {
+		this.moduleSocket = moduleSocket;
+	}		
+	
+	public List<Boolean> evaluateResponse() {
+		return moduleSocket.evaluateResponse(getResponse());
+	}
+	
 }

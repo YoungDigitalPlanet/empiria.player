@@ -21,6 +21,7 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairM
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
+import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 import eu.ydp.gwtutil.xml.XMLParser;
@@ -28,7 +29,7 @@ import eu.ydp.gwtutil.xml.XMLParser;
 public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<MatchInteractionBean> {
 
 	private ConnectionModulePresenterImpl connectionModulePresenter;
-	private MultiplePairModuleView moduleView;
+	private MultiplePairModuleView<SimpleAssociableChoiceBean> moduleView;
 	private ConnectionModuleModel connectionModuleModel;
 		
 	@Test
@@ -65,7 +66,7 @@ public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<Ma
 		connectionModulePresenter.onConnectionEvent(new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_1"));
 		connectionModulePresenter.onConnectionEvent(new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_1"));
 		connectionModulePresenter.onConnectionEvent(new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_4"));
-		doReturn(Arrays.asList(true, false, true)).when(connectionModulePresenter).evaluateResponse();
+		doReturn(Arrays.asList(true, false, true)).when(connectionModuleModel).evaluateResponse();
 		
 		connectionModulePresenter.markCorrectAnswers();
 		connectionModulePresenter.markWrongAnswers();
@@ -134,6 +135,7 @@ public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<Ma
 		Mockito.verify(connectionModuleModel, Mockito.never()).addAnswer(event4.getItemsPair());
 	}	
 	
+	@SuppressWarnings("unchecked")
 	@Before
 	public void init() {
 		connectionModulePresenter = spy(new ConnectionModulePresenterImpl());		

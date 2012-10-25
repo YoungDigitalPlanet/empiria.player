@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairM
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
+import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.gwtutil.client.collections.KeyValue;
@@ -21,7 +22,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	ConnectionModuleModel model;
 
 	@Inject
-	private MultiplePairModuleView moduleView;
+	private MultiplePairModuleView<SimpleAssociableChoiceBean> moduleView;
 
 	private ModuleSocket moduleSocket;
 
@@ -45,7 +46,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	}
 
 	@Override
-	public void setModuleView(MultiplePairModuleView moduleView) {
+	public void setModuleView(MultiplePairModuleView<SimpleAssociableChoiceBean> moduleView) {
 		this.moduleView = moduleView;
 	}
 
@@ -160,7 +161,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	 * @param markingType - {@link MultiplePairModuleConnectType#CORRECT} or {@link MultiplePairModuleConnectType#WRONG}
 	 */
 	private void setAnswersMarked(boolean markMode, MultiplePairModuleConnectType markingType) {
-		List<Boolean> responseEvaluated = evaluateResponse();
+		List<Boolean> responseEvaluated = model.evaluateResponse();
 		List<KeyValue<String, String>> currentAnswers = model.getCurrentAnswers();
 
 		int responseCnt = 0;
@@ -179,10 +180,6 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 			}
 			responseCnt++;
 		}
-	}
-
-	List<Boolean> evaluateResponse() {
-		return moduleSocket.evaluateResponse(model.getResponse());
 	}
 
 }

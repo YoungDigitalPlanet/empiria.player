@@ -15,6 +15,7 @@ import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemView;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
+import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 
 public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	//singleton na potrzeby testow wszystkie operacje na jednym
@@ -42,7 +43,7 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	}
 
 	@Override
-	public MultiplePairModuleView getMultiplePairModuleView() {
+	public MultiplePairModuleView<SimpleAssociableChoiceBean> getMultiplePairModuleView() {
 		return null;
 	}
 
