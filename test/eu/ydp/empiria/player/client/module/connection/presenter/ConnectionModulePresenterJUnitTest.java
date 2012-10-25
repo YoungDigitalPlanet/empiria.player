@@ -28,14 +28,22 @@ import eu.ydp.gwtutil.xml.XMLParser;
 
 public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<MatchInteractionBean> {
 
+	private static final String CONNECTION_RESPONSE_1_4 = "CONNECTION_RESPONSE_1_4";
+	private static final String CONNECTION_RESPONSE_1_1 = "CONNECTION_RESPONSE_1_1";
+	private static final String CONNECTION_RESPONSE_1_3 = "CONNECTION_RESPONSE_1_3";
+	private static final String CONNECTION_RESPONSE_1_0 = "CONNECTION_RESPONSE_1_0";
+	private static final String FALSE = "false";
+	private static final String TRUE = "true";
+	private static final Integer DEFAULT_MATCH_MAX = 2;
+	
 	private ConnectionModulePresenterImpl connectionModulePresenter;
 	private MultiplePairModuleView<SimpleAssociableChoiceBean> moduleView;
 	private ConnectionModuleModel connectionModuleModel;
 		
 	@Test
 	public void shouldValidateConnectionRequestAsInvalid() {
-		String source = "CONNECTION_RESPONSE_1_0";
-		String target = "CONNECTION_RESPONSE_1_3";
+		String source = CONNECTION_RESPONSE_1_0;
+		String target = CONNECTION_RESPONSE_1_3;
 		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.CONNECTED, source, target);
 		
 		connectionModulePresenter.onConnectionEvent(event);
@@ -45,7 +53,7 @@ public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<Ma
 
 	@Test
 	public void shouldValidateConnectionRequestAsValid() {
-		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_4");
+		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4);
 		
 		connectionModulePresenter.onConnectionEvent(event);
 		
@@ -54,7 +62,7 @@ public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<Ma
 	
 	@Test
 	public void shouldDisconnectPairOnDisconnectedEvent() {
-		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.DISCONNECTED, "CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_4");
+		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.DISCONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4);
 		
 		connectionModulePresenter.onConnectionEvent(event);
 		
@@ -63,28 +71,28 @@ public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<Ma
 	
 	@Test
 	public void markCorrectAnswers() {
-		connectionModulePresenter.onConnectionEvent(new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_1"));
-		connectionModulePresenter.onConnectionEvent(new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_1"));
-		connectionModulePresenter.onConnectionEvent(new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_4"));
+		connectionModulePresenter.onConnectionEvent(new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1));
+		connectionModulePresenter.onConnectionEvent(new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
+		connectionModulePresenter.onConnectionEvent(new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4));
 		doReturn(Arrays.asList(true, false, true)).when(connectionModuleModel).evaluateResponse();
 		
 		connectionModulePresenter.markCorrectAnswers();
 		connectionModulePresenter.markWrongAnswers();
 		
-		Mockito.verify(moduleView, Mockito.times(1)).connect("CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_1", MultiplePairModuleConnectType.CORRECT);
-		Mockito.verify(moduleView, Mockito.times(1)).connect("CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_4", MultiplePairModuleConnectType.CORRECT);
-		Mockito.verify(moduleView, Mockito.times(1)).connect("CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_1", MultiplePairModuleConnectType.WRONG);
+		Mockito.verify(moduleView, Mockito.times(1)).connect(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1, MultiplePairModuleConnectType.CORRECT);
+		Mockito.verify(moduleView, Mockito.times(1)).connect(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4, MultiplePairModuleConnectType.CORRECT);
+		Mockito.verify(moduleView, Mockito.times(1)).connect(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1, MultiplePairModuleConnectType.WRONG);
 	}
 	
 	@Test
 	public void shouldDetectMaximumOverallAssociationsNumberAchieved() {
 		connectionModulePresenter.setBean(createBeanFromXMLString(mockStructure(2, null)));
 		
-		PairConnectEvent event1 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_1");		
+		PairConnectEvent event1 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1);		
 		connectionModulePresenter.onConnectionEvent(event1);
-		PairConnectEvent event2 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_1");		
+		PairConnectEvent event2 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1);		
 		connectionModulePresenter.onConnectionEvent(event2);
-		PairConnectEvent event3 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_4");		
+		PairConnectEvent event3 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4);		
 		connectionModulePresenter.onConnectionEvent(event3);
 		
 		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(event1.getItemsPair());
@@ -96,13 +104,13 @@ public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<Ma
 	public void shouldIgnoreOverallAssociationsNumberLimits() {
 		connectionModulePresenter.setBean(createBeanFromXMLString(mockStructure(null, null)));
 		
-		PairConnectEvent event1 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_1");		
+		PairConnectEvent event1 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1);		
 		connectionModulePresenter.onConnectionEvent(event1);
-		PairConnectEvent event2 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_1");		
+		PairConnectEvent event2 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1);		
 		connectionModulePresenter.onConnectionEvent(event2);
-		PairConnectEvent event3 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_4");		
+		PairConnectEvent event3 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4);		
 		connectionModulePresenter.onConnectionEvent(event3);
-		PairConnectEvent event4 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_4");		
+		PairConnectEvent event4 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4);		
 		connectionModulePresenter.onConnectionEvent(event4);		
 		
 		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(event1.getItemsPair());
@@ -114,19 +122,19 @@ public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<Ma
 	@Test
 	public void shouldDetectChoiceMaxMatchLimits() {		
 		Map<String, Integer> matchMaxMap = new HashMap<String, Integer>();
-		matchMaxMap.put("CONNECTION_RESPONSE_1_0", 1);
-		matchMaxMap.put("CONNECTION_RESPONSE_1_1", 1);
-		matchMaxMap.put("CONNECTION_RESPONSE_1_4", 2);
-		matchMaxMap.put("CONNECTION_RESPONSE_1_3", 2);		
+		matchMaxMap.put(CONNECTION_RESPONSE_1_0, 1);
+		matchMaxMap.put(CONNECTION_RESPONSE_1_1, 1);
+		matchMaxMap.put(CONNECTION_RESPONSE_1_4, 2);
+		matchMaxMap.put(CONNECTION_RESPONSE_1_3, 2);		
 		connectionModulePresenter.setBean(createBeanFromXMLString(mockStructure(null, matchMaxMap)));
 		
-		PairConnectEvent event1 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_4");		
+		PairConnectEvent event1 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4);		
 		connectionModulePresenter.onConnectionEvent(event1);
-		PairConnectEvent event2 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_1");		
+		PairConnectEvent event2 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1);		
 		connectionModulePresenter.onConnectionEvent(event2);
-		PairConnectEvent event3 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_3", "CONNECTION_RESPONSE_1_4");		
+		PairConnectEvent event3 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4);		
 		connectionModulePresenter.onConnectionEvent(event3);
-		PairConnectEvent event4 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, "CONNECTION_RESPONSE_1_0", "CONNECTION_RESPONSE_1_1");		
+		PairConnectEvent event4 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1);		
 		connectionModulePresenter.onConnectionEvent(event4);		
 		
 		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(event1.getItemsPair());
@@ -148,41 +156,46 @@ public class ConnectionModulePresenterJUnitTest  extends AbstractJAXBTestBase<Ma
 	}	
 	
 	private Element mockResponseElement() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<responseDeclaration baseType=\"directedPair\" cardinality=\"multiple\" evaluate=\"user\" identifier=\"CONNECTION_RESPONSE_1\">");
-		sb.append("		<correctResponse>");
-		sb.append("			<value>CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
-		sb.append("			<value>CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4</value>");
-		sb.append("		</correctResponse>");
-		sb.append("</responseDeclaration>");
-		return XMLParser.parse(sb.toString()).getDocumentElement();
+		StringBuilder builder = new StringBuilder();
+		builder.append("<responseDeclaration baseType=\"directedPair\" cardinality=\"multiple\" evaluate=\"user\" identifier=\"CONNECTION_RESPONSE_1\">");
+		builder.append("		<correctResponse>");
+		builder.append("			<value>"+CONNECTION_RESPONSE_1_0+" "+CONNECTION_RESPONSE_1_1+"</value>");
+		builder.append("			<value>"+CONNECTION_RESPONSE_1_3+" "+CONNECTION_RESPONSE_1_4+"</value>");
+		builder.append("		</correctResponse>");
+		builder.append("</responseDeclaration>");
+		return XMLParser.parse(builder.toString()).getDocumentElement();
 	}
 	
 	private String mockStructure(Integer maxAssociations, Map<String, Integer> matchMaxMap) {
-		String maxAssociationsXMLAttr = (maxAssociations!=null) ? " maxAssociations=\"" + maxAssociations + "\"" : "";
-		return "<matchInteraction id=\"dummy1\" responseIdentifier=\"CONNECTION_RESPONSE_1\" shuffle=\"true\"" + maxAssociationsXMLAttr +">" +
+		String maxAssociationsXMLAttr = "";
+		if (maxAssociations!=null) {
+			maxAssociationsXMLAttr = " maxAssociations=\"" + maxAssociations + "\"";
+		}
+		return "<matchInteraction id=\"dummy1\" responseIdentifier=\"CONNECTION_RESPONSE_1\" shuffle=\""+TRUE+"\"" + maxAssociationsXMLAttr +">" +
 				"<simpleMatchSet>" +
-					"<simpleAssociableChoice fixed=\"false\" identifier=\"CONNECTION_RESPONSE_1_0\" matchMax=\"" + getMatchMax("CONNECTION_RESPONSE_1_0", matchMaxMap) + "\">" +
+					"<simpleAssociableChoice fixed=\""+FALSE+"\" identifier=\""+CONNECTION_RESPONSE_1_0+"\" matchMax=\"" + getMatchMax(CONNECTION_RESPONSE_1_0, matchMaxMap) + "\">" + // NOPMD
 						"a	</simpleAssociableChoice>" +
-					"<simpleAssociableChoice fixed=\"false\" identifier=\"CONNECTION_RESPONSE_1_3\" matchMax=\"" + getMatchMax("CONNECTION_RESPONSE_1_3", matchMaxMap) + "\">" +
+					"<simpleAssociableChoice fixed=\""+FALSE+"\" identifier=\""+CONNECTION_RESPONSE_1_3+"\" matchMax=\"" + getMatchMax(CONNECTION_RESPONSE_1_3, matchMaxMap) + "\">" +
 						"b	</simpleAssociableChoice>" +
 					"</simpleMatchSet>" +
 					"<simpleMatchSet>" +
-						"<simpleAssociableChoice fixed=\"false\" identifier=\"CONNECTION_RESPONSE_1_4\" matchMax=\"" + getMatchMax("CONNECTION_RESPONSE_1_4", matchMaxMap) + "\">" +
+						"<simpleAssociableChoice fixed=\""+FALSE+"\" identifier=\""+CONNECTION_RESPONSE_1_4+"\" matchMax=\"" + getMatchMax(CONNECTION_RESPONSE_1_4, matchMaxMap) + "\">" +
 							"c	</simpleAssociableChoice>" +
-						"<simpleAssociableChoice fixed=\"false\" identifier=\"CONNECTION_RESPONSE_1_1\" matchMax=\"" + getMatchMax("CONNECTION_RESPONSE_1_1", matchMaxMap) + "\">" +
+						"<simpleAssociableChoice fixed=\""+FALSE+"\" identifier=\""+CONNECTION_RESPONSE_1_1+"\" matchMax=\"" + getMatchMax(CONNECTION_RESPONSE_1_1, matchMaxMap) + "\">" +
 							"d	</simpleAssociableChoice>" +
 						"</simpleMatchSet>" +
-				"</matchInteraction>";			
+				"</matchInteraction>"; 			
 	}
 	
 	private int getMatchMax(String identifier, Map<String, Integer> matchMaxMap) {
-		final int defaultMatchMax = 2;
 		Integer value = null;
 		if (matchMaxMap != null) {
 			value = matchMaxMap.get(identifier);
 		}
-		return (value != null) ? value : defaultMatchMax;
+		if (value == null) {
+			value = DEFAULT_MATCH_MAX;
+		}		
+		return value;
 	}
 	
 }

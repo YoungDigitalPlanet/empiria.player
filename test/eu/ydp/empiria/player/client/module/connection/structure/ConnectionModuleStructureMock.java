@@ -53,7 +53,7 @@ public class ConnectionModuleStructureMock extends ConnectionModuleStructure {
 								binds.add(c);
 							}
 
-							final JAXBContext context = JAXBContext.newInstance(binds.toArray(new Class<?>[0]));
+							final JAXBContext context = JAXBContext.newInstance(binds.toArray(new Class<?>[0])); // NOPMD
 							return (MatchInteractionBean) context.createUnmarshaller().unmarshal(new StringReader(xml));
 						} catch (JAXBException e) {
 							Assert.fail(e.getMessage());

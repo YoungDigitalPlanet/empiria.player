@@ -40,7 +40,7 @@ public class MatchInteractionBean implements MultiplePairBean<SimpleAssociableCh
 	@XmlElement(name = "simpleMatchSet")
 	private List<SimpleMatchSetBean> simpleMatchSets;
 
-	private Map<String, SimpleAssociableChoiceBean> flatChoicesMap;
+	private final Map<String, SimpleAssociableChoiceBean> flatChoicesMap;
 	
 	public MatchInteractionBean() {
 		id = StringUtils.EMPTY_STRING;

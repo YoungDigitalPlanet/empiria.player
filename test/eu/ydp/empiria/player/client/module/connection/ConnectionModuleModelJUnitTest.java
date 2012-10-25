@@ -25,15 +25,15 @@ public class ConnectionModuleModelJUnitTest {
 	}
 	
 	private Response mockResponse() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<responseDeclaration baseType=\"directedPair\" cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\">");
-		sb.append("		<correctResponse>");
-		sb.append("			<value>CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
-		sb.append("			<value>CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4</value>");
-		sb.append("		</correctResponse>");
-		sb.append("</responseDeclaration>");
+		StringBuilder builder = new StringBuilder();
+		builder.append("<responseDeclaration baseType=\"directedPair\" cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\">");
+		builder.append("		<correctResponse>");
+		builder.append("			<value>CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
+		builder.append("			<value>CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4</value>");
+		builder.append("		</correctResponse>");
+		builder.append("</responseDeclaration>");
 		
-		return new Response(XMLParser.parse(sb.toString()).getDocumentElement());
+		return new Response(XMLParser.parse(builder.toString()).getDocumentElement());
 	}
 
 	@Test
