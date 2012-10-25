@@ -19,6 +19,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	
 	ConnectionModuleModel model;
 
+	//@Inject
 	private MultiplePairModuleView moduleView;
 	
 	private ModuleSocket moduleSocket;
@@ -116,18 +117,27 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		}		
 	}
 
-	/**
-	 * Checks whether connection is possible to be done (i.e. do not connect
-	 * source with another source node, only source node with target node)
-	 * 
-	 * @param sourceItem
-	 * @param targetItem
-	 * @return
-	 */
 	private boolean isConnectionValid(String sourceItem, String targetItem) {
-		return (bean.getSourceChoicesIdentifiersSet().contains(sourceItem) && bean.getTargetChoicesIdentifiersSet().contains(targetItem));
-	}
+		int errorsCount = 0;
 
+		if (bean.getSourceChoicesIdentifiersSet().contains(targetItem) || bean.getTargetChoicesIdentifiersSet().contains(sourceItem)) {
+			// source-target pair allowed
+			errorsCount++;
+		} else if (bean.getMaxAssociations() > 0 && model.getCurrentOverallPairingsNumber() >= bean.getMaxAssociations()) {
+			// The maxAssociations attribute controls the maximum number of pairings the user is allowed to make overall.
+			errorsCount++;
+		} else if (bean.getChoiceByIdentifier(sourceItem).getMatchMax() > 0
+				&& model.getCurrentChoicePairingsNumber(sourceItem) >= bean.getChoiceByIdentifier(sourceItem).getMatchMax()) {
+			// Individually, each choice has a matchMax attribute that controls how many pairings it can be part of.
+			errorsCount++;
+		} else if (bean.getChoiceByIdentifier(targetItem).getMatchMax() > 0
+				&& model.getCurrentChoicePairingsNumber(targetItem) >= bean.getChoiceByIdentifier(targetItem).getMatchMax()) {
+			errorsCount++;
+		}
+
+		return errorsCount == 0;
+	}
+		
 	/**
 	 * Sets connections in view using given {@link KeyValue} collection for defined {@link MultiplePairModuleConnectType}
 	 * 
@@ -135,6 +145,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	 * @param type
 	 */
 	private void showAnswers(List<KeyValue<String, String>> answers, MultiplePairModuleConnectType type) {		
+		moduleView.reset();
 		for (KeyValue<String, String> answer : answers) {			
 			moduleView.connect(answer.getKey(), answer.getValue(), type);
 		}				
@@ -157,7 +168,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 			if (markingType.equals(type)) {
 				if (markMode) {
 					moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
-					// TODO: jesli dana pozycja nie jest zaznaczona wcale to wyslac MultiplePairModuleConnectType.NONE
+					// TODO: jesli dana pozycja nie jest zaznaczona wcale to wyslac MultiplePairModuleConnectType.NONE ??
 				} else {
 					moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
 					moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL); // TODO: NORMAL
@@ -169,7 +180,6 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	
 	List<Boolean> evaluateResponse() {
 		return moduleSocket.evaluateResponse(model.getResponse());
-	}
-	
+	}	
 
 }

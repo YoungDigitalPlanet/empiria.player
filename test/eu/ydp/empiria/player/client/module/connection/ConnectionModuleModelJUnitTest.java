@@ -46,19 +46,5 @@ public class ConnectionModuleModelJUnitTest {
 		assertThat(correctAnswers.get(1).getKey(), is(equalTo("CONNECTION_RESPONSE_1_3")));
 		assertThat(correctAnswers.get(1).getValue(), is(equalTo("CONNECTION_RESPONSE_1_4")));
 	}
-	
-	//	@Test
-	//	public void shouldMarkCorrectAnswer() {
-	//		boolean result = connectionModuleModel.isCorrectAnswer("CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1");
-	//		
-	//		assertThat(result, is(equalTo(true)));
-	//	}
-	//
-	//	@Test
-	//	public void shouldMarkWrongAnswer() {
-	//		boolean result = connectionModuleModel.isCorrectAnswer("CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_4");
-	//		
-	//		assertThat(result, is(equalTo(false)));
-	//	}
 		
 }

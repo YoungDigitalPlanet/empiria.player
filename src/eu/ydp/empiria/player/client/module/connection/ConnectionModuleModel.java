@@ -35,8 +35,6 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 		return response;
 	}	
 	
-	// ---
-	
 	public void addAnswer(String answer){
 		response.add(answer);
 		onModelChange();
@@ -47,17 +45,17 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 		onModelChange();
 	}
 
-	//	public boolean isCorrectAnswer(String answer) {		
-	//		return response.correctAnswers.getAllAnswers().contains(answer);
-	//	}	
-	//	
-	//	@Deprecated
-	//	public boolean isWrongAnswer(String answer) {
-	//		return !isCorrectAnswer(answer);
-	//	}
-	//	
-	//	public boolean isCurrentAnswer(String identifier) {
-	//		return response.values.contains(identifier);
-	//	}
+	public int getCurrentChoicePairingsNumber(String identifier) {
+		int count = 0;
+		for (KeyValue<String, String> answer : getCurrentAnswers()) {
+			if (answer.getKey().equals(identifier) || answer.getValue().equals(identifier)) {
+				count++;;
+			}
+		}
+		return count;
+	}	
 	
+	public int getCurrentOverallPairingsNumber() {
+		return getCurrentAnswers().size();
+	}	
 }

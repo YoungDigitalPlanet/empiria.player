@@ -13,10 +13,10 @@ public class ConnectionGinModule extends AbstractGinModule {
 	@Override
 	protected void configure() {
 		install(new GinFactoryModuleBuilder().build(ConnectionModuleFactory.class));
-		
-		//bind(ConnectionModuleJAXBParser.class); //.toProvider(P.class);		
-		bind(ConnectionModulePresenter.class).to(ConnectionModulePresenterImpl.class);
+				
+		bind(ConnectionModulePresenter.class).to(ConnectionModulePresenterImpl.class);		
 		bind(ConnectionModuleStructure.class);
+		//bind(MultiplePairModuleView.class).to(MultiplePairModuleViewImpl.class)
 	}
 
 }
