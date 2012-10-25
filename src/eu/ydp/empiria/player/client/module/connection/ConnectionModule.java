@@ -33,9 +33,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 		
 		// TODO: feedbacks
 	}
-	
-	
-	
+		
 	@Override
 	public ConnectionModule getNewInstance() {
 		return moduleFactory.getConnectionModule();

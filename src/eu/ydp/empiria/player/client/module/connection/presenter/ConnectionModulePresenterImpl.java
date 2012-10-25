@@ -69,7 +69,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	@Override
 	public void showCurrentAnswers() {
-		showAnswers(model.getCurrentAnswers(), MultiplePairModuleConnectType.CORRECT);
+		showAnswers(model.getCurrentAnswers(), MultiplePairModuleConnectType.NORMAL); 
 	}
 
 	@Override
@@ -167,6 +167,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 			KeyValue<String, String> answersPair = currentAnswers.get(responseCnt);
 			if (markingType.equals(type)) {
 				if (markMode) {
+					// TODO: disconnect ?
 					moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
 					// TODO: jesli dana pozycja nie jest zaznaczona wcale to wyslac MultiplePairModuleConnectType.NONE ??
 				} else {

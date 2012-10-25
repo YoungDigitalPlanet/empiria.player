@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
-import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionPresenter;
+import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 
@@ -16,7 +16,7 @@ public interface MultiplePairModuleView extends IsWidget {
 	 * Jezeli istnieja jakies polaczenia i zostanie wywolana ta metoda to dla
 	 * wszystkich usunietych polaczen zostana wywolane handlery
 	 * {@link PairConnectEventHandler} zarejestrowane poprzez
-	 * {@link ConnectionPresenter#addConnectionEventHandler(PairConnectEventHandler)}
+	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)}
 	 * poprzez zdarzenie {@link PairConnectEventTypes.DISCONNECTED}
 	 *
 	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#reset()
@@ -34,10 +34,10 @@ public interface MultiplePairModuleView extends IsWidget {
 
 	/**
 	 * Laczy wskazane elementy wywolanie tej metody jest rownowazne z
-	 * {@link ConnectionPresenter#connect(String, String, MultiplePairModuleConnectType)}
+	 * {@link ConnectionModulePresenter#connect(String, String, MultiplePairModuleConnectType)}
 	 * Wykonanie polaczenia musi zostac zakomunikowane poprzez powiadomienie
 	 * {@link PairConnectEventHandler} zarejestrowanych poprzez
-	 * {@link ConnectionPresenter#addConnectionEventHandler(PairConnectEventHandler)}
+	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)}
 	 * zdarzeniem {@link PairConnectEventTypes.CONNECTED}
 	 *
 	 * @param sourceIdentifier
@@ -49,7 +49,7 @@ public interface MultiplePairModuleView extends IsWidget {
 //	 * Laczy wskazane elementy Wykonanie polaczenia musi zostac zakomunikowane
 //	 * poprzez powiadomienie {@link ConnectionEventHandler} zarejestrowanych
 //	 * poprzez
-//	 * {@link ConnectionPresenter#addConnectionEventHandler(ConnectionEventHandler)}
+//	 * {@link ConnectionModulePresenter#addConnectionEventHandler(ConnectionEventHandler)}
 //	 * zdarzeniem {@link ConnectionEventTypes.CONNECTED}
 //	 *
 //	 * @param sourceIdentifier
@@ -63,7 +63,7 @@ public interface MultiplePairModuleView extends IsWidget {
 	 * Rozdziela wskazane elementy. polaczenie powinno zostac usuniete z widoku.
 	 * Wykonanie rozloczenia musi zostac zakomunikowane poprzez powiadomienie
 	 * {@link PairConnectEventHandler} zarejestrowanych poprzez
-	 * {@link ConnectionPresenter#addConnectionEventHandler(PairConnectEventHandler)}
+	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)}
 	 * zdarzeniem {@link PairConnectEventTypes.DISCONNECTED}
 	 *
 	 * @param sourceIdentifier
