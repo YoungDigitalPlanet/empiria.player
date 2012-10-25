@@ -61,7 +61,10 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-choice-label")
 	public String QP_CHOICE_LABEL();
-
+	
+	@DefaultStringValue("qp-choice-button-place")
+	public String QP_CHOICE_BUTTON_PLACE();
+	
 	@DefaultStringValue("qp-choice-module")
 	public String QP_CHOICE_MODULE();
 

@@ -5,7 +5,7 @@
 	<g:FlowPanel ui:field="mainPanel" styleName="{res.QP_CHOICE_OPTION_BOX}">
 		<g:FlowPanel ui:field="optionPanel"	styleName="{res.QP_CHOICE_OPTION} {res.QP_MARKANSWERS_BUTTON_INACTIVE}">
 			<g:FlowPanel ui:field="markAnswersPanel" styleName="{res.QP_MARKANSWERS_BUTTON_INACTIVE}"/>
-			<g:FlowPanel ui:field="buttonPlace"/>
+			<g:FlowPanel ui:field="buttonPlace" styleName="{res.QP_CHOICE_BUTTON_PLACE}" />
 			<g:FlowPanel ui:field="labelPanel" styleName="{res.QP_CHOICE_LABEL} {res.QP_MARKANSWERS_LABEL_INACTIVE}">
 				<g:AbsolutePanel ui:field="container" styleName="{res.QP_CHOICE_OPTION_CONTAINER}">
 					<g:FlowPanel ui:field="contentWidgetPlace"/>
