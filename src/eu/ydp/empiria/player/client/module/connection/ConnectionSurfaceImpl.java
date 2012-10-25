@@ -60,4 +60,9 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 		view.applyStyles(styles);
 	}
 
+	@Override
+	public void removeFromParent() {
+		view.removeFromParent();
+	}
+
 }

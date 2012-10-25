@@ -4,14 +4,15 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
+import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 
-public interface MultiplePairModuleView extends IsWidget {
+public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidget {
 
 	public void bindView();
-	public void setBean(MultiplePairBean modelInterface);
+	public void setBean(MultiplePairBean<T> modelInterface);
 	/**
 	 * Jezeli istnieja jakies polaczenia i zostanie wywolana ta metoda to dla
 	 * wszystkich usunietych polaczen zostana wywolane handlery

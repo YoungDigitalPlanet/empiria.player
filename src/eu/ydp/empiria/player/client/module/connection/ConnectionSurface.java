@@ -14,4 +14,6 @@ public interface ConnectionSurface extends IsWidget{
 
 	public abstract void applyStyles(Map<String, String> styles);
 
+	public abstract void removeFromParent();
+
 }

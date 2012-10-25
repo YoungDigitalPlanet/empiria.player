@@ -34,7 +34,6 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InfoModuleConnectorExtension;
@@ -156,7 +155,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	protected ModuleFactory moduleFactory = PlayerGinjector.INSTANCE.getModuleFactory();
 
 	protected Integer initialItemIndex;
-	
+
 	private final ModuleHandlerManager moduleHandlerManager = PlayerGinjector.INSTANCE.getModuleHandlerManager();
 
 	/**
@@ -243,16 +242,16 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		initFlow();
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTED));
-		updatePageStyle();	
+		updatePageStyle();
 		//flowManager.gotoPage(4);
 	}
 
-	protected void initFlow() {		
-		
+	protected void initFlow() {
+
 		JSONArray deState = null;
-		
+
 		if (stateAsync != null) {
-			
+
 			deState = (JSONArray) JSONParser.parseLenient(stateAsync);
 
 			assessmentController.reset();
@@ -261,28 +260,28 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 			extensionsManager.setState(deState.get(2).isArray());
 
-			flowManager.deinitFlow();			
-		
-		} 
-		
+			flowManager.deinitFlow();
+
+		}
+
 		IFlowRequest flowRequest = parseFlowRequest(deState);
 		if(flowRequest != null){
 			flowManager.invokeFlowRequest(flowRequest);
 		}
-		
-		flowManager.initFlow();		
-	}	
-	
+
+		flowManager.initFlow();
+	}
+
 	protected IFlowRequest parseFlowRequest(JSONArray deState){
 		IFlowRequest flowRequest =null;
-		
+
 		if(deState != null){
 			if(initialItemIndex != null){
-				flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);				
-			}				
+				flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);
+			}
 			else if (deState.get(0).isNumber() != null) {
 				flowRequest = new FlowRequest.NavigateGotoItem((int) deState.get(0).isNumber().doubleValue());
-			} 
+			}
 			else if (deState.get(0).isString() != null) {
 				if (deState.get(0).isString().stringValue().equals(PageType.TOC.toString())) {
 					flowRequest = new FlowRequest.NavigateToc();
@@ -294,7 +293,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		else if(initialItemIndex != null){
 			flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);
 		}
-		
+
 		return flowRequest;
 	}
 
@@ -338,7 +337,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new AudioMuteButtonModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
-	//	loadExtension(new SimpleConnectorExtension(moduleFactory.getConnectionModule(), ModuleTagName.CONNECTION));
+		loadExtension(new SimpleConnectorExtension(moduleFactory.getConnectionModule(), ModuleTagName.MATCH_INTERACTION,true));
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
 		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
 		loadExtension(PlayerGinjector.INSTANCE.getPage());
@@ -559,11 +558,11 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		QueueSet<String> links = dataManager.getPageStyleLinksForUserAgent(flowManager.getPageReference(), userAgent);
 		styleManager.registerItemStyles(links);
 	}
-	
+
 	@Override
 	public void setInitialItemIndex(Integer num) {
 		initialItemIndex = num;
-		
+
 	}
 
 }

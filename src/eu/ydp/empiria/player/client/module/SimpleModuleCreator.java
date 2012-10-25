@@ -7,9 +7,9 @@ package eu.ydp.empiria.player.client.module;
  */
 public class SimpleModuleCreator<T extends IModule> implements ModuleCreator {
 
-	protected boolean isInlineModule;
-	protected boolean isMultiViewModule;
-	private Factory<? extends IModule> factory;
+	private final boolean inlineModule;
+	private final boolean multiViewModule;
+	private final Factory<? extends IModule> factory;
 
 	/**
 	 * @param factory
@@ -19,19 +19,19 @@ public class SimpleModuleCreator<T extends IModule> implements ModuleCreator {
 	 * @param isInlineModule
 	 */
 	public SimpleModuleCreator(Factory<? extends IModule> factory, boolean isMultiViewModule, boolean isInlineModule) {
-		this.isInlineModule = isInlineModule;
-		this.isMultiViewModule = isMultiViewModule;
+		this.inlineModule = isInlineModule;
+		this.multiViewModule = isMultiViewModule;
 		this.factory = factory;
 	}
 
 	@Override
 	public boolean isMultiViewModule() {
-		return isMultiViewModule;
+		return multiViewModule;
 	}
 
 	@Override
 	public boolean isInlineModule() {
-		return isInlineModule;
+		return inlineModule;
 	}
 
 	@Override

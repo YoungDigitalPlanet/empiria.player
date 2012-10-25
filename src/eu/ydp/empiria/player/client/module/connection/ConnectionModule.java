@@ -13,27 +13,27 @@ import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModule
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
 
 public class ConnectionModule extends AbstractInteractionModule<ConnectionModule, ConnectionModuleModel, MatchInteractionBean> {
-	
+
 	@Inject
-	private ConnectionModulePresenter presenter;	
-	
+	private ConnectionModulePresenter presenter;
+
 	@Inject
 	ConnectionModuleStructure connectionStructure;
 
 	@Inject
 	protected ModuleFactory moduleFactory;
-	
+
 	@Inject
 	private ConnectionModuleFactory connectionModuleFactory;
-	
+
 	@Override
 	protected void initalizeModule() {
-		connectionStructure.createFromXml(getModuleElement().toString());		
-		presenter.setModuleSocket(getModuleSocket());
-		
+
 		// TODO: feedbacks
 	}
-		
+
+
+
 	@Override
 	public ConnectionModule getNewInstance() {
 		return moduleFactory.getConnectionModule();

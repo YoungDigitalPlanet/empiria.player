@@ -95,6 +95,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-connection-item-selected")
 	public String QP_CONNECTION_ITEM_SELECTED();
 
+	@DefaultStringValue("qp-connection-item-conected")
+	public String QP_CONNECTION_ITEM_CONECTED();
+
 	@DefaultStringValue("qp-connection-item-selection-button")
 	public String QP_CONNECTION_ITEM_SELECTION_BUTTON();
 
@@ -340,7 +343,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-page-unselected")
 	public String QP_PAGE_UNSELECTED();
-	
+
 	@DefaultStringValue("qp-placeholder")
 	public String QP_PLACEHOLDER();
 

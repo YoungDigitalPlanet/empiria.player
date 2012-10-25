@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
@@ -14,26 +15,27 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHan
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
 public class ConnectionModulePresenterImpl implements ConnectionModulePresenter, PairConnectEventHandler  {
-	
+
 	private MatchInteractionBean bean;
-	
+
 	ConnectionModuleModel model;
 
-	//@Inject
+	@Inject
 	private MultiplePairModuleView moduleView;
-	
+
 	private ModuleSocket moduleSocket;
-	
+
 	@Override
 	public void setModuleSocket(ModuleSocket moduleSocket) {
 		this.moduleSocket = moduleSocket;
 	}
-	
+
 	@Override
 	public void bindView() {
 		moduleView.setBean(bean);
+		moduleView.setModuleSocket(moduleSocket);
 		moduleView.bindView();
-		
+
 		moduleView.reset();
 	}
 
@@ -46,7 +48,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	public void setModuleView(MultiplePairModuleView moduleView) {
 		this.moduleView = moduleView;
 	}
-	
+
 	@Override
 	public void setModel(ConnectionModuleModel model) {
 		this.model = model;
@@ -69,7 +71,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	@Override
 	public void showCurrentAnswers() {
-		showAnswers(model.getCurrentAnswers(), MultiplePairModuleConnectType.NORMAL); 
+		showAnswers(model.getCurrentAnswers(), MultiplePairModuleConnectType.NORMAL);
 	}
 
 	@Override
@@ -81,7 +83,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	public void markWrongAnswers() {
 		setAnswersMarked(true, MultiplePairModuleConnectType.WRONG);
 	}
-	
+
 	@Override
 	public void unmarkCorrectAnswers() {
 		setAnswersMarked(false, MultiplePairModuleConnectType.CORRECT);
@@ -91,12 +93,12 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	public void unmarkWrongAnswers() {
 		setAnswersMarked(false, MultiplePairModuleConnectType.WRONG);
 	}
-	
+
 	@Override
 	public Widget asWidget() {
 		return moduleView.asWidget();
 	}
-	
+
 	@Override
 	public void onConnectionEvent(PairConnectEvent event) {
 		switch (event.getType()) {
@@ -107,14 +109,14 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 				moduleView.disconnect(event.getSourceItem(), event.getTargetItem());
 			}
 			break;
-		case DISCONNECTED:			
+		case DISCONNECTED:
 			model.removeAnswer(event.getItemsPair());
 			break;
 		case WRONG_CONNECTION:
 		default:
 			/* TODO: to handle incorrect situation */
 			break;
-		}		
+		}
 	}
 
 	private boolean isConnectionValid(String sourceItem, String targetItem) {
@@ -137,33 +139,33 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 		return errorsCount == 0;
 	}
-		
+
 	/**
 	 * Sets connections in view using given {@link KeyValue} collection for defined {@link MultiplePairModuleConnectType}
-	 * 
-	 * @param answers 
+	 *
+	 * @param answers
 	 * @param type
 	 */
-	private void showAnswers(List<KeyValue<String, String>> answers, MultiplePairModuleConnectType type) {		
+	private void showAnswers(List<KeyValue<String, String>> answers, MultiplePairModuleConnectType type) {
 		moduleView.reset();
-		for (KeyValue<String, String> answer : answers) {			
+		for (KeyValue<String, String> answer : answers) {
 			moduleView.connect(answer.getKey(), answer.getValue(), type);
-		}				
+		}
 	}
 
 	/**
 	 * Marks / unmarks answers
-	 * 
+	 *
 	 * @param markMode - {@link Boolean} mark/unmark
-	 * @param markingType - {@link MultiplePairModuleConnectType#CORRECT} or {@link MultiplePairModuleConnectType#WRONG} 
+	 * @param markingType - {@link MultiplePairModuleConnectType#CORRECT} or {@link MultiplePairModuleConnectType#WRONG}
 	 */
 	private void setAnswersMarked(boolean markMode, MultiplePairModuleConnectType markingType) {
-		List<Boolean> responseEvaluated = evaluateResponse();		
+		List<Boolean> responseEvaluated = evaluateResponse();
 		List<KeyValue<String, String>> currentAnswers = model.getCurrentAnswers();
-				
+
 		int responseCnt = 0;
 		for (Boolean isCorrect : responseEvaluated) {
-			MultiplePairModuleConnectType type = (isCorrect) ? MultiplePairModuleConnectType.CORRECT : MultiplePairModuleConnectType.WRONG;			
+			MultiplePairModuleConnectType type = (isCorrect) ? MultiplePairModuleConnectType.CORRECT : MultiplePairModuleConnectType.WRONG;
 			KeyValue<String, String> answersPair = currentAnswers.get(responseCnt);
 			if (markingType.equals(type)) {
 				if (markMode) {
@@ -175,12 +177,12 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 					moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL); // TODO: NORMAL
 				}
 			}
-			responseCnt++; 
-		}		
-	}		
-	
+			responseCnt++;
+		}
+	}
+
 	List<Boolean> evaluateResponse() {
 		return moduleSocket.evaluateResponse(model.getResponse());
-	}	
+	}
 
 }

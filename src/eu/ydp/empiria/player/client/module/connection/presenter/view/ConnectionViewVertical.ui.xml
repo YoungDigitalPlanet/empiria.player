@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
+	<ui:style>
+		.relative{
+			position: relative;
+		}
+		.bottom{
+			width: 100%;
+			clear: both;
+		}
+	</ui:style>
+	<g:FlowPanel ui:field="view" styleName="{style.relative} {res.QP_CONNECTION}">
+		<g:FlowPanel ui:field="leftColumn" styleName="{res.QP_CONNECTION_LEFT_COLUMN}" />
+		<g:FlowPanel ui:field="centerColumn" styleName="{res.QP_CONNECTION_CENTER_COLUMN}" />
+		<g:FlowPanel ui:field="rightColumn" styleName="{res.QP_CONNECTION_RIGHT_COLUMN}" />
+		<g:FlowPanel styleName="{style.bottom}"></g:FlowPanel>
+	</g:FlowPanel>
+</ui:UiBinder>

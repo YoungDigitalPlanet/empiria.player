@@ -28,6 +28,8 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchRecognition;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.empiria.player.client.util.scheduler.SchedulerImpl;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
@@ -83,7 +85,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
 		install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
 
-		install(new GinFactoryModuleBuilder().build(TouchRecognitionFactory.class));
+		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class) .build(TouchRecognitionFactory.class));
 
 
 

@@ -7,6 +7,11 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
+/**
+ * Zwraca style dla canvas
+ * @author plelakowski
+ *
+ */
 public class ConnectionModuleViewStyles {
 	private final StyleSocket styleSocket;
 	private final ConnectionStyleXMLElementCache cache;
