@@ -83,7 +83,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			item = null;
 			itemViewSocket.setItemView(new ItemViewCarrier(data.errorMessage.length() > 0 ? data.errorMessage : e.getClass().getName() + "<br/>" + e.getMessage() + "<br/>"
 					+ e.getStackTrace()));
-			e.printStackTrace();
+			//e.printStackTrace();
 			OperationLogManager.logEvent(OperationLogEvent.DISPLAY_ITEM_FAILED);
 			e.printStackTrace();
 		}

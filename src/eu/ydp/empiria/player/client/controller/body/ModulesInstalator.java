@@ -82,24 +82,22 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	public void createSingleViewModule(Element element, HasWidgets parent,BodyGeneratorSocket bodyGeneratorSocket) {
 		IModule module = registry.createModule(element);
 
-		if (module != null) {
-			parenthood.addChild(module);
+		parenthood.addChild(module);
 	
-			if (module instanceof ISingleViewWithBodyModule){
-				parenthood.pushParent((ISingleViewWithBodyModule) module);
-				((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, interactionListener, bodyGeneratorSocket);
-				parenthood.popParent();
-			} else if (module instanceof ISingleViewSimpleModule){
-				((ISingleViewSimpleModule)module).initModule(element, moduleSocket, interactionListener);
-			}else if(module instanceof IInlineModule){
-				((IInlineModule) module).initModule(element, moduleSocket);
-			}
-			if (((ISingleViewModule)module).getView() instanceof Widget ){
-				parent.add( ((ISingleViewModule)module).getView() );
-			}
-	
-			singleViewModules.add(module);
+		if (module instanceof ISingleViewWithBodyModule){
+			parenthood.pushParent((ISingleViewWithBodyModule) module);
+			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, interactionListener, bodyGeneratorSocket);
+			parenthood.popParent();
+		} else if (module instanceof ISingleViewSimpleModule){
+			((ISingleViewSimpleModule)module).initModule(element, moduleSocket, interactionListener);
+		}else if(module instanceof IInlineModule){
+			((IInlineModule) module).initModule(element, moduleSocket);
 		}
+		if (((ISingleViewModule)module).getView() instanceof Widget ){
+			parent.add( ((ISingleViewModule)module).getView() );
+		}
+	
+		singleViewModules.add(module);
 	}
 
 	public void installMultiViewNonuniuqeModules(){

@@ -51,19 +51,16 @@ public class ModulesRegistry implements ModulesRegistrySocket {
 		return false;
 	}
 	
-	public IModule createModule(Element node){
+	public IModule createModule(Element node) {
 		String nodeName = node.getNodeName();
-		
-		if (node.hasAttribute(EmpiriaTagConstants.ATTR_TYPE)) {
-			nodeName = ModuleTagName.getTagNameWithType(nodeName, node.getAttribute(EmpiriaTagConstants.ATTR_TYPE));
-		}
-		
 		ModuleCreator currCreator = moduleCreators.get(nodeName);
 		
-		IModule module = null;
-		if (currCreator != null) {
-			module = currCreator.createModule();
+		if ( (currCreator == null) && (node.hasAttribute(EmpiriaTagConstants.ATTR_TYPE)) ) {
+			nodeName = ModuleTagName.getTagNameWithType(nodeName, node.getAttribute(EmpiriaTagConstants.ATTR_TYPE));
+			currCreator = moduleCreators.get(nodeName);
 		}
+		
+		IModule module = currCreator.createModule();
 		
 		return module;
 	}
