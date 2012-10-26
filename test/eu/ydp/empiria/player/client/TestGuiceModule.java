@@ -161,7 +161,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	@Singleton
 	public TouchRecognitionFactory getTouchRecognitionFactory(){
 		TouchRecognitionFactory factory = mock(TouchRecognitionFactory.class);
-		when(factory.getTouchRecognition(Mockito.any(Widget.class),true)).thenReturn(spy(new HasTouchHandlersMock()));
+		when(factory.getTouchRecognition(Mockito.any(Widget.class),Mockito.anyBoolean())).thenReturn(spy(new HasTouchHandlersMock()));
 		return factory;
 	}
 
