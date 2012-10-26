@@ -167,7 +167,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	
 	native void notifyModeChange()/*-{
 		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::playerJsObject;
-		if (typeof playerJso == 'object'  &&  typeof playerJso.bookmarkingClearButtons == 'function'){
+		if (typeof playerJso != 'undefined'  && playerJso != null  &&  typeof playerJso.bookmarkingClearButtons == 'function'){		 
 			playerJso.bookmarkingClearButtons();
 		}
 	}-*/;
@@ -252,7 +252,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	@Override
 	public void setPlayerJsObject(JavaScriptObject playerJsObject) {
 		this.playerJsObject = playerJsObject;
-		initJsApi(playerJsObject);
+		initJsApi(playerJsObject);		
 	}
 
 	private native void initJsApi(JavaScriptObject playerJsObject) /*-{
@@ -422,10 +422,11 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	@Override
 	public void setState(JSONArray newState) {		
 		
-		String externalBookmarks = getExternalBookmarks();
+		JavaScriptObject externalBookmarks = getExternalBookmarks();
+		
 		JSONArray externalState = null;
 		if(externalBookmarks != null){
-			externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks);
+			externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks.toString());
 		}
 		
 		JSONArray state = externalState == null ? newState : externalState;
@@ -436,9 +437,9 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		}
 	}
 	
-	private native String getExternalBookmarks()/*-{
-		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::playerJsObject;
-		if (typeof playerJso == 'object'  &&  typeof playerJso.getExternalBookmarks == 'function'){
+	private native JavaScriptObject getExternalBookmarks()/*-{
+		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::playerJsObject;		
+		if (typeof playerJso != 'undefined'  && playerJso != null && typeof playerJso.getExternalBookmarks == 'function'){			
 			return playerJso.getExternalBookmarks();
 		}
 		else{
