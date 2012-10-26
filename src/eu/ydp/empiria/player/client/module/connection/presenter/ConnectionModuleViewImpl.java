@@ -133,7 +133,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		view.addConnectionMoveEndHandler(this);
 		view.addConnectionMoveStartHandler(this);
 		// zdarzenia od usera
-		HasTouchHandlers touchRecognition = touchRecognitionFactory.getTouchRecognition(view.asWidget());
+		HasTouchHandlers touchRecognition = touchRecognitionFactory.getTouchRecognition(view.asWidget(),true);
 		touchRecognition.addTouchHandler(this, TouchEvent.getType(TouchTypes.TOUCH_START));
 		touchRecognition.addTouchHandler(this, TouchEvent.getType(TouchTypes.TOUCH_END));
 		// elementy do wyswietlenia / polaczenia

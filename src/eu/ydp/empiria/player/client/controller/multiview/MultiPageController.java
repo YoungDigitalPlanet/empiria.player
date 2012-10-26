@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
@@ -28,11 +29,16 @@ import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
 import eu.ydp.empiria.player.client.controller.multiview.animation.AnimationEndCallback;
+import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -43,7 +49,7 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
-public class MultiPageController implements PlayerEventHandler, FlowRequestSocketUserExtension, FlowDataSocketUserExtension,Extension, TouchHandler {
+public class MultiPageController implements PlayerEventHandler, FlowRequestSocketUserExtension, FlowDataSocketUserExtension, Extension, TouchHandler {
 
 	@Inject
 	protected EventsBus eventsBus;
@@ -58,13 +64,13 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	@Inject
 	protected GWTPanelFactory panelFactory;
 	@Inject
-	protected PageEventsHandler pageEvents;
-	@Inject
 	protected MultiPageView view;
 	@Inject
 	protected StyleSocket styleSocket;
 	@Inject
 	protected Animation animation;
+	@Inject
+	protected TouchRecognitionFactory touchRecognitionFactory;
 	private static int activePageCount = 3;
 	private int currentVisiblePage = -1;
 	private int start;
@@ -98,29 +104,25 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private FlowDataSupplier flowDataSupplier;
 
 	/*
-	private final Timer touchEndTimer = new Timer() {
+	 * private final Timer touchEndTimer = new Timer() {
+	 *
+	 * @Override public void run() { animatePageSwitch(getPositionLeft(),
+	 * currentPosition, null, QUICK_ANIMATION_TIME, true); swipeStarted = false;
+	 * resetPostionValues(); } };
+	 */
 
-		@Override
-		public void run() {
-			animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
-			swipeStarted = false;
-			resetPostionValues();
-		}
-	};
-	*/
-	
 	private final Timer touchEndTimer = new Timer() {
 		@Override
 		public void run() {
-			if(UserAgentChecker.isStackAndroidBrowser()) {
+			if (UserAgentChecker.isStackAndroidBrowser()) {
 				animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 				swipeStarted = false;
 				resetPostionValues();
 			}
 		}
 	};
+	private final Set<HandlerRegistration> touchHandlers = new HashSet<HandlerRegistration>();
 
-	
 	private void setStylesForPages(boolean swipeStarted) {
 		if (swipeStarted) {
 			Panel selectedPanel = panelsCache.get(currentVisiblePage).getKey();
@@ -402,23 +404,18 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		if (UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX)) {
 			zoomed = Window.getScrollLeft() != 0;
 		} else {
-			zoomed = getInnerWidth() != Window.getClientWidth() && getInnerWidth()-1 !=Window.getClientWidth();
+			zoomed = getInnerWidth() != Window.getClientWidth() && getInnerWidth() - 1 != Window.getClientWidth();
 		}
 		return zoomed;
 	}
 
-	private boolean isHorizontalSwipe(){
+	private boolean isHorizontalSwipe() {
 		return Math.abs(startY - endY) < Math.abs(start - end);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see eu.ydp.empiria.player.client.controller.multiview.TouchHandler#onTouchMove (com.google.gwt.dom.client.NativeEvent)
-	 */
-	@Override
 	public void onTouchMove(NativeEvent event) {
-		// nie zawsze wystepuje event touchend na androidzie - emulacja zachownaia
+		// nie zawsze wystepuje event touchend na androidzie - emulacja
+		// zachownaia
 		touchEndTimer.cancel();
 		if (!touchReservation && !touchLock && !animation.isRunning()) {
 			JsArray<Touch> touches = event.getTouches();
@@ -451,12 +448,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see eu.ydp.empiria.player.client.controller.multiview.TouchHandler#onTouchEnd (com.google.gwt.dom.client.NativeEvent)
-	 */
-	@Override
 	public void onTouchEnd(NativeEvent event) {
 		touchEndTimer.cancel();
 		if (swipeStarted) {
@@ -486,15 +477,9 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		resetPostionValues();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see eu.ydp.empiria.player.client.controller.multiview.TouchHandler#onTouchStart (com.google.gwt.dom.client.NativeEvent)
-	 */
-	@Override
 	public void onTouchStart(NativeEvent event) {
 		if (!touchReservation && !animation.isRunning()) {
-			touchLock=false;
+			touchLock = false;
 			reset();
 			JsArray<Touch> touches = event.getTouches();
 			if (touches == null) {
@@ -555,7 +540,8 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	public void setFlowDataSupplier(FlowDataSupplier supplier) {
 		flowDataSupplier = supplier;
 	}
-		private void configure() {
+
+	private void configure() {
 		String xml = "<root><swipeoptions class=\"qp-swipe-options\"/></root>";
 		Map<String, String> styles = styleSocket.getStyles((Element) XMLParser.parse(xml).getDocumentElement().getFirstChild());
 		if (styles.get(EmpiriaStyleNameConstants.EMPIRIA_SWIPE_DISABLE_ANIMATION) != null) {
@@ -590,9 +576,15 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	public void setSwipeDisabled(boolean swipeDisabled) {
 		this.swipeDisabled = swipeDisabled;
 		if (swipeDisabled) {
-			pageEvents.removeTouchHandler(this);
-		}else{
-			pageEvents.setTouchHandler(this);
+			for (HandlerRegistration registration : touchHandlers) {
+				registration.removeHandler();
+			}
+			touchHandlers.clear();
+		} else {
+			HasTouchHandlers touchHandler = touchRecognitionFactory.getTouchRecognition(RootPanel.get(), false);
+			touchHandlers.add(touchHandler.addTouchHandler(this, TouchEvent.getType(TouchTypes.TOUCH_START)));
+			touchHandlers.add(touchHandler.addTouchHandler(this, TouchEvent.getType(TouchTypes.TOUCH_MOVE)));
+			touchHandlers.add(touchHandler.addTouchHandler(this, TouchEvent.getType(TouchTypes.TOUCH_END)));
 		}
 		panelsCache.setSwipeDisabled(swipeDisabled);
 		view.setSwipeDisabled(swipeDisabled);
@@ -616,6 +608,25 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	public MultiPageView getView() {
 		return view;
+	}
+
+	@Override
+	public void onTouchEvent(TouchEvent event) {
+		switch (event.getType()) {
+		case TOUCH_START:
+			onTouchStart(event.getNativeEvent());
+			break;
+		case TOUCH_END:
+			onTouchEnd(event.getNativeEvent());
+			break;
+		case TOUCH_MOVE:
+			onTouchMove(event.getNativeEvent());
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
 }

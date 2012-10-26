@@ -11,7 +11,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.Book
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
-import eu.ydp.empiria.player.client.controller.multiview.PageEventsHandler;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
@@ -51,7 +50,6 @@ public interface PlayerGinjector extends Ginjector {
 	DOMTreeWalker getDomTreeWalker();
 	PanelCache getPanelCache();
 	GWTPanelFactory getPanelFactory();
-	PageEventsHandler getPageEvents();
 	ObjectTemplateParser<?>  getObjectTemplateParser();
 	VideoFullScreenHelper getVideoFullScreenHelper();
 	MediaControllerFactory getControllerFactory();
@@ -61,9 +59,9 @@ public interface PlayerGinjector extends Ginjector {
 	TextTrackFactory getTextTrackFactory();
 	ModuleFactory getModuleFactory();
 
-	ConnectionModuleJAXBParser getConnectionModuleJAXBParser();	
+	ConnectionModuleJAXBParser getConnectionModuleJAXBParser();
 	ConnectionModuleStructure getConnectionModuleStructure();
-	
+
 //	ConnectionItemFactory getConnectionItemFactory();
 
 	BookmarkProcessorExtension getBookmarkProcessorExtension();

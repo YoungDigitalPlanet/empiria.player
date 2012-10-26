@@ -91,6 +91,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 				bind(bindDescriptor, BindType.SIMPLE);
 			}
 		}
+
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));
@@ -160,7 +161,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	@Singleton
 	public TouchRecognitionFactory getTouchRecognitionFactory(){
 		TouchRecognitionFactory factory = mock(TouchRecognitionFactory.class);
-		when(factory.getTouchRecognition(Mockito.any(Widget.class))).thenReturn(spy(new HasTouchHandlersMock()));
+		when(factory.getTouchRecognition(Mockito.any(Widget.class),true)).thenReturn(spy(new HasTouchHandlersMock()));
 		return factory;
 	}
 

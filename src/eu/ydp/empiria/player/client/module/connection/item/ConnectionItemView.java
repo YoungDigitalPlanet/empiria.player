@@ -42,7 +42,7 @@ public class ConnectionItemView extends Composite implements HasTouchHandlers {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.bean = bean;
 		this.styleNames = styleNames;
-		this.touchRecognition = touchRecognitionFactory.getTouchRecognition(selection);
+		this.touchRecognition = touchRecognitionFactory.getTouchRecognition(selection,true);
 		this.bodyGenerator = bodyGenerator;
 		buildView();
 	}

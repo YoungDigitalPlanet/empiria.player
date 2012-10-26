@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchMoveHandler;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
-import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -21,32 +20,38 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.util.events.AbstractEventHandlers;
 import eu.ydp.empiria.player.client.util.events.Event.Type;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 //TODO dopisac rozpoznawanie gestow
-public class TouchRecognition extends AbstractEventHandlers<TouchHandler, TouchTypes,TouchEvent> implements HasTouchHandlers, TouchStartHandler, TouchEndHandler, TouchMoveHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler {
+public class TouchRecognition extends AbstractEventHandlers<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, TouchStartHandler,
+		TouchEndHandler, TouchMoveHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler {
 	private final Widget listenOn;
 	private boolean touchMoveHandlers = false;
 	private boolean touchStartHandlers = false;
 	private boolean touchEndHandlers = false;
+	private boolean emulateClickAsTouch = true;
 
 	@Inject
-	public TouchRecognition(@Assisted Widget listenOn) {
+	public TouchRecognition(@Assisted Widget listenOn, @Assisted Boolean emulateClickAsTouch) {
 		this.listenOn = listenOn;
+		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
 	}
 
 	private void addTouchMoveHandlers() {
 		if (!touchMoveHandlers) {
 			listenOn.addDomHandler(this, TouchMoveEvent.getType());
-			listenOn.addDomHandler(this, MouseMoveEvent.getType());
+			if (emulateClickAsTouch) {
+				listenOn.addDomHandler(this, MouseMoveEvent.getType());
+			}
 			touchMoveHandlers = true;
 		}
 	}
 
 	private void addTouchEndHandlers() {
 		if (!touchEndHandlers) {
-			listenOn.addDomHandler(this, MouseUpEvent.getType());
 			listenOn.addDomHandler(this, TouchEndEvent.getType());
+			if (emulateClickAsTouch) {
+				listenOn.addDomHandler(this, MouseUpEvent.getType());
+			}
 			touchEndHandlers = false;
 		}
 	}
@@ -54,15 +59,17 @@ public class TouchRecognition extends AbstractEventHandlers<TouchHandler, TouchT
 	private void addTouchStartHandlers() {
 		if (!touchStartHandlers) {
 			listenOn.addDomHandler(this, TouchStartEvent.getType());
-			listenOn.addDomHandler(this, MouseDownEvent.getType());
+			if (emulateClickAsTouch) {
+				listenOn.addDomHandler(this, MouseDownEvent.getType());
+			}
 			touchStartHandlers = false;
 		}
 	}
 
 	private void checkEvent(NativeEvent event) {
-		if (!(listenOn instanceof FocusWidget) && UserAgentChecker.isStackAndroidBrowser()) {
-			event.preventDefault();
-		}
+//		if (!(listenOn instanceof FocusWidget) && UserAgentChecker.isStackAndroidBrowser()) {
+//	//		event.preventDefault();
+//		}
 	}
 
 	private void touchStart(NativeEvent event) {
@@ -81,10 +88,9 @@ public class TouchRecognition extends AbstractEventHandlers<TouchHandler, TouchT
 	}
 
 	@Override
-	protected void dispatchEvent(TouchHandler handler,TouchEvent event) {
+	protected void dispatchEvent(TouchHandler handler, TouchEvent event) {
 		handler.onTouchEvent(event);
 	}
-
 
 	private void addTouchHandlers(TouchTypes type) {
 		switch (type) {
@@ -108,7 +114,6 @@ public class TouchRecognition extends AbstractEventHandlers<TouchHandler, TouchT
 		addTouchHandlers((TouchTypes) event.getType());
 		return addHandler(handler, event);
 	}
-
 
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
