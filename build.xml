@@ -3,24 +3,24 @@
 
 	<tstamp><format property="tstamp" pattern="yyyyMMddHHmm" timezone="GMT"/></tstamp>
 	<property file="default.properties" />
-	
+
 	<dirname property="base.dir" file="${ant.file.empiria.player}" />
 	<property name="bin.dir" value="${base.dir}/war/WEB-INF/classes"/>
 	<property name="bin.test.dir" value="${base.dir}/bin.test"/>
 	<property name="src.dir" value="${base.dir}/src"/>
-	
+
 	<property name="test.reports.dev.dir" value="${base.dir}/reports/htmlunit.dev" />
-	
+
 	<property name="lib.dir" value="${base.dir}/libs" />
-	<property name="ivylib.dir" value="${base.dir}/ivy-lib" />	
-	<property name="lib.coverage.dir" value="${base.dir}/ivy-lib-coverage" />	
+	<property name="ivylib.dir" value="${base.dir}/ivy-lib" />
+	<property name="lib.coverage.dir" value="${base.dir}/ivy-lib-coverage" />
 	<property name="version.file" value="${src.dir}/eu/ydp/empiria/player/client/version/version.txt"/>
 	<echo>${ivylib.dir}</echo>
-	
+
   <condition property="XstartOnFirstThread" value="-XstartOnFirstThread">
     <os family="mac"/>
   </condition>
-  
+
   <condition property="XstartOnFirstThread" value="">
     <not><os family="mac"/></not>
   </condition>
@@ -39,18 +39,18 @@
 	  <target name="resolve-coverage" depends="resolve" description="--> retrieve dependencies with ivy">
 	  	<ivy:retrieve pattern="${lib.coverage.dir}/[artifact].[ext]" conf="coverage" />
 	  </target>
-    
+
   <target name="libs" depends="resolve" description="Copy libs to WEB-INF/lib">
     <mkdir dir="war/WEB-INF/lib" />
     <copy todir="war/WEB-INF/lib">
-		<fileset dir="${ivylib.dir}" includes="**/*.jar"/> 
+		<fileset dir="${ivylib.dir}" includes="**/*.jar"/>
 	</copy>
     <!-- Add any additional server libs that need to be copied -->
   </target>
 
   <target name="javac" depends="libs" description="Compile java source">
     <mkdir dir="${bin.dir}"/>
-    <javac srcdir="src" includes="**" encoding="utf-8"
+    <javac srcdir="src" includes="**" excludes="com/google/gwt/emul/java/lang/*" encoding="utf-8"
         destdir="${bin.dir}"
         source="1.5" target="1.5" nowarn="true"
         debug="true" debuglevel="lines,vars,source">
@@ -60,7 +60,7 @@
       <fileset dir="src" excludes="**/*.java"/>
     </copy>
   </target>
-  
+
   <target name="gwtc" depends="javac" description="GWT compile to JavaScript">
     <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
       <classpath>
@@ -95,7 +95,7 @@
   <target name="war" depends="build" description="Create a war file">
     <zip destfile="empiriaplayer.war" basedir="war"/>
   </target>
-  
+
   <target name="lib" depends="javac, buildnumber" description="Create module library">
     <mkdir dir="dist/lib" />
     <copy todir="dist/lib">
@@ -125,11 +125,11 @@
     <delete dir="${cobertura.report.dir}" />
     <delete file="${cobertura.datafile}"  />
   </target>
-  
+
   <target name="buildnumber" description="Update build number">
 	<ivy:buildnumber organisation="eu.ydp" module="empiriaplayer" />
   </target>
-	
+
     <property name="cobertura.dir" value="${lib.coverage.dir}" />
     <property name="instrumented.dir" value="${base.dir}/bin.cobertura" />
     <property name="cobertura.report.dir" value="${base.dir}/cobertura-report" />
@@ -142,11 +142,11 @@
           <exclude name="ant*.jar" />
       </fileset>
   </path>
-	
-	
+
+
   <target name="cobertura-instrument" depends="javac.tests, resolve-coverage">
   	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-  	
+
   	<delete file="${cobertura.datafile}" />
 
   	<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
@@ -157,18 +157,18 @@
   	    </fileset>
   	</cobertura-instrument>
   </target>
-	
-  
+
+
   <target name="javac.tests" depends="javac" description="Compiles test code">
   	<mkdir dir="${bin.test.dir}"/>
-  	
+
     <javac srcdir="test" includes="**" encoding="utf-8"
       source="1.5" target="1.5" nowarn="true" destdir="${bin.test.dir}"
       debug="true" debuglevel="lines,vars,source">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
-  
+
   <target name="test.dev" depends="javac.tests, cobertura-instrument" description="Run development mode tests">
   	<delete dir="${test.reports.dev.dir}" />
     <mkdir dir="${test.reports.dev.dir}" />
@@ -181,7 +181,7 @@
       <classpath>
       	<pathelement location="src" />
       	<pathelement location="test" />
-      	
+
       	<pathelement location="${bin.test.dir}" />
         <path refid="cobertura.classpath" />
       	<pathelement location="${instrumented.dir}" />
@@ -195,7 +195,7 @@
       <formatter type="plain" />
       <formatter type="xml" />
     </junit>
-  	
+
   	<cobertura-report
   		format="${cobertura.report.type}"
   		destdir="${cobertura.report.dir}"
@@ -223,7 +223,7 @@
       <formatter type="xml" />
     </junit>
   </target>
-  
+
   <target name="test.all" depends="test.dev, test.prod">
   </target>
 
@@ -236,8 +236,8 @@
 
     <zip destfile="dist/empiriaplayer.zip" basedir="dist/build/empiria.player"/>
   </target>
-  
-  <target name="publish" depends="dist, project.file, sonar" description="Publish artifacts into Ivy repository">  	
+
+  <target name="publish" depends="dist, project.file, sonar" description="Publish artifacts into Ivy repository">
   	<!-- resolve is needed to get organization/module from ivy.xml for publish task !-->
 		<ivy:resolve />
 		<ivy:publish
@@ -246,17 +246,17 @@
 			status="${ivy.publish.status}"
 			forcedeliver="true"
 			artifactspattern="dist/[artifact].[ext]"
-			overwrite="true"/>		
+			overwrite="true"/>
 	</target>
-	
+
 	<target name="project.file">
 		<copy file="${base.dir}/project.template.xml" tofile="${base.dir}/project.xml" encoding="UTF-8">
 			<filterchain>
 				<expandproperties />
 			</filterchain>
 		</copy>
-	</target>  
-	
+	</target>
+
 	<target name="metadata.file">
 		<copy file="${base.dir}/metadata.template.xml" tofile="${base.dir}/metadata.xml" encoding="UTF-8" overwrite="true">
 			<filterchain>
@@ -264,11 +264,11 @@
 			</filterchain>
 		</copy>
 	</target>
-	
+
 	<target name="version.file">
 		<echo file="${version.file}">${revision}</echo>
 	</target>
-	
+
 
 	<property name="sonar-build-xml" value="${ivylib.dir}/sonar-build.xml" />
 
