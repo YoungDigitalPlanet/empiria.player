@@ -50,7 +50,7 @@
 
   <target name="javac" depends="libs" description="Compile java source">
     <mkdir dir="${bin.dir}"/>
-    <javac srcdir="src" includes="**" excludes="com/google/gwt/emul/java/lang/*" encoding="utf-8"
+    <javac srcdir="src" includes="**" encoding="utf-8"
         destdir="${bin.dir}"
         source="1.5" target="1.5" nowarn="true"
         debug="true" debuglevel="lines,vars,source">

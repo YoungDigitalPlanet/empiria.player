@@ -4,59 +4,65 @@ import java.util.Vector;
 
 import com.google.gwt.json.client.JSONValue;
 
+import eu.ydp.gwtutil.client.regex.RegexMatcher;
+
 public abstract class Variable {
-	
-	public Variable(){
+
+	protected RegexMatcher regexMatcher = new RegexMatcher();
+
+	public Variable() {
 		values = new Vector<String>();
 		identifier = "";
 		cardinality = Cardinality.SINGLE;
 		baseType = BaseType.STRING;
 	}
-	
+
 	public String identifier;
 
 	public Cardinality cardinality;
-	
+
 	public BaseType baseType;
-	
+
 	public Vector<String> values;
-		
-	public void reset(){
-		values.clear();		
+
+	public void reset() {
+		values.clear();
 	}
-	
-	public String getValuesShort(){
-		
-		String output = "";
-		
-		for (int i = 0 ; i < values.size() ; i ++ ){
-			output += escapeCSV (values.get(i));
-			if (i < values.size()-1)
-				output += ";";
+
+	public String getValuesShort() {
+
+		StringBuilder output = new StringBuilder("");
+
+		for (int i = 0; i < values.size(); i++) {
+			output.append(escapeCSV(values.get(i)));
+			if (i < values.size() - 1) {
+				output.append(";");
+			}
 		}
-		
-		return output;
+		return output.toString();
 	}
-	
-	protected String escapeCSV(String value){
-		if (value.contains("'")  ||  value.contains(";")){
+
+	protected String escapeCSV(String value) {
+		if (value.contains("'") || value.contains(";")) {
 			value = value.replace("'", "''");
 			value = "'" + value + "'";
 		}
 		return value;
 	}
-	
-	public boolean compareValues(String[] testValues){
+
+	public boolean compareValues(String[] testValues) {
 		Vector<String> vec = new Vector<String>();
-		for (int i = 0 ; i < testValues.length ; i ++)
+		for (int i = 0; i < testValues.length; i++) {
 			vec.add(testValues[i]);
-		return compareValues(vec);	
+		}
+		return compareValues(vec);
 	}
-	
+
 	public boolean compareValues(Vector<String> testValues){
 		
-		if (values.size() != testValues.size())
+		if (values.size() != testValues.size()) {
 			return false;
+		}
 		
 		boolean contains;
 		
@@ -67,23 +73,27 @@ public abstract class Variable {
 					contains = true;
 					break;
 				}
-			}	
-			if (!contains)
+			}
+			if (!contains) {
 				return false;
+			}
 		}
 		return true;
 	}
-	
+
 	public boolean matchFirstValue(String[] testValues) {
 		String value = this.values.firstElement();
-
-		for (String testValue : testValues)
-				if (value.matches(testValue))
-					return true;
-		
-		return false;
+		boolean result = false;
+		for (String testValue : testValues) {
+			if (regexMatcher.matches(value,"^(" + testValue + ")$")) {
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
-	
+
 	public abstract JSONValue toJSON();
+
 	public abstract void fromJSON(JSONValue value);
 }
