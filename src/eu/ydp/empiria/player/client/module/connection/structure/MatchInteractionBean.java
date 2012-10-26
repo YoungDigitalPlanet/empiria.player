@@ -26,9 +26,6 @@ public class MatchInteractionBean implements MultiplePairBean<SimpleAssociableCh
 	private String type;
 	
 	@XmlAttribute
-	private int matchMax;
-
-	@XmlAttribute
 	private int maxAssociations;
 
 	@XmlAttribute
@@ -77,15 +74,6 @@ public class MatchInteractionBean implements MultiplePairBean<SimpleAssociableCh
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	@Override	
-	public int getMatchMax() {
-		return matchMax;
-	}
-
-	public void setMatchMax(int matchMax) {
-		this.matchMax = matchMax;
 	}
 
 	@Override	

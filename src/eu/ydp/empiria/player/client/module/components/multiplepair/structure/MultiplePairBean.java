@@ -21,7 +21,5 @@ public interface MultiplePairBean<B extends PairChoiceBean> extends ModuleBean {
 	public String getResponseIdentifier();
 
 	public int getMaxAssociations();
-
-	public int getMatchMax();
 	
 }
