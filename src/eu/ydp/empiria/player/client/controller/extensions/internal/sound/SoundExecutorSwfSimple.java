@@ -8,7 +8,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.gwtutil.client.PathUtil;
 
 public class SoundExecutorSwfSimple implements SoundExecutor<Widget> {
 
@@ -32,7 +31,7 @@ public class SoundExecutorSwfSimple implements SoundExecutor<Widget> {
 		embedSwf(htmlId, swfSrc, installSrc, src);
 	}
 
-	private native void embedSwf(String objectId, String swfSrc, String installSrc, String soundSrc)/*-{
+	private native void embedSwf(String id, String swfSrc, String installSrc, String soundSrc)/*-{
 		var flashvars = {source:soundSrc};
 		$wnd.swfobject.embedSWF(swfSrc, id, 100, 100, "9", installSrc, flashvars);
 
