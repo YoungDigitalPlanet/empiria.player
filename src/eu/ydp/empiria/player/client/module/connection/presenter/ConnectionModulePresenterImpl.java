@@ -33,6 +33,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	@Override
 	public void bindView() {
+		moduleView.addPairConnectEventHandler(this);
 		moduleView.setBean(bean);
 		moduleView.setModuleSocket(moduleSocket);
 		moduleView.bindView();
@@ -101,17 +102,21 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	}
 
 	@Override
-	public void onConnectionEvent(PairConnectEvent event) {
+	public void onConnectionEvent(PairConnectEvent event) {		
 		switch (event.getType()) {
 		case CONNECTED:
-			if (isConnectionValid(event.getSourceItem(), event.getTargetItem())) {
-				model.addAnswer(event.getItemsPair());
-			} else {
-				moduleView.disconnect(event.getSourceItem(), event.getTargetItem());
+			if (event.isUserAction()) {
+				if (isConnectionValid(event.getSourceItem(), event.getTargetItem())) {
+					model.addAnswer(event.getItemsPair());
+				} else {
+					moduleView.disconnect(event.getSourceItem(), event.getTargetItem());
+				}
 			}
 			break;
 		case DISCONNECTED:
-			model.removeAnswer(event.getItemsPair());
+			if (event.isUserAction()) {
+				model.removeAnswer(event.getItemsPair());
+			}
 			break;
 		case WRONG_CONNECTION:
 		default:
