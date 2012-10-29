@@ -8,6 +8,7 @@ import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -73,6 +74,50 @@ public class DefaultVariableProcessorJUnitTest {
 	}
 	
 	@Test
+	public void processSingleResponseCardinalitySingleResponseCorrect() {
+		CorrectAnswers correctAnswers = new CorrectAnswers();
+		correctAnswers.add(new ResponseValue("RESPONSE_1_0"));
+		correctAnswers.add(new ResponseValue("RESPONSE_1_1"));
+		Vector<String> userAnswers = new Vector<String>();
+		userAnswers.add("RESPONSE_1_0");
+		ArrayList<Boolean> answersEvaluation = new ArrayList<Boolean>();
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		boolean passed = dvp.invokeProcessSingleResponseCardinalitySingle(correctAnswers, userAnswers, answersEvaluation);
+		assertThat(passed, is(true));
+		assertThat(answersEvaluation.get(0), is(true));
+	}
+	
+	@Test
+	public void processSingleResponseCardinalitySingleResponseWrong() {
+		CorrectAnswers correctAnswers = new CorrectAnswers();
+		correctAnswers.add(new ResponseValue("RESPONSE_1_0"));
+		correctAnswers.add(new ResponseValue("RESPONSE_1_1"));
+		Vector<String> userAnswers = new Vector<String>();
+		userAnswers.add("RESPONSE_1_4");
+		ArrayList<Boolean> answersEvaluation = new ArrayList<Boolean>();
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		boolean passed = dvp.invokeProcessSingleResponseCardinalitySingle(correctAnswers, userAnswers, answersEvaluation);
+		assertThat(passed, is(false));
+		assertThat(answersEvaluation.get(0), is(false));
+	}
+	
+	@Test
+	public void processSingleResponseCardinalitySingleUserAnswersInvalidSize() {
+		CorrectAnswers correctAnswers = new CorrectAnswers();
+		correctAnswers.add(new ResponseValue("RESPONSE_1_0"));
+		correctAnswers.add(new ResponseValue("RESPONSE_1_1"));
+		Vector<String> userAnswers = new Vector<String>();
+		ArrayList<Boolean> answersEvaluation = new ArrayList<Boolean>();
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		boolean passed = dvp.invokeProcessSingleResponseCardinalitySingle(correctAnswers, userAnswers, answersEvaluation);
+		assertThat(passed, is(false));
+		assertThat(answersEvaluation.get(0), is(false));
+	}
+	
+	@Test
 	public void processCardinalityMultipleEvaluateUser() {
 		Response mockResponse = mockMultiplePairResponse(Evaluate.USER);		
 		mockResponse.add("CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1");
@@ -108,11 +153,20 @@ public class DefaultVariableProcessorJUnitTest {
 		outcome.values.add("+RESPONSE_1_0");
 		Response response = mock(Response.class);
 		response.cardinality = Cardinality.SINGLE;
-		response.correctAnswers = new CorrectAnswers();
-		ResponseValue responseValue1 = new ResponseValue("RESPONSE_1_0");
-		ResponseValue responseValue2 = new ResponseValue("RESPONSE_1_1");
-		response.correctAnswers.add(responseValue1);
-		response.correctAnswers.add(responseValue2);
+		response.correctAnswers = mockCorrectAnswers();
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		int mistakesCounter = dvp.invokeProcessCheckMistakes(response, outcome);
+		assertThat(mistakesCounter, is(0));		
+	}
+	
+	@Test
+	public void processCheckMistakesCardinalitySingleAnswerInvalidFormat() {
+		Outcome outcome = mockOutcome();
+		outcome.values.add("RESPONSE_1_4");
+		Response response = mock(Response.class);
+		response.cardinality = Cardinality.SINGLE;
+		response.correctAnswers = mockCorrectAnswers();
 		
 		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
 		int mistakesCounter = dvp.invokeProcessCheckMistakes(response, outcome);
@@ -125,11 +179,7 @@ public class DefaultVariableProcessorJUnitTest {
 		outcome.values.add("+RESPONSE_1_4");
 		Response response = mock(Response.class);
 		response.cardinality = Cardinality.SINGLE;
-		response.correctAnswers = new CorrectAnswers();
-		ResponseValue responseValue1 = new ResponseValue("RESPONSE_1_0");
-		ResponseValue responseValue2 = new ResponseValue("RESPONSE_1_1");
-		response.correctAnswers.add(responseValue1);
-		response.correctAnswers.add(responseValue2);
+		response.correctAnswers = mockCorrectAnswers();
 		
 		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
 		int mistakesCounter = dvp.invokeProcessCheckMistakes(response, outcome);
@@ -143,11 +193,7 @@ public class DefaultVariableProcessorJUnitTest {
 		outcome.values.add("+RESPONSE_1_1");
 		Response response = mock(Response.class);
 		response.cardinality = Cardinality.MULTIPLE;
-		response.correctAnswers = new CorrectAnswers();
-		ResponseValue responseValue1 = new ResponseValue("RESPONSE_1_0");
-		ResponseValue responseValue2 = new ResponseValue("RESPONSE_1_1");
-		response.correctAnswers.add(responseValue1);
-		response.correctAnswers.add(responseValue2);
+		response.correctAnswers = mockCorrectAnswers();
 		
 		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
 		int mistakesCounter = dvp.invokeProcessCheckMistakes(response, outcome);
@@ -161,11 +207,7 @@ public class DefaultVariableProcessorJUnitTest {
 		outcome.values.add("+RESPONSE_1_7");
 		Response response = mock(Response.class);
 		response.cardinality = Cardinality.MULTIPLE;
-		response.correctAnswers = new CorrectAnswers();
-		ResponseValue responseValue1 = new ResponseValue("RESPONSE_1_0");
-		ResponseValue responseValue2 = new ResponseValue("RESPONSE_1_1");
-		response.correctAnswers.add(responseValue1);
-		response.correctAnswers.add(responseValue2);
+		response.correctAnswers = mockCorrectAnswers();
 		
 		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
 		int mistakesCounter = dvp.invokeProcessCheckMistakes(response, outcome);
@@ -179,11 +221,7 @@ public class DefaultVariableProcessorJUnitTest {
 		outcome.values.add("->RESPONSE_1_1");
 		Response response = mock(Response.class);
 		response.cardinality = Cardinality.ORDERED;
-		response.correctAnswers = new CorrectAnswers();
-		ResponseValue responseValue1 = new ResponseValue("RESPONSE_1_0");
-		ResponseValue responseValue2 = new ResponseValue("RESPONSE_1_1");
-		response.correctAnswers.add(responseValue1);
-		response.correctAnswers.add(responseValue2);
+		response.correctAnswers = mockCorrectAnswers();
 		
 		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
 		int mistakesCounter = dvp.invokeProcessCheckMistakes(response, outcome);
@@ -197,15 +235,31 @@ public class DefaultVariableProcessorJUnitTest {
 		outcome.values.add("->RESPONSE_1_4");
 		Response response = mock(Response.class);
 		response.cardinality = Cardinality.ORDERED;
-		response.correctAnswers = new CorrectAnswers();
-		ResponseValue responseValue1 = new ResponseValue("RESPONSE_1_0");
-		ResponseValue responseValue2 = new ResponseValue("RESPONSE_1_1");
-		response.correctAnswers.add(responseValue1);
-		response.correctAnswers.add(responseValue2);
+		response.correctAnswers = mockCorrectAnswers();
 		
 		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
 		int mistakesCounter = dvp.invokeProcessCheckMistakes(response, outcome);
 		assertThat(mistakesCounter, is(1));
+	}
+	
+	@Test
+	public void processCheckMistakesCardinalityOrderedAnswerInvalidFormat() {
+		Outcome outcome = mockOutcome();
+		outcome.values.add("RESPONSE_1_0");
+		Response response = mock(Response.class);
+		response.cardinality = Cardinality.ORDERED;
+		response.correctAnswers = mockCorrectAnswers();
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		int mistakesCounter = dvp.invokeProcessCheckMistakes(response, outcome);
+		assertThat(mistakesCounter, is(0));
+	}
+	
+	private CorrectAnswers mockCorrectAnswers() {
+		CorrectAnswers correctAnswers = new CorrectAnswers();
+		correctAnswers.add(new ResponseValue("RESPONSE_1_0"));
+		correctAnswers.add(new ResponseValue("RESPONSE_1_1"));
+		return correctAnswers;
 	}
 	
 	private Response mockMultiplePairResponse(Evaluate evaluateType) {
@@ -248,6 +302,10 @@ public class DefaultVariableProcessorJUnitTest {
 	private class DefaultVariableProcessorMock extends DefaultVariableProcessor {
 		public int invokeProcessCheckMistakes(Response response, Outcome moduleLastChange) {
 			return processCheckMistakes(response, moduleLastChange);
+		}
+		
+		public boolean invokeProcessSingleResponseCardinalitySingle(CorrectAnswers correctAnswers, Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
+			return processSingleResponseCardinalitySingle(correctAnswers, userAnswers, answersEvaluation);
 		}
 	}
 }

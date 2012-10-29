@@ -366,7 +366,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 		} else if (response.cardinality == Cardinality.SINGLE) {
-			passed = processSingleResponseCardinalitySingle(response, correctAnswers, userAnswers, answersEvaluation);
+			passed = processSingleResponseCardinalitySingle(correctAnswers, userAnswers, answersEvaluation);
 		} else if (response.cardinality == Cardinality.MULTIPLE) {			
 			passed = processSingleResponseCardinalityMultiple(response, correctAnswers, userAnswers, answersEvaluation);
 		}
@@ -377,20 +377,13 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 	}
 
-	private boolean processSingleResponseCardinalitySingle(Response response, CorrectAnswers correctAnswers,
-			Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
-
-		boolean passed = true;
-		if (userAnswers.size() == 0 || !correctAnswers.containsAnswer(userAnswers.get(0))) {
-			passed = false;
-			answersEvaluation.add(false);
-		} else {
-			answersEvaluation.add(true);
-		}
+	protected boolean processSingleResponseCardinalitySingle(CorrectAnswers correctAnswers, Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
+		boolean passed = ( (userAnswers.size() == 0) || !correctAnswers.containsAnswer(userAnswers.get(0)) ) ? false : true;
+		answersEvaluation.add(passed);
 		return passed;
 	}
 
-	private boolean processSingleResponseCardinalityMultiple(Response response, CorrectAnswers correctAnswers,
+	protected boolean processSingleResponseCardinalityMultiple(Response response, CorrectAnswers correctAnswers,
 			Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
 
 		boolean passed = true;
