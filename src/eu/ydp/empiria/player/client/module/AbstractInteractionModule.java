@@ -105,7 +105,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	@Override
 	public void lock(boolean lock) {
 		locked = lock;
-		presenter.setLocked(!lock);
+		presenter.setLocked(lock);
 	}
 
 	@Override
