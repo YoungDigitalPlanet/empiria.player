@@ -439,7 +439,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		return passed;
 	}
 
-	private int processCheckMistakes(Response response, Outcome moduleLastChange){
+	protected int processCheckMistakes(Response response, Outcome moduleLastChange){
 		int mistakesCounter = 0;
 
 		if (response.cardinality == Cardinality.SINGLE  ||  response.cardinality == Cardinality.MULTIPLE){
