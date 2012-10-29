@@ -7,6 +7,7 @@ public class PairConnectEvent extends AbstractEvent<PairConnectEventHandler, Pai
 	public static EventTypes<PairConnectEventHandler, PairConnectEventTypes> types = new EventTypes<PairConnectEventHandler, PairConnectEventTypes>();
 	private String sourceItem;
 	private String targetItem;
+	private boolean userAction = false;
 
 	public PairConnectEvent(PairConnectEventTypes type, String source, String target) {
 		super(type, null);
@@ -42,6 +43,10 @@ public class PairConnectEvent extends AbstractEvent<PairConnectEventHandler, Pai
 
 	public static Type<PairConnectEventHandler, PairConnectEventTypes> getType(PairConnectEventTypes type) {
 		return types.getType(type);
+	}
+
+	public boolean isUserAction() {
+		return userAction;
 	}
 
 }
