@@ -73,7 +73,7 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
 		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0));
 		ConnectionSurface surface = moduleFactory.getConnectionSurfce(0, 0);
-		Mockito.verify(surface).drawLine(0, 0, 0, 0);
+		Mockito.verify(surface, times(2)).drawLine(0, 0, 0, 0);
 	}
 
 	@Test
