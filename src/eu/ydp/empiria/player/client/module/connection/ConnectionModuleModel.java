@@ -38,13 +38,13 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 		return response;
 	}	
 	
-	public void addAnswer(String answer){
-		response.add(answer);
+	public void addAnswer(String directedPair) {
+		response.add(directedPair);
 		onModelChange();
 	}
 	
-	public void removeAnswer(String answer){
-		response.remove(answer);
+	public void removeAnswer(String directedPair) {
+		response.remove(directedPair);
 		onModelChange();
 	}
 
@@ -58,6 +58,10 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 		return count;
 	}	
 	
+	public boolean checkUserResonseContainsAnswer(String answer) {
+		return response.values.contains(answer);
+	}
+	
 	public int getCurrentOverallPairingsNumber() {
 		return getCurrentAnswers().size();
 	}
@@ -66,7 +70,7 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 		this.moduleSocket = moduleSocket;
 	}		
 	
-	public List<Boolean> evaluateResponse() {
+	public List<Boolean> evaluateResponse() {		
 		return moduleSocket.evaluateResponse(getResponse());
 	}
 	

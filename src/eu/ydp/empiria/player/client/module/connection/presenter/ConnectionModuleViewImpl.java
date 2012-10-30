@@ -92,7 +92,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			ConnectionItem source = items.get(sourceIdentifier);
 			ConnectionItem target = items.get(targetIdentifier);
 			startDrawLine(source, type);
-			drawLine(target, target.getRelativeX(), target.getRelativeY());
+			drawLine(source, target.getRelativeX(), target.getRelativeY());
 			connectItems(source, target);
 		} else {
 			fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, sourceIdentifier, targetIdentifier);

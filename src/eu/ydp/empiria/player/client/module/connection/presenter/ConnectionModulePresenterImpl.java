@@ -103,19 +103,23 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	@Override
 	public void onConnectionEvent(PairConnectEvent event) {		
+		
+		DirectedPair pair = getDirectedPair(event);
+		
 		switch (event.getType()) {
 		case CONNECTED:
 			if (event.isUserAction()) {
-				if (isConnectionValid(event.getSourceItem(), event.getTargetItem())) {
-					model.addAnswer(event.getItemsPair());
+				boolean isResponseExists = model.checkUserResonseContainsAnswer(pair.toString());
+				if (isConnectionValid(pair) && !isResponseExists) {
+					model.addAnswer(getDirectedPair(event).toString());
 				} else {
 					moduleView.disconnect(event.getSourceItem(), event.getTargetItem());
 				}
 			}
 			break;
 		case DISCONNECTED:
-			if (event.isUserAction()) {
-				model.removeAnswer(event.getItemsPair());
+			if (event.isUserAction() && pair.getSource() != null && pair.getTarget() != null) {
+				model.removeAnswer(getDirectedPair(event).toString());
 			}
 			break;
 		case WRONG_CONNECTION:
@@ -125,21 +129,42 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		}
 	}
 
-	private boolean isConnectionValid(String sourceItem, String targetItem) {
+	private DirectedPair getDirectedPair(PairConnectEvent event) {
+		DirectedPair pair = new DirectedPair();
+		
+		String start = event.getSourceItem();
+		String end = event.getTargetItem();
+				
+		if (bean.getSourceChoicesIdentifiersSet().contains(start)) {
+			pair.setSource(start);
+		} else if (bean.getTargetChoicesIdentifiersSet().contains(start)) {
+			pair.setTarget(start);
+		}
+
+		if (bean.getSourceChoicesIdentifiersSet().contains(end)) {
+			pair.setSource(end);
+		} else if (bean.getTargetChoicesIdentifiersSet().contains(end)) {
+			pair.setTarget(end);
+		}
+		
+		return pair;
+	}
+
+	private boolean isConnectionValid(DirectedPair pair) {
 		int errorsCount = 0;
 
-		if (bean.getSourceChoicesIdentifiersSet().contains(targetItem) || bean.getTargetChoicesIdentifiersSet().contains(sourceItem)) {
-			// source-target pair allowed
+		if (pair.getSource() == null || pair.getTarget() == null) {
+			// invalid pair
 			errorsCount++;
 		} else if (bean.getMaxAssociations() > 0 && model.getCurrentOverallPairingsNumber() >= bean.getMaxAssociations()) {
 			// The maxAssociations attribute controls the maximum number of pairings the user is allowed to make overall.
 			errorsCount++;
-		} else if (bean.getChoiceByIdentifier(sourceItem).getMatchMax() > 0
-				&& model.getCurrentChoicePairingsNumber(sourceItem) >= bean.getChoiceByIdentifier(sourceItem).getMatchMax()) {
+		} else if (bean.getChoiceByIdentifier(pair.getSource()).getMatchMax() > 0
+				&& model.getCurrentChoicePairingsNumber(pair.getSource()) >= bean.getChoiceByIdentifier(pair.getSource()).getMatchMax()) {
 			// Individually, each choice has a matchMax attribute that controls how many pairings it can be part of.
 			errorsCount++;
-		} else if (bean.getChoiceByIdentifier(targetItem).getMatchMax() > 0
-				&& model.getCurrentChoicePairingsNumber(targetItem) >= bean.getChoiceByIdentifier(targetItem).getMatchMax()) {
+		} else if (bean.getChoiceByIdentifier(pair.getTarget()).getMatchMax() > 0
+				&& model.getCurrentChoicePairingsNumber(pair.getTarget()) >= bean.getChoiceByIdentifier(pair.getTarget()).getMatchMax()) {
 			errorsCount++;
 		}
 
@@ -175,7 +200,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 			KeyValue<String, String> answersPair = currentAnswers.get(responseCnt);
 			if (markingType.equals(type)) {
 				if (markMode) {
-					// TODO: disconnect ?
+					moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
 					moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
 					// TODO: jesli dana pozycja nie jest zaznaczona wcale to wyslac MultiplePairModuleConnectType.NONE ??
 				} else {
@@ -187,4 +212,26 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		}
 	}
 
+	private class DirectedPair {
+		private String source;
+		private String target;
+		
+		public String getSource() {
+			return source;
+		}
+		public void setSource(String source) {
+			this.source = source;
+		}
+		public String getTarget() {
+			return target;
+		}
+		public void setTarget(String target) {
+			this.target = target;
+		}
+		
+		@Override
+		public String toString() {			
+			return source + " " + target;
+		}
+	}	
 }

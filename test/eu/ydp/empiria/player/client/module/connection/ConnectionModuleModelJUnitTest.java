@@ -47,4 +47,13 @@ public class ConnectionModuleModelJUnitTest {
 		assertThat(correctAnswers.get(1).getValue(), is(equalTo("CONNECTION_RESPONSE_1_4")));
 	}
 		
+	@Test
+	public void checkUserResonseContainsAnswer() {
+		connectionModuleModel.addAnswer("CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1");
+		connectionModuleModel.addAnswer("CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4");
+		
+		boolean check = connectionModuleModel.checkUserResonseContainsAnswer("CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1");
+		
+		assertThat(check, is(equalTo(true)));
+	}
 }
