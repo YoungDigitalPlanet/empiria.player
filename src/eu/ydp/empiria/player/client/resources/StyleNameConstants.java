@@ -59,11 +59,11 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-bookmark-selected")
 	public String QP_BOOKMARK_SELECTED();
 
-	@DefaultStringValue("qp-choice-label")
-	public String QP_CHOICE_LABEL();
-	
 	@DefaultStringValue("qp-choice-button-place")
 	public String QP_CHOICE_BUTTON_PLACE();
+	
+	@DefaultStringValue("qp-choice-label")
+	public String QP_CHOICE_LABEL();
 	
 	@DefaultStringValue("qp-choice-module")
 	public String QP_CHOICE_MODULE();
@@ -92,14 +92,14 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-connection-item")
 	public String QP_CONNECTION_ITEM();
 
+	@DefaultStringValue("qp-connection-item-conected")
+	public String QP_CONNECTION_ITEM_CONECTED();
+
 	@DefaultStringValue("qp-connection-item-content")
 	public String QP_CONNECTION_ITEM_CONTENT();
 
 	@DefaultStringValue("qp-connection-item-selected")
 	public String QP_CONNECTION_ITEM_SELECTED();
-
-	@DefaultStringValue("qp-connection-item-conected")
-	public String QP_CONNECTION_ITEM_CONECTED();
 
 	@DefaultStringValue("qp-connection-item-selection-button")
 	public String QP_CONNECTION_ITEM_SELECTION_BUTTON();
@@ -461,6 +461,33 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-span")
 	public String QP_SPAN();
 
+	@DefaultStringValue("qp-stickie-container-inner")
+	public String QP_STICKIE_CONTAINER_INNER();
+
+	@DefaultStringValue("qp-stickie-container-mid")
+	public String QP_STICKIE_CONTAINER_MID();
+
+	@DefaultStringValue("qp-stickie-container-outer")
+	public String QP_STICKIE_CONTAINER_OUTER();
+
+	@DefaultStringValue("qp-stickie-delete-button")
+	public String QP_STICKIE_DELETE_BUTTON();
+
+	@DefaultStringValue("qp-stickie-delete-panel")
+	public String QP_STICKIE_DELETE_PANEL();
+
+	@DefaultStringValue("qp-stickie-minimize-button")
+	public String QP_STICKIE_MINIMIZE_BUTTON();
+
+	@DefaultStringValue("qp-stickie-minimize-panel")
+	public String QP_STICKIE_MINIMIZE_PANEL();
+
+	@DefaultStringValue("qp-stickie-text-area")
+	public String QP_STICKIE_TEXT_AREA();
+
+	@DefaultStringValue("qp-stickie-text-panel")
+	public String QP_STICKIE_TEXT_PANEL();
+
 	@DefaultStringValue("qp-summary")
 	public String QP_SUMMARY();
 
@@ -514,7 +541,6 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-items")
 	public String QP_TOC_ITEMS();
-
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
