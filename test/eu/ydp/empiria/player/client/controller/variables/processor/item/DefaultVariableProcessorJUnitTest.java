@@ -75,9 +75,7 @@ public class DefaultVariableProcessorJUnitTest {
 	
 	@Test
 	public void processSingleResponseCardinalitySingleResponseCorrect() {
-		CorrectAnswers correctAnswers = new CorrectAnswers();
-		correctAnswers.add(new ResponseValue("RESPONSE_1_0"));
-		correctAnswers.add(new ResponseValue("RESPONSE_1_1"));
+		CorrectAnswers correctAnswers = mockCorrectAnswers();
 		Vector<String> userAnswers = new Vector<String>();
 		userAnswers.add("RESPONSE_1_0");
 		ArrayList<Boolean> answersEvaluation = new ArrayList<Boolean>();
@@ -90,9 +88,7 @@ public class DefaultVariableProcessorJUnitTest {
 	
 	@Test
 	public void processSingleResponseCardinalitySingleResponseWrong() {
-		CorrectAnswers correctAnswers = new CorrectAnswers();
-		correctAnswers.add(new ResponseValue("RESPONSE_1_0"));
-		correctAnswers.add(new ResponseValue("RESPONSE_1_1"));
+		CorrectAnswers correctAnswers = mockCorrectAnswers();
 		Vector<String> userAnswers = new Vector<String>();
 		userAnswers.add("RESPONSE_1_4");
 		ArrayList<Boolean> answersEvaluation = new ArrayList<Boolean>();
@@ -105,9 +101,7 @@ public class DefaultVariableProcessorJUnitTest {
 	
 	@Test
 	public void processSingleResponseCardinalitySingleUserAnswersInvalidSize() {
-		CorrectAnswers correctAnswers = new CorrectAnswers();
-		correctAnswers.add(new ResponseValue("RESPONSE_1_0"));
-		correctAnswers.add(new ResponseValue("RESPONSE_1_1"));
+		CorrectAnswers correctAnswers = mockCorrectAnswers();
 		Vector<String> userAnswers = new Vector<String>();
 		ArrayList<Boolean> answersEvaluation = new ArrayList<Boolean>();
 		
@@ -255,6 +249,59 @@ public class DefaultVariableProcessorJUnitTest {
 		assertThat(mistakesCounter, is(0));
 	}
 	
+	@Test
+	public void processSingleResponseWrongUserAnswersSize() {
+		Response response = mock(Response.class);
+		response.cardinality = Cardinality.ORDERED;
+		response.correctAnswers = mockCorrectAnswers();
+		response.values = new Vector<String>();
+		response.values.add("RESPONSE_1_0");
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		boolean passed = dvp.invokeProcessSingleResponse(response);
+		assertThat(passed, is(false));
+	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public void processSingleResponseUnsupportedOperationException() {
+		Response response = mock(Response.class);
+		response.cardinality = Cardinality.ORDERED;
+		response.evaluate = Evaluate.CORRECT;
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		dvp.invokeProcessSingleResponse(response);
+	}
+	
+	@Test
+	public void processSingleResponseAnswerCorrect() {
+		Response response = mock(Response.class);
+		response.cardinality = Cardinality.ORDERED;
+		response.correctAnswers = mockCorrectAnswers();
+		response.groups = new TreeMap<String, List<Integer>>();
+		response.values = new Vector<String>();
+		response.values.add("RESPONSE_1_0");
+		response.values.add("RESPONSE_1_1");
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		boolean passed = dvp.invokeProcessSingleResponse(response);
+		assertThat(passed, is(true));
+	}
+	
+	@Test
+	public void processSingleResponseAnswerWrong() {
+		Response response = mock(Response.class);
+		response.cardinality = Cardinality.ORDERED;
+		response.correctAnswers = mockCorrectAnswers();
+		response.groups = new TreeMap<String, List<Integer>>();
+		response.values = new Vector<String>();
+		response.values.add("RESPONSE_1_4");
+		response.values.add("RESPONSE_1_5");
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		boolean passed = dvp.invokeProcessSingleResponse(response);
+		assertThat(passed, is(false));
+	}
+	
 	private CorrectAnswers mockCorrectAnswers() {
 		CorrectAnswers correctAnswers = new CorrectAnswers();
 		correctAnswers.add(new ResponseValue("RESPONSE_1_0"));
@@ -302,6 +349,10 @@ public class DefaultVariableProcessorJUnitTest {
 	private class DefaultVariableProcessorMock extends DefaultVariableProcessor {
 		public int invokeProcessCheckMistakes(Response response, Outcome moduleLastChange) {
 			return processCheckMistakes(response, moduleLastChange);
+		}
+		
+		public boolean invokeProcessSingleResponse(Response response) {
+			return processSingleResponse(response);
 		}
 		
 		public boolean invokeProcessSingleResponseCardinalitySingle(CorrectAnswers correctAnswers, Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {

@@ -300,7 +300,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		return 0;
 	}
 
-	boolean processSingleResponse(Response response) {
+	protected boolean processSingleResponse(Response response) {
 
 		CorrectAnswers correctAnswers = response.correctAnswers;
 
