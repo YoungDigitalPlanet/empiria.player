@@ -48,7 +48,7 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 
 		connectionModulePresenter.onConnectionEvent(event);
 
-		Mockito.verify(moduleView, Mockito.times(1)).disconnect(source, target);
+		Mockito.verify(moduleView).disconnect(source, target);
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 
 		connectionModulePresenter.onConnectionEvent(event);
 		
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4));
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 
 		connectionModulePresenter.onConnectionEvent(event);
 
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).removeAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4));
+		Mockito.verify(connectionModuleModel).removeAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4));
 	}
 
 	@Test
@@ -78,8 +78,8 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		PairConnectEvent event2 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_1, CONNECTION_RESPONSE_1_3, true);
 		connectionModulePresenter.onConnectionEvent(event2);
 
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1));
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 
 		Mockito.verify(connectionModuleModel, Mockito.never()).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_3));
 		Mockito.verify(connectionModuleModel, Mockito.never()).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_0));
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
 	}
 
 	@Test
@@ -107,9 +107,9 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		PairConnectEvent reConnectEvent2 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_1, CONNECTION_RESPONSE_1_3, true);
 		connectionModulePresenter.onConnectionEvent(reConnectEvent2);
 
-		Mockito.verify(moduleView, Mockito.times(1)).disconnect(reConnectEvent.getSourceItem(), reConnectEvent.getTargetItem());
-		Mockito.verify(moduleView, Mockito.times(1)).disconnect(reConnectEvent2.getSourceItem(), reConnectEvent2.getTargetItem());
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
+		Mockito.verify(moduleView).disconnect(reConnectEvent.getSourceItem(), reConnectEvent.getTargetItem());
+		Mockito.verify(moduleView).disconnect(reConnectEvent2.getSourceItem(), reConnectEvent2.getTargetItem());
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
 	}
 
 	@Test
@@ -125,9 +125,9 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		connectionModulePresenter.markCorrectAnswers();
 		connectionModulePresenter.markWrongAnswers();
 
-		Mockito.verify(moduleView, Mockito.times(1)).connect(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1, MultiplePairModuleConnectType.CORRECT);
-		Mockito.verify(moduleView, Mockito.times(1)).connect(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4, MultiplePairModuleConnectType.CORRECT);
-		Mockito.verify(moduleView, Mockito.times(1)).connect(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1, MultiplePairModuleConnectType.WRONG);
+		Mockito.verify(moduleView).connect(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1, MultiplePairModuleConnectType.CORRECT);
+		Mockito.verify(moduleView).connect(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4, MultiplePairModuleConnectType.CORRECT);
+		Mockito.verify(moduleView).connect(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1, MultiplePairModuleConnectType.WRONG);
 	}
 
 	@Test
@@ -141,8 +141,8 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		PairConnectEvent event3 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4, true);
 		connectionModulePresenter.onConnectionEvent(event3);
 
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1));
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
 		Mockito.verify(connectionModuleModel, Mockito.never()).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4));
 	}
 
@@ -159,10 +159,10 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		PairConnectEvent event4 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4, true);
 		connectionModulePresenter.onConnectionEvent(event4);
 
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1));
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4));
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4));
 	}
 
 	@Test
@@ -183,9 +183,9 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		PairConnectEvent event4 = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1, true);
 		connectionModulePresenter.onConnectionEvent(event4);
 
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4));
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
-		Mockito.verify(connectionModuleModel, Mockito.times(1)).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_1));
+		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4));
 		Mockito.verify(connectionModuleModel, Mockito.never()).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1));
 	}
 
