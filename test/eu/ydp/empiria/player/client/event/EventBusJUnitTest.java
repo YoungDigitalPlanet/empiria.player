@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.event;
 
+import static org.mockito.Mockito.mock;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
