@@ -148,11 +148,11 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.getConnectionItems(null);
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, connectionItems.iterator().next()));
+		testObject.setLocked(true);
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
 		Mockito.verify(surface).drawLine(0, 0, 0, 0);
 		Mockito.verify(surface).clear();
-		verify(connectionItems.iterator().next()).reset();
 	}
 
 	@Test

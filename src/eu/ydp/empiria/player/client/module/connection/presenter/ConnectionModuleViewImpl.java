@@ -63,7 +63,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	private final Map<String, ConnectionItem> items = new HashMap<String, ConnectionItem>();
 	protected final Set<ConnectionItem> leftColumnItems = new HashSet<ConnectionItem>();
 	protected final Set<ConnectionItem> rightColumnItems = new HashSet<ConnectionItem>();
-	protected ConnectionSurface currentSurfce = null;
+	protected ConnectionSurface currentSurface = null;
 	protected final Map<KeyValue<String, String>, ConnectionSurface> connectedSurfaces = new HashMap<KeyValue<String, String>, ConnectionSurface>();
 	protected final Map<ConnectionItem, KeyValue<Integer, Integer>> startPositions = new HashMap<ConnectionItem, KeyValue<Integer, Integer>>();
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
@@ -210,7 +210,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	protected void drawLine(ConnectionItem item, double positionX, double positionY) {
 		if (startPositions.containsKey(item)) {
 			KeyValue<Integer, Integer> startPoint = startPositions.get(item);
-			currentSurfce.drawLine(startPoint.getKey(), startPoint.getValue(), positionX, positionY);
+			currentSurface.drawLine(startPoint.getKey(), startPoint.getValue(), positionX, positionY);
 		}
 
 	}
@@ -219,17 +219,17 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		if (startPositions.containsKey(item)) {
 			item.reset();
 			startPositions.remove(item);
-			currentSurfce.clear();
+			currentSurface.clear();
 		}
 	}
 
 	protected void startDrawLine(ConnectionItem item, MultiplePairModuleConnectType type) {
 		KeyValue<Integer, Integer> startPoint = new KeyValue<Integer, Integer>(item.getRelativeX(), item.getRelativeY());
 		startPositions.put(item, startPoint);
-		currentSurfce = connectionFactory.getConnectionSurface(view.getOffsetWidth(), view.getOffsetHeight());
-		currentSurfce.applyStyles(connectionModuleViewStyles.getStyles(type));
-		view.addElementToMainView(currentSurfce.asWidget());
-		currentSurfce.drawLine(item.getRelativeX(), item.getRelativeY(), item.getRelativeX(), item.getRelativeY());
+		currentSurface = connectionFactory.getConnectionSurface(view.getOffsetWidth(), view.getOffsetHeight());
+		currentSurface.applyStyles(connectionModuleViewStyles.getStyles(type));
+		view.addElementToMainView(currentSurface.asWidget());
+		currentSurface.drawLine(item.getRelativeX(), item.getRelativeY(), item.getRelativeX(), item.getRelativeY());
 	}
 
 	protected void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, boolean userAction) {
@@ -238,7 +238,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		sourceItem.setConnected(true);
 		targetItem.setConnected(true);
 		ConnectionSurface duplicate = connectedSurfaces.put(new KeyValue<String, String>(sourceItem.getBean().getIdentifier(), targetItem.getBean()
-				.getIdentifier()), currentSurfce);
+				.getIdentifier()), currentSurface);
 		if (duplicate == null) {
 			fireConnectEvent(PairConnectEventTypes.CONNECTED, sourceItem.getBean().getIdentifier(), targetItem.getBean().getIdentifier(), userAction);
 		} else {
