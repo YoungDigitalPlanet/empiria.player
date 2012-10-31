@@ -34,11 +34,11 @@ public class FeedbackManager implements InlineFeedbackSocket{
 		container.setStyleName("qp-feedback-modal-container");
 	}
 	
-	public Vector<IItemFeedback> feedbacks; 
-	private FlowPanel container;
+	public Vector<IItemFeedback> feedbacks;
+	private final FlowPanel container;
 	protected ModuleSocket moduleSocket;
 	
-	private String baseUrl;
+	private final String baseUrl;
 	
 	public Panel getModalFeedbackView(){
 		return container;
@@ -50,18 +50,19 @@ public class FeedbackManager implements InlineFeedbackSocket{
 		
 		for (IItemFeedback currFeedback : feedbacks){
 			
-			if (responses.containsKey(currFeedback.getVariableIdentifier()))
+			if (responses.containsKey(currFeedback.getVariableIdentifier())) {
 				currVar = responses.get(currFeedback.getVariableIdentifier());
-			else if (outcomes.containsKey(currFeedback.getVariableIdentifier()))
+			} else if (outcomes.containsKey(currFeedback.getVariableIdentifier())) {
 				currVar = outcomes.get(currFeedback.getVariableIdentifier());
-			else
+			} else {
 				continue;
+			}
 			
 			boolean condition = false;
 			boolean validated = (currFeedback.getValue().compareTo("") != 0);
 			
-			if (currFeedback.getValue().startsWith(">=")  ||  
-				currFeedback.getValue().startsWith("<=")  ||  
+			if (currFeedback.getValue().startsWith(">=")  ||
+				currFeedback.getValue().startsWith("<=")  ||
 				currFeedback.getValue().startsWith("==")){
 				
 				try {
@@ -69,12 +70,13 @@ public class FeedbackManager implements InlineFeedbackSocket{
 					Integer referenceValue = Integer.valueOf(currFeedback.getValue().substring(2));
 					Integer testValue = Integer.valueOf(currVar.getValuesShort());
 					
-					if (currFeedback.getValue().startsWith(">="))
+					if (currFeedback.getValue().startsWith(">=")) {
 						condition = (testValue >= referenceValue);
-					else if (currFeedback.getValue().startsWith("<="))
+					} else if (currFeedback.getValue().startsWith("<=")) {
 						condition = (testValue <= referenceValue);
-					else if (currFeedback.getValue().startsWith("=="))
+					} else if (currFeedback.getValue().startsWith("==")) {
 						condition = (testValue == referenceValue);
+					}
 					
 				} catch (Exception e) {	}
 				
@@ -99,25 +101,28 @@ public class FeedbackManager implements InlineFeedbackSocket{
 			boolean senderMatches = true;
 			
 			if (currFeedback.getSenderIdentifier().length() > 0){
-				senderMatches = senderIdentifier.matches(currFeedback.getSenderIdentifier());  
+				senderMatches = senderIdentifier.matches(currFeedback.getSenderIdentifier());
 			}
 			
-			if (!validated)
+			if (!validated) {
 				continue;
+			}
 			
 			if (currFeedback.hasHTMLContent()){
 				
-				if (currFeedback.showOnMatch() == condition  &&  senderMatches)
+				if (currFeedback.showOnMatch() == condition  &&  senderMatches) {
 					currFeedback.show(container);
-				else
+				} else {
 					currFeedback.hide(container);
+				}
 								
 			}
 
 			if (currFeedback.hasSoundContent()){
 				
-				if (condition == currFeedback.showOnMatch()  &&  senderMatches)
+				if (condition == currFeedback.showOnMatch()  &&  senderMatches) {
 					currFeedback.processSound();
+				}
 				
 			}
 			

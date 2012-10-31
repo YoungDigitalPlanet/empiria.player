@@ -71,9 +71,9 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 			if(!nonuniqueModulesMap.containsKey(element)){
 				nonuniqueModulesMap.put(element, new StackMap<IModule, HasWidgets>());
 			}
-			
+
 			IModule currModule = registry.createModule(element);
-			nonuniqueModulesMap.get(element).put(currModule, placeholder);		
+			nonuniqueModulesMap.get(element).put(currModule, placeholder);
 			parenthood.addChild(currModule);
 		}
 	}
@@ -83,7 +83,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		IModule module = registry.createModule(element);
 
 		parenthood.addChild(module);
-	
+
 		if (module instanceof ISingleViewWithBodyModule){
 			parenthood.pushParent((ISingleViewWithBodyModule) module);
 			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, interactionListener, bodyGeneratorSocket);
@@ -91,12 +91,12 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		} else if (module instanceof ISingleViewSimpleModule){
 			((ISingleViewSimpleModule)module).initModule(element, moduleSocket, interactionListener);
 		}else if(module instanceof IInlineModule){
-			((IInlineModule) module).initModule(element, moduleSocket);
+			((IInlineModule) module).initModule(element, moduleSocket,interactionListener);
 		}
 		if (((ISingleViewModule)module).getView() instanceof Widget ){
 			parent.add( ((ISingleViewModule)module).getView() );
 		}
-	
+
 		singleViewModules.add(module);
 	}
 
@@ -104,11 +104,11 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		for (Element currElement : nonuniqueModulesMap.getKeys()){
 			StackMap<IModule, HasWidgets> moduleMap = nonuniqueModulesMap.get(currElement);
 			IModule module = moduleMap.getKeys().get(0);
-			
+
 			if(module instanceof IMultiViewModule){
 				IMultiViewModule multiViewModule = (IMultiViewModule) module;
 				List<HasWidgets> placeholders = moduleMap.getValues();
-				
+
 				multiViewModule.initModule(moduleSocket, interactionListener);
 				multiViewModule.addElement(currElement);
 				multiViewModule.installViews(placeholders);
@@ -149,7 +149,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		}
 		return modules;
 	}
-	
+
 	public List<IModule> getInstalledSingleViewModules(){
 		return singleViewModules;
 	}

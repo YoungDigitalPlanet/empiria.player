@@ -94,7 +94,7 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 
 	@Override
 	public void addElementToMainView(Widget widget) {
-		view.add(widget);
+		view.insert(widget,0);
 	}
 
 	@Override

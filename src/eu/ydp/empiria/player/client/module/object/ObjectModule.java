@@ -12,7 +12,7 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
@@ -27,7 +27,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class ObjectModule extends SimpleModuleBase implements Factory<ObjectModule> {// NOPMD
+public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {// NOPMD
 
 	private class MediaWrapperHandler implements CallbackRecevier {
 		@Override

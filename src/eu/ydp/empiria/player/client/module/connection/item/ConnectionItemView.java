@@ -42,7 +42,8 @@ public class ConnectionItemView extends Composite {
 	}
 
 	private void buildView() {
-		item.add(bodyGenerator.generateInlineBody(bean.getXmlContent().getValue()));
+		item.add(bodyGenerator.generateInlineBody(bean.getXmlContent().getValue(),true));
+		item.getElement().getStyle().setZIndex(1);
 	}
 
 	public void reset() {

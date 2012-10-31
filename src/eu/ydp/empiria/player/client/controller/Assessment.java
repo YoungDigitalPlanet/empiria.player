@@ -78,9 +78,11 @@ public class Assessment {
 	private AssessmentBodyView bodyView;
 
 	/**
-	 * Properties instance prepared by assessmentController (based on item body properties through the page controller) 
+	 * Properties instance prepared by assessmentController (based on item body properties through the page controller)
 	 */
 	private final IItemProperties itemProperties;
+
+	private InteractionEventsListener interactionEventsListener;
 
 	/**
 	 * C'tor
@@ -100,11 +102,11 @@ public class Assessment {
 		Document document = xmlData.getDocument();
 		Element rootNode = (Element) document.getElementsByTagName("assessmentTest").item(0);
 		Element skinBody = getSkinBody(data.getSkinData());
-		
+
 		if (skinBody == null) {
 			skinBody = XMLParser.parse("<itemBody><pageInPage /></itemBody>").getDocumentElement();
 		}
-		
+
 		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), xmlData.getBaseURL());
 		title = rootNode.getAttribute("title");
 
@@ -117,6 +119,7 @@ public class Assessment {
 			bodyView = new AssessmentBodyView(body);
 			bodyView.init( body.init(bodyNode) );
 			pageSlot = body.getPageSlot();
+			this.interactionEventsListener = interactionEventsListener;
 		}
 	}
 
@@ -198,7 +201,7 @@ public class Assessment {
 		@Override
 		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 			if (inlineBodyGenerator == null) {
-				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options);
+				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener);
 			}
 			return inlineBodyGenerator;
 		}

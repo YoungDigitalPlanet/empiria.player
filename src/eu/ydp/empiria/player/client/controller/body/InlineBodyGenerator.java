@@ -15,6 +15,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -28,11 +29,13 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 	protected ModuleSocket moduleSocket;
 	protected DisplayContentOptions options;
 	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private final InteractionEventsListener interactionEventsListener;
 
-	public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket moduleSocket, DisplayContentOptions options) {
+	public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket moduleSocket, DisplayContentOptions options, InteractionEventsListener interactionEventsListener) {
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
 		this.moduleSocket = moduleSocket;
+		this.interactionEventsListener = interactionEventsListener;
 	}
 
 	@Override
@@ -108,7 +111,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 			} else if (modulesRegistrySocket.isModuleSupported(currNode.getNodeName()) && modulesRegistrySocket.isInlineModule(currNode.getNodeName())) {
 				IModule module = modulesRegistrySocket.createModule((Element) currNode);
 				if (module instanceof IInlineModule) {
-					((IInlineModule) module).initModule((Element) currNode, moduleSocket);
+					((IInlineModule) module).initModule((Element) currNode, moduleSocket,interactionEventsListener);
 					Widget moduleView = ((IInlineModule) module).getView();
 					if (moduleView != null) {
 						parentElement.appendChild(moduleView.getElement());
@@ -139,7 +142,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 			if (modulesRegistrySocket.isModuleSupported(moduleName) && modulesRegistrySocket.isInlineModule(moduleName)) {
 				IModule module = modulesRegistrySocket.createModule((Element) node);
 				if (module instanceof IInlineModule) {
-					((IInlineModule) module).initModule((Element) node, moduleSocket);
+					((IInlineModule) module).initModule((Element) node, moduleSocket,interactionEventsListener);
 					Widget moduleView = ((IInlineModule) module).getView();
 					if (parent instanceof ComplexPanel && moduleView != null) {
 						((Panel) parent).add(moduleView);
@@ -208,8 +211,8 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 
 	@Override
 	public void generateInlineBody(String node,	com.google.gwt.dom.client.Element parentElement) {
-		
-		
+
+
 		generateInlineBody(getElementFromString(node), parentElement);
 	}
 
@@ -217,13 +220,13 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 	public Widget generateInlineBody(String mainNode, boolean allAsWidget) {
 		return generateInlineBody(getElementFromString(mainNode), allAsWidget);
 	}
-	
+
 	private Element getElementFromString(String value){
 		com.google.gwt.xml.client.Document doc = XMLParser.createDocument();
 		com.google.gwt.xml.client.Element textElement = doc.createElement("content");
-		
+
 		textElement.appendChild(doc.createTextNode(value));
-		
+
 		return textElement;
 	}
 }
