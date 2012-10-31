@@ -3,13 +3,10 @@ package eu.ydp.empiria.player.client.module.connection.item;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
-import eu.ydp.empiria.player.client.module.connection.presenter.view.AbstractConnectionView;
 
 public interface ConnectionItem extends IsWidget {
 
 	public PairChoiceBean getBean();
-
-	public void setConnectionView(AbstractConnectionView connectionView);
 
 	public void reset();
 
@@ -26,5 +23,13 @@ public interface ConnectionItem extends IsWidget {
 	public int getWidth();
 
 	public int getHeight();
+
+	/**
+	 * Czy element znajduje sie na pozycji x y
+	 * @param xPos
+	 * @param yPos
+	 * @return
+	 */
+	public boolean isOnPosition(int xPos, int yPos);
 
 }

@@ -19,7 +19,7 @@ public class PairConnectEventTest {
 	@Test
 	public void sourceTargetTest() {
 		String source = "source", target = "target";
-		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.CONNECTED, source, target);
+		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.CONNECTED, source, target,true);
 		assertEquals(PairConnectEventTypes.CONNECTED, event.getType());
 		assertEquals(event.getSourceItem(), source);
 		assertEquals(event.getTargetItem(), target);

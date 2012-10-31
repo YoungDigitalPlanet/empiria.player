@@ -24,4 +24,8 @@ public class ConnectionMoveEvent {
 	public NativeEvent getNativeEvent() {
 		return event;
 	}
+
+	public void preventDefault(){
+		event.preventDefault();
+	}
 }

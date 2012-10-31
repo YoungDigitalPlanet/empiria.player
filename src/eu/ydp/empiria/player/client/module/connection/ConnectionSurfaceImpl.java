@@ -18,7 +18,7 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 	private final ConnectionSurfaceView view;
 
 	@Inject
-	public ConnectionSurfaceImpl(StyleHelper styleHelper,@Assisted int width, @Assisted int height) {
+	public ConnectionSurfaceImpl(StyleHelper styleHelper,@Assisted("width") Integer width, @Assisted("height") Integer height) {
 		view = new ConnectionSurfaceView(width, height, styleHelper);
 
 	}

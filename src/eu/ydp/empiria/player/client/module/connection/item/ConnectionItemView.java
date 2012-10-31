@@ -8,18 +8,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.Event.Type;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
 
-public class ConnectionItemView extends Composite implements HasTouchHandlers {
+public class ConnectionItemView extends Composite {
 
 	private static ConnectionItemViewUiBinder uiBinder = GWT.create(ConnectionItemViewUiBinder.class);
 
@@ -38,11 +33,10 @@ public class ConnectionItemView extends Composite implements HasTouchHandlers {
 	private final InlineBodyGeneratorSocket bodyGenerator;
 
 	@Inject
-	public ConnectionItemView(StyleNameConstants styleNames, TouchRecognitionFactory touchRecognitionFactory, @Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean) {
+	public ConnectionItemView(StyleNameConstants styleNames, @Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.bean = bean;
 		this.styleNames = styleNames;
-		this.touchRecognition = touchRecognitionFactory.getTouchRecognition(selection,true);
 		this.bodyGenerator = bodyGenerator;
 		buildView();
 	}
@@ -66,11 +60,6 @@ public class ConnectionItemView extends Composite implements HasTouchHandlers {
 
 	public FlowPanel getSelectionElement() {
 		return selection;
-	}
-
-	@Override
-	public HandlerRegistration addTouchHandler(TouchHandler handler, Type<TouchHandler, TouchTypes> event) {
-		return touchRecognition.addTouchHandler(handler, event);
 	}
 
 	public void setSelected(boolean connected) {

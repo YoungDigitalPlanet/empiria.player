@@ -7,12 +7,12 @@ import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 public class XMLContentTypeAdapter extends XmlAdapter<String,  XMLContent> {// implements DomHandler<ElementT, Result> {
 
 	@Override
-	public XMLContent unmarshal(String v) throws Exception {
+	public XMLContent unmarshal(String value) throws Exception {
 		return null;
 	}
 
 	@Override
-	public String marshal(XMLContent v) throws Exception {
+	public String marshal(XMLContent value) throws Exception {
 		return null;
 	}
 }

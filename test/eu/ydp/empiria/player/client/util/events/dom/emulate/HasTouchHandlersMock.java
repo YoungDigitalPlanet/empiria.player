@@ -21,4 +21,13 @@ public class HasTouchHandlersMock extends AbstractEventHandlers<TouchHandler, To
 		fireEvent(event);
 	}
 
+	@Override
+	public HandlerRegistration[] addTouchHandlers(TouchHandler handler, Type<TouchHandler, TouchTypes>... event) {
+		 HandlerRegistration[] reg = new  HandlerRegistration[event.length];
+		 for(int x=0;x<reg.length;++x){
+			 reg[x] = addHandler(handler, event[x]);
+		 }
+		return reg;
+	}
+
 }

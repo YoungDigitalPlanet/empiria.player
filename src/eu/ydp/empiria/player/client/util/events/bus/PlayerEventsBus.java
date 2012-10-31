@@ -270,30 +270,6 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 		}
 	}
 
-	private <H extends EventHandler, T extends Enum<T>> void doRemove(Type<H, T> type, EventScope<?> scope) {
-		Map<Object, Map<EventScope<?>, List<?>>> handlerMap = asyncMap.get(type);
-		if (handlerMap != null) {
-			for (Map.Entry<Object, Map<EventScope<?>, List<?>>> entry : handlerMap.entrySet()) {
-				Map<EventScope<?>, List<?>> handlers = entry.getValue();
-				if (handlers == null) {
-					continue;
-				}
-				handlers.remove(scope);
-			}
-		}
-
-		handlerMap = syncMap.get(type);
-		if (handlerMap != null) {
-			for (Map.Entry<Object, Map<EventScope<?>, List<?>>> entry : handlerMap.entrySet()) {
-				Map<EventScope<?>, List<?>> handlers = entry.getValue();
-				if (handlers == null) {
-					continue;
-				}
-				handlers.remove(scope);
-			}
-		}
-	}
-
 	private void doRemoveAllWithScope(EventScope<?> scope) {
 		for (Map<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> map : Arrays.asList(syncMap, asyncMap)) {
 			for (Map<Object, Map<EventScope<?>, List<?>>> handlerMap : map.values()) {

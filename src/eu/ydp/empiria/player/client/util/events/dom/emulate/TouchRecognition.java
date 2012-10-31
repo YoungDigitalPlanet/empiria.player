@@ -67,9 +67,10 @@ public class TouchRecognition extends AbstractEventHandlers<TouchHandler, TouchT
 	}
 
 	private void checkEvent(NativeEvent event) {
-//		if (!(listenOn instanceof FocusWidget) && UserAgentChecker.isStackAndroidBrowser()) {
-//	//		event.preventDefault();
-//		}
+		// if (!(listenOn instanceof FocusWidget) &&
+		// UserAgentChecker.isStackAndroidBrowser()) {
+		// // event.preventDefault();
+		// }
 	}
 
 	private void touchStart(NativeEvent event) {
@@ -113,6 +114,14 @@ public class TouchRecognition extends AbstractEventHandlers<TouchHandler, TouchT
 	public HandlerRegistration addTouchHandler(TouchHandler handler, Type<TouchHandler, TouchTypes> event) {
 		addTouchHandlers((TouchTypes) event.getType());
 		return addHandler(handler, event);
+	}
+
+	@Override
+	public HandlerRegistration[] addTouchHandlers(TouchHandler handler, Type<TouchHandler, TouchTypes>... events) {
+		for (Type<TouchHandler, TouchTypes> event : events) {
+			addTouchHandlers((TouchTypes) event.getType());
+		}
+		return addHandlers(handler, events);
 	}
 
 	@Override

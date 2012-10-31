@@ -9,10 +9,11 @@ public class PairConnectEvent extends AbstractEvent<PairConnectEventHandler, Pai
 	private String targetItem;
 	private boolean userAction = true;
 
-	public PairConnectEvent(PairConnectEventTypes type, String source, String target) {
+	public PairConnectEvent(PairConnectEventTypes type, String source, String target, boolean userAction) {
 		super(type, null);
 		this.sourceItem = source;
 		this.targetItem = target;
+		this.userAction = userAction;
 	}
 
 	public PairConnectEvent(PairConnectEventTypes type) {

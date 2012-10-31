@@ -13,6 +13,7 @@ public class TouchEvent extends AbstractEvent<TouchHandler, TouchTypes> {
 	public static EventTypes<TouchHandler, TouchTypes> types = new EventTypes<TouchHandler, TouchTypes>();
 
 	private final NativeEvent nativeEvent;
+
 	public TouchEvent(TouchTypes type, NativeEvent nativeEvent) {
 		super(type, nativeEvent);
 		this.nativeEvent = nativeEvent;
@@ -28,23 +29,21 @@ public class TouchEvent extends AbstractEvent<TouchHandler, TouchTypes> {
 		handler.onTouchEvent(this);
 	}
 
-	@Override
-	public TouchTypes getType() {
-		return super.getType();
-	}
-
 	public static Type<TouchHandler, TouchTypes> getType(TouchTypes type) {
 		return types.getType(type);
+	}
+
+	public static Type<TouchHandler, TouchTypes>[] getTypes(TouchTypes... typeList) {
+		return typeList.length > 0 ? types.getTypes(typeList) : new Type[0];
+
 	}
 
 	public NativeEvent getNativeEvent() {
 		return nativeEvent;
 	}
 
-	public void preventDefault(){
+	public void preventDefault() {
 		nativeEvent.preventDefault();
 	}
-
-
 
 }

@@ -37,8 +37,6 @@ public class ConnectionSurfaceView extends Composite {
 		view.getElement().getStyle().setPosition(Position.ABSOLUTE);
 		view.getElement().getStyle().setLeft(0, Unit.PX);
 		view.getElement().getStyle().setTop(0, Unit.PX);
-		view.getElement().getStyle().setZIndex(-1);
-
 	}
 
 	public void drawLine(double fromX, double fromY, double toX, double toY) {
@@ -47,6 +45,7 @@ public class ConnectionSurfaceView extends Composite {
 		coordinates[1] = fromY;
 		coordinates[2] = toX;
 		coordinates[3] = toY;
+
 		context2d.beginPath();
 		context2d.moveTo(fromX, fromY);
 		context2d.lineTo(toX, toY);

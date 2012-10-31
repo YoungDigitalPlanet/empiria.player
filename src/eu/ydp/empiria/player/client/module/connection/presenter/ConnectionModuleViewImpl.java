@@ -29,19 +29,19 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveS
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.AbstractEventHandlers;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
-public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectEventHandler, PairConnectEventTypes, PairConnectEvent> implements MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler, ConnectionMoveStartHandler, TouchHandler {
+public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectEventHandler, PairConnectEventTypes, PairConnectEvent> implements
+		MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler, ConnectionMoveStartHandler {
 
 	@Inject
 	private ConnectionView view;
@@ -56,7 +56,9 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	@Inject
 	private StyleNameConstants styleNames;
 	@Inject
-	XMLParser xmlParser;
+	private XMLParser xmlParser;
+	@Inject
+	private EventsBus eventsBus;
 
 	private final Map<String, ConnectionItem> items = new HashMap<String, ConnectionItem>();
 	protected final Set<ConnectionItem> leftColumnItems = new HashSet<ConnectionItem>();
@@ -93,9 +95,9 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			ConnectionItem target = items.get(targetIdentifier);
 			startDrawLine(source, type);
 			drawLine(source, target.getRelativeX(), target.getRelativeY());
-			connectItems(source, target);
+			connectItems(source, target, false);
 		} else {
-			fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, sourceIdentifier, targetIdentifier);
+			fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, sourceIdentifier, targetIdentifier, false);
 		}
 	}
 
@@ -111,9 +113,9 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			}
 			items.get(sourceIdentifier).reset();
 			items.get(targetIdentifier).reset();
-			fireConnectEvent(PairConnectEventTypes.DISCONNECTED, sourceIdentifier, targetIdentifier);
+			fireConnectEvent(PairConnectEventTypes.DISCONNECTED, sourceIdentifier, targetIdentifier, false);
 		} else {
-			fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, sourceIdentifier, targetIdentifier);
+			fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, sourceIdentifier, targetIdentifier, false);
 		}
 
 	}
@@ -133,9 +135,6 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		view.addConnectionMoveEndHandler(this);
 		view.addConnectionMoveStartHandler(this);
 		// zdarzenia od usera
-		HasTouchHandlers touchRecognition = touchRecognitionFactory.getTouchRecognition(view.asWidget(),true);
-		touchRecognition.addTouchHandler(this, TouchEvent.getType(TouchTypes.TOUCH_START));
-		touchRecognition.addTouchHandler(this, TouchEvent.getType(TouchTypes.TOUCH_END));
 		// elementy do wyswietlenia / polaczenia
 		for (PairChoiceBean choice : modelInterface.getSourceChoicesSet()) {
 			ConnectionItem item = connectionFactory.getConnectionItem(choice, moduleSocket.getInlineBodyGeneratorSocket());
@@ -160,21 +159,28 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	@Override
 	public void onConnectionStart(ConnectionMoveStartEvent event) {
 		if (!locked) {
-			startDrawLine(event.getItem(), MultiplePairModuleConnectType.NORMAL);
-			selectedItem = event.getItem();
+			ConnectionItem item = findConnectionItem(event.getNativeEvent());
+			if (item == null) {
+				findConnection(event.getNativeEvent());
+			} else {
+				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+				startDrawLine(item, MultiplePairModuleConnectType.NORMAL);
+				selectedItem = item;
+			}
 		}
-
 	}
 
 	@Override
 	public void onConnectionMove(ConnectionMoveEvent event) {
-		if (!locked) {
+		if (!locked && startPositions.containsKey(selectedItem)) {
+			event.preventDefault();
 			int approximation = 5;
 			if (UserAgentChecker.isStackAndroidBrowser()) {
 				approximation = 15;
 			}
 
 			if (Math.abs(lastPoint.getKey() - event.getX()) > approximation || Math.abs(lastPoint.getValue() - event.getY()) > approximation) {
+
 				lastPoint.setKey(event.getX());
 				lastPoint.setValue(event.getY());
 				drawLine(selectedItem, event.getX(), event.getY());
@@ -190,9 +196,10 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
 		if (!locked) {
 			for (ConnectionItem item : getConnectionItems(selectedItem)) {
-				if (item.getOffsetLeft() <= event.getX() && event.getX() <= item.getOffsetLeft() + item.getWidth() && item.getOffsetTop() <= event.getY() && event.getY() <= item.getOffsetTop() + item.getHeight()) {
+				if (item.getOffsetLeft() <= event.getX() && event.getX() <= item.getOffsetLeft() + item.getWidth() && item.getOffsetTop() <= event.getY()
+						&& event.getY() <= item.getOffsetTop() + item.getHeight()) {
 					drawLine(selectedItem, event.getX(), event.getY());
-					connectItems(selectedItem, item);
+					connectItems(selectedItem, item, true);
 					return;
 				}
 			}
@@ -219,27 +226,28 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	protected void startDrawLine(ConnectionItem item, MultiplePairModuleConnectType type) {
 		KeyValue<Integer, Integer> startPoint = new KeyValue<Integer, Integer>(item.getRelativeX(), item.getRelativeY());
 		startPositions.put(item, startPoint);
-		currentSurfce = connectionFactory.getConnectionSurfce(view.getOffsetWidth(), view.getOffsetHeight());
+		currentSurfce = connectionFactory.getConnectionSurface(view.getOffsetWidth(), view.getOffsetHeight());
 		currentSurfce.applyStyles(connectionModuleViewStyles.getStyles(type));
 		view.addElementToMainView(currentSurfce.asWidget());
 		currentSurfce.drawLine(item.getRelativeX(), item.getRelativeY(), item.getRelativeX(), item.getRelativeY());
 	}
 
-	protected void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem) {
+	protected void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, boolean userAction) {
 		startPositions.remove(sourceItem);
 		sourceItem.reset();
 		sourceItem.setConnected(true);
 		targetItem.setConnected(true);
-		ConnectionSurface duplicate = connectedSurfaces.put(new KeyValue<String, String>(sourceItem.getBean().getIdentifier(), targetItem.getBean().getIdentifier()), currentSurfce);
+		ConnectionSurface duplicate = connectedSurfaces.put(new KeyValue<String, String>(sourceItem.getBean().getIdentifier(), targetItem.getBean()
+				.getIdentifier()), currentSurfce);
 		if (duplicate == null) {
-			fireConnectEvent(PairConnectEventTypes.CONNECTED, sourceItem.getBean().getIdentifier(), targetItem.getBean().getIdentifier());
+			fireConnectEvent(PairConnectEventTypes.CONNECTED, sourceItem.getBean().getIdentifier(), targetItem.getBean().getIdentifier(), userAction);
 		} else {
 			duplicate.removeFromParent();
 		}
 	}
 
-	protected void fireConnectEvent(PairConnectEventTypes type, String source, String target) {
-		PairConnectEvent event = new PairConnectEvent(type, source, target);
+	protected void fireConnectEvent(PairConnectEventTypes type, String source, String target, boolean userAction) {
+		PairConnectEvent event = new PairConnectEvent(type, source, target, userAction);
 		fireEvent(event);
 
 	}
@@ -260,7 +268,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		this.moduleSocket = socket;
 	}
 
-	private void findConnection(NativeEvent event) {
+	protected void findConnection(NativeEvent event) {
 		int xPos = positionHelper.getPositionX(event, view.getElement());
 		int yPos = positionHelper.getPositionY(event, view.getElement());
 		for (Map.Entry<KeyValue<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
@@ -275,12 +283,17 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		}
 	}
 
-	@Override
-	public void onTouchEvent(TouchEvent event) {
-		if (event.getType() == TouchTypes.TOUCH_START) {
-			findConnection(event.getNativeEvent());
-		} else if (event.getType() == TouchTypes.TOUCH_END) {
-			clearSurface(selectedItem);
+	protected ConnectionItem findConnectionItem(NativeEvent event) {
+		int xPos = positionHelper.getPositionX(event, view.getElement());
+		int yPos = positionHelper.getPositionY(event, view.getElement());
+		ConnectionItem item = null;
+		for (Map.Entry<String, ConnectionItem> itemEntry : items.entrySet()) {
+			if (itemEntry.getValue().isOnPosition(xPos, yPos)) {
+				item = itemEntry.getValue();
+				break;
+			}
 		}
+		return item;
 	}
+
 }

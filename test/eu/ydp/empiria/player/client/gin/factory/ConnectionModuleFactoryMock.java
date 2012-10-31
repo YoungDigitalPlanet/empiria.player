@@ -4,6 +4,8 @@ import static org.mockito.Mockito.mock;
 
 import org.mockito.Mockito;
 
+import com.google.inject.assistedinject.Assisted;
+
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
@@ -33,6 +35,8 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	public ConnectionItem getConnectionItem(PairChoiceBean element, InlineBodyGeneratorSocket bodyGeneratorSocket) {
 		ConnectionItem item = mock(ConnectionItem.class);
 		Mockito.when(item.getBean()).thenReturn(element);
+		Mockito.when(item.isOnPosition(Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
+		Mockito.when(item.toString()).thenReturn("");
 		return item;
 	}
 
@@ -52,16 +56,15 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 		return null;
 	}
 
-
-	@Override
-	public ConnectionSurface getConnectionSurfce(int width, int height) {
-		return surface;
-	}
-
 	@Override
 	public ConnectionView getConnectionView() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public ConnectionSurface getConnectionSurface(@Assisted("width") Integer width, @Assisted("height") Integer height) {
+		// TODO Auto-generated method stub
+		return surface;
 	}
 
 }

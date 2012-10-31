@@ -26,9 +26,17 @@ public abstract class AbstractEventHandlers<H extends EventHandler, E extends En
 		return registration;
 	}
 
+	protected HandlerRegistration[] addHandlers(final H handler, final Type<H, E>[] event) {
+		HandlerRegistration[] registrations = new HandlerRegistration[event.length];
+		for (int x = 0; x < event.length; ++x) {
+			registrations[x] = addHandler(handler, event[x]);
+		}
+		return registrations;
+	}
+
 	protected Set<H> getHandlers(Type<H, E> event) {
 		Set<H> eventHandlers = null;
-		if ((eventHandlers = handlers.get(event)) == null) {
+		if ((eventHandlers = handlers.get(event)) == null) { //NOPMD
 			eventHandlers = new HashSet<H>();
 			handlers.put(event, eventHandlers);
 		}

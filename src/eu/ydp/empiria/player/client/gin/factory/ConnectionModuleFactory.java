@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
+import com.google.inject.assistedinject.Assisted;
+
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
@@ -19,6 +21,6 @@ public interface ConnectionModuleFactory {
 	public ConnectionItemView getConnectionItemView(PairChoiceBean element, InlineBodyGeneratorSocket bodyGeneratorSocket);
 	public MultiplePairModuleView getMultiplePairModuleView();
 	public ConnectionModuleModel getConnectionModuleModel(Response response, ResponseModelChangeListener modelChangeListener);
-	public ConnectionSurface getConnectionSurfce(int width, int height);
+	public ConnectionSurface getConnectionSurface(@Assisted("width") Integer width, @Assisted("height") Integer height);
 	public ConnectionView getConnectionView();
 }

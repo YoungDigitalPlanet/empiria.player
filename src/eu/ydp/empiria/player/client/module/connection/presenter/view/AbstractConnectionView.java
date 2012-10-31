@@ -5,14 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.TouchMoveEvent;
-import com.google.gwt.event.dom.client.TouchMoveHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndHandler;
@@ -21,22 +18,24 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveH
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-public abstract class AbstractConnectionView extends Composite implements TouchMoveHandler, MouseMoveHandler, ConnectionView {
+public abstract class AbstractConnectionView extends Composite implements ConnectionView, TouchHandler {
 	private final Set<ConnectionMoveHandler> handlers = new HashSet<ConnectionMoveHandler>();
 	private final Set<ConnectionMoveEndHandler> endMoveHandlers = new HashSet<ConnectionMoveEndHandler>();
 	private final Set<ConnectionMoveStartHandler> startMoveHandlers = new HashSet<ConnectionMoveStartHandler>();
 	protected final EventsBus eventsBus;
 	private final PositionHelper positionHelper;
 
-	public AbstractConnectionView(EventsBus eventsBus, PositionHelper positionHelper) {
-		createAndBindUi();
-		this.addDomHandler(this, TouchMoveEvent.getType());
-		this.addDomHandler(this, MouseMoveEvent.getType());
-			this.eventsBus = eventsBus;
+	protected final TouchRecognitionFactory touchRecognitionFactory;
+
+	public AbstractConnectionView(EventsBus eventsBus, PositionHelper positionHelper, TouchRecognitionFactory touchRecognitionFactory) {
+		this.eventsBus = eventsBus;
 		this.positionHelper = positionHelper;
+		this.touchRecognitionFactory = touchRecognitionFactory;
+		createAndBindUi();
 	}
 
 	@Override
@@ -77,20 +76,9 @@ public abstract class AbstractConnectionView extends Composite implements TouchM
 		}
 	}
 
-	@Override
-	public void onTouchMove(TouchMoveEvent event) {
+	public void onTouchMove(NativeEvent event) {
 		if (getView() != null) {
-			if (UserAgentChecker.isStackAndroidBrowser()) {
-				event.preventDefault();
-			}
-			callOnMoveHandlers(new ConnectionMoveEvent(getPositionX(event.getNativeEvent()), getPositionY(event.getNativeEvent()), event.getNativeEvent()));
-		}
-	}
-
-	@Override
-	public void onMouseMove(MouseMoveEvent event) {
-		if (getView() != null) {
-			callOnMoveHandlers(new ConnectionMoveEvent(getPositionX(event.getNativeEvent()), getPositionY(event.getNativeEvent()), event.getNativeEvent()));
+			callOnMoveHandlers(new ConnectionMoveEvent(getPositionX(event), getPositionY(event), event));
 		}
 	}
 
@@ -114,6 +102,24 @@ public abstract class AbstractConnectionView extends Composite implements TouchM
 		return positionHelper.getPositionY(event, getView().getElement());
 	}
 
+	@Override
+	public void onTouchEvent(TouchEvent event) {
+		switch (event.getType()) {
+		case TOUCH_START:
+			onTouchStart(event.getNativeEvent());
+			break;
+		case TOUCH_END:
+			onTouchEnd(event.getNativeEvent());
+			break;
+		case TOUCH_MOVE:
+			onTouchMove(event.getNativeEvent());
+			break;
+		default:
+			break;
+		}
+
+	}
+
 	public abstract void createAndBindUi();
 
 	public abstract FlowPanel getView();
@@ -124,7 +130,7 @@ public abstract class AbstractConnectionView extends Composite implements TouchM
 	@Override
 	public abstract void addSecondColumnItem(ConnectionItem item);
 
-	public abstract void onTouchStart(NativeEvent event, ConnectionItem item);
+	public abstract void onTouchStart(NativeEvent event);
 
-	public abstract void onTouchEnd(NativeEvent event, ConnectionItem item);
+	public abstract void onTouchEnd(NativeEvent event);
 }
