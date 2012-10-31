@@ -265,7 +265,7 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 		if (handlerMap != null) {
 			Map<EventScope<?>, List<?>> handlers = handlerMap.get(source);
 			if (handlers != null) {
-				boolean remove = handlers.get(scope).remove(handler);
+				handlers.get(scope).remove(handler);
 			}
 		}
 	}

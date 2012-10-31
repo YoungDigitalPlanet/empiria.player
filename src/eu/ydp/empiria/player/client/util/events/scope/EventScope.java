@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.util.events.scope;
 
-import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBusOld;
-
 /**
  * Zakres widocznosci eventu
  *
