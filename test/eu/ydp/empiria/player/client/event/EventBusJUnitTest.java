@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.event;
 
-import static org.mockito.Mockito.mock;
-
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -181,12 +179,6 @@ public class EventBusJUnitTest extends AbstractTestBase {
 	@Test(expected = NullPointerException.class)
 	public void addNullHandlerAndThrowNullPointerException() {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void fireNullEventAndThrowNullPointerException() {
-		prepareHandlers();
-		eventsBus.fireAsyncEvent(null, new PageScope(0));
 	}
 
 }
