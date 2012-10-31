@@ -9,7 +9,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
 
@@ -340,12 +339,14 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	 * @param itemIndex selected item index
 	 */
 	void updateModules(int itemIndex, boolean updateBookmarkedModules){
-		List<IBookmarkable> itemModules = modules.get(itemIndex);
-		for (IBookmarkable module : itemModules){
-			if (!isModuleBookmarked(module, itemIndex)){
-				updateNotBookmarkedModule(module);
-			} else if (updateBookmarkedModules){
-				updateBookmarkedModule(module);
+		if (itemIndex < modules.size()){
+			List<IBookmarkable> itemModules = modules.get(itemIndex);
+			for (IBookmarkable module : itemModules){
+				if (!isModuleBookmarked(module, itemIndex)){
+					updateNotBookmarkedModule(module);
+				} else if (updateBookmarkedModules){
+					updateBookmarkedModule(module);
+				}
 			}
 		}
 	}
@@ -422,11 +423,11 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	@Override
 	public void setState(JSONArray newState) {		
 		
-		JavaScriptObject externalBookmarks = getExternalBookmarks();
+		String externalBookmarks = getExternalBookmarks();
 		
 		JSONArray externalState = null;
 		if(externalBookmarks != null){
-			externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks.toString());
+			externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks);
 		}
 		
 		JSONArray state = externalState == null ? newState : externalState;
@@ -437,15 +438,12 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		}
 	}
 	
-	private native JavaScriptObject getExternalBookmarks()/*-{
+	private native String getExternalBookmarks()/*-{
 		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::playerJsObject;		
 		if (typeof playerJso != 'undefined'  && playerJso != null && typeof playerJso.getExternalBookmarks == 'function'){			
 			return playerJso.getExternalBookmarks();
 		}
-		else{
-			return null;
-		}		
-		
+		return null;
 	}-*/;
 
 	private StackMap<Integer, BookmarkProperties> decodeItemState(JSONObject object) {
@@ -482,10 +480,6 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	
 	private void onBookmarkPopupClosed(){
 		currBookmarkNewlyCreated = false;		
-	}
-	
-	void importBookmarks(JSONValue json){		
-		
 	}
 
 }
