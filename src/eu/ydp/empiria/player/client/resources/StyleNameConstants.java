@@ -482,6 +482,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-stickie-header")
 	public String QP_STICKIE_HEADER();
 
+	@DefaultStringValue("qp-stickie-label")
+	public String QP_STICKIE_LABEL();
+
+	@DefaultStringValue("qp-stickie-label-panel")
+	public String QP_STICKIE_LABEL_PANEL();
+
 	@DefaultStringValue("qp-stickie-minimize-button")
 	public String QP_STICKIE_MINIMIZE_BUTTON();
 
