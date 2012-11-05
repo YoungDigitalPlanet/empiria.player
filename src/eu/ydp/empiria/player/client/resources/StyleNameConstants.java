@@ -461,11 +461,14 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-span")
 	public String QP_SPAN();
 
+	@DefaultStringValue("qp-stickie")
+	public String QP_STICKIE();
+
+	@DefaultStringValue("qp-stickie-color-")
+	public String QP_STICKIE_COLOR_();
+
 	@DefaultStringValue("qp-stickie-container-inner")
 	public String QP_STICKIE_CONTAINER_INNER();
-
-	@DefaultStringValue("qp-stickie-container-mid")
-	public String QP_STICKIE_CONTAINER_MID();
 
 	@DefaultStringValue("qp-stickie-container-outer")
 	public String QP_STICKIE_CONTAINER_OUTER();
@@ -476,11 +479,17 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-stickie-delete-panel")
 	public String QP_STICKIE_DELETE_PANEL();
 
+	@DefaultStringValue("qp-stickie-header")
+	public String QP_STICKIE_HEADER();
+
 	@DefaultStringValue("qp-stickie-minimize-button")
 	public String QP_STICKIE_MINIMIZE_BUTTON();
 
 	@DefaultStringValue("qp-stickie-minimize-panel")
 	public String QP_STICKIE_MINIMIZE_PANEL();
+
+	@DefaultStringValue("qp-stickie-minimized")
+	public String QP_STICKIE_MINIMIZED();
 
 	@DefaultStringValue("qp-stickie-text-area")
 	public String QP_STICKIE_TEXT_AREA();
