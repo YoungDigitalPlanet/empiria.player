@@ -317,6 +317,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new SlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER));
 		loadExtension(new SimpleConnectorExtension(new FlashModule(), ModuleTagName.FLASH));
 		loadExtension(new SimpleConnectorExtension(new SimulationModule(), ModuleTagName.SIMULATION_PLAYER));
+		loadExtension(new SimpleConnectorExtension(moduleFactory.getSourceListModule(), ModuleTagName.SOURCE_LIST));
 		loadExtension(new InfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(new LinkModuleConnectorExtension());
