@@ -24,6 +24,7 @@ import eu.ydp.empiria.player.client.BindDescriptor.BindType;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
+import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
@@ -32,6 +33,7 @@ import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresent
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
+import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.SchedulerImpl;
@@ -166,7 +168,11 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		return helper;
 	}
 
-
+	@Provides ModuleFactory getModuleFactory(SourceListModule sourceListModule){
+		ModuleFactory factory = mock(ModuleFactory.class);
+		when(factory.getSourceListModule()).thenReturn(sourceListModule);
+		return factory;
+	}
 
 
 
