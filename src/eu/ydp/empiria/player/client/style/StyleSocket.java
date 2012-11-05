@@ -8,5 +8,6 @@ import eu.ydp.empiria.player.client.controller.communication.PageReference;
 
 public interface StyleSocket {
 	public Map<String,String> getStyles( Element element );
+	public Map<String,String> getOrgStyles( Element element );
 	public void setCurrentPages( PageReference pr );
 }

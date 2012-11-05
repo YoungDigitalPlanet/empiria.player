@@ -150,6 +150,11 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 			}
 
 			@Override
+			public Map<String,String> getOrgStyles(Element element) {
+				return (styleSocket != null) ? styleSocket.getOrgStyles(element) : new HashMap<String, String>();
+			};
+
+			@Override
 			public void setCurrentPages(PageReference pr) {
 				if (styleSocket != null) {
 					styleSocket.setCurrentPages(pr);

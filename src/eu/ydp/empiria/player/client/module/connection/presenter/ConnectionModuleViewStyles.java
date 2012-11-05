@@ -22,6 +22,6 @@ public class ConnectionModuleViewStyles {
 	}
 
 	public Map<String, String> getStyles(MultiplePairModuleConnectType type) {
-		return styleSocket.getStyles(cache.get(type));
+		return styleSocket.getOrgStyles(cache.get(type));
 	}
 }

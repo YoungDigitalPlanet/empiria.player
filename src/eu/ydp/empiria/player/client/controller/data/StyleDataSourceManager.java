@@ -26,7 +26,8 @@ public class StyleDataSourceManager implements StyleSocket {
 	private final QueueSet<StyleDocument> assessmentStyle;
 
 	// style declarations for all items
-	// TODO consider using WeakHashMap to avoid problems with vector size at lines 50, 96
+	// TODO consider using WeakHashMap to avoid problems with vector size at
+	// lines 50, 96
 	private final Vector<QueueSet<StyleDocument>> itemStyle;
 
 	/**
@@ -56,55 +57,65 @@ public class StyleDataSourceManager implements StyleSocket {
 			styles = new QueueSet<StyleDocument>();
 			itemStyle.set(index, styles);
 		}
-		styles.append( styleDocument );
-	}
-	
-	@Override
-	public Map<String, String> getStyles(Element element) {
-		return getStyleProperties(element);
+		styles.append(styleDocument);
 	}
 
-	public Map<String, String> getStyleProperties(Element element) {
+	@Override
+	public Map<String, String> getStyles(Element element) {
+		return getStyleProperties(element, true);
+	}
+
+	@Override
+	public Map<String, String> getOrgStyles(Element element) {
+		return getStyleProperties(element, false);
+	}
+
+	public Map<String, String> getStyleProperties(Element element, boolean lowerCase) {
 		List<String> selectors = getElementSelectors(element);
 		Map<String, String> result = new HashMap<String, String>();
 
-		for (StyleDocument sheet : currentStyles){
+		for (StyleDocument sheet : currentStyles) {
 			Map<String, String> currResult = sheet.getDeclarationsForSelectors(selectors);
-			result.putAll(currResult);
+			if (lowerCase) {
+				for (Map.Entry<String, String> entry : currResult.entrySet()) {
+					result.put(entry.getKey().toLowerCase(), entry.getValue());
+				}
+			} else {
+				result.putAll(currResult);
+			}
 		}
-
 		return result;
 	}
 
-	protected List<String> getElementSelectors(Element element){
+	protected List<String> getElementSelectors(Element element) {
 		String name = element.getNodeName().toLowerCase();
 		String[] classes = null;
-		String id = null; //NOPMD
-		if (element.hasAttribute("class")  &&  !"".equals(element.getAttribute("class")) ){
+		String id = null; // NOPMD
+		if (element.hasAttribute("class") && !"".equals(element.getAttribute("class"))) {
 			classes = element.getAttribute("class").split(" ");
 		}
-		if (element.hasAttribute("id")  &&  !"".equals(element.getAttribute("id")) ){
+		if (element.hasAttribute("id") && !"".equals(element.getAttribute("id"))) {
 			id = element.getAttribute("id");
 		}
 
 		return buildSelectors(name, classes, id);
 	}
 
-	protected List<String> buildSelectors(String name, String[] classes, String id){//NOPMD
+	protected List<String> buildSelectors(String name, String[] classes, String id) {// NOPMD
 		List<String> selectors = new ArrayList<String>();
 
 		selectors.add(name);
-		if (classes != null){
-			for (int i = 0 ; i < classes.length ; i ++){
-				selectors.add("."+classes[i]);
+		if (classes != null) {
+			for (int i = 0; i < classes.length; i++) {
+				selectors.add("." + classes[i]);
 			}
-			for (int i = 0 ; i < classes.length ; i ++){
-				selectors.add(name+"."+classes[i]);
+			for (int i = 0; i < classes.length; i++) {
+				selectors.add(name + "." + classes[i]);
 			}
 		}
-		if (id != null){
-			selectors.add("#"+id);
-			selectors.add(name+"#"+id);
+		if (id != null) {
+			selectors.add("#" + id);
+			selectors.add(name + "#" + id);
 		}
 
 		return selectors;
@@ -112,10 +123,10 @@ public class StyleDataSourceManager implements StyleSocket {
 
 	@Override
 	public void setCurrentPages(PageReference pageReference) {
-		Vector<QueueSet<StyleDocument>> activeItemStyles = new Vector<QueueSet<StyleDocument>>( pageReference.pageIndices.length );
+		Vector<QueueSet<StyleDocument>> activeItemStyles = new Vector<QueueSet<StyleDocument>>(pageReference.pageIndices.length);
 		for (int pageIndex : pageReference.pageIndices) {
 			if (pageIndex < itemStyle.size()) {
-				activeItemStyles.add( itemStyle.get(pageIndex) );
+				activeItemStyles.add(itemStyle.get(pageIndex));
 			}
 		}
 		currentStyles.clear();
