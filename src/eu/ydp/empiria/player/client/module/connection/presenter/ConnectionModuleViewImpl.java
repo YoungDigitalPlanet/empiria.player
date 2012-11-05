@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
@@ -51,8 +50,6 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	private PositionHelper positionHelper;
 	@Inject
 	private StyleSocket styleSocket;
-	@Inject
-	private TouchRecognitionFactory touchRecognitionFactory;
 	@Inject
 	private StyleNameConstants styleNames;
 	@Inject
@@ -180,7 +177,6 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			}
 
 			if (Math.abs(lastPoint.getKey() - event.getX()) > approximation || Math.abs(lastPoint.getValue() - event.getY()) > approximation) {
-
 				lastPoint.setKey(event.getX());
 				lastPoint.setValue(event.getY());
 				drawLine(selectedItem, event.getX(), event.getY());
@@ -198,7 +194,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			for (ConnectionItem item : getConnectionItems(selectedItem)) {
 				if (item.getOffsetLeft() <= event.getX() && event.getX() <= item.getOffsetLeft() + item.getWidth() && item.getOffsetTop() <= event.getY()
 						&& event.getY() <= item.getOffsetTop() + item.getHeight()) {
-					drawLine(selectedItem, event.getX(), event.getY());
+					drawLine(selectedItem, item.getRelativeX(), item.getRelativeY());
 					connectItems(selectedItem, item, true);
 					return;
 				}
@@ -274,10 +270,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		for (Map.Entry<KeyValue<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
 			if (entry.getValue().isPointOnPath(xPos, yPos, 10)) {
 				disconnect(entry.getKey().getKey(), entry.getKey().getValue());
-				try {
-					event.preventDefault();
-				} catch (Exception exc) {
-				}
+				event.preventDefault();
 				break;
 			}
 		}
