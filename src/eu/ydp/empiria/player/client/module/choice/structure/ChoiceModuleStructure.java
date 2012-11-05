@@ -10,16 +10,18 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
+import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInteractionBean, ChoiceModuleJAXBParser>{
 
 	private RandomizedSet<Integer> randomizedIndices;
-	
+
 	@Override
 	protected void prepareStructure(){
 		randomizeChoices();
 	}
-	
+
+	@Override
 	protected NodeList getParentNodesForFeedbacks(Document xmlDocument){
 		return xmlDocument.getElementsByTagName(EmpiriaTagConstants.NAME_SIMPLE_CHOICE);
 	}
@@ -84,5 +86,10 @@ public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInterac
 
 	public List<SimpleChoiceBean> getSimpleChoices() {
 		return getBean().getSimpleChoices();
+	}
+
+	@Override
+	protected XMLParser getXMLParser() {
+		return new XMLParser();
 	}
 }

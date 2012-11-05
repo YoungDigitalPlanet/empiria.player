@@ -1,17 +1,16 @@
 package eu.ydp.empiria.player.client.module.connection.structure;
 
-import java.io.StringReader;
-import java.util.ArrayList;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
-import junit.framework.Assert;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.google.gwt.xml.client.Document;
-import com.peterfranza.gwt.jaxb.client.parser.JAXBBindings;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 
+import eu.ydp.empiria.player.client.jaxb.JAXBParserImpl;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 public class ConnectionModuleStructureMock extends ConnectionModuleStructure {
@@ -41,33 +40,22 @@ public class ConnectionModuleStructureMock extends ConnectionModuleStructure {
 		return new ConnectionModuleJAXBParser() {
 			@Override
 			public JAXBParser<MatchInteractionBean> create() {
-				return new JAXBParser<MatchInteractionBean>() {
-					@Override
-					public MatchInteractionBean parse(String xml) {
-						try {
-							JAXBBindings bindings = ConnectionModuleJAXBParser.class.getAnnotation(JAXBBindings.class);
-							ArrayList<Class<?>> binds = new ArrayList<Class<?>>();
-							binds.add(bindings.value());
-
-							for(Class<?> c: bindings.objects()) {
-								binds.add(c);
-							}
-
-							final JAXBContext context = JAXBContext.newInstance(binds.toArray(new Class<?>[0])); // NOPMD
-							return (MatchInteractionBean) context.createUnmarshaller().unmarshal(new StringReader(xml));
-						} catch (JAXBException e) {
-							Assert.fail(e.getMessage());
-							return null;
-						}
-					}
-				};
+				return new JAXBParserImpl<MatchInteractionBean>(ConnectionModuleJAXBParser.class);
 			}
 		};
 	}
 
 	@Override
-	protected Document parseXML(String xml) {
-		return XMLParser.parse(xml);
+	protected eu.ydp.gwtutil.client.xml.XMLParser getXMLParser() {
+		eu.ydp.gwtutil.client.xml.XMLParser xmlParser = mock(eu.ydp.gwtutil.client.xml.XMLParser.class);
+		when(xmlParser.parse(Mockito.anyString())).thenAnswer(new Answer<Document>() {
+			@Override
+			public Document answer(InvocationOnMock invocation) throws Throwable {
+				return XMLParser.parse((String) invocation.getArguments()[0]);
+			}
+		});
+		return xmlParser;
 	}
+
 
 }

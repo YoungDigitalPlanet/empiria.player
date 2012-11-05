@@ -6,11 +6,11 @@ import java.util.Map;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
-import com.google.gwt.xml.client.XMLParser;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JAXBParserFactory<M>> {
 
@@ -43,6 +43,7 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 	 */
 	protected abstract void prepareStructure();
 
+	protected abstract XMLParser getXMLParser();
 	/**
 	 * Prepares feedbacks map.
 	 * Needs to be extended in inheriting module
@@ -51,7 +52,7 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 	 */
 	protected final void prepareFeedbackNodes(String xml) {
 		feedbacks = new HashMap<String, Element>();
-		Document xmlDocument = parseXML(xml);
+		Document xmlDocument = getXMLParser().parse(xml);
 		NodeList nodes = getParentNodesForFeedbacks(xmlDocument);
 
 		if(nodes != null){
@@ -62,14 +63,6 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 				addFeedbackNode(feedbackNode);
 			}
 		}
-	}
-
-	/**
-	 * @param xml
-	 * @return Document
-	 */
-	protected Document parseXML(String xml) {
-		return XMLParser.parse(xml);
 	}
 
 	protected abstract NodeList getParentNodesForFeedbacks(Document xmlDocument);
