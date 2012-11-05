@@ -32,7 +32,6 @@ import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresent
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
-import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.SchedulerImpl;
@@ -113,13 +112,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	@Singleton
 	public VideoTextTrackElementPresenter getVideoTextTrackElementPresenter() {
 		return mock(VideoTextTrackElementPresenter.class);
-	}
-
-	@Provides
-	public ObjectTemplateParser<?> getObjectTemplateParser(MediaControllerFactory factory) {
-		ObjectTemplateParser<?> parser = new ObjectTemplateParser();
-		parser.setFactory(factory);
-		return parser;
 	}
 
 	@Provides

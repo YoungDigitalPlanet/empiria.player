@@ -87,7 +87,6 @@ import eu.ydp.empiria.player.client.module.math.InlineChoiceGapModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.math.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
-import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.prompt.PromptModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
@@ -188,8 +187,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(flowManager.getFlowCommandsExecutor()));
 		sessionDataManager = new SessionDataManager();
 
-		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(), deliveryEventsHub.getInteractionSocket(),
-				sessionDataManager, modulesRegistry, moduleHandlerManager);
+		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(),
+				deliveryEventsHub.getInteractionSocket(), sessionDataManager, modulesRegistry, moduleHandlerManager);
 		assessmentController.setStyleSocket(styleSocket);
 
 		playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
@@ -243,7 +242,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTED));
 		updatePageStyle();
-		//flowManager.gotoPage(4);
+		// flowManager.gotoPage(4);
 	}
 
 	protected void initFlow() {
@@ -265,32 +264,29 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		}
 
 		IFlowRequest flowRequest = parseFlowRequest(deState);
-		if(flowRequest != null){
+		if (flowRequest != null) {
 			flowManager.invokeFlowRequest(flowRequest);
 		}
 
 		flowManager.initFlow();
 	}
 
-	protected IFlowRequest parseFlowRequest(JSONArray deState){
-		IFlowRequest flowRequest =null;
+	protected IFlowRequest parseFlowRequest(JSONArray deState) {
+		IFlowRequest flowRequest = null;
 
-		if(deState != null){
-			if(initialItemIndex != null){
+		if (deState != null) {
+			if (initialItemIndex != null) {
 				flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);
-			}
-			else if (deState.get(0).isNumber() != null) {
+			} else if (deState.get(0).isNumber() != null) {
 				flowRequest = new FlowRequest.NavigateGotoItem((int) deState.get(0).isNumber().doubleValue());
-			}
-			else if (deState.get(0).isString() != null) {
+			} else if (deState.get(0).isString() != null) {
 				if (deState.get(0).isString().stringValue().equals(PageType.TOC.toString())) {
 					flowRequest = new FlowRequest.NavigateToc();
 				} else if (deState.get(0).isString().stringValue().equals(PageType.SUMMARY.toString())) {
 					flowRequest = new FlowRequest.NavigateSummary();
 				}
 			}
-		}
-		else if(initialItemIndex != null){
+		} else if (initialItemIndex != null) {
 			flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);
 		}
 
@@ -314,10 +310,10 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new InlineChoiceGapModule(), ModuleTagName.MATH_GAP_INLINE_CHOICE_TYPE, true));
 		loadExtension(new SimpleConnectorExtension(new InlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new SimpleTextModule(), ModuleTagName.SIMPLE_TEXT));
-		loadExtension(new SimpleConnectorExtension(new ObjectModule(), ModuleTagName.AUDIO_PLAYER, false));
+		loadExtension(new SimpleConnectorExtension(moduleFactory.getObjectModule(), ModuleTagName.AUDIO_PLAYER, false, true));
 		loadExtension(new SimpleConnectorExtension(new MathTextModule(), ModuleTagName.MATH_TEXT, false, true));
 		loadExtension(new SimpleConnectorExtension(new MathModule(), ModuleTagName.MATH_INTERACTION));
-		loadExtension(new SimpleConnectorExtension(new ObjectModule(), ModuleTagName.OBJECT, false, true));
+		loadExtension(new SimpleConnectorExtension(moduleFactory.getObjectModule(), ModuleTagName.OBJECT, false, true));
 		loadExtension(new SimpleConnectorExtension(new SlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER));
 		loadExtension(new SimpleConnectorExtension(new FlashModule(), ModuleTagName.FLASH));
 		loadExtension(new SimpleConnectorExtension(new SimulationModule(), ModuleTagName.SIMULATION_PLAYER));
@@ -337,7 +333,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new AudioMuteButtonModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUB.tagName()), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(new HtmlContainerModule(ModuleTagName.SUP.tagName()), ModuleTagName.SUP));
-		loadExtension(new SimpleConnectorExtension(moduleFactory.getConnectionModule(), ModuleTagName.MATCH_INTERACTION,true));
+		loadExtension(new SimpleConnectorExtension(moduleFactory.getConnectionModule(), ModuleTagName.MATCH_INTERACTION, true));
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
 		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
 		loadExtension(PlayerGinjector.INSTANCE.getPage());
@@ -416,10 +412,11 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 				soundProcessorManager.setSoundProcessorExtension((SoundProcessorExtension) extension);
 			}
 			if (extension instanceof ModuleConnectorExtension) {
-				modulesRegistry.registerModuleCreator(((ModuleConnectorExtension) extension).getModuleNodeName(), ((ModuleConnectorExtension) extension).getModuleCreator());
+				modulesRegistry.registerModuleCreator(((ModuleConnectorExtension) extension).getModuleNodeName(),
+						((ModuleConnectorExtension) extension).getModuleCreator());
 			}
-			if (extension instanceof ModuleHandlerExtension){
-				moduleHandlerManager.addModuleHandler((ModuleHandlerExtension)extension);
+			if (extension instanceof ModuleHandlerExtension) {
+				moduleHandlerManager.addModuleHandler((ModuleHandlerExtension) extension);
 			}
 		}
 	}
@@ -480,26 +477,28 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			}
 			updatePageStyle();
 		}
-		if (event.getType() == FlowProcessingEventType.PAGE_CHANGING || event.getType() == FlowProcessingEventType.CHECK ||
-				event.getType() == FlowProcessingEventType.SHOW_ANSWERS) {
+		if (event.getType() == FlowProcessingEventType.PAGE_CHANGING || event.getType() == FlowProcessingEventType.CHECK
+				|| event.getType() == FlowProcessingEventType.SHOW_ANSWERS) {
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.BEFORE_FLOW));
 		}
 		deliveryEventsHub.onFlowProcessingEvent(event);
 	}
+
 	@Override
 	public void onPageEvent(PageEvent event) {
-		if(event.getValue() instanceof FlowProcessingEvent) {
+		if (event.getValue() instanceof FlowProcessingEvent) {
 			onFlowProcessingEvent((FlowProcessingEvent) event.getValue());
 		}
 	}
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		if(event.getValue() instanceof FlowProcessingEvent){
+		if (event.getValue() instanceof FlowProcessingEvent) {
 			onFlowProcessingEvent((FlowProcessingEvent) event.getValue());
 		}
 
 	}
+
 	public DeliveryEventsListener getDeliveryEventsListener() {
 		return deliveryEventsHub;
 	}

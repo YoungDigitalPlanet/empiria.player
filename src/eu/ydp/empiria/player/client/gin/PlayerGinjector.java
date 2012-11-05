@@ -22,7 +22,6 @@ import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModule
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
-import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
@@ -50,7 +49,6 @@ public interface PlayerGinjector extends Ginjector {
 	DOMTreeWalker getDomTreeWalker();
 	PanelCache getPanelCache();
 	GWTPanelFactory getPanelFactory();
-	ObjectTemplateParser<?>  getObjectTemplateParser();
 	VideoFullScreenHelper getVideoFullScreenHelper();
 	MediaControllerFactory getControllerFactory();
 	PageScopeFactory getPageScopeFactory();

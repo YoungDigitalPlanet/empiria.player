@@ -9,8 +9,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
@@ -29,6 +30,21 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {// NOPMD
 
+	private Widget widget;
+	private final boolean flashPlayer = false; // NOPMD
+	private Widget moduleView = null;
+	private MediaWrapper<?> mediaWrapper = null;
+	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
+	@Inject
+	private EventsBus eventsBus;
+	@Inject
+	private ObjectTemplateParser<?> parser;
+	@Inject
+	private ModuleFactory moduleFactory;
+
+	private MediaWrapper<?> fullScreenMediaWrapper;
+
+
 	private class MediaWrapperHandler implements CallbackRecevier {
 		@Override
 		public void setCallbackReturnObject(Object object) {
@@ -41,14 +57,6 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			}
 		}
 	}
-
-	private Widget widget;
-	private final boolean flashPlayer = false; // NOPMD
-	private Widget moduleView = null;
-	private MediaWrapper<?> mediaWrapper = null;
-	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
-	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	private MediaWrapper<?> fullScreenMediaWrapper;
 
 	@Override
 	public Widget getView() {
@@ -115,7 +123,6 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	}
 
 	private void parseTemplate(Element template, Element fullScreenTemplate, FlowPanel parent) {
-		ObjectTemplateParser<?> parser = PlayerGinjector.INSTANCE.getObjectTemplateParser();
 		parser.setMediaWrapper(mediaWrapper);
 		parser.setFullScreenMediaWrapper(fullScreenMediaWrapper);
 		parser.setFullScreenTemplate(fullScreenTemplate);
@@ -183,7 +190,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 
 	@Override
 	public ObjectModule getNewInstance() {
-		return new ObjectModule();
+		return moduleFactory.getObjectModule();
 	}
 
 }

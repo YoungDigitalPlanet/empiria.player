@@ -22,7 +22,9 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 	protected MediaWrapper<?> mediaDescriptor = null;
 	protected MediaWrapper<?> fullScreenMediaWrapper = null;
 
+	@Inject
 	protected MediaControllerFactory factory;
+
 	private Element fullScreenTemplate;
 	private  boolean fullScreen = false;
 
@@ -78,11 +80,6 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 	@Override
 	protected boolean isModuleSupported(String moduleName) {
 		return controllers.contains(moduleName);
-	}
-
-	@Inject
-	public void setFactory(MediaControllerFactory factory) {
-		this.factory = factory;
 	}
 
 	public void setFullScreenTemplate(Element fullScreenTemplate) {
