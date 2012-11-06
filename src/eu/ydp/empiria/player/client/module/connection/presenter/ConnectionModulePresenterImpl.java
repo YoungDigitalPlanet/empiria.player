@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.CORRECT;
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NORMAL;
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.WRONG;
+
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -18,7 +22,7 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
-public class ConnectionModulePresenterImpl implements ConnectionModulePresenter, PairConnectEventHandler  {
+public class ConnectionModulePresenterImpl implements ConnectionModulePresenter, PairConnectEventHandler {
 
 	private MatchInteractionBean bean;
 
@@ -68,29 +72,16 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	public void setLocked(boolean locked) {
 		moduleView.setLocked(locked);
 	}
-	
-	public void showCorrectAnswers() {
-		showAnswers(model.getCorrectAnswers(), MultiplePairModuleConnectType.CORRECT);
+
+	@Override
+	public void showAnswers(ShowAnswersType mode) {
+		showAnswers(model.getCorrectAnswers(), (mode == ShowAnswersType.CORRECT) ? CORRECT : NORMAL);
 	}
-	
-	public void showCurrentAnswers() {
-		showAnswers(model.getCurrentAnswers(), MultiplePairModuleConnectType.NORMAL);
-	}
-	
-	public void markCorrectAnswers() {
-		setAnswersMarked(true, MultiplePairModuleConnectType.CORRECT);
-	}
-	
-	public void markWrongAnswers() {
-		setAnswersMarked(true, MultiplePairModuleConnectType.WRONG);
-	}
-	
-	public void unmarkCorrectAnswers() {
-		setAnswersMarked(false, MultiplePairModuleConnectType.CORRECT);
-	}
-	
-	public void unmarkWrongAnswers() {
-		setAnswersMarked(false, MultiplePairModuleConnectType.WRONG);
+
+	@Override
+	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+		setAnswersMarked(mode == MarkAnswersMode.MARK, (type == MarkAnswersType.CORRECT) ? CORRECT : WRONG);
+
 	}
 
 	@Override
@@ -99,10 +90,10 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	}
 
 	@Override
-	public void onConnectionEvent(PairConnectEvent event) {		
-		
+	public void onConnectionEvent(PairConnectEvent event) {
+
 		DirectedPair pair = getDirectedPair(event);
-		
+
 		switch (event.getType()) {
 		case CONNECTED:
 			if (event.isUserAction()) {
@@ -128,10 +119,10 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	private DirectedPair getDirectedPair(PairConnectEvent event) {
 		DirectedPair pair = new DirectedPair();
-		
+
 		String start = event.getSourceItem();
 		String end = event.getTargetItem();
-				
+
 		if (bean.getSourceChoicesIdentifiersSet().contains(start)) {
 			pair.setSource(start);
 		} else if (bean.getTargetChoicesIdentifiersSet().contains(start)) {
@@ -143,7 +134,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		} else if (bean.getTargetChoicesIdentifiersSet().contains(end)) {
 			pair.setTarget(end);
 		}
-		
+
 		return pair;
 	}
 
@@ -154,11 +145,13 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 			// invalid pair
 			errorsCount++;
 		} else if (bean.getMaxAssociations() > 0 && model.getCurrentOverallPairingsNumber() >= bean.getMaxAssociations()) {
-			// The maxAssociations attribute controls the maximum number of pairings the user is allowed to make overall.
+			// The maxAssociations attribute controls the maximum number of
+			// pairings the user is allowed to make overall.
 			errorsCount++;
 		} else if (bean.getChoiceByIdentifier(pair.getSource()).getMatchMax() > 0
 				&& model.getCurrentChoicePairingsNumber(pair.getSource()) >= bean.getChoiceByIdentifier(pair.getSource()).getMatchMax()) {
-			// Individually, each choice has a matchMax attribute that controls how many pairings it can be part of.
+			// Individually, each choice has a matchMax attribute that controls
+			// how many pairings it can be part of.
 			errorsCount++;
 		} else if (bean.getChoiceByIdentifier(pair.getTarget()).getMatchMax() > 0
 				&& model.getCurrentChoicePairingsNumber(pair.getTarget()) >= bean.getChoiceByIdentifier(pair.getTarget()).getMatchMax()) {
@@ -169,7 +162,8 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	}
 
 	/**
-	 * Sets connections in view using given {@link KeyValue} collection for defined {@link MultiplePairModuleConnectType}
+	 * Sets connections in view using given {@link KeyValue} collection for
+	 * defined {@link MultiplePairModuleConnectType}
 	 *
 	 * @param answers
 	 * @param type
@@ -184,8 +178,11 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	/**
 	 * Marks / unmarks answers
 	 *
-	 * @param markMode - {@link Boolean} mark/unmark
-	 * @param markingType - {@link MultiplePairModuleConnectType#CORRECT} or {@link MultiplePairModuleConnectType#WRONG}
+	 * @param markMode
+	 *            - {@link Boolean} mark/unmark
+	 * @param markingType
+	 *            - {@link MultiplePairModuleConnectType#CORRECT} or
+	 *            {@link MultiplePairModuleConnectType#WRONG}
 	 */
 	private void setAnswersMarked(boolean markMode, MultiplePairModuleConnectType markingType) {
 		List<Boolean> responseEvaluated = model.evaluateResponse();
@@ -199,10 +196,12 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 				if (markMode) {
 					moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
 					moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
-					// TODO: jesli dana pozycja nie jest zaznaczona wcale to wyslac MultiplePairModuleConnectType.NONE ??
+					// TODO: jesli dana pozycja nie jest zaznaczona wcale to
+					// wyslac MultiplePairModuleConnectType.NONE ??
 				} else {
 					moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
-					moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL); // TODO: NORMAL
+					moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL); // TODO:
+																															// NORMAL
 				}
 			}
 			responseCnt++;
@@ -212,35 +211,27 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	private class DirectedPair {
 		private String source;
 		private String target;
-		
+
 		public String getSource() {
 			return source;
 		}
+
 		public void setSource(String source) {
 			this.source = source;
 		}
+
 		public String getTarget() {
 			return target;
 		}
+
 		public void setTarget(String target) {
 			this.target = target;
 		}
-		
+
 		@Override
-		public String toString() {			
+		public String toString() {
 			return source + " " + target;
 		}
 	}
 
-	@Override
-	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void showAnswers(ShowAnswersType mode) {
-		// TODO Auto-generated method stub
-		
-	}	
 }
