@@ -11,7 +11,7 @@ import eu.ydp.gwtutil.client.collections.RandomizedSet;
 
 public class ShuffleHelper {
 
-	public <B extends ModuleBean & HasShuffle, I extends HasFixed> List<I> randomizeChoices(B bean, List<I> associableChoices) {
+	public <B extends ModuleBean & HasShuffle, I extends HasFixed> List<I> randomize(B bean, List<I> associableChoices) {
 		List<I> resultList = associableChoices;
 		if (bean.isShuffle()) {
 			resultList = new ArrayList<I>(associableChoices.size());
@@ -26,7 +26,6 @@ public class ShuffleHelper {
 				}
 			}
 
-
 			for (Integer index : reverseOrder) {
 				copyList.remove(index.intValue());
 			}
@@ -40,7 +39,6 @@ public class ShuffleHelper {
 			for (Map.Entry<Integer, I> fixedEntry : fixedMap.entrySet()) {
 				resultList.add(fixedEntry.getKey(), fixedEntry.getValue());
 			}
-
 		}
 		return resultList;
 	}
