@@ -6,11 +6,14 @@ import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
+import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkPopup;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBookmarkPopupView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieView;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
@@ -80,6 +83,9 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(IBookmarkPopupView.class).to(BookmarkPopup.class);
 		bind(XMLParser.class);
 		bind(FeedbackRegistry.class).in(Singleton.class);
+
+		bind(IStickieView.class).to(StickieView.class);
+		bind(PlayerContainersAccessor.class).in(Singleton.class);
 		
 		//bind(ConnectionPresenter.class).to(ConnectionPresenterImpl.class);
 		//factory

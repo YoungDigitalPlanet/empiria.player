@@ -92,10 +92,8 @@ public class ItemBody implements WidgetWorkflowListener {
 				}
 			}
 		}
-
+		
 		return itemBodyModule.getView();
-
-
 	}
 
 	// ------------------------- EVENTS --------------------------------

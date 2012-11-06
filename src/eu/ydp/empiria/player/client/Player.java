@@ -27,6 +27,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
@@ -49,6 +50,8 @@ public class Player {
   /** View engine maintains the view tasks */
   private final ViewEngine viewEngine;
 
+  private PlayerContainersAccessor accessor;
+
   {
 	 logVersion();
   }
@@ -63,6 +66,7 @@ public class Player {
 		viewEngine = injector.getViewEngine();
 		RootPanel root = RootPanel.get(id);
 		viewEngine.mountView(root);
+		getAccessor().setPlayerContainer(root);
 		deliveryEngine = injector.getDeliveryEngine();
 		deliveryEngine.init(jsObject);
 	}
@@ -70,6 +74,7 @@ public class Player {
 	public Player(ComplexPanel container){
 		this.jsObject = JavaScriptObject.createFunction();
 		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		getAccessor().setPlayerContainer(container);
 		viewEngine = injector.getViewEngine();
 		viewEngine.mountView(container);
 		deliveryEngine = injector.getDeliveryEngine();
@@ -123,4 +128,10 @@ public class Player {
 			console.log(message);
 	 }-*/;
 
+	private PlayerContainersAccessor getAccessor() {
+		if (accessor == null){
+			accessor = PlayerGinjector.INSTANCE.getItemBodyAccessor();
+		}
+		return accessor;
+	}	
 }

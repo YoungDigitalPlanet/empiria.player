@@ -270,7 +270,7 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 			return itemBody.getModuleCount();
 		}
 
-		public Widget getContentView() {
+		public Panel getContentView() {
 			return itemBodyView;
 		}
 

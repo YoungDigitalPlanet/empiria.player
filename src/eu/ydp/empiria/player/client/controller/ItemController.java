@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
@@ -58,6 +59,8 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private StyleSocket styleSocket;
 	private final ModuleHandlerManager moduleHandlerManager;
 
+	PlayerContainersAccessor accessor;
+
 	public void setStyleSocket(StyleSocket styleSocket) {
 		this.styleSocket = styleSocket;
 	}
@@ -74,6 +77,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			}
 			itemIndex = data.itemIndex;
 			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex), moduleHandlerManager);
+			getAccessor().registerItemBodyContainer(itemIndex, item.getContentView());
 			item.setState(itemSessionSocket.getState(itemIndex));
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
 			itemSessionSocket.beginItemSession(itemIndex);
@@ -166,6 +170,13 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		}
 		item.handleFlowActivityEvent(newEvent);
 
+	}
+
+	private PlayerContainersAccessor getAccessor() {
+		if (accessor == null){
+			accessor = PlayerGinjector.INSTANCE.getItemBodyAccessor();
+		}
+		return accessor;
 	}
 
 	/**

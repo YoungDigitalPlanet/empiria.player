@@ -1,0 +1,30 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
+	<ui:style>
+		.outer{
+			position: absolute;
+		}
+	</ui:style>
+	<g:FocusPanel stylePrimaryName="{res.QP_STICKIE} {style.outer}" ui:field="containerPanel">
+		<g:FlowPanel styleName="{res.QP_STICKIE_CONTAINER_OUTER}">
+			<g:FlowPanel styleName="{res.QP_STICKIE_CONTAINER_INNER}">
+				<g:FocusPanel styleName="{res.QP_STICKIE_HEADER}" ui:field="headerPanel">
+				</g:FocusPanel>
+				<g:FlowPanel styleName="{res.QP_STICKIE_DELETE_PANEL}">
+					<g:PushButton styleName="{res.QP_STICKIE_DELETE_BUTTON)" ui:field="deleteButton"/>
+				</g:FlowPanel>
+				<g:FlowPanel styleName="{res.QP_STICKIE_MINIMIZE_PANEL}">
+					<g:PushButton styleName="{res.QP_STICKIE_MINIMIZE_BUTTON}" ui:field="minimizeButton"/>
+				</g:FlowPanel>
+				<g:FlowPanel styleName="{res.QP_STICKIE_TEXT_PANEL}" ui:field="textPanel">
+					<g:TextArea styleName="{res.QP_STICKIE_TEXT_AREA}" ui:field="contentText" visible="false" />
+				</g:FlowPanel>
+				<g:FocusPanel styleName="{res.QP_STICKIE_LABEL_PANEL}" ui:field="labelPanel">
+					<g:InlineHTML styleName="{res.QP_STICKIE_LABEL}" ui:field="contentLabel" />
+				</g:FocusPanel>
+			</g:FlowPanel>
+		</g:FlowPanel>
+	</g:FocusPanel>
+</ui:UiBinder>

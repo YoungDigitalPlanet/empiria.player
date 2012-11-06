@@ -339,6 +339,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
 		loadExtension(PlayerGinjector.INSTANCE.getPage());
 		loadExtension(PlayerGinjector.INSTANCE.getBookmarkProcessorExtension());
+		loadExtension(PlayerGinjector.INSTANCE.getStickiesProcessorExtension());
 	}
 
 	protected void loadLibraryExtensions() {
