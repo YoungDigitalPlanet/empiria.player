@@ -8,11 +8,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasShuffle;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
 
 @XmlRootElement(name = "sourceList")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SourceListBean implements ModuleBean {
+public class SourceListBean implements ModuleBean, HasShuffle {
 	@XmlAttribute
 	private String id; //NOPMD
 
@@ -40,12 +41,17 @@ public class SourceListBean implements ModuleBean {
 		return moveElements;
 	}
 
+	@Override
 	public boolean isShuffle() {
 		return shuffle;
 	}
 
 	public List<SimpleSourceListItemBean> getSimpleSourceListItemBeans() {
 		return simpleSourceListItemBeans;
+	}
+
+	public void setSimpleSourceListItemBeans(List<SimpleSourceListItemBean> simpleSourceListItemBeans) {
+		this.simpleSourceListItemBeans = simpleSourceListItemBeans;
 	}
 
 

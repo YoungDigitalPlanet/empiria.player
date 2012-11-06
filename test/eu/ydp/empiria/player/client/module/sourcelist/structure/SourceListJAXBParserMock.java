@@ -10,6 +10,24 @@ public class SourceListJAXBParserMock implements SourceListJAXBParser {
 			"<simpleSourceListItem alt=\"kota\">kota</simpleSourceListItem>"+
 			"<simpleSourceListItem alt=\"tygrysa\">tygrysa</simpleSourceListItem>"+
 						"</sourceList>";
+
+	public static final String XML_WITHOUT_SHUFFLE = "<sourceList id=\"dummy2\" moveElements=\"true\" shuffle=\"false\">"+
+			"<simpleSourceListItem alt=\"psa\">psa</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"kota\">kota</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"tygrysa\">tygrysa</simpleSourceListItem>"+
+						"</sourceList>";
+
+	public static final String XML_WITH_MORE_ITEMS = "<sourceList id=\"dummy2\" moveElements=\"true\" shuffle=\"true\">"+
+			"<simpleSourceListItem alt=\"psa\">psa</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"kota\">kota</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"tygrysa\">tygrysa</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"psa\">psa1</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"kota\">kota1</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"tygrysa\">tygrysa1</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"psa\">psa2</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"kota\">kota2</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"tygrysa\">tygrysa2</simpleSourceListItem>"+
+						"</sourceList>";
 	@Override
 	public JAXBParser<SourceListBean> create() {
 		return new JAXBParserImpl<SourceListBean>(SourceListJAXBParser.class);
