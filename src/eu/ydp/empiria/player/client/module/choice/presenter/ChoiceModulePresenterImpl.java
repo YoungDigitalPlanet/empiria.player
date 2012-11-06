@@ -14,7 +14,10 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
@@ -147,7 +150,6 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		return searchedIdentifier;
 	}
 
-	@Override
 	public void markCorrectAnswers() {
 		for (SimpleChoicePresenter choice : getSimpleChoices()) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
@@ -157,8 +159,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			}
 		}
 	}
-
-	@Override
+	
 	public void markWrongAnswers() {
 		for (SimpleChoicePresenter choice : getSimpleChoices()) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
@@ -168,8 +169,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			}
 		}
 	}
-
-	@Override
+	
 	public void unmarkCorrectAnswers() {
 		for (SimpleChoicePresenter choice : getSimpleChoices()) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
@@ -179,8 +179,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			}
 		}
 	}
-
-	@Override
+	
 	public void unmarkWrongAnswers() {
 		for (SimpleChoicePresenter choice : getSimpleChoices()) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
@@ -190,8 +189,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			}
 		}
 	}
-
-	@Override
+	
 	public void showCorrectAnswers() {
 		for (SimpleChoicePresenter choice : getSimpleChoices()) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
@@ -199,8 +197,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 			choice.setSelected(isCorrect);
 		}
 	}
-
-	@Override
+	
 	public void showCurrentAnswers() {
 		for (SimpleChoicePresenter choice : getSimpleChoices()) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
@@ -223,6 +220,18 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	public void setModuleSocket(ModuleSocket socket) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showAnswers(ShowAnswersType mode) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

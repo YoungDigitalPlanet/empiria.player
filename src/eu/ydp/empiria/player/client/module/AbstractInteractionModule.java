@@ -83,23 +83,16 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	@Override
 	public void markAnswers(boolean mark) {
 		markingAnswers = mark;
-
-		if(mark){
-			presenter.markCorrectAnswers();
-			presenter.markWrongAnswers();
-		}else{
-			presenter.unmarkCorrectAnswers();
-			presenter.unmarkWrongAnswers();
-		}
+		MarkAnswersMode markAnswerMode = (mark)? MarkAnswersMode.MARK: MarkAnswersMode.UNMARK;
+		
+		presenter.markAnswers(MarkAnswersType.CORRECT, markAnswerMode);
+		presenter.markAnswers(MarkAnswersType.WRONG, markAnswerMode);
 	}
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
-		if(show){
-			presenter.showCorrectAnswers();
-		}else{
-			presenter.showCurrentAnswers();
-		}
+		ShowAnswersType showAnswersType = (show)? ShowAnswersType.CORRECT: ShowAnswersType.USER;
+		presenter.showAnswers(showAnswersType);
 	}
 
 	@Override
@@ -124,7 +117,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	public void setState(JSONArray newState) {
 		clearModel();
 		getResponseModel().setState(newState);
-		presenter.showCurrentAnswers();
+		presenter.showAnswers(ShowAnswersType.USER);
 		fireStateChanged(false);
 	}
 

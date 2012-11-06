@@ -5,7 +5,10 @@ import java.util.List;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.module.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
@@ -65,33 +68,27 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	public void setLocked(boolean locked) {
 		moduleView.setLocked(locked);
 	}
-
-	@Override
+	
 	public void showCorrectAnswers() {
 		showAnswers(model.getCorrectAnswers(), MultiplePairModuleConnectType.CORRECT);
 	}
-
-	@Override
+	
 	public void showCurrentAnswers() {
 		showAnswers(model.getCurrentAnswers(), MultiplePairModuleConnectType.NORMAL);
 	}
-
-	@Override
+	
 	public void markCorrectAnswers() {
 		setAnswersMarked(true, MultiplePairModuleConnectType.CORRECT);
 	}
-
-	@Override
+	
 	public void markWrongAnswers() {
 		setAnswersMarked(true, MultiplePairModuleConnectType.WRONG);
 	}
-
-	@Override
+	
 	public void unmarkCorrectAnswers() {
 		setAnswersMarked(false, MultiplePairModuleConnectType.CORRECT);
 	}
-
-	@Override
+	
 	public void unmarkWrongAnswers() {
 		setAnswersMarked(false, MultiplePairModuleConnectType.WRONG);
 	}
@@ -233,5 +230,17 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		public String toString() {			
 			return source + " " + target;
 		}
+	}
+
+	@Override
+	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showAnswers(ShowAnswersType mode) {
+		// TODO Auto-generated method stub
+		
 	}	
 }

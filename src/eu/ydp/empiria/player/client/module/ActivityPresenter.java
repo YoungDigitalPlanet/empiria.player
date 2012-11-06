@@ -44,36 +44,15 @@ public interface ActivityPresenter<H extends AbstractResponseModel<?>, T extends
 	 * @param locked
 	 */
 	void setLocked(boolean locked);
-
+	
 	/**
-	 * Pokazywanie poprawnych odpowiedzi
+	 * Zaznaczanie/odznaczanie poprawnych/błędnych odpowiedzi
 	 */
-	void showCorrectAnswers();
-
+	void markAnswers(MarkAnswersType type, MarkAnswersMode mode);
+	
 	/**
-	 * Pokazywanie odpowiedzi zaznaczonych
-	 * przez użytkownika
+	 * Pokazywanie/ukrywanie poprawnych odpowiedzi
 	 */
-	void showCurrentAnswers();
-
-	/**
-	 * Zaznaczanie poprawnych odpowiedzi
-	 */
-	void markCorrectAnswers();
-
-	/**
-	 * Zaznaczanie błędnych odpowiedzi
-	 */
-	void markWrongAnswers();
-
-	/**
-	 * Odznaczanie poprawnych odpowiedzi
-	 */
-	void unmarkCorrectAnswers();
-
-	/**
-	 * Odznaczanie błędnych odpowiedzi
-	 */
-	void unmarkWrongAnswers();
+	void showAnswers(ShowAnswersType mode);
 
 }
