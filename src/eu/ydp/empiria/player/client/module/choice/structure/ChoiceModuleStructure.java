@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.module.choice.structure;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
@@ -15,6 +15,12 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInteractionBean, ChoiceModuleJAXBParser>{
 
 	private RandomizedSet<Integer> randomizedIndices;
+	
+	@Inject
+	private ChoiceModuleJAXBParser parserFactory;
+	
+	@Inject
+	private XMLParser xmlParser;
 
 	@Override
 	protected void prepareStructure(){
@@ -81,7 +87,7 @@ public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInterac
 
 	@Override
 	protected ChoiceModuleJAXBParser getParserFactory() {
-		return GWT.create(ChoiceModuleJAXBParser.class);
+		return parserFactory;
 	}
 
 	public List<SimpleChoiceBean> getSimpleChoices() {
@@ -90,6 +96,6 @@ public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInterac
 
 	@Override
 	protected XMLParser getXMLParser() {
-		return new XMLParser();
+		return xmlParser;
 	}
 }
