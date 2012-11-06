@@ -16,6 +16,8 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
@@ -122,8 +124,8 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 				true));
 		doReturn(Arrays.asList(true, false, true)).when(connectionModuleModel).evaluateResponse();
 
-		connectionModulePresenter.markCorrectAnswers();
-		connectionModulePresenter.markWrongAnswers();
+		connectionModulePresenter.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.MARK);
+		connectionModulePresenter.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.MARK);
 
 		Mockito.verify(moduleView).connect(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1, MultiplePairModuleConnectType.CORRECT);
 		Mockito.verify(moduleView).connect(CONNECTION_RESPONSE_1_3, CONNECTION_RESPONSE_1_4, MultiplePairModuleConnectType.CORRECT);
