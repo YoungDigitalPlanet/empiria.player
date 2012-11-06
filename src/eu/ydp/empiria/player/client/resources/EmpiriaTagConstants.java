@@ -17,6 +17,7 @@ public final class EmpiriaTagConstants {
 	public static final String NAME_INLINE_CHOICE = "inlineChoice";
 	public static final String NAME_SIMPLE_CHOICE = "simpleChoice";
 	public static final String NAME_FEEDBACK_INLINE = "feedbackInline";
+	public static final String NAME_FEEDBACK = "feedback";
 	
 	private EmpiriaTagConstants() {
 	}

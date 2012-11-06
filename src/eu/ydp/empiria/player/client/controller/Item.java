@@ -36,6 +36,7 @@ import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
@@ -218,13 +219,13 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 		}
 
 		public void process(boolean userInteract) {
-			process(userInteract, "");
+			process(userInteract, null);
 		}
 
-		public void process(boolean userInteract, String senderIdentifier) {
+		public void process(boolean userInteract, IUniqueModule sender) {
 			variableProcessor.processResponseVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), userInteract);
 			if (userInteract) {
-				feedbackManager.process(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), senderIdentifier);
+				feedbackManager.process(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), sender);
 			}
 		}
 

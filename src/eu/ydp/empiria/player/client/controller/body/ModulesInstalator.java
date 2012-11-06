@@ -9,6 +9,8 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -31,6 +33,8 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	protected StackMap<String, StackMap<Element, HasWidgets>> uniqueModulesMap = new StackMap<String, StackMap<Element,HasWidgets>>();
 	protected StackMap<Element, StackMap<IModule, HasWidgets>> nonuniqueModulesMap = new StackMap<Element, StackMap<IModule,HasWidgets>>();
 	protected StackMap<String, IModule> multiViewModulesMap = new StackMap<String, IModule>();
+	
+	protected FeedbackRegistry feedbackRegistry = PlayerGinjector.INSTANCE.getFeedbackRegistry();
 
 	public ModulesInstalator(ParenthoodGeneratorSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, InteractionEventsListener mil){
 		this.registry = reg;
@@ -83,6 +87,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		IModule module = registry.createModule(element);
 
 		parenthood.addChild(module);
+		registerModuleFeedbacks(module, element);
 
 		if (module instanceof ISingleViewWithBodyModule){
 			parenthood.pushParent((ISingleViewWithBodyModule) module);
@@ -99,6 +104,10 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 
 		singleViewModules.add(module);
 	}
+	
+	private void registerModuleFeedbacks(IModule module, Element moduleElement){
+		feedbackRegistry.registerFeedbacks(module, moduleElement);
+	}
 
 	public void installMultiViewNonuniuqeModules(){
 		for (Element currElement : nonuniqueModulesMap.getKeys()){
@@ -112,6 +121,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 				multiViewModule.initModule(moduleSocket, interactionListener);
 				multiViewModule.addElement(currElement);
 				multiViewModule.installViews(placeholders);
+				registerModuleFeedbacks(module, currElement);
 			}
 		}
 	}
@@ -131,7 +141,8 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 					if (currModule instanceof IMultiViewModule){
 						((IMultiViewModule)currModule).initModule(moduleSocket, interactionListener);
 					}
-					//registerModule(currModule);
+					
+					registerModuleFeedbacks(currModule, currElement);
 				}
 				if (currModule instanceof IMultiViewModule){
 					((IMultiViewModule)currModule).addElement(currElement);

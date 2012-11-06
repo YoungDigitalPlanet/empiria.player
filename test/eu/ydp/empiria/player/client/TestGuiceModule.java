@@ -21,6 +21,8 @@ import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
@@ -80,6 +82,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class).to(ConnectionModuleFactoryMock.class).in(Singleton.class));
 		bindDescriptors.add(new BindDescriptor<VideoFullScreenHelper>().bind(VideoFullScreenHelper.class).in(Singleton.class));
 		bindDescriptors.add(new BindDescriptor<PanelCache>().bind(PanelCache.class));
+		bindDescriptors.add(new BindDescriptor<FeedbackParserFactory>().bind(FeedbackParserFactory.class).to(FeedbackParserFactoryMock.class));
 	}
 
 	@Override

@@ -105,7 +105,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	public void onStateChange(StateChangeEvent event) {
 		if (event.getType() == StateChangeEventTypes.STATE_CHANGED && event.getValue() instanceof StateChangedInteractionEvent) {
 			StateChangedInteractionEvent scie = (StateChangedInteractionEvent) event.getValue();
-			item.process(scie.isUserInteract(), scie.getSender() == null ? "" : scie.getSender().getIdentifier());
+			item.process(scie.isUserInteract(), scie.getSender());
 			// STATE
 			itemSessionSocket.setState(itemIndex, item.getState());
 			// item.updateItemSession(itemIndex, itemSessionSocket);

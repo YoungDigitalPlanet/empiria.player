@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
@@ -56,6 +57,7 @@ public interface PlayerGinjector extends Ginjector {
 	ModuleHandlerManager getModuleHandlerManager();
 	TextTrackFactory getTextTrackFactory();
 	ModuleFactory getModuleFactory();
+	FeedbackRegistry getFeedbackRegistry();
 
 	ConnectionModuleJAXBParser getConnectionModuleJAXBParser();
 	ConnectionModuleStructure getConnectionModuleStructure();

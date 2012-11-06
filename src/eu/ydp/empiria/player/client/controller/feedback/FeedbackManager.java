@@ -12,9 +12,14 @@ import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackIntera
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
 public class FeedbackManager implements InlineFeedbackSocket{
+	
+	private FeedbackRegistry feedbackRegistry = PlayerGinjector.INSTANCE.getFeedbackRegistry();
 
 	public FeedbackManager(NodeList feedbackNodes, String baseUrl, ModuleSocket moduleSocket, FeedbackInteractionEventListner feedbackListener){
 		
@@ -42,6 +47,19 @@ public class FeedbackManager implements InlineFeedbackSocket{
 	
 	public Panel getModalFeedbackView(){
 		return container;
+	}
+	
+	public void process (Map<String, Response> responses, Map<String, Outcome> outcomes, IUniqueModule sender){
+		if(feedbackRegistry.isModuleRegistered(sender)){
+			processNewFeedbacks(sender);
+		}else{
+			String identifier = (sender == null)? "" : sender.getIdentifier();
+			process(responses, outcomes, identifier);
+		}
+	}
+	
+	private void processNewFeedbacks(IModule module){
+		//TODO: processing new feedbacks
 	}
 	
 	public void process (Map<String, Response> responses, Map<String, Outcome> outcomes, String senderIdentifier){
