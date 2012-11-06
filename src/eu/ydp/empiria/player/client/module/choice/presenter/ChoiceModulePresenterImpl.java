@@ -61,7 +61,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 				model.selectResponse(choiceIdentifier);
 			}
 
-			showCurrentAnswers();
+			showAnswers(ShowAnswersType.USER);
 		}
 	};
 
@@ -149,61 +149,50 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 		return searchedIdentifier;
 	}
+	
+	@Override
+	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+		for (SimpleChoicePresenter choice : getSimpleChoices()) {
+			String choiceIdentifier = getChoiceIdentifier(choice);
+			boolean mark = isChoiceMarkType(type, choiceIdentifier);
+			
+			if (choice.isSelected() && mark) {
+				choice.markAnswers(type, mode);
+			}
+		}
+	}
+	
+	private boolean isChoiceMarkType(MarkAnswersType type, String choiceIdentifier){
+		boolean is = false;
+		
+		if(MarkAnswersType.CORRECT.equals(type)){
+			is = model.isCorrectAnswer(choiceIdentifier);
+		}else if(MarkAnswersType.WRONG.equals(type)){
+			is = model.isWrongAnswer(choiceIdentifier);
+		}
+		
+		return is;
+	}
 
-	public void markCorrectAnswers() {
+	@Override
+	public void showAnswers(ShowAnswersType type) {
 		for (SimpleChoicePresenter choice : getSimpleChoices()) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
-			boolean isCorrect = model.isCorrectAnswer(choiceIdentifier);
-			if (isCorrect && choice.isSelected()) {
-				choice.markCorrectAnswers();
-			}
-		}
+			boolean select = isChoiceAnswerType(type, choiceIdentifier);
+			choice.setSelected(select);
+		}		
 	}
 	
-	public void markWrongAnswers() {
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
-			boolean isWrong = model.isWrongAnswer(choiceIdentifier);
-			if(isWrong && choice.isSelected()){
-				choice.markWrongAnswers();
-			}
+	private boolean isChoiceAnswerType(ShowAnswersType type, String choiceIdentifier){
+		boolean select = false;
+		
+		if(ShowAnswersType.CORRECT.equals(type)){
+			select = model.isCorrectAnswer(choiceIdentifier);
+		}else if(ShowAnswersType.USER.equals(type)){
+			select = model.isCurrentAnswer(choiceIdentifier);
 		}
-	}
-	
-	public void unmarkCorrectAnswers() {
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
-			boolean isCorrect = model.isCorrectAnswer(choiceIdentifier);
-			if(isCorrect && choice.isSelected()){
-				choice.unmarkCorrectAnswers();
-			}
-		}
-	}
-	
-	public void unmarkWrongAnswers() {
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
-			boolean isWrong = model.isWrongAnswer(choiceIdentifier);
-			if(isWrong && choice.isSelected()){
-				choice.unmarkWrongAnswers();
-			}
-		}
-	}
-	
-	public void showCorrectAnswers() {
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
-			boolean isCorrect = model.isCorrectAnswer(choiceIdentifier);
-			choice.setSelected(isCorrect);
-		}
-	}
-	
-	public void showCurrentAnswers() {
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
-			boolean isCurrent = model.isCurrentAnswer(choiceIdentifier);
-			choice.setSelected(isCurrent);
-		}
+		
+		return select;
 	}
 
 	@Override
@@ -221,17 +210,4 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void showAnswers(ShowAnswersType mode) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

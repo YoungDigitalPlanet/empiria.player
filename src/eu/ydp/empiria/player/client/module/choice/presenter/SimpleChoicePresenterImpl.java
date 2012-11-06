@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.module.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
@@ -167,8 +169,8 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter{
 		return labelPanel;
 	}
 
-	public void setLocked(boolean enabled) {
-		button.setButtonEnabled(enabled);
+	public void setLocked(boolean locked) {
+		button.setButtonEnabled(!locked);
 	}
 
 	public void reset() {
@@ -192,20 +194,29 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter{
 		uiBinder.createAndBindUi(this);
 	}
 	
-	public void markCorrectAnswers() {
-		removeInactiveStyle();
-		markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-correct");
-		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
-		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
-		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
+	@Override
+	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+		if(MarkAnswersMode.MARK.equals(mode)){
+			mark(type);
+		}else if(MarkAnswersMode.UNMARK.equals(mode)){
+			unmark(type);
+		}
 	}
 	
-	public void markWrongAnswers() {
+	private void mark(MarkAnswersType type){
 		removeInactiveStyle();
-		markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-wrong");
-		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
-		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
-		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
+		
+		if(MarkAnswersType.CORRECT.equals(type)){
+			markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-correct");
+			markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
+			optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+			labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
+		}else if(MarkAnswersType.WRONG.equals(type)){
+			markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-wrong");
+			markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
+			optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+			labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
+		}
 	}
 	
 	private void removeInactiveStyle(){
@@ -213,16 +224,16 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter{
 		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
 	}
 	
-	public void unmarkCorrectAnswers() {
+	private void unmark(MarkAnswersType type){
 		addInactiveStyle();
-		optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
-		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
-	}
-
-	public void unmarkWrongAnswers() {
-		addInactiveStyle();
-		optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
-		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
+		
+		if(MarkAnswersType.CORRECT.equals(type)){
+			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
+		}else if(MarkAnswersType.WRONG.equals(type)){
+			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
+		}
 	}
 	
 	private void addInactiveStyle(){
@@ -236,5 +247,4 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter{
 	public void setListener(ChoiceModuleListener listener) {
 		this.listener = listener;
 	}
-
 }

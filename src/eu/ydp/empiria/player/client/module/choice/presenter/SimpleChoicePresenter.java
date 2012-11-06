@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.choice.presenter;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
+import eu.ydp.empiria.player.client.module.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 
 public interface SimpleChoicePresenter extends IsWidget{
@@ -16,13 +18,7 @@ public interface SimpleChoicePresenter extends IsWidget{
 
 	boolean isSelected();
 
-	void markCorrectAnswers();
-
-	void markWrongAnswers();
-
-	void unmarkCorrectAnswers();
-
-	void unmarkWrongAnswers();
+	void markAnswers(MarkAnswersType type, MarkAnswersMode mode);
 
 	void setSelected(boolean isCorrect);
 

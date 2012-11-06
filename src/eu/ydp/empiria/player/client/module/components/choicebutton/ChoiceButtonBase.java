@@ -5,19 +5,17 @@ import com.google.gwt.user.client.ui.PushButton;
 public abstract class ChoiceButtonBase extends PushButton implements ISelectableButton {
 
 	protected boolean selected;
-	protected boolean enabled;
 	protected boolean over;
 	protected String moduleStyleNamePart;
 
 	public ChoiceButtonBase(String moduleStyleNamePart){
 		selected = false;
-		enabled = true;
 		over = false;
 		this.moduleStyleNamePart = moduleStyleNamePart;
 	}
 	
 	public void setButtonEnabled(boolean value){
-		enabled = value;
+		setEnabled(value);
 		updateStyle();
 	}
 
@@ -55,7 +53,7 @@ public abstract class ChoiceButtonBase extends PushButton implements ISelectable
 		} else {
 			styleName += "-notselected";			
 		}
-		if (!enabled){
+		if (!isEnabled()){
 			styleName += "-disabled";
 		}
 		if (over){
