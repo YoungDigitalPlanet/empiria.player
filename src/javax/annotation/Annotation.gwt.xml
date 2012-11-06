@@ -1,0 +1,4 @@
+<module>
+	<!-- workaround for using guava gwt -->
+	<source path=""/>
+</module>

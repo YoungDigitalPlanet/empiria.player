@@ -23,6 +23,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="ivy-lib/hamcrest-library.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/hamcrest-core.jar"/>
-	<classpathentry kind="lib" path="libs/jaxb4gwt-1.0.1.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/jaxb4gwt.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/guava-gwt.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/guava.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/jsr305.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

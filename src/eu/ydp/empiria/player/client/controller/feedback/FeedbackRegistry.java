@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
@@ -19,7 +19,7 @@ public class FeedbackRegistry {
 	@Inject
 	private FeedbackParserFactory feedbackParserFactory;
 	
-	private final Map<IModule, List<Feedback>> modules2feedbacks = new HashMap<IModule, List<Feedback>>();
+	private final Map<IModule, List<Feedback>> modules2feedbacks = Maps.newHashMap();
 	
 	public void registerFeedbacks(IModule module, Node moduleNode){
 		Element moduleElement = (Element) moduleNode;
@@ -44,14 +44,14 @@ public class FeedbackRegistry {
 		List<Feedback> feedbackList = modules2feedbacks.get(module);
 		
 		if(feedbackList == null){
-			feedbackList = new ArrayList<Feedback>();
+			feedbackList = Lists.newArrayList();
 		}
 		
 		return feedbackList;
 	}
 	
 	private List<Feedback> createFeedbackList(NodeList feedbackNodeList){
-		List<Feedback> feedbackList = new ArrayList<Feedback>();
+		List<Feedback> feedbackList = Lists.newArrayList();
 		
 		for(int i = 0; i < feedbackNodeList.getLength(); i++){
 			Node feedbackNode = feedbackNodeList.item(i);
