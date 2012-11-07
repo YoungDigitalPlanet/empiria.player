@@ -82,14 +82,13 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 
 	@Override
 	public void setState(JSONArray newState) {
-		String externalStickies = getExternalStickies();
-		
+		JavaScriptObject externalStickies = getExternalStickies();		
 		JSONArray externalState = null;
-		if(externalStickies != null){
-			externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());
+		if(externalStickies != null){			
+			externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());			
 		}
 		
-		JSONArray state = externalState == null ? newState : externalState;
+		JSONArray state = externalState == null ? newState : externalState;	
 		
 		stickies.clear();
 		for (int i = 0 ; i < state.size() ; i ++ ){
@@ -106,7 +105,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		return itemStickies;
 	}
 
-	private native String getExternalStickies()/*-{
+	private native JavaScriptObject getExternalStickies()/*-{
 		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension::playerJsObject;		
 		if (typeof playerJso != 'undefined'  && playerJso != null && typeof playerJso.getExternalStickies == 'function'){			
 			return playerJso.getExternalStickies();
