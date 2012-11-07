@@ -75,7 +75,8 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
-		showAnswers(model.getCorrectAnswers(), (mode == ShowAnswersType.CORRECT) ? CORRECT : NORMAL);
+		List<KeyValue<String, String>> answers = (mode == ShowAnswersType.CORRECT) ? model.getCorrectAnswers() : model.getCurrentAnswers();
+		showAnswers(answers, (mode == ShowAnswersType.CORRECT) ? CORRECT : NORMAL);
 	}
 
 	@Override
