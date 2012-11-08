@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.controller.Page;
@@ -12,7 +13,9 @@ import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkPopup;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBookmarkPopupView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieView;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
@@ -96,8 +99,11 @@ public class PlayerGinModule extends AbstractGinModule {
 
 		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class) .build(TouchRecognitionFactory.class));
 
-
-
+	}
+	
+	@Provides
+	public IStickieProperties provideStickieProperties(){
+		return StickieProperties.newInstance();
 	}
 
 }
