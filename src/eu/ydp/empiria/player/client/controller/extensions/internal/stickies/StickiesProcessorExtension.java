@@ -28,6 +28,7 @@ import eu.ydp.gwtutil.client.geom.MathUtil;
 public class StickiesProcessorExtension extends InternalExtension implements DataSourceDataSocketUserExtension, PlayerJsObjectModifierExtension, 
 	StatefulExtension {
 	
+	private static final int DISTANCE_MIN = 40;
 	@Inject IPlayerContainersAccessor itemBodyAccessor;
 	@Inject StyleNameConstants styleNames;
 	@Inject EventsBus eventsBus;
@@ -190,7 +191,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		for (int s = 0 ; s < getStickiesForCurrentItem().size() ; s ++){
 			IStickieProperties refSp = getStickiesForCurrentItem().get(s);
 			if (refSp != sp){
-				if (MathUtil.distance(sp.getX(), sp.getY(), refSp.getX(), refSp.getY()) < 30){
+				if (MathUtil.distance(sp.getX(), sp.getY(), refSp.getX(), refSp.getY()) < DISTANCE_MIN){
 					views.get(sp).setX(refSp.getX() + 20);
 					views.get(sp).setY(refSp.getY() + 20);
 				}
