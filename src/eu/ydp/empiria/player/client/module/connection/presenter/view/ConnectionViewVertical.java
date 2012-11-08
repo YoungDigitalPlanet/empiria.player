@@ -42,6 +42,7 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 	Map<String, String> errorStyles = null, correctStyles = null;
 
 	protected HasTouchHandlers touchRecognition;
+
 	@Inject
 	public ConnectionViewVertical(EventsBus eventsBus, PositionHelper positionHelper, TouchRecognitionFactory touchRecognitionFactory) {
 		super(eventsBus, positionHelper, touchRecognitionFactory);
@@ -50,7 +51,7 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 	@Override
 	public void createAndBindUi() {
 		initWidget(uiBinder.createAndBindUi(this));
-		touchRecognition = touchRecognitionFactory.getTouchRecognition(this, true);
+		touchRecognition = touchRecognitionFactory.getTouchRecognition(this, true, true);
 		touchRecognition.addTouchHandlers(this, TouchEvent.getTypes(TouchTypes.TOUCH_START, TouchTypes.TOUCH_END, TouchTypes.TOUCH_MOVE));
 	}
 
@@ -94,7 +95,7 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 
 	@Override
 	public void addElementToMainView(Widget widget) {
-		view.insert(widget,0);
+		view.insert(widget, 0);
 	}
 
 	@Override

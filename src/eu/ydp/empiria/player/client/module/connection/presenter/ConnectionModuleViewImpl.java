@@ -100,6 +100,9 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 
 	@Override
 	public void disconnect(String sourceIdentifier, String targetIdentifier) {
+		disconnect(sourceIdentifier, targetIdentifier, false);
+	}
+	public void disconnect(String sourceIdentifier, String targetIdentifier, boolean userAction) {
 		if (items.containsKey(sourceIdentifier) && items.containsKey(targetIdentifier)) {
 			KeyValue<String, String> keyValue = new KeyValue<String, String>(sourceIdentifier, targetIdentifier);
 			ConnectionSurface connectionSurface = connectedSurfaces.get(keyValue);
@@ -110,9 +113,9 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			}
 			items.get(sourceIdentifier).reset();
 			items.get(targetIdentifier).reset();
-			fireConnectEvent(PairConnectEventTypes.DISCONNECTED, sourceIdentifier, targetIdentifier, false);
+			fireConnectEvent(PairConnectEventTypes.DISCONNECTED, sourceIdentifier, targetIdentifier, userAction);
 		} else {
-			fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, sourceIdentifier, targetIdentifier, false);
+			fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, sourceIdentifier, targetIdentifier, userAction);
 		}
 
 	}
@@ -269,7 +272,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		int yPos = positionHelper.getPositionY(event, view.getElement());
 		for (Map.Entry<KeyValue<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
 			if (entry.getValue().isPointOnPath(xPos, yPos, 10)) {
-				disconnect(entry.getKey().getKey(), entry.getKey().getValue());
+				disconnect(entry.getKey().getKey(), entry.getKey().getValue(),true);
 				event.preventDefault();
 				break;
 			}
