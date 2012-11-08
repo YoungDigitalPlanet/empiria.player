@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.geom.MathUtil;
 
 public class StickiesProcessorExtension extends InternalExtension implements DataSourceDataSocketUserExtension, PlayerJsObjectModifierExtension, 
 	StatefulExtension {
@@ -189,7 +190,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		for (int s = 0 ; s < getStickiesForCurrentItem().size() ; s ++){
 			IStickieProperties refSp = getStickiesForCurrentItem().get(s);
 			if (refSp != sp){
-				if (calculateDistance(sp.getX(), sp.getY(), refSp.getX(), refSp.getY()) < 30){
+				if (MathUtil.distance(sp.getX(), sp.getY(), refSp.getX(), refSp.getY()) < 30){
 					views.get(sp).setX(refSp.getX() + 20);
 					views.get(sp).setY(refSp.getY() + 20);
 				}
@@ -197,10 +198,6 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		}
 	}
 	
-	private double calculateDistance(int x1, int y1, int x2, int y2){
-		return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-	}
-
 	void deleteStickie(IStickieProperties sp){
 		deleteStickieView(sp);
 		getStickiesForCurrentItem().remove(sp);
