@@ -246,23 +246,28 @@ public class StickieView extends Composite implements IStickieView {
 		setPosition(x, y);
 	}
 
-	private void setPosition(double left, double top){
+	private final void setPosition(double left, double top){
+		double newLeft = left;
+		double newTop = top;
+		
 		if (left < 0){
-			left = 0;
+			newLeft = 0;
 		} else if (left > parent.getOffsetWidth() - getOffsetWidth()){
-			left = parent.getOffsetWidth() - getOffsetWidth();
+			newLeft = parent.getOffsetWidth() - getOffsetWidth();
 		}
+		
 		if (parent != null){
 			
 			int topMin = ((Widget)accessor.getPlayerContainer()).getAbsoluteTop() - parent.getAbsoluteTop();
 			int topMax = ((Widget)accessor.getPlayerContainer()).getAbsoluteTop() + ((Widget)accessor.getPlayerContainer()).getOffsetHeight() - parent.getAbsoluteTop();
 			if (top < topMin){
-				top = topMin;
+				newTop = topMin;
 			} else if (top > topMax - getOffsetHeight()){
-				top = topMax - getOffsetHeight();
+				newTop = topMax - getOffsetHeight();
 			}
 		}
-		setPositionRaw(left, top);
+		
+		setPositionRaw(newLeft, newTop);
 		presenter.stickieChange();
 	}
 
