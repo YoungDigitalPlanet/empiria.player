@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
+import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
@@ -59,7 +59,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private StyleSocket styleSocket;
 	private final ModuleHandlerManager moduleHandlerManager;
 
-	PlayerContainersAccessor accessor;
+	IPlayerContainersAccessor accessor;
 
 	public void setStyleSocket(StyleSocket styleSocket) {
 		this.styleSocket = styleSocket;
@@ -172,9 +172,9 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 	}
 
-	private PlayerContainersAccessor getAccessor() {
+	private IPlayerContainersAccessor getAccessor() {
 		if (accessor == null){
-			accessor = PlayerGinjector.INSTANCE.getItemBodyAccessor();
+			accessor = PlayerGinjector.INSTANCE.getPlayerContainersAccessor();
 		}
 		return accessor;
 	}

@@ -9,11 +9,10 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
+import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
@@ -28,7 +27,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 public class StickiesProcessorExtension extends InternalExtension implements DataSourceDataSocketUserExtension, PlayerJsObjectModifierExtension, 
 	StatefulExtension {
 	
-	@Inject PlayerContainersAccessor itemBodyAccessor;
+	@Inject IPlayerContainersAccessor itemBodyAccessor;
 	@Inject StyleNameConstants styleNames;
 	@Inject EventsBus eventsBus;
 	@Inject Provider<IStickieView> viewProvider;
@@ -154,6 +153,9 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	void addStickieView(final IStickieProperties sp){
 		final IStickieView view = viewProvider.get();
 		view.setColorIndex(sp.getColorIndex());
+		view.setPositionRaw(sp.getX(), sp.getY());
+		view.setMinimized(sp.isMinimized());
+		view.setText(sp.getStickieContent());
 		view.setPresenter(new IStickieView.IPresenter() {
 			
 			@Override
@@ -205,7 +207,9 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	}
 
 	private void initStickies(int itemIndex) {
-		
+		for (IStickieProperties sp : getStickiesForCurrentItem()){
+			addStickieView(sp);
+		}
 	}
 	
 	void clearAll(){

@@ -470,6 +470,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-stickie-container-inner")
 	public String QP_STICKIE_CONTAINER_INNER();
 
+	@DefaultStringValue("qp-stickie-container-mid")
+	public String QP_STICKIE_CONTAINER_MID();
+
 	@DefaultStringValue("qp-stickie-container-outer")
 	public String QP_STICKIE_CONTAINER_OUTER();
 

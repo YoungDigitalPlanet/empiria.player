@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
+import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -44,8 +44,8 @@ public class StickieView extends Composite implements IStickieView {
 
 	interface StickieViewUiBinder extends UiBinder<Widget, StickieView> { }
 	
+	@Inject IPlayerContainersAccessor accessor;
 	@Inject StyleNameConstants styleNames;
-	@Inject PlayerContainersAccessor containersAccessor;
 	@Inject EventsBus eventsBus;
 
 	public StickieView() {
@@ -69,6 +69,7 @@ public class StickieView extends Composite implements IStickieView {
 	private Point dragInitMousePosition;
 	private Point dragInitViewPosition;
 	private Point position;
+	HandlerRegistration upHandlerReg;
 		
 	@UiHandler("minimizeButton")
 	public void minimizeHandler(ClickEvent event){
@@ -79,7 +80,6 @@ public class StickieView extends Composite implements IStickieView {
 	public void deleteHandler(ClickEvent event){
 		presenter.stickieDelete();
 	}
-	HandlerRegistration upHandlerReg;
 	
 	@UiHandler("headerPanel")
 	public void mouseDownHandler(MouseDownEvent event){
@@ -99,11 +99,13 @@ public class StickieView extends Composite implements IStickieView {
 
 			@Override
 			public void onMouseUp(MouseUpEvent event) {
+				dragEnd();
 				moveHandlerReg.removeHandler();
-				upHandlerReg.removeHandler();
 			}
 			
 		}, MouseUpEvent.getType());
+		
+		event.preventDefault();
 	}
 
 	@UiHandler("containerPanel")
@@ -125,10 +127,12 @@ public class StickieView extends Composite implements IStickieView {
 			
 			@Override
 			public void onTouchEnd(TouchEndEvent event) {
+				dragEnd();
 				moveHandlerReg.removeHandler();
-				upHandlerReg.removeHandler();
 			}
 		}, TouchEndEvent.getType());
+		
+		event.preventDefault();
 	}
 	
 	void dragStart(int x, int y){
@@ -144,6 +148,11 @@ public class StickieView extends Composite implements IStickieView {
 			double newTop = dragInitViewPosition.getY() + screenPoint.getY() - dragInitMousePosition.getY();
 			setPosition(newLeft, newTop);
 		}
+	}
+	
+	void dragEnd(){
+		dragging = false;
+		upHandlerReg.removeHandler();
 	}
 
 	@UiHandler("labelPanel")
@@ -232,11 +241,11 @@ public class StickieView extends Composite implements IStickieView {
 	}
 
 	private void centerView() {
-		int x = (((Widget)containersAccessor.getPlayerContainer()).getOffsetWidth() - getOffsetWidth())/2;
-		int y = (((Widget)containersAccessor.getPlayerContainer()).getOffsetHeight() - getOffsetHeight())/2;
+		int x = (((Widget)accessor.getPlayerContainer()).getOffsetWidth() - getOffsetWidth())/2;
+		int y = (((Widget)accessor.getPlayerContainer()).getOffsetHeight() - getOffsetHeight())/2 - parent.getAbsoluteTop() + ((Widget)accessor.getPlayerContainer()).getAbsoluteTop();
 		setPosition(x, y);
 	}
-	
+
 	private void setPosition(double left, double top){
 		if (left < 0){
 			left = 0;
@@ -244,8 +253,9 @@ public class StickieView extends Composite implements IStickieView {
 			left = parent.getOffsetWidth() - getOffsetWidth();
 		}
 		if (parent != null){
-			int topMin = ((Widget)containersAccessor.getPlayerContainer()).getAbsoluteTop() - parent.getAbsoluteTop();
-			int topMax = ((Widget)containersAccessor.getPlayerContainer()).getAbsoluteTop() + ((Widget)containersAccessor.getPlayerContainer()).getOffsetHeight() - parent.getAbsoluteTop();
+			
+			int topMin = ((Widget)accessor.getPlayerContainer()).getAbsoluteTop() - parent.getAbsoluteTop();
+			int topMax = ((Widget)accessor.getPlayerContainer()).getAbsoluteTop() + ((Widget)accessor.getPlayerContainer()).getOffsetHeight() - parent.getAbsoluteTop();
 			if (top < topMin){
 				top = topMin;
 			} else if (top > topMax - getOffsetHeight()){
@@ -256,7 +266,8 @@ public class StickieView extends Composite implements IStickieView {
 		presenter.stickieChange();
 	}
 
-	void setPositionRaw(double left, double top){
+	@Override
+	public void setPositionRaw(double left, double top){
 		position = new Point(left, top);
 		getElement().getStyle().setLeft(left, Unit.PX);
 		getElement().getStyle().setTop(top, Unit.PX);		

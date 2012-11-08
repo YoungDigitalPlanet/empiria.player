@@ -24,6 +24,8 @@ public interface IStickieView extends HasText, IsWidget {
 	
 	void setY(int y);
 	
+	void setPositionRaw(double x, double y);
+	
 	public static interface IPresenter {
 		
 		void stickieMinimize();

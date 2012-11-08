@@ -5,8 +5,8 @@ import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 
 import eu.ydp.empiria.player.client.controller.Page;
+import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
-import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
@@ -68,5 +68,5 @@ public interface PlayerGinjector extends Ginjector {
 
 	BookmarkProcessorExtension getBookmarkProcessorExtension();
 	StickiesProcessorExtension getStickiesProcessorExtension();
-	PlayerContainersAccessor getItemBodyAccessor();
+	IPlayerContainersAccessor getPlayerContainersAccessor();
 }

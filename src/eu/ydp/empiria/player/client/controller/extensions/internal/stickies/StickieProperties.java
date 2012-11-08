@@ -12,8 +12,8 @@ public class StickieProperties extends JavaScriptObject implements IStickiePrope
 		sp.setMinimized(false);
 		sp.setStickieTitle("");
 		sp.setStickieContent("");
-		sp.setX(0);
-		sp.setY(0);
+		sp.setX(-2000);
+		sp.setY(-2000);
 		return sp;
 	}
 

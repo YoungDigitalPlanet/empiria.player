@@ -6,25 +6,34 @@
 		.outer{
 			position: absolute;
 		}
+		.glass{
+			position: fixed;
+			left: 0;
+			top: 0;
+			background-color: black;
+			opacity: 0.2;
+		}
 	</ui:style>
-	<g:FocusPanel stylePrimaryName="{res.QP_STICKIE} {style.outer}" ui:field="containerPanel">
-		<g:FlowPanel styleName="{res.QP_STICKIE_CONTAINER_OUTER}">
-			<g:FlowPanel styleName="{res.QP_STICKIE_CONTAINER_INNER}">
-				<g:FocusPanel styleName="{res.QP_STICKIE_HEADER}" ui:field="headerPanel">
-				</g:FocusPanel>
-				<g:FlowPanel styleName="{res.QP_STICKIE_DELETE_PANEL}">
-					<g:PushButton stylePrimaryName="{res.QP_STICKIE_DELETE_BUTTON}" ui:field="deleteButton"/>
+	<g:FlowPanel stylePrimaryName="{res.QP_STICKIE} {style.outer}">
+		<g:FocusPanel stylePrimaryName="{res.QP_STICKIE_CONTAINER_OUTER}" ui:field="containerPanel">
+			<g:FlowPanel styleName="{res.QP_STICKIE_CONTAINER_MID}">
+				<g:FlowPanel styleName="{res.QP_STICKIE_CONTAINER_INNER}">
+					<g:FocusPanel styleName="{res.QP_STICKIE_HEADER}" ui:field="headerPanel">
+					</g:FocusPanel>
+					<g:FlowPanel styleName="{res.QP_STICKIE_DELETE_PANEL}">
+						<g:PushButton stylePrimaryName="{res.QP_STICKIE_DELETE_BUTTON}" ui:field="deleteButton"/>
+					</g:FlowPanel>
+					<g:FlowPanel styleName="{res.QP_STICKIE_MINIMIZE_PANEL}">
+						<g:PushButton stylePrimaryName="{res.QP_STICKIE_MINIMIZE_BUTTON}" ui:field="minimizeButton"/>
+					</g:FlowPanel>
+					<g:FlowPanel styleName="{res.QP_STICKIE_TEXT_PANEL}" ui:field="textPanel">
+						<g:TextArea styleName="{res.QP_STICKIE_TEXT_AREA}" ui:field="contentText" visible="false" />
+					</g:FlowPanel>
+					<g:FocusPanel styleName="{res.QP_STICKIE_LABEL_PANEL}" ui:field="labelPanel">
+						<g:InlineHTML styleName="{res.QP_STICKIE_LABEL}" ui:field="contentLabel" />
+					</g:FocusPanel>
 				</g:FlowPanel>
-				<g:FlowPanel styleName="{res.QP_STICKIE_MINIMIZE_PANEL}">
-					<g:PushButton stylePrimaryName="{res.QP_STICKIE_MINIMIZE_BUTTON}" ui:field="minimizeButton"/>
-				</g:FlowPanel>
-				<g:FlowPanel styleName="{res.QP_STICKIE_TEXT_PANEL}" ui:field="textPanel">
-					<g:TextArea styleName="{res.QP_STICKIE_TEXT_AREA}" ui:field="contentText" visible="false" />
-				</g:FlowPanel>
-				<g:FocusPanel styleName="{res.QP_STICKIE_LABEL_PANEL}" ui:field="labelPanel">
-					<g:InlineHTML styleName="{res.QP_STICKIE_LABEL}" ui:field="contentLabel" />
-				</g:FocusPanel>
 			</g:FlowPanel>
-		</g:FlowPanel>
-	</g:FocusPanel>
+		</g:FocusPanel>
+	</g:FlowPanel>
 </ui:UiBinder>

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
-public class PlayerContainersAccessor  {
+public class PlayerContainersAccessor implements IPlayerContainersAccessor {
 
 	private Map<Integer, HasWidgets> itemContainers = new HashMap<Integer, HasWidgets>();
 	private HasWidgets playerContainer;

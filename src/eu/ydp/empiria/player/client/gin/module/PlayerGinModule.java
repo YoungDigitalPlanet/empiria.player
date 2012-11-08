@@ -6,6 +6,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.controller.Page;
+import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
@@ -88,7 +89,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(FeedbackRegistry.class).in(Singleton.class);
 
 		bind(IStickieView.class).to(StickieView.class);
-		bind(PlayerContainersAccessor.class).in(Singleton.class);
+		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class).in(Singleton.class);
 		
 		//bind(ConnectionPresenter.class).to(ConnectionPresenterImpl.class);
 		//factory
