@@ -147,13 +147,12 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		sp.setColorIndex(colorIndex);
 		sp.updateTimestamp();
 		getStickiesForCurrentItem().add(sp);
-		addStickieView(sp);
+		addStickieView(sp, true);
 	}
 	
-	void addStickieView(final IStickieProperties sp){
+	void addStickieView(final IStickieProperties sp, boolean initialAddition){
 		final IStickieView view = viewProvider.get();
 		view.setColorIndex(sp.getColorIndex());
-		view.setPositionRaw(sp.getX(), sp.getY());
 		view.setMinimized(sp.isMinimized());
 		view.setText(sp.getStickieContent());
 		view.setPresenter(new IStickieView.IPresenter() {
@@ -177,6 +176,11 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 			}
 		});
 		view.setViewParent(itemBodyAccessor.getItemBodyContainer(currItemIndex));
+		if (initialAddition){
+			view.centerView();
+		} else {
+			view.setPositionRaw(sp.getX(), sp.getY());
+		}
 		views.put(sp, view);
 		checkStickieOverlay(sp);
 	}
@@ -208,7 +212,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 
 	private void initStickies(int itemIndex) {
 		for (IStickieProperties sp : getStickiesForCurrentItem()){
-			addStickieView(sp);
+			addStickieView(sp, false);
 		}
 	}
 	

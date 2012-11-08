@@ -163,10 +163,14 @@ public class StickieView extends Composite implements IStickieView {
 	@UiHandler("contentText")
 	public void contentTextBlurHandler(BlurEvent event){
 		setEditing(false);
-		contentLabel.setHTML(contentText.getText().replace("\n", "<br/>"));
+		updateContentLabel();
 		presenter.stickieChange();
 	}
 	
+	private void updateContentLabel() {
+		contentLabel.setHTML(contentText.getText().replace("\n", "<br/>"));
+	}
+
 	private void setEditing(boolean edit) {
 		if (edit == labelPanel.isVisible()){
 			if (edit){
@@ -211,6 +215,7 @@ public class StickieView extends Composite implements IStickieView {
 	@Override
 	public void setText(String text) {
 		contentText.setText(text);
+		updateContentLabel();
 	}
 
 	@Override
@@ -237,10 +242,10 @@ public class StickieView extends Composite implements IStickieView {
 	public void setViewParent(HasWidgets parent) {
 		this.parent = (Widget)parent;
 		parent.add(this);
-		centerView();
 	}
 
-	private void centerView() {
+	@Override
+	public void centerView() {
 		int x = (((Widget)accessor.getPlayerContainer()).getOffsetWidth() - getOffsetWidth())/2;
 		int y = (((Widget)accessor.getPlayerContainer()).getOffsetHeight() - getOffsetHeight())/2 - parent.getAbsoluteTop() + ((Widget)accessor.getPlayerContainer()).getAbsoluteTop();
 		setPosition(x, y);
