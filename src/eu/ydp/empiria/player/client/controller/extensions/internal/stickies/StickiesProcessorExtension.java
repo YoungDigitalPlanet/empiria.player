@@ -2,13 +2,14 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.stickies;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -31,9 +32,10 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	@Inject StyleNameConstants styleNames;
 	@Inject EventsBus eventsBus;
 	@Inject Provider<IStickieView> viewProvider;
+	@Inject Provider<IStickieProperties> propertiesProvider;
 
-	List<List<StickieProperties>> stickies = new ArrayList<List<StickieProperties>>();
-	Map<StickieProperties, IStickieView> views = new HashMap<StickieProperties, IStickieView>(); 
+	List<List<IStickieProperties>> stickies = new ArrayList<List<IStickieProperties>>();
+	Map<IStickieProperties, IStickieView> views = new HashMap<IStickieProperties, IStickieView>(); 
 	private DataSourceDataSupplier dataSourceSupplier;
 	int currItemIndex = 0;
 	JavaScriptObject playerJsObject;
@@ -43,7 +45,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		int itemsCount = dataSourceSupplier.getItemsCount();
 		stickies.clear();
 		for (int i = 0 ; i < itemsCount ; i ++){
-			stickies.add(new ArrayList<StickieProperties>());
+			stickies.add(new ArrayList<IStickieProperties>());
 		}
 		
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), new PlayerEventHandler() {
@@ -72,34 +74,35 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		return stateArray;
 	}
 
-	private JSONArray getItemState(List<StickieProperties> list) {
+	private JSONArray getItemState(List<IStickieProperties> list) {
 		JSONArray arr = new JSONArray();
-		for (StickieProperties sp : list){
-			arr.set(arr.size(), sp.toJSON());
+		for (IStickieProperties sp : list){
+			arr.set(arr.size(), new JSONObject((JavaScriptObject)sp));
 		}
 		return arr;
 	}
 
 	@Override
 	public void setState(JSONArray newState) {
-		JavaScriptObject externalStickies = getExternalStickies();		
+		JavaScriptObject externalStickies = getExternalStickies();
+		
 		JSONArray externalState = null;
-		if(externalStickies != null){			
-			externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());			
+		if(externalStickies != null){
+			externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());
+		} else {
+			externalState = newState;
 		}
 		
-		JSONArray state = externalState == null ? newState : externalState;	
-		
 		stickies.clear();
-		for (int i = 0 ; i < state.size() ; i ++ ){
-			stickies.add( decodeItemState(state.get(i).isArray()) );
+		for (int i = 0 ; i < externalState.size() ; i ++ ){
+			stickies.add( decodeItemState(externalState.get(i).isArray()) );
 		}
 	}
 	
-	private List<StickieProperties> decodeItemState(JSONArray array) {
-		List<StickieProperties> itemStickies = new ArrayList<StickieProperties>();
+	private List<IStickieProperties> decodeItemState(JSONArray array) {
+		List<IStickieProperties> itemStickies = new ArrayList<IStickieProperties>();
 		for (int i = 0 ; i < array.size() ; i ++ ){
-			StickieProperties sp = StickieProperties.fromJSON(array.get(i).isArray());
+			IStickieProperties sp = array.get(i).isObject().getJavaScriptObject().<StickieProperties>cast();
 			itemStickies.add(sp);
 		}
 		return itemStickies;
@@ -141,20 +144,21 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	}
 	
 	void addStickie(int colorIndex){
-		StickieProperties sp = new StickieProperties(colorIndex, "", -2000, -2000);
+		IStickieProperties sp = propertiesProvider.get();
+		sp.setColorIndex(colorIndex);
 		getStickiesForCurrentItem().add(sp);
 		addStickieView(sp);
 	}
 	
-	void addStickieView(final StickieProperties sp){
+	void addStickieView(final IStickieProperties sp){
 		final IStickieView view = viewProvider.get();
 		view.setColorIndex(sp.getColorIndex());
 		view.setPresenter(new IStickieView.IPresenter() {
 			
 			@Override
 			public void stickieMinimize() {
-				sp.setMinimized(!sp.getMinimized());
-				view.setMinimized(sp.getMinimized());
+				sp.setMinimized(!sp.isMinimized());
+				view.setMinimized(sp.isMinimized());
 			}
 			
 			@Override
@@ -170,14 +174,32 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 			}
 		});
 		view.setViewParent(itemBodyAccessor.getItemBodyContainer(currItemIndex));
+		views.put(sp, view);
+		checkStickieOverlay(sp);
 	}
 	
-	void deleteStickie(StickieProperties sp){
+	private void checkStickieOverlay(IStickieProperties sp) {
+		for (int s = 0 ; s < getStickiesForCurrentItem().size() ; s ++){
+			IStickieProperties refSp = getStickiesForCurrentItem().get(s);
+			if (refSp != sp){
+				if (calculateDistance(sp.getX(), sp.getY(), refSp.getX(), refSp.getY()) < 30){
+					views.get(sp).setX(refSp.getX() + 20);
+					views.get(sp).setY(refSp.getY() + 20);
+				}
+			}
+		}
+	}
+	
+	private double calculateDistance(int x1, int y1, int x2, int y2){
+		return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+	}
+
+	void deleteStickie(IStickieProperties sp){
 		deleteStickieView(sp);
 		getStickiesForCurrentItem().remove(sp);
 	}
 	
-	void deleteStickieView(StickieProperties sp){
+	void deleteStickieView(IStickieProperties sp){
 		views.get(sp).remove();
 	}
 
@@ -186,13 +208,13 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	}
 	
 	void clearAll(){
-		Iterator<StickieProperties> iter = getStickiesForCurrentItem().iterator();
-		while (iter.hasNext()){
-			deleteStickie(iter.next());
+		List<IStickieProperties> currStickies = getStickiesForCurrentItem();
+		while (currStickies.size() > 0){
+			deleteStickie(currStickies.get(0));
 		}
 	}
 	
-	List<StickieProperties> getStickiesForCurrentItem(){
+	List<IStickieProperties> getStickiesForCurrentItem(){
 		return stickies.get(currItemIndex);
 	}
 	

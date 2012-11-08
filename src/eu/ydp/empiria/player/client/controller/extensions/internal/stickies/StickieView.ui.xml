@@ -13,10 +13,10 @@
 				<g:FocusPanel styleName="{res.QP_STICKIE_HEADER}" ui:field="headerPanel">
 				</g:FocusPanel>
 				<g:FlowPanel styleName="{res.QP_STICKIE_DELETE_PANEL}">
-					<g:PushButton styleName="{res.QP_STICKIE_DELETE_BUTTON)" ui:field="deleteButton"/>
+					<g:PushButton stylePrimaryName="{res.QP_STICKIE_DELETE_BUTTON}" ui:field="deleteButton"/>
 				</g:FlowPanel>
 				<g:FlowPanel styleName="{res.QP_STICKIE_MINIMIZE_PANEL}">
-					<g:PushButton styleName="{res.QP_STICKIE_MINIMIZE_BUTTON}" ui:field="minimizeButton"/>
+					<g:PushButton stylePrimaryName="{res.QP_STICKIE_MINIMIZE_BUTTON}" ui:field="minimizeButton"/>
 				</g:FlowPanel>
 				<g:FlowPanel styleName="{res.QP_STICKIE_TEXT_PANEL}" ui:field="textPanel">
 					<g:TextArea styleName="{res.QP_STICKIE_TEXT_AREA}" ui:field="contentText" visible="false" />

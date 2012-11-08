@@ -69,7 +69,7 @@ public class StickieView extends Composite implements IStickieView {
 	private Point dragInitMousePosition;
 	private Point dragInitViewPosition;
 	private Point position;
-	
+		
 	@UiHandler("minimizeButton")
 	public void minimizeHandler(ClickEvent event){
 		presenter.stickieMinimize();
@@ -105,7 +105,7 @@ public class StickieView extends Composite implements IStickieView {
 			
 		}, MouseUpEvent.getType());
 	}
-	
+
 	@UiHandler("containerPanel")
 	public void touchStartHandler(TouchStartEvent event){
 		setEditing(false);
@@ -232,7 +232,9 @@ public class StickieView extends Composite implements IStickieView {
 	}
 
 	private void centerView() {
-		setPosition( (parent.getOffsetWidth() - getOffsetWidth())/2, (parent.getOffsetHeight() - getOffsetHeight())/2);
+		int x = (((Widget)containersAccessor.getPlayerContainer()).getOffsetWidth() - getOffsetWidth())/2;
+		int y = (((Widget)containersAccessor.getPlayerContainer()).getOffsetHeight() - getOffsetHeight())/2;
+		setPosition(x, y);
 	}
 	
 	private void setPosition(double left, double top){
@@ -253,7 +255,7 @@ public class StickieView extends Composite implements IStickieView {
 		setPositionRaw(left, top);
 		presenter.stickieChange();
 	}
-	
+
 	void setPositionRaw(double left, double top){
 		position = new Point(left, top);
 		getElement().getStyle().setLeft(left, Unit.PX);
@@ -279,5 +281,5 @@ public class StickieView extends Composite implements IStickieView {
 	public void setY(int y) {
 		setPosition(position.getX(), y);
 	}
-	
+
 }
