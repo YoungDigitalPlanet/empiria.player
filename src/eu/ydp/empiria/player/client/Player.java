@@ -27,7 +27,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
-import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
+import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
@@ -50,7 +50,7 @@ public class Player {
   /** View engine maintains the view tasks */
   private final ViewEngine viewEngine;
 
-  private PlayerContainersAccessor accessor;
+  private IPlayerContainersAccessor accessor;
 
   {
 	 logVersion();
@@ -128,9 +128,9 @@ public class Player {
 			console.log(message);
 	 }-*/;
 
-	private PlayerContainersAccessor getAccessor() {
+	private IPlayerContainersAccessor getAccessor() {
 		if (accessor == null){
-			accessor = PlayerGinjector.INSTANCE.getItemBodyAccessor();
+			accessor = PlayerGinjector.INSTANCE.getPlayerContainersAccessor();
 		}
 		return accessor;
 	}	
