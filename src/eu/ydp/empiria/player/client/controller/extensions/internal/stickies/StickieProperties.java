@@ -69,11 +69,11 @@ public class StickieProperties extends JavaScriptObject implements IStickiePrope
 		this.timestamp = new Date().getTime();
 	}-*/;
 	
-	public final native void setTimestamp(long ts)/*-{
+	public final native void setTimestamp(double ts)/*-{
 		this.timestamp = ts;
 	}-*/;
 	
-	public final native long getTimestamp()/*-{
+	public final native double getTimestamp()/*-{
 		return this.timestamp;
 	}-*/;
 
