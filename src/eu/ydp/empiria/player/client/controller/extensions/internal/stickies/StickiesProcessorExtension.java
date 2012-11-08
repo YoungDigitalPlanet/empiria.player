@@ -146,6 +146,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	void addStickie(int colorIndex){
 		IStickieProperties sp = propertiesProvider.get();
 		sp.setColorIndex(colorIndex);
+		sp.updateTimestamp();
 		getStickiesForCurrentItem().add(sp);
 		addStickieView(sp);
 	}

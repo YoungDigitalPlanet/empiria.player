@@ -64,10 +64,6 @@ public class StickieProperties extends JavaScriptObject implements IStickiePrope
 	public final native void setMinimized(boolean minimized) /*-{
 		this.minimized = minimized;
 	}-*/;
-
-	public final native void updateTimestamp() /*-{
-		this.timestamp = new Date().getTime();
-	}-*/;
 	
 	public final native void setTimestamp(double ts)/*-{
 		this.timestamp = ts;
@@ -75,6 +71,10 @@ public class StickieProperties extends JavaScriptObject implements IStickiePrope
 	
 	public final native double getTimestamp()/*-{
 		return this.timestamp;
+	}-*/;
+
+	public final native void updateTimestamp() /*-{
+		this.timestamp = new Date().getTime();
 	}-*/;
 
 }

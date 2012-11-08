@@ -14,5 +14,6 @@ public interface IStickieProperties {
 	void setY(int y);
 	boolean isMinimized();
 	void setMinimized(boolean minimized);
+	void updateTimestamp();
 	
 }
