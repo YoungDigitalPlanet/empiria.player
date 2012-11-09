@@ -27,8 +27,9 @@ import eu.ydp.gwtutil.client.geom.MathUtil;
 
 public class StickiesProcessorExtension extends InternalExtension implements DataSourceDataSocketUserExtension, PlayerJsObjectModifierExtension, 
 	StatefulExtension {
-	
-	private static final int DISTANCE_MIN = 40;
+
+	static final int DISTANCE_MIN_COMPONENT = 20;
+	static final int DISTANCE_MIN = (int)(DISTANCE_MIN_COMPONENT * Math.pow(2, 0.5));
 	@Inject IPlayerContainersAccessor itemBodyAccessor;
 	@Inject StyleNameConstants styleNames;
 	@Inject EventsBus eventsBus;
@@ -43,11 +44,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 
 	@Override
 	public void init() {
-		int itemsCount = dataSourceSupplier.getItemsCount();
-		stickies.clear();
-		for (int i = 0 ; i < itemsCount ; i ++){
-			stickies.add(new ArrayList<IStickieProperties>());
-		}
+		initStickiesList(dataSourceSupplier.getItemsCount());
 		
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), new PlayerEventHandler() {
 			
@@ -64,6 +61,13 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 				initStickies(currItemIndex);
 			}
 		});
+	}
+	
+	void initStickiesList(int itemsCount){
+		stickies.clear();
+		for (int i = 0 ; i < itemsCount ; i ++){
+			stickies.add(new ArrayList<IStickieProperties>());
+		}
 	}
 	
 	@Override
@@ -145,15 +149,21 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	}
 	
 	void addStickie(int colorIndex){
-		IStickieProperties sp = propertiesProvider.get();
-		sp.setColorIndex(colorIndex);
-		sp.updateTimestamp();
+		IStickieProperties sp = createStickie(colorIndex);
 		getStickiesForCurrentItem().add(sp);
 		addStickieView(sp, true);
 	}
 	
+	IStickieProperties createStickie(int colorIndex){
+		IStickieProperties sp = propertiesProvider.get();
+		sp.setColorIndex(colorIndex);
+		sp.updateTimestamp();
+		return sp;
+	}
+	
 	void addStickieView(final IStickieProperties sp, boolean initialAddition){
 		final IStickieView view = viewProvider.get();
+		views.put(sp, view);
 		view.setColorIndex(sp.getColorIndex());
 		view.setMinimized(sp.isMinimized());
 		view.setText(sp.getStickieContent());
@@ -180,20 +190,24 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		view.setViewParent(itemBodyAccessor.getItemBodyContainer(currItemIndex));
 		if (initialAddition){
 			view.centerView();
+			checkStickieOverlay(sp);
+			updateStickiePosition(sp);
 		} else {
 			view.setPositionRaw(sp.getX(), sp.getY());
 		}
-		views.put(sp, view);
-		checkStickieOverlay(sp);
 	}
 	
-	private void checkStickieOverlay(IStickieProperties sp) {
+	private void updateStickiePosition(IStickieProperties sp){
+		views.get(sp).setPosition(sp.getX(), sp.getY());
+	}
+	
+	void checkStickieOverlay(IStickieProperties sp) {
 		for (int s = 0 ; s < getStickiesForCurrentItem().size() ; s ++){
 			IStickieProperties refSp = getStickiesForCurrentItem().get(s);
 			if (refSp != sp){
 				if (MathUtil.distance(sp.getX(), sp.getY(), refSp.getX(), refSp.getY()) < DISTANCE_MIN){
-					views.get(sp).setX(refSp.getX() + 20);
-					views.get(sp).setY(refSp.getY() + 20);
+					sp.setX(refSp.getX() + DISTANCE_MIN_COMPONENT);
+					sp.setY(refSp.getY() + DISTANCE_MIN_COMPONENT);
 				}
 			}
 		}
@@ -206,6 +220,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	
 	void deleteStickieView(IStickieProperties sp){
 		views.get(sp).remove();
+		views.remove(sp);
 	}
 
 	private void initStickies(int itemIndex) {
@@ -216,7 +231,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	
 	void clearAll(){
 		List<IStickieProperties> currStickies = getStickiesForCurrentItem();
-		while (currStickies.size() > 0){
+		while (!currStickies.isEmpty()){
 			deleteStickie(currStickies.get(0));
 		}
 	}

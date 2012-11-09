@@ -12,8 +12,7 @@ public class StickieProperties extends JavaScriptObject implements IStickiePrope
 		sp.setMinimized(false);
 		sp.setStickieTitle("");
 		sp.setStickieContent("");
-		sp.setX(-2000);
-		sp.setY(-2000);
+		sp.setPosition(-2000, -2000);
 		return sp;
 	}
 
@@ -75,6 +74,11 @@ public class StickieProperties extends JavaScriptObject implements IStickiePrope
 
 	public final native void updateTimestamp() /*-{
 		this.timestamp = new Date().getTime();
+	}-*/;
+
+	public final native void setPosition(int x, int y) /*-{
+		this.x = x;
+		this.y = y;
 	}-*/;
 
 }

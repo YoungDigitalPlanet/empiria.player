@@ -20,11 +20,9 @@ public interface IStickieView extends HasText, IsWidget {
 	
 	int getY();
 	
-	void setX(int x);
+	void setPosition(int x, int y);
 	
-	void setY(int y);
-	
-	void setPositionRaw(double x, double y);
+	void setPositionRaw(int x, int y);
 	
 	void centerView();
 	

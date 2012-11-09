@@ -144,8 +144,8 @@ public class StickieView extends Composite implements IStickieView {
 	void dragMove(int x, int y){
 		if (dragging){
 			Point screenPoint = new Point(x, y);
-			double newLeft = dragInitViewPosition.getX() + screenPoint.getX() - dragInitMousePosition.getX();
-			double newTop = dragInitViewPosition.getY() + screenPoint.getY() - dragInitMousePosition.getY();
+			int newLeft = (int)(dragInitViewPosition.getX() + screenPoint.getX() - dragInitMousePosition.getX());
+			int newTop = (int)(dragInitViewPosition.getY() + screenPoint.getY() - dragInitMousePosition.getY());
 			setPosition(newLeft, newTop);
 		}
 	}
@@ -251,9 +251,9 @@ public class StickieView extends Composite implements IStickieView {
 		setPosition(x, y);
 	}
 
-	private final void setPosition(double left, double top){
-		double newLeft = left;
-		double newTop = top;
+	public final void setPosition(int left, int top){
+		int newLeft = left;
+		int newTop = top;
 		
 		if (left < 0){
 			newLeft = 0;
@@ -277,7 +277,7 @@ public class StickieView extends Composite implements IStickieView {
 	}
 
 	@Override
-	public void setPositionRaw(double left, double top){
+	public void setPositionRaw(int left, int top){
 		position = new Point(left, top);
 		getElement().getStyle().setLeft(left, Unit.PX);
 		getElement().getStyle().setTop(top, Unit.PX);		
@@ -291,16 +291,6 @@ public class StickieView extends Composite implements IStickieView {
 	@Override
 	public int getY() {
 		return (int)position.getY();
-	}
-
-	@Override
-	public void setX(int x) {
-		setPosition(x, position.getY());
-	}
-
-	@Override
-	public void setY(int y) {
-		setPosition(position.getX(), y);
 	}
 
 }
