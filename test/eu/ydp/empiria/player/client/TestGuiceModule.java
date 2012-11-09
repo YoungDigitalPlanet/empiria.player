@@ -36,6 +36,8 @@ import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionV
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
+import eu.ydp.empiria.player.client.module.sourcelist.SourceListPresenterMock;
+import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListViewMock;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParser;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
@@ -101,7 +103,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		}
 
 		bind(SourceListJAXBParser.class).toInstance(spy(new SourceListJAXBParserMock()));
-		bind(SourceListView.class).toInstance(spy(new SourceListViewMock()));
+		bind(SourceListView.class).to(SourceListViewMock.class);
+		bind(SourceListPresenter.class).to(SourceListPresenterMock.class);
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));

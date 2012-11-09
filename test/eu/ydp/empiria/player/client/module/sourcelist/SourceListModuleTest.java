@@ -16,8 +16,10 @@ import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
+import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListViewMock;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
+import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 @SuppressWarnings("PMD")
@@ -29,6 +31,7 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(SourceListPresenter.class).toInstance(spy(new SourceListPresenterMock()));
+			binder.bind(SourceListView.class).toInstance(spy(new SourceListViewMock()));
 		}
 	}
 
@@ -45,7 +48,7 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 
 	@Before
 	public void before(){
-		setUp(new Class<?>[] { SourceListPresenter.class }, new CustomGuiceModule());
+		setUp(new Class<?>[] { SourceListPresenter.class,SourceListView.class }, new CustomGuiceModule());
 		instance = injector.getInstance(SourceListModule.class);
 		presenter = injector.getInstance(SourceListPresenter.class);
 

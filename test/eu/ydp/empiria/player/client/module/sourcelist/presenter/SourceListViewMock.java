@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 public class SourceListViewMock implements SourceListView {
 
 	FlowPanel panel = mock(FlowPanel.class);
+	
 	@Override
 	public Widget asWidget() {
 		return panel;

@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.sourcelist.presenter;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.spy;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,6 +24,7 @@ public class SourceListPresenterTest extends AbstractTestBaseWithoutAutoInjector
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(SourceListPresenter.class).to(SourceListPresenterImpl.class);
+			binder.bind(SourceListView.class).toInstance(spy(new SourceListViewMock()));
 		}
 	}
 
@@ -42,7 +44,7 @@ public class SourceListPresenterTest extends AbstractTestBaseWithoutAutoInjector
 
 	@Before
 	public void before() {
-		setUp(new Class<?>[] {}, new CustomGuiceModule());
+		setUp(new Class<?>[] { SourceListPresenter.class,SourceListView.class }, new CustomGuiceModule());
 		instance = injector.getInstance(SourceListPresenter.class);
 		view = injector.getInstance(SourceListView.class);
 		sourceListJAXBParserMock = new SourceListJAXBParserMock();
