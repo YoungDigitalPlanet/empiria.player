@@ -132,8 +132,6 @@ public class StickieView extends Composite implements IStickieView {
 				moveHandlerReg.removeHandler();
 			}
 		}, TouchEndEvent.getType());
-		
-		event.preventDefault();
 	}
 	
 	void dragStart(int x, int y){
