@@ -21,8 +21,7 @@ import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.module.ChoiceGinModule;
 import eu.ydp.empiria.player.client.gin.module.ConnectionGinModule;
 import eu.ydp.empiria.player.client.gin.module.PlayerGinModule;
-import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleJAXBParser;
-import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
+import eu.ydp.empiria.player.client.gin.module.SourceListGinModule;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -34,7 +33,7 @@ import eu.ydp.empiria.player.client.view.player.PageViewCache;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
-@GinModules(value={PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class})
+@GinModules(value={PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class})
 public interface PlayerGinjector extends Ginjector {
 	PlayerGinjector INSTANCE  = GWT.create(PlayerGinjector.class);
 
@@ -60,11 +59,6 @@ public interface PlayerGinjector extends Ginjector {
 	TextTrackFactory getTextTrackFactory();
 	ModuleFactory getModuleFactory();
 	FeedbackRegistry getFeedbackRegistry();
-
-	ConnectionModuleJAXBParser getConnectionModuleJAXBParser();
-	ConnectionModuleStructure getConnectionModuleStructure();
-
-//	ConnectionItemFactory getConnectionItemFactory();
 
 	BookmarkProcessorExtension getBookmarkProcessorExtension();
 	StickiesProcessorExtension getStickiesProcessorExtension();

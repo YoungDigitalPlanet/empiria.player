@@ -5,6 +5,7 @@ import org.junit.Before;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+@SuppressWarnings("PMD")
 public abstract class AbstractTestBase {
 
 	protected Injector injector;
