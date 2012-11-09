@@ -272,7 +272,7 @@ public class StickieView extends Composite implements IStickieView {
 	}
 
 	@Override
-	public void setPositionRaw(int left, int top){
+	public final void setPositionRaw(int left, int top){
 		position = new Point(left, top);
 		getElement().getStyle().setLeft(left, Unit.PX);
 		getElement().getStyle().setTop(top, Unit.PX);		
