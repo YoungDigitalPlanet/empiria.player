@@ -24,12 +24,24 @@ public class SimpleSourceListItemBean implements HasFixed{
 		return alt;
 	}
 
+	public void setAlt(String alt) {
+		this.alt = alt;
+	}
+
 	public String getValue() {
 		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	@Override
 	public boolean isFixed() {
 		return fixed;
+	}
+
+	public void setFixed(boolean fixed) {
+		this.fixed = fixed;
 	}
 }

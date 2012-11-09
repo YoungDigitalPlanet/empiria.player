@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SourceListBean implements ModuleBean, HasShuffle {
 	@XmlAttribute
-	private String id; //NOPMD
+	private String id; // NOPMD
 
 	@XmlAttribute(name = "class")
 	private String type;
@@ -26,24 +26,40 @@ public class SourceListBean implements ModuleBean, HasShuffle {
 	@XmlAttribute
 	private boolean shuffle;
 
-	@XmlElement(name="simpleSourceListItem")
+	@XmlElement(name = "simpleSourceListItem")
 	private List<SimpleSourceListItemBean> simpleSourceListItemBeans;
 
 	public String getId() {
 		return id;
 	}
 
+	public void setId(String id) {//NOPMD
+		this.id = id;
+	}
+
 	public String getType() {
 		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public boolean isMoveElements() {
 		return moveElements;
 	}
 
+	public void setMoveElements(boolean moveElements) {
+		this.moveElements = moveElements;
+	}
+
 	@Override
 	public boolean isShuffle() {
 		return shuffle;
+	}
+
+	public void setShuffle(boolean shuffle) {
+		this.shuffle = shuffle;
 	}
 
 	public List<SimpleSourceListItemBean> getSimpleSourceListItemBeans() {
@@ -53,6 +69,5 @@ public class SourceListBean implements ModuleBean, HasShuffle {
 	public void setSimpleSourceListItemBeans(List<SimpleSourceListItemBean> simpleSourceListItemBeans) {
 		this.simpleSourceListItemBeans = simpleSourceListItemBeans;
 	}
-
 
 }
