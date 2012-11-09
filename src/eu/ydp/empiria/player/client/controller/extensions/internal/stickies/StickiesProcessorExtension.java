@@ -92,10 +92,10 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		JavaScriptObject externalStickies = getExternalStickies();
 		
 		JSONArray externalState = null;
-		if(externalStickies != null){
-			externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());
-		} else {
+		if(externalStickies == null){
 			externalState = newState;
+		} else {
+			externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());
 		}
 		
 		stickies.clear();
@@ -224,7 +224,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	}
 
 	private void initStickies(int itemIndex) {
-		for (IStickieProperties sp : getStickiesForCurrentItem()){
+		for (IStickieProperties sp : stickies.get(itemIndex)){
 			addStickieView(sp, false);
 		}
 	}
