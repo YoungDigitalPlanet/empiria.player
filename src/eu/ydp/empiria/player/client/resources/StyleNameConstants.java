@@ -61,10 +61,10 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-choice-button-place")
 	public String QP_CHOICE_BUTTON_PLACE();
-	
+
 	@DefaultStringValue("qp-choice-label")
 	public String QP_CHOICE_LABEL();
-	
+
 	@DefaultStringValue("qp-choice-module")
 	public String QP_CHOICE_MODULE();
 
@@ -458,6 +458,18 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-slideshow-title-panel")
 	public String QP_SLIDESHOW_TITLE_PANEL();
 
+	@DefaultStringValue("qp-sourcelist")
+	public String QP_SOURCELIST();
+
+	@DefaultStringValue("qp-sourcelist-item")
+	public String QP_SOURCELIST_ITEM();
+
+	@DefaultStringValue("qp-sourcelist-item-disabled")
+	public String QP_SOURCELIST_ITEM_DISABLED();
+
+	@DefaultStringValue("qp-sourcelist-item-dragged")
+	public String QP_SOURCELIST_ITEM_DRAGGED();
+
 	@DefaultStringValue("qp-span")
 	public String QP_SPAN();
 
@@ -562,4 +574,5 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
+
 }
