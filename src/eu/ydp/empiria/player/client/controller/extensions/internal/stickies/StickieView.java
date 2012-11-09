@@ -37,6 +37,7 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public class StickieView extends Composite implements IStickieView {
 
@@ -143,9 +144,8 @@ public class StickieView extends Composite implements IStickieView {
 		
 	void dragMove(int x, int y){
 		if (dragging){
-			Point screenPoint = new Point(x, y);
-			int newLeft = (int)(dragInitViewPosition.getX() + screenPoint.getX() - dragInitMousePosition.getX());
-			int newTop = (int)(dragInitViewPosition.getY() + screenPoint.getY() - dragInitMousePosition.getY());
+			int newLeft = (int)(dragInitViewPosition.getX() + x - dragInitMousePosition.getX());
+			int newTop = (int)(dragInitViewPosition.getY() + y - dragInitMousePosition.getY());
 			setPosition(newLeft, newTop);
 		}
 	}
@@ -190,21 +190,16 @@ public class StickieView extends Composite implements IStickieView {
 	}
 	
 	void scrollToStickie(){
-		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-			
-			@Override
-			public void execute() {
+		if (UserAgentChecker.isMobileUserAgent()){
+			Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
 				
-			}
-		});
-		Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
-			
-			@Override
-			public boolean execute() {
-				Window.scrollTo(Window.getScrollLeft(), (int) (getAbsoluteTop() - 20));
-				return false;
-			}
-		}, 500);
+				@Override
+				public boolean execute() {
+					Window.scrollTo(Window.getScrollLeft(), (int) (getAbsoluteTop() - 20));
+					return false;
+				}
+			}, 500);
+		}
 	}
 
 	@Override
