@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import static com.google.common.base.Optional.fromNullable;
+import static eu.ydp.empiria.player.client.resources.EmpiriaTagConstants.NAME_FEEDBACK;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +15,6 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
 public class FeedbackRegistry {
 	
@@ -23,9 +25,9 @@ public class FeedbackRegistry {
 	
 	public void registerFeedbacks(IModule module, Node moduleNode){
 		Element moduleElement = (Element) moduleNode;
-		NodeList feedbackNodeList = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_FEEDBACK);
+		NodeList feedbackNodeList = moduleElement.getElementsByTagName(NAME_FEEDBACK);
 		
-		if(feedbackNodeList != null && feedbackNodeList.getLength() > 0){
+		if(fromNullable(feedbackNodeList).isPresent() && feedbackNodeList.getLength() > 0){
 			addModuleFeedbacks(module, feedbackNodeList);
 		}
 	}
@@ -37,13 +39,13 @@ public class FeedbackRegistry {
 	}
 	
 	public boolean isModuleRegistered(IModule module){
-		return modules2feedbacks.get(module) != null;
+		return fromNullable(modules2feedbacks.get(module)).isPresent();
 	}
 	
 	public List<Feedback> getModuleFeedbacks(IModule module){
 		List<Feedback> feedbackList = modules2feedbacks.get(module);
 		
-		if(feedbackList == null){
+		if(!fromNullable(feedbackList).isPresent()){
 			feedbackList = Lists.newArrayList();
 		}
 		
