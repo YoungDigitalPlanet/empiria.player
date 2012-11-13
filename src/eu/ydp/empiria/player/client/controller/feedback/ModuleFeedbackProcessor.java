@@ -5,7 +5,7 @@ import static com.google.common.base.Optional.fromNullable;
 import java.util.List;
 
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.FeedbackAction;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.IModule;
 

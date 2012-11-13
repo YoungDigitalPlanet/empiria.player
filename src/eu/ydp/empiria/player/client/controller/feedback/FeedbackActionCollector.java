@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.feedback;
 
 import java.util.List;
 
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.FeedbackAction;
 import eu.ydp.empiria.player.client.module.IModule;
 
 public class FeedbackActionCollector {
