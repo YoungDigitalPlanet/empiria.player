@@ -1,27 +1,31 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class FeedbackConditionBase {
 	
 	@XmlElement(name="propertyCondition")
-	private List<PropertyConditionBean> propertyConditions = new ArrayList<PropertyConditionBean>();
+	private List<PropertyConditionBean> propertyConditions = Lists.newArrayList();
 	
 	@XmlElement(name="countCondition")
-	private List<CountConditionBean> countConditions = new ArrayList<CountConditionBean>();
+	private List<CountConditionBean> countConditions = Lists.newArrayList();
 	
 	@XmlElement(name="and")
-	private List<AndConditionBean> andConditions = new ArrayList<AndConditionBean>();
+	private List<AndConditionBean> andConditions = Lists.newArrayList();
 	
 	@XmlElement(name="or")
-	private List<OrConditionBean> orConditions = new ArrayList<OrConditionBean>();
+	private List<OrConditionBean> orConditions = Lists.newArrayList();
 	
 	@XmlElement(name="not")
-	private List<NotConditionBean> notConditions = new ArrayList<NotConditionBean>();
+	private List<NotConditionBean> notConditions = Lists.newArrayList();
 	
 	public List<PropertyConditionBean> getPropertyConditions() {
 		return propertyConditions;
