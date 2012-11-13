@@ -28,4 +28,12 @@ public enum FeedbackPropertyName{
 		
 		return searchedName;
 	}
+	
+	public static boolean exists(FeedbackPropertyName name){
+		return !DEFAULT.equals(name);
+	}
+	
+	public static boolean exists(String value){
+		return !DEFAULT.equals(getPropertyName(value));
+	}
 }

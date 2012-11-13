@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -71,6 +72,25 @@ public class FeedbackPropertiesJUnitTest {
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(true)));
 		assertThat(properties.getStringProperty(FeedbackPropertyName.RESULT), is(equalTo("res 0")));
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.WRONG), is(equalTo(true)));
+	}
+	
+	@Test
+	public void gettingPropetyValueByPropertyStringName(){
+		properties.addBooleanProperty(FeedbackPropertyName.ALL_OK, true);
+		
+		assertThat(properties.getProperty("allOk"), is(instanceOf(Boolean.class)));
+		assertThat((Boolean)properties.getProperty("allOk"), is(equalTo(true)));
+		assertThat("not existing name", (String)properties.getProperty("notExisting"), is(equalTo(FeedbackProperties.EMPTY)));
+		assertThat("exisiting name, not existing value", (String)properties.getProperty("text"), is(equalTo(FeedbackProperties.EMPTY)));
+	}
+	
+	@Test
+	public void hasValueTest(){
+		properties.addBooleanProperty(FeedbackPropertyName.ALL_OK, true);
+		
+		assertThat(properties.hasValue("allOk"), is(equalTo(true)));
+		assertThat("not existing name", properties.hasValue("notExisting"), is(equalTo(false)));
+		assertThat("exisiting name, not existing value", properties.hasValue("text"), is(equalTo(false)));
 	}
 
 }
