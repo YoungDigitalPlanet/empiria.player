@@ -4,7 +4,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.FeedbackCriter
 
 public class FeedbackCriterionMatcher {
 	
-	public boolean match(FeedbackCriterion criterion, Object properties){
+	public boolean match(FeedbackCriterion criterion, FeedbackProperties properties){
 		return false;
 	}
 	

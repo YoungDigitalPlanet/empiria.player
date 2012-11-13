@@ -33,7 +33,7 @@ public class ModuleFeedbackProcessor {
 	}
 	
 	private void appendPropertiesToSource(IModule source) {
-		Object properties = getPropertiesFromResponse(source);
+		FeedbackProperties properties = getPropertiesFromResponse(source);
 		feedbackActionCollector.appendPropertiesToSource(properties, source);
 	}
 	
@@ -48,7 +48,7 @@ public class ModuleFeedbackProcessor {
 	}
 	
 	private void appendFeedbackActions(Feedback feedback, IModule source){
-		Object properties = feedbackActionCollector.getSourceProperties(source);
+		FeedbackProperties properties = feedbackActionCollector.getSourceProperties(source);
 		
 		if(matcher.match(feedback.getCriterion(), properties)){
 			feedbackActionCollector.appendActionsToSource(feedback.getActions(), source);
@@ -74,7 +74,7 @@ public class ModuleFeedbackProcessor {
 		};
 	}
 
-	private Object getPropertiesFromResponse(IModule module){
+	private FeedbackProperties getPropertiesFromResponse(IModule module){
 		return null;
 	}
 	
