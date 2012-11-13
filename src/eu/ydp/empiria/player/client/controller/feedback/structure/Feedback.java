@@ -1,11 +1,11 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure;
 
-import java.util.List;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackActionBean;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackConditionBean;
 
 public interface Feedback {
 	
-	List<FeedbackAction> getActions();
+	FeedbackActionBean getAction();
 	
-	FeedbackCriterion getCriterion();
-	
+	FeedbackConditionBean getCondition();
 }

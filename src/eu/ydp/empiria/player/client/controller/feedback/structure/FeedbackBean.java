@@ -1,31 +1,38 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackActionBean;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackConditionBean;
+
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="feedback")
 public class FeedbackBean implements Feedback {
-
+	
 	@XmlElement(name="action")
-	List<FeedbackAction> actions;
+	FeedbackActionBean action;
+	
+	@XmlElement(name="condition")
+	FeedbackConditionBean condition;
 
 	@Override
-	public List<FeedbackAction> getActions() {
-		return actions;
+	public FeedbackActionBean getAction() {
+		return action;
 	}
 	
-	public void setActions(List<FeedbackAction> actions) {
-		this.actions = actions;
+	public void setActions(FeedbackActionBean action) {
+		this.action = action;
 	}
-
+	
 	@Override
-	public FeedbackCriterion getCriterion() {
-		return null;
+	public FeedbackConditionBean getCondition() {
+		return condition;
 	}	
 
+	public void setCondition(FeedbackConditionBean criterion) {
+		this.condition = criterion;
+	}
 }
