@@ -16,12 +16,16 @@ public class FeedbackProperties{
 		addProperty(name, value);
 	}
 	
-	private void addProperty(FeedbackPropertyName name, Object value){
-		propertyMap.put(name, value);
-	}
-	
 	public void addStringProperty(FeedbackPropertyName name, String value){
 		addProperty(name, value);
+	}
+	
+	public void addIntegerProperty(FeedbackPropertyName name, Integer value) {
+		addProperty(name, value);
+	}
+	
+	private void addProperty(FeedbackPropertyName name, Object value){
+		propertyMap.put(name, value);
 	}
 	
 	public Object getProperty(String value){
@@ -50,6 +54,17 @@ public class FeedbackProperties{
 		return output;
 	}
 	
+	public Integer getIntegerProperty(FeedbackPropertyName name) {
+		Object value = propertyMap.get(name);
+		Integer output = Integer.MAX_VALUE;
+		
+		if(value instanceof Integer){
+			output = (Integer) value;
+		}
+		
+		return output;
+	}
+	
 	public String getStringProperty(FeedbackPropertyName name){
 		Object value = propertyMap.get(name);
 		String output = StringUtils.EMPTY_STRING;
@@ -67,7 +82,6 @@ public class FeedbackProperties{
 
 	public Boolean hasValue(String name) {
 		return !EMPTY.equals(getProperty(name));
-	}
-	
+	}	
 	
 }
