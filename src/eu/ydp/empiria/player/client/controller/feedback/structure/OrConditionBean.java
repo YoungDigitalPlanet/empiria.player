@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.feedback.structure.condition;
+package eu.ydp.empiria.player.client.controller.feedback.structure;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

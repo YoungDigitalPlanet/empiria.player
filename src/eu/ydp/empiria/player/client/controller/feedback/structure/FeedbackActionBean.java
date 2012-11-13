@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.feedback.structure.action;
+package eu.ydp.empiria.player.client.controller.feedback.structure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-@SuppressWarnings("unused")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="action")
 public class FeedbackActionBean {
@@ -20,19 +19,19 @@ public class FeedbackActionBean {
 	@XmlElement(name="showUrl")
 	private List<ShowUrlAction> showUrls = new ArrayList<ShowUrlAction>();
 
-	private ShowTextAction getShowText() {
+	public ShowTextAction getShowText() {
 		return showText;
 	}
 
-	private void setShowText(ShowTextAction showText) {
+	public void setShowText(ShowTextAction showText) {
 		this.showText = showText;
 	}
 	
-	private List<ShowUrlAction> getShowUrls() {
+	public List<ShowUrlAction> getShowUrls() {
 		return showUrls;
 	}
 
-	private void setShowUrls(List<ShowUrlAction> showUrls) {
+	public void setShowUrls(List<ShowUrlAction> showUrls) {
 		this.showUrls = showUrls;
 	}
 	

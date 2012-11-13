@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.feedback.structure.condition;
+package eu.ydp.empiria.player.client.controller.feedback.structure;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("unused")
 public class FeedbackConditionBase {
 	
 	@XmlElement(name="propertyCondition")
@@ -24,43 +23,43 @@ public class FeedbackConditionBase {
 	@XmlElement(name="not")
 	private List<NotConditionBean> notConditions = new ArrayList<NotConditionBean>();
 	
-	private List<PropertyConditionBean> getPropertyConditions() {
+	public List<PropertyConditionBean> getPropertyConditions() {
 		return propertyConditions;
 	}
 
-	private void setPropertyConditions(List<PropertyConditionBean> propertyCondition) {
+	public void setPropertyConditions(List<PropertyConditionBean> propertyCondition) {
 		this.propertyConditions = propertyCondition;
 	}
 
-	private List<CountConditionBean> getCountConditions() {
+	public List<CountConditionBean> getCountConditions() {
 		return countConditions;
 	}
 
-	private void setCountConditions(List<CountConditionBean> countCondition) {
+	public void setCountConditions(List<CountConditionBean> countCondition) {
 		this.countConditions = countCondition;
 	}
 
-	private List<AndConditionBean> getAndConditions() {
+	public List<AndConditionBean> getAndConditions() {
 		return andConditions;
 	}
 
-	private void setAndConditions(List<AndConditionBean> andConditions) {
+	public void setAndConditions(List<AndConditionBean> andConditions) {
 		this.andConditions = andConditions;
 	}
 	
-	private List<OrConditionBean> getOrConditions() {
+	public List<OrConditionBean> getOrConditions() {
 		return orConditions;
 	}
 
-	private void setOrConditions(List<OrConditionBean> orConditions) {
+	public void setOrConditions(List<OrConditionBean> orConditions) {
 		this.orConditions = orConditions;
 	}
 	
-	private List<NotConditionBean> getNotConditions() {
+	public List<NotConditionBean> getNotConditions() {
 		return notConditions;
 	}
 
-	private void setNotConditions(List<NotConditionBean> notConditions) {
+	public void setNotConditions(List<NotConditionBean> notConditions) {
 		this.notConditions = notConditions;
 	}
 	
