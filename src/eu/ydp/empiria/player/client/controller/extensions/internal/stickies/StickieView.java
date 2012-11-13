@@ -5,6 +5,9 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
@@ -52,6 +55,18 @@ public class StickieView extends Composite implements IStickieView {
 	public StickieView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		setPositionRaw(-2000, -2000);
+		
+		contentText.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if (android  &&  firstKeyInputAfterClick  &&  contentText.getCursorPos() != 0){
+					firstKeyInputAfterClick = false;
+				}
+			}
+		});
+		
+		android = UserAgentChecker.isStackAndroidBrowser();
 	}
 
 	@UiField TextArea contentText;
@@ -71,6 +86,9 @@ public class StickieView extends Composite implements IStickieView {
 	private Point dragInitViewPosition;
 	private Point position;
 	HandlerRegistration upHandlerReg;
+	private boolean takeOverKeyInput;
+	private boolean firstKeyInputAfterClick;
+	boolean android;
 		
 	@UiHandler("minimizeButton")
 	public void minimizeHandler(ClickEvent event){
@@ -164,6 +182,21 @@ public class StickieView extends Composite implements IStickieView {
 		updateContentLabel();
 		presenter.stickieChange();
 	}
+
+	@UiHandler("contentText")
+	public void contentTextKeyDownHandler(KeyDownEvent event){
+		takeOverKeyInput = ( android  &&  firstKeyInputAfterClick  &&  contentText.getCursorPos() == 0 );
+	}
+
+	@UiHandler("contentText")
+	public void contentTextKeyPressHandler(KeyPressEvent event){
+		if (takeOverKeyInput){
+			contentText.setText(contentText.getText() + event.getCharCode());
+			event.preventDefault();
+			takeOverKeyInput = false;
+			firstKeyInputAfterClick = false;
+		}
+	}
 	
 	private void updateContentLabel() {
 		contentLabel.setHTML(contentText.getText().replace("\n", "<br/>"));
@@ -177,7 +210,10 @@ public class StickieView extends Composite implements IStickieView {
 				}
 				contentText.setVisible(true);
 				contentText.setFocus(true);
-				contentText.setSelectionRange(contentText.getText().length(), 0);
+				if (!android){
+					contentText.setSelectionRange(contentText.getText().length(), 0);
+				}
+				firstKeyInputAfterClick = true;
 				scrollToStickie();
 			} else {
 				contentText.getElement().blur();
