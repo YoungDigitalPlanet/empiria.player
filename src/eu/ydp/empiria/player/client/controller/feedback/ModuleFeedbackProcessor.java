@@ -5,7 +5,7 @@ import static com.google.common.base.Optional.fromNullable;
 import java.util.List;
 
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
-import eu.ydp.empiria.player.client.controller.feedback.structure.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.IModule;
 
@@ -15,7 +15,7 @@ public class ModuleFeedbackProcessor {
 	
 	private FeedbackActionCollector feedbackActionCollector;
 	
-	private FeedbackCriterionMatcher matcher;
+	private FeedbackConditionMatcher matcher;
 	
 	public void process(IModule sender){
 		feedbackActionCollector = new FeedbackActionCollector(sender);
@@ -50,8 +50,8 @@ public class ModuleFeedbackProcessor {
 	private void appendFeedbackActions(Feedback feedback, IModule source){
 		FeedbackProperties properties = feedbackActionCollector.getSourceProperties(source);
 		
-		if(matcher.match(feedback.getCriterion(), properties)){
-			feedbackActionCollector.appendActionsToSource(feedback.getActions(), source);
+		if(matcher.match(feedback.getCondition(), properties)){
+			feedbackActionCollector.appendActionsToSource(feedback.getAction().getAllActions(), source);
 		}
 	}
 	
