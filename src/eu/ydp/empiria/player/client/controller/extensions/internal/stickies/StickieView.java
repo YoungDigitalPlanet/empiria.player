@@ -89,6 +89,7 @@ public class StickieView extends Composite implements IStickieView {
 	private boolean takeOverKeyInput;
 	private boolean firstKeyInputAfterClick;
 	boolean android;
+	static boolean firstFocusDone = false;
 		
 	@UiHandler("minimizeButton")
 	public void minimizeHandler(ClickEvent event){
@@ -191,15 +192,20 @@ public class StickieView extends Composite implements IStickieView {
 	@UiHandler("contentText")
 	public void contentTextKeyPressHandler(KeyPressEvent event){
 		if (takeOverKeyInput){
-			contentText.setText(contentText.getText() + event.getCharCode());
-			event.preventDefault();
-			takeOverKeyInput = false;
-			firstKeyInputAfterClick = false;
-		}
+			if (firstFocusDone){
+				contentText.setText(contentText.getText() + event.getCharCode());
+				event.preventDefault();
+				takeOverKeyInput = false;
+				firstKeyInputAfterClick = false;
+			} else {
+				firstFocusDone = true;
+			}
+		} 
 	}
 	
 	private void updateContentLabel() {
 		contentLabel.setHTML(contentText.getText().replace("\n", "<br/>"));
+		
 	}
 
 	private void setEditing(boolean edit) {
