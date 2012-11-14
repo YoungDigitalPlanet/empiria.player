@@ -61,13 +61,13 @@ public class PropertyConditionMatcher implements FeedbackPropertyMatcher {
 		return operator.checkString(propertyValue, condition.getValue());
 	}
 	
-	protected <A extends Number & Comparable<A>> boolean matchNumberValue(A propertyValue) {
+	protected boolean matchNumberValue(Number propertyValue) {
 		boolean isMatch = false;
 		
 		if (propertyValue instanceof Double) {
-			isMatch = operator.checkNumber(propertyValue.doubleValue(), Double.valueOf(condition.getValue()));
+			isMatch = operator.checkNumber((Double) propertyValue, Double.valueOf(condition.getValue()));
 		} else if(propertyValue instanceof Integer) {
-			isMatch = operator.checkNumber(propertyValue.intValue(), Integer.valueOf(condition.getValue()));
+			isMatch = operator.checkNumber((Integer) propertyValue, Integer.valueOf(condition.getValue()));
 		}
 		
 		return isMatch;

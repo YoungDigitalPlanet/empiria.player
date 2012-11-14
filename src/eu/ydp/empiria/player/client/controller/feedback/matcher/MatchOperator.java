@@ -17,9 +17,9 @@ public enum MatchOperator {
 	public boolean checkBoolean(Boolean value1, Boolean value2) {
 		Boolean areValuesMatch = false;
 		
-		if ( operator.equals(EQUAL) && (value1 == value2) ) {
+		if ( operator.equals(EQUAL.getName()) && (value1 == value2) ) {
 			areValuesMatch = true;
-		} else if ( operator.equals(NOT_EQUAL) && (value1 != value2) ) {
+		} else if ( operator.equals(NOT_EQUAL.getName()) && (value1 != value2) ) {
 			areValuesMatch = true;
 		}
 		
@@ -29,10 +29,12 @@ public enum MatchOperator {
 	public boolean checkString(String value1, String value2) {
 		Boolean areValuesMatch = false;
 		
-		if ( operator.equals(EQUAL) && value1.equals(value2) ) {
-			areValuesMatch = true;
-		} else if ( operator.equals(NOT_EQUAL) && !value1.equals(value2) ) {
-			areValuesMatch = true;
+		if (value1 != null) {
+			if ( operator.equals(EQUAL.getName()) && value1.equals(value2) ) {
+				areValuesMatch = true;
+			} else if ( operator.equals(NOT_EQUAL.getName()) && !value1.equals(value2) ) {
+				areValuesMatch = true;
+			}
 		}
 		
 		return areValuesMatch;
