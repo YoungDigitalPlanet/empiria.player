@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.feedback.structure;
+package eu.ydp.empiria.player.client.controller.feedback.structure.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 
 
 @XmlAccessorType(XmlAccessType.NONE)

@@ -12,6 +12,14 @@ import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.AndConditionBean;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.CountConditionBean;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.NotConditionBean;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.OrConditionBean;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
 
 public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	

@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.controller.feedback.matcher;
 
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackProperties;
-import eu.ydp.empiria.player.client.controller.feedback.structure.FeedbackCondition;
-import eu.ydp.empiria.player.client.controller.feedback.structure.PropertyConditionBean;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
 
 public class PropertyConditionMatcher implements FeedbackPropertyMatcher {
 	

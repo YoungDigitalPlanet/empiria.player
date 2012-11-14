@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.feedback.structure;
+package eu.ydp.empiria.player.client.controller.feedback.structure.condition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.collect.Lists;
+
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class FeedbackConditionBase implements FeedbackCondition{

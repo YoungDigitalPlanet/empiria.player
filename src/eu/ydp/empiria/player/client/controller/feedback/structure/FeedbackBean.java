@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackActionBean;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackConditionBean;
 
 
 @XmlAccessorType(XmlAccessType.NONE)
