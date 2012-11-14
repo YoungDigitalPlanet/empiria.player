@@ -19,7 +19,7 @@ public class PropertyConditionMatcher implements FeedbackPropertyMatcher {
 		if(condition instanceof PropertyConditionBean){
 			this.properties = properties;
 			this.condition = (PropertyConditionBean)condition;
-			this.operator = new MatchOperator(this.condition.getOperator());
+			this.operator = MatchOperator.getMatchOperator(this.condition.getOperator());
 			matches = checkPropertyCondition();
 		}
 		
@@ -43,8 +43,10 @@ public class PropertyConditionMatcher implements FeedbackPropertyMatcher {
 			matches = matchBooleanValue((Boolean) value);
 		}else if(value instanceof String){
 			matches = matchStringValue((String) value);
-		}else if(value instanceof Number){
-			matches = matchNumberValue((Number) value);
+		}else if(value instanceof Double){
+			matches = matchNumberValue((Double) value);
+		}else if(value instanceof Integer){
+			matches = matchNumberValue((Integer) value);
 		}
 		
 		return matches;
@@ -59,9 +61,16 @@ public class PropertyConditionMatcher implements FeedbackPropertyMatcher {
 		return operator.checkString(propertyValue, condition.getValue());
 	}
 	
-	protected boolean matchNumberValue(Number propertyValue){
-		Number conditionValue = Double.valueOf(condition.getValue());
-		return operator.checkNumber(propertyValue, conditionValue);
+	protected <A extends Number & Comparable<A>> boolean matchNumberValue(A propertyValue) {
+		boolean isMatch = false;
+		
+		if (propertyValue instanceof Double) {
+			isMatch = operator.checkNumber(propertyValue.doubleValue(), Double.valueOf(condition.getValue()));
+		} else if(propertyValue instanceof Integer) {
+			isMatch = operator.checkNumber(propertyValue.intValue(), Integer.valueOf(condition.getValue()));
+		}
+		
+		return isMatch;
 	}
 
 }
