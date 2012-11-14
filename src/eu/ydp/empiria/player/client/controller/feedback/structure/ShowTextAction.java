@@ -5,10 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackTextAction;
+
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="showText")
-public class ShowTextAction implements FeedbackAction {
+public class ShowTextAction implements FeedbackTextAction {
 	
 	@XmlValue
 	private String text;

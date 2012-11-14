@@ -5,10 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
+
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="showUrl")
-public class ShowUrlAction implements FeedbackAction {
+public class ShowUrlAction implements FeedbackUrlAction {
 	
 	@XmlAttribute(name="href")
 	private String href;

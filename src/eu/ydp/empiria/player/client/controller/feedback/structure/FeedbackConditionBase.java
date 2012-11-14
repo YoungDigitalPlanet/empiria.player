@@ -1,16 +1,16 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @XmlAccessorType(XmlAccessType.NONE)
-public class FeedbackConditionBase {
+public class FeedbackConditionBase implements FeedbackCondition{
 	
 	@XmlElement(name="propertyCondition")
 	private List<PropertyConditionBean> propertyConditions = Lists.newArrayList();

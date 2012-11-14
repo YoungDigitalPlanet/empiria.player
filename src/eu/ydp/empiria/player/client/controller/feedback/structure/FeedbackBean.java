@@ -1,9 +1,13 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -15,8 +19,7 @@ public class FeedbackBean implements Feedback {
 	
 	@XmlElement(name="condition")
 	FeedbackConditionBean condition;
-
-	@Override
+	
 	public FeedbackActionBean getAction() {
 		return action;
 	}
@@ -25,12 +28,21 @@ public class FeedbackBean implements Feedback {
 		this.action = action;
 	}
 	
-	@Override
-	public FeedbackConditionBean getCondition() {
+	public FeedbackConditionBean getConditionBean() {
 		return condition;
 	}	
 
-	public void setCondition(FeedbackConditionBean condition) {
+	public void setConditionElement(FeedbackConditionBean condition) {
 		this.condition = condition;
+	}
+
+	@Override
+	public List<FeedbackAction> getActions() {
+		return action.getAllActions();
+	}
+
+	@Override
+	public FeedbackCondition getCondition() {
+		return condition;
 	}
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import eu.ydp.empiria.player.client.controller.feedback.structure.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.module.IModule;
 
 public class FeedbackActionCollector {

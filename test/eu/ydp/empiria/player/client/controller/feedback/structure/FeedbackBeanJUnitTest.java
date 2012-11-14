@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 
 public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
@@ -43,13 +44,13 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	@Test
 	public void shouldHaveActionAndCondition() {
-		assertThat(feedback.getCondition(), notNullValue());
+		assertThat(feedback.getConditionBean(), notNullValue());
 		assertThat(feedback.getAction(), notNullValue());
 	}
 
 	@Test
 	public void shouldHaveFirstLevelConditions() {
-		List<FeedbackCondition> allConditions = feedback.getCondition().getAllConditions();
+		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
 		assertThat(allConditions.get(0), instanceOf(AndConditionBean.class));
 		assertThat(allConditions.get(1), instanceOf(OrConditionBean.class));
 		assertThat(allConditions.get(2), instanceOf(NotConditionBean.class));
@@ -57,14 +58,14 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	@Test
 	public void shouldHaveCountCondition() {
-		List<FeedbackCondition> allConditions = feedback.getCondition().getAllConditions();
+		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
 		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
 		assertThat(andConditionBean.getAllConditions().get(0), instanceOf(CountConditionBean.class));
 	}
 	
 	@Test
 	public void shouldHaveCorrectAttributesInCountCondition() {
-		List<FeedbackCondition> allConditions = feedback.getCondition().getAllConditions();
+		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
 		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		assertThat(countConditionBean.getCount(), is("3"));
@@ -73,7 +74,7 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	@Test
 	public void shouldHavePropertyCondition() {
-		List<FeedbackCondition> allConditions = feedback.getCondition().getAllConditions();
+		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
 		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		assertThat(countConditionBean.getAllConditions().get(0), instanceOf(PropertyConditionBean.class));
@@ -81,7 +82,7 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	@Test
 	public void shouldHaveCorrectAttributesInPropertyCondition() {
-		List<FeedbackCondition> allConditions = feedback.getCondition().getAllConditions();
+		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
 		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		PropertyConditionBean propertyConditionBean = (PropertyConditionBean) countConditionBean.getAllConditions().get(0);
@@ -92,7 +93,7 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	@Test
 	public void shouldHaveCorrectDefaultAttributesInPropertyCondition() {
-		List<FeedbackCondition> allConditions = feedback.getCondition().getAllConditions();
+		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
 		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		PropertyConditionBean propertyConditionBean = (PropertyConditionBean) countConditionBean.getAllConditions().get(1);
@@ -103,27 +104,27 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	@Test
 	public void shouldHaveShowTextAction() {
-		List<FeedbackAction> allActions = feedback.getAction().getAllActions();
+		List<FeedbackAction> allActions = feedback.getActions();
 		assertThat(allActions.get(0), instanceOf(ShowTextAction.class));
 	}
 	
 	@Test
 	public void shouldHaveCorrectValueInShowTextAction() {
-		List<FeedbackAction> allActions = feedback.getAction().getAllActions();
+		List<FeedbackAction> allActions = feedback.getActions();
 		ShowTextAction showTextAction = (ShowTextAction) allActions.get(0);
 		assertThat(showTextAction.getText(), is("testowy tekst"));
 	}
 	
 	@Test
 	public void shouldHaveShowUrlActions() {
-		List<FeedbackAction> allActions = feedback.getAction().getAllActions();
+		List<FeedbackAction> allActions = feedback.getActions();
 		assertThat(allActions.get(1), instanceOf(ShowUrlAction.class));
 		assertThat(allActions.get(2), instanceOf(ShowUrlAction.class));
 	}
 	
 	@Test
 	public void shouldHaveCorrectAttributesInShowUrlActions() {
-		List<FeedbackAction> allActions = feedback.getAction().getAllActions();
+		List<FeedbackAction> allActions = feedback.getActions();
 		ShowUrlAction firstShowUrlAction = (ShowUrlAction) allActions.get(1);
 		ShowUrlAction secondShowUrlAction = (ShowUrlAction) allActions.get(2);
 		assertThat(firstShowUrlAction.getHref(), is("sound.mp3"));
