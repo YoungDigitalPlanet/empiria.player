@@ -128,8 +128,14 @@ public class StickieView extends Composite implements IStickieView {
 		event.preventDefault();
 	}
 
+	@UiHandler("contentText")
+	public void contentTextTouchStartHandler(TouchStartEvent event){
+		event.stopPropagation();
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+	}
+
 	@UiHandler("containerPanel")
-	public void touchStartHandler(TouchStartEvent event){
+	public void containerPanelTouchStartHandler(TouchStartEvent event){
 		setEditing(false);
 		dragStart(event.getTouches().get(0).getScreenX(), event.getTouches().get(0).getScreenY());
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
