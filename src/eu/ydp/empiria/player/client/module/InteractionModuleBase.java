@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module;
 
+import java.util.List;
+
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
@@ -20,8 +22,8 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 	private Response response;
 	private String responseIdentifier;
 	private final EventsBus eventsBus = getEventsBus();
-	
-	
+
+
 	@Override
 	public final void initModule(ModuleSocket moduleSocket, InteractionEventsListener interactionEventsListener) {
 		initModule(moduleSocket);
@@ -38,7 +40,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 		response = findResponse();
 	}
-	
+
 	protected Response findResponse(){
 		return moduleSocket.getResponse(responseIdentifier);
 	}
@@ -46,7 +48,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 	protected Response getResponse(){
 		return response;
 	}
-	
+
 	protected final InteractionEventsListener getInteractionEventsListener() {
 		return interactionEventsListener;
 	}
@@ -57,5 +59,10 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
 	protected EventsBus getEventsBus() {
 		return PlayerGinjector.INSTANCE.getEventsBus();
+	}
+
+	@Override
+	public List<IModule> getChildren() {
+		return moduleSocket.getChildren(this);
 	}
 }

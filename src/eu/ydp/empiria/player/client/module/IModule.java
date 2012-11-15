@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module;
 
-public interface IModule extends HasParent {
+import java.util.List;
 
+public interface IModule extends HasParent {
+	List<IModule> getChildren();
 }

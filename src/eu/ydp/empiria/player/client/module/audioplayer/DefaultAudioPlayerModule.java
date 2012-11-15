@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.audioplayer;
 
+import java.util.List;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.PushButton;
@@ -11,7 +13,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.HasParent;
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
@@ -31,13 +33,14 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 	private ModuleSocket moduleSocket;
 
 	@Override
-	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
-		this.moduleSocket = ms;
+	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener iel) {
+		this.moduleSocket = moduleSocket;
 		mediaListener = iel;
 
 		address = XMLUtils.getAttributeAsString(element, "src");
-		if (address == null  ||  "".equals(address))
+		if (address == null  ||  "".equals(address)) {
 			address = XMLUtils.getAttributeAsString(element, "data");
+		}
 
 		playing = false;
 
@@ -72,16 +75,17 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 			}
 
 			@Override
-			public void setCallforward(MediaInteractionSoundEventCallforward cf) {
-				callforward = cf;
+			public void setCallforward(MediaInteractionSoundEventCallforward callForward) {
+				callforward = callForward;
 			}
 		}));
 	}
 
 	protected void stop(){
 		enabled = false;
-		if (callforward != null)
+		if (callforward != null) {
 			callforward.stop();
+		}
 	}
 
 	protected void setPlaying(){
@@ -100,15 +104,21 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 
 	protected void onButtonClick() {
 		if (enabled){
-			if (!playing)
-				play();
-			else
+			if (playing) {
 				stop();
+			} else {
+				play();
+			}
 		}
 	}
 
 	@Override
 	public HasChildren getParentModule() {
 		return moduleSocket.getParent(this);
+	}
+
+	@Override
+	public List<IModule> getChildren() {
+		return moduleSocket.getChildren(this);
 	}
 }

@@ -22,6 +22,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IActivity;
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -327,5 +328,10 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Override
 	public HasChildren getParentModule() {
 		return moduleSocket.getParent(this);
+	}
+
+	@Override
+	public List<IModule> getChildren() {
+		return moduleSocket.getChildren(this);
 	}
 }

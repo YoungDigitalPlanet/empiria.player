@@ -35,7 +35,7 @@ public class PlayerEvent extends AbstractEvent<PlayerEventHandler, PlayerEventTy
 	}
 
 	public static Type<PlayerEventHandler, PlayerEventTypes>[] getTypes(PlayerEventTypes... typeList){
-		return typeList.length >0  ? types.getTypes(typeList) :  new Type[0];
+		return types.getTypes(typeList);
 	}
 
 }

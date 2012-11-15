@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions;
 
+import java.util.List;
+
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
@@ -15,8 +17,10 @@ import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsLi
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
 import eu.ydp.empiria.player.client.module.HasChildren;
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
+@SuppressWarnings("PMD")
 public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 
 	protected String test = "";
@@ -36,6 +40,10 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 			}
 			@Override
 			public HasChildren getParentModule() {
+				return null;
+			}
+			@Override
+			public List<IModule> getChildren() {
 				return null;
 			}
 		}));
