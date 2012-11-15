@@ -5,6 +5,7 @@ import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
+import eu.ydp.empiria.player.client.controller.AssessmentControllerFactory;
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
@@ -97,6 +98,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
 		install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
+		install(new GinFactoryModuleBuilder().build(AssessmentControllerFactory.class));
 
 		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class) .build(TouchRecognitionFactory.class));
 

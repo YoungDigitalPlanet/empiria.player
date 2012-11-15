@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
@@ -76,8 +78,11 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 		private InteractionEventsListener interactionEventsListener;
 
-		public Item(XmlData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket ss, ModulesRegistrySocket mrs,
-				Map<String, Outcome> outcomeVariables, ModuleHandlerManager moduleHandlerManager) {
+		@Inject
+		public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options, 
+					@Assisted InteractionEventsListener interactionEventsListener, @Assisted StyleSocket ss, 
+					@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables, 
+					@Assisted ModuleHandlerManager moduleHandlerManager, AssessmentControllerFactory controllerFactory) {
 
 			this.modulesRegistrySocket = mrs;
 			this.options = options;
@@ -90,9 +95,9 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 			Node itemBodyNode = xmlData.getDocument().getElementsByTagName("itemBody").item(0);
 
 			variableProcessor = VariableProcessorTemplate.fromNode(xmlData.getDocument().getElementsByTagName("variableProcessing"));
-
-			feedbackManager = new FeedbackManager(xmlData.getDocument().getElementsByTagName("modalFeedback"), xmlData.getBaseURL(), moduleSocket,
-					interactionEventsListener);
+			
+			feedbackManager = controllerFactory.getFeedbackManager(xmlData.getDocument().getElementsByTagName("modalFeedback"), xmlData.getBaseURL(), 
+																	moduleSocket, interactionEventsListener);
 
 			responseManager = new VariableManager<Response>(xmlData.getDocument().getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {
 				@Override

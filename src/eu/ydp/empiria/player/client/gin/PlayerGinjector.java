@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 
+import eu.ydp.empiria.player.client.controller.AssessmentControllerFactory;
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
@@ -61,6 +62,7 @@ public interface PlayerGinjector extends Ginjector {
 	ModuleFactory getModuleFactory();
 	FeedbackRegistry getFeedbackRegistry();
 	ModuleFeedbackProcessor getModuleFeedbackProcessor();
+	AssessmentControllerFactory getAssessmentControllerFactory();
 
 	BookmarkProcessorExtension getBookmarkProcessorExtension();
 	StickiesProcessorExtension getStickiesProcessorExtension();

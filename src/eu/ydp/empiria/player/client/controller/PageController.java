@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.controller;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
@@ -36,8 +38,14 @@ public class PageController implements PageInterferenceSocket {
 	private final boolean isInitialized = false;
 	private StyleSocket styleSocket;
 	private ModuleHandlerManager moduleHandlerManager;
+	
+	@Inject
+	private AssessmentControllerFactory controllerFactory;
 
-	public PageController(PageViewSocket pvs, IFlowSocket fs, InteractionEventsSocket is, PageSessionSocket pss, ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
+	@Inject
+	public PageController(@Assisted PageViewSocket pvs, @Assisted IFlowSocket fs, 
+							@Assisted InteractionEventsSocket is, @Assisted PageSessionSocket pss, 
+							@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager) {
 		pageViewSocket = pvs;
 		flowSocket = fs;
 		interactionSocket = is;
@@ -71,8 +79,9 @@ public class PageController implements PageInterferenceSocket {
 				pageViewSocket.setPageViewCarrier(new PageViewCarrier());
 
 				for (int i = 0; i < pageDataTest.datas.length; i++) {
-					ItemController controller = new ItemController(pageViewSocket.getItemViewSocket(i), flowSocket, interactionSocket, pageSessionSocket.getItemSessionSocket(),
-							modulesRegistrySocket, moduleHandlerManager);
+					ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket, 
+																					interactionSocket, pageSessionSocket.getItemSessionSocket(),
+																					modulesRegistrySocket, moduleHandlerManager);
 					controller.setStyleSocket(styleSocket);
 					controller.init(pageDataTest.datas[i], pageDataTest.displayOptions);
 					controller.setAssessmentParenthoodSocket(parenthoodSocket);

@@ -40,6 +40,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private final Page page = PlayerGinjector.INSTANCE.getPage();
 	private final IItemProperties itemProperties = createItemProperties();
 	private final ModuleHandlerManager moduleHandlerManager;
+	private final AssessmentControllerFactory controllerFactory = PlayerGinjector.INSTANCE.getAssessmentControllerFactory();
 
 	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket, AssessmentSessionSocket ass, ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
 		assessmentViewSocket = avs;
@@ -63,8 +64,9 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 			if (isInCache) {
 				pageController = controllerCache.get(pageNumber);
 			} else {
-				pageController = new PageController(assessmentViewSocket.getPageViewSocket(), flowSocket, interactionEventsSocket, assessmentSessionSocket.getPageSessionSocket(),
-						modulesRegistrySocket, moduleHandlerManager);
+				pageController = controllerFactory.getPageController(assessmentViewSocket.getPageViewSocket(), flowSocket, 
+																		interactionEventsSocket, assessmentSessionSocket.getPageSessionSocket(),
+																		modulesRegistrySocket, moduleHandlerManager);
 				controllerCache.put(pageNumber, pageController);
 			}
 		}

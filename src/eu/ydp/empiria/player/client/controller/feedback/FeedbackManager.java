@@ -7,22 +7,27 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEventListner;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
 public class FeedbackManager implements InlineFeedbackSocket{
 	
-	private FeedbackRegistry feedbackRegistry = PlayerGinjector.INSTANCE.getFeedbackRegistry();
+	@Inject
+	private FeedbackRegistry feedbackRegistry;
 	
-	private ModuleFeedbackProcessor moduleFeedbackProcessor = PlayerGinjector.INSTANCE.getModuleFeedbackProcessor();
+	@Inject
+	private ModuleFeedbackProcessor moduleFeedbackProcessor;
 
-	public FeedbackManager(NodeList feedbackNodes, String baseUrl, ModuleSocket moduleSocket, FeedbackInteractionEventListner feedbackListener){
+	@Inject
+	public FeedbackManager(@Assisted NodeList feedbackNodes, @Assisted String baseUrl, 
+							@Assisted ModuleSocket moduleSocket, @Assisted FeedbackInteractionEventListner feedbackListener){
 		
 		this.baseUrl = baseUrl;
 		this.moduleSocket = moduleSocket;

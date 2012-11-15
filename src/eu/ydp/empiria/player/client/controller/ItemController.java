@@ -4,6 +4,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
@@ -37,8 +39,11 @@ import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 
 public class ItemController implements PageEventHandler, StateChangeEventHandler {
 
+	@Inject
 	@SuppressWarnings("PMD")
-	public ItemController(ItemViewSocket ivs, IFlowSocket fs, InteractionEventsSocket is, ItemSessionSocket iss, ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
+	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs, 
+							@Assisted InteractionEventsSocket is, @Assisted ItemSessionSocket iss, 
+							@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager) {
 		itemViewSocket = ivs;
 		itemSessionSocket = iss;
 		interactionSocket = is;
@@ -58,6 +63,9 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private StyleSocket styleSocket;
 	private final ModuleHandlerManager moduleHandlerManager;
+	
+	@Inject
+	private AssessmentControllerFactory controllerFactory;
 
 	IPlayerContainersAccessor accessor;
 
@@ -76,7 +84,10 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 				throw new Exception("Item data is null");// NOPMD
 			}
 			itemIndex = data.itemIndex;
-			item = new Item(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex), moduleHandlerManager);
+			item = controllerFactory.getItem(data.data, options, 
+												interactionSocket, styleSocket, 
+												modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex), 
+												moduleHandlerManager);
 			getAccessor().registerItemBodyContainer(itemIndex, item.getContentView());
 			item.setState(itemSessionSocket.getState(itemIndex));
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
