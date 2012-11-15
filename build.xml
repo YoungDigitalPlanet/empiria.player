@@ -25,6 +25,11 @@
     <not><os family="mac"/></not>
   </condition>
 
+  <!-- option "-XdisableCastChecking" is needed for iOS 6.x compatibility -->
+  <condition property="compile.disableCastChecking" value="-XdisableCastChecking" else="">
+    <equals arg1="${compiler.castchecking}" arg2="false" />
+  </condition>  
+  		
   <path id="project.class.path">
     <pathelement location="${bin.dir}"/>
     <fileset dir="${lib.dir}"/>
@@ -61,7 +66,7 @@
     </copy>
   </target>
 
-  <target name="gwtc" depends="javac" description="GWT compile to JavaScript">
+  <target name="gwtc" depends="javac" description="GWT compile to JavaScript">  	
     <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
       <classpath>
         <pathelement location="src"/>
@@ -71,7 +76,8 @@
       <jvmarg value="-Xmx256M"/>
       <jvmarg line="${XstartOnFirstThread}"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
-      <arg value="eu.ydp.empiria.player.Player"/>
+      <arg line="${compile.disableCastChecking}" />
+      <arg value="eu.ydp.empiria.player.Player"/>    	
     </java>
   </target>
 
@@ -86,6 +92,7 @@
       <arg value="-startupUrl"/>
       <arg value="test.html"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+      <arg line="${compile.disableCastChecking}" />
       <arg value="com.qtitools.player.Player"/>
     </java>
   </target>
