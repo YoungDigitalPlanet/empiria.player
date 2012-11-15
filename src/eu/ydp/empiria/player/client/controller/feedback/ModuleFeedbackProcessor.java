@@ -20,6 +20,7 @@ public class ModuleFeedbackProcessor {
 	
 	private FeedbackActionCollector feedbackActionCollector;
 	
+	@Inject
 	private FeedbackConditionMatcher matcher;
 	
 	private static final ImmutableList<FeedbackActionProcessor> DEFAULT_PROCESSORS = 
