@@ -4,18 +4,28 @@ import static com.google.common.base.Optional.fromNullable;
 
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
+import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.IModule;
 
 public class ModuleFeedbackProcessor {
 	
-	private FeedbackRegistry feedbackRegistry = PlayerGinjector.INSTANCE.getFeedbackRegistry();
+	@Inject
+	private FeedbackRegistry feedbackRegistry;
 	
 	private FeedbackActionCollector feedbackActionCollector;
 	
 	private FeedbackConditionMatcher matcher;
+	
+	private static final ImmutableList<FeedbackActionProcessor> DEFAULT_PROCESSORS = 
+																	ImmutableList.<FeedbackActionProcessor>builder().
+																		add(new SoundActionProcessor()).
+																	build();
 	
 	public void process(IModule sender){
 		feedbackActionCollector = new FeedbackActionCollector(sender);
@@ -42,12 +52,12 @@ public class ModuleFeedbackProcessor {
 		
 		if(fromNullable(feedbackList).isPresent()){
 			for(Feedback feedback: feedbackList){
-				appendFeedbackActions(feedback, source);
+				appendMatchedFeedbackActions(feedback, source);
 			}
 		}
 	}
 	
-	private void appendFeedbackActions(Feedback feedback, IModule source){
+	private void appendMatchedFeedbackActions(Feedback feedback, IModule source){
 		FeedbackProperties properties = feedbackActionCollector.getSourceProperties(source);
 		
 		if(matcher.match(feedback.getCondition(), properties)){
@@ -56,22 +66,27 @@ public class ModuleFeedbackProcessor {
 	}
 	
 	private void processActions(IModule module){
-		FeedbackActionProcessor processor = getFeedbackProcessor(module);
+		List<FeedbackActionProcessor> processors = getFeedbackProcessors(module);
 		
-		if(fromNullable(processor).isPresent()){
-			//processor.processActions();
+		for(FeedbackActionProcessor processor: processors){
+			if(fromNullable(processor).isPresent()){
+				processor.processActions(feedbackActionCollector.getActions());
+			}
 		}
 	}
 	
-	private FeedbackActionProcessor getFeedbackProcessor(IModule module){
+	protected List<FeedbackActionProcessor> getFeedbackProcessors(IModule module){
+		List<FeedbackActionProcessor> processors = Lists.newArrayList();
+		
+		processors.addAll(DEFAULT_PROCESSORS);
+		processors.addAll(getProcessorModules(module));
+		
+		return processors;
+	}
+	
+	private List<FeedbackActionProcessor> getProcessorModules(IModule module){
 		//TODO: find processor in module
-		return new FeedbackActionProcessor() {
-			
-			@Override
-			public void processActions(List<FeedbackAction> actions) {
-								
-			}
-		};
+		return Lists.newArrayList();
 	}
 
 	private FeedbackProperties getPropertiesFromResponse(IModule module){

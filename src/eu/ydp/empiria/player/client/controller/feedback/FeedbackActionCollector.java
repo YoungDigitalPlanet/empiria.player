@@ -41,4 +41,8 @@ public class FeedbackActionCollector {
 		return source;
 	}
 
+	public List<FeedbackAction> getActions() {
+		return null;
+	}
+
 }

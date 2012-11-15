@@ -87,6 +87,5 @@ public class FeedbackActionCollectorJUnitTest {
 		assertThat(newRetrievedProperties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(true)));
 		assertThat(newRetrievedProperties.getBooleanProperty(FeedbackPropertyName.OK), is(equalTo(true)));
 		assertThat(newRetrievedProperties.getBooleanProperty(FeedbackPropertyName.WRONG), is(equalTo(false)));
-	}
-	
+	}	
 }

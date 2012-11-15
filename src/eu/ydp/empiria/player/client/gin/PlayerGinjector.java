@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.Book
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
+import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
@@ -59,6 +60,7 @@ public interface PlayerGinjector extends Ginjector {
 	TextTrackFactory getTextTrackFactory();
 	ModuleFactory getModuleFactory();
 	FeedbackRegistry getFeedbackRegistry();
+	ModuleFeedbackProcessor getModuleFeedbackProcessor();
 
 	BookmarkProcessorExtension getBookmarkProcessorExtension();
 	StickiesProcessorExtension getStickiesProcessorExtension();
