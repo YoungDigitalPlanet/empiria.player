@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.feedback.matcher;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackProperties;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
+import eu.ydp.gwtutil.client.operator.MatchOperator;
 
 public class PropertyConditionMatcher implements FeedbackPropertyMatcher {
 	

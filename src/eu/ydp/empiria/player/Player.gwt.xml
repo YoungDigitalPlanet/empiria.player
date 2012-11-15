@@ -13,8 +13,6 @@
 	<inherits name='eu.ydp.jsfilerequest.jsfilerequest' />
 	<inherits name="eu.ydp.gwtcreatejs.GwtCreateJs" />
 	<inherits name="com.peterfranza.gwt.jaxb.JAXB" />
-	<inherits name="javax.annotation.Annotation"/>
-	<inherits name="com.google.common.collect.Collect"/>
 
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject" />
