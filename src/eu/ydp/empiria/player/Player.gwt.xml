@@ -116,6 +116,14 @@
 			<when-property-is name="user.agent" value="ie9" />
 		</any>
 	</replace-with>
+	
+	<replace-with class="eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule">
+		<when-type-is class="eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule" />
+		<any>
+			<when-property-is name="user.agent" value="safari" />
+			<when-property-is name="user.agent" value="ie9" />
+		</any>
+	</replace-with>
 	<!-- END AUDIO -->
 
 	<!-- default implementation of sound executor -->
