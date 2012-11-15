@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
 public enum FeedbackPropertyName{
-	RESULT("result"), OK("ok"), WRONG("wrong"), ALL_OK("allOk"), TEXT("text"), DEFAULT("default");
+	RESULT("result"), OK("ok"), WRONG("wrong"), ALL_OK("allOk"), TEXT("text"), DEFAULT("default"), COUNT("count");
 	
 	private String name;
 	
