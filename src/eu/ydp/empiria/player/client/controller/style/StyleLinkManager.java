@@ -37,8 +37,11 @@ public class StyleLinkManager {
 		}
 
 		for (String link : styleLinks){
-			if (solidStyles.containsKey(link)){
-				removeStyleLink(solidStyles.get(link));
+			if (solidStyles.containsKey(link)) {
+				JavaScriptObject styleLink = solidStyles.get(link);
+				if (styleLink !=  null) {
+					removeStyleLink(styleLink);
+				}
 				solidStyles.remove(link);
 				JavaScriptObject newLink = appendStyleLink(link);
 				solidStyles.put(link, newLink);
