@@ -128,12 +128,12 @@
 
 	<!-- default implementation of sound executor -->
 	<replace-with class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorSwf">
-		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
+		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor" />
 	</replace-with>
 
 	<!-- swf simple implementation of sound executor -->
 	<replace-with class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorSwfSimple">
-		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
+		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor" />
 		<any>
 			<when-property-is name="run.local" value="true" />
 		</any>
@@ -141,7 +141,7 @@
 
 	<!-- html5 implementation of sound executor -->
 	<replace-with class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorHtml5">
-		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor" />
+		<when-type-is class="eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor" />
 		<any>
 			<when-property-is name="user.agent" value="safari" />
 			<when-property-is name="user.agent" value="ie9" />
