@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.feedback.matcher;
 
 import java.util.Map;
 
-import com.google.gwt.thirdparty.guava.common.collect.Maps;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.AndConditionBean;
