@@ -16,7 +16,7 @@ public class FeedbackConditionMatcher {
 		FeedbackMatcher matcher = registry.getMatcher(condition);
 		
 		if (matcher != null) {
-			matcher.match(condition, properties);
+			matches = matcher.match(condition, properties);
 		}
 		
 		return matches;

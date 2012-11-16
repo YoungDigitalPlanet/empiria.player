@@ -4,11 +4,9 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
-import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.AndConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.CountConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.NotConditionBean;
