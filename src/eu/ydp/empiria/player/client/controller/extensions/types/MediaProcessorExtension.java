@@ -2,6 +2,6 @@ package eu.ydp.empiria.player.client.controller.extensions.types;
 
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsListener;
 
-public interface SoundProcessorExtension extends DeliveryEventsListener {
+public interface MediaProcessorExtension extends DeliveryEventsListener {
 
 }

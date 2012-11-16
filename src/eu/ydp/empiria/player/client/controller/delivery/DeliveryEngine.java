@@ -61,7 +61,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.ModuleHandlerExt
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.processing.DefaultFlowRequestProcessor;
@@ -411,8 +411,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			if (extension instanceof PlayerJsObjectModifierExtension) {
 				((PlayerJsObjectModifierExtension) extension).setPlayerJsObject(playerJsObject);
 			}
-			if (extension instanceof SoundProcessorExtension) {
-				soundProcessorManager.setSoundProcessorExtension((SoundProcessorExtension) extension);
+			if (extension instanceof MediaProcessorExtension) {
+				soundProcessorManager.setSoundProcessorExtension((MediaProcessorExtension) extension);
 			}
 			if (extension instanceof ModuleConnectorExtension) {
 				modulesRegistry.registerModuleCreator(((ModuleConnectorExtension) extension).getModuleNodeName(),

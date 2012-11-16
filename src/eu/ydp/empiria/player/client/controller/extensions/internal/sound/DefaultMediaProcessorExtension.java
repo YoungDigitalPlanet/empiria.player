@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.LocalSw
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
-import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -36,7 +36,7 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
-public class DefaultMediaProcessorExtension extends AbstractMediaProcessor implements SoundProcessorExtension, SoundExecutorListener {
+public class DefaultMediaProcessorExtension extends AbstractMediaProcessor implements MediaProcessorExtension, SoundExecutorListener {
 	protected boolean muteFeedbacks = false;
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
 	protected boolean initialized = false;

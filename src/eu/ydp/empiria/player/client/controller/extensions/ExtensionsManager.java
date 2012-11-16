@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsInteracti
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsPageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsPlayerJsObjectUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsSessionDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsSoundProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStatefulExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
@@ -50,8 +50,8 @@ public class ExtensionsManager implements IStateful {
 			case EXTENSION_PROCESSOR_FLOW_REQUEST:
 				currExt = new JsFlowRequestProcessorExtension();
 				break;
-			case EXTENSION_PROCESSOR_SOUND:
-				currExt = new JsSoundProcessorExtension();
+			case EXTENSION_PROCESSOR_MEDIA:
+				currExt = new JsMediaProcessorExtension();
 				break;
 			case EXTENSION_LISTENER_DELIVERY_EVENTS:
 				currExt = new JsDeliveryEventsListenerExtension();

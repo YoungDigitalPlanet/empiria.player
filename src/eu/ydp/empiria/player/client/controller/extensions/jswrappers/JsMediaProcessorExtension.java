@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
-import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -25,7 +25,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class JsSoundProcessorExtension extends JsExtension implements SoundProcessorExtension, PlayerEventHandler, MediaEventHandler {
+public class JsMediaProcessorExtension extends JsExtension implements MediaProcessorExtension, PlayerEventHandler, MediaEventHandler {
 
 	protected boolean playing;
 	protected JavaScriptObject socketJs;
@@ -82,13 +82,13 @@ public class JsSoundProcessorExtension extends JsExtension implements SoundProce
 
 	@Override
 	public ExtensionType getType() {
-		return ExtensionType.EXTENSION_PROCESSOR_SOUND;
+		return ExtensionType.EXTENSION_PROCESSOR_MEDIA;
 	}
 
 	@Override
 	public void init() {
 		socketJs = createSoundProcessorSocketJs();
-		setSoundProcessorSocketJs(extensionJsObject, socketJs);
+		setMediaProcessorSocketJs(extensionJsObject, socketJs);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), this);
 		for (MediaEventTypes type : MediaEventTypes.values()) {
 			eventsBus.addHandler(MediaEvent.getType(type), this);
@@ -149,12 +149,12 @@ public class JsSoundProcessorExtension extends JsExtension implements SoundProce
 		var instance = this;
 		var socket = [];
 		socket.onSoundFinished = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsSoundProcessorExtension::onSoundFinished()();
+			return instance.@eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsMediaProcessorExtension::onSoundFinished()();
 		}
 		return socket;
 	}-*/;
 
-	private native void setSoundProcessorSocketJs(JavaScriptObject extension, JavaScriptObject socket)/*-{
+	private native void setMediaProcessorSocketJs(JavaScriptObject extension, JavaScriptObject socket)/*-{
 		if (typeof extension.setSoundProcessorSocket == 'function') {
 			extension.setSoundProcessorSocket(socket);
 		}
