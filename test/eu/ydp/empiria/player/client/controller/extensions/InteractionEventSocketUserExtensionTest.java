@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedIn
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.types.SoundProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
@@ -133,7 +133,7 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 
 	}
 
-	protected class MockInteractionSoundEventSocketUserExtension extends MockInteractionEventSocketUserExtension implements SoundProcessorExtension{
+	protected class MockInteractionSoundEventSocketUserExtension extends MockInteractionEventSocketUserExtension implements MediaProcessorExtension{
 
 	}
 }
