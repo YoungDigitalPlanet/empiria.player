@@ -87,7 +87,7 @@ public class JsMediaProcessorExtension extends JsExtension implements MediaProce
 
 	@Override
 	public void init() {
-		socketJs = createSoundProcessorSocketJs();
+		socketJs = createMediaProcessorSocketJs();
 		setMediaProcessorSocketJs(extensionJsObject, socketJs);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), this);
 		for (MediaEventTypes type : MediaEventTypes.values()) {
@@ -145,7 +145,7 @@ public class JsMediaProcessorExtension extends JsExtension implements MediaProce
 		return null;
 	}-*/;
 
-	private native JavaScriptObject createSoundProcessorSocketJs()/*-{
+	private native JavaScriptObject createMediaProcessorSocketJs()/*-{
 		var instance = this;
 		var socket = [];
 		socket.onSoundFinished = function() {

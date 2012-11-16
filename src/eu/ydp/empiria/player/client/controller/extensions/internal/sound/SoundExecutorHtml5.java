@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 @Deprecated
-public class SoundExecutorHtml5 implements SoundExecutor<Widget>, TouchStartHandler {
+public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHandler {
 
 	protected Audio audioCtrl;
 	protected boolean playing = false;

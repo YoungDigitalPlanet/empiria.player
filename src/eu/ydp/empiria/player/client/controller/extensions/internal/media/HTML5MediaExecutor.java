@@ -9,7 +9,7 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.media.client.MediaBase;
 
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
@@ -26,7 +26,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-public class HTML5MediaExecutor implements HTML5MediaEventHandler, SoundExecutor<MediaBase> {
+public class HTML5MediaExecutor implements HTML5MediaEventHandler, MediaExecutor<MediaBase> {
 
 	private MediaBase media;
 	private MediaWrapper<MediaBase> mediaDescriptor;

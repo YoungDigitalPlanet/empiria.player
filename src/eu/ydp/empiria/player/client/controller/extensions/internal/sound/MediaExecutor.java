@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
-public interface SoundExecutor<T extends Widget> {
+public interface MediaExecutor<T extends Widget> {
 	public MediaWrapper<T> getMediaWrapper();
 	public void setMediaWrapper(MediaWrapper<T> descriptor);
 	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration);

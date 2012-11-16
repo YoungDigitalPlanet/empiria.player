@@ -34,7 +34,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-public abstract class ExecutorSwf implements SoundExecutor<Widget> {
+public abstract class ExecutorSwf implements MediaExecutor<Widget> {
 	protected BaseMediaConfiguration baseMediaConfiguration;
 	protected MediaWrapper<Widget> mediaWrapper = null;
 	protected SoundExecutorListener soundExecutorListener;

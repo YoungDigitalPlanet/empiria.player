@@ -17,8 +17,8 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler {
-	protected Map<MediaWrapper<?>, SoundExecutor<?>> executors = new HashMap<MediaWrapper<?>, SoundExecutor<?>>();
-	protected SoundExecutor<?> feedbackSoundExecutor = null;//NOPMD
+	protected Map<MediaWrapper<?>, MediaExecutor<?>> executors = new HashMap<MediaWrapper<?>, MediaExecutor<?>>();
+	protected MediaExecutor<?> feedbackSoundExecutor = null;//NOPMD
 	protected MediaInteractionSoundEventCallback callback;
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
@@ -33,7 +33,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 
 	@Override
 	public void onMediaEvent(MediaEvent event) {
-		SoundExecutor<?> executor = executors.get(event.getMediaWrapper());
+		MediaExecutor<?> executor = executors.get(event.getMediaWrapper());
 		if (executor == null) {
 			Debug.log("Executor is null for " + event.getMediaWrapper());
 			return;

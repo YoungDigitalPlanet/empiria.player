@@ -45,7 +45,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	public void init() {
 		if (!initialized) {
 			super.init();
-			feedbackSoundExecutor = GWT.create(SoundExecutor.class);
+			feedbackSoundExecutor = GWT.create(MediaExecutor.class);
 			feedbackSoundExecutor.setSoundFinishedListener(this);
 			executors.put(null, feedbackSoundExecutor);
 			initialized = true;
@@ -102,7 +102,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	}
 
 	protected void forceStop(boolean pause, MediaWrapper<?> mw, boolean stopDefaultSoundExecutor) {
-		for (SoundExecutor<?> se : executors.values()) {
+		for (MediaExecutor<?> se : executors.values()) {
 			if (se.getMediaWrapper() != null && se.getMediaWrapper().equals(mw)) {
 				continue;
 			}
@@ -156,8 +156,8 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 				defaultMedia = new HTML5AudioImpl();
 			}
 
-			SoundExecutor<?> executor;
-			SoundExecutor<?> fullScreenExecutor = null;
+			MediaExecutor<?> executor;
+			MediaExecutor<?> fullScreenExecutor = null;
 			if (!UserAgentChecker.isLocal() && defaultMedia == null) {
 				if (bmc.isTemplate()) {
 					if (bmc.getMediaType() == MediaType.VIDEO) {
@@ -187,7 +187,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 		}
 	}
 
-	private void fireCallback(PlayerEvent event, SoundExecutor<?> defaultMediaExecutor, SoundExecutor<?> fullScreenMediaExecutor) {
+	private void fireCallback(PlayerEvent event, MediaExecutor<?> defaultMediaExecutor, MediaExecutor<?> fullScreenMediaExecutor) {
 		if (event.getSource() instanceof CallbackRecevier) {
 			if (fullScreenMediaExecutor == null) {
 				((CallbackRecevier) event.getSource()).setCallbackReturnObject(defaultMediaExecutor.getMediaWrapper());
@@ -206,7 +206,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 		return geckoSupport;
 	}
 
-	private void initExecutor(SoundExecutor<?> executor, BaseMediaConfiguration mediaConfiguration) {
+	private void initExecutor(MediaExecutor<?> executor, BaseMediaConfiguration mediaConfiguration) {
 		if (executor != null) {
 			executor.setBaseMediaConfiguration(mediaConfiguration);
 			executor.init();
@@ -214,7 +214,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 		}
 	}
 
-	private SoundExecutor<?> createHTML5MediaExecutor(Media media) {
+	private MediaExecutor<?> createHTML5MediaExecutor(Media media) {
 		HTML5MediaExecutor executor = null;
 		if (media != null) {
 			executor = new HTML5MediaExecutor();
@@ -224,13 +224,13 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 		return executor;
 	}
 
-	private SoundExecutor<?> createSWFVideoMediaExecutor() {
+	private MediaExecutor<?> createSWFVideoMediaExecutor() {
 		VideoExecutorSwf executor = new VideoExecutorSwf();
 		executor.setMediaWrapper(new SwfMediaWrapper());
 		return executor;
 	}
 
-	private SoundExecutor<?> createSWFSoundMediaExecutor() {
+	private MediaExecutor<?> createSWFSoundMediaExecutor() {
 		SoundExecutorSwf executor = new SoundExecutorSwf();
 		executor.setMediaWrapper(new SwfMediaWrapper());
 		return executor;

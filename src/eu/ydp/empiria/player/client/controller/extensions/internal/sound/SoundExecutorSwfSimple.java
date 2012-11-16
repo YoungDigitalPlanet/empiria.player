@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
-public class SoundExecutorSwfSimple implements SoundExecutor<Widget> {
+public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 
 	private final FlowPanel panelMain;
 

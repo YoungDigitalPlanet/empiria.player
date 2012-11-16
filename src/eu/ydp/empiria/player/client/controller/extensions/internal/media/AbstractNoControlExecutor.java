@@ -2,12 +2,12 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media;
 
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
-public abstract class AbstractNoControlExecutor implements SoundExecutor<Widget> {
+public abstract class AbstractNoControlExecutor implements MediaExecutor<Widget> {
 
 	protected MediaWrapper<Widget> mediaWrapper;
 	protected BaseMediaConfiguration bmc;
