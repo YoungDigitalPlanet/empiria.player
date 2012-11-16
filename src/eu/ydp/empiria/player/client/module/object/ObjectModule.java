@@ -15,17 +15,21 @@ import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
+import eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule;
+import eu.ydp.empiria.player.client.module.audioplayer.FlashAudioPlayerModule;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
+import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {// NOPMD
@@ -143,16 +147,22 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 				fullScreenTemplate = node;
 			}
 		}
+		if (element.getNodeName().equals("audioPlayer")) {
+			type = "audio";
+		}
 		Map<String, String> styles = getModuleSocket().getStyles(element);
 		String playerType = styles.get("-player-" + type + "-skin");
 		if ("audioPlayer".equals(element.getNodeName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
-			AudioPlayerModule player = GWT.create(AudioPlayerModule.class);
+			Map<String, String> sources = getSource(element, type);
+			AudioPlayerModule player;
+			if (!UserAgentChecker.isBrowserSupportingMp3()  &&  !SourceUtil.containsOgg(sources)) {
+				player = new FlashAudioPlayerModule();
+			} else {
+				player = new DefaultAudioPlayerModule();
+			}
 			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
 			this.moduleView = player.getView();
 		} else {
-			if (element.getNodeName().equals("audioPlayer")) {
-				type = "audio";
-			}
 			getMediaWrapper(element, defaultTemplate != null && !"native".equals(playerType), fullScreenTemplate != null, type);
 			ObjectModuleView moduleView = new ObjectModuleView();
 			String cls = element.getAttribute("class");
