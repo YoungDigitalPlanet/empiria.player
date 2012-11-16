@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.util.dom.drag;
 
 public interface DragDataObject {
 
-	public String getSourceId();
+	public String getPreviousValue();
 
 	public String getValue();
 
@@ -10,6 +10,6 @@ public interface DragDataObject {
 
 	public void setValue(String value);
 
-	public void setSourceId(String sourceId);
+	public void setPreviousValue(String value);
 
 }

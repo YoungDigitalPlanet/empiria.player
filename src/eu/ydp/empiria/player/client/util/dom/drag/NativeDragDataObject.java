@@ -9,8 +9,8 @@ public class NativeDragDataObject extends JavaScriptObject implements DragDataOb
 	}
 
 	@Override
-	public final native String getSourceId()/*-{
-		return this.sourceId;
+	public final native String getPreviousValue()/*-{
+		return this.previousValue;
 	}-*/;
 
 	@Override
@@ -24,8 +24,8 @@ public class NativeDragDataObject extends JavaScriptObject implements DragDataOb
 	}-*/;
 
 	@Override
-	public final native void setSourceId(String sourceId)/*-{
-		this.sourceId = sourceId;
+	public final native void setPreviousValue(String value)/*-{
+		this.previousValue = value;
 	}-*/;
 
 	@Override
