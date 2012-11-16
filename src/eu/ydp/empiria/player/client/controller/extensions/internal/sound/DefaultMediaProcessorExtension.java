@@ -236,11 +236,4 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 		return executor;
 	}
 
-	/**
-	 * sprawdza czy w elementach soirce mamy pliki typu ogg
-	 *
-	 * @param sources
-	 * @return
-	 */
-
 }
