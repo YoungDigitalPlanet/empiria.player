@@ -9,52 +9,53 @@ import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
  *
  */
 public class JsMediaAvaliableOptions extends JavaScriptObject implements MediaAvailableOptions {
+	
 	protected JsMediaAvaliableOptions() {
 
 	}
 
 	@Override
 	public native final boolean isPlaySupported() /*-{
-		return this.playSupported ? true : false;
+		return this.playSupported == true;
 	}-*/;
 
 	@Override
 	public native final boolean isPauseSupported() /*-{
-		return this.pauseSupported ? true : false;
+		return this.pauseSupported == true;
 	}-*/;
 
 	@Override
 	public native final boolean isMuteSupported() /*-{
-		return this.muteSupported ? true : false;
+		return this.muteSupported == true;
 	}-*/;
 
 	@Override
 	public native final boolean isVolumeChangeSupported() /*-{
-		return this.volumeChangeSupported ? true : false;
+		return this.volumeChangeSupported == true;
 	}-*/;
 
 	@Override
 	public native final boolean isStopSupported() /*-{
-		return this.stopSupported ? true : false;
+		return this.stopSupported == true;
 	}-*/;
 
 	@Override
 	public native final boolean isSeekSupported() /*-{
-		return this.seekSupported ? true : false;
+		return this.seekSupported == true;
 	}-*/;
 
 	@Override
 	public native final boolean isFullScreenSupported() /*-{
-		return this.fullScreenSupported ? true : false;
+		return this.fullScreenSupported == true;
 	}-*/;
 
 	@Override
 	public native final boolean isMediaMetaAvailable() /*-{
-		return this.mediaMetaAvailable ? true : false;
+		return this.mediaMetaAvailable == true;
 	}-*/;
 
 	@Override
 	public native final boolean isTemplateSupported() /*-{
-		return this.templateSupported ? true : false;
+		return this.templateSupported == true;
 	}-*/;
 }
