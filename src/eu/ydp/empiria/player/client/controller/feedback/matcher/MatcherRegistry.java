@@ -16,13 +16,10 @@ public class MatcherRegistry {
 	
 	Map<Class<? extends FeedbackCondition>, FeedbackMatcher> map;
 	
+	@Inject private MatcherRegistryFactory factory;
 	
-	public MatcherRegistry() {
+	public void init() {
 		map = Maps.newHashMap();
-	}
-	
-	@Inject
-	public void setMatcherRegistry(MatcherRegistryFactory factory) {
 		map.put(CountConditionBean.class, factory.getCountConditionMatcher());
 		map.put(PropertyConditionBean.class, factory.getPropertyConditionMatcher());
 		map.put(AndConditionBean.class, factory.getAndConditionMatcher());
@@ -31,6 +28,9 @@ public class MatcherRegistry {
 	}
 	
 	public FeedbackMatcher getMatcher(FeedbackCondition condition) {
+		if (map == null){
+			init();
+		}
 		return map.get(condition.getClass());
 	}
 
