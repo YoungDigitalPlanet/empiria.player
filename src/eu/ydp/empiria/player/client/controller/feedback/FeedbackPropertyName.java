@@ -36,4 +36,8 @@ public enum FeedbackPropertyName{
 	public static boolean exists(String value){
 		return !DEFAULT.equals(getPropertyName(value));
 	}
+	
+	public String getName() {
+		return name;
+	}
 }

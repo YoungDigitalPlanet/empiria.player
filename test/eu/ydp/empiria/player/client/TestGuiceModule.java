@@ -14,6 +14,7 @@ import org.mockito.stubbing.Answer;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
 import com.google.inject.Provides;
@@ -23,6 +24,8 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
+import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
+import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
@@ -47,7 +50,9 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.SchedulerImpl;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlersMock;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchRecognition;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
@@ -105,9 +110,11 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(SourceListJAXBParser.class).toInstance(spy(new SourceListJAXBParserMock()));
 		bind(SourceListView.class).to(SourceListViewMock.class);
 		bind(SourceListPresenter.class).to(SourceListPresenterMock.class);
+		bind(MatcherRegistry.class).in(Singleton.class);
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));
+		install(new FactoryModuleBuilder().build(MatcherRegistryFactory.class));
 	}
 
 	@Provides

@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.common.collect.Lists;
+
 
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -18,7 +20,7 @@ public class FeedbackActionBean {
 	private ShowTextAction showText;
 	
 	@XmlElement(name="showUrl")
-	private List<ShowUrlAction> showUrls = new ArrayList<ShowUrlAction>();
+	private List<ShowUrlAction> showUrls = Lists.newArrayList();
 
 	public ShowTextAction getShowText() {
 		return showText;

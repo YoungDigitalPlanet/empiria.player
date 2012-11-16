@@ -20,6 +20,8 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.ISti
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieView;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
+import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
+import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
@@ -92,6 +94,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(IStickieView.class).to(StickieView.class);
 		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class).in(Singleton.class);
 		
+		bind(MatcherRegistry.class).in(Singleton.class);
+		
 		//bind(ConnectionPresenter.class).to(ConnectionPresenterImpl.class);
 		//factory
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
@@ -99,6 +103,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
 		install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
 		install(new GinFactoryModuleBuilder().build(AssessmentControllerFactory.class));
+		install(new GinFactoryModuleBuilder().build(MatcherRegistryFactory.class));
 
 		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class) .build(TouchRecognitionFactory.class));
 

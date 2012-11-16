@@ -76,7 +76,7 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
 		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
-		assertThat(countConditionBean.getCount(), is("3"));
+		assertThat(countConditionBean.getCount(), is(3));
 		assertThat(countConditionBean.getOperator(), is("=="));
 	}
 	

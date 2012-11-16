@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.condition.Feed
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
 import eu.ydp.gwtutil.client.operator.MatchOperator;
 
-public class PropertyConditionMatcher implements FeedbackPropertyMatcher {
+public class PropertyConditionMatcher extends ConditionMatcherBase implements FeedbackMatcher {
 	
 	private PropertyConditionBean condition;
 	
@@ -17,9 +17,9 @@ public class PropertyConditionMatcher implements FeedbackPropertyMatcher {
 	public boolean match(FeedbackCondition condition, FeedbackProperties properties) {
 		boolean matches = false;
 		
-		if(condition instanceof PropertyConditionBean){
+		if (condition instanceof PropertyConditionBean) {
 			this.properties = properties;
-			this.condition = (PropertyConditionBean)condition;
+			this.condition = (PropertyConditionBean) condition;
 			this.operator = MatchOperator.getOperator(this.condition.getOperator());
 			matches = checkPropertyCondition();
 		}
@@ -27,17 +27,17 @@ public class PropertyConditionMatcher implements FeedbackPropertyMatcher {
 		return matches;
 	}
 	
-	protected boolean checkPropertyCondition(){
+	protected boolean checkPropertyCondition() {
 		boolean matches = false;
 		
-		if(properties.hasValue(condition.getProperty())){
+		if (properties.hasValue(condition.getProperty())) {
 			matches = matchPropertyValue(properties.getProperty(condition.getProperty()));
 		}
 		
 		return matches;
 	}
 	
-	protected boolean matchPropertyValue(Object value){
+	protected boolean matchPropertyValue(Object value) {
 		boolean matches = false;
 		
 		if(value instanceof Boolean){

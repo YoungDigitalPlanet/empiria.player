@@ -8,5 +8,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="not")
 public class NotConditionBean extends FeedbackConditionBase implements FeedbackCondition {
+	
+	public FeedbackCondition getCondition() {
+		return getAllConditions().get(0);
+	}
 
 }

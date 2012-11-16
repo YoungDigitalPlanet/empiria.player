@@ -5,23 +5,21 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
-
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="countCondition")
 public class CountConditionBean extends FeedbackConditionBase implements FeedbackCondition {
 	
 	@XmlAttribute(name="count")
-	private String count;
+	private Integer count;
 	
 	@XmlAttribute(name="operator")
 	private String operator;
 
-	public String getCount() {
+	public Integer getCount() {
 		return count;
 	}
 
-	public void setCount(String count) {
+	public void setCount(Integer count) {
 		this.count = count;
 	}
 
@@ -31,5 +29,9 @@ public class CountConditionBean extends FeedbackConditionBase implements Feedbac
 
 	public void setOperator(String operator) {
 		this.operator = operator;
+	}
+	
+	public FeedbackCondition getCondition() {
+		return getAllConditions().get(0);
 	}
 }
