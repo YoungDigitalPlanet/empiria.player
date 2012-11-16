@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.jswrappers;
 
-import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -8,11 +8,15 @@ import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 public class JsMediaWrapper implements MediaWrapper<Widget> {
+	
+	JsMediaAvaliableOptions options;
+	
+	public JsMediaWrapper(JavaScriptObject mediaAvailableOptions){
+		this.options = mediaAvailableOptions.cast();
+	}
 
 	@Override
 	public MediaAvailableOptions getMediaAvailableOptions() {
-		String json ="{\"playSupported\":true,\"stopSupported\":true,\"templateSupported\":true}";
-		JsMediaAvaliableOptions options = (JsMediaAvaliableOptions) JSONParser.parseLenient(json).isObject().getJavaScriptObject();
 		return options;
 	}
 

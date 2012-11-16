@@ -113,7 +113,7 @@ public class JsSoundProcessorExtension extends JsExtension implements SoundProce
 		if (event.getType() == PlayerEventTypes.CREATE_MEDIA_WRAPPER) {
 			if (event.getValue() instanceof BaseMediaConfiguration) {// NOPMD
 				BaseMediaConfiguration bmc = (BaseMediaConfiguration) event.getValue();
-				JsMediaWrapper mediaWrapper = new JsMediaWrapper();
+				JsMediaWrapper mediaWrapper = new JsMediaWrapper(getMediaAvailableOptionsJs(extensionJsObject));
 				sources.put(mediaWrapper, SourceUtil.getMpegSource(bmc.getSources()));
 				if (event.getSource() instanceof CallbackRecevier) {// NOPMD
 					((CallbackRecevier) event.getSource()).setCallbackReturnObject(mediaWrapper);
@@ -136,6 +136,13 @@ public class JsSoundProcessorExtension extends JsExtension implements SoundProce
 		if (typeof extenstionObject.soundStop == 'function') {
 			extenstionObject.soundStop();
 		}
+	}-*/;
+
+	private native JavaScriptObject getMediaAvailableOptionsJs(JavaScriptObject extenstionObject)/*-{
+		if (typeof extenstionObject.getMediaAvailableOptions == 'function') {
+			return extenstionObject.getMediaAvailableOptions();
+		}
+		return null;
 	}-*/;
 
 	private native JavaScriptObject createSoundProcessorSocketJs()/*-{
