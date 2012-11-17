@@ -18,7 +18,6 @@ import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler {
 	protected Map<MediaWrapper<?>, MediaExecutor<?>> executors = new HashMap<MediaWrapper<?>, MediaExecutor<?>>();
-	protected MediaExecutor<?> feedbackSoundExecutor = null;//NOPMD
 	protected MediaInteractionSoundEventCallback callback;
 	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
@@ -88,11 +87,6 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 		default:
 			break;
 		}
-	}
-
-	private void removeUnusedExecutors() {
-		executors.clear();
-		executors.put(null, feedbackSoundExecutor);
 	}
 
 	protected abstract void createMediaWrapper(PlayerEvent event);

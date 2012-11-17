@@ -40,6 +40,8 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	protected boolean muteFeedbacks = false;
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
 	protected boolean initialized = false;
+	protected MediaExecutor<?> feedbackSoundExecutor = null;//NOPMD
+	protected MediaExecutor<?> html5SoundExecutor = null;//NOPMD
 
 	@Override
 	public void init() {
@@ -47,7 +49,10 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			super.init();
 			feedbackSoundExecutor = GWT.create(MediaExecutor.class);
 			feedbackSoundExecutor.setSoundFinishedListener(this);
-			executors.put(null, feedbackSoundExecutor);
+			if (Audio.isSupported()){
+				html5SoundExecutor = new SoundExecutorHtml5();
+				html5SoundExecutor.setSoundFinishedListener(this);
+			}
 			initialized = true;
 		}
 	}
@@ -87,14 +92,18 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 						}
 					});
 				}
-				feedbackSoundExecutor.play(url);
+				if (!UserAgentChecker.isBrowserSupportingHtml5Mp3()  &&  html5SoundExecutor != null  &&  url.toLowerCase().endsWith(".ogg")){
+					html5SoundExecutor.play(url);
+				} else {
+					feedbackSoundExecutor.play(url);
+				}
 			}
 		}
 	}
 
 	@Override
 	protected void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
-		forceStop(true, mediaWrapper, false);
+		forceStop(true, mediaWrapper, true);
 	}
 
 	protected void forceStop(boolean pause, boolean stopDefaultSoundExecutor) {
@@ -108,8 +117,14 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			}
 			if (se.getMediaWrapper() != null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported() && pause) {
 				se.pause();
-			} else if (se.getMediaWrapper() != null || (se.getMediaWrapper() == null && mw != null) || stopDefaultSoundExecutor) {
+			} else if (se.getMediaWrapper() != null || (se.getMediaWrapper() == null && mw != null)) {
 				se.stop();
+			}
+		}
+		if (stopDefaultSoundExecutor){
+			feedbackSoundExecutor.stop();
+			if (html5SoundExecutor != null){
+				html5SoundExecutor.stop();
 			}
 		}
 		if (mw != null) {

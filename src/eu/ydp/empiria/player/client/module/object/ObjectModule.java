@@ -1,9 +1,10 @@
 package eu.ydp.empiria.player.client.module.object;
 
-import java.util.HashMap;
+import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
+
 import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -67,28 +68,6 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		return moduleView;
 	}
 
-	/**
-	 * Zwraca kolekcje zrodel powiazanych z tym elementem key=url,value=type
-	 *
-	 * @param element
-	 * @return
-	 */
-	private Map<String, String> getSource(Element element, String mediaType) {
-		NodeList sources = element.getElementsByTagName("source");
-		String src = XMLUtils.getAttributeAsString(element, "data");
-		Map<String, String> retValue = new HashMap<String, String>();
-		if (sources.getLength() > 0) {
-			for (int x = 0; x < sources.getLength(); ++x) {
-				src = XMLUtils.getAttributeAsString((Element) sources.item(x), "src");
-				String type = XMLUtils.getAttributeAsString((Element) sources.item(x), "type");
-				retValue.put(src, type);
-			}
-		} else {
-			String[] type = src.split("[.]");
-			retValue.put(src, mediaType + "/" + type[type.length - 1]);
-		}
-		return retValue;
-	}
 
 	public void getMediaWrapper(Element element, boolean defaultTemplate, boolean fullScreenTemplate, String type) {
 		int width = XMLUtils.getAttributeAsInt(element, "width");
@@ -155,7 +134,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		if ("audioPlayer".equals(element.getNodeName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
 			Map<String, String> sources = getSource(element, type);
 			AudioPlayerModule player;
-			if (!UserAgentChecker.isBrowserSupportingMp3()  &&  !SourceUtil.containsOgg(sources)) {
+			if ((!UserAgentChecker.isBrowserSupportingHtml5Mp3()  &&  !SourceUtil.containsOgg(sources))  ||  !Audio.isSupported()) {
 				player = new FlashAudioPlayerModule();
 			} else {
 				player = new DefaultAudioPlayerModule();

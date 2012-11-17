@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.module.audioplayer;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -15,6 +17,8 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.util.SourceUtil;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class DefaultAudioPlayerModule implements AudioPlayerModule {
@@ -37,9 +41,16 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 		this.moduleSocket = moduleSocket;
 		mediaListener = iel;
 
-		address = XMLUtils.getAttributeAsString(element, "src");
-		if (address == null  ||  "".equals(address)) {
-			address = XMLUtils.getAttributeAsString(element, "data");
+		Map<String, String> sources = SourceUtil.getSource(element, "audio");
+		
+		if (UserAgentChecker.isBrowserSupportingHtml5OnlyOgg()  &&  SourceUtil.containsOgg(sources)  &&  Audio.isSupported()){
+			address = SourceUtil.getOggSource(sources);
+		} else {
+			address = SourceUtil.getMpegSource(sources);
+		}
+		
+		if (address == null){
+			address = XMLUtils.getAttributeAsString(element, "src");
 		}
 
 		playing = false;
