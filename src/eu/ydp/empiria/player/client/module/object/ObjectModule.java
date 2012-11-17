@@ -134,7 +134,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		if ("audioPlayer".equals(element.getNodeName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
 			Map<String, String> sources = getSource(element, type);
 			AudioPlayerModule player;
-			if ((!UserAgentChecker.isBrowserSupportingHtml5Mp3()  &&  !SourceUtil.containsOgg(sources))  ||  !Audio.isSupported()) {
+			if (((!UserAgentChecker.isBrowserSupportingHtml5Mp3()  &&  !SourceUtil.containsOgg(sources))  ||  !Audio.isSupported())  &&  UserAgentChecker.isLocal()) {
 				player = new FlashAudioPlayerModule();
 			} else {
 				player = new DefaultAudioPlayerModule();
