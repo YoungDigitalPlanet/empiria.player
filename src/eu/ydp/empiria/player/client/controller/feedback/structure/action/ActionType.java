@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure.action;
 
-import java.util.Locale;
 
 public enum ActionType {
 	NARRATION, VIDEO, POPUP;
@@ -19,6 +18,6 @@ public enum ActionType {
 	}
 	
 	public String getName(){
-		return toString().toLowerCase(Locale.ENGLISH);
+		return toString().toLowerCase();
 	}
 }
