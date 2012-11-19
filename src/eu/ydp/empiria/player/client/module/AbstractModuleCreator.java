@@ -10,7 +10,7 @@ public abstract class AbstractModuleCreator extends SimpleModuleCreator<IModule>
 	 * taki sam efekt jak {@link AbstractModuleCreator(false,false)}
 	 */
 	public AbstractModuleCreator() {
-		super(null, false, false);
+		super(false, false);
 	}
 
 	/**
@@ -20,7 +20,7 @@ public abstract class AbstractModuleCreator extends SimpleModuleCreator<IModule>
 	 *            czy modul jest inline
 	 */
 	public AbstractModuleCreator(boolean isMultiViewModule, boolean isInlineModule) {
-		super(null, isMultiViewModule, isInlineModule);
+		super(isMultiViewModule, isInlineModule);
 	}
 
 	@Override
