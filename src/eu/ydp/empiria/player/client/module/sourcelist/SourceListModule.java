@@ -24,7 +24,7 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 
 	@Override
 	public SourceListModule getNewInstance() {
-		return moduleFactory.getSourceListModule();
+		return  moduleFactory.getSourceListModule();
 	}
 
 	@Override
@@ -37,6 +37,7 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 		moduleStructure.createFromXml(element.toString());
 		SourceListBean bean = moduleStructure.getBean();
 		presenter.setBean(bean);
+		presenter.setIModule(this);
 		presenter.createAndBindUi();
 	}
 }

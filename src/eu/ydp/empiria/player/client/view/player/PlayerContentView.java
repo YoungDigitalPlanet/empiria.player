@@ -8,7 +8,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentContentView;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentViewSocket;
 
@@ -27,9 +29,10 @@ public class PlayerContentView extends Composite implements PlayerViewSocket {
 	@UiField
 	protected Panel footerPanel;
 
-	public PlayerContentView() {
+	@Inject
+	public PlayerContentView(AssessmentFactory assessmentFactory) {
 		initWidget(uiBinder.createAndBindUi(this));
-		assessmentContentView = new AssessmentContentView(assessmentPanel);
+		assessmentContentView = assessmentFactory.geAssessmentContentView(assessmentPanel);
 		assessmentPanel.getElement().getStyle().setOverflow(Overflow.HIDDEN);
 	}
 

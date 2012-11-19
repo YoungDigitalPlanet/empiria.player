@@ -1,21 +1,36 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
+import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.DRAG_END;
+import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.DRAG_START;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
+import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
+import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
 
-public class SourceListViewImpl extends Composite implements SourceListView {
+public class SourceListViewImpl extends Composite implements SourceListView, DragDropEventHandler {
 
 	private static SourceListViewImplUiBinder uiBinder = GWT.create(SourceListViewImplUiBinder.class);
 
@@ -23,14 +38,25 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	}
 
 	@Inject
-	StyleNameConstants styleNames;
+	private EventsBus eventsBus;
 
 	@Inject
-	GWTPanelFactory panelFactory;
+	private PageScopeFactory pageScopeFactory;
+
+	@Inject
+	private DragDropHelper dragDropHelper;
+
+	@Inject
+	private OverlayTypesParser overlayTypesParser;
+
 	@UiField
 	FlowPanel items;
 
 	private SourceListBean bean;
+
+	private IModule parentModule;
+
+	private final Set<SourceListViewItem> itemsCollection = new HashSet<SourceListViewItem>();
 
 	@Override
 	public void setBean(SourceListBean bean) {
@@ -38,16 +64,74 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	}
 
 	@Override
+	public void setIModule(IModule module) {
+		this.parentModule = module;
+	}
+
+	private String getUniqId() {
+		return "#" + Math.random() + "#" + System.currentTimeMillis() + "#" + DOM.createUniqueId();
+	}
+
+	private SourceListViewItem getItem(DragDataObject dragDataObject) {
+		SourceListViewItem item = new SourceListViewItem(dragDropHelper, dragDataObject, parentModule);
+		item.setSourceListView(this);
+		item.createAndBindUi();
+		item.getElement().getStyle().setWidth(100, Unit.PX);
+		item.getElement().getStyle().setHeight(50, Unit.PX);
+		item.getElement().getStyle().setMargin(10, Unit.PX);
+		item.getElement().getStyle().setBackgroundColor("blue");
+		return item;
+	}
+
+	private DragDataObject createDragDataObject() {
+		return (NativeDragDataObject) overlayTypesParser.get();
+	}
+
+	@Override
 	public void createAndBindUi() {
 		initWidget(uiBinder.createAndBindUi(this));
 		List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
-		for (SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
-			FlowPanel panel = panelFactory.getFlowPanel();
-			panel.setStyleName(styleNames.QP_SOURCELIST_ITEM());
-			panel.setTitle(simpleSourceListItemBean.getValue());
-			panel.getElement().setInnerText(simpleSourceListItemBean.getValue());
-			//panel.getElement().setDraggable(Element.DRAGGABLE_TRUE);
-			items.add(panel);
+		for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
+			DragDataObject obj = createDragDataObject();
+			obj.setValue(simpleSourceListItemBean.getValue());
+			obj.setSourceId(getUniqId());
+		//	Debug.log(obj.toJSON());
+			SourceListViewItem item = getItem(obj);
+			items.add(item);
+			itemsCollection.add(item);
+		}
+
+		eventsBus.addHandler(DragDropEvent.getType(DRAG_END), this, pageScopeFactory.getCurrentPageScope());
+	}
+
+	private void disableItems(boolean disabled) {
+		for (SourceListViewItem item : itemsCollection) {
+			item.setDisableDrag(disabled);
 		}
 	}
+
+	public void onMaybeDragCanceled(){
+		disableItems(false);
+	}
+
+	public void onItemDragStarted(DragDataObject dragDataObject, DragStartEvent startEvent, SourceListViewItem item) {
+		disableItems(true);
+		DragDropEvent event = new DragDropEvent(DRAG_START, this);
+		event.setDragDataObject(dragDataObject);
+		event.setIModule(parentModule);
+ 		// item.setVisible(visible)
+		eventsBus.fireEventFromSource(event, parentModule, pageScopeFactory.getCurrentPageScope());
+	}
+
+	@Override
+	public void onDragEvent(DragDropEvent event) {
+		if (event.getType() == DRAG_END) {
+			disableItems(false);
+		//	Debug.log(event.getDragDataObject().toJSON());
+		//	Debug.log(event.getDragDataObject().getSourceId());
+			// FIXME gdzie obsluzyc wyjeceie lelementu mamy sourceid ?
+		}
+
+	}
+
 }

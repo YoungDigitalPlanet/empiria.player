@@ -4,23 +4,24 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.DragOverEvent;
-import com.google.gwt.event.dom.client.DropEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.gap.GapBase.Presenter;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
+import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
 public class TextEntryModulePresenter implements Presenter {
 
@@ -29,7 +30,7 @@ public class TextEntryModulePresenter implements Presenter {
 
 	private final TextEntryModuleUiBinder uiBinder = GWT.create(TextEntryModuleUiBinder.class);
 
-	@UiField
+	@UiField(provided=true)
 	protected TextBox textBox;
 
 	@UiField
@@ -37,11 +38,14 @@ public class TextEntryModulePresenter implements Presenter {
 
 	private PresenterHandler changeHandler;
 
-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	@Inject
+	private StyleNameConstants styleNames;
 
-	public TextEntryModulePresenter(){
+	@Inject
+	public TextEntryModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper){
+		DroppableObject<TextBox> droppable = dragDropHelper.enableDropForWidget(new TextBox(),parentModule);
+		textBox = droppable.getDroppableWidget();
 		uiBinder.createAndBindUi(this);
-		textBox.getElement().setPropertyString("dopzone", "move string:text/x-example");
 	}
 
 	@UiHandler("textBox")
@@ -55,16 +59,6 @@ public class TextEntryModulePresenter implements Presenter {
 		if(changeHandler != null){
 			changeHandler.onBlur(event);
 		}
-	}
-
-	@UiHandler("textBox")
-	protected void handleDrop(DropEvent drop){
-		Window.alert(drop.getData("text"));
-	}
-
-	@UiHandler("textBox")
-	protected void handleDrop(DragOverEvent drop){
-		textBox.getElement().getStyle().setBackgroundColor("red");
 	}
 
 	@Override

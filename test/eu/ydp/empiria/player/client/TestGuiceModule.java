@@ -14,7 +14,6 @@ import org.mockito.stubbing.Answer;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
 import com.google.inject.Provides;
@@ -48,11 +47,10 @@ import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.SchedulerImpl;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlersMock;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchRecognition;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
@@ -191,6 +189,10 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		ModuleFactory factory = mock(ModuleFactory.class);
 		when(factory.getSourceListModule()).thenReturn(sourceListModule);
 		return factory;
+	}
+
+	@Provides DragDropHelper getDragDropHelper(){
+		return mock(DragDropHelper.class);
 	}
 
 }

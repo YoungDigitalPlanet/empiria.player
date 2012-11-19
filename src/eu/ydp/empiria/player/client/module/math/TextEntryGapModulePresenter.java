@@ -12,33 +12,41 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.gap.GapBase.Presenter;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
+import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
 public class TextEntryGapModulePresenter implements Presenter {
-	
+
 	@UiTemplate("TextEntryGap.ui.xml")
 	interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryGapModulePresenter>{};
-	
+
 	private final TextEntryGapModuleUiBinder uiBinder = GWT.create(TextEntryGapModuleUiBinder.class);
-	
+
 	@UiField
 	protected FlowPanel mainPanel;
-	
+
 	@UiField
 	protected FlowPanel markPanel;
-	
-	@UiField
+
+	@UiField(provided=true)
 	protected TextBox textBox;
-	
+
 	private ChangeHandler changeHandler;
-	
-	public TextEntryGapModulePresenter() {
-		uiBinder.createAndBindUi(this);
+
+	@Inject
+	public TextEntryGapModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
+		 DroppableObject<TextBox> droppable = dragDropHelper.enableDropForWidget(new TextBox(),parentModule);
+		 textBox = droppable.getDroppableWidget();
+		 uiBinder.createAndBindUi(this);
 	}
-	
+
 	@UiHandler("textBox")
 	protected void handleChange(ChangeEvent event) {
 		if (changeHandler != null) {
@@ -50,7 +58,7 @@ public class TextEntryGapModulePresenter implements Presenter {
 	public void setWidth(double value, Unit unit) {
 		textBox.setWidth(value + unit.getType());
 	}
-	
+
 	@Override
 	public int getOffsetWidth() {
 		return textBox.getOffsetWidth();
@@ -58,9 +66,9 @@ public class TextEntryGapModulePresenter implements Presenter {
 
 	@Override
 	public void setHeight(double value, Unit unit) {
-		textBox.setHeight(value + unit.getType());		
+		textBox.setHeight(value + unit.getType());
 	}
-	
+
 	@Override
 	public int getOffsetHeight() {
 		return textBox.getOffsetHeight();
@@ -68,17 +76,17 @@ public class TextEntryGapModulePresenter implements Presenter {
 
 	@Override
 	public void setFontSize(double value, Unit unit) {
-		textBox.getElement().getStyle().setFontSize(value, unit);	
+		textBox.getElement().getStyle().setFontSize(value, unit);
 	}
-	
+
 	@Override
 	public int getFontSize() {
-		return Integer.parseInt(textBox.getElement().getStyle().getFontSize().replace("px", ""));	
+		return Integer.parseInt(textBox.getElement().getStyle().getFontSize().replace("px", ""));
 	}
 
 	@Override
 	public void installViewInContainer(HasWidgets container) {
-		container.add(mainPanel);		
+		container.add(mainPanel);
 	}
 
 	@Override
@@ -110,7 +118,7 @@ public class TextEntryGapModulePresenter implements Presenter {
 	public void removeMarking() {
 		markPanel.removeStyleDependentName(Presenter.NONE);
 		markPanel.removeStyleDependentName(Presenter.CORRECT);
-		markPanel.removeStyleDependentName(Presenter.WRONG);		
+		markPanel.removeStyleDependentName(Presenter.WRONG);
 	}
 
 	@Override
@@ -120,12 +128,12 @@ public class TextEntryGapModulePresenter implements Presenter {
 
 	@Override
 	public void removeFocusFromTextField() {
-		textBox.getElement().blur();		
+		textBox.getElement().blur();
 	}
 
 	@Override
 	public void setMaxLength(int length) {
-		textBox.setMaxLength(length);		
+		textBox.setMaxLength(length);
 	}
 
 	@Override

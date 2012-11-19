@@ -12,7 +12,6 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 
 public class ConnectionItemView extends Composite {
 
@@ -22,7 +21,7 @@ public class ConnectionItemView extends Composite {
 	}
 
 	protected StyleNameConstants styleNames;
-	protected HasTouchHandlers touchRecognition;
+
 	@UiField
 	protected FlowPanel selection;
 

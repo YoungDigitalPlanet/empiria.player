@@ -10,12 +10,13 @@ import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
+import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -28,24 +29,28 @@ import eu.ydp.gwtutil.client.NumberUtils;
 public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<InlineChoiceGapModule> {
 
 	protected String uid;
-	
+
 	protected int index;
-	
+
 	protected List<String> options;
-	
+
 	protected MathModule parentMathModule;
-	
+
 	protected Map<String, String> styles;
-	
+
 	protected Map<String, String> mathStyles;
-	
+
 	protected boolean hasEmptyOption = false;
-	
-	protected StyleNameConstants styleNames = getStyleNameConstants();
-	
-	public InlineChoiceGapModule() {
-		setPresenter();
-		
+
+	@Inject
+	protected StyleNameConstants styleNames;
+
+	@Inject
+	protected ModuleFactory moduleFactory;
+
+	@Inject
+	public InlineChoiceGapModule(InlineChoiceGapModulePresenter presenter) {
+		this.presenter = presenter;
 		getListBox().setChangeListener(new ExListBoxChangeListener() {
 			@Override
 			public void onChange() {
@@ -53,30 +58,26 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 			}
 		});
 	}
-	
-	@Override
-	protected void setPresenter() {
-		presenter = new InlineChoiceGapModulePresenter();
-	}
-	
+
+
 	protected ExListBox getListBox() {
 		return presenter.getListBox();
 	}
-	
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		HasWidgets placeholder = placeholders.get(0);
 		presenter.installViewInContainer(((HasWidgets) ((Widget) placeholder).getParent()));
-		
+
 		loadElementProperties();
-		
+
 		styles = getModuleSocket().getStyles(getModuleElement());
 		initStyles();
-		
+
 		setListBoxEmptyOption();
 		options = createOptions(getModuleElement(), getModuleSocket());
 	}
-	
+
 	protected void setListBoxEmptyOption() {
 		if (hasEmptyOption) {
 			Widget emptyOptionInBody = new InlineHTML(GapBase.INLINE_HTML_NBSP);
@@ -89,11 +90,11 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 			getListBox().setSelectedIndex(-1);
 		}
 	}
-	
+
 	List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket){
 		NodeList optionNodes = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_INLINE_CHOICE);
 		List<String> options = new ArrayList<String>();
-		
+
 		for (int o = 0; o < optionNodes.getLength(); o++) {
 			String currId = ((Element) optionNodes.item(o)).getAttribute(EmpiriaTagConstants.ATTR_IDENTIFIER);
 			options.add(currId);
@@ -101,7 +102,7 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 			Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
 			getListBox().addOption(baseBody, popupBody);
 		}
-		
+
 		return options;
 	}
 
@@ -117,12 +118,12 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 		} else if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
 			presenter.setHeight(NumberUtils.tryParseInt(mathStyles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)), Unit.PX);
 		}
-		
+
 		if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
 			hasEmptyOption = mathStyles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(EmpiriaStyleNameConstants.VALUE_SHOW);
 		}
 	}
-	
+
 	@Override
 	public String getValue() {
 		String value = "";
@@ -132,19 +133,19 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 		}
 		return value;
 	}
-	
+
 	private int indexViewToInternal() {
 		int valueIndex = getListBox().getSelectedIndex();
 		if (hasEmptyOption) {
 			valueIndex--;
-		}	
-		return valueIndex;		
+		}
+		return valueIndex;
 	}
-	
+
 	public void setValue(String valueIdentifier) {
 		getListBox().setSelectedIndex(indexInternalToView(valueIdentifier));
 	}
-	
+
 	private int indexInternalToView(String valueIdentifier) {
 		int valueIndex = options.indexOf(valueIdentifier);
 		if (hasEmptyOption) {
@@ -152,7 +153,7 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 		}
 		return valueIndex;
 	}
-	
+
 	@Override
 	protected Response findResponse() {
 		return (getParentMathModule() == null) ? null : getParentMathModule().getResponse();
@@ -162,7 +163,7 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 	public Widget getContainer() {
 		return (Widget) presenter.getContainer();
 	}
-	
+
 	private void loadElementProperties() {
 		uid = getElementAttributeValue(EmpiriaTagConstants.ATTR_UID);
 	}
@@ -171,7 +172,7 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 	public String getUid() {
 		return (uid == null) ? EMPTY_STRING : uid;
 	}
-	
+
 	@Override
 	public void reset() {
 		getListBox().setSelectedIndex((hasEmptyOption) ? 0 : -1);
@@ -179,7 +180,7 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 
 	@Override
 	public void setIndex(int index) {
-		this.index = index;		
+		this.index = index;
 	}
 
 	@Override
@@ -223,7 +224,7 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 		List<String> correctAnswers = getCorrectResponseValue().getAnswers();
 		return correctAnswers.get(0);
 	}
-	
+
 	@Override
 	protected void setCorrectAnswer() {
 		setValue(getCorrectAnswer());
@@ -233,22 +234,22 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 	protected void setPreviousAnswer() {
 		setValue(getCurrentResponseValue());
 	}
-	
+
 	private ResponseValue getCorrectResponseValue(){
 		return getResponse().correctAnswers.getResponseValue(index);
 	}
-	
+
 	private MathModule getParentMathModule() {
 		if (parentMathModule == null) {
 			IModule parent = this;
-			
+
 			do {
 				parent = getModuleSocket().getParent(parent);
 			} while ( !(parent instanceof MathModule) );
-			
+
 			parentMathModule = (parent == null) ? null : (MathModule)parent;
 		}
-		
+
 		return parentMathModule;
 	}
 
@@ -256,10 +257,10 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 	protected void updateResponse() {
 		getParentMathModule().updateResponseAfterUserAction();
 	}
-	
+
 	@Override
 	public InlineChoiceGapModule getNewInstance() {
-		return new InlineChoiceGapModule();
+		return moduleFactory.getInlineChoiceGapModule();
 	}
 
 	@Override
@@ -268,9 +269,5 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 
 	@Override
 	public void startGap() {
-	}
-	
-	protected StyleNameConstants getStyleNameConstants() {
-		return PlayerGinjector.INSTANCE.getStyleNameConstants();
 	}
 }

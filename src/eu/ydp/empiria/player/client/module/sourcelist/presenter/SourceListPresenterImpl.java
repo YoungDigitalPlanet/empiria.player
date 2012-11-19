@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.sourcelist.presenter;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -20,6 +21,10 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 		view.setBean(bean);
 	}
 
+	@Override
+	public void setIModule(IModule module) {
+		view.setIModule(module);
+	}
 
 	@Override
 	public Widget asWidget() {

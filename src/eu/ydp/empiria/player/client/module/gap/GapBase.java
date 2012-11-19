@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.module.gap;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH_ALIGN;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
 
 import java.util.List;
 import java.util.Map;
@@ -37,78 +37,78 @@ import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public abstract class GapBase extends OneViewInteractionModuleBase implements Bindable {
-	
+
 	protected final static String EMPTY_STRING = "";
-	
+
 	public static final String INLINE_HTML_NBSP = "&nbsp;";
-	
+
 	protected Presenter presenter;
-	
+
 	protected boolean markingAnswer = false;
-	
+
 	protected boolean showingAnswer = false;
-	
+
 	protected String lastValue = null;
-	
+
 	protected Integer fontSize = 16;
-	
+
 	protected DefaultBindingGroupIdentifier widthBindingIdentifier;
-	
+
 	protected DefaultBindingGroupIdentifier maxlengthBindingIdentifier;
-	
+
 	protected BindingContext widthBindingContext;
-	
+
 	protected BindingContext maxlengthBindingContext;
-	
+
 	protected String maxLength = "";
-	
+
 	public interface Presenter {
-		
+
 		public static final String WRONG = "wrong";
-		
+
 		public static final String CORRECT = "correct";
-		
+
 		public static final String NONE = "none";
-		
+
 		void setWidth(double value, Unit unit);
-		
+
 		int getOffsetWidth();
-		
+
 		void setHeight(double value, Unit unit);
-		
+
 		int getOffsetHeight();
-		
+
 		void setMaxLength(int length);
-		
+
 		void setFontSize(double value, Unit unit);
-		
+
 		int getFontSize();
-		
+
 		void setText(String text);
-		
+
 		String getText();
-		
+
 		HasWidgets getContainer();
-		
+
 		void installViewInContainer(HasWidgets container);
 
 		void setViewEnabled(boolean enabled);
-		
+
 		void setMarkMode(String mode);
-		
+
 		void removeMarking();
-		
+
 		void addPresenterHandler(PresenterHandler handler);
-		
+
 		void removeFocusFromTextField();
-		
+
 		public ExListBox getListBox();
 	}
-	
+
 	public interface PresenterHandler extends BlurHandler, ChangeHandler{
-		
+
 	}
-	
+
 	@Override
 	public void markAnswers(boolean mark) {
 		if(mark  && !markingAnswer){
@@ -124,16 +124,16 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		}else if (!mark && markingAnswer){
 			presenter.removeMarking();
 		}
-		
+
 		markingAnswer = mark;
 	}
-	
+
 	protected boolean isResponseEmpty(){
 		return EMPTY_STRING.equals(getCurrentResponseValue());
 	}
-	
+
 	protected abstract boolean isResponseCorrect();
-	
+
 	protected abstract String getCurrentResponseValue();
 
 	@Override
@@ -143,17 +143,15 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		} else if (!show  &&  showingAnswer) {
 			setPreviousAnswer();
 		}
-		
+
 		showingAnswer = show;
 	}
-	
+
 	protected abstract void setCorrectAnswer();
-	
+
 	protected abstract void setPreviousAnswer();
-	
+
 	public abstract String getCorrectAnswer();
-	
-	protected abstract void setPresenter();
 
 	@Override
 	public void lock(boolean lock) {
@@ -165,7 +163,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		presenter.setText(EMPTY_STRING);
 		updateResponse();
 	}
-	
+
 	protected abstract void updateResponse();
 
 	/**
@@ -199,20 +197,20 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	public JavaScriptObject getJsSocket() {
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
-	
+
 	protected String getElementAttributeValue(String attrName){
 		String attrValue = null;
-		
+
 		if(getModuleElement().hasAttribute(attrName)){
 			attrValue = getModuleElement().getAttribute(attrName);
 		}
-		
+
 		return attrValue;
 	}
-	
+
 	public int getLongestAnswerLength() {
 		int longestLength = 0;
-		
+
 		for (int i = 0; i < getResponse().correctAnswers.getResponseValuesCount(); i++) {
 			for (String a : getResponse().correctAnswers.getResponseValue(i).getAnswers()){
 				if (a.length() > longestLength) {
@@ -220,33 +218,33 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 				}
 			}
 		}
-		
+
 		return longestLength;
 	}
-	
+
 	@Override
 	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
 		BindingGroupIdentifier groupIndentifier = null;
-		
+
 		if (bindingType == BindingType.GAP_WIDTHS){
 			groupIndentifier = widthBindingIdentifier;
 		}
-		
+
 		if (bindingType == BindingType.GAP_MAXLENGHTS) {
 			groupIndentifier = maxlengthBindingIdentifier;
 		}
-		
+
 		return groupIndentifier;
 	}
-	
+
 	@Override
 	public BindingValue getBindingValue(BindingType bindingType) {
 		BindingValue bindingValue = null;
-		
+
 		if (bindingType == BindingType.GAP_WIDTHS) {
 			bindingValue = new GapWidthBindingValue(getLongestAnswerLength());
 		}
-		
+
 		if (bindingType == BindingType.GAP_MAXLENGHTS) {
 			if (maxLength.matches("ANSWER")) {
 				bindingValue = new GapMaxlengthBindingValue(getLongestAnswerLength());
@@ -254,13 +252,13 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 				bindingValue = new GapMaxlengthBindingValue(Integer.parseInt(maxLength));
 			}
 		}
-			
+
 		return bindingValue;
 	}
-	
+
 	protected void setWidthBinding(Map<String, String> styles, Element moduleElement) {
 		GapWidthMode widthMode = getGapWidthMode(styles);
-		
+
 		if (widthMode == GapWidthMode.GROUP){
 			widthBindingIdentifier = getBindindIdentifier(moduleElement);
 		} else if (widthMode == GapWidthMode.GAP){
@@ -272,45 +270,45 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 			}
 		}
 	}
-	
+
 	protected GapWidthMode getGapWidthMode(Map<String, String> styles){
 		GapWidthMode widthMode = null;
 		String gapWidthAlign = EMPTY_STRING;
-		
+
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN)) {
 			gapWidthAlign = styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN).trim().toUpperCase();
 		} else if (styles.containsKey(EMPIRIA_MATH_GAP_WIDTH_ALIGN)) {
 			gapWidthAlign = styles.get(EMPIRIA_MATH_GAP_WIDTH_ALIGN).trim().toUpperCase();
 		}
-		
+
 		if ( !gapWidthAlign.equals(EMPTY_STRING) ) {
 			widthMode = GapWidthMode.valueOf(gapWidthAlign);
 		}
-		
+
 		return widthMode;
 	}
-	
+
 	protected DefaultBindingGroupIdentifier getBindindIdentifier(Element moduleElement) {
 		DefaultBindingGroupIdentifier bindingIdentifier;
-		
+
 		if (moduleElement.hasAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP)){
 			bindingIdentifier = new DefaultBindingGroupIdentifier(moduleElement.getAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP));
 		} else {
 			bindingIdentifier = new DefaultBindingGroupIdentifier("");
 		}
-		
+
 		return bindingIdentifier;
 	}
-	
+
 	protected void setMaxlengthBinding(Map<String, String> styles, Element moduleElement) {
 		String gapMaxlength = EMPTY_STRING;
-		
+
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH)) {
 			gapMaxlength = styles.get(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH).trim().toUpperCase();
 		} else if (styles.containsKey(EMPIRIA_MATH_GAP_MAXLENGTH)) {
 			gapMaxlength = styles.get(EMPIRIA_MATH_GAP_MAXLENGTH).trim().toUpperCase();
 		}
-		
+
 		if ( !gapMaxlength.equals(EMPTY_STRING) ) {
 			maxlengthBindingIdentifier = getBindindIdentifier(moduleElement);
 			maxLength = gapMaxlength;
@@ -319,38 +317,38 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 			presenter.setMaxLength(XMLUtils.getAttributeAsInt(getModuleElement(), "expectedLength"));
 		}
 	}
-	
+
 	protected void registerBindingContexts() {
 		if (widthBindingIdentifier != null) {
 			widthBindingContext = BindingUtil.register(BindingType.GAP_WIDTHS, this, this);
 		}
-		
+
 		if (maxlengthBindingIdentifier != null) {
 			maxlengthBindingContext = BindingUtil.register(BindingType.GAP_MAXLENGHTS, this, this);
 		}
 	}
-	
+
 	protected void setBindingValues() {
 		if (widthBindingContext != null) {
 			int longestAnswerLength = ((GapWidthBindingContext) widthBindingContext).getGapWidthBindingOutcomeValue().getGapCharactersCount();
 			int textBoxWidth = calculateTextBoxWidth(longestAnswerLength);
 			presenter.setWidth(textBoxWidth, Unit.PX);
 		}
-		
+
 		if (maxlengthBindingContext != null) {
 			int longestAnswerLength = ((GapMaxlengthBindingContext) maxlengthBindingContext).getGapMaxlengthBindingOutcomeValue().getGapCharactersCount();
 			presenter.setMaxLength(longestAnswerLength);
 		}
 	}
-	
+
 	protected int calculateTextBoxWidth(int longestAnswerLength) {
 		return longestAnswerLength * getFontSize();
 	}
-	
+
 	public int getFontSize() {
 		return presenter.getFontSize();
 	}
-	
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 	}
@@ -368,11 +366,11 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	@Override
 	public void onSetUp() {
 	}
-	
+
 	@Override
 	public void onStart() {
 	}
-	
+
 	@Override
 	public void onClose() {
 		//eu.ydp.empiria.player.client.module.ILifeCycle.onClose

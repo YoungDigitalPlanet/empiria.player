@@ -13,6 +13,8 @@
 	<inherits name='eu.ydp.jsfilerequest.jsfilerequest' />
 	<inherits name="eu.ydp.gwtcreatejs.GwtCreateJs" />
 	<inherits name="com.peterfranza.gwt.jaxb.JAXB" />
+	<inherits name='com.google.gwt.query.Query'/>
+ 	<inherits name='gwtquery.plugins.droppable.Droppable'/>
 
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject" />
@@ -116,7 +118,7 @@
 			<when-property-is name="user.agent" value="ie9" />
 		</any>
 	</replace-with>
-	
+
 	<replace-with class="eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule">
 		<when-type-is class="eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule" />
 		<any>

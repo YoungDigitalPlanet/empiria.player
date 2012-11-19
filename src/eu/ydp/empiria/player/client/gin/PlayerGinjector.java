@@ -15,15 +15,16 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.Stic
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
-import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.module.ChoiceGinModule;
 import eu.ydp.empiria.player.client.gin.module.ConnectionGinModule;
 import eu.ydp.empiria.player.client.gin.module.PlayerGinModule;
 import eu.ydp.empiria.player.client.gin.module.SourceListGinModule;
+import eu.ydp.empiria.player.client.gin.module.TextEntryGinModule;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -31,11 +32,10 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.view.ViewEngine;
 import eu.ydp.empiria.player.client.view.player.PageControllerCache;
-import eu.ydp.empiria.player.client.view.player.PageViewCache;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
-@GinModules(value={PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class})
+@GinModules(value={PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class, TextEntryGinModule.class})
 public interface PlayerGinjector extends Ginjector {
 	PlayerGinjector INSTANCE  = GWT.create(PlayerGinjector.class);
 
@@ -43,8 +43,8 @@ public interface PlayerGinjector extends Ginjector {
 	DeliveryEngine getDeliveryEngine();
 	EventsBus getEventsBus();
 	DefaultMediaProcessorExtension getDefaultMediaExtension();
-	MultiPageController getMultiPage();
-	PageViewCache getPageViewCache();
+//	MultiPageController getMultiPage();
+//	PageViewCache getPageViewCache();
 	PageControllerCache getPageControllerCache();
 	StyleNameConstants getStyleNameConstants();
 	MainFlowProcessor getMainFlowProcessor();
@@ -60,6 +60,7 @@ public interface PlayerGinjector extends Ginjector {
 	ModuleHandlerManager getModuleHandlerManager();
 	TextTrackFactory getTextTrackFactory();
 	ModuleFactory getModuleFactory();
+	ModuleProviderFactory getModuleProviderFactory();
 	FeedbackRegistry getFeedbackRegistry();
 	ModuleFeedbackProcessor getModuleFeedbackProcessor();
 	AssessmentControllerFactory getAssessmentControllerFactory();

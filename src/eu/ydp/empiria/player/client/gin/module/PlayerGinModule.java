@@ -25,7 +25,10 @@ import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryF
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
+import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
@@ -37,6 +40,8 @@ import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelperImpl;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
@@ -57,6 +62,7 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class PlayerGinModule extends AbstractGinModule {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void configure() {
 		bind(StyleDataSourceManager.class).in(Singleton.class);
@@ -90,27 +96,27 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(IBookmarkPopupView.class).to(BookmarkPopup.class);
 		bind(XMLParser.class);
 		bind(FeedbackRegistry.class).in(Singleton.class);
-
-		bind(IStickieView.class).to(StickieView.class);
-		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class).in(Singleton.class);
-		
 		bind(MatcherRegistry.class).in(Singleton.class);
-		
-		//bind(ConnectionPresenter.class).to(ConnectionPresenterImpl.class);
-		//factory
-		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
+
+		bind(IStickieView.class) .to(StickieView.class);
+		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class).in(Singleton.class);
+		bind(DragDropHelper.class).to(DragDropHelperImpl.class).in(Singleton.class);
+		//bind(OverlayTypesParser.class).in(Singleton.class);
+		install(new GinFactoryModuleBuilder(). build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
-		install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
+		install(new GinFactoryModuleBuilder().build(AssessmentFactory.class));
+		install(new GinFactoryModuleBuilder(). build(ModuleFactory.class));
+		bind(ModuleProviderFactory.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(AssessmentControllerFactory.class));
+		install(new GinFactoryModuleBuilder().build(DragDropObjectFactory.class));
 		install(new GinFactoryModuleBuilder().build(MatcherRegistryFactory.class));
 
-		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class) .build(TouchRecognitionFactory.class));
-
+		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class).build(TouchRecognitionFactory.class));
 	}
-	
+
 	@Provides
-	public IStickieProperties provideStickieProperties(){
+	public IStickieProperties provideStickieProperties() {
 		return StickieProperties.newInstance();
 	}
 

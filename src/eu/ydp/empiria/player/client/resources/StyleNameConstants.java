@@ -575,4 +575,13 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
 
+	@DefaultStringValue("qp-dropzone-over")
+	public String QP_DROPZONE_OVER();
+
+	@DefaultStringValue("qp-dragged-over-dropzone")
+	public String QP_DRAGGED_OVER_DROPZONE();
+
+	@DefaultStringValue("qp-dragged-drag")
+	public String QP_DRAGGED_DRAG();
+
 }

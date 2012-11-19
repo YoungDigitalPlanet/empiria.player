@@ -15,10 +15,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
@@ -34,15 +36,20 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 public class TextEntryModule extends GapBase implements Factory<TextEntryModule> {
 
-	private final EventsBus eventsBus = getEventsBus();
+	@Inject
+	private EventsBus eventsBus;
 
-	protected StyleNameConstants styleNames = getStyleNameConstants();
+	@Inject
+	protected StyleNameConstants styleNames;
+
+	@Inject
+	protected ModuleFactory moduleFactory;
 
 	protected Map<String, String> styles;
 
-	public TextEntryModule() {
-		setPresenter();
-
+	@Inject
+	public TextEntryModule(TextEntryModuleFactory moduleFactory) {
+		this.presenter = moduleFactory.getTextEntryModulePresenter(this);
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -59,25 +66,10 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 	}
 
 	@Override
-	protected EventsBus getEventsBus() {
-		return PlayerGinjector.INSTANCE.getEventsBus();
-	}
-
-	protected StyleNameConstants getStyleNameConstants() {
-		return PlayerGinjector.INSTANCE.getStyleNameConstants();
-	}
-
-	@Override
-	protected void setPresenter() {
-		presenter = new TextEntryModulePresenter();
-	}
-
-	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		styles = getModuleSocket().getStyles(getModuleElement());
 
 		addPlayerEventHandlers();
-		addTextBoxHandlers();
 		setDimensions(styles);
 		setMaxlengthBinding(styles, getModuleElement());
 		setWidthBinding(styles, getModuleElement());
@@ -97,27 +89,6 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 				}
 			}
 		},new CurrentPageScope());
-	}
-
-	private void addTextBoxHandlers(){
-		if (isMobileUserAgent()){
-			/*textBox.addFocusHandler(new FocusHandler() {
-
-				@Override
-				public void onFocus(FocusEvent event) {
-					Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-						@Override
-						public void execute() {
-							if (textBox.getText().length() > 0) {
-								textBox.setSelectionRange(0, textBox.getText().length());
-							}
-						}
-					});
-				}
-			});*/
-		}
-//		getModuleSocket().get
 	}
 
 	private boolean isMobileUserAgent(){
@@ -216,6 +187,6 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 
 	@Override
 	public TextEntryModule getNewInstance() {
-		return new TextEntryModule();
+		return moduleFactory.getTextEntryModule();
 	}
 }

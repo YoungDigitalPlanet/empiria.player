@@ -4,6 +4,8 @@ public interface DragDataObject {
 
 	public String getPreviousValue();
 
+	public String getSourceId();
+
 	public String getValue();
 
 	public String toJSON();
@@ -11,5 +13,7 @@ public interface DragDataObject {
 	public void setValue(String value);
 
 	public void setPreviousValue(String value);
+
+	public void setSourceId(String sId);
 
 }
