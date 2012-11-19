@@ -7,9 +7,18 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Ordering;
+
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackAppendActionTestData.FeedbackActionData;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.module.IModule;
 
 public class FeedbackActionCollectorJUnitTest {
@@ -21,7 +30,7 @@ public class FeedbackActionCollectorJUnitTest {
 	@Before
 	public void initialize(){
 		source = mock(IModule.class);
-		collector = new FeedbackActionCollector(source);
+		collector = new FeedbackActionCollector(source);		
 	}
 	
 	@Test
@@ -88,4 +97,53 @@ public class FeedbackActionCollectorJUnitTest {
 		assertThat(newRetrievedProperties.getBooleanProperty(FeedbackPropertyName.OK), is(equalTo(true)));
 		assertThat(newRetrievedProperties.getBooleanProperty(FeedbackPropertyName.WRONG), is(equalTo(false)));
 	}	
+	
+	@Test
+	public void shouldAppendActionsToSource(){
+		//given
+		FeedbackAppendActionTestData testData = new FeedbackAppendActionTestData();
+		prepareAndAppendActions(testData);
+		
+		//when		
+		List<FeedbackAction> actions = collector.getActions();
+		actions = Ordering.usingToString().sortedCopy(actions);
+		
+		//then
+		assertThat(actions.size(), is(equalTo(5)));
+		
+		for(int i = 0; i < testData.getActionsSize(); i++){
+			FeedbackActionData actionData = testData.getActionDataAtIndex(i);
+			FeedbackAction expectedAction = testData.getActionAtIndex(i);
+			
+			assertThat(actions.get(i).getClass().getName(), is(equalTo(actionData.getActionClass().getName())));
+			
+			if(actions.get(i) instanceof ShowTextAction){
+				ShowTextAction textAction = (ShowTextAction) expectedAction;
+				ShowTextAction actualAction = (ShowTextAction) actions.get(i);
+				
+				assertThat(actualAction.getText(), is(equalTo(textAction.getText())));
+			}else if(actions.get(i) instanceof ShowUrlAction){
+				ShowUrlAction urlAction = (ShowUrlAction) expectedAction;
+				ShowUrlAction actualAction = (ShowUrlAction) actions.get(i);
+				
+				assertThat(actualAction.getType(), is(equalTo(urlAction.getType())));
+				assertThat(actualAction.getHref(), is(equalTo(urlAction.getHref())));
+			}
+			
+		}		
+	}
+	
+	private void prepareAndAppendActions(FeedbackAppendActionTestData testData){
+		IModule module = mock(IModule.class);
+		
+		testData.addShowTextAction(0, source, "Very goood!!!");
+		testData.addShowUrlAction(2, source, "/commons/very_good.mp3", ActionType.NARRATION);
+		testData.addShowUrlAction(3, source, "/commons/very_good.mp4", ActionType.VIDEO);
+		
+		testData.addShowTextAction(1, module, "wrong");
+		testData.addShowUrlAction(4, module, "/commons/wrong.mp3", ActionType.NARRATION);
+		
+		collector.appendActionsToSource(testData.getModuleActions(source), source);
+		collector.appendActionsToSource(testData.getModuleActions(module), module);
+	}
 }

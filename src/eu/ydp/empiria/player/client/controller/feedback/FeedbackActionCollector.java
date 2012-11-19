@@ -3,6 +3,9 @@ package eu.ydp.empiria.player.client.controller.feedback;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
@@ -14,6 +17,7 @@ public class FeedbackActionCollector {
 	
 	private Map<IModule, FeedbackProperties> source2properties = Maps.newHashMap();
 	
+	private ListMultimap<IModule, FeedbackAction> source2actions = ArrayListMultimap.create();	
 	
 	public FeedbackActionCollector(IModule sender){
 		source = sender;
@@ -33,8 +37,12 @@ public class FeedbackActionCollector {
 		return source2properties.get(source);
 	}
 
-	public void appendActionsToSource(List<FeedbackAction> action, IModule source) {
-		
+	public void appendActionsToSource(List<FeedbackAction> actions, IModule source) {
+		if(source2actions.containsKey(source)){
+			source2actions.get(source).addAll(actions);
+		}else{
+			source2actions.putAll(source, actions);
+		}
 	}
 
 	public IModule getSource() {
@@ -42,7 +50,7 @@ public class FeedbackActionCollector {
 	}
 
 	public List<FeedbackAction> getActions() {
-		return null;
+		return Lists.newArrayList(source2actions.values());
 	}
 
 }

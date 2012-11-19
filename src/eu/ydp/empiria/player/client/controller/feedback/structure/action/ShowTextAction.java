@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="showText")
 public class ShowTextAction implements FeedbackTextAction {
-	
+
 	@XmlValue
 	private String text;
 
@@ -20,5 +20,10 @@ public class ShowTextAction implements FeedbackTextAction {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	@Override
+	public String toString() {
+		return "ShowTextAction [text=" + text + "]";
 	}
 }
