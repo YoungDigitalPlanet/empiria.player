@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
-public class JsAssessmentFooterViewExtension extends JsExtension implements AssessmentFooterViewExtension {
+public class JsAssessmentFooterViewExtension extends AbstractJsExtension implements AssessmentFooterViewExtension {
 	
 	public JsAssessmentFooterViewExtension(){
 	}

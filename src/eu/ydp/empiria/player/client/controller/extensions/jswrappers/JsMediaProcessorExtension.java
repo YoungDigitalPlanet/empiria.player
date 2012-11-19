@@ -25,7 +25,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class JsMediaProcessorExtension extends JsExtension implements MediaProcessorExtension, PlayerEventHandler, MediaEventHandler {
+public class JsMediaProcessorExtension extends AbstractJsExtension implements MediaProcessorExtension, PlayerEventHandler, MediaEventHandler {
 
 	protected boolean playing;
 	protected JavaScriptObject socketJs;
@@ -100,12 +100,12 @@ public class JsMediaProcessorExtension extends JsExtension implements MediaProce
 	public void onMediaEvent(MediaEvent event) {
 		// emulujemy play poprzez deliveryevent
 
-		if (event.getAssociatedType().getType() == MediaEventTypes.PLAY) {
+		/*if (event.getAssociatedType().getType() == MediaEventTypes.PLAY) {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("url", sources.get(event.getSource()));
 			DeliveryEvent dEvent = new DeliveryEvent(DeliveryEventType.MEDIA_SOUND_PLAY, params);
 			onDeliveryEvent(dEvent);
-		}
+		}*/
 	}
 
 	@Override

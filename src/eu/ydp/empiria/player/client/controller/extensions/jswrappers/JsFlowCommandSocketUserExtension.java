@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.controller.flow.execution.FlowCommandsExecut
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommand;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCommand;
 
-public class JsFlowCommandSocketUserExtension extends JsExtension implements FlowCommandsSocketUserExtension {
+public class JsFlowCommandSocketUserExtension extends AbstractJsExtension implements FlowCommandsSocketUserExtension {
 
 	protected FlowCommandsExecutor flowCommandsExecutor;
 	protected JavaScriptObject flowCommandsSocketJs;

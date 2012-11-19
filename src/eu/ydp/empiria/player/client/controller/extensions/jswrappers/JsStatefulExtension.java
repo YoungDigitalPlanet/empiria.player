@@ -8,7 +8,7 @@ import com.google.gwt.json.client.JSONValue;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
 
-public class JsStatefulExtension extends JsExtension implements StatefulExtension {
+public class JsStatefulExtension extends AbstractJsExtension implements StatefulExtension {
 
 	@Override
 	public ExtensionType getType() {

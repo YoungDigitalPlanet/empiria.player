@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.StyleSocketUserE
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
-public class JsStyleSocketUserExtension extends JsExtension implements StyleSocketUserExtension {
+public class JsStyleSocketUserExtension extends AbstractJsExtension implements StyleSocketUserExtension {
 
 	protected JavaScriptObject styleSocketJs;
 	protected StyleSocket styleSocket;

@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 
-public class JsInteractionEventSocketUserExtension extends JsExtension implements
+public class JsInteractionEventSocketUserExtension extends AbstractJsExtension implements
 		InteractionEventSocketUserExtension {
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	protected JavaScriptObject interactionSocketJs;

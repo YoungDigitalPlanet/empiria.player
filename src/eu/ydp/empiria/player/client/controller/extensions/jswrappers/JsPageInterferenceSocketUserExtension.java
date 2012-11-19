@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterfe
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
 
-public class JsPageInterferenceSocketUserExtension extends JsExtension implements PageInterferenceSocketUserExtension {
+public class JsPageInterferenceSocketUserExtension extends AbstractJsExtension implements PageInterferenceSocketUserExtension {
 
 	protected PageInterferenceSocket pageInterferenceSocket;
 	protected JavaScriptObject assessmentInterferenceSocketJs;

@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngineSocket;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
 
-public class JsDeliveryEngineSocketUserExtension extends JsExtension implements
+public class JsDeliveryEngineSocketUserExtension extends AbstractJsExtension implements
 		DeliveryEngineSocketUserExtension {
 
 	protected DeliveryEngineSocket deliveryEngineSocket;

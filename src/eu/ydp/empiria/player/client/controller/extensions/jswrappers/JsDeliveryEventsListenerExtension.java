@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 
-public class JsDeliveryEventsListenerExtension extends JsExtension implements DeliveryEventsListenerExtension {
+public class JsDeliveryEventsListenerExtension extends AbstractJsExtension implements DeliveryEventsListenerExtension {
 
 	@Override
 	public ExtensionType getType() {

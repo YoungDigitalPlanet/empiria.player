@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 
-public class JsFlowDataSocketUserExtension extends JsExtension implements
+public class JsFlowDataSocketUserExtension extends AbstractJsExtension implements
 		FlowDataSocketUserExtension {
 
 	protected JavaScriptObject socketJs;

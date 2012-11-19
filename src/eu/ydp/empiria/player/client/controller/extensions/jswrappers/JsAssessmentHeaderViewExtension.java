@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
-public class JsAssessmentHeaderViewExtension extends JsExtension implements
+public class JsAssessmentHeaderViewExtension extends AbstractJsExtension implements
 		AssessmentHeaderViewExtension {
 
 	@Override

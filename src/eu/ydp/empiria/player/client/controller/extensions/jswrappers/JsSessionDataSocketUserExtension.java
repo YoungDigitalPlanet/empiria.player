@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 
-public class JsSessionDataSocketUserExtension extends JsExtension implements
+public class JsSessionDataSocketUserExtension extends AbstractJsExtension implements
 		SessionDataSocketUserExtension {
 
 

@@ -5,7 +5,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 
-public class JsPlayerJsObjectUserExtension extends JsExtension implements
+public class JsPlayerJsObjectUserExtension extends AbstractJsExtension implements
 		PlayerJsObjectModifierExtension {
 
 	protected JavaScriptObject playerJsObject;

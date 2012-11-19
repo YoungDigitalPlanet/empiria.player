@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 
-public class JsDataSourceDataSocketUserExtension extends JsExtension
+public class JsDataSourceDataSocketUserExtension extends AbstractJsExtension
 		implements DataSourceDataSocketUserExtension {
 
 	protected JavaScriptObject socketJs;
