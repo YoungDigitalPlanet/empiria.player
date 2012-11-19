@@ -32,6 +32,7 @@ import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
@@ -92,7 +93,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 						}
 					});
 				}
-				if (!UserAgentChecker.isBrowserSupportingHtml5Mp3()  &&  html5SoundExecutor != null  &&  url.toLowerCase().endsWith(".ogg")){
+				if (!MediaChecker.isHtml5Mp3Support()  &&  html5SoundExecutor != null  &&  url.toLowerCase().endsWith(".ogg")){
 					html5SoundExecutor.play(url);
 				} else {
 					feedbackSoundExecutor.play(url);

@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.SourceUtil;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class DefaultAudioPlayerModule implements AudioPlayerModule {
@@ -43,7 +43,7 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 
 		Map<String, String> sources = SourceUtil.getSource(element, "audio");
 		
-		if (UserAgentChecker.isBrowserSupportingHtml5OnlyOgg()  &&  SourceUtil.containsOgg(sources)  &&  Audio.isSupported()){
+		if (MediaChecker.isHtml5OggSupport()  &&  SourceUtil.containsOgg(sources)  &&  Audio.isSupported()){
 			address = SourceUtil.getOggSource(sources);
 		} else {
 			address = SourceUtil.getMpegSource(sources);

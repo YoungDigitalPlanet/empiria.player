@@ -30,6 +30,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
@@ -134,7 +135,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		if ("audioPlayer".equals(element.getNodeName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
 			Map<String, String> sources = getSource(element, type);
 			AudioPlayerModule player;
-			if (((!UserAgentChecker.isBrowserSupportingHtml5Mp3()  &&  !SourceUtil.containsOgg(sources))  ||  !Audio.isSupported())  &&  UserAgentChecker.isLocal()) {
+			if (((!MediaChecker.isHtml5Mp3Support()  &&  !SourceUtil.containsOgg(sources))  ||  !Audio.isSupported())  &&  UserAgentChecker.isLocal()) {
 				player = new FlashAudioPlayerModule();
 			} else {
 				player = new DefaultAudioPlayerModule();
