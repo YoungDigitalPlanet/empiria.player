@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackTextAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
 
@@ -24,7 +25,7 @@ public class SoundActionProcessorJUnitTest {
 	@Test
 	public void shouldAcceptAction(){
 		FeedbackUrlAction action = mock(FeedbackUrlAction.class);
-		when(action.getType()).thenReturn("mp3");
+		when(action.getType()).thenReturn(ActionType.NARRATION.getName());
 		
 		boolean accepts = processor.canProcessAction(action);
 		assertThat(accepts, is(equalTo(true)));
