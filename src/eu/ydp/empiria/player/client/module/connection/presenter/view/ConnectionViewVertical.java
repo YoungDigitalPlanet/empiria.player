@@ -108,7 +108,6 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 
 	@Override
 	public void onTouchEnd(NativeEvent event) {
-		event.stopPropagation();
 		ConnectionMoveEndEvent connectionMoveEndEvent = new ConnectionMoveEndEvent(getPositionX(event), getPositionY(event), event);
 		callOnMoveEndHandlers(connectionMoveEndEvent);
 	}
