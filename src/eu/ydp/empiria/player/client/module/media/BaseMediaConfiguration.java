@@ -2,6 +2,9 @@ package eu.ydp.empiria.player.client.module.media;
 
 import java.util.Map;
 
+/**
+ * Contains data specific to the media instance (sources, type etc.).
+ */
 public class BaseMediaConfiguration {
 	public enum MediaType {
 		AUDIO, VIDEO
