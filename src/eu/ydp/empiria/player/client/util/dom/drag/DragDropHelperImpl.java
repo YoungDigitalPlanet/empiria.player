@@ -28,7 +28,7 @@ public class DragDropHelperImpl implements DragDropHelper {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <W extends Widget & HasValue<?> & HasChangeHandlers> DroppableObject<W> enableDropForWidget(W widget, IModule module, boolean disableAutoBehavior) {
-		return (DroppableObject<W>)  ((DragEvent.isSupported())
+		return (DroppableObject)  ((DragEvent.isSupported())
 								 ? obFactory.getHTML5DragDrop(widget, module, DragDropType.DROP, disableAutoBehavior)
 								 : obFactory.getEmulatedDragDrop(widget, DragDropType.DROP,disableAutoBehavior));
 	}
