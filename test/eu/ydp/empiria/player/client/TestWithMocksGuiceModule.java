@@ -20,6 +20,10 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		super(ignoreClassList);
 	}
 	
+	public TestWithMocksGuiceModule(Class<?>[] classToOmit, Class<?>[] classToSpy){
+		super(classToOmit, classToSpy);
+	}
+	
 	@Override
 	public void configure() {
 		bindToSingletonOrMockInstance(EventsBus.class);
