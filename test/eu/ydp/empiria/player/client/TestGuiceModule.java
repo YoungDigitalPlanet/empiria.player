@@ -4,9 +4,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.annotation.PostConstruct;
 
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -18,7 +21,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.matcher.AbstractMatcher;
+import com.google.inject.spi.InjectionListener;
+import com.google.inject.spi.TypeEncounter;
+import com.google.inject.spi.TypeListener;
 
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
@@ -61,6 +69,39 @@ import eu.ydp.gwtutil.test.mock.GwtPanelFactoryMock;
 
 @SuppressWarnings("PMD")
 public class TestGuiceModule extends ExtendTestGuiceModule {
+	private class HasInitMethod extends AbstractMatcher<TypeLiteral<?>> {
+		@Override
+		public boolean matches(TypeLiteral<?> tpe) {
+			try {
+				Method[] methods = tpe.getRawType().getMethods();
+				for(Method method:methods){
+					if (method.isAnnotationPresent(PostConstruct.class)) {
+						return true;
+					}
+				}
+				return false;
+			} catch (Exception e) {
+				return false;
+			}
+		}
+	}
+
+	private class InitInvoker implements InjectionListener {
+		@Override
+		public void afterInjection(Object injectee) {
+			try {
+				Method[] methods = injectee.getClass().getMethods();
+				for(Method method:methods){
+					if (method.isAnnotationPresent(PostConstruct.class)) {
+						method.invoke(injectee);
+					}
+				}
+			} catch (Exception e) {
+				/* do something to handle errors here */
+			}
+		}
+	}
+
 	private final Set<Class<?>> classToMock = new HashSet<Class<?>>();
 	private final Set<Class<?>> classToSpy = new HashSet<Class<?>>();
 	private final Set<BindDescriptor<?>> bindDescriptors = new HashSet<BindDescriptor<?>>();
@@ -86,7 +127,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	private void init() {
 		bindDescriptors.add(new BindDescriptor<Scheduler>().bind(Scheduler.class).to(SchedulerImpl.class).in(Singleton.class));
 		bindDescriptors.add(new BindDescriptor<EventsBus>().bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class));
-		bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class).to(ConnectionModuleFactoryMock.class).in(Singleton.class));
+		bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class).to(ConnectionModuleFactoryMock.class)
+				.in(Singleton.class));
 		bindDescriptors.add(new BindDescriptor<VideoFullScreenHelper>().bind(VideoFullScreenHelper.class).in(Singleton.class));
 		bindDescriptors.add(new BindDescriptor<PanelCache>().bind(PanelCache.class));
 		bindDescriptors.add(new BindDescriptor<FeedbackParserFactory>().bind(FeedbackParserFactory.class).to(FeedbackParserFactoryMock.class));
@@ -94,6 +136,14 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 
 	@Override
 	public void configure() {
+		HasInitMethod hasInit = new HasInitMethod();
+		final InitInvoker initInvoker = new InitInvoker();
+		bindListener(hasInit, new TypeListener() {
+			@Override
+			public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
+				encounter.register(initInvoker);
+			}
+		});
 		init();
 		for (BindDescriptor<?> bindDescriptor : bindDescriptors) {
 			if (classToMock.contains(bindDescriptor.getBind())) {
@@ -139,7 +189,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	}
 
 	@Provides
-	public ConnectionView getConnectionView(){
+	public ConnectionView getConnectionView() {
 		return mock(ConnectionView.class);
 	}
 
@@ -151,13 +201,13 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 
 	@Provides
 	@Singleton
-	public StyleSocket getStyleSocket(){
+	public StyleSocket getStyleSocket() {
 		return mock(StyleSocket.class);
 	}
 
 	@Provides
 	@Singleton
-	public XMLParser getXmlParser(){
+	public XMLParser getXmlParser() {
 		XMLParser parser = mock(XMLParser.class);
 		when(parser.parse(Mockito.anyString())).then(new Answer<Document>() {
 			@Override
@@ -170,28 +220,30 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 
 	@Provides
 	@Singleton
-	public TouchRecognitionFactory getTouchRecognitionFactory(){
+	public TouchRecognitionFactory getTouchRecognitionFactory() {
 		TouchRecognitionFactory factory = mock(TouchRecognitionFactory.class);
-		when(factory.getTouchRecognition(Mockito.any(Widget.class),Mockito.anyBoolean())).thenReturn(spy(new HasTouchHandlersMock()));
+		when(factory.getTouchRecognition(Mockito.any(Widget.class), Mockito.anyBoolean())).thenReturn(spy(new HasTouchHandlersMock()));
 		return factory;
 	}
 
 	@Provides
 	@Singleton
-	public PositionHelper getPositionHelper(){
+	public PositionHelper getPositionHelper() {
 		PositionHelper helper = mock(PositionHelper.class);
 		when(helper.getPositionX(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
 		when(helper.getPositionY(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
 		return helper;
 	}
 
-	@Provides ModuleFactory getModuleFactory(SourceListModule sourceListModule){
+	@Provides
+	ModuleFactory getModuleFactory(SourceListModule sourceListModule) {
 		ModuleFactory factory = mock(ModuleFactory.class);
 		when(factory.getSourceListModule()).thenReturn(sourceListModule);
 		return factory;
 	}
 
-	@Provides DragDropHelper getDragDropHelper(){
+	@Provides
+	DragDropHelper getDragDropHelper() {
 		return mock(DragDropHelper.class);
 	}
 
