@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.module.IModule;
 
 public class ModuleFeedbackProcessor {
@@ -71,7 +72,8 @@ public class ModuleFeedbackProcessor {
 		
 		for(FeedbackActionProcessor processor: processors){
 			if(fromNullable(processor).isPresent()){
-				processor.processActions(feedbackActionCollector.getActions());
+				List<FeedbackAction> processedActions = processor.processActions(feedbackActionCollector.getActions());
+				feedbackActionCollector.removeActions(processedActions);
 			}
 		}
 	}

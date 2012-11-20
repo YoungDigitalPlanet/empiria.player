@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackAppendActionTestData.FeedbackActionData;
@@ -101,12 +102,13 @@ public class FeedbackActionCollectorJUnitTest {
 	@Test
 	public void shouldAppendActionsToSource(){
 		//given
+		IModule module = mock(IModule.class);
 		FeedbackAppendActionTestData testData = new FeedbackAppendActionTestData();
-		prepareAndAppendActions(testData);
+		prepareAndAppendActions(testData, module);
 		
 		//when		
 		List<FeedbackAction> actions = collector.getActions();
-		actions = Ordering.usingToString().sortedCopy(actions);
+		actions = sortToString(actions);
 		
 		//then
 		assertThat(actions.size(), is(equalTo(5)));
@@ -133,9 +135,48 @@ public class FeedbackActionCollectorJUnitTest {
 		}		
 	}
 	
-	private void prepareAndAppendActions(FeedbackAppendActionTestData testData){
+	@Test
+	public void shouldRemoveActions(){
+		//given
 		IModule module = mock(IModule.class);
+		FeedbackAppendActionTestData testData = new FeedbackAppendActionTestData();
+		prepareAndAppendActions(testData, module);
 		
+		List<FeedbackAction> actionsToRemove = Lists.newArrayList();
+		List<FeedbackAction> sourceActions = collector.getActionsForSource(source);
+		List<FeedbackAction> moduleActions = collector.getActionsForSource(module);
+		
+		sourceActions = sortToString(sourceActions);
+		
+		actionsToRemove.add(sourceActions.get(0));
+		actionsToRemove.addAll(moduleActions);
+		
+		//when
+		collector.removeActions(actionsToRemove);
+		sourceActions = sortToString(collector.getActionsForSource(source));
+		moduleActions = collector.getActionsForSource(module);
+		
+		//then		
+		assertThat(collector.getActions().size(), is(equalTo(2)));
+		assertThat(sourceActions.size(), is(equalTo(2)));
+		assertThat(moduleActions.size(), is(equalTo(0)));
+		
+		int sourceActionsCounter = 0;
+		
+		for(int i = 2; i < 4; i++){
+			ShowUrlAction urlAction = (ShowUrlAction) testData.getActionAtIndex(i);
+			ShowUrlAction actualAction = (ShowUrlAction) sourceActions.get(sourceActionsCounter++);
+			
+			assertThat(actualAction.getType(), is(equalTo(urlAction.getType())));
+			assertThat(actualAction.getHref(), is(equalTo(urlAction.getHref())));
+		}
+	}
+	
+	private <T> List<T> sortToString(List<T> list){
+		return Ordering.usingToString().sortedCopy(list);
+	}
+	
+	private void prepareAndAppendActions(FeedbackAppendActionTestData testData, IModule module){		
 		testData.addShowTextAction(0, source, "Very goood!!!");
 		testData.addShowUrlAction(2, source, "/commons/very_good.mp3", ActionType.NARRATION);
 		testData.addShowUrlAction(3, source, "/commons/very_good.mp4", ActionType.VIDEO);

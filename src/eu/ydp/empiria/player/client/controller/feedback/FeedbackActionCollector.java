@@ -44,6 +44,10 @@ public class FeedbackActionCollector {
 			source2actions.putAll(source, actions);
 		}
 	}
+	
+	public void removeActions(List<FeedbackAction> actionsToRemove){
+		source2actions.values().removeAll(actionsToRemove);
+	}
 
 	public IModule getSource() {
 		return source;
@@ -51,6 +55,10 @@ public class FeedbackActionCollector {
 
 	public List<FeedbackAction> getActions() {
 		return Lists.newArrayList(source2actions.values());
+	}
+
+	public List<FeedbackAction> getActionsForSource(IModule source) {
+		return Lists.newArrayList(source2actions.get(source));
 	}
 
 }
