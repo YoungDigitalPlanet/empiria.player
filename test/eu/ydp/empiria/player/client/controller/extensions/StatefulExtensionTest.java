@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.extensions;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
@@ -18,10 +17,10 @@ public class StatefulExtensionTest extends ExtensionTestBase {
 	protected DeliveryEngine de;
 	protected boolean passed1 = false;
 	protected boolean passed2 = false;
-	
+
 	public void testExtensionState(){
 
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		de.setFlowOptions(new FlowOptions(false, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
@@ -36,11 +35,11 @@ public class StatefulExtensionTest extends ExtensionTestBase {
 		de.loadExtension(new MockStatefulExtension());
 		de.setStateString(stateX);
 		de.load(getAssessmentXMLData(), getItemXMLDatas());
-		
+
 		assertTrue(passed1);
 		assertTrue(passed2);
 	}
-	
+
 	protected void checkSetState(JSONArray newState){
 		assertTrue(newState.isArray() != null);
 		assertEquals(1, newState.isArray().size());
@@ -48,19 +47,19 @@ public class StatefulExtensionTest extends ExtensionTestBase {
 		assertEquals("X78675764320934897982", newState.isArray().get(0).isString().stringValue());
 		passed1 = true;
 	}
-	
+
 	protected void checkGetState(String stateString){
 		assertTrue( stateString.contains("X78675764320934897982") );
 		passed2 = true;
 	}
-	
+
 	protected class MockStatefulExtension extends InternalExtension implements StatefulExtension{
 
 		@Override
 		public void init() {
-			
+
 		}
-		
+
 		@Override
 		public JSONArray getState() {
 			JSONArray arr = new JSONArray();
@@ -72,7 +71,7 @@ public class StatefulExtensionTest extends ExtensionTestBase {
 		public void setState(JSONArray newState) {
 			checkSetState(newState);
 		}
-		
+
 	}
-	
+
 }

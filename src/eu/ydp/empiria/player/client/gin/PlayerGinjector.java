@@ -15,6 +15,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.Stic
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
+import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
@@ -43,7 +44,7 @@ public interface PlayerGinjector extends Ginjector {
 	DeliveryEngine getDeliveryEngine();
 	EventsBus getEventsBus();
 	DefaultMediaProcessorExtension getDefaultMediaExtension();
-//	MultiPageController getMultiPage();
+	MultiPageController getMultiPage();
 //	PageViewCache getPageViewCache();
 	PageControllerCache getPageControllerCache();
 	StyleNameConstants getStyleNameConstants();

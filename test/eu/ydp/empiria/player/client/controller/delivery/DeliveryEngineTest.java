@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.delivery;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.json.client.JSONArray;
@@ -33,7 +32,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 	}
 
 	public void testEngineMode(){
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
 		DeliveryEngine de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 
@@ -68,7 +67,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testDeliveryEventsWithToc(){
 		types = typesWithToc;
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEventsListenerExtension();
@@ -80,7 +79,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testDeliveryEventsNoToc(){
 		types = typesNoToc;
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEventsListenerExtension();
@@ -93,7 +92,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testDeliveryEventsPageSwitch(){
 		types = typesPageSwitch;
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEventsListenerExtension();
@@ -152,72 +151,72 @@ public class DeliveryEngineTest extends GWTTestCase {
 			flowInvoker = fri;
 		}
 
-	}	
-	
-	public void testParseFlowRequestNoState(){		
-		
-		int itemIndex = 1;
-		
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
-		de = injector.getDeliveryEngine();				
-		de.setInitialItemIndex(itemIndex);
-		
-		IFlowRequest flowRequest = de.parseFlowRequest(null);
-		
-		NavigateGotoItem navigableItem = (NavigateGotoItem)flowRequest;
-		assertEquals(itemIndex, navigableItem.getIndex());		
 	}
-	
+
+	public void testParseFlowRequestNoState(){
+
+		int itemIndex = 1;
+
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		de = injector.getDeliveryEngine();
+		de.setInitialItemIndex(itemIndex);
+
+		IFlowRequest flowRequest = de.parseFlowRequest(null);
+
+		NavigateGotoItem navigableItem = (NavigateGotoItem)flowRequest;
+		assertEquals(itemIndex, navigableItem.getIndex());
+	}
+
 	public void testParseFlowRequestWithState(){
-		
+
 		int initialItemIndex = 2;
 		int stateItemIndex = 5;
-		
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
+
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
 		de = injector.getDeliveryEngine();
 		de.initialItemIndex =  initialItemIndex;
-		
+
 		JSONArray arr = createJSonStateArr(stateItemIndex);
-		
+
 		IFlowRequest flowRequest = de.parseFlowRequest(arr);
-		
+
 		NavigateGotoItem navigableItem = (NavigateGotoItem)flowRequest;
-		assertEquals(initialItemIndex, navigableItem.getIndex());		
-		
+		assertEquals(initialItemIndex, navigableItem.getIndex());
+
 	}
-	
+
 	public void testParseFlowRequestWithStateNoInitial(){
-		
-		
+
+
 		int stateItemIndex = 5;
-		
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
-		de = injector.getDeliveryEngine();		
-		
+
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		de = injector.getDeliveryEngine();
+
 		JSONArray arr = createJSonStateArr(stateItemIndex);
-		
+
 		IFlowRequest flowRequest = de.parseFlowRequest(arr);
-		
+
 		NavigateGotoItem navigableItem = (NavigateGotoItem)flowRequest;
-		assertEquals(stateItemIndex, navigableItem.getIndex());		
-		
+		assertEquals(stateItemIndex, navigableItem.getIndex());
+
 	}
-	
-	public void testParseFlowRequestNoStateNoInitial(){		
-		
-		PlayerGinjector injector = GWT.create( PlayerGinjector.class );
-		de = injector.getDeliveryEngine();	
-		
-		IFlowRequest flowRequest = de.parseFlowRequest(null);		
-		
-		assertEquals(null, flowRequest);		
-		
+
+	public void testParseFlowRequestNoStateNoInitial(){
+
+		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		de = injector.getDeliveryEngine();
+
+		IFlowRequest flowRequest = de.parseFlowRequest(null);
+
+		assertEquals(null, flowRequest);
+
 	}
-	
+
 	private JSONArray createJSonStateArr(int itemIndex){
-		JSONArray arr = new JSONArray();		
+		JSONArray arr = new JSONArray();
 		arr.isArray().set(0, new JSONNumber(itemIndex));
-		
+
 		return arr;
 	}
 

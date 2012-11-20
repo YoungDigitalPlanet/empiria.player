@@ -335,7 +335,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getConnectionModule(), ModuleTagName.MATCH_INTERACTION, true));
 		loadExtension(extensionFactory.getDragDropManager());
 		loadExtension(PlayerGinjector.INSTANCE.getDefaultMediaExtension());
-		loadExtension(moduleProviderFactory.getMultiPageController().get());
+		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
 		loadExtension(PlayerGinjector.INSTANCE.getPage());
 		loadExtension(PlayerGinjector.INSTANCE.getBookmarkProcessorExtension());
 		loadExtension(PlayerGinjector.INSTANCE.getStickiesProcessorExtension());

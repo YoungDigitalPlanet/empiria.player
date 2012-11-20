@@ -5,6 +5,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
@@ -19,6 +21,9 @@ public class PageInPageModule extends SimpleModuleBase implements Factory<PageIn
 
 	@Inject
 	protected ModuleProviderFactory providerFactory;
+
+
+	protected MultiPageController controller = PlayerGinjector.INSTANCE.getMultiPage();
 	@Override
 	public void initModule(Element element) { //NOPMD
 	}
@@ -26,7 +31,7 @@ public class PageInPageModule extends SimpleModuleBase implements Factory<PageIn
 	@Override
 	public Widget getView() {
 		if (pagePanel == null) {
-			pagePanel = providerFactory.getMultiPageController().get().getView();
+			pagePanel = controller.getView();
 			pagePanel.setStyleName(styleNames.QP_PAGE_IN_PAGE());
 		}
 		return pagePanel;

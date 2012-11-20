@@ -18,8 +18,10 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
 	protected FlowPanel navigationPanel;
 
 	protected StyleNameConstants styleNames;
+
 	@Inject
 	protected PageViewCache pageViewCache;
+
 	@Inject
 	private Page page;
 
