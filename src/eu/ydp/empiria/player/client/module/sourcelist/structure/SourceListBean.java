@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasShuffle;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
 
-@XmlRootElement(name = "sourceList")
+@XmlRootElement(name = "dragDropInteraction")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SourceListBean implements ModuleBean, HasShuffle {
 	@XmlAttribute
