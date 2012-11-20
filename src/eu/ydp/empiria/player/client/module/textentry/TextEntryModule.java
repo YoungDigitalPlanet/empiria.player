@@ -16,10 +16,10 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -43,7 +43,7 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 	protected StyleNameConstants styleNames;
 
 	@Inject
-	protected ModuleFactory moduleFactory;
+	protected Provider<TextEntryModule> moduleFactory;
 
 	protected Map<String, String> styles;
 
@@ -187,6 +187,6 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 
 	@Override
 	public TextEntryModule getNewInstance() {
-		return moduleFactory.getTextEntryModule();
+		return moduleFactory.get();
 	}
 }

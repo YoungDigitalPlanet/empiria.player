@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
-public abstract class AbstractDragDrop {
+public abstract class AbstractDragDrop<W extends Widget> {
 	@Inject
 	protected EventsBus eventsBus;
 
@@ -32,12 +32,18 @@ public abstract class AbstractDragDrop {
 			dragDropEvent.setDragDataObject(dataObject);
 			eventsBus.fireEventFromSource(dragDropEvent, getIModule(), scopeFactory.getCurrentPageScope());
 		}
+	}
 
+	protected void registerDropZone(){
+		DragDropEvent event = new DragDropEvent(DragDropEventTypes.REGISTER_DROP_ZONE, getIModule());
+		event.setIModule(getIModule());
+		eventsBus.fireEventFromSource(event, getIModule(), scopeFactory.getCurrentPageScope());
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void setAutoBehaviorForDrop(boolean disableAutoBehavior) {
-		Widget widget = getWidget();
+		registerDropZone();
+		Widget widget = getOriginalWidget();
 		if (widget instanceof HasValueChangeHandlers) {
 			((HasValueChangeHandlers) widget).addValueChangeHandler(new ValueChangeHandler() {
 				@Override
@@ -45,7 +51,6 @@ public abstract class AbstractDragDrop {
 					if (valueChangeSelfFire) {
 						valueChangeSelfFire = false;
 					} else {
-						Object source = event.getSource();
 						String value = String.valueOf(event.getValue());
 						NativeDragDataObject object = overlayTypesParser.get();
 						object.setValue(value);
@@ -59,7 +64,7 @@ public abstract class AbstractDragDrop {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected String putValue(String jsonObject) {
 		String value = null;
-		Widget widget = getWidget();
+		Widget widget = getOriginalWidget();
 		if (widget instanceof HasValue && overlayTypesParser.isValidJSON(jsonObject)) {
 			NativeDragDataObject dragData = overlayTypesParser.get(jsonObject);
 			value = dragData.getValue();
@@ -72,7 +77,7 @@ public abstract class AbstractDragDrop {
 		return value;
 	}
 
-	protected abstract Widget getWidget();
+	protected abstract W getOriginalWidget();
 
 	protected abstract IModule getIModule();
 }

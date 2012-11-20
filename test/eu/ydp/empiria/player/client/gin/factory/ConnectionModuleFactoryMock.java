@@ -9,7 +9,6 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
-import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
@@ -17,7 +16,6 @@ import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemView;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
-import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 
 public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	//singleton na potrzeby testow wszystkie operacje na jednym
@@ -43,11 +41,6 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	@Override
 	public ConnectionItemView getConnectionItemView(PairChoiceBean element, InlineBodyGeneratorSocket bodyGeneratorSocket) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MultiplePairModuleView<SimpleAssociableChoiceBean> getMultiplePairModuleView() {
 		return null;
 	}
 

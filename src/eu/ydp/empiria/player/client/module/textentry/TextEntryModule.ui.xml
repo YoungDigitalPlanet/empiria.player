@@ -4,7 +4,7 @@
 	<g:FlowPanel ui:field="moduleWidget" styleName="{res.QP_TEXT_TEXTENTRY}">
 		<g:FlowPanel styleName="{res.QP_TEXT_TEXTENTRY_PREFIX}"/>
 		<g:FlowPanel styleName="{res.QP_TEXT_TEXTENTRY_CONTENT}">
-			<g:TextBox ui:field="textBox"/>
+			<g:Widget ui:field="textBoxWidget"/>
 		</g:FlowPanel>
 		<g:FlowPanel styleName="{res.QP_TEXT_TEXTENTRY_SUFIX}"/>
 	</g:FlowPanel>

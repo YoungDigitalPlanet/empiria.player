@@ -22,21 +22,21 @@ import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
 
 public interface AssessmentControllerFactory {
-	
-	PageController getPageController(PageViewSocket pvs, IFlowSocket fs, 
-										InteractionEventsSocket is, PageSessionSocket pss, 
-										ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager);
 
-	ItemController getItemController(ItemViewSocket ivs, IFlowSocket fs, 
-										InteractionEventsSocket is, ItemSessionSocket iss, 
-										ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager);
+	PageController getPageController(PageViewSocket pvs, IFlowSocket fs,
+										InteractionEventsSocket is, PageSessionSocket pss,
+										ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager, AssessmentControllerFactory controllerFactory);
 
-	Item getItem(XmlData data, DisplayContentOptions options, 
-					InteractionEventsListener interactionEventsListener, StyleSocket ss, 
-					ModulesRegistrySocket mrs, Map<String, Outcome> outcomeVariables, 
-					ModuleHandlerManager moduleHandlerManager);
+	ItemController getItemController(ItemViewSocket ivs, IFlowSocket fs,
+										InteractionEventsSocket is, ItemSessionSocket iss,
+										ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager,AssessmentControllerFactory controllerFactory);
 
-	FeedbackManager getFeedbackManager(NodeList feedbackNodes, String baseUrl, 
+	Item getItem(XmlData data, DisplayContentOptions options,
+					InteractionEventsListener interactionEventsListener, StyleSocket ss,
+					ModulesRegistrySocket mrs, Map<String, Outcome> outcomeVariables,
+					ModuleHandlerManager moduleHandlerManager,AssessmentControllerFactory controllerFactory);
+
+	FeedbackManager getFeedbackManager(NodeList feedbackNodes, String baseUrl,
 										ModuleSocket moduleSocket, FeedbackInteractionEventListner feedbackListener);
-	
+
 }

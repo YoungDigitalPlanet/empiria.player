@@ -4,9 +4,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
-public class TextEntryModulePresenter implements Presenter {
+public class TextEntryModulePresenter implements Presenter,ChangeHandler {
 
 	@UiTemplate("TextEntryModule.ui.xml")
 	interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModulePresenter>{};
@@ -31,6 +31,8 @@ public class TextEntryModulePresenter implements Presenter {
 	private final TextEntryModuleUiBinder uiBinder = GWT.create(TextEntryModuleUiBinder.class);
 
 	@UiField(provided=true)
+	protected Widget textBoxWidget;
+
 	protected TextBox textBox;
 
 	@UiField
@@ -44,12 +46,15 @@ public class TextEntryModulePresenter implements Presenter {
 	@Inject
 	public TextEntryModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper){
 		DroppableObject<TextBox> droppable = dragDropHelper.enableDropForWidget(new TextBox(),parentModule);
-		textBox = droppable.getDroppableWidget();
+		textBoxWidget= droppable.getDroppableWidget();
+		textBox = droppable.getOriginalWidget();
 		uiBinder.createAndBindUi(this);
+		textBox.addChangeHandler(this);
+
 	}
 
-	@UiHandler("textBox")
-	protected void handleChange(ChangeEvent event){
+	@Override
+	public void onChange(ChangeEvent event) {
 		if(changeHandler != null){
 			changeHandler.onChange(event);
 		}

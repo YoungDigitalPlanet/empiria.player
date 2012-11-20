@@ -12,6 +12,6 @@ public interface DragDropObjectFactory {
 	public HTML5DragDrop<Widget> getHTML5DragDrop(@Assisted("widget") Widget widget,@Assisted("imodule") IModule imodule, @Assisted("type") DragDropType type,
 			@Assisted("disableAutoBehavior") boolean disableAutoBehavior);
 
-	public EmulatedDragDrop<Widget> getEmulatedDragDrop(@Assisted("widget") Widget widget, @Assisted("type") DragDropType type,
+	public EmulatedDragDrop<Widget> getEmulatedDragDrop(@Assisted("widget") Widget widget,@Assisted("imodule") IModule imodule, @Assisted("type") DragDropType type,
 			@Assisted("disableAutoBehavior") boolean disableAutoBehavior);
 }
