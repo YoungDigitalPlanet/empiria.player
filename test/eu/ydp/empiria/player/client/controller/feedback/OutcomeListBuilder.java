@@ -7,7 +7,8 @@ import com.google.common.collect.Maps;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 
 public class OutcomeListBuilder {
-	private Map<String, Outcome> map;
+	
+	private final Map<String, Outcome> map;
 
 	public OutcomeListBuilder() {
 		this.map = Maps.newHashMap();

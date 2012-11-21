@@ -10,7 +10,7 @@ public class FeedbackProperties{
 	
 	public static final String EMPTY = "empty";
 	
-	private Map<FeedbackPropertyName, Object> propertyMap = Maps.newHashMap();
+	private final Map<FeedbackPropertyName, Object> propertyMap = Maps.newHashMap();
 	
 	public void addBooleanProperty(FeedbackPropertyName name, Boolean value){
 		addProperty(name, value);

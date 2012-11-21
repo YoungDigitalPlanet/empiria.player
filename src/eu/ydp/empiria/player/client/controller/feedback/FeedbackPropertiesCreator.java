@@ -43,7 +43,7 @@ public class FeedbackPropertiesCreator {
 		
 		properties.addBooleanProperty(FeedbackPropertyName.OK, getInteger(LASTMISTAKEN) == 1);
 		properties.addBooleanProperty(FeedbackPropertyName.WRONG, getInteger(LASTMISTAKEN) == 0);
-		properties.addBooleanProperty(FeedbackPropertyName.ALL_OK, getAllOkValue());
+		properties.addBooleanProperty(FeedbackPropertyName.ALL_OK, isAllOk());
 		properties.addIntegerProperty(FeedbackPropertyName.DONE, getInteger(DONE));
 		properties.addIntegerProperty(FeedbackPropertyName.TODO, getInteger(TODO));
 		properties.addIntegerProperty(FeedbackPropertyName.ERRORS, getInteger(ERRORS));
@@ -52,7 +52,7 @@ public class FeedbackPropertiesCreator {
 		return  properties;
 	}
 	
-	private boolean getAllOkValue(){
+	private boolean isAllOk(){
 		return getInteger(DONE) == getInteger(TODO) && 
 				getInteger(TODO) != 0 && getInteger(ERRORS) == 0;
 	}

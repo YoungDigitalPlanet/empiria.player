@@ -13,11 +13,11 @@ import eu.ydp.empiria.player.client.module.IModule;
 
 public class FeedbackActionCollector {
 	
-	private IModule source;
+	private final IModule source;
 	
-	private Map<IModule, FeedbackProperties> source2properties = Maps.newHashMap();
+	private final Map<IModule, FeedbackProperties> source2properties = Maps.newHashMap();
 	
-	private ListMultimap<IModule, FeedbackAction> source2actions = ArrayListMultimap.create();	
+	private final ListMultimap<IModule, FeedbackAction> source2actions = ArrayListMultimap.create();	
 	
 	public FeedbackActionCollector(IModule sender){
 		source = sender;

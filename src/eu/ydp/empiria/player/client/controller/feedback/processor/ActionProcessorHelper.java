@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 
 public class ActionProcessorHelper extends AbstractFeedbackActionProcessor {
 	
-	private ActionProcessorTarget target;
+	private final ActionProcessorTarget target;
 	
 	public ActionProcessorHelper(ActionProcessorTarget target){
 		this.target = target;

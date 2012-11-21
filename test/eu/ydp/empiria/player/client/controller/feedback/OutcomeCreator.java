@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 
 public class OutcomeCreator {
 	
-	private String moduleId;
+	private final String moduleId;
 	
 	public OutcomeCreator(String moduleId){
 		this.moduleId = moduleId;
