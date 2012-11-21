@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.feedback;
 import static com.google.common.base.Optional.fromNullable;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -12,7 +13,9 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackAction
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class ModuleFeedbackProcessor {
 	
@@ -24,12 +27,17 @@ public class ModuleFeedbackProcessor {
 	@Inject
 	private FeedbackConditionMatcher matcher;
 	
+	@Inject
+	private FeedbackPropertiesCreator propertiesCreator;
+	
+	private Map<String, ? extends Variable> variables;
+	
 	private static final ImmutableList<FeedbackActionProcessor> DEFAULT_PROCESSORS = 
 																	ImmutableList.<FeedbackActionProcessor>builder().
 																		add(new SoundActionProcessor()).
 																	build();
 	
-	public void process(IModule sender){
+	public void process(IModule sender, Map<String, ? extends Variable> variables){
 		feedbackActionCollector = new FeedbackActionCollector(sender);
 		processFeedbackActionCollector(sender);
 	}
@@ -93,7 +101,14 @@ public class ModuleFeedbackProcessor {
 	}
 
 	private FeedbackProperties getPropertiesFromResponse(IModule module){
-		return null;
+		FeedbackProperties properties = new FeedbackProperties();
+		
+		if(module instanceof IUniqueModule){
+			String identifier = ((IUniqueModule) module).getIdentifier();
+			properties = propertiesCreator.getPropertiesFromVariables(identifier, variables);
+		}
+		
+		return properties;
 	}
 	
 }

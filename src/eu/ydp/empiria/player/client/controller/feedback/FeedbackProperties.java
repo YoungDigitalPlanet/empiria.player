@@ -24,6 +24,10 @@ public class FeedbackProperties{
 		addProperty(name, value);
 	}
 	
+	public void addDoubleValue(FeedbackPropertyName name, Double value){
+		addProperty(name, value);
+	}
+	
 	private void addProperty(FeedbackPropertyName name, Object value){
 		propertyMap.put(name, value);
 	}
@@ -60,6 +64,17 @@ public class FeedbackProperties{
 		
 		if(value instanceof Integer){
 			output = (Integer) value;
+		}
+		
+		return output;
+	}
+	
+	public Double getDoubleProperty(FeedbackPropertyName name) {
+		Object value = propertyMap.get(name);
+		Double output = Double.MAX_VALUE;
+		
+		if(value instanceof Double){
+			output = (Double) value;
 		}
 		
 		return output;

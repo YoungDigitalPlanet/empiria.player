@@ -57,7 +57,7 @@ public class FeedbackManager implements InlineFeedbackSocket{
 	
 	public void process (Map<String, Response> responses, Map<String, Outcome> outcomes, IUniqueModule sender){
 		if(feedbackRegistry.isModuleRegistered(sender)){
-			moduleFeedbackProcessor.process(sender);
+			moduleFeedbackProcessor.process(sender, outcomes);
 		}else{
 			String identifier = (sender == null)? "" : sender.getIdentifier();
 			process(responses, outcomes, identifier);
