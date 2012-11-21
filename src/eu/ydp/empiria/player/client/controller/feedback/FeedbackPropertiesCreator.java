@@ -63,7 +63,7 @@ public class FeedbackPropertiesCreator {
 		try {
 			result = 100*getInteger(DONE)/getInteger(TODO);
 		} catch (ArithmeticException exception) {
-			Logger.getAnonymousLogger().info(exception.getMessage());
+			Logger.getLogger(getClass().getName()).info(exception.getMessage());
 		}
 		
 		return result;
@@ -79,7 +79,7 @@ public class FeedbackPropertiesCreator {
 		try {
 			value = fromNullable(variables.get(variableIdentifier + "-" + variableName).values.get(0));
 		} catch (Exception exception) {
-			Logger.getAnonymousLogger().info(exception.getMessage() + " " + variableName);
+			Logger.getLogger(getClass().getName()).info(exception.getMessage());
 		}
 		
 		return value.orNull();
