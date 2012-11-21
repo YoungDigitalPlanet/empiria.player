@@ -25,7 +25,7 @@ import com.google.gwt.user.client.Event;
  * not IE).
  */
 @SuppressWarnings("PMD")
-abstract class DOMImplStandard extends DOMImpl {
+abstract class CopyOfDOMImplStandard extends DOMImpl {
 
   private static JavaScriptObject captureElem;
 
@@ -39,29 +39,28 @@ abstract class DOMImplStandard extends DOMImpl {
 
   private static JavaScriptObject dispatchUnhandledEvent;
 
-
   @Override
   public Element eventGetFromElement(Event evt) {
-    if (evt.getType().equals("mouseover")) {
-      return evt.getRelatedEventTarget().cast();
-    }
-
-    if (evt.getType().equals("mouseout")) {
-      return evt.getEventTarget().cast();
-    }
+//    if (evt.getType().equals(BrowserEvents.MOUSEOVER)) {
+//      return evt.getRelatedEventTarget().cast();
+//    }
+//
+//    if (evt.getType().equals(BrowserEvents.MOUSEOUT)) {
+//      return evt.getEventTarget().cast();
+//    }
 
     return null;
   }
 
   @Override
   public Element eventGetToElement(Event evt) {
-    if (evt.getType().equals("mouseover")) {
-      return evt.getEventTarget().cast();
-    }
-
-    if (evt.getType().equals("mouseout")) {
-      return evt.getRelatedEventTarget().cast();
-    }
+//    if (evt.getType().equals(BrowserEvents.MOUSEOVER)) {
+//      return evt.getEventTarget().cast();
+//    }
+//
+//    if (evt.getType().equals(BrowserEvents.MOUSEOUT)) {
+//      return evt.getRelatedEventTarget().cast();
+//    }
 
     return null;
   }
