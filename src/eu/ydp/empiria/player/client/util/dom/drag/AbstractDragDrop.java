@@ -30,6 +30,7 @@ public abstract class AbstractDragDrop<W extends Widget> {
 	@Inject
 	protected StyleNameConstants styleNames;
 
+
 	protected boolean valueChangeSelfFire = false;
 
 	protected void fireEvent(DragDropEventTypes type, DragDataObject dataObject) {

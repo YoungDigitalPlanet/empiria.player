@@ -14,7 +14,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -76,10 +75,6 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		this.parentModule = module;
 	}
 
-	private String getUniqId() {
-		return "#" + Math.random() + "#" + System.currentTimeMillis() + "#" + DOM.createUniqueId();
-	}
-
 	private SourceListViewItem getItem(DragDataObject dragDataObject) {
 		SourceListViewItem item = new SourceListViewItem(dragDropHelper, dragDataObject, parentModule, styleNames);
 		item.setSourceListView(this);
@@ -98,7 +93,6 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
 			DragDataObject obj = createDragDataObject();
 			obj.setValue(simpleSourceListItemBean.getValue());
-			obj.setSourceId(getUniqId());
 			SourceListViewItem item = getItem(obj);
 			items.add(item);
 			itemsCollection.put(item, obj.getValue());
@@ -144,8 +138,10 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		}
 		if (itemsCollection.containsValue(dragDataObject.getValue())) {
 			SourceListViewItem sourceListViewItem = itemsCollection.inverse().get(dragDataObject.getValue());
-			sourceListViewItem.hide();
-			hiddenItems.put(sourceListViewItem, dragDataObject.getValue());
+			if (!bean.isMoveElements()) {
+				sourceListViewItem.hide();
+				hiddenItems.put(sourceListViewItem, dragDataObject.getValue());
+			}
 		}
 	}
 

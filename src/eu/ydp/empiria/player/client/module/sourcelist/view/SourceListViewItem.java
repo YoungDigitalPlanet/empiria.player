@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -41,6 +42,9 @@ public class SourceListViewItem extends Composite {
 
 	private final StyleNameConstants styleNames;
 
+	protected HandlerRegistration addTouchHandler;
+	protected boolean dragRelease = false;
+
 	public SourceListViewItem(DragDropHelper dragDropHelper, DragDataObject dragDataObject, IModule parentModule, StyleNameConstants styleNames) {
 		super();
 		this.dragDropHelper = dragDropHelper;
@@ -61,19 +65,17 @@ public class SourceListViewItem extends Composite {
 		container.getElement().getStyle().setBackgroundColor("blue");
 		draggable = dragDropHelper.enableDragForWidget(container, parentModule);
 		item.add(draggable.getDraggableWidget());
-
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
+				dragRelease = false;
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
 				event.setData("json", dragDataObject.toJSON());
-				// FIXME gdzie obslugiwac zaradzaniem widkokiem przenoszonego
-				// widgetu moze tu tylko ustawiwnie wielkosci dla parent?
 				sourceListView.onItemDragStarted(dragDataObject, event, SourceListViewItem.this);
+
 			}
 		});
 		draggable.addDragEndHandler(new DragEndHandler() {
-
 			@Override
 			public void onDragEnd(DragEndEvent event) {
 				sourceListView.onMaybeDragCanceled();
