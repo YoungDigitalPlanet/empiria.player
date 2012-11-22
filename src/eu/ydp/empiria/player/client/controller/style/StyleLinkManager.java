@@ -29,10 +29,7 @@ public class StyleLinkManager {
 
 	private void doRegisterStyleLinks(QueueSet<String> styleLinks, boolean areRemovable){
 
-		if (areRemovable){
-			for (JavaScriptObject currLink : removableStyles){
-				//removeStyleLink(currLink);
-			}
+		if (areRemovable) {
 			removableStyles.clear();
 		}
 
