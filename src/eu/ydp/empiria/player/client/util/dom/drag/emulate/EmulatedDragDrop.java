@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.util.dom.drag.emulate;
 
 import javax.annotation.PostConstruct;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragEnterHandler;
@@ -20,9 +21,12 @@ import eu.ydp.empiria.player.client.util.dom.drag.AbstractDragDrop;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropType;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
+import eu.ydp.gwtutil.client.debug.logger.Debug;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
+import gwtquery.plugins.draggable.client.events.DragStartEvent;
+import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHandler;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import gwtquery.plugins.droppable.client.events.DropEvent;
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
@@ -34,6 +38,7 @@ import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
  */
 public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> implements DraggableObject<W>, DroppableObject<W> {
 	private static final String JSON = "json";
+	private static final String DATA_JSON = "data-json";
 	DragStartEndHandlerWrapper dragStartEndHandlerWrapper;
 	DropEventsHandlerWrapper dropEventsHandlerWrapper;
 	DraggableWidget<W> dragWidget;
@@ -42,7 +47,6 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 	private final W originalWidget;
 	private final boolean disableAutoBehavior;
 	private final IModule imodule;
-	private final W widget;
 	private final DragDropType type;
 
 	@Inject
@@ -54,17 +58,17 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 		this.originalWidget = widget;
 		this.imodule = imodule;
 		this.disableAutoBehavior = disableAutoBehavior;
-		this.widget = widget;
 		this.type = type;
-
+		Debug.log("emulated Drop");
 	}
 
 	@PostConstruct
 	public void postConstruct() {
+		Debug.log("emulated Drop post construct");
 		if (type == DragDropType.DRAG) {
-			createDrag(widget);
+			createDrag(originalWidget);
 		} else {
-			createDrop(widget);
+			createDrop(originalWidget);
 		}
 	}
 
@@ -76,21 +80,37 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 		dragWidget = new DraggableWidget<W>(widget, options);
 		dragWidget.setDraggableOptions(options);
 		dragWidget.setDraggingOpacity(.8f);
+		dragWidget.addDragStartHandler(new DragStartEventHandler() {
+
+			@Override
+			public void onDragStart(DragStartEvent event) {
+				Debug.log("DRAG START");
+			}
+		});
+
+
 	}
 
+	private native void ss(JavaScriptObject ob)/*-{
+		console.log(ob);
+	}-*/;
 	private void createDrop(W widget) {
 		dropWidget = new DroppableWidget<W>(widget);
 		dropWidget.addDropHandler(new DropEventHandler() {
 			@Override
 			public void onDrop(DropEvent event) {
-				JsonAttr jsonAttr = overlayTypesParser.get(event.getDraggable().getAttribute(JSON));
+				ss(event.getDraggable());
+				Debug.log("drop "+event.getDraggable());
+				Debug.log("drop "+event.getDraggable().getAttribute(DATA_JSON));
+				JsonAttr jsonAttr = overlayTypesParser.get(event.getDraggable().getAttribute(DATA_JSON));
 				getDropEventsHandlerWrapper().setJsonAttr(jsonAttr);
 			}
 		});
-		super.setAutoBehaviorForDrop(disableAutoBehavior);
+
 		if (!disableAutoBehavior) {
 			setAutoBehaviorForDrop(disableAutoBehavior);
 		}
+		super.setAutoBehaviorForDrop(disableAutoBehavior);
 	}
 
 	@Override
@@ -98,7 +118,8 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 		dropWidget.addDropHandler(new DropEventHandler() {
 			@Override
 			public void onDrop(DropEvent event) {
-				JsonAttr jsonAttr = overlayTypesParser.get(event.getDraggable().getAttribute(JSON));
+				JsonAttr jsonAttr = overlayTypesParser.get(event.getDraggable().getAttribute(DATA_JSON));
+				Debug.log("json attr"+jsonAttr.toJSON()+" "+jsonAttr.getAttrValue(DATA_JSON));
 				if (jsonAttr.getAttrValue(JSON) != null) {
 					putValue(jsonAttr.getAttrValue(JSON));
 				}
@@ -122,8 +143,7 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 
 	@Override
 	public HandlerRegistration addDragEndHandler(DragEndHandler handler) {
-		DragStartEndHandlerWrapper wrapper = getDragStartEndHandlerWrapper();
-		return wrapper.wrap(handler);
+		return getDragStartEndHandlerWrapper().wrap(handler);
 	}
 
 	@Override
@@ -143,8 +163,8 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 
 	@Override
 	public HandlerRegistration addDragStartHandler(DragStartHandler handler) {
-		DragStartEndHandlerWrapper wrapper = getDragStartEndHandlerWrapper();
-		return wrapper.wrap(handler);
+		Debug.log("add drag start statata "+handler);
+		return getDragStartEndHandlerWrapper().wrap(handler);
 	}
 
 	@Override

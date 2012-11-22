@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -29,6 +28,7 @@ import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
+import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 public class SourceListViewImpl extends Composite implements SourceListView, DragDropEventHandler {
 
@@ -76,10 +76,6 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		SourceListViewItem item = new SourceListViewItem(dragDropHelper, dragDataObject, parentModule);
 		item.setSourceListView(this);
 		item.createAndBindUi();
-		item.getElement().getStyle().setWidth(100, Unit.PX);
-		item.getElement().getStyle().setHeight(50, Unit.PX);
-		item.getElement().getStyle().setMargin(10, Unit.PX);
-		item.getElement().getStyle().setBackgroundColor("blue");
 		return item;
 	}
 
@@ -95,7 +91,7 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 			DragDataObject obj = createDragDataObject();
 			obj.setValue(simpleSourceListItemBean.getValue());
 			obj.setSourceId(getUniqId());
-		//	Debug.log(obj.toJSON());
+			Debug.log(obj.toJSON());
 			SourceListViewItem item = getItem(obj);
 			items.add(item);
 			itemsCollection.add(item);
@@ -116,6 +112,7 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 
 	public void onItemDragStarted(DragDataObject dragDataObject, DragStartEvent startEvent, SourceListViewItem item) {
 		disableItems(true);
+
 		DragDropEvent event = new DragDropEvent(DRAG_START, this);
 		event.setDragDataObject(dragDataObject);
 		event.setIModule(parentModule);

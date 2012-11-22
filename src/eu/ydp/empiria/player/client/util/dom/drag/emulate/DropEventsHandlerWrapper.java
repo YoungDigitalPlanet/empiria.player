@@ -1,15 +1,5 @@
 package eu.ydp.empiria.player.client.util.dom.drag.emulate;
 
-import com.google.gwt.event.dom.client.DragEnterEvent;
-import com.google.gwt.event.dom.client.DragEnterHandler;
-import com.google.gwt.event.dom.client.DragLeaveEvent;
-import com.google.gwt.event.dom.client.DragLeaveHandler;
-import com.google.gwt.event.dom.client.DragOverEvent;
-import com.google.gwt.event.dom.client.DragOverHandler;
-import com.google.gwt.event.dom.client.DropHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-
-import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import gwtquery.plugins.droppable.client.events.DropEvent;
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.events.OutDroppableEvent;
@@ -18,9 +8,18 @@ import gwtquery.plugins.droppable.client.events.OverDroppableEvent;
 import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppableEventHandler;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
-public class DropEventsHandlerWrapper implements DragDropSetGetData {
-	private final static OverlayTypesParser parser = new OverlayTypesParser();
-	private JsonAttr jsonAttr = parser.get();
+import com.google.gwt.dom.client.DataTransfer;
+import com.google.gwt.event.dom.client.DragEnterEvent;
+import com.google.gwt.event.dom.client.DragEnterHandler;
+import com.google.gwt.event.dom.client.DragLeaveEvent;
+import com.google.gwt.event.dom.client.DragLeaveHandler;
+import com.google.gwt.event.dom.client.DragOverEvent;
+import com.google.gwt.event.dom.client.DragOverHandler;
+import com.google.gwt.event.dom.client.DropHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Element;
+
+public class DropEventsHandlerWrapper extends AbstractHTML5DragDropWrapper {
 
 	protected class DragEnterEventWrapper extends DragEnterEvent {
 		private final DragDropSetGetData setGetData;
@@ -30,13 +29,8 @@ public class DropEventsHandlerWrapper implements DragDropSetGetData {
 		}
 
 		@Override
-		public void setData(String format, String data) {
-			setGetData.setData(format, data);
-		}
-
-		@Override
-		public String getData(String format) {
-			return setGetData.getData(format);
+		public DataTransfer getDataTransfer() {
+			return setGetData.getDataTransfer();
 		}
 	}
 
@@ -48,13 +42,8 @@ public class DropEventsHandlerWrapper implements DragDropSetGetData {
 		}
 
 		@Override
-		public void setData(String format, String data) {
-			setGetData.setData(format, data);
-		}
-
-		@Override
-		public String getData(String format) {
-			return setGetData.getData(format);
+		public DataTransfer getDataTransfer() {
+			return setGetData.getDataTransfer();
 		}
 	}
 
@@ -66,13 +55,8 @@ public class DropEventsHandlerWrapper implements DragDropSetGetData {
 		}
 
 		@Override
-		public void setData(String format, String data) {
-			setGetData.setData(format, data);
-		}
-
-		@Override
-		public String getData(String format) {
-			return setGetData.getData(format);
+		public DataTransfer getDataTransfer() {
+			return setGetData.getDataTransfer();
 		}
 	}
 
@@ -84,13 +68,8 @@ public class DropEventsHandlerWrapper implements DragDropSetGetData {
 		}
 
 		@Override
-		public void setData(String format, String data) {
-			setGetData.setData(format, data);
-		}
-
-		@Override
-		public String getData(String format) {
-			return setGetData.getData(format);
+		public DataTransfer getDataTransfer() {
+			return setGetData.getDataTransfer();
 		}
 	}
 
@@ -100,9 +79,7 @@ public class DropEventsHandlerWrapper implements DragDropSetGetData {
 		this.droppableWidget = droppableWidget;
 	}
 
-	public void setJsonAttr(JsonAttr jsonAttr) {
-		this.jsonAttr = jsonAttr;
-	}
+
 
 	public HandlerRegistration wrap(final DragEnterHandler dragEnterHandler) {
 		return droppableWidget.addOverDroppableHandler(new OverDroppableEventHandler() {
@@ -142,18 +119,9 @@ public class DropEventsHandlerWrapper implements DragDropSetGetData {
 			}
 		});
 	}
-
-	private String getKey(String format) {
-		return format.replaceAll("[^A-Za-z_]", "");
-	}
-
 	@Override
-	public void setData(String format, String data) {
-		jsonAttr.setAttrValue(getKey(format), data);
+	protected Element getElement() {
+		return null;
 	}
 
-	@Override
-	public String getData(String format) {
-		return jsonAttr.getAttrValue(format);
-	}
 }
