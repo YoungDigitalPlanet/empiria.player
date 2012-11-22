@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -37,7 +36,7 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 	
 	SourceListModule dragSource;
 
-	private ArrayList<IModule> waitingForRegister = new ArrayList<IModule>();
+	ArrayList<IModule> waitingForRegister = new ArrayList<IModule>();
 	
 	@Override
 	public ExtensionType getType() {
@@ -65,8 +64,8 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 		}		
 	}
 
-	Vector<IModule> findInapplicableGaps(SourceListModule dragSource) {
-		Vector<IModule> list = new Vector<IModule>();
+	List<IModule> findInapplicableGaps(SourceListModule dragSource) {
+		List<IModule> list = new ArrayList<IModule>();
 		
 		for (IModule gap : dropZones.keySet()) {
 			if (!dropZones.containsEntry(gap, dragSource)) {

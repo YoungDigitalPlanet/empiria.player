@@ -3,14 +3,12 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -131,9 +129,9 @@ public class DragDropManagerJUnitTest {
 		dragDropManager.dropZones.put(gap1, sourceList2);
 		dragDropManager.dropZones.put(gap1, sourceList3);		
 				
-		Vector<IModule> result = dragDropManager.findInapplicableGaps(dragSource);
+		List<IModule> result = dragDropManager.findInapplicableGaps(dragSource);
 		
-		assertThat(result.size(), is(0));
+		assertThat(result.size(), is(equalTo(0)));
 	}
 	
 	@Test
@@ -149,7 +147,7 @@ public class DragDropManagerJUnitTest {
 		dragDropManager.dropZones.put(gap1, sourceList2);
 		dragDropManager.dropZones.put(gap1, sourceList3);		
 				
-		Vector<IModule> result = dragDropManager.findInapplicableGaps(dragSource);
+		List<IModule> result = dragDropManager.findInapplicableGaps(dragSource);
 		
 		assertThat((SimpleTextModule)result.get(0), is(equalTo(gap1)));
 	}	
