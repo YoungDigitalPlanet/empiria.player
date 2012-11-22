@@ -16,7 +16,6 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
-import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 public abstract class AbstractDragDrop<W extends Widget> {
 	@Inject
@@ -37,7 +36,6 @@ public abstract class AbstractDragDrop<W extends Widget> {
 		if (type != null && dataObject != null) {
 			DragDropEvent dragDropEvent = new DragDropEvent(type, getIModule());
 			dragDropEvent.setDragDataObject(dataObject);
-			Debug.log(type+" "+dataObject.toJSON());
 			eventsBus.fireEventFromSource(dragDropEvent, getIModule(), scopeFactory.getCurrentPageScope());
 		}
 	}
@@ -46,6 +44,7 @@ public abstract class AbstractDragDrop<W extends Widget> {
 		DragDropEvent event = new DragDropEvent(DragDropEventTypes.REGISTER_DROP_ZONE, getIModule());
 		event.setIModule(getIModule());
 		eventsBus.fireEventFromSource(event, getIModule(), scopeFactory.getCurrentPageScope());
+
 	}
 
 	protected void addHandlerDisableEnableEvent(){

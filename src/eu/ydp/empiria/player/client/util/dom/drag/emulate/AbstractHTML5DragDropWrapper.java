@@ -5,7 +5,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Element;
 
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
-import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 public abstract class AbstractHTML5DragDropWrapper implements DragDropSetGetData{
 
@@ -40,13 +39,11 @@ public abstract class AbstractHTML5DragDropWrapper implements DragDropSetGetData
 		if(getElement()!=null){
 			getElement().setAttribute(JSON, new JSONObject(attr).toString());
 		}
-		Debug.log(" ****** " + new JSONObject(attr).toString());
 	}
 
 
 	@Override
 	public String getData(String format) {
-		Debug.log(attr.getAttrValue(getKey(format)));
 		return attr.getAttrValue(getKey(format));
 	}
 

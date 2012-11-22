@@ -3,10 +3,10 @@ package eu.ydp.empiria.player.client.module.sourcelist.view;
 import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.DRAG_END;
 import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.DRAG_START;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -22,13 +22,13 @@ import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
-import eu.ydp.gwtutil.client.debug.logger.Debug;
 
 public class SourceListViewImpl extends Composite implements SourceListView, DragDropEventHandler {
 
@@ -49,6 +49,9 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 	@Inject
 	private OverlayTypesParser overlayTypesParser;
 
+	@Inject
+	private StyleNameConstants styleNames;
+
 	@UiField
 	FlowPanel items;
 
@@ -56,7 +59,8 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 
 	private IModule parentModule;
 
-	private final Set<SourceListViewItem> itemsCollection = new HashSet<SourceListViewItem>();
+	private final BiMap<SourceListViewItem, String> itemsCollection = HashBiMap.create();
+	private final BiMap<SourceListViewItem, String> hiddenItems = HashBiMap.create();
 
 	@Override
 	public void setBean(SourceListBean bean) {
@@ -73,7 +77,7 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 	}
 
 	private SourceListViewItem getItem(DragDataObject dragDataObject) {
-		SourceListViewItem item = new SourceListViewItem(dragDropHelper, dragDataObject, parentModule);
+		SourceListViewItem item = new SourceListViewItem(dragDropHelper, dragDataObject, parentModule, styleNames);
 		item.setSourceListView(this);
 		item.createAndBindUi();
 		return item;
@@ -91,22 +95,22 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 			DragDataObject obj = createDragDataObject();
 			obj.setValue(simpleSourceListItemBean.getValue());
 			obj.setSourceId(getUniqId());
-			Debug.log(obj.toJSON());
 			SourceListViewItem item = getItem(obj);
 			items.add(item);
-			itemsCollection.add(item);
+			itemsCollection.put(item, obj.getValue());
 		}
 
-		eventsBus.addHandler(DragDropEvent.getType(DRAG_END), this, pageScopeFactory.getCurrentPageScope());
+		// FIXME null -> imodule
+		eventsBus.addHandlerToSource(DragDropEvent.getType(DRAG_END), null, this, pageScopeFactory.getCurrentPageScope());
 	}
 
 	private void disableItems(boolean disabled) {
-		for (SourceListViewItem item : itemsCollection) {
+		for (SourceListViewItem item : itemsCollection.keySet()) {
 			item.setDisableDrag(disabled);
 		}
 	}
 
-	public void onMaybeDragCanceled(){
+	public void onMaybeDragCanceled() {
 		disableItems(false);
 	}
 
@@ -122,10 +126,18 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 	public void onDragEvent(DragDropEvent event) {
 		if (event.getType() == DRAG_END) {
 			disableItems(false);
-			
-		//	Debug.log(event.getDragDataObject().toJSON());
-		//	Debug.log(event.getDragDataObject().getSourceId());
-		// FIXME gdzie obsluzyc wyjeceie lelementu mamy sourceid ?
+			DragDataObject dragDataObject = event.getDragDataObject();
+			if (hiddenItems.containsValue(dragDataObject.getPreviousValue())) {
+				BiMap<String, SourceListViewItem> inverse = hiddenItems.inverse();
+				SourceListViewItem sourceListViewItem = inverse.get(dragDataObject.getPreviousValue());
+				sourceListViewItem.show();
+				inverse.remove(dragDataObject.getPreviousValue());
+			}
+			if (itemsCollection.containsValue(dragDataObject.getValue())) {
+				SourceListViewItem sourceListViewItem = itemsCollection.inverse().get(dragDataObject.getValue());
+				sourceListViewItem.hide();
+				hiddenItems.put(sourceListViewItem, dragDataObject.getValue());
+			}
 		}
 
 	}

@@ -14,11 +14,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
-import eu.ydp.gwtutil.client.debug.logger.Debug;
-
 
 public class SourceListViewItem extends Composite {
 
@@ -37,47 +36,39 @@ public class SourceListViewItem extends Composite {
 	private SourceListViewImpl sourceListView;
 	DraggableObject<FlowPanel> draggable;
 
+	FlowPanel container;
 	private final IModule parentModule;
 
-	public SourceListViewItem(DragDropHelper dragDropHelper, DragDataObject dragDataObject,IModule parentModule) {
+	private final StyleNameConstants styleNames;
+
+	public SourceListViewItem(DragDropHelper dragDropHelper, DragDataObject dragDataObject, IModule parentModule, StyleNameConstants styleNames) {
 		super();
 		this.dragDropHelper = dragDropHelper;
 		this.dragDataObject = dragDataObject;
 		this.parentModule = parentModule;
+		this.styleNames = styleNames;
 	}
-
-
 
 	public void createAndBindUi() {
 		initWidget(uiBinder.createAndBindUi(this));
 		Label label = new Label(dragDataObject.getValue());
-		FlowPanel item2 = new FlowPanel();
-		item2.add(label);
-		item2.getElement().getStyle().setWidth(100, Unit.PX);
-		item2.getElement().getStyle().setHeight(50, Unit.PX);
-		item2.getElement().getStyle().setMargin(10, Unit.PX);
-		item2.getElement().getStyle().setBackgroundColor("blue");
-		draggable = dragDropHelper.enableDragForWidget(item2,parentModule);
+		container = new FlowPanel();
+		container.addStyleName(styleNames.QP_DRAG_ITEM());
+		container.add(label);
+		container.getElement().getStyle().setWidth(100, Unit.PX);
+		container.getElement().getStyle().setHeight(50, Unit.PX);
+		container.getElement().getStyle().setMargin(10, Unit.PX);
+		container.getElement().getStyle().setBackgroundColor("blue");
+		draggable = dragDropHelper.enableDragForWidget(container, parentModule);
 		item.add(draggable.getDraggableWidget());
 
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
-//				Element clone = DOM.clone(getElement(),true);
-//				Document.get().getBody().appendChild(clone);
-//				HTMLPanel cloncontainer = HTMLPanel.wrap(clone);
-//				FlowPanel panel = new FlowPanel();
-//				panel.add(cloncontainer);
-//				Element element = panel.getElement();
-//				element.getStyle().setZIndex(100);
-//				element.getStyle().setPosition(Position.ABSOLUTE);
-//				element.getStyle().setLeft(-50, Unit.PX);
-//				RootPanel.get().add(panel);
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
-			//	event.setData("text", dragDataObject.getValue());
-				Debug.log("on drag start draggable");
 				event.setData("json", dragDataObject.toJSON());
-				// FIXME gdzie obslugiwac zaradzaniem widkokiem przenoszonego widgetu moze tu tylko ustawiwnie wielkosci dla parent?
+				// FIXME gdzie obslugiwac zaradzaniem widkokiem przenoszonego
+				// widgetu moze tu tylko ustawiwnie wielkosci dla parent?
 				sourceListView.onItemDragStarted(dragDataObject, event, SourceListViewItem.this);
 			}
 		});
@@ -98,4 +89,11 @@ public class SourceListViewItem extends Composite {
 		draggable.setDisableDrag(disableDrag);
 	}
 
+	public void show() {
+		container.setVisible(true);
+	}
+
+	public void hide() {
+		container.setVisible(false);
+	}
 }
