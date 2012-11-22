@@ -55,7 +55,8 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 	}
 	
 	private void handleDragStart(DragDropEvent event) {
-		dragSource = (SourceListModule) event.getIModule();
+		dragSource = (SourceListModule) event.getIModule();		
+		eventsBus.fireEvent(new DragDropEvent(DragDropEventTypes.ENABLE_ALL_DROP_ZONE, null), scopeFactory.getCurrentPageScope());
 		
 		for (IModule gap : findInapplicableGaps(dragSource)) {
 			DragDropEvent gapDisableEvent = new DragDropEvent(DragDropEventTypes.DISABLE_DROP_ZONE, gap);			
