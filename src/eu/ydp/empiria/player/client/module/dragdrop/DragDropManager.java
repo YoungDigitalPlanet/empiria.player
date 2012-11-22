@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.dragdrop;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -18,8 +19,11 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class DragDropManager implements Extension, DragDropEventHandler {
+public class DragDropManager implements Extension, DragDropEventHandler, PlayerEventHandler {
 
 	@Inject
 	EventsBus eventsBus;
@@ -32,6 +36,8 @@ public class DragDropManager implements Extension, DragDropEventHandler {
 	HashMap<IModule, String> moduleValues = new HashMap<IModule, String>();
 	
 	SourceListModule dragSource;
+
+	private ArrayList<IModule> waitingForRegister = new ArrayList<IModule>();
 	
 	@Override
 	public ExtensionType getType() {
@@ -41,6 +47,7 @@ public class DragDropManager implements Extension, DragDropEventHandler {
 	@Override
 	public void init() {
 		eventsBus.addHandler(DragDropEvent.getType(DragDropEventTypes.REGISTER_DROP_ZONE), this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_LOADED), this);
 	}
 
 	private void handleDragCancell(DragDropEvent event) {
@@ -51,7 +58,7 @@ public class DragDropManager implements Extension, DragDropEventHandler {
 		dragSource = (SourceListModule) event.getIModule();
 		
 		for (IModule gap : findInapplicableGaps(dragSource)) {
-			DragDropEvent gapDisableEvent = new DragDropEvent(DragDropEventTypes.DISABLE_DROP_ZONE, gap);
+			DragDropEvent gapDisableEvent = new DragDropEvent(DragDropEventTypes.DISABLE_DROP_ZONE, gap);			
 			gapDisableEvent.setIModule(gap);
 			eventsBus.fireEventFromSource(gapDisableEvent, gap, scopeFactory.getCurrentPageScope());			
 		}		
@@ -104,8 +111,7 @@ public class DragDropManager implements Extension, DragDropEventHandler {
 	
 	protected void registerDropZone(DragDropEvent event) {		
 		eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.DRAG_END), event.getIModule(), this);		
-		IModule dropZone = event.getIModule();				
-		buildDropZoneSourceListRelationships(dropZone, dropZone.getParentModule());
+		waitingForRegister.add(event.getIModule()); 
 	}
 
 	private void buildDropZoneSourceListRelationships(IModule dropZone, HasChildren module) {
@@ -113,11 +119,19 @@ public class DragDropManager implements Extension, DragDropEventHandler {
 			List<IModule> relatedModules = module.getChildrenModules();
 			for (IModule relatedModule : relatedModules) {
 				if (relatedModule instanceof SourceListModule) {										
-					dropZones.put(dropZone, (SourceListModule)relatedModule);					
+					dropZones.put(dropZone, (SourceListModule)relatedModule);
 					eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.DRAG_START), relatedModule, this);
 				}
 			}
 			buildDropZoneSourceListRelationships(dropZone, module.getParentModule());
 		}
-	}		
+	}
+
+	@Override
+	public void onPlayerEvent(PlayerEvent event) {		
+		for (IModule dropZone : waitingForRegister) {
+			buildDropZoneSourceListRelationships(dropZone, dropZone.getParentModule());			
+		}		
+	}
+	
 }
