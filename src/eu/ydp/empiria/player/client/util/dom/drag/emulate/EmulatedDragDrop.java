@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.util.dom.drag.emulate;
 
 import javax.annotation.PostConstruct;
 
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragEnterHandler;
@@ -16,20 +15,20 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.AbstractDragDrop;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropType;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
-import eu.ydp.gwtutil.client.debug.logger.Debug;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
-import gwtquery.plugins.draggable.client.events.DragStartEvent;
-import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHandler;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import gwtquery.plugins.droppable.client.events.DropEvent;
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
+import gwtquery.plugins.droppable.client.events.OutDroppableEvent;
+import gwtquery.plugins.droppable.client.events.OutDroppableEvent.OutDroppableEventHandler;
+import gwtquery.plugins.droppable.client.events.OverDroppableEvent;
+import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppableEventHandler;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 /**
@@ -50,21 +49,16 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 	private final DragDropType type;
 
 	@Inject
-	private OverlayTypesParser parser;
-
-	@Inject
 	public EmulatedDragDrop(@Assisted("widget") W widget, @Assisted("imodule") IModule imodule, @Assisted("type") DragDropType type,
 			@Assisted("disableAutoBehavior") boolean disableAutoBehavior) {
 		this.originalWidget = widget;
 		this.imodule = imodule;
 		this.disableAutoBehavior = disableAutoBehavior;
 		this.type = type;
-		Debug.log("emulated Drop");
 	}
 
 	@PostConstruct
 	public void postConstruct() {
-		Debug.log("emulated Drop post construct");
 		if (type == DragDropType.DRAG) {
 			createDrag(originalWidget);
 		} else {
@@ -80,28 +74,14 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 		dragWidget = new DraggableWidget<W>(widget, options);
 		dragWidget.setDraggableOptions(options);
 		dragWidget.setDraggingOpacity(.8f);
-		dragWidget.addDragStartHandler(new DragStartEventHandler() {
-
-			@Override
-			public void onDragStart(DragStartEvent event) {
-				Debug.log("DRAG START");
-			}
-		});
-
 
 	}
 
-	private native void ss(JavaScriptObject ob)/*-{
-		console.log(ob);
-	}-*/;
 	private void createDrop(W widget) {
 		dropWidget = new DroppableWidget<W>(widget);
 		dropWidget.addDropHandler(new DropEventHandler() {
 			@Override
 			public void onDrop(DropEvent event) {
-				ss(event.getDraggable());
-				Debug.log("drop "+event.getDraggable());
-				Debug.log("drop "+event.getDraggable().getAttribute(DATA_JSON));
 				JsonAttr jsonAttr = overlayTypesParser.get(event.getDraggable().getAttribute(DATA_JSON));
 				getDropEventsHandlerWrapper().setJsonAttr(jsonAttr);
 			}
@@ -119,10 +99,29 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 			@Override
 			public void onDrop(DropEvent event) {
 				JsonAttr jsonAttr = overlayTypesParser.get(event.getDraggable().getAttribute(DATA_JSON));
-				Debug.log("json attr"+jsonAttr.toJSON()+" "+jsonAttr.getAttrValue(DATA_JSON));
 				if (jsonAttr.getAttrValue(JSON) != null) {
 					putValue(jsonAttr.getAttrValue(JSON));
 				}
+			}
+		});
+		dropWidget.addDropHandler(new DropEventHandler() {
+			@Override
+			public void onDrop(DropEvent event) {
+				removeStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
+			}
+		});
+
+		dropWidget.addOverDroppableHandler(new OverDroppableEventHandler() {
+			@Override
+			public void onOverDroppable(OverDroppableEvent event) {
+				addStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
+			}
+		});
+
+		dropWidget.addOutDroppableHandler(new OutDroppableEventHandler() {
+			@Override
+			public void onOutDroppable(OutDroppableEvent event) {
+				removeStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
 			}
 		});
 	}
@@ -163,7 +162,6 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 
 	@Override
 	public HandlerRegistration addDragStartHandler(DragStartHandler handler) {
-		Debug.log("add drag start statata "+handler);
 		return getDragStartEndHandlerWrapper().wrap(handler);
 	}
 

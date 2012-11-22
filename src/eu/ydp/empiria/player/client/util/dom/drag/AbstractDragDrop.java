@@ -11,8 +11,10 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
+import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 import eu.ydp.gwtutil.client.debug.logger.Debug;
 
@@ -26,13 +28,16 @@ public abstract class AbstractDragDrop<W extends Widget> {
 	@Inject
 	protected PageScopeFactory scopeFactory;
 
+	@Inject
+	protected StyleNameConstants styleNames;
+
 	protected boolean valueChangeSelfFire = false;
 
 	protected void fireEvent(DragDropEventTypes type, DragDataObject dataObject) {
 		if (type != null && dataObject != null) {
 			DragDropEvent dragDropEvent = new DragDropEvent(type, getIModule());
 			dragDropEvent.setDragDataObject(dataObject);
-			Debug.log(type + " " + dataObject.toJSON());
+			Debug.log(type+" "+dataObject.toJSON());
 			eventsBus.fireEventFromSource(dragDropEvent, getIModule(), scopeFactory.getCurrentPageScope());
 		}
 	}
@@ -43,6 +48,22 @@ public abstract class AbstractDragDrop<W extends Widget> {
 		eventsBus.fireEventFromSource(event, getIModule(), scopeFactory.getCurrentPageScope());
 	}
 
+	protected void addHandlerDisableEnableEvent(){
+		eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.DISABLE_DROP_ZONE), getIModule(), new DragDropEventHandler() {
+			@Override
+			public void onDragEvent(DragDropEvent event) {
+				setDisableDrop(true);
+			}
+		});
+
+		eventsBus.addHandler(DragDropEvent.getType(DragDropEventTypes.ENABLE_ALL_DROP_ZONE), new DragDropEventHandler() {
+			@Override
+			public void onDragEvent(DragDropEvent event) {
+				setDisableDrop(false);
+			}
+		});
+
+	}
 	public HasValueChangeHandlers<?> findHasValueChangeHandlers(Widget widget) {
 		HasValueChangeHandlers<?> returnValue = null;
 		if (widget instanceof HasValueChangeHandlers) {
@@ -64,6 +85,7 @@ public abstract class AbstractDragDrop<W extends Widget> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void setAutoBehaviorForDrop(boolean disableAutoBehavior) {
 		registerDropZone();
+		addHandlerDisableEnableEvent();
 		HasValueChangeHandlers widget = findHasValueChangeHandlers(getOriginalWidget());
 		if (widget != null) {
 			widget.addValueChangeHandler(new ValueChangeHandler() {
@@ -122,7 +144,21 @@ public abstract class AbstractDragDrop<W extends Widget> {
 		return value;
 	}
 
+	protected void addStyleForWidget(String style,boolean disabled) {
+		if (!disabled) {
+			getOriginalWidget().addStyleName(style);
+		}
+	}
+
+	protected void removeStyleForWidget(String style,boolean disabled) {
+		if (!disabled) {
+			getOriginalWidget().removeStyleName(style);
+		}
+	}
+
 	protected abstract W getOriginalWidget();
 
 	protected abstract IModule getIModule();
+
+	protected abstract void setDisableDrop(boolean disabled);
 }

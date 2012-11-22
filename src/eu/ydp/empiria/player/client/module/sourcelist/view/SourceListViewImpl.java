@@ -112,11 +112,9 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 
 	public void onItemDragStarted(DragDataObject dragDataObject, DragStartEvent startEvent, SourceListViewItem item) {
 		disableItems(true);
-
 		DragDropEvent event = new DragDropEvent(DRAG_START, this);
 		event.setDragDataObject(dragDataObject);
 		event.setIModule(parentModule);
- 		// item.setVisible(visible)
 		eventsBus.fireEventFromSource(event, parentModule, pageScopeFactory.getCurrentPageScope());
 	}
 
@@ -124,9 +122,10 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 	public void onDragEvent(DragDropEvent event) {
 		if (event.getType() == DRAG_END) {
 			disableItems(false);
+			
 		//	Debug.log(event.getDragDataObject().toJSON());
 		//	Debug.log(event.getDragDataObject().getSourceId());
-			// FIXME gdzie obsluzyc wyjeceie lelementu mamy sourceid ?
+		// FIXME gdzie obsluzyc wyjeceie lelementu mamy sourceid ?
 		}
 
 	}

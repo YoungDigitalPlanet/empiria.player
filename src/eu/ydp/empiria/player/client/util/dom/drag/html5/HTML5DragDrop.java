@@ -26,7 +26,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.AbstractDragDrop;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropType;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
@@ -38,9 +37,6 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 
 	private final W originalWidget;
 	private final boolean disableAutoBehavior;
-
-	@Inject
-	protected StyleNameConstants styleNames;
 
 	private boolean disabled = false;
 	private final IModule imodule;
@@ -59,7 +55,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 	@PostConstruct
 	public void postConstruct(){
 		if (type == DRAG) {
-			setAutoBehaviorForDrag(disableAutoBehavior);
+			setAutoBehaviorForDrag();
 		} else {
 			setAutoBehaviorForDrop(disableAutoBehavior);
 		}
@@ -68,25 +64,13 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 		element.dragDrop();
 	}-*/;
 
-	private void addStyleForWidget(String style) {
-		if (!disabled) {
-			originalWidget.addStyleName(style);
-		}
-	}
-
-	private void removeStyleForWidget(String style) {
-		if (!disabled) {
-			originalWidget.removeStyleName(style);
-		}
-	}
-
 	@Override
 	protected void setAutoBehaviorForDrop(boolean disableAutoBehavior) {
 		if (!disableAutoBehavior) {
 			originalWidget.addDomHandler(new DropHandler() {
 				@Override
 				public void onDrop(DropEvent event) {
-					removeStyleForWidget(styleNames.QP_DROPZONE_OVER());
+					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(),disabled);
 					if (!disabled) {
 						putValue(event.getData("json"));
 					}
@@ -108,7 +92,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 			originalWidget.addDomHandler(new DragOverHandler() {
 				@Override
 				public void onDragOver(DragOverEvent event) {
-					addStyleForWidget(styleNames.QP_DROPZONE_OVER());
+					addStyleForWidget(styleNames.QP_DROPZONE_OVER(),disabled);
 					setDropEffect(event.getDataTransfer(), (disabled) ? "none" : "move");
 					event.stopPropagation();
 					event.preventDefault();
@@ -118,7 +102,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 			originalWidget.addDomHandler(new DragLeaveHandler() {
 				@Override
 				public void onDragLeave(DragLeaveEvent event) {
-					removeStyleForWidget(styleNames.QP_DROPZONE_OVER());
+					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(),disabled);
 				}
 			}, DragLeaveEvent.getType());
 		}
@@ -136,7 +120,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 		//	dataTransferObject.effectAllowed=value;
 	}-*/;
 
-	private void setAutoBehaviorForDrag(boolean disableAutoBehavior) {
+	private void setAutoBehaviorForDrag() {
 		// IE bug
 		if (UserAgentChecker.isUserAgent(UserAgent.IE9, UserAgent.IE8)) {
 			originalWidget.addDomHandler(new MouseDownHandler() {
@@ -148,14 +132,6 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 				}
 			}, MouseDownEvent.getType());
 		}
-//		widget.addDomHandler(new DragStartHandler() {
-//
-//			@Override
-//			public void onDragStart(DragStartEvent event) {
-//				// setEffectAllowed(event.getDataTransfer(),"move");
-//			}
-//		}, DragStartEvent.getType());
-
 		originalWidget.getElement().setDraggable(Element.DRAGGABLE_TRUE);
 	}
 
