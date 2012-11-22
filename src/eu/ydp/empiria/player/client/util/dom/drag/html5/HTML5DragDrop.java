@@ -44,7 +44,8 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 	private final DragDropType type;
 
 	@Inject
-	public HTML5DragDrop(final @Assisted("widget") W widget, @Assisted("imodule") IModule imodule, @Assisted("type") DragDropType type, @Assisted("disableAutoBehavior") boolean disableAutoBehavior) {
+	public HTML5DragDrop(final @Assisted("widget") W widget, @Assisted("imodule") IModule imodule, @Assisted("type") DragDropType type,
+			@Assisted("disableAutoBehavior") boolean disableAutoBehavior) {
 		this.originalWidget = widget;
 		this.imodule = imodule;
 		this.disableAutoBehavior = disableAutoBehavior;
@@ -53,13 +54,14 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 	}
 
 	@PostConstruct
-	public void postConstruct(){
+	public void postConstruct() {
 		if (type == DRAG) {
 			setAutoBehaviorForDrag();
 		} else {
 			setAutoBehaviorForDrop(disableAutoBehavior);
 		}
 	}
+
 	protected final native void enableDragForIE(Element element)/*-{
 		element.dragDrop();
 	}-*/;
@@ -70,7 +72,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 			originalWidget.addDomHandler(new DropHandler() {
 				@Override
 				public void onDrop(DropEvent event) {
-					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(),disabled);
+					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
 					if (!disabled) {
 						putValue(event.getData("json"));
 					}
@@ -92,7 +94,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 			originalWidget.addDomHandler(new DragOverHandler() {
 				@Override
 				public void onDragOver(DragOverEvent event) {
-					addStyleForWidget(styleNames.QP_DROPZONE_OVER(),disabled);
+					addStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
 					setDropEffect(event.getDataTransfer(), (disabled) ? "none" : "move");
 					event.stopPropagation();
 					event.preventDefault();
@@ -102,7 +104,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 			originalWidget.addDomHandler(new DragLeaveHandler() {
 				@Override
 				public void onDragLeave(DragLeaveEvent event) {
-					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(),disabled);
+					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
 				}
 			}, DragLeaveEvent.getType());
 		}
@@ -111,7 +113,9 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 	}
 
 	/**
-	 * @see <a reef="https://developer.mozilla.org/en-US/docs/DragDrop/DataTransfer">DataTransfer</a>
+	 * @see <a
+	 *      reef="https://developer.mozilla.org/en-US/docs/DragDrop/DataTransfer"
+	 *      >DataTransfer</a>
 	 * @param dataTransferObject
 	 * @param value
 	 */

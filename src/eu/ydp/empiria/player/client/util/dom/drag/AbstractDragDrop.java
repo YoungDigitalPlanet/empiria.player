@@ -96,7 +96,7 @@ public abstract class AbstractDragDrop<W extends Widget> {
 						String value = String.valueOf(event.getValue());
 						NativeDragDataObject object = overlayTypesParser.get();
 						object.setValue(value);
-						fireEvent(DragDropEventTypes.DRAG_END, object);
+						fireEvent(DragDropEventTypes.USER_CHANGE_DROP_ZONE, object);
 					}
 				}
 			});
