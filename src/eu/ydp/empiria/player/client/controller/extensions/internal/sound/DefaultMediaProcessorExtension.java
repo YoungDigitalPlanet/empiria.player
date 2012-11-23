@@ -175,7 +175,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			MediaExecutor<?> executor;
 			MediaExecutor<?> fullScreenExecutor = null;
 			if (!UserAgentChecker.isLocal() && defaultMedia == null) {
-				if (bmc.isTemplate()) {
+				if (bmc.isTemplate() || bmc.isFeedback()) {
 					if (bmc.getMediaType() == MediaType.VIDEO) {
 						executor = createSWFVideoMediaExecutor();
 						if (bmc.isFullScreenTemplate()) {

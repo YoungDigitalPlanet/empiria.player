@@ -5,15 +5,16 @@ import static com.google.common.base.Optional.fromNullable;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
@@ -31,12 +32,11 @@ public class ModuleFeedbackProcessor {
 	private FeedbackPropertiesCreator propertiesCreator;
 	
 	private Map<String, ? extends Variable> variables;
-	
-	private static final ImmutableList<FeedbackActionProcessor> DEFAULT_PROCESSORS = 
-																	ImmutableList.<FeedbackActionProcessor>builder().
-																		add(new SoundActionProcessor()).
-																	build();
-	
+
+	@Inject
+	private SoundActionProcessor soundProcessor;
+
+	private Map<String, ? extends Variable> variables;	
 	public void process(IModule sender, Map<String, ? extends Variable> variables){
 		feedbackActionCollector = new FeedbackActionCollector(sender);
 		processFeedbackActionCollector(sender);
@@ -89,8 +89,15 @@ public class ModuleFeedbackProcessor {
 	protected List<FeedbackActionProcessor> getFeedbackProcessors(IModule module){
 		List<FeedbackActionProcessor> processors = Lists.newArrayList();
 		
-		processors.addAll(DEFAULT_PROCESSORS);
+		processors.addAll(getDefaultProcessors());
 		processors.addAll(getProcessorModules(module));
+		
+		return processors;
+	}
+	
+	private List<FeedbackActionProcessor> getDefaultProcessors() {
+		List<FeedbackActionProcessor> processors = Lists.newArrayList();
+		processors.add(soundProcessor);
 		
 		return processors;
 	}

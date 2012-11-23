@@ -1,10 +1,20 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
+import java.util.Collections;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 
 public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
+	
+	@Inject
+	private SoundPlayer player;
 
 	@Override
 	protected boolean canProcessAction(FeedbackAction action) {
@@ -22,7 +32,14 @@ public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
 
 	@Override
 	protected void processSingleAction(FeedbackAction action) {
-		// TODO Auto-generated method stub
+		if (action instanceof ShowUrlAction) {
+			ShowUrlAction urlAction = ((ShowUrlAction) action);
+			
+			List<String> sources = Lists.newArrayList();
+			sources.add(urlAction.getHref());
+			
+			player.play(sources);
+		}
 	}
 	
 }

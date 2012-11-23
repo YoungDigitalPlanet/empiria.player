@@ -18,9 +18,9 @@ public class BaseMediaConfiguration {
 	private final boolean hasTemplate;
 	private final String narrationText;
 	private final boolean fullScreenTemplate;
+	private boolean isFeedback;
 
 	public BaseMediaConfiguration(Map<String, String> sources, MediaType mediaType, String poster, int height, int width, boolean hasTemplate, boolean fullScreenTemplate, String narrationText) {
-		super();
 		this.sources = sources;
 		this.mediaType = mediaType;
 		this.poster = poster;
@@ -29,8 +29,13 @@ public class BaseMediaConfiguration {
 		this.hasTemplate = hasTemplate;
 		this.narrationText = narrationText;
 		this.fullScreenTemplate = fullScreenTemplate;
+		this.isFeedback = false;
 	}
 
+	public BaseMediaConfiguration(Map<String, String> sources, boolean isFeedback) {
+		this(sources, MediaType.AUDIO, "", 1, 1, false, false, "");
+		this.isFeedback = isFeedback;
+	}
 
 	public Map<String, String> getSources() {
 		return sources;
@@ -62,5 +67,9 @@ public class BaseMediaConfiguration {
 
 	public String getNarrationText() {
 		return narrationText;
+	}
+
+	public boolean isFeedback() {
+		return isFeedback;
 	}
 }
