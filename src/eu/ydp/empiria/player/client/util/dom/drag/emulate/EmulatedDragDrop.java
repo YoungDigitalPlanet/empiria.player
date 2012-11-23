@@ -71,6 +71,8 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 		options.setHelper(HelperType.CLONE);
 		options.setRevert(RevertOption.ON_INVALID_DROP);
 		options.setCursor(Cursor.MOVE);
+		options.setSnap(true);
+		options.setSnapTolerance(50);
 		dragWidget = new DraggableWidget<W>(widget, options);
 		dragWidget.setDraggableOptions(options);
 		dragWidget.setDraggingOpacity(.8f);
