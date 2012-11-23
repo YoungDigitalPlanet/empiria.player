@@ -31,7 +31,6 @@ public class SourceListPresenterMock implements SourceListPresenter {
 
 	@Override
 	public void setIModule(IModule module) {
-		// TODO Auto-generated method stub
 
 	}
 

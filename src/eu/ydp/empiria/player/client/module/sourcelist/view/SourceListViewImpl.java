@@ -34,7 +34,7 @@ import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
 public class SourceListViewImpl extends Composite implements SourceListView, DragDropEventHandler {
 
-	private static SourceListViewImplUiBinder uiBinder = GWT.create(SourceListViewImplUiBinder.class);
+	protected static SourceListViewImplUiBinder uiBinder = GWT.create(SourceListViewImplUiBinder.class);
 
 	interface SourceListViewImplUiBinder extends UiBinder<Widget, SourceListViewImpl> {
 	}
@@ -78,13 +78,16 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		return item;
 	}
 
-	private DragDataObject createDragDataObject() {
+	protected DragDataObject createDragDataObject() {
 		return (NativeDragDataObject) overlayTypesParser.get();
 	}
 
+	protected void initWidget(){
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 	@Override
 	public void createAndBindUi() {
-		initWidget(uiBinder.createAndBindUi(this));
+		initWidget();
 		List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
 		for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
 			DragDataObject obj = createDragDataObject();

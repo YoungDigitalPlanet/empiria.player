@@ -52,6 +52,8 @@ import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListViewMo
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParser;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParserMock;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.SchedulerImpl;
@@ -159,10 +161,12 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(SourceListView.class).to(SourceListViewMock.class);
 		bind(SourceListPresenter.class).to(SourceListPresenterMock.class);
 		bind(MatcherRegistry.class).in(Singleton.class);
+		bind(OverlayTypesParser.class).toInstance(mock(OverlayTypesParserMock.class));
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));
 		install(new FactoryModuleBuilder().build(MatcherRegistryFactory.class));
+
 	}
 
 	@Provides

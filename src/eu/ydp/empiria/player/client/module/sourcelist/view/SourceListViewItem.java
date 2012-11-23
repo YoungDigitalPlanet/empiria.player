@@ -48,7 +48,6 @@ public class SourceListViewItem extends Composite {
 
 	@Inject
 	public SourceListViewItem(@Assisted DragDataObject dragDataObject, @Assisted IModule parentModule, StyleNameConstants styleNames, DragDropHelper dragDropHelper) {
-		super();
 		this.dragDropHelper = dragDropHelper;
 		this.dragDataObject = dragDataObject;
 		this.parentModule = parentModule;
