@@ -11,10 +11,8 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
@@ -36,7 +34,6 @@ public class ModuleFeedbackProcessor {
 	@Inject
 	private SoundActionProcessor soundProcessor;
 
-	private Map<String, ? extends Variable> variables;	
 	public void process(IModule sender, Map<String, ? extends Variable> variables){
 		feedbackActionCollector = new FeedbackActionCollector(sender);
 		processFeedbackActionCollector(sender);
