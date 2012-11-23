@@ -25,19 +25,11 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 public class TextEntryModule extends GapBase implements Factory<TextEntryModule> {
-
-	@Inject
-	private EventsBus eventsBus;
 
 	@Inject
 	protected StyleNameConstants styleNames;
@@ -78,18 +70,6 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 		createFeedbacks(getModuleElement(), getModuleSocket(), getInteractionEventsListener());
 	}
 
-	private void addPlayerEventHandlers(){
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
-
-			@Override
-			public void onPlayerEvent(PlayerEvent event) {
-				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
-					updateResponse(false);
-					presenter.removeFocusFromTextField();
-				}
-			}
-		},new CurrentPageScope());
-	}
 
 	private boolean isMobileUserAgent(){
 		return UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN;
@@ -169,7 +149,7 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 		updateResponse(false);
 	}
 
-	private void updateResponse(boolean userInteract){
+	protected void updateResponse(boolean userInteract){
 		if (showingAnswer) {
 			return;
 		}

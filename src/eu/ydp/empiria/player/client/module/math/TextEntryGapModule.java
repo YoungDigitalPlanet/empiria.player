@@ -61,9 +61,8 @@ public class TextEntryGapModule extends GapBase implements MathGap, Factory<Text
 	public void installViews(List<HasWidgets> placeholders) {
 		HasWidgets placeholder = placeholders.get(0);
 		presenter.installViewInContainer(((HasWidgets) ((Widget) placeholder).getParent()));
-
+		addPlayerEventHandlers();
 		loadElementProperties();
-
 		styles = getModuleSocket().getStyles(getModuleElement());
 
 		setDimensions();

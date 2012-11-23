@@ -17,13 +17,13 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.gap.GapBase.Presenter;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
-public class TextEntryModulePresenter implements Presenter,ChangeHandler {
+public class TextEntryModulePresenter implements GapModulePresenter,ChangeHandler {
 
 	@UiTemplate("TextEntryModule.ui.xml")
 	interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModulePresenter>{};
@@ -136,9 +136,9 @@ public class TextEntryModulePresenter implements Presenter,ChangeHandler {
 	public void setMarkMode(String mode) {
 		String markStyleName;
 
-		if(Presenter.CORRECT.equals(mode)) {
+		if(GapModulePresenter.CORRECT.equals(mode)) {
 			markStyleName = styleNames.QP_TEXT_TEXTENTRY_CORRECT();
-		} else if(Presenter.WRONG.equals(mode)){
+		} else if(GapModulePresenter.WRONG.equals(mode)){
 			markStyleName = styleNames.QP_TEXT_TEXTENTRY_WRONG();
 		}else{
 			markStyleName = styleNames.QP_TEXT_TEXTENTRY_NONE();

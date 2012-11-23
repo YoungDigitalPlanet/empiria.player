@@ -16,12 +16,12 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.gap.GapBase.Presenter;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
-public class TextEntryGapModulePresenter implements Presenter, ChangeHandler {
+public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHandler {
 
 	@UiTemplate("TextEntryGap.ui.xml")
 	interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryGapModulePresenter>{};
@@ -119,9 +119,9 @@ public class TextEntryGapModulePresenter implements Presenter, ChangeHandler {
 
 	@Override
 	public void removeMarking() {
-		markPanel.removeStyleDependentName(Presenter.NONE);
-		markPanel.removeStyleDependentName(Presenter.CORRECT);
-		markPanel.removeStyleDependentName(Presenter.WRONG);
+		markPanel.removeStyleDependentName(GapModulePresenter.NONE);
+		markPanel.removeStyleDependentName(GapModulePresenter.CORRECT);
+		markPanel.removeStyleDependentName(GapModulePresenter.WRONG);
 	}
 
 	@Override
