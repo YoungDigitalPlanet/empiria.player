@@ -20,13 +20,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.factory.SourceListFactory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
-import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
@@ -47,13 +46,10 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 	private PageScopeFactory pageScopeFactory;
 
 	@Inject
-	private DragDropHelper dragDropHelper;
-
-	@Inject
 	private OverlayTypesParser overlayTypesParser;
 
 	@Inject
-	private StyleNameConstants styleNames;
+	private SourceListFactory sourceListFactory;
 
 	@UiField
 	FlowPanel items;
@@ -76,7 +72,7 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 	}
 
 	private SourceListViewItem getItem(DragDataObject dragDataObject) {
-		SourceListViewItem item = new SourceListViewItem(dragDropHelper, dragDataObject, parentModule, styleNames);
+		SourceListViewItem item = sourceListFactory.getSourceListViewItem(dragDataObject, parentModule);
 		item.setSourceListView(this);
 		item.createAndBindUi();
 		return item;

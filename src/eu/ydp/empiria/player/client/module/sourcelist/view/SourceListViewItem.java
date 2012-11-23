@@ -11,6 +11,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.module.IModule;
@@ -44,7 +46,8 @@ public class SourceListViewItem extends Composite {
 	protected HandlerRegistration addTouchHandler;
 	protected boolean dragRelease = false;
 
-	public SourceListViewItem(DragDropHelper dragDropHelper, DragDataObject dragDataObject, IModule parentModule, StyleNameConstants styleNames) {
+	@Inject
+	public SourceListViewItem(@Assisted DragDataObject dragDataObject, @Assisted IModule parentModule, StyleNameConstants styleNames, DragDropHelper dragDropHelper) {
 		super();
 		this.dragDropHelper = dragDropHelper;
 		this.dragDataObject = dragDataObject;
