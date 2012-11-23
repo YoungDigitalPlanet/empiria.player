@@ -209,11 +209,6 @@ public class DragDropManagerJUnitTest {
 		}
 
 		@Override
-		public String getSourceId() {
-			return null;
-		}
-
-		@Override
 		public String getValue() {
 			return value;
 		}
@@ -233,9 +228,6 @@ public class DragDropManagerJUnitTest {
 			this.previousValue = value;
 			
 		}
-
-		@Override
-		public void setSourceId(String sId) {
-		}    	
+ 	
     }
 }
