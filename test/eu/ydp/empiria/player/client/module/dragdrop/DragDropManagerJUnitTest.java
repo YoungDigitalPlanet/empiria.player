@@ -30,6 +30,8 @@ import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
@@ -57,6 +59,7 @@ public class DragDropManagerJUnitTest {
 		DragDropEvent eventMock = mockDragDropEvent(module, DragDropEventTypes.REGISTER_DROP_ZONE, null);
 		
 		dragDropManager.registerDropZone(eventMock);		
+		dragDropManager.onPlayerEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED));
 		
 		assertThat(dragDropManager.dropZones.size(), is(equalTo(2)));
 	}
@@ -71,7 +74,8 @@ public class DragDropManagerJUnitTest {
 		buildSourcelistsCollection(topParentModule);	
 		DragDropEvent eventMock = mockDragDropEvent(module, DragDropEventTypes.REGISTER_DROP_ZONE, null);
 		
-		dragDropManager.registerDropZone(eventMock);		
+		dragDropManager.registerDropZone(eventMock);
+		dragDropManager.onPlayerEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED));
 		
 		assertThat(dragDropManager.dropZones.size(), is(equalTo(4)));
 	}	
