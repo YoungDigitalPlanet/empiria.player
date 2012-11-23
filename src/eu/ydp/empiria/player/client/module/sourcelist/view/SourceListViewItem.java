@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.DragEndEvent;
 import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragStartEvent;
@@ -53,22 +52,27 @@ public class SourceListViewItem extends Composite {
 		this.styleNames = styleNames;
 	}
 
+	private void setSize() {
+		setWidth(item.getOffsetWidth() + "px");
+		setHeight(item.getOffsetHeight() + "px");
+		container.setHeight(item.getOffsetHeight() + "px");
+		container.setWidth(item.getOffsetWidth() + "px");
+	}
+
 	public void createAndBindUi() {
 		initWidget(uiBinder.createAndBindUi(this));
 		Label label = new Label(dragDataObject.getValue());
 		container = new FlowPanel();
 		container.addStyleName(styleNames.QP_DRAG_ITEM());
 		container.add(label);
-		container.getElement().getStyle().setWidth(100, Unit.PX);
-		container.getElement().getStyle().setHeight(50, Unit.PX);
-		container.getElement().getStyle().setMargin(10, Unit.PX);
-		container.getElement().getStyle().setBackgroundColor("blue");
 		draggable = dragDropHelper.enableDragForWidget(container, parentModule);
 		item.add(draggable.getDraggableWidget());
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
+				setSize();
 				dragRelease = false;
+				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
 				event.setData("json", dragDataObject.toJSON());
 				sourceListView.onItemDragStarted(dragDataObject, event, SourceListViewItem.this);
@@ -78,6 +82,7 @@ public class SourceListViewItem extends Composite {
 		draggable.addDragEndHandler(new DragEndHandler() {
 			@Override
 			public void onDragEnd(DragEndEvent event) {
+				getElement().removeClassName(styleNames.QP_DRAGGED_DRAG());
 				sourceListView.onMaybeDragCanceled();
 			}
 		});

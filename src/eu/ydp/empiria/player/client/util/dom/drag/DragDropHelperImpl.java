@@ -16,14 +16,14 @@ public class DragDropHelperImpl implements DragDropHelper {
 	@Inject
 	protected DragDropObjectFactory obFactory;
 
-	private boolean isNativeDragSupported(){
-		//ie sprawie za duzo problemow przy dragu domyslnie emulowany
-		return DragEvent.isSupported() && !UserAgentChecker.isUserAgent(UserAgent.IE8,UserAgent.IE9);
-	}
+	private final static boolean isNativeDragSupported =    DragEvent.isSupported()
+														&& !UserAgentChecker.isUserAgent(UserAgent.IE8,UserAgent.IE9)
+														&& !UserAgentChecker.isMobileUserAgent();
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public DraggableObject<Widget> enableDragForWidget(Widget widget, IModule module) {
-		return (isNativeDragSupported()) ? obFactory.getHTML5DragDrop(widget, module, DragDropType.DRAG, false)
+		return (isNativeDragSupported) ? obFactory.getHTML5DragDrop(widget, module, DragDropType.DRAG, false)
 										 : obFactory.getEmulatedDragDrop(widget,module, DragDropType.DRAG, false);
 	}
 
@@ -35,7 +35,7 @@ public class DragDropHelperImpl implements DragDropHelper {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <W extends Widget & HasValue<?> & HasChangeHandlers> DroppableObject<W> enableDropForWidget(W widget, IModule module, boolean disableAutoBehavior) {
-		return (DroppableObject) ((isNativeDragSupported())
+		return (DroppableObject) ((isNativeDragSupported)
 									? obFactory.getHTML5DragDrop(widget, module, DragDropType.DROP, disableAutoBehavior)
 								 	: obFactory.getEmulatedDragDrop(widget,module, DragDropType.DROP,disableAutoBehavior));
 	}
