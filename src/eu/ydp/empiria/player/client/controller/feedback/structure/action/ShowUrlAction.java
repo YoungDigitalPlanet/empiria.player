@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure.action;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,14 +16,22 @@ import com.google.common.collect.Lists;
 @XmlRootElement(name="showUrl")
 public class ShowUrlAction implements FeedbackUrlAction {
 	
+	@XmlElement(name="source")
+	private List<ShowUrlActionSource> sources = Lists.newArrayList();
+	
 	@XmlAttribute(name="href")
 	private String href;
 	
 	@XmlAttribute(name="type")
 	private String type;
 	
-	@XmlElement(name="source")
-	private List<ShowUrlActionSource> sources = Lists.newArrayList();
+	public List<ShowUrlActionSource> getSources() {
+		return sources;
+	}
+
+	public void setSources(List<ShowUrlActionSource> sources) {
+		this.sources = sources;
+	}
 
 	public String getHref() {
 		return href;
@@ -40,14 +47,6 @@ public class ShowUrlAction implements FeedbackUrlAction {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-	
-	public List<ShowUrlActionSource> getSources() {
-		return sources;
-	}
-
-	public void setSources(List<ShowUrlActionSource> sources) {
-		this.sources = sources;
 	}
 	
 	public Map<String, String> getSourcesWithTypes() {
