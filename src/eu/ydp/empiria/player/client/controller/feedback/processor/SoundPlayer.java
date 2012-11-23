@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +28,11 @@ public class SoundPlayer {
 	@Inject
 	protected EventsBus eventsBus;
 	
-	private Map<String, MediaWrapper<?>> wrappers = new HashMap<String, MediaWrapper<?>>();
+	// Cache dla wrapperow - do odegrania danego pliku bedzie uzywany zawsze ten sam wrapper.
+	protected Map<String, MediaWrapper<?>> wrappers = new HashMap<String, MediaWrapper<?>>();
 	
-	private class MediaWrapperHandler implements CallbackRecevier {
-		private String wrappersSourcesKey;
+	protected class MediaWrapperHandler implements CallbackRecevier {
+		protected String wrappersSourcesKey;
 		
 		@Override
 		public void setCallbackReturnObject(Object object) {
@@ -43,7 +45,7 @@ public class SoundPlayer {
 			}
 		}
 		
-		private void attachMediaObject(Widget mediaObject) {
+		protected void attachMediaObject(Widget mediaObject) {
 			FlowPanel panel = new FlowPanel();
 			panel.getElement().getStyle().setWidth(1, Unit.PX);
 			panel.getElement().getStyle().setHeight(1, Unit.PX);
@@ -58,32 +60,45 @@ public class SoundPlayer {
 		}
 	}
 
+	// Jesli mamy tylko zrodla plikow.
 	public void play(List<String> sources) {
-		if (wrappers.containsKey(getWrappersSourcesKey(sources))) {
-			playSound(wrappers.get(getWrappersSourcesKey(sources)));
-		} else {
-			createMediaWrapper(sources);
+		Map<String, String> sourcesWithTypes = new HashMap<String, String>();
+		for (String source : sources) {
+			sourcesWithTypes.put(source, getMimeType(source));
 		}
+		
+		this.play(getWrappersSourcesKey(sources), sourcesWithTypes);
 	}
 	
-	protected String getWrappersSourcesKey(List<String> sources) {
-		return Joiner.on(",").join(sources);
+	// Jesli mamy zrodla plikow oraz ich MIME.
+	public void play(Map<String, String> sourcesWithTypes) {
+		String wrappersSourcesKey = getWrappersSourcesKey(new ArrayList<String>(sourcesWithTypes.keySet()));
+		
+		this.play(wrappersSourcesKey, sourcesWithTypes);
+	}
+	
+	protected void play(String wrappersSourcesKey, Map<String, String> sourcesWithTypes) {
+		if (wrappers.containsKey(wrappersSourcesKey)) {
+			playSound(wrappers.get(wrappersSourcesKey));
+		} else {
+			createMediaWrapper(wrappersSourcesKey, sourcesWithTypes);
+		}
 	}
 	
 	protected void playSound(MediaWrapper<?> mediaWrapper) {
 		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, mediaWrapper), mediaWrapper);
 	}
 
-	protected void createMediaWrapper(List<String> sources) {
-		Map<String, String> sourcesWithTypes = new HashMap<String, String>();
-		for (String source : sources) {
-			sourcesWithTypes.put(source, getMimeType(source));
-		}
-		
+	protected void createMediaWrapper(String wrappersSourcesKey, Map<String, String> sourcesWithTypes) {
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, true);
 		MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
-		callbackHandler.setWrappersSourcesKey(getWrappersSourcesKey(sources));
+		callbackHandler.setWrappersSourcesKey(wrappersSourcesKey);
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
+	}
+	
+	// Klucz po ktorym przeszukiwany jest cache.
+	protected String getWrappersSourcesKey(List<String> sources) {
+		return Joiner.on(",").join(sources);
 	}
 	
 	protected String getMimeType(String url) {

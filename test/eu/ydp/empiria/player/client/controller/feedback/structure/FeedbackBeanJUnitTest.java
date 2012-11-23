@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -14,6 +15,7 @@ import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlActionSource;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.AndConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.CountConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
@@ -40,7 +42,10 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 									"</condition>" +
 									"<action>" +
 										"<showText>testowy tekst</showText>" +
-										"<showUrl href=\"sound.mp3\" type=\"narration\" />" +
+										"<showUrl href=\"sound.mp3\" type=\"narration\">" +
+											"<source src=\"sound.mp3\" type=\"audio/mp4\"/>" +
+											"<source src=\"sound.ogg\" type=\"audio/ogg\"/>" +
+										"</showUrl>" +
 										"<showUrl href=\"video.swf\" type=\"video\" />" +
 									"</action>" +
 								"</feedback>";
@@ -139,5 +144,18 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 		assertThat(firstShowUrlAction.getType(), is("narration"));
 		assertThat(secondShowUrlAction.getHref(), is("video.swf"));
 		assertThat(secondShowUrlAction.getType(), is("video"));
+	}
+	
+	@Test
+	public void shouldHaveCorrectSourcesInShowUrlActionOfNarrationType() {
+		List<FeedbackAction> allActions = feedback.getActions();
+		ShowUrlAction firstShowUrlAction = (ShowUrlAction) allActions.get(1);
+		List<ShowUrlActionSource> sources = firstShowUrlAction.getSources();
+		ShowUrlActionSource firstSource = sources.get(0);
+		ShowUrlActionSource secondSource = sources.get(1);
+		assertThat(firstSource.getSrc(), is("sound.mp3"));
+		assertThat(firstSource.getType(), is("audio/mp4"));
+		assertThat(secondSource.getSrc(), is("sound.ogg"));
+		assertThat(secondSource.getType(), is("audio/ogg"));
 	}
 }

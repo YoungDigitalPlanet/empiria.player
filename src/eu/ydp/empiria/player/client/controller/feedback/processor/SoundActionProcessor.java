@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionT
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlActionSource;
 
 public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
 	
@@ -35,10 +36,12 @@ public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
 		if (action instanceof ShowUrlAction) {
 			ShowUrlAction urlAction = ((ShowUrlAction) action);
 			
-			List<String> sources = Lists.newArrayList();
-			sources.add(urlAction.getHref());
-			
-			player.play(sources);
+			if (urlAction.getSources().size() > 0) {
+				player.play(urlAction.getSourcesWithTypes());
+			} else {
+				List<String> sources = Lists.newArrayList(urlAction.getHref());
+				player.play(sources);
+			}
 		}
 	}
 	

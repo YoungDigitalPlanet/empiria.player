@@ -10,8 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.common.collect.Lists;
 
-
-
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="action")
 public class FeedbackActionBean {
