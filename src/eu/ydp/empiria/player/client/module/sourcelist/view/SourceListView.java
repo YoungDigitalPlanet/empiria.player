@@ -9,5 +9,5 @@ public interface SourceListView extends IsWidget{
 	public void setBean(SourceListBean bean);
 	public void setIModule(IModule module);
 	public void createAndBindUi();
-
+	public boolean containsValue(String value);
 }

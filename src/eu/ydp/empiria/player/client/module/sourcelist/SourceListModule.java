@@ -40,4 +40,8 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 		presenter.setIModule(this);
 		presenter.createAndBindUi();
 	}
+
+	public boolean containsValue(String value) {		
+		return presenter.containsValue(value);
+	}
 }

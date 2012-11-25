@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.sourcelist.presenter;
 
 import static org.mockito.Mockito.mock;
 
+import com.google.gwt.i18n.server.testing.Parent;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -34,6 +35,12 @@ public class SourceListViewMock implements SourceListView {
 	public void setIModule(IModule module) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean containsValue(String value) {
+		// TODO to be mocked for test?
+		return false;
 	}
 
 }

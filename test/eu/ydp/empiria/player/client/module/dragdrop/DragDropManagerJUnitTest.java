@@ -47,8 +47,9 @@ public class DragDropManagerJUnitTest {
 	@Before
 	public void init() {
 		dragDropManager = new DragDropManager();
-		dragDropManager.eventsBus = mock(EventsBus.class);
+		dragDropManager.eventsBus = mock(EventsBus.class);		
 		dragDropManager.scopeFactory = mock(PageScopeFactory.class);
+		dragDropManager.helper = mock(DragDropManagerHelper.class);
 	}
 	
 	@Test
@@ -84,12 +85,13 @@ public class DragDropManagerJUnitTest {
 	public void fireDragEndEventToProperSourcelist() {
 		SourceListModule dragSource = mock(SourceListModule.class);
 		DragDropEvent startEventMock = mockDragDropEvent(dragSource, DragDropEventTypes.DRAG_START, null);
-		DragDropEvent endEventMock = mockDragDropEvent(mock(SimpleTextModule.class), DragDropEventTypes.DRAG_END, null);
+		SimpleTextModule gap = mock(SimpleTextModule.class);
+		DragDropEvent endEventMock = mockDragDropEvent(gap, DragDropEventTypes.DRAG_END, null);
 		
 		dragDropManager.onDragEvent(startEventMock);		
 		dragDropManager.onDragEvent(endEventMock);
 		
-		Mockito.verify(dragDropManager.eventsBus, times(1)).fireEventFromSource(endEventMock, dragSource, dragDropManager.scopeFactory.getCurrentPageScope());
+		Mockito.verify(dragDropManager.helper).fireEventFromSource(dragSource, endEventMock.getDragDataObject(), DragDropEventTypes.DRAG_END, gap);
 	}
 	
 	@Test
@@ -112,9 +114,9 @@ public class DragDropManagerJUnitTest {
 		dragDropManager.onDragEvent(endEventMock1);		
 		dragDropManager.onDragEvent(endEventMock2);
 		
-		assertThat(dragDropManager.moduleValues.containsKey(dragSource), is(true));
-		assertThat(dragDropManager.moduleValues.containsValue(TEST1), is(false));
-		assertThat(dragDropManager.moduleValues.get(dragSource), is(TEST2));				
+		assertThat(dragDropManager.gapValuesCache.containsKey(dragSource), is(true));
+		assertThat(dragDropManager.gapValuesCache.containsValue(TEST1), is(false));
+		assertThat(dragDropManager.gapValuesCache.get(dragSource), is(TEST2));				
 		assertThat(endEventMock2.getDragDataObject().getValue(), is(TEST2));
 		assertThat(endEventMock2.getDragDataObject().getPreviousValue(), is(TEST1));
 	}		

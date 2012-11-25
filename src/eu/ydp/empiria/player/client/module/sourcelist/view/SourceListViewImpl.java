@@ -144,6 +144,11 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		}
 	}
 
+	@Override
+	public boolean containsValue(String value) {
+		return itemsCollection.containsValue(value);
+	}
+	
 	private void searchItem(DragDataObject dragDataObject) {
 		if (hiddenItems.containsValue(dragDataObject.getValue())) {
 			fireValueEvent(VALUE_NOT_FOUND_IN_SOURCELIST, dragDataObject);
