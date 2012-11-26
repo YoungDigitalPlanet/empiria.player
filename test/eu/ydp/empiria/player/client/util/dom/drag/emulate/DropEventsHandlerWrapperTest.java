@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.util.dom.drag.emulate;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParserMock;
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.events.OutDroppableEvent.OutDroppableEventHandler;
 import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppableEventHandler;
@@ -44,6 +45,7 @@ public class DropEventsHandlerWrapperTest {
 
 	@Before
 	public void before() {
+		AbstractHTML5DragDropWrapper.parser = new OverlayTypesParserMock();
 		droppableWidget = mock(DroppableWidget.class);
 		instance = new DropEventsHandlerWrapper(droppableWidget);
 	}

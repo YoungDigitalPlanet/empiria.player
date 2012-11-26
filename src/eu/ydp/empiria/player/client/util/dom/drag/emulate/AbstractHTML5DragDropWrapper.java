@@ -11,16 +11,16 @@ public abstract class AbstractHTML5DragDropWrapper implements DragDropSetGetData
 	protected static final String JSON = "data-json";
 
 
-	private static final OverlayTypesParser PARSER = new OverlayTypesParser();
+	protected static OverlayTypesParser parser = new OverlayTypesParser();
 
-	JsonAttr attr = PARSER.get();
+	JsonAttr attr = parser.get();
 
 	public void setJsonAttr(JsonAttr jsonAttr) {
 		this.attr = jsonAttr;
 	}
 	@Override
 	public void clearData() {
-		attr = PARSER.get();
+		attr = parser.get();
 	}
 
 	@Override
