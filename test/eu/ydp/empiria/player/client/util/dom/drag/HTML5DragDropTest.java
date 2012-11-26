@@ -22,7 +22,6 @@ import com.google.gwt.event.dom.client.DragLeaveHandler;
 import com.google.gwt.event.dom.client.DragOverHandler;
 import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.event.dom.client.DropHandler;
-import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
@@ -115,13 +114,13 @@ public class HTML5DragDropTest {
 		verifyDragHandlers(instance, widget);
 	}
 
-	@Test
-	public void ie8_ie9_DragStartStopAddEventTest() {
-		before("Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US))");
-		// ie mouse down
-		verify(widget).addDomHandler(Mockito.any(MouseDownHandler.class), Mockito.any(Type.class));
-		verifyDragHandlers(instance, widget);
-	}
+//	@Test ie disable html5 drag drop emulated instead
+//	public void ie8_ie9_DragStartStopAddEventTest() {
+//		before("Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US))");
+//		// ie mouse down
+//		verify(widget).addDomHandler(Mockito.any(MouseDownHandler.class), Mockito.any(Type.class));
+//		verifyDragHandlers(instance, widget);
+//	}
 
 	@Test
 	public void dropAddEventTest() {
