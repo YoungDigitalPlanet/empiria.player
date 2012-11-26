@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackAction
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 
-public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget {
+public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, IModule {
 
 	private ActionProcessorHelper helper;
 	
@@ -28,6 +28,18 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 	@Override
 	public void processSingleAction(FeedbackAction action) {
 		
+	}
+
+	@Override
+	public HasChildren getParentModule() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<IModule> getChildren() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
