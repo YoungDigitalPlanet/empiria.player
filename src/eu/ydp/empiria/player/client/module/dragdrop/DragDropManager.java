@@ -60,78 +60,55 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 		eventsBus.fireEvent(new DragDropEvent(DragDropEventTypes.ENABLE_ALL_DROP_ZONE, null), scopeFactory.getCurrentPageScope());
 		
 		for (IModule gap : findInapplicableGaps(lastDragSource)) {
-			DragDropEvent gapDisableEvent = new DragDropEvent(DragDropEventTypes.DISABLE_DROP_ZONE, gap);			
-			gapDisableEvent.setIModule(gap);			
-			eventsBus.fireEventFromSource(gapDisableEvent, gap, scopeFactory.getCurrentPageScope());			
+			helper.fireEventFromSource(gap, event.getDragDataObject(), DragDropEventTypes.DISABLE_DROP_ZONE);		
 		}		
 	}
 	
 	List<IModule> findInapplicableGaps(SourceListModule dragSource) {
-		List<IModule> list = new ArrayList<IModule>();
-		
+		List<IModule> list = new ArrayList<IModule>();		
 		for (IModule gap : dropZones.keySet()) {
 			if (!dropZones.containsEntry(gap, dragSource)) {
 				list.add(gap);
 			}
 		}
-
 		return list;
 	}
-	
-	private void handleDragEnd(DragDropEvent event) {
+		
+	private void processGapChanged(DragDropEvent event) {
 		IModule gapModule = (IModule)event.getIModule();
 		
 		updateDragDataObject(event, gapModule);		
 		String newValue = event.getDragDataObject().getValue();
-		gapValuesCache.put(gapModule, newValue);
+		gapValuesCache.put(gapModule, newValue);		
 		
+		if (DragDropEventTypes.DRAG_END.equals(event.getType())) {
+			processGapChangedOnDragEnd(event, gapModule);			
+		} else if (DragDropEventTypes.USER_CHANGE_DROP_ZONE.equals(event.getType())) {
+			processGapChangedOnManualUserChange(event, gapModule, newValue);			
+		}
+	}
+
+	private void processGapChangedOnManualUserChange(DragDropEvent event, IModule gapModule, String newValue) {
+		Collection<SourceListModule> assignedSourceLists = dropZones.get(gapModule);		
+		for (SourceListModule sourceList : assignedSourceLists) {			
+			if (sourceList.containsValue(newValue)) {
+				helper.fireEventFromSource(sourceList, event.getDragDataObject(), DragDropEventTypes.DRAG_END, gapModule);
+				break;
+			}				
+		}
+	}
+
+	private void processGapChangedOnDragEnd(DragDropEvent event, IModule gapModule) {
 		if (lastDragSource != null) {
 			gapValueSourceCache.put(gapModule, lastDragSource);
 			helper.fireEventFromSource(lastDragSource, event.getDragDataObject(), DragDropEventTypes.DRAG_END, gapModule);
 		}
-	}
-
-	private void handleUserChangedDropZone(DragDropEvent event) {
-		IModule gapChanged = (IModule)event.getIModule();	
-		
-		event.setIModule(gapChanged);
-		updateDragDataObject(event, gapChanged);
-		String newValue = event.getDragDataObject().getValue();
-		gapValuesCache.put(gapChanged, newValue);
-		
-		Collection<SourceListModule> assignedSourceLists = dropZones.get(gapChanged);		
-		for (SourceListModule sourceList : assignedSourceLists) {			
-			if (sourceList.containsValue(newValue)) {
-				helper.fireEventFromSource(sourceList, event.getDragDataObject(), DragDropEventTypes.DRAG_END, gapChanged);
-				break;
-			}				
-		}		
 	}
 	
 	private void updateDragDataObject(DragDropEvent event, IModule gapModule) {				
 		String previousValue = gapValuesCache.get(gapModule);
 		event.getDragDataObject().setPreviousValue(previousValue);		
 	}	
-	
-	@Override
-	public void onDragEvent(DragDropEvent event) {
-		switch (event.getType()) {
-		case DRAG_START:
-			handleDragStart(event);
-			break;
-		case USER_CHANGE_DROP_ZONE:
-			handleUserChangedDropZone(event);
-			break;
-		case DRAG_END:
-			handleDragEnd(event);
-			break;
-		case REGISTER_DROP_ZONE:
-			registerDropZone(event);
-			break;
-		default:
-			break;
-		}
-	}
 
 	protected void registerDropZone(DragDropEvent event) {		
 		if (event.getDragDataObject() != null) {
@@ -160,5 +137,23 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 			buildDropZoneSourceListRelationships(dropZone, dropZone.getParentModule());			
 		}		
 	}
-		
+	
+	@Override
+	public void onDragEvent(DragDropEvent event) {
+		switch (event.getType()) {
+		case DRAG_START:
+			handleDragStart(event);
+			break;
+		case USER_CHANGE_DROP_ZONE:
+		case DRAG_END:
+			processGapChanged(event);
+			break;
+		case REGISTER_DROP_ZONE:
+			registerDropZone(event);
+			break;
+		default:
+			break;
+		}
+	}
+	
 }

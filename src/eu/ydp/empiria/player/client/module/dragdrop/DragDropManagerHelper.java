@@ -9,21 +9,18 @@ import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
 public class DragDropManagerHelper {
 
-	private EventsBus eventsBus;
-	private PageScopeFactory scopeFactory;
+	private final EventsBus eventsBus;
+	private final PageScopeFactory scopeFactory;
 
 	public DragDropManagerHelper(EventsBus eventsBus, PageScopeFactory scopeFactory) {
 		this.eventsBus = eventsBus;
 		this.scopeFactory = scopeFactory;
 	}
 	
-	public void fireEventFromSource(IModule source, DragDataObject dragDropDataObject, DragDropEventTypes eventType, IModule correspondingModule) {
-		if (correspondingModule == null) {
-			correspondingModule = source;
-		}		
+	public void fireEventFromSource(IModule source, DragDataObject dragDropDataObject, DragDropEventTypes eventType, IModule assignedModule) {	
 		DragDropEvent event = new DragDropEvent(eventType, source);
 		event.setDragDataObject(dragDropDataObject);
-		event.setIModule(correspondingModule);		
+		event.setIModule((assignedModule == null) ? source : assignedModule);		
 		eventsBus.fireEventFromSource(event, source, scopeFactory.getCurrentPageScope());
 	}
 	
