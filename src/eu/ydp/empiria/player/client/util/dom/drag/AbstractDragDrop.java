@@ -36,6 +36,7 @@ public abstract class AbstractDragDrop<W extends Widget> {
 	protected void fireEvent(DragDropEventTypes type, DragDataObject dataObject) {
 		if (type != null && dataObject != null) {
 			DragDropEvent dragDropEvent = new DragDropEvent(type, getIModule());
+			dragDropEvent.setIModule(getIModule());
 			dragDropEvent.setDragDataObject(dataObject);
 			eventsBus.fireEventFromSource(dragDropEvent, getIModule(), scopeFactory.getCurrentPageScope());
 		}
