@@ -13,14 +13,15 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackAction
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
-import eu.ydp.empiria.player.client.module.feedback.text.TextFeedbackPresenter;
+import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.gwtutil.client.StringUtils;
 
 public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, Factory<TextActionProcessor> {
 
 	private ActionProcessorHelper helper;
 	
-	private TextFeedbackPresenter feedbackPresenter = new TextFeedbackPresenter();
+	@Inject
+	private TextFeedback feedbackPresenter;
 	
 	@Inject
 	Provider<TextActionProcessor> provider;
@@ -53,14 +54,14 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 		if (action instanceof ShowTextAction) {
 			ShowTextAction textAction = (ShowTextAction) action;
 			feedbackPresenter.setText(textAction.getText());
-			feedbackPresenter.setVisible(true);
+			feedbackPresenter.show();
 		}
 	}
 	
 	@Override
 	public void clearFeedback() {
 		feedbackPresenter.setText("");
-		feedbackPresenter.setVisible(false);
+		feedbackPresenter.hide();
 	}
 
 	@Override
@@ -70,12 +71,12 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 	
 	@Override
 	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
-		feedbackPresenter.setVisible(false);
+		feedbackPresenter.hide();
 	}
 
 	@Override
 	public Widget getView() {
-		return feedbackPresenter;
+		return (Widget) feedbackPresenter;
 	}
 
 	@Override

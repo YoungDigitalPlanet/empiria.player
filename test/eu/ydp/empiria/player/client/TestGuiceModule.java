@@ -31,6 +31,7 @@ import com.google.inject.spi.TypeListener;
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
+import eu.ydp.empiria.player.client.controller.feedback.TextFeedbackPresenterMock;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
@@ -43,6 +44,7 @@ import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
+import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
@@ -162,6 +164,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(SourceListPresenter.class).to(SourceListPresenterMock.class);
 		bind(MatcherRegistry.class).in(Singleton.class);
 		bind(OverlayTypesParser.class).toInstance(mock(OverlayTypesParserMock.class));
+		bind(TextFeedback.class).toInstance(mock(TextFeedbackPresenterMock.class));
+		
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));
