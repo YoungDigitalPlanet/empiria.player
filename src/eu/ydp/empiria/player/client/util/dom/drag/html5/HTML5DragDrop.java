@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.util.dom.drag.html5;
 
 import static eu.ydp.empiria.player.client.util.dom.drag.DragDropType.DRAG;
 
+import javax.annotation.PostConstruct;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.DragEndEvent;
@@ -24,7 +26,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.AbstractDragDrop;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropType;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
@@ -32,24 +33,30 @@ import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
-public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop implements DraggableObject<W>, DroppableObject<W> {
+public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> implements DraggableObject<W>, DroppableObject<W> {
 
-	private final W widget;
+	private final W originalWidget;
 	private final boolean disableAutoBehavior;
-
-	@Inject
-	protected StyleNameConstants styleNames;
 
 	private boolean disabled = false;
 	private final IModule imodule;
 
+	private final DragDropType type;
+
 	@Inject
-	public HTML5DragDrop(final @Assisted("widget") W widget, @Assisted("imodule") IModule imodule, @Assisted("type") DragDropType type, @Assisted("disableAutoBehavior") boolean disableAutoBehavior) {
-		this.widget = widget;
+	public HTML5DragDrop(final @Assisted("widget") W widget, @Assisted("imodule") IModule imodule, @Assisted("type") DragDropType type,
+			@Assisted("disableAutoBehavior") boolean disableAutoBehavior) {
+		this.originalWidget = widget;
 		this.imodule = imodule;
 		this.disableAutoBehavior = disableAutoBehavior;
+		this.type = type;
+
+	}
+
+	@PostConstruct
+	public void postConstruct() {
 		if (type == DRAG) {
-			setAutoBehaviorForDrag(disableAutoBehavior);
+			setAutoBehaviorForDrag();
 		} else {
 			setAutoBehaviorForDrop(disableAutoBehavior);
 		}
@@ -59,25 +66,13 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop implements
 		element.dragDrop();
 	}-*/;
 
-	private void addStyleForWidget(String style) {
-		if (!disabled) {
-			widget.addStyleName(style);
-		}
-	}
-
-	private void removeStyleForWidget(String style) {
-		if (!disabled) {
-			widget.removeStyleName(style);
-		}
-	}
-
 	@Override
 	protected void setAutoBehaviorForDrop(boolean disableAutoBehavior) {
 		if (!disableAutoBehavior) {
-			widget.addDomHandler(new DropHandler() {
+			originalWidget.addDomHandler(new DropHandler() {
 				@Override
 				public void onDrop(DropEvent event) {
-					removeStyleForWidget(styleNames.QP_DROPZONE_OVER());
+					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
 					if (!disabled) {
 						putValue(event.getData("json"));
 					}
@@ -86,7 +81,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop implements
 				}
 			}, DropEvent.getType());
 
-			widget.addDomHandler(new DragEnterHandler() {
+			originalWidget.addDomHandler(new DragEnterHandler() {
 
 				@Override
 				public void onDragEnter(DragEnterEvent event) {
@@ -96,97 +91,97 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop implements
 				}
 			}, DragEnterEvent.getType());
 
-			widget.addDomHandler(new DragOverHandler() {
+			originalWidget.addDomHandler(new DragOverHandler() {
 				@Override
 				public void onDragOver(DragOverEvent event) {
-					addStyleForWidget(styleNames.QP_DROPZONE_OVER());
+					addStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
 					setDropEffect(event.getDataTransfer(), (disabled) ? "none" : "move");
 					event.stopPropagation();
 					event.preventDefault();
 				}
 			}, DragOverEvent.getType());
 
-			widget.addDomHandler(new DragLeaveHandler() {
+			originalWidget.addDomHandler(new DragLeaveHandler() {
 				@Override
 				public void onDragLeave(DragLeaveEvent event) {
-					removeStyleForWidget(styleNames.QP_DROPZONE_OVER());
+					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
 				}
 			}, DragLeaveEvent.getType());
-			super.setAutoBehaviorForDrop(disableAutoBehavior);
 		}
+		super.setAutoBehaviorForDrop(disableAutoBehavior);
+
 	}
 
+	/**
+	 * @see <a
+	 *      reef="https://developer.mozilla.org/en-US/docs/DragDrop/DataTransfer"
+	 *      >DataTransfer</a>
+	 * @param dataTransferObject
+	 * @param value
+	 */
 	private native void setDropEffect(JavaScriptObject dataTransferObject, String value)/*-{
 		dataTransferObject.dropEffect = value;
 		//	dataTransferObject.effectAllowed=value;
 	}-*/;
 
-	private void setAutoBehaviorForDrag(boolean disableAutoBehavior) {
+	private void setAutoBehaviorForDrag() {
 		// IE bug
 		if (UserAgentChecker.isUserAgent(UserAgent.IE9, UserAgent.IE8)) {
-			widget.addDomHandler(new MouseDownHandler() {
+			originalWidget.addDomHandler(new MouseDownHandler() {
 				@Override
 				public void onMouseDown(MouseDownEvent event) {
 					if (!disabled) {
-						enableDragForIE(widget.getElement());
+						enableDragForIE(originalWidget.getElement());
 					}
 				}
 			}, MouseDownEvent.getType());
 		}
-//		widget.addDomHandler(new DragStartHandler() {
-//
-//			@Override
-//			public void onDragStart(DragStartEvent event) {
-//				// setEffectAllowed(event.getDataTransfer(),"move");
-//			}
-//		}, DragStartEvent.getType());
-
-		widget.getElement().setDraggable(Element.DRAGGABLE_TRUE);
+		originalWidget.getElement().setDraggable(Element.DRAGGABLE_TRUE);
 	}
 
 	@Override
 	public HandlerRegistration addDragEndHandler(DragEndHandler handler) {
-		return widget.addDomHandler(handler, DragEndEvent.getType());
+		return originalWidget.addDomHandler(handler, DragEndEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addDragEnterHandler(DragEnterHandler handler) {
-		return widget.addDomHandler(handler, DragEnterEvent.getType());
+		return originalWidget.addDomHandler(handler, DragEnterEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addDragLeaveHandler(DragLeaveHandler handler) {
-		return widget.addDomHandler(handler, DragLeaveEvent.getType());
+		return originalWidget.addDomHandler(handler, DragLeaveEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addDragOverHandler(DragOverHandler handler) {
-		return widget.addDomHandler(handler, DragOverEvent.getType());
+		return originalWidget.addDomHandler(handler, DragOverEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addDragStartHandler(DragStartHandler handler) {
-		return widget.addDomHandler(handler, DragStartEvent.getType());
+		return originalWidget.addDomHandler(handler, DragStartEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addDropHandler(DropHandler handler) {
-		return widget.addDomHandler(handler, DropEvent.getType());
+		return originalWidget.addDomHandler(handler, DropEvent.getType());
 	}
 
 	@Override
 	public W getDraggableWidget() {
-		return widget;
+		return originalWidget;
 	}
 
 	@Override
 	public W getDroppableWidget() {
-		return widget;
+		return originalWidget;
 	}
 
 	@Override
-	protected Widget getWidget() {
-		return widget;
+	public W getOriginalWidget() {
+		return originalWidget;
 	}
 
 	@Override
@@ -198,9 +193,9 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop implements
 	public void setDisableDrag(boolean disable) {
 		this.disabled = disable;
 		if (disable) {
-			widget.getElement().removeAttribute("draggable");
+			originalWidget.getElement().removeAttribute("draggable");
 		} else {
-			widget.getElement().setDraggable(Element.DRAGGABLE_TRUE);
+			originalWidget.getElement().setDraggable(Element.DRAGGABLE_TRUE);
 		}
 	}
 

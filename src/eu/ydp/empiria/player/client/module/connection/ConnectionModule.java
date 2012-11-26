@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -21,13 +21,13 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	private ConnectionModuleStructure connectionStructure;
 
 	@Inject
-	protected ModuleFactory moduleFactory;
+	protected Provider<ConnectionModule> moduleFactory;
 
 	@Inject
 	private ConnectionModuleFactory connectionModuleFactory;
 
-	private ConnectionModuleModel connectionModel; 
-	
+	private ConnectionModuleModel connectionModel;
+
 	@Override
 	protected void initalizeModule() {
 		connectionModel = connectionModuleFactory.getConnectionModuleModel(getResponse(), this);
@@ -36,7 +36,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 
 	@Override
 	public ConnectionModule getNewInstance() {
-		return moduleFactory.getConnectionModule();
+		return moduleFactory.get();
 	}
 
 	@Override

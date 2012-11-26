@@ -5,9 +5,9 @@
 		<g:FlowPanel ui:field="markPanel" styleName="qp-mathinteraction-textentrygap-mark">
 			<g:FlowPanel styleName="qp-mathinteraction-textentrygap-prefix"/>
 			<g:FlowPanel styleName="qp-mathinteraction-textentrygap-body">
-				<g:TextBox ui:field="textBox" />
+				<g:Widget ui:field="textBoxWidget" />
 			</g:FlowPanel>
 			<g:FlowPanel styleName="qp-mathinteraction-textentrygap-sufix"/>
 		</g:FlowPanel>
 	</g:FlowPanel>
-</ui:UiBinder> 
+</ui:UiBinder>

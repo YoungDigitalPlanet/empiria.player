@@ -38,4 +38,9 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	public void createAndBindUi() {
 		view.createAndBindUi();
 	}
+
+	@Override
+	public boolean containsValue(String value) {
+		return view.containsValue(value);
+	}
 }

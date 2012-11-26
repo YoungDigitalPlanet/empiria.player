@@ -97,7 +97,6 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(XMLParser.class);
 		bind(FeedbackRegistry.class).in(Singleton.class);
 		bind(MatcherRegistry.class).in(Singleton.class);
-
 		bind(IStickieView.class) .to(StickieView.class);
 		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class).in(Singleton.class);
 		bind(DragDropHelper.class).to(DragDropHelperImpl.class).in(Singleton.class);
@@ -111,13 +110,12 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(AssessmentControllerFactory.class));
 		install(new GinFactoryModuleBuilder().build(DragDropObjectFactory.class));
 		install(new GinFactoryModuleBuilder().build(MatcherRegistryFactory.class));
-
 		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class).build(TouchRecognitionFactory.class));
+
 	}
 
 	@Provides
 	public IStickieProperties provideStickieProperties() {
 		return StickieProperties.newInstance();
 	}
-
 }

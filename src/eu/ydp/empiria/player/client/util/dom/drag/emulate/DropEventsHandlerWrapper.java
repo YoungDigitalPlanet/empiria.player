@@ -8,9 +8,7 @@ import gwtquery.plugins.droppable.client.events.OverDroppableEvent;
 import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppableEventHandler;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.gwt.dom.client.DataTransfer;
 import com.google.gwt.event.dom.client.DragEnterEvent;
 import com.google.gwt.event.dom.client.DragEnterHandler;
 import com.google.gwt.event.dom.client.DragLeaveEvent;
@@ -19,84 +17,69 @@ import com.google.gwt.event.dom.client.DragOverEvent;
 import com.google.gwt.event.dom.client.DragOverHandler;
 import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Element;
 
-public class DropEventsHandlerWrapper implements DragDropSetGetData  {
-	private final Map<String, String> data = new HashMap<String, String>();
+public class DropEventsHandlerWrapper extends AbstractHTML5DragDropWrapper {
 
-	protected class DragEnterEventWrapper extends DragEnterEvent{
+	protected class DragEnterEventWrapper extends DragEnterEvent {
 		private final DragDropSetGetData setGetData;
 
 		public DragEnterEventWrapper(DragDropSetGetData data) {
 			this.setGetData = data;
 		}
-		@Override
-		public void setData(String format, String data) {
-			setGetData.setData(format, data);
-		}
 
 		@Override
-		public String getData(String format) {
-			return setGetData.getData(format);
+		public DataTransfer getDataTransfer() {
+			return setGetData.getDataTransfer();
 		}
 	}
 
-	protected class DragLeaveEventWrapper extends DragLeaveEvent{
+	protected class DragLeaveEventWrapper extends DragLeaveEvent {
 		private final DragDropSetGetData setGetData;
 
 		public DragLeaveEventWrapper(DragDropSetGetData data) {
 			this.setGetData = data;
 		}
-		@Override
-		public void setData(String format, String data) {
-			setGetData.setData(format, data);
-		}
 
 		@Override
-		public String getData(String format) {
-			return setGetData.getData(format);
+		public DataTransfer getDataTransfer() {
+			return setGetData.getDataTransfer();
 		}
 	}
 
-	protected class DragOverEventWrapper extends DragOverEvent{
+	protected class DragOverEventWrapper extends DragOverEvent {
 		private final DragDropSetGetData setGetData;
 
 		public DragOverEventWrapper(DragDropSetGetData data) {
 			this.setGetData = data;
 		}
-		@Override
-		public void setData(String format, String data) {
-			setGetData.setData(format, data);
-		}
 
 		@Override
-		public String getData(String format) {
-			return setGetData.getData(format);
+		public DataTransfer getDataTransfer() {
+			return setGetData.getDataTransfer();
 		}
 	}
 
-	protected class DropEventWrapper extends com.google.gwt.event.dom.client.DropEvent{
+	protected class DropEventWrapper extends com.google.gwt.event.dom.client.DropEvent {
 		private final DragDropSetGetData setGetData;
 
 		public DropEventWrapper(DragDropSetGetData data) {
 			this.setGetData = data;
 		}
-		@Override
-		public void setData(String format, String data) {
-			setGetData.setData(format, data);
-		}
 
 		@Override
-		public String getData(String format) {
-			return setGetData.getData(format);
+		public DataTransfer getDataTransfer() {
+			return setGetData.getDataTransfer();
 		}
 	}
-
 
 	private final DroppableWidget<?> droppableWidget;
 
 	public DropEventsHandlerWrapper(DroppableWidget<?> droppableWidget) {
 		this.droppableWidget = droppableWidget;
 	}
+
+
 
 	public HandlerRegistration wrap(final DragEnterHandler dragEnterHandler) {
 		return droppableWidget.addOverDroppableHandler(new OverDroppableEventHandler() {
@@ -137,12 +120,8 @@ public class DropEventsHandlerWrapper implements DragDropSetGetData  {
 		});
 	}
 	@Override
-	public void setData(String format, String data) {
-		this.data.put(format, data);
+	protected Element getElement() {
+		return null;
 	}
 
-	@Override
-	public String getData(String format) {
-		return this.data.get(format);
-	}
 }

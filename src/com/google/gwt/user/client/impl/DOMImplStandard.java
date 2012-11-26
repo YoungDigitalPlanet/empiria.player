@@ -24,6 +24,7 @@ import com.google.gwt.user.client.Event;
  * by those browsers that come a bit closer to supporting a common standard (ie,
  * not IE).
  */
+@SuppressWarnings("PMD")
 abstract class DOMImplStandard extends DOMImpl {
 
   private static JavaScriptObject captureElem;
@@ -37,6 +38,7 @@ abstract class DOMImplStandard extends DOMImpl {
   private static JavaScriptObject dispatchEvent;
 
   private static JavaScriptObject dispatchUnhandledEvent;
+
 
   @Override
   public Element eventGetFromElement(Event evt) {

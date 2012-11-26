@@ -28,5 +28,8 @@
 	<classpathentry kind="lib" path="ivy-lib/guava.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/jsr305.jar"/>
 	<classpathentry kind="lib" path="libs/gquery-dnd-bundle-1.0.5.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/gwtquery.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/javassist.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/junit.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -6,7 +6,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -17,12 +16,12 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.gap.GapBase.Presenter;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
-public class TextEntryGapModulePresenter implements Presenter {
+public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHandler {
 
 	@UiTemplate("TextEntryGap.ui.xml")
 	interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryGapModulePresenter>{};
@@ -36,6 +35,8 @@ public class TextEntryGapModulePresenter implements Presenter {
 	protected FlowPanel markPanel;
 
 	@UiField(provided=true)
+	protected Widget textBoxWidget;
+
 	protected TextBox textBox;
 
 	private ChangeHandler changeHandler;
@@ -43,12 +44,14 @@ public class TextEntryGapModulePresenter implements Presenter {
 	@Inject
 	public TextEntryGapModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
 		 DroppableObject<TextBox> droppable = dragDropHelper.enableDropForWidget(new TextBox(),parentModule);
-		 textBox = droppable.getDroppableWidget();
+		 textBoxWidget = droppable.getDroppableWidget();
+		 textBox = droppable.getOriginalWidget();
 		 uiBinder.createAndBindUi(this);
+		 textBox.addChangeHandler(this);
 	}
 
-	@UiHandler("textBox")
-	protected void handleChange(ChangeEvent event) {
+	@Override
+	public void onChange(ChangeEvent event) {
 		if (changeHandler != null) {
 			changeHandler.onChange(event);
 		}
@@ -116,9 +119,9 @@ public class TextEntryGapModulePresenter implements Presenter {
 
 	@Override
 	public void removeMarking() {
-		markPanel.removeStyleDependentName(Presenter.NONE);
-		markPanel.removeStyleDependentName(Presenter.CORRECT);
-		markPanel.removeStyleDependentName(Presenter.WRONG);
+		markPanel.removeStyleDependentName(GapModulePresenter.NONE);
+		markPanel.removeStyleDependentName(GapModulePresenter.CORRECT);
+		markPanel.removeStyleDependentName(GapModulePresenter.WRONG);
 	}
 
 	@Override

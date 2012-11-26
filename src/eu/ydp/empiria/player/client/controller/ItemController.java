@@ -41,13 +41,14 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 	@Inject
 	@SuppressWarnings("PMD")
-	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs, 
-							@Assisted InteractionEventsSocket is, @Assisted ItemSessionSocket iss, 
-							@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager) {
+	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs,
+							@Assisted InteractionEventsSocket is, @Assisted ItemSessionSocket iss,
+							@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
 		itemViewSocket = ivs;
 		itemSessionSocket = iss;
 		interactionSocket = is;
 		modulesRegistrySocket = mrs;
+		this.controllerFactory = controllerFactory;
 		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
@@ -63,9 +64,9 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	private StyleSocket styleSocket;
 	private final ModuleHandlerManager moduleHandlerManager;
-	
-	@Inject
-	private AssessmentControllerFactory controllerFactory;
+
+	//@Inject
+	private final AssessmentControllerFactory controllerFactory;
 
 	IPlayerContainersAccessor accessor;
 
@@ -84,10 +85,10 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 				throw new Exception("Item data is null");// NOPMD
 			}
 			itemIndex = data.itemIndex;
-			item = controllerFactory.getItem(data.data, options, 
-												interactionSocket, styleSocket, 
-												modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex), 
-												moduleHandlerManager);
+			item = controllerFactory.getItem(data.data, options,
+												interactionSocket, styleSocket,
+												modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex),
+												moduleHandlerManager,controllerFactory);
 			getAccessor().registerItemBodyContainer(itemIndex, item.getContentView());
 			item.setState(itemSessionSocket.getState(itemIndex));
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));

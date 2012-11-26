@@ -30,7 +30,7 @@ public class DragDropEvent extends AbstractEvent<DragDropEventHandler, DragDropE
 		this.module = module;
 	}
 
-	public IModule getModule() {
+	public IModule getIModule() {
 		return module;
 	}
 

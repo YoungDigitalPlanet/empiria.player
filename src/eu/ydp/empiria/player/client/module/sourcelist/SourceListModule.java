@@ -3,8 +3,8 @@ package eu.ydp.empiria.player.client.module.sourcelist;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
@@ -17,14 +17,14 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 	private SourceListModuleStructure moduleStructure;
 
 	@Inject
-	private ModuleFactory moduleFactory;
+	private Provider<SourceListModule> moduleFactory;
 
 	@Inject
 	private SourceListPresenter presenter;
 
 	@Override
 	public SourceListModule getNewInstance() {
-		return  moduleFactory.getSourceListModule();
+		return  moduleFactory.get();
 	}
 
 	@Override
@@ -39,5 +39,9 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 		presenter.setBean(bean);
 		presenter.setIModule(this);
 		presenter.createAndBindUi();
+	}
+
+	public boolean containsValue(String value) {		
+		return presenter.containsValue(value);
 	}
 }

@@ -31,8 +31,13 @@ public class SourceListPresenterMock implements SourceListPresenter {
 
 	@Override
 	public void setIModule(IModule module) {
-		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean containsValue(String value) {
+		// TODO to be mocked for tests?
+		return false;
 	}
 
 }

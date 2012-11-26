@@ -16,8 +16,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
@@ -34,15 +34,23 @@ import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingConte
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public abstract class GapBase extends OneViewInteractionModuleBase implements Bindable {
+
+	@Inject
+	protected EventsBus eventsBus;
 
 	protected final static String EMPTY_STRING = "";
 
 	public static final String INLINE_HTML_NBSP = "&nbsp;";
 
-	protected Presenter presenter;
+	protected GapModulePresenter presenter;
 
 	protected boolean markingAnswer = false;
 
@@ -62,51 +70,22 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	protected String maxLength = "";
 
-	public interface Presenter {
-
-		public static final String WRONG = "wrong";
-
-		public static final String CORRECT = "correct";
-
-		public static final String NONE = "none";
-
-		void setWidth(double value, Unit unit);
-
-		int getOffsetWidth();
-
-		void setHeight(double value, Unit unit);
-
-		int getOffsetHeight();
-
-		void setMaxLength(int length);
-
-		void setFontSize(double value, Unit unit);
-
-		int getFontSize();
-
-		void setText(String text);
-
-		String getText();
-
-		HasWidgets getContainer();
-
-		void installViewInContainer(HasWidgets container);
-
-		void setViewEnabled(boolean enabled);
-
-		void setMarkMode(String mode);
-
-		void removeMarking();
-
-		void addPresenterHandler(PresenterHandler handler);
-
-		void removeFocusFromTextField();
-
-		public ExListBox getListBox();
-	}
 
 	public interface PresenterHandler extends BlurHandler, ChangeHandler{
 
+	}
+
+	protected void addPlayerEventHandlers(){
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
+
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
+					updateResponse();
+					presenter.removeFocusFromTextField();
+				}
+			}
+		},new CurrentPageScope());
 	}
 
 	@Override
@@ -114,11 +93,11 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		if(mark  && !markingAnswer){
 			String markMode;
 			if(isResponseEmpty()){
-				markMode = Presenter.NONE;
+				markMode = GapModulePresenter.NONE;
 			}else if(isResponseCorrect()){
-				markMode = Presenter.CORRECT;
+				markMode = GapModulePresenter.CORRECT;
 			}else{
-				markMode = Presenter.WRONG;
+				markMode = GapModulePresenter.WRONG;
 			}
 			presenter.setMarkMode(markMode);
 		}else if (!mark && markingAnswer){
@@ -135,6 +114,8 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	protected abstract boolean isResponseCorrect();
 
 	protected abstract String getCurrentResponseValue();
+
+	protected abstract void updateResponse();
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
@@ -163,9 +144,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		presenter.setText(EMPTY_STRING);
 		updateResponse();
 	}
-
-	protected abstract void updateResponse();
-
 	/**
 	 * @see IStateful#getState()
 	 */

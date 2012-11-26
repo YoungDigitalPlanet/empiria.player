@@ -11,12 +11,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -46,7 +46,7 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 	protected StyleNameConstants styleNames;
 
 	@Inject
-	protected ModuleFactory moduleFactory;
+	protected Provider<InlineChoiceGapModule> moduleFactory;
 
 	@Inject
 	public InlineChoiceGapModule(InlineChoiceGapModulePresenter presenter) {
@@ -260,7 +260,7 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 
 	@Override
 	public InlineChoiceGapModule getNewInstance() {
-		return moduleFactory.getInlineChoiceGapModule();
+		return moduleFactory.get();
 	}
 
 	@Override

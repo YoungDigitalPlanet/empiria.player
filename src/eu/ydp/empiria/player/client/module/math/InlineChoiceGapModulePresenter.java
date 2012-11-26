@@ -10,26 +10,26 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
-import eu.ydp.empiria.player.client.module.gap.GapBase.Presenter;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 
-public class InlineChoiceGapModulePresenter implements Presenter {
-	
+public class InlineChoiceGapModulePresenter implements GapModulePresenter {
+
 	@UiTemplate("InlineChoiceGap.ui.xml")
 	interface InlineChoiceGapModuleUiBinder extends UiBinder<Widget, InlineChoiceGapModulePresenter>{};
-	
+
 	private final InlineChoiceGapModuleUiBinder uiBinder = GWT.create(InlineChoiceGapModuleUiBinder.class);
-	
+
 	@UiField
 	protected FlowPanel mainPanel;
-	
+
 	@UiField
 	protected ExListBox listBox;
-	
+
 	public InlineChoiceGapModulePresenter() {
 		uiBinder.createAndBindUi(this);
 	}
-	
+
 	@Override
 	public void setWidth(double value, Unit unit) {
 		listBox.setWidth(value + unit.getType());
@@ -56,12 +56,12 @@ public class InlineChoiceGapModulePresenter implements Presenter {
 
 	@Override
 	public void setFontSize(double value, Unit unit) {
-		listBox.getElement().getStyle().setFontSize(value, unit);	
+		listBox.getElement().getStyle().setFontSize(value, unit);
 	}
 
 	@Override
 	public int getFontSize() {
-		return Integer.parseInt(listBox.getElement().getStyle().getFontSize().replace("px", ""));	
+		return Integer.parseInt(listBox.getElement().getStyle().getFontSize().replace("px", ""));
 	}
 
 	@Override
@@ -95,9 +95,9 @@ public class InlineChoiceGapModulePresenter implements Presenter {
 
 	@Override
 	public void removeMarking() {
-		mainPanel.removeStyleDependentName(Presenter.NONE);
-		mainPanel.removeStyleDependentName(Presenter.CORRECT);
-		mainPanel.removeStyleDependentName(Presenter.WRONG);	
+		mainPanel.removeStyleDependentName(GapModulePresenter.NONE);
+		mainPanel.removeStyleDependentName(GapModulePresenter.CORRECT);
+		mainPanel.removeStyleDependentName(GapModulePresenter.WRONG);
 	}
 
 	@Override

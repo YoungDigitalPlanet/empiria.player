@@ -37,20 +37,21 @@ public class PageController implements PageInterferenceSocket {
 	protected ItemController[] items;
 	private final boolean isInitialized = false;
 	private StyleSocket styleSocket;
-	private ModuleHandlerManager moduleHandlerManager;
-	
-	@Inject
-	private AssessmentControllerFactory controllerFactory;
+	private final ModuleHandlerManager moduleHandlerManager;
+
+
+	private final AssessmentControllerFactory controllerFactory;
 
 	@Inject
-	public PageController(@Assisted PageViewSocket pvs, @Assisted IFlowSocket fs, 
-							@Assisted InteractionEventsSocket is, @Assisted PageSessionSocket pss, 
-							@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager) {
+	public PageController(@Assisted PageViewSocket pvs, @Assisted IFlowSocket fs,
+							@Assisted InteractionEventsSocket is, @Assisted PageSessionSocket pss,
+							@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager,@Assisted AssessmentControllerFactory controllerFactory) {
 		pageViewSocket = pvs;
 		flowSocket = fs;
 		interactionSocket = is;
 		pageSessionSocket = pss;
 		modulesRegistrySocket = mrs;
+		this.controllerFactory = controllerFactory;
 		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
@@ -79,9 +80,9 @@ public class PageController implements PageInterferenceSocket {
 				pageViewSocket.setPageViewCarrier(new PageViewCarrier());
 
 				for (int i = 0; i < pageDataTest.datas.length; i++) {
-					ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket, 
+					ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket,
 																					interactionSocket, pageSessionSocket.getItemSessionSocket(),
-																					modulesRegistrySocket, moduleHandlerManager);
+																					modulesRegistrySocket, moduleHandlerManager,controllerFactory);
 					controller.setStyleSocket(styleSocket);
 					controller.init(pageDataTest.datas[i], pageDataTest.displayOptions);
 					controller.setAssessmentParenthoodSocket(parenthoodSocket);
@@ -166,16 +167,16 @@ public class PageController implements PageInterferenceSocket {
 	}
 
 	public boolean hasInteractiveModules() {
-		boolean foundInteractive = false; 
-		if (items != null) {			
+		boolean foundInteractive = false;
+		if (items != null) {
 			for (ItemController item : items) {
 				if (item != null && item.hasInteractiveModules()) {
 					foundInteractive = true;
 					break;
-				}				
+				}
 			}
-		}		
+		}
 		return foundInteractive;
 	}
-	
+
 }

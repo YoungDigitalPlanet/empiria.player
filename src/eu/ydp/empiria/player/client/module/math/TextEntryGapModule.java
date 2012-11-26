@@ -11,10 +11,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -38,7 +38,7 @@ public class TextEntryGapModule extends GapBase implements MathGap, Factory<Text
 	protected Map<String, String> mathStyles;
 
 	@Inject
-	private ModuleFactory moduleFactory;
+	private Provider<TextEntryGapModule> moduleFactory;
 
 	@Inject
 	public TextEntryGapModule(TextEntryModuleFactory moduleFactory){
@@ -61,9 +61,8 @@ public class TextEntryGapModule extends GapBase implements MathGap, Factory<Text
 	public void installViews(List<HasWidgets> placeholders) {
 		HasWidgets placeholder = placeholders.get(0);
 		presenter.installViewInContainer(((HasWidgets) ((Widget) placeholder).getParent()));
-
+		addPlayerEventHandlers();
 		loadElementProperties();
-
 		styles = getModuleSocket().getStyles(getModuleElement());
 
 		setDimensions();
@@ -254,7 +253,7 @@ public class TextEntryGapModule extends GapBase implements MathGap, Factory<Text
 
 	@Override
 	public TextEntryGapModule getNewInstance() {
-		return moduleFactory.getEntryGapModule();
+		return moduleFactory.get();
 	}
 
 	@Override

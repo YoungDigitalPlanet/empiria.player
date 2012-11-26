@@ -79,14 +79,13 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 		private InteractionEventsListener interactionEventsListener;
 
 		@Inject
-		public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options, 
-					@Assisted InteractionEventsListener interactionEventsListener, @Assisted StyleSocket ss, 
-					@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables, 
-					@Assisted ModuleHandlerManager moduleHandlerManager, AssessmentControllerFactory controllerFactory) {
+		public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options,
+					@Assisted InteractionEventsListener interactionEventsListener, @Assisted StyleSocket ss,
+					@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables,
+					@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
 
 			this.modulesRegistrySocket = mrs;
 			this.options = options;
-
 			xmlData = data;
 
 			styleSocket = ss;
@@ -95,8 +94,8 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 			Node itemBodyNode = xmlData.getDocument().getElementsByTagName("itemBody").item(0);
 
 			variableProcessor = VariableProcessorTemplate.fromNode(xmlData.getDocument().getElementsByTagName("variableProcessing"));
-			
-			feedbackManager = controllerFactory.getFeedbackManager(xmlData.getDocument().getElementsByTagName("modalFeedback"), xmlData.getBaseURL(), 
+
+			feedbackManager = controllerFactory.getFeedbackManager(xmlData.getDocument().getElementsByTagName("modalFeedback"), xmlData.getBaseURL(),
 																	moduleSocket, interactionEventsListener);
 
 			responseManager = new VariableManager<Response>(xmlData.getDocument().getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {

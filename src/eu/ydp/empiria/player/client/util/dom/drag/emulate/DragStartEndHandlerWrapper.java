@@ -6,12 +6,11 @@ import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.gwt.dom.client.DataTransfer;
 import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Element;
 
 /**
  * Wrapper dla com.google.gwt.event.dom.client.DragStartEvent oraz
@@ -20,7 +19,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author plelakowski
  *
  */
-public class DragStartEndHandlerWrapper implements DragDropSetGetData {
+public class DragStartEndHandlerWrapper extends AbstractHTML5DragDropWrapper {
 	protected static class DragStartEventWrapper extends com.google.gwt.event.dom.client.DragStartEvent {
 		private final DragDropSetGetData wrapper;
 
@@ -29,13 +28,8 @@ public class DragStartEndHandlerWrapper implements DragDropSetGetData {
 		}
 
 		@Override
-		public void setData(String format, String data) {
-			wrapper.setData(format, data);
-		}
-
-		@Override
-		public String getData(String format) {
-			return wrapper.getData(format);
+		public DataTransfer getDataTransfer() {
+			return wrapper.getDataTransfer();
 		}
 	}
 
@@ -47,32 +41,21 @@ public class DragStartEndHandlerWrapper implements DragDropSetGetData {
 		}
 
 		@Override
-		public void setData(String format, String data) {
-			wrapper.setData(format, data);
-		}
-
-		@Override
-		public String getData(String format) {
-			return wrapper.getData(format);
+		public DataTransfer getDataTransfer() {
+			return wrapper.getDataTransfer();
 		}
 	}
 
 	private final DraggableWidget<?> draggableWidget;
 
-	private final Map<String, String> data = new HashMap<String, String>();
+	@Override
+	protected Element getElement() {
+		return draggableWidget.getElement();
+	}
+
 
 	public DragStartEndHandlerWrapper(DraggableWidget<?> draggableWidget) {
 		this.draggableWidget = draggableWidget;
-	}
-
-	@Override
-	public void setData(String format, String data) {
-		this.data.put(format, data);
-	}
-
-	@Override
-	public String getData(String format) {
-		return this.data.get(format);
 	}
 
 	public HandlerRegistration wrap(final DragStartHandler dragHandlers) {
@@ -95,4 +78,6 @@ public class DragStartEndHandlerWrapper implements DragDropSetGetData {
 		});
 		return addDragStartHandler;
 	}
+
+
 }

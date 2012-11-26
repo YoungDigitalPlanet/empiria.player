@@ -3,10 +3,10 @@ package eu.ydp.empiria.player.client.module.choice;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.gin.factory.ChoiceModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -17,15 +17,15 @@ import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructur
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 
 public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
-	
+
 	@Inject
 	private ChoiceModulePresenter presenter;
-	
+
 	@Inject
 	private ChoiceModuleStructure choiceStructure;
 
 	@Inject
-	protected ModuleFactory moduleFactory;
+	protected Provider<ChoiceModule> moduleFactory;
 
 	@Inject
 	protected ChoiceModuleFactory choiceModuleFactory;
@@ -58,7 +58,7 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, Choice
 
 	@Override
 	public ChoiceModule getNewInstance() {
-		return moduleFactory.getChoiceModule();
+		return moduleFactory.get();
 	}
 
 	@Override
