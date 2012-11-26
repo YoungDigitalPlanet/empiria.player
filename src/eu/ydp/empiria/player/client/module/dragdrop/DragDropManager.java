@@ -52,7 +52,7 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 	public void init() {
 		this.helper = new DragDropManagerHelper(eventsBus, scopeFactory);
 		eventsBus.addHandler(DragDropEvent.getType(DragDropEventTypes.REGISTER_DROP_ZONE), this);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_LOADED), this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_INITIALIZED), this);
 	}
 	
 	private void handleDragStart(DragDropEvent event) {
@@ -76,8 +76,9 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 		
 	private void processGapChanged(DragDropEvent event) {
 		IModule gapModule = (IModule)event.getIModule();
-		
-		updateDragDataObject(event, gapModule);		
+				
+		String previousValue = gapValuesCache.get(gapModule);
+		event.getDragDataObject().setPreviousValue(previousValue);
 		String newValue = event.getDragDataObject().getValue();
 		gapValuesCache.put(gapModule, newValue);		
 		
@@ -105,17 +106,10 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 		}
 	}
 	
-	private void updateDragDataObject(DragDropEvent event, IModule gapModule) {				
-		String previousValue = gapValuesCache.get(gapModule);
-		event.getDragDataObject().setPreviousValue(previousValue);		
-	}	
-
 	protected void registerDropZone(DragDropEvent event) {		
-		if (event.getDragDataObject() != null) {
-			eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.DRAG_END), event.getIModule(), this);
-			eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.USER_CHANGE_DROP_ZONE), event.getIModule(), this);		
-			waitingForRegister.add(event.getIModule());
-		}
+		eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.DRAG_END), event.getIModule(), this);
+		eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.USER_CHANGE_DROP_ZONE), event.getIModule(), this);			
+		waitingForRegister.add(event.getIModule());
 	}
 
 	private void buildDropZoneSourceListRelationships(IModule dropZone, HasChildren module) {
@@ -133,7 +127,7 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {		
-		for (IModule dropZone : waitingForRegister) {
+		for (IModule dropZone : waitingForRegister) {			
 			buildDropZoneSourceListRelationships(dropZone, dropZone.getParentModule());			
 		}		
 	}

@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gwt.junit.GWTMockUtilities;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
@@ -127,18 +128,14 @@ public class DragDropManagerJUnitTest {
 		SourceListModule sourceList3 = mock(SourceListModule.class);
 		SimpleTextModule gap1 = mock(SimpleTextModule.class);
 		SimpleTextModule gap2 = mock(SimpleTextModule.class);
-		SourceListModule dragSource = sourceList1;				
-		dragDropManager.dropZones = ArrayListMultimap.create();
-		dragDropManager.dropZones.put(gap1, sourceList1);
-		dragDropManager.dropZones.put(gap2, sourceList1);
-		dragDropManager.dropZones.put(gap1, sourceList2);
-		dragDropManager.dropZones.put(gap1, sourceList3);		
+		SourceListModule dragSource = sourceList1;
+		dragDropManager.dropZones = fillArrayListMultimap(new IModule[]{gap1, sourceList1, gap2, sourceList1, gap1, sourceList2, gap1, sourceList3});	
 				
 		List<IModule> result = dragDropManager.findInapplicableGaps(dragSource);
 		
 		assertThat(result.size(), is(equalTo(0)));
 	}
-	
+
 	@Test
 	public void disableNotAssociatedGaps() {
 		SourceListModule sourceList1 = mock(SourceListModule.class);
@@ -146,11 +143,8 @@ public class DragDropManagerJUnitTest {
 		SourceListModule sourceList3 = mock(SourceListModule.class);
 		SimpleTextModule gap1 = mock(SimpleTextModule.class);
 		SimpleTextModule gap2 = mock(SimpleTextModule.class);
-		SourceListModule dragSource = sourceList1;				
-		dragDropManager.dropZones = ArrayListMultimap.create();
-		dragDropManager.dropZones.put(gap2, sourceList1);
-		dragDropManager.dropZones.put(gap1, sourceList2);
-		dragDropManager.dropZones.put(gap1, sourceList3);		
+		SourceListModule dragSource = sourceList1;			
+		dragDropManager.dropZones = fillArrayListMultimap(new IModule[]{gap2, sourceList1, gap1, sourceList2, gap1, sourceList3});
 				
 		List<IModule> result = dragDropManager.findInapplicableGaps(dragSource);
 		
@@ -181,6 +175,15 @@ public class DragDropManagerJUnitTest {
 		when(module.getParentModule()).thenReturn(parentModule);
 		return parentModule;
 	}
+
+	@SuppressWarnings("unchecked")
+	private Multimap<IModule, SourceListModule> fillArrayListMultimap(IModule[] list) {
+		ArrayListMultimap<IModule, SourceListModule> collection = ArrayListMultimap.create();
+		for (int i = 0; i < list.length; i += 2) {
+			collection.put((IModule) list[i], (SourceListModule) list[i + 1]);
+		}
+		return collection;
+	}
 	
     @BeforeClass
     public static void prepareTestEnviroment() {
@@ -197,8 +200,7 @@ public class DragDropManagerJUnitTest {
     	 */
     	GWTMockUtilities.restore();
     }
-		
-    
+
     public class MockDragDataObject implements DragDataObject {
 
 		private String value;
@@ -228,7 +230,6 @@ public class DragDropManagerJUnitTest {
 		public void setPreviousValue(String value) {
 			this.previousValue = value;
 			
-		}
- 	
+		}				
     }
 }
