@@ -34,7 +34,7 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 
 	@Override
 	public void processSingleAction(FeedbackAction action) {
-		System.out.println("this: " + this);
+		
 	}
 
 	@Override
