@@ -31,7 +31,7 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 		soundProcessor = spy(injector.getInstance(SoundActionProcessorMock.class));
 	}
 	
-	protected void start(List<FeedbackAction> actions){
+	protected void initializeWithActions(List<FeedbackAction> actions){
 		new Initializer().initWithActions(actions);
 	}
 	

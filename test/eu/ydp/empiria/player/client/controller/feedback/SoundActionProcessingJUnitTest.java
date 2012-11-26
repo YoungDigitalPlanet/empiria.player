@@ -24,7 +24,7 @@ public class SoundActionProcessingJUnitTest extends ProcessingFeedbackActionTest
 											addUrlAction(ActionType.NARRATION, "good.mp3").
 											addTextAction("Good").
 											getList();
-		start(actions);
+		initializeWithActions(actions);
 		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 		
 		processor.processActions(source);
@@ -47,7 +47,7 @@ public class SoundActionProcessingJUnitTest extends ProcessingFeedbackActionTest
 											addUrlAction(ActionType.NARRATION, audioUrl[1]).
 											getList();
 		
-		start(actions);
+		initializeWithActions(actions);
 		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 		
 		processor.processActions(source);
