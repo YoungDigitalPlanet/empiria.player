@@ -27,7 +27,7 @@ public class SimpleConnectorExtension extends ModuleExtension implements ModuleC
 	 * @param clazz
 	 *            klasa modulu
 	 * @param tagName
-	 *            nazwa taga który ma by obslugiwany
+	 *            nazwa taga ktï¿½ry ma by obslugiwany
 	 */
 	public SimpleConnectorExtension(Factory< ? extends IModule> clazz, ModuleTagName tagName) {
 		this(clazz, tagName, false);
@@ -43,7 +43,7 @@ public class SimpleConnectorExtension extends ModuleExtension implements ModuleC
 	 * @param clazz
 	 *            klasa modulu
 	 * @param tagName
-	 *            nazwa taga który ma by obslugiwany
+	 *            nazwa taga ktï¿½ry ma by obslugiwany
 	 * @param isMultiViewModule
 	 *            czy modul jest multiView
 	 */
@@ -59,16 +59,16 @@ public class SimpleConnectorExtension extends ModuleExtension implements ModuleC
 	 * @param clazz
 	 *            klasa modulu
 	 * @param tagName
-	 *            nazwa taga który ma by obslugiwany
+	 *            nazwa taga ktï¿½ry ma by obslugiwany
 	 * @param isMultiViewModule
 	 *            czy modul jest multiView
 	 * @param isInlineModule
 	 */
 	public SimpleConnectorExtension(Factory< ? extends IModule> clazz, ModuleTagName tagName, boolean isMultiViewModule, boolean isInlineModule) {
-		this(clazz,null, tagName, isMultiViewModule, false);
+		this(clazz,null, tagName, isMultiViewModule, isInlineModule);
 	}
 	public SimpleConnectorExtension(Provider< ? extends IModule> clazz, ModuleTagName tagName, boolean isMultiViewModule, boolean isInlineModule) {
-		this(null,clazz, tagName, isMultiViewModule, false);
+		this(null,clazz, tagName, isMultiViewModule, isInlineModule);
 	}
 	private SimpleConnectorExtension(Factory< ? extends IModule> clazz,Provider<? extends IModule> clazzProvider, ModuleTagName tagName, boolean isMultiViewModule, boolean isInlineModule) {
 		this.clazz = clazz;
