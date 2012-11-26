@@ -1,8 +1,11 @@
 package eu.ydp.empiria.player.client.module.sourcelist;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -76,6 +79,14 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 		instance.initModule(XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement());
 		assertEquals(presenter.asWidget(),instance.getView());
 		Mockito.verify(presenter).createAndBindUi();
+	}
+
+	@Test
+	public void containsValueTest() {
+		when(presenter.containsValue(Mockito.anyString())).thenReturn(true);
+		assertTrue(instance.containsValue("test"));
+		when(presenter.containsValue(Mockito.anyString())).thenReturn(false);
+		assertFalse(instance.containsValue("test"));
 	}
 
 }

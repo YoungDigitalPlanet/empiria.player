@@ -84,9 +84,6 @@ public class SourceListViewImplTest extends AbstractTestBaseWithoutAutoInjectorI
 		instance.createAndBindUi();
 		verify(eventbus).addHandlerToSource(Mockito.eq(DragDropEvent.getType(DragDropEventTypes.DRAG_END)), Mockito.eq(module),
 				Mockito.any(DragDropEventHandler.class), Mockito.any(EventScope.class));
-		verify(eventbus).addHandlerToSource(Mockito.eq(DragDropEvent.getType(DragDropEventTypes.FIND_VALUE_IN_SOURCELIST)), Mockito.eq(module),
-				Mockito.any(DragDropEventHandler.class), Mockito.any(EventScope.class));
-
 	}
 
 	@Test
@@ -105,34 +102,12 @@ public class SourceListViewImplTest extends AbstractTestBaseWithoutAutoInjectorI
 		instance.onItemDragStarted(dragDataObject, startEvent, item);
 	}
 
-	boolean searchResult = false;
 
 	@Test
 	public void findValueTest() {
 		instance.createAndBindUi();
-		eventbus.addHandler(DragDropEvent.getType(DragDropEventTypes.VALUE_NOT_FOUND_IN_SOURCELIST), new DragDropEventHandler() {
-			@Override
-			public void onDragEvent(DragDropEvent event) {
-				searchResult = false;
-			}
-		});
-
-		eventbus.addHandler(DragDropEvent.getType(DragDropEventTypes.VALUE_FOUND_IN_SOURCELIST), new DragDropEventHandler() {
-			@Override
-			public void onDragEvent(DragDropEvent event) {
-				searchResult = true;
-			}
-		});
-		DragDataObjectImpl dragDataObjectImpl = new DragDataObjectImpl();
-		DragDropEvent dragDropEvent = new DragDropEvent(DragDropEventTypes.FIND_VALUE_IN_SOURCELIST, null);
-		dragDropEvent.setIModule(mock(IModule.class));
-		dragDropEvent.setDragDataObject(dragDataObjectImpl);
-		dragDataObjectImpl.setValue("psa");
-		eventbus.fireEventFromSource(dragDropEvent, module);
-		assertTrue(searchResult);
-		dragDataObjectImpl.setValue("sss");
-		eventbus.fireEventFromSource(dragDropEvent, module);
-		assertFalse(searchResult);
+		assertTrue(instance.containsValue("psa"));
+		assertFalse(instance.containsValue("sss"));
 	}
 
 }

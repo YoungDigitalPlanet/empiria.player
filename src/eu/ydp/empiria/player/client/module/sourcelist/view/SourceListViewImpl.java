@@ -2,9 +2,6 @@ package eu.ydp.empiria.player.client.module.sourcelist.view;
 
 import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.DRAG_END;
 import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.DRAG_START;
-import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.FIND_VALUE_IN_SOURCELIST;
-import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.VALUE_FOUND_IN_SOURCELIST;
-import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.VALUE_NOT_FOUND_IN_SOURCELIST;
 
 import java.util.List;
 
@@ -30,7 +27,6 @@ import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
-import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
 public class SourceListViewImpl extends Composite implements SourceListView, DragDropEventHandler {
 
@@ -82,9 +78,10 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		return (NativeDragDataObject) overlayTypesParser.get();
 	}
 
-	protected void initWidget(){
+	protected void initWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
+
 	@Override
 	public void createAndBindUi() {
 		initWidget();
@@ -98,8 +95,6 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		}
 
 		eventsBus.addHandlerToSource(DragDropEvent.getType(DRAG_END), parentModule, this, pageScopeFactory.getCurrentPageScope());
-		eventsBus.addHandlerToSource(DragDropEvent.getType(FIND_VALUE_IN_SOURCELIST), parentModule, this, pageScopeFactory.getCurrentPageScope());
-
 	}
 
 	private void disableItems(boolean disabled) {
@@ -118,13 +113,6 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		event.setDragDataObject(dragDataObject);
 		event.setIModule(parentModule);
 		eventsBus.fireEventFromSource(event, parentModule, pageScopeFactory.getCurrentPageScope());
-	}
-
-	private void fireValueEvent(DragDropEventTypes type, DragDataObject data) {
-		DragDropEvent event = new DragDropEvent(type, parentModule);
-		event.setIModule(parentModule);
-		event.setDragDataObject(data);
-		eventsBus.fireEvent(event, pageScopeFactory.getCurrentPageScope());
 	}
 
 	private void checkSourceList(DragDataObject dragDataObject) {
@@ -148,23 +136,11 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 	public boolean containsValue(String value) {
 		return itemsCollection.containsValue(value);
 	}
-	
-	private void searchItem(DragDataObject dragDataObject) {
-		if (hiddenItems.containsValue(dragDataObject.getValue())) {
-			fireValueEvent(VALUE_NOT_FOUND_IN_SOURCELIST, dragDataObject);
-		} else if (itemsCollection.containsValue(dragDataObject.getValue())) {
-			fireValueEvent(VALUE_FOUND_IN_SOURCELIST, dragDataObject);
-		} else {
-			fireValueEvent(VALUE_NOT_FOUND_IN_SOURCELIST, dragDataObject);
-		}
-	}
 
 	@Override
 	public void onDragEvent(DragDropEvent event) {
 		if (event.getType() == DRAG_END) {
 			checkSourceList(event.getDragDataObject());
-		} else if (event.getType() == FIND_VALUE_IN_SOURCELIST) {
-			searchItem(event.getDragDataObject());
 		}
 
 	}
