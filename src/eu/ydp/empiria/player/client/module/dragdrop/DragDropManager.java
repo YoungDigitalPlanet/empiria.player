@@ -134,9 +134,11 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 	}
 
 	protected void registerDropZone(DragDropEvent event) {		
-		eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.DRAG_END), event.getIModule(), this);
-		eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.USER_CHANGE_DROP_ZONE), event.getIModule(), this);
-		waitingForRegister.add(event.getIModule()); 
+		if (event.getDragDataObject() != null) {
+			eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.DRAG_END), event.getIModule(), this);
+			eventsBus.addHandlerToSource(DragDropEvent.getType(DragDropEventTypes.USER_CHANGE_DROP_ZONE), event.getIModule(), this);		
+			waitingForRegister.add(event.getIModule());
+		}
 	}
 
 	private void buildDropZoneSourceListRelationships(IModule dropZone, HasChildren module) {
