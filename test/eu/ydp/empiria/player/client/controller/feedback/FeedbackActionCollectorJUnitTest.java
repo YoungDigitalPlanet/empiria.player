@@ -31,7 +31,8 @@ public class FeedbackActionCollectorJUnitTest {
 	@Before
 	public void initialize(){
 		source = mock(IModule.class);
-		collector = new FeedbackActionCollector(source);		
+		collector = new FeedbackActionCollector();
+		collector.setSource(source);
 	}
 	
 	@Test

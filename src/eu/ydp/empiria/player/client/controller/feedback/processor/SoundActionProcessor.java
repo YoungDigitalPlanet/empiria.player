@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -10,7 +9,6 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionT
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlActionSource;
 
 public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
 	

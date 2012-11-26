@@ -4,6 +4,7 @@ import static com.google.common.base.Optional.fromNullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
@@ -21,7 +22,8 @@ public class ModuleFeedbackProcessor {
 	@Inject
 	private FeedbackRegistry feedbackRegistry;
 	
-	private FeedbackActionCollector feedbackActionCollector;
+	@Inject
+	protected FeedbackActionCollector feedbackActionCollector;
 	
 	@Inject
 	private FeedbackConditionMatcher matcher;
@@ -35,7 +37,7 @@ public class ModuleFeedbackProcessor {
 	private SoundActionProcessor soundProcessor;
 
 	public void process(IModule sender, Map<String, ? extends Variable> variables){
-		feedbackActionCollector = new FeedbackActionCollector(sender);
+		feedbackActionCollector.setSource(sender);
 		processFeedbackActionCollector(sender);
 	}
 	
@@ -72,7 +74,7 @@ public class ModuleFeedbackProcessor {
 		}
 	}
 	
-	private void processActions(IModule module){
+	protected void processActions(IModule module){
 		List<FeedbackActionProcessor> processors = getFeedbackProcessors(module);
 		
 		for(FeedbackActionProcessor processor: processors){
@@ -99,9 +101,22 @@ public class ModuleFeedbackProcessor {
 		return processors;
 	}
 	
-	private List<FeedbackActionProcessor> getProcessorModules(IModule module){
-		//TODO: find processor in module
-		return Lists.newArrayList();
+	protected List<FeedbackActionProcessor> getProcessorModules(IModule module){
+		List<FeedbackActionProcessor> processors = Lists.newArrayList();
+		
+		try {
+			IModule parentModule = module.getParentModule();
+			
+			for (IModule child : parentModule.getChildren()) {
+				if(child instanceof FeedbackActionProcessor){
+					processors.add((FeedbackActionProcessor) child);
+				}
+			}
+		} catch (Exception exception) {
+			Logger.getLogger(getClass().getName()).info(exception.getMessage());
+		}
+		
+		return processors;
 	}
 
 	private FeedbackProperties getPropertiesFromResponse(IModule module){
