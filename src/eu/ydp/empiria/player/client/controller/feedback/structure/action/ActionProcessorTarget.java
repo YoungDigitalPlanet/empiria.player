@@ -7,4 +7,6 @@ public interface ActionProcessorTarget{
 	
 	void processSingleAction(FeedbackAction action);
 	
+	void clearFeedback();
+	
 }

@@ -23,10 +23,12 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class SoundPlayer {
+public class FeedbackSoundPlayer {
 	
 	@Inject
 	protected EventsBus eventsBus;
+	
+	MediaWrapper<?> lastMediaWrapper;
 	
 	// Cache dla wrapperow - do odegrania danego pliku bedzie uzywany zawsze ten sam wrapper.
 	protected Map<String, MediaWrapper<?>> wrappers = new HashMap<String, MediaWrapper<?>>();
@@ -86,8 +88,15 @@ public class SoundPlayer {
 	}
 	
 	protected void playSound(MediaWrapper<?> mediaWrapper) {
+		lastMediaWrapper = mediaWrapper;
 		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP, mediaWrapper), mediaWrapper);
 		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, mediaWrapper), mediaWrapper);
+	}
+	
+	public void stop() {
+		if (lastMediaWrapper != null) {
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP, lastMediaWrapper), lastMediaWrapper);
+		}
 	}
 
 	protected void createMediaWrapper(String wrappersSourcesKey, Map<String, String> sourcesWithTypes) {

@@ -11,7 +11,7 @@ import com.google.inject.Provides;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
-import eu.ydp.empiria.player.client.controller.feedback.processor.SoundPlayer;
+import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackSoundPlayer;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.module.IModule;
 
@@ -27,7 +27,7 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 	
 	@Override
 	public void setUp() {
-		setUp(new Class<?>[]{FeedbackActionCollector.class, SoundActionProcessor.class, SoundPlayer.class}, new FeedbackActionCollectorModule());
+		setUp(new Class<?>[]{FeedbackActionCollector.class, SoundActionProcessor.class, FeedbackSoundPlayer.class}, new FeedbackActionCollectorModule());
 		soundProcessor = spy(injector.getInstance(SoundActionProcessorMock.class));
 	}
 	
@@ -52,8 +52,8 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 		}
 		
 		@Provides
-		public SoundPlayer getSoundPlayer(){
-			return mock(SoundPlayer.class);
+		public FeedbackSoundPlayer getSoundPlayer(){
+			return mock(FeedbackSoundPlayer.class);
 		}
 		
 	}

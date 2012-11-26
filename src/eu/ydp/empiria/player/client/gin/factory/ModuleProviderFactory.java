@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.gin.factory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.module.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
@@ -20,6 +21,9 @@ public class ModuleProviderFactory {
 
 	@Inject
 	protected Provider<PageInPageModule> pageInPageModule;
+	
+	@Inject
+	protected Provider<TextActionProcessor> textActionProcessor;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -35,5 +39,9 @@ public class ModuleProviderFactory {
 
 	public Provider<PageInPageModule> getPageInPageModule() {
 		return pageInPageModule;
+	}
+	
+	public Provider<TextActionProcessor> getTextActionProcessor() {
+		return textActionProcessor;
 	}
 }

@@ -20,5 +20,10 @@ public class ActionProcessorHelper extends AbstractFeedbackActionProcessor {
 	protected void processSingleAction(FeedbackAction action) {
 		target.processSingleAction(action);
 	}
+	
+	@Override
+	protected void clearFeedback() {
+		target.clearFeedback();
+	}
 
 }

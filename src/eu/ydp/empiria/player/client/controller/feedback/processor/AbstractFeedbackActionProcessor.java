@@ -12,6 +12,8 @@ public abstract class AbstractFeedbackActionProcessor implements FeedbackActionP
 	public List<FeedbackAction> processActions(List<FeedbackAction> actions) {
 		List<FeedbackAction> processedActions = Lists.newArrayList();
 		
+		clearFeedback();
+		
 		for(FeedbackAction action: actions){
 			if(canProcessAction(action)){
 				processSingleAction(action);
@@ -25,5 +27,7 @@ public abstract class AbstractFeedbackActionProcessor implements FeedbackActionP
 	protected abstract boolean canProcessAction(FeedbackAction action);
 	
 	protected abstract void processSingleAction(FeedbackAction action);
+	
+	protected abstract void clearFeedback();
 		
 }

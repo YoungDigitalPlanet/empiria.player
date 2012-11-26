@@ -13,17 +13,15 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrl
 public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
 	
 	@Inject
-	private SoundPlayer player;
+	private FeedbackSoundPlayer player;
 
 	@Override
 	protected boolean canProcessAction(FeedbackAction action) {
 		boolean canProcess = false;
 		
-		try{
-			FeedbackUrlAction urlAction = (FeedbackUrlAction)action;
+		if (action instanceof FeedbackUrlAction) {
+			FeedbackUrlAction urlAction = (FeedbackUrlAction) action;
 			canProcess = ActionType.NARRATION.equalsToString(urlAction.getType());
-		}catch(ClassCastException exception){// NOPMD by MKaldonek on 14.11.12 15:17 
-						
 		}
 		
 		return canProcess;
@@ -41,6 +39,11 @@ public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
 				player.play(sources);
 			}
 		}
+	}
+
+	@Override
+	protected void clearFeedback() {
+		player.stop();
 	}
 	
 }

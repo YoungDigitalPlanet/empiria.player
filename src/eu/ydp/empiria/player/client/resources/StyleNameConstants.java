@@ -583,6 +583,12 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-dragged-drag")
 	public String QP_DRAGGED_DRAG();
+	
+	@DefaultStringValue("qp-feedback-text-module")
+	public String QP_FEEDBACK_TEXT_MODULE();
+	
+	@DefaultStringValue("qp-feedback-text")
+	public String QP_FEEDBACK_TEXT();
 
 	@DefaultStringValue("qp-drag-item")
 	public String QP_DRAG_ITEM();
