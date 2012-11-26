@@ -86,6 +86,7 @@ public class SoundPlayer {
 	}
 	
 	protected void playSound(MediaWrapper<?> mediaWrapper) {
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP, mediaWrapper), mediaWrapper);
 		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, mediaWrapper), mediaWrapper);
 	}
 
