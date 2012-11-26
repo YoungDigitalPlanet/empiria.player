@@ -22,7 +22,7 @@ public class NotConditionMatcher extends ConditionMatcherBase implements Feedbac
 
 		notCondition = (NotConditionBean) condition;
 		FeedbackMatcher feedbackMatcher = getMatcher(notCondition.getCondition());
-		matches ^= feedbackMatcher.match(notCondition.getCondition(), properties);
+		matches = !feedbackMatcher.match(notCondition.getCondition(), properties);
 
 		return matches;
 	}
