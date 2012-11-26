@@ -13,13 +13,17 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 
 	private ActionProcessorHelper helper;
 	
-	public TextActionProcessor(){
-		helper = new ActionProcessorHelper(this);
-	}
-	
 	@Override
 	public List<FeedbackAction> processActions(List<FeedbackAction> actions) {
-		return helper.processActions(actions);
+		return getHelper().processActions(actions);
+	}
+	
+	private ActionProcessorHelper getHelper(){
+		if(helper == null){
+			helper = new ActionProcessorHelper(this);
+		}
+		
+		return helper;
 	}
 
 	@Override
@@ -30,7 +34,7 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 
 	@Override
 	public void processSingleAction(FeedbackAction action) {
-		
+		System.out.println("this: " + this);
 	}
 
 	@Override
