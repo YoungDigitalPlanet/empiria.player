@@ -23,8 +23,7 @@ public class DragDropManagerHelper {
 		}		
 		DragDropEvent event = new DragDropEvent(eventType, source);
 		event.setDragDataObject(dragDropDataObject);
-		event.setIModule(correspondingModule);
-		System.err.println("poszedl event na: " + source);
+		event.setIModule(correspondingModule);		
 		eventsBus.fireEventFromSource(event, source, scopeFactory.getCurrentPageScope());
 	}
 	

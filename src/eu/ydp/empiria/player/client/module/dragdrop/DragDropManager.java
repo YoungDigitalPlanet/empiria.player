@@ -38,7 +38,6 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 	Map<IModule, SourceListModule> gapValueSourceCache = new HashMap<IModule, SourceListModule>();
 	
 	SourceListModule lastDragSource;
-	//IModule lastGapChanged;
 
 	List<IModule> waitingForRegister = new ArrayList<IModule>();
 
@@ -54,8 +53,6 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 		this.helper = new DragDropManagerHelper(eventsBus, scopeFactory);
 		eventsBus.addHandler(DragDropEvent.getType(DragDropEventTypes.REGISTER_DROP_ZONE), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_LOADED), this);
-		//eventsBus.addHandler(DragDropEvent.getType(DragDropEventTypes.VALUE_FOUND_IN_SOURCELIST), this);
-		//eventsBus.addHandler(DragDropEvent.getType(DragDropEventTypes.VALUE_NOT_FOUND_IN_SOURCELIST), this);
 	}
 	
 	private void handleDragStart(DragDropEvent event) {
@@ -82,21 +79,20 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 	}
 	
 	private void handleDragEnd(DragDropEvent event) {
-		IModule gapModule = (IModule)event.getSource();		
+		IModule gapModule = (IModule)event.getIModule();
+		
 		updateDragDataObject(event, gapModule);		
 		String newValue = event.getDragDataObject().getValue();
 		gapValuesCache.put(gapModule, newValue);
 		
 		if (lastDragSource != null) {
-			gapValueSourceCache.put(gapModule, lastDragSource); // FIXME: is it needed?
+			gapValueSourceCache.put(gapModule, lastDragSource);
 			helper.fireEventFromSource(lastDragSource, event.getDragDataObject(), DragDropEventTypes.DRAG_END, gapModule);
 		}
 	}
 
 	private void handleUserChangedDropZone(DragDropEvent event) {
-		//lastGapChanged = (IModule)event.getSource();		
-		
-		IModule gapChanged = (IModule)event.getSource(); // FIXME: why IModule is not set? what is difference between source and iModule?	
+		IModule gapChanged = (IModule)event.getIModule();	
 		
 		event.setIModule(gapChanged);
 		updateDragDataObject(event, gapChanged);
@@ -109,7 +105,6 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 				helper.fireEventFromSource(sourceList, event.getDragDataObject(), DragDropEventTypes.DRAG_END, gapChanged);
 				break;
 			}				
-			//helper.fireEventFromSource(sourceList, event.getDragDataObject(), DragDropEventTypes.FIND_VALUE_IN_SOURCELIST);
 		}		
 	}
 	
