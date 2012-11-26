@@ -21,6 +21,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public abstract class AbstractConnectionView extends Composite implements ConnectionView, TouchHandler {
 	private final Set<ConnectionMoveHandler> handlers = new HashSet<ConnectionMoveHandler>();
@@ -28,7 +29,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	private final Set<ConnectionMoveStartHandler> startMoveHandlers = new HashSet<ConnectionMoveStartHandler>();
 	protected final EventsBus eventsBus;
 	private final PositionHelper positionHelper;
-
+	private final static boolean notMobileBrowser = !UserAgentChecker.isMobileUserAgent();
 	protected final TouchRecognitionFactory touchRecognitionFactory;
 
 	public AbstractConnectionView(EventsBus eventsBus, PositionHelper positionHelper, TouchRecognitionFactory touchRecognitionFactory) {
@@ -78,6 +79,9 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 
 	public void onTouchMove(NativeEvent event) {
 		if (getView() != null) {
+			if(notMobileBrowser) {
+				event.preventDefault();
+			}
 			callOnMoveHandlers(new ConnectionMoveEvent(getPositionX(event), getPositionY(event), event));
 		}
 	}
