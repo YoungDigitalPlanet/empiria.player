@@ -6,6 +6,8 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.ActionProcesso
 import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
+import eu.ydp.gwtutil.client.StringUtils;
 
 public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, IModule {
 
@@ -22,7 +24,8 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 
 	@Override
 	public boolean canProcessAction(FeedbackAction action) {
-		return false;
+		return (action instanceof ShowTextAction && 
+				!StringUtils.EMPTY_STRING.equals(((ShowTextAction) action).getText()));
 	}
 
 	@Override
