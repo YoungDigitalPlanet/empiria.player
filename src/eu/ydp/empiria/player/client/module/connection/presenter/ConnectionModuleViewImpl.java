@@ -68,6 +68,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	private MultiplePairBean<SimpleAssociableChoiceBean> modelInterface;
 	private final KeyValue<Double, Double> lastPoint = new KeyValue<Double, Double>(0d, 0d);
 	private ModuleSocket moduleSocket;
+	private static int approximation = UserAgentChecker.isStackAndroidBrowser() ? 15 : 5;
 
 	private boolean locked;
 
@@ -102,6 +103,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	public void disconnect(String sourceIdentifier, String targetIdentifier) {
 		disconnect(sourceIdentifier, targetIdentifier, false);
 	}
+
 	public void disconnect(String sourceIdentifier, String targetIdentifier, boolean userAction) {
 		if (items.containsKey(sourceIdentifier) && items.containsKey(targetIdentifier)) {
 			KeyValue<String, String> keyValue = new KeyValue<String, String>(sourceIdentifier, targetIdentifier);
@@ -174,11 +176,6 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	public void onConnectionMove(ConnectionMoveEvent event) {
 		if (!locked && startPositions.containsKey(selectedItem)) {
 			event.preventDefault();
-			int approximation = 5;
-			if (UserAgentChecker.isStackAndroidBrowser()) {
-				approximation = 15;
-			}
-
 			if (Math.abs(lastPoint.getKey() - event.getX()) > approximation || Math.abs(lastPoint.getValue() - event.getY()) > approximation) {
 				lastPoint.setKey(event.getX());
 				lastPoint.setValue(event.getY());
@@ -272,7 +269,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		int yPos = positionHelper.getPositionY(event, view.getElement());
 		for (Map.Entry<KeyValue<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
 			if (entry.getValue().isPointOnPath(xPos, yPos, 10)) {
-				disconnect(entry.getKey().getKey(), entry.getKey().getValue(),true);
+				disconnect(entry.getKey().getKey(), entry.getKey().getValue(), true);
 				event.preventDefault();
 				break;
 			}
@@ -286,6 +283,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		for (Map.Entry<String, ConnectionItem> itemEntry : items.entrySet()) {
 			if (itemEntry.getValue().isOnPosition(xPos, yPos)) {
 				item = itemEntry.getValue();
+				event.preventDefault(); // disable text selection
 				break;
 			}
 		}
