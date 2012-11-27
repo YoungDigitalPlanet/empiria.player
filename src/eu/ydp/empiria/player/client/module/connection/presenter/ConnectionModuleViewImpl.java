@@ -64,11 +64,11 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	protected final Map<KeyValue<String, String>, ConnectionSurface> connectedSurfaces = new HashMap<KeyValue<String, String>, ConnectionSurface>();
 	protected final Map<ConnectionItem, KeyValue<Integer, Integer>> startPositions = new HashMap<ConnectionItem, KeyValue<Integer, Integer>>();
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
-	private ConnectionItem selectedItem;
+	private final KeyValue<ConnectionItem, ConnectionItem> connectionItemPair = new KeyValue<ConnectionItem, ConnectionItem>();
 	private MultiplePairBean<SimpleAssociableChoiceBean> modelInterface;
 	private final KeyValue<Double, Double> lastPoint = new KeyValue<Double, Double>(0d, 0d);
 	private ModuleSocket moduleSocket;
-	private static int approximation = UserAgentChecker.isStackAndroidBrowser() ? 15 : 5;
+	private final int approximation = UserAgentChecker.isStackAndroidBrowser() ? 15 : 5;
 
 	private boolean locked;
 
@@ -86,14 +86,18 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		connectedSurfaces.clear();
 	}
 
+	protected void connect(ConnectionItem source, ConnectionItem target, MultiplePairModuleConnectType type, boolean userAction) {
+		startDrawLine(source, type);
+		drawLine(source, target.getRelativeX(), target.getRelativeY());
+		connectItems(source, target, userAction);
+	}
+
 	@Override
 	public void connect(String sourceIdentifier, String targetIdentifier, MultiplePairModuleConnectType type) {
 		if (items.containsKey(sourceIdentifier) && items.containsKey(targetIdentifier)) {
 			ConnectionItem source = items.get(sourceIdentifier);
 			ConnectionItem target = items.get(targetIdentifier);
-			startDrawLine(source, type);
-			drawLine(source, target.getRelativeX(), target.getRelativeY());
-			connectItems(source, target, false);
+			connect(source, target, type, false);
 		} else {
 			fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, sourceIdentifier, targetIdentifier, false);
 		}
@@ -167,19 +171,19 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			} else {
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
 				startDrawLine(item, MultiplePairModuleConnectType.NORMAL);
-				selectedItem = item;
+				connectionItemPair.setKey(item);
 			}
 		}
 	}
 
 	@Override
 	public void onConnectionMove(ConnectionMoveEvent event) {
-		if (!locked && startPositions.containsKey(selectedItem)) {
+		if (!locked && startPositions.containsKey(connectionItemPair.getKey())) {
 			event.preventDefault();
 			if (Math.abs(lastPoint.getKey() - event.getX()) > approximation || Math.abs(lastPoint.getValue() - event.getY()) > approximation) {
 				lastPoint.setKey(event.getX());
 				lastPoint.setValue(event.getY());
-				drawLine(selectedItem, event.getX(), event.getY());
+				drawLine(connectionItemPair.getKey(), event.getX(), event.getY());
 			}
 		}
 	}
@@ -188,19 +192,31 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		return rightColumnItems.contains(selectedItem) ? leftColumnItems : rightColumnItems;
 	}
 
+	public void resetConnectionByTouch() {
+		connectionItemPair.setKey(null);
+		connectionItemPair.setValue(null);
+	}
+
 	@Override
 	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
 		if (!locked) {
-			for (ConnectionItem item : getConnectionItems(selectedItem)) {
+			for (ConnectionItem item : getConnectionItems(connectionItemPair.getKey())) {
 				if (item.getOffsetLeft() <= event.getX() && event.getX() <= item.getOffsetLeft() + item.getWidth() && item.getOffsetTop() <= event.getY()
 						&& event.getY() <= item.getOffsetTop() + item.getHeight()) {
-					drawLine(selectedItem, item.getRelativeX(), item.getRelativeY());
-					connectItems(selectedItem, item, true);
+					drawLine(connectionItemPair.getKey(), item.getRelativeX(), item.getRelativeY());
+					connectItems(connectionItemPair.getKey(), item, true);
+					resetConnectionByTouch();
 					return;
 				}
 			}
+			if (connectionItemPair.getValue() == null || connectionItemPair.getValue().equals(connectionItemPair.getKey())) {
+				connectionItemPair.setValue(connectionItemPair.getKey());
+			} else {
+				connect(connectionItemPair.getKey(), connectionItemPair.getValue(), MultiplePairModuleConnectType.NORMAL, true);
+				resetConnectionByTouch();
+			}
 		}
-		clearSurface(selectedItem);
+		clearSurface(connectionItemPair.getKey());
 	}
 
 	protected void drawLine(ConnectionItem item, double positionX, double positionY) {
