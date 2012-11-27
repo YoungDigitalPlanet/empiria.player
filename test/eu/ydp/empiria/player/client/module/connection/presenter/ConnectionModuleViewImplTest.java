@@ -32,9 +32,9 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-import eu.ydp.gwtutil.useragent.UserAgentCheckerNativeInterfaceMock;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
