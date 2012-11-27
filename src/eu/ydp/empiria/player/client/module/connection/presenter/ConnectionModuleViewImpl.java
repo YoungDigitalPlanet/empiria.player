@@ -62,6 +62,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	protected final Set<ConnectionItem> rightColumnItems = new HashSet<ConnectionItem>();
 	protected ConnectionSurface currentSurface = null;
 	protected final Map<KeyValue<String, String>, ConnectionSurface> connectedSurfaces = new HashMap<KeyValue<String, String>, ConnectionSurface>();
+	protected final Map<String, ConnectionSurface> surfaces = new HashMap<String, ConnectionSurface>();
 	protected final Map<ConnectionItem, KeyValue<Integer, Integer>> startPositions = new HashMap<ConnectionItem, KeyValue<Integer, Integer>>();
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
 	private final KeyValue<ConnectionItem, ConnectionItem> connectionItemPair = new KeyValue<ConnectionItem, ConnectionItem>();
@@ -117,13 +118,13 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 				connectionSurface.removeFromParent();
 				connectedSurfaces.remove(keyValue);
 			}
-			items.get(sourceIdentifier).reset();
-			items.get(targetIdentifier).reset();
+
+			resetIfNotConnected(items.get(sourceIdentifier));
+			resetIfNotConnected(items.get(targetIdentifier));
 			fireConnectEvent(PairConnectEventTypes.DISCONNECTED, sourceIdentifier, targetIdentifier, userAction);
 		} else {
 			fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, sourceIdentifier, targetIdentifier, userAction);
 		}
-
 	}
 
 	@Override
@@ -171,6 +172,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			} else {
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
 				startDrawLine(item, MultiplePairModuleConnectType.NORMAL);
+				item.setConnected(true);
 				connectionItemPair.setKey(item);
 			}
 		}
@@ -192,7 +194,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		return rightColumnItems.contains(selectedItem) ? leftColumnItems : rightColumnItems;
 	}
 
-	public void resetConnectionByTouch() {
+	protected void resetConnectionByTouch() {
 		connectionItemPair.setKey(null);
 		connectionItemPair.setValue(null);
 	}
@@ -209,6 +211,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 					return;
 				}
 			}
+			//connection by click
 			if (connectionItemPair.getValue() == null || connectionItemPair.getValue().equals(connectionItemPair.getKey())) {
 				connectionItemPair.setValue(connectionItemPair.getKey());
 			} else {
@@ -227,21 +230,50 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 
 	}
 
+	protected boolean hasConnections(ConnectionItem item){
+		boolean hasConnection = false;
+		String identifier = item.getBean().getIdentifier();
+		for(KeyValue<String, String> connection : connectedSurfaces.keySet()){
+			if(identifier.equals(connection.getKey()) || identifier.equals(connection.getValue())){
+				hasConnection = true;
+				break;
+			}
+		}
+		return hasConnection;
+	}
+
+	protected void resetIfNotConnected(ConnectionItem item){
+		if(!hasConnections(item)){
+			item.reset();
+		}
+	}
 	protected void clearSurface(ConnectionItem item) {
 		if (startPositions.containsKey(item)) {
-			item.reset();
 			startPositions.remove(item);
 			currentSurface.clear();
 		}
 	}
 
+	protected ConnectionSurface getSurface(ConnectionItem item) {
+		ConnectionSurface surface;
+		if ((surface = surfaces.get(item.getBean().getIdentifier())) == null) {// NOPMD
+			surface = connectionFactory.getConnectionSurface(view.getOffsetWidth(), view.getOffsetHeight());
+			surfaces.put(item.getBean().getIdentifier(), surface);
+		}
+		return surface;
+	}
+
 	protected void startDrawLine(ConnectionItem item, MultiplePairModuleConnectType type) {
 		KeyValue<Integer, Integer> startPoint = new KeyValue<Integer, Integer>(item.getRelativeX(), item.getRelativeY());
 		startPositions.put(item, startPoint);
-		currentSurface = connectionFactory.getConnectionSurface(view.getOffsetWidth(), view.getOffsetHeight());
+		currentSurface = getSurface(item);
 		currentSurface.applyStyles(connectionModuleViewStyles.getStyles(type));
 		view.addElementToMainView(currentSurface.asWidget());
 		currentSurface.drawLine(item.getRelativeX(), item.getRelativeY(), item.getRelativeX(), item.getRelativeY());
+	}
+
+	protected KeyValue<String, String> getConnectionPair(ConnectionItem sourceItem, ConnectionItem targetItem) {
+		return new KeyValue<String, String>(sourceItem.getBean().getIdentifier(), targetItem.getBean().getIdentifier());
 	}
 
 	protected void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, boolean userAction) {
@@ -249,8 +281,8 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		sourceItem.reset();
 		sourceItem.setConnected(true);
 		targetItem.setConnected(true);
-		ConnectionSurface duplicate = connectedSurfaces.put(new KeyValue<String, String>(sourceItem.getBean().getIdentifier(), targetItem.getBean()
-				.getIdentifier()), currentSurface);
+		ConnectionSurface duplicate = connectedSurfaces.put(getConnectionPair(sourceItem, targetItem), currentSurface);
+		surfaces.remove(sourceItem.getBean().getIdentifier());
 		if (duplicate == null) {
 			fireConnectEvent(PairConnectEventTypes.CONNECTED, sourceItem.getBean().getIdentifier(), targetItem.getBean().getIdentifier(), userAction);
 		} else {

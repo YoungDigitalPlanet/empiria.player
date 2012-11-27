@@ -1,10 +1,14 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.AfterClass;
@@ -177,7 +181,54 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 
 	}
 
+	@Test
+	public void connectByClickTest(){
+		ConnectionModuleViewImpl testObject = spy(instance);
+		Set<ConnectionItem> connectionItems = testObject.getConnectionItems(null);
+		Iterator<ConnectionItem> iterator = connectionItems.iterator();
+		ConnectionItem item1 = iterator.next();
+		ConnectionItem item2 = iterator.next();
+		doReturn(item1).when(testObject).findConnectionItem(Mockito.any(NativeEvent.class));
+		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
+		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
+		doReturn(item2).when(testObject).findConnectionItem(Mockito.any(NativeEvent.class));
+		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
+		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
+		verify(testObject).resetConnectionByTouch();
+		verify(testObject).connect(eq(item2),eq(item1), eq(MultiplePairModuleConnectType.NORMAL), eq(true));
+	}
 
+	@Test
+	public void itemHasAnotherConnectionTest(){
+		ConnectionModuleViewImpl testObject = spy(instance);
+		Set<ConnectionItem> connectionItems = testObject.getConnectionItems(null);
+		Iterator<ConnectionItem> iterator = connectionItems.iterator();
+		ConnectionItem item1 = iterator.next();
+		ConnectionItem item2 = iterator.next();
+		ConnectionItem item3 = testObject.getConnectionItems(item1).iterator().next();
+		doReturn(item1).when(testObject).findConnectionItem(Mockito.any(NativeEvent.class));
+		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
+		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
+		doReturn(item2).when(testObject).findConnectionItem(Mockito.any(NativeEvent.class));
+		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
+		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
+		doReturn(item1).when(testObject).findConnectionItem(Mockito.any(NativeEvent.class));
+		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
+		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
+		verify(item2,times(1)).reset();
+		doReturn(item3).when(testObject).findConnectionItem(Mockito.any(NativeEvent.class));
+		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
+		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
+		verify(testObject,times(2)).resetConnectionByTouch();
+		verify(testObject).connect(eq(item2),eq(item1), eq(MultiplePairModuleConnectType.NORMAL), eq(true));
+		verify(testObject).connect(eq(item3),eq(item1), eq(MultiplePairModuleConnectType.NORMAL), eq(true));
+
+		testObject.disconnect(item1.getBean().getIdentifier(), item2.getBean().getIdentifier());
+		assertTrue(testObject.hasConnections(item1));
+		verify(item2,times(1)).reset();
+		verify(item1,times(0)).reset();
+
+	}
 
 
 
