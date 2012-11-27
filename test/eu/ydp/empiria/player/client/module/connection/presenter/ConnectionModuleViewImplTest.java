@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.google.gwt.dom.client.NativeEvent;
@@ -30,8 +31,14 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveS
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.junit.runners.ExMockRunner;
+import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import eu.ydp.gwtutil.useragent.UserAgentCheckerNativeInterfaceMock;
 
 @SuppressWarnings("PMD")
+@RunWith(ExMockRunner.class)
+@PrepareForTest(NativeEvent.class)
 public class ConnectionModuleViewImplTest extends AbstractTestBase {
 	AbstractJAXBTestBase<MatchInteractionBean> jaxb = new AbstractJAXBTestBase<MatchInteractionBean>() {
 
@@ -53,6 +60,7 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 
 	@Before
 	public void before(){
+		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock("Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2"));
 		jaxb.createUnmarshaller();
 		bean = jaxb.createBeanFromXMLString(ConnectionModuleStructureMock.CONNECTION_XML);
 		instance = injector.getInstance(ConnectionModuleViewImpl.class);
@@ -62,6 +70,7 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 		instance.setModuleSocket(moduleSocket);
 		instance.bindView();
 		event = mock(NativeEvent.class);
+
 
 	}
 
