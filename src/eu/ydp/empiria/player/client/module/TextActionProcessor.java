@@ -26,17 +26,13 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 	@Inject
 	Provider<TextActionProcessor> provider;
 	
-	public TextActionProcessor(){
-		helper = new ActionProcessorHelper(this);
-	}
-	
 	@Override
 	public List<FeedbackAction> processActions(List<FeedbackAction> actions) {
 		return getHelper().processActions(actions);
 	}
 	
 	private ActionProcessorHelper getHelper(){
-		if(helper == null){
+		if (helper == null) {
 			helper = new ActionProcessorHelper(this);
 		}
 		
