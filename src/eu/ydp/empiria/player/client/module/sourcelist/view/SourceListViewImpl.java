@@ -138,6 +138,14 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 	}
 
 	@Override
+	public void reset() {
+		for(SourceListViewItem item : hiddenItems.keySet()){
+			item.show();
+		}
+		hiddenItems.clear();
+	}
+
+	@Override
 	public void onDragEvent(DragDropEvent event) {
 		if (event.getType() == DRAG_END) {
 			checkSourceList(event.getDragDataObject());
