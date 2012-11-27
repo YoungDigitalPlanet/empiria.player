@@ -4,8 +4,15 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 
 import eu.ydp.empiria.player.client.jaxb.JAXBParserImpl;
 
+@SuppressWarnings("PMDs")
 public class SourceListJAXBParserMock implements SourceListJAXBParser {
 	public static final String XML = "<sourceList id=\"dummy2\" moveElements=\"true\" shuffle=\"true\">"+
+			"<simpleSourceListItem alt=\"psa\">psa</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"kota\">kota</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"tygrysa\">tygrysa</simpleSourceListItem>"+
+						"</sourceList>";
+
+	public static final String XML_WITHOUT_MOVE_ELEMENTS = "<sourceList id=\"dummy2\" moveElements=\"false\" shuffle=\"true\">"+
 			"<simpleSourceListItem alt=\"psa\">psa</simpleSourceListItem>"+
 			"<simpleSourceListItem alt=\"kota\">kota</simpleSourceListItem>"+
 			"<simpleSourceListItem alt=\"tygrysa\">tygrysa</simpleSourceListItem>"+
