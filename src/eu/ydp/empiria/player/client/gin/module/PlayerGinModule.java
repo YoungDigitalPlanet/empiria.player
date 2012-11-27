@@ -35,6 +35,8 @@ import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
+import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
+import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedbackPresenter;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedbackPresenter;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
@@ -103,6 +105,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class).in(Singleton.class);
 		bind(DragDropHelper.class).to(DragDropHelperImpl.class).in(Singleton.class);
 		bind(TextFeedback.class).to(TextFeedbackPresenter.class);
+		bind(ImageFeedback.class).to(ImageFeedbackPresenter.class);
 		
 		//bind(OverlayTypesParser.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder(). build(VideoTextTrackElementFactory.class));

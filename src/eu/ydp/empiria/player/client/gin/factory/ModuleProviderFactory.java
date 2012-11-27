@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.gin.factory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
@@ -24,6 +25,9 @@ public class ModuleProviderFactory {
 	
 	@Inject
 	protected Provider<TextActionProcessor> textActionProcessor;
+	
+	@Inject
+	protected Provider<ImageActionProcessor> imageActionProcessor;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -44,4 +48,9 @@ public class ModuleProviderFactory {
 	public Provider<TextActionProcessor> getTextActionProcessor() {
 		return textActionProcessor;
 	}
+	
+	public Provider<ImageActionProcessor> getImageActionProcessor() {
+		return imageActionProcessor;
+	}
+	
 }
