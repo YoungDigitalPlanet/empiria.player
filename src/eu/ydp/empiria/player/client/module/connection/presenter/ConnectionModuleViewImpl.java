@@ -85,6 +85,10 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			surfce.removeFromParent();
 		}
 		connectedSurfaces.clear();
+		for(ConnectionItem item : items.values()){
+			item.reset();
+		}
+
 	}
 
 	protected void connect(ConnectionItem source, ConnectionItem target, MultiplePairModuleConnectType type, boolean userAction) {
