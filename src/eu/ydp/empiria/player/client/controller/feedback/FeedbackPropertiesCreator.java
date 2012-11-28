@@ -47,7 +47,7 @@ public class FeedbackPropertiesCreator {
 		properties.addIntegerProperty(FeedbackPropertyName.DONE, getInteger(DONE));
 		properties.addIntegerProperty(FeedbackPropertyName.TODO, getInteger(TODO));
 		properties.addIntegerProperty(FeedbackPropertyName.ERRORS, getInteger(ERRORS));
-		properties.addDoubleValue(FeedbackPropertyName.RESULT, getResultValue());
+		properties.addDoubleProperty(FeedbackPropertyName.RESULT, getResultValue());
 		
 		return  properties;
 	}

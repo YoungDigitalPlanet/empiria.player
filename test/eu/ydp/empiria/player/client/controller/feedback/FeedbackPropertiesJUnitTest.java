@@ -92,5 +92,60 @@ public class FeedbackPropertiesJUnitTest {
 		assertThat("not existing name", properties.hasValue("notExisting"), is(equalTo(false)));
 		assertThat("exisiting name, not existing value", properties.hasValue("text"), is(equalTo(false)));
 	}
+	
+	@Test
+	public void mergingToEmptyProperties(){
+		FeedbackProperties propertiesToMerge = new FeedbackProperties();
+		properties = new FeedbackProperties();
+		
+		propertiesToMerge.addBooleanProperty(FeedbackPropertyName.ALL_OK, true);
+		propertiesToMerge.addIntegerProperty(FeedbackPropertyName.TODO, 2);
+		propertiesToMerge.addStringProperty(FeedbackPropertyName.TEXT, "text prop");
+		propertiesToMerge.addDoubleProperty(FeedbackPropertyName.RESULT, 50.0);
+		
+		properties.merge(propertiesToMerge);
+		
+		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(true)));
+		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(2)));
+		assertThat(properties.getStringProperty(FeedbackPropertyName.TEXT), is(equalTo("text prop")));
+		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(50.0)));
+	}
+	
+	@Test
+	public void mergingToNotEmptyProperties(){
+		FeedbackProperties propertiesToMerge = new FeedbackProperties();
+		properties = new FeedbackProperties();
+		properties.addBooleanProperty(FeedbackPropertyName.ALL_OK, false);
+		properties.addIntegerProperty(FeedbackPropertyName.TODO, 3);
+		properties.addStringProperty(FeedbackPropertyName.TEXT, "Good");
+		properties.addDoubleProperty(FeedbackPropertyName.RESULT, 7.5);
+		
+		propertiesToMerge.addBooleanProperty(FeedbackPropertyName.ALL_OK, true);
+		propertiesToMerge.addIntegerProperty(FeedbackPropertyName.TODO, 2);
+		propertiesToMerge.addStringProperty(FeedbackPropertyName.TEXT, "text prop");
+		propertiesToMerge.addDoubleProperty(FeedbackPropertyName.RESULT, 50.0);
+		
+		properties.merge(propertiesToMerge);
+		
+		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(false)));
+		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(5)));
+		assertThat(properties.getStringProperty(FeedbackPropertyName.TEXT), is(equalTo("text prop")));
+		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(57.5)));
+	}
+	
+	@Test
+	public void mergingEmptyProperties(){
+		properties.addBooleanProperty(FeedbackPropertyName.ALL_OK, true);
+		properties.addIntegerProperty(FeedbackPropertyName.TODO, 3);
+		properties.addStringProperty(FeedbackPropertyName.TEXT, "Good");
+		properties.addDoubleProperty(FeedbackPropertyName.RESULT, 7.5);
+		
+		properties.merge(new FeedbackProperties());
+		
+		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(true)));
+		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(3)));
+		assertThat(properties.getStringProperty(FeedbackPropertyName.TEXT), is(equalTo("Good")));
+		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(7.5)));
+	}
 
 }

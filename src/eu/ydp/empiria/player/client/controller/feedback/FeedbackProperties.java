@@ -24,7 +24,7 @@ public class FeedbackProperties{
 		addProperty(name, value);
 	}
 	
-	public void addDoubleValue(FeedbackPropertyName name, Double value){
+	public void addDoubleProperty(FeedbackPropertyName name, Double value){
 		addProperty(name, value);
 	}
 	
@@ -97,6 +97,49 @@ public class FeedbackProperties{
 
 	public Boolean hasValue(String name) {
 		return !EMPTY.equals(getProperty(name));
+	}
+
+	public void merge(FeedbackProperties propertiesToMerge) {
+		for(FeedbackPropertyName name: propertiesToMerge.propertyMap.keySet()){
+			Object currentValue = getProperty(name);
+			Object value = propertiesToMerge.propertyMap.get(name);
+			
+			if(currentValue == null){
+				currentValue = getDefaultValue(value);
+			}
+			
+			addProperty(name, mergeValue(currentValue, value));
+		}
 	}	
+	
+	private Object mergeValue(Object value1, Object value2){
+		Object result = null;
+		
+		if(value1 instanceof Boolean && value2 instanceof Boolean){
+			result = (Boolean)value1 && (Boolean)value2;
+		}else if(value1 instanceof Integer && value2 instanceof Integer){
+			result = (Integer)value1 + (Integer)value2;
+		}else if(value2 instanceof String){
+			result = value2;
+		}else if(value1 instanceof Double && value2 instanceof Double){
+			result = (Double)value1 + (Double)value2;
+		}
+		
+		return result;
+	}
+	
+	private Object getDefaultValue(Object value){
+		Object defValue = null;
+		
+		if(value instanceof Boolean){
+			defValue = true;
+		}else if(value instanceof Integer){
+			defValue = 0;
+		}else if(value instanceof Double){
+			defValue = 0.0;
+		}
+		
+		return defValue;
+	}
 	
 }
