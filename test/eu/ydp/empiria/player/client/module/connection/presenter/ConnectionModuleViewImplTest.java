@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -130,6 +131,9 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
 		Mockito.verify(surface).removeFromParent();
 		Mockito.reset(surface);
+		for(ConnectionItem item: testObject.items.values()){
+			verify(item,atLeast(1)).reset();
+		}
 		testObject.reset();
 		verify(surface,times(0)).clear();
 		verify(surface,times(0)).removeFromParent();
