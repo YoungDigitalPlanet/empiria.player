@@ -15,7 +15,6 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class ModuleFeedbackProcessor {
 	
@@ -27,17 +26,16 @@ public class ModuleFeedbackProcessor {
 	
 	@Inject
 	private FeedbackConditionMatcher matcher;
-	
-	@Inject
-	private FeedbackPropertiesCreator propertiesCreator;
-	
-	private Map<String, ? extends Variable> variables;
 
 	@Inject
 	private SoundActionProcessor soundProcessor;
+	
+	@Inject
+	private FeedbackPropertiesCollector propertiesCollector;
 
 	public void process(IModule sender, Map<String, ? extends Variable> variables){
 		feedbackActionCollector.setSource(sender);
+		propertiesCollector.setVariables(variables);
 		processFeedbackActionCollector(sender);
 	}
 	
@@ -120,14 +118,7 @@ public class ModuleFeedbackProcessor {
 	}
 
 	private FeedbackProperties getPropertiesFromResponse(IModule module){
-		FeedbackProperties properties = new FeedbackProperties();
-		
-		if(module instanceof IUniqueModule){
-			String identifier = ((IUniqueModule) module).getIdentifier();
-			properties = propertiesCreator.getPropertiesFromVariables(identifier, variables);
-		}
-		
-		return properties;
+		return propertiesCollector.collect(module, feedbackActionCollector.getSource());
 	}
 	
 }
