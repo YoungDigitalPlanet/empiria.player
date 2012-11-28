@@ -94,7 +94,7 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 
 	@Override
 	public void setText(String text) {
-		textBox.setText(text);
+		textBox.setValue(text, true);
 	}
 
 	@Override

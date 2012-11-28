@@ -16,6 +16,7 @@ import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
@@ -76,34 +77,52 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 		
 	private void processGapChanged(DragDropEvent event) {
 		IModule gapModule = (IModule)event.getIModule();
-				
-		String previousValue = gapValuesCache.get(gapModule);
-		event.getDragDataObject().setPreviousValue(previousValue);
-		String newValue = event.getDragDataObject().getValue();
-		gapValuesCache.put(gapModule, newValue);		
+		DragDataObject dragDataObject = event.getDragDataObject();		
+		String newValue = dragDataObject.getValue();
 		
+		undoLastChange(event, gapModule);				
+		
+		dragDataObject.setValue(newValue);
+		dragDataObject.setPreviousValue(null);
 		if (DragDropEventTypes.DRAG_END.equals(event.getType())) {
-			processGapChangedOnDragEnd(event, gapModule);			
+			processGapChangedOnDragEnd(gapModule, event.getDragDataObject(), newValue);			
 		} else if (DragDropEventTypes.USER_CHANGE_DROP_ZONE.equals(event.getType())) {
-			processGapChangedOnManualUserChange(event, gapModule, newValue);			
+			processGapChangedOnManualUserChange(event.getDragDataObject(), gapModule, newValue);			
 		}
 	}
 
-	private void processGapChangedOnManualUserChange(DragDropEvent event, IModule gapModule, String newValue) {
+	private void undoLastChange(DragDropEvent event, IModule gapModule) {
+		SourceListModule associatedSourceList = gapValueSourceCache.get(gapModule);
+		if (associatedSourceList != null) {
+			DragDataObject dragDataObject = event.getDragDataObject();
+			dragDataObject.setValue(null);
+			dragDataObject.setPreviousValue(gapValuesCache.get(gapModule));		
+			helper.fireEventFromSource(associatedSourceList, dragDataObject, DragDropEventTypes.DRAG_END, gapModule);
+			gapValueSourceCache.remove(gapModule);
+		}
+	}
+	
+	private void processGapChangedOnDragEnd(IModule gapModule, DragDataObject dragDataObject, String newValue) {
+		if (lastDragSource != null) {			
+			storeUndoData(gapModule, newValue, lastDragSource);
+			helper.fireEventFromSource(lastDragSource, dragDataObject, DragDropEventTypes.DRAG_END, gapModule);
+		}
+	}	
+	
+	private void processGapChangedOnManualUserChange(DragDataObject dragDataObject, IModule gapModule, String newValue) {				
 		Collection<SourceListModule> assignedSourceLists = dropZones.get(gapModule);		
 		for (SourceListModule sourceList : assignedSourceLists) {			
 			if (sourceList.containsValue(newValue)) {
-				helper.fireEventFromSource(sourceList, event.getDragDataObject(), DragDropEventTypes.DRAG_END, gapModule);
+				storeUndoData(gapModule, newValue, sourceList);
+				helper.fireEventFromSource(sourceList, dragDataObject, DragDropEventTypes.DRAG_END, gapModule);
 				break;
 			}				
-		}
+		}		
 	}
 
-	private void processGapChangedOnDragEnd(DragDropEvent event, IModule gapModule) {
-		if (lastDragSource != null) {
-			gapValueSourceCache.put(gapModule, lastDragSource);
-			helper.fireEventFromSource(lastDragSource, event.getDragDataObject(), DragDropEventTypes.DRAG_END, gapModule);
-		}
+	private void storeUndoData(IModule gapModule, String newValue, SourceListModule sourceList) {
+		gapValueSourceCache.put(gapModule, sourceList);
+		gapValuesCache.put(gapModule, newValue);
 	}
 	
 	protected void registerDropZone(DragDropEvent event) {		
@@ -149,5 +168,4 @@ public class DragDropManager implements Extension, DragDropEventHandler, PlayerE
 			break;
 		}
 	}
-	
 }

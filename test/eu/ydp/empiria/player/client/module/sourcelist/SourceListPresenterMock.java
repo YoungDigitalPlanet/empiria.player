@@ -36,8 +36,7 @@ public class SourceListPresenterMock implements SourceListPresenter {
 
 	@Override
 	public boolean containsValue(String value) {
-		// TODO to be mocked for tests?
 		return false;
 	}
-
+	
 }

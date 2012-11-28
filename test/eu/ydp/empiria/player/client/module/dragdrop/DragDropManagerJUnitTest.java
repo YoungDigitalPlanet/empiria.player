@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.google.common.collect.ArrayListMultimap;
+//import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.gwt.junit.GWTMockUtilities;
 
@@ -39,8 +40,8 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 @PrepareForTest({ ParentedModuleBase.class })
 public class DragDropManagerJUnitTest {
 
-	private static final String TEST1 = "kot";
-	private static final String TEST2 = "tygrys";
+//	private static final String TEST1 = "kot";
+//	private static final String TEST2 = "tygrys";
 	
 	private DragDropManager dragDropManager;
 
@@ -94,32 +95,32 @@ public class DragDropManagerJUnitTest {
 		Mockito.verify(dragDropManager.helper).fireEventFromSource(dragSource, endEventMock.getDragDataObject(), DragDropEventTypes.DRAG_END, gap);
 	}
 	
-	@Test
-	public void fireDragEndEventPreviousValueIsNullFirstTime() {
-		SourceListModule dragSource = mock(SourceListModule.class);
-		DragDropEvent endEventMock1 = mockDragDropEvent(dragSource, DragDropEventTypes.DRAG_END, TEST1);
-		
-		dragDropManager.onDragEvent(endEventMock1);		
-		
-		assertThat(endEventMock1.getDragDataObject().getValue(), is(TEST1));
-		assertThat(endEventMock1.getDragDataObject().getPreviousValue(), equalTo(null));
-	}	
-	
-	@Test
-	public void fireDragEndEventSendsPreviousValue() {
-		SourceListModule dragSource = mock(SourceListModule.class);
-		DragDropEvent endEventMock1 = mockDragDropEvent(dragSource, DragDropEventTypes.DRAG_END, TEST1);
-		DragDropEvent endEventMock2 = mockDragDropEvent(dragSource, DragDropEventTypes.DRAG_END, TEST2);
-		
-		dragDropManager.onDragEvent(endEventMock1);		
-		dragDropManager.onDragEvent(endEventMock2);
-		
-		assertThat(dragDropManager.gapValuesCache.containsKey(dragSource), is(true));
-		assertThat(dragDropManager.gapValuesCache.containsValue(TEST1), is(false));
-		assertThat(dragDropManager.gapValuesCache.get(dragSource), is(TEST2));				
-		assertThat(endEventMock2.getDragDataObject().getValue(), is(TEST2));
-		assertThat(endEventMock2.getDragDataObject().getPreviousValue(), is(TEST1));
-	}		
+//	@Test
+//	public void fireDragEndEventPreviousValueIsNullFirstTime() {
+//		SourceListModule dragSource = mock(SourceListModule.class);
+//		DragDropEvent endEventMock1 = mockDragDropEvent(dragSource, DragDropEventTypes.DRAG_END, TEST1);
+//		
+//		dragDropManager.onDragEvent(endEventMock1);		
+//		
+//		assertThat(endEventMock1.getDragDataObject().getValue(), is(TEST1));
+//		assertThat(endEventMock1.getDragDataObject().getPreviousValue(), equalTo(null));
+//	}	
+//	
+//	@Test
+//	public void fireDragEndEventSendsPreviousValue() {
+//		SourceListModule dragSource = mock(SourceListModule.class);
+//		DragDropEvent endEventMock1 = mockDragDropEvent(dragSource, DragDropEventTypes.DRAG_END, TEST1);
+//		DragDropEvent endEventMock2 = mockDragDropEvent(dragSource, DragDropEventTypes.DRAG_END, TEST2);
+//		
+//		dragDropManager.onDragEvent(endEventMock1);		
+//		dragDropManager.onDragEvent(endEventMock2);
+//		
+//		assertThat(dragDropManager.gapValuesCache.containsKey(dragSource), is(true));
+//		assertThat(dragDropManager.gapValuesCache.containsValue(TEST1), is(false));
+//		assertThat(dragDropManager.gapValuesCache.get(dragSource), is(TEST2));				
+//		assertThat(endEventMock2.getDragDataObject().getValue(), is(TEST2));
+//		assertThat(endEventMock2.getDragDataObject().getPreviousValue(), is(TEST1));
+//	}		
 	
 	@Test
 	public void disableNotAssociatedGapsNothingToBeDisabled() {
@@ -130,7 +131,7 @@ public class DragDropManagerJUnitTest {
 		SimpleTextModule gap2 = mock(SimpleTextModule.class);
 		SourceListModule dragSource = sourceList1;
 		dragDropManager.dropZones = fillArrayListMultimap(new IModule[]{gap1, sourceList1, gap2, sourceList1, gap1, sourceList2, gap1, sourceList3});	
-				
+		
 		List<IModule> result = dragDropManager.findInapplicableGaps(dragSource);
 		
 		assertThat(result.size(), is(equalTo(0)));

@@ -37,10 +37,4 @@ public class SourceListViewMock implements SourceListView {
 	public boolean containsValue(String value) {
 		return false;
 	}
-
-	@Override
-	public void reset() {
-
-	}
-
 }

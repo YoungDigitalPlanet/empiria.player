@@ -144,17 +144,4 @@ public class SourceListViewImplTest extends AbstractTestBaseWithoutAutoInjectorI
 		verify(itemMocks.get(0)).show();
 	}
 
-	@Test
-	public void resetTest() {
-		instance.createAndBindUi();
-		DragDropEvent event = new DragDropEvent(DragDropEventTypes.DRAG_END, null);
-		DragDataObject data = new DragDataObjectImpl();
-		data.setPreviousValue("xxx");
-		data.setValue("psa");
-		event.setDragDataObject(data);
-		instance.onDragEvent(event);
-		instance.reset();
-		verify(itemMocks.get(0)).show();
-	}
-
 }
