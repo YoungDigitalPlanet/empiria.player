@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import java.text.NumberFormat;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -60,10 +59,7 @@ public class FeedbackPropertiesCollector {
 	private void updateProperties(FeedbackProperties properties){
 		double result = 0.0;
 		
-		if(todo != 0.0){
-			NumberFormat nf = NumberFormat.getInstance();
-			nf.setMaximumFractionDigits(2);
-			
+		if(todo != 0.0){			
 			result = Math.round(100.0 * (done/todo));
 		}
 		
