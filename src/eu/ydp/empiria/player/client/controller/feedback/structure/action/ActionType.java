@@ -4,20 +4,17 @@ package eu.ydp.empiria.player.client.controller.feedback.structure.action;
 public enum ActionType {
 	NARRATION, VIDEO, POPUP, IMAGE;
 	
-	public boolean equalsToString(String value){
+	public boolean equalsToString(String value) {
 		boolean equals = false;
 		
-		for(ActionType type: values()){
-			if(type.getName().equals(value)){
-				equals = true;
-				break;
-			}
+		if (this.getName().equals(value)) {
+			equals = true;
 		}
 		
 		return equals;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return toString().toLowerCase();
 	}
 }

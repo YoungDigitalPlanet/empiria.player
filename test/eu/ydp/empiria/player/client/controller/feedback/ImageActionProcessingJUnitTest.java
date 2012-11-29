@@ -20,82 +20,81 @@ import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
 
-public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestBase {
+public class ImageActionProcessingJUnitTest extends ProcessingFeedbackActionTestBase {
 	
-	private TextActionProcessor textProcessor;
-	
+	private ImageActionProcessor imageProcessor;
+
 	@Test
-	public void shouldProcessSingleTextAction(){
-		//given
+	public void shouldProcessSingleImageAction(){		//given
 		List<FeedbackAction> actions = ActionListBuilder.create().
 											addUrlAction(ActionType.NARRATION, "good.mp3").
-											addTextAction("Good").
+											addUrlAction(ActionType.IMAGE, "good.jpg").
 											getList();
 		
 		initializeWithActions(actions);
-		initializeModuleHierarchyWithTextProcessor();
+		initializeModuleHierarchyWithImageProcessor();
 		
 		//when
 		processor.processActions(source);
 		
 		//then
 		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);		
-		verify(textProcessor).processSingleAction(argument.capture());
+		verify(imageProcessor).processSingleAction(argument.capture());
 		FeedbackAction processedAction = argument.getValue();
 		
 		assertThat(argument.getAllValues().size(), is(equalTo(1)));
-		assertThat(processedAction, is(instanceOf(ShowTextAction.class)));
-		assertThat(((ShowTextAction) processedAction).getText(), is(equalTo("Good")));
+		assertThat(processedAction, is(instanceOf(ShowUrlAction.class)));
+		assertThat(((ShowUrlAction) processedAction).getHref(), is(equalTo("good.jpg")));
 		assertThat(collector.getActions().size(), is(equalTo(0)));
 	}
 	
 	@Test
-	public void shouldProcessManyTextActions(){
+	public void shouldProcessManyImageActions(){
 		//given
-		String[] actionTexts = new String[]{"Good", "Very good!!!"};
 		List<FeedbackAction> actions = ActionListBuilder.create().
 											addUrlAction(ActionType.NARRATION, "good.mp3").
-											addTextAction(actionTexts[0]).
+											addUrlAction(ActionType.IMAGE, "good.jpg").
 											addUrlAction(ActionType.NARRATION, "allok.mp3").
-											addTextAction(actionTexts[1]).
+											addUrlAction(ActionType.IMAGE, "bad.jpg").
 											getList();
 		
-		
 		initializeWithActions(actions);
-		initializeModuleHierarchyWithTextProcessor();
+		initializeModuleHierarchyWithImageProcessor();
 		
 		//when
 		processor.processActions(source);
 		
 		//then
 		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
-		verify(textProcessor, times(2)).processSingleAction(argument.capture());
+		verify(imageProcessor, times(2)).processSingleAction(argument.capture());
 		assertThat(collector.getActions().size(), is(equalTo(0)));
 		List<FeedbackAction> processedActions = argument.getAllValues();
 		
-		for (int i = 0; i < actionTexts.length; i++) {
-			FeedbackAction processedAction = processedActions.get(i);
-			String actionText = actionTexts[i];
-			
-			assertThat(processedAction, is(instanceOf(ShowTextAction.class)));
-			assertThat(((ShowTextAction) processedAction).getText(), is(equalTo(actionText)));
-		}
+		FeedbackAction processedAction1 = processedActions.get(0);
+		assertThat(processedAction1, is(instanceOf(ShowUrlAction.class)));
+		assertThat(((ShowUrlAction) processedAction1).getHref(), is(equalTo("good.jpg")));
+
+		FeedbackAction processedAction2 = processedActions.get(1);
+		assertThat(processedAction2, is(instanceOf(ShowUrlAction.class)));
+		assertThat(((ShowUrlAction) processedAction2).getHref(), is(equalTo("bad.jpg")));
 	}
 	
-	private void initializeModuleHierarchyWithTextProcessor(){
+	private void initializeModuleHierarchyWithImageProcessor(){
 		HasChildren parentModule = mock(HasChildren.class);
-		textProcessor = spy(injector.getInstance(TextActionProcessor.class));
+		imageProcessor = spy(injector.getInstance(ImageActionProcessor.class));
 		
 		when(source.getParentModule()).thenReturn(parentModule);
 		when(parentModule.getChildren()).thenReturn(Lists.newArrayList(
 														mock(IModule.class),
 														mock(IModule.class),
 														source, 
-														textProcessor));		
+														imageProcessor));		
 	}
 	
 }
