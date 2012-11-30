@@ -12,15 +12,15 @@ import com.google.common.collect.Maps;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.module.HasChildren;
+import eu.ydp.empiria.player.client.module.IContainerModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
 
 class FeedbackPropertiesCollectorTestHelper {
 	
 	private IModule sender;
 	
-	private AbstractActivityContainerModuleBase container;
+	private IContainerModule container;
 	
 	private Map<String, Variable> variables;
 	
@@ -29,7 +29,7 @@ class FeedbackPropertiesCollectorTestHelper {
 	}
 	
 	public void createHierarchy(ModuleInfo[] infos){
-		container = mock(AbstractActivityContainerModuleBase.class);
+		container = mock(IContainerModule.class);
 		
 		variables = Maps.newHashMap();
 		List<IModule> children = Lists.newArrayList();
@@ -40,6 +40,7 @@ class FeedbackPropertiesCollectorTestHelper {
 		
 		sender = children.get(0);
 		when(container.getChildren()).thenReturn(children);
+		when(container.getParentModule()).thenReturn(null);
 	}
 	
 	public Map<String, Outcome> createOutcomeVariables(ModuleInfo info){

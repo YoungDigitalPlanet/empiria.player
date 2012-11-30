@@ -16,7 +16,6 @@ import java.util.Map;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
@@ -28,12 +27,8 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.condition.AndConditionBean;
-import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
-import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.gwtutil.client.operator.MatchOperator;
 
 public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	
@@ -144,7 +139,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 		@Provides
 		public FeedbackRegistry getFeedbackRegistry(){
 			FeedbackRegistry registry = mock(FeedbackRegistry.class);
-			List<Feedback> feedbackList = new FeedbackCreator().createFeedbackList();
+			List<Feedback> feedbackList =  new FeedbackCreator(GOOD_MP3, WRONG_MP3, ALLOK_MP3).createFeedbackList();
 			
 			when(registry.isModuleRegistered(sender)).thenReturn(true);
 			when(registry.getModuleFeedbacks(sender)).thenReturn(feedbackList);
@@ -159,46 +154,6 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 			return spy(processor);
 		}	
 		
-	}
-	
-	private class FeedbackCreator{
-
-		private List<Feedback> createFeedbackList(){
-			List<Feedback> feedbackList = Lists.newArrayList();
-			
-			feedbackList.add(createSoundFeedback(FeedbackPropertyName.OK, GOOD_MP3));
-			feedbackList.add(createSoundFeedback(FeedbackPropertyName.WRONG, WRONG_MP3));
-			feedbackList.add(createSoundFeedback(FeedbackPropertyName.ALL_OK, ALLOK_MP3));
-			
-			return feedbackList;
-		}
-		
-		private Feedback createSoundFeedback(FeedbackPropertyName name, String url){
-			Feedback feedback = mock(Feedback.class);
-			List<FeedbackAction> actionList = ActionListBuilder.create().
-												addUrlAction(ActionType.NARRATION, url).
-												getList();
-			FeedbackCondition condition = getCondition(name);
-			
-			when(feedback.getActions()).thenReturn(actionList);
-			when(feedback.getCondition()).thenReturn(condition);
-			
-			return feedback;
-		}
-		
-		private FeedbackCondition getCondition(FeedbackPropertyName name){
-			AndConditionBean andCondition = new AndConditionBean();
-			PropertyConditionBean condition = new PropertyConditionBean();
-			List<PropertyConditionBean> conditions = Lists.newArrayList();
-			
-			condition.setOperator(MatchOperator.EQUAL.getName());
-			condition.setProperty(name.getName());
-			conditions.add(condition);
-			
-			andCondition.setPropertyConditions(conditions);
-			
-			return andCondition;
-		}
 	}
 	
 }
