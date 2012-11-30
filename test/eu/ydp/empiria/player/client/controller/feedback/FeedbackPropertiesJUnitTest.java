@@ -12,6 +12,9 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 public class FeedbackPropertiesJUnitTest {
 	
+	private static final String TEXT_PROP = "text prop";
+	private static final String RESULT_TEXT1 = "res 1";
+	private static final String RESULT_TEXT0 = "res 0";
 	private FeedbackProperties properties;
 	
 	@Before
@@ -47,30 +50,30 @@ public class FeedbackPropertiesJUnitTest {
 		properties.addBooleanProperty(FeedbackPropertyName.OK, false);
 		
 		FeedbackProperties newProperties = new FeedbackProperties();
-		newProperties.addStringProperty(FeedbackPropertyName.RESULT, "res 0");
+		newProperties.addStringProperty(FeedbackPropertyName.RESULT, RESULT_TEXT0);
 		newProperties.addBooleanProperty(FeedbackPropertyName.WRONG, true);
 		
 		properties.appendProperties(newProperties);
 		
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(true)));
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.OK), is(equalTo(false)));
-		assertThat(properties.getStringProperty(FeedbackPropertyName.RESULT), is(equalTo("res 0")));
+		assertThat(properties.getStringProperty(FeedbackPropertyName.RESULT), is(equalTo(RESULT_TEXT0)));
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.WRONG), is(equalTo(true)));
 	}
 	
 	@Test
 	public void shouldMergeAndOverrideProperties(){
 		properties.addBooleanProperty(FeedbackPropertyName.ALL_OK, true);
-		properties.addStringProperty(FeedbackPropertyName.RESULT, "res 1");
+		properties.addStringProperty(FeedbackPropertyName.RESULT, RESULT_TEXT1);
 		
 		FeedbackProperties newProperties = new FeedbackProperties();
-		newProperties.addStringProperty(FeedbackPropertyName.RESULT, "res 0");
+		newProperties.addStringProperty(FeedbackPropertyName.RESULT, RESULT_TEXT0);
 		newProperties.addBooleanProperty(FeedbackPropertyName.WRONG, true);
 		
 		properties.appendProperties(newProperties);
 		
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(true)));
-		assertThat(properties.getStringProperty(FeedbackPropertyName.RESULT), is(equalTo("res 0")));
+		assertThat(properties.getStringProperty(FeedbackPropertyName.RESULT), is(equalTo(RESULT_TEXT0)));
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.WRONG), is(equalTo(true)));
 	}
 	
@@ -100,14 +103,14 @@ public class FeedbackPropertiesJUnitTest {
 		
 		propertiesToMerge.addBooleanProperty(FeedbackPropertyName.ALL_OK, true);
 		propertiesToMerge.addIntegerProperty(FeedbackPropertyName.TODO, 2);
-		propertiesToMerge.addStringProperty(FeedbackPropertyName.TEXT, "text prop");
+		propertiesToMerge.addStringProperty(FeedbackPropertyName.TEXT, TEXT_PROP);
 		propertiesToMerge.addDoubleProperty(FeedbackPropertyName.RESULT, 50.0);
 		
 		properties.merge(propertiesToMerge);
 		
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(true)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(2)));
-		assertThat(properties.getStringProperty(FeedbackPropertyName.TEXT), is(equalTo("text prop")));
+		assertThat(properties.getStringProperty(FeedbackPropertyName.TEXT), is(equalTo(TEXT_PROP)));
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(50.0)));
 	}
 	
@@ -122,14 +125,14 @@ public class FeedbackPropertiesJUnitTest {
 		
 		propertiesToMerge.addBooleanProperty(FeedbackPropertyName.ALL_OK, true);
 		propertiesToMerge.addIntegerProperty(FeedbackPropertyName.TODO, 2);
-		propertiesToMerge.addStringProperty(FeedbackPropertyName.TEXT, "text prop");
+		propertiesToMerge.addStringProperty(FeedbackPropertyName.TEXT, TEXT_PROP);
 		propertiesToMerge.addDoubleProperty(FeedbackPropertyName.RESULT, 50.0);
 		
 		properties.merge(propertiesToMerge);
 		
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(false)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(5)));
-		assertThat(properties.getStringProperty(FeedbackPropertyName.TEXT), is(equalTo("text prop")));
+		assertThat(properties.getStringProperty(FeedbackPropertyName.TEXT), is(equalTo(TEXT_PROP)));
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(57.5)));
 	}
 	

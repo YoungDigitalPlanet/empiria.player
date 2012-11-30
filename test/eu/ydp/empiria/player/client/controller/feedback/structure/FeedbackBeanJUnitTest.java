@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -27,7 +26,7 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	private FeedbackBean feedback;
 	
-	private String xmlString = 	"<feedback>" +
+	private final String xmlString = "<feedback>" +
 									"<condition>" +
 										"<and>" +
 											"<countCondition count=\"3\" operator=\"==\">" +

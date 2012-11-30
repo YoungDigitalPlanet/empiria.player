@@ -12,6 +12,12 @@ import eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertiesCollec
 
 public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 
+	private static final String MODULE_3 = "MODULE_3";
+
+	private static final String MODULE_2 = "MODULE_2";
+
+	private static final String MODULE_1 = "MODULE_1";
+
 	private FeedbackPropertiesCollector propertiesCollector;
 
 	private FeedbackPropertiesCollectorTestHelper helper;
@@ -26,9 +32,9 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 	@Test
 	public void shouldCollectPropertiesFromSingleModule() {
 		moduleInfos = new ModuleInfo[] { 
-								ModuleInfo.create("MODULE_1").setLastOk(true).setTodo(2).setDone(1).setErrors(0),
-								ModuleInfo.create("MODULE_2").setLastOk(false).setTodo(1).setDone(2).setErrors(0),
-								ModuleInfo.create("MODULE_3").setLastOk(false).setTodo(1).setDone(2).setErrors(0) 
+								ModuleInfo.create(MODULE_1).setLastOk(true).setTodo(2).setDone(1).setErrors(0),
+								ModuleInfo.create(MODULE_2).setLastOk(false).setTodo(1).setDone(2).setErrors(0),
+								ModuleInfo.create(MODULE_3).setLastOk(false).setTodo(1).setDone(2).setErrors(0) 
 							};
 		
 		initializeModules();
@@ -45,9 +51,9 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 	@Test
 	public void shouldCollectContainerProperties(){
 		moduleInfos = new ModuleInfo[] { 
-								ModuleInfo.create("MODULE_1").setLastOk(true).setTodo(2).setDone(1).setErrors(0),
-								ModuleInfo.create("MODULE_2").setLastOk(false).setTodo(3).setDone(2).setErrors(1),
-								ModuleInfo.create("MODULE_3").setLastOk(false).setTodo(4).setDone(2).setErrors(1) 
+								ModuleInfo.create(MODULE_1).setLastOk(true).setTodo(2).setDone(1).setErrors(0),
+								ModuleInfo.create(MODULE_2).setLastOk(false).setTodo(3).setDone(2).setErrors(1),
+								ModuleInfo.create(MODULE_3).setLastOk(false).setTodo(4).setDone(2).setErrors(1) 
 							};
 		initializeModules();
 		FeedbackProperties properties = propertiesCollector.collect(helper.getContainer(), helper.getSender());
@@ -63,9 +69,9 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 	@Test
 	public void shouldCollectContainerPropertiesWhen_isAllOk(){
 		moduleInfos = new ModuleInfo[] { 
-								ModuleInfo.create("MODULE_1").setLastOk(false).setTodo(2).setDone(2).setErrors(0),
-								ModuleInfo.create("MODULE_2").setLastOk(false).setTodo(3).setDone(3).setErrors(0),
-								ModuleInfo.create("MODULE_3").setLastOk(false).setTodo(4).setDone(4).setErrors(0) 
+								ModuleInfo.create(MODULE_1).setLastOk(false).setTodo(2).setDone(2).setErrors(0),
+								ModuleInfo.create(MODULE_2).setLastOk(false).setTodo(3).setDone(3).setErrors(0),
+								ModuleInfo.create(MODULE_3).setLastOk(false).setTodo(4).setDone(4).setErrors(0) 
 							};
 		initializeModules();
 		FeedbackProperties properties = propertiesCollector.collect(helper.getContainer(), helper.getSender());
@@ -81,9 +87,9 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 	@Test
 	public void shouldCollectContainerPropertiesWhen_allAreDoneWithErrors(){
 		moduleInfos = new ModuleInfo[] { 
-								ModuleInfo.create("MODULE_1").setLastOk(false).setTodo(2).setDone(2).setErrors(0),
-								ModuleInfo.create("MODULE_2").setLastOk(false).setTodo(3).setDone(3).setErrors(0),
-								ModuleInfo.create("MODULE_3").setLastOk(false).setTodo(4).setDone(4).setErrors(1) 
+								ModuleInfo.create(MODULE_1).setLastOk(false).setTodo(2).setDone(2).setErrors(0),
+								ModuleInfo.create(MODULE_2).setLastOk(false).setTodo(3).setDone(3).setErrors(0),
+								ModuleInfo.create(MODULE_3).setLastOk(false).setTodo(4).setDone(4).setErrors(1) 
 							};
 		initializeModules();
 		FeedbackProperties properties = propertiesCollector.collect(helper.getContainer(), helper.getSender());

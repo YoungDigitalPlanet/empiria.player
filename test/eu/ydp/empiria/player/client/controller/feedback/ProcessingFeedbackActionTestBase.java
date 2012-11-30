@@ -5,13 +5,15 @@ import static org.mockito.Mockito.spy;
 
 import java.util.List;
 
+import org.junit.Before;
+
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackSoundPlayer;
+import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.module.IModule;
 
@@ -25,6 +27,7 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 
 	protected IModule source;
 	
+	@Before
 	@Override
 	public void setUp() {
 		setUp(new Class<?>[]{FeedbackActionCollector.class, SoundActionProcessor.class, FeedbackSoundPlayer.class}, new FeedbackActionCollectorModule());
@@ -39,7 +42,7 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 
 		@Override
 		public void configure(Binder binder) {
-			
+			//
 		}
 		
 		@Provides SoundActionProcessor getSoundActionProcessor(){

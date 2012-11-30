@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -33,6 +34,8 @@ import eu.ydp.empiria.player.client.module.IModule;
 public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	
 	
+	private static final String MODULE_1 = "MODULE_1";
+
 	private static final String WRONG_MP3 = "wrong.mp3";
 
 	private static final String ALLOK_MP3 = "allok.mp3";
@@ -43,6 +46,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	private Map<String, Outcome> variables;
 	
+	@Before
 	@Override
 	public void setUp() {
 		setUp(new Class<?>[]{FeedbackRegistry.class, FeedbackActionCollector.class, 
@@ -52,7 +56,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessOkFeedback(){		
-		ModuleInfo info = ModuleInfo.create("MODULE_1").setLastOk(true).setDone(1).setTodo(3).setErrors(0);		
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(true).setDone(1).setTodo(3).setErrors(0);		
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(1)));
@@ -62,7 +66,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessWrongFeedback(){		
-		ModuleInfo info = ModuleInfo.create("MODULE_1").setLastOk(false).setDone(1).setTodo(3).setErrors(0);
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(false).setDone(1).setTodo(3).setErrors(0);
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(1)));
@@ -72,7 +76,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessAllOkFeedback(){		
-		ModuleInfo info = ModuleInfo.create("MODULE_1").setLastOk(true).setDone(3).setTodo(3).setErrors(0);
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(true).setDone(3).setTodo(3).setErrors(0);
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(2)));
@@ -86,7 +90,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessOkFeedbackWhen_allAreDoneWithOneError(){		
-		ModuleInfo info = ModuleInfo.create("MODULE_1").setLastOk(true).setDone(3).setTodo(3).setErrors(1);
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(true).setDone(3).setTodo(3).setErrors(1);
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(1)));
@@ -95,7 +99,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessWrongFeedbackWhen_allAreDoneWithOneError(){		
-		ModuleInfo info = ModuleInfo.create("MODULE_1").setLastOk(false).setDone(3).setTodo(3).setErrors(1);
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(false).setDone(3).setTodo(3).setErrors(1);
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(1)));
@@ -133,7 +137,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 
 		@Override
 		public void configure(Binder binder) {
-				
+			//aaaa
 		}
 		
 		@Provides

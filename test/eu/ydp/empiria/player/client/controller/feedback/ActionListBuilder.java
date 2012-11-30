@@ -10,9 +10,9 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 
-public class ActionListBuilder {
+public final class ActionListBuilder {
 	
-	private List<FeedbackAction> actions;
+	private final List<FeedbackAction> actions;
 	
 	private ActionListBuilder(){
 		actions = Lists.newArrayList();

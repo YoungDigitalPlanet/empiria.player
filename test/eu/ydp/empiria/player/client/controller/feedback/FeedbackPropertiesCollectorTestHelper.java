@@ -78,10 +78,14 @@ class FeedbackPropertiesCollectorTestHelper {
 	
 	protected static class ModuleInfo{
 		
-		private String id;
-		private boolean isLastOk;
+		private final String id;
+		
+		private boolean lastOk;
+		
 		private int todo;
+		
 		private int done;
+		
 		private int errors;
 		
 		public ModuleInfo(String id){
@@ -97,12 +101,12 @@ class FeedbackPropertiesCollectorTestHelper {
 		}
 		
 		public ModuleInfo setLastOk(boolean isLastOk) {
-			this.isLastOk = isLastOk;
+			this.lastOk = isLastOk;
 			return this;
 		}
 		
 		public boolean isLastOk() {
-			return isLastOk;
+			return lastOk;
 		}
 		
 		public ModuleInfo setTodo(int todo) {
