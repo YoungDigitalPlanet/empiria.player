@@ -14,12 +14,10 @@ public class SingleChoiceButton extends ChoiceButtonBase {
 	
 	@Override
 	public void setSelected(boolean value){
-		if (!selected  &&  value){
+		if (value){
 			ctrl.unselectAll();
-			super.setSelected(value);
-		} else if (selected  &&  !value){
-			super.setSelected(value);
 		}
+		super.setSelected(value);
 	}
 	
 

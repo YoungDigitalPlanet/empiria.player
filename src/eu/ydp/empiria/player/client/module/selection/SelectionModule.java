@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.selection;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -312,7 +311,7 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 				}
 
 			}
-
+			updateEnabledAllButtonsState(false);
 		} else {
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
 				grid.getWidget(i+1, 0).setStyleName(styleNameConstants.QP_SELECTION_ITEM());
@@ -325,6 +324,7 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 					buttonsPanels.get(i).get(c).setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
 				}
 			}
+			updateEnabledAllButtonsState(true);
 		}
 
 	}
@@ -340,8 +340,9 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 
 		for (int i = 0 ; i < buttons.size() ; i ++){
 			for (int c = 0 ; c < buttons.get(i).size() ; c ++){
-				if (buttons.get(i).get(c).isSelected())
-					buttons.get(i).get(c).setSelected(false);
+				ChoiceButtonBase choiceButtonBase = buttons.get(i).get(c);
+				choiceButtonBase.setEnabled(true);
+				choiceButtonBase.setSelected(false);
 			}
 		}
 
@@ -355,25 +356,44 @@ public class SelectionModule extends OneViewInteractionModuleBase implements IIn
 
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
 				for (int c = 0 ; c < choiceIdentifiers.size() ; c ++){
-					if (getResponse().correctAnswers.containsAnswer(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
-						buttons.get(i).get(c).setSelected(true);
+					ChoiceButtonBase choiceButtonBase = buttons.get(i).get(c);
+					if (getResponse().correctAnswers.containsAnswer(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c))) {
+						choiceButtonBase.setSelected(true);
+					}else{
+						choiceButtonBase.setSelected(false);
+					}
 				}
 			}
+			updateEnabledAllButtonsState(false);
 
 		} else if (!show  &&  showingAnswers) {
 			clearAnswers();
 
 			for (int i = 0 ; i < itemIdentifiers.size() ; i ++){
 				for (int c = 0 ; c < choiceIdentifiers.size() ; c ++){
-					if (getResponse().values.contains(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c)))
-						buttons.get(i).get(c).setSelected(true);
+					ChoiceButtonBase choiceButtonBase = buttons.get(i).get(c);
+					if (getResponse().values.contains(itemIdentifiers.get(i) + " " + choiceIdentifiers.get(c))) {
+						choiceButtonBase.setSelected(true);
+					}else{
+						choiceButtonBase.setSelected(false);
+					}
 				}
 			}
+			updateEnabledAllButtonsState(true);
 			showingAnswers = false;
 		}
 
 	}
 
+	private void updateEnabledAllButtonsState(boolean enabled){
+		for (int i = 0 ; i < buttons.size() ; i ++){
+			for (int c = 0 ; c < buttons.get(i).size() ; c ++){
+				ChoiceButtonBase choiceButtonBase = buttons.get(i).get(c);
+				choiceButtonBase.setEnabled(enabled);
+			}
+		}
+	}
+	
 	public JavaScriptObject getJsSocket(){
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
