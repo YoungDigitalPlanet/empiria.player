@@ -28,7 +28,7 @@ public class ModuleFeedbackProcessor {
 	private FeedbackConditionMatcher matcher;
 
 	@Inject
-	private SoundActionProcessor soundProcessor;
+	protected SoundActionProcessor soundProcessor;
 	
 	@Inject
 	private FeedbackPropertiesCollector propertiesCollector;
@@ -50,7 +50,7 @@ public class ModuleFeedbackProcessor {
 	}
 	
 	private void appendPropertiesToSource(IModule source) {
-		FeedbackProperties properties = getPropertiesFromResponse(source);
+		FeedbackProperties properties = getPropertiesForModule(source);
 		feedbackActionCollector.appendPropertiesToSource(properties, source);
 	}
 	
@@ -117,7 +117,7 @@ public class ModuleFeedbackProcessor {
 		return processors;
 	}
 
-	private FeedbackProperties getPropertiesFromResponse(IModule module){
+	private FeedbackProperties getPropertiesForModule(IModule module){
 		return propertiesCollector.collect(module, feedbackActionCollector.getSource());
 	}
 	

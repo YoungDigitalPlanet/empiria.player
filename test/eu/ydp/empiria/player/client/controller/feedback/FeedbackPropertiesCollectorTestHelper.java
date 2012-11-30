@@ -24,6 +24,10 @@ class FeedbackPropertiesCollectorTestHelper {
 	
 	private Map<String, Variable> variables;
 	
+	public FeedbackPropertiesCollectorTestHelper(){
+		variables = Maps.newHashMap();
+	}
+	
 	public void createHierarchy(ModuleInfo[] infos){
 		container = mock(AbstractActivityContainerModuleBase.class);
 		
@@ -38,7 +42,7 @@ class FeedbackPropertiesCollectorTestHelper {
 		when(container.getChildren()).thenReturn(children);
 	}
 	
-	private Map<String, Outcome> createOutcomeVariables(ModuleInfo info){
+	public Map<String, Outcome> createOutcomeVariables(ModuleInfo info){
 		OutcomeCreator creator = new OutcomeCreator(info.getId());
 		
 		return OutcomeListBuilder.init().
@@ -49,7 +53,7 @@ class FeedbackPropertiesCollectorTestHelper {
 						getMap();
 	}
 	
-	private IUniqueModule createUniqueModuleMock(HasChildren parent, String id, Map<String, ? extends Variable> variables){
+	public IUniqueModule createUniqueModuleMock(HasChildren parent, String id, Map<String, ? extends Variable> variables){
 		IUniqueModule module = mock(IUniqueModule.class);
 		when(module.getIdentifier()).thenReturn(id);
 		when(module.getParentModule()).thenReturn(parent);
