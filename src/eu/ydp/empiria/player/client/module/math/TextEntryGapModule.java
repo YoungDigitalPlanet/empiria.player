@@ -211,18 +211,28 @@ public class TextEntryGapModule extends GapBase implements MathGap, Factory<Text
 	}
 
 	@Override
-	protected String getCurrentResponseValue(){
+	protected String getCurrentResponseValue() {
 		return getResponse().values.get(index);
 	}
-
-	@Override
-	protected boolean isResponseCorrect(){
-		List<Boolean> evaluations = getModuleSocket().evaluateResponse(getResponse());
-		return (evaluations.size() <= index + 1) ? evaluations.get(index) : false;
+	
+	protected List<Boolean> getEvaluatedResponse() {
+		return getModuleSocket().evaluateResponse(getResponse());
 	}
 
 	@Override
-	protected void updateResponse(){
+	protected boolean isResponseCorrect() {
+		boolean isCorrect = false;
+		List<Boolean> evaluations = getEvaluatedResponse();
+		
+		if (index < evaluations.size()) {
+			isCorrect = evaluations.get(index);
+		}
+		
+		return isCorrect;
+	}
+	
+	@Override
+	protected void updateResponse() {
 		getParentMathModule().updateResponseAfterUserAction();
 	}
 

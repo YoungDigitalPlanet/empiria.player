@@ -5,6 +5,7 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -17,7 +18,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
@@ -33,6 +37,7 @@ import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.BindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapmaxlength.GapMaxlengthBindingValue;
+import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.xml.XMLParser;
 
@@ -43,8 +48,14 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		public void configure(Binder binder) {
 			binder.bind(TextEntryGapModulePresenter.class).toInstance(mock(TextEntryGapModulePresenter.class));
 			TextEntryModuleFactory factory = mock(TextEntryModuleFactory.class);
-			when(factory.getTextEntryGapModulePresenter(Mockito.any(IModule.class))).thenReturn(mock(TextEntryGapModulePresenter.class));
 			binder.bind(TextEntryModuleFactory.class).toInstance(factory);
+			
+			when(factory.getTextEntryGapModulePresenter(Mockito.any(IModule.class))).thenAnswer(new Answer<TextEntryGapModulePresenter>() {
+				@Override
+				public TextEntryGapModulePresenter answer(InvocationOnMock invocation) throws Throwable {
+					return mock(TextEntryGapModulePresenter.class);
+				}
+			});
 		}
 	}
 
@@ -52,6 +63,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 	public void before() {
 		setUp(new Class<?>[] {}, new CustomGuiceModule());
 	}
+
 	@Test
 	public void testIfSubOrSupIsCorrectlyDetected() {
 		TextEntryGapModule textGap = mockTextGap();
@@ -59,9 +71,11 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		Element node = XMLParser.parse("<gap type=\"text-entry\" uid=\"uid_0000\" />").getDocumentElement();
 		Element parentNode = XMLParser.parse(
 				"<mmultiscripts>" +
-				"<gap type=\"text-entry\" uid=\"uid_0000\" />" +
-				"<none/>" +
-				"<mprescripts/><none/><none/>" +
+					"<gap type=\"text-entry\" uid=\"uid_0000\" />" +
+					"<none/>" +
+					"<mprescripts/>" +
+					"<none/>" + 
+					"<none/>" +
 				"</mmultiscripts>").getDocumentElement();
 
 		Assert.assertTrue(textGap.isSubOrSup(node, parentNode));
@@ -102,21 +116,49 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		assertThat(width, is(80));
 	}
 
-    @BeforeClass
-    public static void prepareTestEnviroment() {
-    	/**
-    	 * disable GWT.create() behavior for pure JUnit testing
-    	 */
-    	GWTMockUtilities.disarm();
-    }
+	@Test
+	public void testIfMarkAnswersWorksCorrectly() {
+		TextEntryGapModuleMock gap1 = mockTextGap();
+		TextEntryGapModuleMock gap2 = mockTextGap();
+		TextEntryGapModuleMock gap3 = mockTextGap();
+		TextEntryGapModuleMock gap4 = mockTextGap();
 
-    @AfterClass
-    public static void restoreEnviroment() {
-    	/**
-    	 * restore GWT.create() behavior
-    	 */
-    	GWTMockUtilities.restore();
-    }
+		gap1.setIndex(0);
+		gap2.setIndex(1);
+		gap3.setIndex(2);
+		gap4.setIndex(3);
+		
+		gap1.setMockedResponse("4");
+		gap2.setMockedResponse("4");
+		gap3.setMockedResponse("");
+		gap4.setMockedResponse("5");
+		
+		gap1.markAnswers(true);
+		gap2.markAnswers(true);
+		gap3.markAnswers(true);
+		gap4.markAnswers(true);
+		
+		verify(gap1.getPresenter()).setMarkMode(GapModulePresenter.CORRECT);
+		verify(gap2.getPresenter()).setMarkMode(GapModulePresenter.WRONG);
+		verify(gap3.getPresenter()).setMarkMode(GapModulePresenter.NONE);
+		verify(gap4.getPresenter()).setMarkMode(GapModulePresenter.CORRECT);
+	}
+
+	@BeforeClass
+	public static void prepareTestEnviroment() {
+		/**
+		 * disable GWT.create() behavior for pure JUnit testing
+		 */
+		GWTMockUtilities.disarm();
+	}
+
+	@AfterClass
+	public static void restoreEnviroment() {
+		/**
+		 * restore GWT.create() behavior
+		 */
+		GWTMockUtilities.restore();
+	}
 
 	public TextEntryGapModuleMock mockTextGap(Map<String, String> styles) {
 		return new TextEntryGapModuleMock(styles);
@@ -132,6 +174,8 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 			super(injector.getInstance(TextEntryModuleFactory.class));
 			this.styles = styles;
 		}
+		
+		protected String mockedResponse;
 
 		@Override
 		protected EventsBus getEventsBus() {
@@ -166,5 +210,25 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		public int invokeCalculateTextBoxWidth() {
 			return getLongestAnswerLength() * getFontSize();
 		}
+
+		@Override
+		protected List<Boolean> getEvaluatedResponse() {
+			List<Boolean> evaluations = Lists.newArrayList(true, false, false, true);
+			return evaluations;
+		}
+		
+		public void setMockedResponse(String response) {
+			mockedResponse = response;
+		}
+		
+		@Override
+		protected String getCurrentResponseValue() {
+			return mockedResponse;
+		}
+		
+		public GapModulePresenter getPresenter() {
+			return presenter;
+		}
+
 	}
 }
