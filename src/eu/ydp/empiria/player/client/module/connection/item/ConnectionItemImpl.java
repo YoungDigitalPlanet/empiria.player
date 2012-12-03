@@ -9,13 +9,14 @@ import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 
 public class ConnectionItemImpl implements ConnectionItem {
-	private final ConnectionItemView view;
+	private final AbstractConnectionItemView view;
 	private final PairChoiceBean bean;
 
 	@Inject
-	public ConnectionItemImpl(ConnectionModuleFactory itemViewFactory, @Assisted InlineBodyGeneratorSocket socket, @Assisted PairChoiceBean bean) {
+	public ConnectionItemImpl(ConnectionModuleFactory itemViewFactory, @Assisted InlineBodyGeneratorSocket socket, @Assisted PairChoiceBean bean,
+			@Assisted Column column) {
 		this.bean = bean;
-		view = itemViewFactory.getConnectionItemView(bean, socket);
+		view = column == Column.LEFT ? itemViewFactory.getConnectionItemViewLeft(bean, socket) : itemViewFactory.getConnectionItemViewRight(bean, socket);
 	}
 
 	/*
@@ -126,8 +127,11 @@ public class ConnectionItemImpl implements ConnectionItem {
 		return view.getSelectionElement().getOffsetHeight();
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.ydp.empiria.player.client.module.connection.item.ConnectionItem#isOnPosition(int, int)
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see eu.ydp.empiria.player.client.module.connection.item.ConnectionItem#
+	 * isOnPosition(int, int)
 	 */
 	@Override
 	public boolean isOnPosition(int xPos, int yPos) {

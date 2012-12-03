@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
+import static eu.ydp.empiria.player.client.module.connection.item.ConnectionItem.Column.LEFT;
+import static eu.ydp.empiria.player.client.module.connection.item.ConnectionItem.Column.RIGHT;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -43,7 +46,7 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectEventHandler, PairConnectEventTypes, PairConnectEvent> implements
-		MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler, ConnectionMoveStartHandler,ResizeHandler {
+		MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler, ConnectionMoveStartHandler, ResizeHandler {
 
 	@Inject
 	private ConnectionView view;
@@ -140,11 +143,11 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			addHandler(handler, PairConnectEvent.getType(type));
 		}
 	}
+
 	@Override
 	public void onResize(ResizeEvent event) {
 		fireConnectEvent(PairConnectEventTypes.REPAINT_VIEW, "", "", true);
 	}
-
 
 	@Override
 	public void bindView() {
@@ -157,13 +160,13 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		// zdarzenia od usera
 		// elementy do wyswietlenia / polaczenia
 		for (PairChoiceBean choice : modelInterface.getSourceChoicesSet()) {
-			ConnectionItem item = connectionFactory.getConnectionItem(choice, moduleSocket.getInlineBodyGeneratorSocket());
+			ConnectionItem item = connectionFactory.getConnectionItem(choice, moduleSocket.getInlineBodyGeneratorSocket(), LEFT);
 			leftColumnItems.add(item);
 			items.put(choice.getIdentifier(), item);
 			view.addFirstColumnItem(item);
 		}
 		for (PairChoiceBean choice : modelInterface.getTargetChoicesSet()) {
-			ConnectionItem item = connectionFactory.getConnectionItem(choice, moduleSocket.getInlineBodyGeneratorSocket());
+			ConnectionItem item = connectionFactory.getConnectionItem(choice, moduleSocket.getInlineBodyGeneratorSocket(), RIGHT);
 			rightColumnItems.add(item);
 			items.put(choice.getIdentifier(), item);
 			view.addSecondColumnItem(item);

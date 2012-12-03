@@ -1,0 +1,8 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+	<g:FlowPanel styleName="{res.QP_CONNECTION_ITEM}">
+		<g:FlowPanel ui:field="selection" styleName="{res.QP_CONNECTION_ITEM_SELECTION_BUTTON}" />
+		<g:FlowPanel ui:field="item" styleName="{res.QP_CONNECTION_ITEM_CONTENT}" />
+	</g:FlowPanel>
+</ui:UiBinder>

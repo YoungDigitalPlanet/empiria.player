@@ -5,6 +5,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 
 public interface ConnectionItem extends IsWidget {
+	public static enum Column {
+		LEFT, RIGHT
+	}
 
 	public PairChoiceBean getBean();
 
@@ -26,6 +29,7 @@ public interface ConnectionItem extends IsWidget {
 
 	/**
 	 * Czy element znajduje sie na pozycji x y
+	 *
 	 * @param xPos
 	 * @param yPos
 	 * @return

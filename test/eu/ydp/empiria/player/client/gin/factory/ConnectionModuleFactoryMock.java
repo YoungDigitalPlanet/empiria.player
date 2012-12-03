@@ -13,7 +13,9 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.structure.Pai
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
-import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemView;
+import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem.Column;
+import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemViewLeft;
+import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemViewRight;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 
@@ -30,7 +32,7 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	}
 
 	@Override
-	public ConnectionItem getConnectionItem(PairChoiceBean element, InlineBodyGeneratorSocket bodyGeneratorSocket) {
+	public ConnectionItem getConnectionItem(PairChoiceBean element, InlineBodyGeneratorSocket bodyGeneratorSocket,Column column) {
 		ConnectionItem item = mock(ConnectionItem.class);
 		Mockito.when(item.getBean()).thenReturn(element);
 		Mockito.when(item.isOnPosition(Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
@@ -39,10 +41,17 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	}
 
 	@Override
-	public ConnectionItemView getConnectionItemView(PairChoiceBean element, InlineBodyGeneratorSocket bodyGeneratorSocket) {
+	public ConnectionItemViewLeft getConnectionItemViewLeft(PairChoiceBean element, InlineBodyGeneratorSocket bodyGeneratorSocket) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public ConnectionItemViewRight getConnectionItemViewRight(PairChoiceBean element, InlineBodyGeneratorSocket bodyGeneratorSocket) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	@Override
 	public ConnectionModuleModel getConnectionModuleModel(Response response, ResponseModelChangeListener modelChangeListener) {
