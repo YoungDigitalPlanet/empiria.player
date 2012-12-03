@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.junit.GWTMockUtilities;
 
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
@@ -54,6 +55,7 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 	private ModuleSocket moduleSocket;
 	private NativeEvent event;
 	private ConnectionModuleFactory moduleFactory;
+
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
@@ -65,7 +67,7 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 	}
 
 	@Before
-	public void before(){
+	public void before() {
 		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(FIREFOX_UA));
 		jaxb.createUnmarshaller();
 		bean = jaxb.createBeanFromXMLString(ConnectionModuleStructureMock.CONNECTION_XML);
@@ -77,71 +79,74 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 		instance.bindView();
 		event = mock(NativeEvent.class);
 
-
 	}
 
 	@Test
-	public void connectTest(){
-		//test
+	public void connectTest() {
+		// test
 		ConnectionModuleViewImpl testObject = spy(instance);
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
-		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0),false);
+		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0),
+				bean.getTargetChoicesIdentifiersSet().get(0), false);
 	}
 
 	@Test
-	public void wrongConnectTest(){
-		//test
+	public void wrongConnectTest() {
+		// test
 		ConnectionModuleViewImpl testObject = spy(instance);
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), "---", MultiplePairModuleConnectType.NORMAL);
-		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, bean.getSourceChoicesIdentifiersSet().get(0), "---",false);
+		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, bean.getSourceChoicesIdentifiersSet().get(0), "---", false);
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
-		Mockito.verify(surface,times(0)).drawLine(0, 0, 0, 0);
+		Mockito.verify(surface, times(0)).drawLine(0, 0, 0, 0);
 	}
 
-
 	@Test
-	public void disconnectTest(){
-		//test
+	public void disconnectTest() {
+		// test
 		ConnectionModuleViewImpl testObject = spy(instance);
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
-		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0),false);
+		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0),
+				bean.getTargetChoicesIdentifiersSet().get(0), false);
 		testObject.disconnect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0));
-		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.DISCONNECTED, bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0),false);
+		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.DISCONNECTED, bean.getSourceChoicesIdentifiersSet().get(0),
+				bean.getTargetChoicesIdentifiersSet().get(0), false);
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
 		Mockito.verify(surface).clear();
 		Mockito.verify(surface).removeFromParent();
 	}
 
 	@Test
-	public void wrongDisconnectTest(){
-		//test
+	public void wrongDisconnectTest() {
+		// test
 		ConnectionModuleViewImpl testObject = spy(instance);
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
-		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0),false);
+		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0),
+				bean.getTargetChoicesIdentifiersSet().get(0), false);
 		testObject.disconnect(bean.getSourceChoicesIdentifiersSet().get(0), "---");
-		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, bean.getSourceChoicesIdentifiersSet().get(0), "---",false);
+		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, bean.getSourceChoicesIdentifiersSet().get(0), "---", false);
 	}
 
 	@Test
-	public void resetTest(){
-		//test
+	public void resetTest() {
+		// test
 		ConnectionModuleViewImpl testObject = spy(instance);
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
-		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0),false);
+		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0),
+				bean.getTargetChoicesIdentifiersSet().get(0), false);
 		testObject.reset();
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
 		Mockito.verify(surface).removeFromParent();
 		Mockito.reset(surface);
-		for(ConnectionItem item: testObject.items.values()){
-			verify(item,atLeast(1)).reset();
+		for (ConnectionItem item : testObject.items.values()) {
+			verify(item, atLeast(1)).reset();
 		}
 		testObject.reset();
-		verify(surface,times(0)).clear();
-		verify(surface,times(0)).removeFromParent();
+		verify(surface, times(0)).clear();
+		verify(surface, times(0)).removeFromParent();
 	}
 
 	@Test
-	public void pairConnectEventHandlerTest(){
+	public void pairConnectEventHandlerTest() {
 		ConnectionModuleViewImpl testObject = spy(instance);
 		PairConnectEventHandler handler = mock(PairConnectEventHandler.class);
 		testObject.addPairConnectEventHandler(handler);
@@ -150,19 +155,21 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 	}
 
 	@Test
-	public void duplicateConnectionTest(){
+	public void duplicateConnectionTest() {
 		ConnectionModuleViewImpl testObject = spy(instance);
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
-		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0),false);
+		Mockito.verify(testObject).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0),
+				bean.getTargetChoicesIdentifiersSet().get(0), false);
 		Mockito.reset(testObject);
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
-		Mockito.verify(testObject,times(0)).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0),false);
+		Mockito.verify(testObject, times(0)).fireConnectEvent(PairConnectEventTypes.CONNECTED, bean.getSourceChoicesIdentifiersSet().get(0),
+				bean.getTargetChoicesIdentifiersSet().get(0), false);
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
 		Mockito.verify(surface).removeFromParent();
 	}
 
 	@Test
-	public void clearSurfaceTest(){
+	public void clearSurfaceTest() {
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.getConnectionItems(null);
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, connectionItems.iterator().next()));
@@ -174,20 +181,21 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 	}
 
 	@Test
-	public void findConnectionTest(){
+	public void findConnectionTest() {
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.getConnectionItems(null);
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, connectionItems.iterator().next()));
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
 		Mockito.when(surface.isPointOnPath(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
-//		verify(event).preventDefault();
-		Mockito.verify(testObject).fireConnectEvent(Mockito.eq(PairConnectEventTypes.CONNECTED), Mockito.anyString(), Mockito.anyString(),Mockito.anyBoolean());
+		// verify(event).preventDefault();
+		Mockito.verify(testObject)
+				.fireConnectEvent(Mockito.eq(PairConnectEventTypes.CONNECTED), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean());
 
 	}
 
 	@Test
-	public void connectByClickTest(){
+	public void connectByClickTest() {
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.getConnectionItems(null);
 		Iterator<ConnectionItem> iterator = connectionItems.iterator();
@@ -200,11 +208,11 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
 		verify(testObject).resetConnectionByTouch();
-		verify(testObject).connect(eq(item2),eq(item1), eq(MultiplePairModuleConnectType.NORMAL), eq(true));
+		verify(testObject).connect(eq(item2), eq(item1), eq(MultiplePairModuleConnectType.NORMAL), eq(true));
 	}
 
 	@Test
-	public void itemHasAnotherConnectionTest(){
+	public void itemHasAnotherConnectionTest() {
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.getConnectionItems(null);
 		Iterator<ConnectionItem> iterator = connectionItems.iterator();
@@ -220,29 +228,26 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 		doReturn(item1).when(testObject).findConnectionItem(Mockito.any(NativeEvent.class));
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
-		verify(item2,times(1)).reset();
+		verify(item2, times(1)).reset();
 		doReturn(item3).when(testObject).findConnectionItem(Mockito.any(NativeEvent.class));
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
-		verify(testObject,times(2)).resetConnectionByTouch();
-		verify(testObject).connect(eq(item2),eq(item1), eq(MultiplePairModuleConnectType.NORMAL), eq(true));
-		verify(testObject).connect(eq(item3),eq(item1), eq(MultiplePairModuleConnectType.NORMAL), eq(true));
+		verify(testObject, times(2)).resetConnectionByTouch();
+		verify(testObject).connect(eq(item2), eq(item1), eq(MultiplePairModuleConnectType.NORMAL), eq(true));
+		verify(testObject).connect(eq(item3), eq(item1), eq(MultiplePairModuleConnectType.NORMAL), eq(true));
 
 		testObject.disconnect(item1.getBean().getIdentifier(), item2.getBean().getIdentifier());
 		assertTrue(testObject.hasConnections(item1));
-		verify(item2,times(1)).reset();
-		verify(item1,times(0)).reset();
+		verify(item2, times(1)).reset();
+		verify(item1, times(0)).reset();
 
 	}
 
-
-
-
-
-
-
-
-
-
+	@Test
+	public void onResizeViewTest() {
+		ConnectionModuleViewImpl testObject = spy(instance);
+		testObject.onResize(mock(ResizeEvent.class));
+		verify(testObject).fireConnectEvent(eq(PairConnectEventTypes.REPAINT_VIEW), Mockito.anyString(), Mockito.anyString(), eq(true));
+	}
 
 }

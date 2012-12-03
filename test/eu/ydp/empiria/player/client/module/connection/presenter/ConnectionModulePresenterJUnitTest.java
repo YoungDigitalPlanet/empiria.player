@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -19,6 +20,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
+import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
@@ -28,6 +30,7 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 import eu.ydp.gwtutil.xml.XMLParser;
 
+@SuppressWarnings("PMD")
 public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<MatchInteractionBean> {
 
 	private static final String CONNECTION_RESPONSE_1_4 = "CONNECTION_RESPONSE_1_4";
@@ -47,10 +50,19 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		String source = CONNECTION_RESPONSE_1_0;
 		String target = CONNECTION_RESPONSE_1_3;
 		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.CONNECTED, source, target, true);
+		connectionModulePresenter.onConnectionEvent(event);
+		Mockito.verify(moduleView).disconnect(source, target);
+	}
+
+	@Test
+	public void shouldResetViewAndSetUserAnswers() {
+		String source = CONNECTION_RESPONSE_1_0;
+		String target = CONNECTION_RESPONSE_1_3;
+		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.REPAINT_VIEW, source, target, true);
 
 		connectionModulePresenter.onConnectionEvent(event);
-
-		Mockito.verify(moduleView).disconnect(source, target);
+		verify(connectionModulePresenter).reset();
+		verify(connectionModulePresenter).showAnswers(Mockito.eq(ShowAnswersType.USER));
 	}
 
 	@Test
@@ -58,7 +70,7 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.CONNECTED, CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4, true);
 
 		connectionModulePresenter.onConnectionEvent(event);
-		
+
 		Mockito.verify(connectionModuleModel).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_4));
 	}
 

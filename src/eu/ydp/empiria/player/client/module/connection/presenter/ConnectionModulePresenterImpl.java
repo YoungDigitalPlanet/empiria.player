@@ -111,6 +111,10 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 				model.removeAnswer(getDirectedPair(event).toString());
 			}
 			break;
+		case REPAINT_VIEW:
+			reset();
+			showAnswers(ShowAnswersType.USER);
+			break;
 		case WRONG_CONNECTION:
 		default:
 			/* TODO: to handle incorrect situation */

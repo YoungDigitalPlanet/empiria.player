@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -40,7 +43,7 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectEventHandler, PairConnectEventTypes, PairConnectEvent> implements
-		MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler, ConnectionMoveStartHandler {
+		MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler, ConnectionMoveStartHandler,ResizeHandler {
 
 	@Inject
 	private ConnectionView view;
@@ -85,7 +88,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			surfce.removeFromParent();
 		}
 		connectedSurfaces.clear();
-		for(ConnectionItem item : items.values()){
+		for (ConnectionItem item : items.values()) {
 			item.reset();
 		}
 
@@ -137,6 +140,11 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			addHandler(handler, PairConnectEvent.getType(type));
 		}
 	}
+	@Override
+	public void onResize(ResizeEvent event) {
+		fireConnectEvent(PairConnectEventTypes.REPAINT_VIEW, "", "", true);
+	}
+
 
 	@Override
 	public void bindView() {
@@ -145,6 +153,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		view.addConnectionMoveHandler(this);
 		view.addConnectionMoveEndHandler(this);
 		view.addConnectionMoveStartHandler(this);
+		Window.addResizeHandler(this);
 		// zdarzenia od usera
 		// elementy do wyswietlenia / polaczenia
 		for (PairChoiceBean choice : modelInterface.getSourceChoicesSet()) {
@@ -215,7 +224,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 					return;
 				}
 			}
-			//connection by click
+			// connection by click
 			if (connectionItemPair.getValue() == null || connectionItemPair.getValue().equals(connectionItemPair.getKey())) {
 				connectionItemPair.setValue(connectionItemPair.getKey());
 			} else {
@@ -234,11 +243,11 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 
 	}
 
-	protected boolean hasConnections(ConnectionItem item){
+	protected boolean hasConnections(ConnectionItem item) {
 		boolean hasConnection = false;
 		String identifier = item.getBean().getIdentifier();
-		for(KeyValue<String, String> connection : connectedSurfaces.keySet()){
-			if(identifier.equals(connection.getKey()) || identifier.equals(connection.getValue())){
+		for (KeyValue<String, String> connection : connectedSurfaces.keySet()) {
+			if (identifier.equals(connection.getKey()) || identifier.equals(connection.getValue())) {
 				hasConnection = true;
 				break;
 			}
@@ -246,11 +255,12 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		return hasConnection;
 	}
 
-	protected void resetIfNotConnected(ConnectionItem item){
-		if(!hasConnections(item)){
+	protected void resetIfNotConnected(ConnectionItem item) {
+		if (!hasConnections(item)) {
 			item.reset();
 		}
 	}
+
 	protected void clearSurface(ConnectionItem item) {
 		if (startPositions.containsKey(item)) {
 			startPositions.remove(item);
