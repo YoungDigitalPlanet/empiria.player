@@ -1,5 +1,10 @@
 package eu.ydp.empiria.player.client.module.media.fullscreen;
 
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent.IE8;
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent.IE9;
+
+import javax.annotation.PostConstruct;
+
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
@@ -12,17 +17,20 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.media.Video;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.HTML5FullScreenHelper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.fullscreen.FullScreenEvent;
+import eu.ydp.empiria.player.client.util.events.fullscreen.FullScreenEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-public class VideoFullScreenHelper implements KeyUpHandler {
+public class VideoFullScreenHelper implements KeyUpHandler, FullScreenEventHandler {
 
 	@Inject
 	protected EventsBus eventsBus;
@@ -36,11 +44,23 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 	@Inject
 	protected StyleNameConstants styleNames;
 
+	@Inject
+	protected PageScopeFactory pageScopeFactory;
+
+	@Inject
+	private HTML5FullScreenHelper html5FullScreenHelper;
+
 	protected FlowPanel fullScreenView = null;
 	protected VideoFullScreenViewImpl view;
 	protected VideoControlHideTimer controlsHideTimer;
 	protected MediaWrapper<?> lastMediaWrapper = null;
-	
+	protected MediaWrapper<?> synchronizeWithMediaWrapper = null;
+
+	@PostConstruct
+	public void postConstruct() {
+		html5FullScreenHelper.addFullScreenEventHandler(this);
+	}
+
 	/**
 	 * Powiadamia listentery
 	 *
@@ -49,10 +69,14 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 	 */
 	private void fireEvent(final boolean inFullScreen, final MediaWrapper<?> mediaWrapper) {
 		if (inFullScreen) {
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_FULL_SCREEN_OPEN), mediaWrapper, new CurrentPageScope());
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_FULL_SCREEN_OPEN), mediaWrapper, pageScopeFactory.getCurrentPageScope());
 		} else {
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_FULL_SCREEN_EXIT), mediaWrapper, new CurrentPageScope());
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_FULL_SCREEN_EXIT), mediaWrapper, pageScopeFactory.getCurrentPageScope());
 		}
+	}
+
+	private void firePlayEvent(final MediaWrapper<?> mediaWrapper) {
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY), mediaWrapper, pageScopeFactory.getCurrentPageScope());
 	}
 
 	protected FlowPanel parseTemplate(MediaWrapper<?> mediaWrapper, Element template, FlowPanel parent) {
@@ -77,11 +101,10 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 			controlsHideTimer = new VideoControlHideTimer(view);
 			RootPanel.get().addDomHandler(this, KeyUpEvent.getType());
 		}
-		resizeToFullScreen(view, Position.FIXED);
 		return view;
 	}
 
-	private void clearFullScreenView() {
+	protected void clearFullScreenView() {
 		if (view != null && view.isAttached()) {
 			view.removeFromParent();
 			// 0 to kontrolki 1 widget wideo
@@ -91,30 +114,58 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 		}
 	}
 
-	public void openFullScreen(MediaWrapper<?> mediaWrapper, Element template) {
+	protected void openFullScreenMobile(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
+		html5FullScreenHelper.requestFullScreen(((Widget) mediaWrapper.getMediaObject()).getElement());
+		lastMediaWrapper = fullScreenMediaWrapper;
+		fireEvent(true, fullScreenMediaWrapper);
+	}
+
+	protected void openFullScreenDesktop(MediaWrapper<?> mediaWrapper, Element template) {
 		if (mediaWrapper != null && template != null) {
 			clearFullScreenView();
 			lastMediaWrapper = mediaWrapper;
 			VideoFullScreenViewImpl parent = getFullScreenView();
 			Widget widget = mediaWrapper.getMediaObject();
-			//do poprawy odtwarzacz flashowy
-//			if(mediaWrapper instanceof SwfMediaWrapper){
-//				FlashVideo video = (FlashVideo) ((SwfMediaWrapper) mediaWrapper).getFlashMedia();
-//				video.setSize(Window.getClientWidth(), Window.getClientHeight());
-//			}
-			resizeToFullScreen(widget, Position.ABSOLUTE);
 			parent.getContainer().add(widget);
 			parseTemplate(mediaWrapper, template, parent.getControls());
 			fireEvent(true, mediaWrapper);
 			RootPanel.get().add(parent);
-			
-			resizeToFullScreen(((Video) lastMediaWrapper.getMediaObject()), Position.FIXED);
+			html5FullScreenHelper.requestFullScreen(parent.getElement());
+			resizeToFullScreen(lastMediaWrapper.getMediaObject(), Position.FIXED);
+		}
+	}
+
+	protected void openFullscreenIE(MediaWrapper<?> mediaWrapper, Element template) {
+		if (mediaWrapper != null && template != null) {
+			clearFullScreenView();
+			lastMediaWrapper = mediaWrapper;
+			VideoFullScreenViewImpl parent = getFullScreenView();
+			Widget widget = mediaWrapper.getMediaObject();
+			parent.getContainer().add(widget);
+			resizeToFullScreen(parent, Position.FIXED);
+			resizeToFullScreen(widget, Position.ABSOLUTE);
+			parseTemplate(mediaWrapper, template, parent.getControls());
+			fireEvent(true, mediaWrapper);
+			RootPanel.get().add(parent);
+			resizeToFullScreen(lastMediaWrapper.getMediaObject(), Position.FIXED);
 			resizeToFullScreen(view, Position.FIXED);
 			resizeToFullScreen(widget, Position.ABSOLUTE);
 		}
 	}
 
+	public void openFullScreen(MediaWrapper<?> fullScreenMediaWrapper, MediaWrapper<?> defaultMediaWrapper, Element template) {
+		synchronizeWithMediaWrapper = defaultMediaWrapper;
+		if (UserAgentChecker.isMobileUserAgent()) {
+			openFullScreenMobile(defaultMediaWrapper, fullScreenMediaWrapper);
+		} else if (UserAgentChecker.isUserAgent(IE8, IE9)) {
+			openFullscreenIE(fullScreenMediaWrapper, template);
+		} else {
+			openFullScreenDesktop(fullScreenMediaWrapper, template);
+		}
+	}
+
 	public void closeFullScreen() {
+		html5FullScreenHelper.exitFullScreen();
 		clearFullScreenView();
 		fireEvent(false, lastMediaWrapper);
 	}
@@ -126,5 +177,15 @@ public class VideoFullScreenHelper implements KeyUpHandler {
 			closeFullScreen();
 		}
 
+	}
+
+	@Override
+	public void handleEvent(FullScreenEvent event) {
+		if (event.isInFullScreen()) {
+			firePlayEvent(lastMediaWrapper);
+		} else {
+			closeFullScreen();
+
+		}
 	}
 }

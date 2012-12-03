@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.media;
 
 import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
@@ -24,6 +25,10 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 	protected MediaProgressBar mediaProgerssBar;
 	@Inject
 	protected VideoTextTrackElementFactory videoTextTrackElementFactory;
+
+	@Inject
+	protected Provider<FullScreenMediaButton> fullScreenMediaButtonProvider;
+
 	@Override
 	public AbstractMediaController<?> get(ModuleTagName moduleType) {
 		AbstractMediaController<?> mediaController = null;
@@ -42,7 +47,7 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 				mediaController = GWT.create(MediaProgressBar.class);// (AbstractMediaController<?>) ((AbstractMediaController<?>) mediaProgerssBar).getNewInstance();
 				break;
 			case MEDIA_FULL_SCREEN_BUTTON:
-				mediaController = new FullScreenMediaButton();
+				mediaController = fullScreenMediaButtonProvider.get();
 				break;
 			case MEDIA_POSITION_IN_STREAM:
 				mediaController = new PositionInMediaStream();

@@ -3,9 +3,10 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -19,7 +20,8 @@ import eu.ydp.gwtutil.client.debug.logger.Debug;
 public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler {
 	protected Map<MediaWrapper<?>, MediaExecutor<?>> executors = new HashMap<MediaWrapper<?>, MediaExecutor<?>>();
 	protected MediaInteractionSoundEventCallback callback;
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	@Inject
+	protected EventsBus eventsBus;
 
 	@Override
 	public void init() {

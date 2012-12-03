@@ -8,7 +8,10 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
@@ -23,9 +26,15 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
  */
 public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, IBookmarkable {
 
+	@Inject
+	protected Provider<ImgModule> moduleProvider;
+
+	@Inject
+	protected TemplateParserFactory parserFactory;
+
 	protected ImgModuleView view;
 	private String imageSource;
-	private BookmarkingHelper bookmarkingHelper;
+	private final BookmarkingHelper bookmarkingHelper;
 
 	public ImgModule() {
 		view = new ImgModuleView();
@@ -73,7 +82,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 	 * @param template
 	 */
 	protected void createViewFromTemplate(Element baseElement, Element template) {
-		ImgTemplateParser templateParser = new ImgTemplateParser(baseElement, getModuleSocket());
+		ImgTemplateParser templateParser =  parserFactory.getImgTemplateParser(baseElement, getModuleSocket());
 		view.getContainerPanel().clear();
 		templateParser.parse(template, view.getContainerPanel());
 	}
@@ -95,7 +104,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 
 	@Override
 	public ImgModule getNewInstance() {
-		return new ImgModule();
+		return moduleProvider.get();
 	}
 
 	@Override

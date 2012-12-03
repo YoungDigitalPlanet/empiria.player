@@ -40,11 +40,17 @@ public class HTML5FullScreenHelper {
 	 * @return true jezeli sie uda false w przeciwnym razie
 	 */
 	public boolean requestFullScreen(Element element) {
+		nativeExitFullScreen();
 		return nativeRequestFullScrean(element);
 	}
 
 	private native boolean nativeRequestFullScrean(Element element)/*-{
 		try {
+			if(element.webkitExitFullscreen){
+				element.webkitExitFullscreen();
+			}else if(element.mozCancelFullScreen){
+				element.mozCancelFullScreen();
+			}
 			if (element.requestFullscreen) {
 				element.requestFullscreen();
 				return true;
@@ -54,15 +60,12 @@ public class HTML5FullScreenHelper {
 			} else if (element.webkitRequestFullscreen) {
 				element.webkitRequestFullscreen();
 				return true;
-			} else if (element.webkitRequestFullScreen) {
-				element.webkitRequestFullScreen();
-				return true;
-			} else if (element.webkitEnterFullscreen) {
+			}  else if (element.webkitEnterFullscreen) {
 				element.webkitEnterFullscreen();
 				return true;
 			}
 		} catch (e) {
-			console.log(e);
+			//console.log(e);
 		}
 		return false;
 	}-*/;
@@ -91,13 +94,13 @@ public class HTML5FullScreenHelper {
 			}
 
 		} catch (e) {
-			console.log(e);
 		}
 		return false;
 	}-*/;
 
 	public native boolean isInFullScrean(Element element)/*-{
-		return !!e.webkitDisplayingFullscreen || !!e.webkitIsFullScreen;
+		return !!element.webkitDisplayingFullscreen
+				|| !!element.webkitIsFullScreen;
 	}-*/;
 
 	/**
@@ -105,12 +108,14 @@ public class HTML5FullScreenHelper {
 	 */
 	protected void handleEvent() {
 		final boolean inFullScreen = isInFullScreen();
+
 		FullScreenEvent fse = new FullScreenEvent() {
 
 			@Override
 			public boolean isInFullScreen() {
 				return inFullScreen;
 			}
+
 			@Override
 			public MediaWrapper<?> getMediaWrapper() {
 				return null;
@@ -132,45 +137,56 @@ public class HTML5FullScreenHelper {
 					|| !!$doc.webkitIsFullScreen
 					|| !!$doc.webkitDisplayingFullscreen ? true : false;
 		} catch (e) {
-			alert(e);
-			//console.log(e);
 		}
 		return false;
 	}-*/;
 
+
 	private native void addFullScreenChangeHandler()/*-{
-		return;
 		try {
-			$doc
-					.addEventListener(
-							"fullscreenchange",
-							this
-									.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent(),
+			var thhis = this;
+			$doc.addEventListener(
+							"fullscreenchange",function(){
+							thhis.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent()()},
 							false);
-			$doc
-					.addEventListener(
-							"mozfullscreenchange",
-							this
-									.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent(),
+			$doc.addEventListener(
+							"mozfullscreenchange",function(){
+							thhis.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent()()},
 							false);
-			$doc
-					.addEventListener(
-							"webkitfullscreenchange",
-							this
-									.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent(),
+			$doc.addEventListener(
+							"webkitfullscreenchange",function(){
+							thhis.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent()()},
 							false);
 		} catch (e) {
-			alert(e);
 		}
 	}-*/;
 
+	public static native boolean isFullScreenSupported()/*-{
+		try {
+			var browserPrefixes = [ "moz", "webkit" ];
+			if (typeof $doc.cancelFullScreen != 'undefined') {
+				return true;
+			} else {
+				// check for fullscreen support by vendor prefix
+				for ( var i = 0, il = browserPrefixes.length; i < il; i++) {
+					var prefix = browserPrefixes[i];
+					if (typeof $doc[prefix + 'CancelFullScreen'] != 'undefined') {
+						return true;
+					}
+				}
+			}
+		} catch (e) {
+		}
+		return false;
+	}-*/;
+
 	/**
-	 * sprawdza czy dany element mozna wyswietli w trybie pelnoekranowym
+	 * sprawdza czy dany element mozna wyswietlic w trybie pelnoekranowym
 	 *
 	 * @param video
 	 * @return true jezeli mozna false w przeciwnym razie
 	 */
-	public native boolean supoortFullScreen(Video video)/*-{
+	public native boolean supportsFullScreen(Video video)/*-{
 		try {
 			return !!video.getElement().webkitSupportsFullscreen;
 		} catch (e) {

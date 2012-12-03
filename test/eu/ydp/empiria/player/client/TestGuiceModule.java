@@ -47,7 +47,6 @@ import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionV
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
-import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListPresenterMock;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
@@ -102,7 +101,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 					}
 				}
 			} catch (Exception e) {
-				/* do something to handle errors here */
+				e.printStackTrace();
 			}
 		}
 	}
@@ -134,7 +133,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bindDescriptors.add(new BindDescriptor<EventsBus>().bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class));
 		bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class).to(ConnectionModuleFactoryMock.class)
 				.in(Singleton.class));
-		bindDescriptors.add(new BindDescriptor<VideoFullScreenHelper>().bind(VideoFullScreenHelper.class).in(Singleton.class));
+	//	bindDescriptors.add(new BindDescriptor<VideoFullScreenHelper>().bind(VideoFullScreenHelper.class).in(Singleton.class));
 		bindDescriptors.add(new BindDescriptor<PanelCache>().bind(PanelCache.class));
 		bindDescriptors.add(new BindDescriptor<FeedbackParserFactory>().bind(FeedbackParserFactory.class).to(FeedbackParserFactoryMock.class));
 	}

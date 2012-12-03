@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -18,7 +20,7 @@ import eu.ydp.empiria.player.client.module.img.DefaultImgContent;
 import eu.ydp.empiria.player.client.module.img.ExplorableImgContent;
 import eu.ydp.empiria.player.client.module.img.ImgContent;
 import eu.ydp.empiria.player.client.module.img.LabelledImgContent;
-import eu.ydp.empiria.player.client.module.media.button.FullScreenMediaButton;
+import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
@@ -28,7 +30,11 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	private final Element baseElement;
 	private final ModuleSocket moduleSocket;
 
-	public ImgTemplateParser(Element baseElement, ModuleSocket moduleSocket) {
+	@Inject
+	protected MediaControllerFactory controllerFactory;
+
+	@Inject
+	public ImgTemplateParser(@Assisted Element baseElement, @Assisted ModuleSocket moduleSocket) {
 		this.baseElement = baseElement;
 		this.moduleSocket = moduleSocket;
 		controllers.add(ModuleTagName.MEDIA_TITLE.tagName());
@@ -54,7 +60,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 				controller = createWrapper("description");
 				break;
 			case MEDIA_FULL_SCREEN_BUTTON:
-				controller = new FullScreenMediaButton();
+				controller = controllerFactory.get(tagName);
 				break;
 			default:
 				break;

@@ -4,16 +4,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.regex.Pattern;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.event.dom.client.DragEndHandler;
@@ -28,8 +24,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.util.dom.drag.html5.HTML5DragDrop;
-import eu.ydp.gwtutil.client.util.BrowserNativeInterface;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
@@ -42,7 +38,7 @@ public class HTML5DragDropTest {
 	Widget widget;
 
 	public void before(String userAgent) {
-		UserAgentChecker.setNativeInterface(fillMock(userAgent));
+		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(userAgent));
 		widget = mock(Widget.class);
 		Element element = mock(Element.class);
 		when(widget.getElement()).thenReturn(element);
@@ -56,20 +52,7 @@ public class HTML5DragDropTest {
 		before("Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2");
 	}
 
-	private BrowserNativeInterface fillMock(String userAgent) {
-		BrowserNativeInterface nativeInterface = Mockito.mock(BrowserNativeInterface.class);
-		Mockito.when(nativeInterface.getUserAgentStrting()).thenReturn(userAgent);
-		Mockito.when(nativeInterface.isLocal()).thenReturn(false);
-		Mockito.when(nativeInterface.isUserAgent(Mockito.any(String.class), Mockito.any(String.class))).then(new Answer<Boolean>() {
-			@Override
-			public Boolean answer(InvocationOnMock invocation) throws Throwable {
-				Object[] args = invocation.getArguments();
-				Pattern pattern = Pattern.compile(String.valueOf(args[0]));
-				return pattern.matcher(String.valueOf(args[1])).find();
-			}
-		});
-		return nativeInterface;
-	}
+	
 
 	@BeforeClass
 	public static void disarm() {

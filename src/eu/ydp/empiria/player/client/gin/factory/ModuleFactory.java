@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
@@ -20,4 +21,5 @@ public interface ModuleFactory {
 	TextEntryGapModule getEntryGapModule();
 	TextEntryModule getTextEntryModule();
 	InlineChoiceGapModule getInlineChoiceGapModule();
+	DefaultMediaProcessorExtension getDefaultMediaProcessorExtension();
 }

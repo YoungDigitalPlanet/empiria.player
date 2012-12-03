@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_UA;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeast;
@@ -65,7 +66,7 @@ public class ConnectionModuleViewImplTest extends AbstractTestBase {
 
 	@Before
 	public void before(){
-		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock("Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2"));
+		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(FIREFOX_UA));
 		jaxb.createUnmarshaller();
 		bean = jaxb.createBeanFromXMLString(ConnectionModuleStructureMock.CONNECTION_XML);
 		instance = injector.getInstance(ConnectionModuleViewImpl.class);

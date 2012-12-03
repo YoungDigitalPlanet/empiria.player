@@ -9,6 +9,7 @@ import java.util.Set;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
@@ -22,6 +23,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfM
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
+import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -44,6 +46,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	protected MediaExecutor<?> feedbackSoundExecutor = null;//NOPMD
 	protected MediaExecutor<?> html5SoundExecutor = null;//NOPMD
 
+	@Inject
+	MediaWrappersPairFactory pairFactory;
+
 	@Override
 	public void init() {
 		if (!initialized) {
@@ -56,10 +61,6 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			}
 			initialized = true;
 		}
-	}
-
-	public void getSoundExecutor() {
-
 	}
 
 	@Override
@@ -208,8 +209,8 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			if (fullScreenMediaExecutor == null) {
 				((CallbackRecevier) event.getSource()).setCallbackReturnObject(defaultMediaExecutor.getMediaWrapper());
 			} else {
-				((CallbackRecevier) event.getSource()).setCallbackReturnObject(new MediaWrappersPair(defaultMediaExecutor.getMediaWrapper(), fullScreenMediaExecutor
-						.getMediaWrapper()));
+				MediaWrappersPair pair = pairFactory.getMediaWrappersPair(defaultMediaExecutor.getMediaWrapper(), fullScreenMediaExecutor.getMediaWrapper());
+				((CallbackRecevier) event.getSource()).setCallbackReturnObject(pair);
 			}
 		}
 	}
