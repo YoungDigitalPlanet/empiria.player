@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.connection.item;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
+import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 
 public interface ConnectionItem extends IsWidget {
@@ -13,7 +14,7 @@ public interface ConnectionItem extends IsWidget {
 
 	public void reset();
 
-	public void setConnected(boolean connected);
+	public void setConnected(boolean connected, MultiplePairModuleConnectType connectType);
 
 	public int getRelativeX();
 

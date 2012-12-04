@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.CORRECT;
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NONE;
 import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NORMAL;
 import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.WRONG;
 
@@ -76,7 +77,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		List<KeyValue<String, String>> answers = (mode == ShowAnswersType.CORRECT) ? model.getCorrectAnswers() : model.getCurrentAnswers();
-		showAnswers(answers, (mode == ShowAnswersType.CORRECT) ? CORRECT : NORMAL);
+		showAnswers(answers, (mode == ShowAnswersType.CORRECT) ? NONE : NORMAL);
 	}
 
 	@Override

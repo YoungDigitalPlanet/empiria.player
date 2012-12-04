@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NORMAL;
 import static eu.ydp.empiria.player.client.module.connection.item.ConnectionItem.Column.LEFT;
 import static eu.ydp.empiria.player.client.module.connection.item.ConnectionItem.Column.RIGHT;
 
@@ -100,7 +101,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 	protected void connect(ConnectionItem source, ConnectionItem target, MultiplePairModuleConnectType type, boolean userAction) {
 		startDrawLine(source, type);
 		drawLine(source, target.getRelativeX(), target.getRelativeY());
-		connectItems(source, target, userAction);
+		connectItems(source, target, type, userAction);
 	}
 
 	@Override
@@ -187,8 +188,8 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 				findConnection(event.getNativeEvent());
 			} else {
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
-				startDrawLine(item, MultiplePairModuleConnectType.NORMAL);
-				item.setConnected(true);
+				startDrawLine(item, NORMAL);
+				item.setConnected(true, NORMAL);
 				connectionItemPair.setKey(item);
 			}
 		}
@@ -222,7 +223,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 				if (item.getOffsetLeft() <= event.getX() && event.getX() <= item.getOffsetLeft() + item.getWidth() && item.getOffsetTop() <= event.getY()
 						&& event.getY() <= item.getOffsetTop() + item.getHeight()) {
 					drawLine(connectionItemPair.getKey(), item.getRelativeX(), item.getRelativeY());
-					connectItems(connectionItemPair.getKey(), item, true);
+					connectItems(connectionItemPair.getKey(), item, NORMAL, true);
 					resetConnectionByTouch();
 					return;
 				}
@@ -231,7 +232,7 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 			if (connectionItemPair.getValue() == null || connectionItemPair.getValue().equals(connectionItemPair.getKey())) {
 				connectionItemPair.setValue(connectionItemPair.getKey());
 			} else {
-				connect(connectionItemPair.getKey(), connectionItemPair.getValue(), MultiplePairModuleConnectType.NORMAL, true);
+				connect(connectionItemPair.getKey(), connectionItemPair.getValue(), NORMAL, true);
 				resetConnectionByTouch();
 			}
 		}
@@ -293,11 +294,11 @@ public class ConnectionModuleViewImpl extends AbstractEventHandlers<PairConnectE
 		return new KeyValue<String, String>(sourceItem.getBean().getIdentifier(), targetItem.getBean().getIdentifier());
 	}
 
-	protected void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, boolean userAction) {
+	protected void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, MultiplePairModuleConnectType type, boolean userAction) {
 		startPositions.remove(sourceItem);
 		sourceItem.reset();
-		sourceItem.setConnected(true);
-		targetItem.setConnected(true);
+		sourceItem.setConnected(true, type);
+		targetItem.setConnected(true, type);
 		ConnectionSurface duplicate = connectedSurfaces.put(getConnectionPair(sourceItem, targetItem), currentSurface);
 		surfaces.remove(sourceItem.getBean().getIdentifier());
 		if (duplicate == null) {

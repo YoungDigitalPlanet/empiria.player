@@ -18,7 +18,7 @@ public class ConnectionStyleXMLElementCache extends AbstractCache<MultiplePairMo
 	public ConnectionStyleXMLElementCache(StyleNameConstants styleNames, XMLParser xmlParser) {
 		styles.put(MultiplePairModuleConnectType.WRONG, styleNames.QP_CONNECTION_WRONG());
 		styles.put(MultiplePairModuleConnectType.CORRECT, styleNames.QP_CONNECTION_CORRECT());
-		styles.put(MultiplePairModuleConnectType.NONE, styleNames.QP_CONNECTION_NONE());
+		styles.put(MultiplePairModuleConnectType.NONE, styleNames.QP_CONNECTION_DISABLED());
 		styles.put(MultiplePairModuleConnectType.NORMAL, styleNames.QP_CONNECTION_NORMAL());
 		this.xmlParser = xmlParser;
 	}

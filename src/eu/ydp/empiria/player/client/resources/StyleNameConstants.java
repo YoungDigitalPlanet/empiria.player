@@ -89,11 +89,17 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-connection-correct")
 	public String QP_CONNECTION_CORRECT();
 
+	@DefaultStringValue("qp-connection-disabled")
+	public String QP_CONNECTION_DISABLED();
+
 	@DefaultStringValue("qp-connection-item")
 	public String QP_CONNECTION_ITEM();
 
 	@DefaultStringValue("qp-connection-item-conected")
 	public String QP_CONNECTION_ITEM_CONECTED();
+
+	@DefaultStringValue("qp-connection-item-conected-disabled")
+	public String QP_CONNECTION_ITEM_CONECTED_DISABLED();
 
 	@DefaultStringValue("qp-connection-item-content")
 	public String QP_CONNECTION_ITEM_CONTENT();
@@ -118,6 +124,30 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-connection-wrong")
 	public String QP_CONNECTION_WRONG();
+
+	@DefaultStringValue("qp-drag-item")
+	public String QP_DRAG_ITEM();
+
+	@DefaultStringValue("qp-dragged-drag")
+	public String QP_DRAGGED_DRAG();
+
+	@DefaultStringValue("qp-dragged-over-dropzone")
+	public String QP_DRAGGED_OVER_DROPZONE();
+
+	@DefaultStringValue("qp-dropzone-over")
+	public String QP_DROPZONE_OVER();
+
+	@DefaultStringValue("qp-feedback-image")
+	public String QP_FEEDBACK_IMAGE();
+
+	@DefaultStringValue("qp-feedback-image-module")
+	public String QP_FEEDBACK_IMAGE_MODULE();
+
+	@DefaultStringValue("qp-feedback-text")
+	public String QP_FEEDBACK_TEXT();
+
+	@DefaultStringValue("qp-feedback-text-module")
+	public String QP_FEEDBACK_TEXT_MODULE();
 
 	@DefaultStringValue("qp-footer")
 	public String QP_FOOTER();
@@ -574,29 +604,5 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
-
-	@DefaultStringValue("qp-dropzone-over")
-	public String QP_DROPZONE_OVER();
-
-	@DefaultStringValue("qp-dragged-over-dropzone")
-	public String QP_DRAGGED_OVER_DROPZONE();
-
-	@DefaultStringValue("qp-dragged-drag")
-	public String QP_DRAGGED_DRAG();
-	
-	@DefaultStringValue("qp-feedback-text-module")
-	public String QP_FEEDBACK_TEXT_MODULE();
-	
-	@DefaultStringValue("qp-feedback-text")
-	public String QP_FEEDBACK_TEXT();
-	
-	@DefaultStringValue("qp-feedback-image-module")
-	public String QP_FEEDBACK_IMAGE_MODULE();
-	
-	@DefaultStringValue("qp-feedback-image")
-	public String QP_FEEDBACK_IMAGE();
-
-	@DefaultStringValue("qp-drag-item")
-	public String QP_DRAG_ITEM();
 
 }

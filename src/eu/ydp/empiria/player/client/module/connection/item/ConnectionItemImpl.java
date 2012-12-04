@@ -6,6 +6,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
+import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 
 public class ConnectionItemImpl implements ConnectionItem {
@@ -55,8 +56,8 @@ public class ConnectionItemImpl implements ConnectionItem {
 	 * setConnected(boolean)
 	 */
 	@Override
-	public void setConnected(boolean connected) {
-		view.setSelected(connected);
+	public void setConnected(boolean connected,MultiplePairModuleConnectType connectType) {
+		view.setSelected(connected,connectType);
 	}
 
 	/*
