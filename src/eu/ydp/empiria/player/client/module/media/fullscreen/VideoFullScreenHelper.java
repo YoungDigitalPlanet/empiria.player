@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.media.fullscreen;
 
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent.FIREFOX;
 import static eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent.IE8;
 import static eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent.IE9;
 
@@ -155,9 +156,9 @@ public class VideoFullScreenHelper implements KeyUpHandler, FullScreenEventHandl
 
 	public void openFullScreen(MediaWrapper<?> fullScreenMediaWrapper, MediaWrapper<?> defaultMediaWrapper, Element template) {
 		synchronizeWithMediaWrapper = defaultMediaWrapper;
-		if (UserAgentChecker.isMobileUserAgent()) {
+		if (UserAgentChecker.isMobileUserAgent() && !UserAgentChecker.isMobileUserAgent(FIREFOX)) {
 			openFullScreenMobile(defaultMediaWrapper, fullScreenMediaWrapper);
-		} else if (UserAgentChecker.isUserAgent(IE8, IE9)) {
+		} else if (UserAgentChecker.isUserAgent(IE8, IE9, FIREFOX)) {
 			openFullscreenIE(fullScreenMediaWrapper, template);
 		} else {
 			openFullScreenDesktop(fullScreenMediaWrapper, template);

@@ -33,7 +33,7 @@ public class ConnectionStyleXMLElementCacheTest {
 		styleNames = GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
 		styles.put(MultiplePairModuleConnectType.WRONG, styleNames.QP_CONNECTION_WRONG());
 		styles.put(MultiplePairModuleConnectType.CORRECT, styleNames.QP_CONNECTION_CORRECT());
-		styles.put(MultiplePairModuleConnectType.NONE, styleNames.QP_CONNECTION_NONE());
+		styles.put(MultiplePairModuleConnectType.NONE, styleNames.QP_CONNECTION_DISABLED());
 		styles.put(MultiplePairModuleConnectType.NORMAL, styleNames.QP_CONNECTION_NORMAL());
 		when(parser.parse(Mockito.anyString())).then(new Answer<Document>() {
 			@Override

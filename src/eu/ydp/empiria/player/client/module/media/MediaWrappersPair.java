@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.media;
 
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent.FIREFOX;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class MediaWrappersPair implements MediaEventHandler {
 
 	@PostConstruct
 	public void postConstruct() {
-		if (!UserAgentChecker.isMobileUserAgent()) { // powoduje problemy na
+		if (!UserAgentChecker.isMobileUserAgent() || UserAgentChecker.isMobileUserAgent(FIREFOX)) { // powoduje problemy na
 														// mobilnych
 			// synchronizacja pomiedzy dwoma obiektami video
 			HandlerRegistration addHandlerToSource = eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_OPEN),
