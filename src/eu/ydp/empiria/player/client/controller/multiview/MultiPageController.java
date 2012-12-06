@@ -7,6 +7,7 @@ import java.util.Set;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.Touch;
@@ -122,6 +123,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		}
 	};
 	private final Set<HandlerRegistration> touchHandlers = new HashSet<HandlerRegistration>();
+	private boolean focusDroped;
 
 	private void setStylesForPages(boolean swipeStarted) {
 		if (swipeStarted) {
@@ -346,7 +348,22 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	}
 
+	/**
+	 * Na androidzie podczas swipe gapy zle sie rysowaly nachodzac na siebie.
+	 * Pozbycie sie z nich focusa na czas swipe rozwiazalo problem
+	 */
+	private void dropFocus(){
+		focusDroped = true;
+		NodeList<com.google.gwt.dom.client.Element> elementsByTagName = RootPanel.getBodyElement().getElementsByTagName("input");
+		for(int x=0; x< elementsByTagName.getLength();++x){
+			elementsByTagName.getItem(x).blur();
+		}
+	};
+
 	private void move(boolean swipeRight, float length) {
+		if(!focusDroped && UserAgentChecker.isStackAndroidBrowser()){
+			dropFocus();
+		}
 		if (swipeRight) {
 			showProgressBarForPage(currentVisiblePage + 1);
 		} else {
@@ -387,6 +404,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		touchReservation = false;
 		swipeStarted = false;
 		swipeRight = false;
+		focusDroped = false;
 		setStylesForPages(swipeStarted);
 
 	}
