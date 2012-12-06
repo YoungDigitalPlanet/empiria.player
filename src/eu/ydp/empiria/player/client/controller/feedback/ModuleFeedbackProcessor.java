@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
@@ -21,7 +22,6 @@ public class ModuleFeedbackProcessor {
 	@Inject
 	private FeedbackRegistry feedbackRegistry;
 	
-	@Inject
 	protected FeedbackActionCollector feedbackActionCollector;
 	
 	@Inject
@@ -33,7 +33,20 @@ public class ModuleFeedbackProcessor {
 	@Inject
 	private FeedbackPropertiesCollector propertiesCollector;
 
+	private Provider<FeedbackActionCollector> feedbackActionCollectorProvider;
+	
+	@Inject
+	public ModuleFeedbackProcessor(Provider<FeedbackActionCollector> feedbackActionCollectorProvider){
+		this.feedbackActionCollectorProvider = feedbackActionCollectorProvider;
+		initializeFeedbackActionCollector();
+	}
+	
+	private void initializeFeedbackActionCollector(){
+		feedbackActionCollector = feedbackActionCollectorProvider.get();
+	}
+
 	public void process(IModule sender, Map<String, ? extends Variable> variables){
+		initializeFeedbackActionCollector();
 		feedbackActionCollector.setSource(sender);
 		propertiesCollector.setVariables(variables);
 		processFeedbackActionCollector(sender);

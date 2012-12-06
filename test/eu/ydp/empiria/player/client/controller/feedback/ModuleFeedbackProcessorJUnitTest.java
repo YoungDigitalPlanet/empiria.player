@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.feedback;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -73,6 +74,17 @@ public class ModuleFeedbackProcessorJUnitTest extends AbstractTestBase{
 		
 		assertThat(processorModules, is(notNullValue()));
 		assertThat(processorModules.size(), is(equalTo(0)));
+	}
+	
+	@Test
+	public void shouldCreateNewInstanceOfActionCollector(){
+		IModule module = mock(IModule.class);
+		feedbackProcessor.process(module, null);
+		
+		FeedbackActionCollector collector = feedbackProcessor.feedbackActionCollector;
+		feedbackProcessor.process(module, null);
+		
+		assertThat(feedbackProcessor.feedbackActionCollector, is(not(collector)));
 	}
 	
 }

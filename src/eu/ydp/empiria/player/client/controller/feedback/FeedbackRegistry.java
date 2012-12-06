@@ -70,5 +70,9 @@ public class FeedbackRegistry {
 	FeedbackParserFactory getFeedbackParserFactory(){
 		return feedbackParserFactory;
 	}
+
+	public Boolean hasFeedbacks() {
+		return !modules2feedbacks.values().isEmpty();
+	}
 	
 }

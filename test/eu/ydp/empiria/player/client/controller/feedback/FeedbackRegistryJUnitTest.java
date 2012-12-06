@@ -103,6 +103,20 @@ public class FeedbackRegistryJUnitTest extends AbstractTestBase{
 		assertThat(registry.getModuleFeedbacks(module).size(), is(equalTo(4)));
 	}
 	
+	@Test
+	public void testIfRegistryDoesntContainFeedbacks(){
+		assertThat(registry.hasFeedbacks(), is(equalTo(false)));
+	}
+	
+	@Test
+	public void testIfRegistryContainsFeedbacks(){
+		IModule module = mock(IModule.class);
+		Node moduleNode = getModuleNode("<module><feedback/></module>");
+		
+		registry.registerFeedbacks(module, moduleNode);
+		assertThat(registry.hasFeedbacks(), is(equalTo(true)));
+	}
+	
 	private Node getModuleNode(String node){
 		return XMLParser.parse(node).getDocumentElement();
 	}

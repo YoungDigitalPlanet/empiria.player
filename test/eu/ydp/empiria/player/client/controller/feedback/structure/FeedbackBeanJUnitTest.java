@@ -17,9 +17,6 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrl
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlActionSource;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.AndConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.CountConditionBean;
-import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
-import eu.ydp.empiria.player.client.controller.feedback.structure.condition.NotConditionBean;
-import eu.ydp.empiria.player.client.controller.feedback.structure.condition.OrConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
 
 public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
@@ -34,10 +31,6 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 												"<propertyCondition property=\"ok\"/>" +
 											"</countCondition>" +
 										"</and>" +
-										"<or>" +
-										"</or>" +
-										"<not>" +
-										"</not>" +
 									"</condition>" +
 									"<action>" +
 										"<showText>testowy tekst</showText>" +
@@ -56,29 +49,24 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	@Test
 	public void shouldHaveActionAndCondition() {
-		assertThat(feedback.getConditionBean(), notNullValue());
+		assertThat(feedback.getCondition(), notNullValue());
 		assertThat(feedback.getAction(), notNullValue());
 	}
 
 	@Test
 	public void shouldHaveFirstLevelConditions() {
-		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
-		assertThat(allConditions.get(0), instanceOf(AndConditionBean.class));
-		assertThat(allConditions.get(1), instanceOf(OrConditionBean.class));
-		assertThat(allConditions.get(2), instanceOf(NotConditionBean.class));
+		assertThat(feedback.getCondition(), instanceOf(AndConditionBean.class));
 	}
 	
 	@Test
 	public void shouldHaveCountCondition() {
-		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
-		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
+		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		assertThat(andConditionBean.getAllConditions().get(0), instanceOf(CountConditionBean.class));
 	}
 	
 	@Test
 	public void shouldHaveCorrectAttributesInCountCondition() {
-		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
-		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
+		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		assertThat(countConditionBean.getCount(), is(3));
 		assertThat(countConditionBean.getOperator(), is("=="));
@@ -86,16 +74,14 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	@Test
 	public void shouldHavePropertyCondition() {
-		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
-		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
+		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		assertThat(countConditionBean.getAllConditions().get(0), instanceOf(PropertyConditionBean.class));
 	}
 	
 	@Test
 	public void shouldHaveCorrectAttributesInPropertyCondition() {
-		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
-		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
+		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		PropertyConditionBean propertyConditionBean = (PropertyConditionBean) countConditionBean.getAllConditions().get(0);
 		assertThat(propertyConditionBean.getProperty(), is("wrong"));
@@ -105,8 +91,7 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 	
 	@Test
 	public void shouldHaveCorrectDefaultAttributesInPropertyCondition() {
-		List<FeedbackCondition> allConditions = feedback.getConditionBean().getAllConditions();
-		AndConditionBean andConditionBean = (AndConditionBean) allConditions.get(0);
+		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		PropertyConditionBean propertyConditionBean = (PropertyConditionBean) countConditionBean.getAllConditions().get(1);
 		assertThat(propertyConditionBean.getProperty(), is("ok"));

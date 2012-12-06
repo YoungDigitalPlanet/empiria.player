@@ -30,10 +30,6 @@ public class FeedbackBean implements Feedback {
 	public void setActions(FeedbackActionBean action) {
 		this.action = action;
 	}
-	
-	public FeedbackConditionBean getConditionBean() {
-		return condition;
-	}	
 
 	public void setConditionElement(FeedbackConditionBean condition) {
 		this.condition = condition;
@@ -46,6 +42,8 @@ public class FeedbackBean implements Feedback {
 
 	@Override
 	public FeedbackCondition getCondition() {
-		return condition;
+		return (condition.getAllConditions().isEmpty())? 
+							null: 
+							condition.getAllConditions().get(0);
 	}
 }
