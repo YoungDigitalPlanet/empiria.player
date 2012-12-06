@@ -5,7 +5,7 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
@@ -224,11 +223,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		}
 
 		if (bindingType == BindingType.GAP_MAXLENGHTS) {
-			if (maxLength.matches("ANSWER")) {
-				bindingValue = new GapMaxlengthBindingValue(getLongestAnswerLength());
-			} else {
-				bindingValue = new GapMaxlengthBindingValue(Integer.parseInt(maxLength));
-			}
+			bindingValue = new GapMaxlengthBindingValue(getLongestAnswerLength());
 		}
 
 		return bindingValue;
@@ -288,8 +283,13 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		}
 
 		if ( !gapMaxlength.equals(EMPTY_STRING) ) {
-			maxlengthBindingIdentifier = getBindindIdentifier(moduleElement);
 			maxLength = gapMaxlength;
+			
+			if (maxLength.matches("ANSWER")) {
+				maxlengthBindingIdentifier = getBindindIdentifier(moduleElement);
+			} else {
+				presenter.setMaxLength(Integer.parseInt(maxLength));
+			}
 		}
 		else if (getModuleElement().hasAttribute("expectedLength")) {
 			presenter.setMaxLength(XMLUtils.getAttributeAsInt(getModuleElement(), "expectedLength"));
@@ -325,10 +325,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	public int getFontSize() {
 		return presenter.getFontSize();
-	}
-
-	@Override
-	public void installViews(List<HasWidgets> placeholders) {
 	}
 
 	@Override

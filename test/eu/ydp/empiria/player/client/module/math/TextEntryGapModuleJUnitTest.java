@@ -101,9 +101,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		styles.put(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH, "3");
 		TextEntryGapModuleMock textGap = mockTextGap();
 		textGap.invokeSetMaxlengthBinding(styles);
-		BindingValue bindingValue = textGap.getBindingValue(BindingType.GAP_MAXLENGHTS);
-		int maxlength = ((GapMaxlengthBindingValue) bindingValue).getGapCharactersCount();
-		assertThat(maxlength, is(3));
+		verify(textGap.getPresenter()).setMaxLength(3);
 	}
 
 	@Test
@@ -172,7 +170,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 
 		public TextEntryGapModuleMock(Map<String, String> styles) {
 			super(injector.getInstance(TextEntryModuleFactory.class));
-			this.styles = styles;
+			this.mathStyles = styles;
 		}
 		
 		protected String mockedResponse;

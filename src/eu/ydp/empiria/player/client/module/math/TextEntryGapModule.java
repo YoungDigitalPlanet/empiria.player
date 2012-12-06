@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.thirdparty.guava.common.collect.Multimap;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -32,8 +33,6 @@ public class TextEntryGapModule extends GapBase implements MathGap, Factory<Text
 	protected int index;
 
 	protected MathModule parentMathModule;
-
-	protected Map<String, String> styles;
 
 	protected Map<String, String> mathStyles;
 
@@ -63,8 +62,10 @@ public class TextEntryGapModule extends GapBase implements MathGap, Factory<Text
 		presenter.installViewInContainer(((HasWidgets) ((Widget) placeholder).getParent()));
 		addPlayerEventHandlers();
 		loadElementProperties();
-		styles = getModuleSocket().getStyles(getModuleElement());
 
+		applyIdAndClassToView((Widget) presenter.getContainer());
+		Map<String, String> styles = getModuleSocket().getStyles(getModuleElement());
+		mathStyles.putAll(styles);
 		setDimensions();
 		setMaxlengthBinding(mathStyles, getModuleElement());
 		setWidthBinding(mathStyles, getModuleElement());
@@ -100,21 +101,15 @@ public class TextEntryGapModule extends GapBase implements MathGap, Factory<Text
 	}
 
 	protected void setDimensions() {
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH)) {
-			setGapWidth(NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH)));
-		} else if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH)) {
+		if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH)) {
 			setGapWidth(NumberUtils.tryParseInt(mathStyles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH)));
 		}
 
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT)) {
-			setGapHeight(NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT)));
-		} else if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT)) {
+		if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT)) {
 			setGapHeight(NumberUtils.tryParseInt(mathStyles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT)));
 		}
 
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE)) {
-			setGapFontSize(NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE)));
-		} else if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE)) {
+		if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE)) {
 			setGapFontSize(NumberUtils.tryParseInt(mathStyles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE)));
 		}
 

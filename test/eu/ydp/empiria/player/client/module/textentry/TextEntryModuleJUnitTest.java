@@ -7,6 +7,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -67,9 +68,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		styles.put(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH, "3");
 		TextEntryModuleMock textEntryModule = mockTextGap();
 		textEntryModule.invokeSetMaxlengthBinding(styles);
-		BindingValue bindingValue = textEntryModule.getBindingValue(BindingType.GAP_MAXLENGHTS);
-		int maxlength = ((GapMaxlengthBindingValue) bindingValue).getGapCharactersCount();
-		assertThat(maxlength, is(3));
+		verify(textEntryModule.getPresenter()).setMaxLength(3);
 	}
 
 	@Test
