@@ -2,10 +2,12 @@ package eu.ydp.empiria.player.client.controller.feedback;
 
 import static com.google.common.base.Optional.fromNullable;
 import static eu.ydp.empiria.player.client.resources.EmpiriaTagConstants.NAME_FEEDBACK;
+import static eu.ydp.empiria.player.client.resources.EmpiriaTagConstants.NAME_FEEDBACKS;
 
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.xml.client.Element;
@@ -24,12 +26,26 @@ public class FeedbackRegistry {
 	private final Map<IModule, List<Feedback>> modules2feedbacks = Maps.newHashMap();
 	
 	public void registerFeedbacks(IModule module, Node moduleNode){
-		Element moduleElement = (Element) moduleNode;
-		NodeList feedbackNodeList = moduleElement.getElementsByTagName(NAME_FEEDBACK);
+		Element feedbackElement = getFeedbacksElement(moduleNode);
 		
-		if(fromNullable(feedbackNodeList).isPresent() && feedbackNodeList.getLength() > 0){
-			addModuleFeedbacks(module, feedbackNodeList);
+		if(fromNullable(feedbackElement).isPresent()){
+			addModuleFeedbacks(module, feedbackElement.getElementsByTagName(NAME_FEEDBACK));
+		}		
+	}
+	
+	private Element getFeedbacksElement(Node moduleNode){
+		Optional<Element> feedbackElement = Optional.absent();
+		NodeList moduleChildNodes = moduleNode.getChildNodes();
+		
+		for(int i = 0; i < moduleChildNodes.getLength(); i++){
+			Node child = moduleChildNodes.item(i);
+			if(NAME_FEEDBACKS.equals(child.getNodeName())){
+				feedbackElement = Optional.of((Element)child);
+				break;
+			}
 		}
+		
+		return feedbackElement.orNull();
 	}
 	
 	private void addModuleFeedbacks(IModule module, NodeList feedbackNodeList){

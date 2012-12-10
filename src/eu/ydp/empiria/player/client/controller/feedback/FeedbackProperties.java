@@ -141,5 +141,12 @@ public class FeedbackProperties{
 		
 		return defValue;
 	}
+
+	@Override
+	public String toString() {
+		return "FeedbackProperties [propertyMap=" + propertyMap + "]";
+	}
+	
+	
 	
 }

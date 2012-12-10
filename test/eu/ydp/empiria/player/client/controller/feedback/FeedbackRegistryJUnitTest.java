@@ -33,7 +33,7 @@ public class FeedbackRegistryJUnitTest extends AbstractTestBase{
 	@Test
 	public void shouldAddModuleFeedbacks(){
 		IModule module = mock(IModule.class);
-		Node moduleNode = getModuleNode("<module><feedback/></module>");
+		Node moduleNode = getModuleNode("<module><feedbacks><feedback/></feedbacks></module>");
 		
 		registry.registerFeedbacks(module, moduleNode);
 		List<Feedback> moduleFeedbacks = registry.getModuleFeedbacks(module);
@@ -71,7 +71,7 @@ public class FeedbackRegistryJUnitTest extends AbstractTestBase{
 	public void testIfModuleIsRegistered(){
 		IModule module = mock(IModule.class);
 		IModule module1 = mock(IModule.class);
-		Node moduleNode = getModuleNode("<module><feedback/></module>");
+		Node moduleNode = getModuleNode("<module><feedbacks><feedback/></feedbacks></module>");
 		
 		registry.registerFeedbacks(module, moduleNode);
 		
@@ -94,7 +94,7 @@ public class FeedbackRegistryJUnitTest extends AbstractTestBase{
 	@Test
 	public void shouldAppendFeedbacksToRegisteredModule(){
 		IModule module = mock(IModule.class);
-		Node moduleNode = getModuleNode("<module><feedback/><feedback/></module>");
+		Node moduleNode = getModuleNode("<module><feedbacks><feedback/><feedback/></feedbacks></module>");
 		
 		registry.registerFeedbacks(module, moduleNode);
 		assertThat(registry.getModuleFeedbacks(module).size(), is(equalTo(2)));
@@ -111,10 +111,20 @@ public class FeedbackRegistryJUnitTest extends AbstractTestBase{
 	@Test
 	public void testIfRegistryContainsFeedbacks(){
 		IModule module = mock(IModule.class);
-		Node moduleNode = getModuleNode("<module><feedback/></module>");
+		Node moduleNode = getModuleNode("<module><feedbacks><feedback/></feedbacks></module>");
 		
 		registry.registerFeedbacks(module, moduleNode);
 		assertThat(registry.hasFeedbacks(), is(equalTo(true)));
+	}
+	
+	@Test
+	public void shouldNotGetFeedbacksFromChildModules(){
+		IModule module = mock(IModule.class);
+		Node moduleNode = getModuleNode("<module><childModule><feedbacks><feedback/></feedbacks></childModule></module>");
+		
+		registry.registerFeedbacks(module, moduleNode);
+		assertThat(registry.getModuleFeedbacks(module), is(not(nullValue())));
+		assertThat(registry.getModuleFeedbacks(module).isEmpty(), is(true));
 	}
 	
 	private Node getModuleNode(String node){
