@@ -37,7 +37,7 @@ public class FeedbackPropertiesCreatorJUnitTest {
 	@Test
 	public void shouldApplyOkProperty() {
 		OutcomeListBuilder builder = OutcomeListBuilder.init().
-										put(creator.createLastMistakenOutcome(1));
+										put(creator.createLastMistakenOutcome(0));
 		FeedbackProperties properties = getProperties(builder);
 
 		assertThat("not null", properties, is(notNullValue()));
@@ -48,7 +48,7 @@ public class FeedbackPropertiesCreatorJUnitTest {
 	@Test
 	public void shouldApplyWrongProperty() {
 		OutcomeListBuilder builder = OutcomeListBuilder.init().
-										put(creator.createLastMistakenOutcome(0));
+										put(creator.createLastMistakenOutcome(1));
 		FeedbackProperties properties = getProperties(builder);
 
 		assertThat("not null", properties, is(notNullValue()));
