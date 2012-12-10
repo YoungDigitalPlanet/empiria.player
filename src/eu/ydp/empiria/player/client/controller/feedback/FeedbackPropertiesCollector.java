@@ -29,6 +29,8 @@ public class FeedbackPropertiesCollector {
 	public FeedbackProperties collect(IModule module, IModule sender){
 		
 		this.sender = sender;
+		this.todo = 0.0;
+		this.done = 0.0;
 		
 		FeedbackProperties properties = new FeedbackProperties();
 		mergeProperties(module, properties);

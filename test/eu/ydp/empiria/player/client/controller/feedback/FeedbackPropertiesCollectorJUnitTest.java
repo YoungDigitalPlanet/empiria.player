@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
+import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertiesCollectorTestHelper.ModuleInfo;
 
 public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
@@ -100,6 +101,26 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.ERRORS), is(equalTo(1)));
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(false)));
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(100.0)));
+	}
+	
+	@Test
+	public void shouldReturnCorrectResultWhen_calledMoreThanOnce(){
+		moduleInfos = new ModuleInfo[] { 
+				ModuleInfo.create(MODULE_1).setLastOk(false).setTodo(2).setDone(1).setErrors(0)
+			};
+		
+		initializeModules();
+		FeedbackProperties properties = propertiesCollector.collect(helper.getSender(), helper.getSender());
+		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(50.0)));
+		
+		moduleInfos = new ModuleInfo[] { 
+				ModuleInfo.create(MODULE_1).setLastOk(false).setTodo(3).setDone(1).setErrors(0)
+			};
+		
+		helper.createHierarchy(moduleInfos);
+		propertiesCollector.setVariables(helper.getVariables());
+		properties = propertiesCollector.collect(helper.getSender(), helper.getSender());
+		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(33.0)));
 	}
 	
 	private void initializeModules(){
