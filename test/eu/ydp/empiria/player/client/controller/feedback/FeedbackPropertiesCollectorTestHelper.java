@@ -50,7 +50,7 @@ class FeedbackPropertiesCollectorTestHelper {
 						put(creator.createDoneOutcome(info.getDone())).
 						put(creator.createTodoOutcome(info.getTodo())).
 						put(creator.createErrorsOutcome(info.getErrors())).
-						put(creator.createLastMistakenOutcome(info.isLastOk()? 1: 0)).
+						put(creator.createLastMistakenOutcome(info.isLastOk()? 0: 1)).
 						getMap();
 	}
 	
