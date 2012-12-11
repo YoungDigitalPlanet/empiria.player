@@ -15,10 +15,7 @@ import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
@@ -26,19 +23,12 @@ import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
 
-public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<InlineChoiceGapModule> {
+public class InlineChoiceGapModule extends MathGapBase implements MathGap, Factory<InlineChoiceGapModule> {
 
-	protected String uid;
-
-	protected int index;
-
+	@Inject
+	private Provider<InlineChoiceGapModule> moduleFactory;
+	
 	protected List<String> options;
-
-	protected MathModule parentMathModule;
-
-	protected Map<String, String> styles;
-
-	protected Map<String, String> mathStyles;
 
 	protected boolean hasEmptyOption = false;
 
@@ -46,19 +36,16 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 	protected StyleNameConstants styleNames;
 
 	@Inject
-	protected Provider<InlineChoiceGapModule> moduleFactory;
-
-	@Inject
 	public InlineChoiceGapModule(InlineChoiceGapModulePresenter presenter) {
 		this.presenter = presenter;
+		
 		getListBox().setChangeListener(new ExListBoxChangeListener() {
 			@Override
 			public void onChange() {
-				updateResponse();
+				updateResponse(true);
 			}
 		});
 	}
-
 
 	protected ExListBox getListBox() {
 		return presenter.getListBox();
@@ -69,9 +56,10 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 		HasWidgets placeholder = placeholders.get(0);
 		presenter.installViewInContainer(((HasWidgets) ((Widget) placeholder).getParent()));
 
-		loadElementProperties();
+		loadUID();
 
-		styles = getModuleSocket().getStyles(getModuleElement());
+		Map<String, String> styles = getModuleSocket().getStyles(getModuleElement());
+		mathStyles.putAll(styles);
 		initStyles();
 
 		setListBoxEmptyOption();
@@ -107,15 +95,11 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 	}
 
 	protected void initStyles() {
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
-			presenter.setWidth(NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)), Unit.PX);
-		} else if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
+		if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
 			presenter.setWidth(NumberUtils.tryParseInt(mathStyles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)), Unit.PX);
 		}
 
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
-			presenter.setHeight(NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)), Unit.PX);
-		} else if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
+		if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
 			presenter.setHeight(NumberUtils.tryParseInt(mathStyles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)), Unit.PX);
 		}
 
@@ -153,76 +137,11 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 		}
 		return valueIndex;
 	}
-
-	@Override
-	protected Response findResponse() {
-		return (getParentMathModule() == null) ? null : getParentMathModule().getResponse();
-	}
-
-	@Override
-	public Widget getContainer() {
-		return (Widget) presenter.getContainer();
-	}
-
-	private void loadElementProperties() {
-		uid = getElementAttributeValue(EmpiriaTagConstants.ATTR_UID);
-	}
-
-	@Override
-	public String getUid() {
-		return (uid == null) ? EMPTY_STRING : uid;
-	}
-
+	
 	@Override
 	public void reset() {
 		getListBox().setSelectedIndex((hasEmptyOption) ? 0 : -1);
-	}
-
-	@Override
-	public void setIndex(int index) {
-		this.index = index;
-	}
-
-	@Override
-	public int getIndex() {
-		return index;
-	}
-
-	@Override
-	public void setGapWidth(int gapWidth) {
-		presenter.setWidth(gapWidth, Unit.PX);
-	}
-
-	@Override
-	public void setGapHeight(int gapHeight) {
-		presenter.setHeight(gapHeight, Unit.PX);
-	}
-
-	@Override
-	public void setGapFontSize(int gapFontSize) {
-		presenter.setFontSize(gapFontSize, Unit.PX);
-	}
-
-	@Override
-	public void setMathStyles(Map<String, String> mathStyles) {
-		this.mathStyles = mathStyles;
-	}
-
-	@Override
-	protected boolean isResponseCorrect() {
-		List<Boolean> evaluations = getModuleSocket().evaluateResponse(getResponse());
-		return (evaluations.size() <= index + 1) ? evaluations.get(index) : false;
-	}
-
-	@Override
-	protected String getCurrentResponseValue() {
-		return getResponse().values.get(index);
-	}
-
-	@Override
-	public String getCorrectAnswer() {
-		List<String> correctAnswers = getCorrectResponseValue().getAnswers();
-		return correctAnswers.get(0);
+		updateResponse(false);
 	}
 
 	@Override
@@ -235,39 +154,9 @@ public class InlineChoiceGapModule extends GapBase implements MathGap, Factory<I
 		setValue(getCurrentResponseValue());
 	}
 
-	private ResponseValue getCorrectResponseValue(){
-		return getResponse().correctAnswers.getResponseValue(index);
-	}
-
-	private MathModule getParentMathModule() {
-		if (parentMathModule == null) {
-			IModule parent = this;
-
-			do {
-				parent = getModuleSocket().getParent(parent);
-			} while ( !(parent instanceof MathModule) );
-
-			parentMathModule = (parent == null) ? null : (MathModule)parent;
-		}
-
-		return parentMathModule;
-	}
-
-	@Override
-	protected void updateResponse() {
-		getParentMathModule().updateResponseAfterUserAction();
-	}
-
 	@Override
 	public InlineChoiceGapModule getNewInstance() {
 		return moduleFactory.get();
 	}
 
-	@Override
-	public void setUpGap() {
-	}
-
-	@Override
-	public void startGap() {
-	}
 }

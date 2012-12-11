@@ -5,7 +5,6 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -17,7 +16,6 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
 import eu.ydp.empiria.player.client.module.binding.Bindable;
@@ -38,14 +36,13 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public abstract class GapBase extends OneViewInteractionModuleBase implements Bindable {
 
 	@Inject
 	protected EventsBus eventsBus;
-
-	protected final static String EMPTY_STRING = "";
 
 	public static final String INLINE_HTML_NBSP = "&nbsp;";
 
@@ -68,7 +65,18 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	protected BindingContext maxlengthBindingContext;
 
 	protected String maxLength = "";
+	
+	protected abstract boolean isResponseCorrect();
 
+	protected abstract String getCurrentResponseValue();
+
+	protected abstract void updateResponse(boolean userInteract);
+	
+	protected abstract void setCorrectAnswer();
+
+	protected abstract void setPreviousAnswer();
+
+	public abstract String getCorrectAnswer();
 
 	public interface PresenterHandler extends BlurHandler, ChangeHandler{
 
@@ -80,7 +88,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
 				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
-					updateResponse();
+					updateResponse(false);
 					presenter.removeFocusFromTextField();
 				}
 			}
@@ -89,17 +97,15 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	@Override
 	public void markAnswers(boolean mark) {
-		if(mark  && !markingAnswer){
-			String markMode;
-			if(isResponseEmpty()){
-				markMode = GapModulePresenter.NONE;
-			}else if(isResponseCorrect()){
-				markMode = GapModulePresenter.CORRECT;
-			}else{
-				markMode = GapModulePresenter.WRONG;
+		if (mark  && !markingAnswer) {
+			if (isResponseEmpty()) {
+				presenter.setMarkMode(GapModulePresenter.NONE);
+			} else if (isResponseCorrect()) {
+				presenter.setMarkMode(GapModulePresenter.CORRECT);
+			} else {
+				presenter.setMarkMode(GapModulePresenter.WRONG);
 			}
-			presenter.setMarkMode(markMode);
-		}else if (!mark && markingAnswer){
+		} else if (!mark && markingAnswer) {
 			presenter.removeMarking();
 		}
 
@@ -107,14 +113,8 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	}
 
 	protected boolean isResponseEmpty(){
-		return EMPTY_STRING.equals(getCurrentResponseValue());
+		return StringUtils.EMPTY_STRING.equals(getCurrentResponseValue());
 	}
-
-	protected abstract boolean isResponseCorrect();
-
-	protected abstract String getCurrentResponseValue();
-
-	protected abstract void updateResponse();
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
@@ -127,12 +127,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		showingAnswer = show;
 	}
 
-	protected abstract void setCorrectAnswer();
-
-	protected abstract void setPreviousAnswer();
-
-	public abstract String getCorrectAnswer();
-
 	@Override
 	public void lock(boolean lock) {
 		presenter.setViewEnabled(!lock);
@@ -140,12 +134,10 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	@Override
 	public void reset() {
-		presenter.setText(EMPTY_STRING);
-		updateResponse();
+		presenter.setText(StringUtils.EMPTY_STRING);
+		updateResponse(false);
 	}
-	/**
-	 * @see IStateful#getState()
-	 */
+	
 	@Override
 	public JSONArray getState() {
 		JSONArray jsonArr = new JSONArray();
@@ -154,9 +146,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		return jsonArr;
 	}
 
-	/**
-	 * @see IStateful#setState(Serializable)
-	 */
 	@Override
 	public void setState(JSONArray newState) {
 		String state = "";
@@ -167,7 +156,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		}
 
 		presenter.setText(state);
-		updateResponse();
+		updateResponse(false);
 	}
 
 	@Override
@@ -246,7 +235,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	protected GapWidthMode getGapWidthMode(Map<String, String> styles){
 		GapWidthMode widthMode = null;
-		String gapWidthAlign = EMPTY_STRING;
+		String gapWidthAlign = StringUtils.EMPTY_STRING;
 
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN)) {
 			gapWidthAlign = styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN).trim().toUpperCase();
@@ -254,7 +243,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 			gapWidthAlign = styles.get(EMPIRIA_MATH_GAP_WIDTH_ALIGN).trim().toUpperCase();
 		}
 
-		if ( !gapWidthAlign.equals(EMPTY_STRING) ) {
+		if ( !gapWidthAlign.equals(StringUtils.EMPTY_STRING) ) {
 			widthMode = GapWidthMode.valueOf(gapWidthAlign);
 		}
 
@@ -274,7 +263,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	}
 
 	protected void setMaxlengthBinding(Map<String, String> styles, Element moduleElement) {
-		String gapMaxlength = EMPTY_STRING;
+		String gapMaxlength = StringUtils.EMPTY_STRING;
 
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH)) {
 			gapMaxlength = styles.get(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH).trim().toUpperCase();
@@ -282,7 +271,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 			gapMaxlength = styles.get(EMPIRIA_MATH_GAP_MAXLENGTH).trim().toUpperCase();
 		}
 
-		if ( !gapMaxlength.equals(EMPTY_STRING) ) {
+		if ( !gapMaxlength.equals(StringUtils.EMPTY_STRING) ) {
 			maxLength = gapMaxlength;
 			
 			if (maxLength.matches("ANSWER")) {
@@ -329,12 +318,10 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	@Override
 	public void onBodyLoad() {
-		//eu.ydp.empiria.player.client.module.ILifeCycle.onBodyLoad
 	}
 
 	@Override
 	public void onBodyUnload() {
-		//eu.ydp.empiria.player.client.module.ILifeCycle.onBodyUnload
 	}
 
 	@Override
@@ -347,7 +334,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	@Override
 	public void onClose() {
-		//eu.ydp.empiria.player.client.module.ILifeCycle.onClose
 	}
 
 }

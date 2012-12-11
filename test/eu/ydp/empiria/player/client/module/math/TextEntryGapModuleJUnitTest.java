@@ -84,8 +84,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 	@Test
 	public void testIfCorrectAnswerIsFound() {
 		TextEntryGapModule textGap = mockTextGap();
-		textGap.setIndex(1);
-		Assert.assertTrue(textGap.getCorrectAnswer().equals("12"));
+		Assert.assertTrue(textGap.getCorrectAnswer().equals("13"));
 	}
 
 	@Test
@@ -119,27 +118,22 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		TextEntryGapModuleMock gap1 = mockTextGap();
 		TextEntryGapModuleMock gap2 = mockTextGap();
 		TextEntryGapModuleMock gap3 = mockTextGap();
-		TextEntryGapModuleMock gap4 = mockTextGap();
 
-		gap1.setIndex(0);
-		gap2.setIndex(1);
-		gap3.setIndex(2);
-		gap4.setIndex(3);
-		
-		gap1.setMockedResponse("4");
+		gap1.setMockedResponse("13");
 		gap2.setMockedResponse("4");
 		gap3.setMockedResponse("");
-		gap4.setMockedResponse("5");
+		
+		gap1.setEvaluatedResponse(true);
+		gap2.setEvaluatedResponse(false);
+		gap3.setEvaluatedResponse(false);
 		
 		gap1.markAnswers(true);
 		gap2.markAnswers(true);
 		gap3.markAnswers(true);
-		gap4.markAnswers(true);
 		
 		verify(gap1.getPresenter()).setMarkMode(GapModulePresenter.CORRECT);
 		verify(gap2.getPresenter()).setMarkMode(GapModulePresenter.WRONG);
 		verify(gap3.getPresenter()).setMarkMode(GapModulePresenter.NONE);
-		verify(gap4.getPresenter()).setMarkMode(GapModulePresenter.CORRECT);
 	}
 
 	@BeforeClass
@@ -167,6 +161,8 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 	}
 
 	private class TextEntryGapModuleMock extends TextEntryGapModule {
+		
+		private boolean evaluatedResponse;
 
 		public TextEntryGapModuleMock(Map<String, String> styles) {
 			super(injector.getInstance(TextEntryModuleFactory.class));
@@ -185,9 +181,9 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 			Response response = mock(Response.class);
 			response.groups = new HashMap<String, List<Integer>>();
 			response.correctAnswers = new CorrectAnswers();
-			response.correctAnswers.add(new ResponseValue("1332"));
-			response.correctAnswers.add(new ResponseValue("12"));
-			response.correctAnswers.add(new ResponseValue("555"));
+			response.correctAnswers.add(new ResponseValue("13"));
+			response.correctAnswers.add(new ResponseValue("1322"));
+			response.correctAnswers.add(new ResponseValue("1"));
 
 			return response;
 		}
@@ -209,12 +205,6 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 			return getLongestAnswerLength() * getFontSize();
 		}
 
-		@Override
-		protected List<Boolean> getEvaluatedResponse() {
-			List<Boolean> evaluations = Lists.newArrayList(true, false, false, true);
-			return evaluations;
-		}
-		
 		public void setMockedResponse(String response) {
 			mockedResponse = response;
 		}
@@ -226,6 +216,22 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		
 		public GapModulePresenter getPresenter() {
 			return presenter;
+		}
+		
+		@Override
+		protected boolean isResponseInMathModule() {
+			return false;
+		}
+		
+		public void setEvaluatedResponse(boolean evaluatedResponse) {
+			this.evaluatedResponse = evaluatedResponse;
+		}
+		
+		@Override
+		protected List<Boolean> getEvaluatedResponse() {
+			List<Boolean> evaluations = Lists.newArrayList();
+			evaluations.add(evaluatedResponse);
+			return evaluations;
 		}
 
 	}

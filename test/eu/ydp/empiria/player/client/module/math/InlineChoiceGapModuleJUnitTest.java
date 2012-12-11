@@ -99,7 +99,6 @@ public class InlineChoiceGapModuleJUnitTest {
 
 		public InlineChoiceGapModuleMock(Map<String, String> mathStyles) {
 			super(mock(InlineChoiceGapModulePresenter.class));
-			styles = new HashMap<String, String>();
 			this.mathStyles = mathStyles;
 			initStyles();
 			options = createOptions(getModuleElement(), getModuleSocket());
@@ -147,6 +146,11 @@ public class InlineChoiceGapModuleJUnitTest {
 		@Override
 		protected EventsBus getEventsBus() {
 			return mock(EventsBus.class);
+		}
+		
+		@Override
+		protected boolean isResponseInMathModule() {
+			return false;
 		}
     }
 }

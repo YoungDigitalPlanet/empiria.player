@@ -26,6 +26,7 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
@@ -42,6 +43,7 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 	@Inject
 	public TextEntryModule(TextEntryModuleFactory moduleFactory) {
 		this.presenter = moduleFactory.getTextEntryModulePresenter(this);
+		
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -141,12 +143,7 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 
 	@Override
 	protected String getCurrentResponseValue(){
-		return (getResponse().values.size()>0) ? getResponse().values.get(0) : EMPTY_STRING;
-	}
-
-	@Override
-	protected void updateResponse() {
-		updateResponse(false);
+		return (getResponse().values.size() > 0) ? getResponse().values.get(0) : StringUtils.EMPTY_STRING;
 	}
 
 	protected void updateResponse(boolean userInteract){

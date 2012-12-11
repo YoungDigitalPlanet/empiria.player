@@ -175,20 +175,18 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	
 	@Override
 	public void onBodyLoad() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onBodyUnload() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onSetUp() {
 		for (MathGap gap: getMathGaps()) {
-			gap.setUpGap();
+			if (gap instanceof TextEntryGapModule) {
+				((TextEntryGapModule) gap).setUpGap();
+			}
 		}
 		
 		placeGaps();		
@@ -198,7 +196,9 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	@Override
 	public void onStart() {
 		for (MathGap gap: getMathGaps()) {
-			gap.startGap();
+			if (gap instanceof TextEntryGapModule) {
+				((TextEntryGapModule) gap).startGap();
+			}
 		}
 		
 		setSizeOfGapDummies();
@@ -233,27 +233,13 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 				int height = gap.getContainer().getOffsetHeight();
 					
 				mathManager.setCustomFieldWidth(gapId, width);
-				//if(gap.isSubOrSupParent){
-					mathManager.setCustomFieldHeight(gapId, height);
-				//}
+				mathManager.setCustomFieldHeight(gapId, height);
 			}	
 		}
-		
-		/*if(actualTextEntryGapSize != null){
-			mpm.setCustomFieldWidth(GapIdentifier.createTypeIdentifier(GapType.TEXT_ENTRY.getName()), actualTextEntryGapSize.getWidth());
-			mpm.setCustomFieldHeight(GapIdentifier.createTypeIdentifier(GapType.TEXT_ENTRY.getName()), actualTextEntryGapSize.getHeight());
-		}
-		
-		if(actualInlineChoiceGapSize != null){
-			mpm.setCustomFieldWidth(GapIdentifier.createTypeIdentifier(GapType.INLINE_CHOICE.getName()), actualInlineChoiceGapSize.getWidth());
-			mpm.setCustomFieldHeight(GapIdentifier.createTypeIdentifier(GapType.INLINE_CHOICE.getName()), actualInlineChoiceGapSize.getHeight());
-		}*/
 	}
 
 	@Override
 	public void onClose() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	private void placeGaps(){
@@ -329,10 +315,12 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	}
 	
 	private void updateResponse(){
-		getResponse().values.clear();
-		
-		for(MathGap gap: getMathGaps()){
-			getResponse().values.add(gap.getIndex(), gap.getValue());
+		if (getResponse() != null) {
+			getResponse().values.clear();
+			
+			for(MathGap gap: getMathGaps()){
+				getResponse().values.add(gap.getIndex(), gap.getValue());
+			}
 		}
 	}
 	

@@ -16,6 +16,4 @@ public interface MathGap {
 	public void setGapHeight(int gapHeight);
 	public void setGapFontSize(int gapFontSize);
 	public void setMathStyles(Map<String, String> mathStyles);
-	public void setUpGap();
-	public void startGap();
 }
