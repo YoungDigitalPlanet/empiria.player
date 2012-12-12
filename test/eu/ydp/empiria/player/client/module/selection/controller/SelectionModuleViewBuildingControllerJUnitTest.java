@@ -29,6 +29,7 @@ import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("PMD")
 public class SelectionModuleViewBuildingControllerJUnitTest {
 
 	private SelectionModuleViewBuildingController viewBuildingController;

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -14,6 +16,8 @@ import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 
 public class GroupAnswersController {
 
+	private static final Logger LOGGER = Logger.getLogger(GroupAnswersController.class.getName());
+	
 	private List<SelectionAnswerDto> allSelectionAnswers = new ArrayList<SelectionAnswerDto>();
 	private Queue<SelectionAnswerDto> selectedAnswers;
 	private int maxSelected;
@@ -41,7 +45,9 @@ public class GroupAnswersController {
 	
 	void selectAnswer(SelectionAnswerDto selectionAnswer){
 		if(!allSelectionAnswers.contains(selectionAnswer)){
-			throw new RuntimeException("SelectButton method called from GroupChoicesController with button as argument, that is not connected with this controller!");
+			LOGGER.log(Level.SEVERE, "SelectButton method called from GroupChoicesController with button as argument, " +
+					"that is not connected with this controller!");
+			return;
 		}
 
 		if(selectedAnswers.size() >= maxSelected){
@@ -67,7 +73,10 @@ public class GroupAnswersController {
 	}
 	
 	public void selectToggleAnswer(String selectionAnswerId) {
-		SelectionAnswerDto selectionAnswer = findSelectionAnswerById(selectionAnswerId);
+		SelectionAnswerDto selectionAnswer = selectionAnswer = findSelectionAnswerById(selectionAnswerId);
+		if(selectionAnswer == null){
+			return;
+		}
 		
 		if(selectionAnswer.isSelected())
 			unselectAnswer(selectionAnswer);
@@ -76,12 +85,14 @@ public class GroupAnswersController {
 	}
 	
 	private SelectionAnswerDto findSelectionAnswerById(String answerId){
+		SelectionAnswerDto selectionAnswerById = null;
 		for(SelectionAnswerDto selectionAnswer : allSelectionAnswers){
 			if(answerId.equals(selectionAnswer.getId())){
-				return selectionAnswer;
+				selectionAnswerById = selectionAnswer;
+				break;
 			}
 		}
-		throw new RuntimeException("Cannot find SelectionAnswerDto with id: "+answerId);
+		return selectionAnswerById;
 	}
 	
 	public void reset(){

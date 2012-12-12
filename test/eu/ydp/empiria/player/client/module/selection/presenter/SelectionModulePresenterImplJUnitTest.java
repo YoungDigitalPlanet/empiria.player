@@ -38,6 +38,7 @@ import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("PMD")
 public class SelectionModulePresenterImplJUnitTest {
 
 	private SelectionModulePresenterImpl presenter;

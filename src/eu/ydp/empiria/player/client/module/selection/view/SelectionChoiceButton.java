@@ -12,7 +12,7 @@ public class SelectionChoiceButton extends ChoiceButtonBase {
 			@Assisted("moduleStyleNamePart") String moduleStyleNamePart) {
 		super(moduleStyleNamePart);
 		selected = false;
-		updateStyle();
+		updateStyle(); //NOPMD
 	}
 	
 	@Override

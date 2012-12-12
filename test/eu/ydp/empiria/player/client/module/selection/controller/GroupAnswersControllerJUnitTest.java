@@ -20,6 +20,7 @@ import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonB
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 
+@SuppressWarnings("PMD")
 public class GroupAnswersControllerJUnitTest {
 
 	private ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
@@ -133,7 +134,7 @@ public class GroupAnswersControllerJUnitTest {
 		}
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void testSelectAnswer_selectedNotRelatedButton() {
 		String answerId = "answerId";
 		SelectionAnswerDto answer = new SelectionAnswerDto(answerId);
@@ -206,7 +207,7 @@ public class GroupAnswersControllerJUnitTest {
 		assertTrue(groupAnswerController.getSelectedAnswers().contains(selectionAnswerDto));
 	}
 	
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void testSelectToggleAnswer_notRelatedButton()throws Exception {
 		String answerId = "answerId";
 		SelectionAnswerDto otherAnswer = new SelectionAnswerDto("otherId");

@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.components.choicebutton.Identifiable;
 
+@SuppressWarnings("PMD")
 public class IdentifiableAnswersByTypeFinderJUnitTest {
 
 	private IdentifiableAnswersByTypeFinder answersByTypeFinder;
