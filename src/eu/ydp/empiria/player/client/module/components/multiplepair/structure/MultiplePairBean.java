@@ -3,13 +3,8 @@ package eu.ydp.empiria.player.client.module.components.multiplepair.structure;
 import java.util.List;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasShuffle;
-import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
 
-public interface MultiplePairBean<B extends PairChoiceBean> extends ModuleBean, HasShuffle {
-
-	public String getId();
-
-	public String getType();
+public interface MultiplePairBean<B extends PairChoiceBean> extends HasShuffle {
 
 	public List<B> getSourceChoicesSet();
 
@@ -19,8 +14,6 @@ public interface MultiplePairBean<B extends PairChoiceBean> extends ModuleBean, 
 
 	@Override
 	public boolean isShuffle();
-
-	public String getResponseIdentifier();
 
 	public int getMaxAssociations();
 

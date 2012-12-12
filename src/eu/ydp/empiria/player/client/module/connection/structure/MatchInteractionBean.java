@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.structure;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,26 +11,15 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import java.util.HashMap;
-
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
-import eu.ydp.gwtutil.client.StringUtils;
+import eu.ydp.empiria.player.client.structure.InteractionModuleBean;
 
 @XmlRootElement(name="matchInteraction")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MatchInteractionBean implements MultiplePairBean<SimpleAssociableChoiceBean> {
-
-	@XmlAttribute
-	private String id;
-
-	@XmlAttribute(name = "class")
-	private String type;
+public class MatchInteractionBean extends InteractionModuleBean implements MultiplePairBean<SimpleAssociableChoiceBean> {
 	
 	@XmlAttribute
 	private int maxAssociations;
-
-	@XmlAttribute
-	private String responseIdentifier;
 
 	@XmlAttribute
 	private boolean shuffle;
@@ -40,8 +30,6 @@ public class MatchInteractionBean implements MultiplePairBean<SimpleAssociableCh
 	private final Map<String, SimpleAssociableChoiceBean> flatChoicesMap;
 	
 	public MatchInteractionBean() {
-		id = StringUtils.EMPTY_STRING;
-		responseIdentifier = StringUtils.EMPTY_STRING;		
 		simpleMatchSets = new ArrayList<SimpleMatchSetBean>();
 		flatChoicesMap = new HashMap<String, SimpleAssociableChoiceBean>(); 
 	}
@@ -57,24 +45,6 @@ public class MatchInteractionBean implements MultiplePairBean<SimpleAssociableCh
 		}
 		return flatChoicesMap;
 	}
-	
-	@Override	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	@Override	
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
 
 	@Override	
 	public int getMaxAssociations() {
@@ -83,15 +53,6 @@ public class MatchInteractionBean implements MultiplePairBean<SimpleAssociableCh
 
 	public void setMaxAssociations(int maxAssociations) {
 		this.maxAssociations = maxAssociations;
-	}
-
-	@Override	
-	public String getResponseIdentifier() {
-		return responseIdentifier;
-	}
-
-	public void setResponseIdentifier(String responseIdentifier) {
-		this.responseIdentifier = responseIdentifier;
 	}
 
 	@Override

@@ -56,9 +56,9 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		public void onChoiceClick(SimpleChoicePresenter choice) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
 			if(choice.isSelected()){
-				model.unselectResponse(choiceIdentifier);
+				model.addAnswer(choiceIdentifier);
 			}else{
-				model.selectResponse(choiceIdentifier);
+				model.addAnswer(choiceIdentifier);
 			}
 
 			showAnswers(ShowAnswersType.USER);
@@ -189,7 +189,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		if(ShowAnswersType.CORRECT.equals(type)){
 			select = model.isCorrectAnswer(choiceIdentifier);
 		}else if(ShowAnswersType.USER.equals(type)){
-			select = model.isCurrentAnswer(choiceIdentifier);
+			select = model.isUserAnswer(choiceIdentifier);
 		}
 		
 		return select;

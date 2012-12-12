@@ -87,7 +87,6 @@ import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.prompt.PromptModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
-import eu.ydp.empiria.player.client.module.selection.SelectionModule;
 import eu.ydp.empiria.player.client.module.shape.ShapeModule;
 import eu.ydp.empiria.player.client.module.simpletext.SimpleTextModule;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModule;
@@ -300,7 +299,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new TextInteractionModule(), ModuleTagName.TEXT_INTERACTION));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getImgModule(), ModuleTagName.IMG, false, true));
 		loadExtension(new SimpleConnectorExtension(extensionFactory.getChoiceModule(), ModuleTagName.CHOICE_INTERACTION, true));
-		loadExtension(new SimpleConnectorExtension(new SelectionModule(), ModuleTagName.SELECTION_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSelectionModule(), ModuleTagName.SELECTION_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new IdentificationModule(), ModuleTagName.IDENTYFICATION_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(extensionFactory.getTextEntryModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(extensionFactory.getEntryGapModule(), ModuleTagName.MATH_GAP_TEXT_ENTRY_TYPE, true));

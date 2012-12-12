@@ -9,16 +9,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
-import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
+import eu.ydp.empiria.player.client.structure.SimpleChoiceBaseBean;
 import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapter;
-import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="simpleChoice")
-public class SimpleChoiceBean implements ModuleBean{
+public class SimpleChoiceBean extends SimpleChoiceBaseBean{
 
-	@XmlAttribute
-	private String identifier;
 	@XmlAttribute
 	private boolean fixed;
 	@XmlValue
@@ -27,16 +24,8 @@ public class SimpleChoiceBean implements ModuleBean{
 	private boolean multi;
 	
 	public SimpleChoiceBean(){
-		identifier = StringUtils.EMPTY_STRING;
+//		identifier = StringUtils.EMPTY_STRING;
 		//content = StringUtils.EMPTY_STRING;
-	}
-	
-	public String getIdentifier() {
-		return identifier;
-	}
-	
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
 	}
 	
 	public XMLContent getContent() {

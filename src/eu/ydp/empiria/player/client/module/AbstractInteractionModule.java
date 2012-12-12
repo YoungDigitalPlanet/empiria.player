@@ -13,8 +13,8 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
-import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.empiria.player.client.structure.ModuleBean;
 
 /**
  *

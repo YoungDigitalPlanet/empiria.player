@@ -10,6 +10,7 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.empiria.player.client.structure.ModuleBean;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JAXBParserFactory<M>> {

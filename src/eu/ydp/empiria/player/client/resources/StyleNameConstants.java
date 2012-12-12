@@ -421,6 +421,18 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-resultpage-time")
 	public String QP_RESULTPAGE_TIME();
+	
+	@DefaultStringValue("selection")
+	public String SELECTION();
+	
+	@DefaultStringValue("selection-multi")
+	public String SELECTION_MULTI();
+	
+	@DefaultStringValue("qp-selection-table")
+	public String QP_SELECTION_TABLE();
+	
+	@DefaultStringValue("qp-selection-module")
+	public String QP_SELECTION_MODULE();
 
 	@DefaultStringValue("qp-selection-choice")
 	public String QP_SELECTION_CHOICE();

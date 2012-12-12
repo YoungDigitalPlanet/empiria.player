@@ -23,25 +23,7 @@ public class ChoiceModuleModel extends AbstractResponseModel<String> {
 		return new ArrayList<String>(values);
 	}
 	
-	public boolean isCorrectAnswer(String answer){
-		return getCorrectAnswers().contains(answer);
-	}
-	
 	public boolean isWrongAnswer(String answer){
-		return !getCorrectAnswers().contains(answer);
-	}
-	
-	public boolean isCurrentAnswer(String identifier){
-		return getCurrentAnswers().contains(identifier);
-	}
-	
-	public void selectResponse(String answer){
-		response.add(answer);
-		onModelChange();
-	}
-	
-	public void unselectResponse(String answer){
-		response.remove(answer);
-		onModelChange();
+		return !isCorrectAnswer(answer);
 	}
 }

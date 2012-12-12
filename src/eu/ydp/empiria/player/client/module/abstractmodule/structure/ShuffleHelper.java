@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import eu.ydp.empiria.player.client.structure.ModuleBean;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
 
 public class ShuffleHelper {

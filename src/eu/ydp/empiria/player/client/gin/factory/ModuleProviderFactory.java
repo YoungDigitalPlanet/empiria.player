@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
+import eu.ydp.empiria.player.client.module.selection.SelectionModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 
 public class ModuleProviderFactory {
@@ -32,6 +33,9 @@ public class ModuleProviderFactory {
 
 	@Inject
 	protected Provider<ImgModule> imgModule;
+	
+	@Inject
+	protected Provider<SelectionModule> selectionModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -59,6 +63,10 @@ public class ModuleProviderFactory {
 
 	public Provider<ImgModule> getImgModule() {
 		return imgModule;
+	}
+
+	public Provider<SelectionModule> getSelectionModule() {
+		return selectionModule;
 	}
 
 }
