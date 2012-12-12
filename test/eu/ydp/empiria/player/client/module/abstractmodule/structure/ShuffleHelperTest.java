@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import eu.ydp.empiria.player.client.structure.ModuleBean;
+
 @SuppressWarnings("PMD")
 public class ShuffleHelperTest {
 
@@ -37,7 +39,7 @@ public class ShuffleHelperTest {
 
 	}
 
-	public static class Bean implements HasShuffle, ModuleBean {
+	public static class Bean extends ModuleBean implements HasShuffle {
 		@Override
 		public boolean isShuffle() {
 			return false;

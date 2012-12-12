@@ -9,19 +9,15 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
+import eu.ydp.empiria.player.client.structure.InteractionModuleBean;
 import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="choiceInteraction")
-public class ChoiceInteractionBean implements ModuleBean{
-	
-	@XmlAttribute
-	private String id;
+public class ChoiceInteractionBean extends InteractionModuleBean{
+
 	@XmlAttribute
 	private int maxChoices;
-	@XmlAttribute
-	private String responseIdentifier;
 	@XmlAttribute
 	private boolean shuffle;
 	@XmlElement(name="simpleChoice")
@@ -30,8 +26,6 @@ public class ChoiceInteractionBean implements ModuleBean{
 	private String prompt;
 	
 	public ChoiceInteractionBean(){
-		id = StringUtils.EMPTY_STRING;
-		responseIdentifier = StringUtils.EMPTY_STRING;
 		simpleChoices = new ArrayList<SimpleChoiceBean>();
 		prompt = StringUtils.EMPTY_STRING;
 	}
@@ -43,14 +37,6 @@ public class ChoiceInteractionBean implements ModuleBean{
 	public void setSimpleChoices(List<SimpleChoiceBean> simpleChoices) {
 		this.simpleChoices = simpleChoices;
 	}
-
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
 	
 	public int getMaxChoices() {
 		return maxChoices;
@@ -58,14 +44,6 @@ public class ChoiceInteractionBean implements ModuleBean{
 	
 	public void setMaxChoices(int maxChoices) {
 		this.maxChoices = maxChoices;
-	}
-	
-	public String getResponseIdentifier() {
-		return responseIdentifier;
-	}
-	
-	public void setResponseIdentifier(String responseIdentifier) {
-		this.responseIdentifier = responseIdentifier;
 	}
 	
 	public boolean isShuffle() {

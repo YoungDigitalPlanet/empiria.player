@@ -12,7 +12,7 @@ import com.google.gwt.junit.GWTMockUtilities;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
-import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
+import eu.ydp.empiria.player.client.structure.ModuleBean;
 
 public abstract class AbstractModuleStructureTestBase<M extends AbstractModuleStructure<B, P>, B extends ModuleBean, P extends JAXBParserFactory<B>> {
 

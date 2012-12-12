@@ -38,16 +38,6 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 		return response;
 	}	
 	
-	public void addAnswer(String directedPair) {
-		response.add(directedPair);
-		onModelChange();
-	}
-	
-	public void removeAnswer(String directedPair) {
-		response.remove(directedPair);
-		onModelChange();
-	}
-
 	public int getCurrentChoicePairingsNumber(String identifier) {
 		int count = 0;
 		for (KeyValue<String, String> answer : getCurrentAnswers()) {

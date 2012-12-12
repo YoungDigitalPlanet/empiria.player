@@ -94,7 +94,7 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter{
 	
 	private void createButton(ChoiceGroupController controller){
 		if (isMulti) {
-			button = new MultiChoiceButton(STYLE_CHOICE_MULTI);
+			button = new MultiChoiceButton(STYLE_CHOICE_MULTI); //TODO replace null with id of answer
 		} else {
 			button = new SingleChoiceButton(controller, STYLE_CHOICE_SINGLE);
 		}

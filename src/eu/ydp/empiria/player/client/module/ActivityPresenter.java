@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
-import eu.ydp.empiria.player.client.module.abstractmodule.structure.ModuleBean;
+import eu.ydp.empiria.player.client.structure.ModuleBean;
 
 /**
  * Interfejs prezentera

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
@@ -16,12 +17,22 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 public abstract class AbstractResponseModel<T> implements IStateful{
 	
 	protected Response response;
-	
 	private ResponseModelChangeListener responseModelChange;
+	protected abstract List<T> parseResponse(Collection<String> values);
 	
 	public AbstractResponseModel(Response response, ResponseModelChangeListener responseModelChange){
 		this.response = response;
 		this.responseModelChange = responseModelChange;
+	}
+	
+	public boolean isCorrectAnswer(String answer){
+		List<String> correctAnswers = response.correctAnswers.getAllAnswers();
+		return correctAnswers.contains(answer);
+	}
+	
+	public boolean isUserAnswer(String answer){
+		Vector<String> userAnswers = response.values;
+		return userAnswers.contains(answer);
 	}
 	
 	public List<T> getCorrectAnswers() {
@@ -37,7 +48,6 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 	 * @param values
 	 * @return
 	 */
-	protected abstract List<T> parseResponse(Collection<String> values);
 	
 	@Override
 	public void setState(JSONArray newState) {
@@ -60,6 +70,16 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 	
 	public void reset(){
 		response.reset();
+	}
+	
+	public void addAnswer(String answerIdentifier) {
+		response.add(answerIdentifier);
+		onModelChange();
+	}
+	
+	public void removeAnswer(String answerIdentifier) {
+		response.remove(answerIdentifier);
+		onModelChange();
 	}
 	
 	protected void onModelChange(){
