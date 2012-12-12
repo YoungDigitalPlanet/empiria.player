@@ -569,15 +569,15 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	@Override
 	public void init() {
+		mainPanel = panelFactory.getFlowPanel();
+		view.setController(this);
 		configure();
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.ASSESSMENT_STARTED), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), this);
-		mainPanel = panelFactory.getFlowPanel();
 		resizeTimer = new ResizeTimer(this);
-		view.setController(this);
 		view.add(mainPanel);
 
 	}
