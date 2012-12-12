@@ -542,8 +542,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		}
 		if (prevValue == null) {
 			outcomes.put(variable.identifier, variable);
-		}
-		if (variable.values.size() > 0 && prevValue.values.size() == 0) {
+		}else if (variable.values.size() > 0 && prevValue.values.size() == 0) {
 			prevValue.values.addAll(variable.values);
 		}
 	}
