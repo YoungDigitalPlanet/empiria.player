@@ -6,6 +6,7 @@ import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IContainerModule;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IResetable;
 
 public abstract class AbstractActivityContainerModuleBase extends ContainerModuleBase implements IContainerModule, IActivity {
 
@@ -28,8 +29,8 @@ public abstract class AbstractActivityContainerModuleBase extends ContainerModul
 		markAnswers(false);
 		List<? extends IModule> children = getModuleSocket().getChildren(this);
 		for (IModule child : children){
-			if (child instanceof IActivity){
-				((IActivity)child).reset();
+			if (child instanceof IResetable){
+				((IResetable) child).reset();
 			}
 		}
 	}

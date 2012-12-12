@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 
-public class ImageActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, Factory<ImageActionProcessor> {
+public class ImageActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<ImageActionProcessor> {
 	
 	private ActionProcessorHelper helper;
 	
@@ -89,6 +89,11 @@ public class ImageActionProcessor implements FeedbackActionProcessor, ActionProc
 	@Override
 	public HasChildren getParentModule() {
 		return null;
+	}
+
+	@Override
+	public void reset() {
+		clearFeedback();
 	}
 	
 }

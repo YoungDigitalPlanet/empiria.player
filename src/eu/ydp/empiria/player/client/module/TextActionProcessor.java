@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTex
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.gwtutil.client.StringUtils;
 
-public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, Factory<TextActionProcessor> {
+public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<TextActionProcessor> {
 
 	private ActionProcessorHelper helper;
 	
@@ -31,7 +31,7 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 		return getHelper().processActions(actions);
 	}
 	
-	private ActionProcessorHelper getHelper(){
+	private ActionProcessorHelper getHelper() {
 		if (helper == null) {
 			helper = new ActionProcessorHelper(this);
 		}
@@ -41,8 +41,14 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 
 	@Override
 	public boolean canProcessAction(FeedbackAction action) {
-		return (action instanceof ShowTextAction && 
-				!StringUtils.EMPTY_STRING.equals(((ShowTextAction) action).getText()));
+		boolean canProcess = false;
+		
+		if (action instanceof ShowTextAction) {
+			ShowTextAction textAction = (ShowTextAction) action;
+			canProcess = !StringUtils.EMPTY_STRING.equals(textAction.getText());
+		}
+		
+		return canProcess;
 	}
 
 	@Override
@@ -83,6 +89,11 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 	@Override
 	public HasChildren getParentModule() {
 		return null;
+	}
+
+	@Override
+	public void reset() {
+		clearFeedback();
 	}
 
 }

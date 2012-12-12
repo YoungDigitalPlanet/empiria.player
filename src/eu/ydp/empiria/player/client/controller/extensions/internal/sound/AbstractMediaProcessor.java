@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
@@ -54,7 +55,11 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			executor.setCurrentTime(event.getCurrentTime());
 			break;
 		case PLAY:
-			executor.play();
+			try {
+				executor.play();
+			} catch (Exception e) {
+				GWT.log(e.getMessage());
+			}
 			break;
 		case ON_PLAY:
 			pauseAllOthers(executor.getMediaWrapper());

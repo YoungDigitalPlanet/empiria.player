@@ -1,16 +1,11 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.junit.client.GWTTestCase;
 
-import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
@@ -19,7 +14,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.condition.AndC
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.CountConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
 
-public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
+public class FeedbackBeanJUnitTest extends GWTTestCase {
 	
 	private FeedbackBean feedback;
 	
@@ -42,104 +37,99 @@ public class FeedbackBeanJUnitTest extends AbstractJAXBTestBase<FeedbackBean>  {
 									"</action>" +
 								"</feedback>";
 	
-	@Before
-	public void createFeedback() {
-		feedback = createBeanFromXMLString(xmlString);
+	@Override
+	protected void gwtSetUp() throws Exception {
+		FeedbackParserFactory feedbackParserFactory = GWT.create(FeedbackParserFactory.class);
+		feedback = feedbackParserFactory.create().parse(xmlString);
+		super.gwtSetUp();
 	}
 	
-	@Test
-	public void shouldHaveActionAndCondition() {
-		assertThat(feedback.getCondition(), notNullValue());
-		assertThat(feedback.getAction(), notNullValue());
+	public void testShouldHaveActionAndCondition() {
+		assertNotNull(feedback.getCondition());
+		assertNotNull(feedback.getCondition());
 	}
 
-	@Test
-	public void shouldHaveFirstLevelConditions() {
-		assertThat(feedback.getCondition(), instanceOf(AndConditionBean.class));
+	public void testShouldHaveFirstLevelConditions() {
+		assertTrue(feedback.getCondition() instanceof AndConditionBean);
 	}
 	
-	@Test
-	public void shouldHaveCountCondition() {
+	public void testShouldHaveCountCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
-		assertThat(andConditionBean.getAllConditions().get(0), instanceOf(CountConditionBean.class));
+		assertTrue(andConditionBean.getAllConditions().get(0) instanceof CountConditionBean);
 	}
 	
-	@Test
-	public void shouldHaveCorrectAttributesInCountCondition() {
+	public void testShouldHaveCorrectAttributesInCountCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
-		assertThat(countConditionBean.getCount(), is(3));
-		assertThat(countConditionBean.getOperator(), is("=="));
+		assertTrue(countConditionBean.getCount() == 3);
+		assertTrue(countConditionBean.getOperator().equals("=="));
 	}
 	
-	@Test
-	public void shouldHavePropertyCondition() {
+	public void testShouldHavePropertyCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
-		assertThat(countConditionBean.getAllConditions().get(0), instanceOf(PropertyConditionBean.class));
+		assertTrue(countConditionBean.getAllConditions().get(0) instanceof PropertyConditionBean);
 	}
 	
-	@Test
-	public void shouldHaveCorrectAttributesInPropertyCondition() {
+	public void testShouldHaveCorrectAttributesInPropertyCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		PropertyConditionBean propertyConditionBean = (PropertyConditionBean) countConditionBean.getAllConditions().get(0);
-		assertThat(propertyConditionBean.getProperty(), is("wrong"));
-		assertThat(propertyConditionBean.getValue(), is("1"));
-		assertThat(propertyConditionBean.getOperator(), is(">="));
+		assertTrue(propertyConditionBean.getProperty().equals("wrong"));
+		assertTrue(propertyConditionBean.getValue().equals("1"));
+		assertTrue(propertyConditionBean.getOperator().equals(">="));
 	}
 	
-	@Test
-	public void shouldHaveCorrectDefaultAttributesInPropertyCondition() {
+	public void testShouldHaveCorrectDefaultAttributesInPropertyCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		PropertyConditionBean propertyConditionBean = (PropertyConditionBean) countConditionBean.getAllConditions().get(1);
-		assertThat(propertyConditionBean.getProperty(), is("ok"));
-		assertThat(propertyConditionBean.getValue(), is("true"));
-		assertThat(propertyConditionBean.getOperator(), is("=="));
+		assertTrue(propertyConditionBean.getProperty().equals("ok"));
+		assertTrue(propertyConditionBean.getValue().equals("true"));
+		assertTrue(propertyConditionBean.getOperator().equals("=="));
 	}
 	
-	@Test
-	public void shouldHaveShowTextAction() {
+	public void testShouldHaveShowTextAction() {
 		List<FeedbackAction> allActions = feedback.getActions();
-		assertThat(allActions.get(0), instanceOf(ShowTextAction.class));
+		assertTrue(allActions.get(0) instanceof ShowTextAction);
 	}
 	
-	@Test
-	public void shouldHaveCorrectValueInShowTextAction() {
+	public void testShouldHaveCorrectValueInShowTextAction() {
 		List<FeedbackAction> allActions = feedback.getActions();
 		ShowTextAction showTextAction = (ShowTextAction) allActions.get(0);
-		assertThat(showTextAction.getText(), is("testowy tekst"));
+		assertTrue(showTextAction.getText().equals("testowy tekst"));
 	}
 	
-	@Test
-	public void shouldHaveShowUrlActions() {
+	public void testShouldHaveShowUrlActions() {
 		List<FeedbackAction> allActions = feedback.getActions();
-		assertThat(allActions.get(1), instanceOf(ShowUrlAction.class));
-		assertThat(allActions.get(2), instanceOf(ShowUrlAction.class));
+		assertTrue(allActions.get(1) instanceof ShowUrlAction);
+		assertTrue(allActions.get(2) instanceof ShowUrlAction);
 	}
 	
-	@Test
-	public void shouldHaveCorrectAttributesInShowUrlActions() {
+	public void testShouldHaveCorrectAttributesInShowUrlActions() {
 		List<FeedbackAction> allActions = feedback.getActions();
 		ShowUrlAction firstShowUrlAction = (ShowUrlAction) allActions.get(1);
 		ShowUrlAction secondShowUrlAction = (ShowUrlAction) allActions.get(2);
-		assertThat(firstShowUrlAction.getHref(), is("sound.mp3"));
-		assertThat(firstShowUrlAction.getType(), is("narration"));
-		assertThat(secondShowUrlAction.getHref(), is("video.swf"));
-		assertThat(secondShowUrlAction.getType(), is("video"));
+		assertTrue(firstShowUrlAction.getHref().equals("sound.mp3"));
+		assertTrue(firstShowUrlAction.getType().equals("narration"));
+		assertTrue(secondShowUrlAction.getHref().equals("video.swf"));
+		assertTrue(secondShowUrlAction.getType().equals("video"));
 	}
 	
-	@Test
-	public void shouldHaveCorrectSourcesInShowUrlActionOfNarrationType() {
+	public void testShouldHaveCorrectSourcesInShowUrlActionOfNarrationType() {
 		List<FeedbackAction> allActions = feedback.getActions();
 		ShowUrlAction firstShowUrlAction = (ShowUrlAction) allActions.get(1);
 		List<ShowUrlActionSource> sources = firstShowUrlAction.getSources();
 		ShowUrlActionSource firstSource = sources.get(0);
 		ShowUrlActionSource secondSource = sources.get(1);
-		assertThat(firstSource.getSrc(), is("sound.mp3"));
-		assertThat(firstSource.getType(), is("audio/mp4"));
-		assertThat(secondSource.getSrc(), is("sound.ogg"));
-		assertThat(secondSource.getType(), is("audio/ogg"));
+		assertTrue(firstSource.getSrc().equals("sound.mp3"));
+		assertTrue(firstSource.getType().equals("audio/mp4"));
+		assertTrue(secondSource.getSrc().equals("sound.ogg"));
+		assertTrue(secondSource.getType().equals("audio/ogg"));
+	}
+
+	@Override
+	public String getModuleName() {
+	    return "eu.ydp.empiria.player.Player";
 	}
 }

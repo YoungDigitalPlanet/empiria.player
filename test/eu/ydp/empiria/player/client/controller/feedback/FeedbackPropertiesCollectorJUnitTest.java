@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
-import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertiesCollectorTestHelper.ModuleInfo;
 
 public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {

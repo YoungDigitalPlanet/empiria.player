@@ -43,7 +43,6 @@ public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
 
 	@Override
 	protected void clearFeedback() {
-		player.stop();
 	}
 	
 }
