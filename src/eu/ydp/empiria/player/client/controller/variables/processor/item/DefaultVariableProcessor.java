@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.RuntimeMobileUserAgent.IOS6;
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.RuntimeMobileUserAgent.IOS6_1;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,6 +21,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Correc
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.gwtutil.client.collections.CollectionsUtil;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public class DefaultVariableProcessor extends VariableProcessor {
 
@@ -37,6 +41,11 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	public static final String SHOW_ANSWERS = "SHOW_ANSWERS";
 	public static final String CHECKS = "CHECKS";
 	public static final String ERRORS = "ERRORS";
+	public static boolean isIOS6_0_OR_IOS6_1 = false;
+
+	public DefaultVariableProcessor() {
+		isIOS6_0_OR_IOS6_1 = UserAgentChecker.isUserAgent(IOS6, IOS6_1);
+	}
 
 	@Override
 	public void processFlowActivityVariables(Map<String, Outcome> outcomes, FlowActivityEvent event) {
@@ -375,7 +384,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	}
 
 	protected boolean processSingleResponseCardinalitySingle(CorrectAnswers correctAnswers, Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
-		boolean passed = ((userAnswers.size() == 0) || !correctAnswers.containsAnswer(userAnswers.get(0))) ? false : true;
+		boolean passed = ((userAnswers.isEmpty()) || !correctAnswers.containsAnswer(userAnswers.get(0))) ? false : true;
 		answersEvaluation.add(passed);
 		return passed;
 	}
@@ -520,10 +529,22 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	}
 
 	private void ensureVariable(Map<String, Outcome> outcomes, Outcome variable) {
-		if (!outcomes.containsKey(variable.identifier)) {
+		Outcome prevValue = null;
+		if (isIOS6_0_OR_IOS6_1) {
+			for (Map.Entry<String, Outcome> entry : outcomes.entrySet()) {
+				if (entry.getKey().equals(variable.identifier)) {
+					prevValue = entry.getValue();
+					break;
+				}
+			}
+		} else {
+			prevValue = outcomes.get(variable.identifier);
+		}
+		if (prevValue == null) {
 			outcomes.put(variable.identifier, variable);
-		} else if (variable.values.size() > 0 && outcomes.get(variable.identifier).values.size() == 0) {
-			outcomes.get(variable.identifier).values.addAll(variable.values);
+		}
+		if (variable.values.size() > 0 && prevValue.values.size() == 0) {
+			prevValue.values.addAll(variable.values);
 		}
 	}
 
