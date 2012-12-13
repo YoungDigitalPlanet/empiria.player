@@ -223,10 +223,13 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		views.remove(sp);
 	}
 
-	private void initStickies(int itemIndex) {
-		for (IStickieProperties sp : stickies.get(itemIndex)){
-			addStickieView(sp, false);
+	private void initStickies(int itemIndex) {		
+		if(stickies.isEmpty() == false){
+			for (IStickieProperties sp : stickies.get(itemIndex)){
+				addStickieView(sp, false);
+			}
 		}
+		
 	}
 	
 	void clearAll(){
