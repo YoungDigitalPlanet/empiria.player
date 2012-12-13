@@ -224,7 +224,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	}
 
 	private void initStickies(int itemIndex) {		
-		if(stickies.isEmpty() == false){
+		if(stickies.size() > itemIndex){
 			for (IStickieProperties sp : stickies.get(itemIndex)){
 				addStickieView(sp, false);
 			}
