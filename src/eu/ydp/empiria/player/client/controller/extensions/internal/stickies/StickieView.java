@@ -2,10 +2,13 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.stickies;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -23,6 +26,9 @@ import com.google.gwt.touch.client.Point;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -42,6 +48,8 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
+
+
 public class StickieView extends Composite implements IStickieView {
 
 	private static StickieViewUiBinder uiBinder = GWT.create(StickieViewUiBinder.class);
@@ -51,6 +59,9 @@ public class StickieView extends Composite implements IStickieView {
 	@Inject IPlayerContainersAccessor accessor;
 	@Inject StyleNameConstants styleNames;
 	@Inject EventsBus eventsBus;
+	
+	HandlerRegistration preventHandlerRegistration;
+		
 
 	public StickieView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -64,11 +75,11 @@ public class StickieView extends Composite implements IStickieView {
 					firstKeyInputAfterClick = false;
 				}
 			}
-		});
+		});	
 		
 		android = UserAgentChecker.isStackAndroidBrowser();
-	}
-
+	}	
+	
 	@UiField TextArea contentText;
 	@UiField PushButton deleteButton;
 	@UiField PushButton minimizeButton;	
@@ -91,8 +102,9 @@ public class StickieView extends Composite implements IStickieView {
 	boolean android;
 	static boolean firstFocusDone = false;
 		
+		
 	@UiHandler("minimizeButton")
-	public void minimizeHandler(ClickEvent event){
+	public void minimizeHandler(ClickEvent event){		
 		presenter.stickieMinimize();
 	}
 	
@@ -184,11 +196,31 @@ public class StickieView extends Composite implements IStickieView {
 	}
 
 	@UiHandler("contentText")
-	public void contentTextBlurHandler(BlurEvent event){
+	public void contentTextBlurHandler(BlurEvent event){		
 		setEditing(false);
 		updateContentLabel();
-		presenter.stickieChange();
+		presenter.stickieChange();	
+		removePreventHandlerRegistration();	
 	}
+	
+	@UiHandler("contentText")
+	public void contentFocusInHandler(FocusEvent event){		
+		
+		preventHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {			
+			@Override
+			public void onPreviewNativeEvent(NativePreviewEvent event) {				
+				Event nativeEvent = Event.as(event.getNativeEvent());
+				EventTarget target = nativeEvent.getEventTarget();				
+				if (Element.is(target) && nativeEvent.getType().equals("mousedown") && (!getElement().isOrHasChild(Element.as(target)))) {							
+					contentTextBlurHandler(null);
+					minimizeHandler(null);
+				}								
+			}
+		});
+		
+		
+	}
+	
 
 	@UiHandler("contentText")
 	public void contentTextKeyDownHandler(KeyDownEvent event){
@@ -229,7 +261,7 @@ public class StickieView extends Composite implements IStickieView {
 				scrollToStickie();
 			} else {
 				contentText.getElement().blur();
-				contentText.removeFromParent();
+				contentText.removeFromParent();				
 			}
 			labelPanel.setVisible(!edit);
 		}
@@ -332,6 +364,19 @@ public class StickieView extends Composite implements IStickieView {
 	@Override
 	public int getY() {
 		return (int)position.getY();
+	}	
+	
+	@Override
+	protected void onUnload() {		
+		super.onUnload();
+		removePreventHandlerRegistration();
+	}
+	
+	private void removePreventHandlerRegistration(){
+		if(preventHandlerRegistration != null){
+			preventHandlerRegistration.removeHandler();
+			preventHandlerRegistration = null;
+		}
 	}
 
 }
