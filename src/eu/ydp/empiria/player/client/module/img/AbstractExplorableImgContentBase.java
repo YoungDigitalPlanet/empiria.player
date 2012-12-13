@@ -1,13 +1,12 @@
 package eu.ydp.empiria.player.client.module.img;
 
-import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
-
 import java.util.Map;
 
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Timer;
@@ -15,15 +14,16 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PushButton;
 
+import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public abstract class AbstractExplorableImgContentBase extends Composite implements ImgContent {
-	
+
 	protected static final String ZOOMOUT_BUTTON = "zoomoutButton";
 	protected static final String ZOOMIN_BUTTON = "zoominButton";
 	protected boolean touchingButtons = false;
 	protected boolean zoomInClicked = false;
-	
+
 	protected int windowWidth = ExplorableImageConst.WINDOW_WIDTH;
 	protected int windowHeight = ExplorableImageConst.WINDOW_HEIGHT;
 	protected double scale = ExplorableImageConst.ZOOM_SCALE;
@@ -40,23 +40,31 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 	protected PushButton zoominButton;
 	@UiField
 	protected PushButton zoomoutButton;
-	
+	@UiField
+	protected FlowPanel toolbox;
 	public AbstractExplorableImgContentBase() {
 		initUiBinder();
+		toolbox.addDomHandler(new TouchStartHandler() {
+
+			@Override
+			public void onTouchStart(TouchStartEvent event) {
+				event.preventDefault();
+			}
+		}, TouchStartEvent.getType());
 		startZoomTimer = initializeZoomTimer();
 	}
-		
+
 	/**
 	 * Creates and initializes UIBinder
 	 */
 	protected abstract void initUiBinder();
-	
+
 	/**
 	 * Implementation of zoom functionality
 	 */
 	protected abstract void zoom();
-	
-	protected void parseStyles(Map<String, String> styles) {		
+
+	protected void parseStyles(Map<String, String> styles) {
 		String toReplace = "\\D";
 		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL)){
 			scale = (double)(NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL).replaceAll(toReplace, ""), 100))/100.0d;
@@ -66,14 +74,14 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 		}
 		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_MAX)) {
 			zoomMax = (double)NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_MAX).replaceAll(toReplace, ""), 800)/100.0d;
-		}		
+		}
 		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH)){
 			windowWidth = NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH).replaceAll(toReplace, ""), 300);
 		}
 		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT)){
 			windowHeight = NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT).replaceAll(toReplace, ""), 300);
-		}			
-	}	
+		}
+	}
 
 	private final Timer initializeZoomTimer() {
 		zoomTimer = new Timer() {
@@ -83,7 +91,7 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 				zoom();
 			}
 		};
-		
+
 		return new Timer() {
 
 			@Override
@@ -92,12 +100,12 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 			}
 		};
 	}
-	
+
 	protected void cancelZoomTimers() {
 		zoomTimer.cancel();
 		startZoomTimer.cancel();
-	}	
-		
+	}
+
 	@UiHandler(ZOOMIN_BUTTON)
 	public void zoomInButtonMouseDownHandler(MouseDownEvent event) {
 		if (!touchingButtons) {
@@ -152,7 +160,7 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 	public void zoomOutButtonTouchEndHandler(TouchEndEvent event){
 		cancelZoomTimers();
 		event.preventDefault();
-	}	
+	}
 
 	private void zoomIn() {
 		zoomInClicked = true;
@@ -163,5 +171,5 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 		zoomInClicked = false;
 		zoom();
 	}
-	
+
 }

@@ -20,7 +20,7 @@ public class ExplorableImgContent extends AbstractExplorableImgContentBase {
 
 	@Override
 	protected void initUiBinder() {
-		initWidget(uiBinder.createAndBindUi(this));	
+		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
 	@Override

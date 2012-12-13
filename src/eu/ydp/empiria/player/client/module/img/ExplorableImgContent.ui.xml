@@ -8,7 +8,7 @@
 		<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE_WINDOW}" ui:field="windowPanel">
 			<i:ExplorableImgWindow ui:field="window"/>
 		</g:FlowPanel>
-		<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE_TOOLBOX}">
+		<g:FlowPanel  ui:field="toolbox"  styleName="{res.QP_IMG_EXPLORABLE_TOOLBOX}">
 			<g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMIN}" ui:field="zoominButton" />
 			<g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMOUT}" ui:field="zoomoutButton" />
 		</g:FlowPanel>
