@@ -104,14 +104,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private boolean swipeDisabled = false;
 	private FlowDataSupplier flowDataSupplier;
 
-	/*
-	 * private final Timer touchEndTimer = new Timer() {
-	 *
-	 * @Override public void run() { animatePageSwitch(getPositionLeft(),
-	 * currentPosition, null, QUICK_ANIMATION_TIME, true); swipeStarted = false;
-	 * resetPostionValues(); } };
-	 */
-
 	private final Timer touchEndTimer = new Timer() {
 		@Override
 		public void run() {
@@ -233,9 +225,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			resetPostionValues();
 			this.touchReservation = true;
 			break;
-		case ASSESSMENT_STARTED:
-			onAssesmentStart();
-			break;
 		case LOAD_PAGE_VIEW:
 			setVisiblePanels((Integer) (event.getValue() == null ? 0 : event.getValue()));
 			break;
@@ -245,10 +234,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		default:
 			break;
 		}
-	}
-
-	private void onAssesmentStart() {
-		setSwipeDisabled(flowDataSupplier.getPageCount() < 2);
 	}
 
 	private void scheduleDeferedRemoveFromParent(final int page) {
@@ -564,6 +549,8 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		Map<String, String> styles = styleSocket.getStyles((Element) XMLParser.parse(xml).getDocumentElement().getFirstChild());
 		if (styles.get(EmpiriaStyleNameConstants.EMPIRIA_SWIPE_DISABLE_ANIMATION) != null) {
 			setSwipeDisabled(true);
+		}else{
+			setSwipeDisabled(false);
 		}
 	}
 
@@ -574,7 +561,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		configure();
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.ASSESSMENT_STARTED), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), this);
 		resizeTimer = new ResizeTimer(this);
@@ -598,6 +584,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 				registration.removeHandler();
 			}
 			touchHandlers.clear();
+			visblePageCount =1;
 		} else {
 			HasTouchHandlers touchHandler = touchRecognitionFactory.getTouchRecognition(RootPanel.get(), false);
 			touchHandlers.add(touchHandler.addTouchHandler(this, TouchEvent.getType(TouchTypes.TOUCH_START)));
@@ -605,7 +592,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			touchHandlers.add(touchHandler.addTouchHandler(this, TouchEvent.getType(TouchTypes.TOUCH_END)));
 		}
 		panelsCache.setSwipeDisabled(swipeDisabled);
-		view.setSwipeDisabled(swipeDisabled);
 	}
 
 	public int getCurrentVisiblePage() {
