@@ -27,6 +27,8 @@ import eu.ydp.empiria.player.client.gin.module.PlayerGinModule;
 import eu.ydp.empiria.player.client.gin.module.SelectionGinModule;
 import eu.ydp.empiria.player.client.gin.module.SourceListGinModule;
 import eu.ydp.empiria.player.client.gin.module.TextEntryGinModule;
+import eu.ydp.empiria.player.client.module.info.VariableInterpreter;
+import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -65,6 +67,7 @@ public interface PlayerGinjector extends Ginjector {
 	FeedbackRegistry getFeedbackRegistry();
 	ModuleFeedbackProcessor getModuleFeedbackProcessor();
 	AssessmentControllerFactory getAssessmentControllerFactory();
+	VariableInterpreterFactory getVariableInterpreterFactory();
 
 	BookmarkProcessorExtension getBookmarkProcessorExtension();
 	StickiesProcessorExtension getStickiesProcessorExtension();

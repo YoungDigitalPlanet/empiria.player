@@ -37,14 +37,15 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	protected Panel contentPanel;
 	protected Element mainElement;
 	protected String contentString;
-	protected VariableInterpreter varInterpreter;
+	protected VariableInterpreter variableInterpreter;
 	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private final VariableInterpreterFactory interpreterFactory = PlayerGinjector.INSTANCE.getVariableInterpreterFactory();
 
 	public InfoModule(DataSourceDataSupplier dsds, SessionDataSupplier sds, FlowDataSupplier fds) {
 		dataSourceDataSupplier = dsds;
 		sessionDataSupplier = sds;
 		flowDataSupplier = fds;
-		varInterpreter = new VariableInterpreter(dataSourceDataSupplier, sessionDataSupplier);
+		variableInterpreter = interpreterFactory.getInterpreter(dataSourceDataSupplier, sessionDataSupplier);
 	}
 
 	public void setModuleUnloadListener(InfoModuleUnloadListener imul) {
@@ -109,7 +110,7 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	}
 
 	protected String replaceTemplates(String content, int refItemIndex) {// NOPMD
-		return varInterpreter.replaceTemplates(content, refItemIndex);
+		return variableInterpreter.replaceAllTags(content, refItemIndex);
 	}
 
 	protected String getVariableValue(VariableProviderSocket vps, String name, String defaultValue) {

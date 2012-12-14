@@ -41,6 +41,8 @@ import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedbackPresenter;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedbackPresenter;
+import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
+import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
@@ -122,6 +124,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(TemplateParserFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class).build(TouchRecognitionFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrappersPairFactory.class));
+		install(new GinFactoryModuleBuilder().build(FieldValueHandlerFactory.class));
+		install(new GinFactoryModuleBuilder().build(VariableInterpreterFactory.class));
 	}
 
 	@Provides

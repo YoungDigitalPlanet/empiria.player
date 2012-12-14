@@ -21,6 +21,10 @@ public class OutcomeCreator {
 	
 	private final String moduleId;
 	
+	public OutcomeCreator(){
+		this("");
+	}
+	
 	public OutcomeCreator(String moduleId){
 		this.moduleId = moduleId;
 	}

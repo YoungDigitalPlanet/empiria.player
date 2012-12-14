@@ -14,14 +14,16 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
+import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
+import eu.ydp.empiria.player.client.controller.feedback.OutcomeCreator;
 import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
-import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor;
 
-public class VariableInterpreterJUnitTest {
+public class VariableInterpreterJUnitTest extends AbstractTestBase{
 
 	private VariableInterpreter interpreter;
 
@@ -33,99 +35,95 @@ public class VariableInterpreterJUnitTest {
 	public void initialize() {
 		sourceSupplier = mock(DataSourceDataSupplier.class);
 		sessionSupplier = mock(SessionDataSupplier.class);
-		interpreter = new VariableInterpreter(sourceSupplier, sessionSupplier);
+		VariableInterpreterFactory factory = injector.getInstance(VariableInterpreterFactory.class);
+		interpreter = factory.getInterpreter(sourceSupplier, sessionSupplier);
 	}
 
 	@Test
-	public void shouldReturnDefaulValues(){	
+	public void shouldReturnCorrectContentString(){		
 		ItemSessionDataSocket itemSessionDataSocket = mock(ItemSessionDataSocket.class);
 		AssessmentSessionDataSocket assessmentSessionDataSocket = mock(AssessmentSessionDataSocket.class);
-		VariableProviderSocket variableSocket = mock(VariableProviderSocket.class);
+		VariableProviderSocket itemVariableSocket = mock(VariableProviderSocket.class);
+		VariableProviderSocket assessmentVariableSocket = mock(VariableProviderSocket.class);
+		OutcomeCreator outcomeCreator = new OutcomeCreator();
 		int refItemIndex = 0;
 		
 		when(sourceSupplier.getAssessmentTitle()).thenReturn("Lesson 1");
-		when(sourceSupplier.getItemTitle(anyInt())).thenReturn("Page 1");
+		when(sourceSupplier.getItemTitle(0)).thenReturn("Page 1");
+		when(sourceSupplier.getItemTitle(1)).thenReturn("Page 2");
 		when(sourceSupplier.getItemsCount()).thenReturn(1);
-		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(variableSocket);
 		
 		when(sessionSupplier.getItemSessionDataSocket(anyInt())).thenReturn(itemSessionDataSocket);
-		when(sessionSupplier.getAssessmentSessionDataSocket()).thenReturn(assessmentSessionDataSocket);
-		when(assessmentSessionDataSocket.getVariableProviderSocket()).thenReturn(variableSocket);
+		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocket);
 		
-		List<ValueInfo> infos = Lists.newArrayList(
-					ValueInfo.create("$[item.title]", "Page 1"),
-					ValueInfo.create("$[test.title]", "Lesson 1"), 
-					ValueInfo.create("$[item.index]", "1"),
-					ValueInfo.create("$[item.page_num]", "1"),
-					ValueInfo.create("$[item.page_count]", "1"),
-					ValueInfo.create("$[item.todo]", "0"),
-					ValueInfo.create("$[item.done]", "0"),
-					ValueInfo.create("$[item.checks]", "0"),
-					ValueInfo.create("$[item.mistakes]", "0"),
-					ValueInfo.create("$[item.show_answers]", "0"),
-					ValueInfo.create("$[item.reset]", "0"),
-					ValueInfo.create("$[item.result]", "0"),
-					ValueInfo.create("$[test.title]", "Lesson 1"),
-					ValueInfo.create("$[test.todo]", "0"),
-					ValueInfo.create("$[test.done]", "0"),
-					ValueInfo.create("$[test.checks]", "0"),
-					ValueInfo.create("$[test.mistakes]", "0"),
-					ValueInfo.create("$[test.show_answers]", "0"),
-					ValueInfo.create("$[test.reset]", "0"),
-					ValueInfo.create("$[test.result]", "0")
+		when(sessionSupplier.getAssessmentSessionDataSocket()).thenReturn(assessmentSessionDataSocket);
+		when(assessmentSessionDataSocket.getVariableProviderSocket()).thenReturn(assessmentVariableSocket);
+		
+		when(itemVariableSocket.getVariableValue(DefaultVariableProcessor.TODO)).thenReturn(outcomeCreator.createTodoOutcome(3));
+		when(assessmentVariableSocket.getVariableValue(DefaultVariableProcessor.DONE)).thenReturn(outcomeCreator.createDoneOutcome(2));
+		
+		List<ContentInfo> infos = Lists.newArrayList(
+					ContentInfo.create("$[item.title]", "Page 1", 0),
+					ContentInfo.create("$[item.title]", "Page 2", 1),
+					ContentInfo.create("$[test.title]", "Lesson 1", 0), 
+					ContentInfo.create("$[item.index]", "1", 0),
+					ContentInfo.create("$[item.page_num]", "1", 0),
+					ContentInfo.create("$[item.page_count]", "1", 0),
+					ContentInfo.create("$[item.todo]", "3", 0),
+					ContentInfo.create("$[item.done]", "0", 0),
+					ContentInfo.create("$[item.checks]", "0", 0),
+					ContentInfo.create("$[item.mistakes]", "0", 0),
+					ContentInfo.create("$[item.show_answers]", "0", 0),
+					ContentInfo.create("$[item.reset]", "0", 0),
+					ContentInfo.create("$[item.result]", "0", 0),
+					ContentInfo.create("$[test.title]", "Lesson 1", 0),
+					ContentInfo.create("$[test.todo]", "0", 0),
+					ContentInfo.create("$[test.done]", "2", 0),
+					ContentInfo.create("$[test.checks]", "0", 0),
+					ContentInfo.create("$[test.mistakes]", "0", 0),
+					ContentInfo.create("$[test.show_answers]", "0", 0),
+					ContentInfo.create("$[test.reset]", "0", 0),
+					ContentInfo.create("$[test.result]", "0", 0),
+					ContentInfo.create("$[item.title], $[test.title] result is $[test.result]%", "Page 1, Lesson 1 result is 0%", 0)
 				);		
 		
-		for(ValueInfo info: infos){
-			assertInfo(info, refItemIndex);
-		}		
+		for(ContentInfo info: infos){
+			assertInfo(info);
+		}
+		
+		
 	}
 
-	@Test
-	public void shouldReturnVariableValue() {
-		VariableProviderSocket variableProviderSocket = mock(VariableProviderSocket.class);
-		Variable variable = mock(Variable.class);
-
-		when(variable.getValuesShort()).thenReturn("3");
-		when(variableProviderSocket.getVariableValue("existingVariable")).thenReturn(variable);
-
-		assertThat(interpreter.getVariableValue(variableProviderSocket, "notExistingName", "0"), is(equalTo("0")));
-		assertThat(interpreter.getVariableValue(variableProviderSocket, "existingVariable", "0"), is(equalTo("3")));
-	}
-	
-	@Test
-	public void shouldCountResult(){
-		assertThat(interpreter.countResult(0, 10), is(equalTo(0)));
-		assertThat(interpreter.countResult(2, 0), is(equalTo(0)));
-		assertThat(interpreter.countResult(25, 50), is(equalTo(50)));
-		assertThat(interpreter.countResult(1, 3), is(equalTo(33)));
-		assertThat(interpreter.countResult(2, 3), is(equalTo(66)));
-		assertThat(interpreter.countResult(10, 10), is(equalTo(100)));
-	}
-
-	private void assertInfo(ValueInfo info, int refItemIndex) {
+	private void assertInfo(ContentInfo info) {
 		String template = "This is %1$s.";
-		String content = String.format(template, info.getContent());
+		String content = String.format(template, info.getContentTag());
 		String expectedValue = String.format(template, info.getExpectedValue());
 
-		assertThat(info.getContent(), interpreter.replaceTemplates(content, refItemIndex), is(equalTo(expectedValue)));
+		assertThat(info.getContentTag(), interpreter.replaceAllTags(content, info.getRefItemIndex()), is(equalTo(expectedValue)));
 	}
 
-	private static class ValueInfo {
+	private static class ContentInfo {
 
-		private String content;
+		private String contentTag;
 		private String expectedValue;
+		private int refItemIndex;
 
-		public static ValueInfo create(String content, String expectedValue) {
-			return new ValueInfo(content, expectedValue);
+		public static ContentInfo create(String content, String expectedValue, int refItemIndex) {
+			return new ContentInfo(content, expectedValue, refItemIndex);
 		}
 
-		public ValueInfo(String content, String expectedValue) {
-			this.content = content;
+		public ContentInfo(String contentTag, String expectedValue, int refItemIndex) {
+			this.contentTag = contentTag;
 			this.expectedValue = expectedValue;
+			this.refItemIndex = refItemIndex;
 		}
 
-		public String getContent() {
-			return content;
+		public String getContentTag() {
+			return contentTag;
+		}
+		
+		public int getRefItemIndex() {
+			return refItemIndex;
 		}
 
 		public String getExpectedValue() {
