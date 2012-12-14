@@ -56,7 +56,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		public void onChoiceClick(SimpleChoicePresenter choice) {
 			String choiceIdentifier = getChoiceIdentifier(choice);
 			if(choice.isSelected()){
-				model.addAnswer(choiceIdentifier);
+				model.removeAnswer(choiceIdentifier);
 			}else{
 				model.addAnswer(choiceIdentifier);
 			}
