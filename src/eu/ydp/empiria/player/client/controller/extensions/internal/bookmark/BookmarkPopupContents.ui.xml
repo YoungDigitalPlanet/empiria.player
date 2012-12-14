@@ -5,7 +5,7 @@
     <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_CONTENTS}" >
         <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_CONTAINER_OUTER}">
             <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_CONTAINER_INNER}">
-                <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_CONTAINER_INNER_INNER}">
+                <g:FlowPanel ui:field="innerInnerPanel" styleName="{res.QP_BOOKMARK_POPUP_CONTAINER_INNER_INNER}">
              	   <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_TITLE_PANEL}">
              	       <g:TextBox ui:field="titleTextBox" styleName="{res.QP_BOOKMARK_POPUP_TITLE}" maxLength="30" />
              	   </g:FlowPanel>
