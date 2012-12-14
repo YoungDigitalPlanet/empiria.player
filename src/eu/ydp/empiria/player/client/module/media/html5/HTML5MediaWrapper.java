@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.media.html5;
 
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
-import com.google.gwt.media.client.Video;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
@@ -10,6 +9,7 @@ import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
+import eu.ydp.empiria.player.client.module.object.impl.Video;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
