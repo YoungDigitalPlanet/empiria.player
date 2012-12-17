@@ -36,6 +36,7 @@ import eu.ydp.empiria.player.client.controller.feedback.TextFeedbackPresenterMoc
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
@@ -177,6 +178,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		install(new FactoryModuleBuilder().build(MatcherRegistryFactory.class));
 		install(new FactoryModuleBuilder().build(VariableInterpreterFactory.class));
 		install(new FactoryModuleBuilder().build(FieldValueHandlerFactory.class));
+		install(new FactoryModuleBuilder().build(AssessmentReportFactory.class));
 
 	}
 

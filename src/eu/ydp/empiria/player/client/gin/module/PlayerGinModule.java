@@ -25,6 +25,7 @@ import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryF
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
@@ -126,6 +127,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(MediaWrappersPairFactory.class));
 		install(new GinFactoryModuleBuilder().build(FieldValueHandlerFactory.class));
 		install(new GinFactoryModuleBuilder().build(VariableInterpreterFactory.class));
+		install(new GinFactoryModuleBuilder().build(AssessmentReportFactory.class));
 	}
 
 	@Provides
