@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.AssessmentJsonReportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
@@ -22,4 +23,5 @@ public interface ModuleFactory {
 	TextEntryModule getTextEntryModule();
 	InlineChoiceGapModule getInlineChoiceGapModule();
 	DefaultMediaProcessorExtension getDefaultMediaProcessorExtension();
+	AssessmentJsonReportExtension getAssessmentJsonReportExtension();
 }

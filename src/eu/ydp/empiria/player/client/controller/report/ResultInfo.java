@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
+import eu.ydp.empiria.player.client.controller.variables.VariableResult;
 import eu.ydp.empiria.player.client.controller.variables.VariableUtil;
 
 public class ResultInfo {
@@ -31,6 +32,11 @@ public class ResultInfo {
 
 	public int getErrors() {
 		return util.getVariableIntValue(ERRORS, DEFAULT_INT_VALUE);
+	}
+	
+	public int getResult(){
+		VariableResult variableResult = new VariableResult(getDone(), getTodo());
+		return variableResult.getResult();
 	}
 	
 }

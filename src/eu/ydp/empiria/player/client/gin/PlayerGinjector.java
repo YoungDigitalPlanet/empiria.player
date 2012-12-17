@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.AssessmentJsonReportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
@@ -17,6 +18,7 @@ import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
@@ -27,7 +29,6 @@ import eu.ydp.empiria.player.client.gin.module.PlayerGinModule;
 import eu.ydp.empiria.player.client.gin.module.SelectionGinModule;
 import eu.ydp.empiria.player.client.gin.module.SourceListGinModule;
 import eu.ydp.empiria.player.client.gin.module.TextEntryGinModule;
-import eu.ydp.empiria.player.client.module.info.VariableInterpreter;
 import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -68,8 +69,10 @@ public interface PlayerGinjector extends Ginjector {
 	ModuleFeedbackProcessor getModuleFeedbackProcessor();
 	AssessmentControllerFactory getAssessmentControllerFactory();
 	VariableInterpreterFactory getVariableInterpreterFactory();
+	AssessmentReportFactory getAssessmentReportFactory();
 
 	BookmarkProcessorExtension getBookmarkProcessorExtension();
 	StickiesProcessorExtension getStickiesProcessorExtension();
 	IPlayerContainersAccessor getPlayerContainersAccessor();
+	AssessmentJsonReportExtension getAssessmentJsonReportExtension();
 }

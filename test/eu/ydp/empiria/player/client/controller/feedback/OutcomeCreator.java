@@ -4,6 +4,7 @@ import static eu.ydp.empiria.player.client.controller.variables.objects.BaseType
 import static eu.ydp.empiria.player.client.controller.variables.objects.BaseType.INTEGER;
 import static eu.ydp.empiria.player.client.controller.variables.objects.Cardinality.MULTIPLE;
 import static eu.ydp.empiria.player.client.controller.variables.objects.Cardinality.SINGLE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.CHECKS;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONECHANGES;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONEHISTORY;
@@ -12,6 +13,8 @@ import static eu.ydp.empiria.player.client.controller.variables.processor.item.D
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTMISTAKEN;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.MISTAKES;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.PREVIOUS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.RESET;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.SHOW_ANSWERS;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
@@ -64,6 +67,18 @@ public class OutcomeCreator {
 	
 	public Outcome createMistakesOutcome(int mistakesNum){
 		return createOutcome(MISTAKES, SINGLE, INTEGER, String.valueOf(mistakesNum));
+	}
+	
+	public Outcome createChecksOutcome(int mistakesNum){
+		return createOutcome(CHECKS, SINGLE, INTEGER, String.valueOf(mistakesNum));
+	}
+	
+	public Outcome createResetOutcome(int mistakesNum){
+		return createOutcome(RESET, SINGLE, INTEGER, String.valueOf(mistakesNum));
+	}
+	
+	public Outcome createShowAnswersOutcome(int mistakesNum){
+		return createOutcome(SHOW_ANSWERS, SINGLE, INTEGER, String.valueOf(mistakesNum));
 	}
 	
 	public Outcome createErrorsOutcome(int errorsNum){
