@@ -34,7 +34,7 @@ import eu.ydp.empiria.player.client.module.IModule;
 public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	
 	
-	private static final String MODULE_1 = "MODULE_1";
+	private static final String MODULE_1 = "+MODULE_1";
 
 	private static final String WRONG_MP3 = "wrong.mp3";
 
@@ -62,6 +62,14 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 		assertThat(actions.size(), is(equalTo(1)));
 		FeedbackAction action = actions.get(0);
 		assertUrlAction(action, ActionType.NARRATION, GOOD_MP3);
+	}
+	
+	@Test
+	public void shouldIgnoreFeedbackBecauseIsOnUnselect(){		
+		ModuleInfo info = ModuleInfo.create("-"+MODULE_1).setLastOk(true).setDone(1).setTodo(3).setErrors(0);		
+		List<FeedbackAction> actions = processUserAction(info);
+		
+		assertThat(actions.size(), is(equalTo(0)));
 	}
 	
 	@Test

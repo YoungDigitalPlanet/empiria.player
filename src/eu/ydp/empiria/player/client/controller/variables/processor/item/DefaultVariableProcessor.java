@@ -445,11 +445,14 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			for (int v = 0; v < moduleLastChange.values.size(); v++) {
 				String currVal = moduleLastChange.values.get(v);
 
+				boolean shouldBeCorrect;
 				if (currVal.startsWith("+")) {
-					currVal = currVal.substring(1);
+					shouldBeCorrect = true;
 				} else {
-					continue;
+					shouldBeCorrect = false;
+//					continue;
 				}
+				currVal = currVal.substring(1);
 
 				boolean answerFound = false;
 
@@ -457,7 +460,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					answerFound = true;
 				}
 
-				if (!answerFound) {
+				if (answerFound != shouldBeCorrect) {
 					mistakesCounter++;
 				}
 			}

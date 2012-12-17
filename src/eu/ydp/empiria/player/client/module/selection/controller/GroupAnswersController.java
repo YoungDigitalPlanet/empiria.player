@@ -73,7 +73,7 @@ public class GroupAnswersController {
 	}
 	
 	public void selectToggleAnswer(String selectionAnswerId) {
-		SelectionAnswerDto selectionAnswer = selectionAnswer = findSelectionAnswerById(selectionAnswerId);
+		SelectionAnswerDto selectionAnswer = findSelectionAnswerById(selectionAnswerId);
 		if(selectionAnswer == null){
 			return;
 		}

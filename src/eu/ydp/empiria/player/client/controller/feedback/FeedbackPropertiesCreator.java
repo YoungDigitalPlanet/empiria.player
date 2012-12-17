@@ -4,6 +4,7 @@ import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.fromNullable;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.ERRORS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTCHANGE;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTMISTAKEN;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
 
@@ -49,9 +50,24 @@ public class FeedbackPropertiesCreator {
 		properties.addIntegerProperty(FeedbackPropertyName.ERRORS, getInteger(ERRORS));
 		properties.addDoubleProperty(FeedbackPropertyName.RESULT, getResultValue());
 		
+		boolean isSelect = checkIfFeedbackIsOnSelectAction();
+		properties.addBooleanProperty(FeedbackPropertyName.SELECTED, isSelect);
+		properties.addBooleanProperty(FeedbackPropertyName.UNSELECT, !isSelect);
+		
 		return  properties;
 	}
-	
+
+	private boolean checkIfFeedbackIsOnSelectAction() {
+		String variableValue = getVariableValue(LASTCHANGE);
+		boolean isSelect;
+		if(variableValue != null && variableValue.startsWith("+")){
+			isSelect = true;
+		}else{
+			isSelect = false;
+		}
+		return isSelect;
+	}
+
 	private boolean isAllOk(){
 		return getInteger(DONE) == getInteger(TODO) && 
 				getInteger(TODO) != 0 && getInteger(ERRORS) == 0;

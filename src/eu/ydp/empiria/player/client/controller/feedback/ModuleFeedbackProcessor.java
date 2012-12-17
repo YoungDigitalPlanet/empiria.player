@@ -80,9 +80,18 @@ public class ModuleFeedbackProcessor {
 	private void appendMatchedFeedbackActions(Feedback feedback, IModule source){
 		FeedbackProperties properties = feedbackActionCollector.getSourceProperties(source);
 		
-		if(matcher.match(feedback.getCondition(), properties)){
+		if(isUnselectFeedback(properties)){
+			return;
+		}
+		
+		boolean match = matcher.match(feedback.getCondition(), properties);
+		if(match){
 			feedbackActionCollector.appendActionsToSource(feedback.getActions(), source);
 		}
+	}
+
+	private Boolean isUnselectFeedback(FeedbackProperties properties) {
+		return (Boolean) properties.getProperty(FeedbackPropertyName.UNSELECT);
 	}
 	
 	protected void processActions(IModule module){

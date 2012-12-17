@@ -33,9 +33,9 @@ import eu.ydp.empiria.player.client.module.IModule;
 
 public class FeedbackProcessingWithContainerIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	
-	private static final String MODULE_2 = "MODULE_2";
+	private static final String MODULE_2 = "+MODULE_2";
 
-	private static final String MODULE_1 = "MODULE_1";
+	private static final String MODULE_1 = "+MODULE_1";
 
 	private static final String CONTAINER_ALL_OK_MP3 = "containerAllOk.mp3";
 
@@ -74,6 +74,18 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 		
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
 		String[] expectedUrls = new String[]{GOOD_MP3, CONTAINER_OK_MP3};
+		assertAllUrlActions(capturedActions, expectedUrls);
+	}
+	
+	@Test
+	public void shouldIgnoreUnselectFeedback(){		
+		ModuleInfo[] infos = new ModuleInfo[]{
+				ModuleInfo.create("-"+MODULE_1).setLastOk(true).setDone(1).setTodo(3).setErrors(0),
+				ModuleInfo.create("-"+MODULE_2).setLastOk(false).setDone(2).setTodo(6).setErrors(0)
+		};
+		
+		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
+		String[] expectedUrls = new String[]{};
 		assertAllUrlActions(capturedActions, expectedUrls);
 	}
 	
