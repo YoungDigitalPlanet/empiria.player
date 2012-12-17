@@ -19,8 +19,7 @@ public class VideoExecutorSwf extends ExecutorSwf {
 	@Override
 	public void init() {
 		FlowPanel flowPanel = new FlowPanel();
-		FlashVideo video = FlashVideoFactory.createVideo(source, flowPanel);
-		video.setSize(baseMediaConfiguration.getWidth(), baseMediaConfiguration.getHeight());
+		FlashVideo video = FlashVideoFactory.createVideo(source, flowPanel, baseMediaConfiguration.getWidth(), baseMediaConfiguration.getHeight());
 		flashMedia = video;
 		if(this.mediaWrapper instanceof SwfMediaWrapper){
 			((SwfMediaWrapper) this.mediaWrapper).setMediaWidget(flowPanel);
