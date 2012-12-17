@@ -18,4 +18,8 @@ public class VariableUtil {
 		}
 		return value;
 	}
+	
+	public int getVariableIntValue(String name, int defaultValue){
+		return Integer.valueOf(getVariableValue(name, String.valueOf(defaultValue)));
+	}
 }
