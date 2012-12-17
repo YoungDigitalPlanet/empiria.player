@@ -5,15 +5,11 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
-import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
 
 /**
@@ -40,7 +36,6 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 		getPresenter().setModuleSocket(getModuleSocket());
 		initalizeModule();
 		initializePresenter();
-		initializeAndInstallFeedbacks();
 		applyIdAndClassToView(getView());
 		placeholders.get(0).add(getView());
 	}
@@ -50,18 +45,6 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 		presenter.setBean(getStructure().getBean());
 		presenter.setModel(getResponseModel());
 		presenter.bindView();
-	}
-
-	protected void initializeAndInstallFeedbacks() {
-		NodeList childNodes = getModuleElement().getElementsByTagName(EmpiriaTagConstants.NAME_FEEDBACK_INLINE);
-		for (int f = 0; f < childNodes.getLength(); f++) {
-			InlineFeedback feedback = createInlineFeedback(getView(), childNodes.item(f));
-			getModuleSocket().addInlineFeedback(feedback);
-		}
-	}
-
-	protected InlineFeedback createInlineFeedback(IsWidget mountingPoint, Node feedbackNode) {
-		return new InlineFeedback((Widget) mountingPoint, feedbackNode, getModuleSocket(), getInteractionEventsListener());
 	}
 
 	protected abstract ActivityPresenter<H, U> getPresenter();

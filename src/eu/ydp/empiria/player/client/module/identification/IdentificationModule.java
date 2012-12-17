@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
@@ -129,12 +128,6 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			currPlaceholder.add(panel);
 
 			options.addAll(currOptions);
-
-			NodeList childNodes = element.getChildNodes();
-			for (int f = 0 ; f < childNodes.getLength() ; f ++){
-				if (childNodes.item(f).getNodeName().compareTo("feedbackInline") == 0)
-					getModuleSocket().addInlineFeedback(new InlineFeedback(panel, childNodes.item(f), getModuleSocket(), getInteractionEventsListener()));
-			}
 		}
 	}
 

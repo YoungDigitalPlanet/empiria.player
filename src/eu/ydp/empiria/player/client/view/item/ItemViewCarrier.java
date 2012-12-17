@@ -6,11 +6,15 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ItemViewCarrier {
+	
+	private Widget titleView;
+	private Widget contentView;
+	private Widget scoreView;
+	private Panel errorView;
 
-	public ItemViewCarrier(Widget title, Widget _contentView, Widget _feedbackView, Widget _scoreView){
+	public ItemViewCarrier(Widget title, Widget _contentView, Widget _scoreView){
 		titleView = title;
 		contentView = _contentView;
-		feedbackView = _feedbackView;
 		scoreView = _scoreView;
 		errorView = null;
 	}
@@ -28,12 +32,6 @@ public class ItemViewCarrier {
 		errorView.add(errorLabel);
 	}
 	
-	private Widget titleView;
-	private Widget contentView;
-	private Widget feedbackView;
-	private Widget scoreView;
-	private Panel errorView;
-	
 	public boolean isError(){
 		return errorView != null;
 	}
@@ -47,9 +45,6 @@ public class ItemViewCarrier {
 	}
 	public Widget getContentView(){
 		return contentView;
-	}
-	public Widget getFeedbackView(){
-		return feedbackView;
 	}
 	public Widget getScoreView(){
 		return scoreView;

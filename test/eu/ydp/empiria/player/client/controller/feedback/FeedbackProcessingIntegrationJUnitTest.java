@@ -30,6 +30,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	
@@ -119,7 +120,12 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 		sender = createSender(info);
 		
 		ModuleFeedbackProcessor processor = injector.getInstance(ModuleFeedbackProcessor.class);
-		processor.process(sender, variables);
+		FeedbackRegistry feedbackRegistry = injector.getInstance(FeedbackRegistry.class);
+		
+		when(feedbackRegistry.hasFeedbacks())
+			.thenReturn(true);
+		
+		processor.processFeedbacks(variables, (IUniqueModule) sender);
 		
 		ArgumentCaptor<List> argument = ArgumentCaptor.forClass(List.class);
 		verify(processor.soundProcessor, times(1)).processActions(argument.capture());
@@ -143,6 +149,8 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	private class ProcessingModule implements Module{
 
+		private FeedbackRegistry feedbackRegistry = null;
+		
 		@Override
 		public void configure(Binder binder) {
 			//aaaa
@@ -150,13 +158,16 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 		
 		@Provides
 		public FeedbackRegistry getFeedbackRegistry(){
-			FeedbackRegistry registry = mock(FeedbackRegistry.class);
-			List<Feedback> feedbackList =  new FeedbackCreator(GOOD_MP3, WRONG_MP3, ALLOK_MP3).createFeedbackList();
+			if(feedbackRegistry == null){
+				FeedbackRegistry registry = mock(FeedbackRegistry.class);
+				List<Feedback> feedbackList =  new FeedbackCreator(GOOD_MP3, WRONG_MP3, ALLOK_MP3).createFeedbackList();
+				
+				when(registry.isModuleRegistered(sender)).thenReturn(true);
+				when(registry.getModuleFeedbacks(sender)).thenReturn(feedbackList);
+				this.feedbackRegistry = registry;
+			}
 			
-			when(registry.isModuleRegistered(sender)).thenReturn(true);
-			when(registry.getModuleFeedbacks(sender)).thenReturn(feedbackList);
-			
-			return registry;
+			return this.feedbackRegistry;
 		}
 		
 		@Provides

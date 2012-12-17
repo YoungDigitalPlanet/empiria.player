@@ -40,7 +40,6 @@ import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.HasChildren;
@@ -179,11 +178,6 @@ public class Assessment {
 		@Override
 		public List<Boolean> evaluateResponse(Response response) {
 			return null;
-		}
-
-		@Override
-		public void addInlineFeedback(InlineFeedback inlineFeedback) {
-
 		}
 
 		@Override

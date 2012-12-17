@@ -16,25 +16,23 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class ModuleFeedbackProcessor {
 	
 	@Inject
 	private FeedbackRegistry feedbackRegistry;
-	
-	protected FeedbackActionCollector feedbackActionCollector;
-	
 	@Inject
 	private FeedbackConditionMatcher matcher;
-
 	@Inject
 	protected SoundActionProcessor soundProcessor;
-	
 	@Inject
 	private FeedbackPropertiesCollector propertiesCollector;
-
+	
+	protected FeedbackActionCollector feedbackActionCollector;
 	private Provider<FeedbackActionCollector> feedbackActionCollectorProvider;
 	
+
 	@Inject
 	public ModuleFeedbackProcessor(Provider<FeedbackActionCollector> feedbackActionCollectorProvider){
 		this.feedbackActionCollectorProvider = feedbackActionCollectorProvider;
@@ -44,8 +42,14 @@ public class ModuleFeedbackProcessor {
 	private void initializeFeedbackActionCollector(){
 		feedbackActionCollector = feedbackActionCollectorProvider.get();
 	}
+	
+	public void processFeedbacks (Map<String, ? extends Variable> outcomes, IUniqueModule sender){
+		if(feedbackRegistry.hasFeedbacks()){
+			process(sender, outcomes);
+		}
+	}
 
-	public void process(IModule sender, Map<String, ? extends Variable> variables){
+	private void process(IModule sender, Map<String, ? extends Variable> variables){
 		initializeFeedbackActionCollector();
 		feedbackActionCollector.setSource(sender);
 		propertiesCollector.setVariables(variables);

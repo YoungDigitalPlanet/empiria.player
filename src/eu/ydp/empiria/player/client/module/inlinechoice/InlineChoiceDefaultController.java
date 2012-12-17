@@ -17,7 +17,6 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.components.AccessibleListBox;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.HasChildren;
@@ -99,11 +98,6 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		container.setStyleName("qp-text-choice");
 		if (userClass != null  &&  !"".equals(userClass)) {
 			container.addStyleName(userClass);
-		}
-
-		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
-		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			moduleSocket.addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), moduleSocket, interactionEventsListener));
 		}
 	}
 

@@ -18,7 +18,6 @@ import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
@@ -134,11 +133,6 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 
 		placeholders.get(0).add(container);
-
-		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
-		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			getModuleSocket().addInlineFeedback(new InlineFeedback(container, inlineFeedbackNodes.item(f), getModuleSocket(), interactionEventsListener));
-		}
 	}
 
 	@Override

@@ -10,19 +10,12 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
@@ -69,7 +62,6 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 		setWidthBinding(styles, getModuleElement());
 
 		installViewPanel(placeholders.get(0));
-		createFeedbacks(getModuleElement(), getModuleSocket(), getInteractionEventsListener());
 	}
 
 
@@ -93,19 +85,6 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 	private void installViewPanel(HasWidgets placeholder){
 		applyIdAndClassToView((Widget) presenter.getContainer());
 		presenter.installViewInContainer(placeholder);
-	}
-
-	private void createFeedbacks(Element moduleElement, ModuleSocket moduleSocket, InteractionEventsListener eventListener){
-		NodeList inlineFeedbackNodes = moduleElement.getElementsByTagName("feedbackInline");
-
-		for (int f = 0 ; f < inlineFeedbackNodes.getLength() ; f ++){
-			InlineFeedback inlineFeedback = createInlineFeedback((Panel) presenter.getContainer(), inlineFeedbackNodes.item(f), moduleSocket, eventListener);
-			moduleSocket.addInlineFeedback(inlineFeedback);
-		}
-	}
-
-	private InlineFeedback createInlineFeedback(Panel parent, Node feedbackNode, ModuleSocket moduleSocket, InteractionEventsListener eventListener){
-		return new InlineFeedback(parent, feedbackNode, moduleSocket, eventListener);
 	}
 
 	// ------------------------ INTERFACES ------------------------

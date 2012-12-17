@@ -26,7 +26,7 @@ public class FeedbackRegistryJUnitTest extends AbstractTestBase{
 	@Override
 	@Before
 	public void setUp() {
-		super.setUp();
+		super.setUp(FeedbackRegistry.class);
 		registry = injector.getInstance(FeedbackRegistry.class);
 	}
 

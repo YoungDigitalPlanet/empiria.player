@@ -24,8 +24,7 @@ import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterfe
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.feedback.FeedbackManager;
-import eu.ydp.empiria.player.client.controller.feedback.InlineFeedback;
+import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.controller.variables.IVariableCreator;
 import eu.ydp.empiria.player.client.controller.variables.manager.BindableVariableManager;
@@ -58,7 +57,7 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 		protected VariableProcessor variableProcessor;
 
-		private FeedbackManager feedbackManager;
+		private ModuleFeedbackProcessor moduleFeedbackProcessor;
 
 		private VariableManager<Response> responseManager;
 
@@ -82,21 +81,20 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 		public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options,
 					@Assisted InteractionEventsListener interactionEventsListener, @Assisted StyleSocket ss,
 					@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables,
-					@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
+					@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory,
+					ModuleFeedbackProcessor moduleFeedbackProcessor) {
 
 			this.modulesRegistrySocket = mrs;
 			this.options = options;
 			xmlData = data;
 
 			styleSocket = ss;
+			this.moduleFeedbackProcessor = moduleFeedbackProcessor;
 
 			Node rootNode = xmlData.getDocument().getElementsByTagName("assessmentItem").item(0);
 			Node itemBodyNode = xmlData.getDocument().getElementsByTagName("itemBody").item(0);
 
 			variableProcessor = VariableProcessorTemplate.fromNode(xmlData.getDocument().getElementsByTagName("variableProcessing"));
-
-			feedbackManager = controllerFactory.getFeedbackManager(xmlData.getDocument().getElementsByTagName("modalFeedback"), xmlData.getBaseURL(),
-																	moduleSocket, interactionEventsListener);
 
 			responseManager = new VariableManager<Response>(xmlData.getDocument().getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {
 				@Override
@@ -119,8 +117,6 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 			itemBodyView.init(itemBody.init((Element) itemBodyNode));
 
-			feedbackManager.setBodyView(itemBodyView);
-
 			title = ((Element) rootNode).getAttribute("title");
 
 			scorePanel = new FlowPanel();
@@ -142,11 +138,6 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 			@Override
 			public List<Boolean> evaluateResponse(Response response) {
 				return variableProcessor.evaluateAnswer(response);
-			}
-
-			@Override
-			public void addInlineFeedback(InlineFeedback inlineFeedback) {
-				feedbackManager.addInlineFeedback(inlineFeedback);
 			}
 
 			@Override
@@ -218,7 +209,6 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 		};
 
 		public void close() {
-			feedbackManager.hideAllInlineFeedbacks();
 			itemBody.close();
 		}
 
@@ -229,7 +219,7 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 		public void process(boolean userInteract, IUniqueModule sender) {
 			variableProcessor.processResponseVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), userInteract);
 			if (userInteract) {
-				feedbackManager.process(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), sender);
+				moduleFeedbackProcessor.processFeedbacks(outcomeManager.getVariablesMap(), sender);
 			}
 		}
 
@@ -276,11 +266,6 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 		public Panel getContentView() {
 			return itemBodyView;
-		}
-
-		@Deprecated
-		public Widget getFeedbackView() {
-			return feedbackManager.getModalFeedbackView();
 		}
 
 		@Deprecated

@@ -29,14 +29,13 @@ import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
-import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.TextFeedbackPresenterMock;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
@@ -170,6 +169,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(OverlayTypesParser.class).toInstance(mock(OverlayTypesParserMock.class));
 		bind(TextFeedback.class).toInstance(mock(TextFeedbackPresenterMock.class));
 		bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
+		bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
 		
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));

@@ -22,10 +22,6 @@ public class ItemContentView implements ItemViewSocket {
 				itemPanel.add(ivc.getContentView());
 			}
 
-			if(ivc.getFeedbackView() != null) {
-				itemPanel.add(ivc.getFeedbackView());
-			}
-
 			if(ivc.getScoreView() != null) {
 				itemPanel.add(ivc.getScoreView());
 			}

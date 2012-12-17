@@ -147,7 +147,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			String index = String.valueOf(itemData.itemIndex + 1);
 			Widget titleWidget = createTitleWidget(index, item.getTitle());
 
-			carrier = new ItemViewCarrier(titleWidget, item.getContentView(), item.getFeedbackView(), item.getScoreView());
+			carrier = new ItemViewCarrier(titleWidget, item.getContentView(), item.getScoreView());
 		}
 
 		return carrier;

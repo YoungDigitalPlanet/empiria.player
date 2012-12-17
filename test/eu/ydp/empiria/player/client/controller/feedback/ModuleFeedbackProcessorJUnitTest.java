@@ -21,15 +21,18 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackAction
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
 
 public class ModuleFeedbackProcessorJUnitTest extends AbstractTestBase{
 	
 	private ModuleFeedbackProcessor feedbackProcessor;
+	private FeedbackRegistry feedbackRegistry;
 	
 	@Before
 	public void init(){
 		feedbackProcessor = injector.getInstance(ModuleFeedbackProcessor.class);
+		feedbackRegistry = injector.getInstance(FeedbackRegistry.class);
 	}
 	
 	@Test
@@ -78,11 +81,15 @@ public class ModuleFeedbackProcessorJUnitTest extends AbstractTestBase{
 	
 	@Test
 	public void shouldCreateNewInstanceOfActionCollector(){
-		IModule module = mock(IModule.class);
-		feedbackProcessor.process(module, null);
+		
+		when(feedbackRegistry.hasFeedbacks())
+			.thenReturn(true);
+		
+		IUniqueModule module = mock(IUniqueModule.class);
+		feedbackProcessor.processFeedbacks(null, module);
 		
 		FeedbackActionCollector collector = feedbackProcessor.feedbackActionCollector;
-		feedbackProcessor.process(module, null);
+		feedbackProcessor.processFeedbacks(null, module);
 		
 		assertThat(feedbackProcessor.feedbackActionCollector, is(not(collector)));
 	}

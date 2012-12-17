@@ -30,6 +30,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionT
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class FeedbackProcessingWithContainerIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	
@@ -145,7 +146,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 		container = helper.getContainer();
 		
 		ModuleFeedbackProcessor processor = injector.getInstance(ModuleFeedbackProcessor.class);
-		processor.process(sender, helper.getVariables());
+		processor.processFeedbacks(helper.getVariables(), (IUniqueModule)sender);
 		
 		verify(processor.soundProcessor, times(2)).processActions(captor.capture());
 		
@@ -177,6 +178,8 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	
 	private class ProcessingModule implements Module{
 
+		private FeedbackRegistry feedbackRegistry = null;
+		
 		@Override
 		public void configure(Binder binder) {
 			//all default bindings
@@ -184,17 +187,22 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 		
 		@Provides
 		public FeedbackRegistry getFeedbackRegistry(){
-			FeedbackRegistry registry = mock(FeedbackRegistry.class);
-			List<Feedback> moduleFeedbackList = new FeedbackCreator(GOOD_MP3, WRONG_MP3, ALLOK_MP3).createFeedbackList();
-			List<Feedback> containerFeedbackList = new FeedbackCreator(CONTAINER_OK_MP3, CONTAINER_WRONG_MP3, CONTAINER_ALL_OK_MP3).createFeedbackList();
+			if(this.feedbackRegistry == null){
+				FeedbackRegistry registry = mock(FeedbackRegistry.class);
+				List<Feedback> moduleFeedbackList = new FeedbackCreator(GOOD_MP3, WRONG_MP3, ALLOK_MP3).createFeedbackList();
+				List<Feedback> containerFeedbackList = new FeedbackCreator(CONTAINER_OK_MP3, CONTAINER_WRONG_MP3, CONTAINER_ALL_OK_MP3).createFeedbackList();
+				
+				when(registry.isModuleRegistered(sender)).thenReturn(true);
+				when(registry.getModuleFeedbacks(sender)).thenReturn(moduleFeedbackList);
+				
+				when(registry.isModuleRegistered(container)).thenReturn(true);
+				when(registry.getModuleFeedbacks(container)).thenReturn(containerFeedbackList);
+				when(registry.hasFeedbacks()).thenReturn(true);
+				
+				this.feedbackRegistry = registry;
+			}
 			
-			when(registry.isModuleRegistered(sender)).thenReturn(true);
-			when(registry.getModuleFeedbacks(sender)).thenReturn(moduleFeedbackList);
-			
-			when(registry.isModuleRegistered(container)).thenReturn(true);
-			when(registry.getModuleFeedbacks(container)).thenReturn(containerFeedbackList);
-			
-			return registry;
+			return this.feedbackRegistry;
 		}
 		
 		@Provides

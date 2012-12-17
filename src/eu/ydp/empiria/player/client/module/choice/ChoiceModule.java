@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.choice;
 
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -14,7 +12,6 @@ import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresente
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleJAXBParser;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
-import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 
 public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
 
@@ -38,22 +35,6 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, Choice
 
 	private boolean isMulti() {
 		return Cardinality.MULTIPLE.equals(getResponse().cardinality);
-	}
-
-	@Override
-	protected void initializeAndInstallFeedbacks() {
-		super.initializeAndInstallFeedbacks();
-
-		// TODO: rewrite to JAXB
-		for (SimpleChoiceBean choiceOption : choiceStructure.getSimpleChoices()) {
-			String identifier = choiceOption.getIdentifier();
-			Element feedbackNode = choiceStructure.getFeedbackElement(identifier);
-
-			if (feedbackNode != null) {
-				IsWidget feedbackPlaceholder = presenter.getFeedbackPlaceholderByIdentifier(identifier);
-				createInlineFeedback(feedbackPlaceholder, feedbackNode);
-			}
-		}
 	}
 
 	@Override
