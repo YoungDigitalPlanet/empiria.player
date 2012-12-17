@@ -32,7 +32,6 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsLis
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
@@ -291,7 +290,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	protected void loadPredefinedExtensions() {
 		loadExtension(new PlayerCoreApiExtension());
-		loadExtension(new ScormSupportExtension());
+		loadExtension(extensionFactory.getScormSupportExtension());
 		loadExtension(extensionFactory.getAssessmentJsonReportExtension());
 		loadExtension(soundProcessorManager);
 		loadExtension(new SimpleConnectorExtension(new DivModule(), ModuleTagName.DIV));

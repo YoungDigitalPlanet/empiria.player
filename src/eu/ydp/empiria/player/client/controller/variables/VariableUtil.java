@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.gwtutil.client.NumberUtils;
 
 public class VariableUtil {
 	
@@ -20,6 +21,8 @@ public class VariableUtil {
 	}
 	
 	public int getVariableIntValue(String name, int defaultValue){
-		return Integer.valueOf(getVariableValue(name, String.valueOf(defaultValue)));
+		String defaultValueString = String.valueOf(defaultValue);
+		String variableValue = getVariableValue(name, defaultValueString);
+		return NumberUtils.tryParseInt(variableValue, defaultValue);
 	}
 }
