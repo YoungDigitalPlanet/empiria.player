@@ -32,6 +32,8 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 	@Inject
 	protected TemplateParserFactory parserFactory;
 
+	@Inject
+	protected Provider<DefaultImgContent> defaultImgContentProvider;
 	protected ImgModuleView view;
 	private String imageSource;
 	private final BookmarkingHelper bookmarkingHelper;
@@ -55,7 +57,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 			if (styles.containsKey(EMPIRIA_IMG_MODE) && styles.get(EMPIRIA_IMG_MODE).equalsIgnoreCase("explorable")) {
 				content = new ExplorableImgContent();
 			} else {
-				content = new DefaultImgContent();
+				content = defaultImgContentProvider.get();
 			}
 		}
 		content.init(element, getModuleSocket());

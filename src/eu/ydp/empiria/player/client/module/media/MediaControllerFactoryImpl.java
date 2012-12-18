@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
-import eu.ydp.empiria.player.client.module.media.button.FullScreenMediaButton;
+import eu.ydp.empiria.player.client.module.media.button.VideoFullScreenMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.module.media.button.MediaProgressBar;
 import eu.ydp.empiria.player.client.module.media.button.MuteMediaButton;
@@ -27,7 +27,7 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 	protected VideoTextTrackElementFactory videoTextTrackElementFactory;
 
 	@Inject
-	protected Provider<FullScreenMediaButton> fullScreenMediaButtonProvider;
+	protected Provider<VideoFullScreenMediaButton> fullScreenMediaButtonProvider;
 
 	@Override
 	public AbstractMediaController<?> get(ModuleTagName moduleType) {

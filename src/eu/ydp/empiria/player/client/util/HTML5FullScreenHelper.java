@@ -7,8 +7,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.media.client.Video;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.fullscreen.FullScreenEvent;
-import eu.ydp.empiria.player.client.util.events.fullscreen.FullScreenEventHandler;
+import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEvent;
+import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEventHandler;
 
 /**
  * Klasa pomocnicza do obslugi trybu pelnoekranowego w przegladarkach
@@ -16,14 +16,14 @@ import eu.ydp.empiria.player.client.util.events.fullscreen.FullScreenEventHandle
  */
 public class HTML5FullScreenHelper {
 
-	private final Set<FullScreenEventHandler> eventHandlers = new HashSet<FullScreenEventHandler>();
+	private final Set<VideoFullScreenEventHandler> eventHandlers = new HashSet<VideoFullScreenEventHandler>();
 
 	/**
 	 * Dodaje handlera nasluchujacego na zmiany trybu pelnoekranowego
 	 *
 	 * @param handler
 	 */
-	public void addFullScreenEventHandler(FullScreenEventHandler handler) {
+	public void addFullScreenEventHandler(VideoFullScreenEventHandler handler) {
 		if (handler == null) {
 			return;
 		}
@@ -109,7 +109,7 @@ public class HTML5FullScreenHelper {
 	protected void handleEvent() {
 		final boolean inFullScreen = isInFullScreen();
 
-		FullScreenEvent fse = new FullScreenEvent() {
+		VideoFullScreenEvent fse = new VideoFullScreenEvent() {
 
 			@Override
 			public boolean isInFullScreen() {
@@ -121,7 +121,7 @@ public class HTML5FullScreenHelper {
 				return null;
 			}
 		};
-		for (FullScreenEventHandler h : eventHandlers) {
+		for (VideoFullScreenEventHandler h : eventHandlers) {
 			h.handleEvent(fse);
 		}
 	}

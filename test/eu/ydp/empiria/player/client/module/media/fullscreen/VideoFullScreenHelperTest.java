@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.HTML5FullScreenHelper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.fullscreen.FullScreenEventHandler;
+import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.scope.PageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
@@ -70,7 +70,7 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
 	@Test
 	public void initTest(){
 		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_UA);
-		verify(fullScreenHelper).addFullScreenEventHandler(Mockito.any(FullScreenEventHandler.class));
+		verify(fullScreenHelper).addFullScreenEventHandler(Mockito.any(VideoFullScreenEventHandler.class));
 	}
 
 	@Test

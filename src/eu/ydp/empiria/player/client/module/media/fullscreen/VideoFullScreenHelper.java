@@ -24,14 +24,14 @@ import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.HTML5FullScreenHelper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.fullscreen.FullScreenEvent;
-import eu.ydp.empiria.player.client.util.events.fullscreen.FullScreenEventHandler;
+import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEvent;
+import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-public class VideoFullScreenHelper implements KeyUpHandler, FullScreenEventHandler {
+public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEventHandler {
 
 	@Inject
 	protected EventsBus eventsBus;
@@ -181,7 +181,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, FullScreenEventHandl
 	}
 
 	@Override
-	public void handleEvent(FullScreenEvent event) {
+	public void handleEvent(VideoFullScreenEvent event) {
 		if (event.isInFullScreen()) {
 			firePlayEvent(lastMediaWrapper);
 		} else {

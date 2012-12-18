@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.button.FullScreenMediaButton;
+import eu.ydp.empiria.player.client.module.media.button.VideoFullScreenMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
@@ -68,10 +68,10 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 			controller.setMediaDescriptor(mediaDescriptor);
 			controller.setFullScreen(fullScreen);
 		}
-		if (controller instanceof FullScreenMediaButton) {
-			((FullScreenMediaButton) controller).setFullScreenTemplate(fullScreenTemplate);
-			((FullScreenMediaButton) controller).setMediaWrapper(mediaDescriptor);
-			((FullScreenMediaButton) controller).setFullScreenMediaWrapper(fullScreenMediaWrapper);
+		if (controller instanceof VideoFullScreenMediaButton) {
+			((VideoFullScreenMediaButton) controller).setFullScreenTemplate(fullScreenTemplate);
+			((VideoFullScreenMediaButton) controller).setMediaWrapper(mediaDescriptor);
+			((VideoFullScreenMediaButton) controller).setFullScreenMediaWrapper(fullScreenMediaWrapper);
 		}
 
 		return controller;

@@ -41,34 +41,28 @@ lightbox = new Lightbox options
 */
 
 
-var LightBoxObject = function() {
-  var $, Lightbox, LightboxOptions;
-
+(function() {
+  var $, LightboxOptions, Lightbox;
   $ = jQuery;
 
-  LightboxOptions = (function() {
-
-    function LightboxOptions() {
+  LightboxOptions = function() {
       this.fileLoadingImage = '../images/loading.gif';
       this.fileCloseImage = '../images/close.png';
       this.resizeDuration = 700;
       this.fadeDuration = 500;
       this.labelImage = "Image";
       this.labelOf = "of";
-    }
+    };
 
-    return LightboxOptions;
 
-  })();
 
-  Lightbox = (function() {
-
-    function Lightbox(options) {
+  Lightbox = function (options) {
       this.options = options;
       this.album = [];
       this.currentImageIndex = void 0;
+      this.handlers = [];
       this.init();
-    }
+    };
 
     Lightbox.prototype.init = function() {
       this.enable();
@@ -131,11 +125,11 @@ var LightBoxObject = function() {
       });
       $lightbox = $('#lightbox');
       $lightbox.hide().on('click', function(e) {
-        if ($(e.target).attr('id') === 'lightbox') _this.end();
+        _this.end();
         return false;
       });
       $lightbox.find('.lb-outerContainer').on('click', function(e) {
-        if ($(e.target).attr('id') === 'lightbox') _this.end();
+          _this.end();
         return false;
       });
       $lightbox.find('.lb-prev').on('click', function(e) {
@@ -199,6 +193,7 @@ var LightBoxObject = function() {
           }else{
               this.startDefault($link);
           }
+          this.callHandlers({"isInFullScreen":true});
     };
 
      Lightbox.prototype.prepareView =  function(){
@@ -359,21 +354,31 @@ var LightBoxObject = function() {
       $(window).off("resize", this.sizeOverlay);
       $('#lightbox').fadeOut(this.options.fadeDuration);
       $('#lightboxOverlay').fadeOut(this.options.fadeDuration);
+      this.callHandlers({"isInFullScreen":false});
       return $('select, object, embed').css({
-        visibility: "visible"
-      });
+            visibility: "visible"
+       });
     };
 
-    return Lightbox;
+    Lightbox.prototype.callHandlers = function(object){
+        var handler;
+        for (i = 0, _len = this.handlers.length; i < _len; i++) {
+            handler = this.handlers[i];
+            try{
+                handler.handle(object);
+            }catch(e ){
+               // console.log(e);
+            }
+        }
+    };
+
+    Lightbox.prototype.addListener= function(listener){
+        this.handlers.push(listener);
+    };
+
+    $(function() {
+        window.Lightbox = Lightbox;
+        window.LightboxOptions = LightboxOptions;
+    });
 
   })();
-
-  /*$(function() {
-        var lightbox, options;
-        options = new LightboxOptions;
-        lightbox = new Lightbox(options);
-        window.lightbox2 = lightbox;
-        return lightbox;
-    });*/
-
-};

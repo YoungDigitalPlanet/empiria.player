@@ -11,6 +11,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
@@ -32,6 +33,9 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	@Inject
 	protected MediaControllerFactory controllerFactory;
+
+	@Inject
+	protected Provider<DefaultImgContent> defaultImgContentProvider;
 
 	@Inject
 	public ImgTemplateParser(@Assisted Element baseElement, @Assisted ModuleSocket moduleSocket) {
@@ -71,23 +75,25 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	/**
 	 * tworzy widget na podstawie wezlow xml poprzez {@link InlineBodyGenerator}
+	 *
 	 * @param elementName
 	 * @return
 	 */
-	private ModuleWrapper createWrapper(String elementName){
+	private ModuleWrapper createWrapper(String elementName) {
 		ModuleWrapper moduleWrapper = null;
 		NodeList titleNodes = baseElement.getElementsByTagName(elementName);
 		if (titleNodes.getLength() > 0) {
-			 Widget widget  = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstChildElement((Element) titleNodes.item(0)));
-			 if(widget!=null){
-				 moduleWrapper = new ModuleWrapper(widget);
-			 }
+			Widget widget = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstChildElement((Element) titleNodes.item(0)));
+			if (widget != null) {
+				moduleWrapper = new ModuleWrapper(widget);
+			}
 		}
 		return moduleWrapper;
 	}
 
 	/**
-	 * Tworzy obiekt  img + labele
+	 * Tworzy obiekt img + labele
+	 *
 	 * @return
 	 */
 	private MediaController<?> createScreen() {
@@ -99,7 +105,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 			if (styles.containsKey(EMPIRIA_IMG_MODE) && styles.get(EMPIRIA_IMG_MODE).equalsIgnoreCase("explorable")) {
 				content = new ExplorableImgContent();
 			} else {
-				content = new DefaultImgContent();
+				content = defaultImgContentProvider.get();
 			}
 		}
 		content.init(baseElement, moduleSocket);

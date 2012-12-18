@@ -36,6 +36,11 @@
 	  }
 	]]></property-provider>
 
+	<stylesheet src="lightbox2/css/lightbox.css"/>
+	<script src="jquery/jquery-1.7.2.min.js" />
+	<script src="jquery/jquery-ui-1.8.18.custom.min.js" />
+	<script src="jquery/jquery.smooth-scroll.min.js" />
+	<script src="lightbox2/js/lightbox-min.js" />
 	<script src="video/AC_RunActiveContent.js" />
 	<script src="video/FAVideo.js" />
 	<script src="jscss/cssparser.js" />
