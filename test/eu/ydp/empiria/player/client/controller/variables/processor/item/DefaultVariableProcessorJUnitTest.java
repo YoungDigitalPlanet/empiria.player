@@ -17,6 +17,8 @@ import java.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
@@ -306,6 +308,31 @@ public class DefaultVariableProcessorJUnitTest {
 		boolean passed = dvp.invokeProcessSingleResponse(response);
 		assertThat(passed, is(false));
 	}
+	
+	@Test
+	public void shouldUpdateLastMistakeInCommutativeGroup() {
+		Map<String, List<Boolean>> groupsAnswersUsed = new TreeMap<String, List<Boolean>>();
+		List<Boolean> answers = Lists.newArrayList(false, false, true);
+		String groupId = "group1";
+		groupsAnswersUsed.put(groupId, answers);
+		
+		Outcome outcome = new Outcome();
+		outcome.values.add("");
+		
+		DefaultVariableProcessorMock dvp = mockDefaultVariableProcessor();
+		dvp.mockGroupsAnswersUsed(groupsAnswersUsed);
+		
+		answers = Lists.newArrayList(true, false, true);
+		groupsAnswersUsed.put(groupId, answers);
+		dvp.invokeUpdateLastMistakeInGroup(groupId, outcome);
+		assertThat(outcome.values.get(0), is("0"));
+		
+		dvp.invokeUpdateGroupsPoints();
+		answers = Lists.newArrayList(false, false, true);
+		groupsAnswersUsed.put(groupId, answers);
+		dvp.invokeUpdateLastMistakeInGroup(groupId, outcome);
+		assertThat(outcome.values.get(0), is("1"));
+	}
 
 	private CorrectAnswers mockCorrectAnswers() {
 		CorrectAnswers correctAnswers = new CorrectAnswers();
@@ -355,13 +382,25 @@ public class DefaultVariableProcessorJUnitTest {
 		public int invokeProcessCheckMistakes(Response response, Outcome moduleLastChange) {
 			return processCheckMistakes(response, moduleLastChange);
 		}
-
+		
 		public boolean invokeProcessSingleResponse(Response response) {
 			return processSingleResponse(response);
 		}
 
 		public boolean invokeProcessSingleResponseCardinalitySingle(CorrectAnswers correctAnswers, Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
 			return processSingleResponseCardinalitySingle(correctAnswers, userAnswers, answersEvaluation);
+		}
+		
+		public void mockGroupsAnswersUsed(Map<String, List<Boolean>> groupsAnswersUsed) {
+			this.groupsAnswersUsed = groupsAnswersUsed;
+		}
+		
+		public void invokeUpdateGroupsPoints() {
+			updateGroupsPoints();
+		}
+		
+		public void invokeUpdateLastMistakeInGroup(String group, Outcome outcome) {
+			updateLastMistakeInGroup(group, outcome);
 		}
 	}
 }

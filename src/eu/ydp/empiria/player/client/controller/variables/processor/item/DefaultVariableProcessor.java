@@ -20,14 +20,16 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
+import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.collections.CollectionsUtil;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public class DefaultVariableProcessor extends VariableProcessor {
 
-	private Map<String, List<ResponseValue>> groupsCorrectAnswers;
-	private Map<String, List<Boolean>> groupsAnswersUsed;
-	private final Map<String, List<Boolean>> responsesAnswersEvaluation = new HashMap<String, List<Boolean>>();
+	protected Map<String, List<ResponseValue>> groupsCorrectAnswers;
+	protected Map<String, Integer> groupsPoints = new HashMap<String, Integer>();
+	protected Map<String, List<Boolean>> groupsAnswersUsed;
+	protected final Map<String, List<Boolean>> responsesAnswersEvaluation = new HashMap<String, List<Boolean>>();
 
 	public static final String MISTAKES = "MISTAKES";
 	public static final String LASTMISTAKEN = "LASTMISTAKEN";
@@ -102,6 +104,9 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		Integer errors = 0;
 		Integer todoCount = 0;
 		String currKey;
+		
+		String commutativityGroup = StringUtils.EMPTY_STRING;
+		Outcome commutativityOutcome = new Outcome();
 
 		Iterator<String> iter = responses.keySet().iterator();
 		boolean passed;
@@ -184,6 +189,14 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			if (outcomes.containsKey(lastChangeKey) && outcomes.containsKey(lastMistakenKey)) {
 				if (userInteract) {
 					int lastMistakes = processCheckMistakes(responses.get(currKey), outcomes.get(lastChangeKey));
+					
+					Outcome lastChanges = outcomes.get(lastChangeKey);
+					boolean isInGroup = responses.get(currKey).groups.size() > 0 ? true : false;
+					if ( (lastChanges.values.size() > 0) && (isInGroup) ) {
+						commutativityGroup = responses.get(currKey).groups.keySet().iterator().next();
+						commutativityOutcome = outcomes.get(lastMistakenKey);
+					}
+					
 					outcomes.get(lastMistakenKey).values.set(0, String.valueOf(lastMistakes));
 					if (outcomes.containsKey(mistakesKey)) {
 						if (outcomes.get(mistakesKey).values.size() == 0) {
@@ -259,9 +272,46 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				}
 			}
 		}
+		
+		if ( !commutativityGroup.equals(StringUtils.EMPTY_STRING) ) {
+			updateLastMistakeInGroup(commutativityGroup, commutativityOutcome);
+		}
+		
+		updateGroupsPoints();
+	}
+	
+	protected void updateGroupsPoints() {
+		for (Map.Entry<String, List<Boolean>> group : groupsAnswersUsed.entrySet()) {
+			groupsPoints.put(group.getKey(), checkPointsInGroup(group.getKey()));
+		}
+	}
+	
+	protected void updateLastMistakeInGroup(String group, Outcome outcome) {
+		Integer currentPoints = checkPointsInGroup(group);
+		Integer lastPoints = (groupsPoints.get(group) != null) ? groupsPoints.get(group) : 0;
+		
+		if (currentPoints.intValue() > lastPoints.intValue()) {
+			outcome.values.set(0, "0");
+		} else {
+			outcome.values.set(0, "1");
+		}
+		
+		groupsPoints.put(group, currentPoints);
 	}
 
-	private void prepareGroupsCorrectAnswers(Map<String, Response> responses) {
+	protected Integer checkPointsInGroup(String groupId) {
+		int points = 0;
+		
+		for (boolean isAnswerCorrect : groupsAnswersUsed.get(groupId)) {
+			if (isAnswerCorrect) {
+				points++;
+			}
+		}
+
+		return points;
+	}
+
+	protected void prepareGroupsCorrectAnswers(Map<String, Response> responses) {
 		groupsCorrectAnswers = new TreeMap<String, List<ResponseValue>>();
 
 		for (Response currResponse : responses.values()) {
@@ -276,7 +326,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		}
 	}
 
-	private void prepareGroupsAnswersUsedMap() {
+	protected void prepareGroupsAnswersUsedMap() {
 		groupsAnswersUsed = new TreeMap<String, List<Boolean>>();
 
 		for (String currGroupName : groupsCorrectAnswers.keySet()) {
