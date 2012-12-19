@@ -35,7 +35,7 @@ public class LightBox2 {
 
 	private native JavaScriptObject enableLightBox2()/*-{
 		var lightbox, options;
-		options = new $wnd.LightboxOptions;
+		options = new $wnd.LightboxOptions();
 		lightbox = new $wnd.Lightbox(options);
 		var thiss = this;
 		lightbox.addListener({handle : function(object){
