@@ -54,30 +54,18 @@ lightbox = new Lightbox options
       this.labelOf = "of";
     };
 
-
-
   Lightbox = function (options) {
       this.options = options;
       this.album = [];
       this.currentImageIndex = void 0;
       this.handlers = [];
-      this.init();
-    };
-
-    Lightbox.prototype.init = function() {
-      this.enable();
-      return this.build();
-    };
-
-    Lightbox.prototype.enable = function() {
-      var _this = this;
-      return $('body').on('click', 'a[rel^=lightbox], area[rel^=lightbox]', function(e) {
-       // _this.start($(e.currentTarget));
-        return false;
-      });
+      this.build();
     };
 
     Lightbox.prototype.build = function() {
+      if($("#lightbox")){
+          return;
+      }
       var $lightbox,
         _this = this;
       $("<div>", {
