@@ -79,7 +79,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 	}
 
 	/**
-	 * buduje widok w oparciu o template
+	 * buduje widok w oparciu o szablon
 	 * @param baseElement
 	 * @param template
 	 */

@@ -35,11 +35,11 @@ public class ModuleWrapper extends AbstractMediaController<ModuleWrapper> {
 
 	@Override
 	public void init() {
-
+		//
 	}
 
 	@Override
 	public void setStyleNames() {
-
+		//
 	}
 }

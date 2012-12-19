@@ -12,12 +12,12 @@ public class XmlData {
 		baseURL = url;
 		fix(doc, url);
 	}
-	
+
 	/** XML DOM document connected with this Assessment Content */
-	private Document document;
-	
+	private final Document document;
+
 	/** Base URL do document */
-	private String baseURL;
+	private final String baseURL;
 
 	public Document getDocument(){
 		return document;
@@ -26,7 +26,7 @@ public class XmlData {
 	public String getBaseURL(){
 		return baseURL;
 	}
-	
+
 	public boolean checkIntegrity(){
 		return true;
 	}
@@ -35,6 +35,7 @@ public class XmlData {
 	private void fix(Document document, String baseUrl){
 
 		fixLinks(document, baseUrl, "img", "src");
+		fixLinks(document, baseUrl, "img", "srcFullScreen");
 		fixLinks(document, baseUrl, "embed", "src");
 		fixLinks(document, baseUrl, "sound", "src");
 		fixLinks(document, baseUrl, "video", "src");
@@ -49,7 +50,7 @@ public class XmlData {
 		fixLinks(document, baseUrl, "simulationPlayer", "src");
 		fixLinks(document, baseUrl, "showUrl", "href");
 	}
-	
+
 	/**
 	 * Fix links relative to xml file
 	 * @param tagName tag name
@@ -71,5 +72,5 @@ public class XmlData {
 			}
 		}
 	}
-	
+
 }

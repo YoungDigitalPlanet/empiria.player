@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.module.img.ImgContent;
 import eu.ydp.empiria.player.client.module.img.LabelledImgContent;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
+import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButon;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
@@ -35,7 +36,10 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	protected MediaControllerFactory controllerFactory;
 
 	@Inject
-	protected Provider<DefaultImgContent> defaultImgContentProvider;
+	private Provider<DefaultImgContent> defaultImgContentProvider;
+
+	@Inject
+	private Provider<PicturePlayerFullScreenMediaButon> fullScreenProvider;
 
 	@Inject
 	public ImgTemplateParser(@Assisted Element baseElement, @Assisted ModuleSocket moduleSocket) {
@@ -51,7 +55,6 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	protected MediaController<?> getMediaControllerNewInstance(String moduleName, Node node) {
 		MediaController<?> controller = null;
 		if (isModuleSupported(moduleName)) {
-
 			ModuleTagName tagName = ModuleTagName.getTag(moduleName);
 			switch (tagName) {
 			case MEDIA_TITLE:
@@ -64,13 +67,22 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 				controller = createWrapper("description");
 				break;
 			case MEDIA_FULL_SCREEN_BUTTON:
-				controller = controllerFactory.get(tagName);
+				controller = createFullScreenButon();
 				break;
 			default:
 				break;
 			}
 		}
 		return controller;
+	}
+
+	private PicturePlayerFullScreenMediaButon createFullScreenButon() {
+		Element titleNodes = XMLUtils.getFirstElementWithTagName(baseElement, "title");
+		final String title = XMLUtils.getTextFromChilds(titleNodes);
+		final String srcFullScreen = baseElement.getAttribute("srcFullScreen");
+		PicturePlayerFullScreenMediaButon fullScreenMediaButon = fullScreenProvider.get();
+		fullScreenMediaButon.addImage(srcFullScreen, title);
+		return fullScreenMediaButon;
 	}
 
 	/**
@@ -106,6 +118,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 				content = new ExplorableImgContent();
 			} else {
 				content = defaultImgContentProvider.get();
+				((DefaultImgContent) content).setTemplate(true);
 			}
 		}
 		content.init(baseElement, moduleSocket);
@@ -114,7 +127,11 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	@Override
 	protected boolean isModuleSupported(String moduleName) {
-		return controllers.contains(moduleName);
+		boolean supported = controllers.contains(moduleName);
+		if (supported && ModuleTagName.getTag(moduleName) == ModuleTagName.MEDIA_FULL_SCREEN_BUTTON) {
+			supported = PicturePlayerFullScreenMediaButon.isSupported(baseElement);
+		}
+		return supported;
 	}
 
 }

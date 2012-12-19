@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.media.button;
 
 import javax.annotation.PostConstruct;
 
+import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -47,6 +48,10 @@ public class PicturePlayerFullScreenMediaButon extends FullScreenMediaButton<Pic
 	@Override
 	public boolean isSupported() {
 		return true;
+	}
+
+	public static boolean isSupported(Element element){
+		return element.hasAttribute("srcFullScreen") && !element.getAttribute("srcFullScreen").trim().isEmpty();
 	}
 
 	@Override

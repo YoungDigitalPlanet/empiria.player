@@ -27,11 +27,20 @@ public class DefaultImgContent extends Composite implements ImgContent {
 	@UiField
 	protected FlowPanel container;
 
+	/**
+	 * czy element renderowany jest w kontekscie szablonu
+	 */
+	private boolean template = false;
+
 	@Inject
 	private PicturePlayerFullScreenMediaButon fullScreenMediaButon;
 
 	public DefaultImgContent() {
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+
+	public void setTemplate(boolean template) {
+		this.template = template;
 	}
 
 	@Override
@@ -41,7 +50,7 @@ public class DefaultImgContent extends Composite implements ImgContent {
 		final String srcFullScreen = element.getAttribute("srcFullScreen");
 		image.setAltText(title);
 		image.setUrl(element.getAttribute("src"));
-		if (srcFullScreen != null && !srcFullScreen.trim().isEmpty()) {
+		if (srcFullScreen != null && !srcFullScreen.trim().isEmpty() && !template) {
 			fullScreenMediaButon.addImage(srcFullScreen, title);
 			fullScreenMediaButon.init();
 			container.add(fullScreenMediaButon);
