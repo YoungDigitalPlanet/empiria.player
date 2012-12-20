@@ -82,7 +82,9 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	public void shouldIgnoreUnselectFeedback(){		
 		ModuleInfo[] infos = new ModuleInfo[]{
 				ModuleInfo.create("-"+MODULE_1).setLastOk(true).setDone(1).setTodo(3).setErrors(0),
-				ModuleInfo.create("-"+MODULE_2).setLastOk(false).setDone(2).setTodo(6).setErrors(0)
+				ModuleInfo.create("-"+MODULE_2).setLastOk(false).setDone(2).setTodo(6).setErrors(0),
+				ModuleInfo.create(null).setLastOk(false).setDone(1).setTodo(3).setErrors(0),
+				ModuleInfo.create("+").setLastOk(false).setDone(1).setTodo(3).setErrors(0)
 		};
 		
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);

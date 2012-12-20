@@ -60,12 +60,20 @@ public class FeedbackPropertiesCreator {
 	private boolean checkIfFeedbackIsOnSelectAction() {
 		String variableValue = getVariableValue(LASTCHANGE);
 		boolean isSelect;
-		if(variableValue != null && variableValue.startsWith("+")){
+		if( !isVariableEmpty(variableValue) && variableValue.startsWith("+") ) {
 			isSelect = true;
-		}else{
+		} else {
 			isSelect = false;
 		}
 		return isSelect;
+	}
+	
+	private boolean isVariableEmpty(String variableValue) {
+		if ( (variableValue == null) || variableValue.equals("+") ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private boolean isAllOk(){
