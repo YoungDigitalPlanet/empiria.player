@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
@@ -46,14 +47,16 @@ public class SelectionModuleViewBuildingController {
 	public void fillFirstColumnWithItems(List<SelectionItemBean> items) {
 		for(int itemNumber=0; itemNumber<items.size(); itemNumber++){
 			SelectionItemBean selectionItemBean = items.get(itemNumber);
-			selectionModuleView.setItemDisplayedName(selectionItemBean.getValue(), itemNumber);
+			XMLContent xmlContent = selectionItemBean.getXmlContent();
+			selectionModuleView.setItemDisplayedName(xmlContent, itemNumber);
 		}
 	}
 
 	public void fillFirstRowWithChoices(List<SelectionSimpleChoiceBean> simpleChoices) {
 		for (int rowNumber=0; rowNumber<simpleChoices.size(); rowNumber++) {
 			SelectionSimpleChoiceBean selectionSimpleChoiceBean = simpleChoices.get(rowNumber);
-			selectionModuleView.setChoiceOptionDisplayedName(selectionSimpleChoiceBean.getValue(), rowNumber);
+			XMLContent xmlContent = selectionSimpleChoiceBean.getXmlContent();
+			selectionModuleView.setChoiceOptionDisplayedName(xmlContent, rowNumber);
 		}
 	}
 	

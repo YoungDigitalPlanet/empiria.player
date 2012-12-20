@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
@@ -59,9 +60,9 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	}
 	
 	@Override
-	public void setItemDisplayedName(String itemName, int itemNumber){
-		Widget itemTextLabel = inlineBodyGeneratorSocket.generateInlineBody(itemName, false);
-		
+	public void setItemDisplayedName(XMLContent itemName, int itemNumber){
+		Widget itemTextLabel = inlineBodyGeneratorSocket.generateInlineBody(itemName.getValue());
+
 		itemTextLabel.setStyleName(styleNameConstants.QP_SELECTION_ITEM_LABEL());
 		itemTextLabel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
 		Panel itemContainer = new FlowPanel();
@@ -73,8 +74,8 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	}
 	
 	@Override
-	public void setChoiceOptionDisplayedName(String choiceName, int choiceNumber){
-		Widget choiseTextWidget = inlineBodyGeneratorSocket.generateInlineBody(choiceName, false);
+	public void setChoiceOptionDisplayedName(XMLContent choiceName, int choiceNumber){
+		Widget choiseTextWidget = inlineBodyGeneratorSocket.generateInlineBody(choiceName.getValue());
 		choiseTextWidget.setStyleName(styleNameConstants.QP_SELECTION_CHOICE());
 		
 		selectionGrid.setWidget(0, choiceNumber+COLUMNS_RESERVED_FOR_ROW_HEADER, choiseTextWidget);

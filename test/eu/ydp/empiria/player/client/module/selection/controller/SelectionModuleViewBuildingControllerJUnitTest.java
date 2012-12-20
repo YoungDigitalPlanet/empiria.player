@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
@@ -76,25 +77,29 @@ public class SelectionModuleViewBuildingControllerJUnitTest {
 	@Test
 	public void testFillFirstColumnWithItems() {
 		SelectionItemBean itemBean = new SelectionItemBean();
-		itemBean.setValue("selection item bean value");
+		XMLContent xmlContent = mock(XMLContent.class);
+		
+		itemBean.setXmlContent(xmlContent);
 		List<SelectionItemBean> items = Lists.newArrayList(itemBean);
 		
 		//then
 		viewBuildingController.fillFirstColumnWithItems(items);
 		
-		verify(selectionModuleView).setItemDisplayedName(itemBean.getValue(), items.indexOf(itemBean));
+		verify(selectionModuleView).setItemDisplayedName(itemBean.getXmlContent(), items.indexOf(itemBean));
 	}
 
 	@Test
 	public void testFillFirstRowWithChoices() {
 		SelectionSimpleChoiceBean choiceBean = new SelectionSimpleChoiceBean();
-		choiceBean.setValue("choice bean value");
+		XMLContent xmlContent = mock(XMLContent.class);
+		
+		choiceBean.setXmlContent(xmlContent);
 		List<SelectionSimpleChoiceBean> simpleChoices = Lists.newArrayList(choiceBean);;
 		
 		//then
 		viewBuildingController.fillFirstRowWithChoices(simpleChoices);
 		
-		verify(selectionModuleView).setChoiceOptionDisplayedName(choiceBean.getValue(), simpleChoices.indexOf(choiceBean));
+		verify(selectionModuleView).setChoiceOptionDisplayedName(choiceBean.getXmlContent(), simpleChoices.indexOf(choiceBean));
 	}
 
 	@Test
