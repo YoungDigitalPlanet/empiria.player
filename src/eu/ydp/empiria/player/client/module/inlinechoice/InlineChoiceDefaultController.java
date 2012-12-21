@@ -44,13 +44,13 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	private String	lastValue = null;
 	private boolean showingAnswers = false;
 	protected boolean showEmptyOption = true;
-	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private final EventsBus eventsBus = getEventsBus();
 	protected Element moduleElement;
 
 	protected Panel container;
 	
 	IUniqueModule parentModule;
-
+	
 	@Override
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
 
@@ -61,6 +61,10 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Override
 	public void addElement(Element element) {
 		moduleElement = element;
+	}
+	
+	protected EventsBus getEventsBus() {
+		return PlayerGinjector.INSTANCE.getEventsBus();
 	}
 
 	@Override
@@ -292,8 +296,13 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	}
 	
 	@Override
-	public void setParentModule(IUniqueModule module) {
+	public void setParentInlineModule(IUniqueModule module) {
 		parentModule = module;
+	}
+	
+	@Override
+	public IUniqueModule getParentInlineModule() {
+		return parentModule;
 	}
 
 	private void updateResponse(boolean userInteract){

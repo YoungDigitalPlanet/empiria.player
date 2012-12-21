@@ -18,12 +18,21 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
+
 public class InlineChoiceModule extends InteractionModuleBase implements Factory<InlineChoiceModule> {
-	private InlineChoiceController controller;
-	private boolean moduleInitialized = false;
+	
+	protected InlineChoiceController controller;
+
+	protected boolean moduleInitialized = false;
 
 	public void initModule() {
-		Map<String, String> styles = getModuleSocket().getStyles(XMLParser.createDocument().createElement("inlinechoiceinteraction"));
+		setStyles();
+		controller.initModule(getModuleSocket(), getInteractionEventsListener());
+		controller.setParentInlineModule(this);
+	}
+	
+	protected void setStyles() {
+		Map<String, String> styles = getStyles();
 		if (styles != null && styles.containsKey(EMPIRIA_INLINECHOICE_TYPE) && styles.get(EMPIRIA_INLINECHOICE_TYPE).equalsIgnoreCase("popup")) {
 			controller = new InlineChoicePopupController();
 		} else {
@@ -38,8 +47,10 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 				&& styles.get(EMPIRIA_INLINECHOICE_POPUP_POSITION).equalsIgnoreCase("below")) {
 			((InlineChoicePopupController) controller).setPopupPosition(ExListBox.PopupPosition.BELOW);
 		}
-		controller.initModule(getModuleSocket(), getInteractionEventsListener());
-		controller.setParentModule(this);
+	}
+	
+	protected Map<String, String> getStyles() {
+		return getModuleSocket().getStyles(XMLParser.createDocument().createElement("inlinechoiceinteraction"));
 	}
 
 	@Override
@@ -79,6 +90,10 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 
 	@Override
 	public void onClose() {
+	}
+	
+	public InlineChoiceController getController() {
+		return controller;
 	}
 
 	// ------------------------ INTERFACES ------------------------

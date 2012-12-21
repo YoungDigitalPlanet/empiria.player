@@ -51,7 +51,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	protected List<Integer> identifiersMap;
 	protected boolean showEmptyOption = true;
-	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private final EventsBus eventsBus = getEventsBus();
 	protected ExListBox.PopupPosition popupPosition = ExListBox.PopupPosition.ABOVE;
 	
 	IUniqueModule parentModule;
@@ -60,6 +60,10 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
 		super.initModule(moduleSocket);
 		this.interactionEventsListener = moduleInteractionListener;
+	}
+	
+	protected EventsBus getEventsBus() {
+		return PlayerGinjector.INSTANCE.getEventsBus();
 	}
 
 	@Override
@@ -217,7 +221,6 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	@Override
 	public JSONArray getState() {
-
 		  JSONArray jsonArr = new JSONArray();
 
 		  String stateString = "";
@@ -235,12 +238,10 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	@Override
 	public void setState(JSONArray newState) {
-
 		if (newState != null  &&  newState.size() > 0  &&  newState.get(0).isString() != null){
 			int index = identifiers.indexOf(newState.get(0).isString().stringValue());
 			listBox.setSelectedIndex( index + ((showEmptyOption)?1:0) );
 		}
-
 
 		updateResponse(false);
 	}
@@ -251,8 +252,13 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	}
 	
 	@Override
-	public void setParentModule(IUniqueModule module) {
+	public void setParentInlineModule(IUniqueModule module) {
 		parentModule = module;
+	}
+	
+	@Override
+	public IUniqueModule getParentInlineModule() {
+		return parentModule;
 	}
 
 	private void updateResponse(boolean userInteract){
@@ -285,4 +291,5 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	public void setPopupPosition(ExListBox.PopupPosition pp){
 		popupPosition = pp;
 	}
+	
 }
