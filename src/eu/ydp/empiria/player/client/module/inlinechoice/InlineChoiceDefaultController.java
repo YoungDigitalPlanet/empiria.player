@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -47,6 +48,8 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	protected Element moduleElement;
 
 	protected Panel container;
+	
+	IUniqueModule parentModule;
 
 	@Override
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
@@ -287,6 +290,11 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		}
 
 	}
+	
+	@Override
+	public void setParentModule(IUniqueModule module) {
+		parentModule = module;
+	}
 
 	private void updateResponse(boolean userInteract){
 		if (showingAnswers) {
@@ -302,7 +310,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 			lastValue = "";
 		}
 		response.add(lastValue);
-		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, this)), new CurrentPageScope());
+		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, parentModule)), new CurrentPageScope());
 	}
 
 	@Override

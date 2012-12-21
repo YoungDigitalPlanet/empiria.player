@@ -39,6 +39,7 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 			((InlineChoicePopupController) controller).setPopupPosition(ExListBox.PopupPosition.BELOW);
 		}
 		controller.initModule(getModuleSocket(), getInteractionEventsListener());
+		controller.setParentModule(this);
 	}
 
 	@Override

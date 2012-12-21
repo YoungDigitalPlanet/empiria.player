@@ -20,6 +20,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParentedModuleBase;
@@ -52,6 +53,8 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	protected boolean showEmptyOption = true;
 	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 	protected ExListBox.PopupPosition popupPosition = ExListBox.PopupPosition.ABOVE;
+	
+	IUniqueModule parentModule;
 
 	@Override
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
@@ -246,6 +249,11 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	public JavaScriptObject getJsSocket() {
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
+	
+	@Override
+	public void setParentModule(IUniqueModule module) {
+		parentModule = module;
+	}
 
 	private void updateResponse(boolean userInteract){
 		if (showingAnswers) {
@@ -258,7 +266,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 			String lastValue = identifiers.get(listBox.getSelectedIndex() - ((showEmptyOption)?1:0));
 			response.add(lastValue);
 		}
-		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, this)), new CurrentPageScope());
+		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, parentModule)), new CurrentPageScope());
 	}
 
 	@Override
