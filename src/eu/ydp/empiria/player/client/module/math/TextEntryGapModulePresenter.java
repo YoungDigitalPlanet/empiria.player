@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
-import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
+import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
 public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHandler {
 
@@ -140,7 +140,7 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	}
 
 	@Override
-	public ExListBox getListBox() {
+	public IsExListBox getListBox() {
 		return null;
 	}
 }

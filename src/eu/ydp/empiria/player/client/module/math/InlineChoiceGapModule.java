@@ -20,8 +20,8 @@ import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
-import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxChangeListener;
+import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
 public class InlineChoiceGapModule extends MathGapBase implements MathGap, Factory<InlineChoiceGapModule> {
 
@@ -47,7 +47,7 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 		});
 	}
 
-	protected ExListBox getListBox() {
+	protected IsExListBox getListBox() {
 		return presenter.getListBox();
 	}
 

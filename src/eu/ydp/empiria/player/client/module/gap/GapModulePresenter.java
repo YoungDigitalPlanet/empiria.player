@@ -4,7 +4,7 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
-import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
+import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
 public interface GapModulePresenter {
 
@@ -46,5 +46,5 @@ public interface GapModulePresenter {
 
 	void removeFocusFromTextField();
 
-	public ExListBox getListBox();
+	public IsExListBox getListBox();
 }

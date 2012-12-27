@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
+import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
 public class InlineChoiceGapModulePresenter implements GapModulePresenter {
 
@@ -109,7 +110,7 @@ public class InlineChoiceGapModulePresenter implements GapModulePresenter {
 	}
 
 	@Override
-	public ExListBox getListBox() {
+	public IsExListBox getListBox() {
 		return listBox;
 	}
 

@@ -2,8 +2,6 @@ package eu.ydp.empiria.player.client.module.math;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
@@ -21,9 +19,8 @@ import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
-import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxOption;
-import eu.ydp.gwtutil.client.components.exlistbox.ExListBox.ExListBoxUnitTestAccess;
+import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
+import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
 
 public class InlineChoiceGapModuleJUnitTest {
 
@@ -95,14 +92,13 @@ public class InlineChoiceGapModuleJUnitTest {
 
     private class InlineChoiceGapModuleMock extends InlineChoiceGapModule {
 
-    	private ExListBox mockedListBox;
+    	private IsExListBox mockedListBox;
 
 		public InlineChoiceGapModuleMock(Map<String, String> mathStyles) {
 			super(mock(InlineChoiceGapModulePresenter.class));
 			this.mathStyles = mathStyles;
 			initStyles();
 			options = createOptions(getModuleElement(), getModuleSocket());
-			initListBox();
 		}
 
 		@Override
@@ -116,30 +112,11 @@ public class InlineChoiceGapModuleJUnitTest {
 			return mockedListBoxIdentifiers;
 		}
 
-		protected void initListBox() {
-			ExListBoxUnitTestAccess listBoxPrivateAccess = mockedListBox.new ExListBoxUnitTestAccess();
-
-			ArrayList<ExListBoxOption> options = new ArrayList<ExListBoxOption>();
-
-			if (hasEmptyOption) {
-				options.add(mock(ExListBoxOption.class));
-			}
-			options.add(mock(ExListBoxOption.class));
-			options.add(mock(ExListBoxOption.class));
-			options.add(mock(ExListBoxOption.class));
-
-			listBoxPrivateAccess.setOptions(options);
-
-			doCallRealMethod().when(mockedListBox).setSelectedIndex(anyInt());
-			doCallRealMethod().when(mockedListBox).getSelectedIndex();
-		}
-
 		@Override
-		public ExListBox getListBox() {
+		public IsExListBox getListBox() {
 			if (mockedListBox == null) {
-				mockedListBox = mock(ExListBox.class);
+				mockedListBox = mock(IsExListBox.class, new ReturnsJavaBeanAnswers());
 			}
-
 			return mockedListBox;
 		}
 
