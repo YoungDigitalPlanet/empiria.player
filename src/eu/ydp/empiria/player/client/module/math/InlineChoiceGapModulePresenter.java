@@ -9,9 +9,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 
 public class InlineChoiceGapModulePresenter implements GapModulePresenter {
 

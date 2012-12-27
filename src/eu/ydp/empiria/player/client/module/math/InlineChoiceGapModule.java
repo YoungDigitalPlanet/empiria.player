@@ -13,8 +13,6 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.components.ExListBox;
-import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
@@ -22,6 +20,8 @@ import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxChangeListener;
 
 public class InlineChoiceGapModule extends MathGapBase implements MathGap, Factory<InlineChoiceGapModule> {
 

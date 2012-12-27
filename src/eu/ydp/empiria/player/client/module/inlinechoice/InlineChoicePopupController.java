@@ -14,8 +14,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.components.ExListBox;
-import eu.ydp.empiria.player.client.components.ExListBoxChangeListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -29,6 +27,8 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxChangeListener;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class InlineChoicePopupController extends ParentedModuleBase implements InlineChoiceController, ExListBoxChangeListener {

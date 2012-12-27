@@ -13,11 +13,11 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 
-import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 
 public class InlineChoiceModule extends InteractionModuleBase implements Factory<InlineChoiceModule> {
 	

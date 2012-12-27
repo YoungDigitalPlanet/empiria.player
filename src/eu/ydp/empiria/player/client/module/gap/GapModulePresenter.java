@@ -3,8 +3,8 @@ package eu.ydp.empiria.player.client.module.gap;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasWidgets;
 
-import eu.ydp.empiria.player.client.components.ExListBox;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 
 public interface GapModulePresenter {
 

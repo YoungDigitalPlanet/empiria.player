@@ -18,12 +18,12 @@ import org.junit.Test;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.components.ExListBox;
-import eu.ydp.empiria.player.client.components.ExListBox.ExListBoxUnitTestAccess;
-import eu.ydp.empiria.player.client.components.ExListBoxOption;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxOption;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBox.ExListBoxUnitTestAccess;
 
 public class InlineChoiceGapModuleJUnitTest {
 
