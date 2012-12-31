@@ -63,7 +63,7 @@ lightbox = new Lightbox options
     };
 
     Lightbox.prototype.build = function() {
-      if($("#lightbox")){
+      if($("#lightbox").lenght > 0){
           return;
       }
       var $lightbox,
