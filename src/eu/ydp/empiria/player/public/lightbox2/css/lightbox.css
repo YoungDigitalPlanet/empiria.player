@@ -169,10 +169,13 @@
 }
 /* line 112, ../sass/lightbox.sass */
 .lb-data .lb-close {
-  width: 35px;
+  width: 27px;
+  height:27px;
   float: right;
   padding-bottom: 0.7em;
   outline: none;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAABuUlEQVR42p1WMY6DMBDkJVcdRZDyhpx0TX5AoggqOgQFNS3V3TfykBRpEzl5RE4n3Ru4HckrgY29xpZGlvF4Bw/Yu4nRMsKX7oPaOI4WqL0Tvgm7yXNL6IH1us8ixDjOXcf5I3yaYilBgXA4HEb0epyuEJvFOR6PHOeX8MFiGeGJibIsx/P5jJ6JeL4JEQPPjNO2Lcf5gaUgXfHgdDqBwMCYicpj6dQ6tRSnaRqO8wLxwm9ioiiKEEvZOvAX49R1zTGSjMSeCyTZUts610vP1qa0fWWQXJZuWMiwzrUWnNT89bFDCEqW3gh79D7rAMRDXOuc8dtiy4IgA2PROtehDrK067pxu92iD7JOEJMt7fs+1DpZTLZUtm4JUnvL81zxTnw7BQ98BI0WI6iqqrximAcvQsw+sMMweMUwTzwgyka+62BPyPcCjwWlH0S+62zId6kkJt918q/vtJSblSY8h/pGh3qPXrhLTUtXWYe52UWM8RpL0bKYNDERXJWeLqFpwhCKSU/J1bcjmpPKgtD09PJlapBWFTzgO8oCXfA4rMA4ppTDOqPg4VLOSisPbV1skcpx7rqUmxWp//cDxLp5KHl1AAAAAElFTkSuQmCC);
 }
 /* line 117, ../sass/lightbox.sass */
 .lb-data .lb-close:hover {
