@@ -82,7 +82,6 @@ import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.flash.FlashModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
-import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.prompt.PromptModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
@@ -120,7 +119,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private StyleLinkManager styleManager;
 
 	private final DataSourceManager dataManager;
-	
+
 	private ExtensionsManager extensionsManager;
 
 	private FlowManager flowManager;
@@ -308,7 +307,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new SimpleTextModule(), ModuleTagName.SIMPLE_TEXT));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.AUDIO_PLAYER, false, true));
 		loadExtension(new SimpleConnectorExtension(new MathTextModule(), ModuleTagName.MATH_TEXT, false, true));
-		loadExtension(new SimpleConnectorExtension(new MathModule(), ModuleTagName.MATH_INTERACTION));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getMathModule(), ModuleTagName.MATH_INTERACTION));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.OBJECT, false, true));
 		loadExtension(new SimpleConnectorExtension(new SlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER));
 		loadExtension(new SimpleConnectorExtension(new FlashModule(), ModuleTagName.FLASH));

@@ -7,6 +7,7 @@ import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
+import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
@@ -33,9 +34,12 @@ public class ModuleProviderFactory {
 
 	@Inject
 	protected Provider<ImgModule> imgModule;
-	
+
 	@Inject
 	protected Provider<SelectionModule> selectionModule;
+
+	@Inject
+	protected Provider<MathModule> mathModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -67,6 +71,10 @@ public class ModuleProviderFactory {
 
 	public Provider<SelectionModule> getSelectionModule() {
 		return selectionModule;
+	}
+
+	public Provider<MathModule> getMathModule() {
+		return mathModule;
 	}
 
 }
