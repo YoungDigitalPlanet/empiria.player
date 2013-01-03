@@ -56,6 +56,7 @@ public class ObjectTemplateParserTest extends AbstractTestBase {
 		controllers.add(ModuleTagName.MEDIA_CURRENT_TIME.tagName());
 		controllers.add(ModuleTagName.MEDIA_TOTAL_TIME.tagName());
 		controllers.add(ModuleTagName.MEDIA_TEXT_TRACK.tagName());
+		controllers.add(ModuleTagName.MEDIA_SCREEN.tagName());
 	}
 
 	@Test
@@ -72,6 +73,7 @@ public class ObjectTemplateParserTest extends AbstractTestBase {
 		});
 		// test
 		controllers.remove(ModuleTagName.MEDIA_TEXT_TRACK.tagName());
+		controllers.remove(ModuleTagName.MEDIA_SCREEN.tagName());
 		for (String tagName : controllers) {
 			MediaController<?> mediaController = parser.getMediaControllerNewInstance(tagName, null);
 			assertNotNull("media controller is null", mediaController);

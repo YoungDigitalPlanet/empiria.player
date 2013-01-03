@@ -28,7 +28,7 @@ import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ImgTemplateParser extends AbstractTemplateParser {
-	protected Set<String> controllers = new HashSet<String>();
+	protected final static Set<String> CONTROLLERS = new HashSet<String>();
 	private final Element baseElement;
 	private final ModuleSocket moduleSocket;
 
@@ -45,10 +45,17 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	public ImgTemplateParser(@Assisted Element baseElement, @Assisted ModuleSocket moduleSocket) {
 		this.baseElement = baseElement;
 		this.moduleSocket = moduleSocket;
-		controllers.add(ModuleTagName.MEDIA_TITLE.tagName());
-		controllers.add(ModuleTagName.MEDIA_DESCRIPTION.tagName());
-		controllers.add(ModuleTagName.MEDIA_FULL_SCREEN_BUTTON.tagName());
-		controllers.add(ModuleTagName.MEDIA_SCREEN.tagName());
+		if (CONTROLLERS.isEmpty()) {
+			CONTROLLERS.add(ModuleTagName.MEDIA_TITLE.tagName());
+			CONTROLLERS.add(ModuleTagName.MEDIA_DESCRIPTION.tagName());
+			CONTROLLERS.add(ModuleTagName.MEDIA_FULL_SCREEN_BUTTON.tagName());
+			CONTROLLERS.add(ModuleTagName.MEDIA_SCREEN.tagName());
+		}
+	}
+
+	@Override
+	public void beforeParse(Node mainNode, Widget parent) {
+		//
 	}
 
 	@Override
@@ -127,7 +134,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	@Override
 	protected boolean isModuleSupported(String moduleName) {
-		boolean supported = controllers.contains(moduleName);
+		boolean supported = CONTROLLERS.contains(moduleName);
 		if (supported && ModuleTagName.getTag(moduleName) == ModuleTagName.MEDIA_FULL_SCREEN_BUTTON) {
 			supported = PicturePlayerFullScreenMediaButon.isSupported(baseElement);
 		}

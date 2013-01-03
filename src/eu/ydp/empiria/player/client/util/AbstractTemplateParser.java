@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.util;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -14,6 +17,7 @@ import eu.ydp.empiria.player.client.module.media.button.MediaController;
 
 public abstract class AbstractTemplateParser {
 	private final static String MODULE_ATTRIBUTE = "module";
+	private final Set<String> templateModules = new HashSet<String>();
 
 	private void parseXMLAttributes(com.google.gwt.xml.client.Element srcElement, com.google.gwt.dom.client.Element dstElement) {
 		NamedNodeMap attributes = srcElement.getAttributes();
@@ -29,7 +33,8 @@ public abstract class AbstractTemplateParser {
 		}
 	}
 
-	public void parse(Node mainNode, Widget parent) {
+	private void collectModules(Node mainNode, boolean complexPanel) {
+		templateModules.clear();
 		if (mainNode == null) {
 			return;
 		}
@@ -39,27 +44,72 @@ public abstract class AbstractTemplateParser {
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				String moduleName = node.getNodeName();
 				if (!moduleName.trim().isEmpty() && isModuleSupported(moduleName)) {
-					MediaController<?> mediaController = getMediaControllerNewInstance(moduleName,node);
+					templateModules.add(moduleName);
+					collectModules(node, complexPanel);
+				} else {
+					collectModules(node, complexPanel);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Zwraca true jezeli modul wystepuje w szablonie i parser go obsluguje
+	 * false w przeciwnym razie
+	 *
+	 * @param moduleName
+	 * @return
+	 */
+	public boolean isModuleInTemplate(String moduleName) {
+		return templateModules.contains(moduleName);
+	}
+
+	private void parseNode(Node mainNode, Widget parent) {
+		if (mainNode == null) {
+			return;
+		}
+		NodeList nodes = mainNode.getChildNodes();
+		for (int x = 0; x < nodes.getLength(); ++x) {
+			Node node = nodes.item(x);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				String moduleName = node.getNodeName();
+				if (!moduleName.trim().isEmpty() && isModuleSupported(moduleName)) {
+					MediaController<?> mediaController = getMediaControllerNewInstance(moduleName, node);
 					mediaController.init();
 					parseXMLAttributes((Element) node, mediaController.asWidget().getElement());
 					if (parent instanceof ComplexPanel) {
 						((Panel) parent).add(mediaController);
-						parse(node, (Widget) mediaController);
+						parseNode(node, (Widget) mediaController);
 					}
 				} else {
-					HTMLPanel panel = new HTMLPanel(((Element) node).getNodeName(), ""); //NOPMD
+					HTMLPanel panel = new HTMLPanel(((Element) node).getNodeName(), ""); // NOPMD
 					if (parent instanceof ComplexPanel) {
 						((Panel) parent).add(panel);
 						parseXMLAttributes((Element) node, panel.getElement());
-						parse(node, panel);
+						parseNode(node, panel);
 					}
 				}
 			} else if (node.getNodeType() == Node.TEXT_NODE) {
 				parent.getElement().appendChild(Document.get().createTextNode(node.getNodeValue()));
 			}
 		}
-
 	}
+
+	public void parse(Node mainNode, Widget parent) {
+		collectModules(mainNode, parent instanceof ComplexPanel);
+		beforeParse(mainNode, parent);
+		parseNode(mainNode, parent);
+	}
+
+	/**
+	 * Metoda jest wywolywana zanim rozpocznie sie parsowanie Elementu przyczym
+	 * wstepna analiza szablonu zostala juz wykonana i dane na temat modulow w
+	 * szablonie sa juz dostepne.
+	 *
+	 * @param mainNode
+	 * @param parent
+	 */
+	public abstract void beforeParse(Node mainNode, Widget parent);
 
 	/**
 	 * Metoda zwraca nowy controler
@@ -67,7 +117,7 @@ public abstract class AbstractTemplateParser {
 	 * @param moduleName
 	 * @return
 	 */
-	protected abstract MediaController<?> getMediaControllerNewInstance(String moduleName,Node node);
+	protected abstract MediaController<?> getMediaControllerNewInstance(String moduleName, Node node);
 
 	/**
 	 * Sprawdza czy dany modu jest obslugiwany

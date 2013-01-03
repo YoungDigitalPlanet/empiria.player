@@ -126,8 +126,6 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 			clearFullScreenView();
 			lastMediaWrapper = mediaWrapper;
 			VideoFullScreenViewImpl parent = getFullScreenView();
-			Widget widget = mediaWrapper.getMediaObject();
-			parent.getContainer().add(widget);
 			parseTemplate(mediaWrapper, template, parent.getControls());
 			fireEvent(true, mediaWrapper);
 			RootPanel.get().add(parent);

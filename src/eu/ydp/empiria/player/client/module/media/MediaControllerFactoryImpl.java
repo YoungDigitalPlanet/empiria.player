@@ -8,12 +8,12 @@ import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
-import eu.ydp.empiria.player.client.module.media.button.VideoFullScreenMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.module.media.button.MediaProgressBar;
 import eu.ydp.empiria.player.client.module.media.button.MuteMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.PlayPauseMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.StopMediaButton;
+import eu.ydp.empiria.player.client.module.media.button.VideoFullScreenMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.VolumeMediaButton;
 import eu.ydp.empiria.player.client.module.media.info.MediaCurrentTime;
 import eu.ydp.empiria.player.client.module.media.info.MediaTotalTime;
@@ -44,7 +44,7 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 				mediaController = new MuteMediaButton();
 				break;
 			case MEDIA_PROGRESS_BAR:
-				mediaController = GWT.create(MediaProgressBar.class);// (AbstractMediaController<?>) ((AbstractMediaController<?>) mediaProgerssBar).getNewInstance();
+				mediaController = GWT.create(MediaProgressBar.class);
 				break;
 			case MEDIA_FULL_SCREEN_BUTTON:
 				mediaController = fullScreenMediaButtonProvider.get();
