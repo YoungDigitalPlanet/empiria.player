@@ -5,7 +5,9 @@ import java.util.Set;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.ComplexPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -34,7 +36,6 @@ public abstract class AbstractTemplateParser {
 	}
 
 	private void collectModules(Node mainNode, boolean complexPanel) {
-		templateModules.clear();
 		if (mainNode == null) {
 			return;
 		}
@@ -64,6 +65,16 @@ public abstract class AbstractTemplateParser {
 		return templateModules.contains(moduleName);
 	}
 
+	private Panel getPanel(String nodeName) {
+		Panel panel = null;
+		if ("div".equals(nodeName)) {
+			panel = new FlowPanel();
+		} else {
+			panel = new HTMLPanel(nodeName, "");
+		}
+		return panel;
+	}
+
 	private void parseNode(Node mainNode, Widget parent) {
 		if (mainNode == null) {
 			return;
@@ -77,18 +88,19 @@ public abstract class AbstractTemplateParser {
 					MediaController<?> mediaController = getMediaControllerNewInstance(moduleName, node);
 					mediaController.init();
 					parseXMLAttributes((Element) node, mediaController.asWidget().getElement());
-					if (parent instanceof ComplexPanel) {
-						((Panel) parent).add(mediaController);
-						parseNode(node, (Widget) mediaController);
+					if (parent instanceof HasWidgets) {
+						((HasWidgets) parent).add(mediaController.asWidget());
+						if (mediaController instanceof Widget) {
+							parseNode(node, (Widget) mediaController);
+						}
 					}
-				} else {
-					HTMLPanel panel = new HTMLPanel(((Element) node).getNodeName(), ""); // NOPMD
-					if (parent instanceof ComplexPanel) {
-						((Panel) parent).add(panel);
-						parseXMLAttributes((Element) node, panel.getElement());
-						parseNode(node, panel);
-					}
+				} else if (parent instanceof ComplexPanel) {
+					Panel panel = getPanel(((Element) node).getNodeName());
+					((Panel) parent).add(panel);
+					parseXMLAttributes((Element) node, panel.getElement());
+					parseNode(node, panel);
 				}
+
 			} else if (node.getNodeType() == Node.TEXT_NODE) {
 				parent.getElement().appendChild(Document.get().createTextNode(node.getNodeValue()));
 			}
@@ -96,6 +108,7 @@ public abstract class AbstractTemplateParser {
 	}
 
 	public void parse(Node mainNode, Widget parent) {
+		templateModules.clear();
 		collectModules(mainNode, parent instanceof ComplexPanel);
 		beforeParse(mainNode, parent);
 		parseNode(mainNode, parent);

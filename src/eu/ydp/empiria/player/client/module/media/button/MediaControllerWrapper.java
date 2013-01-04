@@ -1,17 +1,20 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
-public class MediaControllerWrapper<T  extends Widget> implements MediaController<T> {
+public class MediaControllerWrapper<T extends Widget> implements MediaController<T> {
 
-	private final T widget;
+	private final Widget widget;
 
 	public MediaControllerWrapper(T widget) {
-		this.widget = widget;
+		FlowPanel panel = new FlowPanel();
+		panel.add(widget);
+		this.widget = panel;// widget;
 	}
 
 	@Override
