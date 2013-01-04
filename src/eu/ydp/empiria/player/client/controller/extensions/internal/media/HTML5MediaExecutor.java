@@ -59,7 +59,11 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, MediaExecutor
 
 				if (baseMediaConfiguration.getNarrationText().trim().length() > 0) {
 					TextTrack textTrack = ((Video) media).addTrack(TextTrackKind.SUBTITLES);
-					textTrack.addCue(new TextTrackCue(Document.get().createUniqueId(), 0, 1000, baseMediaConfiguration.getNarrationText()));
+					//FIXME do poprawy gdy narrationScript bedzie zawieral informacje o czasie wyswietlania
+					//zamiast Double.MAX_VALUE tu powinna sie znalezc wartosc czasowa okreslajaca
+					//kiedy napis znika poniewaz w tej chwili narrationScript nie posiada takiej informacji
+					//przypisuje najwieksza dostepna wartosc
+					textTrack.addCue(new TextTrackCue(Document.get().createUniqueId(), 0, Double.MAX_VALUE, baseMediaConfiguration.getNarrationText()));
 				}
 			}
 			for (Map.Entry<String, String> entry : baseMediaConfiguration.getSources().entrySet()) {

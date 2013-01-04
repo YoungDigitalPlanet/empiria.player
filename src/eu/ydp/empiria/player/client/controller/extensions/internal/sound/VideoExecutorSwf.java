@@ -26,7 +26,11 @@ public class VideoExecutorSwf extends ExecutorSwf {
 		}
 			if (baseMediaConfiguration.getNarrationText().trim().length() > 0 ) {
 				final TextTrack textTrack = textTrackFactory.getTextTrack(TextTrackKind.SUBTITLES, mediaWrapper);
-				textTrack.addCue(new TextTrackCue(Document.get().createUniqueId(), 0, 10, baseMediaConfiguration.getNarrationText()));
+				//FIXME do poprawy gdy narrationScript bedzie zawieral informacje o czasie wyswietlania
+				//zamiast Double.MAX_VALUE tu powinna sie znalezc wartosc czasowa okreslajaca
+				//kiedy napis znika poniewaz w tej chwili narrationScript nie posiada takiej informacji
+				//przypisuje najwieksza dostepna wartosc
+				textTrack.addCue(new TextTrackCue(Document.get().createUniqueId(), 0, Double.MAX_VALUE, baseMediaConfiguration.getNarrationText()));
 				eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), mediaWrapper, new MediaEventHandler() {
 
 					@Override
