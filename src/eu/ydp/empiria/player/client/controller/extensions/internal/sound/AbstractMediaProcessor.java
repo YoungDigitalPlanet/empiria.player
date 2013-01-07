@@ -1,14 +1,21 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.isUserAgent;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
+import eu.ydp.empiria.player.client.media.Audio;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.html5.HTML5MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
@@ -16,11 +23,16 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.debug.logger.Debug;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.RuntimeMobileUserAgent;
+
+import java.util.logging.Logger;
 
 public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler {
-	protected Map<MediaWrapper<?>, MediaExecutor<?>> executors = new HashMap<MediaWrapper<?>, MediaExecutor<?>>();
+	private Map<MediaWrapper<?>, MediaExecutor<?>> executors = new HashMap<MediaWrapper<?>, MediaExecutor<?>>();
+	
 	protected MediaInteractionSoundEventCallback callback;
+	
 	@Inject
 	protected EventsBus eventsBus;
 
@@ -32,53 +44,93 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			eventsBus.addHandler(MediaEvent.getType(type), this);
 		}
 	}
+	
+	public Map<MediaWrapper<?>, MediaExecutor<?>> getMediaExecutors() {
+		return executors;
+	}
+	
+	public void putMediaExecutor(MediaWrapper<?> wrapper, MediaExecutor<?> executor) {
+		executors.put(wrapper, executor);
+	}
 
 	@Override
 	public void onMediaEvent(MediaEvent event) {
-		MediaExecutor<?> executor = executors.get(event.getMediaWrapper());
+		MediaWrapper<?> wrapper = event.getMediaWrapper();
+		MediaExecutor<?> executor = executors.get(wrapper);
+		
 		if (executor == null) {
-			Debug.log("Executor is null for " + event.getMediaWrapper());
+			Logger.getLogger(getClass().getName()).info("Media Executor is null");
 			return;
 		}
-
+		
 		switch (((MediaEventTypes) event.getAssociatedType().getType())) {
-		case CHANGE_VOLUME:
-			executor.setVolume( event.getVolume());
-			break;
-		case STOP:
-			executor.stop();
-			break;
-		case PAUSE:
-			executor.pause();
-			break;
-		case SET_CURRENT_TIME:
-			executor.setCurrentTime(event.getCurrentTime());
-			break;
-		case PLAY:
-			try {
-				executor.play();
-			} catch (Exception e) {
-				GWT.log(e.getMessage());
-			}
-			break;
-		case ON_PLAY:
-			pauseAllOthers(executor.getMediaWrapper());
-			break;
-		case MUTE:
-			executor.setMuted(!(executor.getMediaWrapper().isMuted()));
-			break;
-		case ENDED:
-		case ON_END:
-			if (executor.getMediaWrapper().getMediaAvailableOptions().isPauseSupported()) {
-				executor.pause();
-			} else {
+			case CHANGE_VOLUME:
+				executor.setVolume( event.getVolume());
+				break;
+			case STOP:
 				executor.stop();
-			}
-			executor.setCurrentTime(0);
-			break;
-		default:
-			break;
+				break;
+			case PAUSE:
+				executor.pause();
+				break;
+			case SET_CURRENT_TIME:
+				executor.setCurrentTime(event.getCurrentTime());
+				break;
+			case PLAY:
+				if (isUserAgent(RuntimeMobileUserAgent.ANDROID404)
+						&& UserAgentChecker.isStackAndroidBrowser()
+						&& executor.getBaseMediaConfiguration().isFeedback()) {
+					reCreateAudio((HTML5MediaWrapper) wrapper, (HTML5MediaExecutor) executor);
+				}
+				try {
+					executor.play();
+				} catch (Exception e) {
+					Logger.getLogger(getClass().getName()).info(e.getMessage());
+				}
+				break;
+			case ON_PLAY:
+				pauseAllOthers(executor.getMediaWrapper());
+				break;
+			case MUTE:
+				executor.setMuted(!(executor.getMediaWrapper().isMuted()));
+				break;
+			case ENDED:
+			case ON_END:
+				if (isUserAgent(RuntimeMobileUserAgent.ANDROID404)
+						&& UserAgentChecker.isStackAndroidBrowser()) {
+					reCreateAudio((HTML5MediaWrapper) wrapper, (HTML5MediaExecutor) executor);
+				}
+				executor.stop();
+				break;
+			case ON_ERROR:
+				Logger.getLogger(getClass().getName()).info("Media Error");
+				break;
+			default:
+				break;
 		}
+	}
+	
+	protected void reCreateAudio(HTML5MediaWrapper wrapper, HTML5MediaExecutor executor) {
+		Audio audio = (Audio) wrapper.getMediaObject();
+		Audio newAudio = reAttachAudio(audio);
+		wrapper.setMediaObject(newAudio);
+		executor.setMedia(newAudio);
+		executor.init();			
+	}
+	
+	protected Audio reAttachAudio(Audio audio) {
+		NodeList<Node> sourceList = audio.getAudioElement().getChildNodes();
+		FlowPanel parent = (FlowPanel) audio.getParent();
+		
+		parent.remove(audio);
+		Audio newAudio = new Audio();
+		parent.add(newAudio);
+		
+		for (int i = 0; i < sourceList.getLength(); i++) {
+			newAudio.getElement().appendChild(sourceList.getItem(i));
+		} 
+		
+		return newAudio;
 	}
 
 	@Override

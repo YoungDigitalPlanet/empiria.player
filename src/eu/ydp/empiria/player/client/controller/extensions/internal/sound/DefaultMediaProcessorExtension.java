@@ -113,7 +113,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	}
 
 	protected void forceStop(boolean pause, MediaWrapper<?> mw, boolean stopDefaultSoundExecutor) {
-		for (MediaExecutor<?> se : executors.values()) {
+		for (MediaExecutor<?> se : getMediaExecutors().values()) {
 			if (se.getMediaWrapper() != null && se.getMediaWrapper().equals(mw)) {
 				continue;
 			}
@@ -227,7 +227,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 		if (executor != null) {
 			executor.setBaseMediaConfiguration(mediaConfiguration);
 			executor.init();
-			executors.put(executor.getMediaWrapper(), executor);
+			putMediaExecutor(executor.getMediaWrapper(), executor);
 		}
 	}
 

@@ -96,5 +96,10 @@ public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {//NOPMD
 
 	}
+	
+	@Override
+	public BaseMediaConfiguration getBaseMediaConfiguration() {
+		return null;
+	}
 
 }

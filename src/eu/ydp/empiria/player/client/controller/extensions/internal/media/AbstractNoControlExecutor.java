@@ -26,9 +26,12 @@ public abstract class AbstractNoControlExecutor implements MediaExecutor<Widget>
 	@Override
 	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {//NOPMD
 		this.bmc = baseMediaConfiguration;
-
 	}
 
+	@Override
+	public BaseMediaConfiguration getBaseMediaConfiguration() {
+		return bmc;
+	}
 
 	@Override
 	@Deprecated

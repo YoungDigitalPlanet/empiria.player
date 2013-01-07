@@ -9,6 +9,7 @@ public interface MediaExecutor<T extends Widget> {
 	public MediaWrapper<T> getMediaWrapper();
 	public void setMediaWrapper(MediaWrapper<T> descriptor);
 	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration);
+	public BaseMediaConfiguration getBaseMediaConfiguration();
 	public void init();
 	@Deprecated
 	public void play(String src);

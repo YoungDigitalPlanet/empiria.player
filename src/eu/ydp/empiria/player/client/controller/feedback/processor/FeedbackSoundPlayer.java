@@ -35,12 +35,12 @@ public class FeedbackSoundPlayer {
 			if (object instanceof MediaWrapper<?>) {
 				MediaWrapper<?> mediaWrapper = (MediaWrapper<?>) object;
 				wrappers.put(wrappersSourcesKey, mediaWrapper);
-				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, mediaWrapper), mediaWrapper);
+				playSound(mediaWrapper);
 			}
 		}
 
-		public void setWrappersSourcesKey(String wrappersSourcesKey) {
-			this.wrappersSourcesKey = wrappersSourcesKey;
+		public void setWrappersSourcesKey(String sourcesKey) {
+			this.wrappersSourcesKey = sourcesKey;
 		}
 		
 	}
@@ -57,16 +57,16 @@ public class FeedbackSoundPlayer {
 	
 	// Jesli mamy zrodla plikow oraz ich MIME.
 	public void play(Map<String, String> sourcesWithTypes) {
-		String wrappersSourcesKey = getWrappersSourcesKey(new ArrayList<String>(sourcesWithTypes.keySet()));
+		String sourcesKey = getWrappersSourcesKey(new ArrayList<String>(sourcesWithTypes.keySet()));
 		
-		this.play(wrappersSourcesKey, sourcesWithTypes);
+		this.play(sourcesKey, sourcesWithTypes);
 	}
 	
-	protected void play(String wrappersSourcesKey, Map<String, String> sourcesWithTypes) {
-		if (wrappers.containsKey(wrappersSourcesKey)) {
-			playSound(wrappers.get(wrappersSourcesKey));
+	protected void play(String sourcesKey, Map<String, String> sourcesWithTypes) {
+		if (wrappers.containsKey(sourcesKey)) {
+			playSound(wrappers.get(sourcesKey));
 		} else {
-			createMediaWrapper(wrappersSourcesKey, sourcesWithTypes);
+			createMediaWrapper(sourcesKey, sourcesWithTypes);
 		}
 	}
 	
@@ -75,10 +75,10 @@ public class FeedbackSoundPlayer {
 		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, mediaWrapper), mediaWrapper);
 	}
 	
-	protected void createMediaWrapper(String wrappersSourcesKey, Map<String, String> sourcesWithTypes) {
+	protected void createMediaWrapper(String sourcesKey, Map<String, String> sourcesWithTypes) {
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, true);
 		MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
-		callbackHandler.setWrappersSourcesKey(wrappersSourcesKey);
+		callbackHandler.setWrappersSourcesKey(sourcesKey);
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
 	}
 	

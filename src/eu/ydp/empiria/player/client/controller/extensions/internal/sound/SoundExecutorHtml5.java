@@ -131,5 +131,10 @@ public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHand
 	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {
 		this.baseMediaConfiguration = baseMediaConfiguration;
 	}
+	
+	@Override
+	public BaseMediaConfiguration getBaseMediaConfiguration() {
+		return baseMediaConfiguration;
+	}
 
 }

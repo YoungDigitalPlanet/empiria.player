@@ -87,6 +87,11 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, MediaExecutor
 	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {// NOPMD
 		this.baseMediaConfiguration = baseMediaConfiguration;
 	}
+	
+	@Override
+	public BaseMediaConfiguration getBaseMediaConfiguration() {
+		return baseMediaConfiguration;
+	}
 
 	@Override
 	public void onEvent(HTML5MediaEvent event) {// NOPMD
@@ -131,6 +136,10 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, MediaExecutor
 	@Override
 	public void play(String src) {
 		media.play();
+	}
+	
+	public void setMedia(MediaBase media) {
+		this.media = media;
 	}
 
 	@Override

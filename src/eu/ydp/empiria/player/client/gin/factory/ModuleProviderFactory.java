@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.gin.factory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
@@ -37,6 +38,9 @@ public class ModuleProviderFactory {
 
 	@Inject
 	protected Provider<SelectionModule> selectionModule;
+	
+	@Inject
+	protected Provider<DefaultMediaProcessorExtension> mediaProcessor;
 
 	@Inject
 	protected Provider<MathModule> mathModule;
@@ -71,6 +75,10 @@ public class ModuleProviderFactory {
 
 	public Provider<SelectionModule> getSelectionModule() {
 		return selectionModule;
+	}
+	
+	public Provider<DefaultMediaProcessorExtension> getMediaProcessor() {
+		return mediaProcessor;
 	}
 
 	public Provider<MathModule> getMathModule() {

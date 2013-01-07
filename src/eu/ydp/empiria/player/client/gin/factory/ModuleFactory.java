@@ -23,7 +23,6 @@ public interface ModuleFactory {
 	TextEntryGapModule getEntryGapModule();
 	TextEntryModule getTextEntryModule();
 	InlineChoiceGapModule getInlineChoiceGapModule();
-	DefaultMediaProcessorExtension getDefaultMediaProcessorExtension();
 	AssessmentJsonReportExtension getAssessmentJsonReportExtension();
 	ScormSupportExtension getScormSupportExtension();
 }

@@ -171,7 +171,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		mode = new EngineModeManager();
 		styleManager = new StyleLinkManager();
 
-		extensionsManager = new ExtensionsManager();
+		extensionsManager = PlayerGinjector.INSTANCE.getExtensionsManager();
 
 		deliveryEventsHub = new DeliveryEventsHub();
 
@@ -333,7 +333,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextActionProcessor(), ModuleTagName.TEXT_FEEDBACK));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getImageActionProcessor(), ModuleTagName.IMAGE_FEEDBACK));
 		loadExtension(extensionFactory.getDragDropManager());
-		loadExtension(extensionFactory.getDefaultMediaProcessorExtension());
+		loadExtension(moduleProviderFactory.getMediaProcessor().get());
 		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
 		loadExtension(PlayerGinjector.INSTANCE.getPage());
 		loadExtension(PlayerGinjector.INSTANCE.getBookmarkProcessorExtension());
