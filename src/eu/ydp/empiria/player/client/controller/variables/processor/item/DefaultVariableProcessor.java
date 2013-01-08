@@ -12,12 +12,12 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
-import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.gwtutil.client.StringUtils;
@@ -51,42 +51,78 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 	@Override
 	public void processFlowActivityVariables(Map<String, Outcome> outcomes, FlowActivityEvent event) {
-
 		if (event != null) {
-			if (event.getType() == FlowActivityEventType.CHECK) {
-				if (outcomes.containsKey(CHECKS)) {
-					Integer value = 0;
-					if (outcomes.get(CHECKS).values.size() > 0) {
-						value = Integer.parseInt(outcomes.get(CHECKS).values.get(0));
-					}
-					value++;
-					outcomes.get(CHECKS).values.clear();
-					outcomes.get(CHECKS).values.add(value.toString());
-				}
+			switch (event.getType()) {
+			case CHECK:
+				increaseOutcome(outcomes, CHECKS);
+				break;
+			case SHOW_ANSWERS:
+				increaseOutcome(outcomes, SHOW_ANSWERS);
+				break;
+			case RESET:
+				increaseOutcome(outcomes, RESET);
+				break;
+			default:
+				break;
 			}
-			if (event.getType() == FlowActivityEventType.SHOW_ANSWERS) {
-				if (outcomes.containsKey(SHOW_ANSWERS)) {
-					Integer value = 0;
-					if (outcomes.get(SHOW_ANSWERS).values.size() > 0) {
-						value = Integer.parseInt(outcomes.get(SHOW_ANSWERS).values.get(0));
-					}
-					value++;
-					outcomes.get(SHOW_ANSWERS).values.clear();
-					outcomes.get(SHOW_ANSWERS).values.add(value.toString());
-				}
+		}
+	}
+
+	private void increaseOutcome(Map<String, Outcome> outcomes, String key) {
+		Outcome outcome = null;
+		if ((outcome = outcomes.get(key)) != null) {
+			int value = 0;
+			Vector<String> values = outcome.values;
+			if (values.size() > 0) {
+				value = Integer.parseInt(values.get(0));
 			}
-			if (event.getType() == FlowActivityEventType.RESET) {
-				if (outcomes.containsKey(RESET)) {
-					Integer value = 0;
-					if (outcomes.get(RESET).values.size() > 0) {
-						value = Integer.parseInt(outcomes.get(RESET).values.get(0));
+			value++;
+			values.clear();
+			values.add(String.valueOf(value));
+		}
+	}
+
+	private void clearAndAddToOutcomeValues(Map<String, Outcome> outcomes, String key, String value) {
+		Outcome outcome = null;
+		if ((outcome = outcomes.get(key)) != null) {
+			outcome.values.clear();
+			outcome.values.add(value);
+		}
+	}
+
+	private void addToOutcomeValues(Map<String, Outcome> outcomes, String key, String value) {
+		Outcome outcome = null;
+		if ((outcome = outcomes.get(key)) != null) {
+			outcome.values.add(value);
+		}
+	}
+
+	private int countCorrectAnswers(Response response) {
+		int count = 1;
+		if (response.getCountMode() == CountMode.CORRECT_ANSWERS) {
+			List<Boolean> evaluations = null;
+			count = 0;
+			if ((evaluations = responsesAnswersEvaluation.get(response.identifier)) != null) {
+				for (Boolean correct : evaluations) {
+					if (correct) {
+						++count;
 					}
-					value++;
-					outcomes.get(RESET).values.clear();
-					outcomes.get(RESET).values.add(value.toString());
 				}
 			}
 		}
+		return count;
+	}
+
+	public int getTODOCount(Response response) {
+		int value = 0;
+		if (response.correctAnswers.getResponseValuesCount() > 0) {
+			if (response.getCountMode() == CountMode.CORRECT_ANSWERS) {
+				value = response.correctAnswers.getResponseValuesCount();
+			} else {
+				value = 1;
+			}
+		}
+		return value;
 	}
 
 	@Override
@@ -104,204 +140,169 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		Integer errors = 0;
 		Integer todoCount = 0;
 		String currKey;
-		
+
 		String commutativityGroup = StringUtils.EMPTY_STRING;
 		Outcome commutativityOutcome = new Outcome();
 
-		Iterator<String> iter = responses.keySet().iterator();
 		boolean passed;
-		while (iter.hasNext()) {
-			currKey = iter.next();
-
-			if (!responses.get(currKey).isModuleAdded()) {
+		int correctAnswersCount = 0;
+		for (Map.Entry<String, Response> responseEntry : responses.entrySet()) {
+			Response response = responseEntry.getValue();
+			if (!response.isModuleAdded()) {
 				continue;
 			}
 
-			passed = processSingleResponse(responses.get(currKey));
-
+			currKey = responseEntry.getKey();
+			passed = processSingleResponse(response);
 			if (passed) {
-				points++;
+				correctAnswersCount = countCorrectAnswers(response);
+				points += correctAnswersCount;
 			}
 
 			// MAKRO PROCESSING
 			String currKeyPrefix = currKey + "-";
-
 			String doneKey = currKeyPrefix + DONE;
-			if (outcomes.containsKey(doneKey)) {
-				outcomes.get(doneKey).values.clear();
-				if (passed) {
-					outcomes.get(doneKey).values.add("1");
-				} else {
-					outcomes.get(doneKey).values.add("0");
-				}
-			}
+			clearAndAddToOutcomeValues(outcomes, doneKey, String.valueOf(correctAnswersCount));
 
 			String todoKey = currKeyPrefix + TODO;
 			if (outcomes.containsKey(todoKey)) {
+				int value = getTODOCount(response);
+				clearAndAddToOutcomeValues(outcomes, todoKey, String.valueOf(value));
+				todoCount += value;
+			}
 
-				outcomes.get(todoKey).values.clear();
-				if (responses.get(currKey).correctAnswers.getResponseValuesCount() > 0) {
-					outcomes.get(todoKey).values.add("1");
-					todoCount++;
-				} else {
-					outcomes.get(todoKey).values.add("0");
-				}
-			}
 			String doneHistoryKey = currKeyPrefix + DONEHISTORY;
-			if (outcomes.containsKey(doneHistoryKey)) {
-				if (userInteract) {
-					if (passed) {
-						outcomes.get(doneHistoryKey).values.add("1");
-					} else {
-						outcomes.get(doneHistoryKey).values.add("0");
-					}
-				}
+			if (userInteract) {
+				addToOutcomeValues(outcomes, doneHistoryKey, String.valueOf(correctAnswersCount));
 			}
+
+			Outcome doneHistory = outcomes.get(doneHistoryKey);
 			String doneChangesKey = currKeyPrefix + DONECHANGES;
-			if (outcomes.containsKey(doneChangesKey) && outcomes.containsKey(doneHistoryKey)) {
-				if (userInteract) {
-					if (outcomes.get(doneHistoryKey).values.size() == 1) {
-						outcomes.get(doneChangesKey).values.add(outcomes.get(doneHistoryKey).values.get(0));
-					} else {
-						int currModuleScore = Integer.parseInt(outcomes.get(doneHistoryKey).values.get(outcomes.get(doneHistoryKey).values.size() - 1));
-						int prevModuleScore = Integer.parseInt(outcomes.get(doneHistoryKey).values.get(outcomes.get(doneHistoryKey).values.size() - 2));
-						outcomes.get(doneChangesKey).values.add(String.valueOf(currModuleScore - prevModuleScore));
-					}
+			if (userInteract && outcomes.containsKey(doneChangesKey) && outcomes.containsKey(doneHistoryKey)) {
+				if (doneHistory.values.size() == 1) {
+					outcomes.get(doneChangesKey).values.add(doneHistory.values.get(0));
+				} else {
+					int currModuleScore = Integer.parseInt(doneHistory.values.get(doneHistory.values.size() - 1));
+					int prevModuleScore = Integer.parseInt(doneHistory.values.get(doneHistory.values.size() - 2));
+					outcomes.get(doneChangesKey).values.add(String.valueOf(currModuleScore - prevModuleScore));
 				}
 			}
+
 			String previousKey = currKeyPrefix + PREVIOUS;
 			String lastChangeKey = currKeyPrefix + LASTCHANGE;
-			if (outcomes.containsKey(previousKey) && outcomes.containsKey(lastChangeKey)) {
-				if (userInteract) {
-					outcomes.get(lastChangeKey).values = DefaultVariableProcessorHelper.getDifference(responses.get(currKey), outcomes.get(previousKey));
+			if (userInteract && outcomes.containsKey(previousKey) && outcomes.containsKey(lastChangeKey)) {
+				outcomes.get(lastChangeKey).values = DefaultVariableProcessorHelper.getDifference(response, outcomes.get(previousKey));
+			}
+
+			if (userInteract && outcomes.containsKey(previousKey)) {
+				Vector<String> values = outcomes.get(previousKey).values;
+				values.clear();
+				for (int a = 0; a < response.values.size(); a++) {
+					values.add(response.values.get(a));
 				}
 			}
-			if (outcomes.containsKey(previousKey)) {
-				if (userInteract) {
-					outcomes.get(previousKey).values.clear();
-					for (int a = 0; a < responses.get(currKey).values.size(); a++) {
-						outcomes.get(previousKey).values.add(responses.get(currKey).values.get(a));
-					}
-				}
-			}
+
 			String lastMistakenKey = currKeyPrefix + LASTMISTAKEN;
 			String mistakesKey = currKeyPrefix + MISTAKES;
-			if (outcomes.containsKey(lastChangeKey) && outcomes.containsKey(lastMistakenKey)) {
-				if (userInteract) {
-					int lastMistakes = processCheckMistakes(responses.get(currKey), outcomes.get(lastChangeKey));
-					
-					Outcome lastChanges = outcomes.get(lastChangeKey);
-					boolean isInGroup = responses.get(currKey).groups.size() > 0 ? true : false;
-					if ( (lastChanges.values.size() > 0) && (isInGroup) ) {
-						commutativityGroup = responses.get(currKey).groups.keySet().iterator().next();
-						commutativityOutcome = outcomes.get(lastMistakenKey);
+			if (userInteract && outcomes.containsKey(lastChangeKey) && outcomes.containsKey(lastMistakenKey)) {
+				int lastMistakes = processCheckMistakes(response, outcomes.get(lastChangeKey));
+
+				Outcome lastChanges = outcomes.get(lastChangeKey);
+				boolean isInGroup = response.groups.size() > 0;
+				if (isInGroup && lastChanges.values.size() > 0) {
+					commutativityGroup = response.groups.keySet().iterator().next();
+					commutativityOutcome = outcomes.get(lastMistakenKey);
+				}
+
+				outcomes.get(lastMistakenKey).values.set(0, String.valueOf(lastMistakes));
+				if (outcomes.containsKey(mistakesKey)) {
+					Outcome outcome = outcomes.get(mistakesKey);
+					if (outcome.values.size() == 0) {
+						outcome.values.add("0");
 					}
-					
-					outcomes.get(lastMistakenKey).values.set(0, String.valueOf(lastMistakes));
-					if (outcomes.containsKey(mistakesKey)) {
-						if (outcomes.get(mistakesKey).values.size() == 0) {
-							outcomes.get(mistakesKey).values.add("0");
-						}
-						Integer mistakes = Integer.parseInt(outcomes.get(mistakesKey).values.get(0));
-						mistakes += Integer.parseInt(outcomes.get(lastMistakenKey).values.get(0));
-						outcomes.get(mistakesKey).values.set(0, mistakes.toString());
-					}
+					Integer mistakes = Integer.parseInt(outcome.values.get(0));
+					mistakes += Integer.parseInt(outcomes.get(lastMistakenKey).values.get(0));
+					outcome.values.set(0, mistakes.toString());
 				}
 			}
 			String errorsKey = currKeyPrefix + ERRORS;
 			if (outcomes.containsKey(errorsKey)) {
 				outcomes.get(errorsKey).values.clear();
-				boolean userHasInteracted = (outcomes.containsKey(doneHistoryKey) && outcomes.get(doneHistoryKey).values.size() > 0);
-				Integer currErrors = findSingleResponseErrors(responses.get(currKey), passed, userHasInteracted);
+				boolean userHasInteracted = (outcomes.containsKey(doneHistoryKey) && doneHistory.values.size() > 0);
+				Integer currErrors = findSingleResponseErrors(response, passed, userHasInteracted);
 				outcomes.get(errorsKey).values.add(currErrors.toString());
 				errors += currErrors;
 			}
 		}
 
-		if (outcomes.containsKey(DONE)) {
-			outcomes.get(DONE).values.clear();
-			outcomes.get(DONE).values.add(points.toString());
+		clearAndAddToOutcomeValues(outcomes, DONE, String.valueOf(points));
+		clearAndAddToOutcomeValues(outcomes, TODO, String.valueOf(todoCount));
+		clearAndAddToOutcomeValues(outcomes, ERRORS, String.valueOf(errors));
+
+		if (userInteract && outcomes.containsKey(DONEHISTORY)) {
+			outcomes.get(DONEHISTORY).values.add(points.toString());
 		}
 
-		if (outcomes.containsKey(TODO)) {
-			outcomes.get(TODO).values.clear();
-			outcomes.get(TODO).values.add(String.valueOf(todoCount));
-		}
-
-		if (outcomes.containsKey(ERRORS)) {
-			outcomes.get(ERRORS).values.clear();
-			outcomes.get(ERRORS).values.add(errors.toString());
-		}
-
-		if (outcomes.containsKey(DONEHISTORY)) {
-			if (userInteract) {
-				outcomes.get(DONEHISTORY).values.add(points.toString());
+		if (userInteract && outcomes.containsKey(DONEHISTORY) && outcomes.containsKey(DONECHANGES)) {
+			if (outcomes.get(DONEHISTORY).values.size() == 1) {
+				outcomes.get(DONECHANGES).values.add(outcomes.get(DONEHISTORY).values.get(0));
+			} else {
+				int currModuleScore = Integer.parseInt(outcomes.get(DONEHISTORY).values.get(outcomes.get(DONEHISTORY).values.size() - 1));
+				int prevModuleScore = Integer.parseInt(outcomes.get(DONEHISTORY).values.get(outcomes.get(DONEHISTORY).values.size() - 2));
+				outcomes.get(DONECHANGES).values.add(String.valueOf(currModuleScore - prevModuleScore));
 			}
 		}
-		if (outcomes.containsKey(DONEHISTORY) && outcomes.containsKey(DONECHANGES)) {
-			if (userInteract) {
-				if (outcomes.get(DONEHISTORY).values.size() == 1) {
-					outcomes.get(DONECHANGES).values.add(outcomes.get(DONEHISTORY).values.get(0));
-				} else {
-					int currModuleScore = Integer.parseInt(outcomes.get(DONEHISTORY).values.get(outcomes.get(DONEHISTORY).values.size() - 1));
-					int prevModuleScore = Integer.parseInt(outcomes.get(DONEHISTORY).values.get(outcomes.get(DONEHISTORY).values.size() - 2));
-					outcomes.get(DONECHANGES).values.add(String.valueOf(currModuleScore - prevModuleScore));
+		if (userInteract && outcomes.containsKey(LASTMISTAKEN)) {
+			Integer lastMistakes = 0;
+			Iterator<String> keys = responses.keySet().iterator();
+			while (keys.hasNext()) {
+				String currKey2 = keys.next();
+				String outcomesLastMistakenKey = currKey2 + "-" + LASTMISTAKEN;
+				if (outcomes.containsKey(outcomesLastMistakenKey)) {
+					lastMistakes += Integer.parseInt(outcomes.get(outcomesLastMistakenKey).values.get(0));
 				}
 			}
-		}
-		if (outcomes.containsKey(LASTMISTAKEN)) {
-			if (userInteract) {
-				Integer lastMistakes = 0;
-				Iterator<String> keys = responses.keySet().iterator();
-				while (keys.hasNext()) {
-					String currKey2 = keys.next();
-					String outcomesLastMistakenKey = currKey2 + "-" + LASTMISTAKEN;
-					if (outcomes.containsKey(outcomesLastMistakenKey)) {
-						lastMistakes += Integer.parseInt(outcomes.get(outcomesLastMistakenKey).values.get(0));
-					}
-				}
-				outcomes.get(LASTMISTAKEN).values.set(0, lastMistakes.toString());
+			outcomes.get(LASTMISTAKEN).values.set(0, lastMistakes.toString());
 
-				if (outcomes.containsKey(MISTAKES)) {
-					if (outcomes.get(MISTAKES).values.size() == 0) {
-						outcomes.get(MISTAKES).values.add("0");
-					}
-					Integer mistakes = Integer.parseInt(outcomes.get(MISTAKES).values.get(0));
-					mistakes += Integer.parseInt(outcomes.get(LASTMISTAKEN).values.get(0));
-					outcomes.get(MISTAKES).values.set(0, mistakes.toString());
+			if (outcomes.containsKey(MISTAKES)) {
+				if (outcomes.get(MISTAKES).values.size() == 0) {
+					outcomes.get(MISTAKES).values.add("0");
 				}
+				Integer mistakes = Integer.parseInt(outcomes.get(MISTAKES).values.get(0));
+				mistakes += Integer.parseInt(outcomes.get(LASTMISTAKEN).values.get(0));
+				outcomes.get(MISTAKES).values.set(0, mistakes.toString());
 			}
 		}
-		
-		if ( !commutativityGroup.equals(StringUtils.EMPTY_STRING) ) {
+
+		if (!commutativityGroup.equals(StringUtils.EMPTY_STRING)) {
 			updateLastMistakeInGroup(commutativityGroup, commutativityOutcome);
 		}
-		
+
 		updateGroupsPoints();
 	}
-	
+
 	protected void updateGroupsPoints() {
 		for (Map.Entry<String, List<Boolean>> group : groupsAnswersUsed.entrySet()) {
 			groupsPoints.put(group.getKey(), checkPointsInGroup(group.getKey()));
 		}
 	}
-	
+
 	protected void updateLastMistakeInGroup(String group, Outcome outcome) {
 		Integer currentPoints = checkPointsInGroup(group);
 		Integer lastPoints = (groupsPoints.get(group) != null) ? groupsPoints.get(group) : 0;
-		
+
 		if (currentPoints.intValue() > lastPoints.intValue()) {
 			outcome.values.set(0, "0");
 		} else {
 			outcome.values.set(0, "1");
 		}
-		
+
 		groupsPoints.put(group, currentPoints);
 	}
 
 	protected Integer checkPointsInGroup(String groupId) {
 		int points = 0;
-		
+
 		for (boolean isAnswerCorrect : groupsAnswersUsed.get(groupId)) {
 			if (isAnswerCorrect) {
 				points++;
@@ -500,7 +501,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 					shouldBeCorrect = true;
 				} else {
 					shouldBeCorrect = false;
-//					continue;
+					// continue;
 				}
 				currVal = currVal.substring(1);
 
@@ -595,7 +596,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		}
 		if (prevValue == null) {
 			outcomes.put(variable.identifier, variable);
-		}else if (variable.values.size() > 0 && prevValue.values.size() == 0) {
+		} else if (variable.values.size() > 0 && prevValue.values.size() == 0) {
 			prevValue.values.addAll(variable.values);
 		}
 	}
