@@ -167,8 +167,10 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	public void markAnswers(boolean mark) {
 		if (mark){
 			listBox.setEnabled(false);
-			if (listBox.getSelectedIndex() != ((showEmptyOption)?0:-1) ){
-				if (response.isCorrectAnswer(identifiers.get(listBox.getSelectedIndex() - ((showEmptyOption)?1:0) ))){
+			int selectedIndex = listBox.getSelectedIndex();
+			if (selectedIndex != ((showEmptyOption)?0:-1) ){
+				
+				if (isResponseCorrect()){
 					container.setStyleName("qp-text-choice-popup-correct");
 				} else {
 					container.setStyleName("qp-text-choice-popup-wrong");
@@ -180,6 +182,12 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 			container.setStyleName("qp-text-choice-popup");
 			listBox.setEnabled(true);
 		}
+	}
+
+	private boolean isResponseCorrect(){
+		ModuleSocket moduleSocket = getModuleSocket();
+		List<Boolean> evaluateResponse = moduleSocket.evaluateResponse(response);
+		return evaluateResponse.get(0);
 	}
 
 	@Override

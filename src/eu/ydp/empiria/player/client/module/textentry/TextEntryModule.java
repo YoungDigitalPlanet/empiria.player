@@ -14,8 +14,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
@@ -102,12 +104,16 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 
 	@Override
 	protected boolean isResponseCorrect(){
-		return getModuleSocket().evaluateResponse(getResponse()).get(0);
+		ModuleSocket moduleSocket = getModuleSocket();
+		Response response = getResponse();
+		List<Boolean> evaluateResponse = moduleSocket.evaluateResponse(response);
+		return evaluateResponse.get(0);
 	}
 
 	@Override
 	public String getCorrectAnswer(){
-		return getResponse().correctAnswers.getSingleAnswer();
+		Response response = getResponse();
+		return response.correctAnswers.getSingleAnswer();
 	}
 
 	@Override
@@ -122,7 +128,8 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 
 	@Override
 	protected String getCurrentResponseValue(){
-		return (getResponse().values.size() > 0) ? getResponse().values.get(0) : StringUtils.EMPTY_STRING;
+		Response response = getResponse();
+		return (response.values.size() > 0) ? response.values.get(0) : StringUtils.EMPTY_STRING;
 	}
 
 	protected void updateResponse(boolean userInteract){
