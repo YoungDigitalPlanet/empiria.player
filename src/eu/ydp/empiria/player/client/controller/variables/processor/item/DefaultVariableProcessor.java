@@ -291,7 +291,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		Integer currentPoints = checkPointsInGroup(group);
 		Integer lastPoints = (groupsPoints.get(group) != null) ? groupsPoints.get(group) : 0;
 
-		if (currentPoints.intValue() > lastPoints.intValue()) {
+		if (currentPoints.intValue() >= lastPoints.intValue()) {
 			outcome.values.set(0, "0");
 		} else {
 			outcome.values.set(0, "1");
