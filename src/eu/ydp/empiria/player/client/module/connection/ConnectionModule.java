@@ -32,6 +32,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	protected void initalizeModule() {
 		connectionModel = connectionModuleFactory.getConnectionModuleModel(getResponse(), this);
 		connectionModel.setResponseSocket(getModuleSocket());
+		getResponse().setCountMode(getCountMode());
 	}
 
 	@Override

@@ -26,6 +26,7 @@ import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
+import eu.ydp.empiria.player.client.controller.style.StyleAttributeHelper;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
@@ -67,6 +68,7 @@ import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactoryImpl;
+import eu.ydp.gwtutil.client.util.BooleanUtils;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class PlayerGinModule extends AbstractGinModule {
@@ -104,6 +106,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(ModuleHandlerManager.class).in(Singleton.class);
 		bind(IBookmarkPopupView.class).to(BookmarkPopup.class);
 		bind(XMLParser.class);
+		bind(StyleAttributeHelper.class).in(Singleton.class);
+		bind(BooleanUtils.class).in(Singleton.class);
 		bind(FeedbackRegistry.class).in(Singleton.class);
 		bind(MatcherRegistry.class).in(Singleton.class);
 		bind(IStickieView.class) .to(StickieView.class);
@@ -113,11 +117,11 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(ImageFeedback.class).to(ImageFeedbackPresenter.class);
 
 		//bind(OverlayTypesParser.class).in(Singleton.class);
-		install(new GinFactoryModuleBuilder(). build(VideoTextTrackElementFactory.class));
+		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new GinFactoryModuleBuilder().build(TextTrackFactory.class));
 		install(new GinFactoryModuleBuilder().build(AssessmentFactory.class));
-		install(new GinFactoryModuleBuilder(). build(ModuleFactory.class));
+		install(new GinFactoryModuleBuilder().build(ModuleFactory.class));
 		bind(ModuleProviderFactory.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(AssessmentControllerFactory.class));
 		install(new GinFactoryModuleBuilder().build(DragDropObjectFactory.class));

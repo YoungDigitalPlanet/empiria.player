@@ -30,6 +30,9 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, Choice
 	@Override
 	protected void initalizeModule() {
 		choiceStructure.setMulti(isMulti());
+		if(isMulti()){
+			getResponse().setCountMode(getCountMode());
+		}
 		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
 	}
 

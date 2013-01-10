@@ -12,19 +12,16 @@ import eu.ydp.empiria.player.client.module.selection.presenter.SelectionModulePr
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteractionBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionModuleStructure;
 
-public class SelectionModule extends AbstractInteractionModule<SelectionModule, SelectionModuleModel, SelectionInteractionBean>{
+public class SelectionModule extends AbstractInteractionModule<SelectionModule, SelectionModuleModel, SelectionInteractionBean> {
 
-	private Provider<SelectionModule> selectionModuleProvider;
-	private SelectionModulePresenter selectionModulePresenter;
-	private SelectionModuleStructure structure;
-	private SelectionModuleFactory selectionModuleFactory;
-	
+	private final Provider<SelectionModule> selectionModuleProvider;
+	private final SelectionModulePresenter selectionModulePresenter;
+	private final SelectionModuleStructure structure;
+	private final SelectionModuleFactory selectionModuleFactory;
+
 	@Inject
-	public SelectionModule(
-			Provider<SelectionModule> selectionModuleProvider, 
-			SelectionModulePresenter selectionModulePresenter,
-			SelectionModuleStructure structure, 
-			SelectionModuleFactory selectionModuleFactory) {
+	public SelectionModule(Provider<SelectionModule> selectionModuleProvider, SelectionModulePresenter selectionModulePresenter,
+			SelectionModuleStructure structure, SelectionModuleFactory selectionModuleFactory) {
 		this.selectionModuleProvider = selectionModuleProvider;
 		this.selectionModulePresenter = selectionModulePresenter;
 		this.structure = structure;
@@ -32,7 +29,7 @@ public class SelectionModule extends AbstractInteractionModule<SelectionModule, 
 	}
 
 	private SelectionModuleModel model;
-	
+
 	@Override
 	public SelectionModule getNewInstance() {
 		return selectionModuleProvider.get();
@@ -46,6 +43,7 @@ public class SelectionModule extends AbstractInteractionModule<SelectionModule, 
 	@Override
 	protected void initalizeModule() {
 		model = selectionModuleFactory.createSelectionModuleModel(getResponse(), this);
+		getResponse().setCountMode(getCountMode());
 	}
 
 	@Override

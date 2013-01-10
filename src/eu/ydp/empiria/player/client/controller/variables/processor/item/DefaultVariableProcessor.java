@@ -72,8 +72,8 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		Outcome outcome = null;
 		if ((outcome = outcomes.get(key)) != null) {
 			int value = 0;
-			Vector<String> values = outcome.values;
-			if (values.size() > 0) {
+			List<String> values = outcome.values;
+			if (!values.isEmpty()) {
 				value = Integer.parseInt(values.get(0));
 			}
 			value++;
@@ -154,7 +154,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 			currKey = responseEntry.getKey();
 			passed = processSingleResponse(response);
-			if (passed) {
+			if (passed || response.getCountMode() == CountMode.CORRECT_ANSWERS) {
 				correctAnswersCount = countCorrectAnswers(response);
 				points += correctAnswersCount;
 			}
@@ -291,7 +291,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 		Integer currentPoints = checkPointsInGroup(group);
 		Integer lastPoints = (groupsPoints.get(group) != null) ? groupsPoints.get(group) : 0;
 
-		if (currentPoints.intValue() >= lastPoints.intValue()) {
+		if (currentPoints.intValue() > lastPoints.intValue()) {
 			outcome.values.set(0, "0");
 		} else {
 			outcome.values.set(0, "1");
