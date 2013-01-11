@@ -1,10 +1,12 @@
 package eu.ydp.empiria.player.client.module.button;
 
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -13,10 +15,13 @@ public class ShowAnswersButtonModule extends ActivityButtonModule implements Pla
 
 	protected boolean isSelected = false;
 
+	@Inject
+	protected EventsBus eventsBus;
+
 	@Override
 	public void initModule(Element element) {
 		super.initModule(element);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), this);
 	}
 
 	@Override
@@ -30,7 +35,7 @@ public class ShowAnswersButtonModule extends ActivityButtonModule implements Pla
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		if (event.getType() == PlayerEventTypes.PAGE_CHANGE) {
+		if (isSelected && event.getType() == PlayerEventTypes.BEFORE_FLOW) {
 			flowRequestInvoker.invokeRequest(new FlowRequest.Continue(getCurrentGroupIdentifier()));
 		}
 	}

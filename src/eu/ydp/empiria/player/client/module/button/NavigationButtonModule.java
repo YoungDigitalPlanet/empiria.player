@@ -12,8 +12,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
@@ -23,6 +25,9 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 	private PushButton button;
 	private boolean enabled = true;
 	private final NavigationButtonDirection direction;
+
+	//@Inject
+	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
 
 	public NavigationButtonModule(NavigationButtonDirection dir) {
 		direction = dir;

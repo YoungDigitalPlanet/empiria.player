@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.HasChildren;
@@ -17,11 +18,12 @@ import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 
 public abstract class ActivityButtonModule extends ControlModule implements ISimpleModule {
 
+	@Inject
 	protected PushButton button;
 	protected boolean isEnabled = true;
 
-	public ActivityButtonModule(){
-		button = new PushButton();
+	@Override
+	public void initModule(Element element) {// NOPMD
 		updateStyleName();
 		button.addClickHandler(new ClickHandler() {
 
@@ -33,24 +35,20 @@ public abstract class ActivityButtonModule extends ControlModule implements ISim
 	}
 
 	@Override
-	public void initModule(Element element) {//NOPMD
-	}
-
-	@Override
 	public Widget getView() {
 		return button;
 	}
 
-	protected GroupIdentifier getCurrentGroupIdentifier(){
+	protected GroupIdentifier getCurrentGroupIdentifier() {
 		return getModuleSocket().getParentGroupIdentifier(this);
 	}
 
-	protected boolean currentGroupIsConcerned(GroupIdentifier groupId){
+	protected boolean currentGroupIsConcerned(GroupIdentifier groupId) {
 		Stack<HasChildren> parentsHierarchy = getModuleSocket().getParentsHierarchy(this);
-		for (IModule currModule : parentsHierarchy){
-			if (currModule instanceof IGroup){
-				if ( ((IGroup)currModule).getGroupIdentifier().equals(groupId) ){//NOPMD
-					return true; //NOPMD
+		for (IModule currModule : parentsHierarchy) {
+			if (currModule instanceof IGroup) {
+				if (((IGroup) currModule).getGroupIdentifier().equals(groupId)) {// NOPMD
+					return true; // NOPMD
 				}
 			}
 		}
@@ -59,16 +57,16 @@ public abstract class ActivityButtonModule extends ControlModule implements ISim
 
 	protected abstract void invokeRequest();
 
-	protected void updateStyleName(){
+	protected void updateStyleName() {
 		button.setStyleName(getCurrentStyleName(isEnabled));
 	}
 
-	protected String getCurrentStyleName(boolean isEnabled){
+	protected String getCurrentStyleName(boolean isEnabled) {
 		String styleName = null;
 
-		if(isEnabled){
+		if (isEnabled) {
 			styleName = getStyleName();
-		}else{
+		} else {
 			styleName = getStyleName() + "-disabled";
 		}
 
@@ -76,6 +74,5 @@ public abstract class ActivityButtonModule extends ControlModule implements ISim
 	}
 
 	protected abstract String getStyleName();
-
 
 }

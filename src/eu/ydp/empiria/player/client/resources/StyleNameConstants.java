@@ -407,6 +407,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-report-table-row")
 	public String QP_REPORT_TABLE_ROW();
 
+	@DefaultStringValue("qp-reset-button")
+	public String QP_RESET_BUTTON();
+
 	@DefaultStringValue("qp-resultpage-items")
 	public String QP_RESULTPAGE_ITEMS();
 
@@ -421,18 +424,6 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-resultpage-time")
 	public String QP_RESULTPAGE_TIME();
-	
-	@DefaultStringValue("selection")
-	public String SELECTION();
-	
-	@DefaultStringValue("selection-multi")
-	public String SELECTION_MULTI();
-	
-	@DefaultStringValue("qp-selection-table")
-	public String QP_SELECTION_TABLE();
-	
-	@DefaultStringValue("qp-selection-module")
-	public String QP_SELECTION_MODULE();
 
 	@DefaultStringValue("qp-selection-choice")
 	public String QP_SELECTION_CHOICE();
@@ -451,6 +442,12 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-selection-item-wrong")
 	public String QP_SELECTION_ITEM_WRONG();
+
+	@DefaultStringValue("qp-selection-module")
+	public String QP_SELECTION_MODULE();
+
+	@DefaultStringValue("qp-selection-table")
+	public String QP_SELECTION_TABLE();
 
 	@DefaultStringValue("qp-simpletext")
 	public String QP_SIMPLETEXT();
@@ -616,5 +613,11 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
+
+	@DefaultStringValue("selection")
+	public String SELECTION();
+
+	@DefaultStringValue("selection-multi")
+	public String SELECTION_MULTI();
 
 }

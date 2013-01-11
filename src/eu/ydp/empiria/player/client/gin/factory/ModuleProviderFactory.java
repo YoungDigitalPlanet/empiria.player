@@ -3,6 +3,10 @@ package eu.ydp.empiria.player.client.gin.factory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
@@ -38,12 +42,24 @@ public class ModuleProviderFactory {
 
 	@Inject
 	protected Provider<SelectionModule> selectionModule;
-	
+
 	@Inject
 	protected Provider<DefaultMediaProcessorExtension> mediaProcessor;
 
 	@Inject
 	protected Provider<MathModule> mathModule;
+
+	@Inject
+	protected Provider<CheckButtonModuleConnectorExtension> checkButtonModuleConnectorExtension;
+
+	@Inject
+	protected Provider<ShowAnswersButtonModuleConnectorExtension> showAnswersButtonModuleConnectorExtension;
+
+	@Inject
+	protected Provider<AudioMuteButtonModuleConnectorExtension> audioMuteButtonModuleConnectorExtension;
+
+	@Inject
+	protected Provider<ResetButtonModuleConnectorExtension> resetButtonModuleConnectorExtension;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -76,13 +92,29 @@ public class ModuleProviderFactory {
 	public Provider<SelectionModule> getSelectionModule() {
 		return selectionModule;
 	}
-	
+
 	public Provider<DefaultMediaProcessorExtension> getMediaProcessor() {
 		return mediaProcessor;
 	}
 
 	public Provider<MathModule> getMathModule() {
 		return mathModule;
+	}
+
+	public Provider<CheckButtonModuleConnectorExtension> getCheckButtonModuleConnectorExtension() {
+		return checkButtonModuleConnectorExtension;
+	}
+
+	public Provider<ShowAnswersButtonModuleConnectorExtension> getShowAnswersButtonModuleConnectorExtension() {
+		return showAnswersButtonModuleConnectorExtension;
+	}
+
+	public Provider<AudioMuteButtonModuleConnectorExtension> getAudioMuteButtonModuleConnectorExtension() {
+		return audioMuteButtonModuleConnectorExtension;
+	}
+
+	public Provider<ResetButtonModuleConnectorExtension> getResetButtonModuleConnectorExtension() {
+		return resetButtonModuleConnectorExtension;
 	}
 
 }
