@@ -99,7 +99,6 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 
 	public MathModule(){
 		uiBinder.createAndBindUi(this);
-		gapsPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
 	}
 
 	@Override
@@ -212,8 +211,10 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		mathInteractionManager = createMath();
 		gapsPanel.setWidth(mainPanel.getOffsetWidth() + "px");
 		gapsPanel.setHeight(mainPanel.getOffsetHeight() + "px");
-		outerPanel.setHeight(mainPanel.getOffsetHeight() + "px");
-		placeholder.getElement().getStyle().setProperty("verticalAlign", mainPanel.getElement().getStyle().getVerticalAlign());
+		
+		placeholder.getElement().getStyle().setProperty("verticalAlign", String.valueOf(mathManager.getBaseline()) + "px");
+		mainPanel.getElement().getStyle().setProperty("verticalAlign", "0px");
+		
 		positionGaps();
 	}
 
