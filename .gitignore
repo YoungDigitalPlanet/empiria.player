@@ -1,0 +1,13 @@
+.svn/
+gwt-unitCache/
+ivy-lib*/
+*.class
+war/empiria.player/
+war/eu.ydp*/
+war/WEB-INF/classes/
+war/WEB-INF/deploy/
+war/WEB-INF/lib/
+.ruleset
+.pmd
+pmd.xml
+src/eu/ydp/empiria/player/client/version/version.txt
