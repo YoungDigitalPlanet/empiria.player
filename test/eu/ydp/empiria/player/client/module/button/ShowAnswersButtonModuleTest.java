@@ -73,7 +73,7 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 	@Test
 	public void testInitModuleElement() {
 		instance.initModule(mock(Element.class));
-		verify(eventsBus).addHandler(Mockito.eq(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW)), Mockito.eq(instance));
+		verify(eventsBus).addHandler(Mockito.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGING)), Mockito.eq(instance));
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 	@Test
 	public void testOnPlayerEvent() {
 		PlayerEvent event = mock(PlayerEvent.class);
-		when(event.getType()).thenReturn(PlayerEventTypes.BEFORE_FLOW);
+		when(event.getType()).thenReturn(PlayerEventTypes.PAGE_CHANGING);
 		instance.setFlowRequestsInvoker(requestInvoker);
 		doReturn(null).when(instance).getCurrentGroupIdentifier();
 

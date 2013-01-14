@@ -19,7 +19,7 @@ public class CheckButtonModule extends ActivityButtonModule implements PlayerEve
 	@Override
 	public void initModule(Element element) {
 		super.initModule(element);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGING), this);
 	}
 
 	protected boolean isSelected = false;
@@ -48,7 +48,7 @@ public class CheckButtonModule extends ActivityButtonModule implements PlayerEve
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		if (isSelected && event.getType() == PlayerEventTypes.BEFORE_FLOW) {
+		if (isSelected && event.getType() == PlayerEventTypes.PAGE_CHANGING) {
 			flowRequestInvoker.invokeRequest(new FlowRequest.Continue(getCurrentGroupIdentifier()));
 		}
 	}
