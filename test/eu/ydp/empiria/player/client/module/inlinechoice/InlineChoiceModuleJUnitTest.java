@@ -2,42 +2,47 @@ package eu.ydp.empiria.player.client.module.inlinechoice;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.GWTMockUtilities;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
-public class InlineChoiceModuleJUnitTest {
-	
+public class InlineChoiceModuleJUnitTest extends AbstractTestBase {
+	InlineChoiceModule instance;
+
+	@Before
+	public void before() {
+		instance = spy(injector.getInstance(InlineChoiceModule.class));
+		doReturn(new HashMap<String, String>()).when(instance).getStyles();
+	}
+
 	@Test
 	public void shouldSetParentInlineModuleCorrectlyForDefaultController() {
-		IUniqueModule inlineChoice = new InlineChoiceModuleMock(InlineChoiceModuleMock.DEFAULT_CONTROLLER);
-		((InlineChoiceModule) inlineChoice).initModule();
-		IUniqueModule parentModule = ((InlineChoiceModule) inlineChoice).getController().getParentInlineModule();
-		
-		assertThat(parentModule, is(inlineChoice));
+		instance.controller = injector.getInstance(InlineChoiceDefaultController.class);
+		instance.initModule();
+		IUniqueModule parentModule = instance.getController().getParentInlineModule();
+
+		assertThat(parentModule, is((IUniqueModule) instance));
 	}
-	
+
 	@Test
 	public void shouldSetParentInlineModuleCorrectlyForPopupController() {
-		IUniqueModule inlineChoice = new InlineChoiceModuleMock(InlineChoiceModuleMock.POPUP_CONTROLLER);
-		((InlineChoiceModule) inlineChoice).initModule();
-		IUniqueModule parentModule = ((InlineChoiceModule) inlineChoice).getController().getParentInlineModule();
-		
-		assertThat(parentModule, is(inlineChoice));
+		instance.controller = injector.getInstance(InlineChoicePopupController.class);
+		instance.initModule();
+		IUniqueModule parentModule = instance.getController().getParentInlineModule();
+		assertThat(parentModule, is((IUniqueModule) instance));
 	}
-	
+
 	@BeforeClass
 	public static void prepareTestEnviroment() {
 		GWTMockUtilities.disarm();
@@ -48,54 +53,4 @@ public class InlineChoiceModuleJUnitTest {
 		GWTMockUtilities.restore();
 	}
 
-	private class InlineChoiceModuleMock extends InlineChoiceModule {
-		
-		public static final String DEFAULT_CONTROLLER = "default";
-		public static final String POPUP_CONTROLLER = "popup";
-		
-		protected String controllerType;
-		
-		public InlineChoiceModuleMock(String controllerType) {
-			this.controllerType = controllerType;
-		}
-		
-		@Override
-		protected EventsBus getEventsBus() {
-			return mock(EventsBus.class);
-		}
-		
-		@Override
-		protected Map<String, String> getStyles() {
-			return null;
-		}
-		
-		@Override
-		protected void setStyles() {
-			if (controllerType.equals(DEFAULT_CONTROLLER)) {
-				controller = new InlineChoiceDefaultControllerMock();
-			} else if (controllerType.equals(POPUP_CONTROLLER)) {
-				controller = new InlineChoicePopupControllerMock();
-			}
-		}
-		
-	}
-	
-	private class InlineChoiceDefaultControllerMock extends InlineChoiceDefaultController {
-		
-		@Override
-		protected EventsBus getEventsBus() {
-			return mock(EventsBus.class);
-		}
-		
-	}
-	
-	private class InlineChoicePopupControllerMock extends InlineChoicePopupController {
-		
-		@Override
-		protected EventsBus getEventsBus() {
-			return mock(EventsBus.class);
-		}
-		
-	}
-	
 }

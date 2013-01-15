@@ -34,11 +34,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.binding.BindingType;
-import eu.ydp.empiria.player.client.module.binding.BindingValue;
-import eu.ydp.empiria.player.client.module.binding.gapmaxlength.GapMaxlengthBindingValue;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
@@ -49,7 +45,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 			binder.bind(TextEntryGapModulePresenter.class).toInstance(mock(TextEntryGapModulePresenter.class));
 			TextEntryModuleFactory factory = mock(TextEntryModuleFactory.class);
 			binder.bind(TextEntryModuleFactory.class).toInstance(factory);
-			
+
 			when(factory.getTextEntryGapModulePresenter(Mockito.any(IModule.class))).thenAnswer(new Answer<TextEntryGapModulePresenter>() {
 				@Override
 				public TextEntryGapModulePresenter answer(InvocationOnMock invocation) throws Throwable {
@@ -74,7 +70,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 					"<gap type=\"text-entry\" uid=\"uid_0000\" />" +
 					"<none/>" +
 					"<mprescripts/>" +
-					"<none/>" + 
+					"<none/>" +
 					"<none/>" +
 				"</mmultiscripts>").getDocumentElement();
 
@@ -122,15 +118,15 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		gap1.setMockedResponse("13");
 		gap2.setMockedResponse("4");
 		gap3.setMockedResponse("");
-		
+
 		gap1.setEvaluatedResponse(true);
 		gap2.setEvaluatedResponse(false);
 		gap3.setEvaluatedResponse(false);
-		
+
 		gap1.markAnswers(true);
 		gap2.markAnswers(true);
 		gap3.markAnswers(true);
-		
+
 		verify(gap1.getPresenter()).setMarkMode(GapModulePresenter.CORRECT);
 		verify(gap2.getPresenter()).setMarkMode(GapModulePresenter.WRONG);
 		verify(gap3.getPresenter()).setMarkMode(GapModulePresenter.NONE);
@@ -153,28 +149,27 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 	}
 
 	public TextEntryGapModuleMock mockTextGap(Map<String, String> styles) {
-		return new TextEntryGapModuleMock(styles);
+		TextEntryGapModuleMock textEntryGapModuleMock = new TextEntryGapModuleMock(styles);
+		injector.injectMembers(textEntryGapModuleMock);
+		return textEntryGapModuleMock;
 	}
 
 	public TextEntryGapModuleMock mockTextGap() {
-		return new TextEntryGapModuleMock(new HashMap<String, String>());
+		TextEntryGapModuleMock textEntryGapModuleMock = new TextEntryGapModuleMock(new HashMap<String, String>());
+		injector.injectMembers(textEntryGapModuleMock);
+		return textEntryGapModuleMock;
 	}
 
 	private class TextEntryGapModuleMock extends TextEntryGapModule {
-		
+
 		private boolean evaluatedResponse;
 
 		public TextEntryGapModuleMock(Map<String, String> styles) {
 			super(injector.getInstance(TextEntryModuleFactory.class));
 			this.mathStyles = styles;
 		}
-		
-		protected String mockedResponse;
 
-		@Override
-		protected EventsBus getEventsBus() {
-			return mock(EventsBus.class);
-		}
+		protected String mockedResponse;
 
 		@Override
 		protected Response getResponse() {
@@ -208,25 +203,25 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		public void setMockedResponse(String response) {
 			mockedResponse = response;
 		}
-		
+
 		@Override
 		protected String getCurrentResponseValue() {
 			return mockedResponse;
 		}
-		
+
 		public GapModulePresenter getPresenter() {
 			return presenter;
 		}
-		
+
 		@Override
 		protected boolean isResponseInMathModule() {
 			return false;
 		}
-		
+
 		public void setEvaluatedResponse(boolean evaluatedResponse) {
 			this.evaluatedResponse = evaluatedResponse;
 		}
-		
+
 		@Override
 		protected List<Boolean> getEvaluatedResponse() {
 			List<Boolean> evaluations = Lists.newArrayList();

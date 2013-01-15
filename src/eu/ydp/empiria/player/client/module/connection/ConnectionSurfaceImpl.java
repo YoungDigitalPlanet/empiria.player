@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.util.style.StyleHelper;
+import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
 
 /**
  * Widok polaczen
@@ -18,7 +18,7 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 	private final ConnectionSurfaceView view;
 
 	@Inject
-	public ConnectionSurfaceImpl(StyleHelper styleHelper,@Assisted("width") Integer width, @Assisted("height") Integer height) {
+	public ConnectionSurfaceImpl(StyleToPropertyMappingHelper styleHelper,@Assisted("width") Integer width, @Assisted("height") Integer height) {
 		view = new ConnectionSurfaceView(width, height, styleHelper);
 
 	}

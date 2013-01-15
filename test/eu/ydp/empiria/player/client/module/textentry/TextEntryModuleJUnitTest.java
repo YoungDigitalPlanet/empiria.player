@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.doCallRealMethod;
@@ -28,13 +26,10 @@ import com.google.inject.Module;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.binding.BindingType;
-import eu.ydp.empiria.player.client.module.binding.BindingValue;
-import eu.ydp.empiria.player.client.module.binding.gapmaxlength.GapMaxlengthBindingValue;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.xml.XMLParser;
 
+@SuppressWarnings("PMD")
 public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private static class CustomGuiceModule implements Module {
@@ -121,11 +116,6 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 
 		public TextEntryModulePresenter getPresenter() {
 			return (TextEntryModulePresenter) presenter;
-		}
-
-		@Override
-		protected EventsBus getEventsBus() {
-			return mock(EventsBus.class);
 		}
 
 		public void invokeSetDimensions() {

@@ -8,8 +8,26 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-assessment-view")
 	public String QP_ASSESSMENT_VIEW();
 
+	@DefaultStringValue("qp-text-choice-popup-option-empty")
+	public String QP_TEXT_CHOICE_POPUP_OPTION_EMPTY();
+
 	@DefaultStringValue("qp-body")
 	public String QP_BODY();
+
+	@DefaultStringValue("qp-text-choice-popup-disabled")
+	public String QP_TEXT_CHOICE_POPUP_DISABLED();
+
+	@DefaultStringValue("qp-text-choice-popup")
+	public String QP_TEXT_CHOICE_POPUP();
+
+	@DefaultStringValue("qp-text-choice-popup-none")
+	public String QP_TEXT_CHOICE_POPUP_NONE();
+
+	@DefaultStringValue("qp-text-choice-popup-correct")
+	public String QP_TEXT_CHOICE_POPUP_CORRECT();
+
+	@DefaultStringValue("qp-text-choice-popup-wrong")
+	public String QP_TEXT_CHOICE_POPUP_WRONG();
 
 	@DefaultStringValue("qp-bookmark-clearable")
 	public String QP_BOOKMARK_CLEARABLE();

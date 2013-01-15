@@ -13,12 +13,12 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.components.AccessibleListBox;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -37,34 +37,28 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 	private Response response;
 	private String responseIdentifier;
-	private InteractionEventsListener interactionEventsListener;
 	private ModuleSocket moduleSocket;
 	private AccessibleListBox listBox;
 	private boolean shuffle = false;
-	private String	lastValue = null;
+	private String lastValue = null;
 	private boolean showingAnswers = false;
 	protected boolean showEmptyOption = true;
-	private final EventsBus eventsBus = getEventsBus();
+	@Inject
+	private EventsBus eventsBus;
 	protected Element moduleElement;
 
 	protected Panel container;
-	
+
 	IUniqueModule parentModule;
-	
+
 	@Override
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
-
-		this.interactionEventsListener = moduleInteractionListener;
 		this.moduleSocket = moduleSocket;
 	}
 
 	@Override
 	public void addElement(Element element) {
 		moduleElement = element;
-	}
-	
-	protected EventsBus getEventsBus() {
-		return PlayerGinjector.INSTANCE.getEventsBus();
 	}
 
 	@Override
@@ -77,16 +71,16 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 
 		listBox = new AccessibleListBox();
-		if(shuffle) {
+		if (shuffle) {
 			initRandom(moduleElement);
 		} else {
 			init(moduleElement);
 		}
 
 		if (showEmptyOption) {
-			listBox.setSelectedIndex( 0 );
+			listBox.setSelectedIndex(0);
 		} else {
-			listBox.setSelectedIndex( -1 );
+			listBox.setSelectedIndex(-1);
 		}
 
 		listBox.addChangeHandler(new ChangeHandler() {
@@ -103,7 +97,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		placeholders.get(0).add(container);
 
 		container.setStyleName("qp-text-choice");
-		if (userClass != null  &&  !"".equals(userClass)) {
+		if (userClass != null && !"".equals(userClass)) {
 			container.addStyleName(userClass);
 		}
 	}
@@ -131,10 +125,9 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 	// ------------------------ INTERFACES ------------------------
 
-
 	@Override
-	public void lock(boolean l) {
-		  listBox.setEnabled(!l);
+	public void lock(boolean lock) {
+		listBox.setEnabled(!lock);
 
 	}
 
@@ -143,10 +136,10 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	 */
 	@Override
 	public void markAnswers(boolean mark) {
-		if (mark){
+		if (mark) {
 			listBox.setEnabled(false);
-			if (listBox.getSelectedIndex() != ((showEmptyOption)?0:-1) ){
-				if( response.isCorrectAnswer(lastValue) ) {
+			if (listBox.getSelectedIndex() != ((showEmptyOption) ? 0 : -1)) {
+				if (response.isCorrectAnswer(lastValue)) {
 					container.setStyleName("qp-text-choice-correct");
 				} else {
 					container.setStyleName("qp-text-choice-wrong");
@@ -167,10 +160,10 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	public void reset() {
 		markAnswers(false);
 		lock(false);
-		listBox.setSelectedIndex( ((showEmptyOption)?0:-1) );
+		listBox.setSelectedIndex(((showEmptyOption) ? 0 : -1));
 		updateResponse(false);
-	  listBox.setEnabled(true);
-	  container.setStyleName("qp-text-choice");
+		listBox.setEnabled(true);
+		container.setStyleName("qp-text-choice");
 	}
 
 	/**
@@ -179,18 +172,18 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Override
 	public void showCorrectAnswers(boolean show) {
 
-		if (show  &&  !showingAnswers){
+		if (show && !showingAnswers) {
 			showingAnswers = true;
-			for(int i = 0; i < listBox.getItemCount(); i++){
-				if( listBox.getValue(i).equals(response.correctAnswers.getSingleAnswer())){
+			for (int i = 0; i < listBox.getItemCount(); i++) {
+				if (listBox.getValue(i).equals(response.correctAnswers.getSingleAnswer())) {
 					listBox.setSelectedIndex(i);
 					break;
 				}
 			}
-		} else if (!show  &&  showingAnswers) {
+		} else if (!show && showingAnswers) {
 			listBox.setSelectedIndex(-1);
-			for(int i = 0; i < listBox.getItemCount(); i++){
-				if( listBox.getValue(i).compareTo((response.values.size()>0) ? response.values.get(0) : "" ) == 0){
+			for (int i = 0; i < listBox.getItemCount(); i++) {
+				if (listBox.getValue(i).compareTo((response.values.size() > 0) ? response.values.get(0) : "") == 0) {
 					listBox.setSelectedIndex(i);
 					break;
 				}
@@ -200,7 +193,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	}
 
 	@Override
-	public JavaScriptObject getJsSocket(){
+	public JavaScriptObject getJsSocket() {
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
 
@@ -223,34 +216,34 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		return jsonArr;
 	}
 
-
-  	/**
- 	 * @see IStateful#setState(Serializable)
- 	 */
-  	@Override
+	/**
+	 * @see IStateful#setState(Serializable)
+	 */
+	@Override
 	public void setState(JSONArray newState) {
 
 		String state = "";
 
-		if (newState != null  &&  newState.size() > 0  &&  newState.get(0).isString() != null){
+		if (newState != null && newState.size() > 0 && newState.get(0).isString() != null) {
 			state = newState.get(0).isString().stringValue();
 			lastValue = null;
 		}
 
-		for(int i = 0; i < listBox.getItemCount(); i++){
-			if( listBox.getValue(i).compareTo(state) == 0){
+		for (int i = 0; i < listBox.getItemCount(); i++) {
+			if (listBox.getValue(i).compareTo(state) == 0) {
 				listBox.setSelectedIndex(i);
 				break;
 			}
 		}
 		updateResponse(false);
-  	}
+	}
 
 	/**
 	 * init widget view
+	 *
 	 * @param element
 	 */
-	private void init(Element inlineChoiceElement){
+	private void init(Element inlineChoiceElement) {
 		NodeList nodes = inlineChoiceElement.getChildNodes();
 
 		// Add no answer as first option
@@ -258,21 +251,21 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 			listBox.addItem(" ");
 		}
 
-		for(int i = 0; i < nodes.getLength(); i++){
-			if(nodes.item(i).getNodeName().compareTo("inlineChoice") == 0){
-				Element choiceElement = (Element)nodes.item(i);
-				listBox.addItem(XMLUtils.getText(choiceElement),
-				    XMLUtils.getAttributeAsString(choiceElement, "identifier"));
+		for (int i = 0; i < nodes.getLength(); i++) {
+			if (nodes.item(i).getNodeName().compareTo("inlineChoice") == 0) {
+				Element choiceElement = (Element) nodes.item(i);
+				listBox.addItem(XMLUtils.getText(choiceElement), XMLUtils.getAttributeAsString(choiceElement, "identifier"));
 			}
 		}
 	}
 
 	/**
 	 * init widget view. Randomize options
+	 *
 	 * @param element
 	 */
-	private void initRandom(Element inlineChoiceElement){
-		RandomizedSet<Element>	randomizedNodes = new RandomizedSet<Element>();
+	private void initRandom(Element inlineChoiceElement) {
+		RandomizedSet<Element> randomizedNodes = new RandomizedSet<Element>();
 		NodeList nodes = inlineChoiceElement.getChildNodes();
 
 		// Add no answer as first option
@@ -281,36 +274,35 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		}
 
 		// Add nodes to temporary list
-		for(int i = 0; i < nodes.getLength(); i++){
-			if(nodes.item(i).getNodeName().compareTo("inlineChoice") == 0){
-				randomizedNodes.push((Element)nodes.item(i));
+		for (int i = 0; i < nodes.getLength(); i++) {
+			if (nodes.item(i).getNodeName().compareTo("inlineChoice") == 0) {
+				randomizedNodes.push((Element) nodes.item(i));
 			}
 		}
 
-		while(randomizedNodes.hasMore()){
+		while (randomizedNodes.hasMore()) {
 			Element choiceElement = randomizedNodes.pull();
-      listBox.addItem(XMLUtils.getText(choiceElement),
-          XMLUtils.getAttributeAsString(choiceElement, "identifier"));
+			listBox.addItem(XMLUtils.getText(choiceElement), XMLUtils.getAttributeAsString(choiceElement, "identifier"));
 		}
 
 	}
-	
+
 	@Override
 	public void setParentInlineModule(IUniqueModule module) {
 		parentModule = module;
 	}
-	
+
 	@Override
 	public IUniqueModule getParentInlineModule() {
 		return parentModule;
 	}
 
-	private void updateResponse(boolean userInteract){
+	private void updateResponse(boolean userInteract) {
 		if (showingAnswers) {
 			return;
 		}
 
-		if(lastValue != null) {
+		if (lastValue != null) {
 			response.remove(lastValue);
 		}
 
@@ -319,7 +311,8 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 			lastValue = "";
 		}
 		response.add(lastValue);
-		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, parentModule)), new CurrentPageScope());
+		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, parentModule)),
+				new CurrentPageScope());
 	}
 
 	@Override
@@ -327,7 +320,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		return responseIdentifier;
 	}
 
-	protected void listBoxChanged(){
+	protected void listBoxChanged() {
 		updateResponse(true);
 	}
 

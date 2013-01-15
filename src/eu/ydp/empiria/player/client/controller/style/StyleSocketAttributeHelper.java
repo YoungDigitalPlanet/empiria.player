@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
-public class StyleAttributeHelper {
+public class StyleSocketAttributeHelper {
 
 	@Inject
 	XMLParser xmlParser;

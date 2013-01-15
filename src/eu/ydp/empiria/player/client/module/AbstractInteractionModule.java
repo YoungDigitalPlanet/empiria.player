@@ -13,7 +13,7 @@ import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
-import eu.ydp.empiria.player.client.controller.style.StyleAttributeHelper;
+import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
@@ -42,7 +42,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	private ActivityPresenter<H, U> presenter;
 
 	@Inject
-	private StyleAttributeHelper styleAttributeHelper;
+	private StyleSocketAttributeHelper styleAttributeHelper;
 
 	@Inject
 	private BooleanUtils booleanUtils;

@@ -171,7 +171,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(TextFeedback.class).toInstance(mock(TextFeedbackPresenterMock.class));
 		bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
 		bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
-		
+
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));
@@ -230,6 +230,13 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 			@Override
 			public Document answer(InvocationOnMock invocation) throws Throwable {
 				return eu.ydp.gwtutil.xml.XMLParser.parse((String) invocation.getArguments()[0]);
+			}
+		});
+
+		when(parser.createDocument()).then(new Answer<Document>() {
+			@Override
+			public Document answer(InvocationOnMock invocation) throws Throwable {
+				return  eu.ydp.gwtutil.xml.XMLParser.createDocument();
 			}
 		});
 		return parser;

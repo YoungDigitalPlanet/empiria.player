@@ -11,7 +11,8 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.XMLParser;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
@@ -20,23 +21,35 @@ import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 
 public class InlineChoiceModule extends InteractionModuleBase implements Factory<InlineChoiceModule> {
-	
+
 	protected InlineChoiceController controller;
 
 	protected boolean moduleInitialized = false;
+
+	@Inject
+	protected Provider<InlineChoicePopupController> inlineChoicePopupControllerProvider;
+
+	@Inject
+	protected Provider<InlineChoiceDefaultController> inlineChoiceDefaultControllerProvider;
+
+	@Inject
+	protected eu.ydp.gwtutil.client.xml.XMLParser xmlParser;
+
+	@Inject
+	protected Provider<InlineChoiceModule> inlineChoiceModuleProvider;
 
 	public void initModule() {
 		setStyles();
 		controller.initModule(getModuleSocket(), getInteractionEventsListener());
 		controller.setParentInlineModule(this);
 	}
-	
+
 	protected void setStyles() {
 		Map<String, String> styles = getStyles();
 		if (styles != null && styles.containsKey(EMPIRIA_INLINECHOICE_TYPE) && styles.get(EMPIRIA_INLINECHOICE_TYPE).equalsIgnoreCase("popup")) {
-			controller = new InlineChoicePopupController();
+			controller = inlineChoicePopupControllerProvider.get();
 		} else {
-			controller = new InlineChoiceDefaultController();
+			controller =inlineChoiceDefaultControllerProvider.get();
 		}
 		if (styles != null && styles.containsKey(EMPIRIA_INLINECHOICE_EMPTY_OPTION) && styles.get(EMPIRIA_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase("hide")) {
 			controller.setShowEmptyOption(false);
@@ -48,9 +61,9 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 			((InlineChoicePopupController) controller).setPopupPosition(ExListBox.PopupPosition.BELOW);
 		}
 	}
-	
+
 	protected Map<String, String> getStyles() {
-		return getModuleSocket().getStyles(XMLParser.createDocument().createElement("inlinechoiceinteraction"));
+		return getModuleSocket().getStyles(xmlParser.createDocument().createElement("inlinechoiceinteraction"));
 	}
 
 	@Override
@@ -91,7 +104,7 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 	@Override
 	public void onClose() {
 	}
-	
+
 	public InlineChoiceController getController() {
 		return controller;
 	}
@@ -153,7 +166,7 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 
 	@Override
 	public InlineChoiceModule getNewInstance() {
-		return new InlineChoiceModule();
+		return inlineChoiceModuleProvider.get();
 	}
 
 }

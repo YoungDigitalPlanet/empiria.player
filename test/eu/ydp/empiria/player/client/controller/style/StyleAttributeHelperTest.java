@@ -21,14 +21,14 @@ public class StyleAttributeHelperTest extends AbstractTestBase {
 
 	private StyleSocket styleSocket;
 	private Map<String, String> hashMap;
-	private StyleAttributeHelper instance;
+	private StyleSocketAttributeHelper instance;
 
 	@Before
 	public void before() {
 		styleSocket = mock(StyleSocket.class);
 		hashMap = mock(Map.class);
 		when(styleSocket.getStyles(Mockito.any(Element.class))).thenReturn(hashMap);
-		instance = spy(injector.getInstance(StyleAttributeHelper.class));
+		instance = spy(injector.getInstance(StyleSocketAttributeHelper.class));
 	}
 
 	@Test

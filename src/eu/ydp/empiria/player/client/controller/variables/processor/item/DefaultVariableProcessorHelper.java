@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
@@ -8,13 +9,13 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 
 public abstract class DefaultVariableProcessorHelper {
 
-	public static Vector<String> getDifference(Response currentResponse, Outcome previousResponse){
-		Vector<String> current = currentResponse.values;
-		Vector<String> previous = previousResponse.values;
-		Vector<String> differences = new Vector<String>();
-		
+	public static List<String> getDifference(Response currentResponse, Outcome previousResponse){
+		List<String> current = currentResponse.values;
+		List<String> previous = previousResponse.values;
+		List<String> differences = new ArrayList<String>();
+
 		if (currentResponse.cardinality == Cardinality.ORDERED){
-			
+
 			for (int s = 0 ; s < current.size() && s < previous.size(); s ++){
 				if (current.get(s).compareTo(previous.get(s)) != 0){
 					differences.add(previous.get(s) + "->" + current.get(s));
@@ -22,7 +23,7 @@ public abstract class DefaultVariableProcessorHelper {
 					differences.add("");
 				}
 			}
-			
+
 		} else {
 
 			for (int s = 0 ; s < current.size() ; s ++){
@@ -30,14 +31,14 @@ public abstract class DefaultVariableProcessorHelper {
 					differences.add("+" + current.get(s));
 				}
 			}
-	
+
 			for (int s = 0 ; s < previous.size() ; s ++){
 				if (current.indexOf(previous.get(s)) == -1){
 					differences.add("-" + previous.get(s));
 				}
 			}
 		}
-		
+
 		return differences;
 	}
 }

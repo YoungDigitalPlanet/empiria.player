@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
@@ -15,26 +14,26 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
  * @param <T> typ odpowiedzi dostarczanych przez model
  */
 public abstract class AbstractResponseModel<T> implements IStateful{
-	
+
 	protected Response response;
-	private ResponseModelChangeListener responseModelChange;
+	private final ResponseModelChangeListener responseModelChange;
 	protected abstract List<T> parseResponse(Collection<String> values);
-	
+
 	public AbstractResponseModel(Response response, ResponseModelChangeListener responseModelChange){
 		this.response = response;
 		this.responseModelChange = responseModelChange;
 	}
-	
+
 	public boolean isCorrectAnswer(String answer){
 		List<String> correctAnswers = response.correctAnswers.getAllAnswers();
 		return correctAnswers.contains(answer);
 	}
-	
+
 	public boolean isUserAnswer(String answer){
-		Vector<String> userAnswers = response.values;
+		List<String> userAnswers = response.values;
 		return userAnswers.contains(answer);
 	}
-	
+
 	public List<T> getCorrectAnswers() {
 		return parseResponse(response.correctAnswers.getAllAnswers());
 	}
@@ -42,13 +41,13 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 	public List<T> getCurrentAnswers() {
 		return parseResponse(response.values);
 	}
-	
+
 	/**
 	 * Konwertuje odpowiedz z postaci String do typu H.
 	 * @param values
 	 * @return
 	 */
-	
+
 	@Override
 	public void setState(JSONArray newState) {
 		for (int i = 0; i < newState.size(); i++) {
@@ -64,29 +63,29 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 		for (String responseValue : response.values) {
 			state.set(state.size(), createJSONString(responseValue));
 		}
-		
+
 		return state;
 	}
-	
+
 	public void reset(){
 		response.reset();
 	}
-	
+
 	public void addAnswer(String answerIdentifier) {
 		response.add(answerIdentifier);
 		onModelChange();
 	}
-	
+
 	public void removeAnswer(String answerIdentifier) {
 		response.remove(answerIdentifier);
 		onModelChange();
 	}
-	
+
 	protected void onModelChange(){
 		responseModelChange.onResponseModelChange();
 	}
-	
+
 	private JSONString createJSONString(String value) {
 		return new JSONString(value);
-	}	
+	}
 }

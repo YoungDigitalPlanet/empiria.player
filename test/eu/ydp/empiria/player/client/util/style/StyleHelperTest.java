@@ -19,11 +19,11 @@ import eu.ydp.empiria.player.client.AbstractTestBase;
 @SuppressWarnings("PMD")
 public class StyleHelperTest extends AbstractTestBase {
 
-	private StyleHelper testObject;
+	private StyleToPropertyMappingHelper testObject;
 	private NativeStyleHelper nativeStyleHelper;
 	@Before
 	public void init(){
-		testObject = injector.getInstance(StyleHelper.class);
+		testObject = injector.getInstance(StyleToPropertyMappingHelper.class);
 		nativeStyleHelper = injector.getInstance(NativeStyleHelper.class);
 	}
 

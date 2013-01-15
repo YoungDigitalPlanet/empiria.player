@@ -11,7 +11,9 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
+import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
+import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
@@ -61,6 +63,12 @@ public class ModuleProviderFactory {
 	@Inject
 	protected Provider<ResetButtonModuleConnectorExtension> resetButtonModuleConnectorExtension;
 
+	@Inject
+	protected Provider<InlineChoiceModule> inlineChoiceModule;
+
+	@Inject
+	protected Provider<IdentificationModule> identificationModule;
+
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
 	}
@@ -101,6 +109,10 @@ public class ModuleProviderFactory {
 		return mathModule;
 	}
 
+	public Provider<InlineChoiceModule> getInlineChoiceModule() {
+		return inlineChoiceModule;
+	}
+
 	public Provider<CheckButtonModuleConnectorExtension> getCheckButtonModuleConnectorExtension() {
 		return checkButtonModuleConnectorExtension;
 	}
@@ -115,6 +127,10 @@ public class ModuleProviderFactory {
 
 	public Provider<ResetButtonModuleConnectorExtension> getResetButtonModuleConnectorExtension() {
 		return resetButtonModuleConnectorExtension;
+	}
+
+	public Provider<IdentificationModule> getIdentificationModule() {
+		return identificationModule;
 	}
 
 }

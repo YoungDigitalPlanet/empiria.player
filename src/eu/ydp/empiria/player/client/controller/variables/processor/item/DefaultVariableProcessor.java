@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
@@ -195,7 +194,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 			}
 
 			if (userInteract && outcomes.containsKey(previousKey)) {
-				Vector<String> values = outcomes.get(previousKey).values;
+				List<String> values = outcomes.get(previousKey).values;
 				values.clear();
 				for (int a = 0; a < response.values.size(); a++) {
 					values.add(response.values.get(a));
@@ -361,7 +360,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 		CorrectAnswers correctAnswers = response.correctAnswers;
 
-		Vector<String> userAnswers = response.values;
+		List<String> userAnswers = response.values;
 
 		ArrayList<Boolean> answersEvaluation = new ArrayList<Boolean>();
 
@@ -434,13 +433,13 @@ public class DefaultVariableProcessor extends VariableProcessor {
 
 	}
 
-	protected boolean processSingleResponseCardinalitySingle(CorrectAnswers correctAnswers, Vector<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
+	protected boolean processSingleResponseCardinalitySingle(CorrectAnswers correctAnswers, List<String> userAnswers, ArrayList<Boolean> answersEvaluation) {
 		boolean passed = ((userAnswers.isEmpty()) || !correctAnswers.containsAnswer(userAnswers.get(0))) ? false : true;
 		answersEvaluation.add(passed);
 		return passed;
 	}
 
-	protected boolean processSingleResponseCardinalityMultiple(Response response, CorrectAnswers correctAnswers, Vector<String> userAnswers,
+	protected boolean processSingleResponseCardinalityMultiple(Response response, CorrectAnswers correctAnswers, List<String> userAnswers,
 			ArrayList<Boolean> answersEvaluation) {
 
 		boolean passed = correctAnswers.getResponseValuesCount() > 0;

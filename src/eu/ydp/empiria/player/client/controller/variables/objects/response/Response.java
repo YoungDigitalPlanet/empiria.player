@@ -178,7 +178,7 @@ public class Response extends Variable {
 
 	}
 
-	public void set(Vector<String> keys) {
+	public void set(List<String> keys) {
 		values = keys;
 		initialized = true;
 	}
@@ -191,7 +191,7 @@ public class Response extends Variable {
 		return cardinality == Cardinality.SINGLE ? CountMode.SINGLE : countMode;
 	}
 
-	public boolean compare(Vector<String> test) {
+	public boolean compare(List<String> test) {
 		if (values.size() != test.size()) {
 			return false;
 		}

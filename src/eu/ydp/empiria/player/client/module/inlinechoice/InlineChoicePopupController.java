@@ -13,17 +13,23 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParentedModuleBase;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
@@ -31,16 +37,16 @@ import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxChangeListener;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class InlineChoicePopupController extends ParentedModuleBase implements InlineChoiceController, ExListBoxChangeListener {
-
+public class InlineChoicePopupController extends ParentedModuleBase implements InlineChoiceController, ExListBoxChangeListener, PlayerEventHandler {
 
 	private Response response;
 	private String responseIdentifier;
 	protected List<String> identifiers;
 
-	private InteractionEventsListener interactionEventsListener;
-
 	protected Element moduleElement;
+
+	@Inject
+	protected Provider<ExListBox> listBoxProvider;
 
 	protected ExListBox listBox;
 	protected Panel container;
@@ -51,19 +57,24 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	protected List<Integer> identifiersMap;
 	protected boolean showEmptyOption = true;
-	private final EventsBus eventsBus = getEventsBus();
+
+	@Inject
+	private EventsBus eventsBus;
+
+	@Inject
+	private StyleNameConstants styleNames;
+
+	@Inject
+	private PageScopeFactory scopeFactory;
+
 	protected ExListBox.PopupPosition popupPosition = ExListBox.PopupPosition.ABOVE;
-	
-	IUniqueModule parentModule;
+
+	protected IUniqueModule parentModule;
 
 	@Override
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
 		super.initModule(moduleSocket);
-		this.interactionEventsListener = moduleInteractionListener;
-	}
-	
-	protected EventsBus getEventsBus() {
-		return PlayerGinjector.INSTANCE.getEventsBus();
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED), this, scopeFactory.getCurrentPageScope());
 	}
 
 	@Override
@@ -88,36 +99,35 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 		List<Widget> popupBodies = new ArrayList<Widget>();
 		List<String> identifiersTemp = new ArrayList<String>();
 
-		for (int i = 0 ; i < optionsNodes.getLength() ; i ++){
-			Widget baseBody = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(optionsNodes.item(i));
+		for (int i = 0; i < optionsNodes.getLength(); i++) {
+			InlineBodyGeneratorSocket inlineBodyGeneratorSocket = getModuleSocket().getInlineBodyGeneratorSocket();
+			Widget baseBody = inlineBodyGeneratorSocket.generateInlineBody(optionsNodes.item(i));
 			baseBodies.add(baseBody);
-			Widget popupBody = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(optionsNodes.item(i));
+			Widget popupBody = inlineBodyGeneratorSocket.generateInlineBody(optionsNodes.item(i));
 			popupBodies.add(popupBody);
-			identifiersTemp.add(((Element)optionsNodes.item(i)).getAttribute("identifier"));
+			identifiersTemp.add(((Element) optionsNodes.item(i)).getAttribute("identifier"));
 		}
 
-		listBox = new ExListBox();
+		listBox = listBoxProvider.get();
 		listBox.setPopupPosition(popupPosition);
 		listBox.setChangeListener(this);
 
-		if (showEmptyOption){
+		if (showEmptyOption) {
 			Widget emptyOptionInBody = new InlineHTML("&nbsp;");
-			emptyOptionInBody.setStyleName("qp-text-choice-popup-option-empty");
+			emptyOptionInBody.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP_OPTION_EMPTY());
 			Widget emptyOptionInPopup = new InlineHTML("&nbsp;");
-			emptyOptionInPopup.setStyleName("qp-text-choice-popup-option-empty");
+			emptyOptionInPopup.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP_OPTION_EMPTY());
 			listBox.addOption(emptyOptionInBody, emptyOptionInPopup);
-			listBox.setSelectedIndex(0);
-		} else {
-			listBox.setSelectedIndex(-1);
 		}
 
-		if (shuffle){
+		listBox.setSelectedIndex(getAnswerIndex());
+		if (shuffle) {
 			RandomizedSet<Integer> randomizedNodes = new RandomizedSet<Integer>();
-			for (int i = 0 ; i < identifiersTemp.size() ; i ++){
+			for (int i = 0; i < identifiersTemp.size(); i++) {
 				randomizedNodes.push(i);
 			}
 			identifiers = new ArrayList<String>();
-			while (randomizedNodes.hasMore()){
+			while (randomizedNodes.hasMore()) {
 				Integer currIndex = randomizedNodes.pull();
 				identifiers.add(identifiersTemp.get(currIndex));
 				listBox.addOption(baseBodies.get(currIndex), popupBodies.get(currIndex));
@@ -125,19 +135,17 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 		} else {
 			identifiers = identifiersTemp;
-			for (int i = 0 ; i < baseBodies.size()  &&  i < popupBodies.size() ; i ++){
+			for (int i = 0; i < baseBodies.size() && i < popupBodies.size(); i++) {
 				listBox.addOption(baseBodies.get(i), popupBodies.get(i));
 			}
 		}
 
-
 		container = new FlowPanel();
-		container.setStyleName("qp-text-choice-popup");
-		if (userClass != null  &&  !"".equals(userClass)) {
+		container.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP());
+		if (userClass != null && !"".equals(userClass)) {
 			container.addStyleName(userClass);
 		}
 		container.add(listBox);
-
 
 		placeholders.get(0).add(container);
 	}
@@ -165,26 +173,25 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	@Override
 	public void markAnswers(boolean mark) {
-		if (mark){
+		if (mark) {
 			listBox.setEnabled(false);
 			int selectedIndex = listBox.getSelectedIndex();
-			if (selectedIndex != ((showEmptyOption)?0:-1) ){
-				
-				if (isResponseCorrect()){
-					container.setStyleName("qp-text-choice-popup-correct");
+			if (selectedIndex != getAnswerIndex()) {
+				if (isResponseCorrect()) {
+					container.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP_CORRECT());
 				} else {
-					container.setStyleName("qp-text-choice-popup-wrong");
+					container.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP_WRONG());
 				}
-			} else{
-				container.setStyleName("qp-text-choice-popup-none");
+			} else {
+				container.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP_NONE());
 			}
 		} else {
-			container.setStyleName("qp-text-choice-popup");
+			container.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP());
 			listBox.setEnabled(true);
 		}
 	}
 
-	private boolean isResponseCorrect(){
+	private boolean isResponseCorrect() {
 		ModuleSocket moduleSocket = getModuleSocket();
 		List<Boolean> evaluateResponse = moduleSocket.evaluateResponse(response);
 		return evaluateResponse.get(0);
@@ -192,28 +199,32 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
-		if (show  &&  !showingAnswers){
-			int correctAnswerIndex = identifiers.indexOf( response.correctAnswers.getSingleAnswer() ) + ((showEmptyOption)?1:0);
+		if (show && !showingAnswers) {
+			int correctAnswerIndex = identifiers.indexOf(response.correctAnswers.getSingleAnswer()) + getOptionIndex();
 			listBox.setSelectedIndex(correctAnswerIndex);
-		} else if (!show && showingAnswers){
-			int answerIndex = ((showEmptyOption)?0:-1) ;
-			if (response.values.size() > 0) {
-				answerIndex = identifiers.indexOf( response.values.get(0) ) + ((showEmptyOption)?1:0);
+		} else if (!show && showingAnswers) {
+			int answerIndex = getAnswerIndex();
+			if (!response.values.isEmpty()) {
+				answerIndex = identifiers.indexOf(response.values.get(0)) + getOptionIndex();
 			}
 			listBox.setSelectedIndex(answerIndex);
 		}
 		showingAnswers = show;
 	}
 
-	@Override
-	public void lock(boolean l) {
-		locked = l;
-		listBox.setEnabled(!l);
-		if (locked){
-			container.addStyleName("qp-text-choice-popup-disabled");
+	private void updateStyleName(boolean add, String styleName) {
+		if (add) {
+			container.addStyleName(styleName);
 		} else {
-			container.removeStyleName("qp-text-choice-popup-disabled");
+			container.removeStyleName(styleName);
 		}
+	}
+
+	@Override
+	public void lock(boolean lock) {
+		locked = lock;
+		listBox.setEnabled(!lock);
+		updateStyleName(locked, styleNames.QP_TEXT_CHOICE_POPUP_DISABLED());
 
 	}
 
@@ -221,34 +232,36 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	public void reset() {
 		markAnswers(false);
 		lock(false);
-		listBox.setSelectedIndex( ((showEmptyOption)?0:-1) );
+		listBox.setShowEmptyOptions(showEmptyOption);
 		updateResponse(false);
 		listBox.setEnabled(true);
-		container.setStyleName("qp-text-choice-popup");
+		container.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP());
+	}
+
+	private int getOptionIndex() {
+		return (showEmptyOption) ? 1 : 0;
+	}
+
+	private int getAnswerIndex() {
+		return (showEmptyOption) ? 0 : -1;
 	}
 
 	@Override
 	public JSONArray getState() {
-		  JSONArray jsonArr = new JSONArray();
-
-		  String stateString = "";
-
-		  if (listBox.getSelectedIndex() - ((showEmptyOption)?1:0) >= 0) {
-			if (response.values.size() > 0) {
-				stateString = response.values.get(0);
-			}
+		JSONArray jsonArr = new JSONArray();
+		String stateString = "";
+		if (listBox.getSelectedIndex() - getOptionIndex() >= 0 && !response.values.isEmpty()) {
+			stateString = response.values.get(0);
 		}
-
-		  jsonArr.set(0, new JSONString(stateString));
-
-		  return jsonArr;
+		jsonArr.set(0, new JSONString(stateString));
+		return jsonArr;
 	}
 
 	@Override
 	public void setState(JSONArray newState) {
-		if (newState != null  &&  newState.size() > 0  &&  newState.get(0).isString() != null){
+		if (newState != null && newState.size() > 0 && newState.get(0).isString() != null) {
 			int index = identifiers.indexOf(newState.get(0).isString().stringValue());
-			listBox.setSelectedIndex( index + ((showEmptyOption)?1:0) );
+			listBox.setSelectedIndex(index + getOptionIndex());
 		}
 
 		updateResponse(false);
@@ -258,34 +271,32 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	public JavaScriptObject getJsSocket() {
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
-	
+
 	@Override
 	public void setParentInlineModule(IUniqueModule module) {
 		parentModule = module;
 	}
-	
+
 	@Override
 	public IUniqueModule getParentInlineModule() {
 		return parentModule;
 	}
 
-	private void updateResponse(boolean userInteract){
-		if (showingAnswers) {
-			return;
+	private void updateResponse(boolean userInteract) {
+		if (!showingAnswers) {
+			response.reset();
+			if (listBox.getSelectedIndex() != getAnswerIndex()) {
+				String lastValue = identifiers.get(listBox.getSelectedIndex() - getOptionIndex());
+				response.add(lastValue);
+			}
+			StateChangedInteractionEvent stateChangeEvent = new StateChangedInteractionEvent(userInteract, parentModule);
+			eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, stateChangeEvent), scopeFactory.getCurrentPageScope());
 		}
-
-		response.reset();
-
-		if (listBox.getSelectedIndex() != ((showEmptyOption)?0:-1)){
-			String lastValue = identifiers.get(listBox.getSelectedIndex() - ((showEmptyOption)?1:0));
-			response.add(lastValue);
-		}
-		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, parentModule)), new CurrentPageScope());
 	}
 
 	@Override
 	public void onChange() {
-		if (!showingAnswers  &&  !locked){
+		if (!showingAnswers && !locked) {
 			updateResponse(true);
 		}
 
@@ -296,8 +307,14 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 		showEmptyOption = seo;
 	}
 
-	public void setPopupPosition(ExListBox.PopupPosition pp){
-		popupPosition = pp;
+	public void setPopupPosition(ExListBox.PopupPosition popupPosition) {
+		this.popupPosition = popupPosition;
 	}
-	
+
+	@Override
+	public void onPlayerEvent(PlayerEvent event) {
+		if (event.getType() == PlayerEventTypes.PAGE_SWIPE_STARTED) {
+			listBox.hidePopup();
+		}
+	}
 }

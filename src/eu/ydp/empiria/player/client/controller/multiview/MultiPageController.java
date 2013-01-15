@@ -439,13 +439,16 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			if (isHorizontalSwipe()) {
 				touchEndTimer.schedule(TOUCH_END_TIMER_TIME);
 				if (!isZoomed()) {
-					swipeStarted = true;
-					setStylesForPages(swipeStarted);
 					if (lastEnd != end && lastEnd > 0) {
 						swipeRight = (lastEnd > end);
 						move(swipeRight, ((float) Math.abs(lastEnd - end) / RootPanel.get().getOffsetWidth()) * 100);
+						if(!swipeStarted){
+							eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_SWIPE_STARTED));
+						}
 						lastEnd = end;
 					}
+					swipeStarted = true;
+					setStylesForPages(swipeStarted);
 				}
 			}
 		}

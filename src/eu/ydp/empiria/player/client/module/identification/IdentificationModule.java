@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.identification;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,6 +14,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
@@ -22,26 +23,22 @@ import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class IdentificationModule extends InteractionModuleBase implements Factory<IdentificationModule>{
+public class IdentificationModule extends InteractionModuleBase implements Factory<IdentificationModule> {
 
 	private int maxSelections;
 	private boolean locked = false;
 	private boolean showingCorrectAnswers = false;
 
-	private Vector<SelectableChoice> options;
+	@Inject
+	protected Provider<IdentificationModule> identificationModuleProvider;
+	private List<SelectableChoice> options;
 	private FlowPanel panel;
 
-	protected List<Element> multiViewElements = new ArrayList<Element>();;
-
-	public IdentificationModule(){
-	}
-
-
+	protected List<Element> multiViewElements = new ArrayList<Element>();
 
 	@Override
 	public void onBodyLoad() {
 	}
-
 
 	@Override
 	public void onBodyUnload() {
@@ -60,7 +57,6 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	public void onClose() {
 	}
 
-
 	@Override
 	public void addElement(Element element) {
 		multiViewElements.add(element);
@@ -69,19 +65,19 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		setResponseFromElement(multiViewElements.get(0));
-		options = new Vector<SelectableChoice>();
+		options = new ArrayList<SelectableChoice>();
 		String userClass = "";
 
-		for (int e = 0 ; e < multiViewElements.size()  &&  e < placeholders.size() ; e ++ ){
+		for (int e = 0; e < multiViewElements.size() && e < placeholders.size(); e++) {
 
 			Element element = multiViewElements.get(e);
 			HasWidgets currPlaceholder = placeholders.get(e);
-			Vector<SelectableChoice> currOptions = new Vector<SelectableChoice>();
+			ArrayList<SelectableChoice> currOptions = new ArrayList<SelectableChoice>();
 
 			boolean shuffle = false;
 			String separatorString = "/";
 
-			if (e == 0){
+			if (e == 0) {
 
 				shuffle = XMLUtils.getAttributeAsBoolean(element, "shuffle");
 				maxSelections = XMLUtils.getAttributeAsInt(element, "maxSelections");
@@ -91,34 +87,37 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			}
 
 			RandomizedSet<SelectableChoice> optionsSet = new RandomizedSet<SelectableChoice>();
-			Vector<Boolean> fixeds = new Vector<Boolean>();
+			ArrayList<Boolean> fixeds = new ArrayList<Boolean>();
 			NodeList optionNodes = element.getElementsByTagName("simpleChoice");
-			for (int i = 0 ; i < optionNodes.getLength() ; i ++ ){
-				final SelectableChoice sc = new SelectableChoice((Element)optionNodes.item(i), getModuleSocket());
-				currOptions.add(sc);
-				if(shuffle  &&  !XMLUtils.getAttributeAsBoolean((Element)optionNodes.item(i), "fixed")){
-					optionsSet.push(sc);
+			for (int i = 0; i < optionNodes.getLength(); i++) {
+				final SelectableChoice selectableChoice = new SelectableChoice((Element) optionNodes.item(i), getModuleSocket());
+				currOptions.add(selectableChoice);
+				if (shuffle && !XMLUtils.getAttributeAsBoolean((Element) optionNodes.item(i), "fixed")) {
+					optionsSet.push(selectableChoice);
 					fixeds.add(false);
-				} else
+				} else {
 					fixeds.add(true);
-				sc.addDomHandler(new ClickHandler() {
+				}
+				selectableChoice.addDomHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
-						onChoiceClick(sc);
+						onChoiceClick(selectableChoice);
 					}
 				}, ClickEvent.getType());
 			}
 
 			panel = new FlowPanel();
 			panel.setStyleName("qp-identification-module");
-			if (userClass != null  &&  !"".equals(userClass))
+			if (userClass != null && !"".equals(userClass)) {
 				panel.addStyleName(userClass);
-			for (int i = 0 ; i < currOptions.size() ; i ++){
-				if (fixeds.get(i))
+			}
+			for (int i = 0; i < currOptions.size(); i++) {
+				if (fixeds.get(i)) {
 					panel.add(currOptions.get(i));
-				else
+				} else {
 					panel.add(optionsSet.pull());
-				if (i != currOptions.size()-1){
+				}
+				if (i != currOptions.size() - 1) {
 					Label sep = new Label(separatorString);
 					sep.setStyleName("qp-identification-separator");
 					panel.add(sep);
@@ -132,39 +131,36 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	}
 
 	@Override
-	public void lock(boolean l) {
-		locked = l;
+	public void lock(boolean locked) {
+		this.locked = locked;
 	}
 
 	@Override
 	public void markAnswers(boolean mark) {
-
-		for (SelectableChoice currSC:options){
+		for (SelectableChoice currSC : options) {
 			boolean correct = false;
-			if (getResponse().correctAnswers.containsAnswer(currSC.getIdentifier())){
+			if (getResponse().correctAnswers.containsAnswer(currSC.getIdentifier())) {
 				correct = true;
 			}
-			currSC.markAnswers(mark, correct );
+			currSC.markAnswers(mark, correct);
 		}
-
 	}
 
 	@Override
 	public void reset() {
 		markAnswers(false);
 		lock(false);
-		for (int i = 0 ; i < options.size() ; i ++){
+		for (int i = 0; i < options.size(); i++) {
 			options.get(i).setSelected(false);
 		}
 		updateResponse(false);
-
 	}
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
-		if (show){
-			for (SelectableChoice sc : options){
-				if (getResponse().correctAnswers.containsAnswer(sc.getIdentifier())){
+		if (show) {
+			for (SelectableChoice sc : options) {
+				if (getResponse().correctAnswers.containsAnswer(sc.getIdentifier())) {
 					sc.setSelected(true);
 				} else {
 					sc.setSelected(false);
@@ -172,28 +168,27 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			}
 			showingCorrectAnswers = true;
 		} else {
-			for (SelectableChoice sc : options){
-				if (getResponse().values.contains(sc.getIdentifier())){
+			for (SelectableChoice sc : options) {
+				if (getResponse().values.contains(sc.getIdentifier())) {
 					sc.setSelected(true);
 				} else {
 					sc.setSelected(false);
 				}
 			}
 			showingCorrectAnswers = false;
-
 		}
 	}
 
-	public JavaScriptObject getJsSocket(){
+	@Override
+	public JavaScriptObject getJsSocket() {
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
 
 	@Override
 	public JSONArray getState() {
-
 		JSONArray arr = new JSONArray();
-		for (int i = 0 ; i < options.size() ; i ++){
-			arr.set(i, JSONBoolean.getInstance( getResponse().values.contains(options.get(i).getIdentifier()) ));
+		for (int i = 0; i < options.size(); i++) {
+			arr.set(i, JSONBoolean.getInstance(getResponse().values.contains(options.get(i).getIdentifier())));
 		}
 
 		return arr;
@@ -201,30 +196,29 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 
 	@Override
 	public void setState(JSONArray newState) {
-
-		for (int i = 0 ; i < options.size() ; i ++){
-			JSONValue value =  newState.get(i);
-			if (value != null)
+		for (int i = 0; i < options.size(); i++) {
+			JSONValue value = newState.get(i);
+			if (value != null) {
 				options.get(i).setSelected(value.isBoolean().booleanValue());
+			}
 		}
 		updateResponse(false);
 	}
 
-	protected void onChoiceClick(SelectableChoice sc){
-
-		if (!locked){
-
-			sc.setSelected(!sc.getSelected());
+	protected void onChoiceClick(SelectableChoice selectableChoice) {
+		if (!locked) {
+			selectableChoice.setSelected(!selectableChoice.getSelected());
 
 			int currSelectionsCount = 0;
-			for (int i = 0 ; i < options.size() ; i ++){
-				if (options.get(i).getSelected())
+			for (int i = 0; i < options.size(); i++) {
+				if (options.get(i).getSelected()) {
 					currSelectionsCount++;
+				}
 			}
 
-			if (currSelectionsCount > maxSelections){
-				for (int i = 0 ; i < options.size() ; i ++){
-					if (options.get(i).getSelected()  &&  sc != options.get(i)){
+			if (currSelectionsCount > maxSelections) {
+				for (int i = 0; i < options.size(); i++) {
+					if (options.get(i).getSelected() && selectableChoice != options.get(i)) {
 						options.get(i).setSelected(false);
 						break;
 					}
@@ -234,19 +228,19 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 		}
 	}
 
-
-	private void updateResponse(boolean userInteract){
-		if (showingCorrectAnswers)
+	private void updateResponse(boolean userInteract) {
+		if (showingCorrectAnswers) {
 			return;
-
-		Vector<String> currResponseValues = new Vector<String>();
-
-		for (SelectableChoice currSC:options){
-			if (currSC.getSelected())
-				currResponseValues.add(currSC.getIdentifier());
 		}
 
-		if (!getResponse().compare(currResponseValues)  ||  !getResponse().isInitialized()){
+		ArrayList<String> currResponseValues = new ArrayList<String>();
+		for (SelectableChoice currSC : options) {
+			if (currSC.getSelected()) {
+				currResponseValues.add(currSC.getIdentifier());
+			}
+		}
+
+		if (!getResponse().compare(currResponseValues) || !getResponse().isInitialized()) {
 			getResponse().set(currResponseValues);
 			fireStateChanged(userInteract);
 		}
@@ -254,7 +248,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 
 	@Override
 	public IdentificationModule getNewInstance() {
-		return new IdentificationModule();
+		return identificationModuleProvider.get();
 	}
 
 }

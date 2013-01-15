@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection;
 
-import eu.ydp.empiria.player.client.util.style.StyleHelper;
+import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
 import gwt.g2d.client.graphics.Surface;
 import gwt.g2d.client.graphics.canvas.Context;
 
@@ -18,11 +18,11 @@ public class ConnectionSurfaceView extends Composite {
 	// protected Context view = null;
 	protected Context context2d;
 	protected Surface surface;
-	private final StyleHelper styleHelper;
+	private final StyleToPropertyMappingHelper styleHelper;
 	private final double[] coordinates = new double[4];
 	private final Map<String, String> lastSetProperies = new HashMap<String, String>();
 
-	public ConnectionSurfaceView(int width, int height, StyleHelper styleHelper) {
+	public ConnectionSurfaceView(int width, int height, StyleToPropertyMappingHelper styleHelper) {
 		this.styleHelper = styleHelper;
 		surface = new Surface(width, height);
 		context2d = surface.getContext();

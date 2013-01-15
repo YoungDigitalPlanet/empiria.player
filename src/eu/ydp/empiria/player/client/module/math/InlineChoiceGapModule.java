@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
@@ -13,21 +15,26 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxChangeListener;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
-public class InlineChoiceGapModule extends MathGapBase implements MathGap, Factory<InlineChoiceGapModule> {
+public class InlineChoiceGapModule extends MathGapBase implements MathGap, Factory<InlineChoiceGapModule>, PlayerEventHandler {
 
 	@Inject
-	private Provider<InlineChoiceGapModule> moduleFactory;
-	
+	private Provider<InlineChoiceGapModule> moduleProvider;
+
 	protected List<String> options;
 
 	protected boolean hasEmptyOption = false;
@@ -36,15 +43,26 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 	protected StyleNameConstants styleNames;
 
 	@Inject
+	protected EventsBus eventsBus;
+
+	@Inject
+	protected PageScopeFactory pageScopeFactory;
+
+	@Inject
 	public InlineChoiceGapModule(InlineChoiceGapModulePresenter presenter) {
 		this.presenter = presenter;
-		
+
 		getListBox().setChangeListener(new ExListBoxChangeListener() {
 			@Override
 			public void onChange() {
 				updateResponse(true);
 			}
 		});
+	}
+
+	@PostConstruct
+	public void postConstruct() {
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED), this, pageScopeFactory.getCurrentPageScope());
 	}
 
 	protected IsExListBox getListBox() {
@@ -79,7 +97,7 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 		}
 	}
 
-	List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket){
+	List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket) {
 		NodeList optionNodes = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_INLINE_CHOICE);
 		List<String> options = new ArrayList<String>();
 
@@ -104,7 +122,8 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 		}
 
 		if (mathStyles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
-			hasEmptyOption = mathStyles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(EmpiriaStyleNameConstants.VALUE_SHOW);
+			hasEmptyOption = mathStyles.get(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(
+					EmpiriaStyleNameConstants.VALUE_SHOW);
 		}
 	}
 
@@ -137,7 +156,7 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 		}
 		return valueIndex;
 	}
-	
+
 	@Override
 	public void reset() {
 		getListBox().setSelectedIndex((hasEmptyOption) ? 0 : -1);
@@ -156,7 +175,13 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 
 	@Override
 	public InlineChoiceGapModule getNewInstance() {
-		return moduleFactory.get();
+		return moduleProvider.get();
 	}
 
+	@Override
+	public void onPlayerEvent(PlayerEvent event) {
+		if (event.getType() == PlayerEventTypes.PAGE_SWIPE_STARTED) {
+			getListBox().hidePopup();
+		}
+	}
 }

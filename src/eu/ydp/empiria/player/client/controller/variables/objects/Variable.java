@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.objects;
 
+import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.json.client.JSONValue;
@@ -23,7 +24,7 @@ public abstract class Variable {
 
 	public BaseType baseType;
 
-	public Vector<String> values;
+	public List<String> values;
 
 	public void reset() {
 		values.clear();
@@ -59,13 +60,13 @@ public abstract class Variable {
 	}
 
 	public boolean compareValues(Vector<String> testValues){
-		
+
 		if (values.size() != testValues.size()) {
 			return false;
 		}
-		
+
 		boolean contains;
-		
+
 		for (String ref : values){
 			contains = false;
 			for (String test : testValues){
@@ -82,7 +83,7 @@ public abstract class Variable {
 	}
 
 	public boolean matchFirstValue(String[] testValues) {
-		String value = this.values.firstElement();
+		String value = this.values.get(0);
 		boolean result = false;
 		for (String testValue : testValues) {
 			if (regexMatcher.matches(value,"^(" + testValue + ")$")) {

@@ -7,7 +7,11 @@ import java.util.Set;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
 
-public class StyleHelper {
+/**
+ * Klasa mapujaca atrybuty z plikow css na property JavaScriptObject
+ *
+ */
+public class StyleToPropertyMappingHelper {
 	/**
 	 * wywolanie funkcji w css musi miec taki suffix
 	 */

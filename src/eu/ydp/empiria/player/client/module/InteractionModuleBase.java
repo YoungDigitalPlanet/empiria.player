@@ -3,11 +3,11 @@ package eu.ydp.empiria.player.client.module;
 import java.util.List;
 
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
@@ -21,7 +21,9 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
 	private Response response;
 	private String responseIdentifier;
-	private final EventsBus eventsBus = getEventsBus();
+
+	@Inject
+	private EventsBus eventsBus;
 
 
 	@Override
@@ -55,10 +57,6 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
 	protected void fireStateChanged(boolean userInteract){
 		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, this)), new CurrentPageScope());
-	}
-
-	protected EventsBus getEventsBus() {
-		return PlayerGinjector.INSTANCE.getEventsBus();
 	}
 
 	@Override
