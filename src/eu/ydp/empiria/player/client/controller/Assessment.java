@@ -46,7 +46,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.InlineContainerHelper;
+import eu.ydp.empiria.player.client.module.InlineContainerStylesExtractor;
 import eu.ydp.empiria.player.client.module.InlineFormattingContainerType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
@@ -254,7 +254,7 @@ public class Assessment {
 
 		@Override
 		public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module) {
-			InlineContainerHelper inlineContainerHelper = new InlineContainerHelper();
+			InlineContainerStylesExtractor inlineContainerHelper = new InlineContainerStylesExtractor();
 			return inlineContainerHelper.getInlineStyles(module);
 		}
 

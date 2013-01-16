@@ -39,7 +39,7 @@ import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.InlineContainerHelper;
+import eu.ydp.empiria.player.client.module.InlineContainerStylesExtractor;
 import eu.ydp.empiria.player.client.module.InlineFormattingContainerType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
@@ -211,7 +211,7 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 			@Override
 			public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module) {
-				InlineContainerHelper inlineContainerHelper = new InlineContainerHelper();
+				InlineContainerStylesExtractor inlineContainerHelper = new InlineContainerStylesExtractor();
 				return inlineContainerHelper.getInlineStyles(module);
 			}
 		};

@@ -17,9 +17,9 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 
 	@Override
 	public void initModule(Element element) {
-		MathTextFontHelper fontHelper = new MathTextFontHelper(this, getModuleSocket());
+		MathTextFontInitializer fontHelper = new MathTextFontInitializer();
 		MathPlayerManager mpm = new MathPlayerManager();		
-		Font f = fontHelper.initializeFont(element);
+		Font f = fontHelper.initialize(this, getModuleSocket(), element);
 		mpm.setFont(f);
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName("qp-mathtext");
