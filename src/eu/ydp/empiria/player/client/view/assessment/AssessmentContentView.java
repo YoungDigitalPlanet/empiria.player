@@ -61,7 +61,7 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
 
 	@Override
 	public PageViewSocket getPageViewSocket() {
-		return pageViewCache.get(page.getCurrentPageNumber()).getKey();
+		return pageViewCache.getOrCreateAndPut(page.getCurrentPageNumber()).getKey();
 	}
 
 }

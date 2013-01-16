@@ -2,5 +2,5 @@ eclipse.preferences.version=1
 org.moreunit.prefixes=
 org.moreunit.suffixes=JUnitTest
 org.moreunit.test_type=junit4
-org.moreunit.unitsourcefolder=empiria.player_selectionBranch\:src\:empiria.player_selectionBranch\:test
+org.moreunit.unitsourcefolder=empiria.player\:src\:empiria.player\:test
 org.moreunit.useprojectsettings=true

@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.controller.Page;
@@ -46,7 +47,6 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.KeyValue;
-import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
@@ -63,8 +63,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	@Inject
 	protected Page page;
 	@Inject
-	protected GWTPanelFactory panelFactory;
-	@Inject
 	protected MultiPageView view;
 	@Inject
 	protected StyleSocket styleSocket;
@@ -72,6 +70,13 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	protected Animation animation;
 	@Inject
 	protected TouchRecognitionFactory touchRecognitionFactory;
+	
+	@Inject
+	@Named("multiPageControllerMainPanel")
+	private FlowPanel mainPanel;
+	@Inject
+	private PagePlaceHolderPanelCreator pagePlaceHolderPanelCreator;
+	
 	private static int activePageCount = 3;
 	private int currentVisiblePage = -1;
 	private int start;
@@ -89,7 +94,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private boolean swipeStarted = false;
 	private boolean swipeRight = false;
 	private boolean touchLock = false;
-	private FlowPanel mainPanel;
 	private final Set<Integer> measuredPanels = new HashSet<Integer>();
 	private final Set<Integer> detachedPages = new HashSet<Integer>();
 	/**
@@ -119,7 +123,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	private void setStylesForPages(boolean swipeStarted) {
 		if (swipeStarted) {
-			Panel selectedPanel = panelsCache.get(currentVisiblePage).getKey();
+			Panel selectedPanel = panelsCache.getOrCreateAndPut(currentVisiblePage).getKey();
 			selectedPanel.setStyleName(styleNames.QP_PAGE_SELECTED());
 			for (Map.Entry<Integer, KeyValue<FlowPanel, FlowPanel>> panel : panelsCache.getCache().entrySet()) {
 				if (panel.getKey() != currentVisiblePage) {
@@ -187,34 +191,40 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	 * @return
 	 */
 	public FlowPanel getViewForPage(Integer pageNumber) {
-		KeyValue<FlowPanel, FlowPanel> panel = null;
-		if (panelsCache.isPresent(pageNumber)) {
-			panel = panelsCache.get(pageNumber);
-		} else {
-			if (panelsCache.isEmpty()) {
-				for (int index = 0; index <= pageNumber; ++index) {
-					panel = createAndPutToCache(index);
-				}
-			} else {
-				Integer maxIndex = panelsCache.getCache().keySet().iterator().next();
-				if (pageNumber > maxIndex) {
-					for (int index = maxIndex + 1; index <= pageNumber; ++index) {
-						panel = createAndPutToCache(index);
-					}
-				}
-			}
-			panel.getKey().addStyleName(styleNames.QP_PAGE_UNSELECTED());
-			panel.getKey().addStyleName(pageNumber > currentVisiblePage ? styleNames.QP_PAGE_NEXT() : styleNames.QP_PAGE_PREV());
+		if(!panelsCache.isPresent(pageNumber)){
+			pagePlaceHolderPanelCreator.createPanelsUntilIndex(pageNumber);
+			applyStylesToPanelOnIndex(pageNumber);
 			showProgressBarForPage(pageNumber);
 		}
+		
+		KeyValue<FlowPanel, FlowPanel> panel = panelsCache.getOrCreateAndPut(pageNumber);
+		
 		loadedPages.add(pageNumber);
 		return panel.getValue();
 	}
+	
+	private void applyStylesToPanelOnIndex(Integer pageNumber) {
+		KeyValue<FlowPanel, FlowPanel> panelsPair = panelsCache.getOrCreateAndPut(pageNumber);
+		FlowPanel panel = panelsPair.getKey();
+		
+		panel.addStyleName(styleNames.QP_PAGE_UNSELECTED());
+		
+		String pageDirectionChangeStyle = findPageDirectionChangeStyle(pageNumber);
+		panel.addStyleName(pageDirectionChangeStyle);
+	}
 
-	private KeyValue<FlowPanel, FlowPanel> createAndPutToCache(int index) {
-		KeyValue<FlowPanel, FlowPanel> panel = panelsCache.get(index);
-		mainPanel.add(panel.getKey());
-		return panel;
+	private String findPageDirectionChangeStyle(Integer pageNumber) {
+		String pageDirectionChangeStyle;
+		if(isChangeToNextPage(pageNumber)){
+			pageDirectionChangeStyle = styleNames.QP_PAGE_NEXT();
+		}else{
+			pageDirectionChangeStyle = styleNames.QP_PAGE_PREV();
+		}
+		return pageDirectionChangeStyle;
+	}
+
+	private boolean isChangeToNextPage(Integer pageNumber) {
+		return pageNumber > currentVisiblePage;
 	}
 
 	@Override
@@ -240,7 +250,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		scheduler.scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
-				panelsCache.get(page).getValue().removeFromParent();
+				panelsCache.getOrCreateAndPut(page).getValue().removeFromParent();
 			}
 		});
 	}
@@ -249,7 +259,9 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		scheduler.scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
-				pair.getKey().add(pair.getValue());
+				FlowPanel placeHolderPanel = pair.getKey();
+				FlowPanel pageContentPanel = pair.getValue();
+				placeHolderPanel.add(pageContentPanel);
 				if (pageNumber == currentVisiblePage) {
 					setHeight(getHeightForPage(currentVisiblePage));
 				}
@@ -278,7 +290,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		for (Integer page : activePanels) {
 			final int pageNumber = page;
 			if (panelsCache.isPresent(page) && detachedPages.contains(page)) {
-				final KeyValue<FlowPanel, FlowPanel> pair = panelsCache.get(page);
+				final KeyValue<FlowPanel, FlowPanel> pair = panelsCache.getOrCreateAndPut(page);
 				scheduleDeferedAttachToParent(pair, pageNumber);
 				detachedPages.remove(page);
 			}
@@ -559,7 +571,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	@Override
 	public void init() {
-		mainPanel = panelFactory.getFlowPanel();
 		view.setController(this);
 		configure();
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW), this);

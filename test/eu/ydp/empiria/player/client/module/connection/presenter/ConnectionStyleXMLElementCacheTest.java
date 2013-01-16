@@ -47,7 +47,7 @@ public class ConnectionStyleXMLElementCacheTest {
 	@Test
 	public void testGet() {
 		for (MultiplePairModuleConnectType type : MultiplePairModuleConnectType.values()) {
-			Element element = cache.get(type);
+			Element element = cache.getOrCreateAndPut(type);
 			assertEquals(styles.get(type), element.getAttribute("class"));
 			assertEquals("connection", element.getNodeName());
 		}

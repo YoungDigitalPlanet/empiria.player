@@ -36,23 +36,23 @@ public class ElementCacheJUnitTest {
 	@Test
 	public void cacheEmptyTest() {
 		assertTrue("cache is not empty", cache.isEmpty());
-		cache.get(0);
-		cache.get(1);
+		cache.getOrCreateAndPut(0);
+		cache.getOrCreateAndPut(1);
 		assertFalse("cache is empty", cache.isEmpty());
 	}
 
 	@Test
 	public void cacheAddTest() {
-		assertTrue("wrong return value from cache", cache.get(0).equals("0"));
-		assertTrue("wrong return value from cache", cache.get(1).equals("1"));
-		assertTrue("wrong return value from cache", cache.get(0).equals("0"));
+		assertTrue("wrong return value from cache", cache.getOrCreateAndPut(0).equals("0"));
+		assertTrue("wrong return value from cache", cache.getOrCreateAndPut(1).equals("1"));
+		assertTrue("wrong return value from cache", cache.getOrCreateAndPut(0).equals("0"));
 		Mockito.verify(cache, Mockito.times(2)).getElement(Mockito.anyInt());
 	}
 
 	@Test
 	public void cacheContainsTest() {
-		cache.get(0);
-		cache.get(1);
+		cache.getOrCreateAndPut(0);
+		cache.getOrCreateAndPut(1);
 		assertFalse("wrong value in cache", cache.isPresent(20));
 		assertTrue("missing value in cache", cache.isPresent(0));
 		assertTrue("missing value in cache", cache.isPresent(1));

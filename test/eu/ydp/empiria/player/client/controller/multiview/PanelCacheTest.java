@@ -18,20 +18,20 @@ public class PanelCacheTest extends GWTTestCase {
 	public void testPageViewWithSwipeAndWithout() {
 		PanelCache cache =  PlayerGinjector.INSTANCE.getPanelCache();
 		assertTrue(cache.isEmpty());
-		KeyValue<FlowPanel, FlowPanel> value = cache.get(0);
+		KeyValue<FlowPanel, FlowPanel> value = cache.getOrCreateAndPut(0);
 		Style style = value.getKey().getElement().getStyle();
 		assertTrue(style.getPosition().equals(Position.ABSOLUTE.getCssName()));
 		assertTrue(style.getTop().equals("0px"));
 		assertEquals("0.0%", style.getLeft());
 		assertEquals("100.0%", style.getWidth());
-		value = cache.get(2);
+		value = cache.getOrCreateAndPut(2);
 		style = value.getKey().getElement().getStyle();
 		assertEquals(Position.ABSOLUTE.getCssName(), style.getPosition());
 		assertEquals("0px", style.getTop());
 		assertEquals("200.0%", style.getLeft());
 		assertEquals("100.0%", style.getWidth());
 		cache.setSwipeDisabled(true);
-		value = cache.get(3);
+		value = cache.getOrCreateAndPut(3);
 		assertNotSame(Position.ABSOLUTE.getCssName(), style.getPosition());
 		assertNotSame("0px", style.getTop());
 		assertNotSame("200.0%", style.getLeft());

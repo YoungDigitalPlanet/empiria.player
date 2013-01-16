@@ -62,7 +62,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 		if (pageNumber != controllerPageNumber) {
 			controllerPageNumber = pageNumber;
 			if (isInCache) {
-				pageController = controllerCache.get(pageNumber);
+				pageController = controllerCache.getOrCreateAndPut(pageNumber);
 			} else {
 				pageController = controllerFactory.getPageController(assessmentViewSocket.getPageViewSocket(), flowSocket,
 																		interactionEventsSocket, assessmentSessionSocket.getPageSessionSocket(),

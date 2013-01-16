@@ -27,7 +27,7 @@ public abstract class AbstractCache<K, V> {
 	 * @param index
 	 * @return
 	 */
-	public V get(K index) {
+	public V getOrCreateAndPut(K index) {
 		V contentView = cache.get(index);
 		if (contentView == null) {
 			contentView = getElement(index);
