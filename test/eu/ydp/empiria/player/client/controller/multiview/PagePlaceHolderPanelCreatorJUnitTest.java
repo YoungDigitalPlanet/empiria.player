@@ -88,28 +88,28 @@ public class PagePlaceHolderPanelCreatorJUnitTest extends AbstractTestBaseWithou
 	
 	@Test
 	public void testCreatePanelsUntilIndex_cacheIsNotEmpty() throws Exception {
-		int pageIndex = 1;
+		int pageIndex = 2;
 		
 		when(panelsCache.isEmpty())
 			.thenReturn(false);
 		
-		Map<Integer, KeyValue<FlowPanel, FlowPanel>> panelsCacheMap = preparePanelsCacheMap(0);
+		Map<Integer, KeyValue<FlowPanel, FlowPanel>> panelsCacheMap = preparePanelsCacheMap(0, 1);
 		when(panelsCache.getCache())
 			.thenReturn(panelsCacheMap);
 		
-		FlowPanel firstPanelPlaceHolderKey = mock(FlowPanel.class);
-		FlowPanel firstPanelPlaceHolderValue = mock(FlowPanel.class);
-		KeyValue<FlowPanel, FlowPanel> firstPanelPlaceHolderPair = new KeyValue<FlowPanel, FlowPanel>(firstPanelPlaceHolderKey, firstPanelPlaceHolderValue);
-		when(panelsCache.getOrCreateAndPut(1))
-			.thenReturn(firstPanelPlaceHolderPair);
+		FlowPanel secondPanelPlaceHolderKey = mock(FlowPanel.class);
+		FlowPanel secondPanelPlaceHolderValue = mock(FlowPanel.class);
+		KeyValue<FlowPanel, FlowPanel> secondPanelPlaceHolderPair = new KeyValue<FlowPanel, FlowPanel>(secondPanelPlaceHolderKey, secondPanelPlaceHolderValue);
+		when(panelsCache.getOrCreateAndPut(2))
+			.thenReturn(secondPanelPlaceHolderPair);
 		
 		placeHolderPanelCreator.createPanelsUntilIndex(pageIndex);
 		
 		
 		verify(panelsCache).isEmpty();
 		verify(panelsCache).getCache();
-		verify(panelsCache).getOrCreateAndPut(1);
-		verify(mainFlowPanel).add(firstPanelPlaceHolderKey);
+		verify(panelsCache).getOrCreateAndPut(2);
+		verify(mainFlowPanel).add(secondPanelPlaceHolderKey);
 	}
 
 	private Map<Integer, KeyValue<FlowPanel, FlowPanel>> preparePanelsCacheMap(int ... indexes) {
