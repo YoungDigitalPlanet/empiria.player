@@ -129,4 +129,8 @@ public class AssessmentBody implements WidgetWorkflowListener {
 		}
 	}
 
+	public ParenthoodManager getParenthood() {
+		return parenthood;
+	}
+
 }

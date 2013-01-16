@@ -17,6 +17,7 @@ import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.module.IInlineContainerModule;
 import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -30,12 +31,14 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 	protected DisplayContentOptions options;
 	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
 	private final InteractionEventsListener interactionEventsListener;
+	private ParenthoodManager parenthood;
 
-	public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket moduleSocket, DisplayContentOptions options, InteractionEventsListener interactionEventsListener) {
+	public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket moduleSocket, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, ParenthoodManager parenthood) {
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
 		this.moduleSocket = moduleSocket;
 		this.interactionEventsListener = interactionEventsListener;
+		this.parenthood = parenthood;
 	}
 
 	@Override
@@ -111,17 +114,20 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 			} else if (modulesRegistrySocket.isModuleSupported(currNode.getNodeName()) && modulesRegistrySocket.isInlineModule(currNode.getNodeName())) {
 				IModule module = modulesRegistrySocket.createModule((Element) currNode);
 				if (module instanceof IInlineModule) {
+					parenthood.addChild(module);
 					((IInlineModule) module).initModule((Element) currNode, moduleSocket,interactionEventsListener);
 					Widget moduleView = ((IInlineModule) module).getView();
 					if (moduleView != null) {
 						parentElement.appendChild(moduleView.getElement());
 					}
+					if (module instanceof IInlineContainerModule) {
+						parenthood.pushParent((IInlineContainerModule) module);
+						parseElementNode(currNode, parentElement);
+						parenthood.popParent();
+					}
 				}
 			} else {
-				com.google.gwt.dom.client.Element newElement = Document.get().createElement(currNode.getNodeName());
-				parseXMLAttributes((Element) currNode, newElement);
-				parentElement.appendChild(newElement);
-				parseXML(currNode.getChildNodes(), newElement);
+				parseElementNode(currNode, parentElement);
 			}
 		} else if (currNode.getNodeType() == Node.TEXT_NODE) {
 			Document doc = Document.get();
@@ -131,6 +137,13 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 			parentElement.appendChild(span);
 		}
 		return parentElement;
+	}
+
+	private void parseElementNode(Node currNode, com.google.gwt.dom.client.Element parentElement) {
+		com.google.gwt.dom.client.Element newElement = Document.get().createElement(currNode.getNodeName());
+		parseXMLAttributes((Element) currNode, newElement);
+		parentElement.appendChild(newElement);
+		parseXML(currNode.getChildNodes(), newElement);
 	}
 
 	protected void parseNode(Node node, Widget parent) {// NOPMD

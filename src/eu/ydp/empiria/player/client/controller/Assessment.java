@@ -26,6 +26,7 @@ package eu.ydp.empiria.player.client.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import com.google.gwt.user.client.ui.Panel;
@@ -45,6 +46,8 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.InlineContainerHelper;
+import eu.ydp.empiria.player.client.module.InlineFormattingContainerType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
@@ -200,7 +203,7 @@ public class Assessment {
 		@Override
 		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 			if (inlineBodyGenerator == null) {
-				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener);
+				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, body.getParenthood());
 			}
 			return inlineBodyGenerator;
 		}
@@ -247,6 +250,12 @@ public class Assessment {
 		@Override
 		public boolean hasInteractiveModules() {
 			return itemProperties.hasInteractiveModules();
+		}
+
+		@Override
+		public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module) {
+			InlineContainerHelper inlineContainerHelper = new InlineContainerHelper();
+			return inlineContainerHelper.getInlineStyles(module);
 		}
 
 	};

@@ -1,8 +1,9 @@
-	package eu.ydp.empiria.player.client.controller;
+package eu.ydp.empiria.player.client.controller;
 
-	import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -38,6 +39,8 @@ import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.InlineContainerHelper;
+import eu.ydp.empiria.player.client.module.InlineFormattingContainerType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
@@ -160,7 +163,7 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 			@Override
 			public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 				if (inlineBodyGenerator == null) {
-					inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener);
+					inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, itemBody.getParenthood());
 				}
 				return inlineBodyGenerator;
 			}
@@ -206,6 +209,11 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 				return Item.this.hasInteractiveModules();
 			}
 
+			@Override
+			public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module) {
+				InlineContainerHelper inlineContainerHelper = new InlineContainerHelper();
+				return inlineContainerHelper.getInlineStyles(module);
+			}
 		};
 
 		public void close() {

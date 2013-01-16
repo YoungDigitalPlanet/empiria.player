@@ -18,7 +18,7 @@ import eu.ydp.gwtutil.client.collections.QueueSet;
  * Requires that jscssp.js script is added to module xml file
  *
  * @see http://glazman.org/JSCSSP/
- * @author Micha³ Samuj³o msamujlo@ydp.com.pl
+ * @author Michaï¿½ Samujï¿½o msamujlo@ydp.com.pl
  */
 public class StyleDataSourceManager implements StyleSocket {
 

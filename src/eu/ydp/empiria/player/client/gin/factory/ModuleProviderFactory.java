@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Reset
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
+import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
@@ -44,6 +45,9 @@ public class ModuleProviderFactory {
 
 	@Inject
 	protected Provider<SelectionModule> selectionModule;
+
+	@Inject
+	private Provider<InlineContainerModule> inlineContainerModule;
 
 	@Inject
 	protected Provider<DefaultMediaProcessorExtension> mediaProcessor;
@@ -96,6 +100,10 @@ public class ModuleProviderFactory {
 	public Provider<ImgModule> getImgModule() {
 		return imgModule;
 	}
+	
+	public Provider<InlineContainerModule> getInlineContainerModule() {
+		return inlineContainerModule;
+	}	
 
 	public Provider<SelectionModule> getSelectionModule() {
 		return selectionModule;

@@ -332,4 +332,8 @@ public class ItemBody implements WidgetWorkflowListener {
 	public void setUpperParenthoodSocket(ParenthoodSocket parenthoodSocket) {
 		parenthood.setUpperLevelParenthood(parenthoodSocket);
 	}
+
+	public ParenthoodManager getParenthood() {
+		return parenthood;
+	}
 }

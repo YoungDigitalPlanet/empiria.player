@@ -70,6 +70,7 @@ import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
+import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.containers.DivModule;
 import eu.ydp.empiria.player.client.module.containers.HtmlContainerModule;
@@ -300,7 +301,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new SimpleTextModule(), ModuleTagName.SIMPLE_TEXT));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.AUDIO_PLAYER, false, true));
-		loadExtension(new SimpleConnectorExtension(new MathTextModule(), ModuleTagName.MATH_TEXT, false, true));
+		loadExtension(new SimpleConnectorExtension(new InlineContainerModule(), ModuleTagName.INLINE_CONTAINER_STYLE_STRONG, false, true));
+		loadExtension(new SimpleConnectorExtension(new MathTextModule(), ModuleTagName.MATH_TEXT, false, true));		
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getMathModule(), ModuleTagName.MATH_INTERACTION));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.OBJECT, false, true));
 		loadExtension(new SimpleConnectorExtension(new SlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER));

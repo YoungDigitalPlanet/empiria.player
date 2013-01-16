@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Stack;
 
 import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.gwtutil.client.collections.StackMap;
 
