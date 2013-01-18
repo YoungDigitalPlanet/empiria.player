@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertiesCollectorTestHelper.ModuleInfo;
+import eu.ydp.empiria.player.client.module.IContainerModule;
+import eu.ydp.empiria.player.client.module.math.MathModule;
 
 public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 
@@ -122,10 +124,37 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(33.0)));
 	}
 	
+	@Test
+	public void shouldReturnCorrectChildrenPropertiesWhen_parentIsMathModule(){
+		moduleInfos = new ModuleInfo[] { 
+				ModuleInfo.create(MODULE_1).setLastOk(false).setTodo(2).setDone(2).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(false).setTodo(3).setDone(3).setErrors(0),
+				ModuleInfo.create(MODULE_3).setLastOk(false).setTodo(4).setDone(4).setErrors(1) 
+			};
+		
+		initializeModules(MathModule.class);
+		FeedbackProperties properties = propertiesCollector.collect(helper.getContainer(), helper.getSender());
+		
+		assertThat(properties.getBooleanProperty(FeedbackPropertyName.OK), is(equalTo(false)));
+		assertThat(properties.getIntegerProperty(FeedbackPropertyName.DONE), is(equalTo(9)));
+		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(9)));
+		assertThat(properties.getIntegerProperty(FeedbackPropertyName.ERRORS), is(equalTo(1)));
+		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(false)));
+		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(100.0)));
+	}
+	
+	private void initializeModules(Class<? extends IContainerModule> ModuleClass){
+		helper.createHierarchy(moduleInfos, ModuleClass);
+		initializeproperties();
+	}
+	
 	private void initializeModules(){
 		helper.createHierarchy(moduleInfos);
+		initializeproperties();
+	}
+	
+	private void initializeproperties() {
 		propertiesCollector = injector.getInstance(FeedbackPropertiesCollector.class);
 		propertiesCollector.setVariables(helper.getVariables());
 	}
-
 }

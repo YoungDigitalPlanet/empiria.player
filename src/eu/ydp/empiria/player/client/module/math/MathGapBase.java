@@ -31,22 +31,18 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 	
 	@Override
 	protected void updateResponse(boolean userInteract) {
-		if (isResponseInMathModule()) {
-			getParentMathModule().updateResponseAfterUserAction();
-		} else {
-			if (showingAnswer) {
-				return;
+		if (showingAnswer) {
+			return;
+		}
+
+		if (getResponse() != null) {
+			if (lastValue != null) {
+				getResponse().remove(lastValue);
 			}
 
-			if (getResponse() != null) {
-				if (lastValue != null) {
-					getResponse().remove(lastValue);
-				}
-
-				lastValue = getValue();
-				getResponse().add(lastValue);
-				fireStateChanged(userInteract);
-			}
+			lastValue = getValue();
+			getResponse().add(lastValue);
+			fireStateChanged(userInteract);
 		}
 	}
 	
@@ -54,14 +50,8 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 	protected String getCurrentResponseValue() {
 		String answer = StringUtils.EMPTY_STRING;
 		
-		if (isResponseInMathModule()) {
-			if (index < getResponse().values.size()) {
-				answer = getResponse().values.get(index);
-			}
-		} else {
-			if (getResponse().values.size() > 0) {
-				answer = getResponse().values.get(0);
-			}
+		if (getResponse().values.size() > 0) {
+			answer = getResponse().values.get(0);
 		}
 		
 		return answer;
@@ -76,29 +66,11 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 		boolean isCorrect = false;
 		List<Boolean> evaluations = getEvaluatedResponse();
 		
-		if (isResponseInMathModule()) {
-			if (index < evaluations.size()) {
-				isCorrect = evaluations.get(index);
-			}
-		} else {
-			if (evaluations.size() > 0) {
-				isCorrect = evaluations.get(0);				
-			}
+		if (evaluations.size() > 0) {
+			isCorrect = evaluations.get(0);				
 		}
 		
 		return isCorrect;
-	}
-	
-	// potrzebne zeby zachowac kompatybilnosc wsteczna - w starszych wersjach contentu responsy byly przypisane do math modulu, po zmianach
-	// z taska YPUB-4878 responsy sa przypisane do kazdej gapy matematycznej (dla kazdej z nich odpowiedzi liczone sa osobno)
-	protected boolean isResponseInMathModule() {
-		boolean isResponseInMathModule = true;
-		
-		if ( (getParentMathModule() == null) || (getParentMathModule().getResponse() == null) ) {
-			isResponseInMathModule = false;
-		}
-
-		return isResponseInMathModule;
 	}
 	
 	protected MathModule getParentMathModule() {
@@ -119,11 +91,7 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 	protected Response findResponse() {
 		Response response;
 		
-		if (isResponseInMathModule()) {
-			response = getParentMathModule().getResponse();
-		} else {
-			response = super.findResponse();			
-		}
+		response = super.findResponse();
 		
 		return response;
 	}
@@ -135,11 +103,7 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 	}
 	
 	protected ResponseValue getCorrectResponseValue(){
-		if (isResponseInMathModule()) {
-			return getResponse().correctAnswers.getResponseValue(index);
-		} else {
-			return getResponse().correctAnswers.getResponseValue(0);
-		}
+		return getResponse().correctAnswers.getResponseValue(0);
 	}
 
 	@Override

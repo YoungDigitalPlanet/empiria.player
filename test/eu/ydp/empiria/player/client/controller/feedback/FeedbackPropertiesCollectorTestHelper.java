@@ -29,7 +29,11 @@ class FeedbackPropertiesCollectorTestHelper {
 	}
 	
 	public void createHierarchy(ModuleInfo[] infos){
-		container = mock(IContainerModule.class);
+		createHierarchy(infos, IContainerModule.class);
+	}
+	
+	public void createHierarchy(ModuleInfo[] infos, Class<? extends IContainerModule> ModuleClass){
+		container = mock(ModuleClass);
 		
 		variables = Maps.newHashMap();
 		List<IModule> children = Lists.newArrayList();
@@ -40,7 +44,6 @@ class FeedbackPropertiesCollectorTestHelper {
 		
 		sender = children.get(0);
 		when(container.getChildren()).thenReturn(children);
-		when(container.getParentModule()).thenReturn(null);
 	}
 	
 	public Map<String, Outcome> createOutcomeVariables(ModuleInfo info){

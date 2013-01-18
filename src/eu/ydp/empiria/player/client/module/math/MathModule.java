@@ -31,26 +31,20 @@ import com.mathplayer.player.model.interaction.CustomFieldDescription;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.Factory;
+import eu.ydp.empiria.player.client.module.IContainerModule;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.NumberUtils;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class MathModule extends AbstractActivityContainerModuleBase implements Factory<MathModule>, ILifecycleModule, IUniqueModule {
+public class MathModule extends AbstractActivityContainerModuleBase implements Factory<MathModule>, ILifecycleModule, IContainerModule {
 
-	private static MathModuleViewUiBinder uiBinder = GWT.create(MathModuleViewUiBinder.class);
+	private MathModuleViewUiBinder uiBinder;
 
 	@UiTemplate("MathModuleView.ui.xml")
 	interface MathModuleViewUiBinder extends UiBinder<Widget, MathModule> {};
@@ -87,29 +81,23 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 
 	private InteractionManager mathInteractionManager;
 
-	private Response response;
-
-	private String responseIdentifier;
-
 	@Inject
 	private EventsBus eventsBus;
 
 	@Inject
 	private Provider<MathModule> mathModuleProvider;
 
-	public MathModule(){
-		uiBinder.createAndBindUi(this);
-	}
-
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener interactionListener, BodyGeneratorSocket bodyGenerator) {
+		uiBinder = GWT.create(MathModuleViewUiBinder.class);
+		uiBinder.createAndBindUi(this);
+		
 		super.initModule(element, moduleSocket, interactionListener, bodyGenerator);
 
 		moduleElement = element;
 		styles = getModuleSocket().getStyles(moduleElement);
 
 		readAttributes(element);
-		setResponse();
 		initStyles(styles);
 		initializePanels();
 		initializeMathPlayer();
@@ -130,15 +118,6 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		for (MathGap gap: getMathGaps()) {
 			gap.setMathStyles(styles);
 		}
-	}
-
-	private void setResponse(){
-		response = findResponseFromModuleElement();
-	}
-
-	private Response findResponseFromModuleElement(){
-		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, EmpiriaTagConstants.ATTR_RESPONSE_IDENTIFIER);
-		return getModuleSocket().getResponse(responseIdentifier);
 	}
 
 	@Override
@@ -195,7 +174,6 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		}
 
 		placeGaps();
-		updateResponseWihtoutUserAction();
 	}
 
 	@Override
@@ -306,38 +284,5 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		}
 
 		return mathGaps;
-	}
-
-	public Response getResponse() {
-		return response;
-	}
-
-	public void updateResponseAfterUserAction(){
-		updateResponse();
-		fireStateChangedEvent(true);
-	}
-
-	public void updateResponseWihtoutUserAction(){
-		updateResponse();
-		fireStateChangedEvent(false);
-	}
-
-	private void updateResponse(){
-		if (getResponse() != null) {
-			getResponse().values.clear();
-
-			for(MathGap gap: getMathGaps()){
-				getResponse().values.add(gap.getIndex(), gap.getValue());
-			}
-		}
-	}
-
-	protected void fireStateChangedEvent(boolean userInteract){
-		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, this)), new CurrentPageScope());
-	}
-
-	@Override
-	public String getIdentifier() {
-		return responseIdentifier;
 	}
 }

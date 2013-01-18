@@ -16,13 +16,13 @@ import org.junit.Test;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
 
-public class InlineChoiceGapModuleJUnitTest extends AbstractTestBase{
+public class InlineChoiceGapModuleJUnitTest {
 
 	@Test
 	public void properValueAccessWithEmptyOption() {
@@ -87,21 +87,15 @@ public class InlineChoiceGapModuleJUnitTest extends AbstractTestBase{
 
 		mathStyles.put(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION, styleValue);
 
-		InlineChoiceGapModuleMock inlineChoiceGapModuleMock = injector.getInstance(InlineChoiceGapModuleMock.class);
-		inlineChoiceGapModuleMock.initMock(mathStyles);
-		return inlineChoiceGapModuleMock;
+		return new InlineChoiceGapModuleMock(mathStyles);
 	}
 
-    public static class InlineChoiceGapModuleMock extends InlineChoiceGapModule {
+    private class InlineChoiceGapModuleMock extends InlineChoiceGapModule {
 
     	private IsExListBox mockedListBox;
 
-		public InlineChoiceGapModuleMock() {
+		public InlineChoiceGapModuleMock(Map<String, String> mathStyles) {
 			super(mock(InlineChoiceGapModulePresenter.class));
-
-		}
-
-		public void initMock(Map<String, String> mathStyles){
 			this.mathStyles = mathStyles;
 			initStyles();
 			options = createOptions(getModuleElement(), getModuleSocket());
@@ -124,11 +118,6 @@ public class InlineChoiceGapModuleJUnitTest extends AbstractTestBase{
 				mockedListBox = mock(IsExListBox.class, new ReturnsJavaBeanAnswers());
 			}
 			return mockedListBox;
-		}
-
-		@Override
-		protected boolean isResponseInMathModule() {
-			return false;
 		}
     }
 }
