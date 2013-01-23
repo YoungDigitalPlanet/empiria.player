@@ -59,6 +59,10 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	}
 
 	@Override
+	public <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandlerToSource(Type<H, T>[] types, Object source, H handler) {
+		return doAddAll(types, source, handler, false, null);
+	}
+	@Override
 	public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(Type<H, T> type, Object source, H handler, EventScope<?> eventScope) {
 		return doAdd(type, source, handler, false, eventScope);
 	}

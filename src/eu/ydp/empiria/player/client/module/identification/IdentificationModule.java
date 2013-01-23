@@ -1,8 +1,11 @@
 package eu.ydp.empiria.player.client.module.identification;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -17,6 +20,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
@@ -61,6 +65,14 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	public void addElement(Element element) {
 		multiViewElements.add(element);
 	}
+
+	Predicate<SelectableChoice> onlySelectedOptions = new Predicate<SelectableChoice>() {
+
+		@Override
+		public boolean apply(SelectableChoice choice) {
+			return choice.getSelected();
+		}
+	};
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
@@ -125,7 +137,6 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			}
 
 			currPlaceholder.add(panel);
-
 			options.addAll(currOptions);
 		}
 	}
@@ -137,11 +148,9 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 
 	@Override
 	public void markAnswers(boolean mark) {
+		CorrectAnswers correctAnswers = getResponse().correctAnswers;
 		for (SelectableChoice currSC : options) {
-			boolean correct = false;
-			if (getResponse().correctAnswers.containsAnswer(currSC.getIdentifier())) {
-				correct = true;
-			}
+			boolean correct = correctAnswers.containsAnswer(currSC.getIdentifier());
 			currSC.markAnswers(mark, correct);
 		}
 	}
@@ -150,32 +159,39 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	public void reset() {
 		markAnswers(false);
 		lock(false);
-		for (int i = 0; i < options.size(); i++) {
-			options.get(i).setSelected(false);
+		clearSelections();
+		updateResponse(true);
+	}
+
+	private void clearSelections() {
+		for (SelectableChoice choice : options) {
+			choice.setSelected(false);
 		}
-		updateResponse(false);
 	}
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (show) {
-			for (SelectableChoice sc : options) {
-				if (getResponse().correctAnswers.containsAnswer(sc.getIdentifier())) {
-					sc.setSelected(true);
-				} else {
-					sc.setSelected(false);
-				}
-			}
-			showingCorrectAnswers = true;
+			selectCorrectAnswers();
 		} else {
-			for (SelectableChoice sc : options) {
-				if (getResponse().values.contains(sc.getIdentifier())) {
-					sc.setSelected(true);
-				} else {
-					sc.setSelected(false);
-				}
-			}
-			showingCorrectAnswers = false;
+			restoreView();
+		}
+		showingCorrectAnswers = show;
+	}
+
+	private void restoreView() {
+		List<String> values = getResponse().values;
+		for (SelectableChoice sc : options) {
+			boolean select = values.contains(sc.getIdentifier());
+			sc.setSelected(select);
+		}
+	}
+
+	private void selectCorrectAnswers() {
+		CorrectAnswers correctAnswers = getResponse().correctAnswers;
+		for (SelectableChoice sc : options) {
+			boolean select = correctAnswers.containsAnswer(sc.getIdentifier());
+			sc.setSelected(select);
 		}
 	}
 
@@ -208,18 +224,12 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	protected void onChoiceClick(SelectableChoice selectableChoice) {
 		if (!locked) {
 			selectableChoice.setSelected(!selectableChoice.getSelected());
-
-			int currSelectionsCount = 0;
-			for (int i = 0; i < options.size(); i++) {
-				if (options.get(i).getSelected()) {
-					currSelectionsCount++;
-				}
-			}
-
+			Collection<SelectableChoice> selectedOptions = Collections2.filter(options, onlySelectedOptions);
+			int currSelectionsCount = selectedOptions.size();
 			if (currSelectionsCount > maxSelections) {
-				for (int i = 0; i < options.size(); i++) {
-					if (options.get(i).getSelected() && selectableChoice != options.get(i)) {
-						options.get(i).setSelected(false);
+				for (SelectableChoice choice : selectedOptions) {
+					if (selectableChoice != choice) {
+						choice.setSelected(false);
 						break;
 					}
 				}
@@ -229,20 +239,17 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	}
 
 	private void updateResponse(boolean userInteract) {
-		if (showingCorrectAnswers) {
-			return;
-		}
-
-		ArrayList<String> currResponseValues = new ArrayList<String>();
-		for (SelectableChoice currSC : options) {
-			if (currSC.getSelected()) {
-				currResponseValues.add(currSC.getIdentifier());
+		if (!showingCorrectAnswers) {
+			ArrayList<String> currResponseValues = new ArrayList<String>();
+			Collection<SelectableChoice> selectedOptions = Collections2.filter(options, onlySelectedOptions);
+			for (SelectableChoice currSC : selectedOptions) {
+					currResponseValues.add(currSC.getIdentifier());
 			}
-		}
 
-		if (!getResponse().compare(currResponseValues) || !getResponse().isInitialized()) {
-			getResponse().set(currResponseValues);
-			fireStateChanged(userInteract);
+			if (!getResponse().compare(currResponseValues) || !getResponse().isInitialized()) {
+				getResponse().set(currResponseValues);
+				fireStateChanged(userInteract);
+			}
 		}
 	}
 

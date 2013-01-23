@@ -12,7 +12,7 @@ import com.google.inject.Module;
 import com.google.inject.Provides;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackSoundPlayer;
+import eu.ydp.empiria.player.client.controller.feedback.player.FeedbackSoundPlayer;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.module.IModule;

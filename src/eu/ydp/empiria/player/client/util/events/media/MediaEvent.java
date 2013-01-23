@@ -64,6 +64,12 @@ public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes
 		return types.getType(type);
 	}
 
+	public static Type<MediaEventHandler, MediaEventTypes>[] getTypes(MediaEventTypes... type) {
+		return types.getTypes(type);
+	}
+
+
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

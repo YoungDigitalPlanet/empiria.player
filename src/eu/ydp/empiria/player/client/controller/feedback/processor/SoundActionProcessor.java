@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.feedback.player.FeedbackSoundPlayer;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;

@@ -41,6 +41,7 @@ import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
@@ -179,6 +180,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		install(new FactoryModuleBuilder().build(VariableInterpreterFactory.class));
 		install(new FactoryModuleBuilder().build(FieldValueHandlerFactory.class));
 		install(new FactoryModuleBuilder().build(AssessmentReportFactory.class));
+		install(new FactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
 
 	}
 

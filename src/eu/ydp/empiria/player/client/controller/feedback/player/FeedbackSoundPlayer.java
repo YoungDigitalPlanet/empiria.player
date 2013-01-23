@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.feedback.processor;
+package eu.ydp.empiria.player.client.controller.feedback.player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,13 +8,11 @@ import java.util.Map;
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.StringUtils;
 
 public class FeedbackSoundPlayer {
@@ -25,10 +23,13 @@ public class FeedbackSoundPlayer {
 	@Inject
 	protected MediaWrapperCreator mediaWrapperCreator;
 
+	@Inject
+	protected SingleFeedbackSoundPlayerFactory feedbackPlayerFactory;
+
 	// Cache dla wrapperow - do odegrania danego pliku bedzie uzywany zawsze ten
 	// sam wrapper.
 	protected Map<String, MediaWrapper<?>> wrappers = new HashMap<String, MediaWrapper<?>>();
-	protected Map<MediaWrapper<?>, MediaEventHandler> onStopHandlers = new HashMap<MediaWrapper<?>, MediaEventHandler>();
+	protected Map<MediaWrapper<?>, SingleFeedbackSoundPlayer> onStopHandlers = new HashMap<MediaWrapper<?>, SingleFeedbackSoundPlayer>();
 
 	protected class MediaWrapperHandler implements CallbackRecevier {
 
@@ -49,28 +50,18 @@ public class FeedbackSoundPlayer {
 
 	}
 
-	protected void firePlayEvent(final MediaWrapper<?> mediaWrapper) {
-		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, mediaWrapper), mediaWrapper);
-	}
-
-	protected void fireStopEvent(final MediaWrapper<?> mediaWrapper) {
-		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP, mediaWrapper), mediaWrapper);
-	}
-
 	// Jesli mamy tylko zrodla plikow.
 	public void play(List<String> sources) {
 		Map<String, String> sourcesWithTypes = new HashMap<String, String>();
 		for (String source : sources) {
 			sourcesWithTypes.put(source, getMimeType(source));
 		}
-
 		this.play(getWrappersSourcesKey(sources), sourcesWithTypes);
 	}
 
 	// Jesli mamy zrodla plikow oraz ich MIME.
 	public void play(Map<String, String> sourcesWithTypes) {
 		String sourcesKey = getWrappersSourcesKey(new ArrayList<String>(sourcesWithTypes.keySet()));
-
 		this.play(sourcesKey, sourcesWithTypes);
 	}
 
@@ -82,33 +73,23 @@ public class FeedbackSoundPlayer {
 		}
 	}
 
-	protected boolean addHandlerForStopIfNotPresent(final MediaWrapper<?> mediaWrapper) {
-		boolean isPresent = onStopHandlers.containsKey(mediaWrapper);
-		if (!isPresent) {
-			MediaEventHandler onStopPlayHandler = createOnStopMediaHandler(mediaWrapper);
-			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), mediaWrapper, onStopPlayHandler);
-			onStopHandlers.put(mediaWrapper, onStopPlayHandler);
+	protected SingleFeedbackSoundPlayer addSingleFeedbackSoundPlayerIfNotPresent(final MediaWrapper<?> mediaWrapper) {
+		SingleFeedbackSoundPlayer onStopPlayHandler = onStopHandlers.get(mediaWrapper);
+		if (onStopPlayHandler == null) {
+			onStopPlayHandler = createAndStoreSingleFeedbackSoundPlayer(mediaWrapper);
 		}
-		return isPresent;
+		return onStopPlayHandler;
 	}
 
-	protected MediaEventHandler createOnStopMediaHandler(final MediaWrapper<?> mediaWrapper) {
-		MediaEventHandler onStopPlayHandler = new MediaEventHandler() {
-			@Override
-			public void onMediaEvent(MediaEvent event) {
-				firePlayEvent(mediaWrapper);
-			}
-		};
+	private SingleFeedbackSoundPlayer createAndStoreSingleFeedbackSoundPlayer(final MediaWrapper<?> mediaWrapper) {
+		SingleFeedbackSoundPlayer onStopPlayHandler = feedbackPlayerFactory.getSingleFeedbackSoundPlayer(mediaWrapper);
+		onStopHandlers.put(mediaWrapper, onStopPlayHandler);
 		return onStopPlayHandler;
 	}
 
 	protected void stopAndPlaySound(final MediaWrapper<?> mediaWrapper) {
-		boolean firstTimePlay = addHandlerForStopIfNotPresent(mediaWrapper);
-		if(firstTimePlay){
-			firePlayEvent(mediaWrapper);
-		}else{
-			fireStopEvent(mediaWrapper);
-		}
+		SingleFeedbackSoundPlayer player = addSingleFeedbackSoundPlayerIfNotPresent(mediaWrapper);
+		player.play();
 	}
 
 	protected void createMediaWrapper(String sourcesKey, Map<String, String> sourcesWithTypes) {

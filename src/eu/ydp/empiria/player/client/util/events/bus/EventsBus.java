@@ -54,6 +54,7 @@ public interface EventsBus {
 	 * @return
 	 */
 	public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(Type<H, T> type, Object source, H handler);
+	public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandlerToSource(Type<H, T>[] type, Object source, H handler);
 
 	/**
 	 * Dodaje handlera dla zdarzen typu type dla ktorych producenetem jest
@@ -129,13 +130,13 @@ public interface EventsBus {
 	public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(Type<H, T> type, Object source, H handler, EventScope<?> eventScope);
 
 	/**
-	 * wyzwala zdarzenie. Zostaj¹ uruchomione handlery globalne lub
+	 * wyzwala zdarzenie. Zostajï¿½ uruchomione handlery globalne lub
 	 * zarejestrowwane na zakres Page
 	 */
 	public abstract <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEvent(E event);
 
 	/**
-	 * wyzwala zdarzenie. Zostaj¹ uruchomione handlery zarejestrowwane na zakres
+	 * wyzwala zdarzenie. Zostajï¿½ uruchomione handlery zarejestrowwane na zakres
 	 * eventScope
 	 *
 	 * @param event
@@ -146,7 +147,7 @@ public interface EventsBus {
 	public abstract <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEvent(E event, EventScope<?> eventScope);
 
 	/**
-	 * Wyzwala zdarzenie. Zostaj¹ uruchomione handlery globalne lub
+	 * Wyzwala zdarzenie. Zostajï¿½ uruchomione handlery globalne lub
 	 * zarejestrowwane na zakres Page
 	 *
 	 * @param event
@@ -154,7 +155,7 @@ public interface EventsBus {
 	public abstract <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEventWithCallback(E event);
 
 	/**
-	 * Wyzwala zdarzenie. Zostaj¹ uruchomione handlery zarejestrowwane na zakres
+	 * Wyzwala zdarzenie. Zostajï¿½ uruchomione handlery zarejestrowwane na zakres
 	 * eventScope
 	 *
 	 * @param event
@@ -163,8 +164,8 @@ public interface EventsBus {
 	public abstract <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEventWithCallback(E event, EventScope<?> eventScope);
 
 	/**
-	 * Wyzwala zdarzenie. Zostaj¹ uruchomione handlery globalne lub
-	 * zarejestrowwane na zakres Page które zostaly zarejestrowane dla
+	 * Wyzwala zdarzenie. Zostajï¿½ uruchomione handlery globalne lub
+	 * zarejestrowwane na zakres Page ktï¿½re zostaly zarejestrowane dla
 	 * producenta source
 	 *
 	 * @param event
@@ -173,8 +174,8 @@ public interface EventsBus {
 	public abstract <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEventFromSource(E event, Object source);
 
 	/**
-	 * Wyzwala zdarzenie. Zostaj¹ uruchomione handlery zarejestrowwane na zakres
-	 * eventScope, które zostaly zarejestrowane dla producenta source
+	 * Wyzwala zdarzenie. Zostajï¿½ uruchomione handlery zarejestrowwane na zakres
+	 * eventScope, ktï¿½re zostaly zarejestrowane dla producenta source
 	 *
 	 * @param event
 	 * @param source
@@ -183,13 +184,13 @@ public interface EventsBus {
 	public abstract <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEventFromSource(E event, Object source, EventScope<?> eventScope);
 
 	/**
-	 * wyzwala zdarzenie. Zostaj¹ uruchomione handlery globalne lub
+	 * wyzwala zdarzenie. Zostajï¿½ uruchomione handlery globalne lub
 	 * zarejestrowwane na zakres page.
 	 */
 	public abstract <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireAsyncEvent(E event);
 
 	/**
-	 * Wyzwala zdarzenie. Zostaj¹ uruchomione handlery zarejestrowwane na zakres
+	 * Wyzwala zdarzenie. Zostajï¿½ uruchomione handlery zarejestrowwane na zakres
 	 * eventScope
 	 *
 	 * @param event
@@ -198,7 +199,7 @@ public interface EventsBus {
 	public abstract <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireAsyncEvent(E event, EventScope<?> eventScope);
 
 	/**
-	 * wyzwala zdarzenie. Zostaj¹ uruchomione handlery globalne lub
+	 * wyzwala zdarzenie. Zostajï¿½ uruchomione handlery globalne lub
 	 * zarejestrowwane na zakres page
 	 *
 	 * @param event
@@ -207,8 +208,8 @@ public interface EventsBus {
 	public abstract <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireAsyncEventFromSource(E event, Object source);
 
 	/**
-	 * Wyzwala zdarzenie. Zostaj¹ uruchomione handlery zarejestrowwane na zakres
-	 * eventScope, które zostaly zarejestrowane dla producenta source
+	 * Wyzwala zdarzenie. Zostajï¿½ uruchomione handlery zarejestrowwane na zakres
+	 * eventScope, ktï¿½re zostaly zarejestrowane dla producenta source
 	 *
 	 * @param event
 	 * @param source

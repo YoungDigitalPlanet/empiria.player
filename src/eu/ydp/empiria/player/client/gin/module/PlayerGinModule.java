@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
@@ -118,12 +119,12 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(DragDropHelper.class).to(DragDropHelperImpl.class).in(Singleton.class);
 		bind(TextFeedback.class).to(TextFeedbackPresenter.class);
 		bind(ImageFeedback.class).to(ImageFeedbackPresenter.class);
-		
+
 		bind(FlowPanel.class)
 			.annotatedWith(Names.named("multiPageControllerMainPanel"))
 			.toProvider(NewFlowPanelProvider.class)
 			.in(Singleton.class);
-		
+
 		//bind(OverlayTypesParser.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
@@ -140,6 +141,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(FieldValueHandlerFactory.class));
 		install(new GinFactoryModuleBuilder().build(VariableInterpreterFactory.class));
 		install(new GinFactoryModuleBuilder().build(AssessmentReportFactory.class));
+		install(new GinFactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
+
 	}
 
 	@Provides
