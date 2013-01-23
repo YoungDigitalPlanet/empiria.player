@@ -72,7 +72,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 		// verify
 		List<Type> event = Arrays.asList(arguments.getValue());
 		List<MediaEventTypes> registerEventsTypes = Lists.transform(event, typeToMediaType);
-		org.fest.assertions.Assertions.assertThat(registerEventsTypes).containsOnly(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY);
+	//	org.fest.assertions.Assertions.assertThat(registerEventsTypes).containsOnly(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY);
 		MatcherAssert.assertThat(registerEventsTypes, Matchers.contains(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY));
 	}
 
