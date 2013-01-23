@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback.player;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -39,35 +40,28 @@ public class FeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutAutoInj
 		eventsBus = injector.getInstance(EventsBus.class);
 	}
 
-//	@Test
-//	public void testFirePlayEvent() {
-//		createMediaWrapperMock();
-//	//	instance.firePlayEvent(mediaWrapper);
-//
-//		ArgumentCaptor<MediaEvent> arguments = ArgumentCaptor.forClass(MediaEvent.class);
-//		verify(eventsBus).fireEventFromSource(arguments.capture(), Mockito.eq(mediaWrapper));
-//
-//		MediaEvent event = arguments.getValue();
-//		assertEquals(MediaEventTypes.PLAY, event.getType());
-//		assertEquals(mediaWrapper, event.getMediaWrapper());
-//	}
 
 	private void createMediaWrapperMock() {
 		mediaWrapper = mock(MediaWrapper.class);
 	}
 
-//	@Test
-//	public void testFireStopEvent() {
-//		createMediaWrapperMock();
-//		//instance.fireStopEvent(mediaWrapper);
-//
-//		ArgumentCaptor<MediaEvent> arguments = ArgumentCaptor.forClass(MediaEvent.class);
-//		verify(eventsBus).fireEventFromSource(arguments.capture(), Mockito.eq(mediaWrapper));
-//
-//		MediaEvent event = arguments.getValue();
-//		assertEquals(MediaEventTypes.STOP, event.getType());
-//		assertEquals(mediaWrapper, event.getMediaWrapper());
-//	}
+	@Test
+	public void stopAndPlaySoundTest(){
+		SingleFeedbackSoundPlayer player = mock(SingleFeedbackSoundPlayer.class);
+		createMediaWrapperMock();
+		doReturn(player).when(instance).addSingleFeedbackSoundPlayerIfNotPresent(Mockito.eq(mediaWrapper));
+		instance.stopAndPlaySound(mediaWrapper);
+		verify(player).play();
+	}
+
+	@Test
+	public void createAndStoreSingleFeedbackSoundPlayerTest(){
+		createMediaWrapperMock();
+		instance.onStopHandlers = spy(instance.onStopHandlers);
+		assertNotNull(instance.createAndStoreSingleFeedbackSoundPlayer(mediaWrapper));
+		verify(instance.onStopHandlers).put(Mockito.eq(mediaWrapper), Mockito.any(SingleFeedbackSoundPlayer.class));
+
+	}
 
 	@Test
 	public void testPlayListOfString() {
@@ -113,52 +107,6 @@ public class FeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutAutoInj
 		verify(instance).stopAndPlaySound(Mockito.any(MediaWrapper.class));
 
 	}
-//
-//	@Test
-//			public void testAddSingleFeedbackSoundPlayerIfNotPresent() {
-//				// prepare
-//				createMediaWrapperMock();
-//				ArgumentCaptor<Type> arguments = ArgumentCaptor.forClass(Type.class);
-//				MediaEventHandler mediaEventHandler = mock(MediaEventHandler.class);
-//				doReturn(mediaEventHandler).when(instance).createOnStopMediaHandler(Mockito.eq(mediaWrapper));
-//
-//				// test
-//				boolean isPresent = instance.addSingleFeedbackSoundPlayerIfNotPresent(mediaWrapper);
-//				assertFalse(isPresent);
-//				verifyAddHandlerForStopIfNotPresent(arguments, mediaEventHandler);
-//				isPresent = instance.addSingleFeedbackSoundPlayerIfNotPresent(mediaWrapper);
-//				assertTrue(isPresent);// no more interactions
-//				verifyAddHandlerForStopIfNotPresent(arguments, mediaEventHandler);
-//			}
-
-//	private void verifyAddHandlerForStopIfNotPresent(ArgumentCaptor<Type> arguments, MediaEventHandler mediaEventHandler) {
-//	//	verify(instance).createOnStopMediaHandler(Mockito.eq(mediaWrapper));
-//		verify(eventsBus).addHandlerToSource(arguments.capture(), Mockito.eq(mediaWrapper), Mockito.eq(mediaEventHandler));
-//		assertTrue(instance.onStopHandlers.containsKey(mediaWrapper));
-//		assertTrue(mediaEventHandler.equals(instance.onStopHandlers.get(mediaWrapper)));
-//	}
-
-//	@Test
-//	public void testCreateOnStopMediaHandler() {
-//		createMediaWrapperMock();
-////		doNothing().when(instance).firePlayEvent(Mockito.any(MediaWrapper.class));
-//		MediaEvent event = mock(MediaEvent.class);
-//		// test
-//	//	MediaEventHandler onStopMediaHandler = instance.createOnStopMediaHandler(mediaWrapper);
-//	//	onStopMediaHandler.onMediaEvent(event);
-//	//	verify(instance).firePlayEvent(Mockito.eq(mediaWrapper));
-//	}
-
-//	@Test
-//	public void testStopAndPlaySound() {
-//		createMediaWrapperMock();
-//		doReturn(false).when(instance).addSingleFeedbackSoundPlayerIfNotPresent(Mockito.eq(mediaWrapper));
-//		instance.stopAndPlaySound(mediaWrapper);
-//		verify(instance).addSingleFeedbackSoundPlayerIfNotPresent(Mockito.eq(mediaWrapper));
-//		verify(instance).stopAndPlaySound(Mockito.eq(mediaWrapper));
-////		verify(instance).fireStopEvent(Mockito.eq(mediaWrapper));
-//		Mockito.verifyNoMoreInteractions(instance);
-//	}
 
 	@Test
 	public void testGetWrappersSourcesKey() {
@@ -181,6 +129,31 @@ public class FeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutAutoInj
 		for (Map.Entry<String, String> entry : map.entrySet()) {
 			assertEquals(entry.getValue(), instance.getMimeType(entry.getKey()));
 		}
+
+	}
+
+	@Test
+	public void addSingleFeedbackSoundPlayerIfNotPresentTest(){
+		//prepare
+		SingleFeedbackSoundPlayer player = mock(SingleFeedbackSoundPlayer.class);
+		doReturn(player).when(instance).createAndStoreSingleFeedbackSoundPlayer(Mockito.eq(mediaWrapper));
+
+		//test
+		SingleFeedbackSoundPlayer returnedPlayer = instance.addSingleFeedbackSoundPlayerIfNotPresent(mediaWrapper);
+
+		//verify
+		assertEquals(player, returnedPlayer);
+		verify(instance).createAndStoreSingleFeedbackSoundPlayer(Mockito.eq(mediaWrapper));
+
+		//prepare
+		instance.onStopHandlers.put(mediaWrapper, player);
+		//test
+		returnedPlayer = instance.addSingleFeedbackSoundPlayerIfNotPresent(mediaWrapper);
+
+		//verify
+		assertEquals(player, returnedPlayer);
+		verify(instance).createAndStoreSingleFeedbackSoundPlayer(Mockito.eq(mediaWrapper));
+
 
 	}
 

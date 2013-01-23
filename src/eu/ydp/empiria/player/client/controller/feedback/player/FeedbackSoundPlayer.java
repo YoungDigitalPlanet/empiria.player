@@ -81,7 +81,7 @@ public class FeedbackSoundPlayer {
 		return onStopPlayHandler;
 	}
 
-	private SingleFeedbackSoundPlayer createAndStoreSingleFeedbackSoundPlayer(final MediaWrapper<?> mediaWrapper) {
+	protected SingleFeedbackSoundPlayer createAndStoreSingleFeedbackSoundPlayer(final MediaWrapper<?> mediaWrapper) {
 		SingleFeedbackSoundPlayer onStopPlayHandler = feedbackPlayerFactory.getSingleFeedbackSoundPlayer(mediaWrapper);
 		onStopHandlers.put(mediaWrapper, onStopPlayHandler);
 		return onStopPlayHandler;
