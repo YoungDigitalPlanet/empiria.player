@@ -24,6 +24,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.Stic
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
+import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
@@ -99,6 +100,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(Scheduler.class).to(SchedulerImpl.class).in(Singleton.class);
 		bind(Page.class).in(Singleton.class);
 		bind(PanelCache.class).in(Singleton.class);
+		bind(SoundActionProcessor.class).in(Singleton.class);
 		// bind(HTML5FullScreenHelper.class).in(Singleton.class);
 		bind(DOMTreeWalker.class);
 		bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class).in(Singleton.class);

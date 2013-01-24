@@ -10,11 +10,22 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionT
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.feedback.FeedbackEvent;
+import eu.ydp.empiria.player.client.util.events.feedback.FeedbackEventHandler;
+import eu.ydp.empiria.player.client.util.events.feedback.FeedbackEventTypes;
 
-public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
+public class SoundActionProcessor extends AbstractFeedbackActionProcessor implements FeedbackEventHandler{
 	
 	@Inject
 	private FeedbackSoundPlayer player;
+	
+	private boolean isMuted;
+	
+	@Inject
+	public SoundActionProcessor(EventsBus eventBus){
+		eventBus.addHandler(FeedbackEvent.getType(FeedbackEventTypes.MUTE), this);
+	}
 
 	@Override
 	protected boolean canProcessAction(FeedbackAction action) {
@@ -30,7 +41,7 @@ public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
 
 	@Override
 	protected void processSingleAction(FeedbackAction action) {
-		if (action instanceof ShowUrlAction) {
+		if (action instanceof ShowUrlAction && !isMuted) {
 			ShowUrlAction urlAction = ((ShowUrlAction) action);
 			
 			if (urlAction.getSources().size() > 0) {
@@ -44,6 +55,11 @@ public class SoundActionProcessor extends AbstractFeedbackActionProcessor{
 
 	@Override
 	protected void clearFeedback() {
+	}
+
+	@Override
+	public void onFeedbackEvent(FeedbackEvent event) {
+		isMuted = event.isMuted();		
 	}
 	
 }

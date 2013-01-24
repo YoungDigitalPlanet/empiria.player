@@ -31,6 +31,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrl
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	
@@ -171,8 +172,8 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 		}
 		
 		@Provides
-		public SoundActionProcessor getSoundActionProcessor(){
-			SoundActionProcessor processor = new SoundActionProcessor();
+		public SoundActionProcessor getSoundActionProcessor(EventsBus eventsBus){
+			SoundActionProcessor processor = new SoundActionProcessor(eventsBus);
 			injector.injectMembers(processor);
 			return spy(processor);
 		}	

@@ -9,17 +9,18 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackTextAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
 
-public class SoundActionProcessorJUnitTest {
+public class SoundActionProcessorJUnitTest extends AbstractTestBase{
 	
 	private SoundActionProcessor processor;
 	
 	@Before
 	public void initialize(){
-		processor = new SoundActionProcessor();
+		processor = injector.getInstance(SoundActionProcessor.class);
 	}
 	
 	@Test
