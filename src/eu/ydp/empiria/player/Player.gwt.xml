@@ -216,6 +216,6 @@
 
 
 	<!-- END ANIMATIONS -->
-	<add-linker name="xsiframescripts" />
+<!-- 	<add-linker name="xsiframescripts" /> -->
 
 </module>
