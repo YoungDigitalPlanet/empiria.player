@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
-import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
 public class FeedbackAudioMuteButtonModuleTest {
 
@@ -25,8 +25,8 @@ public class FeedbackAudioMuteButtonModuleTest {
 	@Test
 	public void testChangeStyleOnTestPageLoadedExpectsVisibleWhenPageContainsInteractiveModules() {
 		when(button.hasItemInteractiveModules()).thenReturn(true);
-
-		button.onDeliveryEvent(new DeliveryEvent(DeliveryEventType.TEST_PAGE_LOADED));
+		
+		button.onPlayerEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED));
 
 		String expected = FeedbackAudioMuteButtonModule.STYLE_NAME__OFF;
 		assertThat(button.getStyleName(), equalTo(expected));
@@ -35,8 +35,8 @@ public class FeedbackAudioMuteButtonModuleTest {
 	@Test
 	public void testChangeStyleOnTestPageLoadedExpectsHiddenWhenPageContainsInteractiveModules() {
 		when(button.hasItemInteractiveModules()).thenReturn(false);
-
-		button.onDeliveryEvent(new DeliveryEvent(DeliveryEventType.TEST_PAGE_LOADED));
+		
+		button.onPlayerEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED));
 
 		String expected = FeedbackAudioMuteButtonModule.STYLE_NAME__OFF + " " + FeedbackAudioMuteButtonModule.STYLE_NAME__DISABLED;
 		assertThat(button.getStyleName(), equalTo(expected));
