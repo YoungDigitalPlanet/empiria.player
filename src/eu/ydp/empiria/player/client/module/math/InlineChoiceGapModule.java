@@ -160,7 +160,7 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 	@Override
 	public void reset() {
 		getListBox().setSelectedIndex((hasEmptyOption) ? 0 : -1);
-		updateResponse(false);
+		updateResponse(true);
 	}
 
 	@Override

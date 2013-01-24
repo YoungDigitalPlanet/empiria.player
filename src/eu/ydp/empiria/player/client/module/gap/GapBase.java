@@ -65,13 +65,13 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	protected BindingContext maxlengthBindingContext;
 
 	protected String maxLength = "";
-	
+
 	protected abstract boolean isResponseCorrect();
 
 	protected abstract String getCurrentResponseValue();
 
 	protected abstract void updateResponse(boolean userInteract);
-	
+
 	protected abstract void setCorrectAnswer();
 
 	protected abstract void setPreviousAnswer();
@@ -135,9 +135,9 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	@Override
 	public void reset() {
 		presenter.setText(StringUtils.EMPTY_STRING);
-		updateResponse(false);
+		updateResponse(true);
 	}
-	
+
 	@Override
 	public JSONArray getState() {
 		JSONArray jsonArr = new JSONArray();
@@ -273,7 +273,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 		if ( !gapMaxlength.equals(StringUtils.EMPTY_STRING) ) {
 			maxLength = gapMaxlength;
-			
+
 			if (maxLength.matches("ANSWER")) {
 				maxlengthBindingIdentifier = getBindindIdentifier(moduleElement);
 			} else {
