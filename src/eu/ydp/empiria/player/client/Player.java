@@ -64,6 +64,9 @@ public class Player {
 		this.jsObject = JavaScriptObject.createFunction();
 		PlayerGinjector injector = PlayerGinjector.INSTANCE;
 		viewEngine = injector.getViewEngine();
+		try {
+			RootPanel.get(id);
+		} catch (Exception e){}
 		RootPanel root = RootPanel.get(id);
 		viewEngine.mountView(root);
 		getAccessor().setPlayerContainer(root);
