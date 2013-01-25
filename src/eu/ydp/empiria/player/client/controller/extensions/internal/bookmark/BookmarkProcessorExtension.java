@@ -47,7 +47,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	IBookmarkable currEditingModule;
 	boolean currBookmarkNewlyCreated;
 	List<List<IBookmarkable>> modules = new LinkedList<List<IBookmarkable>>();
-	List<StackMap<Integer, IBookmarkProperties>> bookmarks = new LinkedList<StackMap<Integer, IBookmarkProperties>>();
+	List<StackMap<Integer, BookmarkProperties>> bookmarks = new LinkedList<StackMap<Integer, BookmarkProperties>>();
 	Mode mode = Mode.IDLE;
 	Integer bookmarkIndex;
 	private JavaScriptObject playerJsObject;
@@ -63,7 +63,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		}
 		bookmarks.clear();
 		for (int i = 0 ; i < itemsCount ; i ++){
-			bookmarks.add(new StackMap<Integer, IBookmarkProperties>());
+			bookmarks.add(new StackMap<Integer, BookmarkProperties>());
 		}
 		
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_REMOVED), new PlayerEventHandler() {
@@ -205,9 +205,9 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 	
 	void addOrSetBookmark(IBookmarkable module){
-		IBookmarkProperties moduleProps = getBookmarkPropertiesForModule(module);
+		BookmarkProperties moduleProps = getBookmarkPropertiesForModule(module);
 		if (moduleProps == null){
-			moduleProps = createBookmarkProperties(module);
+			moduleProps = new BookmarkProperties(bookmarkIndex, getDefaultTitleForModule(module));
 			addBookmark(module, moduleProps);
 			currBookmarkNewlyCreated = true;
 		} else {
@@ -215,13 +215,6 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 			currBookmarkNewlyCreated = false;
 		}
 		updateBookmarkedModule(module);
-	}
-	
-	IBookmarkProperties createBookmarkProperties(IBookmarkable module){
-		BookmarkProperties bp = BookmarkProperties.newInstance();
-		bp.setBookmarkIndex(bookmarkIndex);
-		bp.setBookmarkTitle(getDefaultTitleForModule(module));
-		return bp;
 	}
 	
 	String getDefaultTitleForModule(IBookmarkable module){
@@ -233,7 +226,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		return moduleTitle;
 	}
 	
-	void addBookmark(IBookmarkable module, IBookmarkProperties props){
+	void addBookmark(IBookmarkable module, BookmarkProperties props){
 		int index = getModulesForCurrentItem().indexOf(module);
 		getBookmarksForCurrentItem().put(index, props);
 	}
@@ -246,7 +239,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 
 	void editBookmark(IBookmarkable module) {
 		currEditingModule = module;
-		IBookmarkProperties props = getBookmarkPropertiesForModule(module);
+		BookmarkProperties props = getBookmarkPropertiesForModule(module);
 		bookmarkPopup.setBookmarkTitle(props.getBookmarkTitle());
 		bookmarkPopup.show(module.getViewArea());
 	}
@@ -378,7 +371,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		module.setBookmarkingStyleName(styleNames.QP_BOOKMARK_SELECTED() + "-" + getBookmarkPropertiesForModule(module).getBookmarkIndex());
 	}
 
-	IBookmarkProperties getBookmarkPropertiesForModule(IBookmarkable module) {
+	BookmarkProperties getBookmarkPropertiesForModule(IBookmarkable module) {
 		for (int m = 0 ; m < modules.size() ; m++){
 			List<IBookmarkable> itemModules = modules.get(m);
 			if (itemModules.contains(module)){
@@ -388,7 +381,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		return null;
 	}
 
-	StackMap<Integer, IBookmarkProperties> getBookmarksForCurrentItem() {
+	StackMap<Integer, BookmarkProperties> getBookmarksForCurrentItem() {
 		return bookmarks.get(currItemIndex);
 	}
 
@@ -401,7 +394,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 
 	private boolean isModuleBookmarkedWithCurrentIndex(IBookmarkable module, int itemIndex){
-		IBookmarkProperties props = bookmarks.get(itemIndex).get(modules.get(itemIndex).indexOf(module));
+		BookmarkProperties props = bookmarks.get(itemIndex).get(modules.get(itemIndex).indexOf(module));
 		return props != null  &&  bookmarkIndex.equals(props.getBookmarkIndex());
 	}
 
@@ -419,11 +412,10 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		return stateArray;
 	}
 	
-	private JSONObject getItemState(StackMap<Integer, IBookmarkProperties> map){
+	private JSONObject getItemState(StackMap<Integer, BookmarkProperties> map){
 		JSONObject obj = new JSONObject();
 		for (Integer key : map.keySet()){
-			IBookmarkProperties bp = map.get(key);
-			obj.put(key.toString(), new JSONObject((JavaScriptObject)bp));
+			obj.put(key.toString(), map.get(key).toJSON());
 		}
 		return obj;
 	}
@@ -454,11 +446,11 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 		return null;
 	}-*/;
 
-	private StackMap<Integer, IBookmarkProperties> decodeItemState(JSONObject object) {
-		StackMap<Integer, IBookmarkProperties> map = new StackMap<Integer, IBookmarkProperties>();
+	private StackMap<Integer, BookmarkProperties> decodeItemState(JSONObject object) {
+		StackMap<Integer, BookmarkProperties> map = new StackMap<Integer, BookmarkProperties>();
 		for (String key : object.keySet()){
 			Integer keyInt = NumberUtils.tryParseInt(key, null);
-			IBookmarkProperties props = object.get(key).isObject().getJavaScriptObject().<BookmarkProperties>cast();
+			BookmarkProperties props = BookmarkProperties.fromJSON(object.get(key));
 			if (keyInt != null  &&  props != null){
 				map.put(keyInt, props);
 			}

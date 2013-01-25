@@ -1,43 +1,69 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 
-import com.google.gwt.core.client.JavaScriptObject;
+import java.util.Date;
 
-public class BookmarkProperties extends JavaScriptObject implements IBookmarkProperties{
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 
-	protected BookmarkProperties(){}
+public class BookmarkProperties {
+
+	/**
+	 * color index
+	 */
+	int bookmarkIndex;
+	String bookmarkTitle;
+	long timestamp;
 	
-	protected static BookmarkProperties newInstance() {
-		BookmarkProperties bp = JavaScriptObject.createObject().cast();
-		bp.setBookmarkIndex(-1);
-		bp.setBookmarkTitle("");
-		
-		
-		bp.touch();
-		return bp;
+	public BookmarkProperties(int bookmarkIndex, String bookmarkTitle) {
+		super();
+		this.bookmarkIndex = bookmarkIndex;
+		this.bookmarkTitle = bookmarkTitle;
+		this.timestamp = new Date().getTime();
 	}
 	
-	public final native int getBookmarkIndex() /*-{
-		return bookmarkIndex;
-	}-*/;
-
-	public final native void setBookmarkIndex(int bookmarkIndex) /*-{
+	public BookmarkProperties(int bookmarkIndex, String bookmarkTitle, long timestamp) {
+		super();
 		this.bookmarkIndex = bookmarkIndex;
-	}-*/;
-
-	public final native String getBookmarkTitle() /*-{
-		return bookmarkTitle;
-	}-*/;
-
-	public final native void setBookmarkTitle(String bookmarkTitle) /*-{
 		this.bookmarkTitle = bookmarkTitle;
-	}-*/;
-	
-	public final native long getTimestamp() /*-{
-		return this.timestamp;
-	}-*/;
+		this.timestamp = timestamp;
+	}
 
-	public final native void touch() /*-{
-		this.timestamp = new Date().getTime();
-	}-*/;
+	public int getBookmarkIndex() {
+		return bookmarkIndex;
+	}
+
+	public void setBookmarkIndex(int bookmarkIndex) {
+		this.bookmarkIndex = bookmarkIndex;
+	}
+
+	public String getBookmarkTitle() {
+		return bookmarkTitle;
+	}
+
+	public void setBookmarkTitle(String bookmarkTitle) {
+		this.bookmarkTitle = bookmarkTitle;
+	}
+	
+	public void touch(){
+		timestamp = new Date().getTime();
+	}
+
+	public JSONValue toJSON() {
+		JSONArray arr = new JSONArray();
+		arr.set(0, new JSONNumber(bookmarkIndex));
+		arr.set(1, new JSONString(bookmarkTitle));
+		arr.set(2, new JSONNumber(timestamp));
+		return arr;
+	}
+	
+	public static BookmarkProperties fromJSON(JSONValue json){
+		int index = (int) json.isArray().get(0).isNumber().doubleValue();
+		String title = json.isArray().get(1).isString().stringValue();
+		long timeStamp = (long)json.isArray().get(2).isNumber().doubleValue();
+		return new BookmarkProperties(index, title, timeStamp);
+	}
+	
 	
 }

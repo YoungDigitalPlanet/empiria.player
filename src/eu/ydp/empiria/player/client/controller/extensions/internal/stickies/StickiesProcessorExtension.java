@@ -79,13 +79,12 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		return stateArray;
 	}
 
-	private JSONObject getItemState(List<IStickieProperties> list) {
-		JSONObject obj = new JSONObject();
-		for (int i = 0 ; i < list.size() ; i ++ ){
-			IStickieProperties sp = list.get(i);
-			obj.put(String.valueOf(i), new JSONObject((JavaScriptObject)sp));
+	private JSONArray getItemState(List<IStickieProperties> list) {
+		JSONArray arr = new JSONArray();
+		for (IStickieProperties sp : list){
+			arr.set(arr.size(), new JSONObject((JavaScriptObject)sp));
 		}
-		return obj;
+		return arr;
 	}
 
 	@Override
@@ -101,14 +100,14 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		
 		stickies.clear();
 		for (int i = 0 ; i < externalState.size() ; i ++ ){
-			stickies.add( decodeItemState(externalState.get(i).isObject()) );
+			stickies.add( decodeItemState(externalState.get(i).isArray()) );
 		}
 	}
 	
-	private List<IStickieProperties> decodeItemState(JSONObject object) {
+	private List<IStickieProperties> decodeItemState(JSONArray array) {
 		List<IStickieProperties> itemStickies = new ArrayList<IStickieProperties>();
-		for (String key : object.keySet()){
-			IStickieProperties sp = object.get(key).isObject().getJavaScriptObject().<StickieProperties>cast();
+		for (int i = 0 ; i < array.size() ; i ++ ){
+			IStickieProperties sp = array.get(i).isObject().getJavaScriptObject().<StickieProperties>cast();
 			itemStickies.add(sp);
 		}
 		return itemStickies;

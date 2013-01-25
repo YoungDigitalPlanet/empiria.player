@@ -15,7 +15,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -47,9 +46,8 @@ public class BookmarkProcessorExtensionJUnitTest {
 		bookmarkProcessor.styleNames = mock(StyleNameConstants.class);		
 		bookmarkProcessor.dataSourceSupplier = mock(DataSourceDataSupplier.class);
 		when(bookmarkProcessor.dataSourceSupplier.getItemTitle(any(Integer.class))).thenReturn("Mock title 1");
-		doReturn(createBookmarkPropertiesMock()).when(bookmarkProcessor).createBookmarkProperties(any(IBookmarkable.class));
 		doReturn(SELECTED).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTED();
-		doReturn(SELECTABLE).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTABLE();
+		doReturn(SELECTABLE).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTABLE();		
 	}
 	
 	@Test
@@ -119,7 +117,7 @@ public class BookmarkProcessorExtensionJUnitTest {
 	
 	@Test
 	public void bookmarkModuleDoBookmark(){
-		StackMap<Integer, IBookmarkProperties> bookmarks = new StackMap<Integer, IBookmarkProperties>();
+		StackMap<Integer, BookmarkProperties> bookmarks = new StackMap<Integer, BookmarkProperties>();
 		IBookmarkable b2 = mock(IBookmarkable.class);
 		bookmarkProcessor.mode = Mode.BOOKMARKING;
 		bookmarkModule(b2, bookmarks, true);
@@ -130,9 +128,8 @@ public class BookmarkProcessorExtensionJUnitTest {
 
 	@Test
 	public void bookmarkModuleUnbookmark(){
-		StackMap<Integer, IBookmarkProperties> bookmarks = new StackMap<Integer, IBookmarkProperties>();
-		IBookmarkProperties bpMock = createBookmarkPropertiesMock();
-		bookmarks.put(1, bpMock);
+		StackMap<Integer, BookmarkProperties> bookmarks = new StackMap<Integer, BookmarkProperties>();
+		bookmarks.put(1, new BookmarkProperties(BOOKMARKING_INDEX, ""));
 		IBookmarkable b2 = mock(IBookmarkable.class);
 		bookmarkProcessor.mode = Mode.BOOKMARKING;
 		bookmarkModule(b2, bookmarks, false);
@@ -143,9 +140,8 @@ public class BookmarkProcessorExtensionJUnitTest {
 	
 	@Test
 	public void bookmarkModuleClear(){
-		StackMap<Integer, IBookmarkProperties> bookmarks = new StackMap<Integer, IBookmarkProperties>();
-		IBookmarkProperties bpMock = createBookmarkPropertiesMock();
-		bookmarks.put(1, bpMock);
+		StackMap<Integer, BookmarkProperties> bookmarks = new StackMap<Integer, BookmarkProperties>();
+		bookmarks.put(1, new BookmarkProperties(BOOKMARKING_INDEX, ""));
 		IBookmarkable b2 = mock(IBookmarkable.class);
 		bookmarkProcessor.mode = Mode.CLEARING;
 		bookmarkModule(b2, bookmarks, false);
@@ -154,17 +150,7 @@ public class BookmarkProcessorExtensionJUnitTest {
 		verify(b2, never()).setBookmarkingStyleName(any(String.class));
 	}
 	
-	private IBookmarkProperties createBookmarkPropertiesMock() {
-		IBookmarkProperties bpMock = mock(IBookmarkProperties.class);
-		long timestamp = new Date().getTime();
-		when(bpMock.getBookmarkIndex()).thenReturn(BOOKMARKING_INDEX);
-		when(bpMock.getBookmarkTitle()).thenReturn("");
-		when(bpMock.getTimestamp()).thenReturn(timestamp);
-		return bpMock;
-		
-	}
-	
-	private void bookmarkModule(IBookmarkable b2, StackMap<Integer, IBookmarkProperties> bookmarks, boolean bkm){
+	private void bookmarkModule(IBookmarkable b2, StackMap<Integer, BookmarkProperties> bookmarks, boolean bkm){
 		IBookmarkable b1 = mock(IBookmarkable.class);
 		List<IBookmarkable> modules = ListCreator.create(b1).add(b2).build();
 		bookmarkProcessor.bookmarks = ListCreator.create(bookmarks).build();
@@ -218,7 +204,7 @@ public class BookmarkProcessorExtensionJUnitTest {
 		IBookmarkable b2 = mock(IBookmarkable.class);
 		List<IBookmarkable> modules = ListCreator.create(b1).add(b2).build();
 		bookmarkProcessor.modules.add(modules);
-		bookmarkProcessor.bookmarks.add(new StackMap<Integer, IBookmarkProperties>());
+		bookmarkProcessor.bookmarks.add(new StackMap<Integer, BookmarkProperties>());
 		bookmarkProcessor.mode = Mode.BOOKMARKING;
 		bookmarkProcessor.updateModules(0, false);
 		verify(b1).setBookmarkingStyleName(SELECTABLE);
@@ -233,7 +219,7 @@ public class BookmarkProcessorExtensionJUnitTest {
 		IBookmarkable b2 = mock(IBookmarkable.class);
 		List<IBookmarkable> modules = ListCreator.create(b1).add(b2).build();
 		bookmarkProcessor.modules.add(modules);
-		bookmarkProcessor.bookmarks.add(new StackMap<Integer, IBookmarkProperties>());
+		bookmarkProcessor.bookmarks.add(new StackMap<Integer, BookmarkProperties>());
 		bookmarkProcessor.mode = Mode.IDLE;
 		bookmarkProcessor.updateModules(0, false);
 		verify(b1, never()).setBookmarkingStyleName(SELECTABLE);
@@ -244,9 +230,9 @@ public class BookmarkProcessorExtensionJUnitTest {
 	
 	@Test
 	public void clearAll(){
-		bookmarkProcessor.bookmarks.add((StackMap<Integer, IBookmarkProperties>) eu.ydp.gwtutil.client.collections.MapCreator.create(new StackMap<Integer, IBookmarkProperties>()).put(1, mock(IBookmarkProperties.class))
+		bookmarkProcessor.bookmarks.add((StackMap<Integer, BookmarkProperties>) eu.ydp.gwtutil.client.collections.MapCreator.create(new StackMap<Integer, BookmarkProperties>()).put(1, mock(BookmarkProperties.class))
 				.put(1, mock(BookmarkProperties.class)).put(3, mock(BookmarkProperties.class)).build());
-		bookmarkProcessor.bookmarks.add((StackMap<Integer, IBookmarkProperties>) eu.ydp.gwtutil.client.collections.MapCreator.create(new StackMap<Integer, IBookmarkProperties>()).put(1, mock(IBookmarkProperties.class))
+		bookmarkProcessor.bookmarks.add((StackMap<Integer, BookmarkProperties>) eu.ydp.gwtutil.client.collections.MapCreator.create(new StackMap<Integer, BookmarkProperties>()).put(1, mock(BookmarkProperties.class))
 				.put(1, mock(BookmarkProperties.class)).put(5, mock(BookmarkProperties.class)).build());
 		doNothing().when(bookmarkProcessor).updateNotBookmarkedModules();
 		doNothing().when(bookmarkProcessor).resetMode();
