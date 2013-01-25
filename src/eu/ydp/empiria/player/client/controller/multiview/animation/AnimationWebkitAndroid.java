@@ -64,7 +64,7 @@ public class AnimationWebkitAndroid extends AbstractAnimation implements Transit
 		setProperty(getToAnimate(), SUFFIX + TRANSFORM, "translate3d(" + 0 + "px,0,0)");
 		setProperty(getToAnimate(), SUFFIX + TRANSITION_DURATION, 0 + "ms");
 		getToAnimate().getElement().getStyle().setLeft(getPositionX(), Unit.PCT);
-		onComplate();
+		onComplate(0);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class AnimationWebkitAndroid extends AbstractAnimation implements Transit
 		}
 		setProperty(getToAnimate(), SUFFIX+ANIMATION,"none");
 		getToAnimate().getElement().getStyle().setLeft(getPositionX(), Unit.PCT);
-		onComplate();
+		onComplate(0);
 	}
 
 }

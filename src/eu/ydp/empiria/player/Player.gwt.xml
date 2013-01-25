@@ -13,8 +13,8 @@
 	<inherits name='eu.ydp.jsfilerequest.jsfilerequest' />
 	<inherits name="eu.ydp.gwtcreatejs.GwtCreateJs" />
 	<inherits name="com.peterfranza.gwt.jaxb.JAXB" />
-	<inherits name='com.google.gwt.query.Query'/>
- 	<inherits name='gwtquery.plugins.droppable.Droppable'/>
+	<inherits name='com.google.gwt.query.Query' />
+	<inherits name='gwtquery.plugins.droppable.Droppable' />
 
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject" />
@@ -36,7 +36,7 @@
 	  }
 	]]></property-provider>
 
-	<stylesheet src="lightbox2/css/lightbox.css"/>
+	<stylesheet src="lightbox2/css/lightbox.css" />
 	<script src="jquery/jquery-1.7.2.min.js" />
 	<script src="jquery/jquery-ui-1.8.18.custom.min.js" />
 	<script src="jquery/jquery.smooth-scroll.min.js" />
@@ -214,8 +214,18 @@
 		<when-type-is class="eu.ydp.empiria.player.client.controller.multiview.animation.Animation" />
 	</replace-with>
 
+	<replace-with class="eu.ydp.empiria.player.client.controller.multiview.animation.AnimationWebkit">
+		<when-type-is class="eu.ydp.empiria.player.client.controller.multiview.animation.Animation" />
+		<any>
+		    <when-property-is name="mobile.user.agent" value="android321" />
+			<when-property-is name="mobile.user.agent" value="android4" />
+			<when-property-is name="mobile.user.agent" value="android3" />
+			<when-property-is name="mobile.user.agent" value="safari" />
+			<when-property-is name="user.agent" value="safari" />
+		</any>
+	</replace-with>
 
 	<!-- END ANIMATIONS -->
-<!-- 	<add-linker name="xsiframescripts" /> -->
+	<!-- <add-linker name="xsiframescripts" /> -->
 
 </module>

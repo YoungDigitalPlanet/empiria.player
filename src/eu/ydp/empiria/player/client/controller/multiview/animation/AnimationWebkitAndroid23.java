@@ -61,7 +61,7 @@ public class AnimationWebkitAndroid23 extends AbstractAnimation implements Trans
 		setProperty(getToAnimate(), SUFFIX + TRANSFORM, "translate(" + 0 + "px,0)");
 		setProperty(getToAnimate(), SUFFIX + TRANSITION_DURATION, 0 + "ms");
 		getToAnimate().getElement().getStyle().setLeft(getPositionX(), Unit.PCT);
-		onComplate();
+		onComplate(0);
 	}
 
 }

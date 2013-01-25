@@ -17,7 +17,7 @@ public class AnimationBase implements Animation {
 	}
 
 	@Override
-	public void goTo(FlowPanel toAnimate, int xPosition, double duration) {
+	public void goTo(FlowPanel toAnimate, final int xPosition, double duration) {
 		running = true;
 		this.xPosition = xPosition;
 		PageSwitchAnimation pageAnimation = new PageSwitchAnimation(toAnimate, xPosition) {
@@ -25,7 +25,7 @@ public class AnimationBase implements Animation {
 			protected void onComplete() {
 				super.onComplete();
 				for (AnimationEndCallback callback : callbacks) {
-					callback.onComplate();
+					callback.onComplate(xPosition);
 				}
 				running = false;
 			}
@@ -43,7 +43,7 @@ public class AnimationBase implements Animation {
 	public double getPositionX() {
 		return xPosition;
 	}
-	
+
 	@Override
 	public boolean isRunning() {
 		return running;

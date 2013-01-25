@@ -39,9 +39,9 @@ public abstract class AbstractAnimation implements Animation {
 		return toAnimate;
 	}
 
-	public void onComplate() {
+	public void onComplate(final int position) {
 		for (AnimationEndCallback callback : callbacks) {
-			callback.onComplate();
+			callback.onComplate(position);
 		}
 		running = false;
 	}

@@ -50,7 +50,7 @@ public class AnimationFF extends AbstractAnimation implements TransitionEndHandl
 		setProperty(getToAnimate(), SUFFIX + TRANSFORM, "translate(" + 0 + "%,0)");
 		setProperty(getToAnimate(), SUFFIX + TRANSITION_DURATION, 0 + "ms");
 		getToAnimate().getElement().getStyle().setLeft(getPositionX(), Unit.PCT);
-		onComplate();
+		onComplate(0);
 	}
 
 }
