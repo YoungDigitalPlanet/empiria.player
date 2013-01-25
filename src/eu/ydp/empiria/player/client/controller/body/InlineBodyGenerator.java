@@ -14,9 +14,9 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.IInlineContainerModule;
 import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -29,7 +29,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 	protected ModulesRegistrySocket modulesRegistrySocket;
 	protected ModuleSocket moduleSocket;
 	protected DisplayContentOptions options;
-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	private final InteractionEventsListener interactionEventsListener;
 	private ParenthoodManager parenthood;
 

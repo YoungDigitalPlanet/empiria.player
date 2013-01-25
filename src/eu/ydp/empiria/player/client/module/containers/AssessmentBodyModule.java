@@ -2,12 +2,12 @@ package eu.ydp.empiria.player.client.module.containers;
 
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class AssessmentBodyModule extends SimpleContainerModuleBase<AssessmentBodyModule> {
-	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	public AssessmentBodyModule(){
 		super();
 		panel.setStyleName(styleNames.QP_BODY());

@@ -62,7 +62,7 @@ public class Player {
 	 */
 	public Player(String id){
 		this.jsObject = JavaScriptObject.createFunction();
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.createNewPlayerGinjector();
 		viewEngine = injector.getViewEngine();
 		try {
 			RootPanel.get(id);
@@ -76,7 +76,7 @@ public class Player {
 
 	public Player(ComplexPanel container){
 		this.jsObject = JavaScriptObject.createFunction();
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.createNewPlayerGinjector();
 		getAccessor().setPlayerContainer(container);
 		viewEngine = injector.getViewEngine();
 		viewEngine.mountView(container);
@@ -133,7 +133,7 @@ public class Player {
 
 	private IPlayerContainersAccessor getAccessor() {
 		if (accessor == null){
-			accessor = PlayerGinjector.INSTANCE.getPlayerContainersAccessor();
+			accessor = PlayerGinjectorFactory.getPlayerGinjector().getPlayerContainersAccessor();
 		}
 		return accessor;
 	}	

@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
@@ -20,7 +21,7 @@ public class StatefulExtensionTest extends ExtensionTestBase {
 
 	public void testExtensionState(){
 
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		de.setFlowOptions(new FlowOptions(false, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));

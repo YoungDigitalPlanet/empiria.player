@@ -8,6 +8,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
@@ -32,7 +33,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 	}
 
 	public void testEngineMode(){
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		DeliveryEngine de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 
@@ -67,7 +68,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testDeliveryEventsWithToc(){
 		types = typesWithToc;
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEventsListenerExtension();
@@ -79,7 +80,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testDeliveryEventsNoToc(){
 		types = typesNoToc;
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEventsListenerExtension();
@@ -92,7 +93,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testDeliveryEventsPageSwitch(){
 		types = typesPageSwitch;
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEventsListenerExtension();
@@ -157,7 +158,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 		int itemIndex = 1;
 
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		de = injector.getDeliveryEngine();
 		de.setInitialItemIndex(itemIndex);
 
@@ -172,7 +173,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 		int initialItemIndex = 2;
 		int stateItemIndex = 5;
 
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		de = injector.getDeliveryEngine();
 		de.initialItemIndex =  initialItemIndex;
 
@@ -190,7 +191,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 		int stateItemIndex = 5;
 
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		de = injector.getDeliveryEngine();
 
 		JSONArray arr = createJSonStateArr(stateItemIndex);
@@ -204,7 +205,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testParseFlowRequestNoStateNoInitial(){
 
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		de = injector.getDeliveryEngine();
 
 		IFlowRequest flowRequest = de.parseFlowRequest(null);

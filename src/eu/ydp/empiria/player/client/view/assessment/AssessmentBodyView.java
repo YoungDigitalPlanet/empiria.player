@@ -4,14 +4,14 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class AssessmentBodyView extends FlowPanel {
 
 	protected WidgetWorkflowListener widgetWorkflowListener;
-	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	public AssessmentBodyView(WidgetWorkflowListener wwl){
 		widgetWorkflowListener = wwl;
 

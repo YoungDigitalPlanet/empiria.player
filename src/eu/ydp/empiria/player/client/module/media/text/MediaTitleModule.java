@@ -6,7 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
  */
 public class MediaTitleModule extends AbstractMediaController<MediaTitleModule> {
 	private static ImgTitleModuleUiBinder uiBinder = GWT.create(ImgTitleModuleUiBinder.class);
-	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 
 	interface ImgTitleModuleUiBinder extends UiBinder<Widget, MediaTitleModule> {
 	}

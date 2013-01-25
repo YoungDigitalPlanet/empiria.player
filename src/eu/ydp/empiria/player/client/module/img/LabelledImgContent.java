@@ -33,8 +33,8 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.canvasadapter.client.CanvasAdapter;
 import eu.ydp.canvasadapter.client.Context2dAdapter;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
@@ -62,7 +62,7 @@ public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 	@UiField
 	protected CanvasAdapter canvas;
 
-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 
 	private Map<String, String> styles;
 

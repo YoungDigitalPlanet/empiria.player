@@ -4,14 +4,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class PageContentView extends Composite {
 	private Panel pagePanel;
 	protected Panel itemsPanel = new FlowPanel();
 	protected Panel titlePanel = new FlowPanel();
-	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 
 	public PageContentView(Panel parentPanel) {
 		setParent(parentPanel);

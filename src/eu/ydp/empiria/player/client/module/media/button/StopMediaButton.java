@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
  *
  */
 public class StopMediaButton extends AbstractMediaButton<StopMediaButton> {
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	public StopMediaButton() {
 		super("qp-media-stop", false);

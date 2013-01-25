@@ -6,7 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
@@ -15,7 +15,7 @@ public class MediaDescriptionModule extends AbstractMediaController<MediaDescrip
 
 	interface ImgDescriptionModuleUiBinder extends UiBinder<Widget, MediaDescriptionModule> {
 	}
-	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
+	protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
 
 	@UiField
 	protected FlowPanel text;

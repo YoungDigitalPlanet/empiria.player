@@ -10,6 +10,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
@@ -67,7 +68,6 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.module.InlineContainerModule;
@@ -137,14 +137,14 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	protected String stateAsync;
 
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
-	protected ModuleFactory extensionFactory = PlayerGinjector.INSTANCE.getModuleFactory();
-	protected ModuleProviderFactory moduleProviderFactory = PlayerGinjector.INSTANCE.getModuleProviderFactory();
+	protected ModuleFactory extensionFactory = PlayerGinjectorFactory.getPlayerGinjector().getModuleFactory();
+	protected ModuleProviderFactory moduleProviderFactory = PlayerGinjectorFactory.getPlayerGinjector().getModuleProviderFactory();
 
 	protected Integer initialItemIndex;
 
-	private final ModuleHandlerManager moduleHandlerManager = PlayerGinjector.INSTANCE.getModuleHandlerManager();
+	private final ModuleHandlerManager moduleHandlerManager = PlayerGinjectorFactory.getPlayerGinjector().getModuleHandlerManager();
 
 	/**
 	 * C'tor.
@@ -166,7 +166,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		mode = new EngineModeManager();
 		styleManager = new StyleLinkManager();
 
-		extensionsManager = PlayerGinjector.INSTANCE.getExtensionsManager();
+		extensionsManager = PlayerGinjectorFactory.getPlayerGinjector().getExtensionsManager();
 
 		deliveryEventsHub = new DeliveryEventsHub();
 
@@ -330,10 +330,10 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getImageActionProcessor(), ModuleTagName.IMAGE_FEEDBACK));
 		loadExtension(extensionFactory.getDragDropManager());
 		loadExtension(moduleProviderFactory.getMediaProcessor().get());
-		loadExtension(PlayerGinjector.INSTANCE.getMultiPage());
-		loadExtension(PlayerGinjector.INSTANCE.getPage());
-		loadExtension(PlayerGinjector.INSTANCE.getBookmarkProcessorExtension());
-		loadExtension(PlayerGinjector.INSTANCE.getStickiesProcessorExtension());
+		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getMultiPage());
+		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getPage());
+		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getBookmarkProcessorExtension());
+		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getStickiesProcessorExtension());
 	}
 
 	protected void loadLibraryExtensions() {

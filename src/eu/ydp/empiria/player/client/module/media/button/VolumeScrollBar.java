@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
 public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
-	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
+	protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
 
 	private static VolumeScrollBarUiBinder uiBinder = GWT.create(VolumeScrollBarUiBinder.class);
 
@@ -44,8 +44,8 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	protected FlowPanel afterButton;
 
 	protected HandlerRegistration durationchangeHandlerRegistration; // NOPMD
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	protected PositionHelper positionHelper = PlayerGinjector.INSTANCE.getPositionHelper();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+	protected PositionHelper positionHelper = PlayerGinjectorFactory.getPlayerGinjector().getPositionHelper();
 
 	public VolumeScrollBar() {
 		initWidget(uiBinder.createAndBindUi(this));

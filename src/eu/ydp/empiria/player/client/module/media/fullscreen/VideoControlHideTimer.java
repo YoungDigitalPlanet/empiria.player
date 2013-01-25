@@ -8,7 +8,7 @@ import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchEndHandler;
 import com.google.gwt.user.client.Timer;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
@@ -17,7 +17,7 @@ public class VideoControlHideTimer implements TouchEndHandler, ClickHandler, Mou
 	private final Timer controlsHideTimer;
 	private static final int CONTROLS_SHOW_TIME = 3000;
 	private final VideoFullScreenView view;
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	public VideoControlHideTimer(VideoFullScreenView view) {
 		this.view = view;

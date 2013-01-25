@@ -4,14 +4,14 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.view.item.ItemContentView;
 import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 
 public class PageViewSocketImpl implements PageViewSocket {
-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); //NOPMD
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); //NOPMD
 	private final PageContentView view;
 	private Panel contentPanel;
 	private ItemContentView[] items;

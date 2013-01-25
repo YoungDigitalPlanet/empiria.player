@@ -2,15 +2,15 @@ package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.gwt.i18n.client.NumberFormat;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaButton;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public abstract class AbstractMediaTime<H> extends AbstractMediaButton<H> {
 	NumberFormat formatter = NumberFormat.getFormat("##00");
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+	protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
 
 	public AbstractMediaTime(String baseStyleName) {
 		super(baseStyleName);

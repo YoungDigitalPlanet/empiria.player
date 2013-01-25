@@ -15,9 +15,9 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.TwoStateButton;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule.Presenter;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -31,7 +31,7 @@ public class SlideshowPlayerModulePresenter implements Presenter{
 	
 	private final SimulationModuleUiBinder uiBinder = GWT.create(SimulationModuleUiBinder.class);
 	
-	private final EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private final EventsBus eventBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	
 	@UiField
 	protected Panel titlePanel;
@@ -59,7 +59,7 @@ public class SlideshowPlayerModulePresenter implements Presenter{
 	
 	protected List<SlideWidget> slideWidgetsList;
 	
-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	
 	private InlineBodyGeneratorSocket bodyGenerator;
 	

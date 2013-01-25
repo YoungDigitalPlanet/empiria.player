@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.mock.AssessmentSessionDataSocketMock;
 import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.mock.DataSourceDataSupplierMock;
 import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.mock.ItemSessionDataSocketMock;
@@ -14,12 +15,11 @@ import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
 public class AssessmentJsonReportGeneratorTest extends AbstractEmpiriaPlayerGWTTestCase {
 	
 	public void testGeneratingJsonReport(){
-		AssessmentReportFactory factory = PlayerGinjector.INSTANCE.getAssessmentReportFactory();
+		AssessmentReportFactory factory = PlayerGinjectorFactory.getPlayerGinjector().getAssessmentReportFactory();
 		SessionDataSupplierMock sessionSupplier = new SessionDataSupplierMock();
 		DataSourceDataSupplierMock dataSupplier = new DataSourceDataSupplierMock();
 		

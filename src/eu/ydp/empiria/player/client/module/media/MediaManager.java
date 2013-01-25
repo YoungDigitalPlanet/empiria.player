@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.module.media;
 import java.util.HashSet;
 import java.util.Set;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 public class MediaManager extends AbstractMediaEventHandler implements Extension {
 
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	public MediaManager() {
 		eventsBus.addAsyncHandler(MediaEvent.getType(MediaEventTypes.MEDIA_ATTACHED), this);

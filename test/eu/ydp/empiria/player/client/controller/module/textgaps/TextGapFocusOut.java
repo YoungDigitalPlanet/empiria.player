@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionTestBase;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
@@ -16,7 +17,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Modul
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
@@ -108,7 +108,7 @@ public abstract class TextGapFocusOut extends ExtensionTestBase {
 
 	protected class MockModule extends OneViewInteractionModuleBase implements Factory<MockModule>{
 
-		private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+		private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 		public MockModule(){
 		}

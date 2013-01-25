@@ -7,10 +7,10 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -34,7 +34,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	protected StackMap<Element, StackMap<IModule, HasWidgets>> nonuniqueModulesMap = new StackMap<Element, StackMap<IModule,HasWidgets>>();
 	protected StackMap<String, IModule> multiViewModulesMap = new StackMap<String, IModule>();
 	
-	protected FeedbackRegistry feedbackRegistry = PlayerGinjector.INSTANCE.getFeedbackRegistry();
+	protected FeedbackRegistry feedbackRegistry = PlayerGinjectorFactory.getPlayerGinjector().getFeedbackRegistry();
 
 	public ModulesInstalator(ParenthoodGeneratorSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, InteractionEventsListener mil){
 		this.registry = reg;

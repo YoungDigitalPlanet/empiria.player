@@ -8,6 +8,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
@@ -33,7 +34,7 @@ public abstract class ExtensionTestBase extends GWTTestCase {
 	}
 
 	protected DeliveryEngine initDeliveryEngine(List<Extension> exts, boolean showTocAndSummary){
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		DeliveryEngine de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		de.setFlowOptions(new FlowOptions(showTocAndSummary, showTocAndSummary, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));

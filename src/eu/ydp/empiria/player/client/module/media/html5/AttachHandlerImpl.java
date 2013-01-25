@@ -7,8 +7,8 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
@@ -22,7 +22,7 @@ public class AttachHandlerImpl implements Handler {
 	private HTML5MediaExecutor mediaExecutor;
 	private HTML5MediaWrapper mediaWrapper;
 
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	@Override
 	public void onAttachOrDetach(AttachEvent event) {

@@ -8,12 +8,12 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
@@ -31,15 +31,15 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	protected SessionDataSupplier sessionDataSupplier;
 	protected FlowDataSupplier flowDataSupplier;
 	protected InfoModuleUnloadListener unloadListener;
-	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	protected Panel mainPanel;
 	protected Panel contentPanel;
 	protected Element mainElement;
 	protected String contentString;
 	protected VariableInterpreter variableInterpreter;
-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
-	private final VariableInterpreterFactory interpreterFactory = PlayerGinjector.INSTANCE.getVariableInterpreterFactory();
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+	private final VariableInterpreterFactory interpreterFactory = PlayerGinjectorFactory.getPlayerGinjector().getVariableInterpreterFactory();
 
 	public InfoModule(DataSourceDataSupplier dsds, SessionDataSupplier sds, FlowDataSupplier fds) {
 		dataSourceDataSupplier = dsds;

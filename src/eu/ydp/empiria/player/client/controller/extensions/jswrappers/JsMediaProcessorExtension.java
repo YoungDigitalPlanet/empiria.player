@@ -6,13 +6,13 @@ import java.util.Map;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.SourceUtil;
@@ -30,7 +30,7 @@ public class JsMediaProcessorExtension extends AbstractJsExtension implements Me
 	protected boolean playing;
 	protected JavaScriptObject socketJs;
 	protected MediaInteractionSoundEventCallback currCallback;
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	protected Map<MediaWrapper<Widget>, String> sources = new HashMap<MediaWrapper<Widget>, String>();
 
 	@Override

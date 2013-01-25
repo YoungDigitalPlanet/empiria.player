@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 public class SpanModule extends SimpleModuleBase implements ISimpleModule, Factory<SpanModule> {
 
 	protected Widget contents;
-	private final StyleNameConstants styleNames = eu.ydp.empiria.player.client.gin.PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private final StyleNameConstants styleNames = eu.ydp.empiria.player.client.PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	
 	@Override
 	public void initModule(Element element) {

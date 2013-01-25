@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
@@ -11,7 +12,6 @@ import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterfe
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -33,14 +33,14 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private StyleSocket styleSocket;
 	private final InteractionEventsSocket interactionEventsSocket; // NOPMD
 	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
-	private final PageControllerCache controllerCache = PlayerGinjector.INSTANCE.getPageControllerCache();
-	private final EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private final PageControllerCache controllerCache = PlayerGinjectorFactory.getPlayerGinjector().getPageControllerCache();
+	private final EventsBus eventBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	private final IFlowSocket flowSocket;
 	private final AssessmentViewSocket assessmentViewSocket; // NOPMD
-	private final Page page = PlayerGinjector.INSTANCE.getPage();
+	private final Page page = PlayerGinjectorFactory.getPlayerGinjector().getPage();
 	private final IItemProperties itemProperties = createItemProperties();
 	private final ModuleHandlerManager moduleHandlerManager;
-	private final AssessmentControllerFactory controllerFactory = PlayerGinjector.INSTANCE.getAssessmentControllerFactory();
+	private final AssessmentControllerFactory controllerFactory = PlayerGinjectorFactory.getPlayerGinjector().getAssessmentControllerFactory();
 
 	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket, AssessmentSessionSocket ass, ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
 		assessmentViewSocket = avs;

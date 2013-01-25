@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventsHandler;
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEvent;
@@ -14,7 +15,6 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEventListener;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 /**
@@ -28,7 +28,7 @@ public class DeliveryEventsHub implements  DeliveryEventsListener, InteractionEv
 	protected List<FlowActivityEventsHandler> flowActivityEventsListeners;
 	protected List<DeliveryEventsListener> deliveryEventsListeners;
 	protected List<StateChangedInteractionEventListener> stateChangedInteractionEventsListeners;
-	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	protected Map<DeliveryEventType, FlowActivityEventType> map;
 
 	public DeliveryEventsHub(){
