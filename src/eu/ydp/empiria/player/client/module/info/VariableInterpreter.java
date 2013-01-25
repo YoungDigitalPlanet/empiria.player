@@ -18,7 +18,6 @@ public class VariableInterpreter {
 	}
 	
 	public String replaceAllTags(String content, int refItemIndex) {
-		fieldRegistry.register(refItemIndex);
 		return replaceItemTags(content, refItemIndex);
 	}
 	

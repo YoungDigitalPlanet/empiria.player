@@ -48,6 +48,7 @@ import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedbackPresenter;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedbackPresenter;
+import eu.ydp.empiria.player.client.module.info.ContentFieldRegistry;
 import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
@@ -101,6 +102,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(Page.class).in(Singleton.class);
 		bind(PanelCache.class).in(Singleton.class);
 		bind(SoundActionProcessor.class).in(Singleton.class);
+		bind(ContentFieldRegistry.class).in(Singleton.class);
 		// bind(HTML5FullScreenHelper.class).in(Singleton.class);
 		bind(DOMTreeWalker.class);
 		bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class).in(Singleton.class);
