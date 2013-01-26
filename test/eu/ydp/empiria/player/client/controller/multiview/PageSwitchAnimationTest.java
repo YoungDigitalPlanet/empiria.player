@@ -18,7 +18,7 @@ public class PageSwitchAnimationTest extends GWTTestCase {
 			@Override
 			protected void onComplete() {
 				super.onComplete();
-				assertEquals("200px", panel.getElement().getStyle().getLeft());
+				assertEquals("200.0%", panel.getElement().getStyle().getLeft());
 				finishTest();
 			};
 		};
