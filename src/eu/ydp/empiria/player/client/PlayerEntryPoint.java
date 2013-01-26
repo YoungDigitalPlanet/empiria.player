@@ -87,11 +87,13 @@ public class PlayerEntryPoint implements EntryPoint {
 	 * @param node_id
 	 */
 	public static JavaScriptObject createPlayer(final String node_id) {
+		final JavaScriptObject jsObject = JavaScriptObject.createFunction();
+		
 		GWT.runAsync(new RunAsyncCallback() {
 			
 			@Override
 			public void onSuccess() {
-				player = new Player(node_id);
+				player = new Player(node_id, jsObject);
 			}
 			
 			@Override
@@ -100,7 +102,7 @@ public class PlayerEntryPoint implements EntryPoint {
 			}
 		});
 		
-		return player.getJavaScriptObject();
+		return jsObject;
 	}
 
 	/**

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -113,7 +114,8 @@ public class DirectLoadInterfaceTest implements EntryPoint {
 	 * loaded as follows.
 	 */
 	public void createPlayer(){
-		Player p = new Player("root");
+		JavaScriptObject jsObject = JavaScriptObject.createFunction();
+		Player p = new Player("root", jsObject);
 		// optionally - flow options could be set
 		p.setFlowOptions(new FlowOptions(true, true, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
 		p.load(assessmentData, itemDatas);
