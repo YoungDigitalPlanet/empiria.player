@@ -8,7 +8,7 @@ public class PlayerGinjectorFactory {
 
 	private static PlayerGinjector playerGinjector;
 	
-	static PlayerGinjector createNewPlayerGinjector(){
+	public static PlayerGinjector createNewPlayerGinjector(){
 		playerGinjector = GWT.create(PlayerGinjector.class);
 		return playerGinjector;
 	}

@@ -40,6 +40,9 @@ public class PlayerEntryPoint implements EntryPoint {
 
 	/** Player object */
 	public static Player player;
+	private static String url1;
+	private static JavaScriptObject jsObject;
+	private static String node_id;
 
 	/**
 	 * This is the entry point method.
@@ -86,22 +89,9 @@ public class PlayerEntryPoint implements EntryPoint {
 	 *
 	 * @param node_id
 	 */
-	public static JavaScriptObject createPlayer(final String node_id) {
-		final JavaScriptObject jsObject = JavaScriptObject.createFunction();
-		
-		GWT.runAsync(new RunAsyncCallback() {
-			
-			@Override
-			public void onSuccess() {
-				player = new Player(node_id, jsObject);
-			}
-			
-			@Override
-			public void onFailure(Throwable reason) {
-				throw new RuntimeException("Error while loading player!", reason);
-			}
-		});
-		
+	public static JavaScriptObject createPlayer(String node_id) {
+		PlayerEntryPoint.node_id = node_id;
+		jsObject = JavaScriptObject.createFunction();
 		return jsObject;
 	}
 
@@ -110,8 +100,21 @@ public class PlayerEntryPoint implements EntryPoint {
 	 *
 	 * @param url
 	 */
-	public static void load(String url) {
-		player.load(url);
+	public static void load(final String url) {
+		GWT.runAsync(new RunAsyncCallback() {
+			@Override
+			public void onSuccess() {
+				if(player != null){
+					player = new Player(node_id, jsObject);
+				}
+				player.load(url);
+			}
+			
+			@Override
+			public void onFailure(Throwable reason) {
+				throw new RuntimeException("Error while loading player!", reason);
+			}
+		});
 	}
 
 	/**
@@ -133,6 +136,7 @@ public class PlayerEntryPoint implements EntryPoint {
 					Document itemDoc = XMLParser.parse(decodeXmlDataDocument(itemDatasArray.get(i)));
 					itemXmlDatas[i] = new XmlData(itemDoc,  decodeXmlDataBaseURL(itemDatasArray.get(i)));
 				}
+				player = new Player(node_id, jsObject);
 				player.load(assessmentXmlData, itemXmlDatas);
 			}
 			
