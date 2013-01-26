@@ -44,6 +44,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.collections.KeyValue;
+import eu.ydp.gwtutil.client.debug.logger.Debug;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
@@ -83,7 +84,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private int startY = 0, endY = 0;
 	private int swipeLength = 220;
 	private final static int WIDTH = Window.getClientWidth();
-	private final static int DEFAULT_ANIMATION_TIME = 350;
+	private final static int DEFAULT_ANIMATION_TIME = STACK_ANDROID_BROWSER ? 500 : 350;
 	private final static int QUICK_ANIMATION_TIME = 150;
 	private final static int TOUCH_END_TIMER_TIME = 800;
 	private float currentPosition;
@@ -146,6 +147,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	protected int getHeightForPage(int pageNumber) {
 		FlowPanel flowPanel = (FlowPanel) getViewForPage(pageNumber).getParent();
+		Debug.log(flowPanel);
 		return flowPanel == null ? 0 : flowPanel.getOffsetHeight();
 	}
 
@@ -154,7 +156,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			view.setHeight("auto");
 		} else {
 			view.setHeight(height + "px");
-
 		}
 	}
 
@@ -163,10 +164,12 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	}
 
 	protected void setVisiblePanels(int pageNumber, NavigationButtonDirection direction) {
+		Debug.log("show visible panels "+direction+" "+pageNumber);
 		showProgressBarForPage(pageNumber);
 		if (!measuredPanels.contains(pageNumber)) {
 			resizeTimer.cancel();
 			resizeTimer.schedule(350);
+			Debug.log("resize start");
 		}
 		if (currentVisiblePage != pageNumber && pageNumber >= 0) {
 			this.currentVisiblePage = pageNumber;
@@ -306,8 +309,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	 */
 
 	private void animatePageSwitch(float from, final float to, final NavigationButtonDirection direction, int duration, final boolean onlyPositionReset) {// NOPMD
-
-	//	if (Math.abs(from - to) > 1) {
 			if (!onlyPositionReset) {
 				Window.scrollTo(0, 0);
 			}
@@ -320,6 +321,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 						@Override
 						public void execute() {
 							setStylesForPages(false);
+							mainPanel.getElement().setPropertyInt("customOffsetLeft", position);
 							if (direction != null) {
 								flowRequestInvoker.invokeRequest(NavigationButtonDirection.getRequest(direction));
 							}
@@ -333,16 +335,8 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			};
 			animation.addAnimationEndCallback(animationCallback);
 			animation.goTo(mainPanel, (int)to /*Math.round((to / WIDTH)) * WIDTH*/, duration);
-	//	} else if (!onlyPositionReset) {
-	///		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
-	//	}
+
 	}
-
-	/*protected float getPositionLeft() {
-		//Style style = mainPanel.getElement().getStyle();
-		return currentPosition;// NumberUtils.tryParseFloat(style.getLeft().replaceAll("[a-z%]+$", ""));
-
-	}*/
 
 	/**
 	 * Na androidzie podczas swipe gapy zle sie rysowaly nachodzac na siebie.
@@ -357,26 +351,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	};
 
 	private void move(boolean swipeRight, float length) {
-//		if(!focusDroped && STACK_ANDROID_BROWSER){
-//			dropFocus();
-//		}
-//		if (swipeRight) {
-//			showProgressBarForPage(currentVisiblePage + 1);
-//		} else {
-//			showProgressBarForPage(currentVisiblePage - 1);
-//		}
-//		Style style = mainPanel.getElement().getStyle();
-//		float position = getCurrentPosition();// getPositionLeft();
-//
-//		NavigationButtonDirection direction = NavigationButtonDirection.PREVIOUS;
-//		if (swipeRight) {
-//			position = position - length;
-//			direction = NavigationButtonDirection.NEXT;
-//		} else {
-//			position = position + length;
-//		}
-//		animatePageSwitch(position, position, direction, 25, false);
-
 	}
 
 	private void showProgressBarForPage(int pageIndex) {
@@ -492,14 +466,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 				switchPage(swipeLength);
 			}
 
-//			if (end > 0 && (Window.getClientHeight() / 2.5) > (startY > endY ? startY - endY : endY - startY)) {
-//				//setVisiblePanels
-//				switchPage(swipeLength);
-//			} else {
-//
-//				//FIXME
-//				//animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
-//			}
 		} else {
 			reset();
 		}
@@ -549,14 +515,11 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		int swipeLength = Math.abs(start - end);
 		if (swipeLength >= minSwipeLength) {
 			NavigationButtonDirection direction = getDirection();
-		//	float percent = (float) swipeLength / RootPanel.get().getOffsetWidth() * 100;
 			if (direction != null) {
 				if (direction == NavigationButtonDirection.PREVIOUS && page.getCurrentPageNumber() > 0) {
 					setVisiblePanels(page.getCurrentPageNumber()-1,direction);
-					//animatePageSwitch(getCurrentPosition(), getCurrentPosition() + WIDTH/* (WIDTH - percent)*/, direction, DEFAULT_ANIMATION_TIME, true);
 				} else if (direction == NavigationButtonDirection.NEXT && page.getCurrentPageNumber() < page.getPageCount() - 1) {
 					setVisiblePanels(page.getCurrentPageNumber()+1,direction);
-					//animatePageSwitch(getCurrentPosition(), getCurrentPosition() - WIDTH /*(WIDTH - percent)*/, direction, DEFAULT_ANIMATION_TIME, true);
 				} else {
 					animatePageSwitch(getCurrentPosition(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 				}
