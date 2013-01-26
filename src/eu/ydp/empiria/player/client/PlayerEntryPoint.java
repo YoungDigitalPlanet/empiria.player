@@ -104,7 +104,7 @@ public class PlayerEntryPoint implements EntryPoint {
 		GWT.runAsync(new RunAsyncCallback() {
 			@Override
 			public void onSuccess() {
-				if(player != null){
+				if(player == null){
 					player = new Player(node_id, jsObject);
 				}
 				player.load(url);
