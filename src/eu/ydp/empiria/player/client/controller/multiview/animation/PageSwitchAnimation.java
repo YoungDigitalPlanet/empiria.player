@@ -23,7 +23,7 @@ public class PageSwitchAnimation extends Animation {
 	}
 
 	private void setPosition(double position) {
-		style.setLeft(position, Unit.PX);
+		style.setLeft(position, Unit.PCT);
 	}
 
 	@Override

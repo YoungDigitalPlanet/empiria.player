@@ -8,6 +8,8 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.Touch;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -43,14 +45,13 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
+import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.KeyValue;
-import eu.ydp.gwtutil.client.debug.logger.Debug;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 public class MultiPageController implements PlayerEventHandler, FlowRequestSocketUserExtension, FlowDataSocketUserExtension, Extension, TouchHandler {
 
-	private static final boolean STACK_ANDROID_BROWSER = UserAgentChecker.isStackAndroidBrowser();
 	@Inject
 	protected EventsBus eventsBus;
 	@Inject
@@ -83,8 +84,8 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private int end = 0;
 	private int startY = 0, endY = 0;
 	private int swipeLength = 220;
-	private final static int WIDTH = Window.getClientWidth();
-	private final static int DEFAULT_ANIMATION_TIME = STACK_ANDROID_BROWSER ? 500 : 350;
+	private final static int WIDTH = 100;
+	private final static int DEFAULT_ANIMATION_TIME = 500;
 	private final static int QUICK_ANIMATION_TIME = 150;
 	private final static int TOUCH_END_TIMER_TIME = 800;
 	private float currentPosition;
@@ -110,8 +111,8 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	private final Timer touchEndTimer = new Timer() {
 		@Override
 		public void run() {
-			if (STACK_ANDROID_BROWSER) {
-				animatePageSwitch(getCurrentPosition(), currentPosition, null, QUICK_ANIMATION_TIME, true);
+			if (UserAgentChecker.isStackAndroidBrowser()) {
+				animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 				swipeStarted = false;
 				resetPostionValues();
 			}
@@ -147,7 +148,6 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	protected int getHeightForPage(int pageNumber) {
 		FlowPanel flowPanel = (FlowPanel) getViewForPage(pageNumber).getParent();
-		Debug.log(flowPanel);
 		return flowPanel == null ? 0 : flowPanel.getOffsetHeight();
 	}
 
@@ -156,6 +156,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			view.setHeight("auto");
 		} else {
 			view.setHeight(height + "px");
+
 		}
 	}
 
@@ -163,13 +164,11 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		swipeLength = length;
 	}
 
-	protected void setVisiblePanels(int pageNumber, NavigationButtonDirection direction) {
-		Debug.log("show visible panels "+direction+" "+pageNumber);
+	protected void setVisiblePanels(int pageNumber) {
 		showProgressBarForPage(pageNumber);
 		if (!measuredPanels.contains(pageNumber)) {
 			resizeTimer.cancel();
 			resizeTimer.schedule(350);
-			Debug.log("resize start");
 		}
 		if (currentVisiblePage != pageNumber && pageNumber >= 0) {
 			this.currentVisiblePage = pageNumber;
@@ -177,7 +176,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 				if (measuredPanels.contains(pageNumber)) {
 					setHeight(getHeightForPage(pageNumber));
 				}
-				animatePageSwitch(getCurrentPosition(), -pageNumber * WIDTH, direction, DEFAULT_ANIMATION_TIME, false);
+				animatePageSwitch(getPositionLeft(), -pageNumber * WIDTH, null, DEFAULT_ANIMATION_TIME, false);
 			}
 		} else {
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
@@ -237,7 +236,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			this.touchReservation = true;
 			break;
 		case LOAD_PAGE_VIEW:
-			setVisiblePanels((Integer) (event.getValue() == null ? 0 : event.getValue()),null);
+			setVisiblePanels((Integer) (event.getValue() == null ? 0 : event.getValue()));
 			break;
 		case PAGE_VIEW_LOADED:
 			detachAttachPanels();
@@ -309,32 +308,40 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	 */
 
 	private void animatePageSwitch(float from, final float to, final NavigationButtonDirection direction, int duration, final boolean onlyPositionReset) {// NOPMD
+		if (Math.abs(from - to) > 1) {
 			if (!onlyPositionReset) {
 				Window.scrollTo(0, 0);
 			}
 			animation.removeAnimationEndCallback(animationCallback);
 			animationCallback = new AnimationEndCallback() {
 				@Override
-				public void onComplate(final int position) {
+				public void onComplate(int position) {
 
 					scheduler.scheduleDeferred(new ScheduledCommand() {
 						@Override
 						public void execute() {
 							setStylesForPages(false);
-							mainPanel.getElement().setPropertyInt("customOffsetLeft", position);
 							if (direction != null) {
 								flowRequestInvoker.invokeRequest(NavigationButtonDirection.getRequest(direction));
 							}
 							if (!onlyPositionReset) {
 								eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
 							}
-							currentPosition = position;
+							currentPosition = to;
 						}
 					});
 				}
 			};
 			animation.addAnimationEndCallback(animationCallback);
-			animation.goTo(mainPanel, (int)to /*Math.round((to / WIDTH)) * WIDTH*/, duration);
+			animation.goTo(mainPanel, Math.round((to / WIDTH)) * WIDTH, duration);
+		} else if (!onlyPositionReset) {
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
+		}
+	}
+
+	protected float getPositionLeft() {
+		Style style = mainPanel.getElement().getStyle();
+		return NumberUtils.tryParseFloat(style.getLeft().replaceAll("[a-z%]+$", ""));
 
 	}
 
@@ -351,6 +358,22 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	};
 
 	private void move(boolean swipeRight, float length) {
+		if(!focusDroped && UserAgentChecker.isStackAndroidBrowser()){
+			dropFocus();
+		}
+		if (swipeRight) {
+			showProgressBarForPage(currentVisiblePage + 1);
+		} else {
+			showProgressBarForPage(currentVisiblePage - 1);
+		}
+		Style style = mainPanel.getElement().getStyle();
+		float position = getPositionLeft();
+		if (swipeRight) {
+			style.setLeft(position - length, Unit.PCT);
+		} else {
+			style.setLeft(position + length, Unit.PCT);
+		}
+
 	}
 
 	private void showProgressBarForPage(int pageIndex) {
@@ -430,7 +453,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 				if (!isZoomed()) {
 					if (lastEnd != end && lastEnd > 0) {
 						swipeRight = (lastEnd > end);
-					//	move(swipeRight, ((float) Math.abs(lastEnd - end) / RootPanel.get().getOffsetWidth()) /** 100*/);
+						move(swipeRight, ((float) Math.abs(lastEnd - end) / RootPanel.get().getOffsetWidth()) * 100);
 						if(!swipeStarted){
 							eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_SWIPE_STARTED));
 						}
@@ -461,11 +484,11 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 					break;
 				}
 			}
-
-			if(end > 0 && (Window.getClientHeight() / 2.5) > Math.abs(startY - endY)){
+			if (end > 0 && (Window.getClientHeight() / 2.5) > (startY > endY ? startY - endY : endY - startY)) {
 				switchPage(swipeLength);
+			} else {
+				animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 			}
-
 		} else {
 			reset();
 		}
@@ -503,29 +526,26 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 
 	}
 
-	public float getCurrentPosition() {
-		return currentPosition;
-	}
-
 	private void switchPage(int minSwipeLength) {
 		if (touchReservation) {
-			animatePageSwitch(getCurrentPosition(), getCurrentPosition(), null, QUICK_ANIMATION_TIME, true);
+			animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 			return;
 		}
 		int swipeLength = Math.abs(start - end);
 		if (swipeLength >= minSwipeLength) {
 			NavigationButtonDirection direction = getDirection();
+			float percent = (float) swipeLength / RootPanel.get().getOffsetWidth() * 100;
 			if (direction != null) {
 				if (direction == NavigationButtonDirection.PREVIOUS && page.getCurrentPageNumber() > 0) {
-					setVisiblePanels(page.getCurrentPageNumber()-1,direction);
+					animatePageSwitch(getPositionLeft(), getPositionLeft() + (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
 				} else if (direction == NavigationButtonDirection.NEXT && page.getCurrentPageNumber() < page.getPageCount() - 1) {
-					setVisiblePanels(page.getCurrentPageNumber()+1,direction);
+					animatePageSwitch(getPositionLeft(), getPositionLeft() - (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
 				} else {
-					animatePageSwitch(getCurrentPosition(), currentPosition, null, QUICK_ANIMATION_TIME, true);
+					animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 				}
 			}
 		} else {
-			animatePageSwitch(getCurrentPosition(), currentPosition, null, QUICK_ANIMATION_TIME, true);
+			animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 		}
 	}
 

@@ -30,7 +30,7 @@ public class MultiPageView extends FlowPanel implements ResizeHandler {
 		Style style = controller.getMainPanel().getElement().getStyle();
 		Style elmentStyle = getElement().getStyle();
 
-		style.setWidth(controller.getWidth(), Unit.PX);
+		style.setWidth(controller.getWidth(), Unit.PCT);
 
 		if (swipeDisabled) {
 			style.clearPosition();
