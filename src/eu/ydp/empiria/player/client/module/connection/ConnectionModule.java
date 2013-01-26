@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -55,4 +56,9 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 		return connectionStructure;
 	}
 
+	@Override
+	public void setState(JSONArray newState) {
+		//TODO: Override and commented out for BETT
+		//FIXME: Find out why connection is not correctly restoring it's state!
+	}
 }
