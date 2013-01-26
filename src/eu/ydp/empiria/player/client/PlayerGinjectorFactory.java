@@ -14,6 +14,10 @@ public class PlayerGinjectorFactory {
 	}
 	
 	public static PlayerGinjector getPlayerGinjector(){
+		if(playerGinjector == null){
+			playerGinjector = GWT.create(PlayerGinjector.class);
+		}
+		
 		return playerGinjector;
 	}
 }
