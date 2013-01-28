@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
@@ -65,13 +66,13 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 			ModuleTagName tagName = ModuleTagName.getTag(moduleName);
 			switch (tagName) {
 			case MEDIA_TITLE:
-				controller = createWrapper("title");
+				controller = createWrapper(ModuleTagName.MEDIA_TITLE.tagName());
 				break;
 			case MEDIA_SCREEN:
 				controller = createScreen();
 				break;
 			case MEDIA_DESCRIPTION:
-				controller = createWrapper("description");
+				controller = createWrapper(ModuleTagName.MEDIA_DESCRIPTION.tagName());
 				break;
 			case MEDIA_FULL_SCREEN_BUTTON:
 				controller = createFullScreenButon();
@@ -98,16 +99,43 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	 * @param elementName
 	 * @return
 	 */
-	private ModuleWrapper createWrapper(String elementName) {
-		ModuleWrapper moduleWrapper = null;
-		NodeList titleNodes = baseElement.getElementsByTagName(elementName);
-		if (titleNodes.getLength() > 0) {
-			Widget widget = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(XMLUtils.getFirstChildElement((Element) titleNodes.item(0)));
-			if (widget != null) {
-				moduleWrapper = new ModuleWrapper(widget);
-			}
+	private MediaController<?> createWrapper(String elementName) {
+		MediaController<?> moduleWrapper = null;
+		if (isNodePresent(elementName)) {
+			moduleWrapper = createModuleWrapper(elementName);
+		} else {
+			moduleWrapper = createEmptyModuleWrapper();
 		}
 		return moduleWrapper;
+	}
+
+	protected MediaController<?> createEmptyModuleWrapper() {
+		return new ModuleWrapper(new FlowPanel());
+	}
+
+	protected MediaController<?> createModuleWrapperForWidget(Widget widget) {
+		return new ModuleWrapper(widget);
+	}
+
+	private MediaController<?> createModuleWrapper(String elementName) {
+		MediaController<?> moduleWrapper = null;
+		Widget widget = generateInlineBody(elementName);
+		if (widget == null) {
+			moduleWrapper = createEmptyModuleWrapper();
+		} else {
+			moduleWrapper = createModuleWrapperForWidget(widget);
+		}
+		return moduleWrapper;
+	}
+
+	private Widget generateInlineBody(String elementName) {
+		NodeList titleNodes = baseElement.getElementsByTagName(elementName);
+		return moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
+	}
+
+	private boolean isNodePresent(String elementName) {
+		NodeList titleNodes = baseElement.getElementsByTagName(elementName);
+		return titleNodes.getLength() > 0;
 	}
 
 	/**
@@ -117,28 +145,51 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	 */
 	private MediaController<?> createScreen() {
 		ImgContent content;
-		if (baseElement.getElementsByTagName("label").getLength() > 0) {
+		if (isLabelledImgContent()) {
 			content = new LabelledImgContent();
+		} else if (isExplorableImgContent()) {
+			content = new ExplorableImgContent();
 		} else {
-			Map<String, String> styles = moduleSocket.getStyles(baseElement);
-			if (styles.containsKey(EMPIRIA_IMG_MODE) && styles.get(EMPIRIA_IMG_MODE).equalsIgnoreCase("explorable")) {
-				content = new ExplorableImgContent();
-			} else {
-				content = defaultImgContentProvider.get();
-				((DefaultImgContent) content).setTemplate(true);
-			}
+			content = createDefaultImgContent();
 		}
+		return initContentAndCreateModuleWrapper(content);
+	}
+
+	private ImgContent createDefaultImgContent() {
+		ImgContent content = defaultImgContentProvider.get();
+		((DefaultImgContent) content).setTemplate(true);
+		return content;
+	}
+
+	private MediaController<?> initContentAndCreateModuleWrapper(ImgContent content) {
 		content.init(baseElement, moduleSocket);
 		return new ModuleWrapper((Widget) content);
+	}
+
+	private boolean isExplorableImgContent() {
+		Map<String, String> styles = moduleSocket.getStyles(baseElement);
+		return "explorable".equalsIgnoreCase(styles.get(EMPIRIA_IMG_MODE));
+	}
+
+	private boolean isLabelledImgContent() {
+		return baseElement.getElementsByTagName("label").getLength() > 0;
+	}
+
+	private boolean isFullScreenSupported() {
+		return PicturePlayerFullScreenMediaButon.isSupported(baseElement);
 	}
 
 	@Override
 	protected boolean isModuleSupported(String moduleName) {
 		boolean supported = CONTROLLERS.contains(moduleName);
-		if (supported && ModuleTagName.getTag(moduleName) == ModuleTagName.MEDIA_FULL_SCREEN_BUTTON) {
-			supported = PicturePlayerFullScreenMediaButon.isSupported(baseElement);
+		if (supported && isFullScreenButtonModule(moduleName)) {
+			supported = isFullScreenSupported();
 		}
 		return supported;
+	}
+
+	private boolean isFullScreenButtonModule(String moduleName) {
+		return ModuleTagName.getTag(moduleName) == ModuleTagName.MEDIA_FULL_SCREEN_BUTTON;
 	}
 
 }
