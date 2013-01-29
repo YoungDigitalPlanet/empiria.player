@@ -40,7 +40,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	private List<Element> items = null;
 
 
-	public void setAssessmentData(XmlData data) {
+	public void initializeAssessmentData(XmlData data) {
 		if (isItemDocument(data.getDocument())) {
 			isDefaultData = true;
 			initializeDefaultData();
@@ -48,6 +48,11 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 			isDefaultData = false;
 			initializeData(data);
 		}
+	}
+	
+	public void setAssessmentData(XmlData data){
+		this.data = data;
+		this.assessmentData = new AssessmentData(data, null);
 	}
 
 	public void setAssessmentLoadingError(String err) {

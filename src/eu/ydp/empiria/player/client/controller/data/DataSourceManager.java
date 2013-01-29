@@ -6,7 +6,6 @@ import java.util.Set;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Navigator;
 import com.google.gwt.user.client.ui.Image;
@@ -139,7 +138,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 			public void finishedLoading(Document document, String baseURL) {				
 				assesmentXML = new XmlData(document, baseURL);
-				assessmentDataManager.setAssessmentData(assesmentXML);
+				assessmentDataManager.initializeAssessmentData(assesmentXML);
 			}
 			
 			@Override
