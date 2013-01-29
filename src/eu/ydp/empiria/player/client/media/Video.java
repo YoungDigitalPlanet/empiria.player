@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.dom.client.VideoElement;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
@@ -20,8 +20,8 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public class Video extends com.google.gwt.media.client.Video implements MediaEventHandler {
 	private final List<TextTrack> textTracks = new ArrayList<TextTrack>();
-	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	protected final TextTrackFactory textTrackFactory = PlayerGinjector.INSTANCE.getTextTrackFactory();
+	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+	protected final TextTrackFactory textTrackFactory = PlayerGinjectorFactory.getPlayerGinjector().getTextTrackFactory();
 	private boolean initialized = false;
 	private MediaWrapper<?> eventBusSource = null;
 	private boolean forcePreload = false;

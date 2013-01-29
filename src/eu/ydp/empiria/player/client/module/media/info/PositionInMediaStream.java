@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.media.info;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
  *
  */
 public class PositionInMediaStream extends AbstractMediaTime<PositionInMediaStream> {
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	public PositionInMediaStream() {
 		super(styleNames.QP_MEDIA_POSITIONINSTREAM());

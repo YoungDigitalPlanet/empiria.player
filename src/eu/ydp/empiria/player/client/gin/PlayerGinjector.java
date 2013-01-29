@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.gin;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 
@@ -12,7 +11,6 @@ import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.AssessmentJsonReportExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
@@ -43,7 +41,6 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 @GinModules(value={PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, 
 		SourceListGinModule.class, TextEntryGinModule.class, SelectionGinModule.class})
 public interface PlayerGinjector extends Ginjector {
-	PlayerGinjector INSTANCE  = GWT.create(PlayerGinjector.class);
 
 	ViewEngine getViewEngine();
 	DeliveryEngine getDeliveryEngine();

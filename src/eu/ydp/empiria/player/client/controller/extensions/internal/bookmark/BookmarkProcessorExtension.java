@@ -12,13 +12,13 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleHandlerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
@@ -94,8 +94,8 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 	
 	void initInjection(){
-		styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
-		eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+		styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+		eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	}
 
 	boolean accepts(IModule module) {

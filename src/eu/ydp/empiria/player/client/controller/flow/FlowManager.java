@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -12,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCom
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.MainFlowRequestInvoker;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
 public final class FlowManager {
 
@@ -22,7 +22,7 @@ public final class FlowManager {
 
 	public FlowManager(){
 		flowRequestInvoker = new MainFlowRequestInvoker();
-		flowProcessor = PlayerGinjector.INSTANCE.getMainFlowProcessor();
+		flowProcessor = PlayerGinjectorFactory.getPlayerGinjector().getMainFlowProcessor();
 		flowCommandsExecutor = new MainFlowCommandsExecutor(flowProcessor);
 	}
 

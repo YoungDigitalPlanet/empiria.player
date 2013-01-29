@@ -2,15 +2,15 @@ package eu.ydp.empiria.player.client.util.events.scope;
 
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.Page;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
 public class CurrentPageScope implements EventScope<CurrentPageScope> {
 	private int pageIndex = -1;
 	protected Scope scope = Scope.PAGE;
 
 	public CurrentPageScope() {
-		pageIndex = PlayerGinjector.INSTANCE.getPage().getCurrentPageNumber();
+		pageIndex = PlayerGinjectorFactory.getPlayerGinjector().getPage().getCurrentPageNumber();
 	}
 
 	@Inject

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.extensions;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
@@ -10,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngineSocket;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+
 
 
 public class DeliveryEngineSocketUserExtensionTest extends ExtensionTestBase {
@@ -30,7 +32,7 @@ public class DeliveryEngineSocketUserExtensionTest extends ExtensionTestBase {
 	}
 
 	protected void testStateInitialPage(String expectedPage){
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEngineSocketUserExtension();
@@ -55,5 +57,4 @@ public class DeliveryEngineSocketUserExtensionTest extends ExtensionTestBase {
 		}
 
 	}
-
 }

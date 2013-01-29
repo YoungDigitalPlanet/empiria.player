@@ -4,14 +4,14 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class HTML5VideoImpl extends FlowPanel implements Video {
 
 	protected eu.ydp.empiria.player.client.media.Video video;
-	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	private MediaWrapper<?> eventBusSource;
 
 	public HTML5VideoImpl() {

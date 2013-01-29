@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
@@ -21,7 +22,6 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityPr
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -60,8 +60,8 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private final ItemSessionSocket itemSessionSocket;
 	private final InteractionEventsSocket interactionSocket;
 	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
-	private final StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
-	private final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+	private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	private StyleSocket styleSocket;
 	private final ModuleHandlerManager moduleHandlerManager;
 
@@ -186,7 +186,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 	private IPlayerContainersAccessor getAccessor() {
 		if (accessor == null){
-			accessor = PlayerGinjector.INSTANCE.getPlayerContainersAccessor();
+			accessor = PlayerGinjectorFactory.getPlayerGinjector().getPlayerContainersAccessor();
 		}
 		return accessor;
 	}

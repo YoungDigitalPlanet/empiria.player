@@ -9,12 +9,12 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.media.client.MediaBase;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
@@ -32,7 +32,7 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, MediaExecutor
 	private MediaWrapper<MediaBase> mediaDescriptor;
 	protected SoundExecutorListener listener;
 	private BaseMediaConfiguration baseMediaConfiguration;
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	private final Set<HandlerRegistration> allEventsRegistration = new HashSet<HandlerRegistration>();
 
 	@Override

@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.controller.style;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -10,47 +8,27 @@ import com.google.gwt.core.client.JavaScriptObject;
 import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class StyleLinkManager {
+	private final Map<String, JavaScriptObject> solidStyles = new HashMap<String, JavaScriptObject>();
 
-	public StyleLinkManager(){
-		solidStyles = new HashMap<String, JavaScriptObject>();
-		removableStyles = new ArrayList<JavaScriptObject>();
-	}
-
-	private final Map<String, JavaScriptObject> solidStyles;
-	private final List<JavaScriptObject> removableStyles;
-
-	public void registerAssessmentStyles(QueueSet<String> styleLinks){
+	public void registerAssessmentStyles(QueueSet<String> styleLinks) {
 		doRegisterStyleLinks(styleLinks, false);
 	}
 
-	public void registerItemStyles(QueueSet<String> styleLinks){
+	public void registerItemStyles(QueueSet<String> styleLinks) {
 		doRegisterStyleLinks(styleLinks, true);
 	}
 
-	private void doRegisterStyleLinks(QueueSet<String> styleLinks, boolean areRemovable){
-
-		if (areRemovable) {
-			removableStyles.clear();
+	private void doRegisterStyleLinks(QueueSet<String> styleLinks, boolean areRemovable) {
+		for (String link : styleLinks) {
+			addStyleIfNotPresent(link);
 		}
+	}
 
-		for (String link : styleLinks){
-			if (solidStyles.containsKey(link)) {
-				JavaScriptObject styleLink = solidStyles.get(link);
-				if (styleLink !=  null) {
-					removeStyleLink(styleLink);
-				}
-				solidStyles.remove(link);
-				JavaScriptObject newLink = appendStyleLink(link);
-				solidStyles.put(link, newLink);
-			} else if (!areRemovable) {
-				JavaScriptObject newLink = appendStyleLink(link);
-				solidStyles.put(link, newLink);
-			} else {
-				JavaScriptObject newLink = appendStyleLink(link);
-				removableStyles.add(newLink);
-			}
+	private void addStyleIfNotPresent(String link) {
+		if (!solidStyles.containsKey(link)) {
+			JavaScriptObject newLink = appendStyleLink(link);
+			solidStyles.put(link, newLink);
 		}
-
 	}
 
 	public native String getUserAgent() /*-{
@@ -72,7 +50,7 @@ public class StyleLinkManager {
 		try {
 			var headID = $wnd.document.getElementsByTagName("head")[0];
 			headID.removeChild(cssNode);
-        } catch (e) {
+		} catch (e) {
 			cssNode.parentNode.removeChild(cssNode);
 		}
 	}-*/;

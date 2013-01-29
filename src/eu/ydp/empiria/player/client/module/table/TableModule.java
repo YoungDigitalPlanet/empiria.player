@@ -14,9 +14,9 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.binding.BindingManager;
@@ -30,7 +30,7 @@ public class TableModule extends AbstractActivityContainerModuleBase implements 
 
 	protected Panel tablePanel;
 	private GapWidthBindingManager gapWidthBindingManager;
-	protected StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	public TableModule(){
 		tablePanel = new FlowPanel();
 		tablePanel.setStyleName(styleNames.QP_TABLE());

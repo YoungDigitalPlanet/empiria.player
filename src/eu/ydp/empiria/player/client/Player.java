@@ -24,7 +24,6 @@
 package eu.ydp.empiria.player.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
@@ -41,9 +40,6 @@ import eu.ydp.empiria.player.client.view.ViewEngine;
  */
 public class Player {
 
-  /** JavaScript object representing this java object */
-  private final JavaScriptObject	jsObject;
-
   /** Delivery engine do manage the assessment content */
   public DeliveryEngine deliveryEngine;
 
@@ -52,6 +48,8 @@ public class Player {
 
   private IPlayerContainersAccessor accessor;
 
+private JavaScriptObject jsObject;
+
   {
 	 logVersion();
   }
@@ -59,24 +57,18 @@ public class Player {
 	/**
 	 * constructor
 	 * @param id
+	 * @param jsObject 
 	 */
-	public Player(String id){
-		this.jsObject = JavaScriptObject.createFunction();
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
+	public Player(String id, JavaScriptObject jsObject){
+		this.jsObject = jsObject;
+		PlayerGinjector injector = PlayerGinjectorFactory.createNewPlayerGinjector();
 		viewEngine = injector.getViewEngine();
+		try {
+			RootPanel.get(id);
+		} catch (Exception e){}
 		RootPanel root = RootPanel.get(id);
 		viewEngine.mountView(root);
 		getAccessor().setPlayerContainer(root);
-		deliveryEngine = injector.getDeliveryEngine();
-		deliveryEngine.init(jsObject);
-	}
-
-	public Player(ComplexPanel container){
-		this.jsObject = JavaScriptObject.createFunction();
-		PlayerGinjector injector = PlayerGinjector.INSTANCE;
-		getAccessor().setPlayerContainer(container);
-		viewEngine = injector.getViewEngine();
-		viewEngine.mountView(container);
 		deliveryEngine = injector.getDeliveryEngine();
 		deliveryEngine.init(jsObject);
 	}
@@ -130,7 +122,7 @@ public class Player {
 
 	private IPlayerContainersAccessor getAccessor() {
 		if (accessor == null){
-			accessor = PlayerGinjector.INSTANCE.getPlayerContainersAccessor();
+			accessor = PlayerGinjectorFactory.getPlayerGinjector().getPlayerContainersAccessor();
 		}
 		return accessor;
 	}	

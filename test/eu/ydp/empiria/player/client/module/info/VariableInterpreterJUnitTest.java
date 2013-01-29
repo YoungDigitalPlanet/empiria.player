@@ -1,9 +1,14 @@
 package eu.ydp.empiria.player.client.module.info;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.CHECKS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.MISTAKES;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.RESET;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.SHOW_ANSWERS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +26,6 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSes
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor;
 
 public class VariableInterpreterJUnitTest extends AbstractTestBase{
 
@@ -41,42 +45,47 @@ public class VariableInterpreterJUnitTest extends AbstractTestBase{
 
 	@Test
 	public void shouldReturnCorrectContentString(){		
-		ItemSessionDataSocket itemSessionDataSocket = mock(ItemSessionDataSocket.class);
+		ItemSessionDataSocket itemSessionDataSocketPage0 = createItemSessionDataSocketForFirstPage();
+		ItemSessionDataSocket itemSessionDataSocketPage1 = createItemSessionDataSocketForSecondPage();
 		AssessmentSessionDataSocket assessmentSessionDataSocket = mock(AssessmentSessionDataSocket.class);
-		VariableProviderSocket itemVariableSocket = mock(VariableProviderSocket.class);
 		VariableProviderSocket assessmentVariableSocket = mock(VariableProviderSocket.class);
 		OutcomeCreator outcomeCreator = new OutcomeCreator();
-		int refItemIndex = 0;
+		
+		when(sessionSupplier.getItemSessionDataSocket(0)).thenReturn(itemSessionDataSocketPage0);
+		when(sessionSupplier.getItemSessionDataSocket(1)).thenReturn(itemSessionDataSocketPage1);
 		
 		when(sourceSupplier.getAssessmentTitle()).thenReturn("Lesson 1");
 		when(sourceSupplier.getItemTitle(0)).thenReturn("Page 1");
 		when(sourceSupplier.getItemTitle(1)).thenReturn("Page 2");
-		when(sourceSupplier.getItemsCount()).thenReturn(1);
-		
-		when(sessionSupplier.getItemSessionDataSocket(anyInt())).thenReturn(itemSessionDataSocket);
-		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocket);
+		when(sourceSupplier.getItemsCount()).thenReturn(1);		
 		
 		when(sessionSupplier.getAssessmentSessionDataSocket()).thenReturn(assessmentSessionDataSocket);
 		when(assessmentSessionDataSocket.getVariableProviderSocket()).thenReturn(assessmentVariableSocket);
 		
-		when(itemVariableSocket.getVariableValue(DefaultVariableProcessor.TODO)).thenReturn(outcomeCreator.createTodoOutcome(3));
-		when(assessmentVariableSocket.getVariableValue(DefaultVariableProcessor.DONE)).thenReturn(outcomeCreator.createDoneOutcome(2));
+		when(assessmentVariableSocket.getVariableValue(DONE)).thenReturn(outcomeCreator.createDoneOutcome(2));
 		
 		List<ContentInfo> infos = Lists.newArrayList(
 					ContentInfo.create("$[item.title]", "Page 1", 0),
 					ContentInfo.create("$[item.title]", "Page 2", 1),
 					ContentInfo.create("$[test.title]", "Lesson 1", 0), 
 					ContentInfo.create("$[item.index]", "1", 0),
+					ContentInfo.create("$[item.index]", "2", 1),
 					ContentInfo.create("$[item.page_num]", "1", 0),
 					ContentInfo.create("$[item.page_count]", "1", 0),
 					ContentInfo.create("$[item.todo]", "3", 0),
+					ContentInfo.create("$[item.todo]", "5", 1),
 					ContentInfo.create("$[item.done]", "0", 0),
+					ContentInfo.create("$[item.done]", "4", 1),
 					ContentInfo.create("$[item.checks]", "0", 0),
+					ContentInfo.create("$[item.checks]", "6", 1),
 					ContentInfo.create("$[item.mistakes]", "0", 0),
+					ContentInfo.create("$[item.mistakes]", "3", 1),
 					ContentInfo.create("$[item.show_answers]", "0", 0),
+					ContentInfo.create("$[item.show_answers]", "2", 1),
 					ContentInfo.create("$[item.reset]", "0", 0),
+					ContentInfo.create("$[item.reset]", "10", 1),
 					ContentInfo.create("$[item.result]", "0", 0),
-					ContentInfo.create("$[test.title]", "Lesson 1", 0),
+					ContentInfo.create("$[item.result]", "80", 1),
 					ContentInfo.create("$[test.todo]", "0", 0),
 					ContentInfo.create("$[test.done]", "2", 0),
 					ContentInfo.create("$[test.checks]", "0", 0),
@@ -90,8 +99,34 @@ public class VariableInterpreterJUnitTest extends AbstractTestBase{
 		for(ContentInfo info: infos){
 			assertInfo(info);
 		}
+	}
+	
+	private ItemSessionDataSocket createItemSessionDataSocketForFirstPage(){
+		OutcomeCreator outcomeCreator = new OutcomeCreator();
+		ItemSessionDataSocket itemSessionDataSocket = mock(ItemSessionDataSocket.class);
+		VariableProviderSocket itemVariableSocketPage = mock(VariableProviderSocket.class);
+		
+		when(itemVariableSocketPage.getVariableValue(TODO)).thenReturn(outcomeCreator.createTodoOutcome(3));
+		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocketPage);
 		
 		
+		return itemSessionDataSocket;
+	}
+
+	private ItemSessionDataSocket createItemSessionDataSocketForSecondPage() {
+		OutcomeCreator outcomeCreator = new OutcomeCreator();
+		ItemSessionDataSocket itemSessionDataSocket = mock(ItemSessionDataSocket.class);
+		VariableProviderSocket itemVariableSocketPage = mock(VariableProviderSocket.class);
+		
+		when(itemVariableSocketPage.getVariableValue(TODO)).thenReturn(outcomeCreator.createTodoOutcome(5));
+		when(itemVariableSocketPage.getVariableValue(DONE)).thenReturn(outcomeCreator.createDoneOutcome(4));
+		when(itemVariableSocketPage.getVariableValue(CHECKS)).thenReturn(outcomeCreator.createChecksOutcome(6));
+		when(itemVariableSocketPage.getVariableValue(MISTAKES)).thenReturn(outcomeCreator.createMistakesOutcome(3));
+		when(itemVariableSocketPage.getVariableValue(SHOW_ANSWERS)).thenReturn(outcomeCreator.createShowAnswersOutcome(2));
+		when(itemVariableSocketPage.getVariableValue(RESET)).thenReturn(outcomeCreator.createResetOutcome(10));
+		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocketPage);
+		
+		return itemSessionDataSocket;
 	}
 
 	private void assertInfo(ContentInfo info) {
@@ -99,8 +134,8 @@ public class VariableInterpreterJUnitTest extends AbstractTestBase{
 		String content = String.format(template, info.getContentTag());
 		String expectedValue = String.format(template, info.getExpectedValue());
 
-		assertThat(info.getContentTag(), interpreter.replaceAllTags(content, info.getRefItemIndex()), is(equalTo(expectedValue)));
-	}
+		assertThat(info.getContentTag() + " page: " + info.getRefItemIndex(), interpreter.replaceAllTags(content, info.getRefItemIndex()), is(equalTo(expectedValue)));
+	} 
 
 	private static class ContentInfo {
 

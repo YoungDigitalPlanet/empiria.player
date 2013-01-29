@@ -32,17 +32,17 @@ public class ContentFieldRegistry {
 								FieldValueHandlerFactory handlerFactory){
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
 		this.sessionDataSupplier = sessionDataSupplier;
-		this.handlerFactory = handlerFactory;	
+		this.handlerFactory = handlerFactory;
 	}
 	
-	public void register(int refItemIndex){
-		FieldValueHandler itemValueHandler = handlerFactory.getProviderValueHandler(getItemVariableProvider(refItemIndex));
-		FieldValueHandler assessmentValueHandler = handlerFactory.getProviderValueHandler(getAssessmentVariableProvider());
+	public void register(){
+		FieldValueHandler itemValueHandler = handlerFactory.getProviderValueHandler(sessionDataSupplier);
+		FieldValueHandler assessmentValueHandler = handlerFactory.getProviderAssessmentValueHandler(getAssessmentVariableProvider());
 		FieldValueHandler titleValueHandler = handlerFactory.getTitleValueHandler(dataSourceDataSupplier);
 		FieldValueHandler itemIndexValueHandler = handlerFactory.getItemIndexValueHandler();
 		FieldValueHandler pageCountValueHandler = handlerFactory.getPageCountValueHandler(dataSourceDataSupplier);
-		FieldValueHandler testResultValueHandler = handlerFactory.getResultValueHandler(getAssessmentVariableProvider());
-		FieldValueHandler itemResultValueHandler = handlerFactory.getResultValueHandler(getItemVariableProvider(refItemIndex));
+		FieldValueHandler testResultValueHandler = handlerFactory.getAssessmentResultValueHandler(getAssessmentVariableProvider());
+		FieldValueHandler itemResultValueHandler = handlerFactory.getResultValueHandler(sessionDataSupplier);
 		
 		Map<String, FieldValueHandler> registry = ImmutableMap.<String, FieldValueHandler>builder().
 															put("item.todo", itemValueHandler).
@@ -65,12 +65,19 @@ public class ContentFieldRegistry {
 															put("test.title", titleValueHandler).
 															put("test.result", testResultValueHandler).
 														build();
-		
+		createFields(registry);
+	}
+	
+	private void createFields(Map<String, FieldValueHandler> registry){
 		Iterator<Entry<String, FieldValueHandler>> iterator = registry.entrySet().iterator();
 		
 		while(iterator.hasNext()){
 			Entry<String, FieldValueHandler> registryEntry = iterator.next();
-			fieldInfos.add(createFieldInfo(registryEntry.getKey()).setHandler(registryEntry.getValue()));
+			String tagName = registryEntry.getKey();
+			FieldValueHandler handler = registryEntry.getValue();
+			ContentFieldInfo fieldInfo = createFieldInfo(tagName).setHandler(handler);
+			
+			fieldInfos.add(fieldInfo);
 		}
 	}
 	
@@ -87,7 +94,14 @@ public class ContentFieldRegistry {
 	}
 
 	public List<ContentFieldInfo> getFieldInfos() {
+		if(!isRegistered()){
+			register();
+		}
 		return Lists.newArrayList(fieldInfos);
 	}	
+	
+	private boolean isRegistered(){
+		return !fieldInfos.isEmpty();
+	}
 	
 }

@@ -3,10 +3,10 @@ package eu.ydp.empiria.player.client.module;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Test;
@@ -40,9 +40,8 @@ public class InlineContainerStylesExtractorJUnitTest {
 		Set<InlineFormattingContainerType> result = helper.getInlineStyles(testModule);
 
 		assertThat(result.size(), is(equalTo(2)));
-		Iterator<InlineFormattingContainerType> resultIterator = result.iterator();
-		assertThat(InlineFormattingContainerType.BOLD.equals(resultIterator.next()), is(equalTo(true)));
-		assertThat(InlineFormattingContainerType.ITALIC.equals(resultIterator.next()), is(equalTo(true)));
+		assertTrue(result.contains(InlineFormattingContainerType.BOLD));
+		assertTrue(result.contains(InlineFormattingContainerType.ITALIC));
 	}
 
 }

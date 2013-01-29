@@ -5,7 +5,7 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
 @SuppressWarnings("PMD")
@@ -16,7 +16,7 @@ public class PanelCacheTest extends GWTTestCase {
 	}
 
 	public void testPageViewWithSwipeAndWithout() {
-		PanelCache cache =  PlayerGinjector.INSTANCE.getPanelCache();
+		PanelCache cache =  PlayerGinjectorFactory.getPlayerGinjector().getPanelCache();
 		assertTrue(cache.isEmpty());
 		KeyValue<FlowPanel, FlowPanel> value = cache.getOrCreateAndPut(0);
 		Style style = value.getKey().getElement().getStyle();

@@ -13,8 +13,8 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
@@ -41,7 +41,7 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter{
 	interface SimpleChoiceViewUiBinder extends UiBinder<Widget, SimpleChoicePresenterImpl> {
 	}
 	
-	private StyleNameConstants styleNameConstants = PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private StyleNameConstants styleNameConstants = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	
 	@UiField
 	Panel optionPanel;

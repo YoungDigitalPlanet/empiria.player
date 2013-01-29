@@ -16,7 +16,7 @@ import eu.ydp.gwtutil.client.geom.Rectangle;
 public class SimpleTextModule extends SimpleModuleBase implements Factory<SimpleTextModule>, IBookmarkable {
 
 	protected Widget contents;
-	private final StyleNameConstants styleNames = eu.ydp.empiria.player.client.gin.PlayerGinjector.INSTANCE.getStyleNameConstants();
+	private final StyleNameConstants styleNames = eu.ydp.empiria.player.client.PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	private final BookmarkingHelper bookmarkingHelper;
 
 	public SimpleTextModule(){

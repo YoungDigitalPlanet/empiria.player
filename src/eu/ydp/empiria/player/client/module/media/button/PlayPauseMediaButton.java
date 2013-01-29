@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
@@ -16,8 +16,8 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
  *
  */
 public class PlayPauseMediaButton extends AbstractMediaButton<PlayPauseMediaButton> {
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
-	protected final static StyleNameConstants styleNames = PlayerGinjector.INSTANCE.getStyleNameConstants(); // NOPMD
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+	protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
 
 	public PlayPauseMediaButton() {
 		super(styleNames.QP_MEDIA_PLAY_PAUSE());

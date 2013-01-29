@@ -24,8 +24,10 @@
 package eu.ydp.empiria.player.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
@@ -38,6 +40,9 @@ public class PlayerEntryPoint implements EntryPoint {
 
 	/** Player object */
 	public static Player player;
+	private static String url1;
+	private static JavaScriptObject jsObject;
+	private static String node_id;
 
 	/**
 	 * This is the entry point method.
@@ -85,8 +90,9 @@ public class PlayerEntryPoint implements EntryPoint {
 	 * @param node_id
 	 */
 	public static JavaScriptObject createPlayer(String node_id) {
-		player = new Player(node_id);
-		return player.getJavaScriptObject();
+		PlayerEntryPoint.node_id = node_id;
+		jsObject = JavaScriptObject.createFunction();
+		return jsObject;
 	}
 
 	/**
@@ -94,8 +100,21 @@ public class PlayerEntryPoint implements EntryPoint {
 	 *
 	 * @param url
 	 */
-	public static void load(String url) {
-		player.load(url);
+	public static void load(final String url) {
+		GWT.runAsync(new RunAsyncCallback() {
+			@Override
+			public void onSuccess() {
+				if(player == null){
+					player = new Player(node_id, jsObject);
+				}
+				player.load(url);
+			}
+			
+			@Override
+			public void onFailure(Throwable reason) {
+				throw new RuntimeException("Error while loading player!", reason);
+			}
+		});
 	}
 
 	/**
@@ -103,18 +122,29 @@ public class PlayerEntryPoint implements EntryPoint {
 	 *
 	 * @param url
 	 */
-	public static void load(JavaScriptObject assessmentData, JavaScriptObject itemDatas) {
-		Document assessmentDoc = XMLParser.parse(decodeXmlDataDocument(assessmentData));
-		XmlData assessmentXmlData = new XmlData(assessmentDoc,  decodeXmlDataBaseURL(assessmentData));
-
-		JsArray<JavaScriptObject> itemDatasArray = itemDatas.cast();
-
-		XmlData itemXmlDatas[] = new XmlData[itemDatasArray.length()];
-		for (int i = 0 ; i < itemDatasArray.length() ; i ++){
-			Document itemDoc = XMLParser.parse(decodeXmlDataDocument(itemDatasArray.get(i)));
-			itemXmlDatas[i] = new XmlData(itemDoc,  decodeXmlDataBaseURL(itemDatasArray.get(i)));
-		}
-		player.load(assessmentXmlData, itemXmlDatas);
+	public static void load(final JavaScriptObject assessmentData, final JavaScriptObject itemDatas) {
+		GWT.runAsync(new RunAsyncCallback() {
+			@Override
+			public void onSuccess() {
+				Document assessmentDoc = XMLParser.parse(decodeXmlDataDocument(assessmentData));
+				XmlData assessmentXmlData = new XmlData(assessmentDoc,  decodeXmlDataBaseURL(assessmentData));
+				
+				JsArray<JavaScriptObject> itemDatasArray = itemDatas.cast();
+				
+				XmlData itemXmlDatas[] = new XmlData[itemDatasArray.length()];
+				for (int i = 0 ; i < itemDatasArray.length() ; i ++){
+					Document itemDoc = XMLParser.parse(decodeXmlDataDocument(itemDatasArray.get(i)));
+					itemXmlDatas[i] = new XmlData(itemDoc,  decodeXmlDataBaseURL(itemDatasArray.get(i)));
+				}
+				player = new Player(node_id, jsObject);
+				player.load(assessmentXmlData, itemXmlDatas);
+			}
+			
+			@Override
+			public void onFailure(Throwable reason) {
+				throw new RuntimeException("Error while loading player!", reason);
+			}
+		});
 	}
 
 	private native static String decodeXmlDataDocument(JavaScriptObject data)/*-{

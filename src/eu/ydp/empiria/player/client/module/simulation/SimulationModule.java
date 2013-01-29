@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
@@ -23,7 +23,7 @@ public class SimulationModule extends SimpleModuleBase implements Factory<Simula
 	
 	protected CreateJsLoader loader;
 	
-	private EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus(); 
+	private EventsBus eventBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus(); 
 
 	@Override
 	public SimulationModule getNewInstance() {

@@ -117,8 +117,8 @@ public class StickieView extends Composite implements IStickieView {
 	public void mouseDownHandler(MouseDownEvent event){
 		dragStart(event.getScreenX(), event.getScreenY());
 		setEditing(false);
-
-		final HandlerRegistration moveHandlerReg = RootPanel.get().addDomHandler(new MouseMoveHandler() {
+		
+		final HandlerRegistration moveHandlerReg = ((Widget)accessor.getPlayerContainer()).addDomHandler(new MouseMoveHandler() {
 			
 			@Override
 			public void onMouseMove(MouseMoveEvent event) {
@@ -127,7 +127,7 @@ public class StickieView extends Composite implements IStickieView {
 			}
 		}, MouseMoveEvent.getType());
 
-		upHandlerReg = RootPanel.get().addDomHandler(new MouseUpHandler() {
+		upHandlerReg = ((Widget)accessor.getPlayerContainer()).addDomHandler(new MouseUpHandler() {
 
 			@Override
 			public void onMouseUp(MouseUpEvent event) {

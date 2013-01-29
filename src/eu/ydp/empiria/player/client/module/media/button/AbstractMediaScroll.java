@@ -7,7 +7,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -22,7 +22,7 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
 	private boolean mediaReady = false;
 	private boolean initialized;
 	protected HandlerRegistration durationchangeHandlerRegistration ; //NOPMD
-	protected EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	/**
 	 * metoda wywolywana gdy pojawi sie jedno z obslugiwanych zdarzen

@@ -70,13 +70,13 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	protected Animation animation;
 	@Inject
 	protected TouchRecognitionFactory touchRecognitionFactory;
-	
+
 	@Inject
 	@Named("multiPageControllerMainPanel")
 	private FlowPanel mainPanel;
 	@Inject
 	private PagePlaceHolderPanelCreator pagePlaceHolderPanelCreator;
-	
+
 	private static int activePageCount = 3;
 	private int currentVisiblePage = -1;
 	private int start;
@@ -196,19 +196,19 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			applyStylesToPanelOnIndex(pageNumber);
 			showProgressBarForPage(pageNumber);
 		}
-		
+
 		KeyValue<FlowPanel, FlowPanel> panel = panelsCache.getOrCreateAndPut(pageNumber);
-		
+
 		loadedPages.add(pageNumber);
 		return panel.getValue();
 	}
-	
+
 	private void applyStylesToPanelOnIndex(Integer pageNumber) {
 		KeyValue<FlowPanel, FlowPanel> panelsPair = panelsCache.getOrCreateAndPut(pageNumber);
 		FlowPanel panel = panelsPair.getKey();
-		
+
 		panel.addStyleName(styleNames.QP_PAGE_UNSELECTED());
-		
+
 		String pageDirectionChangeStyle = findPageDirectionChangeStyle(pageNumber);
 		panel.addStyleName(pageDirectionChangeStyle);
 	}
@@ -315,7 +315,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 			animation.removeAnimationEndCallback(animationCallback);
 			animationCallback = new AnimationEndCallback() {
 				@Override
-				public void onComplate() {
+				public void onComplate(int position) {
 
 					scheduler.scheduleDeferred(new ScheduledCommand() {
 						@Override

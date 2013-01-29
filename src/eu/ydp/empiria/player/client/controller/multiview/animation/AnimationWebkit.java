@@ -1,12 +1,10 @@
 package eu.ydp.empiria.player.client.controller.multiview.animation;
 
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 import eu.ydp.empiria.player.client.util.events.animation.TransitionEndEvent;
 import eu.ydp.empiria.player.client.util.events.animation.TransitionEndHandler;
-import eu.ydp.gwtutil.client.NumberUtils;
 
 /**
  * <code>
@@ -19,26 +17,27 @@ public class AnimationWebkit extends AbstractAnimation implements TransitionEndH
 
 	private HandlerRegistration transitionEndRegistration;
 
+	int animationStartAt = 0;
+
 	@Override
 	public void goTo(FlowPanel toAnimate, int xPosition, double duration) {
-		setRunning(true);
-		setToAnimate(toAnimate);
-		setPositionX(xPosition);
-		float currentPosition = NumberUtils.tryParseFloat(toAnimate.getElement().getStyle().getLeft().replaceAll("[a-z%]+$", ""));
-		double animationLength = Math.abs(currentPosition) - Math.abs(xPosition);
-		setProperty(toAnimate, SUFFIX + TRANSITION, "all " + duration + "ms ease-in-out");
-		setProperty(toAnimate, SUFFIX + TRANSFORM, "translate(" + animationLength + "%,0)");
-		transitionEndRegistration = toAnimate.addDomHandler(this, TransitionEndEvent.getType());
+		if (animationStartAt != xPosition) {
+			setRunning(true);
+			animationStartAt = xPosition;
+			setToAnimate(toAnimate);
+			setPositionX(xPosition);
+			setProperty(toAnimate, SUFFIX + TRANSITION, "all " + duration + "ms ease-out");
+			setProperty(toAnimate, SUFFIX + TRANSFORM, "translate(" + xPosition + "px,0)");
+			transitionEndRegistration = toAnimate.addDomHandler(this, TransitionEndEvent.getType());
+		}else{
+			onComplate(xPosition);
+		}
 	}
 
 	@Override
 	public void onTransitionEnd(TransitionEndEvent event) {
 		transitionEndRegistration.removeHandler();
-		setProperty(getToAnimate(), SUFFIX + TRANSITION, "-webkit-transform linear");
-		setProperty(getToAnimate(), SUFFIX + TRANSFORM, "translate(" + 0 + "%,0)");
-		setProperty(getToAnimate(), SUFFIX + TRANSITION_DURATION, 0 + "ms");
-		getToAnimate().getElement().getStyle().setLeft(getPositionX(), Unit.PCT);
-		onComplate();
+		onComplate(animationStartAt);
 	}
 
 }

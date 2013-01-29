@@ -11,8 +11,8 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -220,7 +220,7 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 	
 	private class SlideshowMediaHandler implements SlideshowPlayerEventHandler{
 		
-		private final EventsBus eventBus = PlayerGinjector.INSTANCE.getEventsBus();
+		private final EventsBus eventBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 		@Override
 		public void onSlideshowPlayerEvent(SlideshowPlayerEvent event) {

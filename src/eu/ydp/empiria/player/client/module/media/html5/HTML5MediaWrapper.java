@@ -4,8 +4,8 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHandler {
 	protected MediaBase mediaBase;
 	protected String uniqId = null;
-	protected final EventsBus eventsBus = PlayerGinjector.INSTANCE.getEventsBus();
+	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	protected HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
 	protected boolean ready = false;
 	protected HandlerRegistration handlerRegistration;
