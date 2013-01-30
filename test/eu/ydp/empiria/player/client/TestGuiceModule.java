@@ -77,14 +77,15 @@ import eu.ydp.gwtutil.xml.XMLProxyWrapper;
 @SuppressWarnings("PMD")
 public class TestGuiceModule extends ExtendTestGuiceModule {
 	private final Set<BindDescriptor<?>> bindDescriptors = new HashSet<BindDescriptor<?>>();
-	private GuiceModuleConfiguration moduleConfiguration;
-	public TestGuiceModule() {
+	private final GuiceModuleConfiguration moduleConfiguration;
 
+	public TestGuiceModule() {
+		moduleConfiguration =  new GuiceModuleConfiguration();
 	}
 
 	public TestGuiceModule(Class<?>[] classToOmit, Class<?>[] classToMock, Class<?>[] classToSpy) {
 		super(classToOmit);
-		moduleConfiguration  = new GuiceModuleConfiguration();
+		moduleConfiguration = new GuiceModuleConfiguration();
 		moduleConfiguration.addAllClassToOmit(classToOmit);
 		moduleConfiguration.addAllClassToMock(classToMock);
 		moduleConfiguration.addAllClassToSpy(classToSpy);
