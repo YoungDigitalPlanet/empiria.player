@@ -73,7 +73,7 @@
         <path refid="project.class.path"/>
       </classpath>
       <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
-      <jvmarg value="-Xmx512M"/>
+      <jvmarg value="-Xmx512M -Xss16M"/>
       <jvmarg line="${XstartOnFirstThread}"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
       <arg line="${compile.disableCastChecking}" />
@@ -87,7 +87,7 @@
         <pathelement location="src"/>
         <path refid="project.class.path"/>
       </classpath>
-      <jvmarg value="-Xmx256M"/>
+      <jvmarg value="-Xmx256M -Xss16M"/>
       <jvmarg line="${XstartOnFirstThread}"/>
       <arg value="-startupUrl"/>
       <arg value="test.html"/>
@@ -181,6 +181,7 @@
     <mkdir dir="${test.reports.dev.dir}" />
     <junit fork="yes" printsummary="yes" haltonfailure="yes">
       <jvmarg line="-Xmx256m" />
+      <jvmarg value="-Xss16M"/>
       <sysproperty key="gwt.args" value="-logLevel WARN" />
       <sysproperty key="java.awt.headless" value="true" />
         <sysproperty key="net.sourceforge.cobertura.datafile"
@@ -214,6 +215,7 @@
     <mkdir dir="reports/htmlunit.prod" />
     <junit fork="yes" printsummary="yes" haltonfailure="yes">
       <jvmarg line="-Xmx256m" />
+      <jvmarg value="-Xss16M"/>
       <sysproperty key="gwt.args" value="-prod -logLevel WARN -out www-test" />
       <sysproperty key="java.awt.headless" value="true" />
       <classpath>
