@@ -14,13 +14,16 @@ import eu.ydp.empiria.player.client.BindDescriptor.BindType;
 import eu.ydp.gwtutil.test.AbstractTestModule;
 
 public abstract class ExtendTestGuiceModule extends AbstractTestModule {
-	protected final Set<Class<?>> classToMock = new HashSet<Class<?>>();
-	protected final Set<Class<?>> classToSpy = new HashSet<Class<?>>();
 	protected final Set<BindDescriptor<?>> bindDescriptors = new HashSet<BindDescriptor<?>>();
 
 	public ExtendTestGuiceModule(Class<?>... classToOmit) {
 		super(classToOmit);
 	}
+
+	public ExtendTestGuiceModule(Iterable<Class<?>> classToOmit) {
+		super(classToOmit);
+	}
+
 	protected Provider<?> getProvider(final Class<?> clazz, final BindType bindType) {
 		Provider<?> provider = new Provider<Object>() {
 			@Override

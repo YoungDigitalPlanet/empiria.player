@@ -4,12 +4,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import javax.annotation.PostConstruct;
 
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -23,8 +20,6 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.matcher.AbstractMatcher;
-import com.google.inject.spi.InjectionListener;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
@@ -73,64 +68,31 @@ import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.xml.XMLParser;
+import eu.ydp.gwtutil.client.xml.proxy.XMLProxy;
+import eu.ydp.gwtutil.client.xml.proxy.XMLProxyFactory;
 import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
 import eu.ydp.gwtutil.test.mock.GwtPanelFactoryMock;
+import eu.ydp.gwtutil.xml.XMLProxyWrapper;
 
 @SuppressWarnings("PMD")
 public class TestGuiceModule extends ExtendTestGuiceModule {
-	private class HasInitMethod extends AbstractMatcher<TypeLiteral<?>> {
-		@Override
-		public boolean matches(TypeLiteral<?> tpe) {
-			try {
-				Method[] methods = tpe.getRawType().getMethods();
-				for(Method method:methods){
-					if (method.isAnnotationPresent(PostConstruct.class)) {
-						return true;
-					}
-				}
-				return false;
-			} catch (Exception e) {
-				return false;
-			}
-		}
-	}
-
-	private class InitInvoker implements InjectionListener {
-		@Override
-		public void afterInjection(Object injectee) {
-			try {
-				Method[] methods = injectee.getClass().getMethods();
-				for(Method method:methods){
-					if (method.isAnnotationPresent(PostConstruct.class)) {
-						method.invoke(injectee);
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private final Set<Class<?>> classToMock = new HashSet<Class<?>>();
-	private final Set<Class<?>> classToSpy = new HashSet<Class<?>>();
 	private final Set<BindDescriptor<?>> bindDescriptors = new HashSet<BindDescriptor<?>>();
-
+	private GuiceModuleConfiguration moduleConfiguration;
 	public TestGuiceModule() {
 
 	}
 
 	public TestGuiceModule(Class<?>[] classToOmit, Class<?>[] classToMock, Class<?>[] classToSpy) {
 		super(classToOmit);
-		setClassToMock(classToMock);
-		setClassToSpy(classToSpy);
+		moduleConfiguration  = new GuiceModuleConfiguration();
+		moduleConfiguration.addAllClassToOmit(classToOmit);
+		moduleConfiguration.addAllClassToMock(classToMock);
+		moduleConfiguration.addAllClassToSpy(classToSpy);
 	}
 
-	public void setClassToMock(Class<?>... clazz) {
-		classToMock.addAll(Arrays.asList(clazz));
-	}
-
-	public void setClassToSpy(Class<?>... clazz) {
-		classToSpy.addAll(Arrays.asList(clazz));
+	public TestGuiceModule(GuiceModuleConfiguration moduleConfiguration) {
+		super(moduleConfiguration.getClassToOmmit());
+		this.moduleConfiguration = moduleConfiguration;
 	}
 
 	private void init() {
@@ -145,15 +107,10 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 
 	@Override
 	public void configure() {
-		HasInitMethod hasInit = new HasInitMethod();
-		final InitInvoker initInvoker = new InitInvoker();
-		bindListener(hasInit, new TypeListener() {
-			@Override
-			public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
-				encounter.register(initInvoker);
-			}
-		});
+		addPostConstructInterceptor(moduleConfiguration);
 		init();
+		List<Class<?>> classToMock = moduleConfiguration.getClassToMock();
+		List<Class<?>> classToSpy = moduleConfiguration.getClassToSpy();
 		for (BindDescriptor<?> bindDescriptor : bindDescriptors) {
 			if (classToMock.contains(bindDescriptor.getBind())) {
 				bind(bindDescriptor, BindType.MOCK);
@@ -172,6 +129,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(TextFeedback.class).toInstance(mock(TextFeedbackPresenterMock.class));
 		bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
 		bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
+		bind(XMLProxy.class).to(XMLProxyWrapper.class);
+		binder.requestStaticInjection(XMLProxyFactory.class);
 
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
@@ -182,6 +141,17 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		install(new FactoryModuleBuilder().build(AssessmentReportFactory.class));
 		install(new FactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
 
+	}
+
+	private void addPostConstructInterceptor(GuiceModuleConfiguration guiceModuleConfiguration) {
+		HasPostConstructMethod hasPostConstruct = new HasPostConstructMethod(guiceModuleConfiguration.getClassWithDisabledPostConstruct());
+		final PostConstructInvoker postConstructInvoker = new PostConstructInvoker();
+		bindListener(hasPostConstruct, new TypeListener() {
+			@Override
+			public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
+				encounter.register(postConstructInvoker);
+			}
+		});
 	}
 
 	@Provides

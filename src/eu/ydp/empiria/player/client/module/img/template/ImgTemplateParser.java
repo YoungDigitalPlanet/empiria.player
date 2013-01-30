@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
@@ -84,7 +85,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 		return controller;
 	}
 
-	private PicturePlayerFullScreenMediaButon createFullScreenButon() {
+	protected MediaController<?> createFullScreenButon() {
 		Element titleNodes = XMLUtils.getFirstElementWithTagName(baseElement, "title");
 		final String title = XMLUtils.getTextFromChilds(titleNodes);
 		final String srcFullScreen = baseElement.getAttribute("srcFullScreen");
@@ -101,7 +102,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	 */
 	private MediaController<?> createWrapper(String elementName) {
 		MediaController<?> moduleWrapper = null;
-		if (isNodePresent(elementName)) {
+		if (isNodeHaveChildren(elementName)) {
 			moduleWrapper = createModuleWrapper(elementName);
 		} else {
 			moduleWrapper = createEmptyModuleWrapper();
@@ -113,7 +114,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 		return new ModuleWrapper(new FlowPanel());
 	}
 
-	protected MediaController<?> createModuleWrapperForWidget(Widget widget) {
+	protected MediaController<?> createModuleWrapperForWidget(IsWidget widget) {
 		return new ModuleWrapper(widget);
 	}
 
@@ -133,7 +134,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 		return moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
 	}
 
-	private boolean isNodePresent(String elementName) {
+	private boolean isNodeHaveChildren(String elementName) {
 		NodeList titleNodes = baseElement.getElementsByTagName(elementName);
 		return titleNodes.getLength() > 0;
 	}
@@ -146,16 +147,24 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	private MediaController<?> createScreen() {
 		ImgContent content;
 		if (isLabelledImgContent()) {
-			content = new LabelledImgContent();
+			content = createLabelledImgContent();
 		} else if (isExplorableImgContent()) {
-			content = new ExplorableImgContent();
+			content = createExplorableImgContent();
 		} else {
 			content = createDefaultImgContent();
 		}
 		return initContentAndCreateModuleWrapper(content);
 	}
 
-	private ImgContent createDefaultImgContent() {
+	protected ImgContent createExplorableImgContent() {
+		return new ExplorableImgContent();
+	}
+
+	protected ImgContent createLabelledImgContent() {
+		return new LabelledImgContent();
+	}
+
+	protected ImgContent createDefaultImgContent() {
 		ImgContent content = defaultImgContentProvider.get();
 		((DefaultImgContent) content).setTemplate(true);
 		return content;
@@ -163,7 +172,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	private MediaController<?> initContentAndCreateModuleWrapper(ImgContent content) {
 		content.init(baseElement, moduleSocket);
-		return new ModuleWrapper((Widget) content);
+		return createModuleWrapperForWidget(content);
 	}
 
 	private boolean isExplorableImgContent() {
@@ -172,7 +181,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	}
 
 	private boolean isLabelledImgContent() {
-		return baseElement.getElementsByTagName("label").getLength() > 0;
+		return isNodeHaveChildren("label");
 	}
 
 	private boolean isFullScreenSupported() {
