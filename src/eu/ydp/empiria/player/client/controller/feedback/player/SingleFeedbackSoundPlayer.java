@@ -18,7 +18,7 @@ public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 
 	protected MediaWrapper<?> mediaWrapper;
 
-	protected boolean played = false;
+	protected boolean plaing = false;
 	protected boolean playAfterStop = false;
 
 	@Inject
@@ -56,11 +56,12 @@ public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 	}
 
 	protected boolean isPlayed() {
-		return played;
+		return plaing;
 	}
 	public void setPlayed(boolean isPlayed) {
-		this.played = isPlayed;
+		this.plaing = isPlayed;
 	}
+
 	@Override
 	public void onMediaEvent(MediaEvent event) {
 		switch (event.getType()) {

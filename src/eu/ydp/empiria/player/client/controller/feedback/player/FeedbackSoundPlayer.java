@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.feedback.player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class FeedbackSoundPlayer {
 	// Cache dla wrapperow - do odegrania danego pliku bedzie uzywany zawsze ten
 	// sam wrapper.
 	protected Map<String, MediaWrapper<?>> wrappers = new HashMap<String, MediaWrapper<?>>();
-	protected Map<MediaWrapper<?>, SingleFeedbackSoundPlayer> onStopHandlers = new HashMap<MediaWrapper<?>, SingleFeedbackSoundPlayer>();
+	protected Map<String, SingleFeedbackSoundPlayer> feedbackPlayers = new HashMap<String, SingleFeedbackSoundPlayer>();
 
 	protected class MediaWrapperHandler implements CallbackRecevier {
 
@@ -40,7 +39,7 @@ public class FeedbackSoundPlayer {
 			if (object instanceof MediaWrapper<?>) {
 				MediaWrapper<?> mediaWrapper = (MediaWrapper<?>) object;
 				wrappers.put(wrappersSourcesKey, mediaWrapper);
-				stopAndPlaySound(mediaWrapper);
+				stopAndPlaySound(wrappersSourcesKey);
 			}
 		}
 
@@ -61,45 +60,46 @@ public class FeedbackSoundPlayer {
 
 	// Jesli mamy zrodla plikow oraz ich MIME.
 	public void play(Map<String, String> sourcesWithTypes) {
-		String sourcesKey = getWrappersSourcesKey(new ArrayList<String>(sourcesWithTypes.keySet()));
+		String sourcesKey = getWrappersSourcesKey(sourcesWithTypes.keySet());
 		this.play(sourcesKey, sourcesWithTypes);
 	}
 
 	protected void play(String sourcesKey, Map<String, String> sourcesWithTypes) {
 		if (wrappers.containsKey(sourcesKey)) {
-			stopAndPlaySound(wrappers.get(sourcesKey));
+			stopAndPlaySound(sourcesKey);
 		} else {
-			createMediaWrapper(sourcesKey, sourcesWithTypes);
+			createMediaWrapperAndStopAndPlaySound(sourcesKey, sourcesWithTypes);
 		}
 	}
 
-	protected SingleFeedbackSoundPlayer addSingleFeedbackSoundPlayerIfNotPresent(final MediaWrapper<?> mediaWrapper) {
-		SingleFeedbackSoundPlayer onStopPlayHandler = onStopHandlers.get(mediaWrapper);
+	protected SingleFeedbackSoundPlayer addSingleFeedbackSoundPlayerIfNotPresent(String sourcesKey) {
+		SingleFeedbackSoundPlayer onStopPlayHandler = feedbackPlayers.get(sourcesKey);
 		if (onStopPlayHandler == null) {
-			onStopPlayHandler = createAndStoreSingleFeedbackSoundPlayer(mediaWrapper);
+			onStopPlayHandler = createAndStoreSingleFeedbackSoundPlayer(sourcesKey);
 		}
 		return onStopPlayHandler;
 	}
 
-	protected SingleFeedbackSoundPlayer createAndStoreSingleFeedbackSoundPlayer(final MediaWrapper<?> mediaWrapper) {
+	protected SingleFeedbackSoundPlayer createAndStoreSingleFeedbackSoundPlayer(String sourcesKey) {
+		MediaWrapper<?> mediaWrapper = wrappers.get(sourcesKey);
 		SingleFeedbackSoundPlayer onStopPlayHandler = feedbackPlayerFactory.getSingleFeedbackSoundPlayer(mediaWrapper);
-		onStopHandlers.put(mediaWrapper, onStopPlayHandler);
+		feedbackPlayers.put(sourcesKey, onStopPlayHandler);
 		return onStopPlayHandler;
 	}
 
-	protected void stopAndPlaySound(final MediaWrapper<?> mediaWrapper) {
-		SingleFeedbackSoundPlayer player = addSingleFeedbackSoundPlayerIfNotPresent(mediaWrapper);
+	protected void stopAndPlaySound(final String sourcesKey) {
+		SingleFeedbackSoundPlayer player = addSingleFeedbackSoundPlayerIfNotPresent(sourcesKey);
 		player.play();
 	}
 
-	protected void createMediaWrapper(String sourcesKey, Map<String, String> sourcesWithTypes) {
+	protected void createMediaWrapperAndStopAndPlaySound(String sourcesKey, Map<String, String> sourcesWithTypes) {
 		MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
 		callbackHandler.setWrappersSourcesKey(sourcesKey);
 		mediaWrapperCreator.createMediaWrapper(sourcesKey, sourcesWithTypes, callbackHandler);
 	}
 
 	// Klucz po ktorym przeszukiwany jest cache.
-	protected String getWrappersSourcesKey(List<String> sources) {
+	protected String getWrappersSourcesKey(Iterable<String> sources) {
 		return Joiner.on(",").join(sources);
 	}
 
