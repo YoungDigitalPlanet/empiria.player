@@ -73,8 +73,7 @@
         <path refid="project.class.path"/>
       </classpath>
       <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
-      <jvmarg value="-Xmx512M -Xss16M"/>
-      <jvmarg line="${XstartOnFirstThread}"/>
+      <jvmarg line="${XstartOnFirstThread} -Xmx512M -Xss16M"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
       <arg line="${compile.disableCastChecking}" />
       <arg value="eu.ydp.empiria.player.Player"/>    	
@@ -87,8 +86,7 @@
         <pathelement location="src"/>
         <path refid="project.class.path"/>
       </classpath>
-      <jvmarg value="-Xmx256M -Xss16M"/>
-      <jvmarg line="${XstartOnFirstThread}"/>
+      <jvmarg line="${XstartOnFirstThread} -Xmx256M -Xss16M"/>
       <arg value="-startupUrl"/>
       <arg value="test.html"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
@@ -180,8 +178,7 @@
   	<delete dir="${test.reports.dev.dir}" />
     <mkdir dir="${test.reports.dev.dir}" />
     <junit fork="yes" printsummary="yes" haltonfailure="yes">
-      <jvmarg line="-Xmx256m" />
-      <jvmarg value="-Xss16M"/>
+      <jvmarg line="-Xmx256m -Xss16M" />
       <sysproperty key="gwt.args" value="-logLevel WARN" />
       <sysproperty key="java.awt.headless" value="true" />
         <sysproperty key="net.sourceforge.cobertura.datafile"
@@ -214,8 +211,7 @@
   <target name="test.prod" depends="javac.tests" description="Run production mode tests">
     <mkdir dir="reports/htmlunit.prod" />
     <junit fork="yes" printsummary="yes" haltonfailure="yes">
-      <jvmarg line="-Xmx256m" />
-      <jvmarg value="-Xss16M"/>
+      <jvmarg line="-Xmx256m -Xss16M" />
       <sysproperty key="gwt.args" value="-prod -logLevel WARN -out www-test" />
       <sysproperty key="java.awt.headless" value="true" />
       <classpath>
