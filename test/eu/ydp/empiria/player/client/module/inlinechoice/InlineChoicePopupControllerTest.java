@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.inlinechoice;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -56,6 +57,7 @@ public class InlineChoicePopupControllerTest extends AbstractTestBaseWithoutAuto
 		eventsBus = injector.getInstance(EventsBus.class);
 		instance = injector.getInstance(InlineChoicePopupController.class);
 		exListBox = injector.getInstance(ExListBox.class);
+		instance.listBox = exListBox;
 	}
 
 	@Test
@@ -63,24 +65,23 @@ public class InlineChoicePopupControllerTest extends AbstractTestBaseWithoutAuto
 		ModuleSocket moduleSocket = mock(ModuleSocket.class);
 		InteractionEventsListener moduleInteractionListener = mock(InteractionEventsListener.class);
 		instance.initModule(moduleSocket, moduleInteractionListener);
-		verify(eventsBus).addHandler(Mockito.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED)), Mockito.eq(instance), Mockito.any(EventScope.class));
+		verify(eventsBus).addHandler(Mockito.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED)), Mockito.eq(instance), Mockito.any(EventScope.class));
 	}
 
 	@Test
-	public void testOnPlayerEvent() {
+	public void exListBoxShouldHideWhen_PageChangeStarted() {
 		PlayerEvent event = mock(PlayerEvent.class);
-		when(event.getType()).thenReturn(PlayerEventTypes.PAGE_SWIPE_STARTED);
-		instance.listBox = exListBox;
+		when(event.getType()).thenReturn(PlayerEventTypes.PAGE_CHANGE_STARTED);
 		instance.onPlayerEvent(event);
 		verify(exListBox).hidePopup();
-		Set<PlayerEventTypes> types = new HashSet<PlayerEventTypes>(Arrays.asList(PlayerEventTypes.values()));
-		types.remove(PlayerEventTypes.PAGE_SWIPE_STARTED);
-		for (PlayerEventTypes type : types) {
-			when(event.getType()).thenReturn(type);
-			instance.onPlayerEvent(event);
-		}
-		verify(exListBox).hidePopup();
-
+	}
+	
+	@Test
+	public void exListBoxShouldNotHideWhen_PageSwipeStarted() {
+		PlayerEvent event = mock(PlayerEvent.class);
+		when(event.getType()).thenReturn(PlayerEventTypes.PAGE_SWIPE_STARTED);
+		instance.onPlayerEvent(event);
+		verify(exListBox, never()).hidePopup();
 	}
 
 }

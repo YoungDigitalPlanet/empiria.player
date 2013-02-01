@@ -74,7 +74,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	@Override
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
 		super.initModule(moduleSocket);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED), this, scopeFactory.getCurrentPageScope());
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED), this, scopeFactory.getCurrentPageScope());
 	}
 
 	@Override
@@ -313,7 +313,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		if (event.getType() == PlayerEventTypes.PAGE_SWIPE_STARTED) {
+		if (event.getType() == PlayerEventTypes.PAGE_CHANGE_STARTED) {
 			listBox.hidePopup();
 		}
 	}
