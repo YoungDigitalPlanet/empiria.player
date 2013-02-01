@@ -11,3 +11,5 @@ war/WEB-INF/lib/
 .pmd
 pmd.xml
 src/eu/ydp/empiria/player/client/version/version.txt
+cobertura-report/
+reports/
