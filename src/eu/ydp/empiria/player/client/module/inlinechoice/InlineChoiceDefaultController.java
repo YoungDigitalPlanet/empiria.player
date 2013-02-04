@@ -161,7 +161,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 		markAnswers(false);
 		lock(false);
 		listBox.setSelectedIndex(((showEmptyOption) ? 0 : -1));
-		updateResponse(false);
+		updateResponse(false, true);
 		listBox.setEnabled(true);
 		container.setStyleName("qp-text-choice");
 	}
@@ -296,8 +296,12 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	public IUniqueModule getParentInlineModule() {
 		return parentModule;
 	}
-
+	
 	private void updateResponse(boolean userInteract) {
+		updateResponse(userInteract, false);
+	}
+
+	private void updateResponse(boolean userInteract, boolean isReset) {
 		if (showingAnswers) {
 			return;
 		}
@@ -311,7 +315,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 			lastValue = "";
 		}
 		response.add(lastValue);
-		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, parentModule)),
+		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, false, parentModule)),
 				new CurrentPageScope());
 	}
 

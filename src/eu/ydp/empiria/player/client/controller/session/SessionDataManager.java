@@ -100,7 +100,7 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 					itemSessionDatas[i] = null;
 				}
 			}
-			eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(false, null)), new CurrentPageScope());
+			eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(false, false, null)), new CurrentPageScope());
 		} catch (Exception e) {
 		}
 	}

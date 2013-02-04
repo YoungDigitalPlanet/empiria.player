@@ -3,10 +3,14 @@ package eu.ydp.empiria.player.client.module.textentry;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +41,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		public void configure(Binder binder) {
 			binder.bind(TextEntryModulePresenter.class).toInstance(mock(TextEntryModulePresenter.class));
 			TextEntryModuleFactory factory = mock(TextEntryModuleFactory.class);
-			when(factory.getTextEntryModulePresenter(Mockito.any(IModule.class))).thenReturn(mock(TextEntryModulePresenter.class));
+			when(factory.getTextEntryModulePresenter(any(IModule.class))).thenReturn(mock(TextEntryModulePresenter.class));
 			binder.bind(TextEntryModuleFactory.class).toInstance(factory);
 		}
 	}
@@ -46,17 +50,17 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 	public void before() {
 		setUp(new Class<?>[] {}, new CustomGuiceModule());
 	}
-
+	
 	@Test
-	public void setDimensionsPixelWidth() {
+	public void setFontSize() {
 		Map<String, String> styles = new HashMap<String, String>();
-		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH, "60");
+		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_FONT_SIZE, "12");
 		TextEntryModuleMock textEntryModule = mockTextGap(styles);
-		doCallRealMethod().when(textEntryModule.getPresenter()).setWidth(anyDouble(), (Style.Unit) any());
+		doCallRealMethod().when(textEntryModule.getPresenter()).setFontSize(anyDouble(), (Style.Unit) any());
 		textEntryModule.invokeSetDimensions();
-		Mockito.verify(textEntryModule.getPresenter(), Mockito.times(1)).setWidth(Double.parseDouble("60"), Unit.PX);
+		verify(textEntryModule.getPresenter(), times(1)).setFontSize(Double.parseDouble("12"), Unit.PX);
 	}
-
+	
 	@Test
 	public void setMaxlength() {
 		Map<String, String> styles = new HashMap<String, String>();
@@ -65,15 +69,31 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		textEntryModule.invokeSetMaxlengthBinding(styles);
 		verify(textEntryModule.getPresenter()).setMaxLength(3);
 	}
-
+	
 	@Test
-	public void setFontSize() {
+	public void setDimensionsPixelWidth() {
 		Map<String, String> styles = new HashMap<String, String>();
-		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_FONT_SIZE, "12");
+		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH, "60");
 		TextEntryModuleMock textEntryModule = mockTextGap(styles);
-		doCallRealMethod().when(textEntryModule.getPresenter()).setFontSize(anyDouble(), (Style.Unit) any());
+		doCallRealMethod().when(textEntryModule.getPresenter()).setWidth(anyDouble(), (Style.Unit) any());
 		textEntryModule.invokeSetDimensions();
-		Mockito.verify(textEntryModule.getPresenter(), Mockito.times(1)).setFontSize(Double.parseDouble("12"), Unit.PX);
+		verify(textEntryModule.getPresenter(), times(1)).setWidth(Double.parseDouble("60"), Unit.PX);
+	}
+	
+	@Test
+	public void shouldSendUpdateResponseWithoutUserInteractionWhen_gapHasAnswer() {
+		TextEntryModuleMock textEntryModule = spy(mockTextGap());
+		when(textEntryModule.getPresenter().getText()).thenReturn("answer");
+		textEntryModule.reset();
+		verify(textEntryModule).updateResponse(false, true);
+	}
+	
+	@Test
+	public void shouldNotSendUpdateResponseAfterResetWhen_gapIsEmpty() {
+		TextEntryModuleMock textEntryModule = spy(mockTextGap());
+		when(textEntryModule.getPresenter().getText()).thenReturn("");
+		textEntryModule.reset();
+		verify(textEntryModule, never()).updateResponse(anyBoolean(), anyBoolean());
 	}
 
 	@BeforeClass
@@ -121,7 +141,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		public void invokeSetDimensions() {
 			setDimensions(styles);
 		}
-
+		
 		public void invokeSetMaxlengthBinding(Map<String, String> styles) {
 			setMaxlengthBinding(styles, XMLParser.parse("<gap type=\"text-entry\" uid=\"uid_0000\" />").getDocumentElement());
 		}

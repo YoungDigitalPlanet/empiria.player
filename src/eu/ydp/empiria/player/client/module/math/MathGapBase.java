@@ -29,8 +29,12 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 		uid = getElementAttributeValue(EmpiriaTagConstants.ATTR_UID);
 	}
 	
-	@Override
 	protected void updateResponse(boolean userInteract) {
+		updateResponse(userInteract, false);
+	}
+	
+	@Override
+	protected void updateResponse(boolean userInteract, boolean isReset) {
 		if (showingAnswer) {
 			return;
 		}
@@ -42,7 +46,7 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 
 			lastValue = getValue();
 			getResponse().add(lastValue);
-			fireStateChanged(userInteract);
+			fireStateChanged(userInteract, isReset);
 		}
 	}
 	

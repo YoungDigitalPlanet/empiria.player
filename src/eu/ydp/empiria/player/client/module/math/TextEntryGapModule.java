@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -27,8 +28,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 
 	@Inject
 	public TextEntryGapModule(TextEntryModuleFactory moduleFactory) {
-		this.presenter = moduleFactory.getTextEntryGapModulePresenter(this);
-		
+		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -37,7 +37,9 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 
 			@Override
 			public void onBlur(BlurEvent event) {
-				updateResponse(true);
+				if(isMobileUserAgent()){
+					updateResponse(true);
+				}
 			}
 		});
 	}

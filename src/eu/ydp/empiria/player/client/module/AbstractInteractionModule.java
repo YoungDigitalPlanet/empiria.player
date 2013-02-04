@@ -105,7 +105,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	public void reset() {
 		presenter.reset();
 		clearModel();
-		fireStateChanged(false);
+		fireStateChanged(false, true);
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 		clearModel();
 		getResponseModel().setState(newState);
 		presenter.showAnswers(ShowAnswersType.USER);
-		fireStateChanged(false);
+		fireStateChanged(false, false);
 	}
 
 	protected void clearModel() {
@@ -127,7 +127,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 
 	@Override
 	public void onResponseModelChange() {
-		fireStateChanged(true);
+		fireStateChanged(true, false);
 	}
 
 	@Override

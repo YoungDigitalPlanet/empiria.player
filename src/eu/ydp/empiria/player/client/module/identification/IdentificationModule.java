@@ -160,7 +160,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 		markAnswers(false);
 		lock(false);
 		clearSelections();
-		updateResponse(true);
+		updateResponse(false, true);
 	}
 
 	private void clearSelections() {
@@ -237,8 +237,12 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			updateResponse(true);
 		}
 	}
-
+	
 	private void updateResponse(boolean userInteract) {
+		updateResponse(userInteract, false);
+	}
+
+	private void updateResponse(boolean userInteract, boolean isReset) {
 		if (!showingCorrectAnswers) {
 			ArrayList<String> currResponseValues = new ArrayList<String>();
 			Collection<SelectableChoice> selectedOptions = Collections2.filter(options, onlySelectedOptions);
@@ -248,7 +252,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 
 			if (!getResponse().compare(currResponseValues) || !getResponse().isInitialized()) {
 				getResponse().set(currResponseValues);
-				fireStateChanged(userInteract);
+				fireStateChanged(userInteract, isReset);
 			}
 		}
 	}

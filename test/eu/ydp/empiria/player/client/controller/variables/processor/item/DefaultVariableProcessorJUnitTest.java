@@ -75,7 +75,7 @@ public class DefaultVariableProcessorJUnitTest {
 		outcomes.put("ID_RESPONSE_10-" + DefaultVariableProcessor.TODO, mockOutcome());
 		outcomes.put("ID_RESPONSE_11-" + DefaultVariableProcessor.TODO, mockOutcome());
 
-		variableProcessor.processResponseVariables(responses, outcomes, false);
+		variableProcessor.processResponseVariables(responses, outcomes, false, false);
 
 		assertThat(outcomes.get(DefaultVariableProcessor.TODO).getValuesShort(), equalTo("1"));
 	}

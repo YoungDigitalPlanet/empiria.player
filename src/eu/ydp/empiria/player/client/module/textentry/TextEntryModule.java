@@ -22,8 +22,6 @@ import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.StringUtils;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 public class TextEntryModule extends GapBase implements Factory<TextEntryModule> {
 
@@ -37,8 +35,7 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 
 	@Inject
 	public TextEntryModule(TextEntryModuleFactory moduleFactory) {
-		this.presenter = moduleFactory.getTextEntryModulePresenter(this);
-		
+		presenter = moduleFactory.getTextEntryModulePresenter(this);
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -64,11 +61,6 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 		setWidthBinding(styles, getModuleElement());
 
 		installViewPanel(placeholders.get(0));
-	}
-
-
-	private boolean isMobileUserAgent(){
-		return UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN;
 	}
 
 	protected void setDimensions(Map<String, String> styles){
@@ -131,8 +123,12 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 		Response response = getResponse();
 		return (response.values.size() > 0) ? response.values.get(0) : StringUtils.EMPTY_STRING;
 	}
+	
+	protected void updateResponse(boolean userInteract) {
+		updateResponse(userInteract, false);
+	}
 
-	protected void updateResponse(boolean userInteract){
+	protected void updateResponse(boolean userInteract, boolean isReset) {
 		if (showingAnswer) {
 			return;
 		}
@@ -144,7 +140,7 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 
 			lastValue = presenter.getText();
 			getResponse().add(lastValue);
-			fireStateChanged(userInteract);
+			fireStateChanged(userInteract, isReset);
 		}
 	}
 

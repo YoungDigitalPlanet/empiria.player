@@ -233,7 +233,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 		markAnswers(false);
 		lock(false);
 		listBox.setShowEmptyOptions(showEmptyOption);
-		updateResponse(false);
+		updateResponse(false, true);
 		listBox.setEnabled(true);
 		container.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP());
 	}
@@ -281,15 +281,19 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	public IUniqueModule getParentInlineModule() {
 		return parentModule;
 	}
-
+	
 	private void updateResponse(boolean userInteract) {
+		updateResponse(userInteract, false);
+	}
+
+	private void updateResponse(boolean userInteract, boolean isReset) {
 		if (!showingAnswers) {
 			response.reset();
 			if (listBox.getSelectedIndex() != getAnswerIndex()) {
 				String lastValue = identifiers.get(listBox.getSelectedIndex() - getOptionIndex());
 				response.add(lastValue);
 			}
-			StateChangedInteractionEvent stateChangeEvent = new StateChangedInteractionEvent(userInteract, parentModule);
+			StateChangedInteractionEvent stateChangeEvent = new StateChangedInteractionEvent(userInteract, isReset, parentModule);
 			eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, stateChangeEvent), scopeFactory.getCurrentPageScope());
 		}
 	}

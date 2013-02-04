@@ -79,7 +79,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		proc.ensureVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("1", outcomes.get("DONE").values.get(0));
 	}
@@ -98,7 +98,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		proc.ensureVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceB");
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("0", outcomes.get("DONE").values.get(0));
 	}
@@ -118,7 +118,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceB");
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("1", outcomes.get("DONE").values.get(0));
 	}
@@ -138,7 +138,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceC");
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("0", outcomes.get("DONE").values.get(0));
 	}
@@ -159,7 +159,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceB");
 		resp.values.add("ChoiceC");
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("1", outcomes.get("DONE").values.get(0));
 	}
@@ -180,7 +180,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceC");
 		resp.values.add("ChoiceB");
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("0", outcomes.get("DONE").values.get(0));
 	}
@@ -199,7 +199,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		proc.ensureVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("0", outcomes.get("DONE").values.get(0));
 	}
@@ -220,7 +220,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceC");
 		resp.values.add("ChoiceB");
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("1", outcomes.get("DONE").values.get(0));
 	}
@@ -241,7 +241,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.values.add("ChoiceC");
 		resp.values.add("ChoiceD");
 		outcomes.get("RESPONSE-LASTCHANGE").values = DefaultVariableProcessorHelper.getDifference(responses.get("RESPONSE"), outcomes.get("RESPONSE-PREVIOUS"));
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("ERRORS"));
 		assertEquals("1", outcomes.get("ERRORS").values.get(0));
 	}
@@ -262,7 +262,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceB");
 		outcomes.get("RESPONSE-LASTCHANGE").values = DefaultVariableProcessorHelper.getDifference(responses.get("RESPONSE"), outcomes.get("RESPONSE-PREVIOUS"));
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("ERRORS"));
 		assertEquals("0", outcomes.get("ERRORS").values.get(0));
 	}
@@ -283,7 +283,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.values.add("ChoiceC");
 		resp.values.add("ChoiceB");
 		resp.values.add("ChoiceA");
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("0", outcomes.get("DONE").values.get(0));
 	}
@@ -309,7 +309,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp1.values.add("ChoiceA");
 		resp2.values.add("ChoiceB");
 		
-		proc.processResponseVariables(responses, outcomes, true);
+		proc.processResponseVariables(responses, outcomes, true, false);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertEquals("2", outcomes.get("DONE").values.get(0));
 	}

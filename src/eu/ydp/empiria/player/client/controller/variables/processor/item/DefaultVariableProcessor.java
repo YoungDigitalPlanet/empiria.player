@@ -125,7 +125,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 	}
 
 	@Override
-	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract) {
+	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract, boolean isReset) {
 
 		responsesAnswersEvaluation.clear();
 
@@ -193,7 +193,7 @@ public class DefaultVariableProcessor extends VariableProcessor {
 				outcomes.get(lastChangeKey).values = DefaultVariableProcessorHelper.getDifference(response, outcomes.get(previousKey));
 			}
 
-			if (userInteract && outcomes.containsKey(previousKey)) {
+			if ((userInteract || isReset) && outcomes.containsKey(previousKey)) {
 				List<String> values = outcomes.get(previousKey).values;
 				values.clear();
 				for (int a = 0; a < response.values.size(); a++) {

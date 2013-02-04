@@ -55,8 +55,8 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		return interactionEventsListener;
 	}
 
-	protected void fireStateChanged(boolean userInteract){
-		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, this)), new CurrentPageScope());
+	protected void fireStateChanged(boolean userInteract, boolean isReset){
+		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, isReset, this)), new CurrentPageScope());
 	}
 
 	@Override

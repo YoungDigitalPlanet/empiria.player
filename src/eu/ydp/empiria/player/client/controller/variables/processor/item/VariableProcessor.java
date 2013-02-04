@@ -15,7 +15,7 @@ public abstract class VariableProcessor {
 
 	public abstract void ensureVariables(Map<String, Response> responses, Map<String, Outcome> outcomes);
 	
-	public abstract void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract);
+	public abstract void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract, boolean isReset);
 	
 	public abstract List<Boolean> evaluateAnswer(Response currResponse);
 	

@@ -8,15 +8,21 @@ import eu.ydp.empiria.player.client.module.IUniqueModule;
 public class StateChangedInteractionEvent extends InteractionEvent {
 
 	protected boolean userInteract;
+	private boolean isReset;
 	protected IUniqueModule sender;
 
-	public StateChangedInteractionEvent(boolean userInteract, IUniqueModule sender){
+	public StateChangedInteractionEvent(boolean userInteract, boolean isReset, IUniqueModule sender){
 		this.userInteract = userInteract;
 		this.sender = sender;
+		this.isReset = isReset;
 	}
 
 	public boolean isUserInteract() {
 		return userInteract;
+	}
+	
+	public boolean isReset() {
+		return isReset;
 	}
 
 	public IUniqueModule getSender() {

@@ -32,7 +32,7 @@ public class InteractionEventSocketUserExtensionTest extends ExtensionTestBase {
 	public void testStateChangedEvent(){
 		de = initDeliveryEngine(new MockInteractionStateChangedEventSocketUserExtension(), false);
 		test = "testStateChangedEvent";
-		iel.onStateChanged(new StateChangedInteractionEvent(true, new IUniqueModule() {
+		iel.onStateChanged(new StateChangedInteractionEvent(true, false, new IUniqueModule() {
 
 			@Override
 			public String getIdentifier() {

@@ -11,8 +11,10 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
+import com.google.common.base.Strings;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
@@ -37,6 +39,8 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.StringUtils;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public abstract class GapBase extends OneViewInteractionModuleBase implements Bindable {
@@ -64,13 +68,13 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	protected BindingContext maxlengthBindingContext;
 
-	protected String maxLength = "";
+	protected String maxLength = StringUtils.EMPTY_STRING;
 
 	protected abstract boolean isResponseCorrect();
 
 	protected abstract String getCurrentResponseValue();
 
-	protected abstract void updateResponse(boolean userInteract);
+	protected abstract void updateResponse(boolean userInteract, boolean isReset);
 
 	protected abstract void setCorrectAnswer();
 
@@ -78,7 +82,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	public abstract String getCorrectAnswer();
 
-	public interface PresenterHandler extends BlurHandler, ChangeHandler{
+	public interface PresenterHandler extends BlurHandler, ChangeHandler {
 
 	}
 
@@ -87,8 +91,8 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
-				if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
-					updateResponse(false);
+				if(event.getType() == PlayerEventTypes.BEFORE_FLOW){
+					updateResponse(false, false);
 					presenter.removeFocusFromTextField();
 				}
 			}
@@ -134,8 +138,10 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	@Override
 	public void reset() {
-		presenter.setText(StringUtils.EMPTY_STRING);
-		updateResponse(true);
+		if (!Strings.isNullOrEmpty(presenter.getText())) {
+			presenter.setText(StringUtils.EMPTY_STRING);
+			updateResponse(false, true);
+		}
 	}
 
 	@Override
@@ -148,7 +154,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	@Override
 	public void setState(JSONArray newState) {
-		String state = "";
+		String state = StringUtils.EMPTY_STRING;
 
 		if (newState != null && newState.size() > 0 && newState.get(0).isString() != null) {
 			state = newState.get(0).isString().stringValue();
@@ -156,7 +162,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		}
 
 		presenter.setText(state);
-		updateResponse(false);
+		updateResponse(false, false);
 	}
 
 	@Override
@@ -256,7 +262,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		if (moduleElement.hasAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP)){
 			bindingIdentifier = new DefaultBindingGroupIdentifier(moduleElement.getAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP));
 		} else {
-			bindingIdentifier = new DefaultBindingGroupIdentifier("");
+			bindingIdentifier = new DefaultBindingGroupIdentifier(StringUtils.EMPTY_STRING);
 		}
 
 		return bindingIdentifier;
@@ -310,6 +316,10 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	protected int calculateTextBoxWidth(int longestAnswerLength) {
 		return longestAnswerLength * getFontSize();
+	}
+	
+	protected boolean isMobileUserAgent(){
+		return UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN;
 	}
 
 	public int getFontSize() {

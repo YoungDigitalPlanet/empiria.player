@@ -17,7 +17,7 @@ public abstract class InteractionEvent {
 			try{
 				boolean userInteract = getJsObjectUserInteract(jsObject);
 				JavaScriptObject senderJs = getJsObjectSender(jsObject);
-				return new StateChangedInteractionEvent(userInteract, null);
+				return new StateChangedInteractionEvent(userInteract, false, null);
 			} catch (Exception e) {
 			}
 		}

@@ -220,12 +220,12 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 			itemBody.close();
 		}
 
-		public void process(boolean userInteract) {
-			process(userInteract, null);
+		public void process(boolean userInteract, boolean isReset) {
+			process(userInteract, isReset, null);
 		}
 
-		public void process(boolean userInteract, IUniqueModule sender) {
-			variableProcessor.processResponseVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), userInteract);
+		public void process(boolean userInteract, boolean isReset, IUniqueModule sender) {
+			variableProcessor.processResponseVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), userInteract, isReset);
 			if (userInteract) {
 				moduleFeedbackProcessor.processFeedbacks(outcomeManager.getVariablesMap(), sender);
 			}
