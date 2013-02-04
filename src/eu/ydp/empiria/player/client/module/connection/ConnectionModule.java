@@ -83,7 +83,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 			public void onPlayerEvent(PlayerEvent event) {
 				LOGGER.info("Executing page content resized event handler");
 				presenter.showAnswers(ShowAnswersType.USER);
-				fireStateChanged(false);
+				fireStateChanged(false, false);
 			}
 		};
 		eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedEventHandler, new CurrentPageScope());
