@@ -42,6 +42,7 @@ import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.gin.providers.NewFlowPanelProvider;
+import eu.ydp.empiria.player.client.lightbox2.LightBox2;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
@@ -126,6 +127,8 @@ public class PlayerGinModule extends AbstractGinModule {
 			.annotatedWith(Names.named("multiPageControllerMainPanel"))
 			.toProvider(NewFlowPanelProvider.class)
 			.in(Singleton.class);
+		
+		bind(LightBox2.class).in(Singleton.class);
 
 		//bind(OverlayTypesParser.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
