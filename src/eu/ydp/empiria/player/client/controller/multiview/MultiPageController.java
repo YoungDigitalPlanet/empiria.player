@@ -31,6 +31,7 @@ import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
 import eu.ydp.empiria.player.client.controller.multiview.animation.AnimationEndCallback;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
@@ -70,7 +71,9 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	protected Animation animation;
 	@Inject
 	protected TouchRecognitionFactory touchRecognitionFactory;
-
+	@Inject
+	private PageScopeFactory pageScopeFactory;
+	
 	@Inject
 	@Named("multiPageControllerMainPanel")
 	private FlowPanel mainPanel;
@@ -167,7 +170,7 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 	protected void setVisiblePanels(int pageNumber) {
 		showProgressBarForPage(pageNumber);
 		if (!measuredPanels.contains(pageNumber)) {
-			resizeTimer.cancel();
+			resizeTimer.cancelAndReset();
 			resizeTimer.schedule(350);
 		}
 		if (currentVisiblePage != pageNumber && pageNumber >= 0) {
@@ -579,7 +582,9 @@ public class MultiPageController implements PlayerEventHandler, FlowRequestSocke
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), this);
-		resizeTimer = new ResizeTimer(this);
+		
+		ResizeContinousUpdater resizeContinousUpdater = new ResizeContinousUpdater(pageScopeFactory, eventsBus, this);
+		resizeTimer = new ResizeTimer(resizeContinousUpdater);
 		view.add(mainPanel);
 
 	}

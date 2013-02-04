@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -7,14 +9,22 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
+import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleJAXBParser;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class ConnectionModule extends AbstractInteractionModule<ConnectionModule, ConnectionModuleModel, MatchInteractionBean> {
 
+	private static final Logger LOGGER = Logger.getLogger(ConnectionModule.class.getName());
+	
 	@Inject
 	private ConnectionModulePresenter presenter;
 
@@ -27,6 +37,9 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	@Inject
 	private ConnectionModuleFactory connectionModuleFactory;
 
+	@Inject
+	private EventsBus eventsBus;
+	
 	private ConnectionModuleModel connectionModel;
 
 	@Override
@@ -58,7 +71,22 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 
 	@Override
 	public void setState(JSONArray newState) {
-		//TODO: Override and commented out for BETT
-		//FIXME: Find out why connection is not correctly restoring it's state!
+		LOGGER.info("Enter set state function");
+		
+		clearModel();
+		getResponseModel().setState(newState);
+		
+		
+		
+		PlayerEventHandler pageContentResizedEventHandler = new PlayerEventHandler() {
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				LOGGER.info("Executing page content resized event handler");
+				presenter.showAnswers(ShowAnswersType.USER);
+				fireStateChanged(false);
+			}
+		};
+		eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedEventHandler, new CurrentPageScope());
+		LOGGER.info("Added page content resized event handler");
 	}
 }
