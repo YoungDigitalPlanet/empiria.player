@@ -66,8 +66,7 @@ lightbox = new Lightbox options
       if($("#lightbox").size() > 0){
           return;
       }
-      var $lightbox,
-        _this = this;
+
       $("<div>", {
         id: 'lightboxOverlay'
       }).after($('<div/>', {
@@ -105,31 +104,9 @@ lightbox = new Lightbox options
       }).append($('<a/>', {
         "class": 'lb-close'
       })))))).appendTo($('body'));
-      $('#lightboxOverlay').hide().on('click', function(e) {
-        _this.end();
-        return false;
-      });
-      $lightbox = $('#lightbox');
-      $lightbox.hide().on('click', function(e) {
-        _this.end();
-        return false;
-      });
-      $lightbox.find('.lb-outerContainer').on('click', function(e) {
-          _this.end();
-        return false;
-      });
-      $lightbox.find('.lb-prev').on('click', function(e) {
-        _this.changeImage(_this.currentImageIndex - 1);
-        return false;
-      });
-      $lightbox.find('.lb-next').on('click', function(e) {
-        _this.changeImage(_this.currentImageIndex + 1);
-        return false;
-      });
-      $lightbox.find('.lb-loader, .lb-close').on('click', function(e) {
-        _this.end();
-        return false;
-      });
+
+
+
     };
 
      Lightbox.prototype.add = function(href,title){
@@ -143,7 +120,44 @@ lightbox = new Lightbox options
           this.album = [];
       }
 
+      Lightbox.prototype.overrideHandlers = function(lb){
+          var $lightbox,
+              _this = lb;
+          $('#lightboxOverlay').hide().off('click');
+          $('#lightboxOverlay').hide().on('click', function(e) {
+              _this.end();
+              return false;
+          });
+          $lightbox = $('#lightbox');
+          $lightbox.hide().off('click');
+          $lightbox.hide().on('click', function(e) {
+              _this.end();
+              return false;
+          });
+          $lightbox.find('.lb-outerContainer').off('click');
+          $lightbox.find('.lb-outerContainer').on('click', function(e) {
+              _this.end();
+              return false;
+          });
+          $lightbox.find('.lb-prev').off('click');
+          $lightbox.find('.lb-prev').on('click', function(e) {
+              _this.changeImage(_this.currentImageIndex - 1);
+              return false;
+          });
+          $lightbox.find('.lb-next').off('click');
+          $lightbox.find('.lb-next').on('click', function(e) {
+              _this.changeImage(_this.currentImageIndex + 1);
+              return false;
+          });
+          $lightbox.find('.lb-loader, .lb-close').off('click');
+          $lightbox.find('.lb-loader, .lb-close').on('click', function(e) {
+              _this.end();
+              return false;
+          });
+      }
+
       Lightbox.prototype.startSingle = function(){
+          this.overrideHandlers(this);
           $(window).on("resize", this.sizeOverlay);
           $('select, object, embed').css({
               visibility: "hidden"
