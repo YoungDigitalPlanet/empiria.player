@@ -17,7 +17,7 @@ import com.google.gwt.dom.client.Element;
 import eu.ydp.empiria.player.client.AbstractTestBase;
 
 @SuppressWarnings("PMD")
-public class StyleHelperTest extends AbstractTestBase {
+public class StyleToPropertyMappingHelperTest extends AbstractTestBase {
 
 	private StyleToPropertyMappingHelper testObject;
 	private NativeStyleHelper nativeStyleHelper;

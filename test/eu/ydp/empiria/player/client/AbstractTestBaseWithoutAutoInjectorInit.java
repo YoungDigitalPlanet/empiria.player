@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.inject.Guice;
 import com.google.inject.Module;
+import com.google.inject.util.Modules;
 
 @SuppressWarnings("PMD")
 public class AbstractTestBaseWithoutAutoInjectorInit extends AbstractTestBase {
@@ -38,5 +39,11 @@ public class AbstractTestBaseWithoutAutoInjectorInit extends AbstractTestBase {
 		moduleList.addAll(Arrays.asList(modules));
 		moduleList.add(new TestGuiceModule(config));
 		injector = Guice.createInjector(moduleList);
+	}
+
+	public final void setUpAndOverrideMainModule(GuiceModuleConfiguration config, Module... modules) {
+		List<Module> moduleList = new ArrayList<Module>();
+		moduleList.addAll(Arrays.asList(modules));
+		injector = Guice.createInjector(Modules.override(new TestGuiceModule(config)).with(moduleList));
 	}
 }

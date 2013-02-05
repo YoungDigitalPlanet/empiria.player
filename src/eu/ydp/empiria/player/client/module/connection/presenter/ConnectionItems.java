@@ -1,0 +1,79 @@
+package eu.ydp.empiria.player.client.module.connection.presenter;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
+import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
+import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
+import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem.Column;
+
+public class ConnectionItems {
+
+	@Inject
+	ConnectionModuleFactory connectionModuleFactory;
+
+	protected final Set<ConnectionItem> leftColumnItems = new HashSet<ConnectionItem>();
+	protected final Set<ConnectionItem> rightColumnItems = new HashSet<ConnectionItem>();
+	protected final Map<String, ConnectionItem> items = new HashMap<String, ConnectionItem>();
+
+	private final InlineBodyGeneratorSocket bodyGenerator;
+
+	@Inject
+	public ConnectionItems(@Assisted InlineBodyGeneratorSocket bodyGenerator) {
+		this.bodyGenerator = bodyGenerator;
+	}
+
+	private void addItem(ConnectionItem item, PairChoiceBean bean) {
+		items.put(bean.getIdentifier(), item);
+	}
+
+	public ConnectionItem addItemToRightColumn(PairChoiceBean choice) {
+		ConnectionItem item = connectionModuleFactory.getConnectionItem(choice, bodyGenerator, Column.RIGHT);
+		rightColumnItems.add(item);
+		addItem(item, choice);
+		return item;
+	}
+
+	public ConnectionItem addItemToLeftColumn(PairChoiceBean choice) {
+		ConnectionItem item = connectionModuleFactory.getConnectionItem(choice, bodyGenerator, Column.LEFT);
+		leftColumnItems.add(item);
+		addItem(item, choice);
+		return item;
+	}
+
+	public Set<ConnectionItem> getConnectionItems(ConnectionItem selectedItem) {
+		return rightColumnItems.contains(selectedItem) ? leftColumnItems : rightColumnItems;
+	}
+
+	public void resetAllItems() {
+		for (ConnectionItem item : items.values()) {
+			item.reset();
+		}
+	}
+
+	public boolean isIdentifiersCorrect(String... identifiers) {
+		for (String identifire : identifiers) {
+			if (!items.containsKey(identifire)) {
+				return false; // NOPMD
+			}
+		}
+		return true;
+	}
+
+	public ConnectionItem getConnectionItem(String identifire) {
+		return items.get(identifire);
+	}
+
+	public Collection<ConnectionItem> getAllItems() {
+		return items.values();
+	}
+
+}

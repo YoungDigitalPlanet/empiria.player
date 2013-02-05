@@ -124,6 +124,16 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 
 	}
 
+	@Override
+	public int getHeight() {
+		return getOffsetHeight();
+	}
+
+	@Override
+	public int getWidth() {
+		return getOffsetWidth();
+	}
+
 	public abstract void createAndBindUi();
 
 	public abstract FlowPanel getView();

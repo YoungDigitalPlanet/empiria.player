@@ -3,7 +3,9 @@ package eu.ydp.empiria.player.client.gin.module;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 
+import eu.ydp.empiria.player.client.gin.factory.ConnectionItemsFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.ConnectionSurfacesManagerFactory;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceImpl;
@@ -26,6 +28,8 @@ public class ConnectionGinModule extends AbstractGinModule {
 					.implement(MultiplePairModuleView.class, ConnectionModuleViewImpl.class)
 					.implement(ConnectionView.class, ConnectionViewVertical.class)
 					.build(ConnectionModuleFactory.class));
+		install(new GinFactoryModuleBuilder().build(ConnectionSurfacesManagerFactory.class));
+		install(new GinFactoryModuleBuilder().build(ConnectionItemsFactory.class));
 		bind(ConnectionModulePresenter.class).to(ConnectionModulePresenterImpl.class);
 		bind(ConnectionView.class).to(ConnectionViewVertical.class);
 		bind(MultiplePairModuleView.class).to(ConnectionModuleViewImpl.class);

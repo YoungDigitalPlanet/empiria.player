@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Touch;
+import com.google.gwt.user.client.ui.IsWidget;
 
 public class PositionHelper {
 	/**
@@ -50,4 +51,14 @@ public class PositionHelper {
 		}
 		return touch;
 	}
+
+	public Point getPoint(NativeEvent event, Element target){
+		return new Point(getPositionX(event, target), getPositionY(event, target));
+	}
+
+	public Point getPoint(NativeEvent event, IsWidget widget){
+		com.google.gwt.user.client.Element target = widget.asWidget().getElement();
+		return new Point(getPositionX(event, target), getPositionY(event, target));
+	}
+
 }

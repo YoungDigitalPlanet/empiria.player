@@ -41,6 +41,7 @@ import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
+import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
@@ -242,6 +243,11 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	@Provides
 	DragDropHelper getDragDropHelper() {
 		return mock(DragDropHelper.class);
+	}
+
+	@Provides
+	ConnectionSurface getConnectionSurface(){
+		return mock(ConnectionSurface.class);
 	}
 
 }
