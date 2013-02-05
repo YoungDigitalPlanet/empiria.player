@@ -43,7 +43,7 @@ import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModule
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
-import eu.ydp.empiria.player.client.module.view.HasDimension;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
@@ -98,10 +98,10 @@ public class ConnectionModuleViewImplTest extends AbstractTestBaseWithoutAutoInj
 		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(FIREFOX_UA));
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
 		ConnectionSurfacesManagerFactory surfacesManagerFactory = injector.getInstance(ConnectionSurfacesManagerFactory.class);
-		when(surfacesManagerFactory.getConnectionSurfacesManager(Mockito.any(HasDimension.class))).thenAnswer(new Answer<ConnectionSurfacesManager>() {
+		when(surfacesManagerFactory.getConnectionSurfacesManager(Mockito.any(HasDimensions.class))).thenAnswer(new Answer<ConnectionSurfacesManager>() {
 			@Override
 			public ConnectionSurfacesManager answer(InvocationOnMock invocation) throws Throwable {
-				HasDimension view = (HasDimension) invocation.getArguments()[0];
+				HasDimensions view = (HasDimensions) invocation.getArguments()[0];
 				ConnectionSurfacesManager surfacesManager = new ConnectionSurfacesManager(view);
 				injector.getMembersInjector(ConnectionSurfacesManager.class).injectMembers(surfacesManager);
 				return spy(surfacesManager);

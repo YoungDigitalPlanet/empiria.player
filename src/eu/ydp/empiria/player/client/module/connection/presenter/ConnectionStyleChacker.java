@@ -58,7 +58,7 @@ public class ConnectionStyleChacker {
 	}
 
 	@SuppressWarnings("PMD")
-	public boolean isStylesAreCorrect() {
+	public void areStylesCorrectThrowsExceptionWhenNot() {
 		for(String className : cssClassNames){
 			StringBuilder xml = new StringBuilder("<root><").append(className).append(" class=\"").append(className).append("\"/></root>");
 			Map<String, String> stylesForModule = getStylesForModule(styleSocket, (Element) xmlParser.parse(xml.toString()).getDocumentElement().getFirstChild());
@@ -66,7 +66,6 @@ public class ConnectionStyleChacker {
 				throw new CssStyleException("Css with display:table-cell is not supported in ConnectionModule");
 			}
 		}
-		return true;
 	}
 
 	private Map<String, String> getStylesForModule(StyleSocket styleSocket, Element moduleXml) {

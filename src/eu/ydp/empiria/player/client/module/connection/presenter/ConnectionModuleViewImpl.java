@@ -151,7 +151,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void checkStylesAndShowError() {
-		connectionStyleChacker.isStylesAreCorrect();
+		connectionStyleChacker.areStylesCorrectThrowsExceptionWhenNot();
 	}
 
 	private void initColumns() {

@@ -8,9 +8,9 @@ import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
-import eu.ydp.empiria.player.client.module.view.HasDimension;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 
-public interface ConnectionView extends IsWidget ,HasDimension{
+public interface ConnectionView extends IsWidget ,HasDimensions{
 
 	public void addFirstColumnItem(ConnectionItem item);
 

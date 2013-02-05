@@ -8,7 +8,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
-import eu.ydp.empiria.player.client.module.view.HasDimension;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
@@ -22,10 +22,10 @@ public class ConnectionSurfacesManager {
 	protected final Map<KeyValue<String, String>, ConnectionSurface> connectedSurfaces = new HashMap<KeyValue<String, String>, ConnectionSurface>();
 	protected final Map<String, ConnectionSurface> surfaces = new HashMap<String, ConnectionSurface>();
 
-	private final HasDimension view;
+	private final HasDimensions view;
 
 	@Inject
-	public ConnectionSurfacesManager(@Assisted HasDimension hasDimension) {
+	public ConnectionSurfacesManager(@Assisted HasDimensions hasDimension) {
 		this.view = hasDimension;
 	}
 
@@ -66,14 +66,14 @@ public class ConnectionSurfacesManager {
 	}
 
 	public KeyValue<String, String> findPointOnPath(Point point) {
-		KeyValue<String, String> findedPoint = null;
+		KeyValue<String, String> foundPoint = null;
 		for (Map.Entry<KeyValue<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
 			if (entry.getValue().isPointOnPath(point.getX(), point.getY(), APPROXIMATION)) {
-				findedPoint = new KeyValue<String, String>(entry.getKey().getKey(), entry.getKey().getValue());// NOPMD
+				foundPoint = new KeyValue<String, String>(entry.getKey().getKey(), entry.getKey().getValue());// NOPMD
 				break;
 			}
 		}
-		return findedPoint;
+		return foundPoint;
 	}
 
 	public void putSurface(KeyValue<String, String> keyValue, ConnectionSurface surface) {

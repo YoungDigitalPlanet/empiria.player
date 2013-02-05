@@ -31,7 +31,7 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionSurfacesManagerFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
-import eu.ydp.empiria.player.client.module.view.HasDimension;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
@@ -54,14 +54,14 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 	}
 
 	private ConnectionSurfacesManager instance;
-	private HasDimension hasDimension;
+	private HasDimensions hasDimension;
 	private ImmutableList<String> idList;
 
 	@Before
 	public void before() {
 		GuiceModuleConfiguration configuration = new GuiceModuleConfiguration();
 		setUpAndOverrideMainModule(configuration, new CustomGinModule());
-		hasDimension = mock(HasDimension.class);
+		hasDimension = mock(HasDimensions.class);
 		doReturn(HEIGHT).when(hasDimension).getHeight();
 		doReturn(WIDTH).when(hasDimension).getWidth();
 		instance = spy(injector.getInstance(ConnectionSurfacesManagerFactory.class).getConnectionSurfacesManager(hasDimension));
