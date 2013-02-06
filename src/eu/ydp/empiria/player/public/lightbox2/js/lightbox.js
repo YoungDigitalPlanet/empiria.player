@@ -60,6 +60,9 @@ lightbox = new Lightbox options
       this.currentImageIndex = void 0;
       this.handlers = [];
       this.build();
+      
+      $('#lightboxOverlay').hide();
+      $('#lightbox').hide();
     };
 
     Lightbox.prototype.build = function() {
@@ -104,9 +107,6 @@ lightbox = new Lightbox options
       }).append($('<a/>', {
         "class": 'lb-close'
       })))))).appendTo($('body'));
-
-
-
     };
 
      Lightbox.prototype.add = function(href,title){
