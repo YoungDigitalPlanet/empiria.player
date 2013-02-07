@@ -96,35 +96,41 @@ public class HTML5MediaExecutor implements HTML5MediaEventHandler, MediaExecutor
 	@Override
 	public void onEvent(HTML5MediaEvent event) {// NOPMD
 		switch (event.getType()) {
-		case durationchange:
-			eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_DURATION_CHANGE, mediaDescriptor), mediaDescriptor);
-			break;
-		case ended:
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_END, mediaDescriptor), mediaDescriptor);
-			if (listener != null) {
-				listener.onSoundFinished();
-			}
-			break;
-		case error:
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_ERROR, mediaDescriptor), mediaDescriptor);
-			break;
-		case pause:
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_PAUSE, mediaDescriptor), mediaDescriptor);
-			break;
-		case timeupdate:
-			eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_TIME_UPDATE, mediaDescriptor), mediaDescriptor);
-			break;
-		case volumechange:
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_VOLUME_CHANGE, mediaDescriptor), mediaDescriptor);
-			break;
-		case play:
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_PLAY, mediaDescriptor), mediaDescriptor);
-			if (listener != null) {
-				listener.onPlay();
-			}
-			break;
-		default:
-			break;
+			case canplay:
+				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.CAN_PLAY, mediaDescriptor), mediaDescriptor);
+				break;
+			case suspend:
+				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.SUSPEND, mediaDescriptor), mediaDescriptor);
+				break;			
+			case durationchange:
+				eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_DURATION_CHANGE, mediaDescriptor), mediaDescriptor);
+				break;
+			case ended:
+				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_END, mediaDescriptor), mediaDescriptor);
+				if (listener != null) {
+					listener.onSoundFinished();
+				}
+				break;
+			case error:
+				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_ERROR, mediaDescriptor), mediaDescriptor);
+				break;
+			case pause:
+				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_PAUSE, mediaDescriptor), mediaDescriptor);
+				break;
+			case timeupdate:
+				eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_TIME_UPDATE, mediaDescriptor), mediaDescriptor);
+				break;
+			case volumechange:
+				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_VOLUME_CHANGE, mediaDescriptor), mediaDescriptor);
+				break;
+			case play:
+				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_PLAY, mediaDescriptor), mediaDescriptor);
+				if (listener != null) {
+					listener.onPlay();
+				}
+				break;
+			default:
+				break;
 		}
 	}
 

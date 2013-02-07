@@ -1,7 +1,12 @@
 package eu.ydp.empiria.player.client.module.media.html5;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
@@ -26,19 +31,26 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	protected HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
 	protected boolean ready = false;
-	protected HandlerRegistration handlerRegistration;
+	protected List<HandlerRegistration> handlerRegistrations = new ArrayList<HandlerRegistration>();
 	protected HTML5MediaExecutor mediaExecutor;
 	protected AttachHandlerImpl attachHandlerImpl;
+	protected Media media;
+	private final HTML5VideoForcePosterOnIOSHack html5VideoForcePosterHackForIOS;
 
 	public HTML5MediaWrapper(Media media) {
+		this.media = media;		
+		
 		setMediaObject(media.getMedia());
-		if (media instanceof Video){
+		if (media instanceof Video) {
 			attachHandlerImpl = new AttachHandlerImpl();
 			attachHandlerImpl.setMediaBase(mediaBase);
 			attachHandlerImpl.setMediaExecutor(mediaExecutor);
 			attachHandlerImpl.setMediaWrapper(this);
 			mediaBase.addAttachHandler(attachHandlerImpl);
 		}
+		
+		html5VideoForcePosterHackForIOS = new HTML5VideoForcePosterOnIOSHack();
+		html5VideoForcePosterHackForIOS.init(this);
 	}
 
 	public void setMediaExecutor(HTML5MediaExecutor mediaExecutor) {
@@ -61,7 +73,8 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	public void setMediaObject(MediaBase mediaBase) {
 		this.mediaBase = mediaBase;
 		mediaBase.setPreload(MediaElement.PRELOAD_METADATA);
-		handlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, new CurrentPageScope());
+		handlerRegistrations.add(eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, new CurrentPageScope()));
+		handlerRegistrations.add(eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.SUSPEND), this, this, new CurrentPageScope()));
 	}
 
 	@Override
@@ -104,11 +117,31 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 
 	@Override
 	public void onMediaEvent(MediaEvent event) {
-		if (event.getType() == MediaEventTypes.ON_DURATION_CHANGE) {
+		MediaEventTypes eventType = event.getType();
+		if (eventType == MediaEventTypes.ON_DURATION_CHANGE) {
 			ready = true;
-			handlerRegistration.removeHandler();
+			removeHandler();
+		}
+		
+		if (eventType == MediaEventTypes.SUSPEND || eventType == MediaEventTypes.CAN_PLAY) {
+			applyHacksOnMediaReady();
 		}
 	}
+
+	private void applyHacksOnMediaReady() {
+		Widget parent = mediaBase.getParent();
+		if (parent != null) {
+			Element parentElement = parent.getElement();
+			html5VideoForcePosterHackForIOS.applayHackIfRequired(parentElement, mediaExecutor.getBaseMediaConfiguration());
+		}
+	}
+
+	private void removeHandler() {		
+		for (HandlerRegistration handlerRegistration : handlerRegistrations) {
+			handlerRegistration.removeHandler();
+		}
+		html5VideoForcePosterHackForIOS.clean();
+	}	
 
 	@Override
 	public int hashCode() {
@@ -139,6 +172,10 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 			return false;
 		}
 		return true;
+	}
+
+	protected Media getMedia() {
+		return media;
 	}
 
 }

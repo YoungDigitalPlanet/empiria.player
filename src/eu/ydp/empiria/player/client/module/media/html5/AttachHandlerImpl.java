@@ -21,12 +21,17 @@ public class AttachHandlerImpl implements Handler {
 	private MediaBase mediaBase;
 	private HTML5MediaExecutor mediaExecutor;
 	private HTML5MediaWrapper mediaWrapper;
+	private boolean firstTimeInitialization = true; 
 
 	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	@Override
 	public void onAttachOrDetach(AttachEvent event) {
-
+		if (firstTimeInitialization) {
+			firstTimeInitialization = false;
+			return;
+		}
+		
 		if (!event.isAttached()) {
 			return;
 		}

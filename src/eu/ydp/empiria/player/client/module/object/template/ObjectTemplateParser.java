@@ -3,6 +3,8 @@ package eu.ydp.empiria.player.client.module.object.template;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -49,10 +51,17 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 		}
 	}
 
-	protected Widget getMediaObject(){
-		return (fullScreen)
-				? fullScreenMediaWrapper.getMediaObject()
-				: mediaDescriptor.getMediaObject();
+	protected Widget getMediaObject() {
+		Widget mediaObjectWidget;
+		if (fullScreen) {
+			mediaObjectWidget = fullScreenMediaWrapper.getMediaObject();
+		} else { 
+			FlowPanel videoContainer = new FlowPanel();
+			videoContainer.add(mediaDescriptor.getMediaObject());
+			videoContainer.getElement().getStyle().setPosition(Position.RELATIVE);
+			mediaObjectWidget = videoContainer;
+		}
+		return mediaObjectWidget;
 	}
 
 	@Override
