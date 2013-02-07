@@ -65,10 +65,6 @@ public class VideoFullScreenMediaButton extends FullScreenMediaButton<VideoFullS
 	
 	@Override
 	protected void openFullScreen() {
-		if (UserAgentChecker.isAIR()) {
-			History.newItem("fullscreen_video");
-		}
-		
 		fullScreenHelper.openFullScreen(fullScreenMediaWrapper, mediaWrapper, fullScreenTemplate);
 	}
 
