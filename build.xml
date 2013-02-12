@@ -66,7 +66,7 @@
     </copy>
   </target>
 
-  <target name="gwtc" depends="javac" description="GWT compile to JavaScript">
+  <target name="gwtc" description="GWT compile to JavaScript">
     <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
       <classpath>
         <pathelement location="src"/>
@@ -237,7 +237,7 @@
 		<zip destfile="dist/${dist.file.name}" basedir="war/empiria.player"/>
 	</target>
 
-	  <target name="dist.all" depends="buildnumber, lib" description="Create java script distribution">
+	  <target name="dist.all" depends="buildnumber, javac" description="Create java script distribution">
 		<mkdir dir="${dist.dir}" />
 		<antcall target="dist.single">
 			<param name="module.name" value="eu.ydp.empiria.player.Player_webkit"/>
@@ -249,7 +249,7 @@
 		</antcall>
 	</target>
 
-	<target name="dist" depends="dist.all, test.dev, metadata.file" description="Create java script distribution">
+	<target name="dist" depends="clean, dist.all, test.dev, metadata.file" description="Create java script distribution">
 	</target>
 
   <target name="publish" depends="dist, project.file, sonar" description="Publish artifacts into Ivy repository">
