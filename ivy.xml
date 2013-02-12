@@ -9,12 +9,14 @@
 		<conf name="lib"  description="Player as library"/>
 		<conf name="test" visibility="private" description="Test conf"/>
 		<conf name="coverage" visibility="private" description="Coverage"/>
+		<conf name="webkit"  description="Empiria Player executables for webkit browsers and controls"/>
   </configurations>
 
   <publications>
   	<artifact name="empiriaplayer" type="zip" conf="default" ext="zip"/>
   	<artifact name="empiriaplayerlib" type="jar" conf="lib" ext="jar"/>
   	<artifact name="empiriaplayerlibs" type="zip" conf="lib" ext="zip"/>
+  	<artifact name="empiriaplayer_webkit" type="zip" conf="webkit" ext="zip"/>
   </publications>
 
   <dependencies>

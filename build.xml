@@ -8,7 +8,7 @@
 	<property name="bin.dir" value="${base.dir}/war/WEB-INF/classes"/>
 	<property name="bin.test.dir" value="${base.dir}/bin.test"/>
 	<property name="src.dir" value="${base.dir}/src"/>
-
+	<property name="dist.dir" value="${base.dir}/dist/build" />
 	<property name="test.reports.dev.dir" value="${base.dir}/reports/htmlunit.dev" />
 
 	<property name="lib.dir" value="${base.dir}/libs" />
@@ -28,8 +28,8 @@
   <!-- option "-XdisableCastChecking" is needed for iOS 6.x compatibility -->
   <condition property="compile.disableCastChecking" value="-XdisableCastChecking" else="">
     <equals arg1="${compiler.castchecking}" arg2="false" />
-  </condition>  
-  		
+  </condition>
+
   <path id="project.class.path">
     <pathelement location="${bin.dir}"/>
     <fileset dir="${lib.dir}"/>
@@ -66,7 +66,7 @@
     </copy>
   </target>
 
-  <target name="gwtc" depends="javac" description="GWT compile to JavaScript">  	
+  <target name="gwtc" depends="javac" description="GWT compile to JavaScript">
     <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
       <classpath>
         <pathelement location="src"/>
@@ -76,7 +76,7 @@
       <jvmarg line="${XstartOnFirstThread} -Xmx512M -Xss16M"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
       <arg line="${compile.disableCastChecking}" />
-      <arg value="eu.ydp.empiria.player.Player"/>    	
+      <arg value="${module.name}"/>
     </java>
   </target>
 
@@ -232,15 +232,26 @@
   <target name="test.all" depends="test.dev, test.prod">
   </target>
 
-  <target name="dist" depends="build, buildnumber, lib, test.dev, metadata.file" description="Create java script distribution">
-    <mkdir dir="dist/build" />
-    <copy todir="dist/build/empiria.player">
-      	<fileset dir="war/empiria.player"/>
-    	<fileset file="${base.dir}/metadata.xml"/>
-    </copy>
+	<target name="dist.single">
+		<antcall target="gwtc"/>
+		<zip destfile="dist/${dist.file.name}" basedir="war/empiria.player"/>
+	</target>
 
-    <zip destfile="dist/empiriaplayer.zip" basedir="dist/build/empiria.player"/>
-  </target>
+	  <target name="dist.all" depends="buildnumber, lib" description="Create java script distribution">
+		<mkdir dir="${dist.dir}" />
+		<antcall target="dist.single">
+			<param name="module.name" value="eu.ydp.empiria.player.Player_webkit"/>
+			<param name="dist.file.name" value="empiriaplayer_webkit.zip"/>
+		</antcall>
+		<antcall target="dist.single">
+			<param name="module.name" value="eu.ydp.empiria.player.Player"/>
+			<param name="dist.file.name" value="empiriaplayer.zip"/>
+		</antcall>
+		<antcall target="dist.sample"/>
+	</target>
+
+	<target name="dist" depends="dist.all, test.dev, metadata.file" description="Create java script distribution">
+	</target>
 
   <target name="publish" depends="dist, project.file, sonar" description="Publish artifacts into Ivy repository">
   	<!-- resolve is needed to get organization/module from ivy.xml for publish task !-->
