@@ -8,7 +8,7 @@ public interface IStickieView extends HasText, IsWidget {
 
 	void setPresenter(IPresenter presenter);
 	
-	void setViewParent(HasWidgets parent);
+	void initViewParent(HasWidgets parent);
 	
 	void setMinimized(boolean minimized);
 	

@@ -5,6 +5,10 @@ import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.CenterPositionFinder;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.RangeCreator;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.ViewportHelper;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.WidgetSizeHelper;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.test.AbstractMockingTestModule;
@@ -32,6 +36,10 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToClassOrMockProvider(IStickieView.class);
 		bindToClassOrMockProvider(StickiesProcessorExtension.class);
 		bindToClassOrMockProvider(IPlayerContainersAccessor.class);
+		bindToClassOrMockProvider(CenterPositionFinder.class);
+		bindToClassOrMockProvider(RangeCreator.class);
+		bindToClassOrMockProvider(WidgetSizeHelper.class);
+		bindToClassOrMockProvider(ViewportHelper.class);
 	}
 
 }

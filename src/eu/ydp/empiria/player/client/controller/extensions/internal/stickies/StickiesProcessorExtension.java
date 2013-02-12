@@ -187,7 +187,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 				sp.setY(view.getY());
 			}
 		});
-		view.setViewParent(itemBodyAccessor.getItemBodyContainer(currItemIndex));
+		view.initViewParent(itemBodyAccessor.getItemBodyContainer(currItemIndex));
 		if (initialAddition){
 			view.centerView();
 			checkStickieOverlay(sp);

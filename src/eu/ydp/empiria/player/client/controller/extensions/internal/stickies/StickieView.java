@@ -22,7 +22,6 @@ import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchMoveHandler;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.touch.client.Point;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -42,10 +41,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.StickieViewPositionFinder;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.StickieViewPositionFinder.Axis;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.geom.Point;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 
@@ -59,6 +61,8 @@ public class StickieView extends Composite implements IStickieView {
 	@Inject IPlayerContainersAccessor accessor;
 	@Inject StyleNameConstants styleNames;
 	@Inject EventsBus eventsBus;
+	
+	@Inject StickieViewPositionFinder positionFinder;
 	
 	HandlerRegistration preventHandlerRegistration;
 		
@@ -93,9 +97,9 @@ public class StickieView extends Composite implements IStickieView {
 	private Widget parent;
 	
 	private boolean dragging = false;
-	private Point dragInitMousePosition;
-	private Point dragInitViewPosition;
-	private Point position;
+	private Point<Integer> dragInitMousePosition;
+	private Point<Integer> dragInitViewPosition;
+	private Point<Integer> position;
 	HandlerRegistration upHandlerReg;
 	private boolean takeOverKeyInput;
 	private boolean firstKeyInputAfterClick;
@@ -133,6 +137,7 @@ public class StickieView extends Composite implements IStickieView {
 			public void onMouseUp(MouseUpEvent event) {
 				dragEnd();
 				moveHandlerReg.removeHandler();
+				upHandlerReg.removeHandler();
 			}
 			
 		}, MouseUpEvent.getType());
@@ -167,12 +172,13 @@ public class StickieView extends Composite implements IStickieView {
 			public void onTouchEnd(TouchEndEvent event) {
 				dragEnd();
 				moveHandlerReg.removeHandler();
+				upHandlerReg.removeHandler();
 			}
 		}, TouchEndEvent.getType());
 	}
 	
 	void dragStart(int x, int y){
-		dragInitMousePosition = new Point(x, y);
+		dragInitMousePosition = new Point<Integer>(x, y);
 		dragInitViewPosition = position;
 		dragging = true;
 	}
@@ -187,7 +193,6 @@ public class StickieView extends Composite implements IStickieView {
 	
 	void dragEnd(){
 		dragging = false;
-		upHandlerReg.removeHandler();
 	}
 
 	@UiHandler("labelPanel")
@@ -312,46 +317,29 @@ public class StickieView extends Composite implements IStickieView {
 	}
 
 	@Override
-	public void setViewParent(HasWidgets parent) {
+	public void initViewParent(HasWidgets parent) {
 		this.parent = (Widget)parent;
 		parent.add(this);
 	}
 
 	@Override
 	public void centerView() {
-		int x = (((Widget)accessor.getPlayerContainer()).getOffsetWidth() - getOffsetWidth())/2;
-		int y = (((Widget)accessor.getPlayerContainer()).getOffsetHeight() - getOffsetHeight())/2 - parent.getAbsoluteTop() + ((Widget)accessor.getPlayerContainer()).getAbsoluteTop();
+		int x = positionFinder.getCenterPosition(getOffsetWidth(),  parent.getAbsoluteLeft(), Axis.HORIZONTAL);
+		int y = positionFinder.getCenterPosition(getOffsetHeight(),  parent.getAbsoluteTop(), Axis.VERTICAL);
 		setPosition(x, y);
 	}
 
-	public final void setPosition(int left, int top){
-		int newLeft = left;
-		int newTop = top;
+	public final void setPosition(int left, int top){		
+		int newLeft = positionFinder.refinePositionHorizontal(left, this, parent);
+		int newTopt = positionFinder.refinePositionVertical(top, this, parent);
 		
-		if (left < 0){
-			newLeft = 0;
-		} else if (left > parent.getOffsetWidth() - getOffsetWidth()){
-			newLeft = parent.getOffsetWidth() - getOffsetWidth();
-		}
-		
-		if (parent != null){
-			
-			int topMin = ((Widget)accessor.getPlayerContainer()).getAbsoluteTop() - parent.getAbsoluteTop();
-			int topMax = ((Widget)accessor.getPlayerContainer()).getAbsoluteTop() + ((Widget)accessor.getPlayerContainer()).getOffsetHeight() - parent.getAbsoluteTop();
-			if (top < topMin){
-				newTop = topMin;
-			} else if (top > topMax - getOffsetHeight()){
-				newTop = topMax - getOffsetHeight();
-			}
-		}
-		
-		setPositionRaw(newLeft, newTop);
+		setPositionRaw(newLeft, newTopt);
 		presenter.stickieChange();
 	}
 
 	@Override
 	public final void setPositionRaw(int left, int top){
-		position = new Point(left, top);
+		position = new Point<Integer>(left, top);
 		getElement().getStyle().setLeft(left, Unit.PX);
 		getElement().getStyle().setTop(top, Unit.PX);		
 	}
