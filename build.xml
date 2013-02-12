@@ -247,7 +247,6 @@
 			<param name="module.name" value="eu.ydp.empiria.player.Player"/>
 			<param name="dist.file.name" value="empiriaplayer.zip"/>
 		</antcall>
-		<antcall target="dist.sample"/>
 	</target>
 
 	<target name="dist" depends="dist.all, test.dev, metadata.file" description="Create java script distribution">
