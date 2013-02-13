@@ -1,59 +1,58 @@
 package eu.ydp.empiria.player.client.module.media.html5;
 
-import static eu.ydp.gwtutil.client.util.UserAgentChecker.isMobileUserAgent;
-
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.Style.Visibility;
+import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
-import eu.ydp.empiria.player.client.module.object.impl.Video;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 /**
  * Safari for iOS has a known problem with the poster attribute on the video tags.
+ * Potentially this solution can be used also for other browsers, on which the similar problem will be appearing.  
  */
-public class HTML5VideoForcePosterOnIOSHack implements MediaEventHandler {
+public class HTML5VideoForcePosterHack implements MediaEventHandler {
 	
 	private Element posterImageElement;
-	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-	private HandlerRegistration handlerRegistration = null;
 	private boolean isPosterCreated = false;
-	private HTML5MediaWrapper html5MediaWrapper;
+	private final MediaBase mediaBase;
+	private final HTML5MediaExecutorDelegator mediaExecutorDelegator;
 		
-	public void init(HTML5MediaWrapper html5MediaWrapper) {
-		this.html5MediaWrapper = html5MediaWrapper;
-		if (isHackApplyConditionMeet()) {
-			handlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), html5MediaWrapper, this, new CurrentPageScope());
+	public HTML5VideoForcePosterHack(MediaBase mediaBase, HTML5MediaExecutorDelegator mediaExecutor) {
+		this.mediaBase = mediaBase;
+		this.mediaExecutorDelegator = mediaExecutor;
+	}
+
+	@Override
+	public void onMediaEvent(MediaEvent event) {
+		MediaEventTypes eventType = event.getType();
+		if (MediaEventTypes.ON_PLAY.equals(eventType)) {
+			hidePosterImage();
+		} else if (MediaEventTypes.SUSPEND.equals(eventType) || MediaEventTypes.CAN_PLAY.equals(eventType)) {
+			createPosterImageOnParentElementOnce();
 		}
 	}
 
-	public void applayHackIfRequired(Element mediaContainerElement, BaseMediaConfiguration baseMediaConfiguration) {
-		if (!isPosterCreated && isHackApplyConditionMeet()) {
-			createPosterImageLayer(mediaContainerElement, baseMediaConfiguration);
+	private void createPosterImageOnParentElementOnce() {
+		if (isPosterCreated) {
+			return;
+		}
+		
+		Widget parent = mediaBase.getParent();
+		Element parentElement = parent.getElement();
+		
+		if (parentElement != null) {
+			HTML5MediaExecutor executor = mediaExecutorDelegator.getExecutor();
+			BaseMediaConfiguration baseMediaConfiguration = executor.getBaseMediaConfiguration();			
+			createPosterImageLayer(parentElement, baseMediaConfiguration);
 			isPosterCreated = true;
-		}
-	}	
-
-	public void clean() {
-		if (handlerRegistration != null) {
-			handlerRegistration.removeHandler();
-		}
-	}		
-	
-	@Override
-	public void onMediaEvent(MediaEvent event) {
-		if (MediaEventTypes.ON_PLAY.equals(event.getType())) {
-			hidePosterImage();
 		}
 	}
 
@@ -75,10 +74,5 @@ public class HTML5VideoForcePosterOnIOSHack implements MediaEventHandler {
 		posterImageElement.getStyle().setVisibility(Visibility.VISIBLE);
 		
 		mediaContainerElement.appendChild(posterImageElement);		
-	}
-	
-	public boolean isHackApplyConditionMeet() {
-		return (isMobileUserAgent(MobileUserAgent.SAFARI) || isMobileUserAgent(MobileUserAgent.SAFARI_WEBVIEW))
-				&& html5MediaWrapper.getMedia() instanceof Video;
-	}
+	}	
 }
