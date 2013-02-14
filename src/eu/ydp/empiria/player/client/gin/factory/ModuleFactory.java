@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.AssessmentJsonReportExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
@@ -25,4 +25,5 @@ public interface ModuleFactory {
 	InlineChoiceGapModule getInlineChoiceGapModule();
 	AssessmentJsonReportExtension getAssessmentJsonReportExtension();
 	ScormSupportExtension getScormSupportExtension();
+	PlayerCoreApiExtension getPlayerCoreApiExtension();
 }

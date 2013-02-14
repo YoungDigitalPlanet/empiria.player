@@ -46,12 +46,10 @@ public interface PlayerGinjector extends Ginjector {
 	DeliveryEngine getDeliveryEngine();
 	EventsBus getEventsBus();
 	MultiPageController getMultiPage();
-//	PageViewCache getPageViewCache();
 	PageControllerCache getPageControllerCache();
 	StyleNameConstants getStyleNameConstants();
 	MainFlowProcessor getMainFlowProcessor();
 	Page getPage();
-	//HTML5FullScreenHelper getHtml5FullScreenHelper();
 	DOMTreeWalker getDomTreeWalker();
 	PanelCache getPanelCache();
 	GWTPanelFactory getPanelFactory();

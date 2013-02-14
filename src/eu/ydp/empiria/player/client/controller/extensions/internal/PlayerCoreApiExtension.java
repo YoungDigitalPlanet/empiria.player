@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -10,16 +11,24 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public class PlayerCoreApiExtension extends
-		InternalExtension implements DeliveryEngineSocketUserExtension, PlayerJsObjectModifierExtension, DeliveryEventsListenerExtension {
+		InternalExtension implements DeliveryEngineSocketUserExtension, PlayerJsObjectModifierExtension, DeliveryEventsListenerExtension, MediaEventHandler {
 
+	@Inject
+	protected EventsBus eventsBus;
+	
 	protected JavaScriptObject playerJsObject;
 	protected DeliveryEngineSocket deliveryEngineSocket;
 	
 	@Override
 	public void init() {
 		initExportStateStringJs(playerJsObject);
+		eventsBus.addHandler(MediaEvent.getType(MediaEventTypes.ON_MOBILE_FULL_SCREEN_OPEN), this);
 	}
 
 	@Override
@@ -41,6 +50,11 @@ public class PlayerCoreApiExtension extends
 			importInitialItemIndex();
 			importState();
 		}
+	}
+	
+	@Override
+	public void onMediaEvent(MediaEvent event) {
+		invokeFullscreenAction(playerJsObject);
 	}
 	
 	private void setOptions(){
@@ -112,5 +126,11 @@ public class PlayerCoreApiExtension extends
 		
 		return itemIndex;		
 				
+	}-*/;
+	
+	private native String invokeFullscreenAction(JavaScriptObject playerJsObject)/*-{
+		if (typeof playerJsObject.invokeAction == 'function') {
+			playerJsObject.invokeAction('fullscreen');
+		}
 	}-*/;
 }

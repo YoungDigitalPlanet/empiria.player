@@ -119,6 +119,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 		html5FullScreenHelper.requestFullScreen(((Widget) mediaWrapper.getMediaObject()).getElement());
 		lastMediaWrapper = fullScreenMediaWrapper;
 		fireEvent(true, fullScreenMediaWrapper);
+		eventsBus.fireEvent(new MediaEvent(MediaEventTypes.ON_MOBILE_FULL_SCREEN_OPEN));
 	}
 
 	protected void openFullScreenDesktop(MediaWrapper<?> mediaWrapper, Element template) {

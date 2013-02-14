@@ -283,7 +283,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	}
 
 	protected void loadPredefinedExtensions() {
-		loadExtension(new PlayerCoreApiExtension());
+		loadExtension(extensionFactory.getPlayerCoreApiExtension());
 		loadExtension(extensionFactory.getScormSupportExtension());
 		loadExtension(extensionFactory.getAssessmentJsonReportExtension());
 		loadExtension(soundProcessorManager);
