@@ -20,10 +20,10 @@ public class PlayerCoreApiExtension extends
 		InternalExtension implements DeliveryEngineSocketUserExtension, PlayerJsObjectModifierExtension, DeliveryEventsListenerExtension, MediaEventHandler {
 
 	@Inject
-	protected EventsBus eventsBus;
+	private EventsBus eventsBus;
 	
-	protected JavaScriptObject playerJsObject;
-	protected DeliveryEngineSocket deliveryEngineSocket;
+	private JavaScriptObject playerJsObject;
+	private DeliveryEngineSocket deliveryEngineSocket;
 	
 	@Override
 	public void init() {
