@@ -32,6 +32,7 @@ import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoa
 import eu.ydp.empiria.player.client.controller.data.library.LibraryExtension;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoader;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoaderListener;
+import eu.ydp.empiria.player.client.preloader.view.ProgressBundle;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;

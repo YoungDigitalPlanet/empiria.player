@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.data;
+package eu.ydp.empiria.player.client.preloader.view;
 
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;

@@ -53,6 +53,8 @@ import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
+import eu.ydp.empiria.player.client.preloader.view.InfinityProgressWidget;
+import eu.ydp.empiria.player.client.preloader.view.ProgressView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
@@ -76,6 +78,7 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactoryImpl;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
+@SuppressWarnings("PMD")
 public class PlayerGinModule extends AbstractGinModule {
 
 	@SuppressWarnings("unchecked")
@@ -121,12 +124,13 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(DragDropHelper.class).to(DragDropHelperImpl.class).in(Singleton.class);
 		bind(TextFeedback.class).to(TextFeedbackPresenter.class);
 		bind(ImageFeedback.class).to(ImageFeedbackPresenter.class);
+		bind(ProgressView.class).to(InfinityProgressWidget.class);
 
 		bind(FlowPanel.class)
 			.annotatedWith(Names.named("multiPageControllerMainPanel"))
 			.toProvider(NewFlowPanelProvider.class)
 			.in(Singleton.class);
-		
+
 		//bind(OverlayTypesParser.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));

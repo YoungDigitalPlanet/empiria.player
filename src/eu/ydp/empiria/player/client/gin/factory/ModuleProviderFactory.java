@@ -19,8 +19,10 @@ import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
+import eu.ydp.empiria.player.client.module.simulation.SimulationModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 
+@SuppressWarnings("PMD")
 public class ModuleProviderFactory {
 	@Inject
 	protected Provider<ConnectionModule> connectionModule;
@@ -73,6 +75,9 @@ public class ModuleProviderFactory {
 	@Inject
 	protected Provider<IdentificationModule> identificationModule;
 
+	@Inject
+	protected Provider<SimulationModule> simulationModule;
+
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
 	}
@@ -100,10 +105,10 @@ public class ModuleProviderFactory {
 	public Provider<ImgModule> getImgModule() {
 		return imgModule;
 	}
-	
+
 	public Provider<InlineContainerModule> getInlineContainerModule() {
 		return inlineContainerModule;
-	}	
+	}
 
 	public Provider<SelectionModule> getSelectionModule() {
 		return selectionModule;
@@ -141,4 +146,7 @@ public class ModuleProviderFactory {
 		return identificationModule;
 	}
 
+	public Provider<SimulationModule> getSimulationModule() {
+		return simulationModule;
+	}
 }

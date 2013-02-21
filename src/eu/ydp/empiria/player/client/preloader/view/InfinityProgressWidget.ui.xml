@@ -1,0 +1,14 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+<ui:with field='progress' type='eu.ydp.empiria.player.client.preloader.view.ProgressBundle'/>
+	<ui:style>
+		.containerStyle {
+			display: table-cell;
+			text-align: center;
+			vertical-align: middle;
+		}
+	</ui:style>
+	<g:FlowPanel styleName="{style.containerStyle}">
+			<g:Image resource="{progress.getProgressImage}" />
+	</g:FlowPanel>
+</ui:UiBinder>
