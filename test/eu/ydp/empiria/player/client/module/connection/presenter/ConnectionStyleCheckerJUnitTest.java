@@ -36,7 +36,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest({ ConnectionStyleChecker.class, NodeList.class, Node.class, Style.class, CssHelper.class })
+@PrepareForTest({ NodeList.class, Node.class, Style.class, CssHelper.class })
 public class ConnectionStyleCheckerJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private class CustomGinModule implements Module {
