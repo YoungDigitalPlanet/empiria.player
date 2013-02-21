@@ -1,11 +1,17 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -16,7 +22,7 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.style.CssHelper;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
-public class ConnectionStyleChacker {
+public class ConnectionStyleChecker {
 
 	@Inject
 	private CssHelper cssHelper;
@@ -30,13 +36,11 @@ public class ConnectionStyleChacker {
 
 	private final StyleSocket styleSocket;
 
-
 	@Inject
-	public ConnectionStyleChacker(@Assisted StyleSocket styleSocket,XMLParser xmlParser) {
+	public ConnectionStyleChecker(@Assisted StyleSocket styleSocket, XMLParser xmlParser) {
 		this.xmlParser = xmlParser;
 		this.styleSocket = styleSocket;
 	}
-
 
 	@PostConstruct
 	public void postConstruct() {
@@ -57,15 +61,64 @@ public class ConnectionStyleChacker {
 		cssClassNames.add(styleNames.QP_CONNECTION_WRONG());
 	}
 
+
+	public void areStylesCorrectThrowsExceptionWhenNot(IsWidget widget) {
+		checkStylesFromCssParser();
+		checkNativeStylesForWidgetHierarchy(widget);
+	}
+
 	@SuppressWarnings("PMD")
-	public void areStylesCorrectThrowsExceptionWhenNot() {
-		for(String className : cssClassNames){
+	private void checkStylesFromCssParser() {
+		for (String className : cssClassNames) {
 			StringBuilder xml = new StringBuilder("<root><").append(className).append(" class=\"").append(className).append("\"/></root>");
-			Map<String, String> stylesForModule = getStylesForModule(styleSocket, (Element) xmlParser.parse(xml.toString()).getDocumentElement().getFirstChild());
-			if(cssHelper.checkIfEquals(stylesForModule, "display", "table-cell")){
+			Element firstChild = (Element) xmlParser.parse(xml.toString()).getDocumentElement().getFirstChild();
+			Map<String, String> stylesForModule = getStylesForModule(styleSocket, firstChild);
+
+			if (cssHelper.checkIfEquals(stylesForModule, "display", "table-cell")) {
 				throw new CssStyleException("Css with display:table-cell is not supported in ConnectionModule");
 			}
 		}
+	}
+
+	@SuppressWarnings("PMD")
+	private void checkNativeStylesForWidgetHierarchy(IsWidget widget) {
+		if (widget != null) {
+			List<Style> allStyles = collectAllStyles(widget);
+			checkNativeStyles(allStyles);
+		}
+	}
+
+	private List<Style> collectAllChildrenStyles(NodeList<Node> childNodes) {
+		List<Style> allStyles = Lists.newArrayList();
+		for (int x = 0; x < childNodes.getLength(); ++x) {
+			Node item = childNodes.getItem(x);
+			if (item.getNodeType() == Node.ELEMENT_NODE) {
+				Style styles = cssHelper.getComputedStyle(item);
+				allStyles.add(styles);
+				allStyles.addAll(collectAllChildrenStyles(((com.google.gwt.dom.client.Element) item).getChildNodes()));
+			}
+		}
+		return allStyles;
+	}
+
+
+
+
+
+	private void checkNativeStyles(List<Style> allStyles) {
+		for (Style style : allStyles) {
+			if (cssHelper.checkIfEquals(style, "display", "table-cell")) {
+				throw new CssStyleException("Css with display:table-cell is not supported in ConnectionModule");
+			}
+		}
+	}
+
+	private List<Style> collectAllStyles(IsWidget widget) {
+		List<Style> allStyles = Lists.newArrayList();
+		com.google.gwt.user.client.Element widgetElement = widget.asWidget().getElement();
+		allStyles.add(cssHelper.getComputedStyle(widgetElement));
+		allStyles.addAll(collectAllChildrenStyles(widgetElement.getChildNodes()));
+		return allStyles;
 	}
 
 	private Map<String, String> getStylesForModule(StyleSocket styleSocket, Element moduleXml) {

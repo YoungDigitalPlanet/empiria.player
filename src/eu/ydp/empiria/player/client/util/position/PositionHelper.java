@@ -18,11 +18,15 @@ public class PositionHelper {
 		Touch touch = getTouch(event);
 		int positionY = 0;
 		if (touch == null) {
-			positionY = event.getClientY() - target.getAbsoluteTop() + target.getScrollTop() + target.getOwnerDocument().getScrollTop();
+			positionY = getRelativeY(event, target);
 		} else {
 			positionY = touch.getRelativeY(target);
 		}
 		return positionY;
+	}
+
+	private int getRelativeY(NativeEvent event, Element target) {
+		return event.getClientY() - target.getAbsoluteTop() + target.getScrollTop() + target.getOwnerDocument().getScrollTop();
 	}
 
 	/**
@@ -36,11 +40,15 @@ public class PositionHelper {
 		Touch touch = getTouch(event);
 		int positionX = 0;
 		if (touch == null) {
-			positionX = event.getClientX() - target.getAbsoluteLeft() + target.getScrollLeft() + target.getOwnerDocument().getScrollLeft();
+			positionX = getRelativeX(event, target);
 		} else {
 			positionX = touch.getRelativeX(target);
 		}
 		return positionX;
+	}
+
+	private int getRelativeX(NativeEvent event, Element target) {
+		return event.getClientX() - target.getAbsoluteLeft() + target.getScrollLeft() + target.getOwnerDocument().getScrollLeft();
 	}
 
 	private Touch getTouch(NativeEvent event) {

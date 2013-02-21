@@ -2,23 +2,25 @@ package eu.ydp.empiria.player.client.module.connection.presenter.view;
 
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import com.google.common.collect.ObjectArrays;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.Event.Type;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
-import eu.ydp.empiria.player.client.util.position.PositionHelper;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public class ConnectionViewVertical extends AbstractConnectionView {
 
@@ -43,16 +45,24 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 
 	protected HasTouchHandlers touchRecognition;
 
-	@Inject
-	public ConnectionViewVertical(EventsBus eventsBus, PositionHelper positionHelper, TouchRecognitionFactory touchRecognitionFactory) {
-		super(eventsBus, positionHelper, touchRecognitionFactory);
-	}
-
-	@Override
+	@PostConstruct
 	public void createAndBindUi() {
 		initWidget(uiBinder.createAndBindUi(this));
-		touchRecognition = touchRecognitionFactory.getTouchRecognition(this, true, true);
-		touchRecognition.addTouchHandlers(this, TouchEvent.getTypes(TouchTypes.TOUCH_START, TouchTypes.TOUCH_END, TouchTypes.TOUCH_MOVE));
+	}
+
+	private void initTouchRecognition() {
+		if (touchRecognition == null) {
+			touchRecognition = touchRecognitionFactory.getTouchRecognition(this, !UserAgentChecker.isMobileUserAgent(), true);
+			touchRecognition.addTouchHandlers(this, getTouchTypes());
+		}
+	}
+
+	private Type<TouchHandler, TouchTypes>[] getTouchTypes() {
+		Type<TouchHandler, TouchTypes>[] types = TouchEvent.getTypes(TouchTypes.TOUCH_START, TouchTypes.TOUCH_END);
+		if (isDrawFollowTouch()) {
+			types = ObjectArrays.concat(types, TouchEvent.getType(TouchTypes.TOUCH_MOVE));
+		}
+		return types;
 	}
 
 	/*
@@ -67,7 +77,6 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 	@Override
 	public void addFirstColumnItem(ConnectionItem item) {
 		leftColumn.add(item);
-		// item.setConnectionView(this);
 	}
 
 	/*
@@ -82,7 +91,6 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 	@Override
 	public void addSecondColumnItem(ConnectionItem item) {
 		rightColumn.add(item);
-		// item.setConnectionView(this);
 	}
 
 	/*
@@ -100,7 +108,6 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 
 	@Override
 	public void onTouchStart(NativeEvent event) {
-		event.stopPropagation();
 		ConnectionMoveStartEvent connectionEvent = new ConnectionMoveStartEvent(getPositionX(event), getPositionY(event), event, null);
 		callOnMoveStartHandlers(connectionEvent);
 
@@ -113,7 +120,13 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 	}
 
 	@Override
-	public FlowPanel getView() {
+	protected FlowPanel getView() {
 		return view;
+	}
+
+	@Override
+	public Widget asWidget() {
+		initTouchRecognition();
+		return this;
 	}
 }

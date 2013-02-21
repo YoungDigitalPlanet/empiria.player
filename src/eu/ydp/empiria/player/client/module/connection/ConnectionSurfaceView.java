@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.module.connection;
 
 import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import gwt.g2d.client.graphics.Surface;
 import gwt.g2d.client.graphics.canvas.Context;
 
@@ -20,8 +22,9 @@ public class ConnectionSurfaceView extends Composite {
 	protected Surface surface;
 	private final StyleToPropertyMappingHelper styleHelper;
 	private final double[] coordinates = new double[4];
-	private final Map<String, String> lastSetProperies = new HashMap<String, String>();
-
+	private final Map<String, String> propertiesToClear = new HashMap<String, String>();
+	private Map<String, String> lastSetStyles = new HashMap<String, String>();
+	private final boolean isAndroid_4_UserAgent = UserAgentChecker.isMobileUserAgent(MobileUserAgent.ANDROID4);
 	public ConnectionSurfaceView(int width, int height, StyleToPropertyMappingHelper styleHelper) {
 		this.styleHelper = styleHelper;
 		surface = new Surface(width, height);
@@ -64,6 +67,17 @@ public class ConnectionSurfaceView extends Composite {
 	public void clear() {
 		double[] rect = getReactToClear();
 		context2d.clearRect(rect[0], rect[1], rect[2], rect[3]);
+		applyHackForCanvasInAndroid4();
+	}
+
+	/**
+	 * @see <a href="http://code.google.com/p/android/issues/detail?id=35474#c25" >android bug trucker</a>
+	 */
+	private void applyHackForCanvasInAndroid4() {
+		if(isAndroid_4_UserAgent){
+			surface.setWidth(surface.getWidth());
+			applyStyles(lastSetStyles);
+		}
 	}
 
 	public Widget getView() {
@@ -75,11 +89,12 @@ public class ConnectionSurfaceView extends Composite {
 	}
 
 	public void applyStyles(Map<String, String> styles) {
-		styleHelper.applyStyles((JavaScriptObject) context2d, lastSetProperies);
+		styleHelper.applyStyles((JavaScriptObject) context2d, propertiesToClear);
 		styleHelper.applyStyles((JavaScriptObject) context2d, styles);
-		lastSetProperies.clear();
+		lastSetStyles = styles;
+		propertiesToClear.clear();
 		for (String property : styles.keySet()) {
-			lastSetProperies.put(property, "");
+			propertiesToClear.put(property, "");
 		}
 	}
 

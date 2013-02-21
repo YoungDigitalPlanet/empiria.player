@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemViewLef
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemViewRight;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionColumnsBuilder;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionItems;
-import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionStyleChacker;
+import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionStyleChecker;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionsBetweenItems;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
@@ -30,9 +30,8 @@ public interface ConnectionModuleFactory {
 	public ConnectionItemViewRight getConnectionItemViewRight (PairChoiceBean element, InlineBodyGeneratorSocket bodyGeneratorSocket);
 	public ConnectionModuleModel getConnectionModuleModel(Response response, ResponseModelChangeListener modelChangeListener);
 	public ConnectionSurface getConnectionSurface(@Assisted("width") Integer width, @Assisted("height") Integer height);
-	public ConnectionView getConnectionView();
 	public ConnectionsBetweenItems getConnectionsBetweenItems(IsWidget widget,ConnectionItems connectionItems);
-	public ConnectionStyleChacker getConnectionStyleChacker(StyleSocket styleSocket);
+	public ConnectionStyleChecker getConnectionStyleChacker(StyleSocket styleSocket);
 	public ConnectionColumnsBuilder getConnectionColumnsBuilder(MultiplePairBean<SimpleAssociableChoiceBean> modelInterface,ConnectionItems connectionItems, ConnectionView view);
 
 }

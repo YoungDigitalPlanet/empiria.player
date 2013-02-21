@@ -5,6 +5,8 @@ import static eu.ydp.empiria.player.client.module.components.multiplepair.Multip
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
@@ -43,6 +45,9 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler,
 		ConnectionMoveStartHandler {
 
+	// protected for tests
+	protected boolean STACK_ANDROID_BROWSER = UserAgentChecker.isStackAndroidBrowser(); // NOPMD
+
 	@Inject
 	private ConnectionView view;
 	@Inject
@@ -72,15 +77,20 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private MultiplePairBean<SimpleAssociableChoiceBean> modelInterface;
 	private final KeyValue<Double, Double> lastPoint = new KeyValue<Double, Double>(0d, 0d);
 	private ModuleSocket moduleSocket;
-	private final int approximation = UserAgentChecker.isStackAndroidBrowser() ? 15 : 5;
+	private final int approximation = STACK_ANDROID_BROWSER ? 15 : 5;
 	private boolean locked;
 
 	protected final Map<ConnectionItem, Point> startPositions = new HashMap<ConnectionItem, Point>();
 	protected ConnectionSurfacesManager connectionSurfacesManager;
 	protected ConnectionItems connectionItems;
 	protected ConnectionsBetweenItems connectionsBetweenItems;
-	protected ConnectionStyleChacker connectionStyleChacker;
+	protected ConnectionStyleChecker connectionStyleChacker;
 	protected ConnectionSurface currentSurface = null;
+
+	@PostConstruct
+	public void postConstruct() {
+		view.setDrawFollowTouch(!STACK_ANDROID_BROWSER);
+	}
 
 	@Override
 	public void setBean(MultiplePairBean<SimpleAssociableChoiceBean> modelInterface) {
@@ -151,7 +161,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void checkStylesAndShowError() {
-		connectionStyleChacker.areStylesCorrectThrowsExceptionWhenNot();
+		connectionStyleChacker.areStylesCorrectThrowsExceptionWhenNot(view);
 	}
 
 	private void initColumns() {
@@ -185,6 +195,10 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		return view.asWidget();
 	}
 
+	private void reserveTouchEvent() {
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+	}
+
 	@Override
 	public void onConnectionStart(ConnectionMoveStartEvent event) {
 		if (!locked) {
@@ -193,15 +207,19 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 				tryDisconnectConnection(event.getNativeEvent());
 			} else {
 				reserveTouchEvent();
+				event.getNativeEvent().preventDefault();
 				startDrawLine(item, NORMAL);
 				item.setConnected(true, NORMAL);
+				resetLastStartElement();
 				connectionItemPair.setKey(item);
 			}
 		}
 	}
 
-	private void reserveTouchEvent() {
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+	private void resetLastStartElement() {
+		if (connectionItemPair.getKey() != null) {
+			resetIfNotConnected(getIdentifier(connectionItemPair.getKey()));
+		}
 	}
 
 	@Override
@@ -213,6 +231,17 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 				drawLine(connectionItemPair.getKey(), event.getX(), event.getY());
 			}
 		}
+	}
+
+	@Override
+	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
+		ConnectionItem connectionStartItem = connectionItemPair.getKey();
+		if (!locked && !searchAndConnectItemsPair(event, connectionStartItem)) {
+			if (!tryConnectByClick(connectionStartItem)) {
+				connectionItemPair.setValue(connectionStartItem);
+			}
+		}
+		clearSurface(connectionStartItem);
 	}
 
 	private void updatePointPosition(ConnectionMoveEvent event) {
@@ -242,17 +271,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		return found;
 	}
 
-	@Override
-	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
-		ConnectionItem connectionStartItem = connectionItemPair.getKey();
-		if (!locked && !searchAndConnectItemsPair(event, connectionStartItem)) {
-			if (!tryConnectByClick(connectionStartItem)) {
-				connectionItemPair.setValue(connectionStartItem);
-			}
-		}
-		clearSurface(connectionStartItem);
-	}
-
 	private boolean tryConnectByClick(ConnectionItem connectionStartItem) {
 		boolean mayConnect = connectionItemPair.getValue() != null && !connectionItemPair.getValue().equals(connectionStartItem);
 		if (mayConnect) {
@@ -263,9 +281,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private boolean isTouchEndOnItem(ConnectionMoveEndEvent event, ConnectionItem item) {
-		return item.getOffsetLeft() <= event.getX()
-				&& event.getX() <= item.getOffsetLeft() + item.getWidth()
-				&& item.getOffsetTop() <= event.getY()
+		return item.getOffsetLeft() <= event.getX() && event.getX() <= item.getOffsetLeft() + item.getWidth() && item.getOffsetTop() <= event.getY()
 				&& event.getY() <= item.getOffsetTop() + item.getHeight();
 	}
 

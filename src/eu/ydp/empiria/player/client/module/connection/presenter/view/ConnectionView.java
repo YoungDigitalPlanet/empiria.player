@@ -24,6 +24,8 @@ public interface ConnectionView extends IsWidget ,HasDimensions{
 
 	public void addConnectionMoveStartHandler(ConnectionMoveStartHandler handler);
 
+	public void setDrawFollowTouch(boolean followTouch);
+
 	public Element getElement();
 
 }

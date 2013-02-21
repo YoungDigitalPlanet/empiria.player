@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemViewLef
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemViewRight;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionColumnsBuilder;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionItems;
-import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionStyleChacker;
+import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionStyleChecker;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionsBetweenItems;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
@@ -71,11 +71,6 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	}
 
 	@Override
-	public ConnectionView getConnectionView() {
-		return null;
-	}
-
-	@Override
 	public ConnectionSurface getConnectionSurface(@Assisted("width") Integer width, @Assisted("height") Integer height) {
 		return surfaceProvider.get();
 	}
@@ -99,9 +94,13 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 		return spy(new ConnectionColumnsBuilder(modelInterface, connectionItems, view));
 	}
 
+	ConnectionStyleChecker connectionStyleChecker;
 	@Override
-	public ConnectionStyleChacker getConnectionStyleChacker(StyleSocket styleSocket) {
-		return new ConnectionStyleChacker(styleSocket, xmlParser);
+	public ConnectionStyleChecker getConnectionStyleChacker(StyleSocket styleSocket) {
+		if(connectionStyleChecker == null) {
+			connectionStyleChecker = new ConnectionStyleChecker(styleSocket, xmlParser);
+		}
+		return connectionStyleChecker;
 	}
 
 }

@@ -3,6 +3,8 @@ package eu.ydp.empiria.player.client.util.style;
 import java.util.Map;
 
 import com.google.common.base.Strings;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Style;
 
 public class CssHelper {
 
@@ -19,4 +21,25 @@ public class CssHelper {
 		}
 		return status;
 	}
+
+	public boolean checkIfEquals(Style styles, String attributeName, String attributeValue) {
+		boolean status = false;
+		String value = styles.getProperty(attributeName);
+		if (value != null) {
+			String fromApplication = prepareValue(attributeValue);
+			String fromCss = prepareValue(value);
+			status = fromApplication.equalsIgnoreCase(fromCss);
+		}
+		return status;
+	}
+
+
+	//protected for tests
+	public native Style getComputedStyle(JavaScriptObject element)/*-{
+		try {
+			return $wnd.getComputedStyle(element);
+		} catch (e) {
+			return ob.style;
+		}
+	}-*/;
 }

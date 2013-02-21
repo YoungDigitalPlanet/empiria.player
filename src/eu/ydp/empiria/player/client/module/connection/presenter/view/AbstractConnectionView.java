@@ -8,6 +8,7 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
@@ -27,16 +28,26 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	private final Set<ConnectionMoveHandler> handlers = new HashSet<ConnectionMoveHandler>();
 	private final Set<ConnectionMoveEndHandler> endMoveHandlers = new HashSet<ConnectionMoveEndHandler>();
 	private final Set<ConnectionMoveStartHandler> startMoveHandlers = new HashSet<ConnectionMoveStartHandler>();
-	protected final EventsBus eventsBus;
-	private final PositionHelper positionHelper;
-	private final static boolean notMobileBrowser = !UserAgentChecker.isMobileUserAgent();
-	protected final TouchRecognitionFactory touchRecognitionFactory;
 
-	public AbstractConnectionView(EventsBus eventsBus, PositionHelper positionHelper, TouchRecognitionFactory touchRecognitionFactory) {
-		this.eventsBus = eventsBus;
-		this.positionHelper = positionHelper;
-		this.touchRecognitionFactory = touchRecognitionFactory;
-		createAndBindUi();
+	@Inject
+	protected EventsBus eventsBus;
+	@Inject
+	private PositionHelper positionHelper;
+
+	private final static boolean NOT_MOBILE_BROWSER = !UserAgentChecker.isMobileUserAgent();
+
+	@Inject
+	protected TouchRecognitionFactory touchRecognitionFactory;
+
+	private boolean drawFollowTouch;
+
+	@Override
+	public void setDrawFollowTouch(boolean followTouch) {
+		this.drawFollowTouch = followTouch;
+	}
+
+	public boolean isDrawFollowTouch() {
+		return drawFollowTouch;
 	}
 
 	@Override
@@ -79,7 +90,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 
 	public void onTouchMove(NativeEvent event) {
 		if (getView() != null) {
-			if(notMobileBrowser) {
+			if (NOT_MOBILE_BROWSER) {
 				event.preventDefault();
 			}
 			callOnMoveHandlers(new ConnectionMoveEvent(getPositionX(event), getPositionY(event), event));
@@ -134,9 +145,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 		return getOffsetWidth();
 	}
 
-	public abstract void createAndBindUi();
-
-	public abstract FlowPanel getView();
+	protected abstract FlowPanel getView();
 
 	@Override
 	public abstract void addFirstColumnItem(ConnectionItem item);
