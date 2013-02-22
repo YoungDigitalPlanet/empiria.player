@@ -62,7 +62,7 @@ public class ConnectionStyleChecker {
 	}
 
 
-	public void areStylesCorrectThrowsExceptionWhenNot(IsWidget widget) {
+	public void areStylesCorrectThrowsExceptionWhenNot(IsWidget widget) throws CssStyleException {
 		checkStylesFromCssParser();
 		checkNativeStylesForWidgetHierarchy(widget);
 	}
@@ -100,10 +100,6 @@ public class ConnectionStyleChecker {
 		}
 		return allStyles;
 	}
-
-
-
-
 
 	private void checkNativeStyles(List<Style> allStyles) {
 		for (Style style : allStyles) {

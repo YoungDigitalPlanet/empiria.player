@@ -156,12 +156,12 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		addConnectionHandlers();
 		addResizeHandler();
 		initColumns();
-		checkStylesAndShowError();
+		addCheckStyleHandler();
 
 	}
 
-	private void checkStylesAndShowError() {
-		connectionStyleChacker.areStylesCorrectThrowsExceptionWhenNot(view);
+	private void addCheckStyleHandler() {
+		view.asWidget().addAttachHandler(new ConnectionStyleCheckerHandler(view, connectionStyleChacker));
 	}
 
 	private void initColumns() {

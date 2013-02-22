@@ -34,12 +34,11 @@ public class CssHelper {
 	}
 
 
-	//protected for tests
 	public native Style getComputedStyle(JavaScriptObject element)/*-{
 		try {
 			return $wnd.getComputedStyle(element);
 		} catch (e) {
-			return ob.style;
+			return element.style;
 		}
 	}-*/;
 }
