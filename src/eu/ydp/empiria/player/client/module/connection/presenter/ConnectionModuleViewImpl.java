@@ -38,7 +38,6 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
-import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
@@ -73,9 +72,9 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
-	private final KeyValue<ConnectionItem, ConnectionItem> connectionItemPair = new KeyValue<ConnectionItem, ConnectionItem>();
+	private final ConnectionPairEntry<ConnectionItem, ConnectionItem> connectionItemPair = new ConnectionPairEntry<ConnectionItem, ConnectionItem>();
 	private MultiplePairBean<SimpleAssociableChoiceBean> modelInterface;
-	private final KeyValue<Double, Double> lastPoint = new KeyValue<Double, Double>(0d, 0d);
+	private final ConnectionPairEntry<Double, Double> lastPoint = new ConnectionPairEntry<Double, Double>(0d, 0d);
 	private ModuleSocket moduleSocket;
 	private final int approximation = STACK_ANDROID_BROWSER ? 15 : 5;
 	private boolean locked;
@@ -131,7 +130,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	public void disconnect(String sourceIdentifier, String targetIdentifier, boolean userAction) {
 		if (connectionItems.isIdentifiersCorrect(sourceIdentifier, targetIdentifier)) {
-			KeyValue<String, String> keyValue = new KeyValue<String, String>(sourceIdentifier, targetIdentifier);
+			ConnectionPairEntry<String, String> keyValue = new ConnectionPairEntry<String, String>(sourceIdentifier, targetIdentifier);
 			connectionSurfacesManager.clearConnectionSurface(keyValue);
 			resetIfNotConnected(sourceIdentifier);
 			resetIfNotConnected(targetIdentifier);
@@ -211,51 +210,51 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 				startDrawLine(item, NORMAL);
 				item.setConnected(true, NORMAL);
 				resetLastStartElement();
-				connectionItemPair.setKey(item);
+				connectionItemPair.setSource(item);
 			}
 		}
 	}
 
 	private void resetLastStartElement() {
-		if (connectionItemPair.getKey() != null) {
-			resetIfNotConnected(getIdentifier(connectionItemPair.getKey()));
+		if (connectionItemPair.getSource() != null) {
+			resetIfNotConnected(getIdentifier(connectionItemPair.getSource()));
 		}
 	}
 
 	@Override
 	public void onConnectionMove(ConnectionMoveEvent event) {
-		if (!locked && startPositions.containsKey(connectionItemPair.getKey())) {
+		if (!locked && startPositions.containsKey(connectionItemPair.getSource())) {
 			event.preventDefault();
 			if (wasMoved(event)) {
 				updatePointPosition(event);
-				drawLine(connectionItemPair.getKey(), event.getX(), event.getY());
+				drawLine(connectionItemPair.getSource(), event.getX(), event.getY());
 			}
 		}
 	}
 
 	@Override
 	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
-		ConnectionItem connectionStartItem = connectionItemPair.getKey();
+		ConnectionItem connectionStartItem = connectionItemPair.getSource();
 		if (!locked && !searchAndConnectItemsPair(event, connectionStartItem)) {
 			if (!tryConnectByClick(connectionStartItem)) {
-				connectionItemPair.setValue(connectionStartItem);
+				connectionItemPair.setTarget(connectionStartItem);
 			}
 		}
 		clearSurface(connectionStartItem);
 	}
 
 	private void updatePointPosition(ConnectionMoveEvent event) {
-		lastPoint.setKey(event.getX());
-		lastPoint.setValue(event.getY());
+		lastPoint.setSource(event.getX());
+		lastPoint.setTarget(event.getY());
 	}
 
 	private boolean wasMoved(ConnectionMoveEvent event) {
-		return Math.abs(lastPoint.getKey() - event.getX()) > approximation || Math.abs(lastPoint.getValue() - event.getY()) > approximation;
+		return Math.abs(lastPoint.getSource() - event.getX()) > approximation || Math.abs(lastPoint.getTarget() - event.getY()) > approximation;
 	}
 
 	protected void resetConnectionMadeByTouch() {
-		connectionItemPair.setKey(null);
-		connectionItemPair.setValue(null);
+		connectionItemPair.setSource(null);
+		connectionItemPair.setTarget(null);
 	}
 
 	private boolean searchAndConnectItemsPair(ConnectionMoveEndEvent event, ConnectionItem connectionStartItem) {
@@ -272,9 +271,9 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private boolean tryConnectByClick(ConnectionItem connectionStartItem) {
-		boolean mayConnect = connectionItemPair.getValue() != null && !connectionItemPair.getValue().equals(connectionStartItem);
+		boolean mayConnect = connectionItemPair.getTarget() != null && !connectionItemPair.getTarget().equals(connectionStartItem);
 		if (mayConnect) {
-			connect(connectionStartItem, connectionItemPair.getValue(), NORMAL, true);
+			connect(connectionStartItem, connectionItemPair.getTarget(), NORMAL, true);
 			resetConnectionMadeByTouch();
 		}
 		return mayConnect;
@@ -318,8 +317,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		return item.getBean().getIdentifier();
 	}
 
-	protected KeyValue<String, String> getConnectionPair(ConnectionItem sourceItem, ConnectionItem targetItem) {
-		return new KeyValue<String, String>(getIdentifier(sourceItem), getIdentifier(targetItem));
+	protected ConnectionPairEntry<String, String> getConnectionPair(ConnectionItem sourceItem, ConnectionItem targetItem) {
+		return new ConnectionPairEntry<String, String>(getIdentifier(sourceItem), getIdentifier(targetItem));
 	}
 
 	protected void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, MultiplePairModuleConnectType type, boolean userAction) {
@@ -327,11 +326,11 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		sourceItem.reset();
 		sourceItem.setConnected(true, type);
 		targetItem.setConnected(true, type);
-		KeyValue<String, String> connectionPair = getConnectionPair(sourceItem, targetItem);
+		ConnectionPairEntry<String, String> connectionPair = getConnectionPair(sourceItem, targetItem);
 		if (connectionSurfacesManager.containsSurface(connectionPair)) {
 			connectionSurfacesManager.removeSurfaceFromParent(connectionPair);
-			resetIfNotConnected(connectionPair.getKey());
-			resetIfNotConnected(connectionPair.getValue());
+			resetIfNotConnected(connectionPair.getSource());
+			resetIfNotConnected(connectionPair.getTarget());
 		} else {
 			connectionSurfacesManager.putSurface(connectionPair, currentSurface);
 			connectionEventHandler.fireConnectEvent(PairConnectEventTypes.CONNECTED, getIdentifier(sourceItem), getIdentifier(targetItem), userAction);
@@ -354,14 +353,14 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	protected void tryDisconnectConnection(NativeEvent event) {
 		Point clickPoint = getClicktPoint(event);
-		KeyValue<String, String> pointOnPath = connectionSurfacesManager.findPointOnPath(clickPoint);
+		ConnectionPairEntry<String, String> pointOnPath = connectionSurfacesManager.findPointOnPath(clickPoint);
 		disconnectAndPreventDefaultBehaviorIfPointNotNull(event, pointOnPath);
 	}
 
-	private void disconnectAndPreventDefaultBehaviorIfPointNotNull(NativeEvent event, KeyValue<String, String> pointOnPath) {
+	private void disconnectAndPreventDefaultBehaviorIfPointNotNull(NativeEvent event, ConnectionPairEntry<String, String> pointOnPath) {
 		if (pointOnPath != null) {
 			connectionSurfacesManager.removeSurfaceFromParent(pointOnPath);
-			disconnect(pointOnPath.getKey(), pointOnPath.getValue(), true);
+			disconnect(pointOnPath.getSource(), pointOnPath.getTarget(), true);
 			event.preventDefault();
 		}
 	}

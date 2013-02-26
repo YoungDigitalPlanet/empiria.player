@@ -56,7 +56,6 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 import eu.ydp.empiria.player.client.util.style.CssHelper;
-import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
@@ -221,7 +220,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		Mockito.verify(connectionEventHandler).fireConnectEvent(PairConnectEventTypes.CONNECTED, source, target, false);
 		testObject.disconnect(source, target);
 		Mockito.verify(connectionEventHandler).fireConnectEvent(PairConnectEventTypes.DISCONNECTED, source, target, false);
-		verify(instance.connectionSurfacesManager).clearConnectionSurface(Mockito.any(KeyValue.class));
+		verify(instance.connectionSurfacesManager).clearConnectionSurface(Mockito.any(ConnectionPairEntry.class));
 	}
 
 	@Test
@@ -320,7 +319,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 		testObject.disconnect(item1.getBean().getIdentifier(), item2.getBean().getIdentifier());
 		assertTrue(testObject.connectionSurfacesManager.hasConnections(item1.getBean().getIdentifier()));
-		verify(item2, times(1)).reset();
+		verify(item2, times(2)).reset();
 		verify(item1, times(1)).reset();
 
 	}

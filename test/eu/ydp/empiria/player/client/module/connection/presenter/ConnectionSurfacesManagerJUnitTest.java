@@ -33,7 +33,6 @@ import eu.ydp.empiria.player.client.gin.factory.ConnectionSurfacesManagerFactory
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.position.Point;
-import eu.ydp.gwtutil.client.collections.KeyValue;
 
 @SuppressWarnings("PMD")
 public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
@@ -79,7 +78,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 	private void putConnections(List<ConnectionSurface> connectionSurfaces) {
 		int index = 0;
 		for (ConnectionSurface surface : connectionSurfaces) {
-			instance.putSurface(new KeyValue<String, String>(idList.get(index), idList.get(index)), surface);
+			instance.putSurface(new ConnectionPairEntry<String, String>(idList.get(index), idList.get(index)), surface);
 			index++;
 		}
 	}
@@ -121,7 +120,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 
 		int index = 0;
 		for (ConnectionSurface surface : connectionSurfaces) {
-			instance.putSurface(new KeyValue<String, String>(idList.get(index) + index, idList.get(index)), surface);
+			instance.putSurface(new ConnectionPairEntry<String, String>(idList.get(index) + index, idList.get(index)), surface);
 			index++;
 		}
 
@@ -135,7 +134,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 	public void testPutSurface_getOrCreateSurfaceShouldReturnNewSurface(){
 		List<ConnectionSurface> connectionSurfaces = getConnectionSurfaces();
 		ConnectionSurface surface = connectionSurfaces.get(0);
-		instance.putSurface(new KeyValue<String, String>(idList.get(0), "test"), surface);
+		instance.putSurface(new ConnectionPairEntry<String, String>(idList.get(0), "test"), surface);
 
 		ConnectionSurface newSurface = instance.getOrCreateSurface(idList.get(0));
 
@@ -156,7 +155,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		List<ConnectionSurface> connectionSurfaces = getConnectionSurfaces();
 		putConnections(connectionSurfaces);
 		for (String id : idList) {
-			instance.clearConnectionSurface(new KeyValue<String, String>(id, id));
+			instance.clearConnectionSurface(new ConnectionPairEntry<String, String>(id, id));
 		}
 
 		for (ConnectionSurface surface : connectionSurfaces) {
@@ -165,7 +164,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		}
 
 		for (String id : idList) {
-			assertFalse(instance.containsSurface(new KeyValue<String, String>(id, id)));
+			assertFalse(instance.containsSurface(new ConnectionPairEntry<String, String>(id, id)));
 		}
 	}
 
@@ -174,7 +173,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		List<ConnectionSurface> connectionSurfaces = getConnectionSurfaces();
 		putConnections(connectionSurfaces);
 		for (String id : idList) {
-			instance.clearConnectionSurface(new KeyValue<String, String>(id + "2", id));
+			instance.clearConnectionSurface(new ConnectionPairEntry<String, String>(id + "2", id));
 		}
 
 		for (ConnectionSurface surface : connectionSurfaces) {
@@ -183,7 +182,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		}
 
 		for (String id : idList) {
-			assertTrue(instance.containsSurface(new KeyValue<String, String>(id, id)));
+			assertTrue(instance.containsSurface(new ConnectionPairEntry<String, String>(id, id)));
 		}
 	}
 
@@ -191,7 +190,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 	public void testFindPointOnPathNoMatch() {
 		List<ConnectionSurface> connectionSurfaces = getConnectionSurfaces();
 		putConnections(connectionSurfaces);
-		KeyValue<String, String> findPointOnPath = instance.findPointOnPath(new Point(20, 20));
+		ConnectionPairEntry<String, String> findPointOnPath = instance.findPointOnPath(new Point(20, 20));
 		assertNull(findPointOnPath);
 	}
 
@@ -204,10 +203,10 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		doReturn(true).when(connectionSurface).isPointOnPath(Mockito.eq(point.getX()), Mockito.eq(point.getY()), Mockito.anyInt());
 
 		// test
-		KeyValue<String, String> findPointOnPath = instance.findPointOnPath(point);
+		ConnectionPairEntry<String, String> findPointOnPath = instance.findPointOnPath(point);
 		assertNotNull(findPointOnPath);
-		assertEquals(findPointOnPath.getKey(), idList.get(2));
-		assertEquals(findPointOnPath.getValue(), idList.get(2));
+		assertEquals(findPointOnPath.getSource(), idList.get(2));
+		assertEquals(findPointOnPath.getTarget(), idList.get(2));
 
 	}
 
@@ -217,21 +216,21 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		putConnections(connectionSurfaces);
 
 		for (String id : idList) {
-			assertTrue(instance.containsSurface(new KeyValue<String, String>(id, id)));
+			assertTrue(instance.containsSurface(new ConnectionPairEntry<String, String>(id, id)));
 		}
 	}
 
 	@Test
 	public void testContainsSurfaceNoMatch() {
 		for (String id : idList) {
-			assertFalse(instance.containsSurface(new KeyValue<String, String>(id, id)));
+			assertFalse(instance.containsSurface(new ConnectionPairEntry<String, String>(id, id)));
 		}
 
 		List<ConnectionSurface> connectionSurfaces = getConnectionSurfaces();
 		putConnections(connectionSurfaces);
 
 		for (String id : idList) {
-			assertFalse(instance.containsSurface(new KeyValue<String, String>(id + id, id)));
+			assertFalse(instance.containsSurface(new ConnectionPairEntry<String, String>(id + id, id)));
 		}
 	}
 
@@ -241,7 +240,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		putConnections(connectionSurfaces);
 
 		for (String id : idList) {
-			instance.removeSurfaceFromParent(new KeyValue<String, String>(id, id));
+			instance.removeSurfaceFromParent(new ConnectionPairEntry<String, String>(id, id));
 		}
 
 		for (ConnectionSurface surface : connectionSurfaces) {
@@ -255,7 +254,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		putConnections(connectionSurfaces);
 
 		for (String id : idList) {
-			instance.removeSurfaceFromParent(new KeyValue<String, String>(id + id, id));
+			instance.removeSurfaceFromParent(new ConnectionPairEntry<String, String>(id + id, id));
 		}
 
 		for (ConnectionSurface surface : connectionSurfaces) {

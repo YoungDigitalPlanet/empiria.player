@@ -10,7 +10,6 @@ import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.position.Point;
-import eu.ydp.gwtutil.client.collections.KeyValue;
 
 public class ConnectionSurfacesManager {
 
@@ -19,7 +18,7 @@ public class ConnectionSurfacesManager {
 	@Inject
 	private ConnectionModuleFactory connectionFactory;
 
-	protected final Map<KeyValue<String, String>, ConnectionSurface> connectedSurfaces = new HashMap<KeyValue<String, String>, ConnectionSurface>();
+	protected final Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces = new HashMap<ConnectionPairEntry<String, String>, ConnectionSurface>();
 	protected final Map<String, ConnectionSurface> surfaces = new HashMap<String, ConnectionSurface>();
 
 	private final HasDimensions view;
@@ -38,8 +37,8 @@ public class ConnectionSurfacesManager {
 
 	public boolean hasConnections(String identifier) {
 		boolean hasConnection = false;
-		for (KeyValue<String, String> connection : connectedSurfaces.keySet()) {
-			if (identifier.equals(connection.getKey()) || identifier.equals(connection.getValue())) {
+		for (ConnectionPairEntry<String, String> connection : connectedSurfaces.keySet()) {
+			if (identifier.equals(connection.getSource()) || identifier.equals(connection.getTarget())) {
 				hasConnection = true;
 				break;
 			}
@@ -47,7 +46,7 @@ public class ConnectionSurfacesManager {
 		return hasConnection;
 	}
 
-	public void clearConnectionSurface(KeyValue<String, String> keyValue) {
+	public void clearConnectionSurface(ConnectionPairEntry<String, String> keyValue) {
 		ConnectionSurface connectionSurface = connectedSurfaces.get(keyValue);
 		if (connectionSurface != null) {
 			connectionSurface.clear();
@@ -65,27 +64,27 @@ public class ConnectionSurfacesManager {
 		return surface;
 	}
 
-	public KeyValue<String, String> findPointOnPath(Point point) {
-		KeyValue<String, String> foundPoint = null;
-		for (Map.Entry<KeyValue<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
+	public ConnectionPairEntry<String, String> findPointOnPath(Point point) {
+		ConnectionPairEntry<String, String> foundPoint = null;
+		for (Map.Entry<ConnectionPairEntry<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
 			if (entry.getValue().isPointOnPath(point.getX(), point.getY(), APPROXIMATION)) {
-				foundPoint = new KeyValue<String, String>(entry.getKey().getKey(), entry.getKey().getValue());// NOPMD
+				foundPoint = new ConnectionPairEntry<String, String>(entry.getKey().getSource(), entry.getKey().getTarget());// NOPMD
 				break;
 			}
 		}
 		return foundPoint;
 	}
 
-	public void putSurface(KeyValue<String, String> keyValue, ConnectionSurface surface) {
+	public void putSurface(ConnectionPairEntry<String, String> keyValue, ConnectionSurface surface) {
 		connectedSurfaces.put(keyValue, surface);
-		surfaces.remove(keyValue.getKey());
+		surfaces.remove(keyValue.getSource());
 	}
 
-	public boolean containsSurface(KeyValue<String, String> keyValue) {
+	public boolean containsSurface(ConnectionPairEntry<String, String> keyValue) {
 		return connectedSurfaces.containsKey(keyValue);
 	}
 
-	public void removeSurfaceFromParent(KeyValue<String, String> keyValue) {
+	public void removeSurfaceFromParent(ConnectionPairEntry<String, String> keyValue) {
 		if (containsSurface(keyValue)) {
 			connectedSurfaces.get(keyValue).removeFromParent();
 		}
