@@ -4,7 +4,6 @@ import static eu.ydp.empiria.player.client.controller.variables.objects.BaseType
 import static eu.ydp.empiria.player.client.controller.variables.objects.BaseType.INTEGER;
 import static eu.ydp.empiria.player.client.controller.variables.objects.Cardinality.MULTIPLE;
 import static eu.ydp.empiria.player.client.controller.variables.objects.Cardinality.SINGLE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.CHECKS;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONECHANGES;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONEHISTORY;
@@ -13,9 +12,10 @@ import static eu.ydp.empiria.player.client.controller.variables.processor.item.D
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTMISTAKEN;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.MISTAKES;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.PREVIOUS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.RESET;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.SHOW_ANSWERS;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.CHECKS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.RESET;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.SHOW_ANSWERS;
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;

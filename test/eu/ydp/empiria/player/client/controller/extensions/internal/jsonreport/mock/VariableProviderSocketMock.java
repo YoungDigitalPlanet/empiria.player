@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.controller.feedback.OutcomeCreator;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
 
 public class VariableProviderSocketMock implements VariableProviderSocket {
 	
@@ -52,10 +53,10 @@ public class VariableProviderSocketMock implements VariableProviderSocket {
 	}
 	
 	private void addHintVariables() {
-		variables.put(DefaultVariableProcessor.CHECKS, outcomeCreator.createChecksOutcome(checks));
+		variables.put(FlowActivityVariablesProcessor.CHECKS, outcomeCreator.createChecksOutcome(checks));
 		variables.put(DefaultVariableProcessor.MISTAKES, outcomeCreator.createMistakesOutcome(mistakes));
-		variables.put(DefaultVariableProcessor.RESET, outcomeCreator.createResetOutcome(reset));	
-		variables.put(DefaultVariableProcessor.SHOW_ANSWERS, outcomeCreator.createShowAnswersOutcome(showAnswers));	
+		variables.put(FlowActivityVariablesProcessor.RESET, outcomeCreator.createResetOutcome(reset));	
+		variables.put(FlowActivityVariablesProcessor.SHOW_ANSWERS, outcomeCreator.createShowAnswersOutcome(showAnswers));	
 	}
 
 	@Override

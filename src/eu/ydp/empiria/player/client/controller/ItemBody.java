@@ -18,7 +18,6 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
@@ -82,15 +81,6 @@ public class ItemBody implements WidgetWorkflowListener {
 
 		for (IModule module : modules){
 			moduleHandlerManager.registerModule(module);
-		}
-
-		for (IModule currModule : modules) {
-			if (currModule instanceof IUniqueModule){
-				Response currResponse = moduleSocket.getResponse( ((IUniqueModule) currModule).getIdentifier() );
-				if (currResponse != null) {
-					currResponse.setModuleAdded();
-				}
-			}
 		}
 		
 		return itemBodyModule.getView();

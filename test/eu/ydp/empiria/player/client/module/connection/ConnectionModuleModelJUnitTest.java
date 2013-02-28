@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseNodeParser;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.xml.XMLParser;
@@ -18,6 +19,7 @@ import eu.ydp.gwtutil.xml.XMLParser;
 public class ConnectionModuleModelJUnitTest {
 
 	private ConnectionModuleModel connectionModuleModel;
+	private ResponseNodeParser responseNodeParser = new ResponseNodeParser();
 
 	@Before
 	public void init() {
@@ -33,7 +35,7 @@ public class ConnectionModuleModelJUnitTest {
 		builder.append("		</correctResponse>");
 		builder.append("</responseDeclaration>");
 		
-		return new Response(XMLParser.parse(builder.toString()).getDocumentElement());
+		return responseNodeParser.parseResponseFromNode((XMLParser.parse(builder.toString()).getDocumentElement()));
 	}
 
 	@Test

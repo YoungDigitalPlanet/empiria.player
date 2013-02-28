@@ -35,7 +35,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
@@ -171,7 +170,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		@Override
 		protected Response getResponse() {
 			Response response = mock(Response.class);
-			response.groups = new HashMap<String, List<Integer>>();
+			response.groups = Lists.newArrayList();
 			response.correctAnswers = new CorrectAnswers();
 			response.correctAnswers.add(new ResponseValue("13"));
 			response.correctAnswers.add(new ResponseValue("1322"));

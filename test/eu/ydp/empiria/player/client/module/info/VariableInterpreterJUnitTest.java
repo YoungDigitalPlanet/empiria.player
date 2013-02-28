@@ -1,10 +1,7 @@
 package eu.ydp.empiria.player.client.module.info;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.CHECKS;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.MISTAKES;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.RESET;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.SHOW_ANSWERS;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -26,6 +23,7 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSes
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
 
 public class VariableInterpreterJUnitTest extends AbstractTestBase{
 
@@ -120,10 +118,10 @@ public class VariableInterpreterJUnitTest extends AbstractTestBase{
 		
 		when(itemVariableSocketPage.getVariableValue(TODO)).thenReturn(outcomeCreator.createTodoOutcome(5));
 		when(itemVariableSocketPage.getVariableValue(DONE)).thenReturn(outcomeCreator.createDoneOutcome(4));
-		when(itemVariableSocketPage.getVariableValue(CHECKS)).thenReturn(outcomeCreator.createChecksOutcome(6));
+		when(itemVariableSocketPage.getVariableValue(FlowActivityVariablesProcessor.CHECKS)).thenReturn(outcomeCreator.createChecksOutcome(6));
 		when(itemVariableSocketPage.getVariableValue(MISTAKES)).thenReturn(outcomeCreator.createMistakesOutcome(3));
-		when(itemVariableSocketPage.getVariableValue(SHOW_ANSWERS)).thenReturn(outcomeCreator.createShowAnswersOutcome(2));
-		when(itemVariableSocketPage.getVariableValue(RESET)).thenReturn(outcomeCreator.createResetOutcome(10));
+		when(itemVariableSocketPage.getVariableValue(FlowActivityVariablesProcessor.SHOW_ANSWERS)).thenReturn(outcomeCreator.createShowAnswersOutcome(2));
+		when(itemVariableSocketPage.getVariableValue(FlowActivityVariablesProcessor.RESET)).thenReturn(outcomeCreator.createResetOutcome(10));
 		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocketPage);
 		
 		return itemSessionDataSocket;

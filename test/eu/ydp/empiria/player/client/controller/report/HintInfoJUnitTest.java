@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.feedback.OutcomeCreator;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
 
 public class HintInfoJUnitTest extends AbstractTestBase{
 
@@ -31,10 +32,10 @@ public class HintInfoJUnitTest extends AbstractTestBase{
 		VariableProviderSocket variableProvider = mock(VariableProviderSocket.class);
 		OutcomeCreator crator = new OutcomeCreator();
 		
-		when(variableProvider.getVariableValue(DefaultVariableProcessor.CHECKS)).thenReturn(crator.createTodoOutcome(3));
+		when(variableProvider.getVariableValue(FlowActivityVariablesProcessor.CHECKS)).thenReturn(crator.createTodoOutcome(3));
 		when(variableProvider.getVariableValue(DefaultVariableProcessor.MISTAKES)).thenReturn(crator.createDoneOutcome(4));
-		when(variableProvider.getVariableValue(DefaultVariableProcessor.SHOW_ANSWERS)).thenReturn(crator.createErrorsOutcome(5));
-		when(variableProvider.getVariableValue(DefaultVariableProcessor.RESET)).thenReturn(crator.createErrorsOutcome(6));
+		when(variableProvider.getVariableValue(FlowActivityVariablesProcessor.SHOW_ANSWERS)).thenReturn(crator.createErrorsOutcome(5));
+		when(variableProvider.getVariableValue(FlowActivityVariablesProcessor.RESET)).thenReturn(crator.createErrorsOutcome(6));
 		
 		return variableProvider;
 	}

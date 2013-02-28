@@ -12,9 +12,9 @@ public enum Evaluate {
 		Evaluate evaluate = DEFAULT;
 		
 		if (key != null) { 
-			if (key.toLowerCase().compareTo("user") == 0) {
+			if (key.equalsIgnoreCase(USER.toString())) {
 				evaluate = USER;
-			} else if (key.toLowerCase().compareTo("correct") == 0) {
+			} else if (key.equalsIgnoreCase(CORRECT.toString())) {
 				evaluate = CORRECT;
 			}
 		}

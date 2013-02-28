@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.controller.report;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.CHECKS;
 import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.MISTAKES;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.RESET;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.SHOW_ANSWERS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.CHECKS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.RESET;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.SHOW_ANSWERS;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;

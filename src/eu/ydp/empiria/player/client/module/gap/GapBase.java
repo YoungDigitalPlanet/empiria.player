@@ -7,14 +7,13 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 
 import java.util.Map;
 
+import com.google.common.base.Strings;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
-import com.google.common.base.Strings;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
@@ -231,7 +230,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 			widthBindingIdentifier = getBindindIdentifier(moduleElement);
 		} else if (widthMode == GapWidthMode.GAP){
 			if (getResponse().groups.size() > 0) {
-				widthBindingIdentifier = new DefaultBindingGroupIdentifier(getResponse().groups.keySet().iterator().next());
+				widthBindingIdentifier = new DefaultBindingGroupIdentifier(getResponse().groups.get(0));
 			} else {
 				int longestAnswer = getLongestAnswerLength();
 				presenter.setWidth((longestAnswer * getFontSize()), Unit.PX);

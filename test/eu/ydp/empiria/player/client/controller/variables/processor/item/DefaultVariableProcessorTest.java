@@ -21,7 +21,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		HashMap<String, Response> responses = new HashMap<String, Response>();
 		HashMap<String, Outcome> outcomes = new HashMap<String, Outcome>();
 
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertTrue(outcomes.containsKey("TODO"));
 		assertTrue(outcomes.containsKey("DONEHISTORY"));
@@ -44,7 +44,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		assertTrue(outcomes.containsKey("DONE"));
 		assertTrue(outcomes.containsKey("TODO"));
 		assertTrue(outcomes.containsKey("DONEHISTORY"));
@@ -76,7 +76,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
 		proc.processResponseVariables(responses, outcomes, true, false);
@@ -95,7 +95,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceB");
 		proc.processResponseVariables(responses, outcomes, true, false);
@@ -114,7 +114,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceB");
@@ -134,7 +134,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceC");
@@ -154,7 +154,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceB");
@@ -175,7 +175,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceC");
@@ -196,7 +196,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
 		proc.processResponseVariables(responses, outcomes, true, false);
@@ -215,7 +215,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceC");
@@ -236,7 +236,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceC");
 		resp.values.add("ChoiceD");
@@ -257,7 +257,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceA");
 		resp.values.add("ChoiceB");
@@ -278,7 +278,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp.setModuleAdded();
 		responses.put("RESPONSE", resp);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp.values.add("ChoiceC");
 		resp.values.add("ChoiceB");
@@ -304,7 +304,7 @@ public class DefaultVariableProcessorTest extends GWTTestCase {
 		resp2.setModuleAdded();
 		responses.put("RESPONSE2", resp2);
 		
-		proc.ensureVariables(responses, outcomes);
+		proc.initializeOutcomeVariables(responses, outcomes);
 		
 		resp1.values.add("ChoiceA");
 		resp2.values.add("ChoiceB");

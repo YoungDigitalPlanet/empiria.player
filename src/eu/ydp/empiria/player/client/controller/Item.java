@@ -32,8 +32,12 @@ import eu.ydp.empiria.player.client.controller.variables.manager.BindableVariabl
 import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseNodeParser;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.OutcomeVariablesInitializer;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.ProcessingMode;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.VariableProcessor;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.VariableProcessorTemplate;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -58,7 +62,7 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 		protected Panel scorePanel;
 
-		protected VariableProcessor variableProcessor;
+		private DefaultVariableProcessor variableProcessor;
 
 		private ModuleFeedbackProcessor moduleFeedbackProcessor;
 
@@ -79,13 +83,16 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 		private XmlData xmlData;
 
 		private InteractionEventsListener interactionEventsListener;
+		private final OutcomeVariablesInitializer outcomeVariablesInitializer;
+		private final FlowActivityVariablesProcessor flowActivityVariablesProcessor;
 
 		@Inject
 		public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options,
 					@Assisted InteractionEventsListener interactionEventsListener, @Assisted StyleSocket ss,
 					@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables,
 					@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory,
-					ModuleFeedbackProcessor moduleFeedbackProcessor) {
+					ModuleFeedbackProcessor moduleFeedbackProcessor, DefaultVariableProcessor variableProcessor, 
+					OutcomeVariablesInitializer outcomeVariablesInitializer, FlowActivityVariablesProcessor flowActivityVariablesProcessor) {
 
 			this.modulesRegistrySocket = mrs;
 			this.options = options;
@@ -93,22 +100,23 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 			styleSocket = ss;
 			this.moduleFeedbackProcessor = moduleFeedbackProcessor;
+			this.outcomeVariablesInitializer = outcomeVariablesInitializer;
+			this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 
 			Node rootNode = xmlData.getDocument().getElementsByTagName("assessmentItem").item(0);
 			Node itemBodyNode = xmlData.getDocument().getElementsByTagName("itemBody").item(0);
 
-			variableProcessor = VariableProcessorTemplate.fromNode(xmlData.getDocument().getElementsByTagName("variableProcessing"));
-
+			final ResponseNodeParser responseNodeParser = new ResponseNodeParser();
 			responseManager = new VariableManager<Response>(xmlData.getDocument().getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {
 				@Override
 				public Response createVariable(Node node) {
-					return new Response(node);
+					return responseNodeParser.parseResponseFromNode(node);
 				}
 			});
 			this.interactionEventsListener = interactionEventsListener;
 			outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
 
-			variableProcessor.ensureVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
+			outcomeVariablesInitializer.initializeOutcomeVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
 
 			styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
 
@@ -225,10 +233,24 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 		}
 
 		public void process(boolean userInteract, boolean isReset, IUniqueModule sender) {
-			variableProcessor.processResponseVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), userInteract, isReset);
+			ProcessingMode processingMode = findCorrectProcessingMode(userInteract, isReset);
+			
+			variableProcessor.processResponseVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), processingMode);
 			if (userInteract) {
 				moduleFeedbackProcessor.processFeedbacks(outcomeManager.getVariablesMap(), sender);
 			}
+		}
+
+		private ProcessingMode findCorrectProcessingMode(boolean userInteract, boolean isReset) {
+			ProcessingMode processingMode;
+			if(userInteract){
+				processingMode = ProcessingMode.USER_INTERACT;
+			}else if (isReset){
+				processingMode = ProcessingMode.RESET;
+			}else{
+				processingMode = ProcessingMode.NOT_USER_INTERACT;
+			}
+			return processingMode;
 		}
 
 		public void handleFlowActivityEvent(JavaScriptObject event) {
@@ -260,7 +282,7 @@ import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 				lockGroup(false, groupIdentifier);
 			}
 
-			variableProcessor.processFlowActivityVariables(outcomeManager.getVariablesMap(), event);
+			flowActivityVariablesProcessor.processFlowActivityVariables(outcomeManager.getVariablesMap(), event);
 		}
 
 		public String getTitle() {

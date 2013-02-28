@@ -6,6 +6,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -13,10 +14,15 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.google.gwt.dev.util.collect.HashMap;
-import com.google.gwt.xml.client.Element;
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
+import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
+import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
@@ -28,7 +34,6 @@ import eu.ydp.empiria.player.client.module.connection.structure.MatchInteraction
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
-import eu.ydp.gwtutil.xml.XMLParser;
 
 @SuppressWarnings("PMD")
 public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<MatchInteractionBean> {
@@ -207,7 +212,7 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 	@Before
 	public void init() {
 		connectionModulePresenter = spy(new ConnectionModulePresenterImpl());
-		connectionModuleModel = spy(new ConnectionModuleModel(new Response(mockResponseElement()), mock(ResponseModelChangeListener.class)));
+		connectionModuleModel = spy(new ConnectionModuleModel(createResponseObject(), mock(ResponseModelChangeListener.class)));
 		connectionModulePresenter.setModel(connectionModuleModel);
 		MatchInteractionBean bean = createBeanFromXMLString(mockStructure(null, null));
 		connectionModulePresenter.setBean(bean);
@@ -215,15 +220,32 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		connectionModulePresenter.setModuleView(moduleView);
 	}
 
-	private Element mockResponseElement() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("<responseDeclaration baseType=\"directedPair\" cardinality=\"multiple\" evaluate=\"user\" identifier=\"CONNECTION_RESPONSE_1\">");
-		builder.append("		<correctResponse>");
-		builder.append("			<value>" + CONNECTION_RESPONSE_1_0 + " " + CONNECTION_RESPONSE_1_1 + "</value>");
-		builder.append("			<value>" + CONNECTION_RESPONSE_1_3 + " " + CONNECTION_RESPONSE_1_4 + "</value>");
-		builder.append("		</correctResponse>");
-		builder.append("</responseDeclaration>");
-		return XMLParser.parse(builder.toString()).getDocumentElement();
+/*
+	Method below private Response createResponseObject()
+	is creating response object with adequate as created from given xml:
+	
+	<responseDeclaration baseType="directedPair" cardinality="multiple" evaluate="user" identifier="CONNECTION_RESPONSE_1">
+				<correctResponse>"
+					<value>CONNECTION_RESPONSE_1_0 + " " + CONNECTION_RESPONSE_1_1"</value>
+					<value>CONNECTION_RESPONSE_1_3 + " " + CONNECTION_RESPONSE_1_4</value>
+				</correctResponse>
+	</responseDeclaration>
+*/
+	private Response createResponseObject() {
+		CorrectAnswers correctAnswers = new CorrectAnswers();
+		ResponseValue firstCorrectAnswer = new ResponseValue(CONNECTION_RESPONSE_1_0 + " " + CONNECTION_RESPONSE_1_1);
+		ResponseValue secondCorrectAnswer = new ResponseValue(CONNECTION_RESPONSE_1_3 + " " + CONNECTION_RESPONSE_1_4);
+		correctAnswers.add(firstCorrectAnswer);
+		correctAnswers.add(secondCorrectAnswer);
+		
+		List<String> values = Lists.newArrayList();
+		List<String> groups = Lists.newArrayList();
+		String identifier = "CONNECTION_RESPONSE_1";
+		Evaluate evaluate = Evaluate.USER;
+		BaseType baseType = BaseType.DIRECTED_PAIR;
+		Cardinality cardinality = Cardinality.MULTIPLE;
+		Response response = new Response(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality);
+		return response;
 	}
 
 	private String mockStructure(Integer maxAssociations, Map<String, Integer> matchMaxMap) {
