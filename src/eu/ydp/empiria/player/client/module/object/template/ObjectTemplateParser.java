@@ -23,8 +23,8 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ObjectTemplateParser<T extends Widget> extends AbstractTemplateParser {
 	protected static final Set<String> CONTROLLERS = new HashSet<String>();
-	protected MediaWrapper<?> mediaDescriptor = null;
-	protected MediaWrapper<?> fullScreenMediaWrapper = null;
+	protected MediaWrapper<?> mediaWrapper;
+	protected MediaWrapper<?> fullScreenMediaWrapper;
 
 	@Inject
 	protected MediaControllerFactory factory;
@@ -57,7 +57,7 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 			mediaObjectWidget = fullScreenMediaWrapper.getMediaObject();
 		} else { 
 			FlowPanel videoContainer = new FlowPanel();
-			videoContainer.add(mediaDescriptor.getMediaObject());
+			videoContainer.add(mediaWrapper.getMediaObject());
 			videoContainer.getElement().getStyle().setPosition(Position.RELATIVE);
 			mediaObjectWidget = videoContainer;
 		}
@@ -79,7 +79,7 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 	}
 
 	public void setMediaWrapper(MediaWrapper<?> mediaDescriptor) {
-		this.mediaDescriptor = mediaDescriptor;
+		this.mediaWrapper = mediaDescriptor;
 	}
 
 	public void setFullScreenMediaWrapper(MediaWrapper<?> fullScreenMediaWrapper) {
@@ -104,12 +104,12 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 			controller = factory.get(ModuleTagName.getTag(moduleName));
 		}
 		if (controller != null) {
-			controller.setMediaDescriptor(mediaDescriptor);
+			controller.setMediaDescriptor(mediaWrapper);
 			controller.setFullScreen(fullScreen);
 		}
 		if (controller instanceof VideoFullScreenMediaButton) {
 			((VideoFullScreenMediaButton) controller).setFullScreenTemplate(fullScreenTemplate);
-			((VideoFullScreenMediaButton) controller).setMediaWrapper(mediaDescriptor);
+			((VideoFullScreenMediaButton) controller).setMediaWrapper(mediaWrapper);
 			((VideoFullScreenMediaButton) controller).setFullScreenMediaWrapper(fullScreenMediaWrapper);
 		}
 
