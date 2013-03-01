@@ -32,7 +32,6 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	protected boolean ready = false;
 	protected Map<MediaEventTypes, HandlerRegistration> handlerRegistrations = new HashMap<MediaEventTypes, HandlerRegistration>();
 	protected HTML5MediaExecutor mediaExecutor;
-	protected AttachHandlerImpl attachHandlerImpl;
 	
 	public HTML5MediaWrapper(Media media) {		
 		setMediaBaseAndPreload(media.getMedia());
@@ -41,9 +40,6 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 
 	public void setMediaExecutor(HTML5MediaExecutor mediaExecutor) {
 		this.mediaExecutor = mediaExecutor;
-		if (attachHandlerImpl != null){
-			attachHandlerImpl.setMediaExecutor(mediaExecutor);
-		}
 	}
 
 	@Override
