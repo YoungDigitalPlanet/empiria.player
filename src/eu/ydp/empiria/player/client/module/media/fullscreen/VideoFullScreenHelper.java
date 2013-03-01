@@ -82,6 +82,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 
 	protected FlowPanel parseTemplate(MediaWrapper<?> mediaWrapper, Element template, FlowPanel parent) {
 		parser.setMediaWrapper(mediaWrapper);
+		parser.setFullScreenMediaWrapper(mediaWrapper);
 		parser.setFullScreen(true);
 		parser.parse(template, parent);
 		return parent;
