@@ -234,6 +234,7 @@
 
 	<target name="dist.single">
 		<antcall target="gwtc"/>
+		<copy file="${base.dir}/metadata.xml" todir="${base.dir}/war/empiria.player" encoding="UTF-8" overwrite="true"/>
 		<zip destfile="dist/${dist.file.name}" basedir="war/empiria.player"/>
 	</target>
 
