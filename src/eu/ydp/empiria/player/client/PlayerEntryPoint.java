@@ -67,7 +67,7 @@ public class PlayerEntryPoint implements EntryPoint {
 		    @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
 		  }
 
-		  // ï¿½adowanie rozszerzeï¿½ (pluginï¿½w i addonï¿½w)
+		  // ³adowanie rozszerzeñ (pluginów i addonów)
 		  player.loadExtension = function(obj){
 		  	if (typeof obj == 'object')
 		  		@eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
@@ -109,7 +109,7 @@ public class PlayerEntryPoint implements EntryPoint {
 				}
 				player.load(url);
 			}
-
+			
 			@Override
 			public void onFailure(Throwable reason) {
 				throw new RuntimeException("Error while loading player!", reason);
@@ -128,9 +128,9 @@ public class PlayerEntryPoint implements EntryPoint {
 			public void onSuccess() {
 				Document assessmentDoc = XMLParser.parse(decodeXmlDataDocument(assessmentData));
 				XmlData assessmentXmlData = new XmlData(assessmentDoc,  decodeXmlDataBaseURL(assessmentData));
-
+				
 				JsArray<JavaScriptObject> itemDatasArray = itemDatas.cast();
-
+				
 				XmlData itemXmlDatas[] = new XmlData[itemDatasArray.length()];
 				for (int i = 0 ; i < itemDatasArray.length() ; i ++){
 					Document itemDoc = XMLParser.parse(decodeXmlDataDocument(itemDatasArray.get(i)));
@@ -139,7 +139,7 @@ public class PlayerEntryPoint implements EntryPoint {
 				player = new Player(node_id, jsObject);
 				player.load(assessmentXmlData, itemXmlDatas);
 			}
-
+			
 			@Override
 			public void onFailure(Throwable reason) {
 				throw new RuntimeException("Error while loading player!", reason);
@@ -163,7 +163,7 @@ public class PlayerEntryPoint implements EntryPoint {
 		player.loadExtension(extension);
 	}
 	public static void loadExtension(String extension){
-		//player.loadExtension(extension);
+		player.loadExtension(extension);
 	}
 
 }
