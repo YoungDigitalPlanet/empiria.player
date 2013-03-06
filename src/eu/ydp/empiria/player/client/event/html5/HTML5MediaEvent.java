@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.google.gwt.event.dom.client.DomEvent;
 
-public final class HTML5MediaEvent extends DomEvent<HTML5MediaEventHandler> {
+public class HTML5MediaEvent extends DomEvent<HTML5MediaEventHandler> {//NOPMD
 	public static Map<HTML5MediaEventsType, Type<HTML5MediaEventHandler>> types = new HashMap<HTML5MediaEventsType, DomEvent.Type<HTML5MediaEventHandler>>();
 
 	HTML5MediaEventsType type = null;

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.media.html5;
 
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
 
 /**
  * The delegator was applied because of the potential possibility of the change
@@ -8,12 +8,12 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5Me
  */
 public class HTML5MediaExecutorDelegator {
 
-	private HTML5MediaExecutor executor;
+	private AbstractHTML5MediaExecutor executor;
 
-	public HTML5MediaExecutor getExecutor() {
+	public AbstractHTML5MediaExecutor getExecutor() {
 		return executor;
 	}
-	public void setExecutor(HTML5MediaExecutor executor) {
+	public void setExecutor(AbstractHTML5MediaExecutor executor) {
 		this.executor = executor;
 	}
 }

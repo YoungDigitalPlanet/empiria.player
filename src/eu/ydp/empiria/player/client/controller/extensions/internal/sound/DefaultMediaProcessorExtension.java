@@ -16,20 +16,19 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.LocalSwfMediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.LocalSwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory.HTML5MediaExecutorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
+import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
-import eu.ydp.empiria.player.client.module.media.html5.HTML5MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.SourceUtil;
@@ -49,6 +48,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 
 	@Inject
 	MediaWrappersPairFactory pairFactory;
+
+	@Inject
+	Instance<HTML5MediaExecutorFactory> html5MediaExecutorFactoryProvider;
 
 	@Override
 	public void init() {
@@ -195,14 +197,18 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 				executor = new LocalSwfMediaExecutor();
 				executor.setMediaWrapper((MediaWrapper) new LocalSwfMediaWrapper());
 			} else {
-				executor = createHTML5MediaExecutor(defaultMedia);
-				fullScreenExecutor = createHTML5MediaExecutor(fullScreenMedia);
+				executor = createHTML5MediaExecutor(defaultMedia, bmc.getMediaType() );
+				fullScreenExecutor = createHTML5MediaExecutor(fullScreenMedia,bmc.getMediaType() );
 			}
 
 			initExecutor(executor, bmc);
 			initExecutor(fullScreenExecutor, bmc);
 			fireCallback(event, executor, fullScreenExecutor);
 		}
+	}
+
+	private MediaExecutor<?> createHTML5MediaExecutor(Media defaultMedia, MediaType mediaType) {
+		return html5MediaExecutorFactoryProvider.get().createMediaExecutor(defaultMedia, mediaType);
 	}
 
 	private void fireCallback(PlayerEvent event, MediaExecutor<?> defaultMediaExecutor, MediaExecutor<?> fullScreenMediaExecutor) {
@@ -230,27 +236,6 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			executor.init();
 			putMediaExecutor(executor.getMediaWrapper(), executor);
 		}
-	}
-
-	private MediaExecutor<?> createHTML5MediaExecutor(Media media) {
-		HTML5MediaExecutor executor = null;
-		if (media != null) {
-			executor = new HTML5MediaExecutor();
-			HTML5MediaWrapper html5MediaWrapper = createHTML5MediaWrapper(media);
-			executor.setMediaWrapper(html5MediaWrapper);
-			media.setEventBusSourceObject(executor.getMediaWrapper());
-		}
-		return executor;
-	}
-
-	private HTML5MediaWrapper createHTML5MediaWrapper(Media media) {
-		HTML5MediaWrapper mediaWrapper;
-		if (media instanceof eu.ydp.empiria.player.client.module.object.impl.Video) {
-			mediaWrapper = new HTML5VideoMediaWrapper(media);
-		} else {
-			mediaWrapper = new HTML5MediaWrapper(media);
-		}
-		return mediaWrapper;
 	}
 
 	private MediaExecutor<?> createSWFVideoMediaExecutor() {

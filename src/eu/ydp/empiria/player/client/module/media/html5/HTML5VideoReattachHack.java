@@ -4,7 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
@@ -22,7 +22,7 @@ public class HTML5VideoReattachHack {
 
 	private EventsBus eventsBus;
 
-	public void reAttachVideo(HTML5MediaWrapper mediaWrapper, HTML5MediaExecutor mediaExecutor, AttachHandlerImpl attachHandler) {
+	public void reAttachVideo(AbstractHTML5MediaWrapper mediaWrapper, AbstractHTML5MediaExecutor mediaExecutor, AttachHandlerImpl attachHandler) {
 		Video video = (Video) mediaWrapper.getMediaObject();
 		Widget parent = video.getParent();
 		MediaWrapper<?> eventBusSourceObject = video.getEventBusSourceObject();

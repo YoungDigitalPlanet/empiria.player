@@ -41,6 +41,12 @@ public class AbstractTestBaseWithoutAutoInjectorInit extends AbstractTestBase {
 		injector = Guice.createInjector(moduleList);
 	}
 
+	public final void setUp(GuiceModuleConfiguration config) {
+		List<Module> moduleList = new ArrayList<Module>();
+		moduleList.add(new TestGuiceModule(config));
+		injector = Guice.createInjector(moduleList);
+	}
+
 	public final void setUpAndOverrideMainModule(GuiceModuleConfiguration config, Module... modules) {
 		List<Module> moduleList = new ArrayList<Module>();
 		moduleList.addAll(Arrays.asList(modules));

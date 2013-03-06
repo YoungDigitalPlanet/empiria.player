@@ -9,8 +9,8 @@ import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
@@ -18,27 +18,30 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
- * Wrapper dla elemntow audio i elementow wspolnych audio i video html5
- * TODO: wydzielic HTML5AudioMediaWrapper a ten zostawic jako HTML5MediaWrapperBase
+ * Wrapper dla elemntow audio i elementow wspolnych audio i video html5 TODO:
+ * wydzielic HTML5AudioMediaWrapper a ten zostawic jako HTML5MediaWrapperBase
  */
-public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHandler {
+public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHandler {
 	protected MediaBase mediaBase;
 	protected String uniqId = null;
-	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+
+	protected EventsBus eventsBus;
 	protected HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
 	protected boolean ready = false;
 	protected Map<MediaEventTypes, HandlerRegistration> handlerRegistrations = new HashMap<MediaEventTypes, HandlerRegistration>();
-	protected HTML5MediaExecutor mediaExecutor;
-	
-	public HTML5MediaWrapper(Media media) {		
+	protected AbstractHTML5MediaExecutor mediaExecutor;
+	private final PageScopeFactory pageScopeFactory;
+
+	public AbstractHTML5MediaWrapper(Media media, EventsBus eventBus, PageScopeFactory pageScopeFactory) {
+		this.eventsBus = eventBus;
+		this.pageScopeFactory= pageScopeFactory;
 		setMediaBaseAndPreload(media.getMedia());
 		registerEvents();
 	}
 
-	public void setMediaExecutor(HTML5MediaExecutor mediaExecutor) {
+	public void setMediaExecutor(AbstractHTML5MediaExecutor mediaExecutor) {
 		this.mediaExecutor = mediaExecutor;
 	}
 
@@ -53,7 +56,7 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	}
 
 	public void setMediaObject(MediaBase mediaBase) {
-		setMediaBaseAndPreload(mediaBase);				
+		setMediaBaseAndPreload(mediaBase);
 	}
 
 	private void setMediaBaseAndPreload(MediaBase mediaBase) {
@@ -62,7 +65,8 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	}
 
 	private void registerEvents() {
-		handlerRegistrations.put(MediaEventTypes.ON_DURATION_CHANGE, eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, new CurrentPageScope()));
+		handlerRegistrations.put(MediaEventTypes.ON_DURATION_CHANGE,
+				eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, pageScopeFactory.getCurrentPageScope()));
 	}
 
 	@Override
@@ -81,11 +85,7 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 	@Override
 	public double getDuration() {
 		double duration = mediaBase.getDuration();
-		if (Double.isNaN(duration)) {
-			return 0;
-		} else {
-			return duration;
-		}
+		return Double.isNaN(duration) ? 0 : duration;
 	}
 
 	@Override
@@ -119,9 +119,9 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 			if (entryMediaEventType.equals(mediaEventType)) {
 				HandlerRegistration handlerRegistration = handlerRegistrationEntry.getValue();
 				handlerRegistration.removeHandler();
-			}			
+			}
 		}
-	}	
+	}
 
 	@Override
 	public int hashCode() {
@@ -143,7 +143,7 @@ public class HTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHan
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		HTML5MediaWrapper other = (HTML5MediaWrapper) obj;
+		AbstractHTML5MediaWrapper other = (AbstractHTML5MediaWrapper) obj;
 		if (getMediaUniqId() == null) {
 			if (other.getMediaUniqId() != null) {
 				return false;

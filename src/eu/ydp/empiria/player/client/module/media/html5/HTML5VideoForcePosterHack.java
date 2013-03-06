@@ -8,7 +8,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.HTML5MediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
@@ -49,7 +49,7 @@ public class HTML5VideoForcePosterHack implements MediaEventHandler {
 		Element parentElement = parent.getElement();
 		
 		if (parentElement != null) {
-			HTML5MediaExecutor executor = mediaExecutorDelegator.getExecutor();
+			AbstractHTML5MediaExecutor executor = mediaExecutorDelegator.getExecutor();
 			BaseMediaConfiguration baseMediaConfiguration = executor.getBaseMediaConfiguration();			
 			createPosterImageLayer(parentElement, baseMediaConfiguration);
 			isPosterCreated = true;

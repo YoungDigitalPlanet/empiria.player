@@ -68,10 +68,14 @@ import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
+import eu.ydp.gwtutil.client.util.BrowserNativeInterface;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
+import eu.ydp.gwtutil.client.util.UserAgentUtilImpl;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxy;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxyFactory;
 import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
+import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.test.mock.GwtPanelFactoryMock;
 import eu.ydp.gwtutil.xml.XMLProxyWrapper;
 
@@ -132,6 +136,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
 		bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
 		bind(XMLProxy.class).to(XMLProxyWrapper.class);
+		bind(BrowserNativeInterface.class).toInstance(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_UA));
+		bind(UserAgentUtil.class).toInstance(spy(new UserAgentUtilImpl()));
 		binder.requestStaticInjection(XMLProxyFactory.class);
 
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
@@ -142,6 +148,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		install(new FactoryModuleBuilder().build(FieldValueHandlerFactory.class));
 		install(new FactoryModuleBuilder().build(AssessmentReportFactory.class));
 		install(new FactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
+	//	install(new FactoryModuleBuilder().build(MediaWrapperFactory.class));
 
 	}
 
