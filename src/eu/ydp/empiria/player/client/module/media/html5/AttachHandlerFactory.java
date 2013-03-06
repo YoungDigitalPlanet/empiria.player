@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.A
 public class AttachHandlerFactory {
 
 	@Inject
-	Provider<AttachHandlerImpl> attachHandlerProvider;
+	private Provider<AttachHandlerImpl> attachHandlerProvider;
 
 	public AttachHandlerImpl createAttachHandler(AbstractHTML5MediaExecutor mediaExecutor, AbstractHTML5MediaWrapper mediaWrapper) {
 		AttachHandlerImpl attachHandlerImpl = attachHandlerProvider.get();

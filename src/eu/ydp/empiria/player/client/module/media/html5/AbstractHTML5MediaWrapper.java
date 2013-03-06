@@ -24,14 +24,14 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
  * wydzielic HTML5AudioMediaWrapper a ten zostawic jako HTML5MediaWrapperBase
  */
 public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHandler {
-	protected MediaBase mediaBase;
-	protected String uniqId = null;
+	private MediaBase mediaBase;
+	private String uniqId = null;
 
-	protected EventsBus eventsBus;
-	protected HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
-	protected boolean ready = false;
-	protected Map<MediaEventTypes, HandlerRegistration> handlerRegistrations = new HashMap<MediaEventTypes, HandlerRegistration>();
-	protected AbstractHTML5MediaExecutor mediaExecutor;
+	private final EventsBus eventsBus;
+	private final HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
+	private boolean ready = false;
+	private final Map<MediaEventTypes, HandlerRegistration> handlerRegistrations = new HashMap<MediaEventTypes, HandlerRegistration>();
+	private AbstractHTML5MediaExecutor mediaExecutor;
 	private final PageScopeFactory pageScopeFactory;
 
 	public AbstractHTML5MediaWrapper(Media media, EventsBus eventBus, PageScopeFactory pageScopeFactory) {
@@ -43,6 +43,10 @@ public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBas
 
 	public void setMediaExecutor(AbstractHTML5MediaExecutor mediaExecutor) {
 		this.mediaExecutor = mediaExecutor;
+	}
+
+	public AbstractHTML5MediaExecutor getMediaExecutor() {
+		return mediaExecutor;
 	}
 
 	@Override
@@ -65,10 +69,13 @@ public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBas
 	}
 
 	private void registerEvents() {
-		handlerRegistrations.put(MediaEventTypes.ON_DURATION_CHANGE,
+		addHandlerRegistration(MediaEventTypes.ON_DURATION_CHANGE,
 				eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, pageScopeFactory.getCurrentPageScope()));
 	}
 
+	public void addHandlerRegistration(MediaEventTypes type,HandlerRegistration handlerRegistration){
+		handlerRegistrations.put(type, handlerRegistration);
+	}
 	@Override
 	public String getMediaUniqId() {
 		if (uniqId == null) {
@@ -123,6 +130,9 @@ public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBas
 		}
 	}
 
+	public MediaBase getMediaBase() {
+		return mediaBase;
+	}
 	@Override
 	public int hashCode() {
 		int prime = 31;

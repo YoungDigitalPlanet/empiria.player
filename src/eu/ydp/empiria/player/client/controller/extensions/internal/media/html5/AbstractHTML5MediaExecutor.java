@@ -17,19 +17,16 @@ import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements HTML5MediaEventHandler, MediaExecutor<MediaBase> {
 
 	private H media;
 	private MediaWrapper<MediaBase> mediaDescriptor;
-	protected SoundExecutorListener listener;
+	private SoundExecutorListener listener;
 	private BaseMediaConfiguration baseMediaConfiguration;
 
 	@Inject
-	protected EventsBus eventsBus;
+	HTML5MediaEventMapper mediaEventMapper;
 
 	private final Set<HandlerRegistration> allEventsRegistration = new HashSet<HandlerRegistration>();
 
@@ -95,43 +92,11 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 
 	@Override
 	public void onEvent(HTML5MediaEvent event) {// NOPMD
-		switch (event.getType()) {
-			case canplay:
-				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.CAN_PLAY, mediaDescriptor), mediaDescriptor);
-				break;
-			case suspend:
-				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.SUSPEND, mediaDescriptor), mediaDescriptor);
-				break;
-			case durationchange:
-				eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_DURATION_CHANGE, mediaDescriptor), mediaDescriptor);
-				break;
-			case ended:
-				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_END, mediaDescriptor), mediaDescriptor);
-				if (listener != null) {
-					listener.onSoundFinished();
-				}
-				break;
-			case error:
-				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_ERROR, mediaDescriptor), mediaDescriptor);
-				break;
-			case pause:
-				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_PAUSE, mediaDescriptor), mediaDescriptor);
-				break;
-			case timeupdate:
-				eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_TIME_UPDATE, mediaDescriptor), mediaDescriptor);
-				break;
-			case volumechange:
-				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_VOLUME_CHANGE, mediaDescriptor), mediaDescriptor);
-				break;
-			case play:
-				eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_PLAY, mediaDescriptor), mediaDescriptor);
-				if (listener != null) {
-					listener.onPlay();
-				}
-				break;
-			default:
-				break;
-		}
+		mapAndFireEvent(event);
+	}
+
+	private void mapAndFireEvent(HTML5MediaEvent event) {
+		mediaEventMapper.mapAndFireEvent(event, listener, mediaDescriptor);
 	}
 
 

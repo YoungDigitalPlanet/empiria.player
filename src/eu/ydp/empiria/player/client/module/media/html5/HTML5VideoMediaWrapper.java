@@ -18,27 +18,30 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
 	protected AttachHandlerImpl attachHandlerImpl;
 
-	AttachHandlerFactory attachHandlerFactory;
+	private final AttachHandlerFactory attachHandlerFactory;
 
 	private final HTML5MediaExecutorDelegator html5MediaExecutorDelegator = new HTML5MediaExecutorDelegator();
 
 	@Inject
 	private UserAgentUtil userAgentUtil;
 
+	private final EventsBus eventsBus;
+
 	@Inject
 	public HTML5VideoMediaWrapper(@Assisted Media media, AttachHandlerFactory attachHandlerFactory, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
 		super(media, eventsBus, pageScopeFactory);
+		this.eventsBus = eventsBus;
 		this.attachHandlerFactory = attachHandlerFactory;
 	}
 
 	@PostConstruct
 	public void registerEvents() {
-		attachHandlerImpl = attachHandlerFactory.createAttachHandler(mediaExecutor, this);
+		attachHandlerImpl = attachHandlerFactory.createAttachHandler(getMediaExecutor(), this);
 		if (isHTML5VideoForcePosterNeeded()) {
-			HTML5VideoForcePosterHack html5VideoForcePosterHack = new HTML5VideoForcePosterHack(mediaBase, html5MediaExecutorDelegator);
-			handlerRegistrations.put(MediaEventTypes.SUSPEND,
+			HTML5VideoForcePosterHack html5VideoForcePosterHack = new HTML5VideoForcePosterHack(getMediaBase(), html5MediaExecutorDelegator);
+			addHandlerRegistration(MediaEventTypes.SUSPEND,
 					eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.SUSPEND), this, html5VideoForcePosterHack, new CurrentPageScope()));
-			handlerRegistrations.put(MediaEventTypes.ON_PLAY,
+			addHandlerRegistration(MediaEventTypes.ON_PLAY,
 					eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), this, html5VideoForcePosterHack, new CurrentPageScope()));
 		}
 	}

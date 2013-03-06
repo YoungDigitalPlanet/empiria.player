@@ -47,10 +47,10 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	protected MediaExecutor<?> html5SoundExecutor = null;//NOPMD
 
 	@Inject
-	MediaWrappersPairFactory pairFactory;
+	private MediaWrappersPairFactory pairFactory;
 
 	@Inject
-	Instance<HTML5MediaExecutorFactory> html5MediaExecutorFactoryProvider;
+	private Instance<HTML5MediaExecutorFactory> html5MediaExecutorFactoryProvider;
 
 	@Override
 	public void init() {

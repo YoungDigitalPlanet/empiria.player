@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 public class HTML5VideoMediaExecutor extends AbstractHTML5MediaExecutor<Video> {
 
 	@Inject
-	UniqueIdGenerator uniqueIdGenerator;
+	private UniqueIdGenerator uniqueIdGenerator;
 
 	@Override
 	public void initExecutor() {

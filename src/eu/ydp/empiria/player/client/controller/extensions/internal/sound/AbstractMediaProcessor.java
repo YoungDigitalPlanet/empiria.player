@@ -41,7 +41,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 	protected EventsBus eventsBus;
 
 	@Inject
-	AttachHandlerFactory attachHandlerFactory;
+	private AttachHandlerFactory attachHandlerFactory;
 
 	private boolean reAttachVideoHackApplied = false;
 
