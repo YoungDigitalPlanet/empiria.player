@@ -4,12 +4,12 @@ import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.HTML5VideoMediaExecutor;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class AttachHandlerImpl implements Handler {
 
-	private AbstractHTML5MediaExecutor mediaExecutor;
+	private HTML5VideoMediaExecutor mediaExecutor;
 	private AbstractHTML5MediaWrapper mediaWrapper;
 	private boolean firstTimeInitialization = true;
 
@@ -25,12 +25,11 @@ public class AttachHandlerImpl implements Handler {
 
 		if (event.isAttached()) {
 			HTML5VideoReattachHack html5VideoReattachHack = new HTML5VideoReattachHack();
-			html5VideoReattachHack.setEventsBus(eventsBus);
 			html5VideoReattachHack.reAttachVideo(mediaWrapper, mediaExecutor, this);
 		}
 	}
 
-	public void setMediaExecutor(AbstractHTML5MediaExecutor mediaExecutor) {
+	public void setMediaExecutor(HTML5VideoMediaExecutor mediaExecutor) {
 		this.mediaExecutor = mediaExecutor;
 	}
 

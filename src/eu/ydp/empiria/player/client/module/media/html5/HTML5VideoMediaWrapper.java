@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.HTML5VideoMediaExecutor;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -36,7 +37,7 @@ public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
 
 	@PostConstruct
 	public void registerEvents() {
-		attachHandlerImpl = attachHandlerFactory.createAttachHandler(getMediaExecutor(), this);
+		attachHandlerImpl = attachHandlerFactory.createAttachHandler((HTML5VideoMediaExecutor)getMediaExecutor(), this);
 		if (isHTML5VideoForcePosterNeeded()) {
 			HTML5VideoForcePosterHack html5VideoForcePosterHack = new HTML5VideoForcePosterHack(getMediaBase(), html5MediaExecutorDelegator);
 			addHandlerRegistration(MediaEventTypes.SUSPEND,
@@ -54,7 +55,7 @@ public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
 	public void setMediaExecutor(AbstractHTML5MediaExecutor mediaExecutor) {
 		super.setMediaExecutor(mediaExecutor);
 		if (attachHandlerImpl != null) {
-			attachHandlerImpl.setMediaExecutor(mediaExecutor);
+			attachHandlerImpl.setMediaExecutor((HTML5VideoMediaExecutor)mediaExecutor);
 		}
 		html5MediaExecutorDelegator.setExecutor(mediaExecutor);
 	}

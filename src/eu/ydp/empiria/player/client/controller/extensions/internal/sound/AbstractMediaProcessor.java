@@ -6,19 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
-import eu.ydp.empiria.player.client.media.Audio;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.HTML5AudioMediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.HTML5VideoMediaExecutor;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.html5.AttachHandlerFactory;
-import eu.ydp.empiria.player.client.module.media.html5.AttachHandlerImpl;
 import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoReattachHack;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -40,11 +36,14 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 	@Inject
 	protected EventsBus eventsBus;
 
-	@Inject
-	private AttachHandlerFactory attachHandlerFactory;
-
 	private boolean reAttachVideoHackApplied = false;
+	
+	@Inject
+	Provider<HTML5VideoReattachHack> html5VideoReattachHackProvider;
 
+	@Inject
+	Provider<ReCreateAudioHack> reCreateAudioHackProvider;
+	
 	@Override
 	public void init() {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), this);
@@ -85,19 +84,16 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			case SET_CURRENT_TIME:
 				executor.setCurrentTime(event.getCurrentTime());
 				break;
-			case PLAY:
-				if (isUserAgent(RuntimeMobileUserAgent.ANDROID404)
-						&& UserAgentChecker.isStackAndroidBrowser()
-						&& executor.getBaseMediaConfiguration().isFeedback()) {
-					reCreateAudio((AbstractHTML5MediaWrapper) wrapper, (AbstractHTML5MediaExecutor) executor);
+			case PLAY:				
+				if (applyReCreateAudioHackCondition(executor)) {
+					ReCreateAudioHack recreateAudioHack = reCreateAudioHackProvider.get();
+					recreateAudioHack.apply((AbstractHTML5MediaWrapper) wrapper, (HTML5AudioMediaExecutor) executor);
 				}
-
-				if (wrapper instanceof HTML5VideoMediaWrapper && isUserAgent(MobileUserAgent.SAFARI_WEBVIEW)
-						&& !reAttachVideoHackApplied) {
-					reAttachVideoHack((AbstractHTML5MediaWrapper) wrapper, (AbstractHTML5MediaExecutor) executor);
+				if (applyReAttachHackCondition(wrapper)) {
+					HTML5VideoReattachHack html5VideoReattachHack = html5VideoReattachHackProvider.get();		
+					html5VideoReattachHack.reAttachVideo((HTML5VideoMediaWrapper) wrapper, (HTML5VideoMediaExecutor) executor);
 					reAttachVideoHackApplied = true;
-				}
-
+				}				
 				try {
 					executor.play();
 				} catch (Exception e) {
@@ -112,9 +108,9 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 				break;
 			case ENDED:
 			case ON_END:
-				if (isUserAgent(RuntimeMobileUserAgent.ANDROID404)
-						&& UserAgentChecker.isStackAndroidBrowser()) {
-					reCreateAudio((AbstractHTML5MediaWrapper) wrapper, (AbstractHTML5MediaExecutor) executor);
+				if (applyReCreateAudioHackCondition(executor)) {
+					ReCreateAudioHack recreateAudioHack = new ReCreateAudioHack();
+					recreateAudioHack.apply((AbstractHTML5MediaWrapper) wrapper, (HTML5AudioMediaExecutor) executor);
 				}
 				executor.stop();
 				break;
@@ -126,35 +122,15 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 		}
 	}
 
-
-	private void reAttachVideoHack(AbstractHTML5MediaWrapper mediaWrapper, AbstractHTML5MediaExecutor mediaExecutor) {
-		HTML5VideoReattachHack html5VideoReattachHack = new HTML5VideoReattachHack();
-		html5VideoReattachHack.setEventsBus(eventsBus);
-		AttachHandlerImpl attachHandler = attachHandlerFactory.createAttachHandler(mediaExecutor, mediaWrapper);
-		html5VideoReattachHack.reAttachVideo(mediaWrapper, mediaExecutor, attachHandler);
+	private boolean applyReCreateAudioHackCondition(MediaExecutor<?> executor) {
+		return isUserAgent(RuntimeMobileUserAgent.ANDROID404)
+				&& UserAgentChecker.isStackAndroidBrowser()
+				&& executor.getBaseMediaConfiguration().isFeedback();
 	}
 
-	protected void reCreateAudio(AbstractHTML5MediaWrapper wrapper, AbstractHTML5MediaExecutor executor) {
-		Audio audio = (Audio) wrapper.getMediaObject();
-		Audio newAudio = reAttachAudio(audio);
-		wrapper.setMediaObject(newAudio);
-		executor.setMedia(newAudio);
-		executor.init();
-	}
-
-	protected Audio reAttachAudio(Audio audio) {
-		NodeList<Node> sourceList = audio.getAudioElement().getChildNodes();
-		FlowPanel parent = (FlowPanel) audio.getParent();
-
-		parent.remove(audio);
-		Audio newAudio = new Audio();
-		parent.add(newAudio);
-
-		for (int i = 0; i < sourceList.getLength(); i++) {
-			newAudio.getElement().appendChild(sourceList.getItem(i));
-		}
-
-		return newAudio;
+	private boolean applyReAttachHackCondition(MediaWrapper<?> wrapper) {
+		return wrapper instanceof HTML5VideoMediaWrapper && isUserAgent(MobileUserAgent.SAFARI_WEBVIEW)
+				&& !reAttachVideoHackApplied;
 	}
 
 	@Override
