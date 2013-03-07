@@ -4,8 +4,8 @@ import static eu.ydp.empiria.player.client.util.events.media.MediaEvent.getType;
 import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_FULL_SCREEN_EXIT;
 import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_FULL_SCREEN_OPEN;
 import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_PLAY;
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_MOBILE_UA;
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_UA;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_ANDROID;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
@@ -73,34 +73,34 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 	@Test
 	public void mediaWrappersGetersTest(){
-		before(FIREFOX_UA);
+		before(FIREFOX_WINDOWS);
 		assertEquals(defaultWrapper, instance.getDefaultMediaWrapper());
 		assertEquals(fullScreenWrapper, instance.getFullScreanMediaWrapper());
 	}
 
 	@Test
 	public void factoryTest() {
-		before(FIREFOX_MOBILE_UA);
+		before(FIREFOX_ANDROID);
 		instance = injector.getInstance(MediaWrappersPairFactory.class).getMediaWrappersPair(defaultWrapper, fullScreenWrapper);
 		assertNotNull(instance);
 	}
 
 	@Test
 	public void mobileBrowserInitTest() {
-		before(FIREFOX_MOBILE_UA);
+		before(FIREFOX_ANDROID);
 		Mockito.verifyZeroInteractions(eventsBus);
 	}
 
 	@Test
 	public void desktopBrowserInitTest() {
-		before(FIREFOX_UA);
+		before(FIREFOX_WINDOWS);
 		verify(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_OPEN)), eq(fullScreenWrapper), any(MediaEventHandler.class), any(EventScope.class));
 		verify(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_EXIT)), eq(fullScreenWrapper), any(MediaEventHandler.class), any(EventScope.class));
 	}
 
 	@Test
 	public void disableFullScreenSynchronizationInitTest() {
-		before(FIREFOX_UA);
+		before(FIREFOX_WINDOWS);
 		verify(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_OPEN)), eq(fullScreenWrapper), any(MediaEventHandler.class), any(EventScope.class));
 		verify(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_EXIT)), eq(fullScreenWrapper), any(MediaEventHandler.class), any(EventScope.class));
 		instance.disableFullScreenSynchronization();
@@ -113,7 +113,7 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 	@Test
 	public void mobileFullScreenOpenRequestTest() {
-		before(FIREFOX_MOBILE_UA);
+		before(FIREFOX_ANDROID);
 		MediaEvent mediaEvent = new MediaEvent(ON_FULL_SCREEN_OPEN);
 		eventsBus.fireEventFromSource(mediaEvent, fullScreenWrapper);
 		verify(instance, times(0)).onMediaEvent(eq(mediaEvent));
@@ -121,7 +121,7 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 	@Test
 	public void desktopFullScreenOpenRequestTest() {
-		before(FIREFOX_UA);
+		before(FIREFOX_WINDOWS);
 		MediaEvent mediaEvent = new MediaEvent(ON_FULL_SCREEN_OPEN);
 		instance.onMediaEvent(mediaEvent);
 		verify(instance).setCurrentTimeForMedia(eq(fullScreenWrapper), eq(defaultWrapper));
@@ -133,7 +133,7 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 	@Test
 	public void desktopFullScreenCloseRequestTest() {
-		before(FIREFOX_UA);
+		before(FIREFOX_WINDOWS);
 		MediaEvent mediaEvent = new MediaEvent(ON_FULL_SCREEN_EXIT);
 		instance.onMediaEvent(mediaEvent);
 		verify(instance).setCurrentTimeForMedia(eq(defaultWrapper), eq(fullScreenWrapper));

@@ -69,27 +69,27 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
 
 	@Test
 	public void initTest(){
-		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_UA);
+		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
 		verify(fullScreenHelper).addFullScreenEventHandler(Mockito.any(VideoFullScreenEventHandler.class));
 	}
 
 	@Test
 	public void openFullScreenDesktopTest(){
-		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_UA);
+		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
 		doNothing().when(instance).openFullScreenDesktop(Mockito.any(MediaWrapper.class), Mockito.any(Element.class));
 		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
 		verify(instance).openFullScreenDesktop(Mockito.any(MediaWrapper.class), Mockito.any(Element.class));
 	}
 	@Test
 	public void openFullScreenMobileTest(){
-		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_MOBILE_UA);
+		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_ANDROID);
 		doNothing().when(instance).openFullScreenMobile(Mockito.any(MediaWrapper.class), Mockito.any(MediaWrapper.class));
 		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
 		verify(instance).openFullScreenMobile(Mockito.any(MediaWrapper.class), Mockito.any(MediaWrapper.class));
 	}
 	@Test
 	public void openFullScreenIETest(){
-		before(UserAgentCheckerNativeInterfaceMock.IE);
+		before(UserAgentCheckerNativeInterfaceMock.IE_9);
 		doNothing().when(instance).openFullscreenIE(Mockito.any(MediaWrapper.class), Mockito.any(Element.class));
 		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
 		verify(instance).openFullscreenIE(Mockito.any(MediaWrapper.class), Mockito.any(Element.class));
@@ -97,7 +97,7 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
 
 	@Test
 	public void closeFullScreenTest(){
-		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_UA);
+		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
 		doNothing().when(instance).clearFullScreenView();
 		instance.closeFullScreen();
 		verify(fullScreenHelper).exitFullScreen();

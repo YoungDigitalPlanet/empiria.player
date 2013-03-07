@@ -38,7 +38,7 @@ public class DefaultVariableProcessorJUnitTest {
 
 	@Before
 	public void init() {
-		BrowserNativeInterface nativeInterface = UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_MOBILE_UA);
+		BrowserNativeInterface nativeInterface = UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_ANDROID);
 		UserAgentChecker.setNativeInterface(nativeInterface);
 		variableProcessor = new DefaultVariableProcessor();
 		response = mock(Response.class);

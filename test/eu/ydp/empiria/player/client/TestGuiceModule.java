@@ -136,7 +136,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
 		bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
 		bind(XMLProxy.class).to(XMLProxyWrapper.class);
-		bind(BrowserNativeInterface.class).toInstance(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_UA));
+		bind(BrowserNativeInterface.class).toInstance(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS));
 		bind(UserAgentUtil.class).toInstance(spy(new UserAgentUtilImpl()));
 		binder.requestStaticInjection(XMLProxyFactory.class);
 
