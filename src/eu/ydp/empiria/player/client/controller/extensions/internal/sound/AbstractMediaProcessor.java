@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.H
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoMediaWrapper;
-import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoReattachHack;
+import eu.ydp.empiria.player.client.module.media.html5.reattachhack.HTML5VideoReattachHack;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
