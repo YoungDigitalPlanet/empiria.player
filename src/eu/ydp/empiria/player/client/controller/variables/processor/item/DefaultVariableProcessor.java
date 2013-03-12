@@ -425,18 +425,6 @@ public class DefaultVariableProcessor {
 					answersEvaluation.add(answerFound);
 				}
 			} else {
-				//
-				// for (ResponseValue correctAnswerResponseValue :
-				// correctAnswers.getAllResponseValues()) {
-				// boolean isCorrectAnswer =
-				// checkIfUserGaveAnswerFittingToResponseValue(correctAnswerResponseValue,
-				// userAnswers);
-				// answersEvaluation.add(isCorrectAnswer);
-				// }
-				// passed = !answersEvaluation.contains(false);
-				//
-				//
-				// case Evaluate.CORRECT
 				for (int correct = 0; correct < amountOfCorrectAnswers; correct++) {
 					ResponseValue currentCorrectAnswerResponseValue = correctAnswers
 							.getResponseValue(correct);
@@ -464,14 +452,6 @@ public class DefaultVariableProcessor {
 		}
 		return passed;
 	}
-
-	// private boolean checkIfUserGaveAnswerFittingToResponseValue(ResponseValue
-	// responseValue, Iterable<String> userAnswers){
-	// List<String> responseAnswers = responseValue.getAnswers();
-	// boolean isAnyUserAnswerFitting =
-	// CollectionsUtil.containsAnyOfElements(userAnswers, responseAnswers);
-	// return isAnyUserAnswerFitting;
-	// }
 
 	private boolean processSingleResponseCardinalitySingle(CorrectAnswers correctAnswers,
 			List<String> userAnswers, ArrayList<Boolean> answersEvaluation) {

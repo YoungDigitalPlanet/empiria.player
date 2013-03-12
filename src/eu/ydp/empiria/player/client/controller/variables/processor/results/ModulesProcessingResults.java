@@ -9,6 +9,9 @@ import java.util.Set;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
+
 
 public class ModulesProcessingResults {
 

@@ -1,15 +1,15 @@
 package eu.ydp.empiria.player.client.controller.variables.objects.response;
 
-import eu.ydp.empiria.player.client.controller.variables.processor.results.DtoModuleProcessingResult;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
 
-public class DtoChangedResponse {
+public class DtoProcessedResponse {
 
 	private Response currentResponse;
 	private DtoModuleProcessingResult previousProcessingResult;
 	private LastAnswersChanges lastAnswersChanges;
 
-	public DtoChangedResponse(Response currentResponse, DtoModuleProcessingResult previousProcessingResult, LastAnswersChanges lastAnswerChanges) {
+	public DtoProcessedResponse(Response currentResponse, DtoModuleProcessingResult previousProcessingResult, LastAnswersChanges lastAnswerChanges) {
 		this.currentResponse = currentResponse;
 		this.previousProcessingResult = previousProcessingResult;
 		this.lastAnswersChanges = lastAnswerChanges;
@@ -37,6 +37,10 @@ public class DtoChangedResponse {
 
 	public void setLastAnswersChanges(LastAnswersChanges lastAnswerChanges) {
 		this.lastAnswersChanges = lastAnswerChanges;
+	}
+
+	public boolean containChanges() {
+		return lastAnswersChanges.containChanges();
 	}
 
 }

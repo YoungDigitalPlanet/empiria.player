@@ -15,15 +15,16 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.gwt.dev.util.collect.HashMap;
-import com.google.gwt.editor.client.Editor.Ignore;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
@@ -33,13 +34,15 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Correc
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
-import eu.ydp.empiria.player.client.controller.variables.processor.VariableProcessingManagerAdapter;
+import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
 public class DefaultVariableProcessorFunctionalJUnitTest {
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 //	 private DefaultVariableProcessor defaultVariableProcessor;
-	private VariableProcessingManagerAdapter defaultVariableProcessor;
+	private VariablesProcessingInitializingWrapper defaultVariableProcessor;
 
 	private OutcomeVariablesInitializer outcomeVariablesInitializer = new OutcomeVariablesInitializer();
 	private ProcessingMode processingMode;
@@ -51,16 +54,18 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 		Injector injector = Guice.createInjector(new AbstractModule() {
 			@Override
 			protected void configure() {
+				bind(ModulesVariablesProcessor.class).annotatedWith(PageScoped.class).to(ModulesVariablesProcessor.class).in(Singleton.class);
+				bind(GroupedAnswersManager.class).annotatedWith(PageScoped.class).to(GroupedAnswersManager.class).in(Singleton.class);
 			}
 		});
 
-		defaultVariableProcessor = injector.getInstance(VariableProcessingManagerAdapter.class);
+		defaultVariableProcessor = injector.getInstance(VariablesProcessingInitializingWrapper.class);
 
 		processingMode = ProcessingMode.USER_INTERACT;
 	}
 
 	@Test
-	public void testProcessResponseVariables_shouldRecognizeMistakeAndUpdateVariables_singleCardinality() throws Exception {
+	public void testProcessResponseVariables_shouldRecognizeMistake_singleCardinality() throws Exception {
 		// given
 		Response response = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.SINGLE);
 		setUpCorrectAnswers(response, "CorrectAnswer1", "CorrectAnswer2");
@@ -80,7 +85,7 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 	}
 
 	@Test
-	public void testProcessResponseVariables_shouldRecognizeCorrectAnswerAndUpdateVariables_singleCardinality() throws Exception {
+	public void testProcessResponseVariables_shouldRecognizeCorrectAnswer_singleCardinality() throws Exception {
 		// given
 		Response response = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.SINGLE);
 		setUpCorrectAnswers(response, "CorrectAnswer1", "CorrectAnswer2");
@@ -100,11 +105,11 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 	}
 
 	@Test
-	public void testProcessResponseVariables_shouldRecognizeCorrectAnswerAndUpdateVariables_multipleCardinality() throws Exception {
+	public void testProcessResponseVariables_shouldRecognizeCorrectAnswer_multipleCardinality() throws Exception {
 		// given
 		Response response = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.MULTIPLE);
 		setUpCorrectAnswers(response, "CorrectAnswer1", "CorrectAnswer2");
-		setUpCurrentUserAnswers(response, "CorrectAnswer1", "CorrectAnswer2", "CorrectAnswer1");
+		setUpCurrentUserAnswers(response, "CorrectAnswer2", "CorrectAnswer1");
 
 		Map<String, Response> responsesMap = convertToMap(response);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -120,7 +125,7 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 	}
 
 	@Test
-	public void testProcessResponseVariables_shouldRecognizeMistakeAndUpdateVariables_multipleCardinality() throws Exception {
+	public void testProcessResponseVariables_shouldRecognizeMistake_multipleCardinality() throws Exception {
 		// given
 		Response response = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.MULTIPLE);
 		setUpCorrectAnswers(response, "CorrectAnswer1", "CorrectAnswer2");
@@ -146,7 +151,7 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 	 * MISTAKES, TODO, LASTMISTAKEN when we have grouped answers
 	 */
 	@Test
-	public void testProcessResponseVariables_shouldRecognizeMistakeInSecondResponseAndUpdateVariables_commutativeAnswers() throws Exception {
+	public void testProcessResponseVariables_shouldRecognizeMistakeInSecondResponse_commutativeAnswers() throws Exception {
 		// given
 		Response responseWithCorrectAnswerInGroup = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.SINGLE);
 		setUpCorrectAnswers(responseWithCorrectAnswerInGroup, "CorrectAnswer assigned to first response");
@@ -177,7 +182,7 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 	}
 
 	@Test
-	public void testProcessResponseVariables_shouldRecognizeCorrectCommutativeAnswersAndUpdateVariables_commutativeAnswers() throws Exception {
+	public void testProcessResponseVariables_shouldRecognizeCorrectCommutativeAnswers_commutativeAnswers() throws Exception {
 		// given
 		Response responseWithCorrectAnswer = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.SINGLE);
 		setUpCorrectAnswers(responseWithCorrectAnswer, "CorrectAnswerFIRST");
@@ -211,7 +216,7 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 	 * we can set only one as correct, and second as wrong
 	 */
 	@Test
-	public void testProcessResponseVariables_shouldRecognizeAnswerAlreadyUsedInGroupAndUpdateVariables_commutativeAnswers() throws Exception {
+	public void testProcessResponseVariables_shouldRecognizeAnswerAlreadyUsedInGroup_commutativeAnswers() throws Exception {
 		// given
 		Response responseWithCorrectAnswerInGroup = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.SINGLE);
 		setUpCorrectAnswers(responseWithCorrectAnswerInGroup, "CorrectAnswerFIRST");
@@ -286,18 +291,13 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList("0"), Lists.newArrayList(DONE, MISTAKES, LASTMISTAKEN, ERRORS), outcomes);
 	}
 
+	@Ignore("Functionality not implemented yet")
 	@Test
 	public void testProcessResponseVariables_shouldRecognizeWrongOrderOfAnswers_cardinalityOrdered() throws Exception {
 		// given
 		Response responseWithEmptyAnswer = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.ORDERED);
 		setUpCorrectAnswers(responseWithEmptyAnswer, "firstAnswer", "secondAnswer");
-		setUpCurrentUserAnswers(responseWithEmptyAnswer, "secondAnswer", "firstAnswer"); // user
-																							// gave
-																							// answer
-																							// in
-																							// not
-																							// correct
-																							// order
+		setUpCurrentUserAnswers(responseWithEmptyAnswer, "secondAnswer", "firstAnswer"); // user  gave answer in not correct order
 
 		Map<String, Response> responsesMap = convertToMap(responseWithEmptyAnswer);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -314,17 +314,13 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList("1"), Lists.newArrayList(TODO, MISTAKES, LASTMISTAKEN, ERRORS), outcomes);
 	}
 
+	@Ignore("Functionality not implemented yet")
 	@Test
 	public void testProcessResponseVariables_shouldRecognizeCorrectOrderOfAnswers_cardinalityOrdered() throws Exception {
 		// given
 		Response responseWithEmptyAnswer = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.ORDERED);
 		setUpCorrectAnswers(responseWithEmptyAnswer, "firstAnswer", "secondAnswer");
-		setUpCurrentUserAnswers(responseWithEmptyAnswer, "firstAnswer", "secondAnswer"); // user
-																							// gave
-																							// answer
-																							// in
-																							// correct
-																							// order
+		setUpCurrentUserAnswers(responseWithEmptyAnswer, "firstAnswer", "secondAnswer"); // user gave answer in correct order
 
 		Map<String, Response> responsesMap = convertToMap(responseWithEmptyAnswer);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -380,22 +376,15 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 		assertResponseRelatedOutcomesHaveValue(responseWithSingleCountMode, Lists.newArrayList(expectedTODOVariableValue), Lists.newArrayList(TODO), outcomes);
 	}
 
-	@Ignore
 	@Test
 	public void testProcessResponseVariables_shouldCorrectlyEvaluateAnswers_EvaluateUserMode() throws Exception {
 		// given
 		Response response = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.MULTIPLE, Evaluate.USER);
 		setUpCorrectAnswers(response, "correct1", "correct2", "correct3");
-		setUpCurrentUserAnswers(response, "correct2", // this user answer is
-														// correct
-				"wrongAnswer", // this is wrong -> not existing in correct
-								// answers list
+		setUpCurrentUserAnswers(response, "correct2", // this user answer is correct
+				"wrongAnswer", // this is wrong -> not existing in correct answers list
 				"correct1"); // this is correct
-		List<Boolean> expectedAnswersEvaluation = Lists.newArrayList(true, false, true); // true
-																							// if
-																							// answer
-																							// is
-																							// correct
+		List<Boolean> expectedAnswersEvaluation = Lists.newArrayList(true, false, true); // true if answer is correct
 
 		Map<String, Response> responsesMap = convertToMap(response);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -408,17 +397,14 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 		assertEquals(expectedAnswersEvaluation, evaluatedAnswer);
 	}
 
-	@Ignore
 	@Test
 	public void testProcessResponseVariables_shouldCorrectlyEvaluateAnswers_EvaluateCorrectMode() throws Exception {
 		// given
 		Response response = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.MULTIPLE, Evaluate.CORRECT);
 		setUpCurrentUserAnswers(response, "wrongAnswer", "correct3", "correct3");
-		setUpCorrectAnswers(response, "correct1", // no user answer like this -
-													// false evaluation
+		setUpCorrectAnswers(response, "correct1", // no user answer like this - false evaluation
 				"correct2", // no user answer like this - false evaluation
-				"correct3"); // there is user answer equals this - true
-								// evaluation
+				"correct3"); // there is user answer equals this - true evaluation
 		List<Boolean> expectedAnswersEvaluation = Lists.newArrayList(false, false, true);
 
 		Map<String, Response> responsesMap = convertToMap(response);
@@ -464,7 +450,7 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 	}
 
 	@Test
-	public void testProcessResponseVariables_shouldHoldStateOfPreviousAnswers() throws Exception {
+	public void testProcessResponseVariables_shouldHoldStateOfPreviousAnswers_AndResetLastInteractionVariables() throws Exception {
 		Response wrongResponse = prepareResponse("responseIdentifier", BaseType.STRING, Cardinality.SINGLE, Evaluate.USER);
 		setUpCorrectAnswers(wrongResponse, "correct1");
 		setUpCurrentUserAnswers(wrongResponse, "wrong");
@@ -481,6 +467,7 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 
 		// second call to processResponses
 		Map<String, Outcome> outcomesAfterFirstCall = copyOutcomesMap(outcomes);
+		resetLastChangeRelatedVariables(outcomesAfterFirstCall);
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		assertOutcomesMapsAreEqual(outcomesAfterFirstCall, outcomes);
@@ -536,6 +523,18 @@ public class DefaultVariableProcessorFunctionalJUnitTest {
 		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(LASTMISTAKEN, DONE, MISTAKES), outcomes);
 	}
 
+
+	private void resetLastChangeRelatedVariables(Map<String, Outcome> outcomes) {
+		for(String outcomeId : outcomes.keySet()){
+			Outcome outcome = outcomes.get(outcomeId);
+			if(outcomeId.contains(LASTMISTAKEN)){
+				outcome.values = Lists.newArrayList("0");
+			}else if(outcomeId.contains(LASTCHANGE)){
+				outcome.values = Lists.newArrayList();
+			}
+		}
+	}
+	
 	private void assertOutcomesMapsAreEqual(Map<String, Outcome> expectedOutcomes, Map<String, Outcome> actualOutcomes) {
 		assertEquals(expectedOutcomes.size(), actualOutcomes.size());
 

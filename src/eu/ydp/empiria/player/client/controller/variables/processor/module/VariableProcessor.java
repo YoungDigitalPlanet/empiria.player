@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
+import java.util.List;
+
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
 
 public interface VariableProcessor {
 
@@ -12,5 +14,6 @@ public interface VariableProcessor {
 	boolean checkLastmistaken(Response response, LastAnswersChanges answersChanges);
 	
 	int calculateMistakes(boolean lastmistaken, int previousMistakes);
-	
+
+	List<Boolean> evaluateAnswers(Response response);
 }

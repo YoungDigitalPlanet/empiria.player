@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.variables.processor.counting.predicates;
+package eu.ydp.empiria.player.client.controller.variables.processor.module.counting.predicates;
 
 import com.google.gwt.thirdparty.guava.common.base.Predicate;
 

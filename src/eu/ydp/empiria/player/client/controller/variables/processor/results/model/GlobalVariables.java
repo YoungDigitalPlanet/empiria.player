@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.variables.processor.results;
+package eu.ydp.empiria.player.client.controller.variables.processor.results.model;
 
 public class GlobalVariables {
 

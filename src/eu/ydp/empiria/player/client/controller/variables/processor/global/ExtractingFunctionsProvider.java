@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
 import com.google.gwt.thirdparty.guava.common.base.Function;
 
-import eu.ydp.empiria.player.client.controller.variables.processor.results.DtoModuleProcessingResult;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 
 public class ExtractingFunctionsProvider {
 

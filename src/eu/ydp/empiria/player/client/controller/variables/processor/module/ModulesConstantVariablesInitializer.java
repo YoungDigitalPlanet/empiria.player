@@ -6,10 +6,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.ConstantVariables;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.InitialProcessingResultFactory;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ConstantVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 
 public class ModulesConstantVariablesInitializer {
 

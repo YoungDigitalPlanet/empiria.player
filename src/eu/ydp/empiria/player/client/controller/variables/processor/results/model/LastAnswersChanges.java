@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.variables.processor.results;
+package eu.ydp.empiria.player.client.controller.variables.processor.results.model;
 
 import java.util.List;
 
@@ -28,5 +28,8 @@ public class LastAnswersChanges {
 	}
 	public void setRemovedAnswers(List<String> removedAnswers) {
 		this.removedAnswers = removedAnswers;
+	}
+	public boolean containChanges() {
+		return (!addedAnswers.isEmpty()) || (!removedAnswers.isEmpty());
 	}
 }

@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.variables.processor.module;
+package eu.ydp.empiria.player.client.controller.variables.processor.module.multiple;
 
 import java.util.List;
 

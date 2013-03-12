@@ -1,8 +1,8 @@
-package eu.ydp.empiria.player.client.controller.variables.processor.counting;
+package eu.ydp.empiria.player.client.controller.variables.processor.module.counting;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 
-public class ValueToCountModeAdjuster {
+public class ErrorsToCountModeAdjuster {
 
 	public int adjustValueToCountMode(int value, CountMode countMode){
 		int adjustedValue;

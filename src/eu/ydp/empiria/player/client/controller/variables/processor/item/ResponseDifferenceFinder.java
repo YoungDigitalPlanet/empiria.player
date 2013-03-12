@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gwt.thirdparty.guava.common.base.Strings;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
-import eu.ydp.empiria.player.client.controller.variables.processor.results.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
 
 public class ResponseDifferenceFinder {
 

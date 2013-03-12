@@ -5,16 +5,15 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.controller.variables.objects.response.DtoChangedResponse;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.DtoProcessedResponse;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.ChangedResponsesFinder;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.ProcessingMode;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.DtoModuleProcessingResult;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.GeneralVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.InitialProcessingResultFactory;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.LastAnswersChanges;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.UserInteractionVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
 
 public class ModulesVariablesProcessor {
 
@@ -41,23 +40,33 @@ public class ModulesVariablesProcessor {
 	}
 	
 	public ModulesProcessingResults processVariablesForResponses(Map<String, Response> responses, ProcessingMode processingMode) {
-		List<DtoChangedResponse> changedResponses = changedResponsesFinder.findResponsesWhereAnswersChanged(processingResults, responses);
-		processVariablesForChangedResponses(changedResponses, processingMode);
+		List<DtoProcessedResponse> processedResponses = changedResponsesFinder.findChangesOfAnswers(processingResults, responses);
+		processVariablesForResponses(processedResponses, processingMode);
 		return processingResults;
 	}
 
-	private void processVariablesForChangedResponses(List<DtoChangedResponse> changedResponses, ProcessingMode processingMode) {
-		for (DtoChangedResponse dtoChangedResponse : changedResponses) {
-			processChangedResponse(dtoChangedResponse, processingMode);
+	private void processVariablesForResponses(List<DtoProcessedResponse> changedResponses, ProcessingMode processingMode) {
+		for (DtoProcessedResponse processedResponse : changedResponses) {
+			if(processedResponse.containChanges())
+				processChangedResponse(processedResponse, processingMode);
+			else
+				resetVariablesOfLastInteracktion(processedResponse);
 		}
 	}
 
-	private void processChangedResponse(DtoChangedResponse dtoChangedResponse, ProcessingMode processingMode) {
-		Response response = dtoChangedResponse.getCurrentResponse();
-		DtoModuleProcessingResult processingResult = dtoChangedResponse.getPreviousProcessingResult();
+	private void resetVariablesOfLastInteracktion(DtoProcessedResponse processedResponse) {
+		DtoModuleProcessingResult processingResult = processedResponse.getPreviousProcessingResult();
+		UserInteractionVariables userInteractionVariables = processingResult.getUserInteractionVariables();
+		userInteractionVariables.setLastAnswerChanges(new LastAnswersChanges());
+		userInteractionVariables.setLastmistaken(false);
+	}
+
+	private void processChangedResponse(DtoProcessedResponse processedResponse, ProcessingMode processingMode) {
+		Response response = processedResponse.getCurrentResponse();
+		DtoModuleProcessingResult processingResult = processedResponse.getPreviousProcessingResult();
 		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(response.cardinality, response.groups.size() > 0);
 		
-		UserInteractionVariables userInteractionVariables = processUserInteractionVariablesInCorrectMode(dtoChangedResponse, processingMode, variableProcessor);
+		UserInteractionVariables userInteractionVariables = processUserInteractionVariablesInCorrectMode(processedResponse, processingMode, variableProcessor);
 		processingResult.setUserInteractionVariables(userInteractionVariables);
 		
 		GeneralVariables generalVariables = processGeneralVariables(response, variableProcessor);
@@ -66,7 +75,7 @@ public class ModulesVariablesProcessor {
 		processingResults.setProcessingResultsForResponseId(response.getID(), processingResult);
 	}
 
-	private UserInteractionVariables processUserInteractionVariablesInCorrectMode(DtoChangedResponse dtoChangedResponse, ProcessingMode processingMode,
+	private UserInteractionVariables processUserInteractionVariablesInCorrectMode(DtoProcessedResponse dtoChangedResponse, ProcessingMode processingMode,
 			VariableProcessor variableProcessor) {
 		UserInteractionVariables userInteractionVariables;
 		if(processingMode == ProcessingMode.USER_INTERACT){
@@ -77,7 +86,7 @@ public class ModulesVariablesProcessor {
 		return userInteractionVariables;
 	}
 
-	private UserInteractionVariables processUserInteractionVariables(VariableProcessor variableProcessor, DtoChangedResponse dtoChangedResponse) {
+	private UserInteractionVariables processUserInteractionVariables(VariableProcessor variableProcessor, DtoProcessedResponse dtoChangedResponse) {
 		Response currentResponse = dtoChangedResponse.getCurrentResponse();
 		LastAnswersChanges answersChanges = dtoChangedResponse.getLastAnswersChanges();
 		UserInteractionVariables previousUserInteractionVariables = dtoChangedResponse.getPreviousProcessingResult().getUserInteractionVariables();
@@ -91,8 +100,9 @@ public class ModulesVariablesProcessor {
 	private GeneralVariables processGeneralVariables(Response response, VariableProcessor variableProcessor) {
 		int errors = variableProcessor.calculateErrors(response);
 		int done = variableProcessor.calculateDone(response);
+		List<Boolean> answersEvaluation = variableProcessor.evaluateAnswers(response);
 		
-		GeneralVariables generalVariables = new GeneralVariables(response.values, errors, done);
+		GeneralVariables generalVariables = new GeneralVariables(response.values, answersEvaluation, errors, done);
 		return generalVariables;
 	}
 

@@ -8,13 +8,13 @@ import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.AnswersChangesFormater;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.ConstantVariables;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.DtoModuleProcessingResult;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.GeneralVariables;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.GlobalVariables;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.LastAnswersChanges;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.UserInteractionVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ConstantVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
 
 public class ProcessingResultsToOutcomeMapConverter {
 

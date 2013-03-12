@@ -6,8 +6,8 @@ import com.google.gwt.thirdparty.guava.common.base.Function;
 import com.google.gwt.thirdparty.guava.common.collect.Iterables;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.controller.variables.processor.results.DtoModuleProcessingResult;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.GlobalVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
 
 public class GlobalVariablesProcessor {
 

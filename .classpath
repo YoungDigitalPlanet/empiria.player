@@ -28,9 +28,9 @@
 	<classpathentry kind="lib" path="ivy-lib/validation-api.jar"/>
 	<classpathentry kind="lib" path="libs/gquery-dnd-bundle-1.0.5.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/gwt-dev.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/math-player"/>
 	<classpathentry kind="lib" path="ivy-lib/JUnitParams.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/gwtcreatejs.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/mathplayer.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ydpGwtUtils"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/gwtCreateJs"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
