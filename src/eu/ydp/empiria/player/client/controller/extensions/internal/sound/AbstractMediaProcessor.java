@@ -4,7 +4,6 @@ import static eu.ydp.gwtutil.client.util.UserAgentChecker.isUserAgent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -24,6 +23,8 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.debug.gwtlogger.ILogger;
+import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.RuntimeMobileUserAgent;
@@ -35,14 +36,14 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 
 	@Inject
 	protected EventsBus eventsBus;
-
-	private boolean reAttachVideoHackApplied = false;
 	
 	@Inject
 	Provider<HTML5VideoReattachHack> html5VideoReattachHackProvider;
 
 	@Inject
 	Provider<ReCreateAudioHack> reCreateAudioHackProvider;
+	
+	ILogger logger = new Logger();
 	
 	@Override
 	public void init() {
@@ -67,7 +68,6 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 		MediaExecutor<?> executor = executors.get(wrapper);
 
 		if (executor == null) {
-			Logger.getLogger(getClass().getName()).info("Media Executor is null");
 			return;
 		}
 
@@ -92,12 +92,11 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 				if (isReAttachHackNeeded(wrapper)) {
 					HTML5VideoReattachHack html5VideoReattachHack = html5VideoReattachHackProvider.get();		
 					html5VideoReattachHack.reAttachVideo((HTML5VideoMediaWrapper) wrapper, (HTML5VideoMediaExecutor) executor);
-					reAttachVideoHackApplied = true;
 				}				
 				try {
 					executor.play();
 				} catch (Exception e) {
-					Logger.getLogger(getClass().getName()).info(e.getMessage());
+					logger.info("AMP PLAY exception: " + getClass().getName() + " " + e.getMessage());
 				}
 				break;
 			case ON_PLAY:
@@ -115,7 +114,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 				executor.stop();
 				break;
 			case ON_ERROR:
-				Logger.getLogger(getClass().getName()).info("Media Error");
+				logger.info("Media Error");
 				break;
 			default:
 				break;
@@ -129,8 +128,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 	}
 
 	private boolean isReAttachHackNeeded(MediaWrapper<?> wrapper) {
-		return wrapper instanceof HTML5VideoMediaWrapper && isUserAgent(MobileUserAgent.SAFARI_WEBVIEW)
-				&& !reAttachVideoHackApplied;
+		return wrapper instanceof HTML5VideoMediaWrapper && (isUserAgent(MobileUserAgent.SAFARI) || isUserAgent(MobileUserAgent.SAFARI_WEBVIEW));
 	}
 
 	@Override
