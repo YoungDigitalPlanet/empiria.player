@@ -42,6 +42,8 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 
 	@Inject
 	Provider<ReCreateAudioHack> reCreateAudioHackProvider;
+
+	private boolean reAttachVideoHackApplied = false;
 	
 	ILogger logger = new Logger();
 	
@@ -68,6 +70,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 		MediaExecutor<?> executor = executors.get(wrapper);
 
 		if (executor == null) {
+			logger.info("media executor is null");
 			return;
 		}
 
@@ -92,6 +95,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 				if (isReAttachHackNeeded(wrapper)) {
 					HTML5VideoReattachHack html5VideoReattachHack = html5VideoReattachHackProvider.get();		
 					html5VideoReattachHack.reAttachVideo((HTML5VideoMediaWrapper) wrapper, (HTML5VideoMediaExecutor) executor);
+					reAttachVideoHackApplied = true;
 				}				
 				try {
 					executor.play();
@@ -128,7 +132,8 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 	}
 
 	private boolean isReAttachHackNeeded(MediaWrapper<?> wrapper) {
-		return wrapper instanceof HTML5VideoMediaWrapper && (isUserAgent(MobileUserAgent.SAFARI) || isUserAgent(MobileUserAgent.SAFARI_WEBVIEW));
+		return wrapper instanceof HTML5VideoMediaWrapper && isUserAgent(MobileUserAgent.SAFARI_WEBVIEW)
+				&& !reAttachVideoHackApplied;
 	}
 
 	@Override
