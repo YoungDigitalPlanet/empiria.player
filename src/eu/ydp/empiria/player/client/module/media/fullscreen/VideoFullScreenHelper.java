@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.HTML5FullScreenHelper;
@@ -117,6 +118,23 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 	}
 
 	protected void openFullScreenMobile(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
+		if (dontHaveAnyMediaData(mediaWrapper)) {
+			playHTML5Media(mediaWrapper);
+		}
+		openFullScreenMobileWhenDataReady(mediaWrapper, fullScreenMediaWrapper);
+	}
+
+	private void playHTML5Media(MediaWrapper<?> mediaWrapper) {
+		((HTML5VideoMediaWrapper)mediaWrapper).getMediaObject().play();
+	}
+
+	private boolean dontHaveAnyMediaData(MediaWrapper<?> mediaWrapper) {
+		return mediaWrapper instanceof HTML5VideoMediaWrapper && !((HTML5VideoMediaWrapper) mediaWrapper).canPlay();
+	}
+
+
+
+	private void openFullScreenMobileWhenDataReady(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
 		html5FullScreenHelper.requestFullScreen(((Widget) mediaWrapper.getMediaObject()).getElement());
 		lastMediaWrapper = fullScreenMediaWrapper;
 		fireEvent(true, fullScreenMediaWrapper);
