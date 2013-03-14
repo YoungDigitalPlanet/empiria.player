@@ -50,8 +50,8 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	}
 
 	private void registerMediaEventHandlers() {
-		for (HTML5MediaEventsType event : HTML5MediaEventsType.values()) {
-			allEventsRegistration.add(media.addBitlessDomHandler(this, HTML5MediaEvent.getType(event)));
+		for (HTML5MediaEventsType type : HTML5MediaEventsType.values()) {
+			allEventsRegistration.add(media.addBitlessDomHandler(this, HTML5MediaEvent.getType(type)));
 		}
 	}
 
