@@ -73,6 +73,32 @@ public class FeedbackPropertiesCreatorJUnitTest {
 	}
 	
 	@Test
+	public void shouldRecognizeWhenAnswerIsSelected() {
+		OutcomeListBuilder builder = OutcomeListBuilder.init().
+				put(creator.createDoneOutcome(1)).
+				put(creator.createErrorsOutcome(1)).
+				put(creator.createTodoOutcome(2)).
+				put(creator.createLastChangeOutcome("+ SelectNewAnswerOutcome"));
+		FeedbackProperties properties = getProperties(builder);
+		
+		assertThat("SELECTED", properties.getBooleanProperty(FeedbackPropertyName.SELECTED), is(equalTo(true))); 
+		assertThat("UNSELECT", properties.getBooleanProperty(FeedbackPropertyName.UNSELECT), is(equalTo(false))); 
+	}
+	
+	@Test
+	public void shouldRecognizeWhenAnswerIsUnselected() {
+		OutcomeListBuilder builder = OutcomeListBuilder.init().
+				put(creator.createDoneOutcome(1)).
+				put(creator.createErrorsOutcome(1)).
+				put(creator.createTodoOutcome(2)).
+				put(creator.createLastChangeOutcome("-SelectNewAnswerOutcome"));
+		FeedbackProperties properties = getProperties(builder);
+		
+		assertThat("SELECTED", properties.getBooleanProperty(FeedbackPropertyName.SELECTED), is(equalTo(false))); 
+		assertThat("UNSELECT", properties.getBooleanProperty(FeedbackPropertyName.UNSELECT), is(equalTo(true))); 
+	}
+	
+	@Test
 	public void shouldApplyModuleResultWhen_thereIsNoError() {
 		OutcomeListBuilder builder = OutcomeListBuilder.init().
 											put(creator.createDoneOutcome(1)).
