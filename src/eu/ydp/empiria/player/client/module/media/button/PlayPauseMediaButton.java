@@ -25,16 +25,27 @@ public class PlayPauseMediaButton extends AbstractMediaButton<PlayPauseMediaButt
 
 	@Override
 	protected void onClick() {
+		MediaEvent me = createMediaEvent();
+		eventsBus.fireEventFromSource(me, getMediaWrapper());
+	}
+
+	private MediaEvent createMediaEvent() {
 		if (isActive()) {
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, getMediaWrapper()), getMediaWrapper());
+			return new MediaEvent(MediaEventTypes.PAUSE, getMediaWrapper());
 		} else {
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, getMediaWrapper()), getMediaWrapper());
+			return new MediaEvent(MediaEventTypes.PLAY, getMediaWrapper());
 		}
 	}
 
 	@Override
 	public void init() {
 		super.init();
+		if (getMediaAvailableOptions().isPauseSupported()){
+			initButtonStyleChangeHandlers();
+		}
+	}
+
+	private void initButtonStyleChangeHandlers() {
 		AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
@@ -50,12 +61,12 @@ public class PlayPauseMediaButton extends AbstractMediaButton<PlayPauseMediaButt
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PAUSE), getMediaWrapper(), handler, scope);
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler, scope);
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler, scope);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), getMediaWrapper(), handler, scope);
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), getMediaWrapper(), handler, scope);		
 	}
 
 	@Override
 	public boolean isSupported() {
-		return getMediaAvailableOptions().isPlaySupported() && getMediaAvailableOptions().isPauseSupported();
+		return getMediaAvailableOptions().isPlaySupported();
 	}
 
 	@Override
