@@ -56,6 +56,9 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
+	// -1 aby przy pierwszym zdarzeniu pokazal sie timer
+	private int lastTime = -1;
+
 	public MediaProgressBarImpl() {
 		super();
 		initWidget(uiBinder.createAndBindUi(this));
@@ -98,8 +101,6 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 		super.init();
 		if (isSupported()) {
 			AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
-				// -1 aby przy pierwszym zdarzeniu pokazal sie timer
-				int lastTime = -1;
 				Set<MediaEventTypes> fastUpdateEvents = new HashSet<MediaEventTypes>(Arrays.asList(new MediaEventTypes[]{ON_FULL_SCREEN_SHOW_CONTROLS,ON_STOP}));
 
 				@Override
@@ -196,9 +197,11 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	protected void setPosition(NativeEvent event) {
 		if (isPressed() && isAttached()) {
 			int positionX = getPositionX(event);
-			seekInMedia(positionX > 0 ? positionX : 0);
+			int positionNonNegative = Math.max(positionX, 0);
+			seekInMedia(positionNonNegative);
 			positionX -= (getButtonWidth() / 2);
-			moveScroll(positionX > 0 ? positionX : 0, true);
+			lastTime = -1;
+			moveScroll(positionNonNegative, true);
 		}
 	}
 
