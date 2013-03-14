@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.google.common.collect.Maps;
+
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 
 /*
@@ -35,6 +37,11 @@ public class FeedbackPropertiesCreator {
 	public FeedbackProperties getPropertiesFromVariables(String variableIdentifier, Map<String, ? extends Variable> variables) {
 		this.variableIdentifier = variableIdentifier;
 		this.variables = variables;
+		
+		if(variables == null){
+			this.variables = Maps.newHashMap();
+		}
+		
 		return createProperties();
 	}
 
