@@ -12,12 +12,9 @@ import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSo
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public class PlayerCoreApiExtension extends
-		InternalExtension implements DeliveryEngineSocketUserExtension, PlayerJsObjectModifierExtension, DeliveryEventsListenerExtension, MediaEventHandler {
+		InternalExtension implements DeliveryEngineSocketUserExtension, PlayerJsObjectModifierExtension, DeliveryEventsListenerExtension {
 
 	@Inject
 	private EventsBus eventsBus;
@@ -28,7 +25,6 @@ public class PlayerCoreApiExtension extends
 	@Override
 	public void init() {
 		initExportStateStringJs(playerJsObject);
-		eventsBus.addHandler(MediaEvent.getType(MediaEventTypes.ON_MOBILE_FULL_SCREEN_OPEN), this);
 	}
 
 	@Override
@@ -50,11 +46,6 @@ public class PlayerCoreApiExtension extends
 			importInitialItemIndex();
 			importState();
 		}
-	}
-	
-	@Override
-	public void onMediaEvent(MediaEvent event) {
-		invokeFullscreenAction(playerJsObject);
 	}
 	
 	private void setOptions(){
@@ -126,11 +117,5 @@ public class PlayerCoreApiExtension extends
 		
 		return itemIndex;		
 				
-	}-*/;
-	
-	private native String invokeFullscreenAction(JavaScriptObject playerJsObject)/*-{
-		if (typeof playerJsObject.invokeAction == 'function') {
-			playerJsObject.invokeAction('fullscreen');
-		}
 	}-*/;
 }
