@@ -17,7 +17,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 
 public class ModulesVariablesProcessor {
 
-	private final ChangedResponsesFinder changedResponsesFinder;
+	private final ResponseChangesFinder responseChangesFinder;
 	private final VariableProcessorFactory variableProcessorFactory;
 	private final InitialProcessingResultFactory initialProcessingResultFactory;
 	private final ModulesConstantVariablesInitializer constantVariablesInitializer;
@@ -25,11 +25,11 @@ public class ModulesVariablesProcessor {
 
 	@Inject
 	public ModulesVariablesProcessor(
-			ChangedResponsesFinder changedResponsesFinder, 
+			ResponseChangesFinder responseChangesFinder, 
 			VariableProcessorFactory variableProcessorFactory, 
 			InitialProcessingResultFactory initialProcessingResultFactory,
 			ModulesConstantVariablesInitializer constantVariablesInitializer) {
-		this.changedResponsesFinder = changedResponsesFinder;
+		this.responseChangesFinder = responseChangesFinder;
 		this.variableProcessorFactory = variableProcessorFactory;
 		this.initialProcessingResultFactory = initialProcessingResultFactory;
 		this.constantVariablesInitializer = constantVariablesInitializer;
@@ -40,7 +40,7 @@ public class ModulesVariablesProcessor {
 	}
 	
 	public ModulesProcessingResults processVariablesForResponses(Map<String, Response> responses, ProcessingMode processingMode) {
-		List<DtoProcessedResponse> processedResponses = changedResponsesFinder.findChangesOfAnswers(processingResults, responses);
+		List<DtoProcessedResponse> processedResponses = responseChangesFinder.findChangesOfAnswers(processingResults, responses);
 		processVariablesForResponses(processedResponses, processingMode);
 		return processingResults;
 	}

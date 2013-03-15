@@ -71,25 +71,22 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	@Override
 	public boolean checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
 		List<String> addedAnswers = answersChanges.getAddedAnswers();
-		List<String> removedAnswers = answersChanges.getRemovedAnswers();
 
-		boolean addedWrongAnswer = hasAddedAnyWrongAnswer(addedAnswers, response);
-		boolean removedCorrectAnswer = hasRemovedAnyCorrectAnswer(removedAnswers, response);
-
-		boolean lastmistaken = addedWrongAnswer || removedCorrectAnswer;
+		boolean addedCorrectAnswer = hasAddedAnyCorrectAnswer(addedAnswers, response);
+		boolean lastmistaken; 
+		
+		if(addedCorrectAnswer){
+			lastmistaken = false;
+		}else{
+			lastmistaken = true;
+		}
 		return lastmistaken;
 	}
 
-	private boolean hasRemovedAnyCorrectAnswer(List<String> removedAnswers, Response response) {
-		int removedCorrectAnswers = countAmountOfCorrectAnswers(response, removedAnswers, response.groups);
-		boolean containsCorrectAnswers = removedCorrectAnswers > 0;
+	private boolean hasAddedAnyCorrectAnswer(List<String> addedAnswers, Response response) {
+		int correctAnswers = countAmountOfCorrectAnswers(response, addedAnswers, response.groups);
+		boolean containsCorrectAnswers = correctAnswers > 0;
 		return containsCorrectAnswers;
-	}
-
-	private boolean hasAddedAnyWrongAnswer(List<String> addedAnswers, Response response) {
-		int wrongAnswers = countErrorsInResponse(response, addedAnswers, response.groups);
-		boolean containsWrongAnswers = wrongAnswers > 0;
-		return containsWrongAnswers;
 	}
 
 	@Override

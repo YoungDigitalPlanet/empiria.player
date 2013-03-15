@@ -6,16 +6,10 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Correc
 
 public class LastGivenAnswersChecker {
 
-	public boolean isAnyAddedAnswerNotCorrect(List<String> addedAnswers, CorrectAnswers correctAnswers){
-		int countHowManyOfAnswersAreCorrect = countHowManyOfAnswersAreCorrect(addedAnswers, correctAnswers);
-		boolean isAnyAddedAnswerNotCorrect = addedAnswers.size() > countHowManyOfAnswersAreCorrect;
-		return isAnyAddedAnswerNotCorrect;
-	}
-	
-	public boolean isAnyRemovedAnswerCorrect(List<String> removedAnswers, CorrectAnswers correctAnswers){
-		int countHowManyOfAnswersAreCorrect = countHowManyOfAnswersAreCorrect(removedAnswers, correctAnswers);
-		boolean isAnyRemovedAnswerCorrect = countHowManyOfAnswersAreCorrect > 0;
-		return isAnyRemovedAnswerCorrect;
+	public boolean isAnyAnswerCorrect(List<String> answers, CorrectAnswers correctAnswers){
+		int amountOfCorrectAnswers = countHowManyOfAnswersAreCorrect(answers, correctAnswers);
+		boolean isAnyCorrect = amountOfCorrectAnswers > 0;
+		return isAnyCorrect;
 	}
 	
 	private int countHowManyOfAnswersAreCorrect(List<String> answers, CorrectAnswers correctAnswers){
@@ -27,6 +21,4 @@ public class LastGivenAnswersChecker {
 		}
 		return countOfCorrectAnswers;
 	}
-	
-	
 }

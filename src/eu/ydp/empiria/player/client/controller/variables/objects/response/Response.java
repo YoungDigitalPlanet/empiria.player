@@ -45,8 +45,8 @@ public class Response extends Variable {
 	public Evaluate evaluate;
 	private CountMode countMode = CountMode.SINGLE;
 
-
-	public Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate, BaseType baseType, Cardinality cardinality){
+	public Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate, BaseType baseType,
+			Cardinality cardinality) {
 		this.correctAnswers = correctAnswers;
 		this.values = values;
 		this.groups = groups;
@@ -166,5 +166,4 @@ public class Response extends Variable {
 	@Override
 	public void fromJSON(JSONValue value) {
 	}
-
 }

@@ -14,12 +14,12 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.Modul
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
 
-public class ChangedResponsesFinder {
+public class ResponseChangesFinder {
 
 	private ResponseDifferenceFinder responseDifferenceFinder;
 	
 	@Inject
-	public ChangedResponsesFinder(ResponseDifferenceFinder responseDifferenceFinder) {
+	public ResponseChangesFinder(ResponseDifferenceFinder responseDifferenceFinder) {
 		this.responseDifferenceFinder = responseDifferenceFinder;
 	}
 	

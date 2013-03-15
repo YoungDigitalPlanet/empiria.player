@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.variables.processor.item;
+package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
 import java.util.List;
 import java.util.Map;
@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.VariableProcessingAdapter;
 import eu.ydp.empiria.player.client.controller.variables.processor.VariablesProcessingModulesInitializer;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.ProcessingMode;
 
 public class VariablesProcessingInitializingWrapper {
 

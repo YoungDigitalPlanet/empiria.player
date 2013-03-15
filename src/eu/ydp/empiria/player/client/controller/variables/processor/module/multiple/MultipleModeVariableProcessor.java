@@ -43,12 +43,11 @@ public class MultipleModeVariableProcessor implements VariableProcessor {
 
 	@Override
 	public boolean checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
-		boolean anyAddedAnswerNotCorrect = lastGivenAnswersChecker.isAnyAddedAnswerNotCorrect(answersChanges.getAddedAnswers(), response.correctAnswers);
-		boolean anyRemovedAnswerCorrect = lastGivenAnswersChecker.isAnyRemovedAnswerCorrect(answersChanges.getRemovedAnswers(), response.correctAnswers);
+		boolean addedCorrectAnswer = lastGivenAnswersChecker.isAnyAnswerCorrect(answersChanges.getAddedAnswers(), response.correctAnswers);
 
-		boolean lastmistaken = false;
-		if (anyAddedAnswerNotCorrect || anyRemovedAnswerCorrect) {
-			lastmistaken = true;
+		boolean lastmistaken = true;
+		if(addedCorrectAnswer){
+			lastmistaken = false;
 		}
 		return lastmistaken;
 	}
