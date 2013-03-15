@@ -118,7 +118,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 	}
 
 	protected void openFullScreenMobile(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
-		if (dontHaveAnyMediaData(mediaWrapper)) {
+		if (isHTML5VideoMediaWrapper(mediaWrapper) && !isHTML5MediaDataAvaliable(mediaWrapper)) {
 			playHTML5Media(mediaWrapper);
 		}
 		openFullScreenMobileWhenDataReady(mediaWrapper, fullScreenMediaWrapper);
@@ -128,8 +128,12 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 		((HTML5VideoMediaWrapper)mediaWrapper).getMediaObject().play();
 	}
 
-	private boolean dontHaveAnyMediaData(MediaWrapper<?> mediaWrapper) {
-		return mediaWrapper instanceof HTML5VideoMediaWrapper && !((HTML5VideoMediaWrapper) mediaWrapper).canPlay();
+	private boolean isHTML5MediaDataAvaliable(MediaWrapper<?> mediaWrapper) {
+		return isHTML5VideoMediaWrapper(mediaWrapper) && ((HTML5VideoMediaWrapper) mediaWrapper).canPlay();
+	}
+
+	private boolean isHTML5VideoMediaWrapper(MediaWrapper<?> mediaWrapper) {
+		return mediaWrapper instanceof HTML5VideoMediaWrapper;
 	}
 
 
