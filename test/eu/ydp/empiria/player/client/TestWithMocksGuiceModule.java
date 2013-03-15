@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client;
 
 import static org.mockito.Mockito.withSettings;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
@@ -32,6 +34,7 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 	public void configure() {
 		bindToSingletonOrMockInstance(EventsBus.class);
 		bindToSingletonOrMockInstance(StyleNameConstants.class);
+		bindToSingletonOrMockInstance(ExternalFullscreenVideoConnector.class);
 		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
 		bindToClassOrMockProvider(IStickieView.class);
 		bindToClassOrMockProvider(StickiesProcessorExtension.class);
@@ -40,6 +43,7 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToClassOrMockProvider(RangeCreator.class);
 		bindToClassOrMockProvider(WidgetSizeHelper.class);
 		bindToClassOrMockProvider(ViewportHelper.class);
+		bindToClassOrMockProvider(FullscreenVideoExecutor.class);
 	}
 
 }

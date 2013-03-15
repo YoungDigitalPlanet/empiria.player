@@ -16,7 +16,10 @@ import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkPopup;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBookmarkPopupView;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory.FullscreenVideoExecutorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieProperties;
@@ -136,6 +139,8 @@ public class PlayerGinModule extends AbstractGinModule {
 			.annotatedWith(Names.named("multiPageControllerMainPanel"))
 			.toProvider(NewFlowPanelProvider.class)
 			.in(Singleton.class);
+		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class).in(Singleton.class);
+		bind(FullscreenVideoExecutorFactory.class).in(Singleton.class);
 
 		//bind(OverlayTypesParser.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));

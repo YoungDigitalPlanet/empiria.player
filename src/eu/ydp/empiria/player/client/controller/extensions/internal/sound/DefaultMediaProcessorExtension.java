@@ -21,6 +21,8 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.LocalSw
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoAvailability;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory.FullscreenVideoExecutorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory.HTML5MediaExecutorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
@@ -29,6 +31,7 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
+import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoImpl;
 import eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.SourceUtil;
@@ -49,8 +52,10 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	@Inject
 	private MediaWrappersPairFactory pairFactory;
 
-	@Inject
-	private Instance<HTML5MediaExecutorFactory> html5MediaExecutorFactoryProvider;
+	@Inject private Instance<HTML5MediaExecutorFactory> html5MediaExecutorFactoryProvider;
+	
+	@Inject	private ExternalFullscreenVideoAvailability externalFullscreenVideoAvailability;
+	@Inject	private FullscreenVideoExecutorFactory fullscreenVideoExecutorFactory;
 
 	@Override
 	public void init() {
@@ -167,7 +172,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			Media fullScreenMedia = null;
 			boolean geckoSupport = isGeckoSupport(bmc);
 
-			if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported() && geckoSupport) {
+			if (bmc.getMediaType() == MediaType.VIDEO && externalFullscreenVideoAvailability.isAvailable()){
+				defaultMedia = new ExternalFullscreenVideoImpl();
+			} else if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported() && geckoSupport) {
 				defaultMedia = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
 				if (bmc.isFullScreenTemplate()) {
 					fullScreenMedia = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
@@ -178,7 +185,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 
 			MediaExecutor<?> executor;
 			MediaExecutor<?> fullScreenExecutor = null;
-			if (!UserAgentChecker.isLocal() && defaultMedia == null) {
+			if (bmc.getMediaType() == MediaType.VIDEO  &&  externalFullscreenVideoAvailability.isAvailable()){
+				executor = fullscreenVideoExecutorFactory.create();
+			} else if (!UserAgentChecker.isLocal() && defaultMedia == null) {
 				if (bmc.isTemplate() || bmc.isFeedback()) {
 					if (bmc.getMediaType() == MediaType.VIDEO) {
 						executor = createSWFVideoMediaExecutor();
