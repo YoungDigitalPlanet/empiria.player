@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 
 public class FullscreenVideoMediaWrapper implements MediaWrapper<Widget> {
 
-	private static final int DURATION_PERCENT_MAX = 100;
+	private static final int DURATION_MILLIPERCENT_MAX = 100 * 1000;
 	@Inject private UniqueIdGenerator idGnerator;
 	@Inject private ExternalFullscreenVideoMediaAvailableOptions availableOptions; 
 	
@@ -51,7 +51,7 @@ public class FullscreenVideoMediaWrapper implements MediaWrapper<Widget> {
 
 	@Override
 	public double getDuration() {
-		return DURATION_PERCENT_MAX;
+		return DURATION_MILLIPERCENT_MAX;
 	}
 
 	@Override

@@ -37,9 +37,9 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 	}
 
 	@Override
-	public void onFullscreenClosed(String id, double currentTimePercent) {
+	public void onFullscreenClosed(String id, double currentTimeMillipercent) {
 		if (mediaWrapper.getMediaUniqId().equals(id)){
-			setCurrentTime(currentTimePercent);
+			setCurrentTime(currentTimeMillipercent);
 		}
 	}
 

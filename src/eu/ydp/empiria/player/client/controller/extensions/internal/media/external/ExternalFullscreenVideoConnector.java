@@ -18,14 +18,14 @@ public class ExternalFullscreenVideoConnector implements FullscreenVideoConnecto
 
 	private native void initJs() /*-{
 		var instance = this;
-		$wnd.empiriaMediaFullscreenVideoOnClose = function(id, currentTimeMillis){
-			instance.@eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector::onFullscreenClose(Ljava/lang/String;I)(id, currentTimeMillis);
+		$wnd.empiriaMediaFullscreenVideoOnClose = function(id, currentTimeMillipercents){
+			instance.@eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector::onFullscreenClose(Ljava/lang/String;I)(id, currentTimeMillipercents);
 		}
 	}-*/;
 	
-	private void onFullscreenClose(String id, int currentTimePercent){
+	private void onFullscreenClose(String id, int currentTimeMillipercent){
 		if (idToListeners.containsKey(id)){
-			idToListeners.get(id).onFullscreenClosed(id, currentTimePercent);
+			idToListeners.get(id).onFullscreenClosed(id, currentTimeMillipercent);
 		}
 	}
 
