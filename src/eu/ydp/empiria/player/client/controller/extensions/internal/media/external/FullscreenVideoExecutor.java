@@ -56,7 +56,6 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 	@Override
 	@Deprecated
 	public void play(String src) {
-		throw new UnsupportedOperationException("Source parameterized play in ExternalVideoExecutor is not supported. It is deprecated.");
 	}
 
 	@Override
@@ -66,22 +65,18 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 
 	@Override
 	public void stop() {
-		throw new UnsupportedOperationException("Stop in ExternalVideoExecutor is not supported.");
 	}
 
 	@Override
 	public void pause() {
-		throw new UnsupportedOperationException("Stop in ExternalVideoExecutor is not supported.");
 	}
 
 	@Override
 	public void setMuted(boolean mute) {
-		throw new UnsupportedOperationException("Stop in ExternalVideoExecutor is not supported.");
 	}
 
 	@Override
 	public void setVolume(double volume) {
-		throw new UnsupportedOperationException("Stop in ExternalVideoExecutor is not supported.");
 	}
 
 	@Override
