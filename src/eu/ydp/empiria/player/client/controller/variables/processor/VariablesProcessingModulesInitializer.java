@@ -9,7 +9,6 @@ import eu.ydp.empiria.player.client.controller.variables.processor.module.Module
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
-// get here page scoped modules and initialize them, ModulesVariablesProcessor and GroupedModeVariableProcessor
 public class VariablesProcessingModulesInitializer {
 
 	private GroupedAnswersManager groupedAnswersManager;

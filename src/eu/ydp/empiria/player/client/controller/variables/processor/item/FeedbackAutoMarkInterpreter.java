@@ -1,26 +1,15 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 
-public abstract class VariableProcessor {
+public abstract class FeedbackAutoMarkInterpreter {
 
-	public abstract void ensureVariables(Map<String, Response> responses, Map<String, Outcome> outcomes);
-	
-	public abstract void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, boolean userInteract, boolean isReset);
-	
-	public abstract List<Boolean> evaluateAnswer(Response currResponse);
-	
-	public abstract void processFlowActivityVariables(Map<String, Outcome> outcomes, FlowActivityEvent event);
-	
 	public static void interpretFeedbackAutoMark(Node node, Map<String, Response> responses){
 		NodeList feedbacks =  ((Element)node).getElementsByTagName("feedbackInline");
 		

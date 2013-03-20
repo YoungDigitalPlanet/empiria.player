@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
+import java.util.logging.Logger;
+
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
@@ -8,7 +10,9 @@ import eu.ydp.empiria.player.client.controller.variables.processor.module.multip
 
 public class VariableProcessorFactory {
 
-	private MultipleModeVariableProcessor multipleModeVariableProcessor;
+	private static final Logger LOGGER = Logger.getLogger(VariableProcessorFactory.class.getName());
+	
+	private final MultipleModeVariableProcessor multipleModeVariableProcessor;
 	private final GroupedModeVariableProcessor groupedModeVariableProcessor;
 	
 	@Inject
@@ -24,20 +28,18 @@ public class VariableProcessorFactory {
 		
 		if(hasGroups){
 			variableProcessor = groupedModeVariableProcessor;
+		}else if(isSingleOrMultiple(cardinality)){
+			variableProcessor = multipleModeVariableProcessor;
 		}else{
+			LOGGER.warning("Unknown Cardinality: "+cardinality+" for variable processing. Will be treated as multiple cardinality");
 			variableProcessor = multipleModeVariableProcessor;
 		}
 		
-//		switch (cardinality) {
-//		case SINGLE:
-//			variableProcessor = multipleModeVariableProcessor;  //single it's just a special case of multiple 
-//			break;
-//		case MULTIPLE:
-//			break;
-//		default:
-//			throw new RuntimeException("Unsuported Cardinality: "+cardinality+" for variable processing");
-//		}
 		return variableProcessor;
+	}
+
+	private boolean isSingleOrMultiple(Cardinality cardinality) {
+		return cardinality == Cardinality.SINGLE || cardinality == Cardinality.MULTIPLE;
 	}
 	
 }

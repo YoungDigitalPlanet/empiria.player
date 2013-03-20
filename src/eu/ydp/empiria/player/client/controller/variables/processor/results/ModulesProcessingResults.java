@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.gwt.thirdparty.guava.common.collect.Maps;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
@@ -34,9 +34,6 @@ public class ModulesProcessingResults {
 		return processingResult;
 	}
 	
-	public void setProcessingResultsForResponseId(String responseId, DtoModuleProcessingResult processingResult){
-		responseIdToProcessingResults.put(responseId, processingResult);
-	}
 	
 	public List<DtoModuleProcessingResult> getListOfProcessingResults(){
 		Collection<DtoModuleProcessingResult> processingResults = responseIdToProcessingResults.values();
@@ -50,7 +47,9 @@ public class ModulesProcessingResults {
 	private DtoModuleProcessingResult getOrCreateProcessingResultForResponseId(String responseId){
 		DtoModuleProcessingResult processingResult = responseIdToProcessingResults.get(responseId);
 		if(processingResult == null){
-			return processingResultFactory.createProcessingResultWithInitialValues();
+			DtoModuleProcessingResult newProcessingResults = processingResultFactory.createProcessingResultWithInitialValues();
+			responseIdToProcessingResults.put(responseId, newProcessingResults);
+			return newProcessingResults;
 		}else{
 			return processingResult;
 		}

@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.gin.scopes.page;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.gwtutil.gin.scopes.CustomScopedProvider;
+import eu.ydp.gwtutil.client.gin.scopes.CustomScopedProvider;
 
 public class PageScopedProvider<T> extends CustomScopedProvider<T>{
 

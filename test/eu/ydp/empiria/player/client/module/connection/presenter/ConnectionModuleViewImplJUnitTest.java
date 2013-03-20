@@ -1,15 +1,5 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_UA;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.Iterator;
 import java.util.Set;
 
@@ -60,6 +50,15 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
@@ -131,7 +130,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 	@Before
 	public void before() {
-		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(FIREFOX_UA));
+		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(FIREFOX_WINDOWS));
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
 		prepareSurfaceManagerFactory();
 		prepareConnectionItems();

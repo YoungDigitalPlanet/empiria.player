@@ -18,6 +18,7 @@ public class ResponseBuilder {
 	private String identifier = "defaultIdentifier";
 	private BaseType baseType = BaseType.STRING;
 	private Cardinality cardinality;
+	private CountMode countMode = CountMode.SINGLE;
 
 	public ResponseBuilder withEvaluate(Evaluate evaluate) {
 		this.evaluate = evaluate;
@@ -25,7 +26,7 @@ public class ResponseBuilder {
 	}
 
 	public ResponseBuilder withCorrectAnswers(CorrectAnswers correctAnswers) {
-		this.correctAnswers = new CorrectAnswers();
+		this.correctAnswers = correctAnswers;
 		return this;
 	}
 
@@ -73,8 +74,13 @@ public class ResponseBuilder {
 		this.groups = Arrays.asList(groups);
 		return this;
 	}
+	
+	public ResponseBuilder withCountMode(CountMode countMode){
+		this.countMode = countMode;
+		return this;
+	}
 
 	public Response build() {
-		return new Response(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality);
+		return new Response(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality, countMode);
 	}
 }

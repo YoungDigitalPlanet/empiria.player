@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class VariableResult {
@@ -14,8 +13,8 @@ public class VariableResult {
 	
 	public VariableResult(VariableProviderSocket variableProvider){
 		VariableUtil util = new VariableUtil(variableProvider);
-		int done = NumberUtils.tryParseInt(util.getVariableValue(DONE, DEFAULT_VALUE_FOR_INT));
-		int todo = NumberUtils.tryParseInt(util.getVariableValue(TODO, DEFAULT_VALUE_FOR_INT));
+		int done = NumberUtils.tryParseInt(util.getVariableValue(VariableName.DONE.toString(), DEFAULT_VALUE_FOR_INT));
+		int todo = NumberUtils.tryParseInt(util.getVariableValue(VariableName.TODO.toString(), DEFAULT_VALUE_FOR_INT));
 		
 		initialize(done, todo);
 	}

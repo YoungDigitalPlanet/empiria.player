@@ -8,7 +8,6 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesProcessor;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.ProcessingMode;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;

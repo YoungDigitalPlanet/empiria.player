@@ -56,6 +56,12 @@ public class Response extends Variable {
 		this.cardinality = cardinality;
 	}
 
+	public Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate, BaseType baseType,
+			Cardinality cardinality, CountMode countMode) {
+		this(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality);
+		this.countMode = countMode;
+	}
+
 	/**
 	 * @return id
 	 */

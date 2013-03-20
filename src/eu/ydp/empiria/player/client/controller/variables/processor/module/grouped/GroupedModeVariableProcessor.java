@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.module.group
 
 import java.util.List;
 
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
@@ -33,15 +33,15 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	@Override
 	public int calculateErrors(Response response) {
 		List<String> currentAnswers = response.values;
-		List<String> groups = response.groups;
 		CountMode countMode = response.getCountMode();
 
-		int errors = countErrorsInResponse(response, currentAnswers, groups);
-		return errorsToCountModeAdjuster.adjustValueToCountMode(errors, countMode);
+		int errors = countErrorsInResponse(response, currentAnswers);
+		int errorsAdjustValueToCountMode = errorsToCountModeAdjuster.adjustValueToCountMode(errors, countMode);
+		return errorsAdjustValueToCountMode;
 	}
 
-	private int countErrorsInResponse(Response response, List<String> currentAnswers, List<String> groups) {
-		int amountOfCorrectAnswers = countAmountOfCorrectAnswers(response, currentAnswers, groups);
+	private int countErrorsInResponse(Response response, List<String> currentAnswers) {
+		int amountOfCorrectAnswers = countAmountOfCorrectAnswers(response, currentAnswers);
 		int errors = currentAnswers.size() - amountOfCorrectAnswers;
 		return errors;
 	}
@@ -49,18 +49,18 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	@Override
 	public int calculateDone(Response response) {
 		List<String> currentAnswers = response.values;
-		List<String> groups = response.groups;
 		CountMode countMode = response.getCountMode();
 
-		int amountOfCorrectAnswers = countAmountOfCorrectAnswers(response, currentAnswers, groups);
-		return doneToCountModeAdjuster.adjustValueToCountMode(amountOfCorrectAnswers, response.correctAnswers, countMode);
+		int amountOfCorrectAnswers = countAmountOfCorrectAnswers(response, currentAnswers);
+		int done = doneToCountModeAdjuster.adjustValueToCountMode(amountOfCorrectAnswers, response.correctAnswers, countMode);
+		return done;
 	}
 
-	private int countAmountOfCorrectAnswers(Response response, List<String> currentAnswers, List<String> groups) {
+	private int countAmountOfCorrectAnswers(Response response, List<String> currentAnswers) {
 		int amountOfCorrectAnswers = 0;
 
 		for (String currentAnswer : currentAnswers) {
-			boolean answerCorrect = groupedAnswersManager.isAnswerCorrectInAnyOfGroups(currentAnswer, response, groups);
+			boolean answerCorrect = groupedAnswersManager.isAnswerCorrectInAnyOfGroups(currentAnswer, response, response.groups);
 			if (answerCorrect) {
 				amountOfCorrectAnswers++;
 			}
@@ -84,7 +84,7 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	}
 
 	private boolean hasAddedAnyCorrectAnswer(List<String> addedAnswers, Response response) {
-		int correctAnswers = countAmountOfCorrectAnswers(response, addedAnswers, response.groups);
+		int correctAnswers = countAmountOfCorrectAnswers(response, addedAnswers);
 		boolean containsCorrectAnswers = correctAnswers > 0;
 		return containsCorrectAnswers;
 	}
@@ -101,12 +101,16 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	@Override
 	public List<Boolean> evaluateAnswers(Response response) {
 		Evaluate evaluate = response.evaluate;
-		if (evaluate != Evaluate.USER) {
+		if ( !isCorrectEvaluateTypeForGroupedAnswers(evaluate)) {
 			throw new UnsupportedOperationException("Cannot evaluate answers in mode: " + evaluate
 					+ " for grouped answers. Only allowed evaluation type for grouped answers is: " + Evaluate.USER);
 		}
 		
 		return evaluateUserAnswers(response);
+	}
+
+	private boolean isCorrectEvaluateTypeForGroupedAnswers(Evaluate evaluate) {
+		return (evaluate == Evaluate.USER) || (evaluate == Evaluate.DEFAULT);
 	}
 
 	private List<Boolean> evaluateUserAnswers(Response response) {

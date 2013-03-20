@@ -35,7 +35,7 @@ public class GroupedAnswersManager {
 
 	private boolean isAnswerCorrectInGroup(String answer, Response response, String groupName) {
 		ResponseAnswerGrouper responseAnswerGrouper = groupNameToResponseAnswerGrouperMap.get(groupName);
-		boolean isAnswerCorrect = responseAnswerGrouper.isAnswerCorrectInGroup(answer, response);
+		boolean isAnswerCorrect = responseAnswerGrouper.isAnswerCorrect(answer, response);
 		return isAnswerCorrect;
 	}
 }

@@ -2,7 +2,8 @@ package eu.ydp.empiria.player.client.controller.variables.processor.module.count
 
 import java.util.List;
 
-import com.google.gwt.thirdparty.guava.common.base.Predicate;
+import com.google.common.base.Predicate;
+
 
 public class GeneralAnswersCounter {
 

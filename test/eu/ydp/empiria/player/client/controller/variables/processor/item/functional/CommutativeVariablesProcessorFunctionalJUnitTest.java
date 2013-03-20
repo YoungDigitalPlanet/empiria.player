@@ -1,10 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.ERRORS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTMISTAKEN;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.MISTAKES;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 
 import java.util.Map;
 

@@ -11,8 +11,8 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.ProcessingMode;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
+import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 
 public class TodoVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase{
 
@@ -22,8 +22,8 @@ public class TodoVariableProcessorFunctionalJUnitTest extends VariableProcessorF
 		Response responseWithCorrectAnswersCountMode = new ResponseBuilder()
 				.withCardinality(Cardinality.MULTIPLE)
 				.withCorrectAnswers("firstAnswer", "secondAnswer", "thirdAnswer")
+				.withCountMode(CountMode.CORRECT_ANSWERS)
 				.build();
-		responseWithCorrectAnswersCountMode.setCountMode(CountMode.CORRECT_ANSWERS);
 
 		Map<String, Response> responsesMap = convertToMap(responseWithCorrectAnswersCountMode);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -44,8 +44,8 @@ public class TodoVariableProcessorFunctionalJUnitTest extends VariableProcessorF
 		Response responseWithSingleCountMode = new ResponseBuilder()
 				.withCardinality(Cardinality.SINGLE)
 				.withCorrectAnswers("firstAnswer", "secondAnswer", "thirdAnswer")
+				.withCountMode(CountMode.SINGLE)
 				.build();
-		responseWithSingleCountMode.setCountMode(CountMode.SINGLE);
 
 		Map<String, Response> responsesMap = convertToMap(responseWithSingleCountMode);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);

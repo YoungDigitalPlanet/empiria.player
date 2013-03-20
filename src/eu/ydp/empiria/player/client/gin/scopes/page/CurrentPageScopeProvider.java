@@ -4,8 +4,8 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.gwtutil.gin.scopes.AbstractCustomScope;
-import eu.ydp.gwtutil.gin.scopes.CurrentScopeProvider;
+import eu.ydp.gwtutil.client.gin.scopes.AbstractCustomScope;
+import eu.ydp.gwtutil.client.gin.scopes.CurrentScopeProvider;
 
 public class CurrentPageScopeProvider implements CurrentScopeProvider{
 

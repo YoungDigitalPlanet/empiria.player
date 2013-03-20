@@ -2,7 +2,8 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results.mode
 
 import java.util.List;
 
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.common.collect.Lists;
+
 
 public class GeneralVariables {
 
@@ -15,7 +16,7 @@ public class GeneralVariables {
 	}
 
 	public GeneralVariables(List<String> answers, List<Boolean> answersEvaluation, int errors, int done) {
-		this.answers = answers;
+		this.answers = Lists.newArrayList(answers);
 		this.answersEvaluation = answersEvaluation;
 		this.errors = errors;
 		this.done = done;

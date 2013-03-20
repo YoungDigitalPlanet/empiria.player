@@ -1,9 +1,5 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTCHANGE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTMISTAKEN;
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,11 +18,13 @@ import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.OutcomeVariablesInitializer;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.ProcessingMode;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+import static org.junit.Assert.assertEquals;
 
 public class VariableProcessorFunctionalTestBase {
 
@@ -59,9 +57,9 @@ public class VariableProcessorFunctionalTestBase {
 	protected void resetLastChangeRelatedVariables(Map<String, Outcome> outcomes) {
 		for (String outcomeId : outcomes.keySet()) {
 			Outcome outcome = outcomes.get(outcomeId);
-			if (outcomeId.contains(LASTMISTAKEN)) {
+			if (outcomeId.contains(VariableName.LASTMISTAKEN.toString())) {
 				outcome.values = Lists.newArrayList("0");
-			} else if (outcomeId.contains(LASTCHANGE)) {
+			} else if (outcomeId.contains(VariableName.LASTCHANGE.toString())) {
 				outcome.values = Lists.newArrayList();
 			}
 		}
@@ -89,14 +87,23 @@ public class VariableProcessorFunctionalTestBase {
 		return copyOfMap;
 	}
 
-	protected void assertResponseRelatedOutcomesHaveValue(Response response, List<String> expectedValues, List<String> responseIdentifiers, Map<String, Outcome> outcomes) {
+	protected void assertResponseRelatedOutcomesHaveValue(Response response, List<String> expectedValues, List<VariableName> responseIdentifiers, Map<String, Outcome> outcomes) {
 		assertOutcomesHaveValue(expectedValues, buildIdenfitiers(response.getID(), responseIdentifiers), outcomes);
 	}
 
-	protected void assertGlobalOutcomesHaveValue(List<String> expectedValues, List<String> responseIdentifiers, Map<String, Outcome> outcomes) {
-		assertOutcomesHaveValue(expectedValues, responseIdentifiers, outcomes);
+	protected void assertGlobalOutcomesHaveValue(List<String> expectedValues, List<VariableName> responseIdentifiers, Map<String, Outcome> outcomes) {
+		
+		assertOutcomesHaveValue(expectedValues, convertToString(responseIdentifiers), outcomes);
 	}
 	
+	private List<String> convertToString(List<VariableName> responseIdentifiers) {
+		List<String> converted = Lists.newArrayList();
+		for (VariableName variablesNames : responseIdentifiers) {
+			converted.add(variablesNames.toString());
+		}
+		return converted;
+	}
+
 	protected Map<String, Outcome> prepareInitialOutcomes(Map<String, Response> responsesMap) {
 		Map<String, Outcome> outcomes = Maps.newHashMap();
 		outcomeVariablesInitializer.initializeOutcomeVariables(responsesMap, outcomes);
@@ -131,9 +138,9 @@ public class VariableProcessorFunctionalTestBase {
 		return copyOfOutcome;
 	}
 
-	private List<String> buildIdenfitiers(String prefix, Iterable<String> variables) {
+	private List<String> buildIdenfitiers(String prefix, Iterable<VariableName> variables) {
 		List<String> identifiers = Lists.newArrayList();
-		for (String variable : variables) {
+		for (VariableName variable : variables) {
 			String currentIdentifier = prefix + "-" + variable;
 			identifiers.add(currentIdentifier);
 		}

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.report;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -59,8 +59,8 @@ public class ItemReportProviderJUnitTest extends AbstractTestBase{
 		when(itemSessionDataSocket0.getVariableProviderSocket()).thenReturn(variableProviderSocket0);
 		when(itemSessionDataSocket1.getVariableProviderSocket()).thenReturn(variableProviderSocket1);
 		
-		when(variableProviderSocket0.getVariableValue(TODO)).thenReturn(creator.createTodoOutcome(4));
-		when(variableProviderSocket1.getVariableValue(TODO)).thenReturn(creator.createTodoOutcome(3));
+		when(variableProviderSocket0.getVariableValue(TODO.toString())).thenReturn(creator.createTodoOutcome(4));
+		when(variableProviderSocket1.getVariableValue(TODO.toString())).thenReturn(creator.createTodoOutcome(3));
 		
 		return sessionSupplier;
 	}

@@ -1,15 +1,14 @@
 package eu.ydp.empiria.player.client.controller.report;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.MISTAKES;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.CHECKS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.RESET;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.SHOW_ANSWERS;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableUtil;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.CHECKS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.RESET;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.SHOW_ANSWERS;
 
 public class HintInfo {
 	
@@ -26,7 +25,7 @@ public class HintInfo {
 	}
 
 	public int getMistakes() {
-		return util.getVariableIntValue(MISTAKES, DEFAULT_INT_VALUE);
+		return util.getVariableIntValue(VariableName.MISTAKES.toString(), DEFAULT_INT_VALUE);
 	}
 
 	public int getShowAnswers() {

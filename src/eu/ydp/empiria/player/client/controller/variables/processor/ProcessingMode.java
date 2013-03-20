@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.variables.processor.item;
+package eu.ydp.empiria.player.client.controller.variables.processor;
 
 public enum ProcessingMode {
 

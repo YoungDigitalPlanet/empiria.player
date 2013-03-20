@@ -2,14 +2,14 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results;
 
 import java.util.List;
 
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
 
 public class AnswersChangesFormater {
 
-	private static final String ADDED_ASWER_PREFIX = "+";
-	private static final String REMOVED_ASWER_PREFIX = "-";
+	public static final String ADDED_ASWER_PREFIX = "+";
+	public static final String REMOVED_ASWER_PREFIX = "-";
 	
 	public List<String> formatLastAnswerChanges(LastAnswersChanges answersChanges){
 		List<String> addedAnswers = answersChanges.getAddedAnswers();

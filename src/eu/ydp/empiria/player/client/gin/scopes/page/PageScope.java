@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.gin.scopes.page;
 
-import eu.ydp.gwtutil.gin.scopes.AbstractCustomScope;
+import eu.ydp.gwtutil.client.gin.scopes.AbstractCustomScope;
 
 public class PageScope extends AbstractCustomScope {
 

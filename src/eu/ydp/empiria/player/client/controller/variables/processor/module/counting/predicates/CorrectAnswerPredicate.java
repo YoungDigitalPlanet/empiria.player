@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module.counting.predicates;
 
-import com.google.gwt.thirdparty.guava.common.base.Predicate;
+
+import com.google.common.base.Predicate;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 

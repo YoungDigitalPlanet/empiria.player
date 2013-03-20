@@ -2,7 +2,8 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results.mode
 
 import java.util.List;
 
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.common.collect.Lists;
+
 
 public class LastAnswersChanges {
 

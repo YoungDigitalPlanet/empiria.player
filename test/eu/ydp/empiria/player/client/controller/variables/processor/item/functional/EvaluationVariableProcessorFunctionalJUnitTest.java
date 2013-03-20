@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.ProcessingMode;
+import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 

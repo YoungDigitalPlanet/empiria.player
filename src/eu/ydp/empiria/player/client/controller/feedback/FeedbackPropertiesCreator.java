@@ -1,19 +1,14 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.fromNullable;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.ERRORS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTCHANGE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTMISTAKEN;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
-
 import java.util.Map;
-import java.util.logging.Logger;
 
 import com.google.common.base.Optional;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.fromNullable;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 
 /*
 EDIT_RESPONSE_2-DONE - ile zrobionych poprawnie
@@ -93,8 +88,16 @@ public class FeedbackPropertiesCreator {
 		return result;
 	}
 	
+	private Integer getInteger(VariableName variableName){
+		return getInteger(variableName.toString());
+	}
+	
 	private Integer getInteger(String variableName){
 		return Integer.valueOf(getOptionalValue(variableName).or("0"));
+	}
+	
+	private String getVariableValue(VariableName variableName){
+		return getVariableValue(variableName.toString());
 	}
 	
 	private String getVariableValue(String variableName){

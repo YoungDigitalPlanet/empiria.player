@@ -2,8 +2,8 @@ package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
 import java.util.Collection;
 
-import com.google.gwt.thirdparty.guava.common.base.Function;
-import com.google.gwt.thirdparty.guava.common.collect.Iterables;
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
@@ -74,9 +74,9 @@ public class GlobalVariablesProcessor {
 		return sumOfValues;
 	}
 
-	private int sumVariables(Iterable<Integer> modulesTodoVariables) {
+	private int sumVariables(Iterable<Integer> modulesVariables) {
 		int sum = 0;
-		for (Integer value : modulesTodoVariables) {
+		for (Integer value : modulesVariables) {
 			sum += value;
 		}
 		return sum;

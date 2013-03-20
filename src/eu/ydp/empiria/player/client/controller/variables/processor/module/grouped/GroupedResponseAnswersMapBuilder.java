@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module.grouped;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gwt.dev.util.collect.HashMap;
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 

@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.controller.variables.processor.module.group
 import java.util.Collection;
 import java.util.List;
 
-import com.google.gwt.thirdparty.guava.common.base.Predicate;
-import com.google.gwt.thirdparty.guava.common.collect.Collections2;
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 
@@ -18,7 +18,7 @@ public class ResponseAnswerGrouper {
 		this.groupedAnswers = groupedAnswers;
 	}
 
-	public boolean isAnswerCorrectInGroup(String answer, Response response){
+	public boolean isAnswerCorrect(String answer, Response response){
 		Collection<GroupedAnswer> fittingAnswers = findAllGroupedAnswersByValue(answer);
 		boolean isAnswerCorrect;
 		if(fittingAnswers.isEmpty()){

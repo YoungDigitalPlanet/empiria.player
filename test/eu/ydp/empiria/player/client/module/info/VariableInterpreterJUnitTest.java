@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.module.info;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.MISTAKES;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -60,7 +58,7 @@ public class VariableInterpreterJUnitTest extends AbstractTestBase{
 		when(sessionSupplier.getAssessmentSessionDataSocket()).thenReturn(assessmentSessionDataSocket);
 		when(assessmentSessionDataSocket.getVariableProviderSocket()).thenReturn(assessmentVariableSocket);
 		
-		when(assessmentVariableSocket.getVariableValue(DONE)).thenReturn(outcomeCreator.createDoneOutcome(2));
+		when(assessmentVariableSocket.getVariableValue(DONE.toString())).thenReturn(outcomeCreator.createDoneOutcome(2));
 		
 		List<ContentInfo> infos = Lists.newArrayList(
 					ContentInfo.create("$[item.title]", "Page 1", 0),
@@ -104,7 +102,7 @@ public class VariableInterpreterJUnitTest extends AbstractTestBase{
 		ItemSessionDataSocket itemSessionDataSocket = mock(ItemSessionDataSocket.class);
 		VariableProviderSocket itemVariableSocketPage = mock(VariableProviderSocket.class);
 		
-		when(itemVariableSocketPage.getVariableValue(TODO)).thenReturn(outcomeCreator.createTodoOutcome(3));
+		when(itemVariableSocketPage.getVariableValue(TODO.toString())).thenReturn(outcomeCreator.createTodoOutcome(3));
 		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocketPage);
 		
 		
@@ -116,10 +114,10 @@ public class VariableInterpreterJUnitTest extends AbstractTestBase{
 		ItemSessionDataSocket itemSessionDataSocket = mock(ItemSessionDataSocket.class);
 		VariableProviderSocket itemVariableSocketPage = mock(VariableProviderSocket.class);
 		
-		when(itemVariableSocketPage.getVariableValue(TODO)).thenReturn(outcomeCreator.createTodoOutcome(5));
-		when(itemVariableSocketPage.getVariableValue(DONE)).thenReturn(outcomeCreator.createDoneOutcome(4));
+		when(itemVariableSocketPage.getVariableValue(TODO.toString())).thenReturn(outcomeCreator.createTodoOutcome(5));
+		when(itemVariableSocketPage.getVariableValue(DONE.toString())).thenReturn(outcomeCreator.createDoneOutcome(4));
 		when(itemVariableSocketPage.getVariableValue(FlowActivityVariablesProcessor.CHECKS)).thenReturn(outcomeCreator.createChecksOutcome(6));
-		when(itemVariableSocketPage.getVariableValue(MISTAKES)).thenReturn(outcomeCreator.createMistakesOutcome(3));
+		when(itemVariableSocketPage.getVariableValue(MISTAKES.toString())).thenReturn(outcomeCreator.createMistakesOutcome(3));
 		when(itemVariableSocketPage.getVariableValue(FlowActivityVariablesProcessor.SHOW_ANSWERS)).thenReturn(outcomeCreator.createShowAnswersOutcome(2));
 		when(itemVariableSocketPage.getVariableValue(FlowActivityVariablesProcessor.RESET)).thenReturn(outcomeCreator.createResetOutcome(10));
 		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocketPage);

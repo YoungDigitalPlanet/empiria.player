@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module.counting;
 
-import com.google.gwt.thirdparty.guava.common.base.Predicate;
+import com.google.common.base.Predicate;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
@@ -26,7 +26,7 @@ public class ErrorAnswersCounter {
 		return adjustedValue;
 	}
 	
-	public int countErrorsForNotOrderedAnswersInResponse(Response response){
+	private int countErrorsForNotOrderedAnswersInResponse(Response response){
 		CorrectAnswers correctAnswers = response.correctAnswers;
 		Predicate<String> wrongAnswerPredicate = new WrongAnswerPredicate(correctAnswers);
 		

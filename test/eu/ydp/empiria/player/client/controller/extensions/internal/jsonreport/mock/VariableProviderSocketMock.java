@@ -8,8 +8,8 @@ import com.google.common.collect.Maps;
 import eu.ydp.empiria.player.client.controller.feedback.OutcomeCreator;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 
 public class VariableProviderSocketMock implements VariableProviderSocket {
 	
@@ -39,9 +39,9 @@ public class VariableProviderSocketMock implements VariableProviderSocket {
 	}
 	
 	private void addResultVariables(){
-		variables.put(DefaultVariableProcessor.TODO, outcomeCreator.createTodoOutcome(todo));
-		variables.put(DefaultVariableProcessor.DONE, outcomeCreator.createDoneOutcome(done));
-		variables.put(DefaultVariableProcessor.ERRORS, outcomeCreator.createErrorsOutcome(errors));
+		variables.put(VariableName.TODO.toString(), outcomeCreator.createTodoOutcome(todo));
+		variables.put(VariableName.DONE.toString(), outcomeCreator.createDoneOutcome(done));
+		variables.put(VariableName.ERRORS.toString(), outcomeCreator.createErrorsOutcome(errors));
 	}
 	
 	public void setHintValues(int checks, int mistakes, int reset, int showAnswers){
@@ -54,7 +54,7 @@ public class VariableProviderSocketMock implements VariableProviderSocket {
 	
 	private void addHintVariables() {
 		variables.put(FlowActivityVariablesProcessor.CHECKS, outcomeCreator.createChecksOutcome(checks));
-		variables.put(DefaultVariableProcessor.MISTAKES, outcomeCreator.createMistakesOutcome(mistakes));
+		variables.put(VariableName.MISTAKES.toString(), outcomeCreator.createMistakesOutcome(mistakes));
 		variables.put(FlowActivityVariablesProcessor.RESET, outcomeCreator.createResetOutcome(reset));	
 		variables.put(FlowActivityVariablesProcessor.SHOW_ANSWERS, outcomeCreator.createShowAnswersOutcome(showAnswers));	
 	}
