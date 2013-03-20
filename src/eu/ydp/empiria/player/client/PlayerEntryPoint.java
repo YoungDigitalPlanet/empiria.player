@@ -57,7 +57,7 @@ public class PlayerEntryPoint implements EntryPoint {
 	 * Init Javascript API
 	 */
 	private static native void initJavaScriptAPI() /*-{
-		// CreatePlayer
+		// CreatePlayer		
 		$wnd.empiriaCreatePlayer = function(id) {
 		  var player = @eu.ydp.empiria.player.client.PlayerEntryPoint::createPlayer(Ljava/lang/String;)(id);
 		  player.load = function(url){
@@ -73,10 +73,14 @@ public class PlayerEntryPoint implements EntryPoint {
 		  		@eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
 		  	else if (typeof obj == 'string')
 		  		@eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Ljava/lang/String;)(obj);
-		  }
-
+		  }		 
+			
 		  return player;
 		}
+		
+		 $wnd.getPlayerVersion = function(){
+		  	return @eu.ydp.empiria.player.client.version.Version::getVersion()();
+		  }
 
 		// Call App loaded function
 		if(typeof $wnd.empiriaPlayerAppLoaded == 'function') {
