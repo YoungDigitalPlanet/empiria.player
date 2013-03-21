@@ -32,8 +32,13 @@ import eu.ydp.empiria.player.client.controller.variables.manager.BindableVariabl
 import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.VariableProcessor;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.VariableProcessorTemplate;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseNodeParser;
+import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
+import eu.ydp.empiria.player.client.controller.variables.processor.VariableProcessingAdapter;
+import eu.ydp.empiria.player.client.controller.variables.processor.VariablesProcessingModulesInitializer;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.OutcomeVariablesInitializer;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.FeedbackAutoMarkInterpreter;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -50,373 +55,387 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
-	public class Item implements IStateful, ItemInterferenceSocket {
+public class Item implements IStateful, ItemInterferenceSocket {
 
-		protected ItemBody itemBody;
+	protected ItemBody itemBody;
+	protected ItemBodyView itemBodyView;
+	protected Panel scorePanel;
 
-		protected ItemBodyView itemBodyView;
+	private ModuleFeedbackProcessor moduleFeedbackProcessor;
+	private VariableManager<Response> responseManager;
+	private BindableVariableManager<Outcome> outcomeManager;
+	private StyleLinkDeclaration styleDeclaration;
+	private StyleSocket styleSocket;
 
-		protected Panel scorePanel;
+	protected ModulesRegistrySocket modulesRegistrySocket;
+	protected DisplayContentOptions options;
 
-		protected VariableProcessor variableProcessor;
+	private String title;
+	private XmlData xmlData;
 
-		private ModuleFeedbackProcessor moduleFeedbackProcessor;
+	private InteractionEventsListener interactionEventsListener;
+	private final OutcomeVariablesInitializer outcomeVariablesInitializer;
+	private final FlowActivityVariablesProcessor flowActivityVariablesProcessor;
 
-		private VariableManager<Response> responseManager;
+	private final VariableProcessingAdapter variableProcessor;
+	private final VariablesProcessingModulesInitializer variablesProcessingModulesInitializer;
 
-		private BindableVariableManager<Outcome> outcomeManager;
+	@Inject
+	public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener, @Assisted StyleSocket ss,
+			@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables, @Assisted ModuleHandlerManager moduleHandlerManager,
+			@Assisted AssessmentControllerFactory controllerFactory, ModuleFeedbackProcessor moduleFeedbackProcessor,
+			OutcomeVariablesInitializer outcomeVariablesInitializer, FlowActivityVariablesProcessor flowActivityVariablesProcessor,
+			VariableProcessingAdapter variableProcessingAdapter, VariablesProcessingModulesInitializer variablesProcessingModulesInitializer) {
 
-		private StyleLinkDeclaration styleDeclaration;
+		this.modulesRegistrySocket = mrs;
+		this.options = options;
+		xmlData = data;
 
-		private StyleSocket styleSocket;
+		styleSocket = ss;
+		this.moduleFeedbackProcessor = moduleFeedbackProcessor;
+		this.outcomeVariablesInitializer = outcomeVariablesInitializer;
+		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
+		this.variableProcessor = variableProcessingAdapter;
+		this.variablesProcessingModulesInitializer = variablesProcessingModulesInitializer;
 
-		protected ModulesRegistrySocket modulesRegistrySocket;
+		Node rootNode = xmlData.getDocument().getElementsByTagName("assessmentItem").item(0);
+		Node itemBodyNode = xmlData.getDocument().getElementsByTagName("itemBody").item(0);
 
-		protected DisplayContentOptions options;
+		final ResponseNodeParser responseNodeParser = new ResponseNodeParser();
+		responseManager = new VariableManager<Response>(xmlData.getDocument().getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {
+			@Override
+			public Response createVariable(Node node) {
+				return responseNodeParser.parseResponseFromNode(node);
+			}
+		});
+		this.interactionEventsListener = interactionEventsListener;
+		outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
 
-		private String title;
+		//TODO: this one is probably to needed anymore - verify this
+//		outcomeVariablesInitializer.initializeOutcomeVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
+		variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap());
 
-		private XmlData xmlData;
+		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
 
-		private InteractionEventsListener interactionEventsListener;
+		FeedbackAutoMarkInterpreter.interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
 
-		@Inject
-		public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options,
-					@Assisted InteractionEventsListener interactionEventsListener, @Assisted StyleSocket ss,
-					@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables,
-					@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory,
-					ModuleFeedbackProcessor moduleFeedbackProcessor) {
+		itemBody = new ItemBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket, moduleHandlerManager);
 
-			this.modulesRegistrySocket = mrs;
-			this.options = options;
-			xmlData = data;
+		itemBodyView = new ItemBodyView(itemBody);
 
-			styleSocket = ss;
-			this.moduleFeedbackProcessor = moduleFeedbackProcessor;
+		itemBodyView.init(itemBody.init((Element) itemBodyNode));
 
-			Node rootNode = xmlData.getDocument().getElementsByTagName("assessmentItem").item(0);
-			Node itemBodyNode = xmlData.getDocument().getElementsByTagName("itemBody").item(0);
+		title = ((Element) rootNode).getAttribute("title");
 
-			variableProcessor = VariableProcessorTemplate.fromNode(xmlData.getDocument().getElementsByTagName("variableProcessing"));
+		scorePanel = new FlowPanel();
+		scorePanel.setStyleName("qp-feedback-hidden");
+	}
 
-			responseManager = new VariableManager<Response>(xmlData.getDocument().getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {
-				@Override
-				public Response createVariable(Node node) {
-					return new Response(node);
-				}
-			});
-			this.interactionEventsListener = interactionEventsListener;
-			outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
+	/**
+	 * Inner class for module socket implementation
+	 */
+	private final ModuleSocket moduleSocket = new ModuleSocket() {
 
-			variableProcessor.ensureVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
+		private InlineBodyGenerator inlineBodyGenerator;
 
-			styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
-
-			VariableProcessor.interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
-
-			itemBody = new ItemBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket, moduleHandlerManager);
-
-			itemBodyView = new ItemBodyView(itemBody);
-
-			itemBodyView.init(itemBody.init((Element) itemBodyNode));
-
-			title = ((Element) rootNode).getAttribute("title");
-
-			scorePanel = new FlowPanel();
-			scorePanel.setStyleName("qp-feedback-hidden");
+		@Override
+		public eu.ydp.empiria.player.client.controller.variables.objects.response.Response getResponse(String id) {
+			return responseManager.getVariable(id);
 		}
 
-		/**
-		 * Inner class for module socket implementation
-		 */
-		private final ModuleSocket moduleSocket = new ModuleSocket() {
+		@Override
+		public List<Boolean> evaluateResponse(Response response) {
+			return variableProcessor.evaluateAnswer(response);
+		}
 
-			private InlineBodyGenerator inlineBodyGenerator;
+		@Override
+		public Map<String, String> getStyles(Element element) {
+			return (styleSocket != null) ? styleSocket.getStyles(element) : new HashMap<String, String>();
+		}
 
-			@Override
-			public eu.ydp.empiria.player.client.controller.variables.objects.response.Response getResponse(String id) {
-				return responseManager.getVariable(id);
-			}
-
-			@Override
-			public List<Boolean> evaluateResponse(Response response) {
-				return variableProcessor.evaluateAnswer(response);
-			}
-
-			@Override
-			public Map<String, String> getStyles(Element element) {
-				return (styleSocket != null) ? styleSocket.getStyles(element) : new HashMap<String, String>();
-			}
-
-			@Override
-			public Map<String,String> getOrgStyles(Element element) {
-				return (styleSocket != null) ? styleSocket.getOrgStyles(element) : new HashMap<String, String>();
-			};
-
-			@Override
-			public void setCurrentPages(PageReference pr) {
-				if (styleSocket != null) {
-					styleSocket.setCurrentPages(pr);
-				}
-			}
-
-			@Override
-			public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
-				if (inlineBodyGenerator == null) {
-					inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, itemBody.getParenthood());
-				}
-				return inlineBodyGenerator;
-			}
-
-			@Override
-			public HasChildren getParent(IModule module) {
-				return itemBody.getModuleParent(module);
-			}
-
-			@Override
-			public GroupIdentifier getParentGroupIdentifier(IModule module) {
-				IModule currParent = module;
-				while (true) {
-					currParent = getParent(currParent);
-					if (currParent == null || currParent instanceof IGroup) {
-						break;
-					}
-				}
-				if (currParent != null) {
-					return ((IGroup) currParent).getGroupIdentifier();
-				}
-				return new DefaultGroupIdentifier("");
-			}
-
-			@Override
-			public List<IModule> getChildren(IModule parent) {
-				return itemBody.getModuleChildren(parent);
-			}
-
-			@Override
-			public Stack<HasChildren> getParentsHierarchy(IModule module) {
-				Stack<HasChildren> hierarchy = new Stack<HasChildren>();
-				HasChildren currParent = getParent(module);
-				while (currParent != null) {
-					hierarchy.push(currParent);
-					currParent = getParent(currParent);
-				}
-				return hierarchy;
-			}
-
-			@Override
-			public boolean hasInteractiveModules() {
-				return Item.this.hasInteractiveModules();
-			}
-
-			@Override
-			public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module) {
-				InlineContainerStylesExtractor inlineContainerHelper = new InlineContainerStylesExtractor();
-				return inlineContainerHelper.getInlineStyles(module);
-			}
+		@Override
+		public Map<String, String> getOrgStyles(Element element) {
+			return (styleSocket != null) ? styleSocket.getOrgStyles(element) : new HashMap<String, String>();
 		};
 
-		public void close() {
-			itemBody.close();
-		}
-
-		public void process(boolean userInteract, boolean isReset) {
-			process(userInteract, isReset, null);
-		}
-
-		public void process(boolean userInteract, boolean isReset, IUniqueModule sender) {
-			variableProcessor.processResponseVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), userInteract, isReset);
-			if (userInteract) {
-				moduleFeedbackProcessor.processFeedbacks(outcomeManager.getVariablesMap(), sender);
+		@Override
+		public void setCurrentPages(PageReference pr) {
+			if (styleSocket != null) {
+				styleSocket.setCurrentPages(pr);
 			}
-		}
-
-		public void handleFlowActivityEvent(JavaScriptObject event) {
-			handleFlowActivityEvent(FlowActivityEvent.fromJsObject(event));
-		}
-
-		public void handleFlowActivityEvent(FlowActivityEvent event) {
-			if (event == null) {
-				return;
-			}
-			GroupIdentifier groupIdentifier;
-			if (event.getGroupIdentifier() != null) {
-				groupIdentifier = event.getGroupIdentifier();
-			} else {
-				groupIdentifier = new DefaultGroupIdentifier("");
-			}
-
-			if (event.getType() == FlowActivityEventType.CHECK) {
-				checkGroup(groupIdentifier);
-			} else if (event.getType() == FlowActivityEventType.CONTINUE) {
-				continueGroup(groupIdentifier);
-			} else if (event.getType() == FlowActivityEventType.SHOW_ANSWERS) {
-				showAnswersGroup(groupIdentifier);
-			} else if (event.getType() == FlowActivityEventType.RESET) {
-				resetGroup(groupIdentifier);
-			} else if (event.getType() == FlowActivityEventType.LOCK) {
-				lockGroup(true, groupIdentifier);
-			} else if (event.getType() == FlowActivityEventType.UNLOCK) {
-				lockGroup(false, groupIdentifier);
-			}
-
-			variableProcessor.processFlowActivityVariables(outcomeManager.getVariablesMap(), event);
-		}
-
-		public String getTitle() {
-			return title;
-		}
-
-		@Deprecated
-		public int getModulesCount() {
-			return itemBody.getModuleCount();
-		}
-
-		public Panel getContentView() {
-			return itemBodyView;
-		}
-
-		@Deprecated
-		public Widget getScoreView() {
-			return scorePanel;
-		}
-
-		// -------------------------- NAVIGATION -------------------------------
-
-		public void checkItem() {
-			itemBody.markAnswers(true);
-			itemBody.lock(true);
-		}
-
-		public void checkGroup(GroupIdentifier gi) {
-			itemBody.markAnswers(true, gi);
-			itemBody.lock(true, gi);
-		}
-
-		public void continueItem() {
-			itemBody.showCorrectAnswers(false);
-			itemBody.markAnswers(false);
-			itemBody.lock(false);
-		}
-
-		public void continueGroup(GroupIdentifier gi) {
-			itemBody.showCorrectAnswers(false, gi);
-			itemBody.markAnswers(false, gi);
-			itemBody.lock(false, gi);
-		}
-
-		public void showAnswers() {
-			itemBody.showCorrectAnswers(true);
-			itemBody.lock(true);
-		}
-
-		public void showAnswersGroup(GroupIdentifier gi) {
-			itemBody.showCorrectAnswers(true, gi);
-			itemBody.lock(true, gi);
-		}
-
-		public void resetItem() {
-			itemBody.reset();
-			itemBody.lock(false);
-		}
-
-		public void resetGroup(GroupIdentifier gi) {
-			itemBody.reset(gi);
-			itemBody.lock(false, gi);
-		}
-
-		public void lockItem(boolean lock) {
-			itemBody.lock(lock);
-		}
-
-		public void lockGroup(boolean lock, GroupIdentifier gi) {
-			itemBody.lock(lock, gi);
 		}
 
 		@Override
-		public JSONArray getState() {
-			return itemBody.getState();
+		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
+			if (inlineBodyGenerator == null) {
+				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, itemBody.getParenthood());
+			}
+			return inlineBodyGenerator;
 		}
 
 		@Override
-		public void setState(JSONArray newState) {
-			itemBody.setState(newState);
-
+		public HasChildren getParent(IModule module) {
+			return itemBody.getModuleParent(module);
 		}
 
 		@Override
-		public JavaScriptObject getJsSocket() {
-			return createItemSocket(itemBody.getJsSocket());
-		}
-
-		private native JavaScriptObject createItemSocket(JavaScriptObject itemBodySocket)/*-{
-			var socket = {};
-			var instance = this;
-			socket.reset = function() {
-				instance.@eu.ydp.empiria.player.client.controller.Item::resetItem()();
+		public GroupIdentifier getParentGroupIdentifier(IModule module) {
+			IModule currParent = module;
+			while (true) {
+				currParent = getParent(currParent);
+				if (currParent == null || currParent instanceof IGroup) {
+					break;
+				}
 			}
-			socket.showAnswers = function() {
-				instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers()();
+			if (currParent != null) {
+				return ((IGroup) currParent).getGroupIdentifier();
 			}
-			socket.lock = function() {
-				instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(true);
-			}
-			socket.unlock = function() {
-				instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(false);
-			}
-			socket.checkItem = function(value) {
-				instance.@eu.ydp.empiria.player.client.controller.Item::checkItem()();
-			}
-			socket.continueItem = function(value) {
-				instance.@eu.ydp.empiria.player.client.controller.Item::continueItem()();
-			}
-			socket.getOutcomeVariables = function() {
-				return instance.@eu.ydp.empiria.player.client.controller.Item::getOutcomeVariablesJsSocket()();
-			}
-			socket.getResponseVariables = function() {
-				return instance.@eu.ydp.empiria.player.client.controller.Item::getResponseVariablesJsSocket()();
-			}
-			socket.getItemBodySocket = function() {
-				return itemBodySocket;
-			}
-			socket.handleFlowActivityEvent = function(event) {
-				instance.@eu.ydp.empiria.player.client.controller.Item::handleFlowActivityEvent(Lcom/google/gwt/core/client/JavaScriptObject;)(event);
-			}
-			return socket;
-		}-*/;
-
-		private JavaScriptObject getOutcomeVariablesJsSocket() {
-			return outcomeManager.getJsSocket();
-		}
-
-		private JavaScriptObject getResponseVariablesJsSocket() {
-			return responseManager.getJsSocket();
+			return new DefaultGroupIdentifier("");
 		}
 
 		@Override
-		public eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[] getModuleSockets() {
-			return itemBody.getModuleSockets();
+		public List<IModule> getChildren(IModule parent) {
+			return itemBody.getModuleChildren(parent);
 		}
 
-		public void setUp() {
-			itemBody.setUp();
+		@Override
+		public Stack<HasChildren> getParentsHierarchy(IModule module) {
+			Stack<HasChildren> hierarchy = new Stack<HasChildren>();
+			HasChildren currParent = getParent(module);
+			while (currParent != null) {
+				hierarchy.push(currParent);
+				currParent = getParent(currParent);
+			}
+			return hierarchy;
 		}
 
-		public void start() {
-			itemBody.start();
-		}
-
-		public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {
-			itemBody.setUpperParenthoodSocket(parenthoodSocket);
-		}
-
-		/**
-		 * Checks whether the item body contains at least one interactive module
-		 *
-		 * @return boolean
-		 */
+		@Override
 		public boolean hasInteractiveModules() {
-			return itemBody.hasInteractiveModules();
+			return Item.this.hasInteractiveModules();
 		}
+
+		@Override
+		public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module) {
+			InlineContainerStylesExtractor inlineContainerHelper = new InlineContainerStylesExtractor();
+			return inlineContainerHelper.getInlineStyles(module);
+		}
+	};
+
+	public void close() {
+		itemBody.close();
+	}
+
+	public void process(boolean userInteract, boolean isReset) {
+		process(userInteract, isReset, null);
+	}
+
+	public void process(boolean userInteract, boolean isReset, IUniqueModule sender) {
+		ProcessingMode processingMode = findCorrectProcessingMode(userInteract, isReset);
+
+		variableProcessor.processResponseVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), processingMode);
+		if (userInteract) {
+			moduleFeedbackProcessor.processFeedbacks(outcomeManager.getVariablesMap(), sender);
+		}
+	}
+
+	private ProcessingMode findCorrectProcessingMode(boolean userInteract, boolean isReset) {
+		ProcessingMode processingMode;
+		if (userInteract) {
+			processingMode = ProcessingMode.USER_INTERACT;
+		} else if (isReset) {
+			processingMode = ProcessingMode.RESET;
+		} else {
+			processingMode = ProcessingMode.NOT_USER_INTERACT;
+		}
+		return processingMode;
+	}
+
+	public void handleFlowActivityEvent(JavaScriptObject event) {
+		handleFlowActivityEvent(FlowActivityEvent.fromJsObject(event));
+	}
+
+	public void handleFlowActivityEvent(FlowActivityEvent event) {
+		if (event == null) {
+			return;
+		}
+		GroupIdentifier groupIdentifier;
+		if (event.getGroupIdentifier() != null) {
+			groupIdentifier = event.getGroupIdentifier();
+		} else {
+			groupIdentifier = new DefaultGroupIdentifier("");
+		}
+
+		if (event.getType() == FlowActivityEventType.CHECK) {
+			checkGroup(groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.CONTINUE) {
+			continueGroup(groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.SHOW_ANSWERS) {
+			showAnswersGroup(groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.RESET) {
+			resetGroup(groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.LOCK) {
+			lockGroup(true, groupIdentifier);
+		} else if (event.getType() == FlowActivityEventType.UNLOCK) {
+			lockGroup(false, groupIdentifier);
+		}
+
+		flowActivityVariablesProcessor.processFlowActivityVariables(outcomeManager.getVariablesMap(), event);
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	@Deprecated
+	public int getModulesCount() {
+		return itemBody.getModuleCount();
+	}
+
+	public Panel getContentView() {
+		return itemBodyView;
+	}
+
+	@Deprecated
+	public Widget getScoreView() {
+		return scorePanel;
+	}
+
+	// -------------------------- NAVIGATION -------------------------------
+
+	public void checkItem() {
+		itemBody.markAnswers(true);
+		itemBody.lock(true);
+	}
+
+	public void checkGroup(GroupIdentifier gi) {
+		itemBody.markAnswers(true, gi);
+		itemBody.lock(true, gi);
+	}
+
+	public void continueItem() {
+		itemBody.showCorrectAnswers(false);
+		itemBody.markAnswers(false);
+		itemBody.lock(false);
+	}
+
+	public void continueGroup(GroupIdentifier gi) {
+		itemBody.showCorrectAnswers(false, gi);
+		itemBody.markAnswers(false, gi);
+		itemBody.lock(false, gi);
+	}
+
+	public void showAnswers() {
+		itemBody.showCorrectAnswers(true);
+		itemBody.lock(true);
+	}
+
+	public void showAnswersGroup(GroupIdentifier gi) {
+		itemBody.showCorrectAnswers(true, gi);
+		itemBody.lock(true, gi);
+	}
+
+	public void resetItem() {
+		itemBody.reset();
+		itemBody.lock(false);
+	}
+
+	public void resetGroup(GroupIdentifier gi) {
+		itemBody.reset(gi);
+		itemBody.lock(false, gi);
+	}
+
+	public void lockItem(boolean lock) {
+		itemBody.lock(lock);
+	}
+
+	public void lockGroup(boolean lock, GroupIdentifier gi) {
+		itemBody.lock(lock, gi);
+	}
+
+	@Override
+	public JSONArray getState() {
+		return itemBody.getState();
+	}
+
+	@Override
+	public void setState(JSONArray newState) {
+		itemBody.setState(newState);
 
 	}
+
+	@Override
+	public JavaScriptObject getJsSocket() {
+		return createItemSocket(itemBody.getJsSocket());
+	}
+
+	private native JavaScriptObject createItemSocket(JavaScriptObject itemBodySocket)/*-{
+		var socket = {};
+		var instance = this;
+		socket.reset = function() {
+			instance.@eu.ydp.empiria.player.client.controller.Item::resetItem()();
+		}
+		socket.showAnswers = function() {
+			instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers()();
+		}
+		socket.lock = function() {
+			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(true);
+		}
+		socket.unlock = function() {
+			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(false);
+		}
+		socket.checkItem = function(value) {
+			instance.@eu.ydp.empiria.player.client.controller.Item::checkItem()();
+		}
+		socket.continueItem = function(value) {
+			instance.@eu.ydp.empiria.player.client.controller.Item::continueItem()();
+		}
+		socket.getOutcomeVariables = function() {
+			return instance.@eu.ydp.empiria.player.client.controller.Item::getOutcomeVariablesJsSocket()();
+		}
+		socket.getResponseVariables = function() {
+			return instance.@eu.ydp.empiria.player.client.controller.Item::getResponseVariablesJsSocket()();
+		}
+		socket.getItemBodySocket = function() {
+			return itemBodySocket;
+		}
+		socket.handleFlowActivityEvent = function(event) {
+			instance.@eu.ydp.empiria.player.client.controller.Item::handleFlowActivityEvent(Lcom/google/gwt/core/client/JavaScriptObject;)(event);
+		}
+		return socket;
+	}-*/;
+
+	private JavaScriptObject getOutcomeVariablesJsSocket() {
+		return outcomeManager.getJsSocket();
+	}
+
+	private JavaScriptObject getResponseVariablesJsSocket() {
+		return responseManager.getJsSocket();
+	}
+
+	@Override
+	public eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[] getModuleSockets() {
+		return itemBody.getModuleSockets();
+	}
+
+	public void setUp() {
+		itemBody.setUp();
+	}
+
+	public void start() {
+		itemBody.start();
+	}
+
+	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {
+		itemBody.setUpperParenthoodSocket(parenthoodSocket);
+	}
+
+	/**
+	 * Checks whether the item body contains at least one interactive module
+	 * 
+	 * @return boolean
+	 */
+	public boolean hasInteractiveModules() {
+		return itemBody.hasInteractiveModules();
+	}
+
+}

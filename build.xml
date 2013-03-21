@@ -10,6 +10,7 @@
 	<property name="src.dir" value="${base.dir}/src"/>
 	<property name="dist.dir" value="${base.dir}/dist/build" />
 	<property name="test.reports.dev.dir" value="${base.dir}/reports/htmlunit.dev" />
+	<property name="test.reports.dev_fast.dir" value="${base.dir}/reports/htmlunit.dev_fast" />
 
 	<property name="lib.dir" value="${base.dir}/libs" />
 	<property name="ivylib.dir" value="${base.dir}/ivy-lib" />
@@ -124,7 +125,7 @@
   	<delete file="${version.file}"/>
   	<delete file="${base.dir}/metadata.xml"/>
   	<delete dir="${test.reports.dev.dir}" />
-
+  	<delete dir="${test.reports.dev_fast.dir}" />
   	<delete dir="${lib.coverage.dir}"/>
     <delete dir="${instrumented.dir}" />
     <delete dir="${cobertura.report.dir}" />
@@ -206,6 +207,31 @@
   		destdir="${cobertura.report.dir}"
 		srcdir="${src.dir}"
   		datafile="${cobertura.datafile}"/>
+  </target>
+
+	<target name="test.fast" depends="javac.tests" description="Run development fast mode tests">
+  	<delete dir="${test.reports.dev_fast.dir}" />
+    <mkdir dir="${test.reports.dev_fast.dir}" />
+    <junit fork="yes" printsummary="yes" haltonfailure="yes">
+      <jvmarg line="-Xmx256m -Xss16M" />
+      <sysproperty key="gwt.args" value="-logLevel WARN" />
+      <sysproperty key="java.awt.headless" value="true" />
+      <classpath>
+      	<pathelement location="src" />
+      	<pathelement location="test" />
+
+      	<pathelement location="${bin.test.dir}" />
+      	<pathelement location="${instrumented.dir}" />
+        <path refid="project.class.path" />
+      </classpath>
+      <batchtest todir="${test.reports.dev_fast.dir}" >
+        <fileset dir="test" >
+          <include name="**/*Test.java" />
+        </fileset>
+      </batchtest>
+      <formatter type="plain" />
+      <formatter type="xml" />
+    </junit>
   </target>
 
   <target name="test.prod" depends="javac.tests" description="Run production mode tests">

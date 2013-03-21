@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -29,8 +28,8 @@ public class VariableResultTest {
 		VariableProviderSocket variableProvider = mock(VariableProviderSocket.class);
 		OutcomeCreator outcomeCreator = new OutcomeCreator();
 		
-		when(variableProvider.getVariableValue(TODO)).thenReturn(outcomeCreator.createTodoOutcome(3));
-		when(variableProvider.getVariableValue(DONE)).thenReturn(outcomeCreator.createDoneOutcome(1));
+		when(variableProvider.getVariableValue(TODO.toString())).thenReturn(outcomeCreator.createTodoOutcome(3));
+		when(variableProvider.getVariableValue(DONE.toString())).thenReturn(outcomeCreator.createDoneOutcome(1));
 		
 		VariableResult result = new VariableResult(variableProvider);
 		assertThat(result.getResult(), is(equalTo(33)));

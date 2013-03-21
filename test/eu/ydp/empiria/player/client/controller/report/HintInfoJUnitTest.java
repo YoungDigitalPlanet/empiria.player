@@ -1,17 +1,17 @@
 package eu.ydp.empiria.player.client.controller.report;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.feedback.OutcomeCreator;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class HintInfoJUnitTest extends AbstractTestBase{
 
@@ -31,10 +31,10 @@ public class HintInfoJUnitTest extends AbstractTestBase{
 		VariableProviderSocket variableProvider = mock(VariableProviderSocket.class);
 		OutcomeCreator crator = new OutcomeCreator();
 		
-		when(variableProvider.getVariableValue(DefaultVariableProcessor.CHECKS)).thenReturn(crator.createTodoOutcome(3));
-		when(variableProvider.getVariableValue(DefaultVariableProcessor.MISTAKES)).thenReturn(crator.createDoneOutcome(4));
-		when(variableProvider.getVariableValue(DefaultVariableProcessor.SHOW_ANSWERS)).thenReturn(crator.createErrorsOutcome(5));
-		when(variableProvider.getVariableValue(DefaultVariableProcessor.RESET)).thenReturn(crator.createErrorsOutcome(6));
+		when(variableProvider.getVariableValue(FlowActivityVariablesProcessor.CHECKS)).thenReturn(crator.createTodoOutcome(3));
+		when(variableProvider.getVariableValue(VariableName.MISTAKES.toString())).thenReturn(crator.createDoneOutcome(4));
+		when(variableProvider.getVariableValue(FlowActivityVariablesProcessor.SHOW_ANSWERS)).thenReturn(crator.createErrorsOutcome(5));
+		when(variableProvider.getVariableValue(FlowActivityVariablesProcessor.RESET)).thenReturn(crator.createErrorsOutcome(6));
 		
 		return variableProvider;
 	}

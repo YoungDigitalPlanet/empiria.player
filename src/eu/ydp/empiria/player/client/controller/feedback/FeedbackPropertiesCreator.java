@@ -1,18 +1,17 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.ERRORS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTCHANGE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.LASTMISTAKEN;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor.TODO;
-
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import com.google.common.collect.Maps;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTCHANGE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
 
 /*
  EDIT_RESPONSE_2-DONE - ile zrobionych poprawnie
@@ -27,8 +26,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
  */
 
 public class FeedbackPropertiesCreator {
-
-	private static final Logger LOGGER = Logger.getLogger(FeedbackPropertiesCreator.class.getName());
 
 	private String variableIdentifier;
 
@@ -99,7 +96,7 @@ public class FeedbackPropertiesCreator {
 		return result;
 	}
 
-	private Integer getIntegerVariable(String variableName) {
+	private Integer getIntegerVariable(VariableName variableName) {
 		int value = 0;
 		String variableValue = getVariableValue(variableName);
 		if (variableValue != null) {
@@ -109,6 +106,10 @@ public class FeedbackPropertiesCreator {
 		return value;
 	}
 
+	private String getVariableValue(VariableName variableName){
+		return getVariableValue(variableName.toString());
+	}
+	
 	private String getVariableValue(String variableName) {
 		String namedVariableIdentifier = variableIdentifier + "-" + variableName;
 		Variable variable = variables.get(namedVariableIdentifier);

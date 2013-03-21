@@ -1,17 +1,17 @@
 package eu.ydp.empiria.player.client.module.info;
 
+import org.junit.Test;
+
+import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
+import eu.ydp.empiria.player.client.module.info.ContentFieldInfo.FieldType;
+import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandler;
+import eu.ydp.gwtutil.client.StringUtils;
 import static eu.ydp.empiria.player.client.module.info.ContentFieldInfo.FieldType.ITEM;
 import static eu.ydp.empiria.player.client.module.info.ContentFieldInfo.FieldType.TEST;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-
-import eu.ydp.empiria.player.client.controller.variables.processor.item.DefaultVariableProcessor;
-import eu.ydp.empiria.player.client.module.info.ContentFieldInfo.FieldType;
-import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandler;
-import eu.ydp.gwtutil.client.StringUtils;
 
 
 public class ContentFieldInfoTest {
@@ -27,19 +27,19 @@ public class ContentFieldInfoTest {
 	public void shouldCreateTestFieldInfo(){
 		ContentFieldTestData[] infos = new ContentFieldTestData[]{
 				new ContentFieldTestData("test", StringUtils.EMPTY_STRING, "$[test]", "\\$\\[test]", TEST),
-				new ContentFieldTestData("test.done", DefaultVariableProcessor.DONE, "$[test.done]", "\\$\\[test.done]", TEST),
-				new ContentFieldTestData("test.todo", DefaultVariableProcessor.TODO, "$[test.todo]", "\\$\\[test.todo]", TEST),
-				new ContentFieldTestData("test.checks", DefaultVariableProcessor.CHECKS, "$[test.checks]", "\\$\\[test.checks]", TEST),
-				new ContentFieldTestData("test.mistakes", DefaultVariableProcessor.MISTAKES, "$[test.mistakes]", "\\$\\[test.mistakes]", TEST),
-				new ContentFieldTestData("test.show_answers", DefaultVariableProcessor.SHOW_ANSWERS, "$[test.show_answers]", "\\$\\[test.show_answers]", TEST),
-				new ContentFieldTestData("test.reset", DefaultVariableProcessor.RESET, "$[test.reset]", "\\$\\[test.reset]", TEST),
+				new ContentFieldTestData("test.done", VariableName.DONE.toString(), "$[test.done]", "\\$\\[test.done]", TEST),
+				new ContentFieldTestData("test.todo", VariableName.TODO.toString(), "$[test.todo]", "\\$\\[test.todo]", TEST),
+				new ContentFieldTestData("test.checks", FlowActivityVariablesProcessor.CHECKS, "$[test.checks]", "\\$\\[test.checks]", TEST),
+				new ContentFieldTestData("test.mistakes", VariableName.MISTAKES.toString(), "$[test.mistakes]", "\\$\\[test.mistakes]", TEST),
+				new ContentFieldTestData("test.show_answers", FlowActivityVariablesProcessor.SHOW_ANSWERS, "$[test.show_answers]", "\\$\\[test.show_answers]", TEST),
+				new ContentFieldTestData("test.reset", FlowActivityVariablesProcessor.RESET, "$[test.reset]", "\\$\\[test.reset]", TEST),
 				new ContentFieldTestData("test.result", "RESULT", "$[test.result]", "\\$\\[test.result]", TEST),
-				new ContentFieldTestData("item.done", DefaultVariableProcessor.DONE, "$[item.done]", "\\$\\[item.done]", ITEM),
-				new ContentFieldTestData("item.todo", DefaultVariableProcessor.TODO, "$[item.todo]", "\\$\\[item.todo]", ITEM),
-				new ContentFieldTestData("item.checks", DefaultVariableProcessor.CHECKS, "$[item.checks]", "\\$\\[item.checks]", ITEM),
-				new ContentFieldTestData("item.mistakes", DefaultVariableProcessor.MISTAKES, "$[item.mistakes]", "\\$\\[item.mistakes]", ITEM),
-				new ContentFieldTestData("item.show_answers", DefaultVariableProcessor.SHOW_ANSWERS, "$[item.show_answers]", "\\$\\[item.show_answers]", ITEM),
-				new ContentFieldTestData("item.reset", DefaultVariableProcessor.RESET, "$[item.reset]", "\\$\\[item.reset]", ITEM),
+				new ContentFieldTestData("item.done", VariableName.DONE.toString(), "$[item.done]", "\\$\\[item.done]", ITEM),
+				new ContentFieldTestData("item.todo", VariableName.TODO.toString(), "$[item.todo]", "\\$\\[item.todo]", ITEM),
+				new ContentFieldTestData("item.checks", FlowActivityVariablesProcessor.CHECKS, "$[item.checks]", "\\$\\[item.checks]", ITEM),
+				new ContentFieldTestData("item.mistakes", VariableName.MISTAKES.toString(), "$[item.mistakes]", "\\$\\[item.mistakes]", ITEM),
+				new ContentFieldTestData("item.show_answers", FlowActivityVariablesProcessor.SHOW_ANSWERS, "$[item.show_answers]", "\\$\\[item.show_answers]", ITEM),
+				new ContentFieldTestData("item.reset", FlowActivityVariablesProcessor.RESET, "$[item.reset]", "\\$\\[item.reset]", ITEM),
 				new ContentFieldTestData("item.result", "RESULT", "$[item.result]", "\\$\\[item.result]", ITEM),
 				new ContentFieldTestData("item.page_num", "PAGE_NUM", "$[item.page_num]", "\\$\\[item.page_num]", ITEM),
 				new ContentFieldTestData("item.page_count", "PAGE_COUNT", "$[item.page_count]", "\\$\\[item.page_count]", ITEM)

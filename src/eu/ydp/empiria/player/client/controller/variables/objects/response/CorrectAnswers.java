@@ -49,5 +49,9 @@ public class CorrectAnswers {
 		
 		return answers;
 	}
+	
+	public List<ResponseValue> getAllResponseValues(){
+		return this.values;
+	}
 
 }
