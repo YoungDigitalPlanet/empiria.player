@@ -30,6 +30,7 @@ import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
@@ -148,7 +149,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(VariableInterpreterFactory.class));
 		install(new GinFactoryModuleBuilder().build(AssessmentReportFactory.class));
 		install(new GinFactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
-
+		install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
 	}
 
 	@Provides

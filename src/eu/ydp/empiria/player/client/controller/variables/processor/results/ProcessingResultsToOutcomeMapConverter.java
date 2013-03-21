@@ -1,14 +1,15 @@
-package eu.ydp.empiria.player.client.controller.variables.processor;
+package eu.ydp.empiria.player.client.controller.variables.processor.results;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.AnswersChangesFormater;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ConstantVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
@@ -25,11 +26,13 @@ public class ProcessingResultsToOutcomeMapConverter {
 	private static final String LASTMISTAKEN = "LASTMISTAKEN";
 	private static final String LASTCHANGE = "LASTCHANGE";
 
-	private final AnswersChangesFormater answersChangesFormater = new AnswersChangesFormater();
 	private final Map<String, Outcome> outcomes;
+	private final AnswersChangesFormater answersChangesFormater;
 
-	public ProcessingResultsToOutcomeMapConverter(Map<String, Outcome> outcomes) {
+	@Inject
+	public ProcessingResultsToOutcomeMapConverter(@Assisted Map<String, Outcome> outcomes, AnswersChangesFormater answersChangesFormater) {
 		this.outcomes = outcomes;
+		this.answersChangesFormater = answersChangesFormater;
 	}
 
 	public void updateOutcomeMapWithGlobalVariables(GlobalVariables globalVariables) {

@@ -46,6 +46,11 @@ public class DtoModuleProcessingResultBuilder {
 		return this;
 	}
 	
+	public DtoModuleProcessingResultBuilder withAnswerEvaluations(List<Boolean> answerEvaluations) {
+		this.answersEvaluation = answerEvaluations;
+		return this;
+	}
+	
 	public DtoModuleProcessingResult build(){
 		GeneralVariables generalVariables = new GeneralVariables(answers, answersEvaluation, errors, done);
 		ConstantVariables constantVariables = new ConstantVariables(todo);

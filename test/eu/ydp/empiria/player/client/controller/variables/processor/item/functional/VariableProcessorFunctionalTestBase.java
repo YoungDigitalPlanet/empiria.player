@@ -15,6 +15,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -22,6 +23,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMod
 import eu.ydp.empiria.player.client.controller.variables.processor.item.OutcomeVariablesInitializer;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import static org.junit.Assert.assertEquals;
@@ -30,7 +32,6 @@ public class VariableProcessorFunctionalTestBase {
 
 	private static final Logger LOGGER = Logger.getLogger(VariableProcessorFunctionalTestBase.class.getName());
 
-	//protected DefaultVariableProcessor defaultVariableProcessor;
 	protected VariablesProcessingInitializingWrapper defaultVariableProcessor;
 	protected ProcessingMode processingMode;
 
@@ -39,13 +40,13 @@ public class VariableProcessorFunctionalTestBase {
 	
 	@Before
 	public void setUp() {
-		// defaultVariableProcessor = new DefaultVariableProcessor();
-
 		Injector injector = Guice.createInjector(new AbstractModule() {
 			@Override
 			protected void configure() {
 				bind(ModulesVariablesProcessor.class).annotatedWith(PageScoped.class).to(ModulesVariablesProcessor.class).in(Singleton.class);
 				bind(GroupedAnswersManager.class).annotatedWith(PageScoped.class).to(GroupedAnswersManager.class).in(Singleton.class);
+				
+				install(new FactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
 			}
 		});
 

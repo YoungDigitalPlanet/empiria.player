@@ -10,7 +10,6 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
 
 
 public class ModulesProcessingResults {
@@ -23,17 +22,10 @@ public class ModulesProcessingResults {
 		this.processingResultFactory = processingResultFactory;
 	}
 
-	public List<String> getPreviousAnswersForResponseId(String responseId){
-		DtoModuleProcessingResult processingResult = getOrCreateProcessingResultForResponseId(responseId);
-		GeneralVariables generalVariables = processingResult.getGeneralVariables();
-		return generalVariables.getAnswers();
-	}
-	
 	public DtoModuleProcessingResult getProcessingResultsForResponseId(String responseId){
 		DtoModuleProcessingResult processingResult = getOrCreateProcessingResultForResponseId(responseId);
 		return processingResult;
 	}
-	
 	
 	public List<DtoModuleProcessingResult> getListOfProcessingResults(){
 		Collection<DtoModuleProcessingResult> processingResults = responseIdToProcessingResults.values();
