@@ -111,10 +111,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		this.interactionEventsListener = interactionEventsListener;
 		outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
 
-		//TODO: this one is probably to needed anymore - verify this
-//		outcomeVariablesInitializer.initializeOutcomeVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
-		variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap());
-
 		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
 
 		FeedbackAutoMarkInterpreter.interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
@@ -124,6 +120,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		itemBodyView = new ItemBodyView(itemBody);
 
 		itemBodyView.init(itemBody.init((Element) itemBodyNode));
+
+		variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap());
 
 		title = ((Element) rootNode).getAttribute("title");
 
