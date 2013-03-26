@@ -11,6 +11,8 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.posi
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.RangeCreator;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.ViewportHelper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.WidgetSizeHelper;
+import eu.ydp.empiria.player.client.module.media.external.FullscreenVideoMediaWrapper;
+import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoImpl;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.test.AbstractMockingTestModule;
@@ -44,6 +46,8 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToClassOrMockProvider(WidgetSizeHelper.class);
 		bindToClassOrMockProvider(ViewportHelper.class);
 		bindToClassOrMockProvider(FullscreenVideoExecutor.class);
+		bindToClassOrMockProvider(FullscreenVideoMediaWrapper.class);
+		bindToClassOrMockProvider(ExternalFullscreenVideoImpl.class);
 	}
 
 }
