@@ -19,7 +19,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBoo
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory.FullscreenVideoExecutorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieProperties;
@@ -141,7 +140,6 @@ public class PlayerGinModule extends AbstractGinModule {
 			.toProvider(NewFlowPanelProvider.class)
 			.in(Singleton.class);
 		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class).in(Singleton.class);
-		bind(FullscreenVideoExecutorFactory.class).in(Singleton.class);
 
 		//bind(OverlayTypesParser.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));

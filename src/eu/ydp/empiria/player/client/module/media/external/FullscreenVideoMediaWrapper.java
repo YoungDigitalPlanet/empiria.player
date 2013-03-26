@@ -5,18 +5,18 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.object.impl.Video;
+import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoImpl;
 import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 
 public class FullscreenVideoMediaWrapper implements MediaWrapper<Widget> {
 
 	private static final int DURATION_MILLIPERCENT_MAX = 100 * 1000;
 	@Inject private UniqueIdGenerator idGnerator;
-	@Inject private ExternalFullscreenVideoMediaAvailableOptions availableOptions; 
+	@Inject private ExternalFullscreenVideoMediaAvailableOptions availableOptions;
+	@Inject private ExternalFullscreenVideoImpl mediaObject; 
 	
 	private String id;
 	private double time;
-	private Video mediaObject;
 	
 	@Override
 	public MediaAvailableOptions getMediaAvailableOptions() {
@@ -26,10 +26,6 @@ public class FullscreenVideoMediaWrapper implements MediaWrapper<Widget> {
 	@Override
 	public Widget getMediaObject() {
 		return mediaObject.asWidget();
-	}
-	
-	public void setMediaObject(Video mediaObject) {
-		this.mediaObject = mediaObject;
 	}
 	
 	public void setPoster(String url){

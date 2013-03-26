@@ -10,6 +10,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
@@ -22,7 +23,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfM
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.OldSwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoAvailability;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory.FullscreenVideoExecutorFactory;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory.HTML5MediaExecutorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
@@ -55,7 +56,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	@Inject private Instance<HTML5MediaExecutorFactory> html5MediaExecutorFactoryProvider;
 	
 	@Inject	private ExternalFullscreenVideoAvailability externalFullscreenVideoAvailability;
-	@Inject	private FullscreenVideoExecutorFactory fullscreenVideoExecutorFactory;
+	@Inject private Provider<FullscreenVideoExecutor> fullscreenVideoExecutorProvider;
 
 	@Override
 	public void init() {
@@ -186,7 +187,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			MediaExecutor<?> executor;
 			MediaExecutor<?> fullScreenExecutor = null;
 			if (bmc.getMediaType() == MediaType.VIDEO  &&  externalFullscreenVideoAvailability.isAvailable()){
-				executor = fullscreenVideoExecutorFactory.create();
+				executor = fullscreenVideoExecutorProvider.get();
 			} else if (!UserAgentChecker.isLocal() && defaultMedia == null) {
 				if (bmc.isTemplate() || bmc.isFeedback()) {
 					if (bmc.getMediaType() == MediaType.VIDEO) {

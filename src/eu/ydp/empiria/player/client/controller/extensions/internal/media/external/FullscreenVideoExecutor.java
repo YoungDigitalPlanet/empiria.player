@@ -16,8 +16,8 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 
 	@Inject private ExternalFullscreenVideoConnector connector;
 	@Inject private EventsBus eventsBus;
+	@Inject private FullscreenVideoMediaWrapper mediaWrapper;
 	
-	private FullscreenVideoMediaWrapper mediaWrapper;
 	private BaseMediaConfiguration baseMediaConfiguration;
 
 	@Override
