@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -18,10 +17,11 @@ import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
-import eu.ydp.empiria.player.client.module.selection.handlers.ChoiceButtonMouseOutHandler;
-import eu.ydp.empiria.player.client.module.selection.handlers.ChoiceButtonMouseOverHandler;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class SelectionModuleViewImpl implements SelectionModuleView{
 
@@ -32,6 +32,8 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	private StyleNameConstants styleNameConstants;
 	@Inject
 	private SelectionModuleFactory selectionModuleFactory;
+	@Inject
+	private UserInteractionHandlerFactory userInteractionHandlerFactory; 
 	
 	private List<List<SelectionChoiceButton>> choiceButtons;
 	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
@@ -98,9 +100,24 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 		addMouseOverHandler(choiceButton);
 	}
 	
-	private void addMouseOverHandler(SelectionChoiceButton button) {
-		button.addMouseOutHandler(new ChoiceButtonMouseOutHandler(button));
-		button.addMouseOverHandler(new ChoiceButtonMouseOverHandler(button));
+	private void addMouseOverHandler(final SelectionChoiceButton button) {
+		EventHandlerProxy userOverHandler = userInteractionHandlerFactory.createUserOverHandler(new Command() {
+			
+			@Override
+			public void execute(NativeEvent event) {
+				button.setMouseOver(true);
+			}
+		});
+		userOverHandler.apply(button);
+		
+		EventHandlerProxy userOutHandler = userInteractionHandlerFactory.createUserOutHandler(new Command() {
+			
+			@Override
+			public void execute(NativeEvent event) {
+				button.setMouseOver(false);
+			}
+		});
+		userOutHandler.apply(button);
 	}
 
 	private void addNewChoiceButton(SelectionChoiceButton choiceButton, int itemNumber) {
@@ -128,11 +145,21 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	}
 
 	@Override
-	public void addClickHandlerToButton(int itemNumber, int choiceNumber, ClickHandler clickHandler){
+	public void addClickHandlerToButton(int itemNumber, int choiceNumber, Command clickHandler){
 		final SelectionChoiceButton button = getButton(itemNumber, choiceNumber);
-		button.addClickHandler(new ClickHandler() {
+		addButtonSelectionHandler(button);
+		addControllerUpdateOnSelectionHandler(clickHandler, button);
+	}
+
+	private void addControllerUpdateOnSelectionHandler(Command clickHandler, final SelectionChoiceButton button) {
+		EventHandlerProxy userControllerUpdateClickHandler = userInteractionHandlerFactory.createUserClickHandler(clickHandler);
+		userControllerUpdateClickHandler.apply(button);
+	}
+
+	private void addButtonSelectionHandler(final SelectionChoiceButton button) {
+		EventHandlerProxy userSelectionClickHandler = userInteractionHandlerFactory.createUserClickHandler(new Command() {
 			@Override
-			public void onClick(ClickEvent event) {
+			public void execute(NativeEvent event) {
 				if(button.isSelected()){
 					button.setSelected(false);
 				}else{
@@ -141,7 +168,7 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 				button.updateStyle();
 			}
 		});
-		button.addClickHandler(clickHandler);
+		userSelectionClickHandler.apply(button);
 	}
 
 	@Override
