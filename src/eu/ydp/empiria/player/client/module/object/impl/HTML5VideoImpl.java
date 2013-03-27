@@ -17,6 +17,7 @@ public class HTML5VideoImpl extends FlowPanel implements Video {
 	public HTML5VideoImpl() {
 		video = eu.ydp.empiria.player.client.media.Video.createIfSupported();
 		video.setPreload(MediaElement.PRELOAD_METADATA);
+		video.setLoop(false);
 		add(video);
 
 	}
