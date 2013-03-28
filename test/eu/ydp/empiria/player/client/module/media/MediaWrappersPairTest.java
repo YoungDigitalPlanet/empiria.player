@@ -6,6 +6,7 @@ import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_
 import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_PLAY;
 import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_ANDROID;
 import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.SAFARI;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
@@ -92,6 +93,12 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 	}
 
 	@Test
+	public void safariBrowserInitTest() {
+		before(SAFARI);
+		Mockito.verifyZeroInteractions(eventsBus);
+	}
+
+	@Test
 	public void desktopBrowserInitTest() {
 		before(FIREFOX_WINDOWS);
 		verify(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_OPEN)), eq(fullScreenWrapper), any(MediaEventHandler.class), any(EventScope.class));
@@ -114,6 +121,14 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 	@Test
 	public void mobileFullScreenOpenRequestTest() {
 		before(FIREFOX_ANDROID);
+		MediaEvent mediaEvent = new MediaEvent(ON_FULL_SCREEN_OPEN);
+		eventsBus.fireEventFromSource(mediaEvent, fullScreenWrapper);
+		verify(instance, times(0)).onMediaEvent(eq(mediaEvent));
+	}
+
+	@Test
+	public void safariFullScreenOpenRequestTest() {
+		before(SAFARI);
 		MediaEvent mediaEvent = new MediaEvent(ON_FULL_SCREEN_OPEN);
 		eventsBus.fireEventFromSource(mediaEvent, fullScreenWrapper);
 		verify(instance, times(0)).onMediaEvent(eq(mediaEvent));

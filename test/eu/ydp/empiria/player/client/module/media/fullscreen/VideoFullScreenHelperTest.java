@@ -1,5 +1,10 @@
 package eu.ydp.empiria.player.client.module.media.fullscreen;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,10 +29,6 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
@@ -78,6 +79,7 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
 		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
 		verify(instance).openFullScreenDesktop(Mockito.any(MediaWrapper.class), Mockito.any(Element.class));
 	}
+
 	@Test
 	public void openFullScreenMobileTest(){
 		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_ANDROID);
@@ -85,6 +87,15 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
 		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
 		verify(instance).openFullScreenMobile(Mockito.any(MediaWrapper.class), Mockito.any(MediaWrapper.class));
 	}
+
+	@Test
+	public void openFullScreenSafariTest(){
+		before(UserAgentCheckerNativeInterfaceMock.SAFARI);
+		doNothing().when(instance).openFullScreenMobile(Mockito.any(MediaWrapper.class), Mockito.any(MediaWrapper.class));
+		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
+		verify(instance).openFullScreenMobile(Mockito.any(MediaWrapper.class), Mockito.any(MediaWrapper.class));
+	}
+
 	@Test
 	public void openFullScreenIETest(){
 		before(UserAgentCheckerNativeInterfaceMock.IE_9);
