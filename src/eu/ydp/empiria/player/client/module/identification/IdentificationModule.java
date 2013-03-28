@@ -7,8 +7,7 @@ import java.util.List;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONValue;
@@ -25,6 +24,9 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
+import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class IdentificationModule extends InteractionModuleBase implements Factory<IdentificationModule> {
@@ -34,9 +36,12 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	private boolean showingCorrectAnswers = false;
 
 	@Inject
-	protected Provider<IdentificationModule> identificationModuleProvider;
+	private Provider<IdentificationModule> identificationModuleProvider;
+
+	@Inject
+	private UserInteractionHandlerFactory interactionHandlerFactory;
+
 	private List<SelectableChoice> options;
-	private FlowPanel panel;
 
 	protected List<Element> multiViewElements = new ArrayList<Element>();
 
@@ -110,15 +115,10 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 				} else {
 					fixeds.add(true);
 				}
-				selectableChoice.addDomHandler(new ClickHandler() {
-					@Override
-					public void onClick(ClickEvent event) {
-						onChoiceClick(selectableChoice);
-					}
-				}, ClickEvent.getType());
+				addClickHandler(selectableChoice);
 			}
 
-			panel = new FlowPanel();
+			FlowPanel panel = new FlowPanel();
 			panel.setStyleName("qp-identification-module");
 			if (userClass != null && !"".equals(userClass)) {
 				panel.addStyleName(userClass);
@@ -139,6 +139,22 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			currPlaceholder.add(panel);
 			options.addAll(currOptions);
 		}
+	}
+
+	private void addClickHandler(final SelectableChoice selectableChoice) {
+		Command clickCommand = createClickCommand(selectableChoice);
+		EventHandlerProxy userClickHandler = interactionHandlerFactory.createUserClickHandler(clickCommand);
+		userClickHandler.apply(selectableChoice);
+	}
+
+	private Command createClickCommand(final SelectableChoice selectableChoice) {
+		return new Command() {
+
+			@Override
+			public void execute(NativeEvent event) {
+				onChoiceClick(selectableChoice);
+			}
+		};
 	}
 
 	@Override
@@ -237,7 +253,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			updateResponse(true);
 		}
 	}
-	
+
 	private void updateResponse(boolean userInteract) {
 		updateResponse(userInteract, false);
 	}
