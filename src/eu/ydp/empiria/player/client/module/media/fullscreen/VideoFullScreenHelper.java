@@ -31,6 +31,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
 public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEventHandler {
 
@@ -178,7 +179,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 
 	public void openFullScreen(MediaWrapper<?> fullScreenMediaWrapper, MediaWrapper<?> defaultMediaWrapper, Element template) {
 		synchronizeWithMediaWrapper = defaultMediaWrapper;
-		if (UserAgentChecker.isMobileUserAgent() && !UserAgentChecker.isMobileUserAgent(FIREFOX)) {
+		if ((UserAgentChecker.isMobileUserAgent() || UserAgentChecker.isUserAgent(UserAgent.SAFARI)) && !UserAgentChecker.isMobileUserAgent(FIREFOX)) {
 			openFullScreenMobile(defaultMediaWrapper, fullScreenMediaWrapper);
 		} else if (UserAgentChecker.isUserAgent(IE8, IE9, FIREFOX)) {
 			openFullscreenIE(fullScreenMediaWrapper, template);

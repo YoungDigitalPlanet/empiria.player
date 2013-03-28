@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
 public class MediaWrappersPair implements MediaEventHandler {
 	@Inject
@@ -39,7 +40,7 @@ public class MediaWrappersPair implements MediaEventHandler {
 
 	@PostConstruct
 	public void postConstruct() {
-		if (!UserAgentChecker.isMobileUserAgent() || UserAgentChecker.isMobileUserAgent(FIREFOX)) { // powoduje problemy na
+		if (isSynchronizationNeeded()) { // powoduje problemy na
 														// mobilnych
 			// synchronizacja pomiedzy dwoma obiektami video
 			HandlerRegistration addHandlerToSource = eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_OPEN),
@@ -49,6 +50,10 @@ public class MediaWrappersPair implements MediaEventHandler {
 					pageScopeFactory.getCurrentPageScope());
 			handlersRegistration.add(addHandlerToSource);
 		}
+	}
+
+	private boolean isSynchronizationNeeded() {
+		return (!UserAgentChecker.isMobileUserAgent() && !UserAgentChecker.isUserAgent(UserAgent.SAFARI)) || UserAgentChecker.isMobileUserAgent(FIREFOX);
 	}
 
 	public MediaWrapper<?> getDefaultMediaWrapper() {
