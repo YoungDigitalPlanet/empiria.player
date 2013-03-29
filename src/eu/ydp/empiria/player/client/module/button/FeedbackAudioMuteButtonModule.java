@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class FeedbackAudioMuteButtonModule extends ActivityButtonModule implements FeedbackEventHandler, PlayerEventHandler{
+public class FeedbackAudioMuteButtonModule extends AbstractActivityButtonModule implements FeedbackEventHandler, PlayerEventHandler{
 
 	public final static String STYLE_NAME__ON = "qp-feedback-audio-mute-on-button";
 	

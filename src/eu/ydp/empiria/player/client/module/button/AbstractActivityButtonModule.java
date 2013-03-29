@@ -4,7 +4,6 @@ import java.util.Stack;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -15,11 +14,12 @@ import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
-public abstract class ActivityButtonModule extends ControlModule implements ISimpleModule {
+public abstract class AbstractActivityButtonModule extends ControlModule implements ISimpleModule {
 
 	@Inject
-	protected PushButton button;
+	protected CustomPushButton button;
 	protected boolean isEnabled = true;
 
 	@Override
@@ -62,12 +62,10 @@ public abstract class ActivityButtonModule extends ControlModule implements ISim
 	}
 
 	protected String getCurrentStyleName(boolean isEnabled) {
-		String styleName = null;
+		String styleName = getStyleName();
 
-		if (isEnabled) {
-			styleName = getStyleName();
-		} else {
-			styleName = getStyleName() + "-disabled";
+		if (!isEnabled) {
+			styleName += "-disabled"; //NOPMD
 		}
 
 		return styleName;

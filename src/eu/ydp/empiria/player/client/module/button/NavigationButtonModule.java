@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 public class NavigationButtonModule extends ControlModule implements ISimpleModule, PlayerEventHandler {
 
@@ -85,7 +86,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 	@Override
 	public Widget getView() {
 		if (button == null) {
-			button = new PushButton();
+			button = new CustomPushButton();
 			button.setStyleName(getStyleName());
 			button.addClickHandler(new ClickHandler() {
 

@@ -21,6 +21,7 @@ import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.module.ChoiceGinModule;
 import eu.ydp.empiria.player.client.gin.module.ConnectionGinModule;
@@ -62,6 +63,7 @@ public interface PlayerGinjector extends Ginjector {
 	TextTrackFactory getTextTrackFactory();
 	ModuleFactory getModuleFactory();
 	ModuleProviderFactory getModuleProviderFactory();
+	SingleModuleInstanceProvider getSingleModuleInstanceProvider();
 	FeedbackRegistry getFeedbackRegistry();
 	ModuleFeedbackProcessor getModuleFeedbackProcessor();
 	AssessmentControllerFactory getAssessmentControllerFactory();

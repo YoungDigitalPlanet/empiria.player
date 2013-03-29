@@ -39,12 +39,14 @@ import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
+import eu.ydp.empiria.player.client.gin.factory.LinkModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrapperFactory;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
+import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
@@ -150,7 +152,7 @@ public class PlayerGinModule extends AbstractGinModule {
 			.toProvider(NewFlowPanelProvider.class)
 			.in(Singleton.class);
 		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class).in(Singleton.class);
-
+		bind(SingleModuleInstanceProvider.class);
 		//bind(OverlayTypesParser.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
@@ -170,6 +172,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(AssessmentReportFactory.class));
 		install(new GinFactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
 		install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
+		install(new GinFactoryModuleBuilder().build(LinkModuleFactory.class));
 	}
 
 	@Provides

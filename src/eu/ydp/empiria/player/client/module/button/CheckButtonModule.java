@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class CheckButtonModule extends ActivityButtonModule implements PlayerEventHandler {
+public class CheckButtonModule extends AbstractActivityButtonModule implements PlayerEventHandler {
 
 	@Inject
 	protected EventsBus eventsBus;

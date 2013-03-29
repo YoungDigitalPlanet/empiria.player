@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
@@ -21,6 +20,7 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 @SuppressWarnings("PMD")
 public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
@@ -31,7 +31,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
-			binder.bind(PushButton.class).toInstance(mock(PushButton.class));
+			binder.bind(CustomPushButton.class).toInstance(mock(CustomPushButton.class));
 		}
 	}
 
@@ -47,7 +47,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 	@Before
 	public void before() {
-		setUp(new Class<?>[] { PushButton.class }, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule());
+		setUp(new Class<?>[] { CustomPushButton.class }, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule());
 		instance = spy(injector.getInstance(ResetButtonModule.class));
 		requestInvoker = mock(FlowRequestInvoker.class);
 		instance.setFlowRequestsInvoker(requestInvoker);

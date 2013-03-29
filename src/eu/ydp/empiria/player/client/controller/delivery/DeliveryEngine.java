@@ -32,10 +32,8 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsHub
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsListener;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
-import eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InfoModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.LinkModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageSwitchModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
@@ -70,6 +68,7 @@ import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
+import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
 import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.containers.DivModule;
@@ -140,6 +139,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	protected ModuleFactory extensionFactory = PlayerGinjectorFactory.getPlayerGinjector().getModuleFactory();
 	protected ModuleProviderFactory moduleProviderFactory = PlayerGinjectorFactory.getPlayerGinjector().getModuleProviderFactory();
+	protected SingleModuleInstanceProvider singleModuleInstanceProvider = PlayerGinjectorFactory.getPlayerGinjector().getSingleModuleInstanceProvider();
 
 	protected Integer initialItemIndex;
 
@@ -310,7 +310,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSourceListModule(), ModuleTagName.SOURCE_LIST));
 		loadExtension(new InfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
-		loadExtension(new LinkModuleConnectorExtension());
+		loadExtension(singleModuleInstanceProvider.getLinkModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(new PromptModule(), ModuleTagName.PROMPT));
 		loadExtension(new SimpleConnectorExtension(new TableModule(), ModuleTagName.TABLE));
 		loadExtension(new NextPageButtonModuleConnectorExtension());

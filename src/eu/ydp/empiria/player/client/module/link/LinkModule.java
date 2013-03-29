@@ -1,19 +1,17 @@
 package eu.ydp.empiria.player.client.module.link;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
+import javax.annotation.PostConstruct;
+
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
@@ -22,6 +20,9 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.command.SetStyleNameCommand;
+import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 
@@ -31,46 +32,74 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 
 	protected int itemIndex = -1;
 	protected String url;
-	protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	public LinkModule(FlowRequestInvoker flowRequestInvoker) {
-		super();
+
+	@Inject
+	private StyleNameConstants styleNames;
+
+	@Inject
+	private UserInteractionHandlerFactory userInteractionHandlerFactory;
+
+	@Inject
+	public LinkModule(@Assisted FlowRequestInvoker flowRequestInvoker) {
 		this.flowRequestInvoker = flowRequestInvoker;
+	}
+
+	@PostConstruct
+	public void postConstruct() {
+		setLinkContentStyle();
+		prepareMainPanel();
+		addClickHandler();
+		addMouseOverHandler();
+		addMouseOutHandler();
+	}
+
+	private void setLinkContentStyle() {
 		panel.setStyleName(styleNames.QP_LINK_CONTENT());
+	}
+
+	private void prepareMainPanel() {
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName(styleNames.QP_LINK());
 		mainPanel.add(panel);
-
-		mainPanel.addDomHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				processLink();
-			}
-		}, ClickEvent.getType());
-
-		mainPanel.addDomHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				mainPanel.setStyleName(styleNames.QP_LINK_OVER());
-			}
-		}, MouseOverEvent.getType());
-		mainPanel.addDomHandler(new MouseOutHandler() {
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				mainPanel.setStyleName(styleNames.QP_LINK());
-			}
-		}, MouseOutEvent.getType());
 	}
 
+	private void addMouseOutHandler() {
+		userInteractionHandlerFactory.createUserOutHandler(createOutCommand()).apply(mainPanel);
+	}
+
+	private Command createOutCommand() {
+		return new SetStyleNameCommand(mainPanel, styleNames.QP_LINK());
+	}
+
+	private void addMouseOverHandler() {
+		userInteractionHandlerFactory.createUserOverHandler(createOverCommand()).apply(mainPanel);
+	}
+
+	private Command createOverCommand() {
+		return new SetStyleNameCommand(mainPanel, styleNames.QP_LINK_OVER());
+	}
+
+	private void addClickHandler() {
+		userInteractionHandlerFactory.createUserClickHandler(createClickCommand()).apply(mainPanel);
+	}
+
+	private Command createClickCommand() {
+		return new Command() {
+			@Override
+			public void execute(NativeEvent event) {
+				processLink();
+			}
+		};
+	}
 
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
 		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
 
-		if (element.hasAttribute("itemIndex")){
-			itemIndex = NumberUtils.tryParseInt( element.getAttribute("itemIndex"), -1);
+		if (element.hasAttribute("itemIndex")) {
+			itemIndex = NumberUtils.tryParseInt(element.getAttribute("itemIndex"), -1);
 		}
-		if (itemIndex == -1  &&   element.hasAttribute("url")){
+		if (itemIndex == -1 && element.hasAttribute("url")) {
 			url = element.getAttribute("url");
 		}
 
@@ -86,10 +115,10 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 		return panel;
 	}
 
-	protected void processLink(){
-		if (itemIndex != -1){
-			flowRequestInvoker.invokeRequest(new FlowRequest.NavigateGotoItem(itemIndex) );
-		} else if (url != null){
+	protected void processLink() {
+		if (itemIndex != -1) {
+			flowRequestInvoker.invokeRequest(new FlowRequest.NavigateGotoItem(itemIndex));
+		} else if (url != null) {
 			Window.open(url, "_blank", "");
 		}
 	}

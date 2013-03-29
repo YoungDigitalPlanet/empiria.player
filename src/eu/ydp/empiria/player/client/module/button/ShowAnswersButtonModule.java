@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class ShowAnswersButtonModule extends ActivityButtonModule implements PlayerEventHandler {
+public class ShowAnswersButtonModule extends AbstractActivityButtonModule implements PlayerEventHandler {
 
 	protected boolean isSelected = false;
 
