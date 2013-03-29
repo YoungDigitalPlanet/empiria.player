@@ -1,19 +1,19 @@
 package eu.ydp.empiria.player.client.module.selection.handlers;
 
-import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
 import eu.ydp.empiria.player.client.module.selection.presenter.SelectionModulePresenter;
-import eu.ydp.gwtutil.client.event.factory.Command;
 
-public class ChoiceButtonClickHandler implements Command{
+public class ChoiceButtonClickHandler implements ClickHandler{
 
-	private GroupAnswersController groupAnswerController;
-	private String buttonId;
+	private final GroupAnswersController groupAnswerController;
+	private final String buttonId;
 	private final SelectionModulePresenter selectionModulePresenter;
-	
+
 	@Inject
 	public ChoiceButtonClickHandler(
 			@Assisted GroupAnswersController groupAnswerController,
@@ -25,7 +25,7 @@ public class ChoiceButtonClickHandler implements Command{
 	}
 
 	@Override
-	public void execute(NativeEvent event) {
+	public void onClick(ClickEvent event) {
 		groupAnswerController.selectToggleAnswer(buttonId);
 		selectionModulePresenter.updateView();
 	}

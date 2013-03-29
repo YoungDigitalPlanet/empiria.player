@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
@@ -20,7 +19,7 @@ public class ChoiceButtonClickHandlerJUnitTest {
 	private GroupAnswersController groupAnswerController;
 	private String buttonId;
 	private SelectionModulePresenter selectionModulePresenter;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		groupAnswerController = mock(GroupAnswersController.class);
@@ -35,11 +34,11 @@ public class ChoiceButtonClickHandlerJUnitTest {
 
 	@Test
 	public void testOnClick() {
-		NativeEvent event = mock(NativeEvent.class);
-		
+		ClickEvent event = mock(ClickEvent.class);
+
 		//then
-		handler.execute(event);
-		
+		handler.onClick(event);
+
 		verify(groupAnswerController).selectToggleAnswer(buttonId);
 		verify(selectionModulePresenter).updateView();
 	}
