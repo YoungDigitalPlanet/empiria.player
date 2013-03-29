@@ -43,6 +43,7 @@ public class HTML5MediaEventMapper {
 
 	public void mapAndFireEvent(HTML5MediaEvent event, SoundExecutorListener listener, MediaWrapper<?> mediaWrapper) {
 		HTML5MediaEventsType eventType = event.getType();
+		System.out.println("eventType " + eventType);
 		fireEvent(mediaWrapper, eventType);
 		callListenerMethod(listener, eventType);
 	}

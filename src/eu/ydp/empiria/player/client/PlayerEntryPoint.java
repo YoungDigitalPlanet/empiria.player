@@ -23,6 +23,9 @@
  */
 package eu.ydp.empiria.player.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -32,6 +35,7 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
+import eu.ydp.gwtutil.client.Alternative;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -39,10 +43,11 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 public class PlayerEntryPoint implements EntryPoint {
 
 	/** Player object */
-	public static Player player;
+	private static Player player;
 	private static String url1;
 	private static JavaScriptObject jsObject;
 	private static String node_id;
+	private static List<Alternative<String, JavaScriptObject>> extensionsToLoad = new ArrayList<Alternative<String,JavaScriptObject>>();
 
 	/**
 	 * This is the entry point method.
@@ -108,10 +113,7 @@ public class PlayerEntryPoint implements EntryPoint {
 		GWT.runAsync(new RunAsyncCallback() {
 			@Override
 			public void onSuccess() {
-				if(player == null){
-					player = new Player(node_id, jsObject);
-				}
-				player.load(url);
+				doLoad(url);
 			}
 			
 			@Override
@@ -119,6 +121,21 @@ public class PlayerEntryPoint implements EntryPoint {
 				throw new RuntimeException("Error while loading player!", reason);
 			}
 		});
+	}
+
+	private static void doLoad(final String url) {
+		if(player == null){
+			player = new Player(node_id, jsObject);
+		}
+		for (Alternative<String, JavaScriptObject> extAlt :  extensionsToLoad){
+			if (extAlt.hasMain()){
+				player.loadExtension(extAlt.getMain());
+			} else {
+				player.loadExtension(extAlt.getOther());
+			}
+			
+		}
+		player.load(url);
 	}
 
 	/**
@@ -164,10 +181,10 @@ public class PlayerEntryPoint implements EntryPoint {
 	 }-*/;
 
 	public static void loadExtension(JavaScriptObject extension){
-		player.loadExtension(extension);
+		extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForOther(extension));
 	}
 	public static void loadExtension(String extension){
-		player.loadExtension(extension);
+		extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForMain(extension));
 	}
 
 }

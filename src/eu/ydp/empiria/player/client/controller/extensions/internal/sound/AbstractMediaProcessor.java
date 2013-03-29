@@ -8,10 +8,11 @@ import java.util.Map;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.HTML5AudioMediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.HTML5VideoMediaExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
+import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoMediaWrapper;
@@ -23,32 +24,28 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.debug.gwtlogger.ILogger;
 import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.RuntimeMobileUserAgent;
 
-public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler {
+public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler, MediaProcessorExtension {
 	private final Map<MediaWrapper<?>, MediaExecutor<?>> executors = new HashMap<MediaWrapper<?>, MediaExecutor<?>>();
 
-	protected MediaInteractionSoundEventCallback callback;
-
-	@Inject
-	protected EventsBus eventsBus;
+	@Inject protected EventsBus eventsBus;
+	@Inject private Provider<HTML5VideoReattachHack> html5VideoReattachHackProvider;
+	@Inject private Provider<ReCreateAudioHack> reCreateAudioHackProvider;
+	@Inject private Logger logger;
 	
-	@Inject
-	Provider<HTML5VideoReattachHack> html5VideoReattachHackProvider;
-
-	@Inject
-	Provider<ReCreateAudioHack> reCreateAudioHackProvider;
-
 	private boolean reAttachVideoHackApplied = false;
 	
-	ILogger logger = new Logger();
 	
 	@Override
-	public void init() {
+	public final void init(){
+		// do nothing
+	}
+
+	public void initEvents() {		
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_UNLOADED), this);
 		for (MediaEventTypes type : MediaEventTypes.values()) {
@@ -143,8 +140,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			createMediaWrapper(event);
 			break;
 		case PAGE_UNLOADED:
-			//FIXME scope for executors
-		//	removeUnusedExecutors();
+			pauseAll();
 			break;
 		default:
 			break;
@@ -152,6 +148,16 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 	}
 
 	protected abstract void createMediaWrapper(PlayerEvent event);
-
+	
+	protected abstract void pauseAll();
+	
 	protected abstract void pauseAllOthers(MediaWrapper<?> mediaWrapper);
+
+	protected void initExecutor(MediaExecutor<?> executor, BaseMediaConfiguration mediaConfiguration) {
+		if (executor != null) {
+			executor.setBaseMediaConfiguration(mediaConfiguration);
+			executor.init();
+			putMediaExecutor(executor.getMediaWrapper(), executor);
+		}
+	}
 }

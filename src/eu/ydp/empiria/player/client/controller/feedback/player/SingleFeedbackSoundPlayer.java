@@ -28,7 +28,7 @@ public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 
 	@PostConstruct
 	public void postConstruct() {
-		eventsBus.addHandlerToSource(MediaEvent.getTypes(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY), mediaWrapper, this);
+		eventsBus.addHandlerToSource(MediaEvent.getTypes(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PAUSE, MediaEventTypes.ON_PLAY), mediaWrapper, this);
 	}
 
 	protected void firePlayEvent(final MediaWrapper<?> mediaWrapper) {
@@ -65,6 +65,7 @@ public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 	@Override
 	public void onMediaEvent(MediaEvent event) {
 		switch (event.getType()) {
+		case ON_PAUSE:
 		case ON_STOP:
 			setPlayed(false);
 			playIfRequired();

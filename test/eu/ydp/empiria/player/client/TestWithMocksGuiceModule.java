@@ -4,6 +4,10 @@ import static org.mockito.Mockito.withSettings;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SingleMediaPlayback;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaEngine;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnector;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnectorListener;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
@@ -14,7 +18,14 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.posi
 import eu.ydp.empiria.player.client.module.media.external.FullscreenVideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoImpl;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
+import eu.ydp.gwtutil.client.date.DateService;
+import eu.ydp.gwtutil.client.scheduler.Scheduler;
+import eu.ydp.gwtutil.client.scheduler.SchedulerMockImpl;
+import eu.ydp.gwtutil.client.timer.Timer;
+import eu.ydp.gwtutil.client.timer.TimerAccessibleMock;
 import eu.ydp.gwtutil.test.AbstractMockingTestModule;
 import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
 
@@ -34,9 +45,16 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 	
 	@Override
 	public void configure() {
-		bindToSingletonOrMockInstance(EventsBus.class);
 		bindToSingletonOrMockInstance(StyleNameConstants.class);
 		bindToSingletonOrMockInstance(ExternalFullscreenVideoConnector.class);
+		bindToSingletonOrMockInstance(EventsBus.class, PlayerEventsBus.class);
+		bindToSingletonOrMockInstance(MediaConnector.class);
+		bindToSingletonOrMockInstance(UniqueIdGenerator.class);
+		bindToSingletonOrMockInstance(ExternalMediaEngine.class);
+		bindToSingletonOrMockInstance(MediaConnectorListener.class, ExternalMediaEngine.class);
+		bindToSingletonOrMockInstance(SingleMediaPlayback.class);
+		bindToSingletonOrMockInstance(DateService.class);
+		
 		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
 		bindToClassOrMockProvider(IStickieView.class);
 		bindToClassOrMockProvider(StickiesProcessorExtension.class);
@@ -48,6 +66,8 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToClassOrMockProvider(FullscreenVideoExecutor.class);
 		bindToClassOrMockProvider(FullscreenVideoMediaWrapper.class);
 		bindToClassOrMockProvider(ExternalFullscreenVideoImpl.class);
+		bindToClassOrMockProvider(Scheduler.class, SchedulerMockImpl.class);
+		bindToClassOrMockProvider(Timer.class, TimerAccessibleMock.class);
 	}
 
 }

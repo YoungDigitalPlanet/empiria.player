@@ -47,6 +47,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	private ObjectTemplateParser<?> parser;
 	@Inject
 	private Provider<ObjectModule> moduleFactory;
+	@Inject Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
 
 	private MediaWrapper<?> fullScreenMediaWrapper;
 
@@ -136,7 +137,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			if (((!MediaChecker.isHtml5Mp3Support() && !SourceUtil.containsOgg(sources)) || !Audio.isSupported()) && UserAgentChecker.isLocal()) {
 				player = new FlashAudioPlayerModule();
 			} else {
-				player = new DefaultAudioPlayerModule();
+				player = defaultAudioPlayerModuleProvider.get();
 			}
 			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
 			this.moduleView = player.getView();

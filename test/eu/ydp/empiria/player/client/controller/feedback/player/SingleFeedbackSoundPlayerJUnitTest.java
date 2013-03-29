@@ -73,7 +73,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 		List<Type> event = Arrays.asList(arguments.getValue());
 		List<MediaEventTypes> registerEventsTypes = Lists.transform(event, typeToMediaType);
 	//	org.fest.assertions.Assertions.assertThat(registerEventsTypes).containsOnly(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY);
-		MatcherAssert.assertThat(registerEventsTypes, Matchers.contains(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY));
+		MatcherAssert.assertThat(registerEventsTypes, Matchers.containsInAnyOrder(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY, MediaEventTypes.ON_PAUSE));
 	}
 
 	@Test
@@ -206,6 +206,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 
 		List<MediaEventTypes> types = new ArrayList<MediaEventTypes>(Arrays.asList(MediaEventTypes.values()));
 		types.remove(MediaEventTypes.ON_STOP);
+		types.remove(MediaEventTypes.ON_PAUSE);
 		types.remove(MediaEventTypes.ON_PLAY);
 
 		//test

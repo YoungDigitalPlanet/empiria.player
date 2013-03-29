@@ -12,6 +12,8 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaProcessor;
+import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -25,7 +27,11 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class JsMediaProcessorExtension extends AbstractJsExtension implements MediaProcessorExtension, PlayerEventHandler, MediaEventHandler {
+/**
+ * @deprecated Use {@link ExternalMediaProcessor} instead.
+ */
+@Deprecated
+public class JsMediaProcessorExtension extends AbstractJsExtension implements MediaProcessorExtension, PlayerEventHandler, MediaEventHandler, DeliveryEventsListenerExtension {
 
 	protected boolean playing;
 	protected JavaScriptObject socketJs;
@@ -87,6 +93,11 @@ public class JsMediaProcessorExtension extends AbstractJsExtension implements Me
 
 	@Override
 	public void init() {
+		// do nothing
+	}
+	
+	@Override
+	public void initMediaProcessor() {
 		socketJs = createMediaProcessorSocketJs();
 		setMediaProcessorSocketJs(extensionJsObject, socketJs);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), this);
@@ -159,5 +170,6 @@ public class JsMediaProcessorExtension extends AbstractJsExtension implements Me
 			extension.setSoundProcessorSocket(socket);
 		}
 	}-*/;
+
 
 }

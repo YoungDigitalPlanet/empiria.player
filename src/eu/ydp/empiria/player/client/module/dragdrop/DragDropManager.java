@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
+import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -25,7 +26,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class DragDropManager implements Extension, DragDropEventHandler, PlayerEventHandler {
+public class DragDropManager extends InternalExtension implements DragDropEventHandler, PlayerEventHandler {
 
 	@Inject
 	EventsBus eventsBus;

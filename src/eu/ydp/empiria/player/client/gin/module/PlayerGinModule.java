@@ -19,6 +19,10 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBoo
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaEngine;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.JsMediaConnector;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnector;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnectorListener;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieProperties;
@@ -67,8 +71,6 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchRecognition;
-import eu.ydp.empiria.player.client.util.scheduler.Scheduler;
-import eu.ydp.empiria.player.client.util.scheduler.SchedulerImpl;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelperImpl;
 import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
@@ -77,6 +79,10 @@ import eu.ydp.empiria.player.client.view.player.PageViewCache;
 import eu.ydp.empiria.player.client.view.player.PlayerContentView;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
+import eu.ydp.gwtutil.client.scheduler.Scheduler;
+import eu.ydp.gwtutil.client.scheduler.SchedulerImpl;
+import eu.ydp.gwtutil.client.timer.Timer;
+import eu.ydp.gwtutil.client.timer.TimerImpl;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactoryImpl;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
@@ -135,6 +141,10 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(ProgressView.class).to(InfinityProgressWidget.class);
 		bind(BrowserNativeInterface.class).to(BrowserNativeInterfaceImpl.class);
 		bind(UserAgentUtil.class).to(UserAgentUtilImpl.class);
+		bind(MediaConnector.class).to(JsMediaConnector.class);
+		bind(ExternalMediaEngine.class).in(Singleton.class);
+		bind(MediaConnectorListener.class).to(ExternalMediaEngine.class);
+		bind(Timer.class).to(TimerImpl.class);
 		bind(FlowPanel.class)
 			.annotatedWith(Names.named("multiPageControllerMainPanel"))
 			.toProvider(NewFlowPanelProvider.class)

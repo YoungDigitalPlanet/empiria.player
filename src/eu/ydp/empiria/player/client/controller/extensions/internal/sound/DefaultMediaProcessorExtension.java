@@ -12,10 +12,6 @@ import com.google.gwt.media.client.Video;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
-import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.LocalSwfMediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.LocalSwfMediaWrapper;
@@ -25,7 +21,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMedi
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoAvailability;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory.HTML5MediaExecutorFactory;
-import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -38,17 +33,13 @@ import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
-public class DefaultMediaProcessorExtension extends AbstractMediaProcessor implements MediaProcessorExtension, SoundExecutorListener {
-	protected boolean muteFeedbacks = false;
+public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
-	protected boolean initialized = false;
-	protected MediaExecutor<?> feedbackSoundExecutor = null;//NOPMD
-	protected MediaExecutor<?> html5SoundExecutor = null;//NOPMD
+	protected boolean initialized;
 
 	@Inject
 	private MediaWrappersPairFactory pairFactory;
@@ -59,15 +50,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	@Inject private Provider<FullscreenVideoExecutor> fullscreenVideoExecutorProvider;
 
 	@Override
-	public void init() {
+	public void initMediaProcessor() {
 		if (!initialized) {
-			super.init();
-			feedbackSoundExecutor = GWT.create(MediaExecutor.class);
-			feedbackSoundExecutor.setSoundFinishedListener(this);
-			if (Audio.isSupported()){
-				html5SoundExecutor = new SoundExecutorHtml5();
-				html5SoundExecutor.setSoundFinishedListener(this);
-			}
+			initEvents();
 			initialized = true;
 		}
 	}
@@ -78,86 +63,28 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 	}
 
 	@Override
-	public void onDeliveryEvent(DeliveryEvent deliveryEvent) {
-		if (deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING) {
-			forceStop(true, true);
-		} else if (deliveryEvent.getType() == DeliveryEventType.FEEDBACK_MUTE) {
-			if (deliveryEvent.getParams().containsKey("mute") && deliveryEvent.getParams().get("mute") instanceof Boolean) {
-				muteFeedbacks = (Boolean) deliveryEvent.getParams().get("mute");
-			}
-		} else if ((deliveryEvent.getType() == DeliveryEventType.FEEDBACK_SOUND && !muteFeedbacks) || deliveryEvent.getType() == DeliveryEventType.MEDIA_SOUND_PLAY) {
-
-			if (deliveryEvent.getParams().containsKey("url") && deliveryEvent.getParams().get("url") instanceof String) {
-				String url = (String) deliveryEvent.getParams().get("url");
-				forceStop(true, true);
-				callback = null;
-				if (deliveryEvent.getParams().containsKey("callback") && deliveryEvent.getParams().get("callback") instanceof MediaInteractionSoundEventCallback) {
-					callback = ((MediaInteractionSoundEventCallback) deliveryEvent.getParams().get("callback"));
-				}
-
-				if (callback != null) {
-					callback.setCallforward(new MediaInteractionSoundEventCallforward() {
-						@Override
-						public void stop() {
-							forceStop(true, true);
-						}
-					});
-				}
-				if (!MediaChecker.isHtml5Mp3Support()  &&  html5SoundExecutor != null  &&  url.toLowerCase().endsWith(".ogg")){
-					html5SoundExecutor.play(url);
-				} else {
-					feedbackSoundExecutor.play(url);
-				}
-			}
-		}
+	protected void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
+		forceStop(mediaWrapper);
 	}
 
 	@Override
-	protected void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
-		forceStop(true, mediaWrapper, true);
+	protected void pauseAll() {
+		forceStop(null);
 	}
-
-	protected void forceStop(boolean pause, boolean stopDefaultSoundExecutor) {
-		forceStop(pause, null, stopDefaultSoundExecutor);
-	}
-
-	protected void forceStop(boolean pause, MediaWrapper<?> mw, boolean stopDefaultSoundExecutor) {
+	
+	protected void forceStop(MediaWrapper<?> mw) {
 		for (MediaExecutor<?> se : getMediaExecutors().values()) {
 			if (se.getMediaWrapper() != null && se.getMediaWrapper().equals(mw)) {
 				continue;
 			}
-			if (se.getMediaWrapper() != null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported() && pause) {
+			if (se.getMediaWrapper() != null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported()) {
 				se.pause();
 			} else if (se.getMediaWrapper() != null || (se.getMediaWrapper() == null && mw != null)) {
 				se.stop();
 			}
-		}
-		if (stopDefaultSoundExecutor){
-			feedbackSoundExecutor.stop();
-			if (html5SoundExecutor != null){
-				html5SoundExecutor.stop();
-			}
-		}
-		if (mw != null) {
-			callback = null;
-		}
+		}	
 	}
-
-	@Override
-	public void onSoundFinished() {
-		if (callback != null) {
-			callback.onStop();
-			callback = null;
-		}
-
-	}
-
-	@Override
-	public void onPlay() {
-		if (callback != null) {
-			callback.onPlay();
-		}
-	}
+	
 
 	/**
 	 * tworzy obiekt wrappera oraz executora
@@ -238,14 +165,6 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor imple
 			geckoSupport = false;
 		}
 		return geckoSupport;
-	}
-
-	private void initExecutor(MediaExecutor<?> executor, BaseMediaConfiguration mediaConfiguration) {
-		if (executor != null) {
-			executor.setBaseMediaConfiguration(mediaConfiguration);
-			executor.init();
-			putMediaExecutor(executor.getMediaWrapper(), executor);
-		}
 	}
 
 	private MediaExecutor<?> createSWFVideoMediaExecutor() {

@@ -124,7 +124,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			// nie zawsze zostanie wyzwolony timeupdate ze wzgledu na
 			// ograniczenie
 			// na 1s postepu wiec robimy to tu
-			handler = new AbstractMediaEventHandler() {
+			AbstractMediaEventHandler handlerForEnd = new AbstractMediaEventHandler() {
 				@Override
 				public void onMediaEvent(MediaEvent event) {
 					double steep = getScrollWidth() / getMediaWrapper().getDuration();
@@ -132,7 +132,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 					eventsBus.fireEventFromSource(new MediaEvent(PAUSE, getMediaWrapper()), getMediaWrapper());
 				}
 			};
-			eventsBus.addHandlerToSource(MediaEvent.getType(ON_END), getMediaWrapper(), handler, new CurrentPageScope());
+			eventsBus.addHandlerToSource(MediaEvent.getType(ON_END), getMediaWrapper(), handlerForEnd, new CurrentPageScope());
 
 		} else {
 			progressBar.setStyleName(styleNames.QP_MEDIA_PROGRESSBAR() + UNSUPPORTED_SUFFIX);

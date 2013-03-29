@@ -5,55 +5,48 @@ import java.util.Map;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEvent;
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
-import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallforward;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.SourceUtil;
-import eu.ydp.gwtutil.client.util.MediaChecker;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class DefaultAudioPlayerModule implements AudioPlayerModule {
 
+	@Inject private EventsBus eventsBus;
+	
+	private PushButton button;
+	private boolean playing;
+	private boolean enabled = true;
+	private ModuleSocket moduleSocket;
+	private MediaWrapper<?> mediaWrapper;
+	
 	public DefaultAudioPlayerModule(){
 		button = new PushButton();
 	}
 
-	protected PushButton button;
-	protected String address;
-	protected InteractionEventsListener mediaListener;
-	protected boolean playing;
-	protected boolean enabled = true;
-
-	protected MediaInteractionSoundEventCallforward callforward;
-	private ModuleSocket moduleSocket;
-
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener iel) {
 		this.moduleSocket = moduleSocket;
-		mediaListener = iel;
 
 		Map<String, String> sources = SourceUtil.getSource(element, "audio");
-		
-		if (MediaChecker.isHtml5OggSupport()  &&  SourceUtil.containsOgg(sources)  &&  Audio.isSupported()){
-			address = SourceUtil.getOggSource(sources);
-		} else {
-			address = SourceUtil.getMpegSource(sources);
-		}
-		
-		if (address == null){
-			address = XMLUtils.getAttributeAsString(element, "src");
-		}
-
-		playing = false;
 
 		button.setStyleName("qp-audioplayer-button");
 		button.getElement().setId(com.google.gwt.dom.client.Document.get().createUniqueId());
@@ -64,6 +57,51 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 				onButtonClick();
 			}
 		});
+		
+		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sources, false, true);
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc , new CallbackRecevier<MediaWrapper<?>>() {
+
+			@Override
+			public void setCallbackReturnObject(MediaWrapper<?> mw) {
+				initMediaWrapper(mw);
+			}
+		}));
+	}
+
+	private void initMediaWrapper(MediaWrapper<?> mw) {
+		this.mediaWrapper = mw;
+		AbstractMediaEventHandler handler = createMediaHandler();
+		addMediaHandlers(handler);
+		addMediaWidgetToRoot();
+	}
+
+	private void addMediaWidgetToRoot() {
+		RootPanel.get().add(mediaWrapper.getMediaObject());
+	}
+
+	private AbstractMediaEventHandler createMediaHandler() {
+		return new AbstractMediaEventHandler() {
+			@Override
+			public void onMediaEvent(MediaEvent event) {
+				if (event.getType() == MediaEventTypes.ON_PLAY) {
+					setPlaying();
+				} else {
+					setStopped();
+				}
+			}
+		};
+	}
+
+	private void addMediaHandlers(AbstractMediaEventHandler handler) {
+		addMediaHandler(MediaEventTypes.ON_PAUSE, handler);
+		addMediaHandler(MediaEventTypes.ON_END, handler);
+		addMediaHandler(MediaEventTypes.ON_STOP, handler);
+		addMediaHandler(MediaEventTypes.ON_PLAY, handler);
+	}
+
+	private void addMediaHandler(MediaEventTypes type, MediaEventHandler handler) {
+		CurrentPageScope scope = new CurrentPageScope();
+		eventsBus.addHandlerToSource(MediaEvent.getType(type), mediaWrapper, handler, scope);		
 	}
 
 	@Override
@@ -73,30 +111,13 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 
 	private void play(){
 		enabled = false;
-		mediaListener.onMediaSound(new MediaInteractionSoundEvent(address, new MediaInteractionSoundEventCallback() {
-
-			@Override
-			public void onStop() {
-				setStopped();
-			}
-
-			@Override
-			public void onPlay() {
-				setPlaying();
-			}
-
-			@Override
-			public void setCallforward(MediaInteractionSoundEventCallforward callForward) {
-				callforward = callForward;
-			}
-		}));
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP, mediaWrapper), mediaWrapper);
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, mediaWrapper), mediaWrapper);
 	}
 
 	protected void stop(){
 		enabled = false;
-		if (callforward != null) {
-			callforward.stop();
-		}
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PAUSE, mediaWrapper), mediaWrapper);
 	}
 
 	protected void setPlaying(){

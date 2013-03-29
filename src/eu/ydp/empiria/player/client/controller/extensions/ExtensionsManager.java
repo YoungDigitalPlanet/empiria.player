@@ -11,6 +11,7 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaProcessor;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsDataSourceDataSocketUserExtension;
@@ -21,23 +22,21 @@ import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsFlowDataS
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsFlowRequestProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsFlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsInteractionEventSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsPageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsPlayerJsObjectUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsSessionDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStatefulExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.IStateful;
 
 public class ExtensionsManager implements IStateful {
 
 	public List<Extension> extensions;
 
-	@Inject
-	protected Provider<DefaultMediaProcessorExtension> mediaProcessor; 
+	@Inject private Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
+	@Inject private Provider<ExternalMediaProcessor> externalMediaProcessor;
 	
 	public ExtensionsManager() {
 		extensions = new ArrayList<Extension>();
@@ -150,7 +149,10 @@ public class ExtensionsManager implements IStateful {
 			retValue = new DefaultAssessmentFooterViewExtension();
 		}
 		if ("DefaultSoundProcessorExtension".equals(name)) {
-			retValue = mediaProcessor.get();
+			retValue = defaultMediaProcessor.get();
+		}
+		if ("ExternalMediaProcessorExtension".equals(name)) {
+			retValue = externalMediaProcessor.get();
 		}
 		return retValue;
 	}

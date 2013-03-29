@@ -37,6 +37,11 @@ public class BaseMediaConfiguration {
 		this.isFeedback = isFeedback;
 	}
 
+	public BaseMediaConfiguration(Map<String, String> sources, boolean isFeedback, boolean isTemplate) {
+		this(sources, MediaType.AUDIO, "", 1, 1, isTemplate, false, "");
+		this.isFeedback = isFeedback;
+	}
+
 	public Map<String, String> getSources() {
 		return sources;
 	}

@@ -8,11 +8,10 @@ import eu.ydp.empiria.player.client.util.events.EventTypes;
 public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes> {
 	public static EventTypes<MediaEventHandler, MediaEventTypes> types = new EventTypes<MediaEventHandler, MediaEventTypes>();
 
-	private Double currentTime;
+	private double currentTime;
+	private double volume;
 
 	private TextTrackCue textTrackCue;
-
-	private double volume;
 
 	public MediaEvent(MediaEventTypes type) {
 		this(type, null);
@@ -67,8 +66,6 @@ public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes
 	public static Type<MediaEventHandler, MediaEventTypes>[] getTypes(MediaEventTypes... type) {
 		return types.getTypes(type);
 	}
-
-
 
 	@Override
 	public String toString() {
