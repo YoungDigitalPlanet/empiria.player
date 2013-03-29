@@ -19,11 +19,11 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.util.events.AbstractEventHandlers;
-import eu.ydp.empiria.player.client.util.events.Event.Type;
+import eu.ydp.gwtutil.client.event.AbstractEventHandler;
+import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 //TODO dopisac rozpoznawanie gestow
-public class TouchRecognition extends AbstractEventHandlers<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, TouchStartHandler,
+public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, TouchStartHandler,
 		TouchEndHandler, TouchMoveHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler {
 	private final Widget listenOn;
 	private boolean touchMoveHandlers = false;

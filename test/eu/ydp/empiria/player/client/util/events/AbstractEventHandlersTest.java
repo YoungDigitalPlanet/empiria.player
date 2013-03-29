@@ -11,45 +11,68 @@ import java.util.Set;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.google.web.bindery.event.shared.HandlerRegistration;
-
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.event.AbstractEventHandler;
+import eu.ydp.gwtutil.client.event.Event;
+import eu.ydp.gwtutil.client.event.EventHandler;
+import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.gwtutil.client.event.HandlerRegistration;
 
 @SuppressWarnings("PMD")
 public class AbstractEventHandlersTest {
-	class AbstractEventHandlersImpl extends AbstractEventHandlers<MediaEventHandler, MediaEventTypes, MediaEvent> {
+	abstract class AbstractEventHandlerImpl<H extends EventHandler, E extends Enum<E>, EV extends Event<H, E>> extends AbstractEventHandler<H, E, EV>{
+		@Override
+		public HandlerRegistration addHandler(H handler, Type<H, E> event) {
+			return super.addHandler(handler, event);
+		}
+
+		@Override
+		public HandlerRegistration[] addHandlers(H handler, Type<H, E>[] event) {
+			return super.addHandlers(handler, event);
+		}
+
+		@Override
+		public Set<H> getHandlers(Type<H, E> event) {
+			return super.getHandlers(event);
+		}
+
+		@Override
+		public void fireEvent(EV event) {
+			super.fireEvent(event);
+		}
+	}
+
+	class AbstractPlayerEventHandlerImpl extends AbstractEventHandlerImpl<PlayerEventHandler, PlayerEventTypes, PlayerEvent> {
+		@Override
+		protected void dispatchEvent(PlayerEventHandler handler, PlayerEvent event) {
+			handler.onPlayerEvent(event);
+		}
+	}
+
+	class AbstractMediaEventHandlerImpl extends AbstractEventHandlerImpl<MediaEventHandler, MediaEventTypes, MediaEvent> {
 		@Override
 		protected void dispatchEvent(MediaEventHandler handler, MediaEvent event) {
 			handler.onMediaEvent(event);
 		}
 	}
 
-	private AbstractEventHandlers<MediaEventHandler, MediaEventTypes, MediaEvent> getAbstractEventHandlers() {
-		return new AbstractEventHandlers<MediaEventHandler, MediaEventTypes, MediaEvent>() {
-			@Override
-			protected void dispatchEvent(MediaEventHandler handler, MediaEvent event) {
-				handler.onMediaEvent(event);
-			}
-		};
+
+	private AbstractMediaEventHandlerImpl getMediaEventHandler() {
+		return new AbstractMediaEventHandlerImpl();
 	}
 
-	private AbstractEventHandlers<PlayerEventHandler, PlayerEventTypes, PlayerEvent> getPlayerAbstractEventHandlers() {
-		return new AbstractEventHandlers<PlayerEventHandler, PlayerEventTypes, PlayerEvent>() {
-			@Override
-			protected void dispatchEvent(PlayerEventHandler handler, PlayerEvent event) {
-				handler.onPlayerEvent(event);
-			}
-		};
+	private AbstractPlayerEventHandlerImpl getPlayerEventHandler() {
+		return new AbstractPlayerEventHandlerImpl();
 	}
 
 	@Test
 	public void getHandlersTest() {
-		AbstractEventHandlers<MediaEventHandler, MediaEventTypes, MediaEvent> abstractEventHandlers = getAbstractEventHandlers();
+		AbstractMediaEventHandlerImpl abstractEventHandlers = getMediaEventHandler();
 		MediaEventHandler handler = mock(MediaEventHandler.class);
 		MediaEventHandler handler2 = mock(MediaEventHandler.class);
 
@@ -69,7 +92,7 @@ public class AbstractEventHandlersTest {
 
 	@Test
 	public void removeHandlerTest() {
-		AbstractEventHandlers<MediaEventHandler, MediaEventTypes, MediaEvent> abstractEventHandlers = getAbstractEventHandlers();
+		AbstractMediaEventHandlerImpl abstractEventHandlers = getMediaEventHandler();
 		MediaEventHandler handler = mock(MediaEventHandler.class);
 		MediaEventHandler handler2 = mock(MediaEventHandler.class);
 
@@ -91,7 +114,7 @@ public class AbstractEventHandlersTest {
 
 	@Test
 	public void fireEventTest() {
-		AbstractEventHandlers<MediaEventHandler, MediaEventTypes, MediaEvent> abstractEventHandlers = getAbstractEventHandlers();
+		AbstractMediaEventHandlerImpl abstractEventHandlers = getMediaEventHandler();
 		MediaEventHandler handler = mock(MediaEventHandler.class);
 		MediaEventHandler handler2 = mock(MediaEventHandler.class);
 
@@ -115,7 +138,7 @@ public class AbstractEventHandlersTest {
 
 	@Test
 	public void addMultipleEventHandlerTest() {
-		AbstractEventHandlers<PlayerEventHandler, PlayerEventTypes, PlayerEvent> abstractEventHandlers = getPlayerAbstractEventHandlers();
+		AbstractPlayerEventHandlerImpl abstractEventHandlers = getPlayerEventHandler();
 		PlayerEventHandler handler = mock(PlayerEventHandler.class);
 		PlayerEventHandler handler2 = mock(PlayerEventHandler.class);
 

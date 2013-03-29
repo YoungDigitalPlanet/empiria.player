@@ -2,10 +2,10 @@ package eu.ydp.empiria.player.client.util.events.bus;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.util.events.Event;
-import eu.ydp.empiria.player.client.util.events.Event.Type;
-import eu.ydp.empiria.player.client.util.events.EventHandler;
 import eu.ydp.empiria.player.client.util.events.scope.EventScope;
+import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.gwtutil.client.event.EventHandler;
+import eu.ydp.gwtutil.client.event.Event;
 
 /**
  * Wewnetrzna szyna zdarzen playera

@@ -2,10 +2,10 @@ package eu.ydp.empiria.player.client.util.events.dom.emulate;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.util.events.AbstractEventHandlers;
-import eu.ydp.empiria.player.client.util.events.Event.Type;
+import eu.ydp.gwtutil.client.event.AbstractEventHandler;
+import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
-public class HasTouchHandlersMock extends AbstractEventHandlers<TouchHandler, TouchTypes,TouchEvent> implements HasTouchHandlers {
+public class HasTouchHandlersMock extends AbstractEventHandler<TouchHandler, TouchTypes,TouchEvent> implements HasTouchHandlers {
 
 	@Override
 	public HandlerRegistration addTouchHandler(TouchHandler handler, Type<TouchHandler, TouchTypes> event) {

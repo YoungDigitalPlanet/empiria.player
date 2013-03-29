@@ -1,11 +1,11 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import eu.ydp.empiria.player.client.util.events.AbstractEventHandlers;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import eu.ydp.gwtutil.client.event.AbstractEventHandler;
 
-public class ConnectionEventHandler extends AbstractEventHandlers<PairConnectEventHandler, PairConnectEventTypes, PairConnectEvent> {
+public class ConnectionEventHandler extends AbstractEventHandler<PairConnectEventHandler, PairConnectEventTypes, PairConnectEvent> {
 
 	protected void fireConnectEvent(PairConnectEventTypes type, String source, String target, boolean userAction) {
 		PairConnectEvent event = new PairConnectEvent(type, source, target, userAction);

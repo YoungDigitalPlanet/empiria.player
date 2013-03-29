@@ -10,9 +10,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.util.events.Event;
-import eu.ydp.empiria.player.client.util.events.Event.Type;
-import eu.ydp.empiria.player.client.util.events.EventHandler;
 import eu.ydp.empiria.player.client.util.events.command.FireCommand;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -20,10 +17,14 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.EventScope;
 import eu.ydp.empiria.player.client.util.events.scope.PageScope;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
+import eu.ydp.gwtutil.client.event.Event;
+import eu.ydp.gwtutil.client.event.EventHandler;
+import eu.ydp.gwtutil.client.event.EventImpl;
+import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
-	private final Map<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> syncMap = new HashMap<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
-	private final Map<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> asyncMap = new HashMap<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
+	private final Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> syncMap = new HashMap<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
+	private final Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> asyncMap = new HashMap<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
 
 	@Inject
 	private Scheduler scheduler;
@@ -210,7 +211,7 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	}
 
 	private <H extends EventHandler, T extends Enum<T>> Map<Object, Map<EventScope<?>, List<?>>> getHandlersList(Event<H, T> type,
-			Map<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> map) {
+			Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> map) {
 		return map.get(type.getAssociatedType());
 	}
 
@@ -275,7 +276,7 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	}
 
 	private void doRemoveAllWithScope(EventScope<?> scope) {
-		for (Map<Event.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> map : Arrays.asList(syncMap, asyncMap)) {
+		for (Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> map : Arrays.asList(syncMap, asyncMap)) {
 			for (Map<Object, Map<EventScope<?>, List<?>>> handlerMap : map.values()) {
 				for (Map.Entry<Object, Map<EventScope<?>, List<?>>> entry : handlerMap.entrySet()) {
 					Map<EventScope<?>, List<?>> handlers = entry.getValue();

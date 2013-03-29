@@ -3,10 +3,11 @@ package eu.ydp.empiria.player.client.util.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import eu.ydp.empiria.player.client.util.events.Event.Type;
+import eu.ydp.gwtutil.client.event.EventImpl;
+import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 public class EventTypes<H,E extends Enum<E>> {
-	public Map<E, Type<H, E>> types = new HashMap<E, Event.Type<H,E>>();
+	public Map<E, Type<H, E>> types = new HashMap<E, EventImpl.Type<H,E>>();
 
 	public Type<H, E> getType(E type) {
 		if (!types.containsKey(type)) {

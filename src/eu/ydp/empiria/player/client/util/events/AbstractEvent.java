@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.util.events;
 
-public abstract class AbstractEvent<H, E extends Enum<E>> extends Event<H, E> {
+import eu.ydp.gwtutil.client.event.EventImpl;
+
+public abstract class AbstractEvent<H, E extends Enum<E>> extends EventImpl<H, E> {
 	protected abstract EventTypes<H, E> getTypes();
 
 	private E type = null; // NOPMD
@@ -15,7 +17,7 @@ public abstract class AbstractEvent<H, E extends Enum<E>> extends Event<H, E> {
 	}
 
 	@Override
-	public eu.ydp.empiria.player.client.util.events.Event.Type<H, E> getAssociatedType() {
+	public EventImpl.Type<H, E> getAssociatedType() {
 		return getTypes().getType(type);
 	}
 }

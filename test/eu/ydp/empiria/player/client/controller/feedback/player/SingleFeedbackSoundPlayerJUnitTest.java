@@ -27,10 +27,10 @@ import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.Event.Type;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
