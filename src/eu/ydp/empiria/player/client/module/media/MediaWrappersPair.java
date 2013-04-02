@@ -53,7 +53,19 @@ public class MediaWrappersPair implements MediaEventHandler {
 	}
 
 	private boolean isSynchronizationNeeded() {
-		return (!UserAgentChecker.isMobileUserAgent() && !UserAgentChecker.isUserAgent(UserAgent.SAFARI)) || UserAgentChecker.isMobileUserAgent(FIREFOX);
+		boolean isSynchronizationNeeded = true;
+		
+		if(isMobileButNotFirefox()){
+			isSynchronizationNeeded = false;
+		}else if(UserAgentChecker.isUserAgent(UserAgent.SAFARI)){
+			isSynchronizationNeeded = false;
+		}
+		
+		return isSynchronizationNeeded;
+	}
+
+	private boolean isMobileButNotFirefox() {
+		return UserAgentChecker.isMobileUserAgent() && !UserAgentChecker.isMobileUserAgent(FIREFOX);
 	}
 
 	public MediaWrapper<?> getDefaultMediaWrapper() {
