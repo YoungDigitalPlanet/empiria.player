@@ -34,6 +34,7 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionPro
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.controller.multiview.touch.MultiPageTouchHandler;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
@@ -112,6 +113,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class);
 		bind(DefaultMediaProcessorExtension.class).in(Singleton.class);
 		bind(MultiPageController.class).in(Singleton.class);
+		bind(MultiPageTouchHandler.class).in(Singleton.class);
+		
 		bind(PageViewCache.class).in(Singleton.class);
 		bind(PageControllerCache.class).in(Singleton.class);
 		bind(StyleNameConstants.class).in(Singleton.class);
