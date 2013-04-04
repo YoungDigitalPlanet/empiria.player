@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.mathtext;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -17,22 +18,45 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 
 	@Override
 	public void initModule(Element element) {
-		MathTextFontInitializer fontHelper = new MathTextFontInitializer();
-		MathPlayerManager mpm = new MathPlayerManager();		
-		Font f = fontHelper.initialize(this, getModuleSocket(), element);
-		mpm.setFont(f);
+		createMainPanel();
+		MathPlayerManager mpm = new MathPlayerManager();	
+		initFont(element, mpm);
+		
+		boolean temporaryAttached = temporaryAttach();
+		mpm.createMath(element.getChildNodes().toString(), mainPanel);
+		temporaryDetach(temporaryAttached);
+		
+		updateVerticalAlign(mpm);
+	}
+
+	private void createMainPanel() {
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName("qp-mathtext");
-		boolean temporaryAttached = false;
+	}
+
+	private void initFont(Element element, MathPlayerManager mpm) {
+		MathTextFontInitializer fontHelper = new MathTextFontInitializer();	
+		Font font = fontHelper.initialize(this, getModuleSocket(), element);
+		mpm.setFont(font);
+	}
+
+	private void updateVerticalAlign(MathPlayerManager mpm) {
+		int verticalAlignPx = -1 * mpm.getBaseline();
+		mainPanel.getElement().getStyle().setVerticalAlign( verticalAlignPx, Unit.PX);
+	}
+
+	private boolean temporaryAttach() {
 		if (!mainPanel.isAttached()){
 			RootPanel.get().add(mainPanel);
-			temporaryAttached = true;
+			return true;
 		}
-		mpm.createMath(element.getChildNodes().toString(), mainPanel);
+		return false;
+	}
+
+	private void temporaryDetach(boolean temporaryAttached) {
 		if (temporaryAttached){
 			mainPanel.removeFromParent();
 		}
-
 	}
 
 	@Override

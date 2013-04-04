@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -29,7 +28,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 	@Inject
 	public TextEntryGapModule(TextEntryModuleFactory moduleFactory) {
 		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
-		presenter.addPresenterHandler(new PresenterHandler() {
+		PresenterHandler presenterHandler = new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
 				updateResponse(true);
@@ -41,23 +40,40 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 					updateResponse(true);
 				}
 			}
-		});
+		};
+		presenter.addPresenterHandler(presenterHandler);
 	}
 	
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		HasWidgets placeholder = placeholders.get(0);
-		presenter.installViewInContainer(((HasWidgets) ((Widget) placeholder).getParent()));
+		installViewInPlaceholder(placeholders.get(0));
 		addPlayerEventHandlers();
-		
 		loadUID();
-
 		applyIdAndClassToView((Widget) presenter.getContainer());
+		initStyles();
+	}
+
+	private void initStyles() {
+		readStyles();
+		updateStyles();
+	}
+
+	private void readStyles() {
 		Map<String, String> styles = getModuleSocket().getStyles(getModuleElement());
 		mathStyles.putAll(styles);
+	}
+
+	private void updateStyles() {
 		setDimensions();
 		setMaxlengthBinding(mathStyles, getModuleElement());
 		setWidthBinding(mathStyles, getModuleElement());
+	}
+
+	private void installViewInPlaceholder(HasWidgets placeholder) {
+		Widget placeholderWidget = (Widget) placeholder;
+		HasWidgets placeholderParent = (HasWidgets) placeholderWidget.getParent();
+		presenter.installViewInContainer(placeholderParent);
+		placeholderWidget.removeFromParent();
 	}
 
 	public boolean isSubOrSup(Element node, Node parentNode) {
