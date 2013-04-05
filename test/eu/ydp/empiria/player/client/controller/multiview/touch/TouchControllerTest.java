@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 
 public class TouchControllerTest {
@@ -27,6 +28,8 @@ public class TouchControllerTest {
 	private TouchEventReader touchEventReader;
 	@Mock
 	private EventsBus eventsBus;
+	@Mock
+	private RootPanelDelegate rootPanelDelegate;
 
 	private TouchModel touchModel;
 
@@ -36,12 +39,12 @@ public class TouchControllerTest {
 	public void before() {
 		touchModel = new TouchModel();
 		MockitoAnnotations.initMocks(this);
-		testObj = new TouchController(windowDelegate, touchEventReader, eventsBus, touchModel);
+		testObj = new TouchController(windowDelegate, touchEventReader, eventsBus, touchModel, rootPanelDelegate);
 	}
 
 	@After
 	public void after() {
-		verifyNoMoreInteractions(windowDelegate, touchEventReader, eventsBus);
+		verifyNoMoreInteractions(windowDelegate, touchEventReader, eventsBus, rootPanelDelegate);
 	}
 
 	@Test
@@ -73,6 +76,22 @@ public class TouchControllerTest {
 		inOrder.verify(touchEventReader).isMoreThenOneFingerTouch(onTouchStartEvent);
 		inOrder.verify(windowDelegate).getScrollTop();
 
+	}
+
+	@Test
+	public void getSwypePercentLengthTest() {
+		/**
+		 * int swypeWidth = Math.abs(touchModel.getLastEndX() -
+		 * touchModel.getEndX()); return ((float) swypeWidth /
+		 * rootPanelDelegate.getOffsetWidth()) * 100;
+		 */
+		touchModel.setLastEndX(50);
+		touchModel.setEndX(100);
+		when(rootPanelDelegate.getOffsetWidth()).thenReturn(200);
+
+		assertTrue(25.0f == testObj.getSwypePercentLength());
+
+		verify(rootPanelDelegate).getOffsetWidth();
 	}
 
 	@Test

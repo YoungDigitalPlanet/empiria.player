@@ -233,7 +233,7 @@ public class MultiPageTouchHandlerTest {
 		NativeEvent nativeEvent = mock(NativeEvent.class);
 		when(touchEvent.getNativeEvent()).thenReturn(nativeEvent);
 		float swypeLength = 200f;
-		when(touchController.getSwypeLength()).thenReturn(swypeLength);
+		when(touchController.getSwypePercentLength()).thenReturn(swypeLength);
 		// given
 		testObj.onTouchEvent(touchEvent);
 
@@ -250,7 +250,7 @@ public class MultiPageTouchHandlerTest {
 		inOrder.verify(touchEndTimer).schedule(MultiPageController.TOUCH_END_TIMER_TIME);
 		inOrder.verify(touchController).isSwypeDetected();
 		inOrder.verify(touchController).isSwipeRight();
-		inOrder.verify(touchController).getSwypeLength();
+		inOrder.verify(touchController).getSwypePercentLength();
 		inOrder.verify(multiPageController).move(false, swypeLength);
 		inOrder.verify(touchController).updateAfterSwypeDetected();
 	}

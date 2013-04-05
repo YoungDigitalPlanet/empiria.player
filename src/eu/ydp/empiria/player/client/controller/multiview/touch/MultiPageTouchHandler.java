@@ -93,7 +93,7 @@ public class MultiPageTouchHandler implements TouchHandler {
 			touchEndTimer.schedule(MultiPageController.TOUCH_END_TIMER_TIME);
 
 			if (touchController.isSwypeDetected()) {
-				multiPageController.move(touchController.isSwipeRight(), touchController.getSwypeLength());
+				multiPageController.move(touchController.isSwipeRight(), touchController.getSwypePercentLength());
 				touchController.updateAfterSwypeDetected();
 
 			}

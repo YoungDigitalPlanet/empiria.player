@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.multiview.touch;
 
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
@@ -9,6 +8,7 @@ import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 
 public class TouchController {
@@ -17,14 +17,17 @@ public class TouchController {
 	private final TouchEventReader touchEventReader;
 	private final EventsBus eventsBus;
 	private final TouchModel touchModel;
+	private final RootPanelDelegate rootPanelDelegate;
 
 	@Inject
-	public TouchController(WindowDelegate windowDelegate, TouchEventReader touchEventReader, EventsBus eventsBus, TouchModel touchModel) {
+	public TouchController(WindowDelegate windowDelegate, TouchEventReader touchEventReader, EventsBus eventsBus, TouchModel touchModel,
+			RootPanelDelegate rootPanelDelegate) {
 
 		this.windowDelegate = windowDelegate;
 		this.touchEventReader = touchEventReader;
 		this.eventsBus = eventsBus;
 		this.touchModel = touchModel;
+		this.rootPanelDelegate = rootPanelDelegate;
 	}
 
 	public void updateOnTouchStart(NativeEvent onTouchStartEvent) {
@@ -92,9 +95,9 @@ public class TouchController {
 		touchModel.setSwipeStarted(true);
 	}
 
-	public float getSwypeLength() {
+	public float getSwypePercentLength() {
 		int swypeWidth = Math.abs(touchModel.getLastEndX() - touchModel.getEndX());
-		return ((float) swypeWidth / RootPanel.get().getOffsetWidth()) * 100;
+		return ((float) swypeWidth / rootPanelDelegate.getOffsetWidth()) * 100;
 	}
 
 	public boolean isSwypeDetected() {
