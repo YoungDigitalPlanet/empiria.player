@@ -82,6 +82,8 @@ import eu.ydp.empiria.player.client.view.player.PageViewCache;
 import eu.ydp.empiria.player.client.view.player.PlayerContentView;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
+import eu.ydp.gwtutil.client.json.NativeMethodInvocator;
+import eu.ydp.gwtutil.client.json.NativeMethodInvocatorImpl;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.scheduler.SchedulerImpl;
 import eu.ydp.gwtutil.client.timer.Timer;
@@ -150,6 +152,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(ExternalMediaEngine.class).in(Singleton.class);
 		bind(MediaConnectorListener.class).to(ExternalMediaEngine.class);
 		bind(Timer.class).to(TimerImpl.class);
+		bind(NativeMethodInvocator.class).to(NativeMethodInvocatorImpl.class);
 		bind(FlowPanel.class)
 			.annotatedWith(Names.named("multiPageControllerMainPanel"))
 			.toProvider(NewFlowPanelProvider.class)

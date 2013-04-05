@@ -65,6 +65,7 @@ import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlersMock;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
+import eu.ydp.gwtutil.client.json.NativeMethodInvocator;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.scheduler.SchedulerMockImpl;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
@@ -255,6 +256,13 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	@Provides
 	ConnectionSurface getConnectionSurface(){
 		return mock(ConnectionSurface.class);
+	}
+
+	@Provides
+	@Singleton
+	NativeMethodInvocator getMethodInvocator(){
+		NativeMethodInvocator invocator = mock(NativeMethodInvocator.class);
+		return invocator;
 	}
 
 }
