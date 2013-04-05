@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.controller.multiview.touch;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +13,14 @@ import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
+import eu.ydp.gwtutil.client.event.TouchEventReader;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class MultiPageTouchHandlerTest {
 
