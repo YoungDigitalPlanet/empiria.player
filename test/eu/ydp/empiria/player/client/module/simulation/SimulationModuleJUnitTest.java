@@ -217,7 +217,7 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 				instance.onPlayerEvent(event);
 			}
 		}
-		Mockito.verify(instance).initModule(Mockito.any(Element.class));
+		Mockito.verifyNoMoreInteractions(simulationController);
 	}
 
 	@Test
