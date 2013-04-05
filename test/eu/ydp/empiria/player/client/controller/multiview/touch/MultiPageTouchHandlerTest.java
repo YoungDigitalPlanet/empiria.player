@@ -273,6 +273,7 @@ public class MultiPageTouchHandlerTest {
 		inOrder.verify(touchEvent).getNativeEvent();
 		inOrder.verify(touchEndTimer).cancel();
 		inOrder.verify(touchController).isSwipeStarted();
+		inOrder.verify(multiPageController).animatePageSwitch();
 		inOrder.verify(touchController).resetTouchModel();
 		inOrder.verify(multiPageController).resetFocusAndStyles();
 	}

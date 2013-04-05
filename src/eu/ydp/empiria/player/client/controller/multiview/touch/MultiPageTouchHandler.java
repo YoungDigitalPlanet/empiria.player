@@ -109,9 +109,7 @@ public class MultiPageTouchHandler implements TouchHandler {
 		touchEndTimer.cancel();
 
 		if (touchController.isSwipeStarted()) {
-
 			touchEventReader.preventDefault(event);
-
 			touchController.updateOnTouchEnd(event);
 
 			if (touchController.canSwitchPage()) {
@@ -119,6 +117,9 @@ public class MultiPageTouchHandler implements TouchHandler {
 			} else {
 				multiPageController.animatePageSwitch();
 			}
+		} else {
+			// zapobiega zatrzymaniu sie animacji - bardzo wazne
+			multiPageController.animatePageSwitch();
 		}
 
 		touchController.resetTouchModel();
