@@ -376,9 +376,9 @@ lightbox = new Lightbox options
         this.handlers.push(listener);
     };
 
-    $(function() {
+    (function() {
         window.Lightbox = Lightbox;
         window.LightboxOptions = LightboxOptions;
-    });
+    })();
 
   })();
