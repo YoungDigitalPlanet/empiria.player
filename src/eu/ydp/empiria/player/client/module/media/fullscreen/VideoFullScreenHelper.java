@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -28,6 +29,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEvent;
 import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
@@ -58,6 +60,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 	protected VideoControlHideTimer controlsHideTimer;
 	protected MediaWrapper<?> lastMediaWrapper = null;
 	protected MediaWrapper<?> synchronizeWithMediaWrapper = null;
+	HandlerRegistration onDataReadyPlayHndlerRegistration =null;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -72,14 +75,16 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 	 */
 	private void fireEvent(final boolean inFullScreen, final MediaWrapper<?> mediaWrapper) {
 		if (inFullScreen) {
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_FULL_SCREEN_OPEN), mediaWrapper, pageScopeFactory.getCurrentPageScope());
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_FULL_SCREEN_OPEN, mediaWrapper), mediaWrapper,
+					pageScopeFactory.getCurrentPageScope());
 		} else {
-			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_FULL_SCREEN_EXIT), mediaWrapper, pageScopeFactory.getCurrentPageScope());
+			eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_FULL_SCREEN_EXIT, mediaWrapper), mediaWrapper,
+					pageScopeFactory.getCurrentPageScope());
 		}
 	}
 
 	private void firePlayEvent(final MediaWrapper<?> mediaWrapper) {
-		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY), mediaWrapper, pageScopeFactory.getCurrentPageScope());
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.PLAY, mediaWrapper), mediaWrapper, pageScopeFactory.getCurrentPageScope());
 	}
 
 	protected FlowPanel parseTemplate(MediaWrapper<?> mediaWrapper, Element template, FlowPanel parent) {
@@ -120,13 +125,21 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 
 	protected void openFullScreenMobile(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
 		if (isHTML5VideoMediaWrapper(mediaWrapper) && !isHTML5MediaDataAvaliable(mediaWrapper)) {
-			playHTML5Media(mediaWrapper);
+			playHTML5MediaAfterDataLoad(mediaWrapper);
+		}else{
+			openFullScreenMobileWhenDataReady(mediaWrapper);
 		}
-		openFullScreenMobileWhenDataReady(mediaWrapper, fullScreenMediaWrapper);
 	}
 
-	private void playHTML5Media(MediaWrapper<?> mediaWrapper) {
-		((HTML5VideoMediaWrapper)mediaWrapper).getMediaObject().play();
+	private void playHTML5MediaAfterDataLoad(final MediaWrapper<?> mediaWrapper) {
+		((HTML5VideoMediaWrapper) mediaWrapper).getMediaObject().play();
+		onDataReadyPlayHndlerRegistration = eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY),mediaWrapper, new MediaEventHandler() {
+			@Override
+			public void onMediaEvent(MediaEvent event) {
+				openFullScreenMobileWhenDataReady(mediaWrapper);
+				onDataReadyPlayHndlerRegistration.removeHandler();
+			}
+		});
 	}
 
 	private boolean isHTML5MediaDataAvaliable(MediaWrapper<?> mediaWrapper) {
@@ -137,12 +150,10 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 		return mediaWrapper instanceof HTML5VideoMediaWrapper;
 	}
 
-
-
-	private void openFullScreenMobileWhenDataReady(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
+	private void openFullScreenMobileWhenDataReady(MediaWrapper<?> mediaWrapper) {
 		html5FullScreenHelper.requestFullScreen(((Widget) mediaWrapper.getMediaObject()).getElement());
-		lastMediaWrapper = fullScreenMediaWrapper;
-		fireEvent(true, fullScreenMediaWrapper);
+		lastMediaWrapper = mediaWrapper;
+		fireEvent(true, mediaWrapper);
 		eventsBus.fireEvent(new MediaEvent(MediaEventTypes.ON_MOBILE_FULL_SCREEN_OPEN));
 	}
 

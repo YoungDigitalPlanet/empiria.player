@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.util;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.media.client.Video;
 
@@ -44,11 +45,34 @@ public class HTML5FullScreenHelper {
 		return nativeRequestFullScrean(element);
 	}
 
+	private native void addFullScreenHandlerForWebkit(JavaScriptObject element)/*-{
+		var thiss = this;
+		if (this.beginFullscreenHandler) {
+			element.removeEventListener("webkitbeginfullscreen",this.beginFullscreenHandler);
+		} else {
+			this.beginFullscreenHandler = function() {
+				thiss.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent(Z)(true);
+			}
+		}
+		if (this.endFullscreenHandler) {
+			element.removeEventListener("webkitendfullscreen",this.endFullscreenHandler);
+		} else {
+			this.endFullscreenHandler = function(){
+				thiss.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent(Z)(false);
+			}
+		}
+
+		element.addEventListener("webkitbeginfullscreen",this.beginFullscreenHandler, false);
+		element.addEventListener("webkitendfullscreen",this.endFullscreenHandler, false);
+
+	}-*/;
+
 	private native boolean nativeRequestFullScrean(Element element)/*-{
 		try {
-			if(element.webkitExitFullscreen){
+			webkitendfullscreen
+			if (element.webkitExitFullscreen) {
 				element.webkitExitFullscreen();
-			}else if(element.mozCancelFullScreen){
+			} else if (element.mozCancelFullScreen) {
 				element.mozCancelFullScreen();
 			}
 			if (element.requestFullscreen) {
@@ -58,9 +82,11 @@ public class HTML5FullScreenHelper {
 				element.mozRequestFullScreen();
 				return true;
 			} else if (element.webkitRequestFullscreen) {
+				this.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::addFullScreenHandlerForWebkit(Lcom/google/gwt/core/client/JavaScriptObject;)(element);
 				element.webkitRequestFullscreen();
 				return true;
-			}  else if (element.webkitEnterFullscreen) {
+			} else if (element.webkitEnterFullscreen) {
+				this.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::addFullScreenHandlerForWebkit(Lcom/google/gwt/core/client/JavaScriptObject;)(element);
 				element.webkitEnterFullscreen();
 				return true;
 			}
@@ -108,7 +134,10 @@ public class HTML5FullScreenHelper {
 	 */
 	protected void handleEvent() {
 		final boolean inFullScreen = isInFullScreen();
+		handleEvent(inFullScreen);
+	}
 
+	private void handleEvent(final boolean inFullScreen) {
 		VideoFullScreenEvent fse = new VideoFullScreenEvent() {
 
 			@Override
@@ -140,7 +169,6 @@ public class HTML5FullScreenHelper {
 		}
 		return false;
 	}-*/;
-
 
 	private native void addFullScreenChangeHandler()/*-{
 		try {
