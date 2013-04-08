@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.multiview.touch;
 
+
 public class TouchModel {
 	private int startX;
 	private int endY;
@@ -7,12 +8,13 @@ public class TouchModel {
 	private int startY;
 	private int lastEndX;
 	private int startScrollTopPossition;
-	private boolean touchLock;
+	private boolean multiTouch;
 	private boolean touchReservation;
 	private boolean swipeStarted;
+	private boolean swypeLock;
 
-	public void setTouchLock(boolean touchLock) {
-		this.touchLock = touchLock;
+	public void setMultiTouch(boolean multiTouch) {
+		this.multiTouch = multiTouch;
 	}
 
 	public int getStartX() {
@@ -63,8 +65,8 @@ public class TouchModel {
 		this.startScrollTopPossition = startScrollTopPossition;
 	}
 
-	public boolean isTouchLock() {
-		return touchLock;
+	public boolean isMultiTouch() {
+		return multiTouch;
 	}
 
 	public boolean isTouchReservation() {
@@ -81,5 +83,13 @@ public class TouchModel {
 
 	public void setSwipeStarted(boolean swipeStarted) {
 		this.swipeStarted = swipeStarted;
+	}
+
+	public boolean isSwypeLock() {
+		return swypeLock;
+	}
+
+	public void setSwypeLock(boolean swypeLock) {
+		this.swypeLock = swypeLock;
 	}
 }

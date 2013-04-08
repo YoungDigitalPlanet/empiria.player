@@ -19,6 +19,7 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
+import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
@@ -60,6 +61,8 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	@Inject
 	private EventsBus eventsBus;
+	@Inject
+	private SwypeBlocker swypeBlocker;
 
 	@Inject
 	private StyleNameConstants styleNames;
@@ -109,6 +112,9 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 		}
 
 		listBox = listBoxProvider.get();
+
+		swypeBlocker.addBlockOnOpenCloseHandler(listBox);
+
 		listBox.setPopupPosition(popupPosition);
 		listBox.setChangeListener(this);
 
@@ -281,7 +287,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	public IUniqueModule getParentInlineModule() {
 		return parentModule;
 	}
-	
+
 	private void updateResponse(boolean userInteract) {
 		updateResponse(userInteract, false);
 	}

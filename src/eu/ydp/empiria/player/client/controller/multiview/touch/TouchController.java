@@ -42,7 +42,7 @@ public class TouchController {
 		touchModel.setStartX(x);
 		touchModel.setLastEndX(x);
 		touchModel.setEndX(-1);
-		touchModel.setTouchLock(touchLock);
+		touchModel.setMultiTouch(touchLock);
 		touchModel.setSwipeStarted(false);
 		touchModel.setTouchReservation(false);
 	}
@@ -132,11 +132,6 @@ public class TouchController {
 
 	public void setTouchReservation(boolean touchReservation) {
 		touchModel.setTouchReservation(touchReservation);
-
-	}
-
-	public boolean isTouchLock() {
-		return touchModel.isTouchLock();
 	}
 
 	public NavigationButtonDirection getDirection() {
@@ -150,11 +145,15 @@ public class TouchController {
 	}
 
 	public boolean canSwype(IMultiPageController multiPageController) {
-		return !multiPageController.isZoomed() && !multiPageController.isAnimationRunning() && !touchModel.isTouchReservation();
+		return !multiPageController.isZoomed() && !multiPageController.isAnimationRunning() && !touchModel.isTouchReservation() && !touchModel.isSwypeLock();
 	}
 
 	public boolean canMove(IMultiPageController multiPageController) {
-		return canSwype(multiPageController) && !isVerticalSwipe() && !touchModel.isTouchLock();
+		return canSwype(multiPageController) && !isVerticalSwipe() && !touchModel.isMultiTouch();
+	}
+
+	public void setSwypeLock(boolean swypeLock) {
+		touchModel.setSwypeLock(swypeLock);
 	}
 
 }

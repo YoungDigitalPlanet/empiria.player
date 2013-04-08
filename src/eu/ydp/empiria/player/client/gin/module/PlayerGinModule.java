@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.multiview.touch.MultiPageTouchHandler;
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
@@ -116,7 +117,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(DefaultMediaProcessorExtension.class).in(Singleton.class);
 		bind(MultiPageController.class).in(Singleton.class);
 		bind(MultiPageTouchHandler.class).in(Singleton.class);
-		
+		bind(TouchController.class).in(Singleton.class);
+
 		bind(PageViewCache.class).in(Singleton.class);
 		bind(PageControllerCache.class).in(Singleton.class);
 		bind(StyleNameConstants.class).in(Singleton.class);
@@ -140,7 +142,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(BooleanUtils.class).in(Singleton.class);
 		bind(FeedbackRegistry.class).in(Singleton.class);
 		bind(MatcherRegistry.class).in(Singleton.class);
-		bind(IStickieView.class) .to(StickieView.class);
+		bind(IStickieView.class).to(StickieView.class);
 		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class).in(Singleton.class);
 		bind(DragDropHelper.class).to(DragDropHelperImpl.class).in(Singleton.class);
 		bind(TextFeedback.class).to(TextFeedbackPresenter.class);
@@ -153,13 +155,10 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(MediaConnectorListener.class).to(ExternalMediaEngine.class);
 		bind(Timer.class).to(TimerImpl.class);
 		bind(NativeMethodInvocator.class).to(NativeMethodInvocatorImpl.class);
-		bind(FlowPanel.class)
-			.annotatedWith(Names.named("multiPageControllerMainPanel"))
-			.toProvider(NewFlowPanelProvider.class)
-			.in(Singleton.class);
+		bind(FlowPanel.class).annotatedWith(Names.named("multiPageControllerMainPanel")).toProvider(NewFlowPanelProvider.class).in(Singleton.class);
 		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class).in(Singleton.class);
 		bind(SingleModuleInstanceProvider.class);
-		//bind(OverlayTypesParser.class).in(Singleton.class);
+		// bind(OverlayTypesParser.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));

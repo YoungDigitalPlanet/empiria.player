@@ -73,7 +73,7 @@ public class TouchControllerTest {
 		assertEquals(touchModel.getStartY(), y);
 		assertEquals(touchModel.getLastEndX(), x);
 		assertEquals(touchModel.getEndX(), -1);
-		assertEquals(touchModel.isTouchLock(), true);
+		assertEquals(touchModel.isMultiTouch(), true);
 		assertEquals(touchModel.isSwipeStarted(), false);
 		assertEquals(touchModel.isTouchReservation(), false);
 
@@ -292,13 +292,6 @@ public class TouchControllerTest {
 	}
 
 	@Test
-	public void isTouchLockTest() {
-		touchModel.setTouchLock(true);
-
-		assertTrue(testObj.isTouchLock());
-	}
-
-	@Test
 	public void getDirectionTest_left() {
 		touchModel.setEndX(22);
 		assertEquals(NavigationButtonDirection.PREVIOUS, testObj.getDirection());
@@ -346,6 +339,17 @@ public class TouchControllerTest {
 	}
 
 	@Test
+	public void canSwype_isSwypeLockTest() {
+		IMultiPageController multiPageController = mock(IMultiPageController.class);
+
+		when(multiPageController.isAnimationRunning()).thenReturn(false);
+		when(multiPageController.isZoomed()).thenReturn(false);
+		touchModel.setSwypeLock(true);
+
+		assertFalse(testObj.canSwype(multiPageController));
+	}
+
+	@Test
 	public void canSwype_isTrue() {
 		IMultiPageController multiPageController = mock(IMultiPageController.class);
 		when(windowDelegate.getScrollTop()).thenReturn(0);
@@ -362,7 +366,7 @@ public class TouchControllerTest {
 		when(windowDelegate.getScrollTop()).thenReturn(0);
 		when(multiPageController.isAnimationRunning()).thenReturn(true);
 		when(multiPageController.isZoomed()).thenReturn(false);
-		touchModel.setTouchLock(false);
+		touchModel.setMultiTouch(false);
 
 		assertFalse(testObj.canMove(multiPageController));
 	}
@@ -373,7 +377,7 @@ public class TouchControllerTest {
 		when(windowDelegate.getScrollTop()).thenReturn(100);
 		when(multiPageController.isAnimationRunning()).thenReturn(true);
 		when(multiPageController.isZoomed()).thenReturn(false);
-		touchModel.setTouchLock(false);
+		touchModel.setMultiTouch(false);
 
 		assertFalse(testObj.canMove(multiPageController));
 	}
@@ -384,7 +388,7 @@ public class TouchControllerTest {
 		when(windowDelegate.getScrollTop()).thenReturn(0);
 		when(multiPageController.isAnimationRunning()).thenReturn(false);
 		when(multiPageController.isZoomed()).thenReturn(false);
-		touchModel.setTouchLock(true);
+		touchModel.setMultiTouch(true);
 
 		assertFalse(testObj.canMove(multiPageController));
 		verify(windowDelegate).getScrollTop();
@@ -396,7 +400,7 @@ public class TouchControllerTest {
 		when(windowDelegate.getScrollTop()).thenReturn(100);
 		when(multiPageController.isAnimationRunning()).thenReturn(false);
 		when(multiPageController.isZoomed()).thenReturn(false);
-		touchModel.setTouchLock(true);
+		touchModel.setMultiTouch(true);
 
 		assertFalse(testObj.canMove(multiPageController));
 		verify(windowDelegate).getScrollTop();
@@ -408,7 +412,7 @@ public class TouchControllerTest {
 		when(windowDelegate.getScrollTop()).thenReturn(0);
 		when(multiPageController.isAnimationRunning()).thenReturn(false);
 		when(multiPageController.isZoomed()).thenReturn(false);
-		touchModel.setTouchLock(false);
+		touchModel.setMultiTouch(false);
 
 		assertTrue(testObj.canMove(multiPageController));
 		verify(windowDelegate).getScrollTop();
@@ -419,6 +423,13 @@ public class TouchControllerTest {
 		touchModel.setSwipeStarted(true);
 
 		assertTrue(testObj.isSwipeStarted());
+	}
+
+	@Test
+	public void setSwypeLockTest() {
+		testObj.setSwypeLock(true);
+
+		assertTrue(touchModel.isSwypeLock());
 	}
 
 }

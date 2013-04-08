@@ -8,7 +8,9 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
@@ -17,7 +19,8 @@ import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 public class InlineChoiceGapModulePresenter implements GapModulePresenter {
 
 	@UiTemplate("InlineChoiceGap.ui.xml")
-	interface InlineChoiceGapModuleUiBinder extends UiBinder<Widget, InlineChoiceGapModulePresenter>{};
+	interface InlineChoiceGapModuleUiBinder extends UiBinder<Widget, InlineChoiceGapModulePresenter> {
+	};
 
 	private final InlineChoiceGapModuleUiBinder uiBinder = GWT.create(InlineChoiceGapModuleUiBinder.class);
 
@@ -27,8 +30,10 @@ public class InlineChoiceGapModulePresenter implements GapModulePresenter {
 	@UiField
 	protected ExListBox listBox;
 
-	public InlineChoiceGapModulePresenter() {
+	@Inject
+	public InlineChoiceGapModulePresenter(SwypeBlocker swypeBlocker) {
 		uiBinder.createAndBindUi(this);
+		swypeBlocker.addBlockOnOpenCloseHandler(listBox);
 	}
 
 	@Override
