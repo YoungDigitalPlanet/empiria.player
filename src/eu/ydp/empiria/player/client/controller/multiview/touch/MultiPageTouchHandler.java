@@ -65,8 +65,7 @@ public class MultiPageTouchHandler implements TouchHandler {
 			return;
 		}
 
-		if (touchController.isSecondFingerAdd()) {
-			// YPUB-5156 - zatrzymawania sie swype w polowie
+		if (touchController.isSwypeStarted()) {
 			return;
 		}
 
@@ -96,16 +95,11 @@ public class MultiPageTouchHandler implements TouchHandler {
 			if (touchController.isSwypeDetected()) {
 				multiPageController.move(touchController.isSwipeRight(), touchController.getSwypePercentLength());
 				touchController.updateAfterSwypeDetected();
-
 			}
 		}
-
 	}
 
 	private void onTouchEnd(NativeEvent event) {
-		// if (!touchController.canSwype(multiPageController)) {
-		// return;
-		// } // chyba nie potrzebne
 
 		touchEndTimer.cancel();
 
@@ -118,9 +112,7 @@ public class MultiPageTouchHandler implements TouchHandler {
 			} else {
 				multiPageController.animatePageSwitch();
 			}
-		} else {
-			// zapobiega zatrzymaniu sie animacji - bardzo wazne
-			multiPageController.animatePageSwitch();
+			touchController.setSwypeStarted(false);
 		}
 
 		touchController.resetTouchModel();

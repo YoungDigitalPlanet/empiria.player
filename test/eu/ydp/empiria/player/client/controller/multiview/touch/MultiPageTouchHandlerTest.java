@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.controller.multiview.touch;
 
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,12 +18,6 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
 import eu.ydp.gwtutil.client.event.TouchEventReader;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 public class MultiPageTouchHandlerTest {
 
@@ -111,7 +108,7 @@ public class MultiPageTouchHandlerTest {
 		// when
 		when(touchEvent.getType()).thenReturn(TouchTypes.TOUCH_START);
 		when(touchController.canSwype(multiPageController)).thenReturn(true);
-		when(touchController.isSecondFingerAdd()).thenReturn(true);
+		when(touchController.isSwypeStarted()).thenReturn(true);
 		NativeEvent nativeEvent = mock(NativeEvent.class);
 		when(touchEvent.getNativeEvent()).thenReturn(nativeEvent);
 		// given
@@ -123,7 +120,7 @@ public class MultiPageTouchHandlerTest {
 		inOrder.verify(touchEvent).getType();
 		inOrder.verify(touchEvent).getNativeEvent();
 		inOrder.verify(touchController).canSwype(multiPageController);
-		inOrder.verify(touchController).isSecondFingerAdd();
+		inOrder.verify(touchController).isSwypeStarted();
 	}
 
 	@Test
@@ -133,7 +130,7 @@ public class MultiPageTouchHandlerTest {
 		when(touchEvent.getType()).thenReturn(TouchTypes.TOUCH_START);
 
 		when(touchController.canSwype(multiPageController)).thenReturn(true);
-		when(touchController.isSecondFingerAdd()).thenReturn(false);
+		when(touchController.isSwypeStarted()).thenReturn(false);
 		NativeEvent nativeEvent = mock(NativeEvent.class);
 		when(touchEvent.getNativeEvent()).thenReturn(nativeEvent);
 		// given
@@ -145,7 +142,7 @@ public class MultiPageTouchHandlerTest {
 		inOrder.verify(touchEvent).getType();
 		inOrder.verify(touchEvent).getNativeEvent();
 		inOrder.verify(touchController).canSwype(multiPageController);
-		inOrder.verify(touchController).isSecondFingerAdd();
+		inOrder.verify(touchController).isSwypeStarted();
 
 		inOrder.verify(touchController).updateOnTouchStart(nativeEvent);
 
@@ -277,7 +274,6 @@ public class MultiPageTouchHandlerTest {
 		inOrder.verify(touchEvent).getNativeEvent();
 		inOrder.verify(touchEndTimer).cancel();
 		inOrder.verify(touchController).isSwipeStarted();
-		inOrder.verify(multiPageController).animatePageSwitch();
 		inOrder.verify(touchController).resetTouchModel();
 		inOrder.verify(multiPageController).resetFocusAndStyles();
 	}
@@ -305,6 +301,7 @@ public class MultiPageTouchHandlerTest {
 		inOrder.verify(touchController).updateOnTouchEnd(nativeEvent);
 		inOrder.verify(touchController).canSwitchPage();
 		inOrder.verify(multiPageController).animatePageSwitch();
+		inOrder.verify(touchController).setSwypeStarted(false);
 		inOrder.verify(touchController).resetTouchModel();
 		inOrder.verify(multiPageController).resetFocusAndStyles();
 	}
@@ -333,6 +330,7 @@ public class MultiPageTouchHandlerTest {
 		inOrder.verify(touchController).updateOnTouchEnd(nativeEvent);
 		inOrder.verify(touchController).canSwitchPage();
 		inOrder.verify(multiPageController).switchPage();
+		inOrder.verify(touchController).setSwypeStarted(false);
 		inOrder.verify(touchController).resetTouchModel();
 		inOrder.verify(multiPageController).resetFocusAndStyles();
 	}

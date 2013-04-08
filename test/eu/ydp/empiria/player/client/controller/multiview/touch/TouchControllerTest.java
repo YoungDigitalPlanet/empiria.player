@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.controller.multiview.touch;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,15 +21,6 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.event.TouchEventReader;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 public class TouchControllerTest {
 	@Mock
@@ -170,13 +164,13 @@ public class TouchControllerTest {
 
 	@Test
 	public void isSecondFingerAddTest_isFalse() {
-		assertFalse(testObj.isSecondFingerAdd());
+		assertFalse(testObj.isSwypeStarted());
 	}
 
 	@Test
 	public void isSecondFingerAddTest_isTrue() {
 		touchModel.setStartX(100);
-		assertTrue(testObj.isSecondFingerAdd());
+		assertTrue(testObj.isSwypeStarted());
 	}
 
 	@Test
@@ -261,10 +255,11 @@ public class TouchControllerTest {
 	public void resetTouchModelTest() {
 		int endX = 100;
 		touchModel.setEndX(endX);
+		touchModel.setSwipeStarted(true);
 		testObj.resetTouchModel();
 		assertEquals(touchModel.getStartX(), endX);
 		assertEquals(touchModel.getLastEndX(), endX);
-		assertFalse(touchModel.isSwipeStarted());
+		assertTrue(touchModel.isSwipeStarted());
 		assertFalse(touchModel.isTouchReservation());
 	}
 
@@ -361,12 +356,35 @@ public class TouchControllerTest {
 	}
 
 	@Test
-	public void canMove_canSwypeIsFalse() {
+	public void canMove_isZoomedTrue() {
+		IMultiPageController multiPageController = mock(IMultiPageController.class);
+		when(windowDelegate.getScrollTop()).thenReturn(100);
+		when(multiPageController.isAnimationRunning()).thenReturn(true);
+		when(multiPageController.isZoomed()).thenReturn(true);
+		touchModel.setMultiTouch(false);
+
+		assertFalse(testObj.canMove(multiPageController));
+	}
+
+	@Test
+	public void canMove_canIsAnimationRunningTrueTest() {
 		IMultiPageController multiPageController = mock(IMultiPageController.class);
 		when(windowDelegate.getScrollTop()).thenReturn(0);
 		when(multiPageController.isAnimationRunning()).thenReturn(true);
 		when(multiPageController.isZoomed()).thenReturn(false);
 		touchModel.setMultiTouch(false);
+		touchModel.setTouchReservation(true);
+
+		assertFalse(testObj.canMove(multiPageController));
+	}
+
+	@Test
+	public void canMove_isSwypeLockTrueTest() {
+		IMultiPageController multiPageController = mock(IMultiPageController.class);
+		when(windowDelegate.getScrollTop()).thenReturn(100);
+		when(multiPageController.isAnimationRunning()).thenReturn(false);
+		when(multiPageController.isZoomed()).thenReturn(false);
+		touchModel.setSwypeLock(true);
 
 		assertFalse(testObj.canMove(multiPageController));
 	}
@@ -375,29 +393,26 @@ public class TouchControllerTest {
 	public void canMove_isVerticalSwipeIsTrue() {
 		IMultiPageController multiPageController = mock(IMultiPageController.class);
 		when(windowDelegate.getScrollTop()).thenReturn(100);
-		when(multiPageController.isAnimationRunning()).thenReturn(true);
+		when(multiPageController.isAnimationRunning()).thenReturn(false);
 		when(multiPageController.isZoomed()).thenReturn(false);
 		touchModel.setMultiTouch(false);
 
 		assertFalse(testObj.canMove(multiPageController));
-	}
 
-	@Test
-	public void canMove_isTouchLockTrue() {
-		IMultiPageController multiPageController = mock(IMultiPageController.class);
-		when(windowDelegate.getScrollTop()).thenReturn(0);
-		when(multiPageController.isAnimationRunning()).thenReturn(false);
-		when(multiPageController.isZoomed()).thenReturn(false);
-		touchModel.setMultiTouch(true);
-
-		assertFalse(testObj.canMove(multiPageController));
 		verify(windowDelegate).getScrollTop();
 	}
 
 	@Test
-	public void canMove_isTouchLockFalse() {
+	public void setSwypeStartedTest() {
+		testObj.setSwypeStarted(true);
+
+		assertTrue(touchModel.isSwipeStarted());
+	}
+
+	@Test
+	public void canMove_isMultiTouchTrue() {
 		IMultiPageController multiPageController = mock(IMultiPageController.class);
-		when(windowDelegate.getScrollTop()).thenReturn(100);
+		when(windowDelegate.getScrollTop()).thenReturn(0);
 		when(multiPageController.isAnimationRunning()).thenReturn(false);
 		when(multiPageController.isZoomed()).thenReturn(false);
 		touchModel.setMultiTouch(true);

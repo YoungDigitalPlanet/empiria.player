@@ -76,7 +76,7 @@ public class TouchController {
 		return touchModel.isTouchReservation();
 	}
 
-	public boolean isSecondFingerAdd() {
+	public boolean isSwypeStarted() {
 		return touchModel.getLastEndX() != touchModel.getStartX();
 	}
 
@@ -116,7 +116,6 @@ public class TouchController {
 	public void resetTouchModel() {
 		touchModel.setStartX(touchModel.getEndX());
 		touchModel.setLastEndX(touchModel.getEndX());
-		touchModel.setSwipeStarted(false);
 		touchModel.setTouchReservation(false);
 
 	}
@@ -149,11 +148,17 @@ public class TouchController {
 	}
 
 	public boolean canMove(IMultiPageController multiPageController) {
-		return canSwype(multiPageController) && !isVerticalSwipe() && !touchModel.isMultiTouch();
+		return !multiPageController.isZoomed() && !multiPageController.isAnimationRunning() && !touchModel.isSwypeLock() && !isVerticalSwipe()
+				&& !touchModel.isMultiTouch();
 	}
 
 	public void setSwypeLock(boolean swypeLock) {
 		touchModel.setSwypeLock(swypeLock);
+	}
+
+	public void setSwypeStarted(boolean b) {
+		touchModel.setSwipeStarted(b);
+
 	}
 
 }
