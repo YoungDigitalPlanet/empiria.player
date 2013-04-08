@@ -376,6 +376,12 @@ lightbox = new Lightbox options
         this.handlers.push(listener);
     };
 
+    /**
+     * Changed call from "$(function" to "(function" because of Internet Explorer issue. 
+     * In previous situation this function was called too late and both values: 
+     * window.Lightbox and window.LightboxOptions was not yet initialized while it was called 
+     * from LightBox2.enableLightBox2() java GWT class. 
+     */
     (function() {
         window.Lightbox = Lightbox;
         window.LightboxOptions = LightboxOptions;
