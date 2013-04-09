@@ -33,23 +33,20 @@ public abstract class AbstractPlayMediaButton<T> extends AbstractMediaButton<T> 
 		}
 	}
 
+	@Override
+	public boolean isSupported() {
+		return getMediaAvailableOptions().isPlaySupported();
+	}
+
+	@Override
+	public T getNewInstance() {
+		return provider.get();
+	}
+	
 	protected void initButtonStyleChangeHandlers() {
-		AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
-			@Override
-			public void onMediaEvent(MediaEvent event) {
-				if (event.getType() == MediaEventTypes.ON_PLAY) {
-					setActive(true);
-				} else {
-					setActive(false);
-				}
-				changeStyleForClick();
-			}
-		};
+		AbstractMediaEventHandler handler = createAbstractMediaEventHandler();
 		CurrentPageScope scope = createCurrentPageScope();
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PAUSE), getMediaWrapper(), handler, scope);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler, scope);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler, scope);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), getMediaWrapper(), handler, scope);
+		addMediaEventHandlers(handler, scope);
 	}
 
 	protected CurrentPageScope createCurrentPageScope() {
@@ -62,14 +59,24 @@ public abstract class AbstractPlayMediaButton<T> extends AbstractMediaButton<T> 
 		eventsBus.fireEventFromSource(mediaEvent, getMediaWrapper());
 	}
 
-	@Override
-	public boolean isSupported() {
-		return getMediaAvailableOptions().isPlaySupported();
+	private void addMediaEventHandlers(AbstractMediaEventHandler handler, CurrentPageScope scope) {
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PAUSE), getMediaWrapper(), handler, scope);
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler, scope);
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler, scope);
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), getMediaWrapper(), handler, scope);
 	}
 
-	@Override
-	public T getNewInstance() {
-		return provider.get();
-	}
-
+	private AbstractMediaEventHandler createAbstractMediaEventHandler() {
+		return new AbstractMediaEventHandler() {
+			@Override
+			public void onMediaEvent(MediaEvent event) {
+				if (event.getType() == MediaEventTypes.ON_PLAY) {
+					setActive(true);
+				} else {
+					setActive(false);
+				}
+				changeStyleForClick();
+			}
+		};
+	}	
 }
