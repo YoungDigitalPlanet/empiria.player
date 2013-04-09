@@ -44,7 +44,7 @@ public abstract class AbstractPlayMediaButton<T> extends AbstractMediaButton<T> 
 	}
 	
 	protected void initButtonStyleChangeHandlers() {
-		AbstractMediaEventHandler handler = createAbstractMediaEventHandler();
+		AbstractMediaEventHandler handler = createButtonActivationHandler();
 		CurrentPageScope scope = createCurrentPageScope();
 		addMediaEventHandlers(handler, scope);
 	}
@@ -66,7 +66,7 @@ public abstract class AbstractPlayMediaButton<T> extends AbstractMediaButton<T> 
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), getMediaWrapper(), handler, scope);
 	}
 
-	private AbstractMediaEventHandler createAbstractMediaEventHandler() {
+	private AbstractMediaEventHandler createButtonActivationHandler() {
 		return new AbstractMediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
