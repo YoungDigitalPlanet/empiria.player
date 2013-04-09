@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.module.InlineModuleBase;
 
 public class MathTextModule extends InlineModuleBase implements Factory<MathTextModule> {
 
+	private static final byte BASELINE_TO_VERTICAL_ALIGN_FACTOR = -1;
 	protected Panel mainPanel;
 
 	@Override
@@ -41,7 +42,7 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 	}
 
 	private void updateVerticalAlign(MathPlayerManager mpm) {
-		int verticalAlignPx = -1 * mpm.getBaseline();
+		int verticalAlignPx = BASELINE_TO_VERTICAL_ALIGN_FACTOR * mpm.getBaseline();
 		mainPanel.getElement().getStyle().setVerticalAlign( verticalAlignPx, Unit.PX);
 	}
 

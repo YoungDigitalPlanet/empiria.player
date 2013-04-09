@@ -44,6 +44,10 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 public class MathModule extends AbstractActivityContainerModuleBase implements Factory<MathModule>, ILifecycleModule, IContainerModule {
 
+	private static final String MINUS = "-";
+
+	private static final String PX = "px";
+
 	private MathModuleViewUiBinder uiBinder;
 
 	@UiTemplate("MathModuleView.ui.xml")
@@ -187,10 +191,10 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		setSizeOfGapDummies();
 
 		mathInteractionManager = createMath();
-		gapsPanel.setWidth(mainPanel.getOffsetWidth() + "px");
-		gapsPanel.setHeight(mainPanel.getOffsetHeight() + "px");
+		gapsPanel.setWidth(mainPanel.getOffsetWidth() + PX);
+		gapsPanel.setHeight(mainPanel.getOffsetHeight() + PX);
 		
-		String verticalAlign = "-" + mathManager.getBaseline() + "px";
+		String verticalAlign = MINUS + mathManager.getBaseline() + PX;
 		placeholder.getElement().getStyle().setProperty("verticalAlign", verticalAlign);
 		
 		positionGaps();
