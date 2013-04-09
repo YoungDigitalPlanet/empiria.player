@@ -38,6 +38,7 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 	public ObjectTemplateParser() {
 		if (CONTROLLERS.isEmpty()) {
 			CONTROLLERS.add(ModuleTagName.MEDIA_PLAY_PAUSE_BUTTON.tagName());
+			CONTROLLERS.add(ModuleTagName.MEDIA_PLAY_STOP_BUTTON.tagName());
 			CONTROLLERS.add(ModuleTagName.MEDIA_STOP_BUTTON.tagName());
 			CONTROLLERS.add(ModuleTagName.MEDIA_MUTE_BUTTON.tagName());
 			CONTROLLERS.add(ModuleTagName.MEDIA_PROGRESS_BAR.tagName());

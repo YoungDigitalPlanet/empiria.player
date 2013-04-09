@@ -10,7 +10,7 @@ public enum ModuleTagName {
 	PAGE_IN_PAGE("pageInPage"), SHAPE("shape"), INFO("info"), REPORT("report"), LINK("link"),
 	NEXT_ITEM_NAVIGATION("nextItemNavigation"), PREV_ITEM_NAVIGATION("prevItemNavigation"), PAGES_SWITCH_BOX("pagesSwitchBox"),
 	MARK_ALL_BUTTON("markAllButton"), SHOW_ANSWERS_BUTTON("showAnswersButton"), RESET_BUTTON("resetButton"), SUB("sub"), SUP("sup"), FLASH("flash"),
-	AUDIO_MUTE_BUTTON("feedbackAudioMuteButton"),MEDIA_PLAY_PAUSE_BUTTON("mediaPlayPauseButton"),MEDIA_STOP_BUTTON("mediaStopButton"),MEDIA_MUTE_BUTTON("mediaMuteButton"),
+	AUDIO_MUTE_BUTTON("feedbackAudioMuteButton"), MEDIA_PLAY_PAUSE_BUTTON("mediaPlayPauseButton"), MEDIA_PLAY_STOP_BUTTON("mediaPlayStopButton"), MEDIA_STOP_BUTTON("mediaStopButton"),MEDIA_MUTE_BUTTON("mediaMuteButton"),
 	MEDIA_PROGRESS_BAR("mediaProgressBar"),MEDIA_VOLUME_BAR("mediaVolumeBar"),MEDIA_FULL_SCREEN_BUTTON("mediaFullScreenButton"),
 	MEDIA_POSITION_IN_STREAM("mediaPositinInStream"),MEDIA_CURRENT_TIME("mediaCurrentTime"),MEDIA_TOTAL_TIME("mediaTotalTime"),
 	MEDIA_TITLE("mediaTitle"), MEDIA_DESCRIPTION("mediaDescription"), MEDIA_SCREEN("mediaScreen"), SIMULATION_PLAYER("simulationPlayer"), MEDIA_TEXT_TRACK("mediaTextTrack"),

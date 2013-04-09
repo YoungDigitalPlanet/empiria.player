@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.module.media.button.MediaProgressBar;
 import eu.ydp.empiria.player.client.module.media.button.MuteMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.PlayPauseMediaButton;
+import eu.ydp.empiria.player.client.module.media.button.PlayStopMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.StopMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.VideoFullScreenMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.VolumeMediaButton;
@@ -29,14 +30,23 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 	@Inject
 	protected Provider<VideoFullScreenMediaButton> fullScreenMediaButtonProvider;
 
+	@Inject
+	private Provider<PlayPauseMediaButton> playPauseMediaButtonProvider;
+
+	@Inject
+	private Provider<PlayStopMediaButton> playStopMediaButtonProvider;	
+	
 	@Override
 	public AbstractMediaController<?> get(ModuleTagName moduleType) {
 		AbstractMediaController<?> mediaController = null;
 		if (moduleType != null) {
 			switch (moduleType) {
 			case MEDIA_PLAY_PAUSE_BUTTON:
-				mediaController = new PlayPauseMediaButton();
+				mediaController = playPauseMediaButtonProvider.get();
 				break;
+			case MEDIA_PLAY_STOP_BUTTON:
+				mediaController = playStopMediaButtonProvider.get();
+				break;				
 			case MEDIA_STOP_BUTTON:
 				mediaController = new StopMediaButton();
 				break;

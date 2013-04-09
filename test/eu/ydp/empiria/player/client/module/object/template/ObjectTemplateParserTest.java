@@ -47,6 +47,7 @@ public class ObjectTemplateParserTest extends AbstractTestBase {
 		parser = injector.getInstance(ObjectTemplateParser.class);
 		controllers = new HashSet<String>();
 		controllers.add(ModuleTagName.MEDIA_PLAY_PAUSE_BUTTON.tagName());
+		controllers.add(ModuleTagName.MEDIA_PLAY_STOP_BUTTON.tagName());
 		controllers.add(ModuleTagName.MEDIA_STOP_BUTTON.tagName());
 		controllers.add(ModuleTagName.MEDIA_MUTE_BUTTON.tagName());
 		controllers.add(ModuleTagName.MEDIA_PROGRESS_BAR.tagName());

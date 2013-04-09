@@ -338,6 +338,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-media-play-pause")
 	public String QP_MEDIA_PLAY_PAUSE();
 
+	@DefaultStringValue("qp-media-play-stop")
+	public String QP_MEDIA_PLAY_STOP();
+	
 	@DefaultStringValue("qp-media-positioninstream")
 	public String QP_MEDIA_POSITIONINSTREAM();
 
