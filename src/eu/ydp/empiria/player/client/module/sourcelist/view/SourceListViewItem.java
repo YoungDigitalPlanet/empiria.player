@@ -47,18 +47,12 @@ public class SourceListViewItem extends Composite {
 	protected boolean dragRelease = false;
 
 	@Inject
-	public SourceListViewItem(@Assisted DragDataObject dragDataObject, @Assisted IModule parentModule, StyleNameConstants styleNames, DragDropHelper dragDropHelper) {
+	public SourceListViewItem(@Assisted DragDataObject dragDataObject, @Assisted IModule parentModule, StyleNameConstants styleNames,
+			DragDropHelper dragDropHelper) {
 		this.dragDropHelper = dragDropHelper;
 		this.dragDataObject = dragDataObject;
 		this.parentModule = parentModule;
 		this.styleNames = styleNames;
-	}
-
-	private void setSize() {
-		setWidth(item.getOffsetWidth() + "px");
-		setHeight(item.getOffsetHeight() + "px");
-		container.setHeight(item.getOffsetHeight() + "px");
-		container.setWidth(item.getOffsetWidth() + "px");
 	}
 
 	public void createAndBindUi() {
@@ -72,7 +66,6 @@ public class SourceListViewItem extends Composite {
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
-				setSize();
 				dragRelease = false;
 				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
