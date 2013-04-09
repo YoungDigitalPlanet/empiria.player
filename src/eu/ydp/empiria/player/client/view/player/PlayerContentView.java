@@ -33,7 +33,6 @@ public class PlayerContentView extends Composite implements PlayerViewSocket {
 	public PlayerContentView(AssessmentFactory assessmentFactory) {
 		initWidget(uiBinder.createAndBindUi(this));
 		assessmentContentView = assessmentFactory.geAssessmentContentView(assessmentPanel);
-		assessmentPanel.getElement().getStyle().setOverflow(Overflow.HIDDEN);
 	}
 
 	@Override
