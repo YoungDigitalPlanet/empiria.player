@@ -148,8 +148,7 @@ public class TouchController {
 	}
 
 	public boolean canMove(IMultiPageController multiPageController) {
-		return !multiPageController.isZoomed() && !multiPageController.isAnimationRunning() && !touchModel.isSwypeLock() && !isVerticalSwipe()
-				&& !touchModel.isMultiTouch();
+		return canSwype(multiPageController) && !isVerticalSwipe() && !touchModel.isMultiTouch();
 	}
 
 	public void setSwypeLock(boolean swypeLock) {

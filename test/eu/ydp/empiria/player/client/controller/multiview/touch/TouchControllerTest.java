@@ -373,6 +373,18 @@ public class TouchControllerTest {
 		when(multiPageController.isAnimationRunning()).thenReturn(true);
 		when(multiPageController.isZoomed()).thenReturn(false);
 		touchModel.setMultiTouch(false);
+
+		assertFalse(testObj.canMove(multiPageController));
+	}
+
+	@Test
+	public void canMove_canIsTouchReservationTrueTest() {
+		IMultiPageController multiPageController = mock(IMultiPageController.class);
+		when(windowDelegate.getScrollTop()).thenReturn(0);
+		when(multiPageController.isAnimationRunning()).thenReturn(false);
+		when(multiPageController.isZoomed()).thenReturn(false);
+		when(multiPageController.isZoomed()).thenReturn(false);
+		touchModel.setMultiTouch(false);
 		touchModel.setTouchReservation(true);
 
 		assertFalse(testObj.canMove(multiPageController));
@@ -384,6 +396,8 @@ public class TouchControllerTest {
 		when(windowDelegate.getScrollTop()).thenReturn(100);
 		when(multiPageController.isAnimationRunning()).thenReturn(false);
 		when(multiPageController.isZoomed()).thenReturn(false);
+		touchModel.setTouchReservation(false);
+
 		touchModel.setSwypeLock(true);
 
 		assertFalse(testObj.canMove(multiPageController));
