@@ -17,10 +17,11 @@ import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemVariab
 
 public class ItemSessionData implements ItemSessionDataSocket {
 	
-	public long timeStarted;
-	public int time;
-	protected JSONArray itemBodyState;	
-	protected ItemVariableStorageImpl<Outcome> variableStorage;
+	private static final double MILI_TO_SECONDS_RATE = 0.001;
+	private long timeStarted;
+	private int time;
+	private JSONArray itemBodyState;	
+	private ItemVariableStorageImpl<Outcome> variableStorage;
 
 	public ItemSessionData(){
 		timeStarted = 0;
@@ -30,22 +31,29 @@ public class ItemSessionData implements ItemSessionDataSocket {
 	}
 	
 	public void begin(){
-		timeStarted = (long) ((new Date()).getTime() * 0.001);
+		timeStarted = getCurrentTimeInSeconds();
 		variableStorage.putVariable("VISITED", new Outcome("VISITED", Cardinality.SINGLE, BaseType.BOOLEAN, "TRUE"));
 	}
 	
 	public void end(){
-		time += ((long) ((new Date()).getTime() * 0.001) - timeStarted);
+		time += ( getCurrentTimeInSeconds() - timeStarted);
 		timeStarted = 0;
+	}
+
+	private long getCurrentTimeInSeconds() {
+		return (long)((new Date()).getTime() * MILI_TO_SECONDS_RATE);
 	}
 	
 	public int getActualTime(){
-		if (timeStarted != 0)
-			return time + (int)((long) ((new Date()).getTime() * 0.001) - timeStarted);
-		else if (time != 0)
-			return time;
-		else
-			return 0;
+		int actualTime = 0;
+		if (timeStarted != 0){
+			actualTime = time + (int)(getCurrentTimeInSeconds() - timeStarted);
+		}
+		else if (time != 0){
+			actualTime = time;
+		}
+		
+		return actualTime;
 	}
 	
 	public JSONValue getState(){

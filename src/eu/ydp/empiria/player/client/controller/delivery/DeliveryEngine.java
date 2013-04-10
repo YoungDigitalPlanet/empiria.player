@@ -65,6 +65,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProces
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
+import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
@@ -107,62 +108,58 @@ import eu.ydp.gwtutil.client.collections.QueueSet;
  */
 public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
-	public EngineModeManager mode;
-
-	private StyleLinkManager styleManager;
+	Integer initialItemIndex;
 
 	private final DataSourceManager dataManager;
-
-	private ExtensionsManager extensionsManager;
-
-	private FlowManager flowManager;
-
-	private SessionDataManager sessionDataManager;
-
-	private DeliveryEventsHub deliveryEventsHub;
-
 	private final PlayerViewSocket playerViewSocket;
-
-	private AssessmentController assessmentController;
-
 	private final StyleSocket styleSocket;
+	private final ModuleHandlerManager moduleHandlerManager;
+	private final SessionDataManager sessionDataManager;
+	private final EventsBus eventsBus;
+	private final ModuleFactory extensionFactory;
+	private final ModuleProviderFactory moduleProviderFactory;
+	private final SingleModuleInstanceProvider singleModuleInstanceProvider;
 
+	private StyleLinkManager styleManager;
+	private ExtensionsManager extensionsManager;
+	private FlowManager flowManager;
+	private DeliveryEventsHub deliveryEventsHub;
+	private AssessmentController assessmentController;
 	private ModulesRegistry modulesRegistry;
-
 	private SoundProcessorManagerExtension soundProcessorManager;
 
-	protected JavaScriptObject playerJsObject;
+	private JavaScriptObject playerJsObject;
+	private String stateAsync;
 
-	protected String stateAsync;
 
-	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-
-	protected ModuleFactory extensionFactory = PlayerGinjectorFactory.getPlayerGinjector().getModuleFactory();
-	protected ModuleProviderFactory moduleProviderFactory = PlayerGinjectorFactory.getPlayerGinjector().getModuleProviderFactory();
-	protected SingleModuleInstanceProvider singleModuleInstanceProvider = PlayerGinjectorFactory.getPlayerGinjector().getSingleModuleInstanceProvider();
-
-	protected Integer initialItemIndex;
-
-	private final ModuleHandlerManager moduleHandlerManager = PlayerGinjectorFactory.getPlayerGinjector().getModuleHandlerManager();
 
 	/**
 	 * C'tor.
 	 */
 	@Inject
-	public DeliveryEngine(PlayerViewSocket pvs, DataSourceManager dsm, StyleSocket styleSocket) {
-		playerViewSocket = pvs;
-		dataManager = dsm;
-		dsm.setDataLoaderEventListener(this);
+	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, 
+			SessionDataManager sessionDataManager, EventsBus eventsBus, ModuleFactory extensionFactory,
+			ModuleProviderFactory moduleProviderFactory, SingleModuleInstanceProvider singleModuleInstanceProvider,
+			ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater) {
+		this.playerViewSocket = playerViewSocket;
+		this.dataManager = dataManager;
+		this.sessionDataManager = sessionDataManager;
+		this.eventsBus = eventsBus;
+		this.extensionFactory = extensionFactory;
+		this.moduleProviderFactory = moduleProviderFactory;
+		this.singleModuleInstanceProvider = singleModuleInstanceProvider;
+		this.moduleHandlerManager = moduleHandlerManager;
+		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
 		eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this);
 		eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.values()), this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), sessionTimeUpdater);
 	}
 
 	public void init(JavaScriptObject playerJsObject) {
 		this.playerJsObject = playerJsObject;
 
 		modulesRegistry = new ModulesRegistry();
-		mode = new EngineModeManager();
 		styleManager = new StyleLinkManager();
 
 		extensionsManager = PlayerGinjectorFactory.getPlayerGinjector().getExtensionsManager();
@@ -173,7 +170,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 		flowManager = new FlowManager();
 		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(flowManager.getFlowCommandsExecutor()));
-		sessionDataManager = new SessionDataManager();
 
 		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(),
 				deliveryEventsHub.getInteractionSocket(), sessionDataManager, modulesRegistry, moduleHandlerManager);
@@ -230,7 +226,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTED));
 		updatePageStyle();
-		// flowManager.gotoPage(4);
 	}
 
 	protected void initFlow() {

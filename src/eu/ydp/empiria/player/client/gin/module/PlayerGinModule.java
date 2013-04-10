@@ -37,6 +37,8 @@ import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.multiview.touch.MultiPageTouchHandler;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
+import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
+import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
@@ -127,7 +129,6 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(Page.class).in(Singleton.class);
 		bind(PanelCache.class).in(Singleton.class);
 		bind(SoundActionProcessor.class).in(Singleton.class);
-		// bind(HTML5FullScreenHelper.class).in(Singleton.class);
 		bind(DOMTreeWalker.class);
 		bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class).in(Singleton.class);
 		bind(MediaControllerFactory.class).to(MediaControllerFactoryImpl.class).in(Singleton.class);
@@ -158,7 +159,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(FlowPanel.class).annotatedWith(Names.named("multiPageControllerMainPanel")).toProvider(NewFlowPanelProvider.class).in(Singleton.class);
 		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class).in(Singleton.class);
 		bind(SingleModuleInstanceProvider.class);
-		// bind(OverlayTypesParser.class).in(Singleton.class);
+		bind(SessionDataManager.class).in(Singleton.class);
+		bind(SessionTimeUpdater.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));

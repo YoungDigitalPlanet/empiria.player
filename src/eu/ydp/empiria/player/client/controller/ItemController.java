@@ -74,8 +74,6 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		this.styleSocket = styleSocket;
 	}
 
-	// private ItemActivityIncidentsStats activityIncidentsStats;
-
 	public void init(ItemData data, DisplayContentOptions options) {
 		try {
 			// Rejestrowanie na wszystkie eventy Page dawniej FLOW
@@ -92,14 +90,12 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			getAccessor().registerItemBodyContainer(itemIndex, item.getContentView());
 			item.setState(itemSessionSocket.getState(itemIndex));
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
-			itemSessionSocket.beginItemSession(itemIndex);
 			item.setUp();
 			item.start();
 		} catch (Exception e) {
 			item = null;
 			itemViewSocket.setItemView(new ItemViewCarrier(data.errorMessage.length() > 0 ? data.errorMessage : e.getClass().getName() + "<br/>" + e.getMessage() + "<br/>"
 					+ e.getStackTrace()));
-			//e.printStackTrace();
 			OperationLogManager.logEvent(OperationLogEvent.DISPLAY_ITEM_FAILED);
 			e.printStackTrace();
 		}
@@ -110,7 +106,6 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		if (item != null) {
 			item.close();
 			itemSessionSocket.setState(itemIndex, item.getState());
-			itemSessionSocket.endItemSession(itemIndex);
 			//FIXME dorobic derejestracje ? czy mechanizm na poziomie eventsBus
 			//interactionSocket.removeStateChangedInteractionEventsListener(this);
 		}
@@ -124,7 +119,6 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			item.process(scie.isUserInteract(), scie.isReset(), scie.getSender());
 			// STATE
 			itemSessionSocket.setState(itemIndex, item.getState());
-			// item.updateItemSession(itemIndex, itemSessionSocket);
 		}
 	}
 

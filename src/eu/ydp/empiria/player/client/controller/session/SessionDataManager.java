@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNull;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
@@ -31,8 +32,9 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 	private final AssessmentVariableStorageImpl variableProvider;
 	private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
-	public SessionDataManager() {
-		variableProvider = new AssessmentVariableStorageImpl();
+	@Inject
+	public SessionDataManager(AssessmentVariableStorageImpl variableProvider) {
+		this.variableProvider = variableProvider;
 	}
 
 	public void init(int itemsCount, InitialData data) {
@@ -152,21 +154,6 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 
 		return count;
 	}
-
-	/*
-	 * public int getAssessmentTotalVariableSum(String name){
-	 *
-	 * int value = 0;
-	 *
-	 * for (int i = 0 ; i < itemSessionDatas.length ; i ++){ try{ Integer
-	 * currValue = tryParseInt(
-	 * itemSessionDatas[i].getStoredVariableValue0(name) ); value += currValue;
-	 * } catch (Exception e) { } }
-	 *
-	 * return value;
-	 *
-	 * }
-	 */
 
 	@Override
 	public JavaScriptObject getJsSocket() {
