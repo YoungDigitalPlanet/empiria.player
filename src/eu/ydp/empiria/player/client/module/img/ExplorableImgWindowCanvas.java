@@ -31,13 +31,16 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.canvasadapter.client.CanvasAdapter;
 import eu.ydp.canvasadapter.client.Context2dAdapter;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.PanelWithScrollbars;
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 
 public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	private static ExplorableCanvasImgContentUiBinder uiBinder = GWT.create(ExplorableCanvasImgContentUiBinder.class);
 
-	interface ExplorableCanvasImgContentUiBinder extends UiBinder<Widget, ExplorableImgWindowCanvas> {}
+	interface ExplorableCanvasImgContentUiBinder extends UiBinder<Widget, ExplorableImgWindowCanvas> {
+	}
 
 	@UiField
 	protected FlowPanel imagePanel;
@@ -59,23 +62,27 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	private Image tempImage;
 
+	private final TouchController touchController;
+
 	public ExplorableImgWindowCanvas() {
 		initWidget(uiBinder.createAndBindUi(this));
 		context2d = imageCanvas.getContext2d();
+		touchController = PlayerGinjectorFactory.getPlayerGinjector().getTouchController();
 	}
 
 	@Override
-	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale, double scaleStep, double zoomMax, String title) {//NOPMD		
+	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale, double scaleStep, double zoomMax, String title) {// NOPMD
 		setWindowWidth(wndWidth);
 		setWindowHeight(wndHeight);
 		setScale(initialScale);
 		setScaleStep(scaleStep);
 		setZoomMax(zoomMax);
-		
+
 		tempImage = new Image(imageUrl);
 		RootPanel.get().add(tempImage);
 		// TODO: try to put img on a div with visibility:hidden
-		// see http://gwt-image-loader.googlecode.com/svn/trunk/src/com/reveregroup/gwt/imagepreloader/ImagePreloader.java
+		// see
+		// http://gwt-image-loader.googlecode.com/svn/trunk/src/com/reveregroup/gwt/imagepreloader/ImagePreloader.java
 		if (!Navigator.getUserAgent().contains("MSIE")) {
 			tempImage.setVisible(false);
 		}
@@ -112,7 +119,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		imageCanvas.setHeight(getWindowHeight() + "px");
 		imageCanvas.setTitle(title);
 		scrollbarsPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
-		FocusWidget focusCanvas = (FocusWidget)imageCanvas.asWidget();
+		FocusWidget focusCanvas = (FocusWidget) imageCanvas.asWidget();
 		focusCanvas.addTouchStartHandler(new TouchStartHandler() {
 
 			@Override
@@ -125,10 +132,11 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 			@Override
 			public void onTouchMove(TouchMoveEvent event) {
-				if (event.getTouches().length() == 1){
+				if (event.getTouches().length() == 1) {
 					onMoveMove(event.getTouches().get(0).getClientX(), event.getTouches().get(0).getClientY());
-				} else if (event.getTouches().length() == 2){
-					onMoveScale(event.getTouches().get(0).getClientX(), event.getTouches().get(0).getClientY(), event.getTouches().get(1).getClientX(), event.getTouches().get(1).getClientY());
+				} else if (event.getTouches().length() == 2) {
+					onMoveScale(event.getTouches().get(0).getClientX(), event.getTouches().get(0).getClientY(), event.getTouches().get(1).getClientX(), event
+							.getTouches().get(1).getClientY());
 				}
 				event.preventDefault();
 			}
@@ -177,19 +185,18 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	}
 
-	private void onMoveStart(int x, int y){//NOPMD
+	private void onMoveStart(int x, int y) {// NOPMD
+		disableSwype();
 		moving = true;
 		prevX = x;
 		prevY = y;
 	}
 
-	private void onMoveScale(int x1, int y1, int x2, int y2) {//NOPMD
-		double currDistance= Math.sqrt(
-				Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)
-				);
+	private void onMoveScale(int x1, int y1, int x2, int y2) {// NOPMD
+		double currDistance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 
-		if (prevDistance != -1){
-			scaleBy(currDistance/prevDistance);
+		if (prevDistance != -1) {
+			scaleBy(currDistance / prevDistance);
 			redraw(true);
 		}
 
@@ -197,18 +204,27 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	}
 
+	private boolean isZoomed() {
+		return getScale() > getScaleMin();
+	}
+
+	private void disableSwype() {
+		touchController.setTouchReservation(isZoomed());
+	}
+
 	@SuppressWarnings("PMD")
-	private void onMoveMove(int x, int y){
-		if (moving){
+	private void onMoveMove(int x, int y) {
+		disableSwype();
+
+		if (moving) {
 
 			double dx = x - prevX;
 			double dy = y - prevY;
 
+			double zoom = getZoom();
 
-			double zoom  = getZoom();
-
-			imgX -= dx/zoom;
-			imgY -= dy/zoom;
+			imgX -= dx / zoom;
+			imgY -= dy / zoom;
 
 			redraw(true);
 
@@ -218,12 +234,12 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		}
 	}
 
-	private void onMoveEnd(){
+	private void onMoveEnd() {
 		moving = false;
 		prevDistance = -1;
 	}
 
-	private void redraw(boolean showScrollbars){
+	private void redraw(boolean showScrollbars) {
 
 		checkImageCoords();
 
@@ -238,20 +254,20 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		double destWidth = getWindowWidth();
 		double destHeight = getWindowHeight();
 
-		if (sourceX + sourceWidth >  getOriginalImageWidth()){
+		if (sourceX + sourceWidth > getOriginalImageWidth()) {
 			sourceWidth = getOriginalImageWidth() - sourceX;
 			double zoom = getZoom();
 			destWidth = sourceWidth * zoom;
 			context2d.clearRect(destWidth, 0, getWindowWidth() - destWidth, getWindowHeight());
 		}
-		if (sourceY + sourceHeight >  getOriginalImageHeight()){
+		if (sourceY + sourceHeight > getOriginalImageHeight()) {
 			sourceHeight = getOriginalImageHeight() - sourceY;
 			double zoom = getZoom();
 			destHeight = sourceHeight * zoom;
 			context2d.clearRect(0, destHeight, getWindowWidth(), getWindowHeight() - destHeight);
 		}
 
-		if (System.currentTimeMillis() - lastRedrawTime > REDRAW_INTERVAL_MIN){
+		if (System.currentTimeMillis() - lastRedrawTime > REDRAW_INTERVAL_MIN) {
 			if (imageLoaded) {
 				context2d.drawImage(ImageElement.as(tempImage.getElement()), sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
 			}
@@ -260,49 +276,49 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		}
 	}
 
-	private void updateScrollbars(boolean showScrollbars){
-		double posX = imgX*getZoom();
-		double posY = imgY*getZoom();
-		scrollbarsPanel.setHorizontalPosition(posX, getWindowWidth(), getOriginalImageWidth()*getZoom(), showScrollbars);
-		scrollbarsPanel.setVerticalPosition(posY, getWindowHeight(), getOriginalImageHeight()*getZoom(), showScrollbars);
+	private void updateScrollbars(boolean showScrollbars) {
+		double posX = imgX * getZoom();
+		double posY = imgY * getZoom();
+		scrollbarsPanel.setHorizontalPosition(posX, getWindowWidth(), getOriginalImageWidth() * getZoom(), showScrollbars);
+		scrollbarsPanel.setVerticalPosition(posY, getWindowHeight(), getOriginalImageHeight() * getZoom(), showScrollbars);
 	}
 
-	private void scaleBy(double dScale){
+	private void scaleBy(double dScale) {
 		double newScale;
-		if (getZoom()*dScale > getZoomMax()) {
+		if (getZoom() * dScale > getZoomMax()) {
 			newScale = getOriginalImageWidth() / getWindowWidth() * (getZoomMax());
 		} else if (getScale() * dScale > getScaleMin()) {
-			newScale = getScale()*dScale;
+			newScale = getScale() * dScale;
 		} else {
 			newScale = getScaleMin();
 		}
 
-		double lastCenterX = imgX*getZoom() + getWindowWidth()/2;
-		double lastCenterY = imgY*getZoom() + getWindowHeight()/2;
+		double lastCenterX = imgX * getZoom() + getWindowWidth() / 2;
+		double lastCenterY = imgY * getZoom() + getWindowHeight() / 2;
 
-		double newCenterX = lastCenterX * newScale/getScale();
-		double newCenterY = lastCenterY * newScale/getScale();
+		double newCenterX = lastCenterX * newScale / getScale();
+		double newCenterY = lastCenterY * newScale / getScale();
 
-		int newImgX = (int)(newCenterX - getWindowWidth()/2);
-		int newImgY = (int)(newCenterY - getWindowHeight()/2);
+		int newImgX = (int) (newCenterX - getWindowWidth() / 2);
+		int newImgY = (int) (newCenterY - getWindowHeight() / 2);
 
-		imgX = newImgX/getZoom(newScale);
-		imgY = newImgY/getZoom(newScale);
+		imgX = newImgX / getZoom(newScale);
+		imgY = newImgY / getZoom(newScale);
 
 		setScale(newScale);
 
 	}
 
-	private void checkImageCoords(){
+	private void checkImageCoords() {
 
 		if (imgX + getOriginalImageWidth() / getScale() > getOriginalImageWidth()) {
-			imgX = getOriginalImageWidth() - (int)(getOriginalImageWidth() / getScale()) - 1;
+			imgX = getOriginalImageWidth() - (int) (getOriginalImageWidth() / getScale()) - 1;
 		}
 
 		double height = (getOriginalImageWidth() * getWindowHeight() / getWindowWidth());
 
 		if (imgY + height / getScale() > getOriginalImageHeight()) {
-			imgY = getOriginalImageHeight() - (int)(height / getScale()) - 1;
+			imgY = getOriginalImageHeight() - (int) (height / getScale()) - 1;
 		}
 
 		if (imgX < 0) {
@@ -314,10 +330,10 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		}
 	}
 
-	private void centerImage(){
+	private void centerImage() {
 
-		imgX = (getOriginalImageWidth() - getWindowWidth() * getScale())/2 / getScale();
-		imgY = (getOriginalImageHeight() - getWindowHeight() * getScale())/2 / getScale();
+		imgX = (getOriginalImageWidth() - getWindowWidth() * getScale()) / 2 / getScale();
+		imgY = (getOriginalImageHeight() - getWindowHeight() * getScale()) / 2 / getScale();
 	}
 
 	@Override
@@ -328,7 +344,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	@Override
 	public void zoomOut() {
-		scaleBy(1.0d/getScaleStep());
+		scaleBy(1.0d / getScaleStep());
 		redraw(true);
 	}
 }

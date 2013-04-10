@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
@@ -41,38 +42,67 @@ import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
-@GinModules(value={PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class,
-		SourceListGinModule.class, TextEntryGinModule.class, SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class})
+@GinModules(value = { PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class, TextEntryGinModule.class,
+		SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class })
 public interface PlayerGinjector extends Ginjector {
 
 	ViewEngine getViewEngine();
+
 	DeliveryEngine getDeliveryEngine();
+
 	EventsBus getEventsBus();
+
 	MultiPageController getMultiPage();
+
 	PageControllerCache getPageControllerCache();
+
 	StyleNameConstants getStyleNameConstants();
+
 	MainFlowProcessor getMainFlowProcessor();
+
 	Page getPage();
+
 	DOMTreeWalker getDomTreeWalker();
+
 	PanelCache getPanelCache();
+
 	GWTPanelFactory getPanelFactory();
+
 	MediaControllerFactory getControllerFactory();
+
 	PageScopeFactory getPageScopeFactory();
+
 	PositionHelper getPositionHelper();
+
 	ModuleHandlerManager getModuleHandlerManager();
+
 	TextTrackFactory getTextTrackFactory();
+
 	ModuleFactory getModuleFactory();
+
 	ModuleProviderFactory getModuleProviderFactory();
+
 	SingleModuleInstanceProvider getSingleModuleInstanceProvider();
+
 	FeedbackRegistry getFeedbackRegistry();
+
 	ModuleFeedbackProcessor getModuleFeedbackProcessor();
+
 	AssessmentControllerFactory getAssessmentControllerFactory();
+
 	VariableInterpreterFactory getVariableInterpreterFactory();
+
 	AssessmentReportFactory getAssessmentReportFactory();
+
 	ExtensionsManager getExtensionsManager();
 
 	BookmarkProcessorExtension getBookmarkProcessorExtension();
+
 	StickiesProcessorExtension getStickiesProcessorExtension();
+
 	IPlayerContainersAccessor getPlayerContainersAccessor();
+
 	AssessmentJsonReportExtension getAssessmentJsonReportExtension();
+
+	TouchController getTouchController();
 }
