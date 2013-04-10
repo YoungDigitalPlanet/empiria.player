@@ -20,7 +20,7 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
-*/
+ */
 package eu.ydp.empiria.player.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -34,38 +34,42 @@ import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.version.Version;
 import eu.ydp.empiria.player.client.view.ViewEngine;
+
 /**
  * Main class with player API
+ * 
  * @author Krzysztof Langner
  */
 public class Player {
 
-  /** Delivery engine do manage the assessment content */
-  public DeliveryEngine deliveryEngine;
+	/** Delivery engine do manage the assessment content */
+	public DeliveryEngine deliveryEngine;
 
-  /** View engine maintains the view tasks */
-  private final ViewEngine viewEngine;
+	/** View engine maintains the view tasks */
+	private final ViewEngine viewEngine;
 
-  private IPlayerContainersAccessor accessor;
+	private IPlayerContainersAccessor accessor;
 
-private JavaScriptObject jsObject;
+	private final JavaScriptObject jsObject;
 
-  {
-	 logVersion();
-  }
+	{
+		logVersion();
+	}
 
 	/**
 	 * constructor
+	 * 
 	 * @param id
-	 * @param jsObject 
+	 * @param jsObject
 	 */
-	public Player(String id, JavaScriptObject jsObject){
+	public Player(String id, JavaScriptObject jsObject) {
 		this.jsObject = jsObject;
-		PlayerGinjector injector = PlayerGinjectorFactory.createNewPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
 		viewEngine = injector.getViewEngine();
 		try {
 			RootPanel.get(id);
-		} catch (Exception e){}
+		} catch (Exception e) {
+		}
 		RootPanel root = RootPanel.get(id);
 		viewEngine.mountView(root);
 		getAccessor().setPlayerContainer(root);
@@ -73,57 +77,57 @@ private JavaScriptObject jsObject;
 		deliveryEngine.init(jsObject);
 	}
 
-	public void loadExtension(JavaScriptObject extension){
+	public void loadExtension(JavaScriptObject extension) {
 		deliveryEngine.loadExtension(extension);
 	}
 
-	public void loadExtension(String extension){
+	public void loadExtension(String extension) {
 		deliveryEngine.loadExtension(extension);
 	}
 
-	public void load(String url){
+	public void load(String url) {
 		deliveryEngine.load(url);
 	}
 
-	public void load(XmlData assessmentData, XmlData[] itemsData){
+	public void load(XmlData assessmentData, XmlData[] itemsData) {
 		deliveryEngine.load(assessmentData, itemsData);
 	}
 
-	 /**
+	/**
 	 * @return js object representing this player
 	 */
-	public JavaScriptObject getJavaScriptObject(){
-	  return jsObject;
-  }
+	public JavaScriptObject getJavaScriptObject() {
+		return jsObject;
+	}
 
-	public void setFlowOptions(FlowOptions o){
+	public void setFlowOptions(FlowOptions o) {
 		deliveryEngine.setFlowOptions(o);
 	}
 
-	public void setDisplayOptions(DisplayOptions o){
+	public void setDisplayOptions(DisplayOptions o) {
 		deliveryEngine.setDisplayOptions(o);
 	}
 
-	public String getEngineMode(){
-  		return deliveryEngine.getEngineMode();
+	public String getEngineMode() {
+		return deliveryEngine.getEngineMode();
 	}
 
-	private void logVersion(){
-		 String version = Version.getVersion();
-		 String versionMessage = "EmpiriaPlayer ver. " + version;
-		 log(versionMessage);
-		 System.out.println(versionMessage);
+	private void logVersion() {
+		String version = Version.getVersion();
+		String versionMessage = "EmpiriaPlayer ver. " + version;
+		log(versionMessage);
+		System.out.println(versionMessage);
 	}
 
 	private native void log(String message)/*-{
 		if (typeof console == 'object')
 			console.log(message);
-	 }-*/;
+	}-*/;
 
 	private IPlayerContainersAccessor getAccessor() {
-		if (accessor == null){
+		if (accessor == null) {
 			accessor = PlayerGinjectorFactory.getPlayerGinjector().getPlayerContainersAccessor();
 		}
 		return accessor;
-	}	
+	}
 }
