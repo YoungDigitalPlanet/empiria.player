@@ -14,6 +14,9 @@ import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 
 public class TouchController {
 
+	private static final int PERCENT_MAX = 100;
+	private static final int SWYPE_WIDTH_TO_HEIGHT_LIMIT_RATE = 5;
+	private static final int MINIMAL_LENGTH_LIMIT_RATE = 4;
 	private final WindowDelegate windowDelegate;
 	private final TouchEventReader touchEventReader;
 	private final EventsBus eventsBus;
@@ -59,11 +62,11 @@ public class TouchController {
 	}
 
 	private boolean isCorrectSwypeWidth(int swipeWidth) {
-		return swipeWidth > windowDelegate.getClientWidth() / 4;
+		return swipeWidth > windowDelegate.getClientWidth() / TouchController.MINIMAL_LENGTH_LIMIT_RATE;
 	}
 
 	private boolean isCorrectSwypeAngle(int swipeWidth, int swipeHeight) {
-		return swipeWidth / swipeHeight > 5;
+		return swipeWidth / swipeHeight > SWYPE_WIDTH_TO_HEIGHT_LIMIT_RATE;
 	}
 
 	public boolean isHorizontalSwipe() {
@@ -98,7 +101,7 @@ public class TouchController {
 
 	public float getSwypePercentLength() {
 		int swypeWidth = Math.abs(touchModel.getLastEndX() - touchModel.getEndX());
-		return ((float) swypeWidth / rootPanelDelegate.getOffsetWidth()) * 100;
+		return ((float) swypeWidth / rootPanelDelegate.getOffsetWidth()) * PERCENT_MAX;
 	}
 
 	public boolean isSwypeDetected() {
