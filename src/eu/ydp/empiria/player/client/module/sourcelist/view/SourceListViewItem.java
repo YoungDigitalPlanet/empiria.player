@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -31,20 +30,14 @@ public class SourceListViewItem extends Composite {
 	@UiField
 	protected FlowPanel item;
 
-	DragDropHelper dragDropHelper;
-
 	private final DragDataObject dragDataObject;
-
-	private SourceListViewImpl sourceListView;
-	DraggableObject<FlowPanel> draggable;
-
-	FlowPanel container;
 	private final IModule parentModule;
-
 	private final StyleNameConstants styleNames;
 
-	protected HandlerRegistration addTouchHandler;
-	protected boolean dragRelease = false;
+	private DragDropHelper dragDropHelper;
+	private SourceListViewImpl sourceListView;
+	private DraggableObject<FlowPanel> draggable;
+	private FlowPanel container;
 
 	@Inject
 	public SourceListViewItem(@Assisted DragDataObject dragDataObject, @Assisted IModule parentModule, StyleNameConstants styleNames,
@@ -53,6 +46,22 @@ public class SourceListViewItem extends Composite {
 		this.dragDataObject = dragDataObject;
 		this.parentModule = parentModule;
 		this.styleNames = styleNames;
+	}
+	
+	public void setSourceListView(SourceListViewImpl sourceListView) {
+		this.sourceListView = sourceListView;
+	}
+	
+	public void setDisableDrag(boolean disableDrag) {
+		draggable.setDisableDrag(disableDrag);
+	}
+	
+	public void show() {
+		container.setVisible(true);
+	}
+	
+	public void hide() {
+		container.setVisible(false);
 	}
 
 	public void createAndBindUi() {
@@ -63,17 +72,27 @@ public class SourceListViewItem extends Composite {
 		container.add(label);
 		draggable = dragDropHelper.enableDragForWidget(container, parentModule);
 		item.add(draggable.getDraggableWidget());
+		addDragHandlers();
+	}
+
+	private void addDragHandlers() {
+		addDragStartHandler();
+		addDragEndHandler();
+	}
+	
+	private void addDragStartHandler() {
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
-				dragRelease = false;
 				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
 				event.setData("json", dragDataObject.toJSON());
 				sourceListView.onItemDragStarted(dragDataObject, event, SourceListViewItem.this);
-
 			}
 		});
+	}
+
+	private void addDragEndHandler() {
 		draggable.addDragEndHandler(new DragEndHandler() {
 			@Override
 			public void onDragEnd(DragEndEvent event) {
@@ -81,21 +100,5 @@ public class SourceListViewItem extends Composite {
 				sourceListView.onMaybeDragCanceled();
 			}
 		});
-	}
-
-	public void setSourceListView(SourceListViewImpl sourceListView) {
-		this.sourceListView = sourceListView;
-	}
-
-	public void setDisableDrag(boolean disableDrag) {
-		draggable.setDisableDrag(disableDrag);
-	}
-
-	public void show() {
-		container.setVisible(true);
-	}
-
-	public void hide() {
-		container.setVisible(false);
 	}
 }
