@@ -24,9 +24,7 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 
 	private MockButton button;
 	private EventsBus eventsBus;
-	
-	private static String testest;
-	
+		
 	@SuppressWarnings("rawtypes")
 	private MediaWrapper mediaWrapper;
 
