@@ -25,6 +25,8 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 	private MockButton button;
 	private EventsBus eventsBus;
 	
+	private static String testest;
+	
 	@SuppressWarnings("rawtypes")
 	private MediaWrapper mediaWrapper;
 
@@ -58,7 +60,7 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 		// when
 		eventsBus.fireEventFromSource(mediaEvent, mediaWrapper);
 		
-		// than
+		// then
 		assertThat(button.isActive(), equalTo(true));		
 	}
 
@@ -72,7 +74,7 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 		// when
 		eventsBus.fireEventFromSource(mediaEvent, mediaWrapper);
 		
-		// than
+		// then
 		assertThat(button.isActive(), equalTo(false));		
 	}	
 
@@ -97,7 +99,7 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 		GWTMockUtilities.restore();
 	}		
 
-	class MockButton extends AbstractPlayMediaButton<MockButton> {
+	private static class MockButton extends AbstractPlayMediaButton<MockButton> {
 
 		public MockButton(String baseStyleName) {			
 			super(baseStyleName);			
