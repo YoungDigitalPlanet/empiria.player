@@ -131,11 +131,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private JavaScriptObject playerJsObject;
 	private String stateAsync;
 
-
-
-	/**
-	 * C'tor.
-	 */
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, 
 			SessionDataManager sessionDataManager, EventsBus eventsBus, ModuleFactory extensionFactory,
