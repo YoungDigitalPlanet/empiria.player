@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.img;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
@@ -50,7 +51,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	protected PanelWithScrollbars scrollbarsPanel;
 
 	private final Context2dAdapter context2d;
-	private final static int REDRAW_INTERVAL_MIN = 50;
+	private static final int REDRAW_INTERVAL_MIN = 50;
 	private double imgX = 0;
 	private double imgY = 0;
 
@@ -71,13 +72,30 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	}
 
 	@Override
-	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale, double scaleStep, double zoomMax, String title) {// NOPMD
+	public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale, double scaleStep, double zoomMax, String title) {
 		setWindowWidth(wndWidth);
 		setWindowHeight(wndHeight);
 		setScale(initialScale);
 		setScaleStep(scaleStep);
 		setZoomMax(zoomMax);
 
+		createAndInitializeTempImage(imageUrl);
+		setUpImageCanvasProperties(title);
+		
+		scrollbarsPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
+		FocusWidget focusCanvas = (FocusWidget) imageCanvas.asWidget();
+		addHandlersToCanvas(focusCanvas);
+	}
+
+	private void setUpImageCanvasProperties(String title) {
+		imageCanvas.setCoordinateSpaceWidth(getWindowWidth());
+		imageCanvas.setCoordinateSpaceHeight(getWindowHeight());
+		imageCanvas.setWidth(getWindowWidth() + "px");
+		imageCanvas.setHeight(getWindowHeight() + "px");
+		imageCanvas.setTitle(title);
+	}
+
+	private void createAndInitializeTempImage(String imageUrl) {
 		tempImage = new Image(imageUrl);
 		RootPanel.get().add(tempImage);
 		// TODO: try to put img on a div with visibility:hidden
@@ -112,22 +130,70 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 				RootPanel.get().remove(tempImage);
 			}
 		});
+	}
 
-		imageCanvas.setCoordinateSpaceWidth(getWindowWidth());
-		imageCanvas.setCoordinateSpaceHeight(getWindowHeight());
-		imageCanvas.setWidth(getWindowWidth() + "px");
-		imageCanvas.setHeight(getWindowHeight() + "px");
-		imageCanvas.setTitle(title);
-		scrollbarsPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
-		FocusWidget focusCanvas = (FocusWidget) imageCanvas.asWidget();
-		focusCanvas.addTouchStartHandler(new TouchStartHandler() {
+	private void addHandlersToCanvas(FocusWidget focusCanvas) {
+		addTouchStartHandler(focusCanvas);
+		addTouchMoveHandler(focusCanvas);
+		addTouchEndHandler(focusCanvas);
+		addMouseDownHandler(focusCanvas);
+		addMouseMoveHandler(focusCanvas);
+		addMouseUpHandler(focusCanvas);
+		addMouseOutHandler(focusCanvas);
+	}
+
+	private void addMouseOutHandler(FocusWidget focusCanvas) {
+		focusCanvas.addMouseOutHandler(new MouseOutHandler() {
 
 			@Override
-			public void onTouchStart(TouchStartEvent event) {
-				onMoveStart(event.getTouches().get(0).getClientX(), event.getTouches().get(0).getClientY());
+			public void onMouseOut(MouseOutEvent event) {
+				onMoveEnd();
+			}
+		});
+	}
+
+	private void addMouseUpHandler(FocusWidget focusCanvas) {
+		focusCanvas.addMouseUpHandler(new MouseUpHandler() {
+
+			@Override
+			public void onMouseUp(MouseUpEvent event) {
+				onMoveEnd();
+			}
+		});
+	}
+
+	private void addMouseMoveHandler(FocusWidget focusCanvas) {
+		focusCanvas.addMouseMoveHandler(new MouseMoveHandler() {
+
+			@Override
+			public void onMouseMove(MouseMoveEvent event) {
+				onMoveMove(event.getClientX(), event.getClientY());
+			}
+		});
+	}
+
+	private void addMouseDownHandler(FocusWidget focusCanvas) {
+		focusCanvas.addMouseDownHandler(new MouseDownHandler() {
+
+			@Override
+			public void onMouseDown(MouseDownEvent event) {
+				onMoveStart(event.getClientX(), event.getClientY());
+			}
+		});
+	}
+
+	private void addTouchEndHandler(FocusWidget focusCanvas) {
+		focusCanvas.addTouchEndHandler(new TouchEndHandler() {
+
+			@Override
+			public void onTouchEnd(TouchEndEvent event) {
+				onMoveEnd();
 				event.preventDefault();
 			}
 		});
+	}
+
+	private void addTouchMoveHandler(FocusWidget focusCanvas) {
 		focusCanvas.addTouchMoveHandler(new TouchMoveHandler() {
 
 			@Override
@@ -142,47 +208,18 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 			}
 
 		});
-		focusCanvas.addTouchEndHandler(new TouchEndHandler() {
+	}
+
+	private void addTouchStartHandler(FocusWidget focusCanvas) {
+		focusCanvas.addTouchStartHandler(new TouchStartHandler() {
 
 			@Override
-			public void onTouchEnd(TouchEndEvent event) {
-				onMoveEnd();
+			public void onTouchStart(TouchStartEvent event) {
+				Touch firstTouch = event.getTouches().get(0);
+				onMoveStart(firstTouch.getClientX(), firstTouch.getClientY());
 				event.preventDefault();
 			}
 		});
-
-		focusCanvas.addMouseDownHandler(new MouseDownHandler() {
-
-			@Override
-			public void onMouseDown(MouseDownEvent event) {
-				onMoveStart(event.getClientX(), event.getClientY());
-			}
-		});
-
-		focusCanvas.addMouseMoveHandler(new MouseMoveHandler() {
-
-			@Override
-			public void onMouseMove(MouseMoveEvent event) {
-				onMoveMove(event.getClientX(), event.getClientY());
-			}
-		});
-
-		focusCanvas.addMouseUpHandler(new MouseUpHandler() {
-
-			@Override
-			public void onMouseUp(MouseUpEvent event) {
-				onMoveEnd();
-			}
-		});
-
-		focusCanvas.addMouseOutHandler(new MouseOutHandler() {
-
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				onMoveEnd();
-			}
-		});
-
 	}
 
 	private void onMoveStart(int x, int y) {// NOPMD
@@ -249,8 +286,6 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		double sourceY = imgY;
 		double sourceWidth = getOriginalImageWidth() / scaleNormalized;
 		double sourceHeight = (getOriginalImageWidth() * getWindowHeight() / getWindowWidth()) / scaleNormalized;
-		double destX = 0;
-		double destY = 0;
 		double destWidth = getWindowWidth();
 		double destHeight = getWindowHeight();
 
@@ -269,6 +304,8 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 		if (System.currentTimeMillis() - lastRedrawTime > REDRAW_INTERVAL_MIN) {
 			if (imageLoaded) {
+				double destX = 0;
+				double destY = 0;
 				context2d.drawImage(ImageElement.as(tempImage.getElement()), sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
 			}
 			lastRedrawTime = System.currentTimeMillis();
