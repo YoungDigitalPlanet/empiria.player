@@ -38,14 +38,14 @@ public class TouchController {
 
 		int y = touchEventReader.getScreenY(onTouchStartEvent);
 		int x = touchEventReader.getX(onTouchStartEvent);
-		boolean touchLock = touchEventReader.isMoreThenOneFingerTouch(onTouchStartEvent);
+		boolean multiTouch = touchEventReader.isMoreThenOneFingerTouch(onTouchStartEvent);
 
 		touchModel.setStartScrollTopPossition(windowDelegate.getScrollTop());
 		touchModel.setStartY(y);
 		touchModel.setStartX(x);
 		touchModel.setLastEndX(x);
 		touchModel.setEndX(-1);
-		touchModel.setMultiTouch(touchLock);
+		touchModel.setMultiTouch(multiTouch);
 		touchModel.setSwipeStarted(false);
 		touchModel.setTouchReservation(false);
 	}
