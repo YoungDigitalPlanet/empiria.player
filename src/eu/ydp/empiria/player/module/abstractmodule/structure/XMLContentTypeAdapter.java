@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
-public class XMLContentTypeAdapter extends XmlAdapter<String,  XMLContent> {// implements DomHandler<ElementT, Result> {
+public class XMLContentTypeAdapter extends XmlAdapter<String,  XMLContent> {
 
 	@Override
 	public XMLContent unmarshal(String value) throws Exception {

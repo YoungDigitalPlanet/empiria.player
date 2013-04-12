@@ -122,12 +122,11 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	public void loadMainDocument(String url, ForIsWidget rootPanel, IsWidget mainPreloader) {
 		rootPanel.add(mainPreloader);
 		
-		if (mode == DataSourceManagerMode.LOADING_ASSESSMENT  ||  mode == DataSourceManagerMode.LOADING_ITEMS || url == "")
+		if (mode == DataSourceManagerMode.LOADING_ASSESSMENT  ||  mode == DataSourceManagerMode.LOADING_ITEMS || url == ""){
 			return;
+		}
 		
 		centerMainPreloader(Window.getClientWidth() / 2, Window.getClientHeight() / 2, getMainPreloader().getElement());
-		
-		//OperationLogManager.logEvent(OperationLogEvent.LOADING_STARTED);
 		
 		mode = DataSourceManagerMode.LOADING_ASSESSMENT;
 
@@ -263,10 +262,12 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		if(assessmentDataManager.isDefaultData()){
 			loadSingleItemData(assesmentXML);
 		}else{
-			if (assessmentDataManager.hasLibrary())
+			if (assessmentDataManager.hasLibrary()){
 				loadExtensionsLibrary();
-			else
+			}
+			else{
 				loadItems();
+			}
 		}
 
 		getDataLoaderEventListener().onAssessmentLoaded();
@@ -336,8 +337,9 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	}
 
 	protected void checkLoadFinished(){
-		if (styleLoadCounter==0)
+		if (styleLoadCounter==0){
 			onLoadFinished();
+		}
 	}
 
 	public void onLoadFinished() {
@@ -348,8 +350,9 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	public void onLoadFinished(IsWidget mainPreloader, ForIsWidget rootPanel) {		
 		int preloaderIndex = rootPanel.getWidgetIndex(mainPreloader);
 		
-		if (preloaderIndex >= 0)
+		if (preloaderIndex >= 0){
 			rootPanel.remove(preloaderIndex);
+		}
 		
 		mode = DataSourceManagerMode.SERVING;
 		//OperationLogManager.logEvent(OperationLogEvent.LOADING_FINISHED);

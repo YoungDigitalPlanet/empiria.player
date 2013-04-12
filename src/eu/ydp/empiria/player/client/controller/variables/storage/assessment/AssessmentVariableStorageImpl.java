@@ -14,8 +14,8 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 public class AssessmentVariableStorageImpl extends VariableProviderBase  implements JsSocketHolder {
 	
-	protected Set<String> identifiers;
-	protected ItemsCollectionSessionDataSocket itemsCollectionSessionDataSocket;
+	private Set<String> identifiers;
+	private ItemsCollectionSessionDataSocket itemsCollectionSessionDataSocket;
 	
 	public AssessmentVariableStorageImpl(){
 		identifiers = new HashSet<String>();
@@ -38,8 +38,9 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 	}
 	
 	private void ensureVariable(String identifier){
-		if (!identifiers.contains(identifier))
+		if (!identifiers.contains(identifier)){
 			identifiers.add(identifier);
+		}
 	}
 	
 	@Override
@@ -65,8 +66,9 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 		for (int i = 0 ; i < itemsCollectionSessionDataSocket.getItemSessionDataSocketsCount() ; i ++){
 			if (itemsCollectionSessionDataSocket.getItemSessionDataSocket(i) != null){
 				currVar = itemsCollectionSessionDataSocket.getItemSessionDataSocket(i).getVariableProviderSocket().getVariableValue(identifier);
-				if (currVar == null)
+				if (currVar == null){
 					continue;
+				}
 				currValue = currVar.getValuesShort();
 				if (currValue != null  &&  currValue.length() > 0){
 					if (currValue.matches("^[0-9]+$")){
@@ -80,35 +82,5 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 		}
 		return total;
 	}
-
-//	@Override
-//	public JavaScriptObject getJsSocket() {
-//		return createJsSocket();
-//	}
-//
-//	protected native JavaScriptObject createJsSocket()/*-{
-//		var socket = [];
-//		var instance = this;
-//		socket.getVariableIdentifiers = function(){
-//			return instance.@eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl::getAssessmentVariableIdentifiersShort()();
-//		}
-//		socket.getVariableValue = function(identifier){
-//			return instance.@eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl::getAssessmentVariableValuesShort(Ljava/lang/String;)(identifier);
-//		}
-//		return socket;
-//	}-*/;
-//
-//	private String getAssessmentVariableValuesShort(String key) {
-//		Outcome o = getVariableValue(key);
-//		if (o != null)
-//			return o.getValuesShort();
-//		return "";
-//	}
-//	
-//	private String getAssessmentVariableIdentifiersShort(){
-//		String stringShort = StringUtils.setToStringShort(identifiers);		
-//		return stringShort;
-//	}
-
 	
 }

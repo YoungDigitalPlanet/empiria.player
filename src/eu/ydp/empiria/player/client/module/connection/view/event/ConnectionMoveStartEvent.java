@@ -12,7 +12,4 @@ public class ConnectionMoveStartEvent  extends ConnectionMoveEvent {
 		this.item = item;
 	}
 
-//	public ConnectionItem getItem() {
-//		return item;
-//	}
 }

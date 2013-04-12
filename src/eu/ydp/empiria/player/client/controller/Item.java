@@ -113,7 +113,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
 
-		FeedbackAutoMarkInterpreter.interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
+		new FeedbackAutoMarkInterpreter().interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
 
 		itemBody = new ItemBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket, moduleHandlerManager);
 

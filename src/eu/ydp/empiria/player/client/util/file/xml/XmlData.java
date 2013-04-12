@@ -6,6 +6,8 @@ import com.google.gwt.xml.client.NodeList;
 
 public class XmlData {
 
+	private static final String SRC_TAG = "src";
+
 	@Deprecated // cala historia z fixowaniem linku jest od czapki
 	public XmlData(Document doc, String url){
 		document = doc;
@@ -34,20 +36,20 @@ public class XmlData {
 	@Deprecated
 	private void fix(Document document, String baseUrl){
 
-		fixLinks(document, baseUrl, "img", "src");
+		fixLinks(document, baseUrl, "img", SRC_TAG);
 		fixLinks(document, baseUrl, "img", "srcFullScreen");
-		fixLinks(document, baseUrl, "embed", "src");
-		fixLinks(document, baseUrl, "sound", "src");
-		fixLinks(document, baseUrl, "video", "src");
+		fixLinks(document, baseUrl, "embed", SRC_TAG);
+		fixLinks(document, baseUrl, "sound", SRC_TAG);
+		fixLinks(document, baseUrl, "video", SRC_TAG);
 		fixLinks(document, baseUrl, "object", "poster");
-		fixLinks(document, baseUrl, "source", "src");
+		fixLinks(document, baseUrl, "source", SRC_TAG);
 		fixLinks(document, baseUrl, "a", "href");
 		fixLinks(document, baseUrl, "object", "data");
 		fixLinks(document, baseUrl, "audioPlayer", "data");
-		fixLinks(document, baseUrl, "audioPlayer", "src");
-		fixLinks(document, baseUrl, "vocaItem", "src");
-		fixLinks(document, baseUrl, "flash", "src");
-		fixLinks(document, baseUrl, "simulationPlayer", "src");
+		fixLinks(document, baseUrl, "audioPlayer", SRC_TAG);
+		fixLinks(document, baseUrl, "vocaItem", SRC_TAG);
+		fixLinks(document, baseUrl, "flash", SRC_TAG);
+		fixLinks(document, baseUrl, "simulationPlayer", SRC_TAG);
 		fixLinks(document, baseUrl, "showUrl", "href");
 	}
 

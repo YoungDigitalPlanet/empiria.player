@@ -30,8 +30,4 @@ public interface AssessmentControllerFactory {
 					InteractionEventsListener interactionEventsListener, StyleSocket ss,
 					ModulesRegistrySocket mrs, Map<String, Outcome> outcomeVariables,
 					ModuleHandlerManager moduleHandlerManager,AssessmentControllerFactory controllerFactory);
-
-//	FeedbackManager getFeedbackManager(NodeList feedbackNodes, String baseUrl,
-//										ModuleSocket moduleSocket, FeedbackInteractionEventListner feedbackListener);
-
 }
