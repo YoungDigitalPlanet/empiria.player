@@ -190,7 +190,12 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 
 	public void openFullScreen(MediaWrapper<?> fullScreenMediaWrapper, MediaWrapper<?> defaultMediaWrapper, Element template) {
 		synchronizeWithMediaWrapper = defaultMediaWrapper;
-		if ((UserAgentChecker.isMobileUserAgent() || UserAgentChecker.isUserAgent(UserAgent.SAFARI)) && !UserAgentChecker.isMobileUserAgent(FIREFOX)) {
+		
+		boolean isMobileUserAgent = UserAgentChecker.isMobileUserAgent();
+		boolean isSafari = UserAgentChecker.isUserAgent(UserAgent.SAFARI);
+		boolean isFirefox = UserAgentChecker.isMobileUserAgent(FIREFOX);
+		
+		if ((isMobileUserAgent || isSafari) && !isFirefox) {
 			openFullScreenMobile(defaultMediaWrapper, fullScreenMediaWrapper);
 		} else if (UserAgentChecker.isUserAgent(IE8, IE9, FIREFOX)) {
 			openFullscreenIE(fullScreenMediaWrapper, template);
