@@ -17,18 +17,23 @@ public class SwypeBlocker {
 	}
 
 	public void addBlockOnOpenCloseHandler(IsExListBox exListBox) {
-		exListBox.addOpenCloseListener(new ExListBoxOpenCloseListener() {
+		exListBox.addOpenCloseListener(new OpenCloseListener());
+	}
 
-			@Override
-			public void onClose(CloseEvent<PopupPanel> event) {
-				touchController.setSwypeLock(false);
-			}
+	class OpenCloseListener implements ExListBoxOpenCloseListener {
 
-			@Override
-			public void onOpen() {
-				touchController.setSwypeLock(true);
-			}
-		});
+		@Override
+		public void onClose(CloseEvent<PopupPanel> event) {
+			touchController.setSwypeLock(false);
+
+		}
+
+		@Override
+		public void onOpen() {
+			touchController.setSwypeLock(true);
+
+		}
+
 	}
 
 }
