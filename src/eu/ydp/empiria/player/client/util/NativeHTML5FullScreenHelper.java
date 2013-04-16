@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEventH
  * Klasa pomocnicza do obslugi trybu pelnoekranowego w przegladarkach
  *
  */
-public class HTML5FullScreenHelper {
+public class NativeHTML5FullScreenHelper {
 
 	private final Set<VideoFullScreenEventHandler> eventHandlers = new HashSet<VideoFullScreenEventHandler>();
 
@@ -51,14 +51,14 @@ public class HTML5FullScreenHelper {
 			element.removeEventListener("webkitbeginfullscreen",this.beginFullscreenHandler);
 		} else {
 			this.beginFullscreenHandler = function() {
-				thiss.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent(Z)(true);
+				thiss.@eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper::handleEvent(Z)(true);
 			}
 		}
 		if (this.endFullscreenHandler) {
 			element.removeEventListener("webkitendfullscreen",this.endFullscreenHandler);
 		} else {
 			this.endFullscreenHandler = function(){
-				thiss.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent(Z)(false);
+				thiss.@eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper::handleEvent(Z)(false);
 			}
 		}
 
@@ -69,7 +69,6 @@ public class HTML5FullScreenHelper {
 
 	private native boolean nativeRequestFullScrean(Element element)/*-{
 		try {
-			webkitendfullscreen
 			if (element.webkitExitFullscreen) {
 				element.webkitExitFullscreen();
 			} else if (element.mozCancelFullScreen) {
@@ -82,11 +81,11 @@ public class HTML5FullScreenHelper {
 				element.mozRequestFullScreen();
 				return true;
 			} else if (element.webkitRequestFullscreen) {
-				this.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::addFullScreenHandlerForWebkit(Lcom/google/gwt/core/client/JavaScriptObject;)(element);
+				this.@eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper::addFullScreenHandlerForWebkit(Lcom/google/gwt/core/client/JavaScriptObject;)(element);
 				element.webkitRequestFullscreen();
 				return true;
 			} else if (element.webkitEnterFullscreen) {
-				this.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::addFullScreenHandlerForWebkit(Lcom/google/gwt/core/client/JavaScriptObject;)(element);
+				this.@eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper::addFullScreenHandlerForWebkit(Lcom/google/gwt/core/client/JavaScriptObject;)(element);
 				element.webkitEnterFullscreen();
 				return true;
 			}
@@ -175,15 +174,15 @@ public class HTML5FullScreenHelper {
 			var thhis = this;
 			$doc.addEventListener(
 							"fullscreenchange",function(){
-							thhis.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent()()},
+							thhis.@eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper::handleEvent()()},
 							false);
 			$doc.addEventListener(
 							"mozfullscreenchange",function(){
-							thhis.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent()()},
+							thhis.@eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper::handleEvent()()},
 							false);
 			$doc.addEventListener(
 							"webkitfullscreenchange",function(){
-							thhis.@eu.ydp.empiria.player.client.util.HTML5FullScreenHelper::handleEvent()()},
+							thhis.@eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper::handleEvent()()},
 							false);
 		} catch (e) {
 		}

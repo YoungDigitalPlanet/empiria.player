@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.media.html5;
 
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_DURATION_CHANGE;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,7 +38,7 @@ public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBas
 
 	public AbstractHTML5MediaWrapper(Media media, EventsBus eventBus, PageScopeFactory pageScopeFactory) {
 		this.eventsBus = eventBus;
-		this.pageScopeFactory= pageScopeFactory;
+		this.pageScopeFactory = pageScopeFactory;
 		setMediaBaseAndPreload(media.getMedia());
 		registerEvents();
 	}
@@ -65,17 +67,19 @@ public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBas
 
 	private void setMediaBaseAndPreload(MediaBase mediaBase) {
 		this.mediaBase = mediaBase;
+		this.ready = false;
 		mediaBase.setPreload(MediaElement.PRELOAD_METADATA);
 	}
 
 	private void registerEvents() {
-		addHandlerRegistration(MediaEventTypes.ON_DURATION_CHANGE,
-				eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), this, this, pageScopeFactory.getCurrentPageScope()));
+		addHandlerRegistration(ON_DURATION_CHANGE,
+				eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_DURATION_CHANGE), this, this, pageScopeFactory.getCurrentPageScope()));
 	}
 
-	public void addHandlerRegistration(MediaEventTypes type,HandlerRegistration handlerRegistration){
+	public void addHandlerRegistration(MediaEventTypes type, HandlerRegistration handlerRegistration) {
 		handlerRegistrations.put(type, handlerRegistration);
 	}
+
 	@Override
 	public String getMediaUniqId() {
 		if (uniqId == null) {
@@ -133,6 +137,7 @@ public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBas
 	public MediaBase getMediaBase() {
 		return mediaBase;
 	}
+
 	@Override
 	public int hashCode() {
 		int prime = 31;

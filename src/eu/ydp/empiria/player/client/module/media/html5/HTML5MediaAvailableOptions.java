@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.media.html5;
 import static eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent.IE8;
 import static eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent.IE9;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
-import eu.ydp.empiria.player.client.util.HTML5FullScreenHelper;
+import eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
@@ -45,7 +45,7 @@ public class HTML5MediaAvailableOptions implements MediaAvailableOptions {
 
 	@Override
 	public boolean isFullScreenSupported() {
-		return HTML5FullScreenHelper.isFullScreenSupported() || UserAgentChecker.isMobileUserAgent() || UserAgentChecker.isUserAgent(IE8, IE9);
+		return NativeHTML5FullScreenHelper.isFullScreenSupported() || UserAgentChecker.isMobileUserAgent() || UserAgentChecker.isUserAgent(IE8, IE9);
 	}
 
 	@Override

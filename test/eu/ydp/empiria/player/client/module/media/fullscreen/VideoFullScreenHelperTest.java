@@ -20,7 +20,7 @@ import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.HTML5FullScreenHelper;
+import eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -32,15 +32,15 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest({ HTML5FullScreenHelper.class,Style.class, com.google.gwt.user.client.Element.class,com.google.gwt.dom.client.Element.class, FlowPanel.class})
+@PrepareForTest({ NativeHTML5FullScreenHelper.class,Style.class, com.google.gwt.user.client.Element.class,com.google.gwt.dom.client.Element.class, FlowPanel.class})
 public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	private VideoFullScreenHelper instance = null;
 	private EventsBus eventsBus = null;
-	private HTML5FullScreenHelper fullScreenHelper;
+	private NativeHTML5FullScreenHelper fullScreenHelper;
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
-			binder.bind(HTML5FullScreenHelper.class).toInstance(mock(HTML5FullScreenHelper.class));
+			binder.bind(NativeHTML5FullScreenHelper.class).toInstance(mock(NativeHTML5FullScreenHelper.class));
 			binder.bind(VideoFullScreenHelper.class).toInstance(spy(new VideoFullScreenHelper()));
 
 		}
@@ -59,7 +59,7 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
 	public void before(String userAgent) {
 		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(userAgent));
 		setUp(new Class[0], new Class[0], new Class[] { EventsBus.class }, new CustomGuiceModule());
-		fullScreenHelper  = injector.getInstance(HTML5FullScreenHelper.class);
+		fullScreenHelper  = injector.getInstance(NativeHTML5FullScreenHelper.class);
 		instance = injector.getInstance(VideoFullScreenHelper.class);
 		instance.postConstruct(); //nie dziala z automatu na mokach
 		eventsBus = injector.getInstance(EventsBus.class);
