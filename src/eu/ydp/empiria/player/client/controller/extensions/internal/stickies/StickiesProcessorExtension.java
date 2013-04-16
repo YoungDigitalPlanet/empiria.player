@@ -75,11 +75,13 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	
 	private void parseExternalStickies(){
 		JavaScriptObject externalStickies = getExternalStickies();				
-		JSONArray externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());
-		
-		if(externalState.size() > 0){					
-			fillStickies(externalState);
+		if(externalStickies != null){
+			JSONArray externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());		
+			if(externalState.size() > 0){					
+				fillStickies(externalState);
+			}
 		}
+		
 	}
 	
 	void initStickiesList(int itemsCount){

@@ -102,12 +102,13 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	
 	
 	private void parseExternalBookarks(){
-		JavaScriptObject externalBookmarks = getExternalBookmarks();				
-		JSONArray externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks.toString());
-		
-		if(externalState.size() > 0){					
-			fillBookmarks(externalState);
-		}
+		JavaScriptObject externalBookmarks = getExternalBookmarks();
+		if(externalBookmarks != null){
+			JSONArray externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks.toString());			
+			if(externalState.size() > 0){					
+				fillBookmarks(externalState);
+			}	
+		}		
 	}
 	
 	void initInjection(){
