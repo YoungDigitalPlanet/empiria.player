@@ -91,6 +91,23 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 				updateModules(currItemIndex, true);
 			}
 		});
+		
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.ASSESSMENT_STARTING), new PlayerEventHandler() {			
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {				
+				parseExternalBookarks();				
+			}
+		});
+	}
+	
+	
+	private void parseExternalBookarks(){
+		JavaScriptObject externalBookmarks = getExternalBookmarks();				
+		JSONArray externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks.toString());
+		
+		if(externalState.size() > 0){					
+			fillBookmarks(externalState);
+		}
 	}
 	
 	void initInjection(){
@@ -422,21 +439,19 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 
 	@Override
 	public void setState(JSONArray newState) {		
-		
-		JavaScriptObject externalBookmarks = getExternalBookmarks();
-		
-		JSONArray externalState = null;
-		if(externalBookmarks != null){
-			externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks.toString());
+		if(bookmarks.isEmpty()){
+			fillBookmarks(newState);
 		}
 		
-		JSONArray state = externalState == null ? newState : externalState;
-		
+	}
+	
+	private void fillBookmarks(JSONArray state){
 		bookmarks.clear();
 		for (int i = 0 ; i < state.size() ; i ++ ){
 			bookmarks.add( decodeItemState(state.get(i).isObject()) );
 		}
 	}
+	
 	
 	private native JavaScriptObject getExternalBookmarks()/*-{
 		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::playerJsObject;		

@@ -43,7 +43,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	JavaScriptObject playerJsObject;
 
 	@Override
-	public void init() {
+	public void init() {					
 		initStickiesList(dataSourceSupplier.getItemsCount());
 		
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), new PlayerEventHandler() {
@@ -52,15 +52,34 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 			public void onPlayerEvent(PlayerEvent event) {
 				currItemIndex = (Integer) event.getValue();
 			}
+		});	
+		
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.ASSESSMENT_STARTING), new PlayerEventHandler() {			
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {				
+				parseExternalStickies();
+				
+			}
 		});
 		
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_INITIALIZED), new PlayerEventHandler() {
-			
+		
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_INITIALIZED), new PlayerEventHandler() {			
 			@Override
-			public void onPlayerEvent(PlayerEvent event) {
+			public void onPlayerEvent(PlayerEvent event) {				
 				initStickies(currItemIndex);
 			}
 		});
+		
+		
+	}
+	
+	private void parseExternalStickies(){
+		JavaScriptObject externalStickies = getExternalStickies();				
+		JSONArray externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());
+		
+		if(externalState.size() > 0){					
+			fillStickies(externalState);
+		}
 	}
 	
 	void initStickiesList(int itemsCount){
@@ -89,18 +108,16 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 
 	@Override
 	public void setState(JSONArray newState) {
-		JavaScriptObject externalStickies = getExternalStickies();
-		
-		JSONArray externalState = null;
-		if(externalStickies == null){
-			externalState = newState;
-		} else {
-			externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());
+		if(stickies.isEmpty()){
+			fillStickies(newState);
 		}
-		
+				
+	}
+	
+	private void fillStickies(JSONArray state){
 		stickies.clear();
-		for (int i = 0 ; i < externalState.size() ; i ++ ){
-			stickies.add( decodeItemState(externalState.get(i).isArray()) );
+		for (int i = 0 ; i < state.size() ; i ++ ){
+			stickies.add( decodeItemState(state.get(i).isArray()) );
 		}
 	}
 	
@@ -148,7 +165,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		dataSourceSupplier = supplier;
 	}
 	
-	void addStickie(int colorIndex){
+	void addStickie(int colorIndex){		
 		IStickieProperties sp = createStickie(colorIndex);
 		getStickiesForCurrentItem().add(sp);
 		addStickieView(sp, true);
