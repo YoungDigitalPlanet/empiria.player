@@ -73,8 +73,8 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		
 	}
 	
-	private void parseExternalStickies(){
-		JavaScriptObject externalStickies = getExternalStickies();				
+	void parseExternalStickies(){
+		JavaScriptObject externalStickies = getExternalStickies();		
 		if(externalStickies != null){
 			JSONArray externalState = (JSONArray)JSONParser.parseLenient(externalStickies.toString());		
 			if(externalState.size() > 0){					
@@ -132,7 +132,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		return itemStickies;
 	}
 
-	private native JavaScriptObject getExternalStickies()/*-{
+	native JavaScriptObject getExternalStickies()/*-{
 		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension::playerJsObject;		
 		if (typeof playerJso != 'undefined'  && playerJso != null && typeof playerJso.getExternalStickies == 'function'){			
 			return playerJso.getExternalStickies();

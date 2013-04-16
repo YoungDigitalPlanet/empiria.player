@@ -2,7 +2,10 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.stickies;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -14,12 +17,15 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
 import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
+
 
 public class StickiesProcessorExtensionJUnitTest extends AbstractTestWithMocksBase {
 
@@ -147,5 +153,24 @@ public class StickiesProcessorExtensionJUnitTest extends AbstractTestWithMocksBa
 		assertThat(ac.getAllValues(), contains(spOnCurrentItem1, spOnCurrentItem2));
 		
 	}
+	@Test	
+	public void testParseExternalStickiesNull(){
+		//given		
+		processorExtension.initStickiesList(ITEMS_COUNT);
+		List<List<IStickieProperties>> stickies = processorExtension.stickies;
+		int initSize = processorExtension.stickies.size();
+		doReturn(null).when(processorExtension).getExternalStickies();
+		
+		//when
+		processorExtension.parseExternalStickies();
+		
+		//then		
+		assertThat(stickies, notNullValue());
+		assertThat(stickies.size(), equalTo(initSize));
+		for(int i = 0; i < stickies.size(); i++){
+			assertThat(stickies.get(i), empty());
+		}	
+		
+	}	
 }
 

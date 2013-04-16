@@ -101,7 +101,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 	
 	
-	private void parseExternalBookarks(){
+	void parseExternalBookarks(){
 		JavaScriptObject externalBookmarks = getExternalBookmarks();
 		if(externalBookmarks != null){
 			JSONArray externalState = (JSONArray)JSONParser.parseLenient(externalBookmarks.toString());			
@@ -454,7 +454,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 	}
 	
 	
-	private native JavaScriptObject getExternalBookmarks()/*-{
+	native JavaScriptObject getExternalBookmarks()/*-{
 		var playerJso = this.@eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension::playerJsObject;		
 		if (typeof playerJso != 'undefined'  && playerJso != null && typeof playerJso.getExternalBookmarks == 'function'){			
 			return playerJso.getExternalBookmarks();

@@ -2,7 +2,9 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.doNothing;
@@ -243,6 +245,19 @@ public class BookmarkProcessorExtensionJUnitTest {
 		verify(bookmarkProcessor).updateNotBookmarkedModules();
 		verify(bookmarkProcessor).resetMode();
 		
+		
+	}
+	
+	@Test
+	public void testParseExternalBookarksNull(){
+		//given
+		List<StackMap<Integer, BookmarkProperties>> bookmarks = bookmarkProcessor.bookmarks;			
+		doReturn(null).when(bookmarkProcessor).getExternalBookmarks();
+		//when		
+		bookmarkProcessor.parseExternalBookarks();
+		//then
+		assertThat(bookmarks, notNullValue());
+		assertThat(bookmarks, empty());
 		
 	}
 	
