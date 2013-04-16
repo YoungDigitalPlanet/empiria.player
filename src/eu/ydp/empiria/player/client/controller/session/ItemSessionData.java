@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemVariab
 
 public class ItemSessionData implements ItemSessionDataSocket {
 	
+	private static final int NUMBER_OF_ELEMENTS_IN_STATE = 3;
 	private static final double MILI_TO_SECONDS_RATE = 0.001;
 	private long timeStarted;
 	private int time;
@@ -60,16 +61,18 @@ public class ItemSessionData implements ItemSessionDataSocket {
 		JSONArray stateArr = new JSONArray();
 		stateArr.set(0, itemBodyState);
 		stateArr.set(1, variableStorage.toJSON());
-		stateArr.set(2, new JSONNumber(getActualTime()));
+
+		//instead of time return zero value - related to scorm documentation empiria should always return times of last session
+		//zero is returned to keep compatibility with older player version and between states generated with different players
+		stateArr.set(2, new JSONNumber(0));
 		return stateArr;
 	}
 	
 	public void setState(JSONValue value){
 		JSONArray stateArr = (JSONArray)value;
-		if (stateArr.size() == 3){
+		if (stateArr.size() == NUMBER_OF_ELEMENTS_IN_STATE){
 			itemBodyState = stateArr.get(0).isArray();
 			variableStorage.fromJSON(stateArr.get(1));
-			time = (int)stateArr.get(2).isNumber().doubleValue();
 		}
 	}
 
