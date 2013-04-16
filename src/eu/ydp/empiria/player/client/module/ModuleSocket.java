@@ -20,8 +20,11 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
-*/
+ */
 package eu.ydp.empiria.player.client.module;
+
+import com.google.common.base.Optional;
+import com.google.gwt.json.client.JSONValue;
 
 import eu.ydp.empiria.player.client.controller.IItemProperties;
 import eu.ydp.empiria.player.client.module.registry.InlineBodyGeneratorSocketProvider;
@@ -29,8 +32,11 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 
 /**
  * Socket interface for modules
+ * 
  * @author Rafal Rybacki
  */
 public interface ModuleSocket extends ResponseSocket, StyleSocket, InlineBodyGeneratorSocketProvider, ParenthoodSocket, IItemProperties {
-	
+
+	Optional<JSONValue> getStateById(String identifier);
+
 }

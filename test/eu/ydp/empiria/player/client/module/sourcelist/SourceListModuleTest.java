@@ -1,28 +1,32 @@
 package eu.ydp.empiria.player.client.module.sourcelist;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 
+import com.google.common.base.Optional;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwt.xml.client.Element;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListViewMock;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
+import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
+import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 @SuppressWarnings("PMD")
@@ -30,14 +34,19 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 
 	private SourceListModule instance;
 	private SourceListPresenter presenter;
+	private ModuleSocket moduleSocket;
+	private ReflectionsUtils reflectionsUtils;
+	private SourceListModuleStructure sourceListModuleStructure;
+
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(SourceListPresenter.class).toInstance(spy(new SourceListPresenterMock()));
 			binder.bind(SourceListView.class).toInstance(spy(new SourceListViewMock()));
+			binder.bind(ModuleSocket.class).toInstance(mock(ModuleSocket.class));
+			binder.bind(SourceListModuleStructure.class).toInstance(mock(SourceListModuleStructure.class));
 		}
 	}
-
 
 	@BeforeClass
 	public static void disarm() {
@@ -50,35 +59,46 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 	}
 
 	@Before
-	public void before(){
-		setUp(new Class<?>[] { SourceListPresenter.class,SourceListView.class }, new CustomGuiceModule());
+	public void before() {
+		setUp(new Class<?>[] { SourceListPresenter.class, SourceListView.class }, new CustomGuiceModule());
 		instance = injector.getInstance(SourceListModule.class);
 		presenter = injector.getInstance(SourceListPresenter.class);
+		moduleSocket = injector.getInstance(ModuleSocket.class);
+		sourceListModuleStructure = injector.getInstance(SourceListModuleStructure.class);
+		reflectionsUtils = new ReflectionsUtils();
 
 	}
 
 	@Test
-	public void testFactoryMethod(){
+	public void testFactoryMethod() {
 		assertNotNull(instance.getNewInstance());
 	}
 
 	@Test
-	public void presenterSetBeanTest(){
-		instance.initModule(XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement());
-		Mockito.verify(presenter).setBean(Mockito.any(SourceListBean.class));
-	}
+	public void initModuleTest() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+		// given
+		reflectionsUtils.setValueInObjectOnField("moduleSocket", instance, moduleSocket);
+		String idModule = "moduleId";
+		reflectionsUtils.setValueInObjectOnField(idModule, instance, idModule);
 
-	@Test
-	public void getViewTest(){
-		instance.initModule(XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement());
-		assertEquals(presenter.asWidget(),instance.getView());
-	}
+		@SuppressWarnings("unchecked")
+		Optional<JSONValue> state = mock(Optional.class);
+		JSONValue jsonValue = mock(JSONValue.class);
+		when(state.get()).thenReturn(jsonValue);
+		when(moduleSocket.getStateById(idModule)).thenReturn(state);
 
-	@Test
-	public void initPresenterTest(){
-		instance.initModule(XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement());
-		assertEquals(presenter.asWidget(),instance.getView());
-		Mockito.verify(presenter).createAndBindUi();
+		Element documentElement = XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement();
+		// when
+		instance.initModule(documentElement);
+		// then
+		InOrder inOrder = inOrder(sourceListModuleStructure, presenter);
+
+		inOrder.verify(sourceListModuleStructure).createFromXml(anyString(), any(Optional.class));
+		inOrder.verify(sourceListModuleStructure).getBean();
+		inOrder.verify(presenter).setBean(Mockito.any(SourceListBean.class));
+		inOrder.verify(presenter).createAndBindUi();
+
+		assertEquals(presenter.asWidget(), instance.getView());
 	}
 
 	@Test

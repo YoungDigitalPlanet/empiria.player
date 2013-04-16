@@ -24,7 +24,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 public class ConnectionModule extends AbstractInteractionModule<ConnectionModule, ConnectionModuleModel, MatchInteractionBean> {
 
 	private static final Logger LOGGER = Logger.getLogger(ConnectionModule.class.getName());
-	
+
 	@Inject
 	private ConnectionModulePresenter presenter;
 
@@ -39,7 +39,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 
 	@Inject
 	private EventsBus eventsBus;
-	
+
 	private ConnectionModuleModel connectionModel;
 
 	@Override
@@ -72,12 +72,10 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	@Override
 	public void setState(JSONArray newState) {
 		LOGGER.info("Enter set state function");
-		
+
 		clearModel();
 		getResponseModel().setState(newState);
-		
-		
-		
+
 		PlayerEventHandler pageContentResizedEventHandler = new PlayerEventHandler() {
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
@@ -88,5 +86,11 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 		};
 		eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedEventHandler, new CurrentPageScope());
 		LOGGER.info("Added page content resized event handler");
+	}
+
+	@Override
+	public JSONArray getState() {
+		// TODO Auto-generated method stub
+		return super.getState();
 	}
 }

@@ -3,6 +3,8 @@ package eu.ydp.empiria.player.client.module.abstractmodule.structure;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Optional;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -19,8 +21,11 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 
 	protected Map<String, Element> feedbacks;
 
-	public void createFromXml(String xml) {
+	protected Optional<JSONValue> state;
+
+	public void createFromXml(String xml, Optional<JSONValue> state) {
 		bean = parse(xml);
+		this.state = state;
 		prepareStructure();
 		prepareFeedbackNodes(xml);
 	}
@@ -29,7 +34,7 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 		return bean;
 	}
 
-	private M parse(String xml){
+	private M parse(String xml) {
 		return getParser().parse(xml);
 	}
 
@@ -45,10 +50,10 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 	protected abstract void prepareStructure();
 
 	protected abstract XMLParser getXMLParser();
+
 	/**
-	 * Prepares feedbacks map.
-	 * Needs to be extended in inheriting module
-	 *
+	 * Prepares feedbacks map. Needs to be extended in inheriting module
+	 * 
 	 * @param xml
 	 */
 	protected final void prepareFeedbackNodes(String xml) {
@@ -56,8 +61,8 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 		Document xmlDocument = getXMLParser().parse(xml);
 		NodeList nodes = getParentNodesForFeedbacks(xmlDocument);
 
-		if(nodes != null){
-			for(int i = 0; i < nodes.getLength(); i++){
+		if (nodes != null) {
+			for (int i = 0; i < nodes.getLength(); i++) {
 				Element choiceNode = (Element) nodes.item(i);
 				Element feedbackNode = getInlineFeedbackNode(choiceNode);
 
@@ -68,25 +73,25 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 
 	protected abstract NodeList getParentNodesForFeedbacks(Document xmlDocument);
 
-	protected final void addFeedbackNode(Element feedbackNode){
-		if(feedbackNode != null){
+	protected final void addFeedbackNode(Element feedbackNode) {
+		if (feedbackNode != null) {
 			String indentifier = feedbackNode.getAttribute(EmpiriaTagConstants.ATTR_IDENTIFIER);
 			feedbacks.put(indentifier, feedbackNode);
 		}
 	}
 
-	protected final Element getInlineFeedbackNode(Element parentNode){
+	protected final Element getInlineFeedbackNode(Element parentNode) {
 		Element feedbackElement = null;
 		NodeList feedbackElements = parentNode.getElementsByTagName(EmpiriaTagConstants.NAME_FEEDBACK_INLINE);
 
-		if(feedbackElements != null && feedbackElements.getLength() > 0){
+		if (feedbackElements != null && feedbackElements.getLength() > 0) {
 			feedbackElement = (Element) feedbackElements.item(0);
 		}
 
 		return feedbackElement;
 	}
 
-	public Element getFeedbackElement(String identifer){
+	public Element getFeedbackElement(String identifer) {
 		return feedbacks.get(identifer);
 	}
 }

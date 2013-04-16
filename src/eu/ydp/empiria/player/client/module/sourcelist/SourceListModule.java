@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.sourcelist;
 
+import com.google.common.base.Optional;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -24,7 +26,7 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 
 	@Override
 	public SourceListModule getNewInstance() {
-		return  moduleFactory.get();
+		return moduleFactory.get();
 	}
 
 	@Override
@@ -34,14 +36,15 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 
 	@Override
 	protected void initModule(Element element) {
-		moduleStructure.createFromXml(element.toString());
+
+		moduleStructure.createFromXml(element.toString(), Optional.<JSONValue> absent());
 		SourceListBean bean = moduleStructure.getBean();
 		presenter.setBean(bean);
 		presenter.setIModule(this);
 		presenter.createAndBindUi();
 	}
 
-	public boolean containsValue(String value) {		
+	public boolean containsValue(String value) {
 		return presenter.containsValue(value);
 	}
 }

@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import com.google.common.base.Optional;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
@@ -80,7 +82,8 @@ public class Assessment {
 	private AssessmentBodyView bodyView;
 
 	/**
-	 * Properties instance prepared by assessmentController (based on item body properties through the page controller)
+	 * Properties instance prepared by assessmentController (based on item body
+	 * properties through the page controller)
 	 */
 	private final IItemProperties itemProperties;
 
@@ -88,7 +91,7 @@ public class Assessment {
 
 	/**
 	 * C'tor
-	 *
+	 * 
 	 * @param data
 	 *            XMLData object as data source
 	 */
@@ -119,7 +122,7 @@ public class Assessment {
 		if (bodyNode != null) {
 			body = new AssessmentBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket);
 			bodyView = new AssessmentBodyView(body);
-			bodyView.init( body.init(bodyNode) );
+			bodyView.init(body.init(bodyNode));
 			pageSlot = body.getPageSlot();
 			this.interactionEventsListener = interactionEventsListener;
 		}
@@ -146,7 +149,7 @@ public class Assessment {
 	}
 
 	public ParenthoodSocket getAssessmentParenthoodSocket() {
-		return (body == null) ? null : body.getParenthoodSocket(); //NOPMD
+		return (body == null) ? null : body.getParenthoodSocket(); // NOPMD
 	}
 
 	/**
@@ -189,7 +192,7 @@ public class Assessment {
 		}
 
 		@Override
-		public Map<String,String> getOrgStyles(Element element) {
+		public Map<String, String> getOrgStyles(Element element) {
 			return (styleSocket != null) ? styleSocket.getOrgStyles(element) : new HashMap<String, String>();
 		};
 
@@ -256,6 +259,11 @@ public class Assessment {
 		public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module) {
 			InlineContainerStylesExtractor inlineContainerHelper = new InlineContainerStylesExtractor();
 			return inlineContainerHelper.getInlineStyles(module);
+		}
+
+		@Override
+		public Optional<JSONValue> getStateById(String identifier) {
+			return Optional.of(null);
 		}
 
 	};

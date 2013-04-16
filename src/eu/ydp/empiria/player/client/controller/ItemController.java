@@ -41,9 +41,8 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 	@Inject
 	@SuppressWarnings("PMD")
-	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs,
-							@Assisted InteractionEventsSocket is, @Assisted ItemSessionSocket iss,
-							@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
+	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs, @Assisted InteractionEventsSocket is, @Assisted ItemSessionSocket iss,
+			@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
 		itemViewSocket = ivs;
 		itemSessionSocket = iss;
 		interactionSocket = is;
@@ -65,7 +64,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private StyleSocket styleSocket;
 	private final ModuleHandlerManager moduleHandlerManager;
 
-	//@Inject
+	// @Inject
 	private final AssessmentControllerFactory controllerFactory;
 
 	IPlayerContainersAccessor accessor;
@@ -78,24 +77,24 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		try {
 			// Rejestrowanie na wszystkie eventy Page dawniej FLOW
 			eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this, new CurrentPageScope());
-			eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.STATE_CHANGED), this,new CurrentPageScope());
+			eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.STATE_CHANGED), this, new CurrentPageScope());
 			if (data.data == null) {
 				throw new Exception("Item data is null");// NOPMD
 			}
 			itemIndex = data.itemIndex;
-			item = controllerFactory.getItem(data.data, options,
-												interactionSocket, styleSocket,
-												modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex),
-												moduleHandlerManager,controllerFactory);
+			item = controllerFactory.getItem(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket,
+					itemSessionSocket.getOutcomeVariablesMap(itemIndex), moduleHandlerManager, controllerFactory, itemSessionSocket.getState(itemIndex));
 			getAccessor().registerItemBodyContainer(itemIndex, item.getContentView());
-			item.setState(itemSessionSocket.getState(itemIndex));
+
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
 			item.setUp();
 			item.start();
 		} catch (Exception e) {
 			item = null;
-			itemViewSocket.setItemView(new ItemViewCarrier(data.errorMessage.length() > 0 ? data.errorMessage : e.getClass().getName() + "<br/>" + e.getMessage() + "<br/>"
-					+ e.getStackTrace()));
+
+			itemViewSocket.setItemView(new ItemViewCarrier(data.errorMessage.length() > 0 ? data.errorMessage : e.getClass().getName() + "<br/>"
+					+ e.getMessage() + "<br/>" + e.getStackTrace()));
+
 			OperationLogManager.logEvent(OperationLogEvent.DISPLAY_ITEM_FAILED);
 			e.printStackTrace();
 		}
@@ -106,8 +105,8 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		if (item != null) {
 			item.close();
 			itemSessionSocket.setState(itemIndex, item.getState());
-			//FIXME dorobic derejestracje ? czy mechanizm na poziomie eventsBus
-			//interactionSocket.removeStateChangedInteractionEventsListener(this);
+			// FIXME dorobic derejestracje ? czy mechanizm na poziomie eventsBus
+			// interactionSocket.removeStateChangedInteractionEventsListener(this);
 		}
 
 	}
@@ -167,10 +166,11 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 	@Override
 	public void onPageEvent(PageEvent event) {
-		//wymuszone kompatibilnoscia wsteczna
+		// wymuszone kompatibilnoscia wsteczna
 		FlowActivityEvent newEvent;
 		if (event.getValue() instanceof ActivityProcessingEvent) {
-			newEvent = new FlowActivityEvent(FlowActivityEventType.valueOf(event.getType().name()), ((ActivityProcessingEvent) event.getValue()).getGroupIdentifier());
+			newEvent = new FlowActivityEvent(FlowActivityEventType.valueOf(event.getType().name()),
+					((ActivityProcessingEvent) event.getValue()).getGroupIdentifier());
 		} else {
 			newEvent = new FlowActivityEvent(FlowActivityEventType.valueOf(event.getType().name()), null);
 		}
@@ -179,7 +179,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	}
 
 	private IPlayerContainersAccessor getAccessor() {
-		if (accessor == null){
+		if (accessor == null) {
 			accessor = PlayerGinjectorFactory.getPlayerGinjector().getPlayerContainersAccessor();
 		}
 		return accessor;
@@ -187,7 +187,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 	/**
 	 * Checks whether the item body contains at least one interactive module
-	 *
+	 * 
 	 * @return boolean
 	 */
 	public boolean hasInteractiveModules() {

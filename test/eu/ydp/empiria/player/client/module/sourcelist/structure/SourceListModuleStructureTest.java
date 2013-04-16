@@ -1,11 +1,7 @@
 package eu.ydp.empiria.player.client.module.sourcelist.structure;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +10,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import com.google.common.base.Optional;
+import com.google.gwt.json.client.JSONValue;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
 
@@ -34,13 +33,17 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 
 	@Test
 	public void parseBeanTestNotNullCheck() {
-		instance.createFromXml(SourceListJAXBParserMock.XML);
+		Optional<JSONValue> state = Mockito.mock(Optional.class);
+
+		instance.createFromXml(SourceListJAXBParserMock.XML, state);
 		assertNotNull(instance.getBean());
 	}
 
 	@Test
 	public void parseBeanTestAttributeCheck() {
-		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE);
+		Optional<JSONValue> state = Mockito.mock(Optional.class);
+
+		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE, state);
 		SourceListBean bean = instance.getBean();
 		assertTrue(bean.isMoveElements());
 		assertTrue(!bean.isShuffle());
@@ -60,13 +63,17 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 
 	@Test
 	public void noShuffleTest() {
-		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE);
+		Optional<JSONValue> state = Mockito.mock(Optional.class);
+
+		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE, state);
 		Mockito.verify(instance, times(0)).shuffle();
 	}
 
 	@Test
 	public void shuffleTest() {
-		instance.createFromXml(SourceListJAXBParserMock.XML_WITH_MORE_ITEMS);
+		Optional<JSONValue> state = Mockito.mock(Optional.class);
+
+		instance.createFromXml(SourceListJAXBParserMock.XML_WITH_MORE_ITEMS, state);
 		Mockito.verify(instance, times(1)).shuffle();
 		SourceListBean bean = instance.getBean();
 		List<String> list = new ArrayList<String>(Arrays.asList("psa", "kota", "tygrysa", "psa1", "kota1", "tygrysa1", "psa2", "kota2", "tygrysa2"));

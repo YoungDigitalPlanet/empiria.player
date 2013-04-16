@@ -1,12 +1,13 @@
 package eu.ydp.empiria.player.client.module;
 
-import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.CORRECT_ANSWERS;
-import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.SINGLE;
+import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.*;
 
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Node;
@@ -20,9 +21,9 @@ import eu.ydp.empiria.player.client.structure.ModuleBean;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
 
 /**
- *
+ * 
  * @author MKaldonek
- *
+ * 
  * @param <T>
  *            typ modułu
  * @param <H>
@@ -49,8 +50,14 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		getStructure().createFromXml(getModuleElement().toString());
+		// responseState
+		// structureState
+
+		Optional<JSONValue> state = getModuleSocket().getStateById(getModuleId());
+
+		getStructure().createFromXml(getModuleElement().toString(), state);
 		getPresenter().setModuleSocket(getModuleSocket());
+
 		initalizeModule();
 		initializePresenter();
 		applyIdAndClassToView(getView());
@@ -110,7 +117,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 
 	@Override
 	public JSONArray getState() {
-		return getResponseModel().getState();
+		return getResponseModel().getState();// + getStructure().getState();
 	}
 
 	@Override
@@ -136,9 +143,9 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	}
 
 	/**
-	 * Zwraca typ liczenia dla modulu. 1 punkt za cwiczenie lub ilosc
-	 * poprawnych odpowiedzi w module
-	 *
+	 * Zwraca typ liczenia dla modulu. 1 punkt za cwiczenie lub ilosc poprawnych
+	 * odpowiedzi w module
+	 * 
 	 * @return
 	 */
 	protected CountMode getCountMode() {
