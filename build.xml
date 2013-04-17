@@ -221,7 +221,6 @@
       	<pathelement location="test" />
 
       	<pathelement location="${bin.test.dir}" />
-      	<pathelement location="${instrumented.dir}" />
         <path refid="project.class.path" />
       </classpath>
       <batchtest todir="${test.reports.dev_fast.dir}" >
