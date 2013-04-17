@@ -111,13 +111,6 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 
 	@Override
 	public void play() {
-		media.addBitlessDomHandler(new HTML5MediaEventHandler() {
-			
-			@Override
-			public void onEvent(HTML5MediaEvent event) {
-				System.out.println("play");
-			}
-		}, HTML5MediaEvent.getType(HTML5MediaEventsType.play));
 		media.play();
 	}
 
