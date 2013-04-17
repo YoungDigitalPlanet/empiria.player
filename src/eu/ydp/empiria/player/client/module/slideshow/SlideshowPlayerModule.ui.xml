@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.empiria.player.client.components">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.empiria.player.client.components" xmlns:b="urn:import:eu.ydp.gwtutil.client.ui.button">
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
 	<g:FlowPanel ui:field="mainPanel" styleName="{res.QP_SLIDESHOW}">
 		<g:FlowPanel ui:field="titlePanel" styleName="{res.QP_SLIDESHOW_TITLE_PANEL}">
@@ -9,9 +9,9 @@
 		</g:FlowPanel>
 		<g:FlowPanel ui:field="buttonsPanel" styleName="{res.QP_SLIDESHOW_BUTTON_PANEL}">
 			<c:TwoStateButton ui:field="playButton"/>
-			<g:PushButton ui:field="stopButton" styleName="{res.QP_SLIDESHOW_BUTTON_STOP}"/>
-			<g:PushButton ui:field="previousButton" styleName="{res.QP_SLIDESHOW_BUTTON_PREVIOUS}"/>
-			<g:PushButton ui:field="nextButton" styleName="{res.QP_SLIDESHOW_BUTTON_NEXT}"/>
+			<b:CustomPushButton ui:field="stopButton" styleName="{res.QP_SLIDESHOW_BUTTON_STOP}"/>
+			<b:CustomPushButton ui:field="previousButton" styleName="{res.QP_SLIDESHOW_BUTTON_PREVIOUS}"/>
+			<b:CustomPushButton ui:field="nextButton" styleName="{res.QP_SLIDESHOW_BUTTON_NEXT}"/>
 		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder>

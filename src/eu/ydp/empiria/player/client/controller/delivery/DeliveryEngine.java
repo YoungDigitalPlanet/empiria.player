@@ -82,7 +82,6 @@ import eu.ydp.empiria.player.client.module.prompt.PromptModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.shape.ShapeModule;
 import eu.ydp.empiria.player.client.module.simpletext.SimpleTextModule;
-import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -132,7 +131,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private String stateAsync;
 
 	@Inject
-	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, 
+	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket,
 			SessionDataManager sessionDataManager, EventsBus eventsBus, ModuleFactory extensionFactory,
 			ModuleProviderFactory moduleProviderFactory, SingleModuleInstanceProvider singleModuleInstanceProvider,
 			ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater) {
@@ -294,7 +293,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new MathTextModule(), ModuleTagName.MATH_TEXT, false, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getMathModule(), ModuleTagName.MATH_INTERACTION));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.OBJECT, false, true));
-		loadExtension(new SimpleConnectorExtension(new SlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER));
 		loadExtension(new SimpleConnectorExtension(new FlashModule(), ModuleTagName.FLASH));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSimulationModule(), ModuleTagName.SIMULATION_PLAYER));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSourceListModule(), ModuleTagName.SOURCE_LIST));

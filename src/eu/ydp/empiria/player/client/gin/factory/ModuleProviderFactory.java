@@ -20,6 +20,7 @@ import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModule;
+import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 
 @SuppressWarnings("PMD")
@@ -77,6 +78,9 @@ public class ModuleProviderFactory {
 
 	@Inject
 	protected Provider<SimulationModule> simulationModule;
+
+	@Inject
+	protected Provider<SlideshowPlayerModule> slideshowPlayerModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -148,5 +152,9 @@ public class ModuleProviderFactory {
 
 	public Provider<SimulationModule> getSimulationModule() {
 		return simulationModule;
+	}
+
+	public Provider<SlideshowPlayerModule> getSlideshowPlayerModule() {
+		return slideshowPlayerModule;
 	}
 }
