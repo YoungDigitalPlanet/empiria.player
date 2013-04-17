@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.sourcelist;
 
 import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -37,7 +37,7 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 	@Override
 	protected void initModule(Element element) {
 
-		moduleStructure.createFromXml(element.toString(), Optional.<JSONValue> absent());
+		moduleStructure.createFromXml(element.toString(), Optional.<JSONArray> absent());
 		SourceListBean bean = moduleStructure.getBean();
 		presenter.setBean(bean);
 		presenter.setIModule(this);

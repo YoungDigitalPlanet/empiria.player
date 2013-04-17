@@ -12,7 +12,7 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Binder;
@@ -74,6 +74,7 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 		assertNotNull(instance.getNewInstance());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void initModuleTest() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		// given
@@ -81,9 +82,8 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 		String idModule = "moduleId";
 		reflectionsUtils.setValueInObjectOnField(idModule, instance, idModule);
 
-		@SuppressWarnings("unchecked")
-		Optional<JSONValue> state = mock(Optional.class);
-		JSONValue jsonValue = mock(JSONValue.class);
+		Optional<JSONArray> state = mock(Optional.class);
+		JSONArray jsonValue = mock(JSONArray.class);
 		when(state.get()).thenReturn(jsonValue);
 		when(moduleSocket.getStateById(idModule)).thenReturn(state);
 

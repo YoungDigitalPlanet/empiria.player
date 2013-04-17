@@ -87,6 +87,8 @@ import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.json.NativeMethodInvocator;
 import eu.ydp.gwtutil.client.json.NativeMethodInvocatorImpl;
+import eu.ydp.gwtutil.client.json.YJsonProvider;
+import eu.ydp.gwtutil.client.json.js.YJsJsonProvider;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.scheduler.SchedulerImpl;
 import eu.ydp.gwtutil.client.timer.Timer;
@@ -161,6 +163,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(SingleModuleInstanceProvider.class);
 		bind(SessionDataManager.class).in(Singleton.class);
 		bind(SessionTimeUpdater.class).in(Singleton.class);
+		bind(YJsonProvider.class).to(YJsJsonProvider.class).in(Singleton.class);
+
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));

@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
@@ -40,7 +40,7 @@ public abstract class AbstractModuleStructureTestBase<M extends AbstractModuleSt
 	}
 
 	@SuppressWarnings("unchecked")
-	public B createFromXML(String xmlString, Optional<JSONValue> state) {
+	public B createFromXML(String xmlString, Optional<JSONArray> state) {
 		moduleStructure.createFromXml(xmlString, state);
 		return moduleStructure.getBean();
 	}

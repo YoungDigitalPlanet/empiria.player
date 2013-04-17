@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -13,6 +13,7 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
+import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JAXBParserFactory<M>> {
@@ -21,9 +22,10 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 
 	protected Map<String, Element> feedbacks;
 
-	protected Optional<JSONValue> state;
+	protected Optional<JSONArray> state;
+	protected YJsonArray savedStructure;
 
-	public void createFromXml(String xml, Optional<JSONValue> state) {
+	public void createFromXml(String xml, Optional<JSONArray> state) {
 		bean = parse(xml);
 		this.state = state;
 		prepareStructure();
@@ -47,7 +49,7 @@ public abstract class AbstractModuleStructure<M extends ModuleBean, P extends JA
 	/**
 	 * Operates on interaction field ie. for randomize elements, etc.
 	 */
-	protected abstract void prepareStructure();
+	protected abstract JSONArray prepareStructure();
 
 	protected abstract XMLParser getXMLParser();
 

@@ -2,12 +2,15 @@ package eu.ydp.empiria.player.client.module.connection.structure;
 
 import java.util.List;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.ShuffleHelper;
+import eu.ydp.gwtutil.client.json.YJsonArray;
+import eu.ydp.gwtutil.client.json.js.YJsJsonArray;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInteractionBean, ConnectionModuleJAXBParser> {
@@ -18,7 +21,11 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	@Inject
 	private XMLParser xmlParser;
 
-	ShuffleHelper shuffleHelper = new ShuffleHelper();
+	@Inject
+	private ShuffleHelper shuffleHelper;
+
+	@Inject
+	private StructureSaver structureSaver;
 
 	@Override
 	protected ConnectionModuleJAXBParser getParserFactory() {
@@ -26,8 +33,12 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	}
 
 	@Override
-	protected void prepareStructure() {
+	protected JSONArray prepareStructure() {
+
 		randomizeSets();
+		YJsonArray savedStructure = structureSaver.save(bean.getSimpleMatchSets());
+
+		return (JSONArray) ((YJsJsonArray) savedStructure).toJson();
 	}
 
 	private void randomizeSets() {

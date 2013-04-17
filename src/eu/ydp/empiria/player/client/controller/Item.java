@@ -9,8 +9,6 @@ import java.util.Stack;
 import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
@@ -101,7 +99,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
 		this.variablesProcessingModulesInitializer = variablesProcessingModulesInitializer;
-		setState(stateArray);
 
 		Node rootNode = xmlData.getDocument().getElementsByTagName("assessmentItem").item(0);
 		Node itemBodyNode = xmlData.getDocument().getElementsByTagName("itemBody").item(0);
@@ -124,6 +121,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 		itemBodyView = new ItemBodyView(itemBody);
 
+		setState(stateArray);
+
 		itemBodyView.init(itemBody.init((Element) itemBodyNode));
 
 		variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap());
@@ -132,6 +131,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 		scorePanel = new FlowPanel();
 		scorePanel.setStyleName("qp-feedback-hidden");
+
 	}
 
 	/**
@@ -224,15 +224,15 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		}
 
 		@Override
-		public Optional<JSONValue> getStateById(String identifier) {
+		public Optional<JSONArray> getStateById(String identifier) {
 
 			if (state == null) {
 				return Optional.absent();
 			}
-			return Optional.of(state.get(identifier));
+			return Optional.of(state);
 		}
 	};
-	private JSONObject state;
+	private JSONArray state;
 
 	public void close() {
 		itemBody.close();
@@ -372,9 +372,11 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	@Override
 	public void setState(JSONArray newState) {
-		if (newState != null && newState.get(0) != null) {
-			state = newState.get(0).isObject();
-		}
+
+		state = newState;
+
+		itemBody.setState(newState);
+
 	}
 
 	@Override
@@ -383,40 +385,40 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	}
 
 	private native JavaScriptObject createItemSocket(JavaScriptObject itemBodySocket)/*-{
-																						var socket = {};
-																						var instance = this;
-																						socket.reset = function() {
-																						instance.@eu.ydp.empiria.player.client.controller.Item::resetItem()();
-																						}
-																						socket.showAnswers = function() {
-																						instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers()();
-																						}
-																						socket.lock = function() {
-																						instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(true);
-																						}
-																						socket.unlock = function() {
-																						instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(false);
-																						}
-																						socket.checkItem = function(value) {
-																						instance.@eu.ydp.empiria.player.client.controller.Item::checkItem()();
-																						}
-																						socket.continueItem = function(value) {
-																						instance.@eu.ydp.empiria.player.client.controller.Item::continueItem()();
-																						}
-																						socket.getOutcomeVariables = function() {
-																						return instance.@eu.ydp.empiria.player.client.controller.Item::getOutcomeVariablesJsSocket()();
-																						}
-																						socket.getResponseVariables = function() {
-																						return instance.@eu.ydp.empiria.player.client.controller.Item::getResponseVariablesJsSocket()();
-																						}
-																						socket.getItemBodySocket = function() {
-																						return itemBodySocket;
-																						}
-																						socket.handleFlowActivityEvent = function(event) {
-																						instance.@eu.ydp.empiria.player.client.controller.Item::handleFlowActivityEvent(Lcom/google/gwt/core/client/JavaScriptObject;)(event);
-																						}
-																						return socket;
-																						}-*/;
+		var socket = {};
+		var instance = this;
+		socket.reset = function() {
+			instance.@eu.ydp.empiria.player.client.controller.Item::resetItem()();
+		}
+		socket.showAnswers = function() {
+			instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers()();
+		}
+		socket.lock = function() {
+			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(true);
+		}
+		socket.unlock = function() {
+			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(false);
+		}
+		socket.checkItem = function(value) {
+			instance.@eu.ydp.empiria.player.client.controller.Item::checkItem()();
+		}
+		socket.continueItem = function(value) {
+			instance.@eu.ydp.empiria.player.client.controller.Item::continueItem()();
+		}
+		socket.getOutcomeVariables = function() {
+			return instance.@eu.ydp.empiria.player.client.controller.Item::getOutcomeVariablesJsSocket()();
+		}
+		socket.getResponseVariables = function() {
+			return instance.@eu.ydp.empiria.player.client.controller.Item::getResponseVariablesJsSocket()();
+		}
+		socket.getItemBodySocket = function() {
+			return itemBodySocket;
+		}
+		socket.handleFlowActivityEvent = function(event) {
+			instance.@eu.ydp.empiria.player.client.controller.Item::handleFlowActivityEvent(Lcom/google/gwt/core/client/JavaScriptObject;)(event);
+		}
+		return socket;
+	}-*/;
 
 	private JavaScriptObject getOutcomeVariablesJsSocket() {
 		return outcomeManager.getJsSocket();

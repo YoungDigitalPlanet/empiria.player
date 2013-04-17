@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.sourcelist.structure;
 
 import java.util.List;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
@@ -24,10 +25,12 @@ public class SourceListModuleStructure extends AbstractModuleStructure<SourceLis
 	}
 
 	@Override
-	protected void prepareStructure() {
+	protected JSONArray prepareStructure() {
 		if (getBean().isShuffle()) {
 			shuffle();
 		}
+
+		return null;
 	}
 
 	protected void shuffle() {

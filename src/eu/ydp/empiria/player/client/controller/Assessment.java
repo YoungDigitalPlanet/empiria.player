@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
@@ -262,8 +262,8 @@ public class Assessment {
 		}
 
 		@Override
-		public Optional<JSONValue> getStateById(String identifier) {
-			return Optional.of(null);
+		public Optional<JSONArray> getStateById(String identifier) {
+			return Optional.<JSONArray> absent();
 		}
 
 	};

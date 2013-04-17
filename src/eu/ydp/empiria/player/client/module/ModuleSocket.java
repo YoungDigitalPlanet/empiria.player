@@ -24,7 +24,7 @@
 package eu.ydp.empiria.player.client.module;
 
 import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.json.client.JSONArray;
 
 import eu.ydp.empiria.player.client.controller.IItemProperties;
 import eu.ydp.empiria.player.client.module.registry.InlineBodyGeneratorSocketProvider;
@@ -37,6 +37,6 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
  */
 public interface ModuleSocket extends ResponseSocket, StyleSocket, InlineBodyGeneratorSocketProvider, ParenthoodSocket, IItemProperties {
 
-	Optional<JSONValue> getStateById(String identifier);
+	Optional<JSONArray> getStateById(String identifier);
 
 }

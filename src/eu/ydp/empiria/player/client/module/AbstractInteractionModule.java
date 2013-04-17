@@ -7,7 +7,6 @@ import java.util.List;
 import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Node;
@@ -53,7 +52,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 		// responseState
 		// structureState
 
-		Optional<JSONValue> state = getModuleSocket().getStateById(getModuleId());
+		Optional<JSONArray> state = getModuleSocket().getStateById(getModuleId());
 
 		getStructure().createFromXml(getModuleElement().toString(), state);
 		getPresenter().setModuleSocket(getModuleSocket());

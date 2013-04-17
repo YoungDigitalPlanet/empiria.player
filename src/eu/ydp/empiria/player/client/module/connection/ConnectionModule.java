@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.connection;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -90,7 +91,12 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 
 	@Override
 	public JSONArray getState() {
-		// TODO Auto-generated method stub
+		JSONObject jsonObject = new JSONObject();
+
+		jsonObject.put("STATE", super.getState());
+
+		// getStructure().
+		// jsonObject.pu
 		return super.getState();
 	}
 }

@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.json.client.JSONArray;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
 
@@ -33,7 +33,7 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 
 	@Test
 	public void parseBeanTestNotNullCheck() {
-		Optional<JSONValue> state = Mockito.mock(Optional.class);
+		Optional<JSONArray> state = Mockito.mock(Optional.class);
 
 		instance.createFromXml(SourceListJAXBParserMock.XML, state);
 		assertNotNull(instance.getBean());
@@ -41,7 +41,7 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 
 	@Test
 	public void parseBeanTestAttributeCheck() {
-		Optional<JSONValue> state = Mockito.mock(Optional.class);
+		Optional<JSONArray> state = Mockito.mock(Optional.class);
 
 		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE, state);
 		SourceListBean bean = instance.getBean();
@@ -63,7 +63,7 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 
 	@Test
 	public void noShuffleTest() {
-		Optional<JSONValue> state = Mockito.mock(Optional.class);
+		Optional<JSONArray> state = Mockito.mock(Optional.class);
 
 		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE, state);
 		Mockito.verify(instance, times(0)).shuffle();
@@ -71,7 +71,7 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 
 	@Test
 	public void shuffleTest() {
-		Optional<JSONValue> state = Mockito.mock(Optional.class);
+		Optional<JSONArray> state = Mockito.mock(Optional.class);
 
 		instance.createFromXml(SourceListJAXBParserMock.XML_WITH_MORE_ITEMS, state);
 		Mockito.verify(instance, times(1)).shuffle();
