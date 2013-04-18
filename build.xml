@@ -135,6 +135,7 @@
   </target>
 
   <target name="buildnumber" description="Update build number">
+  	<ivy:settings file="ivysettings.xml" />
 	<ivy:buildnumber organisation="eu.ydp" module="empiriaplayer" />
   </target>
 
