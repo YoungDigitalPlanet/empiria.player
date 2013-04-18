@@ -41,8 +41,8 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
 	protected boolean initialized;
 
-	@Inject
-	private MediaWrappersPairFactory pairFactory;
+	@Inject private MediaWrappersPairFactory pairFactory;
+	@Inject private MediaExecutorsStopper mediaExecutorsStopper;
 
 	@Inject private Instance<HTML5MediaExecutorFactory> html5MediaExecutorFactoryProvider;
 	
@@ -73,16 +73,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	}
 	
 	protected void forceStop(MediaWrapper<?> mw) {
-		for (MediaExecutor<?> se : getMediaExecutors().values()) {
-			if (se.getMediaWrapper() != null && se.getMediaWrapper().equals(mw)) {
-				continue;
-			}
-			if (se.getMediaWrapper() != null && se.getMediaWrapper().getMediaAvailableOptions().isPauseSupported()) {
-				se.pause();
-			} else if (se.getMediaWrapper() != null || (se.getMediaWrapper() == null && mw != null)) {
-				se.stop();
-			}
-		}	
+		mediaExecutorsStopper.forceStop(mw, getMediaExecutors().values());
 	}
 	
 

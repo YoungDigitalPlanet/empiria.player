@@ -4,6 +4,7 @@ import static org.mockito.Mockito.withSettings;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoExecutor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutorsStopper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SingleMediaPlayback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaEngine;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnector;
@@ -54,6 +55,7 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToSingletonOrMockInstance(MediaConnectorListener.class, ExternalMediaEngine.class);
 		bindToSingletonOrMockInstance(SingleMediaPlayback.class);
 		bindToSingletonOrMockInstance(DateService.class);
+		bindToSingletonOrMockInstance(MediaExecutorsStopper.class);
 		
 		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
 		bindToClassOrMockProvider(IStickieView.class);
