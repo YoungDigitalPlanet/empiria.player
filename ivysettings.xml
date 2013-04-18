@@ -1,0 +1,19 @@
+<ivysettings>
+	<settings defaultResolver="default"/>
+
+	<include url="http://opensource.ydp.eu/ivyrep/public/ivysettings.xml"/>
+	<include url="http://dev/ivyrep/shared/ivysettings.xml"/>
+	<include url="${ivy.default.settings.dir}/ivysettings-local.xml"/>
+	<include url="${ivy.default.settings.dir}/ivysettings-public.xml"/>
+
+	<resolvers>
+	    <ibiblio name='gwt_query_plugins' m2compatible='true' root='http://gwtquery-plugins.googlecode.com/svn/mavenrepo/' />
+		<chain name="default" returnFirst="true" checkmodified="true">
+			<resolver ref="local"/>
+			<resolver ref="eu.ydp.shared"/>
+			<resolver ref="eu.ydp.public"/>
+			<resolver ref="public"/>
+			<resolver ref="gwt_query_plugins"/>
+		</chain>
+	</resolvers>
+</ivysettings>

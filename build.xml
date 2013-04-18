@@ -39,6 +39,8 @@
   </path>
 
   <target name="resolve" depends="version.file" description="--> retrieve dependencies with ivy">
+  	 <ivy:settings file="ivysettings.xml" />
+  	 <ivy:resolve conf="default" />
   	<ivy:retrieve pattern="${ivylib.dir}/[artifact].[ext]" conf="default, lib, test" />
   </target>
 
