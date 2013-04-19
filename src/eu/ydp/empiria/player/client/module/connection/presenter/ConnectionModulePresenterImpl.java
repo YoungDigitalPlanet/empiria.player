@@ -22,9 +22,13 @@ import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociable
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.gwtutil.client.collections.KeyValue;
+import eu.ydp.gwtutil.client.debug.gwtlogger.ILogger;
+import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
 public class ConnectionModulePresenterImpl implements ConnectionModulePresenter, PairConnectEventHandler {
 
+	ILogger log = new Logger();
+	
 	private MatchInteractionBean bean;
 
 	ConnectionModuleModel model;
@@ -97,74 +101,125 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		DirectedPair pair = getDirectedPair(event);
 
 		switch (event.getType()) {
-		case CONNECTED:
-			if (event.isUserAction()) {
-				boolean isResponseExists = model.checkUserResonseContainsAnswer(pair.toString());
-				if (isConnectionValid(pair) && !isResponseExists) {
-					model.addAnswer(getDirectedPair(event).toString());
-				} else {
-					moduleView.disconnect(event.getSourceItem(), event.getTargetItem());
-				}
-			}
-			break;
-		case DISCONNECTED:
-			if (event.isUserAction() && pair.getSource() != null && pair.getTarget() != null) {
-				model.removeAnswer(getDirectedPair(event).toString());
-			}
-			break;
-		case REPAINT_VIEW:
-			reset();
-			showAnswers(ShowAnswersType.USER);
-			break;
-		case WRONG_CONNECTION:
-		default:
-			/* TODO: to handle incorrect situation */
-			break;
+			case CONNECTED:
+				addAnswerToResponseIfConnectionValidOnUserAction(event, pair);
+				break;
+			case DISCONNECTED:
+				disconnectOnUserAction(event, pair);
+				break;
+			case REPAINT_VIEW:
+				repaintViewFromResponseModel();
+				break;
+			case WRONG_CONNECTION:
+			default:
+				handleWrongConnection();
+				break;
 		}
 	}
 
-	private DirectedPair getDirectedPair(PairConnectEvent event) {
-		DirectedPair pair = new DirectedPair();
+	private void repaintViewFromResponseModel() {
+		reset();
+		showAnswers(ShowAnswersType.USER);
+	}
 
+	private void disconnectOnUserAction(PairConnectEvent event, DirectedPair pair) {
+		if (event.isUserAction() && pair.getSource() != null && pair.getTarget() != null) {
+			model.removeAnswer(pair.toString());
+		}
+	}
+
+	private void addAnswerToResponseIfConnectionValidOnUserAction(PairConnectEvent event, DirectedPair pair) {
+		if (event.isUserAction()) {
+			addAnswerToResponseIfConnectionValid(event, pair);
+		}
+	}
+
+	private void addAnswerToResponseIfConnectionValid(PairConnectEvent event, DirectedPair pair) {
+		boolean isResponseExists = model.checkUserResonseContainsAnswer(pair.toString());
+		if (isConnectionValid(pair) && !isResponseExists) {
+			model.addAnswer(pair.toString());
+		} else {
+			moduleView.disconnect(event.getSourceItem(), event.getTargetItem());
+		}
+	}
+
+	private void handleWrongConnection() {
+		log.warning("ConnectionModulePresenter: wrong connection");
+	}
+	
+	private DirectedPair getDirectedPair(PairConnectEvent event) {
 		String start = event.getSourceItem();
 		String end = event.getTargetItem();
+		
+		return createDirectedPair(start, end);
+	}
 
-		if (bean.getSourceChoicesIdentifiersSet().contains(start)) {
-			pair.setSource(start);
-		} else if (bean.getTargetChoicesIdentifiersSet().contains(start)) {
-			pair.setTarget(start);
-		}
+	private DirectedPair createDirectedPair(String start, String end) {
+		DirectedPair pair = new DirectedPair();
+		List<String> sourceChoicesIdentifiersSet = bean.getSourceChoicesIdentifiersSet();
+		List<String> targetChoicesIdentifiersSet = bean.getTargetChoicesIdentifiersSet();		
 
-		if (bean.getSourceChoicesIdentifiersSet().contains(end)) {
-			pair.setSource(end);
-		} else if (bean.getTargetChoicesIdentifiersSet().contains(end)) {
-			pair.setTarget(end);
-		}
+		setDirectedPairNodeByIdentyfier(pair, start, sourceChoicesIdentifiersSet, targetChoicesIdentifiersSet);
+		setDirectedPairNodeByIdentyfier(pair, end, sourceChoicesIdentifiersSet, targetChoicesIdentifiersSet);
 
 		return pair;
+	}
+	
+	private void setDirectedPairNodeByIdentyfier(DirectedPair pair, String choosenIdentifier, List<String> sourceChoicesIdentifiersSet, List<String> targetChoicesIdentifiersSet) {
+		if (sourceChoicesIdentifiersSet.contains(choosenIdentifier)) {
+			pair.setSource(choosenIdentifier);
+		} else if (targetChoicesIdentifiersSet.contains(choosenIdentifier)) {
+			pair.setTarget(choosenIdentifier);
+		}
 	}
 
 	private boolean isConnectionValid(DirectedPair pair) {
 		int errorsCount = 0;
 
-		if (pair.getSource() == null || pair.getTarget() == null) {
-			// invalid pair
+		if (isPairValid(pair)) { 
 			errorsCount++;
-		} else if (bean.getMaxAssociations() > 0 && model.getCurrentOverallPairingsNumber() >= bean.getMaxAssociations()) {
-			// The maxAssociations attribute controls the maximum number of
-			// pairings the user is allowed to make overall.
+		} else if (isMaxAssociationAchieved()) {
 			errorsCount++;
-		} else if (bean.getChoiceByIdentifier(pair.getSource()).getMatchMax() > 0
-				&& model.getCurrentChoicePairingsNumber(pair.getSource()) >= bean.getChoiceByIdentifier(pair.getSource()).getMatchMax()) {
-			// Individually, each choice has a matchMax attribute that controls
-			// how many pairings it can be part of.
+		} else if (isSourceMatchMaxAchieved(pair)) {
 			errorsCount++;
-		} else if (bean.getChoiceByIdentifier(pair.getTarget()).getMatchMax() > 0
-				&& model.getCurrentChoicePairingsNumber(pair.getTarget()) >= bean.getChoiceByIdentifier(pair.getTarget()).getMatchMax()) {
+		} else if (isTargetMatchMaxAchieved(pair)) {
 			errorsCount++;
 		}
 
 		return errorsCount == 0;
+	}
+
+	private boolean isPairValid(DirectedPair pair) {
+		return pair.getSource() == null || pair.getTarget() == null;
+	}
+
+	/**
+	 * Individually, each choice has a matchMax attribute that controls how many pairings it can be part of.
+	 */
+	private boolean matchMaxCondition(String identifier) {
+		SimpleAssociableChoiceBean beanChoiceIdentifier = bean.getChoiceByIdentifier(identifier);
+		int matchMax = beanChoiceIdentifier.getMatchMax();		
+		int currentChoicePairingsNumber = model.getCurrentChoicePairingsNumber(identifier);		
+		
+		return matchMax > 0 && currentChoicePairingsNumber >= matchMax;
+	}
+
+	private boolean isSourceMatchMaxAchieved(DirectedPair pair) {
+		return matchMaxCondition(pair.getSource());
+	}
+	
+	private boolean isTargetMatchMaxAchieved(DirectedPair pair) {
+		return matchMaxCondition(pair.getTarget());
+	}
+	
+	/**
+	 * The maxAssociations attribute controls the maximum number of pairings the user is allowed to make overall.
+	 */
+	private boolean isMaxAssociationAchieved() {
+		int maxAssociations = bean.getMaxAssociations();
+		int currentOverallPairingsNumber = model.getCurrentOverallPairingsNumber();
+		
+		return maxAssociations > 0 && currentOverallPairingsNumber >= maxAssociations;
 	}
 
 	/**
@@ -188,7 +243,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	 *            - {@link Boolean} mark/unmark
 	 * @param markingType
 	 *            - {@link MultiplePairModuleConnectType#CORRECT} or
-	 *            {@link MultiplePairModuleConnectType#WRONG}
+	 *            	{@link MultiplePairModuleConnectType#WRONG}
 	 */
 	private void setAnswersMarked(boolean markMode, MultiplePairModuleConnectType markingType) {
 		List<Boolean> responseEvaluated = model.evaluateResponse();
@@ -199,18 +254,22 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 			MultiplePairModuleConnectType type = (isCorrect) ? MultiplePairModuleConnectType.CORRECT : MultiplePairModuleConnectType.WRONG;
 			KeyValue<String, String> answersPair = currentAnswers.get(responseCnt);
 			if (markingType.equals(type)) {
-				if (markMode) {
-					moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
-					moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
-					// TODO: jesli dana pozycja nie jest zaznaczona wcale to
-					// wyslac MultiplePairModuleConnectType.NONE ??
-				} else {
-					moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
-					moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL); // TODO:
-																															// NORMAL
-				}
+				connectOrDisconnectByMarkMode(markMode, type, answersPair);
 			}
 			responseCnt++;
+		}
+	}
+
+	private void connectOrDisconnectByMarkMode(boolean markMode, MultiplePairModuleConnectType type,
+			KeyValue<String, String> answersPair) {
+		if (markMode) {
+			moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
+			moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
+			// TODO: jesli dana pozycja nie jest zaznaczona wcale to
+			// wyslac MultiplePairModuleConnectType.NONE ??
+		} else {
+			moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
+			moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL); 
 		}
 	}
 
