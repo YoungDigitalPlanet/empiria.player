@@ -22,15 +22,17 @@ import eu.ydp.empiria.player.client.module.connection.InteractionModuleVersionCo
 import eu.ydp.empiria.player.client.module.conversion.StateToStateAndStructureConverter;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.YJsonObject;
+import eu.ydp.gwtutil.client.json.YJsonValue;
 import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.client.service.json.NativeJSONService;
+import eu.ydp.gwtutil.client.state.StateVersion;
 import eu.ydp.gwtutil.json.YNativeJsonArray;
 import eu.ydp.gwtutil.json.YNativeJsonFactory;
 
-public class StructureControllerTest extends AbstractTestBase {
+public class StateControllerTest extends AbstractTestBase {
 
-	private StructureController testObj;
+	private StateController testObj;
 	@Mock
 	private YJsJsonConverter jsJsonConverter;
 
@@ -39,13 +41,70 @@ public class StructureControllerTest extends AbstractTestBase {
 		MockitoAnnotations.initMocks(this);
 		setUp(InteractionModuleVersionConverter.class, StateToStateAndStructureConverter.class, IJSONService.class);
 		InteractionModuleVersionConverter interactionModuleVersionConverter = injector.getInstance(InteractionModuleVersionConverter.class);
-		testObj = new StructureController(new NativeJSONService(), jsJsonConverter, interactionModuleVersionConverter);
+		testObj = new StateController(new NativeJSONService(), jsJsonConverter, interactionModuleVersionConverter);
 
 	}
 
 	@After
 	public void after() {
 		verifyNoMoreInteractions(jsJsonConverter);
+	}
+
+	@Test
+	public void updateStateAndStructureVersionTest_version0() {
+		// given
+		JSONArray stateAndStructure = mock(JSONArray.class);
+		when(jsJsonConverter.toYJson(stateAndStructure)).thenReturn(YNativeJsonFactory.createArray());
+
+		// when
+		YJsonValue result = testObj.updateStateAndStructureVersion(stateAndStructure);
+
+		// then
+		verify(jsJsonConverter).toYJson(stateAndStructure);
+		assertEquals(1, result.isArray().size());
+		assertNotNull(result.isArray().get(0).isObject().get(StateController.STATE).isArray());
+		assertNotNull(result.isArray().get(0).isObject().get(StateController.STRUCTURE).isArray());
+	}
+
+	@Test
+	public void updateStateAndStructureVersionTest_version1() {
+		// given
+		JSONArray stateAndStructure = mock(JSONArray.class);
+
+		YJsonArray yStateAndStructure = YNativeJsonFactory.createArray();
+		YJsonObject yStateAndStructureObject = YNativeJsonFactory.createObject();
+		yStateAndStructureObject.put(StateVersion.VERSION_FIELD, YNativeJsonFactory.createNumber(1));
+		yStateAndStructureObject.put(StateController.STRUCTURE, YNativeJsonFactory.createArray());
+		yStateAndStructureObject.put(StateController.STATE, YNativeJsonFactory.createArray());
+		yStateAndStructure.set(0, yStateAndStructureObject);
+
+		when(jsJsonConverter.toYJson(stateAndStructure)).thenReturn(yStateAndStructure);
+
+		// when
+		YJsonValue result = testObj.updateStateAndStructureVersion(stateAndStructure);
+
+		// then
+		verify(jsJsonConverter).toYJson(stateAndStructure);
+		assertSame(result, yStateAndStructure);
+	}
+
+	@Test
+	public void getStructureTest() {
+		// given
+		YJsonArray structureAndState = YNativeJsonFactory.createArray();
+		YJsonObject structureObject = YNativeJsonFactory.createObject();
+
+		YJsonArray structureArray = YNativeJsonFactory.createArray();
+		String structureString = "structure";
+		structureArray.set(0, YNativeJsonFactory.createString(structureString));
+		structureObject.put(StateController.STRUCTURE, structureArray);
+		structureAndState.set(0, structureObject);
+
+		// when
+		YJsonArray result = testObj.getStructure(structureAndState);
+
+		// then
+		assertEquals(structureString, result.get(0).isString().stringValue());
 	}
 
 	@Test
@@ -76,7 +135,7 @@ public class StructureControllerTest extends AbstractTestBase {
 		resonseArray.set(0, YNativeJsonFactory.createString("response"));
 		YJsonArray result = YNativeJsonFactory.createArray();
 		YJsonObject object = YNativeJsonFactory.createObject();
-		object.put(StructureController.STATE, resonseArray);
+		object.put(StateController.STATE, resonseArray);
 		result.set(0, object);
 
 		return result;
@@ -191,8 +250,8 @@ public class StructureControllerTest extends AbstractTestBase {
 		inOrder.verify(jsJsonConverter).toJson(argumentCaptor.capture());
 		YJsonArray resultBeforeConvert = argumentCaptor.getValue();
 		assertEquals(1, resultBeforeConvert.size());
-		assertEquals(stateString, resultBeforeConvert.get(0).isObject().get(StructureController.STATE).isArray().get(0).isString().stringValue());
-		assertEquals(structureString, resultBeforeConvert.get(0).isObject().get(StructureController.STRUCTURE).isArray().get(0).isString().stringValue());
+		assertEquals(stateString, resultBeforeConvert.get(0).isObject().get(StateController.STATE).isArray().get(0).isString().stringValue());
+		assertEquals(structureString, resultBeforeConvert.get(0).isObject().get(StateController.STRUCTURE).isArray().get(0).isString().stringValue());
 	}
 
 	private void assertSimpleMatchSetBean(SimpleMatchSetBean simpleMatchSetBean, String prefixId) {

@@ -15,12 +15,10 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
-import eu.ydp.empiria.player.client.module.connection.InteractionModuleVersionConverter;
-import eu.ydp.empiria.player.client.module.connection.structure.StructureController;
+import eu.ydp.empiria.player.client.module.connection.structure.StateController;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.YJsonValue;
-import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
 
 /**
@@ -52,21 +50,12 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	private BooleanUtils booleanUtils;
 
 	@Inject
-	private InteractionModuleVersionConverter interactionModuleVersionConverter;
-
-	@Inject
-	private StructureController structureController;
-
-	@Inject
-	private YJsJsonConverter jsJsonConverter;
+	private StateController stateController;
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 
-		YJsonArray stateAndStructure = getModuleSocket().getStateById(getIdentifier());
-		YJsonValue convertedStateAndStructure = interactionModuleVersionConverter.importState(stateAndStructure);
-
-		YJsonArray structure = structureController.getStructureAndUpdateStateVersion(convertedStateAndStructure);
+		YJsonArray structure = getStructureModuleFromState();
 
 		getStructure().createFromXml(getModuleElement().toString(), structure);
 		getPresenter().setModuleSocket(getModuleSocket());
@@ -76,6 +65,14 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 		applyIdAndClassToView(getView());
 		placeholders.get(0).add(getView());
 
+	}
+
+	private YJsonArray getStructureModuleFromState() {
+		YJsonArray stateAndStructure = getModuleSocket().getStateById(getIdentifier());
+		YJsonValue convertedStateAndStructure = stateController.updateStateAndStructureVersion(stateAndStructure);
+
+		YJsonArray structure = stateController.getStructure(convertedStateAndStructure);
+		return structure;
 	}
 
 	private void initializePresenter() {
@@ -133,17 +130,15 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	public JSONArray getState() {
 		YJsonArray savedStructure = getStructure().getSavedStructure();
 		JSONArray state = getResponseModel().getState();
-		return state;// structureController.getResponseWithStructure(state,
-						// savedStructure);
+		return stateController.getResponseWithStructure(state, savedStructure);
 	}
 
 	@Override
 	public void setState(JSONArray stateAndStructure) {
 
-		YJsonArray yStateAndStructure = jsJsonConverter.toYJson(stateAndStructure);
-		YJsonValue convertedStateAndStructure = interactionModuleVersionConverter.importState(yStateAndStructure);
+		YJsonValue convertedStateAndStructure = stateController.updateStateAndStructureVersion(stateAndStructure);
 
-		JSONArray response = structureController.getResponse(convertedStateAndStructure);
+		JSONArray response = stateController.getResponse(convertedStateAndStructure);
 
 		clearModel();
 		getResponseModel().setState(response);

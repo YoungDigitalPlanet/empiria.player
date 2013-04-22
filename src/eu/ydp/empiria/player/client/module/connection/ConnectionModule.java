@@ -15,13 +15,13 @@ import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModule
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleJAXBParser;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
-import eu.ydp.empiria.player.client.module.connection.structure.StructureController;
+import eu.ydp.empiria.player.client.module.connection.structure.StateController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.gwtutil.client.json.YJsonArray;
+import eu.ydp.gwtutil.client.json.YJsonValue;
 
 public class ConnectionModule extends AbstractInteractionModule<ConnectionModule, ConnectionModuleModel, MatchInteractionBean> {
 
@@ -42,7 +42,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	@Inject
 	private EventsBus eventsBus;
 	@Inject
-	private StructureController structureController;
+	private StateController stateController;
 
 	private ConnectionModuleModel connectionModel;
 
@@ -74,17 +74,14 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	}
 
 	@Override
-	public void setState(JSONArray state) {
+	public void setState(JSONArray stateAndStructure) {
 
 		LOGGER.info("Enter set state function");
 
 		clearModel();
 
-		// ConnectionStateHelper connectionStateHelper = new
-		// ConnectionStateHelper();
-		// connectionStateHelper.importState(inState)
-
-		JSONArray newState = structureController.getResponse(state);
+		YJsonValue convertedStateAndStructure = stateController.updateStateAndStructureVersion(stateAndStructure);
+		JSONArray newState = stateController.getResponse(convertedStateAndStructure);
 
 		getResponseModel().setState(newState);
 
@@ -98,13 +95,5 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 		};
 		eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedEventHandler, new CurrentPageScope());
 		LOGGER.info("Added page content resized event handler");
-	}
-
-	@Override
-	public JSONArray getState() {
-		JSONArray state = super.getState();
-		YJsonArray savedStructure = getStructure().getSavedStructure();
-
-		return structureController.getResponseWithStructure(state, savedStructure);
 	}
 }

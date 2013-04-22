@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client;
 
-//import static org.mockito.Matchers.anyString;
-//import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
@@ -21,24 +19,11 @@ public abstract class AbstractModuleStructureTestBase<M extends AbstractModuleSt
 
 	protected abstract M createModuleStructure();
 
-	// @Before
-	// public void init() {
-	// moduleStructure = spy(createModuleStructure());
-	// P parserFactory = mockParserFactory();
-	// JAXBParser<B> parser = parserFactory.create();
-	// //when(moduleStructure.createParserFactory()).thenReturn(parserFactory);
-	//
-	// doReturn(parserFactory).when(moduleStructure).createParserFactory();
-	//
-	// }
-
 	@Before
 	public void init() {
 		moduleStructure = spy(createModuleStructure());
-		// doNothing().when(moduleStructure).prepareFeedbackNodes(anyString());
 	}
 
-	@SuppressWarnings("unchecked")
 	public B createFromXML(String xmlString, YJsonArray state) {
 		moduleStructure.createFromXml(xmlString, state);
 		return moduleStructure.getBean();

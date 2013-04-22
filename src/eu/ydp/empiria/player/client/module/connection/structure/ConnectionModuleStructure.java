@@ -23,7 +23,7 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	private ShuffleHelper shuffleHelper;
 
 	@Inject
-	private StructureController structureController;
+	private StateController stateController;
 	private YJsonArray savedStructure;
 
 	@Override
@@ -34,14 +34,14 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	@Override
 	protected void prepareStructure(YJsonArray structure) {
 
-		if (structureController.isStructureExist(structure)) {
+		if (stateController.isStructureExist(structure)) {
 			List<SimpleMatchSetBean> simpleMatchSets = bean.getSimpleMatchSets();
-			bean.setSimpleMatchSets(structureController.loadStructure(structure, simpleMatchSets));
+			bean.setSimpleMatchSets(stateController.loadStructure(structure, simpleMatchSets));
 
 		} else {
 			randomizeSets();
 		}
-		savedStructure = structureController.saveStructure(bean.getSimpleMatchSets());
+		savedStructure = stateController.saveStructure(bean.getSimpleMatchSets());
 
 	}
 

@@ -14,7 +14,7 @@ import eu.ydp.gwtutil.client.json.YJsonValue;
 import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
 
-public class StructureController {
+public class StateController {
 
 	private final YJsJsonConverter yJsJsonConverter;
 	private final IJSONService ijsonService;
@@ -24,7 +24,7 @@ public class StructureController {
 	public static final String STATE = "STATE";
 
 	@Inject
-	public StructureController(IJSONService ijsonService, YJsJsonConverter yJsJsonConverter, InteractionModuleVersionConverter interactionModuleVersionConverter) {
+	public StateController(IJSONService ijsonService, YJsJsonConverter yJsJsonConverter, InteractionModuleVersionConverter interactionModuleVersionConverter) {
 		this.ijsonService = ijsonService;
 		this.yJsJsonConverter = yJsJsonConverter;
 		this.interactionModuleVersionConverter = interactionModuleVersionConverter;
@@ -65,7 +65,7 @@ public class StructureController {
 		return simpleMatchSets;
 	}
 
-	public YJsonArray getStructureAndUpdateStateVersion(YJsonValue yState) {
+	public YJsonArray getStructure(YJsonValue yState) {
 		YJsonObject object = yState.isArray().get(0).isObject();
 
 		return object.get(STRUCTURE).isArray();
@@ -122,5 +122,14 @@ public class StructureController {
 		YJsonArray result = ijsonService.createArray();
 		result.set(0, resultObject);
 		return yJsJsonConverter.toJson(result);
+	}
+
+	public YJsonValue updateStateAndStructureVersion(JSONArray stateAndStructure) {
+		YJsonArray yStateAndStructure = yJsJsonConverter.toYJson(stateAndStructure);
+		return updateStateAndStructureVersion(yStateAndStructure);
+	}
+
+	public YJsonValue updateStateAndStructureVersion(YJsonArray yStateAndStructure) {
+		return interactionModuleVersionConverter.importState(yStateAndStructure);
 	}
 }
