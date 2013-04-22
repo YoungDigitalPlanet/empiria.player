@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.selection.structure;
 
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
@@ -8,6 +7,8 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.ShuffleHelper;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.gwtutil.client.json.YJsonArray;
+import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class SelectionModuleStructure extends AbstractModuleStructure<SelectionInteractionBean, SelectionModuleJAXBParser> {
@@ -18,6 +19,8 @@ public class SelectionModuleStructure extends AbstractModuleStructure<SelectionI
 	private XMLParser xmlParser;
 	@Inject
 	private ShuffleHelper shuffleHelper;
+	@Inject
+	private IJSONService ijsonService;
 
 	@Override
 	protected SelectionModuleJAXBParser getParserFactory() {
@@ -25,9 +28,8 @@ public class SelectionModuleStructure extends AbstractModuleStructure<SelectionI
 	}
 
 	@Override
-	protected JSONArray prepareStructure() {
+	protected void prepareStructure(YJsonArray structure) {
 		shuffleHelper.randomize(bean, bean.getItems());
-		return null;
 	}
 
 	@Override
@@ -38,6 +40,11 @@ public class SelectionModuleStructure extends AbstractModuleStructure<SelectionI
 	@Override
 	protected NodeList getParentNodesForFeedbacks(Document xmlDocument) {
 		return xmlDocument.getElementsByTagName(EmpiriaTagConstants.NAME_SIMPLE_CHOICE);
+	}
+
+	@Override
+	public YJsonArray getSavedStructure() {
+		return ijsonService.createArray();
 	}
 
 }

@@ -4,7 +4,6 @@ import static eu.ydp.empiria.player.client.controller.variables.objects.response
 
 import java.util.List;
 
-import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -16,7 +15,12 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
+import eu.ydp.empiria.player.client.module.connection.InteractionModuleVersionConverter;
+import eu.ydp.empiria.player.client.module.connection.structure.StructureController;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
+import eu.ydp.gwtutil.client.json.YJsonArray;
+import eu.ydp.gwtutil.client.json.YJsonValue;
+import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
 
 /**
@@ -47,20 +51,31 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	@Inject
 	private BooleanUtils booleanUtils;
 
+	@Inject
+	private InteractionModuleVersionConverter interactionModuleVersionConverter;
+
+	@Inject
+	private StructureController structureController;
+
+	@Inject
+	private YJsJsonConverter jsJsonConverter;
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		// responseState
-		// structureState
 
-		Optional<JSONArray> state = getModuleSocket().getStateById(getModuleId());
+		YJsonArray stateAndStructure = getModuleSocket().getStateById(getIdentifier());
+		YJsonValue convertedStateAndStructure = interactionModuleVersionConverter.importState(stateAndStructure);
 
-		getStructure().createFromXml(getModuleElement().toString(), state);
+		YJsonArray structure = structureController.getStructureAndUpdateStateVersion(convertedStateAndStructure);
+
+		getStructure().createFromXml(getModuleElement().toString(), structure);
 		getPresenter().setModuleSocket(getModuleSocket());
 
 		initalizeModule();
 		initializePresenter();
 		applyIdAndClassToView(getView());
 		placeholders.get(0).add(getView());
+
 	}
 
 	private void initializePresenter() {
@@ -116,13 +131,22 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 
 	@Override
 	public JSONArray getState() {
-		return getResponseModel().getState();// + getStructure().getState();
+		YJsonArray savedStructure = getStructure().getSavedStructure();
+		JSONArray state = getResponseModel().getState();
+		return state;// structureController.getResponseWithStructure(state,
+						// savedStructure);
 	}
 
 	@Override
-	public void setState(JSONArray newState) {
+	public void setState(JSONArray stateAndStructure) {
+
+		YJsonArray yStateAndStructure = jsJsonConverter.toYJson(stateAndStructure);
+		YJsonValue convertedStateAndStructure = interactionModuleVersionConverter.importState(yStateAndStructure);
+
+		JSONArray response = structureController.getResponse(convertedStateAndStructure);
+
 		clearModel();
-		getResponseModel().setState(newState);
+		getResponseModel().setState(response);
 		presenter.showAnswers(ShowAnswersType.USER);
 		fireStateChanged(false, false);
 	}

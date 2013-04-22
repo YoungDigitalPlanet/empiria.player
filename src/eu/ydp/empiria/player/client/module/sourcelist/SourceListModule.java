@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.sourcelist;
 
-import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -12,6 +10,7 @@ import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
+import eu.ydp.gwtutil.client.service.json.IJSONService;
 
 public class SourceListModule extends SimpleModuleBase implements Factory<SourceListModule> {
 
@@ -23,6 +22,9 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 
 	@Inject
 	private SourceListPresenter presenter;
+
+	@Inject
+	private IJSONService ijsonService;
 
 	@Override
 	public SourceListModule getNewInstance() {
@@ -37,7 +39,7 @@ public class SourceListModule extends SimpleModuleBase implements Factory<Source
 	@Override
 	protected void initModule(Element element) {
 
-		moduleStructure.createFromXml(element.toString(), Optional.<JSONArray> absent());
+		moduleStructure.createFromXml(element.toString(), ijsonService.createArray());
 		SourceListBean bean = moduleStructure.getBean();
 		presenter.setBean(bean);
 		presenter.setIModule(this);

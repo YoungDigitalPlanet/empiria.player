@@ -8,13 +8,12 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
+import eu.ydp.gwtutil.client.json.YJsonArray;
 
 public abstract class AbstractModuleStructureTestBase<M extends AbstractModuleStructure<B, P>, B extends ModuleBean, P extends JAXBParserFactory<B>> {
 
@@ -40,7 +39,7 @@ public abstract class AbstractModuleStructureTestBase<M extends AbstractModuleSt
 	}
 
 	@SuppressWarnings("unchecked")
-	public B createFromXML(String xmlString, Optional<JSONArray> state) {
+	public B createFromXML(String xmlString, YJsonArray state) {
 		moduleStructure.createFromXml(xmlString, state);
 		return moduleStructure.getBean();
 	}

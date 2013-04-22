@@ -2,13 +2,14 @@ package eu.ydp.empiria.player.client.module.sourcelist.structure;
 
 import java.util.List;
 
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.ShuffleHelper;
+import eu.ydp.gwtutil.client.json.YJsonArray;
+import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class SourceListModuleStructure extends AbstractModuleStructure<SourceListBean, SourceListJAXBParser> {
@@ -18,6 +19,8 @@ public class SourceListModuleStructure extends AbstractModuleStructure<SourceLis
 
 	@Inject
 	XMLParser xmlParser;
+	@Inject
+	private IJSONService ijsonService;
 
 	@Override
 	protected SourceListJAXBParser getParserFactory() {
@@ -25,12 +28,10 @@ public class SourceListModuleStructure extends AbstractModuleStructure<SourceLis
 	}
 
 	@Override
-	protected JSONArray prepareStructure() {
+	protected void prepareStructure(YJsonArray structure) {
 		if (getBean().isShuffle()) {
 			shuffle();
 		}
-
-		return null;
 	}
 
 	protected void shuffle() {
@@ -47,6 +48,11 @@ public class SourceListModuleStructure extends AbstractModuleStructure<SourceLis
 	@Override
 	protected XMLParser getXMLParser() {
 		return xmlParser;
+	}
+
+	@Override
+	public YJsonArray getSavedStructure() {
+		return ijsonService.createArray();
 	}
 
 }

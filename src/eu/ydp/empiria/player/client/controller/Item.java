@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
@@ -55,6 +55,9 @@ import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
+import eu.ydp.gwtutil.client.json.YJsonArray;
+import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
+import eu.ydp.gwtutil.client.json.js.YJsJsonFactory;
 
 public class Item implements IStateful, ItemInterferenceSocket {
 
@@ -80,6 +83,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	private final VariableProcessingAdapter variableProcessor;
 	private final VariablesProcessingModulesInitializer variablesProcessingModulesInitializer;
+	private final YJsJsonConverter yJsJsonConverter;
+	private JSONArray state;
 
 	@Inject
 	public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
@@ -87,10 +92,11 @@ public class Item implements IStateful, ItemInterferenceSocket {
 			@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory, @Assisted JSONArray stateArray,
 			ModuleFeedbackProcessor moduleFeedbackProcessor, OutcomeVariablesInitializer outcomeVariablesInitializer,
 			FlowActivityVariablesProcessor flowActivityVariablesProcessor, VariableProcessingAdapter variableProcessingAdapter,
-			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer) {
+			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter) {
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
+		this.yJsJsonConverter = yJsJsonConverter;
 		xmlData = data;
 
 		styleSocket = ss;
@@ -224,15 +230,16 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		}
 
 		@Override
-		public Optional<JSONArray> getStateById(String identifier) {
-
-			if (state == null) {
-				return Optional.absent();
+		public YJsonArray getStateById(String id) {
+			JSONValue object = state.get(0);
+			if (object != null) {
+				JSONValue stateValue = object.isObject().get(id);
+				JSONArray stateArray = stateValue.isArray();
+				return yJsJsonConverter.toYJson(stateArray);
 			}
-			return Optional.of(state);
+			return YJsJsonFactory.createArray();
 		}
 	};
-	private JSONArray state;
 
 	public void close() {
 		itemBody.close();
@@ -372,11 +379,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	@Override
 	public void setState(JSONArray newState) {
-
 		state = newState;
-
 		itemBody.setState(newState);
-
 	}
 
 	@Override

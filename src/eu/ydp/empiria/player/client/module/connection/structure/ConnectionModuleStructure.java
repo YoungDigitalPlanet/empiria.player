@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.connection.structure;
 
 import java.util.List;
 
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
@@ -10,7 +9,6 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.ShuffleHelper;
 import eu.ydp.gwtutil.client.json.YJsonArray;
-import eu.ydp.gwtutil.client.json.js.YJsJsonArray;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInteractionBean, ConnectionModuleJAXBParser> {
@@ -25,7 +23,8 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	private ShuffleHelper shuffleHelper;
 
 	@Inject
-	private StructureSaver structureSaver;
+	private StructureController structureController;
+	private YJsonArray savedStructure;
 
 	@Override
 	protected ConnectionModuleJAXBParser getParserFactory() {
@@ -33,12 +32,17 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	}
 
 	@Override
-	protected JSONArray prepareStructure() {
+	protected void prepareStructure(YJsonArray structure) {
 
-		randomizeSets();
-		YJsonArray savedStructure = structureSaver.save(bean.getSimpleMatchSets());
+		if (structureController.isStructureExist(structure)) {
+			List<SimpleMatchSetBean> simpleMatchSets = bean.getSimpleMatchSets();
+			bean.setSimpleMatchSets(structureController.loadStructure(structure, simpleMatchSets));
 
-		return (JSONArray) ((YJsJsonArray) savedStructure).toJson();
+		} else {
+			randomizeSets();
+		}
+		savedStructure = structureController.saveStructure(bean.getSimpleMatchSets());
+
 	}
 
 	private void randomizeSets() {
@@ -61,6 +65,11 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	@Override
 	protected NodeList getParentNodesForFeedbacks(Document xmlDocument) {
 		return null;
+	}
+
+	@Override
+	public YJsonArray getSavedStructure() {
+		return savedStructure;
 	}
 
 }

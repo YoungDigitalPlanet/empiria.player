@@ -11,8 +11,6 @@ import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 
-import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Binder;
@@ -27,6 +25,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBPa
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
+import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 @SuppressWarnings("PMD")
@@ -82,10 +81,9 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 		String idModule = "moduleId";
 		reflectionsUtils.setValueInObjectOnField(idModule, instance, idModule);
 
-		Optional<JSONArray> state = mock(Optional.class);
-		JSONArray jsonValue = mock(JSONArray.class);
-		when(state.get()).thenReturn(jsonValue);
-		when(moduleSocket.getStateById(idModule)).thenReturn(state);
+		YJsonArray state = Mockito.mock(YJsonArray.class);
+
+		when(moduleSocket.getStateById(anyString())).thenReturn(state);
 
 		Element documentElement = XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement();
 		// when
@@ -93,7 +91,7 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 		// then
 		InOrder inOrder = inOrder(sourceListModuleStructure, presenter);
 
-		inOrder.verify(sourceListModuleStructure).createFromXml(anyString(), any(Optional.class));
+		inOrder.verify(sourceListModuleStructure).createFromXml(anyString(), any(YJsonArray.class));
 		inOrder.verify(sourceListModuleStructure).getBean();
 		inOrder.verify(presenter).setBean(Mockito.any(SourceListBean.class));
 		inOrder.verify(presenter).createAndBindUi();

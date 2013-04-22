@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.connection;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -16,11 +15,13 @@ import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModule
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleJAXBParser;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
+import eu.ydp.empiria.player.client.module.connection.structure.StructureController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.gwtutil.client.json.YJsonArray;
 
 public class ConnectionModule extends AbstractInteractionModule<ConnectionModule, ConnectionModuleModel, MatchInteractionBean> {
 
@@ -40,6 +41,8 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 
 	@Inject
 	private EventsBus eventsBus;
+	@Inject
+	private StructureController structureController;
 
 	private ConnectionModuleModel connectionModel;
 
@@ -71,10 +74,18 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	}
 
 	@Override
-	public void setState(JSONArray newState) {
+	public void setState(JSONArray state) {
+
 		LOGGER.info("Enter set state function");
 
 		clearModel();
+
+		// ConnectionStateHelper connectionStateHelper = new
+		// ConnectionStateHelper();
+		// connectionStateHelper.importState(inState)
+
+		JSONArray newState = structureController.getResponse(state);
+
 		getResponseModel().setState(newState);
 
 		PlayerEventHandler pageContentResizedEventHandler = new PlayerEventHandler() {
@@ -91,12 +102,9 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 
 	@Override
 	public JSONArray getState() {
-		JSONObject jsonObject = new JSONObject();
+		JSONArray state = super.getState();
+		YJsonArray savedStructure = getStructure().getSavedStructure();
 
-		jsonObject.put("STATE", super.getState());
-
-		// getStructure().
-		// jsonObject.pu
-		return super.getState();
+		return structureController.getResponseWithStructure(state, savedStructure);
 	}
 }

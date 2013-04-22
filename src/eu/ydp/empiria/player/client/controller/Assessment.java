@@ -29,8 +29,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import com.google.common.base.Optional;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
@@ -58,6 +56,8 @@ import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentBodyView;
+import eu.ydp.gwtutil.client.json.YJsonArray;
+import eu.ydp.gwtutil.client.json.js.YJsJsonFactory;
 
 public class Assessment {
 
@@ -262,8 +262,8 @@ public class Assessment {
 		}
 
 		@Override
-		public Optional<JSONArray> getStateById(String identifier) {
-			return Optional.<JSONArray> absent();
+		public YJsonArray getStateById(String id) {
+			return YJsJsonFactory.createArray();
 		}
 
 	};
