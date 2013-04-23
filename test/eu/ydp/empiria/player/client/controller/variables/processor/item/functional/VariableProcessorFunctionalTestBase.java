@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,10 +25,10 @@ import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMod
 import eu.ydp.empiria.player.client.controller.variables.processor.item.OutcomeVariablesInitializer;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import static org.junit.Assert.assertEquals;
 
 public class VariableProcessorFunctionalTestBase {
 
@@ -35,9 +37,8 @@ public class VariableProcessorFunctionalTestBase {
 	protected VariablesProcessingInitializingWrapper defaultVariableProcessor;
 	protected ProcessingMode processingMode;
 
-	private OutcomeVariablesInitializer outcomeVariablesInitializer = new OutcomeVariablesInitializer();
-	
-	
+	private final OutcomeVariablesInitializer outcomeVariablesInitializer = new OutcomeVariablesInitializer();
+
 	@Before
 	public void setUp() {
 		Injector injector = Guice.createInjector(new AbstractModule() {
@@ -45,7 +46,7 @@ public class VariableProcessorFunctionalTestBase {
 			protected void configure() {
 				bind(ModulesVariablesProcessor.class).annotatedWith(PageScoped.class).to(ModulesVariablesProcessor.class).in(Singleton.class);
 				bind(GroupedAnswersManager.class).annotatedWith(PageScoped.class).to(GroupedAnswersManager.class).in(Singleton.class);
-				
+				bind(ModulesProcessingResults.class).annotatedWith(PageScoped.class).to(ModulesProcessingResults.class).in(Singleton.class);
 				install(new FactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
 			}
 		});
@@ -54,7 +55,7 @@ public class VariableProcessorFunctionalTestBase {
 
 		processingMode = ProcessingMode.USER_INTERACT;
 	}
-	
+
 	protected void resetLastChangeRelatedVariables(Map<String, Outcome> outcomes) {
 		for (String outcomeId : outcomes.keySet()) {
 			Outcome outcome = outcomes.get(outcomeId);
@@ -78,25 +79,26 @@ public class VariableProcessorFunctionalTestBase {
 
 	protected Map<String, Outcome> copyOutcomesMap(Map<String, Outcome> outcomes) {
 		Map<String, Outcome> copyOfMap = new HashMap<String, Outcome>();
-		
+
 		for (String key : outcomes.keySet()) {
 			Outcome currentOutcome = outcomes.get(key);
 			Outcome copyOfOutcome = copyOutcome(currentOutcome);
 			copyOfMap.put(key, copyOfOutcome);
 		}
-		
+
 		return copyOfMap;
 	}
 
-	protected void assertResponseRelatedOutcomesHaveValue(Response response, List<String> expectedValues, List<VariableName> responseIdentifiers, Map<String, Outcome> outcomes) {
+	protected void assertResponseRelatedOutcomesHaveValue(Response response, List<String> expectedValues, List<VariableName> responseIdentifiers,
+			Map<String, Outcome> outcomes) {
 		assertOutcomesHaveValue(expectedValues, buildIdenfitiers(response.getID(), responseIdentifiers), outcomes);
 	}
 
 	protected void assertGlobalOutcomesHaveValue(List<String> expectedValues, List<VariableName> responseIdentifiers, Map<String, Outcome> outcomes) {
-		
+
 		assertOutcomesHaveValue(expectedValues, convertToString(responseIdentifiers), outcomes);
 	}
-	
+
 	private List<String> convertToString(List<VariableName> responseIdentifiers) {
 		List<String> converted = Lists.newArrayList();
 		for (VariableName variablesNames : responseIdentifiers) {
@@ -130,7 +132,6 @@ public class VariableProcessorFunctionalTestBase {
 		assertEquals(expectedOutcome.identifier, actualOutcome.identifier);
 		assertEquals(expectedOutcome.values, actualOutcome.values);
 	}
-
 
 	private Outcome copyOutcome(Outcome currentOutcome) {
 		Outcome copyOfOutcome = new Outcome();
