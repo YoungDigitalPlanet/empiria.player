@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMod
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
 public class ModulesVariablesProcessor {
 
@@ -21,21 +22,18 @@ public class ModulesVariablesProcessor {
 	private final ResponseVariablesProcessor responseVariablesProcessor;
 
 	@Inject
-	public ModulesVariablesProcessor(
-			ResponseChangesFinder responseChangesFinder, 
-			ModulesConstantVariablesInitializer constantVariablesInitializer,
-			ResponseVariablesProcessor responseVariablesProcessor,
-			ModulesProcessingResults processingResults) {
+	public ModulesVariablesProcessor(ResponseChangesFinder responseChangesFinder, ModulesConstantVariablesInitializer constantVariablesInitializer,
+			ResponseVariablesProcessor responseVariablesProcessor, @PageScoped ModulesProcessingResults processingResults) {
 		this.responseChangesFinder = responseChangesFinder;
 		this.constantVariablesInitializer = constantVariablesInitializer;
 		this.responseVariablesProcessor = responseVariablesProcessor;
 		this.processingResults = processingResults;
 	}
 
-	public void initialize(Map<String, Response> responses){
+	public void initialize(Map<String, Response> responses) {
 		constantVariablesInitializer.initializeTodoVariables(responses, processingResults);
 	}
-	
+
 	public ModulesProcessingResults processVariablesForResponses(Map<String, Response> responses, ProcessingMode processingMode) {
 		List<DtoProcessedResponse> processedResponses = responseChangesFinder.findChangesOfAnswers(processingResults, responses);
 		processVariablesForResponses(processedResponses, processingMode);
@@ -49,7 +47,7 @@ public class ModulesVariablesProcessor {
 	}
 
 	private void processVariablesForResponse(ProcessingMode processingMode, DtoProcessedResponse processedResponse) {
-		if(processedResponse.containChanges())
+		if (processedResponse.containChanges())
 			responseVariablesProcessor.processChangedResponse(processedResponse, processingMode);
 		else
 			resetVariablesOfLastInteraction(processedResponse);

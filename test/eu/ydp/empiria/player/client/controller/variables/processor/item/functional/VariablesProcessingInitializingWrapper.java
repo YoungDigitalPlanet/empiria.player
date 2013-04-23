@@ -13,29 +13,28 @@ import eu.ydp.empiria.player.client.controller.variables.processor.VariablesProc
 
 public class VariablesProcessingInitializingWrapper {
 
-	private VariableProcessingAdapter variableProcessingAdapter;
-	private VariablesProcessingModulesInitializer variablesProcessingModulesInitializer;
+	private final VariableProcessingAdapter variableProcessingAdapter;
+	private final VariablesProcessingModulesInitializer variablesProcessingModulesInitializer;
 	private boolean isInitialized = false;
-	
+
 	@Inject
-	public VariablesProcessingInitializingWrapper(
-			VariableProcessingAdapter variableProcessingAdapter,
+	public VariablesProcessingInitializingWrapper(VariableProcessingAdapter variableProcessingAdapter,
 			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer) {
 		this.variableProcessingAdapter = variableProcessingAdapter;
 		this.variablesProcessingModulesInitializer = variablesProcessingModulesInitializer;
 	}
 
-	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, ProcessingMode processingMode){
-		if(!isInitialized){
-			variablesProcessingModulesInitializer.initializeVariableProcessingModules(responses);
+	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, ProcessingMode processingMode) {
+		if (!isInitialized) {
+			variablesProcessingModulesInitializer.initializeVariableProcessingModules(responses, outcomes);
 			isInitialized = true;
 		}
-		
+
 		variableProcessingAdapter.processResponseVariables(responses, outcomes, processingMode);
 	}
 
 	public List<Boolean> evaluateAnswer(Response response) {
 		return variableProcessingAdapter.evaluateAnswer(response);
 	}
-	
+
 }

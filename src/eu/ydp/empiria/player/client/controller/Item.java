@@ -131,7 +131,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 		itemBodyView.init(itemBody.init((Element) itemBodyNode));
 
-		variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap());
+		variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
 
 		title = ((Element) rootNode).getAttribute("title");
 
