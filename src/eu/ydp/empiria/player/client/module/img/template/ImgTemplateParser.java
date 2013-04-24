@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.img.template;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_MODE;
-
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +26,7 @@ import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButon;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_MODE;
 
 public class ImgTemplateParser extends AbstractTemplateParser {
 	protected final static Set<String> CONTROLLERS = new HashSet<String>();

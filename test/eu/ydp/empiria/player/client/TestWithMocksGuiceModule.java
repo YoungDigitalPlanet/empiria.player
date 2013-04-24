@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client;
 
-import static org.mockito.Mockito.withSettings;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoExecutor;
@@ -11,11 +12,15 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnectorListener;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieFactory;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.CenterPositionFinder;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.RangeCreator;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.ViewportHelper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.WidgetSizeHelper;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
 import eu.ydp.empiria.player.client.module.media.external.FullscreenVideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoImpl;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -29,6 +34,7 @@ import eu.ydp.gwtutil.client.timer.Timer;
 import eu.ydp.gwtutil.client.timer.TimerAccessibleMock;
 import eu.ydp.gwtutil.test.AbstractMockingTestModule;
 import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
+import static org.mockito.Mockito.withSettings;
 
 public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 
@@ -70,6 +76,11 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToClassOrMockProvider(ExternalFullscreenVideoImpl.class);
 		bindToClassOrMockProvider(Scheduler.class, SchedulerMockImpl.class);
 		bindToClassOrMockProvider(Timer.class, TimerAccessibleMock.class);
+		
+		install(new FactoryModuleBuilder()
+			.implement(IStickieView.class, StickieView.class)
+			.implement(IStickiePresenter.class, StickiePresenter.class)
+			.build(StickieFactory.class));
 	}
 
 }

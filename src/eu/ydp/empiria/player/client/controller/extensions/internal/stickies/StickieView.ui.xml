@@ -14,7 +14,7 @@
 			opacity: 0.2;
 		}
 	</ui:style>
-	<g:FlowPanel stylePrimaryName="{res.QP_STICKIE} {style.outer}">
+	<g:FlowPanel stylePrimaryName="{res.QP_STICKIE} {style.outer}" ui:field="rootStickiePanel">
 		<g:FocusPanel stylePrimaryName="{res.QP_STICKIE_CONTAINER_OUTER}" ui:field="containerPanel">
 			<g:FlowPanel styleName="{res.QP_STICKIE_CONTAINER_MID}">
 				<g:FlowPanel styleName="{res.QP_STICKIE_CONTAINER_INNER}">

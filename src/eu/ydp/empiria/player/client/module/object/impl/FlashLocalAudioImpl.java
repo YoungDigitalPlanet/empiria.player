@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.media.client.MediaBase;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.gwtutil.client.PathUtil;
 
 public class FlashLocalAudioImpl extends FlashLocalMediaImpl implements Audio {
 

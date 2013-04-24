@@ -3,12 +3,6 @@ package eu.ydp.empiria.player.client.module.containers;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
-
-import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
 
 public class HtmlContainerModule extends SimpleContainerModuleBase<HtmlContainerModule> {
 

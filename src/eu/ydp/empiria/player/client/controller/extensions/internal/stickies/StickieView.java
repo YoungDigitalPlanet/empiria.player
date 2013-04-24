@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.stickies;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,14 +12,6 @@ import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.TouchEndEvent;
-import com.google.gwt.event.dom.client.TouchEndHandler;
-import com.google.gwt.event.dom.client.TouchMoveEvent;
-import com.google.gwt.event.dom.client.TouchMoveHandler;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -28,214 +20,183 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.StickieViewPositionFinder;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.StickieViewPositionFinder.Axis;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.controller.StickieDragHandlersManager;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.WidgetSizeHelper;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.ContainerDimensions;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.scroll.WindowToStickieScroller;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.animation.TransitionEndEvent;
+import eu.ydp.empiria.player.client.util.events.animation.TransitionEndHandler;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.geom.Point;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
-
-
 
 public class StickieView extends Composite implements IStickieView {
 
+	private static final int OUT_OF_SCREEN_COORDINATE = -2000;
 	private static StickieViewUiBinder uiBinder = GWT.create(StickieViewUiBinder.class);
+	private static boolean firstFocusDone = false;
 
-	interface StickieViewUiBinder extends UiBinder<Widget, StickieView> { }
-	
-	@Inject IPlayerContainersAccessor accessor;
-	@Inject StyleNameConstants styleNames;
-	@Inject EventsBus eventsBus;
-	
-	@Inject StickieViewPositionFinder positionFinder;
-	
-	HandlerRegistration preventHandlerRegistration;
-		
+	interface StickieViewUiBinder extends UiBinder<Widget, StickieView> {
+	}
 
-	public StickieView() {
+	private final Widget parent;
+	private final boolean android;
+	private final StyleNameConstants styleNames;
+	private final EventsBus eventsBus;
+	private final StickieDragHandlersManager stickieDragHandlersManager;
+	private final WidgetSizeHelper widgetSizeHelper;
+	private final WindowToStickieScroller windowToStickieScroller;
+
+	private HandlerRegistration preventHandlerRegistration;
+	private final IStickiePresenter presenter;
+
+	private boolean takeOverKeyInput;
+	private boolean firstKeyInputAfterClick;
+
+	@Inject
+	public StickieView(@Assisted HasWidgets parent, @Assisted IStickiePresenter presenter, @Assisted StickieDragHandlersManager stickieDragHandlersManager,
+			StyleNameConstants styleNameConstants, EventsBus eventsBus, WidgetSizeHelper widgetSizeHelper, WindowToStickieScroller windowToStickieScroller) {
+		this.presenter = presenter;
+		this.stickieDragHandlersManager = stickieDragHandlersManager;
+		this.styleNames = styleNameConstants;
+		this.eventsBus = eventsBus;
+		this.widgetSizeHelper = widgetSizeHelper;
+		this.windowToStickieScroller = windowToStickieScroller;
+		this.android = UserAgentChecker.isStackAndroidBrowser();
+		this.parent = (Widget) parent;
+
+		initializeStickie(parent);
+	}
+
+	private void initializeStickie(HasWidgets parent) {
 		initWidget(uiBinder.createAndBindUi(this));
-		setPositionRaw(-2000, -2000);
-		
-		contentText.addClickHandler(new ClickHandler() {
+		setPosition(OUT_OF_SCREEN_COORDINATE, OUT_OF_SCREEN_COORDINATE);
+		addContentTextClickHandler();
+		addTransitionEndHandler();
+		parent.add(this);
+	}
+
+	private void addTransitionEndHandler() {
+		rootStickiePanel.addDomHandler(new TransitionEndHandler() {
 			
 			@Override
+			public void onTransitionEnd(TransitionEndEvent event) {
+				presenter.correctStickiePosition();
+			}
+		}, TransitionEndEvent.getType());
+	}
+
+	private void addContentTextClickHandler() {
+		contentText.addClickHandler(new ClickHandler() {
+
+			@Override
 			public void onClick(ClickEvent event) {
-				if (android  &&  firstKeyInputAfterClick  &&  contentText.getCursorPos() != 0){
+				if (android && firstKeyInputAfterClick && contentText.getCursorPos() != 0) {
 					firstKeyInputAfterClick = false;
 				}
 			}
-		});	
-		
-		android = UserAgentChecker.isStackAndroidBrowser();
-	}	
-	
-	@UiField TextArea contentText;
-	@UiField PushButton deleteButton;
-	@UiField PushButton minimizeButton;	
-	@UiField FocusPanel headerPanel;
-	@UiField InlineHTML contentLabel;
-	@UiField FlowPanel textPanel;
-	@UiField FocusPanel labelPanel;
+		});
+	}
 
-	private IPresenter presenter;
+	@UiField
+	FlowPanel rootStickiePanel;
+	@UiField
+	TextArea contentText;
+	@UiField
+	PushButton deleteButton;
+	@UiField
+	PushButton minimizeButton;
+	@UiField
+	FocusPanel headerPanel;
+	@UiField
+	InlineHTML contentLabel;
+	@UiField
+	FlowPanel textPanel;
+	@UiField
+	FocusPanel labelPanel;
 
-	private Widget parent;
-	
-	private boolean dragging = false;
-	private Point<Integer> dragInitMousePosition;
-	private Point<Integer> dragInitViewPosition;
-	private Point<Integer> position;
-	HandlerRegistration upHandlerReg;
-	private boolean takeOverKeyInput;
-	private boolean firstKeyInputAfterClick;
-	boolean android;
-	static boolean firstFocusDone = false;
-		
-		
 	@UiHandler("minimizeButton")
-	public void minimizeHandler(ClickEvent event){		
-		presenter.stickieMinimize();
+	public void minimizeHandler(ClickEvent event) {
+		presenter.negateStickieMinimize();
 	}
-	
+
 	@UiHandler("deleteButton")
-	public void deleteHandler(ClickEvent event){
-		presenter.stickieDelete();
+	public void deleteHandler(ClickEvent event) {
+		presenter.deleteStickie();
 	}
-	
+
 	@UiHandler("headerPanel")
-	public void mouseDownHandler(MouseDownEvent event){
-		dragStart(event.getScreenX(), event.getScreenY());
+	public void mouseDownHandler(MouseDownEvent event) {
 		setEditing(false);
-		
-		final HandlerRegistration moveHandlerReg = ((Widget)accessor.getPlayerContainer()).addDomHandler(new MouseMoveHandler() {
-			
-			@Override
-			public void onMouseMove(MouseMoveEvent event) {
-				dragMove(event.getScreenX(), event.getScreenY());
-				event.preventDefault();
-			}
-		}, MouseMoveEvent.getType());
-
-		upHandlerReg = ((Widget)accessor.getPlayerContainer()).addDomHandler(new MouseUpHandler() {
-
-			@Override
-			public void onMouseUp(MouseUpEvent event) {
-				dragEnd();
-				moveHandlerReg.removeHandler();
-				upHandlerReg.removeHandler();
-			}
-			
-		}, MouseUpEvent.getType());
-		
-		event.preventDefault();
+		stickieDragHandlersManager.mouseDown(event);
 	}
 
 	@UiHandler("contentText")
-	public void contentTextTouchStartHandler(TouchStartEvent event){
+	public void contentTextTouchStartHandler(TouchStartEvent event) {
 		event.stopPropagation();
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
 	}
 
 	@UiHandler("containerPanel")
-	public void containerPanelTouchStartHandler(TouchStartEvent event){
+	public void containerPanelTouchStartHandler(TouchStartEvent event) {
 		setEditing(false);
-		dragStart(event.getTouches().get(0).getScreenX(), event.getTouches().get(0).getScreenY());
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
-		
-		final HandlerRegistration moveHandlerReg = RootPanel.get().addDomHandler(new TouchMoveHandler() {
-			
-			@Override
-			public void onTouchMove(TouchMoveEvent event) {
-				dragMove(event.getTouches().get(0).getScreenX(), event.getTouches().get(0).getScreenY());
-				event.preventDefault();
-			}
-		}, TouchMoveEvent.getType());
-		
-		upHandlerReg = RootPanel.get().addDomHandler(new TouchEndHandler() {
-			
-			@Override
-			public void onTouchEnd(TouchEndEvent event) {
-				dragEnd();
-				moveHandlerReg.removeHandler();
-				upHandlerReg.removeHandler();
-			}
-		}, TouchEndEvent.getType());
-	}
-	
-	void dragStart(int x, int y){
-		dragInitMousePosition = new Point<Integer>(x, y);
-		dragInitViewPosition = position;
-		dragging = true;
-	}
-		
-	void dragMove(int x, int y){
-		if (dragging){
-			int newLeft = (int)(dragInitViewPosition.getX() + x - dragInitMousePosition.getX());
-			int newTop = (int)(dragInitViewPosition.getY() + y - dragInitMousePosition.getY());
-			setPosition(newLeft, newTop);
-		}
-	}
-	
-	void dragEnd(){
-		dragging = false;
+		stickieDragHandlersManager.touchStart(event);
 	}
 
 	@UiHandler("labelPanel")
-	public void contentLabelClickHandler(ClickEvent event){
+	public void contentLabelClickHandler(ClickEvent event) {
 		setEditing(true);
 	}
 
 	@UiHandler("contentText")
-	public void contentTextBlurHandler(BlurEvent event){		
+	public void contentTextBlurHandler(BlurEvent event) {
 		setEditing(false);
 		updateContentLabel();
-		presenter.stickieChange();	
-		removePreventHandlerRegistration();	
+		presenter.changeContentText(contentText.getText());
+		removePreventHandlerRegistration();
 	}
-	
+
 	@UiHandler("contentText")
-	public void contentFocusInHandler(FocusEvent event){		
-		
-		preventHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {			
+	public void contentFocusInHandler(FocusEvent event) {
+
+		preventHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
 			@Override
-			public void onPreviewNativeEvent(NativePreviewEvent event) {				
+			public void onPreviewNativeEvent(NativePreviewEvent event) {
 				Event nativeEvent = Event.as(event.getNativeEvent());
-				EventTarget target = nativeEvent.getEventTarget();				
-				if (Element.is(target) && nativeEvent.getType().equals("mousedown") && (!getElement().isOrHasChild(Element.as(target)))) {							
+				EventTarget target = nativeEvent.getEventTarget();
+				if (Element.is(target) && nativeEvent.getType()
+						.equals("mousedown") && (!getElement().isOrHasChild(Element.as(target)))) {
 					contentTextBlurHandler(null);
 					minimizeHandler(null);
-				}								
+				}
 			}
 		});
-		
-		
-	}
-	
 
-	@UiHandler("contentText")
-	public void contentTextKeyDownHandler(KeyDownEvent event){
-		takeOverKeyInput = ( android  &&  firstKeyInputAfterClick  &&  contentText.getCursorPos() == 0 );
 	}
 
 	@UiHandler("contentText")
-	public void contentTextKeyPressHandler(KeyPressEvent event){
-		if (takeOverKeyInput){
-			if (firstFocusDone){
+	public void contentTextKeyDownHandler(KeyDownEvent event) {
+		takeOverKeyInput = (android && firstKeyInputAfterClick && contentText.getCursorPos() == 0);
+	}
+
+	@UiHandler("contentText")
+	public void contentTextKeyPressHandler(KeyPressEvent event) {
+		if (takeOverKeyInput) {
+			if (firstFocusDone) {
 				contentText.setText(contentText.getText() + event.getCharCode());
 				event.preventDefault();
 				takeOverKeyInput = false;
@@ -243,45 +204,35 @@ public class StickieView extends Composite implements IStickieView {
 			} else {
 				firstFocusDone = true;
 			}
-		} 
+		}
 	}
-	
+
 	private void updateContentLabel() {
-		contentLabel.setHTML(contentText.getText().replace("\n", "<br/>"));
-		
+		String currentContentText = contentText.getText();
+		String newContentText = currentContentText.replace("\n", "<br/>");
+		contentLabel.setHTML(newContentText);
 	}
 
 	private void setEditing(boolean edit) {
-		if (edit == labelPanel.isVisible()){
-			if (edit){
-				if (!contentText.isAttached()){
+		if (edit == labelPanel.isVisible()) {
+			if (edit) {
+				if (!contentText.isAttached()) {
 					textPanel.add(contentText);
 				}
 				contentText.setVisible(true);
 				contentText.setFocus(true);
-				if (!android){
-					contentText.setSelectionRange(contentText.getText().length(), 0);
+				if (!android) {
+					contentText.setSelectionRange(contentText.getText()
+							.length(), 0);
 				}
 				firstKeyInputAfterClick = true;
-				scrollToStickie();
+				windowToStickieScroller.scrollToStickie(getAbsoluteTop());
 			} else {
-				contentText.getElement().blur();
-				contentText.removeFromParent();				
+				contentText.getElement()
+						.blur();
+				contentText.removeFromParent();
 			}
 			labelPanel.setVisible(!edit);
-		}
-	}
-	
-	void scrollToStickie(){
-		if (UserAgentChecker.isMobileUserAgent()){
-			Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
-				
-				@Override
-				public boolean execute() {
-					Window.scrollTo(Window.getScrollLeft(), (int) (getAbsoluteTop() - 20));
-					return false;
-				}
-			}, 500);
 		}
 	}
 
@@ -294,11 +245,6 @@ public class StickieView extends Composite implements IStickieView {
 	public void setText(String text) {
 		contentText.setText(text);
 		updateContentLabel();
-	}
-
-	@Override
-	public void setPresenter(IPresenter presenter) {
-		this.presenter = presenter;
 	}
 
 	@Override
@@ -317,51 +263,30 @@ public class StickieView extends Composite implements IStickieView {
 	}
 
 	@Override
-	public void initViewParent(HasWidgets parent) {
-		this.parent = (Widget)parent;
-		parent.add(this);
-	}
-
-	@Override
-	public void centerView() {
-		int x = positionFinder.getCenterPosition(getOffsetWidth(),  parent.getAbsoluteLeft(), Axis.HORIZONTAL);
-		int y = positionFinder.getCenterPosition(getOffsetHeight(),  parent.getAbsoluteTop(), Axis.VERTICAL);
-		setPosition(x, y);
-	}
-
-	public final void setPosition(int left, int top){		
-		int newLeft = positionFinder.refinePositionHorizontal(left, this, parent);
-		int newTopt = positionFinder.refinePositionVertical(top, this, parent);
-		
-		setPositionRaw(newLeft, newTopt);
-		presenter.stickieChange();
-	}
-
-	@Override
-	public final void setPositionRaw(int left, int top){
-		position = new Point<Integer>(left, top);
-		getElement().getStyle().setLeft(left, Unit.PX);
-		getElement().getStyle().setTop(top, Unit.PX);		
-	}
-
-	@Override
-	public int getX() {
-		return (int)position.getX();
-	}
-
-	@Override
-	public int getY() {
-		return (int)position.getY();
-	}	
-	
-	@Override
-	protected void onUnload() {		
+	protected void onUnload() {
 		super.onUnload();
 		removePreventHandlerRegistration();
 	}
-	
-	private void removePreventHandlerRegistration(){
-		if(preventHandlerRegistration != null){
+
+	@Override
+	public final void setPosition(int left, int top) {
+		Style elementStyle = getElement().getStyle();
+		elementStyle.setLeft(left, Unit.PX);
+		elementStyle.setTop(top, Unit.PX);
+	}
+
+	@Override
+	public ContainerDimensions getStickieDimensions() {
+		return widgetSizeHelper.getContainerDimensions(this);
+	}
+
+	@Override
+	public ContainerDimensions getParentDimensions() {
+		return widgetSizeHelper.getContainerDimensions(parent);
+	}
+
+	private void removePreventHandlerRegistration() {
+		if (preventHandlerRegistration != null) {
 			preventHandlerRegistration.removeHandler();
 			preventHandlerRegistration = null;
 		}

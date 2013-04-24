@@ -1,16 +1,13 @@
 package eu.ydp.empiria.player.client.controller.data;
 
-import java.util.Set;
-import java.util.Vector;
-
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Node;
 
 import eu.ydp.empiria.player.client.controller.data.events.SkinDataLoaderListener;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
+import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
-import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class SkinDataSourceManager {

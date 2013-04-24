@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.controller.data;
 
-import java.util.Set;
-import java.util.Vector;
-
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 

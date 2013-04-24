@@ -25,8 +25,11 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnectorListener;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieProperties;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieView;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
@@ -147,7 +150,6 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(BooleanUtils.class).in(Singleton.class);
 		bind(FeedbackRegistry.class).in(Singleton.class);
 		bind(MatcherRegistry.class).in(Singleton.class);
-		bind(IStickieView.class).to(StickieView.class);
 		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class).in(Singleton.class);
 		bind(DragDropHelper.class).to(DragDropHelperImpl.class).in(Singleton.class);
 		bind(TextFeedback.class).to(TextFeedbackPresenter.class);
@@ -187,7 +189,12 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
 		install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
 		install(new GinFactoryModuleBuilder().build(LinkModuleFactory.class));
+		install(new GinFactoryModuleBuilder()
+				.implement(IStickieView.class, StickieView.class)
+				.implement(IStickiePresenter.class, StickiePresenter.class)
+				.build(StickieFactory.class));
 		install(new GinFactoryModuleBuilder().build(SlideshowPlayerModuleFactory.class));
+
 	}
 
 	@Provides

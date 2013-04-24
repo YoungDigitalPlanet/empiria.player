@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.stickies;
 
+import eu.ydp.gwtutil.client.geom.Point;
+
 public interface IStickieProperties {
 
 	int getColorIndex();
@@ -12,6 +14,10 @@ public interface IStickieProperties {
 	void setX(int x);
 	int getY();
 	void setY(int y);
+	
+	Point<Integer> getPosition();
+	void setPosition(Point<Integer> newPosition);
+	
 	boolean isMinimized();
 	void setMinimized(boolean minimized);
 	void updateTimestamp();

@@ -7,11 +7,7 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.binding.BindingProxy;
-import eu.ydp.empiria.player.client.module.binding.BindingType;
-import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
 import eu.ydp.empiria.player.client.module.containers.BindingContainerModule;
-import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
 
 public abstract class GroupModuleBase<T> extends BindingContainerModule<T> implements IGroup {
 

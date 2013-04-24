@@ -2,7 +2,11 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.stickies;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import eu.ydp.gwtutil.client.geom.Point;
+
 public class StickieProperties extends JavaScriptObject implements IStickieProperties {
+
+	private static final int OUT_OF_THE_SCREEN_COORDINATE = -2000;
 
 	protected StickieProperties(){}
 	
@@ -12,7 +16,7 @@ public class StickieProperties extends JavaScriptObject implements IStickiePrope
 		sp.setMinimized(false);
 		sp.setStickieTitle("");
 		sp.setStickieContent("");
-		sp.setPosition(-2000, -2000);
+		sp.setPosition(OUT_OF_THE_SCREEN_COORDINATE, OUT_OF_THE_SCREEN_COORDINATE);
 		return sp;
 	}
 
@@ -80,6 +84,17 @@ public class StickieProperties extends JavaScriptObject implements IStickiePrope
 		this.x = x;
 		this.y = y;
 	}-*/;
+
+	@Override
+	public final Point<Integer> getPosition() {
+		return new Point<Integer>(getX(), getY());
+	}
+
+	@Override
+	public final void setPosition(Point<Integer> newPosition) {
+		setX(newPosition.getX());
+		setY(newPosition.getY());
+	}
 
 }
 

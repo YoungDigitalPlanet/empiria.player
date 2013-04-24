@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.listener;
 
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 

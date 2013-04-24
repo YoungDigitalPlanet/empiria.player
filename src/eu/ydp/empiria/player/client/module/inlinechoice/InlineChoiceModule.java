@@ -1,9 +1,6 @@
 package eu.ydp.empiria.player.client.module.inlinechoice;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_INLINECHOICE_EMPTY_OPTION;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_INLINECHOICE_POPUP_POSITION;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_INLINECHOICE_TYPE;
-
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +16,9 @@ import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_INLINECHOICE_EMPTY_OPTION;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_INLINECHOICE_POPUP_POSITION;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_INLINECHOICE_TYPE;
 
 public class InlineChoiceModule extends InteractionModuleBase implements Factory<InlineChoiceModule> {
 

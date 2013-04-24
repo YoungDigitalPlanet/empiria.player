@@ -9,12 +9,17 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.controller.StickieDragController;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.controller.StickieDragHandlersManager;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.controller.StickieMinimizeMaximizeController;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
@@ -33,7 +38,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	@Inject IPlayerContainersAccessor itemBodyAccessor;
 	@Inject StyleNameConstants styleNames;
 	@Inject EventsBus eventsBus;
-	@Inject Provider<IStickieView> viewProvider;
+	@Inject StickieFactory stickieFactory;
 	@Inject Provider<IStickieProperties> propertiesProvider;
 
 	List<List<IStickieProperties>> stickies = new ArrayList<List<IStickieProperties>>();
@@ -180,39 +185,34 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		return sp;
 	}
 	
-	void addStickieView(final IStickieProperties sp, boolean initialAddition){
-		final IStickieView view = viewProvider.get();
-		views.put(sp, view);
-		view.setColorIndex(sp.getColorIndex());
-		view.setMinimized(sp.isMinimized());
-		view.setText(sp.getStickieContent());
-		view.setPresenter(new IStickieView.IPresenter() {
+	void addStickieView(final IStickieProperties stickieProperties, boolean initialAddition){
+		StickieRegistration stickieRegistration = new StickieRegistration() {
 			
 			@Override
-			public void stickieMinimize() {
-				sp.setMinimized(!sp.isMinimized());
-				view.setMinimized(sp.isMinimized());
+			public void removeStickie() {
+				deleteStickie(stickieProperties);
 			}
-			
-			@Override
-			public void stickieDelete() {
-				deleteStickie(sp);
-			}
-			
-			@Override
-			public void stickieChange() {
-				sp.setStickieContent(view.getText());
-				sp.setX(view.getX());
-				sp.setY(view.getY());
-			}
-		});
-		view.initViewParent(itemBodyAccessor.getItemBodyContainer(currItemIndex));
+		};
+		
+		StickieMinimizeMaximizeController stickieMinimizeMaximizeController = stickieFactory.createStickieMinimizeMaximizeController(stickieProperties);
+		IStickiePresenter stickiePresenter = stickieFactory.createStickiePresenter(stickieProperties, stickieMinimizeMaximizeController, stickieRegistration);
+		StickieDragController stickieDragController = stickieFactory.createStickieDragController(stickiePresenter, stickieProperties);
+		StickieDragHandlersManager stickieDragHandlersManager = stickieFactory.createStickieDragHandlerManager(stickieDragController);
+		
+		HasWidgets itemBodyContainer = itemBodyAccessor.getItemBodyContainer(currItemIndex);
+		IStickieView stickieView = stickieFactory.createStickieView(itemBodyContainer, stickiePresenter, stickieDragHandlersManager);
+		
+		stickiePresenter.setView(stickieView);
+		stickiePresenter.updateStickieView();
+
+		views.put(stickieProperties, stickieView);
+		
 		if (initialAddition){
-			view.centerView();
-			checkStickieOverlay(sp);
-			updateStickiePosition(sp);
+			stickiePresenter.centerPositionToView();
+			checkStickieOverlay(stickieProperties);
+			updateStickiePosition(stickieProperties);
 		} else {
-			view.setPositionRaw(sp.getX(), sp.getY());
+			stickieView.setPosition(stickieProperties.getX(), stickieProperties.getY());
 		}
 	}
 	
