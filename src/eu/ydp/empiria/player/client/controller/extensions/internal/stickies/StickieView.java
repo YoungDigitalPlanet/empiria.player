@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.stickies;
 
+import javax.annotation.PostConstruct;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
@@ -53,16 +55,16 @@ public class StickieView extends Composite implements IStickieView {
 	interface StickieViewUiBinder extends UiBinder<Widget, StickieView> {
 	}
 
-	private final Widget parent;
+	private final HasWidgets parent;
 	private final boolean android;
 	private final StyleNameConstants styleNames;
 	private final EventsBus eventsBus;
 	private final StickieDragHandlersManager stickieDragHandlersManager;
 	private final WidgetSizeHelper widgetSizeHelper;
 	private final WindowToStickieScroller windowToStickieScroller;
+	private final IStickiePresenter presenter;
 
 	private HandlerRegistration preventHandlerRegistration;
-	private final IStickiePresenter presenter;
 
 	private boolean takeOverKeyInput;
 	private boolean firstKeyInputAfterClick;
@@ -77,12 +79,11 @@ public class StickieView extends Composite implements IStickieView {
 		this.widgetSizeHelper = widgetSizeHelper;
 		this.windowToStickieScroller = windowToStickieScroller;
 		this.android = UserAgentChecker.isStackAndroidBrowser();
-		this.parent = (Widget) parent;
-
-		initializeStickie(parent);
+		this.parent = parent;
 	}
 
-	private void initializeStickie(HasWidgets parent) {
+	@PostConstruct
+	public void initializeStickie() {
 		initWidget(uiBinder.createAndBindUi(this));
 		setPosition(OUT_OF_SCREEN_COORDINATE, OUT_OF_SCREEN_COORDINATE);
 		addContentTextClickHandler();
@@ -105,7 +106,7 @@ public class StickieView extends Composite implements IStickieView {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if (android && firstKeyInputAfterClick && contentText.getCursorPos() != 0) {
+				if (isFirstKeyInputAfterClickOnAndroid() && contentText.getCursorPos() != 0) {
 					firstKeyInputAfterClick = false;
 				}
 			}
@@ -190,7 +191,11 @@ public class StickieView extends Composite implements IStickieView {
 
 	@UiHandler("contentText")
 	public void contentTextKeyDownHandler(KeyDownEvent event) {
-		takeOverKeyInput = (android && firstKeyInputAfterClick && contentText.getCursorPos() == 0);
+		takeOverKeyInput = (isFirstKeyInputAfterClickOnAndroid() && contentText.getCursorPos() == 0);
+	}
+	
+	private boolean isFirstKeyInputAfterClickOnAndroid(){
+		return android && firstKeyInputAfterClick;
 	}
 
 	@UiHandler("contentText")
@@ -282,7 +287,7 @@ public class StickieView extends Composite implements IStickieView {
 
 	@Override
 	public ContainerDimensions getParentDimensions() {
-		return widgetSizeHelper.getContainerDimensions(parent);
+		return widgetSizeHelper.getContainerDimensions((Widget)parent);
 	}
 
 	private void removePreventHandlerRegistration() {
