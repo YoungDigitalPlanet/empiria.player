@@ -55,6 +55,7 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.style.CssHelper;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
@@ -207,7 +208,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		Mockito.verify(connectionEventHandler).fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, bean.getSourceChoicesIdentifiersSet().get(0), "---",
 				false);
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
-		Mockito.verify(surface, times(0)).drawLine(0, 0, 0, 0);
+		Mockito.verify(surface, times(0)).drawLine(new Point(0, 0), new Point(0, 0));
 	}
 
 	@Test

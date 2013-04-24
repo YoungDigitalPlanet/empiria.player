@@ -2,10 +2,12 @@ package eu.ydp.empiria.player.client.module.connection;
 
 import java.util.Map;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
 
 /**
@@ -28,33 +30,21 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 		return view;
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.ydp.empiria.player.client.module.connection.ConnectionSurfce#drawLine(double, double, double, double)
-	 */
 	@Override
-	public void drawLine(double fromX, double fromY, double toX, double toY) {
-		view.drawLine(fromX, fromY, toX, toY);
+	public void drawLine(Point from, Point to) {
+		view.drawLine(from.getX(), from.getY(), to.getX(), to.getY());
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.ydp.empiria.player.client.module.connection.ConnectionSurfce#clear()
-	 */
 	@Override
 	public void clear() {
 		view.clear();
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.ydp.empiria.player.client.module.connection.ConnectionSurfce#isPointOnPath(int, int, int)
-	 */
 	@Override
 	public boolean isPointOnPath(int xPos, int yPos, int approximation) {
 		return view.isPointOnPath(xPos, yPos, approximation);
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.ydp.empiria.player.client.module.connection.ConnectionSurfce#applyStyles(java.util.Map)
-	 */
 	@Override
 	public void applyStyles(Map<String, String> styles){
 		view.applyStyles(styles);
@@ -63,6 +53,16 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 	@Override
 	public void removeFromParent() {
 		view.removeFromParent();
+	}
+
+	@Override
+	public int getOffsetLeft() {
+		return view.getElement().getOffsetLeft();
+	}
+
+	@Override
+	public void setOffsetLeft(int left) {
+		view.getElement().getStyle().setLeft(left, Unit.PX);
 	}
 
 }

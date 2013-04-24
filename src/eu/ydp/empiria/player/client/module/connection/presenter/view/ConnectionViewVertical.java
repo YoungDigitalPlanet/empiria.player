@@ -10,6 +10,7 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
@@ -65,44 +66,18 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 		return types;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView
-	 * #addFirstColumnItem(eu.ydp.empiria.player.client.module.connection.item.
-	 * ConnectionItem)
-	 */
-
 	@Override
 	public void addFirstColumnItem(ConnectionItem item) {
 		leftColumn.add(item);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView
-	 * #addSecondColumnItem(eu.ydp.empiria.player.client.module.connection.item.
-	 * ConnectionItem)
-	 */
 
 	@Override
 	public void addSecondColumnItem(ConnectionItem item) {
 		rightColumn.add(item);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView
-	 * #addElementToMainView(com.google.gwt.user.client.ui.Widget)
-	 */
-
 	@Override
-	public void addElementToMainView(Widget widget) {
+	public void addElementToMainView(IsWidget widget) {
 		view.insert(widget, 0);
 	}
 

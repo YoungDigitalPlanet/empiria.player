@@ -3,11 +3,13 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Supplier;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
+import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsFinder;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.position.Point;
 
@@ -21,11 +23,11 @@ public class ConnectionSurfacesManager {
 	protected final Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces = new HashMap<ConnectionPairEntry<String, String>, ConnectionSurface>();
 	protected final Map<String, ConnectionSurface> surfaces = new HashMap<String, ConnectionSurface>();
 
-	private final HasDimensions view;
+	private final HasDimensions dimensions;
 
 	@Inject
-	public ConnectionSurfacesManager(@Assisted HasDimensions hasDimension) {
-		this.view = hasDimension;
+	public ConnectionSurfacesManager(@Assisted HasDimensions dimensions) {
+		this.dimensions = dimensions;
 	}
 
 	public void resetAll() {
@@ -58,7 +60,7 @@ public class ConnectionSurfacesManager {
 	protected ConnectionSurface getOrCreateSurface(String identifier) {
 		ConnectionSurface surface;
 		if ((surface = surfaces.get(identifier)) == null) {// NOPMD
-			surface = connectionFactory.getConnectionSurface(view.getWidth(), view.getHeight());
+			surface = connectionFactory.getConnectionSurface(dimensions.getWidth(), dimensions.getHeight());
 			surfaces.put(identifier, surface);
 		}
 		return surface;

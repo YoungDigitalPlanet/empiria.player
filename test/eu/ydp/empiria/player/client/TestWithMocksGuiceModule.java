@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client;
 
+import static org.mockito.Mockito.withSettings;
+
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
@@ -21,6 +23,10 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.posi
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.WidgetSizeHelper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
+import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsDelegate;
+import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsFinder;
+import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePointTranslator;
+import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
 import eu.ydp.empiria.player.client.module.media.external.FullscreenVideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoImpl;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -34,7 +40,6 @@ import eu.ydp.gwtutil.client.timer.Timer;
 import eu.ydp.gwtutil.client.timer.TimerAccessibleMock;
 import eu.ydp.gwtutil.test.AbstractMockingTestModule;
 import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
-import static org.mockito.Mockito.withSettings;
 
 public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 
@@ -76,11 +81,14 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToClassOrMockProvider(ExternalFullscreenVideoImpl.class);
 		bindToClassOrMockProvider(Scheduler.class, SchedulerMockImpl.class);
 		bindToClassOrMockProvider(Timer.class, TimerAccessibleMock.class);
+		bindToClassOrMockProvider(SurfacePointTranslator.class);
+		bindToClassOrMockProvider(SurfaceDimensionsFinder.class);
+		bindToClassOrMockProvider(SurfacePositionFinder.class);
+		bindToClassOrMockProvider(SurfaceDimensionsDelegate.class);		
 		
 		install(new FactoryModuleBuilder()
 			.implement(IStickieView.class, StickieView.class)
 			.implement(IStickiePresenter.class, StickiePresenter.class)
-			.build(StickieFactory.class));
-	}
+			.build(StickieFactory.class));	}
 
 }

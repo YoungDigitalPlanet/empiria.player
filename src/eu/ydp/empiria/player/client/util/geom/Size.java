@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.util.geom;
 
-public class Size {
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
+
+public class Size implements HasDimensions {
 
 	private int width;
 	private int height;

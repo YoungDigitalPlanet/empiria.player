@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -73,7 +74,15 @@ public class ConnectionItems {
 	}
 
 	public Collection<ConnectionItem> getAllItems() {
-		return items.values();
+		return Collections.unmodifiableCollection(items.values());
+	}
+	
+	public Collection<ConnectionItem> getLeftItems(){
+		return Collections.unmodifiableCollection(leftColumnItems);
+	}
+	
+	public Collection<ConnectionItem> getRightItems(){
+		return Collections.unmodifiableCollection(rightColumnItems);
 	}
 
 }

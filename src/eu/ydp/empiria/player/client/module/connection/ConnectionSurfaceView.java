@@ -21,7 +21,7 @@ public class ConnectionSurfaceView extends Composite {
 	protected Context context2d;
 	protected Surface surface;
 	private final StyleToPropertyMappingHelper styleHelper;
-	private final double[] coordinates = new double[4];
+	private final int[] coordinates = new int[4];
 	private final Map<String, String> propertiesToClear = new HashMap<String, String>();
 	private Map<String, String> lastSetStyles = new HashMap<String, String>();
 	private final boolean isAndroid_4_UserAgent = UserAgentChecker.isMobileUserAgent(MobileUserAgent.ANDROID4);
@@ -36,7 +36,7 @@ public class ConnectionSurfaceView extends Composite {
 		surface.getElement().getStyle().setTop(0, Unit.PX);
 	}
 
-	public void drawLine(double fromX, double fromY, double toX, double toY) {
+	public void drawLine(int fromX, int fromY, int toX, int toY) {
 		context2d.save();
 		clear();
 		coordinates[0] = fromX;

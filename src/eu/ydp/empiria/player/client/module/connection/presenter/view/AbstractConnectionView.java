@@ -7,6 +7,7 @@ import java.util.Set;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -51,7 +52,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	}
 
 	@Override
-	public void addElementToMainView(Widget widget) {
+	public void addElementToMainView(IsWidget widget) {
 		getView().add(widget);
 	}
 

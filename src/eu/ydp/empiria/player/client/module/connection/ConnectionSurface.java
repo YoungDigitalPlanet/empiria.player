@@ -4,16 +4,22 @@ import java.util.Map;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
-public interface ConnectionSurface extends IsWidget{
+import eu.ydp.empiria.player.client.util.position.Point;
 
-	public abstract void drawLine(double fromX, double fromY, double toX, double toY);
+public interface ConnectionSurface extends IsWidget {
 
-	public abstract void clear();
+	void drawLine(Point from, Point to);
 
-	public abstract boolean isPointOnPath(int xPos, int yPos, int approximation);
+	void clear();
 
-	public abstract void applyStyles(Map<String, String> styles);
+	boolean isPointOnPath(int xPos, int yPos, int approximation);
 
-	public abstract void removeFromParent();
+	void applyStyles(Map<String, String> styles);
+
+	void removeFromParent();
+
+	int getOffsetLeft();
+	
+	void setOffsetLeft(int left);
 
 }
