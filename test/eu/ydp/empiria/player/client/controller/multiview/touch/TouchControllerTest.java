@@ -49,6 +49,13 @@ public class TouchControllerTest {
 	}
 
 	@Test
+	public void updateOnTouchStartTest() {
+		assertFalse(touchModel.isVerticalSwipeDetected());
+		testObj.setVerticalSwipeDetected(true);
+		assertTrue(touchModel.isVerticalSwipeDetected());
+	}
+
+	@Test
 	public void updateOnTouchStart() {
 		// given
 		NativeEvent onTouchStartEvent = mock(NativeEvent.class);
@@ -70,6 +77,7 @@ public class TouchControllerTest {
 		assertEquals(touchModel.isMultiTouch(), true);
 		assertEquals(touchModel.isSwipeStarted(), false);
 		assertEquals(touchModel.isTouchReservation(), false);
+		assertEquals(touchModel.isVerticalSwipeDetected(), false);
 
 		InOrder inOrder = inOrder(windowDelegate, touchEventReader, eventsBus);
 		inOrder.verify(touchEventReader).getScreenY(onTouchStartEvent);
@@ -137,23 +145,35 @@ public class TouchControllerTest {
 	}
 
 	@Test
-	public void isHorizontalSwipe_isTrue() {
+	public void isReadyToStartAnnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isFalse() {
 		touchModel.setEndX(2);
 		touchModel.setStartX(0);
 		touchModel.setEndY(1);
 		touchModel.setStartY(0);
+		touchModel.setVerticalSwipeDetected(false);
 
-		assertTrue(testObj.isHorizontalSwipe());
+		assertTrue(testObj.isReadyToStartAnnimation());
 	}
 
 	@Test
-	public void isHorizontalSwipe_isFalse() {
+	public void isReadyToStartAnnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isTrue() {
+		touchModel.setEndX(2);
+		touchModel.setStartX(0);
+		touchModel.setEndY(1);
+		touchModel.setStartY(0);
+		touchModel.setVerticalSwipeDetected(true);
+
+		assertFalse(testObj.isReadyToStartAnnimation());
+	}
+
+	@Test
+	public void isReadyToStartAnnimation_isHorizontalSwipe_isFalse() {
 		touchModel.setEndX(1);
 		touchModel.setStartX(0);
 		touchModel.setEndY(2);
 		touchModel.setStartY(0);
 
-		assertFalse(testObj.isHorizontalSwipe());
+		assertFalse(testObj.isReadyToStartAnnimation());
 	}
 
 	@Test
@@ -219,24 +239,6 @@ public class TouchControllerTest {
 		verify(eventsBus).fireEvent(argumentCaptor.capture());
 		assertEquals(argumentCaptor.getValue().getType(), PlayerEventTypes.PAGE_SWIPE_STARTED);
 
-	}
-
-	@Test
-	public void isSwypeDetectedTest_isFalse() {
-		assertFalse(testObj.isSwypeDetected());
-	}
-
-	@Test
-	public void isSwypeDetectedTest_isFalse_EndXEqual0() {
-		touchModel.setEndX(10);
-		assertFalse(testObj.isSwypeDetected());
-	}
-
-	@Test
-	public void isSwypeDetectedTest_isTrue() {
-		touchModel.setEndX(10);
-		touchModel.setLastEndX(22);
-		assertTrue(testObj.isSwypeDetected());
 	}
 
 	@Test

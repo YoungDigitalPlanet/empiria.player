@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.multiview.touch;
 
-
 public class TouchModel {
 	private int startX;
 	private int endY;
@@ -12,6 +11,7 @@ public class TouchModel {
 	private boolean touchReservation;
 	private boolean swipeStarted;
 	private boolean swypeLock;
+	private boolean verticalSwipeDetected;
 
 	public void setMultiTouch(boolean multiTouch) {
 		this.multiTouch = multiTouch;
@@ -91,5 +91,13 @@ public class TouchModel {
 
 	public void setSwypeLock(boolean swypeLock) {
 		this.swypeLock = swypeLock;
+	}
+
+	public boolean isVerticalSwipeDetected() {
+		return verticalSwipeDetected;
+	}
+
+	public void setVerticalSwipeDetected(boolean verticalSwipeDetected) {
+		this.verticalSwipeDetected = verticalSwipeDetected;
 	}
 }

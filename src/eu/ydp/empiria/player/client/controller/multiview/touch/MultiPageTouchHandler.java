@@ -14,7 +14,6 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 public class MultiPageTouchHandler implements TouchHandler {
 
 	private IMultiPageController multiPageController;
-
 	private final UserAgentUtil userAgentUtil;
 	private final TouchEventReader touchEventReader;
 	private final TouchController touchController;
@@ -28,7 +27,6 @@ public class MultiPageTouchHandler implements TouchHandler {
 		this.touchEventReader = touchEventReader;
 		this.touchController = touchController;
 		this.touchEndTimer = touchEndTimerFactory.createTimer(this);
-
 	}
 
 	public void setMultiPageController(IMultiPageController multiPageController) {
@@ -54,13 +52,13 @@ public class MultiPageTouchHandler implements TouchHandler {
 		case TOUCH_MOVE:
 			onTouchMove(event.getNativeEvent());
 			break;
-
 		default:
 			break;
 		}
 	}
 
 	private void onTouchStart(NativeEvent event) {
+
 		if (!touchController.canSwype(multiPageController)) {
 			return;
 		}
@@ -84,23 +82,21 @@ public class MultiPageTouchHandler implements TouchHandler {
 
 		// nie zawsze wystepuje event touchend na androidzie - emulacja
 		// zachownaia
-
 		touchController.updateEndPoint(event);
 
-		if (touchController.isHorizontalSwipe()) {
-			touchEventReader.preventDefault(event);
+		if (touchController.isReadyToStartAnnimation()) {
 
+			touchEventReader.preventDefault(event);
 			touchEndTimer.schedule(MultiPageController.TOUCH_END_TIMER_TIME);
 
-			if (touchController.isSwypeDetected()) {
-				multiPageController.move(touchController.isSwipeRight(), touchController.getSwypePercentLength());
-				touchController.updateAfterSwypeDetected();
-			}
+			multiPageController.move(touchController.isSwipeRight(), touchController.getSwypePercentLength());
+			touchController.updateAfterSwypeDetected();
+		} else {
+			touchController.setVerticalSwipeDetected(true);
 		}
 	}
 
 	private void onTouchEnd(NativeEvent event) {
-
 		touchEndTimer.cancel();
 
 		if (touchController.isSwipeStarted()) {
@@ -129,12 +125,10 @@ public class MultiPageTouchHandler implements TouchHandler {
 
 	public NavigationButtonDirection getDirection() {
 		return touchController.getDirection();
-
 	}
 
 	public void resetModelAndTimer() {
 		touchEndTimer.cancel();
 		touchController.resetTouchModel();
 	}
-
 }

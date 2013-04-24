@@ -48,6 +48,7 @@ public class TouchController {
 		touchModel.setMultiTouch(multiTouch);
 		touchModel.setSwipeStarted(false);
 		touchModel.setTouchReservation(false);
+		touchModel.setVerticalSwipeDetected(false);
 	}
 
 	public boolean isSwipeStarted() {
@@ -69,10 +70,14 @@ public class TouchController {
 		return swipeWidth / swipeHeight > SWYPE_WIDTH_TO_HEIGHT_LIMIT_RATE;
 	}
 
-	public boolean isHorizontalSwipe() {
+	private boolean isHorizontalSwipe() {
 		int swipeWidth = Math.abs(touchModel.getStartX() - touchModel.getEndX());
 		int swipeHeight = Math.abs(touchModel.getStartY() - touchModel.getEndY());
 		return swipeHeight < swipeWidth;
+	}
+
+	public boolean isReadyToStartAnnimation() {
+		return isHorizontalSwipe() && !touchModel.isVerticalSwipeDetected();
 	}
 
 	public boolean isTouchReservation() {
@@ -104,10 +109,6 @@ public class TouchController {
 		return ((float) swypeWidth / rootPanelDelegate.getOffsetWidth()) * PERCENT_MAX;
 	}
 
-	public boolean isSwypeDetected() {
-		return touchModel.getLastEndX() != touchModel.getEndX() && touchModel.getLastEndX() > 0;
-	}
-
 	public boolean isSwipeRight() {
 		return touchModel.getLastEndX() > touchModel.getEndX();
 	}
@@ -120,7 +121,7 @@ public class TouchController {
 		touchModel.setStartX(touchModel.getEndX());
 		touchModel.setLastEndX(touchModel.getEndX());
 		touchModel.setTouchReservation(false);
-
+		touchModel.setVerticalSwipeDetected(false);
 	}
 
 	public void updateOnTouchEnd(NativeEvent event) {
@@ -158,9 +159,13 @@ public class TouchController {
 		touchModel.setSwypeLock(swypeLock);
 	}
 
-	public void setSwypeStarted(boolean b) {
-		touchModel.setSwipeStarted(b);
+	public void setSwypeStarted(boolean swipeStarted) {
+		touchModel.setSwipeStarted(swipeStarted);
 
+	}
+
+	public void setVerticalSwipeDetected(boolean verticalSwipeDetected) {
+		touchModel.setVerticalSwipeDetected(verticalSwipeDetected);
 	}
 
 }
