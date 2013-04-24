@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.gin.module;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -39,6 +40,7 @@ import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.multiview.touch.MultiPageTouchHandler;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchReservationHandler;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
@@ -58,6 +60,7 @@ import eu.ydp.empiria.player.client.gin.factory.SlideshowPlayerModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
+import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.gin.providers.NewFlowPanelProvider;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
@@ -194,6 +197,7 @@ public class PlayerGinModule extends AbstractGinModule {
 				.implement(IStickiePresenter.class, StickiePresenter.class)
 				.build(StickieFactory.class));
 		install(new GinFactoryModuleBuilder().build(SlideshowPlayerModuleFactory.class));
+		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class).build(TouchReservationFactory.class));
 
 	}
 

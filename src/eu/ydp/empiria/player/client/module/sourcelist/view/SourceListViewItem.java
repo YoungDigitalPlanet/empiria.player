@@ -34,7 +34,7 @@ public class SourceListViewItem extends Composite {
 	private final IModule parentModule;
 	private final StyleNameConstants styleNames;
 
-	private DragDropHelper dragDropHelper;
+	private final DragDropHelper dragDropHelper;
 	private SourceListViewImpl sourceListView;
 	private DraggableObject<FlowPanel> draggable;
 	private FlowPanel container;
@@ -47,19 +47,19 @@ public class SourceListViewItem extends Composite {
 		this.parentModule = parentModule;
 		this.styleNames = styleNames;
 	}
-	
+
 	public void setSourceListView(SourceListViewImpl sourceListView) {
 		this.sourceListView = sourceListView;
 	}
-	
+
 	public void setDisableDrag(boolean disableDrag) {
 		draggable.setDisableDrag(disableDrag);
 	}
-	
+
 	public void show() {
 		container.setVisible(true);
 	}
-	
+
 	public void hide() {
 		container.setVisible(false);
 	}
@@ -79,7 +79,7 @@ public class SourceListViewItem extends Composite {
 		addDragStartHandler();
 		addDragEndHandler();
 	}
-	
+
 	private void addDragStartHandler() {
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override

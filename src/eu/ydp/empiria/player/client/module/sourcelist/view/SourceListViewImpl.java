@@ -18,6 +18,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.SourceListFactory;
+import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
@@ -46,6 +47,9 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 
 	@Inject
 	private SourceListFactory sourceListFactory;
+
+	@Inject
+	private TouchReservationFactory touchReservationFactory;
 
 	@UiField
 	FlowPanel items;
@@ -85,6 +89,7 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 	@Override
 	public void createAndBindUi() {
 		initWidget();
+		touchReservationFactory.addTouchReservationHandler(items);
 		List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
 		for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
 			DragDataObject obj = createDragDataObject();
@@ -142,7 +147,6 @@ public class SourceListViewImpl extends Composite implements SourceListView, Dra
 		if (event.getType() == DRAG_END) {
 			checkSourceList(event.getDragDataObject());
 		}
-
 	}
 
 }

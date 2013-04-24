@@ -6,15 +6,11 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Inject
 	private SourceListView view;
-
-	@Inject
-	private EventsBus eventsBus;
 
 	@Override
 	public void setBean(SourceListBean bean) {
