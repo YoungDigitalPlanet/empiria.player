@@ -28,6 +28,7 @@ import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.gin.factory.SourceListFactory;
+import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
@@ -56,6 +57,7 @@ public class SourceListViewImplTest extends AbstractTestBaseWithoutAutoInjectorI
 				}
 			});
 			binder.bind(SourceListFactory.class).toInstance(factory);
+			binder.bind(TouchReservationFactory.class).toInstance(mock(TouchReservationFactory.class));
 		}
 	}
 
