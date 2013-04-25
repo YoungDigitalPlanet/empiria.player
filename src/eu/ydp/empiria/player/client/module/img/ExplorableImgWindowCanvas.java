@@ -81,7 +81,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 		createAndInitializeTempImage(imageUrl);
 		setUpImageCanvasProperties(title);
-		
+
 		scrollbarsPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
 		FocusWidget focusCanvas = (FocusWidget) imageCanvas.asWidget();
 		addHandlersToCanvas(focusCanvas);
@@ -293,24 +293,27 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 			sourceWidth = getOriginalImageWidth() - sourceX;
 			double zoom = getZoom();
 			destWidth = sourceWidth * zoom;
-			context2d.clearRect(destWidth, 0, getWindowWidth() - destWidth, getWindowHeight());
 		}
 		if (sourceY + sourceHeight > getOriginalImageHeight()) {
 			sourceHeight = getOriginalImageHeight() - sourceY;
 			double zoom = getZoom();
 			destHeight = sourceHeight * zoom;
-			context2d.clearRect(0, destHeight, getWindowWidth(), getWindowHeight() - destHeight);
 		}
 
 		if (System.currentTimeMillis() - lastRedrawTime > REDRAW_INTERVAL_MIN) {
 			if (imageLoaded) {
 				double destX = 0;
 				double destY = 0;
+				clearContext();
 				context2d.drawImage(ImageElement.as(tempImage.getElement()), sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
 			}
 			lastRedrawTime = System.currentTimeMillis();
 			updateScrollbars(showScrollbars);
 		}
+	}
+
+	private void clearContext() {
+		context2d.clearRect(0, 0, getWindowWidth(), getWindowHeight());
 	}
 
 	private void updateScrollbars(boolean showScrollbars) {
