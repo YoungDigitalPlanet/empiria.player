@@ -19,8 +19,9 @@ public abstract class FlowCommand implements IFlowCommand {
 	
 	public static IFlowCommand fromJsObject(JavaScriptObject commandJsObject){
 		String objName = getJsObjectName(commandJsObject);
-		if (objName == null  ||  objName.equals(""))
+		if (objName == null  ||  objName.equals("")){
 			return null;
+		}
 		int objIndex = getJsObjectIndex(commandJsObject);
 		String groupIdentifierString = getJsObjectGroupIdentifier(commandJsObject);
 		GroupIdentifier groupIdentifier = new DefaultGroupIdentifier(groupIdentifierString);
@@ -63,18 +64,21 @@ public abstract class FlowCommand implements IFlowCommand {
 	}
 
 	private static native String getJsObjectName(JavaScriptObject obj)/*-{
-		if (typeof obj.name == 'string')
+		if (typeof obj.name == 'string'){
 			return obj.name;
+		}
 		return "";
 	}-*/;
 	private static native int getJsObjectIndex(JavaScriptObject obj)/*-{
-		if (typeof obj.index == 'number')
+		if (typeof obj.index == 'number'){
 			return obj.index;
+		}
 		return -1;
 	}-*/;
 	private static native String getJsObjectGroupIdentifier(JavaScriptObject obj)/*-{
-		if (typeof obj.groupIdentifier == 'string')
+		if (typeof obj.groupIdentifier == 'string'){
 			return obj.groupIdentifier;
+		}
 		return "";
 	}-*/;
 
@@ -88,7 +92,7 @@ public abstract class FlowCommand implements IFlowCommand {
 			listener.nextPage();
 		}
 	}
-	public final static class NavigatePreviousItem extends FlowCommand{
+	public static final class NavigatePreviousItem extends FlowCommand{
 		public NavigatePreviousItem(){
 			super(NAME);
 		}		
@@ -98,7 +102,7 @@ public abstract class FlowCommand implements IFlowCommand {
 			listener.previousPage();
 		}
 	}
-	public final static class NavigateFirstItem extends FlowCommand{
+	public static final class NavigateFirstItem extends FlowCommand{
 		public NavigateFirstItem(){
 			super(NAME);
 		}		
@@ -108,7 +112,7 @@ public abstract class FlowCommand implements IFlowCommand {
 			listener.gotoFirstPage();
 		}
 	}
-	public final static class NavigateLastItem extends FlowCommand{
+	public static final  class NavigateLastItem extends FlowCommand{
 		public NavigateLastItem(){
 			super(NAME);
 		}		
@@ -118,7 +122,7 @@ public abstract class FlowCommand implements IFlowCommand {
 			listener.gotoLastPage();
 		}
 	}
-	public final static class NavigateToc extends FlowCommand{
+	public static final class NavigateToc extends FlowCommand{
 		public NavigateToc(){
 			super(NAME);
 		}
@@ -128,7 +132,7 @@ public abstract class FlowCommand implements IFlowCommand {
 			listener.gotoToc();
 		}
 	}
-	public final static class NavigateTest extends FlowCommand{
+	public static final class NavigateTest extends FlowCommand{
 		public NavigateTest(){
 			super(NAME);
 		}		
@@ -138,7 +142,7 @@ public abstract class FlowCommand implements IFlowCommand {
 			listener.gotoTest();
 		}
 	}
-	public final static class NavigateSummary extends FlowCommand{
+	public static final class NavigateSummary extends FlowCommand{
 		public NavigateSummary(){
 			super(NAME);
 		}		
@@ -155,7 +159,7 @@ public abstract class FlowCommand implements IFlowCommand {
 		}
 		protected int index;
 	}
-	public final static class NavigateGotoItem extends FlowCommandWithIndex{
+	public static final class NavigateGotoItem extends FlowCommandWithIndex{
 		public NavigateGotoItem(int index){
 			super(NAME, index);
 		}	
@@ -165,7 +169,7 @@ public abstract class FlowCommand implements IFlowCommand {
 			listener.gotoPage(index);
 		}
 	}
-	public final static class NavigatePreviewItem extends FlowCommandWithIndex{
+	public static final class NavigatePreviewItem extends FlowCommandWithIndex{
 		public NavigatePreviewItem(int index){
 			super(NAME, index);
 		}	
@@ -192,10 +196,12 @@ public abstract class FlowCommand implements IFlowCommand {
 		public static final String NAME = "CHECK"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
 				listener.checkPage();
-			else
+			}
+			else{
 				listener.checkGroup(groupIdentifier);
+			}
 		}
 	}
 	public static class Continue extends FlowCommandForGroup{
@@ -208,10 +214,12 @@ public abstract class FlowCommand implements IFlowCommand {
 		public static final String NAME = "CONTINUE"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
 				listener.continuePage();
-			else
+			}
+			else{
 				listener.continueGroup(groupIdentifier);
+			}
 			
 		}
 	}
@@ -225,10 +233,12 @@ public abstract class FlowCommand implements IFlowCommand {
 		public static final String NAME = "RESET"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
 				listener.resetPage();
-			else
+			}
+			else{
 				listener.resetGroup(groupIdentifier);
+			}
 		}
 	}
 	public static class ShowAnswers extends FlowCommandForGroup{
@@ -241,11 +251,12 @@ public abstract class FlowCommand implements IFlowCommand {
 		public static final String NAME = "SHOW_ANSWERS"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
 				listener.showAnswersPage();
-			else
+			}
+			else{
 				listener.showAnswersGroup(groupIdentifier);
-			
+			}
 		}
 	}
 	public static class Lock extends FlowCommandForGroup{
@@ -258,10 +269,12 @@ public abstract class FlowCommand implements IFlowCommand {
 		public static final String NAME = "LOCK"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
 				listener.lockPage();
-			else
+			}
+			else{
 				listener.lockGroup(groupIdentifier);
+			}
 		}
 	}
 	public static class Unlock extends FlowCommandForGroup{
@@ -274,10 +287,12 @@ public abstract class FlowCommand implements IFlowCommand {
 		public static final String NAME = "UNLOCK"; 
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) )
+			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
 				listener.unlockPage();
-			else
+			}
+			else{
 				listener.unlockGroup(groupIdentifier);
+			}
 		}
 	}
 	

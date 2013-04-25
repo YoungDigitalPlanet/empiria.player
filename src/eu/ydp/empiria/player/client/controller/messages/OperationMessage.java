@@ -24,12 +24,15 @@ public class OperationMessage implements ExtendedPopupPanelDisplayEventListener 
 		panel.setStyleName("qp-message-box");
 		
 		containerPanel = new MouseEventPanel();
-		if (type == OperationMessageType.ERROR)
+		if (type == OperationMessageType.ERROR){
 			containerPanel.setStyleName("qp-message-error");
-		else if (type == OperationMessageType.WARRNING)
+		}
+		else if (type == OperationMessageType.WARRNING){
 			containerPanel.setStyleName("qp-message-warrning");
-		else if (type == OperationMessageType.INFO)
+		}
+		else if (type == OperationMessageType.INFO){
 			containerPanel.setStyleName("qp-message-info");
+		}
 		if (hideOnClick){
 			containerPanel.addMouseUpHandler(new MouseUpHandler() {
 				public void onMouseUp(MouseUpEvent event) {
@@ -42,12 +45,15 @@ public class OperationMessage implements ExtendedPopupPanelDisplayEventListener 
 		titlePanel.setStyleName("qp-message-title");
 		containerPanel.add(titlePanel);
 
-		if (type == OperationMessageType.ERROR)
+		if (type == OperationMessageType.ERROR){
 			title = new Label(LocalePublisher.getText(LocaleVariable.MESSAGE_TITLE_ERROR));
-		else if (type == OperationMessageType.WARRNING)
+		}
+		else if (type == OperationMessageType.WARRNING){
 			title = new Label(LocalePublisher.getText(LocaleVariable.MESSAGE_TITLE_WARNING));
-		else if (type == OperationMessageType.INFO)
+		}
+		else if (type == OperationMessageType.INFO){
 			title = new Label(LocalePublisher.getText(LocaleVariable.MESSAGE_TITLE_INFO));
+		}
 		title.setStyleName("qp-message-title-text");
 		titlePanel.add(title);
 
@@ -89,29 +95,32 @@ public class OperationMessage implements ExtendedPopupPanelDisplayEventListener 
 		
 		panel.show();
 
-		if (timer != null)
+		if (timer != null){
 			timer.schedule(timeout);
+		}
 	}
 	
 	public void hide(){
 		
-		if (timer != null)
+		if (timer != null){
 			timer.cancel();
-		
+		}
 		panel.hide();
 		listener.onMessageHided(this);
 	}
 
 	@Override
 	public void onMessageAttaching() {
-		if (listener != null)
+		if (listener != null){
 			listener.onMessageAttaching(this);		
+		}
 		attached = true;
 	}
 	@Override
 	public void onMessageHided() {
-		if (listener != null)
+		if (listener != null){
 			listener.onMessageHided(this);
+		}
 		attached = false;
 	}
 		

@@ -27,6 +27,5 @@ public interface AssessmentControllerFactory {
 			ModuleHandlerManager moduleHandlerManager, AssessmentControllerFactory controllerFactory);
 
 	Item getItem(XmlData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket ss, ModulesRegistrySocket mrs,
-			Map<String, Outcome> outcomeVariables, ModuleHandlerManager moduleHandlerManager, AssessmentControllerFactory controllerFactory,
-			JSONArray stateArray);
+			Map<String, Outcome> outcomeVariables, ModuleHandlerManager moduleHandlerManager, JSONArray stateArray);
 }

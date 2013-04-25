@@ -23,15 +23,17 @@ public class ItemDataSourceCollectionManager {
 	public void setItemData(int index, XmlData d){
 		items[index] = new ItemDataSource(d);
 		itemsLoadCounter++;
-		if (itemsLoadCounter == items.length)
+		if (itemsLoadCounter == items.length){
 			listener.onItemCollectionLoaded();
+		}
 	}
 
 	public void setItemData(int index, String error){
 		items[index] = new ItemDataSource(error);
 		itemsLoadCounter++;
-		if (itemsLoadCounter == items.length)
+		if (itemsLoadCounter == items.length){
 			listener.onItemCollectionLoaded();
+		}
 	}
 	
 	public void setItemDataCollection(XmlData[] ds){
@@ -43,17 +45,21 @@ public class ItemDataSourceCollectionManager {
 	}
 
 	public ItemData getItemData(int index){
-		if (index >= items.length)
+		if (index >= items.length){
 			return new ItemData(0, "There's no item of index " + String.valueOf(index));
-		if (!items[index].isError())
+		}
+		if (!items[index].isError()){
 			return new ItemData(index, items[index].getItemData());
-		else
+		}
+		else {
 			return new ItemData(index, items[index].getErrorMessage());
+		}
 	}
 	
 	public InitialItemData getItemInitialData(int index){
-		if (index < items.length  &&  !items[index].isError())
+		if (index < items.length  &&  !items[index].isError()){
 			return new InitialItemData(items[index].getItemData());
+		}
 		
 		return new InitialItemData(null);
 	}
@@ -67,15 +73,18 @@ public class ItemDataSourceCollectionManager {
 	}
 	
 	public int getItemsCount(){
-		if (items != null)
+		if (items != null){
 			return items.length;
-		else
+		}
+		else{
 			return 0;
+		}
 	}
 	
 	public QueueSet<String> getStyleLinksForUserAgent(int itemIndex, String userAgent){
-		if (items != null && itemIndex<=items.length)
+		if (items != null && itemIndex<=items.length){
 			return items[itemIndex].getStyleLinksForUserAgent(userAgent);
+		}
 		return new QueueSet<String>();
 	}
 }

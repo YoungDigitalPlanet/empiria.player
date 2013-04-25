@@ -6,10 +6,10 @@ import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 public abstract class AbstractMediaController<T> extends Composite implements MediaController<T> {
-	protected final static String CLICK_SUFFIX = "-click";
-	protected final static String HOVER_SUFFIX = "-hover";
-	protected final static String FULL_SCREEN_SUFFIX = "-fullscreen";
-	protected final static String UNSUPPORTED_SUFFIX = "-unsupported";
+	protected static final String CLICK_SUFFIX = "-click";
+	protected static final String HOVER_SUFFIX = "-hover";
+	protected static final String FULL_SCREEN_SUFFIX = "-fullscreen";
+	protected static final String UNSUPPORTED_SUFFIX = "-unsupported";
 	private MediaAvailableOptions availableOptions;
 	private MediaWrapper<?> mediaWrapper = null;
 	private boolean infullScreen = false;

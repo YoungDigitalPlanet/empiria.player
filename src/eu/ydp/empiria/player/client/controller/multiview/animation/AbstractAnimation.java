@@ -8,16 +8,16 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public abstract class AbstractAnimation implements Animation {
 
-	protected final static String TRANSITION = "Transition";
-	protected final static String TRANSFORM = "Transform";
-	protected final static String TRANSITION_DURATION = "TransitionDuration";
-	protected final static String ANIMATION_NAME = "AnimationName";
-	protected final static String ANIMATION = "Animation";
-	protected final static String ANIMATION_DURATION = "AnimationDuration";
-	protected final static String ANIMATION_FILL_MODE = "AnimationFillMode";
+	protected static final String TRANSITION = "Transition";
+	protected static final String TRANSFORM = "Transform";
+	protected static final String TRANSITION_DURATION = "TransitionDuration";
+	protected static final String ANIMATION_NAME = "AnimationName";
+	protected static final String ANIMATION = "Animation";
+	protected static final String ANIMATION_DURATION = "AnimationDuration";
+	protected static final String ANIMATION_FILL_MODE = "AnimationFillMode";
 
 	protected final Set<AnimationEndCallback> callbacks = new HashSet<AnimationEndCallback>();
-	protected int positionX = 0;
+	private int positionX = 0;
 	private boolean running = false;
 	private FlowPanel toAnimate;
 

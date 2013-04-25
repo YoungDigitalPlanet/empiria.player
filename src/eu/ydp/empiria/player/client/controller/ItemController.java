@@ -83,7 +83,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			}
 			itemIndex = data.itemIndex;
 			item = controllerFactory.getItem(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket,
-					itemSessionSocket.getOutcomeVariablesMap(itemIndex), moduleHandlerManager, controllerFactory, itemSessionSocket.getState(itemIndex));
+					itemSessionSocket.getOutcomeVariablesMap(itemIndex), moduleHandlerManager, itemSessionSocket.getState(itemIndex));
 			getAccessor().registerItemBodyContainer(itemIndex, item.getContentView());
 
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));

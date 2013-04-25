@@ -78,18 +78,16 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private XmlData xmlData;
 
 	private InteractionEventsListener interactionEventsListener;
-	private final OutcomeVariablesInitializer outcomeVariablesInitializer;
 	private final FlowActivityVariablesProcessor flowActivityVariablesProcessor;
 
 	private final VariableProcessingAdapter variableProcessor;
-	private final VariablesProcessingModulesInitializer variablesProcessingModulesInitializer;
 	private final YJsJsonConverter yJsJsonConverter;
 	private JSONArray state;
 
 	@Inject
 	public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
 			@Assisted StyleSocket ss, @Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables,
-			@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory, @Assisted JSONArray stateArray,
+			@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted JSONArray stateArray,
 			ModuleFeedbackProcessor moduleFeedbackProcessor, OutcomeVariablesInitializer outcomeVariablesInitializer,
 			FlowActivityVariablesProcessor flowActivityVariablesProcessor, VariableProcessingAdapter variableProcessingAdapter,
 			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter) {
@@ -101,10 +99,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 		styleSocket = ss;
 		this.moduleFeedbackProcessor = moduleFeedbackProcessor;
-		this.outcomeVariablesInitializer = outcomeVariablesInitializer;
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
-		this.variablesProcessingModulesInitializer = variablesProcessingModulesInitializer;
 
 		Node rootNode = xmlData.getDocument().getElementsByTagName("assessmentItem").item(0);
 		Node itemBodyNode = xmlData.getDocument().getElementsByTagName("itemBody").item(0);
