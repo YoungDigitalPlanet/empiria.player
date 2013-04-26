@@ -37,6 +37,7 @@ public class FeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutAutoInj
     public void before() {
         setUp(new Class<?>[] {}, new Class<?>[] {}, new Class<?>[] { EventsBus.class });
         instance = spy(injector.getInstance(FeedbackSoundPlayer.class));
+        doReturn(mock(MediaObjectToDocumentInsertManager.class)).when(instance).getMediaObjectContainer();
         eventsBus = injector.getInstance(EventsBus.class);
     }
 

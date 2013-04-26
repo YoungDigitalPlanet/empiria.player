@@ -25,6 +25,9 @@ public class FeedbackSoundPlayer {
 	@Inject
 	protected SingleFeedbackSoundPlayerFactory feedbackPlayerFactory;
 
+	@Inject
+	private MediaObjectToDocumentInsertManager mediaObjectContainer;
+	
 	// Cache dla wrapperow - do odegrania danego pliku bedzie uzywany zawsze ten
 	// sam wrapper.
 	protected Map<String, MediaWrapper<?>> wrappers = new HashMap<String, MediaWrapper<?>>();
@@ -37,6 +40,9 @@ public class FeedbackSoundPlayer {
 		@Override
 		public void setCallbackReturnObject(Object object) {
 			if (object instanceof MediaWrapper<?>) {
+				
+				getMediaObjectContainer().addMediaToDocumentAndHideControls(object);
+				
 				MediaWrapper<?> mediaWrapper = (MediaWrapper<?>) object;
 				wrappers.put(wrappersSourcesKey, mediaWrapper);
 				stopAndPlaySound(wrappersSourcesKey);
@@ -114,4 +120,9 @@ public class FeedbackSoundPlayer {
 		}
 		return mimeType;
 	}
+
+	public MediaObjectToDocumentInsertManager getMediaObjectContainer() {
+		return mediaObjectContainer;
+	}
+
 }
