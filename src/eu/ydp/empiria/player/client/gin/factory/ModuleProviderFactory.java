@@ -15,6 +15,7 @@ import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
+import eu.ydp.empiria.player.client.module.labelling.LabellingModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
@@ -81,6 +82,9 @@ public class ModuleProviderFactory {
 
 	@Inject
 	protected Provider<SlideshowPlayerModule> slideshowPlayerModule;
+
+	@Inject
+	protected Provider<LabellingModule> labellingModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -156,5 +160,9 @@ public class ModuleProviderFactory {
 
 	public Provider<SlideshowPlayerModule> getSlideshowPlayerModule() {
 		return slideshowPlayerModule;
+	}
+	
+	public Provider<LabellingModule> getLabellingModule() {
+		return labellingModule;
 	}
 }

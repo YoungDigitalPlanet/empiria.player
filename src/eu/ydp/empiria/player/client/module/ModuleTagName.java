@@ -16,7 +16,7 @@ public enum ModuleTagName {
 	MEDIA_TITLE("mediaTitle"), MEDIA_DESCRIPTION("mediaDescription"), MEDIA_SCREEN("mediaScreen"), SIMULATION_PLAYER("simulationPlayer"), MEDIA_TEXT_TRACK("mediaTextTrack"),
 	MATH_GAP_TEXT_ENTRY_TYPE("gap_text-entry"), MATH_GAP_INLINE_CHOICE_TYPE("gap_inline-choice"),MATCH_INTERACTION("matchInteraction"),
 	SOURCE_LIST("sourceList"), TEXT_FEEDBACK("textFeedback"), IMAGE_FEEDBACK("imageFeedback"), 
-	INLINE_CONTAINER_STYLE_STRONG("b");
+	INLINE_CONTAINER_STYLE_STRONG("b"), LABELLING_INTERACTION("labellingInteraction");
 	String name = null;
 	private ModuleTagName(String name){
 		this.name = name;
