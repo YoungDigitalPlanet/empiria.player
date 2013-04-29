@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="lib" path="ivy-lib/aopalliance.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/asm.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/cglib.jar"/>
@@ -28,9 +29,9 @@
 	<classpathentry kind="lib" path="ivy-lib/gwtquery.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/javassist.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/junit.jar"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="lib" path="ivy-lib/JUnitParams.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/ydpgwtutils.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/gquery-dnd-bundle.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/xmlunit.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
