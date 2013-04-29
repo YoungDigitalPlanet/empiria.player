@@ -34,9 +34,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
-import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
+import eu.ydp.empiria.player.client.TestJAXBParser;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionItemsFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
@@ -108,9 +108,8 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 	}
 
-	AbstractJAXBTestBase<MatchInteractionBean> jaxb = new AbstractJAXBTestBase<MatchInteractionBean>() {
-
-	};
+	private TestJAXBParser<MatchInteractionBean> jaxb = new TestJAXBParser<MatchInteractionBean>(){};
+			
 	private MatchInteractionBean bean;
 	private ConnectionModuleViewImpl instance;
 	private ModuleSocket moduleSocket;
@@ -159,8 +158,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 	}
 
 	private void prepareBean() {
-		jaxb.createUnmarshaller();
-		bean = jaxb.createBeanFromXMLString(ConnectionModuleStructureMock.CONNECTION_XML);
+		bean = jaxb.parse(ConnectionModuleStructureMock.CONNECTION_XML);
 	}
 
 	private void prepareConnectionItems() {

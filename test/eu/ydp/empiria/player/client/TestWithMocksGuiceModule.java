@@ -27,6 +27,9 @@ import eu.ydp.empiria.player.client.module.connection.presenter.translation.Surf
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePointTranslator;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
+import eu.ydp.empiria.player.client.module.labelling.structure.LabellingModuleJAXBParserFactory;
+import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
+import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
 import eu.ydp.empiria.player.client.module.media.external.FullscreenVideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoImpl;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -67,6 +70,9 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToSingletonOrMockInstance(SingleMediaPlayback.class);
 		bindToSingletonOrMockInstance(DateService.class);
 		bindToSingletonOrMockInstance(MediaExecutorsStopper.class);
+		bindToSingletonOrMockInstance(LabellingView.class);
+		bindToSingletonOrMockInstance(LabellingChildView.class);
+		bindToSingletonOrMockInstance(LabellingModuleJAXBParserFactory.class);
 		
 		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
 		bindToClassOrMockProvider(IStickieView.class);

@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
+import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
 
 public class LabellingModule extends AbstractActivityContainerModuleBase {
 
@@ -20,12 +21,14 @@ public class LabellingModule extends AbstractActivityContainerModuleBase {
 	@Override
 	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
 		super.initModule(element, ms, mil, bgs);
-		createBody(element, bgs);
+		container = createBody(element, bgs);
 	}
 
-	private void createBody(Element element, BodyGeneratorSocket bgs) {
-		container = new SimplePanel();
-		builder.buildAndAttach(container, element, bgs);
+	private SimplePanel createBody(Element element, BodyGeneratorSocket bgs) {
+		SimplePanel container = new SimplePanel();
+		LabellingView view = builder.build(element, bgs);
+		container.add(view.getView());
+		return container;
 	}
 	
 	@Override

@@ -9,10 +9,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "labellingInteraction")
 public class LabellingInteractionBean {
 
-	@XmlElement
-	private ImgBean img;
-	@XmlElement
-	private ChildrenBean children;
+	@XmlElement private ImgBean img;
+	@XmlElement private ChildrenBean children;
 
 	public ImgBean getImg() {
 		return img;

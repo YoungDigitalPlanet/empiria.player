@@ -10,18 +10,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.google.common.collect.Lists;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="children")
+@XmlRootElement(name = "children")
 public class ChildrenBean {
 
-	@XmlElement(name="child")
-	private List<ChildBean> children = Lists.newArrayList();
-	
-	public List<ChildBean> getChildren() {
-		return children;
+	@XmlElement(name = "child")
+	private List<ChildBean> childBeanList = Lists.newArrayList();
+
+	public List<ChildBean> getChildBeanList() {
+		return childBeanList;
 	}
 
-	public void setChildren(List<ChildBean> children) {
-		this.children = children;
+	public void setChildBeanList(List<ChildBean> children) {
+		this.childBeanList = children;
 	}
 
 }

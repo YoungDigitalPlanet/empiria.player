@@ -7,27 +7,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-assessment-view")
 	public String QP_ASSESSMENT_VIEW();
-
-	@DefaultStringValue("qp-text-choice-popup-option-empty")
-	public String QP_TEXT_CHOICE_POPUP_OPTION_EMPTY();
-
+	
 	@DefaultStringValue("qp-body")
 	public String QP_BODY();
-
-	@DefaultStringValue("qp-text-choice-popup-disabled")
-	public String QP_TEXT_CHOICE_POPUP_DISABLED();
-
-	@DefaultStringValue("qp-text-choice-popup")
-	public String QP_TEXT_CHOICE_POPUP();
-
-	@DefaultStringValue("qp-text-choice-popup-none")
-	public String QP_TEXT_CHOICE_POPUP_NONE();
-
-	@DefaultStringValue("qp-text-choice-popup-correct")
-	public String QP_TEXT_CHOICE_POPUP_CORRECT();
-
-	@DefaultStringValue("qp-text-choice-popup-wrong")
-	public String QP_TEXT_CHOICE_POPUP_WRONG();
 
 	@DefaultStringValue("qp-bookmark-clearable")
 	public String QP_BOOKMARK_CLEARABLE();
@@ -257,6 +239,18 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-item-title-text")
 	public String QP_ITEM_TITLE_TEXT();
 
+	@DefaultStringValue("qp-labelling")
+	public String QP_LABELLING();
+	
+	@DefaultStringValue("qp-labelling-background")
+	public String QP_LABELLING_BACKGROUND();
+	
+	@DefaultStringValue("qp-labelling-inner")
+	public String QP_LABELLING_INNER();
+	
+	@DefaultStringValue("qp-labelling-child")
+	public String QP_LABELLING_CHILD();
+
 	@DefaultStringValue("qp-link")
 	public String QP_LINK();
 
@@ -340,7 +334,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-media-play-stop")
 	public String QP_MEDIA_PLAY_STOP();
-	
+
 	@DefaultStringValue("qp-media-positioninstream")
 	public String QP_MEDIA_POSITIONINSTREAM();
 
@@ -358,7 +352,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-media-volume-scrollbar")
 	public String QP_MEDIA_VOLUME_SCROLLBAR();
-
+	
 	@DefaultStringValue("qp-media-volume-scrollbar-button")
 	public String QP_MEDIA_VOLUME_SCROLLBAR_BUTTON();
 
@@ -592,6 +586,24 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-text")
 	public String QP_TEXT();
+
+	@DefaultStringValue("qp-text-choice-popup")
+	public String QP_TEXT_CHOICE_POPUP();
+
+	@DefaultStringValue("qp-text-choice-popup-correct")
+	public String QP_TEXT_CHOICE_POPUP_CORRECT();
+
+	@DefaultStringValue("qp-text-choice-popup-disabled")
+	public String QP_TEXT_CHOICE_POPUP_DISABLED();
+
+	@DefaultStringValue("qp-text-choice-popup-none")
+	public String QP_TEXT_CHOICE_POPUP_NONE();
+
+	@DefaultStringValue("qp-text-choice-popup-option-empty")
+	public String QP_TEXT_CHOICE_POPUP_OPTION_EMPTY();
+
+	@DefaultStringValue("qp-text-choice-popup-wrong")
+	public String QP_TEXT_CHOICE_POPUP_WRONG();
 
 	@DefaultStringValue("qp-text-inline")
 	public String QP_TEXT_INLINE();

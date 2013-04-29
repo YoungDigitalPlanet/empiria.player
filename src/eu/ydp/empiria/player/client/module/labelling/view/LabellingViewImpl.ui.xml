@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="styles" />
+	<g:AbsolutePanel styleName="{styles.QP_LABELLING}">
+		<g:at left='0' top='0'>
+			<g:Image ui:field="image" styleName="{styles.QP_LABELLING_BACKGROUND}" />
+		</g:at>
+		<g:at left='0' top='0'>
+			<g:AbsolutePanel ui:field="panel" styleName="{styles.QP_LABELLING_INNER}"  />
+		</g:at>
+	</g:AbsolutePanel>
+</ui:UiBinder> 

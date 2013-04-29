@@ -9,12 +9,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="img")
 public class ImgBean {
 
-	@XmlAttribute
-	private int width;
-	@XmlAttribute
-	private int height;
-	@XmlAttribute
-	private String src;
+	@XmlAttribute private int width;
+	@XmlAttribute private int height;
+	@XmlAttribute private String src;
 
 	public int getWidth() {
 		return width;
@@ -38,6 +35,37 @@ public class ImgBean {
 
 	public void setSrc(String src) {
 		this.src = src;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + height;
+		result = prime * result + ((src == null) ? 0 : src.hashCode());
+		result = prime * result + width;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ImgBean other = (ImgBean) obj;
+		if (height != other.height)
+			return false;
+		if (src == null) {
+			if (other.src != null)
+				return false;
+		} else if (!src.equals(other.src))
+			return false;
+		if (width != other.width)
+			return false;
+		return true;
 	}
 
 }

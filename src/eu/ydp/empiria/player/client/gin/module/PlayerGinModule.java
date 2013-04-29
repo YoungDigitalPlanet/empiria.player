@@ -71,6 +71,10 @@ import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedbackPresenter;
 import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
+import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
+import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildViewImpl;
+import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
+import eu.ydp.empiria.player.client.module.labelling.view.LabellingViewImpl;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
@@ -172,6 +176,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(SessionTimeUpdater.class).in(Singleton.class);
 		bind(YJsJsonConverter.class).in(Singleton.class);
 		bind(IJSONService.class).to(JSONService.class).in(Singleton.class);
+		bind(LabellingView.class).to(LabellingViewImpl.class);
+		bind(LabellingChildView.class).to(LabellingChildViewImpl.class);
 
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));

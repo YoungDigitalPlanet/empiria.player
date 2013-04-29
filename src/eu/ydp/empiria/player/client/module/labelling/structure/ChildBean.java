@@ -12,41 +12,37 @@ import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="child")
+@XmlRootElement(name = "child")
 public class ChildBean {
 
-	@XmlAttribute
-	private int x;
-	
-	@XmlAttribute
-	private int y;
-	
+	@XmlAttribute private int x;
+	@XmlAttribute private int y;
 	@XmlValue
-	@XmlJavaTypeAdapter(value=XMLContentTypeAdapter.class)
+	@XmlJavaTypeAdapter(value = XMLContentTypeAdapter.class)
 	private XMLContent content;
-	
+
 	public int getX() {
 		return x;
 	}
-	
+
 	public void setX(int x) {
 		this.x = x;
 	}
-	
+
 	public int getY() {
 		return y;
 	}
-	
+
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 	public XMLContent getContent() {
 		return content;
 	}
-	
+
 	public void setContent(XMLContent content) {
 		this.content = content;
 	}
-	
+
 }
