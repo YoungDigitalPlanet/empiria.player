@@ -53,17 +53,16 @@ public class SurfacePointTranslatorTest extends AbstractTestWithMocksBase {
 		assertThat(result.getX(), equalTo(expectedLeft));
 		assertThat(result.getY(), equalTo(TOP));
 	}
-
+	
 	@Test
 	@Parameters(method = "parametersForTranslatePoint")
-	public void translatePoint_xy(int left, int surfaceLeft, int expectedLeft){
+	public void translatePoint_offset(int left, int surfaceLeft, int expectedLeft){
 		// given
 		int TOP = 100;
-		ConnectionSurface surface = mock(ConnectionSurface.class);
-		stub(surface.getOffsetLeft()).toReturn(surfaceLeft);
+		Point point = new Point(left, TOP);
 		
 		// when
-		Point result = translator.translatePoint(left, TOP, surface);
+		Point result = translator.translatePoint(point, surfaceLeft);
 		
 		// then
 		assertThat(result.getX(), equalTo(expectedLeft));

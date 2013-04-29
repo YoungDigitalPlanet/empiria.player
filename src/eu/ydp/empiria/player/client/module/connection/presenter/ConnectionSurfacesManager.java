@@ -59,18 +59,24 @@ public class ConnectionSurfacesManager {
 
 	protected ConnectionSurface getOrCreateSurface(String identifier) {
 		ConnectionSurface surface;
-		if ((surface = surfaces.get(identifier)) == null) {// NOPMD
+		if (surfaces.containsKey(identifier)) {
+			surface = surfaces.get(identifier);
+		} else {
 			surface = connectionFactory.getConnectionSurface(dimensions.getWidth(), dimensions.getHeight());
 			surfaces.put(identifier, surface);
 		}
 		return surface;
+	}
+	
+	public void removeSurfaceForItem(String identifier){
+		surfaces.remove(identifier);
 	}
 
 	public ConnectionPairEntry<String, String> findPointOnPath(Point point) {
 		ConnectionPairEntry<String, String> foundPoint = null;
 		for (Map.Entry<ConnectionPairEntry<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
 			if (entry.getValue().isPointOnPath(point.getX(), point.getY(), APPROXIMATION)) {
-				foundPoint = new ConnectionPairEntry<String, String>(entry.getKey().getSource(), entry.getKey().getTarget());// NOPMD
+				foundPoint = new ConnectionPairEntry<String, String>(entry.getKey().getSource(), entry.getKey().getTarget());
 				break;
 			}
 		}
