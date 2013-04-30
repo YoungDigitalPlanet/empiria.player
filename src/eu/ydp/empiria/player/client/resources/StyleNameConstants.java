@@ -250,6 +250,9 @@ public interface StyleNameConstants extends Constants {
 	
 	@DefaultStringValue("qp-labelling-child")
 	public String QP_LABELLING_CHILD();
+	
+	@DefaultStringValue("qp-labelling-children")
+	public String QP_LABELLING_CHILDREN();
 
 	@DefaultStringValue("qp-link")
 	public String QP_LINK();

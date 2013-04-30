@@ -18,8 +18,9 @@ public class LabellingViewImpl extends Composite implements LabellingView {
 	private static LabellingViewImplUiBinder uiBinder = GWT.create(LabellingViewImplUiBinder.class);
 
 	interface LabellingViewImplUiBinder extends UiBinder<Widget, LabellingViewImpl> {}
-	
-	@UiField AbsolutePanel panel;
+
+	@UiField AbsolutePanel inner;
+	@UiField AbsolutePanel container;
 	@UiField Image image;
 
 	public LabellingViewImpl() {
@@ -34,15 +35,15 @@ public class LabellingViewImpl extends Composite implements LabellingView {
 
 	private void setSize(int width, int height) {
 		String px = Unit.PX.toString().toLowerCase();
-		setWidth(width + px);
-		setHeight(height + px);
-		panel.setWidth(width + px);
-		panel.setHeight(height + px);
+		inner.setWidth(width + px);
+		inner.setHeight(height + px);
+		container.setWidth(width + px);
+		container.setHeight(height + px);
 	}
 
 	@Override
 	public void addChild(IsWidget widget, int left, int top) {
-		panel.add(widget, left, top);
+		container.add(widget, left, top);
 	}
 	
 	public IsWidget getView(){
@@ -51,7 +52,7 @@ public class LabellingViewImpl extends Composite implements LabellingView {
 
 	@Override
 	public HasWidgets.ForIsWidget getContainer() {
-		return panel;
+		return container;
 	}
 	
 	

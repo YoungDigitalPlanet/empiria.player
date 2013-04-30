@@ -15,15 +15,15 @@ public class LabellingModule extends AbstractActivityContainerModuleBase {
 
 	@Inject LabellingBuilder builder;
 	
-	private SimplePanel container;
+	private Widget view;
 	
 	@Override
 	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
 		super.initModule(element, ms, mil, bgs);
-		container = createBody(element, bgs);
+		view = createView(element, bgs);
 	}
 
-	private SimplePanel createBody(Element element, BodyGeneratorSocket bgs) {
+	private SimplePanel createView(Element element, BodyGeneratorSocket bgs) {
 		SimplePanel container = new SimplePanel();
 		LabellingView view = builder.build(element, bgs);
 		container.add(view.getView());
@@ -32,7 +32,7 @@ public class LabellingModule extends AbstractActivityContainerModuleBase {
 
 	@Override
 	public Widget getView() {
-		return container;
+		return view;
 	}
 
 
