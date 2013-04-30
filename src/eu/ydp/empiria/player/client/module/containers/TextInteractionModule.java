@@ -18,9 +18,8 @@ public class TextInteractionModule extends BindingContainerModule<TextInteractio
 	private final BookmarkingHelper bookmarkingHelper;
 
 	public TextInteractionModule(){
-		super();
-		panel.setStyleName(styleNames.QP_TEXTINTERACTION());
-		bookmarkingHelper = new BookmarkingHelper(panel);
+		setContainerStyleName(styleNames.QP_TEXTINTERACTION());
+		bookmarkingHelper = new BookmarkingHelper(getView());
 	}
 	
 	@Override

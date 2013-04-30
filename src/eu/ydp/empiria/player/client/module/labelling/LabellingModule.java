@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.labelling;
 
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -28,11 +27,6 @@ public class LabellingModule extends AbstractActivityContainerModuleBase {
 		SimplePanel container = new SimplePanel();
 		LabellingView view = builder.build(element, bgs);
 		container.add(view.getView());
-		return container;
-	}
-	
-	@Override
-	public HasWidgets getContainer() {
 		return container;
 	}
 

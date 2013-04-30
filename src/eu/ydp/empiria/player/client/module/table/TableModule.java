@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -90,11 +89,6 @@ public class TableModule extends AbstractActivityContainerModuleBase implements 
 
 	@Override
 	public Widget getView() {
-		return tablePanel;
-	}
-
-	@Override
-	public HasWidgets getContainer() {
 		return tablePanel;
 	}
 

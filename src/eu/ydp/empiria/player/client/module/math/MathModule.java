@@ -15,7 +15,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -122,11 +121,6 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		for (MathGap gap: getMathGaps()) {
 			gap.setMathStyles(styles);
 		}
-	}
-
-	@Override
-	public HasWidgets getContainer() {
-		return placeholder;
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -251,11 +250,6 @@ public class ReportModule extends ContainerModuleBase {
 
 	@Override
 	public Widget getView() {
-		return mainPanel;
-	}
-
-	@Override
-	public HasWidgets getContainer() {
 		return mainPanel;
 	}
 

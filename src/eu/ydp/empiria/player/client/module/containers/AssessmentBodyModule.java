@@ -7,10 +7,11 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class AssessmentBodyModule extends SimpleContainerModuleBase<AssessmentBodyModule> {
+	
 	protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+	
 	public AssessmentBodyModule(){
-		super();
-		panel.setStyleName(styleNames.QP_BODY());
+		setContainerStyleName(styleNames.QP_BODY());
 	}
 
 	public void initModule(Element element, BodyGeneratorSocket generator){

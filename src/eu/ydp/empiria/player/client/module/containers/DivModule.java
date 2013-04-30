@@ -1,13 +1,10 @@
 package eu.ydp.empiria.player.client.module.containers;
 
-import com.google.gwt.user.client.ui.FlowPanel;
 
 public class DivModule extends SimpleContainerModuleBase<DivModule> {
 
 	public DivModule(){
-		super();
-		panel = new FlowPanel();
-		panel.setStyleName("qp-div");
+		setContainerStyleName("qp-div");
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import javax.annotation.PostConstruct;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -54,13 +53,13 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 	}
 
 	private void setLinkContentStyle() {
-		panel.setStyleName(styleNames.QP_LINK_CONTENT());
+		setContainerStyleName(styleNames.QP_LINK_CONTENT());
 	}
 
 	private void prepareMainPanel() {
 		mainPanel = new FlowPanel();
 		mainPanel.setStyleName(styleNames.QP_LINK());
-		mainPanel.add(panel);
+		mainPanel.add(getContainer());
 	}
 
 	private void addMouseOutHandler() {
@@ -108,11 +107,6 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 	@Override
 	public Widget getView() {
 		return mainPanel;
-	}
-
-	@Override
-	public HasWidgets getContainer() {
-		return panel;
 	}
 
 	protected void processLink() {

@@ -4,8 +4,7 @@ package eu.ydp.empiria.player.client.module.containers.group;
 public class GroupModule extends GroupModuleBase<GroupModule> {
 
 	public GroupModule(){
-		super();
-		panel.setStyleName("qp-group");
+		setContainerStyleName("qp-group");
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.containers;
 
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -13,10 +12,14 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 
 public abstract class SimpleContainerModuleBase<T> extends AbstractActivityContainerModuleBase implements Factory<T>{
 
-	protected Panel panel;
+	private Panel panel;
 
 	public SimpleContainerModuleBase(){
-		panel = new FlowPanel();
+		this.panel = new FlowPanel();
+	}
+
+	public SimpleContainerModuleBase(Panel panel){
+		this.panel = panel;
 	}
 
 	@Override
@@ -26,7 +29,7 @@ public abstract class SimpleContainerModuleBase<T> extends AbstractActivityConta
 		readAttributes(element);
 		applyIdAndClassToView(getView());
 
-		bodyGeneratorSocket.generateBody(element, getContainer());
+		bodyGeneratorSocket.generateBody(element, panel);
 	}
 
 	@Override
@@ -34,9 +37,12 @@ public abstract class SimpleContainerModuleBase<T> extends AbstractActivityConta
 		return panel;
 	}
 
-	@Override
-	public HasWidgets getContainer() {
+	protected Panel getContainer() {
 		return panel;
+	}
+
+	protected void setContainerStyleName(String styleName) {
+		panel.setStyleName(styleName);
 	}
 
 }

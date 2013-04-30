@@ -6,8 +6,7 @@ import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManag
 public class ItemBodyModule extends GroupModuleBase<ItemBodyModule> {
 
 	public ItemBodyModule(){
-		super();
-		panel.setStyleName("qp-item-body");
+		setContainerStyleName("qp-item-body");
 	}
 
 	@Override
