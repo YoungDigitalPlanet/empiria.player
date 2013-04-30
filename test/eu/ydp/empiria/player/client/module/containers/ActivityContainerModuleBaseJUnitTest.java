@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.IInteractionModule;
@@ -106,11 +105,6 @@ public class ActivityContainerModuleBaseJUnitTest {
 			
 			@Override
 			public Widget getView() {
-				return null;
-			}
-			
-			@Override
-			public HasWidgets getContainer() {
 				return null;
 			}
 			
