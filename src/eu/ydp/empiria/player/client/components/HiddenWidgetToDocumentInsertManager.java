@@ -14,19 +14,17 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class HiddenWidgetToDocumentInsertManager {
 
-	private FlowPanel panel;
-
-	public void addWidgetToDocumentAndHide(Widget widget) {
-		panel = createPanel();
+	/**
+	 * Returns reference to hidden flow panel
+	 */
+	public FlowPanel addWidgetToDocumentAndHide(Widget widget) {
+		FlowPanel panel = createPanel();
 		hidePanel(panel);
 		panel.add(widget);
 		addPanelToRootPanel(panel);
-	}
-
-	public FlowPanel getHiddenPanel() {
 		return panel;
 	}
-	
+
 	private void addPanelToRootPanel(FlowPanel hiddenPanel) {
 		RootPanel.get().add(hiddenPanel);
 	}
