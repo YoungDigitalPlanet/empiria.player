@@ -26,7 +26,7 @@ public class FeedbackSoundPlayer {
 	protected SingleFeedbackSoundPlayerFactory feedbackPlayerFactory;
 
 	@Inject
-	private MediaObjectToDocumentInsertManager mediaObjectContainer;
+	private HideNativeMediaControlsManager nativeMediaControlsManager;
 	
 	// Cache dla wrapperow - do odegrania danego pliku bedzie uzywany zawsze ten
 	// sam wrapper.
@@ -39,11 +39,11 @@ public class FeedbackSoundPlayer {
 
 		@Override
 		public void setCallbackReturnObject(Object object) {
-			if (object instanceof MediaWrapper<?>) {
-				
-				getMediaObjectContainer().addMediaToDocumentAndHideControls(object);
+			if (object instanceof MediaWrapper<?>) {				
 				
 				MediaWrapper<?> mediaWrapper = (MediaWrapper<?>) object;
+				nativeMediaControlsManager.addToDocumentAndHideControls(mediaWrapper);
+								
 				wrappers.put(wrappersSourcesKey, mediaWrapper);
 				stopAndPlaySound(wrappersSourcesKey);
 			}
@@ -119,10 +119,6 @@ public class FeedbackSoundPlayer {
 			mimeType = "audio/ogg";
 		}
 		return mimeType;
-	}
-
-	public MediaObjectToDocumentInsertManager getMediaObjectContainer() {
-		return mediaObjectContainer;
 	}
 
 }
