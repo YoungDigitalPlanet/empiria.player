@@ -85,15 +85,18 @@ public class MultiPageTouchHandler implements TouchHandler {
 		touchController.updateEndPoint(event);
 
 		if (touchController.isReadyToStartAnnimation()) {
-
-			touchEventReader.preventDefault(event);
-			touchEndTimer.schedule(MultiPageController.TOUCH_END_TIMER_TIME);
-
-			multiPageController.move(touchController.isSwipeRight(), touchController.getSwypePercentLength());
-			touchController.updateAfterSwypeDetected();
+			startAnimation(event);
 		} else {
 			touchController.setVerticalSwipeDetected(true);
 		}
+	}
+
+	private void startAnimation(NativeEvent event) {
+		touchEventReader.preventDefault(event);
+		touchEndTimer.schedule(MultiPageController.TOUCH_END_TIMER_TIME);
+
+		multiPageController.move(touchController.isSwipeRight(), touchController.getSwypePercentLength());
+		touchController.updateAfterSwypeDetected();
 	}
 
 	private void onTouchEnd(NativeEvent event) {
