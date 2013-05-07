@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.stickies.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.JsArray;
@@ -35,7 +36,7 @@ public class StickieDragHandlersManager {
 	private final EventsBus eventsBus;
 	private StickieDragController stickieDragController;
 	
-	private List<HandlerRegistration> upMoveHandlersRegistrations;
+	private List<HandlerRegistration> upMoveHandlersRegistrations = new ArrayList<HandlerRegistration>();
 
 	
 	@Inject
