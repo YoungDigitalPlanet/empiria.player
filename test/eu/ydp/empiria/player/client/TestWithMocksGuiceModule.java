@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.posi
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.WidgetSizeHelper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsDelegate;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePointTranslator;
@@ -73,6 +74,7 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToSingletonOrMockInstance(LabellingView.class);
 		bindToSingletonOrMockInstance(LabellingChildView.class);
 		bindToSingletonOrMockInstance(LabellingModuleJAXBParserFactory.class);
+		bindToSingletonOrMockInstance(PageScopeFactory.class);
 		
 		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
 		bindToClassOrMockProvider(IStickieView.class);
