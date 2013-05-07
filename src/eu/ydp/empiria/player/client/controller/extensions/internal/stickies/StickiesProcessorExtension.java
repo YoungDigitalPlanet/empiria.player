@@ -23,11 +23,14 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.pres
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.gwtutil.client.event.EventHandler;
 import eu.ydp.gwtutil.client.geom.MathUtil;
 
 public class StickiesProcessorExtension extends InternalExtension implements DataSourceDataSocketUserExtension, PlayerJsObjectModifierExtension, 
@@ -40,6 +43,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 	@Inject EventsBus eventsBus;
 	@Inject StickieFactory stickieFactory;
 	@Inject Provider<IStickieProperties> propertiesProvider;
+	@Inject PageScopeFactory pageScopeFactory;
 
 	List<List<IStickieProperties>> stickies = new ArrayList<List<IStickieProperties>>();
 	Map<IStickieProperties, IStickieView> views = new HashMap<IStickieProperties, IStickieView>(); 
@@ -195,7 +199,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 		};
 		
 		StickieMinimizeMaximizeController stickieMinimizeMaximizeController = stickieFactory.createStickieMinimizeMaximizeController(stickieProperties);
-		IStickiePresenter stickiePresenter = stickieFactory.createStickiePresenter(stickieProperties, stickieMinimizeMaximizeController, stickieRegistration);
+		final IStickiePresenter stickiePresenter = stickieFactory.createStickiePresenter(stickieProperties, stickieMinimizeMaximizeController, stickieRegistration);
 		StickieDragController stickieDragController = stickieFactory.createStickieDragController(stickiePresenter, stickieProperties);
 		StickieDragHandlersManager stickieDragHandlersManager = stickieFactory.createStickieDragHandlerManager(stickieDragController);
 		
@@ -211,9 +215,19 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 			stickiePresenter.centerPositionToView();
 			checkStickieOverlay(stickieProperties);
 			updateStickiePosition(stickieProperties);
-		} else {
-			stickieView.setPosition(stickieProperties.getX(), stickieProperties.getY());
+		}else{
+			addPageContentResizedHandlerToAdjustStickiePosition(stickiePresenter);
 		}
+	}
+
+	private void addPageContentResizedHandlerToAdjustStickiePosition(final IStickiePresenter stickiePresenter) {
+		PlayerEventHandler pageContentResizedHandler = new PlayerEventHandler() {
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				stickiePresenter.correctStickiePosition();
+			}
+		};
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedHandler, pageScopeFactory.getCurrentPageScope());
 	}
 	
 	private void updateStickiePosition(IStickieProperties sp){
