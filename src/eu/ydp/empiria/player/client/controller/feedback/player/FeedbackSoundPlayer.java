@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Joiner;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
@@ -27,26 +28,24 @@ public class FeedbackSoundPlayer {
 
 	@Inject
 	private HideNativeMediaControlsManager nativeMediaControlsManager;
-	
+
 	// Cache dla wrapperow - do odegrania danego pliku bedzie uzywany zawsze ten
 	// sam wrapper.
-	protected Map<String, MediaWrapper<?>> wrappers = new HashMap<String, MediaWrapper<?>>();
+	protected Map<String, MediaWrapper<Widget>> wrappers = new HashMap<String, MediaWrapper<Widget>>();
 	protected Map<String, SingleFeedbackSoundPlayer> feedbackPlayers = new HashMap<String, SingleFeedbackSoundPlayer>();
 
-	protected class MediaWrapperHandler implements CallbackRecevier {
+	protected class MediaWrapperHandler implements CallbackRecevier<MediaWrapper<Widget>> {
 
 		protected String wrappersSourcesKey;
 
 		@Override
-		public void setCallbackReturnObject(Object object) {
-			if (object instanceof MediaWrapper<?>) {				
-				
-				MediaWrapper<?> mediaWrapper = (MediaWrapper<?>) object;
-				nativeMediaControlsManager.addToDocumentAndHideControls(mediaWrapper);
-								
-				wrappers.put(wrappersSourcesKey, mediaWrapper);
-				stopAndPlaySound(wrappersSourcesKey);
-			}
+		public void setCallbackReturnObject(MediaWrapper<Widget> mediaWrapper) {
+
+			nativeMediaControlsManager.addToDocumentAndHideControls(mediaWrapper);
+
+			wrappers.put(wrappersSourcesKey, mediaWrapper);
+			stopAndPlaySound(wrappersSourcesKey);
+
 		}
 
 		public void setWrappersSourcesKey(String sourcesKey) {

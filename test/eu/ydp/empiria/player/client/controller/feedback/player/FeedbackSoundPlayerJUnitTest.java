@@ -21,6 +21,8 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import com.google.gwt.user.client.ui.Widget;
+
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -91,7 +93,7 @@ public class FeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutAutoInj
     public void testPlayStringMapOfStringString() {
         doNothing().when(instance).stopAndPlaySound(Mockito.anyString());
         doNothing().when(instance).createMediaWrapperAndStopAndPlaySound(Mockito.anyString(), Mockito.anyMap());
-        instance.wrappers = new HashMap<String, MediaWrapper<?>>();
+        instance.wrappers = new HashMap<String, MediaWrapper<Widget>>();
 
         Map<String, String> params = new HashMap<String, String>();
         instance.play("test", params);

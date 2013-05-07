@@ -11,8 +11,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Provides possibility to add widget to RootPanel and hide it. 
+ * i.e.: hidden native media controls or buttons impossible to 
+ * be styled (when dummy button calls hidden button)   
  */
-public class HiddenWidgetToDocumentInsertManager {
+public class HiddenWidgetCreator {
 
 	/**
 	 * Returns reference to hidden flow panel
