@@ -31,6 +31,7 @@ public class ExpressionToResponseConnector {
 				LOGGER.info(message);
 			}else{
 				expressionBean.getResponses().add(response);
+				response.setExpression(expressionBean);
 			}
 		}
 	}

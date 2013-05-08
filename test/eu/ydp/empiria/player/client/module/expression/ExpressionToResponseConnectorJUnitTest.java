@@ -53,6 +53,7 @@ public class ExpressionToResponseConnectorJUnitTest {
 
 		// then
 		verify(identifiersFromExpressionExtractor).extractResponseIdentifiersFromTemplate(template);
+		verify(relatedResponse).setExpression(expressionBean);
 		List<Response> connectedResponses = expressionBean.getResponses();
 		assertEquals(1, connectedResponses.size());
 		assertEquals(relatedResponse, connectedResponses.get(0));

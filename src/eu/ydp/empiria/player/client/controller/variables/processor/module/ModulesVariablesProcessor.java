@@ -47,10 +47,24 @@ public class ModulesVariablesProcessor {
 	}
 
 	private void processVariablesForResponse(ProcessingMode processingMode, DtoProcessedResponse processedResponse) {
-		if (processedResponse.containChanges())
+		if (shouldProcessResponse(processedResponse))
 			responseVariablesProcessor.processChangedResponse(processedResponse, processingMode);
 		else
 			resetVariablesOfLastInteraction(processedResponse);
+	}
+
+	private boolean shouldProcessResponse(DtoProcessedResponse processedResponse) {
+		boolean shouldProcessResponse = false;
+		Response response = processedResponse.getCurrentResponse();
+		
+		if(processedResponse.containChanges()){
+			shouldProcessResponse = true;
+		}else if(response.isInGroup()){
+			shouldProcessResponse = true;
+		}else if(response.isInExpression()){
+			shouldProcessResponse = true;
+		}
+		return shouldProcessResponse;
 	}
 
 	private void resetVariablesOfLastInteraction(DtoProcessedResponse processedResponse) {

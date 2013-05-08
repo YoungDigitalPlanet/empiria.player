@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.processor.module.expression.ExpressionModeVariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedModeVariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.multiple.MultipleModeVariableProcessor;
 import static org.junit.Assert.assertEquals;
@@ -20,18 +21,21 @@ public class VariableProcessorFactoryJUnitTest {
 	private MultipleModeVariableProcessor multipleModeVariableProcessor;
 	@Mock
 	private GroupedModeVariableProcessor groupedModeVariableProcessor;
+	@Mock	
+	private ExpressionModeVariableProcessor expressionVariableProcessor;
 	
 	@Before
 	public void setUp() throws Exception {
-		variableProcessorFactory = new VariableProcessorFactory(multipleModeVariableProcessor, groupedModeVariableProcessor);
+		variableProcessorFactory = new VariableProcessorFactory(multipleModeVariableProcessor, groupedModeVariableProcessor, expressionVariableProcessor);
 	}
 
 	@Test
 	public void shouldCreateGroupedProcessorWhenHasGroup() throws Exception {
 		Cardinality cardinality = Cardinality.ORDERED;
 		boolean hasGroups = true;
+		boolean isInExpression = false;
 		
-		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups);
+		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups, isInExpression);
 		
 		assertEquals(groupedModeVariableProcessor, variableProcessor);
 	}
@@ -40,8 +44,9 @@ public class VariableProcessorFactoryJUnitTest {
 	public void shouldCreateMultipleModeProcessorIsSingleCardinality() throws Exception {
 		Cardinality cardinality = Cardinality.SINGLE;
 		boolean hasGroups = false;
+		boolean isInExpression = false;
 		
-		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups);
+		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups, isInExpression);
 		
 		assertEquals(multipleModeVariableProcessor, variableProcessor);
 	}
@@ -50,8 +55,9 @@ public class VariableProcessorFactoryJUnitTest {
 	public void shouldCreateMultipleModeProcessorIsMultipleCardinality() throws Exception {
 		Cardinality cardinality = Cardinality.MULTIPLE;
 		boolean hasGroups = false;
+		boolean isInExpression = false;
 		
-		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups);
+		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups, isInExpression);
 		
 		assertEquals(multipleModeVariableProcessor, variableProcessor);
 	}
@@ -60,9 +66,21 @@ public class VariableProcessorFactoryJUnitTest {
 	public void shouldCreateMultipleModeProcessorWhenIsNotSupportedCardinality() throws Exception {
 		Cardinality cardinality = Cardinality.ORDERED;
 		boolean hasGroups = false;
+		boolean isInExpression = false;
 		
-		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups);
+		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups, isInExpression);
 		
 		assertEquals(multipleModeVariableProcessor, variableProcessor);
+	}
+	
+	@Test
+	public void shouldCreateExpressionVariableProcessor() throws Exception {
+		Cardinality cardinality = Cardinality.SINGLE;
+		boolean hasGroups = false;
+		boolean isInExpression = true;
+		
+		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups, isInExpression);
+		
+		assertEquals(expressionVariableProcessor, variableProcessor);
 	}
 }

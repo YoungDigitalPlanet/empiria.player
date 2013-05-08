@@ -29,8 +29,10 @@ import com.google.gwt.json.client.JSONValue;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
 public class Response extends Variable {
 
@@ -44,6 +46,8 @@ public class Response extends Variable {
 	private boolean initialized = false;
 	public Evaluate evaluate;
 	private CountMode countMode = CountMode.SINGLE;
+	private ExpressionBean expression;
+	private CheckMode checkMode = CheckMode.DEFAULT;
 
 	public Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate, BaseType baseType,
 			Cardinality cardinality) {
@@ -55,11 +59,13 @@ public class Response extends Variable {
 		this.baseType = baseType;
 		this.cardinality = cardinality;
 	}
-
+	
 	public Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate, BaseType baseType,
-			Cardinality cardinality, CountMode countMode) {
+			Cardinality cardinality, CountMode countMode, ExpressionBean expression, CheckMode checkMode) {
 		this(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality);
 		this.countMode = countMode;
+		this.expression = expression;
+		this.checkMode = checkMode;
 	}
 
 	/**
@@ -171,5 +177,29 @@ public class Response extends Variable {
 
 	@Override
 	public void fromJSON(JSONValue value) {
+	}
+	
+	public boolean isInGroup(){
+		boolean isInGroup = false;
+		if(groups != null){
+			isInGroup = groups.size() > 0;
+		}
+		return isInGroup;
+	}
+	
+	public boolean isInExpression(){
+		return checkMode == CheckMode.EXPRESSION;
+	}
+
+	public ExpressionBean getExpression() {
+		return expression;
+	}
+
+	public void setExpression(ExpressionBean expression) {
+		this.expression = expression;
+	}
+
+	public CheckMode getCheckMode() {
+		return checkMode;
 	}
 }

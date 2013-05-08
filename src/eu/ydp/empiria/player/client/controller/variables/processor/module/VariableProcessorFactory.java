@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.processor.module.expression.ExpressionModeVariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedModeVariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.multiple.MultipleModeVariableProcessor;
 
@@ -14,23 +15,28 @@ public class VariableProcessorFactory {
 	
 	private final MultipleModeVariableProcessor multipleModeVariableProcessor;
 	private final GroupedModeVariableProcessor groupedModeVariableProcessor;
+	private final ExpressionModeVariableProcessor expressionModeVariableProcessor;
 	
 	@Inject
 	public VariableProcessorFactory(
 			MultipleModeVariableProcessor multipleModeVariableProcessor,
-			GroupedModeVariableProcessor groupedModeVariableProcessor) {
+			GroupedModeVariableProcessor groupedModeVariableProcessor,
+			ExpressionModeVariableProcessor expressionModeVariableProcessor) {
 		this.multipleModeVariableProcessor = multipleModeVariableProcessor;
 		this.groupedModeVariableProcessor = groupedModeVariableProcessor;
+		this.expressionModeVariableProcessor = expressionModeVariableProcessor;
 	}
 
-	public VariableProcessor findAppropriateProcessor(Cardinality cardinality, boolean hasGroups){
+	public VariableProcessor findAppropriateProcessor(Cardinality cardinality, boolean hasGroups, boolean isInExpression){
 		VariableProcessor variableProcessor = null;
 		
 		if(hasGroups){
 			variableProcessor = groupedModeVariableProcessor;
-		}else if(isSingleOrMultiple(cardinality)){
+		} else if(isInExpression){
+			return expressionModeVariableProcessor;
+		} else if(isSingleOrMultiple(cardinality)){
 			variableProcessor = multipleModeVariableProcessor;
-		}else{
+		} else{
 			LOGGER.warning("Unknown Cardinality: "+cardinality+" for variable processing. Will be treated as multiple cardinality");
 			variableProcessor = multipleModeVariableProcessor;
 		}

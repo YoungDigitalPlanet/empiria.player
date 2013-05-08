@@ -7,7 +7,9 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
+import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
 public class ResponseBuilder {
 
@@ -19,6 +21,8 @@ public class ResponseBuilder {
 	private BaseType baseType = BaseType.STRING;
 	private Cardinality cardinality;
 	private CountMode countMode = CountMode.SINGLE;
+	private ExpressionBean expression = null;
+	private CheckMode checkMode = CheckMode.DEFAULT;
 
 	public ResponseBuilder withEvaluate(Evaluate evaluate) {
 		this.evaluate = evaluate;
@@ -79,8 +83,18 @@ public class ResponseBuilder {
 		this.countMode = countMode;
 		return this;
 	}
+	
+	public ResponseBuilder withExpression(ExpressionBean expression){
+		this.expression = expression;
+		return this;
+	}
 
+	public ResponseBuilder withCheckMode(CheckMode checkMode){
+		this.checkMode = checkMode;
+		return this;
+	}
+	
 	public Response build() {
-		return new Response(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality, countMode);
+		return new Response(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality, countMode, expression, checkMode);
 	}
 }

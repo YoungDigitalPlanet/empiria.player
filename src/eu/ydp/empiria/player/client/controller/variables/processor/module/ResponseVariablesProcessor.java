@@ -31,7 +31,8 @@ public class ResponseVariablesProcessor {
 		DtoModuleProcessingResult processingResult = processedResponse.getPreviousProcessingResult();
 		
 		boolean hasGroups = response.groups.size() > 0;
-		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(response.cardinality, hasGroups);
+		boolean isInExpression = response.isInExpression();
+		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(response.cardinality, hasGroups, isInExpression);
 		
 		UserInteractionVariables userInteractionVariables = processUserInteractionVariablesInCorrectMode(processedResponse, processingMode, variableProcessor);
 		processingResult.setUserInteractionVariables(userInteractionVariables);

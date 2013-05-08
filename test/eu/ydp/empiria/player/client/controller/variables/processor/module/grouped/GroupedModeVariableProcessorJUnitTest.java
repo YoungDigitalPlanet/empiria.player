@@ -80,7 +80,6 @@ public class GroupedModeVariableProcessorJUnitTest {
 		assertThat(done, equalTo(1));
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldSetLastmistakenBecauseNotCorrectAnswersAdded() throws Exception {		
 		Response response = builder().withCorrectAnswers("doneAnswer1")
@@ -88,6 +87,7 @@ public class GroupedModeVariableProcessorJUnitTest {
 				.build();
 		
 		List<String> addedAnswers = Lists.newArrayList("wrongAnswer");
+		@SuppressWarnings("unchecked")
 		LastAnswersChanges answersChanges = new LastAnswersChanges(addedAnswers, Collections.EMPTY_LIST);
 		
 		when(groupedAnswersManager.isAnswerCorrectInAnyOfGroups("wrongAnswer", response, response.groups))
@@ -96,6 +96,23 @@ public class GroupedModeVariableProcessorJUnitTest {
 		boolean lastmistaken = groupedModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
 		assertThat(lastmistaken, equalTo(true));
+	}
+
+	@Test
+	public void shouldNotSetLastmistakenBecauseAnyAnswerChangedWasChanged() throws Exception {		
+		Response response = builder().withCorrectAnswers("doneAnswer1")
+				.withGroups("group1")
+				.build();
+		
+		@SuppressWarnings("unchecked")
+		LastAnswersChanges answersChanges = new LastAnswersChanges(Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+		
+		when(groupedAnswersManager.isAnswerCorrectInAnyOfGroups("wrongAnswer", response, response.groups))
+		.thenReturn(false);
+		
+		boolean lastmistaken = groupedModeVariableProcessor.checkLastmistaken(response, answersChanges);
+		
+		assertThat(lastmistaken, equalTo(false));
 	}
 	
 	@SuppressWarnings("unchecked")

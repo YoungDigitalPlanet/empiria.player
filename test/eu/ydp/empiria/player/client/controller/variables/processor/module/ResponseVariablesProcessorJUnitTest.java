@@ -38,6 +38,7 @@ public class ResponseVariablesProcessorJUnitTest {
 
 	private Cardinality cardinality = Cardinality.SINGLE;
 	private boolean hasGroups = false;
+	private boolean isInExpression = false;
 	private List<String> newUserAnswers = Lists.newArrayList("newUserAnswer");
 	private Response currentResponse = new ResponseBuilder().withValues(newUserAnswers)
 			.withCardinality(cardinality)
@@ -55,7 +56,7 @@ public class ResponseVariablesProcessorJUnitTest {
 	public void shouldProcessVariablesInNotUserInteractionMode() throws Exception {
 		DtoProcessedResponse processedResponse = prepareInitialProcessedResponse();
 
-		when(variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups))
+		when(variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups, isInExpression))
 			.thenReturn(variableProcessor);
 
 		setUpVariableProcessorCalls();
@@ -70,7 +71,7 @@ public class ResponseVariablesProcessorJUnitTest {
 	public void shouldProcessVariablesWhenIsUserInteractionMode() throws Exception {
 		DtoProcessedResponse processedResponse = prepareInitialProcessedResponse();
 		
-		when(variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups))
+		when(variableProcessorFactory.findAppropriateProcessor(cardinality, hasGroups, isInExpression))
 		.thenReturn(variableProcessor);
 		
 		setUpVariableProcessorCalls();

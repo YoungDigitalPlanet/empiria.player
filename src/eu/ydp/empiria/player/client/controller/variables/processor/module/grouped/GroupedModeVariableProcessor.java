@@ -70,8 +70,16 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 
 	@Override
 	public boolean checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
-		List<String> addedAnswers = answersChanges.getAddedAnswers();
+		boolean lastmistaken = false;
+		if(answersChanges.containChanges()){
+			lastmistaken = checkLastAnswerChangesIfWasMistaken(response, answersChanges);
+		}
+		
+		return lastmistaken;
+	}
 
+	private boolean checkLastAnswerChangesIfWasMistaken(Response response, LastAnswersChanges answersChanges) {
+		List<String> addedAnswers = answersChanges.getAddedAnswers();
 		boolean addedCorrectAnswer = hasAddedAnyCorrectAnswer(addedAnswers, response);
 		boolean lastmistaken; 
 		
