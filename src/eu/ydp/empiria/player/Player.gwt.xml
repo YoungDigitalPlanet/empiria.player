@@ -15,6 +15,7 @@
 	<inherits name="com.peterfranza.gwt.jaxb.JAXB" />
 	<inherits name='com.google.gwt.query.Query' />
 	<inherits name='gwtquery.plugins.droppable.Droppable' />
+	<inherits name="org.matheclipse.parser.Parser"/>
 
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject" />
