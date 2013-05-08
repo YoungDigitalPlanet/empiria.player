@@ -39,7 +39,6 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase  {
 		// given
 		List<Response> responses = Lists.newArrayList(responsesHelper.getResponse("a", "0"), responsesHelper.getResponse("b", "1"), responsesHelper.getResponse("c", "2"));		
 		ExpressionBean expression = buildExpressionBean(responses, "'a'+5*'b'+3<'c'");
-		//5+3>=2
 		
 		// when
 		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);

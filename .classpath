@@ -19,7 +19,7 @@
 	<classpathentry kind="lib" path="ivy-lib/gwtFlashMedia.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/gwtcreatejs.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/mockito-all.jar"/>
-	<classpathentry kind="lib" path="libs/matheclipse-parser-0.0.10.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/matheclipse-parser.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="ivy-lib/hamcrest-library.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/hamcrest-core.jar"/>

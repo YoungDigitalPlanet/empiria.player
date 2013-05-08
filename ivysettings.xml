@@ -8,12 +8,14 @@
 
 	<resolvers>
 	    <ibiblio name='gwt_query_plugins' m2compatible='true' root='http://gwtquery-plugins.googlecode.com/svn/mavenrepo/' />
+	    <ibiblio name='org-matheclipse-repository' m2compatible='true' root='http://symja.googlecode.com/svn/maven-repository/' />
 		<chain name="default" returnFirst="true" checkmodified="true">
 			<resolver ref="local"/>
 			<resolver ref="eu.ydp.shared"/>
 			<resolver ref="eu.ydp.public"/>
 			<resolver ref="public"/>
 			<resolver ref="gwt_query_plugins"/>
+			<resolver ref="org-matheclipse-repository"/>
 		</chain>
-	</resolvers>
+	</resolvers>	
 </ivysettings>
