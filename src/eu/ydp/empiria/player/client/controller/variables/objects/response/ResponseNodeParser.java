@@ -9,6 +9,7 @@ import com.google.gwt.xml.client.NodeList;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
+import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.gwtutil.client.NumberUtils;
 
@@ -20,7 +21,7 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 public class ResponseNodeParser {
 
-	public Response parseResponseFromNode(Node responseDeclaration){
+	public Response parseResponseFromNode(Node responseDeclaration) {
 		CorrectAnswers correctAnswers = new CorrectAnswers();
 
 		List<String> values = new Vector<String>();
@@ -31,6 +32,8 @@ public class ResponseNodeParser {
 		Cardinality cardinality = Cardinality.fromString(((Element) responseDeclaration).getAttribute("cardinality"));
 
 		Evaluate evaluate = Evaluate.fromString(((Element) responseDeclaration).getAttribute("evaluate"));
+
+		CheckMode checkMode = CheckMode.fromString(((Element) responseDeclaration).getAttribute("checkMode"));
 
 		BaseType baseType = BaseType.fromString(((Element) responseDeclaration).getAttribute("baseType"));
 
@@ -67,8 +70,8 @@ public class ResponseNodeParser {
 				}
 			}
 		}
-		
-		return new Response(correctAnswers, values, groupsNames, identifier, evaluate, baseType, cardinality);
+
+		return new Response(correctAnswers, values, groupsNames, identifier, evaluate, baseType, cardinality, CountMode.SINGLE, null, checkMode);
 	}
-	
+
 }

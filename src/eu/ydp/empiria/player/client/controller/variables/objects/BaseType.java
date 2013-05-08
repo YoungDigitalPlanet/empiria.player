@@ -2,32 +2,32 @@ package eu.ydp.empiria.player.client.controller.variables.objects;
 
 public enum BaseType {
 	IDENTIFIER, BOOLEAN, INTEGER, FLOAT, STRING, POINT, PAIR, DIRECTED_PAIR, DURATION, FILE, URL;
-	
-	public static BaseType fromString(String key){
-		if (key.toLowerCase().compareTo("identifier") == 0){
+
+	public static BaseType fromString(String key) {
+		if (key.equalsIgnoreCase(IDENTIFIER.name())) {
 			return IDENTIFIER;
-		} else if (key.toLowerCase().compareTo("boolean") == 0){
+		} else if (key.equalsIgnoreCase("BOOLEAN")) {
 			return BOOLEAN;
-		} else if (key.toLowerCase().compareTo("integer") == 0){
+		} else if (key.equalsIgnoreCase("INTEGER")) {
 			return INTEGER;
-		} else if (key.toLowerCase().compareTo("float") == 0){
+		} else if (key.equalsIgnoreCase("FLOAT")) {
 			return FLOAT;
-		} else if (key.toLowerCase().compareTo("string") == 0){
+		} else if (key.equalsIgnoreCase("STRING")) {
 			return STRING;
-		} else if (key.toLowerCase().compareTo("point") == 0){
+		} else if (key.equalsIgnoreCase("POINT")) {
 			return POINT;
-		} else if (key.toLowerCase().compareTo("pair") == 0){
+		} else if (key.equalsIgnoreCase("PAIR")) {
 			return PAIR;
-		} else if (key.toLowerCase().compareTo("directedPair") == 0){
+		} else if (key.equalsIgnoreCase("DIRECTEDPAIR")) {
 			return DIRECTED_PAIR;
-		} else if (key.toLowerCase().compareTo("duration") == 0){
+		} else if (key.equalsIgnoreCase("DURATION")) {
 			return DURATION;
-		} else if (key.toLowerCase().compareTo("file") == 0){
+		} else if (key.equalsIgnoreCase("FILE")) {
 			return FILE;
-		} else if (key.toLowerCase().compareTo("url") == 0){
+		} else if (key.equalsIgnoreCase("URL")) {
 			return URL;
 		}
-		
+
 		return STRING;
 	}
 }
