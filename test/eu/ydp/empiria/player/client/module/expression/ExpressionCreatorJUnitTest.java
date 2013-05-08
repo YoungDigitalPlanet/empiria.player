@@ -12,19 +12,23 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
-public class ExpressionCreatorTest {
+public class ExpressionCreatorJUnitTest {
 
 	private ExpressionCreator expressionCreator;
+	private ResponsesTestingHelper responsesHelper;
 
 	@Before
 	public void before() {
 		expressionCreator = new ExpressionCreator();
+		responsesHelper = new ResponsesTestingHelper();
 	}
 
 	@Test
 	public void getExpressionTest() {
 		ExpressionBean expressionBean = new ExpressionBean();
-		List<Response> responses = Lists.newArrayList(getResponse("a", "0"), getResponse("b", "1"), getResponse("c", "2"), getResponse("d", "3"));
+		List<Response> responses = Lists.newArrayList(
+				responsesHelper.getResponse("a", "0"), responsesHelper.getResponse("b", "1"), 
+				responsesHelper.getResponse("c", "2"), responsesHelper.getResponse("d", "3"));
 		expressionBean.getResponses().addAll(responses);
 		expressionBean.setTemplate("'a'+5*'b'+3>='c'");
 
@@ -33,7 +37,4 @@ public class ExpressionCreatorTest {
 		assertEquals("0+5*1+3>=2", result);
 	}
 
-	private Response getResponse(String identifier, String value) {
-		return new Response(null, Lists.newArrayList(value), null, identifier, null, null, null);
-	}
 }
