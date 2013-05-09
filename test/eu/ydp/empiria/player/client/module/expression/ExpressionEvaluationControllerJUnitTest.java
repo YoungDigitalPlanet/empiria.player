@@ -86,6 +86,32 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase  {
 		assertTrue(ExpressionEvaluationResult.VALUES_NOT_SET.equals(result));
 	}	
 	
+	@Test
+	public void evaluateInvalidFormedEquationArithmeticException_expectsWrong() {		
+		// given
+		List<Response> responses = Lists.newArrayList(responsesHelper.getResponse("a", "0"), responsesHelper.getResponse("b", "1"), responsesHelper.getResponse("c", "2"));		
+		ExpressionBean expression = buildExpressionBean(responses, "'a'+5*'b'+3");
+		
+		// when
+		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);
+		
+		// then
+		assertTrue(ExpressionEvaluationResult.WRONG.equals(result));
+	}		
+	
+	@Test
+	public void evaluateInvalidFormedEquationStupidityGivenArithmeticException_expectsWrong() {		
+		// given
+		List<Response> responses = Lists.newArrayList(responsesHelper.getResponse("a", "whatthefuck"));		
+		ExpressionBean expression = buildExpressionBean(responses, "'a'");
+		
+		// when
+		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);
+		
+		// then
+		assertTrue(ExpressionEvaluationResult.WRONG.equals(result));
+	}		
+	
 	private ExpressionBean buildExpressionBean(List<Response> inputResponses, String template) {
 		ExpressionBean expressionBean = new ExpressionBean();
 		List<Response> responses = expressionBean.getResponses();

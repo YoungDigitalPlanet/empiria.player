@@ -13,7 +13,13 @@ public class ExpressionEvaluator {
 	
 	public boolean evaluate(String expression) {
 		expression = symjaExpressionAdapter.process(expression);
-		return processLogicalExpressionEvaluator(expression);	
+		boolean result;
+		try {
+			result = processLogicalExpressionEvaluator(expression);
+		} catch (ArithmeticException e) {
+			result = false;
+		}
+		return result;
 	}
 	
 	private boolean processLogicalExpressionEvaluator(String expression) {
