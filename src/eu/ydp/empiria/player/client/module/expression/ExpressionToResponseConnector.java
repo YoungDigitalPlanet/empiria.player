@@ -27,7 +27,7 @@ public class ExpressionToResponseConnector {
 			Response response = responses.get(responseId);
 			
 			if(response == null){
-				String message = String.format("Expression: %s is using identifier: %s that is not existing in responsesMap!", template, responseId);
+				String message = "Expression: "+template+" is using identifier: "+responseId+" that is not existing in responsesMap!";
 				LOGGER.info(message);
 			}else{
 				expressionBean.getResponses().add(response);

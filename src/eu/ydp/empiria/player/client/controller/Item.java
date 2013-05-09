@@ -12,8 +12,10 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -51,6 +53,7 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.expression.ExpressionListBuilder;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
@@ -90,7 +93,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 			@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted JSONArray stateArray,
 			ModuleFeedbackProcessor moduleFeedbackProcessor, OutcomeVariablesInitializer outcomeVariablesInitializer,
 			FlowActivityVariablesProcessor flowActivityVariablesProcessor, VariableProcessingAdapter variableProcessingAdapter,
-			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter) {
+			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter,
+			ExpressionListBuilder expressionListBuilder) {
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
@@ -102,20 +106,25 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
 
-		Node rootNode = xmlData.getDocument().getElementsByTagName("assessmentItem").item(0);
-		Node itemBodyNode = xmlData.getDocument().getElementsByTagName("itemBody").item(0);
+		Document document = xmlData.getDocument();
+		Node rootNode = document.getElementsByTagName("assessmentItem").item(0);
+		Node itemBodyNode = document.getElementsByTagName("itemBody").item(0);
 
 		final ResponseNodeParser responseNodeParser = new ResponseNodeParser();
-		responseManager = new VariableManager<Response>(xmlData.getDocument().getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {
+		responseManager = new VariableManager<Response>(document.getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {
 			@Override
 			public Response createVariable(Node node) {
 				return responseNodeParser.parseResponseFromNode(node);
 			}
 		});
+		Map<String, Response> responsesMap = responseManager.getVariablesMap();
+		
+		parseAndConnectExpressions(expressionListBuilder, document, responsesMap);
+		
 		this.interactionEventsListener = interactionEventsListener;
 		outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
 
-		styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
+		styleDeclaration = new StyleLinkDeclaration(document.getElementsByTagName("styleDeclaration"), data.getBaseURL());
 
 		new FeedbackAutoMarkInterpreter().interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
 
@@ -134,6 +143,16 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		scorePanel = new FlowPanel();
 		scorePanel.setStyleName("qp-feedback-hidden");
 
+	}
+
+	private void parseAndConnectExpressions(ExpressionListBuilder expressionListBuilder, Document document, Map<String, Response> responsesMap) {
+		NodeList expressionsNodes = document.getElementsByTagName("expressions");
+		
+		for(int i=0; i<expressionsNodes.getLength(); i++){
+			Element expressionsElement = (Element) expressionsNodes.item(i);
+			String expressionsXml = expressionsElement.toString();
+			expressionListBuilder.parseAndConnectExpressions(expressionsXml, responsesMap);
+		}
 	}
 
 	/**

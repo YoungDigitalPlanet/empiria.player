@@ -38,10 +38,11 @@ public class VariableProcessorFunctionalTestBase {
 	protected ProcessingMode processingMode;
 
 	private final OutcomeVariablesInitializer outcomeVariablesInitializer = new OutcomeVariablesInitializer();
+	protected Injector injector;
 
 	@Before
 	public void setUp() {
-		Injector injector = Guice.createInjector(new AbstractModule() {
+		this.injector = Guice.createInjector(new AbstractModule() {
 			@Override
 			protected void configure() {
 				bind(ModulesVariablesProcessor.class).annotatedWith(PageScoped.class).to(ModulesVariablesProcessor.class).in(Singleton.class);

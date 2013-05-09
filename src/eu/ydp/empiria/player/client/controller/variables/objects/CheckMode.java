@@ -9,7 +9,7 @@ public enum CheckMode {
     };
 
     public static CheckMode fromString(String value){
-    	if(value.equalsIgnoreCase("expression")){
+    	if("expression".equalsIgnoreCase(value)){
     		return EXPRESSION;
     	}else{
     		return DEFAULT;
