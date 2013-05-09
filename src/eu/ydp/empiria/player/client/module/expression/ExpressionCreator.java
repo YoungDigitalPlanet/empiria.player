@@ -26,6 +26,7 @@ public class ExpressionCreator {
 	}
 
 	private String getValue(Response response) {
-		return response.values.get(0);
+		List<String> values = response.values;
+		return values.get(0);
 	}
 }
