@@ -57,8 +57,8 @@ public class ExpressionModeVariableProcessor implements VariableProcessor {
 	}
 
 	@Override
-	public int calculateMistakes(boolean lastmistaken, int previousMistakes) {
-		if (lastmistaken) {
+	public int calculateMistakes(boolean lastMistaken, int previousMistakes) {
+		if (lastMistaken) {
 			return previousMistakes + 1;
 		} else {
 			return previousMistakes;
