@@ -43,7 +43,6 @@ public class ExpressionEvaluationController {
 	}
 
 	private String prepareExpression(ExpressionBean expressionBean) {
-		expressionCreator = new ExpressionCreator();
 		return expressionCreator.getExpression(expressionBean);
 	}	
 }
