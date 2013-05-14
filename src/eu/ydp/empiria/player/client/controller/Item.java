@@ -86,15 +86,15 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private final VariableProcessingAdapter variableProcessor;
 	private final YJsJsonConverter yJsJsonConverter;
 	private JSONArray state;
+	private final ResponseNodeParser responseNodeParser;
 
 	@Inject
 	public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
 			@Assisted StyleSocket ss, @Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables,
-			@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted JSONArray stateArray,
-			ModuleFeedbackProcessor moduleFeedbackProcessor, OutcomeVariablesInitializer outcomeVariablesInitializer,
-			FlowActivityVariablesProcessor flowActivityVariablesProcessor, VariableProcessingAdapter variableProcessingAdapter,
-			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter,
-			ExpressionListBuilder expressionListBuilder) {
+			@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted JSONArray stateArray, ModuleFeedbackProcessor moduleFeedbackProcessor,
+			OutcomeVariablesInitializer outcomeVariablesInitializer, FlowActivityVariablesProcessor flowActivityVariablesProcessor,
+			VariableProcessingAdapter variableProcessingAdapter, VariablesProcessingModulesInitializer variablesProcessingModulesInitializer,
+			YJsJsonConverter yJsJsonConverter, ExpressionListBuilder expressionListBuilder, final ResponseNodeParser responseNodeParser) {
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
@@ -105,22 +105,22 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		this.moduleFeedbackProcessor = moduleFeedbackProcessor;
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
+		this.responseNodeParser = responseNodeParser;
 
 		Document document = xmlData.getDocument();
 		Node rootNode = document.getElementsByTagName("assessmentItem").item(0);
 		Node itemBodyNode = document.getElementsByTagName("itemBody").item(0);
 
-		final ResponseNodeParser responseNodeParser = new ResponseNodeParser();
 		responseManager = new VariableManager<Response>(document.getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {
 			@Override
 			public Response createVariable(Node node) {
-				return responseNodeParser.parseResponseFromNode(node);
+				return responseNodeParser.parseResponseFromNode(node.toString());
 			}
 		});
 		Map<String, Response> responsesMap = responseManager.getVariablesMap();
-		
+
 		parseAndConnectExpressions(expressionListBuilder, document, responsesMap);
-		
+
 		this.interactionEventsListener = interactionEventsListener;
 		outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
 
@@ -147,8 +147,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	private void parseAndConnectExpressions(ExpressionListBuilder expressionListBuilder, Document document, Map<String, Response> responsesMap) {
 		NodeList expressionsNodes = document.getElementsByTagName("expressions");
-		
-		for(int i=0; i<expressionsNodes.getLength(); i++){
+
+		for (int i = 0; i < expressionsNodes.getLength(); i++) {
 			Element expressionsElement = (Element) expressionsNodes.item(i);
 			String expressionsXml = expressionsElement.toString();
 			expressionListBuilder.parseAndConnectExpressions(expressionsXml, responsesMap);

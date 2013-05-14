@@ -1,9 +1,8 @@
 package eu.ydp.empiria.player.client.controller.variables.objects.response;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
@@ -15,8 +14,8 @@ public class ResponseBuilder {
 
 	private Evaluate evaluate = Evaluate.USER;
 	private CorrectAnswers correctAnswers = new CorrectAnswers();
-	private List<String> values = Lists.newArrayList();
-	private List<String> groups = Lists.newArrayList();
+	private List<String> values = new ArrayList<String>();
+	private List<String> groups = new ArrayList<String>();
 	private String identifier = "defaultIdentifier";
 	private BaseType baseType = BaseType.STRING;
 	private Cardinality cardinality;
@@ -78,22 +77,22 @@ public class ResponseBuilder {
 		this.groups = Arrays.asList(groups);
 		return this;
 	}
-	
-	public ResponseBuilder withCountMode(CountMode countMode){
+
+	public ResponseBuilder withCountMode(CountMode countMode) {
 		this.countMode = countMode;
 		return this;
 	}
-	
-	public ResponseBuilder withExpression(ExpressionBean expression){
+
+	public ResponseBuilder withExpression(ExpressionBean expression) {
 		this.expression = expression;
 		return this;
 	}
 
-	public ResponseBuilder withCheckMode(CheckMode checkMode){
+	public ResponseBuilder withCheckMode(CheckMode checkMode) {
 		this.checkMode = checkMode;
 		return this;
 	}
-	
+
 	public Response build() {
 		return new Response(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality, countMode, expression, checkMode);
 	}
