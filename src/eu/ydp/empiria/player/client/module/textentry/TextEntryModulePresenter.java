@@ -2,9 +2,6 @@ package eu.ydp.empiria.player.client.module.textentry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -23,14 +20,15 @@ import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
-public class TextEntryModulePresenter implements GapModulePresenter,ChangeHandler {
+public class TextEntryModulePresenter implements GapModulePresenter {
 
 	@UiTemplate("TextEntryModule.ui.xml")
-	interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModulePresenter>{};
+	interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModulePresenter> {
+	};
 
 	private final TextEntryModuleUiBinder uiBinder = GWT.create(TextEntryModuleUiBinder.class);
 
-	@UiField(provided=true)
+	@UiField(provided = true)
 	protected Widget textBoxWidget;
 
 	protected TextBox textBox;
@@ -38,39 +36,25 @@ public class TextEntryModulePresenter implements GapModulePresenter,ChangeHandle
 	@UiField
 	protected Panel moduleWidget;
 
-	private PresenterHandler changeHandler;
-
 	@Inject
 	private StyleNameConstants styleNames;
 
 	@Inject
-	public TextEntryModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper){
-		DroppableObject<TextBox> droppable = dragDropHelper.enableDropForWidget(new TextBox(),parentModule);
-		textBoxWidget= droppable.getDroppableWidget();
+	private TextBoxChangeHandler textBoxChangeHandler;
+
+	private final DroppableObject<TextBox> droppable;
+
+	@Inject
+	public TextEntryModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
+		droppable = dragDropHelper.enableDropForWidget(new TextBox(), parentModule);
+		textBoxWidget = droppable.getDroppableWidget();
 		textBox = droppable.getOriginalWidget();
 		uiBinder.createAndBindUi(this);
-		textBox.addChangeHandler(this);
-
-	}
-
-	@Override
-	public void onChange(ChangeEvent event) {
-		if(changeHandler != null){
-			changeHandler.onChange(event);
-		}
-	}
-
-	protected void handleBlur(BlurEvent event){
-		if(changeHandler != null){
-			changeHandler.onBlur(event);
-		}
 	}
 
 	@Override
 	public void setWidth(double value, Unit unit) {
-		if (textBox != null) {
-			textBox.setWidth(value + unit.getType());
-		}
+		textBox.setWidth(value + unit.getType());
 	}
 
 	@Override
@@ -90,16 +74,13 @@ public class TextEntryModulePresenter implements GapModulePresenter,ChangeHandle
 
 	@Override
 	public void setMaxLength(int length) {
-		if (textBox != null) {
-			textBox.setMaxLength(length);
-		}
+		textBox.setMaxLength(length);
+
 	}
 
 	@Override
 	public void setFontSize(double value, Unit unit) {
-		if (textBox != null) {
-			textBox.getElement().getStyle().setFontSize(value, unit);
-		}
+		textBox.getElement().getStyle().setFontSize(value, unit);
 	}
 
 	@Override
@@ -136,11 +117,11 @@ public class TextEntryModulePresenter implements GapModulePresenter,ChangeHandle
 	public void setMarkMode(String mode) {
 		String markStyleName;
 
-		if(GapModulePresenter.CORRECT.equals(mode)) {
+		if (GapModulePresenter.CORRECT.equals(mode)) {
 			markStyleName = styleNames.QP_TEXT_TEXTENTRY_CORRECT();
-		} else if(GapModulePresenter.WRONG.equals(mode)){
+		} else if (GapModulePresenter.WRONG.equals(mode)) {
 			markStyleName = styleNames.QP_TEXT_TEXTENTRY_WRONG();
-		}else{
+		} else {
 			markStyleName = styleNames.QP_TEXT_TEXTENTRY_NONE();
 		}
 
@@ -154,7 +135,7 @@ public class TextEntryModulePresenter implements GapModulePresenter,ChangeHandle
 
 	@Override
 	public void addPresenterHandler(PresenterHandler handler) {
-		changeHandler = handler;
+		textBoxChangeHandler.bind(droppable, handler);
 	}
 
 	@Override
