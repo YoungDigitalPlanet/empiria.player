@@ -33,7 +33,6 @@ public class ResponseNodeParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEquals(response.getCountMode(), CountMode.SINGLE);
 		assertEquals(response.groups.get(0), "x1");
 		assertEquals(response.groups.get(1), "x2");
-		// assertEquals(response, actual)
 	}
 
 	private String getResponseDeclaration() {
