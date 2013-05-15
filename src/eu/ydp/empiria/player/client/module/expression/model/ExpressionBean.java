@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.expression.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,8 +25,12 @@ public class ExpressionBean {
 	private ExpressionMode mode;
 
 	@XmlTransient
-	private final List<Response> responses = new ArrayList<Response>();
+	private List<Response> responses = new ArrayList<Response>();
 
+	@XmlTransient
+	private List<Set<Response>> setsOfResponses = new ArrayList<Set<Response>>();
+	
+	
 	public String getTemplate() {
 		return template;
 	}
@@ -36,6 +41,14 @@ public class ExpressionBean {
 
 	public List<Response> getResponses() {
 		return responses;
+	}
+
+	public List<Set<Response>> getSetsOfResponses() {
+		return setsOfResponses;
+	}
+
+	public void setSetsOfResponses(List<Set<Response>> setsOfResponses) {
+		this.setsOfResponses = setsOfResponses;
 	}
 
 	public ExpressionMode getMode() {
