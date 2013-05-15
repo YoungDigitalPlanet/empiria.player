@@ -18,73 +18,77 @@ import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
 import eu.ydp.empiria.player.client.module.labelling.LabellingModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
+import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModule;
 import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 
-@SuppressWarnings("PMD")
+@SuppressWarnings({"PMD"})
 public class ModuleProviderFactory {
 	@Inject
-	protected Provider<ConnectionModule> connectionModule;
+	private Provider<ConnectionModule> connectionModule;
 
 	@Inject
-	protected Provider<SourceListModule> sourceListModule;
+	private Provider<SourceListModule> sourceListModule;
 
 	@Inject
-	protected Provider<ObjectModule> objectModule;
+	private Provider<ObjectModule> objectModule;
 
 	@Inject
-	protected Provider<PageInPageModule> pageInPageModule;
+	private Provider<PageInPageModule> pageInPageModule;
 
 	@Inject
-	protected Provider<TextActionProcessor> textActionProcessor;
+	private Provider<TextActionProcessor> textActionProcessor;
 
 	@Inject
-	protected Provider<ImageActionProcessor> imageActionProcessor;
+	private Provider<ImageActionProcessor> imageActionProcessor;
 
 	@Inject
-	protected Provider<ImgModule> imgModule;
+	private Provider<ImgModule> imgModule;
 
 	@Inject
-	protected Provider<SelectionModule> selectionModule;
+	private Provider<SelectionModule> selectionModule;
 
 	@Inject
 	private Provider<InlineContainerModule> inlineContainerModule;
 
 	@Inject
-	protected Provider<DefaultMediaProcessorExtension> mediaProcessor;
+	private Provider<DefaultMediaProcessorExtension> mediaProcessor;
 
 	@Inject
-	protected Provider<MathModule> mathModule;
+	private Provider<MathModule> mathModule;
 
 	@Inject
-	protected Provider<CheckButtonModuleConnectorExtension> checkButtonModuleConnectorExtension;
+	private Provider<CheckButtonModuleConnectorExtension> checkButtonModuleConnectorExtension;
 
 	@Inject
-	protected Provider<ShowAnswersButtonModuleConnectorExtension> showAnswersButtonModuleConnectorExtension;
+	private Provider<ShowAnswersButtonModuleConnectorExtension> showAnswersButtonModuleConnectorExtension;
 
 	@Inject
-	protected Provider<AudioMuteButtonModuleConnectorExtension> audioMuteButtonModuleConnectorExtension;
+	private Provider<AudioMuteButtonModuleConnectorExtension> audioMuteButtonModuleConnectorExtension;
 
 	@Inject
-	protected Provider<ResetButtonModuleConnectorExtension> resetButtonModuleConnectorExtension;
+	private Provider<ResetButtonModuleConnectorExtension> resetButtonModuleConnectorExtension;
 
 	@Inject
-	protected Provider<InlineChoiceModule> inlineChoiceModule;
+	private Provider<InlineChoiceModule> inlineChoiceModule;
 
 	@Inject
-	protected Provider<IdentificationModule> identificationModule;
+	private Provider<IdentificationModule> identificationModule;
 
 	@Inject
-	protected Provider<SimulationModule> simulationModule;
+	private Provider<SimulationModule> simulationModule;
 
 	@Inject
-	protected Provider<SlideshowPlayerModule> slideshowPlayerModule;
+	private Provider<SlideshowPlayerModule> slideshowPlayerModule;
 
 	@Inject
-	protected Provider<LabellingModule> labellingModule;
+	private Provider<LabellingModule> labellingModule;
+
+	@Inject
+	private Provider<OrderInteractionModule> orderInteractionModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -161,8 +165,12 @@ public class ModuleProviderFactory {
 	public Provider<SlideshowPlayerModule> getSlideshowPlayerModule() {
 		return slideshowPlayerModule;
 	}
-	
+
 	public Provider<LabellingModule> getLabellingModule() {
 		return labellingModule;
+	}
+
+	public Provider<OrderInteractionModule> getOrderInteractionModule() {
+		return orderInteractionModule;
 	}
 }

@@ -26,6 +26,7 @@ import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.module.ChoiceGinModule;
 import eu.ydp.empiria.player.client.gin.module.ConnectionGinModule;
+import eu.ydp.empiria.player.client.gin.module.OrderingGinModule;
 import eu.ydp.empiria.player.client.gin.module.PageScopedModule;
 import eu.ydp.empiria.player.client.gin.module.PlayerGinModule;
 import eu.ydp.empiria.player.client.gin.module.SelectionGinModule;
@@ -44,7 +45,7 @@ import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
 @GinModules(value = { PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class, TextEntryGinModule.class,
-		SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class})
+		SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class, OrderingGinModule.class})
 public interface PlayerGinjector extends Ginjector {
 
 	ViewEngine getViewEngine();

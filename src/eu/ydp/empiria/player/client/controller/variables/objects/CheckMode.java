@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.objects;
 
 public enum CheckMode {
-	DEFAULT, EXPRESSION;
+	DEFAULT, EXPRESSION, ORDERED;
 
     @Override
     public String toString() {
