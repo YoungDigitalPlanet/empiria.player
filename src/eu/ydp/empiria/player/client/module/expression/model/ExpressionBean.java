@@ -5,22 +5,27 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.expression.ExpressionMode;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "expression")
 public class ExpressionBean {
-	
+
 	@XmlValue
 	private String template;
 
+	@XmlAttribute
+	private ExpressionMode mode;
+
 	@XmlTransient
-	private List<Response> responses = new ArrayList<Response>();
-	
+	private final List<Response> responses = new ArrayList<Response>();
+
 	public String getTemplate() {
 		return template;
 	}
@@ -31,5 +36,17 @@ public class ExpressionBean {
 
 	public List<Response> getResponses() {
 		return responses;
+	}
+
+	public ExpressionMode getMode() {
+		return mode;
+	}
+
+	public void setMode(ExpressionMode mode) {
+		if (mode == null) {
+			this.mode = ExpressionMode.DEFAULT;
+		} else {
+			this.mode = mode;
+		}
 	}
 }
