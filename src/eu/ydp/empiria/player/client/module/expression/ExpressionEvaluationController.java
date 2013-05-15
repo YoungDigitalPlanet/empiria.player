@@ -1,11 +1,13 @@
 package eu.ydp.empiria.player.client.module.expression;
 
-import static eu.ydp.empiria.player.client.module.expression.model.ExpressionEvaluationResult.VALUES_NOT_SET;
 import static eu.ydp.empiria.player.client.module.expression.model.ExpressionEvaluationResult.CORRECT;
+import static eu.ydp.empiria.player.client.module.expression.model.ExpressionEvaluationResult.VALUES_NOT_SET;
 import static eu.ydp.empiria.player.client.module.expression.model.ExpressionEvaluationResult.WRONG;
 
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.module.expression.evaluate.Evaluator;
+import eu.ydp.empiria.player.client.module.expression.evaluate.EvaluatorFactory;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionEvaluationResult;
 
@@ -15,34 +17,27 @@ public class ExpressionEvaluationController {
 	private ExpressionValidator expressionValidator;
 	
 	@Inject
-	private ExpressionCreator expressionCreator;
-	
-	@Inject
-	private ExpressionEvaluator expressionEvaluator;
+	private EvaluatorFactory factory;
 	
 	
 	public ExpressionEvaluationResult evaluateExpression(ExpressionBean expressionBean){
-		
-		ExpressionEvaluationResult evaluationResult = VALUES_NOT_SET;
-		
-		boolean allResponsesAreNotEmpty = validateExpressionAgainstNotEmpty(expressionBean);		
-		if (allResponsesAreNotEmpty) {
-			String expression = prepareExpression(expressionBean);
-			evaluationResult = checkExpression(expression);
+		ExpressionEvaluationResult evaluationResult;
+		boolean expressionValid = validateExpressionAgainstNotEmpty(expressionBean);
+		if (expressionValid){
+			evaluationResult = evaluate(expressionBean);
+		} else {
+			evaluationResult = VALUES_NOT_SET;
 		}
 		return evaluationResult;
 	}
-
-	private ExpressionEvaluationResult checkExpression(String expression) {
-		boolean checkResult = expressionEvaluator.evaluate(expression);
-		return (checkResult) ? CORRECT : WRONG;
-	}
-
+	
 	private boolean validateExpressionAgainstNotEmpty(ExpressionBean expressionBean) {
 		return expressionValidator.isAllResponsesAreNotEmpty(expressionBean);
-	}
-
-	private String prepareExpression(ExpressionBean expressionBean) {
-		return expressionCreator.getExpression(expressionBean);
 	}	
+
+	private ExpressionEvaluationResult evaluate(ExpressionBean expressionBean) {
+		Evaluator evaluator = factory.createEvaluator(expressionBean.getMode());
+		boolean expressionEvaluationResult = evaluator.evaluate(expressionBean);
+		return (expressionEvaluationResult) ? CORRECT : WRONG;
+	}
 }
