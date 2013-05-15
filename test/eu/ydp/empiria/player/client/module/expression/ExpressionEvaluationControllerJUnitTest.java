@@ -100,7 +100,7 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase  {
 	}		
 	
 	@Test
-	public void evaluateInvalidFormedEquationStupidityGivenArithmeticException_expectsWrong() {		
+	public void evaluateInvalidFormedEquationStupidityArithmeticExceptionCatched_expectsWrong() {		
 		// given
 		List<Response> responses = Lists.newArrayList(responsesHelper.getResponse("a", "whatthefuck"));		
 		ExpressionBean expression = buildExpressionBean(responses, "'a'");
@@ -112,6 +112,18 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase  {
 		assertTrue(ExpressionEvaluationResult.WRONG.equals(result));
 	}		
 	
+	@Test
+	public void evaluateInvalidFormedEquationAnotherStupidityExceptionCatched_expectsWrong() {		
+		// given
+		List<Response> responses = Lists.newArrayList(responsesHelper.getResponse("a", "="), responsesHelper.getResponse("b", "="), responsesHelper.getResponse("c", "="), responsesHelper.getResponse("d", "="));
+		ExpressionBean expression = buildExpressionBean(responses, "'a''b''c'='d'");
+		
+		// when
+		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);
+		
+		// then
+		assertTrue(ExpressionEvaluationResult.WRONG.equals(result));
+	}
 	
 	@Test
 	public void evaluateExpressionWithComa_expectsCorrect() {		

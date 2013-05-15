@@ -22,10 +22,14 @@ public class SymjaExpressionAdapter {
 	}
 
 	private String fixOperators(String expression) {
-		if (!expression.matches("^.*?(>=|=>|<=|=<).*$")) {
+		if (!containsGreaterLessThanOrEquals(expression)) {
 			expression = expression.replaceFirst("=", "==");
 		}
 		return expression;
+	}	
+
+	private boolean containsGreaterLessThanOrEquals(String expression) {
+		return expression.matches("^.*?(>=|=>|<=|=<).*$");
 	}
 	
 }
