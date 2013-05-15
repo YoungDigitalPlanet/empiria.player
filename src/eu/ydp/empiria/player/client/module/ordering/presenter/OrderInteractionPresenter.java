@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import eu.ydp.empiria.player.client.module.ActivityPresenter;
+import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
+import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
 
-public interface OrderInteractionPresenter extends IsWidget{
+public interface OrderInteractionPresenter extends ActivityPresenter<OrderInteractionModuleModel, OrderInteractionBean>{
 
 }
