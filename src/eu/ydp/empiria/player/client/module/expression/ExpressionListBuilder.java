@@ -13,13 +13,18 @@ import eu.ydp.empiria.player.client.module.expression.model.ExpressionsBean;
 
 public class ExpressionListBuilder {
 
-	private ExpressionModuleJAXBParserFactory jaxbParserFactory;
-	private ExpressionToResponseConnector expressionToResponseConnector;
+	private final ExpressionModuleJAXBParserFactory jaxbParserFactory;
+	private final ExpressionToResponseConnector expressionToResponseConnector;
+	private final ExpressionSetsFinder expressionSetsFinder;
 	
 	@Inject
-	public ExpressionListBuilder(ExpressionModuleJAXBParserFactory jaxbParserFactory, ExpressionToResponseConnector expressionToResponseConnector) {
+	public ExpressionListBuilder(
+			ExpressionModuleJAXBParserFactory jaxbParserFactory, 
+			ExpressionToResponseConnector expressionToResponseConnector,
+			ExpressionSetsFinder expressionSetsFinder) {
 		this.jaxbParserFactory = jaxbParserFactory;
 		this.expressionToResponseConnector = expressionToResponseConnector;
+		this.expressionSetsFinder = expressionSetsFinder;
 	}
 
 	public List<ExpressionBean> parseAndConnectExpressions(String expressionsXml, Map<String, Response> responses){
@@ -32,6 +37,10 @@ public class ExpressionListBuilder {
 	private void connectResponsesToExpressions(List<ExpressionBean> expressions, Map<String, Response> responses) {
 		for (ExpressionBean expressionBean : expressions) {
 			expressionToResponseConnector.connectResponsesToExpression(expressionBean, responses);
+			
+			if(expressionBean.getMode() == ExpressionMode.COMMUTATION){
+				expressionSetsFinder.updateResponsesSetsInExpression(expressionBean);
+			}
 		}
 	}
 

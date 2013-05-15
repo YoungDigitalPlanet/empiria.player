@@ -31,10 +31,12 @@ public class ExpressionListBuilderJUnitTest {
 	private ExpressionModuleJAXBParserFactory jaxbParserFactory;
 	@Mock
 	private ExpressionToResponseConnector expressionToResponseConnector;
+	@Mock
+	private ExpressionSetsFinder expressionSetsFinder;
 	
 	@Before
 	public void setUp() throws Exception {
-		expressionListBuilder = new ExpressionListBuilder(jaxbParserFactory, expressionToResponseConnector);
+		expressionListBuilder = new ExpressionListBuilder(jaxbParserFactory, expressionToResponseConnector, expressionSetsFinder);
 	}
 
 	@Test
@@ -50,6 +52,7 @@ public class ExpressionListBuilderJUnitTest {
 		
 		ExpressionsBean expressionsBean = new ExpressionsBean();
 		ExpressionBean expressionBean = new ExpressionBean();
+		expressionBean.setMode(ExpressionMode.COMMUTATION);
 		List<ExpressionBean> expressions = Lists.newArrayList(expressionBean);
 		expressionsBean.setExpressions(expressions);
 		when(jaxbParser.parse(expressionsXml))
@@ -63,6 +66,7 @@ public class ExpressionListBuilderJUnitTest {
 		verify(jaxbParserFactory).create();
 		verify(jaxbParser).parse(expressionsXml);
 		verify(expressionToResponseConnector).connectResponsesToExpression(expressionBean, responses);
+		verify(expressionSetsFinder).updateResponsesSetsInExpression(expressionBean);
 		Mockito.verifyNoMoreInteractions(jaxbParserFactory, expressionToResponseConnector, jaxbParser);
 	}
 }
