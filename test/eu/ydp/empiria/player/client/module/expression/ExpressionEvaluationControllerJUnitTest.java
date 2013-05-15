@@ -112,6 +112,20 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase  {
 		assertTrue(ExpressionEvaluationResult.WRONG.equals(result));
 	}		
 	
+	
+	@Test
+	public void evaluateExpressionWithComa_expectsCorrect() {		
+		// given
+		List<Response> responses = Lists.newArrayList(responsesHelper.getResponse("a", "0,1"), responsesHelper.getResponse("b", "1"), responsesHelper.getResponse("c", "1.1"));		
+		ExpressionBean expression = buildExpressionBean(responses, "'a'+'b'='c'");
+		
+		// when
+		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);
+		
+		// then
+		assertTrue(ExpressionEvaluationResult.CORRECT.equals(result));
+	}		
+	
 	private ExpressionBean buildExpressionBean(List<Response> inputResponses, String template) {
 		ExpressionBean expressionBean = new ExpressionBean();
 		List<Response> responses = expressionBean.getResponses();
