@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 public class OrderInteractionViewImpl implements OrderInteractionView {
 
 	@Override
-	public void createItem(String itemId, XMLContent xmlContent, InlineBodyGeneratorSocket bodyGenerator) {
+	public void createItem(OrderingItem orderingItem, XMLContent xmlContent, InlineBodyGeneratorSocket bodyGenerator) {
 		// TODO Auto-generated method stub
 
 	}

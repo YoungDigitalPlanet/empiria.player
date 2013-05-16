@@ -5,12 +5,14 @@ import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 public class OrderingItem {
 
 	private final String id;
+	private final String answerValue;
 	private boolean selected = false;
 	private UserAnswerType answerType = UserAnswerType.DEFAULT;
 	private boolean locked = false;
 
-	public OrderingItem(String id){
+	public OrderingItem(String id, String answerValue){
 		this.id = id;
+		this.answerValue = answerValue;
 	}
 	
 	public boolean isSelected() {
@@ -33,5 +35,9 @@ public class OrderingItem {
 	}
 	public String getId() {
 		return id;
+	}
+
+	public String getAnswerValue() {
+		return answerValue;
 	}
 }
