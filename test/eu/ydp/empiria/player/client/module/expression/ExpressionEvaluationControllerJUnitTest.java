@@ -146,6 +146,19 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase  {
 	}	
 	
 	@Test
+	public void evaluateExpressionWithInequationInUserResponse_expectsCorrect() {		
+		// given
+		List<Response> responses = Lists.newArrayList(responsesHelper.getResponse("a", "1"), responsesHelper.getResponse("b", "1"), responsesHelper.getResponse("c", "<="), responsesHelper.getResponse("d", "2"));		
+		ExpressionBean expression = buildExpressionBean(responses, "'a'+'b''c''d'");
+		
+		// when
+		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);
+		
+		// then
+		assertTrue(ExpressionEvaluationResult.CORRECT.equals(result));
+	}		
+	
+	@Test
 	public void evaluateCommutated_correct() {
 		// given
 		List<Response> leftResponses = Lists.newArrayList(
