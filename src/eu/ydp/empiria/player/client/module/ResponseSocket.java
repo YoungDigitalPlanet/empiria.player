@@ -8,6 +8,6 @@ public interface ResponseSocket {
 
 	/** Get access to response */
 	public Response getResponse(String id);
-	
+
 	public List<Boolean> evaluateResponse(Response response);
 }

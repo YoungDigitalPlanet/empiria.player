@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.expression;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +18,6 @@ import com.google.gwt.dev.util.collect.HashMap;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExpressionToResponseConnectorJUnitTest {
@@ -45,8 +45,8 @@ public class ExpressionToResponseConnectorJUnitTest {
 		responses.put("relatedResponse", relatedResponse);
 		responses.put("unrelatedResponse", unrelatedResponse);
 
-		when(identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(template))
-			.thenReturn(Lists.newArrayList("relatedResponse"));
+		when(identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(template)).thenReturn(
+				Lists.newArrayList("relatedResponse", "notExistingId"));
 
 		// when
 		expressionToResponseConnector.connectResponsesToExpression(expressionBean, responses);
@@ -70,8 +70,7 @@ public class ExpressionToResponseConnectorJUnitTest {
 		Map<String, Response> responses = new HashMap<String, Response>();
 		responses.put("unrelatedResponse", unrelatedResponse);
 
-		when(identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(template))
-			.thenReturn(Lists.newArrayList("relatedResponse"));
+		when(identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(template)).thenReturn(Lists.newArrayList("relatedResponse"));
 
 		// when
 		expressionToResponseConnector.connectResponsesToExpression(expressionBean, responses);

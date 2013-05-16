@@ -163,7 +163,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		private InlineBodyGenerator inlineBodyGenerator;
 
 		@Override
-		public eu.ydp.empiria.player.client.controller.variables.objects.response.Response getResponse(String id) {
+		public Response getResponse(String id) {
 			return responseManager.getVariable(id);
 		}
 

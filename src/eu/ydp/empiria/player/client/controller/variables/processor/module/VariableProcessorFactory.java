@@ -8,44 +8,40 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.expression.ExpressionModeVariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedModeVariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.multiple.MultipleModeVariableProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.module.ordering.OrderingModeVariableProcessor;
 
 public class VariableProcessorFactory {
 
 	private static final Logger LOGGER = Logger.getLogger(VariableProcessorFactory.class.getName());
-	
+
 	private final MultipleModeVariableProcessor multipleModeVariableProcessor;
 	private final GroupedModeVariableProcessor groupedModeVariableProcessor;
 	private final ExpressionModeVariableProcessor expressionModeVariableProcessor;
-	
+	private final OrderingModeVariableProcessor orderingModeVariableProcessor;
+
 	@Inject
-	public VariableProcessorFactory(
-			MultipleModeVariableProcessor multipleModeVariableProcessor,
-			GroupedModeVariableProcessor groupedModeVariableProcessor,
-			ExpressionModeVariableProcessor expressionModeVariableProcessor) {
+	public VariableProcessorFactory(MultipleModeVariableProcessor multipleModeVariableProcessor, GroupedModeVariableProcessor groupedModeVariableProcessor,
+			ExpressionModeVariableProcessor expressionModeVariableProcessor, OrderingModeVariableProcessor orderingModeVariableProcessor) {
 		this.multipleModeVariableProcessor = multipleModeVariableProcessor;
 		this.groupedModeVariableProcessor = groupedModeVariableProcessor;
 		this.expressionModeVariableProcessor = expressionModeVariableProcessor;
+		this.orderingModeVariableProcessor = orderingModeVariableProcessor;
 	}
 
-	public VariableProcessor findAppropriateProcessor(Cardinality cardinality, boolean hasGroups, boolean isInExpression){
-		VariableProcessor variableProcessor = null;
-		
-		if(hasGroups){
-			variableProcessor = groupedModeVariableProcessor;
-		} else if(isInExpression){
-			return expressionModeVariableProcessor;
-		} else if(isSingleOrMultiple(cardinality)){
-			variableProcessor = multipleModeVariableProcessor;
-		} else{
-			LOGGER.warning("Unknown Cardinality: "+cardinality+" for variable processing. Will be treated as multiple cardinality");
-			variableProcessor = multipleModeVariableProcessor;
+	public VariableProcessor findAppropriateProcessor(Cardinality cardinality, boolean hasGroups, boolean isInExpression) {
+
+		if (hasGroups) {
+			return groupedModeVariableProcessor;
 		}
-		
-		return variableProcessor;
-	}
 
-	private boolean isSingleOrMultiple(Cardinality cardinality) {
-		return cardinality == Cardinality.SINGLE || cardinality == Cardinality.MULTIPLE;
+		if (isInExpression) {
+			return expressionModeVariableProcessor;
+		}
+
+		if (Cardinality.ORDERED == cardinality) {
+			return orderingModeVariableProcessor;
+		} else {
+			return multipleModeVariableProcessor;
+		}
 	}
-	
 }
