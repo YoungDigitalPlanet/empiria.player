@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,24 +15,32 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
+import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
 import eu.ydp.empiria.player.client.module.ordering.structure.SimpleOrderChoiceBean;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
-import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
 public class OrderInteractionPresenterImpl implements OrderInteractionPresenter {
 
-	@Inject
 	private OrderInteractionView interactionView;
+	private ItemsOrderByAnswersFinder itemsOrderByAnswersFinder;
+	private ItemsMarkingController itemsMarkingController;
+	private OrderingItemsDao orderingItemsDao;
 	
 	@Inject
-	private ItemsOrderByAnswersFinder itemsOrderByAnswersFinder;
-	
+	public OrderInteractionPresenterImpl(OrderInteractionView interactionView, ItemsOrderByAnswersFinder itemsOrderByAnswersFinder,
+			ItemsMarkingController itemsMarkingController, OrderingItemsDao orderingItemsDao) {
+		this.interactionView = interactionView;
+		this.itemsOrderByAnswersFinder = itemsOrderByAnswersFinder;
+		this.itemsMarkingController = itemsMarkingController;
+		this.orderingItemsDao = orderingItemsDao;
+	}
+
 	private ModuleSocket socket;
 	private OrderInteractionModuleModel model;
 	private OrderInteractionBean bean;
 
-	private Map<String, OrderingItem> orderingItemsMap = new HashMap<String, OrderingItem>();
+	
 	
 	@Override
 	public Widget asWidget() {
@@ -55,7 +61,7 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 			
 			interactionView.createItem(orderingItem, content, bodyGeneratorSocket);
 			
-			orderingItemsMap.put(itemId, orderingItem);
+			orderingItemsDao.addItem(orderingItem);
 		}
 	}
 
@@ -83,14 +89,14 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 
 	@Override
 	public void setLocked(boolean locked) {
-		for(OrderingItem orderingItem : orderingItemsMap.values()){
+		for(OrderingItem orderingItem : orderingItemsDao.getItems()){
 			orderingItem.setLocked(locked);
 		}
 		updateAllItemsStyles();
 	}
 
 	private void updateAllItemsStyles() {
-		for(OrderingItem orderingItem : orderingItemsMap.values()){
+		for(OrderingItem orderingItem : orderingItemsDao.getItems()){
 			interactionView.setChildStyles(orderingItem);
 		}
 	}
@@ -98,60 +104,32 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	@Override
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
 		List<OrderingItem> orderingItems = getItemsByEvaluationType(type);
-		
-		if(mode == MarkAnswersMode.MARK){
-			markItems(orderingItems, type);
-		}else if(mode == MarkAnswersMode.UNMARK){
-			unmarkItems(orderingItems);
-		}
-		
+		itemsMarkingController.marOrUnmarkItemsByType(orderingItems, type, mode);
 		updateAllItemsStyles();
 	}
 	
-	private void markItems(List<OrderingItem> orderingItems, MarkAnswersType type) {
-		if(type == MarkAnswersType.CORRECT){
-			markItemsAsCorrect(orderingItems);
-		}else if (type == MarkAnswersType.WRONG){
-			markItemsAsWrong(orderingItems);
-		}
-	}
-
-	private void markItemsAsWrong(List<OrderingItem> orderingItems) {
-		for (OrderingItem orderingItem : orderingItems) {
-			orderingItem.setAnswerType(UserAnswerType.WRONG);
-		}
-	}
-
-	private void markItemsAsCorrect(List<OrderingItem> orderingItems) {
-		for (OrderingItem orderingItem : orderingItems) {
-			orderingItem.setAnswerType(UserAnswerType.CORRECT);
-		}
-	}
-
-	private void unmarkItems(List<OrderingItem> orderingItems) {
-		for (OrderingItem orderingItem : orderingItems) {
-			orderingItem.setAnswerType(UserAnswerType.NONE);
-		}
-	}
-
 	public List<OrderingItem> getItemsByEvaluationType(MarkAnswersType type){
 		List<Boolean> answerEvaluations = socket.evaluateResponse(model.getResponse());
 		List<String> currentItemsOrder = getCurrentAnswersOrder();
+		List<OrderingItem> fittingTypeItems = findItemsFittingType(type, answerEvaluations, currentItemsOrder);
 		
-		List<OrderingItem> fittingOrderingItems = Lists.newArrayList();
+		return fittingTypeItems;
+	}
+
+	private List<OrderingItem> findItemsFittingType(MarkAnswersType type, List<Boolean> answerEvaluations, List<String> currentItemsOrder) {
+		List<OrderingItem> fittingTypeItems = Lists.newArrayList();
 		
 		for(int i=0; i<answerEvaluations.size(); i++){
 			String itemId = currentItemsOrder.get(i);
 			boolean evaluationResult = answerEvaluations.get(i);
 			
 			if(isItemFittingEvaluationType(evaluationResult, type)){
-				OrderingItem orderingItem = orderingItemsMap.get(itemId);
-				fittingOrderingItems.add(orderingItem);
+				OrderingItem orderingItem = orderingItemsDao.getItem(itemId);
+				fittingTypeItems.add(orderingItem);
 			}
 			
 		}
-		
-		return fittingOrderingItems;
+		return fittingTypeItems;
 	}
 
 	private boolean isItemFittingEvaluationType(boolean evaluationResult, MarkAnswersType type) {
@@ -166,14 +144,14 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 
 	private List<String> getCurrentAnswersOrder() {
 		List<String> currentAnswers = model.getCurrentAnswers();
-		List<OrderingItem> items = new ArrayList<OrderingItem>(orderingItemsMap.values());
+		Collection<OrderingItem> items = orderingItemsDao.getItems();
 		return itemsOrderByAnswersFinder.findCorrectItemsOrderByAnswers(currentAnswers, items);
 	}
 
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		List<String> correctAnswers = model.getCorrectAnswers();
-		List<OrderingItem> items = new ArrayList<OrderingItem>(orderingItemsMap.values());
+		Collection<OrderingItem> items = orderingItemsDao.getItems();
 		List<String> correctItemsOrder = itemsOrderByAnswersFinder.findCorrectItemsOrderByAnswers(correctAnswers, items);
 		
 		interactionView.setChildrenOrder(correctItemsOrder);

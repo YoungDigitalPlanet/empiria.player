@@ -23,4 +23,7 @@ public class OrderInteractionModuleModel extends AbstractResponseModel<String>{
 		return Lists.newArrayList(values);
 	}
 
+	public Response getResponse(){
+		return this.response;
+	}
 }
