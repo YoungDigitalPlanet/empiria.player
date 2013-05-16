@@ -19,20 +19,20 @@ public class CommutationEvaluator implements Evaluator {
 	@Override
 	public boolean evaluate(ExpressionBean bean) {
 		
-		Multiset<Multiset<String>> correctAnswers = fetchAnswers(bean.getSetsOfResponses(), fetcherFunctions.getCorrectAnswerFetcher());
-		Multiset<Multiset<String>> userAnswers = fetchAnswers(bean.getSetsOfResponses(), fetcherFunctions.getUserAnswerFetcher());
+		Multiset<Multiset<String>> correctAnswers = fetchAllAnswers(bean.getSetsOfResponses(), fetcherFunctions.getCorrectAnswerFetcher());
+		Multiset<Multiset<String>> userAnswers = fetchAllAnswers(bean.getSetsOfResponses(), fetcherFunctions.getUserAnswerFetcher());
 		return userAnswers.equals(correctAnswers);
 	}
 
-	private Multiset<Multiset<String>> fetchAnswers(List<Set<Response>> setsOfResponses, Function<Response, String> userAnswerFetcher) {
+	private Multiset<Multiset<String>> fetchAllAnswers(List<Set<Response>> setsOfResponses, Function<Response, String> userAnswerFetcher) {
 		Multiset<Multiset<String>> multisets = HashMultiset.create();
 		for (Set<Response> currentSet : setsOfResponses){
-			multisets.add(findAnswers(currentSet, userAnswerFetcher));
+			multisets.add(fetchAnswers(currentSet, userAnswerFetcher));
 		}
 		return multisets;
 	}
 
-	private Multiset<String> findAnswers(Set<Response> currentSet, Function<Response, String> userAnswerFetcher) {
+	private Multiset<String> fetchAnswers(Set<Response> currentSet, Function<Response, String> userAnswerFetcher) {
 		Multiset<String> multiset = HashMultiset.create();
 		for (Response response : currentSet){
 			multiset.add( userAnswerFetcher.apply(response) );
