@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.ordering.structure;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.mockito.Mockito;

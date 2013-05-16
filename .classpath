@@ -35,7 +35,6 @@
 	<classpathentry kind="lib" path="ivy-lib/gquery-dnd-bundle.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/xmlunit.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/fest-assert-core.jar"/>
-	<classpathentry kind="lib" path="ivy-lib/fest-assert.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/fest-util.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
