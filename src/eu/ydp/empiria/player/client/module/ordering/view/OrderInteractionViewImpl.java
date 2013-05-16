@@ -7,17 +7,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 
 public class OrderInteractionViewImpl implements OrderInteractionView {
 
 	@Override
 	public void createItem(String itemId, XMLContent xmlContent, InlineBodyGeneratorSocket bodyGenerator) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setChildStyles() {
 		// TODO Auto-generated method stub
 
 	}
@@ -36,6 +31,12 @@ public class OrderInteractionViewImpl implements OrderInteractionView {
 	@Override
 	public Widget asWidget() {
 		return new Label(getClass().getName());
+	}
+
+	@Override
+	public void setChildStyles(OrderingItem item) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -68,4 +68,10 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void itemClicked(String itemId) {
+		// TODO Auto-generated method stub
+		
+	}
 }

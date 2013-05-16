@@ -6,4 +6,6 @@ import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBe
 
 public interface OrderInteractionPresenter extends ActivityPresenter<OrderInteractionModuleModel, OrderInteractionBean>{
 
+	void itemClicked(String itemId);
+	
 }
