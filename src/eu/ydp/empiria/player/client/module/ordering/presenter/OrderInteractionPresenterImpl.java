@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.ordering.presenter;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
