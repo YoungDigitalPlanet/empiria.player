@@ -1,10 +1,14 @@
 package eu.ydp.empiria.player.client.module.ordering.structure;
 
+import java.util.List;
+
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.ShuffleHelper;
+import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.client.xml.XMLParser;
@@ -20,6 +24,9 @@ public class OrderInteractionStructure extends AbstractModuleStructure<OrderInte
 	@Inject
 	private IJSONService ijsonService;
 
+	@Inject
+	private ShuffleHelper shuffleHelper;
+
 	@Override
 	public YJsonArray getSavedStructure() {
 		return ijsonService.createArray();
@@ -32,7 +39,8 @@ public class OrderInteractionStructure extends AbstractModuleStructure<OrderInte
 
 	@Override
 	protected void prepareStructure(YJsonArray structure) {
-
+		List<SimpleOrderChoiceBean> randomizedBeans = shuffleHelper.randomize(bean, bean.getChoiceBeans());
+		bean.setChoiceBeans(randomizedBeans);
 	}
 
 	@Override
@@ -42,7 +50,7 @@ public class OrderInteractionStructure extends AbstractModuleStructure<OrderInte
 
 	@Override
 	protected NodeList getParentNodesForFeedbacks(Document xmlDocument) {
-		return null;
+		return xmlDocument.getElementsByTagName(EmpiriaTagConstants.NAME_SIMPLE_CHOICE);
 	}
 
 }

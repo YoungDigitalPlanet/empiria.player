@@ -12,10 +12,10 @@ public class OrderInteractionModuleJAXBParserFactoryGWTTest extends AbstractEmpi
 									"<simpleChoice identifier=\"ORDERING_RESPONSE_1_0\">"+
 										"Words in this sentence	"
 									+ "</simpleChoice>"+
-									"<simpleChoice identifier=\"ORDERING_RESPONSE_1_1\">"+
+									"<simpleChoice identifier=\"ORDERING_RESPONSE_1_1\" fixed=\"true\">"+
 										"should be put in"
 									+ "</simpleChoice>"+
-									"<simpleChoice identifier=\"ORDERING_RESPONSE_1_2\">"+
+									"<simpleChoice identifier=\"ORDERING_RESPONSE_1_2\" fixed=\"false\">"+
 										"the correct order."
 									+ "</simpleChoice>"+
 								"</orderInteraction>";
@@ -24,7 +24,24 @@ public class OrderInteractionModuleJAXBParserFactoryGWTTest extends AbstractEmpi
 		 //dummy test sprawdzenie czy bindowanie dziala
 		 OrderInteractionBean bean = parse(XML);
 		 assertEquals(3, bean.getChoiceBeans().size());
+		 assertEquals("dummy1", bean.getId());
+		 assertEquals("ORDERING_RESPONSE_1", bean.getResponseIdentifier());
+		 assertEquals(true, bean.isShuffle());
 
+		 SimpleOrderChoiceBean simpleOrderChoiceBean = bean.getChoiceBeans().get(0);
+		 assertEquals("ORDERING_RESPONSE_1_0", simpleOrderChoiceBean.getIdentifier());
+		 assertEquals(false, simpleOrderChoiceBean.isFixed());
+		 assertNotNull(simpleOrderChoiceBean.getContent().getValue());
+
+		 simpleOrderChoiceBean = bean.getChoiceBeans().get(1);
+		 assertEquals("ORDERING_RESPONSE_1_1", simpleOrderChoiceBean.getIdentifier());
+		 assertEquals(true, simpleOrderChoiceBean.isFixed());
+		 assertNotNull(simpleOrderChoiceBean.getContent().getValue());
+
+		 simpleOrderChoiceBean = bean.getChoiceBeans().get(2);
+		 assertEquals("ORDERING_RESPONSE_1_2", simpleOrderChoiceBean.getIdentifier());
+		 assertEquals(false, simpleOrderChoiceBean.isFixed());
+		 assertNotNull(simpleOrderChoiceBean.getContent().getValue());
 	 }
 
 	private OrderInteractionBean parse(String xml) {

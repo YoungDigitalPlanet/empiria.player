@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.spy;
 
 import org.junit.AfterClass;
 import org.junit.Before;
