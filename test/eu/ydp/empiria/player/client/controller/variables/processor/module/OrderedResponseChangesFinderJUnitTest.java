@@ -25,8 +25,8 @@ public class OrderedResponseChangesFinderJUnitTest {
 
 	@Test
 	public void findChangesOfAnswersTest_noChanges_shouldReturnResultWithEmptyLists() {
-		List<String> previousAnswers = Lists.newArrayList();
-		List<String> currentAnswers = Lists.newArrayList();
+		List<String> previousAnswers = Lists.newArrayList("a", "b", "c", "d");
+		List<String> currentAnswers = Lists.newArrayList("a", "b", "c", "d");
 
 		LastAnswersChanges result = orderedResponseChangesFinder.findChangesOfAnswers(previousAnswers, currentAnswers);
 

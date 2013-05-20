@@ -17,6 +17,6 @@ public class OrderedResponseChangesFinder {
 	}
 
 	private boolean isEqual(List<String> previousAnswers, List<String> currentAnswers) {
-		return previousAnswers.toString().equals(currentAnswers.toString());
+		return previousAnswers.equals(currentAnswers);
 	}
 }
