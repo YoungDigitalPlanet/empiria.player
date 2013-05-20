@@ -44,19 +44,23 @@ public class ResponseChangesFinder {
 		List<String> currentAnswers = getAnswersOrEmptyList(response);
 		List<String> previousAnswers = getPreviousAnswers(previousProcessingResult);
 
-		LastAnswersChanges changesOfAnswers;
-
-		if (response.cardinality == Cardinality.ORDERED) {
-			changesOfAnswers = orderedResponseChangesFinder.findChangesOfAnswers(previousAnswers, currentAnswers);
-		} else {
-			changesOfAnswers = responseDifferenceFinder.findChangesOfAnswers(previousAnswers, currentAnswers);
-		}
+		LastAnswersChanges changesOfAnswers = getChangesOfAnswers(response, currentAnswers, previousAnswers);
 
 		UserInteractionVariables userInteractionVariables = previousProcessingResult.getUserInteractionVariables();
 		userInteractionVariables.setLastAnswerChanges(changesOfAnswers);
 
 		DtoProcessedResponse changedResponse = new DtoProcessedResponse(response, previousProcessingResult, changesOfAnswers);
 		return changedResponse;
+	}
+
+	private LastAnswersChanges getChangesOfAnswers(Response response, List<String> currentAnswers, List<String> previousAnswers) {
+		LastAnswersChanges changesOfAnswers;
+		if (response.cardinality == Cardinality.ORDERED) {
+			changesOfAnswers = orderedResponseChangesFinder.findChangesOfAnswers(previousAnswers, currentAnswers);
+		} else {
+			changesOfAnswers = responseDifferenceFinder.findChangesOfAnswers(previousAnswers, currentAnswers);
+		}
+		return changesOfAnswers;
 	}
 
 	private List<String> getPreviousAnswers(DtoModuleProcessingResult previousProcessingResult) {
