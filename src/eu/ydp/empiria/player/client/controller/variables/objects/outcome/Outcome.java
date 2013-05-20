@@ -73,14 +73,8 @@ public class Outcome extends Variable {
 				values.add("false");
 			} else if (baseType == BaseType.INTEGER){
 				values.add("0");
-			} else if (baseType == BaseType.FLOAT){
-				values.add("0");
 			} else if (baseType == BaseType.STRING){
 				values.add("");
-			} else if (baseType == BaseType.DURATION){
-				values.add("0");
-			} else if (baseType == BaseType.POINT){
-				values.add("0,0");
 			}
 		}
 	}

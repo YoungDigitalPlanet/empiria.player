@@ -224,7 +224,7 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 	Method below private Response createResponseObject()
 	is creating response object with adequate as created from given xml:
 	
-	<responseDeclaration baseType="directedPair" cardinality="multiple" evaluate="user" identifier="CONNECTION_RESPONSE_1">
+	<responseDeclaration cardinality="multiple" evaluate="user" identifier="CONNECTION_RESPONSE_1">
 				<correctResponse>"
 					<value>CONNECTION_RESPONSE_1_0 + " " + CONNECTION_RESPONSE_1_1"</value>
 					<value>CONNECTION_RESPONSE_1_3 + " " + CONNECTION_RESPONSE_1_4</value>
@@ -242,7 +242,7 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		List<String> groups = Lists.newArrayList();
 		String identifier = "CONNECTION_RESPONSE_1";
 		Evaluate evaluate = Evaluate.USER;
-		BaseType baseType = BaseType.DIRECTED_PAIR;
+		BaseType baseType = BaseType.IDENTIFIER;
 		Cardinality cardinality = Cardinality.MULTIPLE;
 		Response response = new Response(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality);
 		return response;

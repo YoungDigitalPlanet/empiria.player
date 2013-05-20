@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
@@ -13,7 +12,7 @@ public class ResponseNodeJAXBParserFactoryTest extends AbstractEmpiriaPlayerGWTT
 
 	public void testParse() throws Exception {
 		StringBuilder builder = new StringBuilder();
-		builder.append("<responseDeclaration baseType=\"directedPair\" cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\" checkMode=\"expression\" countMode=\"\" evaluate =\"correct\">");
+		builder.append("<responseDeclaration cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\" checkMode=\"expression\" countMode=\"\" evaluate =\"correct\">");
 		builder.append("		<correctResponse>");
 		builder.append("			<value forIndex=\"0\"  group=\"x1\" groupMode=\"groupItem\">CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
 		builder.append("			<value>CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4</value>");
@@ -24,7 +23,6 @@ public class ResponseNodeJAXBParserFactoryTest extends AbstractEmpiriaPlayerGWTT
 
 		assertNotNull(responseBean);
 
-		assertEquals(responseBean.getBaseType(), BaseType.DIRECTED_PAIR);
 		assertEquals(responseBean.getCardinality(), Cardinality.MULTIPLE);
 		assertEquals(responseBean.getCheckMode(), CheckMode.EXPRESSION);
 		assertEquals(responseBean.getEvaluate(), Evaluate.CORRECT);

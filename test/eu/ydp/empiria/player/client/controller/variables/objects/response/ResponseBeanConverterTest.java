@@ -25,7 +25,7 @@ public class ResponseBeanConverterTest {
 	@Test
 	public void convertTest() {
 		ResponseBean responseBean = new ResponseBean();
-		responseBean.setBaseType(BaseType.DURATION);
+		responseBean.setBaseType(BaseType.STRING);
 		responseBean.setCardinality(Cardinality.ORDERED);
 		responseBean.setCheckMode(CheckMode.EXPRESSION);
 		String identifier = "identifier";
@@ -41,7 +41,7 @@ public class ResponseBeanConverterTest {
 
 		Response response = testObj.convert(responseBean);
 
-		assertEquals(BaseType.DURATION, response.baseType);
+		assertEquals(BaseType.STRING, response.baseType);
 		assertEquals(Cardinality.ORDERED, response.cardinality);
 		assertEquals(CheckMode.EXPRESSION, response.getCheckMode());
 		assertEquals(identifier, response.identifier);

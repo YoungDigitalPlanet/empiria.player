@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.controller.variables.objects.response;
 import com.google.gwt.core.client.GWT;
 
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
@@ -22,7 +21,6 @@ public class ResponseNodeParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEquals(response.cardinality, Cardinality.MULTIPLE);
 		assertEquals(response.identifier, "CONNECTION_RESPONSE_1");
 		assertEquals(response.evaluate, Evaluate.CORRECT);
-		assertEquals(response.baseType, BaseType.DIRECTED_PAIR);
 		assertEquals(response.cardinality, Cardinality.MULTIPLE);
 		assertEquals(response.getCheckMode(), CheckMode.EXPRESSION);
 		assertEquals(3, response.correctAnswers.getAllAnswers().size());
@@ -37,7 +35,7 @@ public class ResponseNodeParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	private String getResponseDeclaration() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("<responseDeclaration baseType=\"directedPair\" cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\" checkMode=\"expression\" countMode=\"\" evaluate =\"correct\">");
+		builder.append("<responseDeclaration cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\" checkMode=\"expression\" countMode=\"\" evaluate =\"correct\">");
 		builder.append("		<correctResponse>");
 		builder.append("			<value forIndex=\"0\"  group=\"x1\" groupMode=\"groupItem\">CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
 		builder.append("			<value forIndex=\"0\"  group=\"x2\" groupMode=\"groupItem\">CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_2</value>");
