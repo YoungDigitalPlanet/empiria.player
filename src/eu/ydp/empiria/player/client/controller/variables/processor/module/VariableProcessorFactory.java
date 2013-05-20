@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
-import java.util.logging.Logger;
-
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
@@ -11,8 +9,6 @@ import eu.ydp.empiria.player.client.controller.variables.processor.module.multip
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ordering.OrderingModeVariableProcessor;
 
 public class VariableProcessorFactory {
-
-	private static final Logger LOGGER = Logger.getLogger(VariableProcessorFactory.class.getName());
 
 	private final MultipleModeVariableProcessor multipleModeVariableProcessor;
 	private final GroupedModeVariableProcessor groupedModeVariableProcessor;
@@ -40,8 +36,9 @@ public class VariableProcessorFactory {
 
 		if (Cardinality.ORDERED == cardinality) {
 			return orderingModeVariableProcessor;
-		} else {
-			return multipleModeVariableProcessor;
 		}
+
+		return multipleModeVariableProcessor;
+
 	}
 }
