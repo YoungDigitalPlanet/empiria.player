@@ -1,14 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.*;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -51,7 +46,6 @@ import eu.ydp.empiria.player.client.module.connection.structure.MatchInteraction
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
@@ -64,7 +58,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest({NativeEvent.class, CssHelper.class,NodeList.class,Node.class,Style.class})
+@PrepareForTest({ NativeEvent.class, CssHelper.class, NodeList.class, Node.class, Style.class })
 public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private class CustomGinModule implements Module {
@@ -108,8 +102,9 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 	}
 
-	private TestJAXBParser<MatchInteractionBean> jaxb = new TestJAXBParser<MatchInteractionBean>(){};
-			
+	private final TestJAXBParser<MatchInteractionBean> jaxb = new TestJAXBParser<MatchInteractionBean>() {
+	};
+
 	private MatchInteractionBean bean;
 	private ConnectionModuleViewImpl instance;
 	private ModuleSocket moduleSocket;
@@ -149,7 +144,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 	private void prepareConnectionStyleChecker() {
 		moduleFactory = injector.getInstance(ConnectionModuleFactory.class);
-		ConnectionStyleChecker connectionStyleChacker = moduleFactory.getConnectionStyleChacker(injector.getInstance(StyleSocket.class));
+		ConnectionStyleChecker connectionStyleChacker = injector.getInstance(ConnectionStyleChecker.class);
 		injector.getMembersInjector(ConnectionStyleChecker.class).injectMembers(connectionStyleChacker);
 	}
 
@@ -253,10 +248,10 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		verify(handler).onConnectionEvent(Mockito.any(PairConnectEvent.class));
 	}
 
-
 	@Test
 	public void findConnectionTest() {
-		ConnectionsBetweenItems connectionsBetweenItems = injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class), connectionItems);
+		ConnectionsBetweenItems connectionsBetweenItems = injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class),
+				connectionItems);
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.connectionItems.getConnectionItems(null);
 		ConnectionItem item = connectionItems.iterator().next();
@@ -273,7 +268,8 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 	@Test
 	public void connectByClickTest() {
-		ConnectionsBetweenItems connectionsBetweenItems = injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class), connectionItems);
+		ConnectionsBetweenItems connectionsBetweenItems = injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class),
+				connectionItems);
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.connectionItems.getConnectionItems(null);
 		Iterator<ConnectionItem> iterator = connectionItems.iterator();
@@ -291,7 +287,8 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 	@Test
 	public void itemHasAnotherConnectionTest() {
-		ConnectionsBetweenItems connectionsBetweenItems = injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class), connectionItems);
+		ConnectionsBetweenItems connectionsBetweenItems = injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class),
+				connectionItems);
 
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.connectionItems.getConnectionItems(null);
@@ -324,13 +321,13 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 	}
 
 	@Test
-	public void postConstructTest(){
+	public void postConstructTest() {
 		ConnectionView view = injector.getInstance(ConnectionView.class);
 		verify(view).setDrawFollowTouch(Mockito.eq(true));
 	}
 
 	@Test
-	public void postConstructAndroidTest(){
+	public void postConstructAndroidTest() {
 		ConnectionView view = injector.getInstance(ConnectionView.class);
 		Mockito.reset(view);
 		instance.STACK_ANDROID_BROWSER = true;

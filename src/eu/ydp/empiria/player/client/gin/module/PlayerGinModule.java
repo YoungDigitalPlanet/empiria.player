@@ -198,9 +198,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
 		install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
 		install(new GinFactoryModuleBuilder().build(LinkModuleFactory.class));
-		install(new GinFactoryModuleBuilder()
-				.implement(IStickieView.class, StickieView.class)
-				.implement(IStickiePresenter.class, StickiePresenter.class)
+		install(new GinFactoryModuleBuilder().implement(IStickieView.class, StickieView.class).implement(IStickiePresenter.class, StickiePresenter.class)
 				.build(StickieFactory.class));
 		install(new GinFactoryModuleBuilder().build(SlideshowPlayerModuleFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class).build(TouchReservationFactory.class));

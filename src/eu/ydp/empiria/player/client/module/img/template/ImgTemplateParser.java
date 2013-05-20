@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.img.template;
 
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -24,9 +26,9 @@ import eu.ydp.empiria.player.client.module.img.LabelledImgContent;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButon;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_MODE;
 
 public class ImgTemplateParser extends AbstractTemplateParser {
 	protected final static Set<String> CONTROLLERS = new HashSet<String>();
@@ -41,6 +43,9 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	@Inject
 	private Provider<PicturePlayerFullScreenMediaButon> fullScreenProvider;
+
+	@Inject
+	private StyleSocket styleSocket;
 
 	@Inject
 	public ImgTemplateParser(@Assisted Element baseElement, @Assisted ModuleSocket moduleSocket) {
@@ -95,7 +100,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	/**
 	 * tworzy widget na podstawie wezlow xml poprzez {@link InlineBodyGenerator}
-	 *
+	 * 
 	 * @param elementName
 	 * @return
 	 */
@@ -140,7 +145,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	/**
 	 * Tworzy obiekt img + labele
-	 *
+	 * 
 	 * @return
 	 */
 	private MediaController<?> createScreen() {
@@ -175,7 +180,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	}
 
 	private boolean isExplorableImgContent() {
-		Map<String, String> styles = moduleSocket.getStyles(baseElement);
+		Map<String, String> styles = styleSocket.getStyles(baseElement);
 		return "explorable".equalsIgnoreCase(styles.get(EMPIRIA_IMG_MODE));
 	}
 

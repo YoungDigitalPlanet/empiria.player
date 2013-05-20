@@ -8,5 +8,5 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 public interface ImgContent extends IsWidget {
 
 	public void init(Element element, ModuleSocket moduleSocket);
-	
+
 }

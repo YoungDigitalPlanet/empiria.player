@@ -21,7 +21,6 @@ import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 import eu.ydp.empiria.player.client.view.page.PageViewCarrier;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
@@ -36,16 +35,14 @@ public class PageController implements PageInterferenceSocket {
 	private ParenthoodSocket parenthoodSocket;
 	protected ItemController[] items;
 	private final boolean isInitialized = false;
-	private StyleSocket styleSocket;
-	private final ModuleHandlerManager moduleHandlerManager;
 
+	private final ModuleHandlerManager moduleHandlerManager;
 
 	private final AssessmentControllerFactory controllerFactory;
 
 	@Inject
-	public PageController(@Assisted PageViewSocket pvs, @Assisted IFlowSocket fs,
-							@Assisted InteractionEventsSocket is, @Assisted PageSessionSocket pss,
-							@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager,@Assisted AssessmentControllerFactory controllerFactory) {
+	public PageController(@Assisted PageViewSocket pvs, @Assisted IFlowSocket fs, @Assisted InteractionEventsSocket is, @Assisted PageSessionSocket pss,
+			@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
 		pageViewSocket = pvs;
 		flowSocket = fs;
 		interactionSocket = is;
@@ -55,52 +52,45 @@ public class PageController implements PageInterferenceSocket {
 		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
-	public void setStyleSocket(StyleSocket styleSocket) {
-		this.styleSocket = styleSocket;
-	}
-
 	public void initPage(PageData pageData) {
 
-			// conception compatibility issue
-			page = new Page();
+		// conception compatibility issue
+		page = new Page();
 
-			if (pageData.type == PageType.ERROR) {
+		if (pageData.type == PageType.ERROR) {
 
-				pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataError) pageData));
+			pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataError) pageData));
 
-				OperationLogManager.logEvent(OperationLogEvent.DISPLAY_PAGE_FAILED);
+			OperationLogManager.logEvent(OperationLogEvent.DISPLAY_PAGE_FAILED);
 
-			} else if (pageData.type == PageType.TEST) {
+		} else if (pageData.type == PageType.TEST) {
 
-				PageDataTest pageDataTest = (PageDataTest) pageData;
+			PageDataTest pageDataTest = (PageDataTest) pageData;
 
-				items = new ItemController[pageDataTest.datas.length];
-				pageViewSocket.initItemViewSockets(pageDataTest.datas.length);
+			items = new ItemController[pageDataTest.datas.length];
+			pageViewSocket.initItemViewSockets(pageDataTest.datas.length);
 
-				pageViewSocket.setPageViewCarrier(new PageViewCarrier());
+			pageViewSocket.setPageViewCarrier(new PageViewCarrier());
 
-				for (int i = 0; i < pageDataTest.datas.length; i++) {
-					ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket,
-																					interactionSocket, pageSessionSocket.getItemSessionSocket(),
-																					modulesRegistrySocket, moduleHandlerManager,controllerFactory);
-					controller.setStyleSocket(styleSocket);
-					controller.init(pageDataTest.datas[i], pageDataTest.displayOptions);
-					controller.setAssessmentParenthoodSocket(parenthoodSocket);
-					if (pageDataTest.flowOptions.activityMode == ActivityMode.CHECK) {
-						controller.checkItem();
-					}
-					items[i] = controller;
+			for (int i = 0; i < pageDataTest.datas.length; i++) {
+				ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket, interactionSocket,
+						pageSessionSocket.getItemSessionSocket(), modulesRegistrySocket, moduleHandlerManager, controllerFactory);
+				controller.init(pageDataTest.datas[i], pageDataTest.displayOptions);
+				controller.setAssessmentParenthoodSocket(parenthoodSocket);
+				if (pageDataTest.flowOptions.activityMode == ActivityMode.CHECK) {
+					controller.checkItem();
 				}
-
-			} else if (pageData.type == PageType.TOC) {
-				items = null;
-				pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataToC) pageData, flowSocket));
-			} else if (pageData.type == PageType.SUMMARY) {
-				items = null;
-				pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataSummary) pageData, flowSocket));
+				items[i] = controller;
 			}
-		}
 
+		} else if (pageData.type == PageType.TOC) {
+			items = null;
+			pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataToC) pageData, flowSocket));
+		} else if (pageData.type == PageType.SUMMARY) {
+			items = null;
+			pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataSummary) pageData, flowSocket));
+		}
+	}
 
 	public void close() {
 

@@ -14,7 +14,6 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.connection.exception.CssStyleException;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -24,20 +23,17 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ConnectionStyleChecker {
 
-	@Inject
-	private CssHelper cssHelper;
-
-	@Inject
-	private StyleNameConstants styleNames;
+	private final CssHelper cssHelper;
+	private final StyleNameConstants styleNames;
+	private final XMLParser xmlParser;
+	private final StyleSocket styleSocket;
 
 	protected Set<String> cssClassNames = Sets.newHashSet();
 
-	private final XMLParser xmlParser;
-
-	private final StyleSocket styleSocket;
-
 	@Inject
-	public ConnectionStyleChecker(@Assisted StyleSocket styleSocket, XMLParser xmlParser) {
+	public ConnectionStyleChecker(StyleSocket styleSocket, XMLParser xmlParser, StyleNameConstants styleNames, CssHelper cssHelper) {
+		this.styleNames = styleNames;
+		this.cssHelper = cssHelper;
 		this.xmlParser = xmlParser;
 		this.styleSocket = styleSocket;
 	}
@@ -60,7 +56,6 @@ public class ConnectionStyleChecker {
 		cssClassNames.add(styleNames.QP_CONNECTION_RIGHT_COLUMN());
 		cssClassNames.add(styleNames.QP_CONNECTION_WRONG());
 	}
-
 
 	public void areStylesCorrectThrowsExceptionWhenNot(IsWidget widget) throws CssStyleException {
 		checkStylesFromCssParser();

@@ -34,75 +34,74 @@ import eu.ydp.empiria.player.client.controller.data.library.LibraryLoader;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoaderListener;
 import eu.ydp.empiria.player.client.preloader.view.ProgressBundle;
 import eu.ydp.empiria.player.client.style.StyleDocument;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
 import eu.ydp.gwtutil.client.PathUtil;
 import eu.ydp.gwtutil.client.collections.QueueSet;
 
-public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier, LibraryLoaderListener {
+public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier,
+		LibraryLoaderListener {
 
-	public DataSourceManager(){
+	public DataSourceManager() {
 		mode = DataSourceManagerMode.NONE;
 		assessmentDataManager = new AssessmentDataSourceManager(this);
 		itemDataCollectionManager = new ItemDataSourceCollectionManager(this);
 		libraryLoader = new LibraryLoader(this);
 		styleDataSourceLoader = new StyleDataSourceLoader();
 	}
-	
+
 	protected final String MAIN_PRELOADER_ID = "mainPreloader";
 
 	private StyleDataSourceManager styleDataSourceManager;
 	private int styleLoadCounter;
 
-	private AssessmentDataSourceManager assessmentDataManager;
-	private ItemDataSourceCollectionManager itemDataCollectionManager;
-	private LibraryLoader libraryLoader;
+	private final AssessmentDataSourceManager assessmentDataManager;
+	private final ItemDataSourceCollectionManager itemDataCollectionManager;
+	private final LibraryLoader libraryLoader;
 	private DataSourceManagerMode mode;
 	private DataLoaderEventListener listener;
 	private XmlData assesmentXML;
-	private StyleDataSourceLoader styleDataSourceLoader;
+	private final StyleDataSourceLoader styleDataSourceLoader;
 	private Image mainPreloader;
-	
-	public InitialData getInitialData(){
+
+	public InitialData getInitialData() {
 		InitialData initialData = new InitialData(itemDataCollectionManager.getItemsCount());
-		for (int i = 0 ; i < itemDataCollectionManager.getItemsCount() ; i ++){
+		for (int i = 0; i < itemDataCollectionManager.getItemsCount(); i++) {
 			initialData.addItemInitialData(itemDataCollectionManager.getItemInitialData(i));
 		}
 		return initialData;
 	}
 
-	public AssessmentData getAssessmentData(){
+	public AssessmentData getAssessmentData() {
 		return assessmentDataManager.getAssessmentData();
 	}
 
-	public ItemData getItemData(int index){
+	public ItemData getItemData(int index) {
 		return itemDataCollectionManager.getItemData(index);
 	}
 
-	public StyleSocket getStyleProvider() {
-		return getStyleDataSourceManager();
-	}
-
-	public int getItemsCount(){
+	@Override
+	public int getItemsCount() {
 		return assessmentDataManager.getItemsCount();
 	}
 
 	/**
 	 * Zwraca wezel assessmentItemRef o wskazanym id
-	 * @param index index wezla
+	 * 
+	 * @param index
+	 *            index wezla
 	 * @return Element lub null gdy element o podanym indeksie nie istnieje
 	 */
 	@Override
 	public Element getItem(int itemIndex) {
 		return assessmentDataManager.getItem(itemIndex);
 	}
-	
+
 	public Image getMainPreloader() {
 		return this.mainPreloader;
 	}
-	
+
 	public void setMainPreloader(Image mainPreloader) {
 		this.mainPreloader = mainPreloader;
 	}
@@ -110,54 +109,53 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	public void loadMainDocument(String url) {
 		if (RootPanel.get(MAIN_PRELOADER_ID) != null) {
 			setMainPreloader(Image.wrap(RootPanel.get(MAIN_PRELOADER_ID).getElement()));
-		}
-		else {
+		} else {
 			ProgressBundle progressBundle = GWT.create(ProgressBundle.class);
 			setMainPreloader(new Image(progressBundle.getProgressImage()));
 		}
-		
+
 		loadMainDocument(url, RootPanel.get(), getMainPreloader());
 	}
-	
+
 	public void loadMainDocument(String url, ForIsWidget rootPanel, IsWidget mainPreloader) {
 		rootPanel.add(mainPreloader);
-		
-		if (mode == DataSourceManagerMode.LOADING_ASSESSMENT  ||  mode == DataSourceManagerMode.LOADING_ITEMS || url == ""){
+
+		if (mode == DataSourceManagerMode.LOADING_ASSESSMENT || mode == DataSourceManagerMode.LOADING_ITEMS || url == "") {
 			return;
 		}
-		
+
 		centerMainPreloader(Window.getClientWidth() / 2, Window.getClientHeight() / 2, getMainPreloader().getElement());
-		
+
 		mode = DataSourceManagerMode.LOADING_ASSESSMENT;
 
-		String resolvedURL;		
-		
-		resolvedURL = PathUtil.resolvePath(url,GWT.getHostPageBaseURL());
+		String resolvedURL;
 
-		new eu.ydp.empiria.player.client.util.file.xml.XmlDocument(resolvedURL, new DocumentLoadCallback<Document>(){
+		resolvedURL = PathUtil.resolvePath(url, GWT.getHostPageBaseURL());
 
-			public void finishedLoading(Document document, String baseURL) {				
+		new eu.ydp.empiria.player.client.util.file.xml.XmlDocument(resolvedURL, new DocumentLoadCallback<Document>() {
+
+			@Override
+			public void finishedLoading(Document document, String baseURL) {
 				assesmentXML = new XmlData(document, baseURL);
 				assessmentDataManager.initializeAssessmentData(assesmentXML);
 			}
-			
+
 			@Override
-			public void loadingError(String error) {			
+			public void loadingError(String error) {
 				assessmentDataManager.setAssessmentLoadingError(error);
 				onLoadFinished();
 			}
 		});
 	}
-	
-	protected void centerMainPreloader(int x, int y, com.google.gwt.dom.client.Element preloaderElement)
-	{
+
+	protected void centerMainPreloader(int x, int y, com.google.gwt.dom.client.Element preloaderElement) {
 		preloaderElement.setId(MAIN_PRELOADER_ID);
 		preloaderElement.getStyle().setPosition(Position.ABSOLUTE);
 		preloaderElement.getStyle().setLeft(x - preloaderElement.getOffsetWidth() / 2, Unit.PX);
 		preloaderElement.getStyle().setTop(y - preloaderElement.getOffsetHeight() / 2, Unit.PX);
 	}
-	
-	public void loadExtensionsLibrary(){
+
+	public void loadExtensionsLibrary() {
 		String libraryUrl = assessmentDataManager.getLibraryLink();
 
 		new XmlDocument(libraryUrl, new DocumentLoadCallback<Document>() {
@@ -175,17 +173,17 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	}
 
-	public void onExtensionsLoadFinished(){
+	@Override
+	public void onExtensionsLoadFinished() {
 		loadItems();
 	}
 
-	public void loadItems(){
+	public void loadItems() {
 		loadItems(assessmentDataManager.getItemUrls());
 	}
 
-	private void loadItems(String[] urls){
+	private void loadItems(String[] urls) {
 
-		
 		mode = DataSourceManagerMode.LOADING_ITEMS;
 
 		itemDataCollectionManager.initItemDataCollection(urls.length);
@@ -193,17 +191,18 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		if (urls.length == 0)
 			onItemCollectionLoaded();
 
-		for (int i = 0 ; i < urls.length ; i ++){
+		for (int i = 0; i < urls.length; i++) {
 			final int ii = i;
 
-			new XmlDocument(urls[ii], new DocumentLoadCallback<Document>(){
+			new XmlDocument(urls[ii], new DocumentLoadCallback<Document>() {
 
-				public void finishedLoading(Document document, String baseURL) {					
+				@Override
+				public void finishedLoading(Document document, String baseURL) {
 					itemDataCollectionManager.setItemData(ii, new XmlData(document, baseURL));
 				}
 
 				@Override
-				public void loadingError(String error) {					
+				public void loadingError(String error) {
 					itemDataCollectionManager.setItemData(ii, error);
 				}
 			});
@@ -211,32 +210,31 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	}
 
-	private void loadSingleItemData(XmlData itemData){
-		itemDataCollectionManager.setItemDataCollection(new XmlData[] {itemData});
+	private void loadSingleItemData(XmlData itemData) {
+		itemDataCollectionManager.setItemDataCollection(new XmlData[] { itemData });
 	}
 
-	public void loadData(XmlData ad, XmlData[] ids){
+	public void loadData(XmlData ad, XmlData[] ids) {
 		assessmentDataManager.setAssessmentData(ad);
 		itemDataCollectionManager.setItemDataCollection(ids);
 	}
 
-
-	public PageData generatePageData(PageReference ref){
+	public PageData generatePageData(PageReference ref) {
 		PageData pd;
 
-		if (assessmentDataManager.isError()){
+		if (assessmentDataManager.isError()) {
 			pd = new PageDataError(assessmentDataManager.getErrorMessage());
 			return pd;
 		}
 
-		if (ref.type == PageType.TOC){
+		if (ref.type == PageType.TOC) {
 			pd = new PageDataToC(itemDataCollectionManager.getTitlesList());
-		} else if (ref.type == PageType.SUMMARY){
+		} else if (ref.type == PageType.SUMMARY) {
 			pd = new PageDataSummary(itemDataCollectionManager.getTitlesList());
 		} else {
 			ItemData[] ids = new ItemData[ref.pageIndices.length];
 
-			for (int i = 0 ; i < ref.pageIndices.length ; i ++){
+			for (int i = 0; i < ref.pageIndices.length; i++) {
 				ids[i] = itemDataCollectionManager.getItemData(ref.pageIndices[i]);
 			}
 
@@ -246,11 +244,11 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		return pd;
 	}
 
-	public QueueSet<String> getAssessmentStyleLinksForUserAgent(String userAgent){
+	public QueueSet<String> getAssessmentStyleLinksForUserAgent(String userAgent) {
 		return assessmentDataManager.getStyleLinksForUserAgent(userAgent);
 	}
 
-	public QueueSet<String> getPageStyleLinksForUserAgent(PageReference ref, String userAgent){
+	public QueueSet<String> getPageStyleLinksForUserAgent(PageReference ref, String userAgent) {
 		if (ref.pageIndices.length == 0)
 			return new QueueSet<String>();
 
@@ -259,13 +257,12 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	@Override
 	public void onAssessmentDataLoaded() {
-		if(assessmentDataManager.isDefaultData()){
+		if (assessmentDataManager.isDefaultData()) {
 			loadSingleItemData(assesmentXML);
-		}else{
-			if (assessmentDataManager.hasLibrary()){
+		} else {
+			if (assessmentDataManager.hasLibrary()) {
 				loadExtensionsLibrary();
-			}
-			else{
+			} else {
 				loadItems();
 			}
 		}
@@ -285,59 +282,59 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		String userAgent = Navigator.getUserAgent();
 		// load assesment styles
 		Set<String> aStyles = assessmentDataManager.getStyleLinksForUserAgent(userAgent);
-		for (String styleURL : aStyles) {			
+		for (String styleURL : aStyles) {
 			styleLoadCounter++;
-			
+
 			styleDataSourceLoader.load(styleURL, new DocumentLoadCallback<StyleDocument>() {
 
 				@Override
-				public void finishedLoading(StyleDocument value, String baseUrl) {					
+				public void finishedLoading(StyleDocument value, String baseUrl) {
 					styleLoadCounter--;
-					getStyleDataSourceManager().addAssessmentStyle( value );
+					getStyleDataSourceManager().addAssessmentStyle(value);
 					checkLoadFinished();
 				}
 
 				@Override
-				public void loadingError(String message) {					
+				public void loadingError(String message) {
 					styleLoadCounter--;
 					checkLoadFinished();
 				}
 			});
-			
+
 		}
 		// load item styles
 		int itemCount = itemDataCollectionManager.getItemsCount();
-		for (int i=itemCount-1;i>=0;i--) {
+		for (int i = itemCount - 1; i >= 0; i--) {
 			QueueSet<String> iStyles = itemDataCollectionManager.getStyleLinksForUserAgent(i, userAgent);
 			for (String styleURL : iStyles) {
 				final int ii = i;
 
 				styleLoadCounter++;
-				
+
 				styleDataSourceLoader.load(styleURL, new DocumentLoadCallback<StyleDocument>() {
 
 					@Override
-					public void finishedLoading(StyleDocument value, String baseUrl) {						
+					public void finishedLoading(StyleDocument value, String baseUrl) {
 						styleLoadCounter--;
-						getStyleDataSourceManager().addItemStyle( ii, value );
+						getStyleDataSourceManager().addItemStyle(ii, value);
 						checkLoadFinished();
 					}
 
 					@Override
-					public void loadingError(String message) {						
+					public void loadingError(String message) {
 						styleLoadCounter--;
 						checkLoadFinished();
 					}
 				});
-				
+
 			}
 		}
 
 		checkLoadFinished();
 	}
 
-	protected void checkLoadFinished(){
-		if (styleLoadCounter==0){
+	protected void checkLoadFinished() {
+		if (styleLoadCounter == 0) {
 			onLoadFinished();
 		}
 	}
@@ -346,29 +343,31 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		ForIsWidget rootPanel = RootPanel.get();
 		onLoadFinished(getMainPreloader(), rootPanel);
 	}
-	
-	public void onLoadFinished(IsWidget mainPreloader, ForIsWidget rootPanel) {		
+
+	public void onLoadFinished(IsWidget mainPreloader, ForIsWidget rootPanel) {
 		int preloaderIndex = rootPanel.getWidgetIndex(mainPreloader);
-		
-		if (preloaderIndex >= 0){
+
+		if (preloaderIndex >= 0) {
 			rootPanel.remove(preloaderIndex);
 		}
-		
+
 		mode = DataSourceManagerMode.SERVING;
-		//OperationLogManager.logEvent(OperationLogEvent.LOADING_FINISHED);
-		
+		// OperationLogManager.logEvent(OperationLogEvent.LOADING_FINISHED);
+
 		getDataLoaderEventListener().onDataReady();
 	}
-	
-	public DataSourceManagerMode getMode(){
+
+	public DataSourceManagerMode getMode() {
 		return mode;
 	}
 
-	public String getAssessmentTitle(){
+	@Override
+	public String getAssessmentTitle() {
 		return assessmentDataManager.getAssessmentTitle();
 	}
 
-	public String getItemTitle(int index){
+	@Override
+	public String getItemTitle(int index) {
 		return itemDataCollectionManager.getTitlesList()[index];
 	}
 
@@ -389,7 +388,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		return listener;
 	}
 
-	public List<LibraryExtension> getExtensionCreators(){
+	public List<LibraryExtension> getExtensionCreators() {
 		return libraryLoader.getExtensionCreators();
 	}
 

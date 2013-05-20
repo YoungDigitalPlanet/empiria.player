@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.style;
 
 import java.util.Map;
 
+import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
@@ -11,24 +12,32 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class StyleSocketAttributeHelper {
 
-	@Inject
-	XMLParser xmlParser;
+	private final XMLParser xmlParser;
+	private final BooleanUtils booleanUtil;
+	private final StyleSocket styleSocket;
 
 	@Inject
-	BooleanUtils booleanUtil;
-
-	private Map<String, String> getStyleValue(StyleSocket styleSocket, String attribute) {
-		String xml = "<root><" + attribute + " class=\"" + attribute + "\"/></root>";
-		return styleSocket.getStyles((Element) xmlParser.parse(xml).getDocumentElement().getFirstChild());
+	public StyleSocketAttributeHelper(XMLParser xmlParser, BooleanUtils booleanUtil, StyleSocket styleSocket) {
+		this.xmlParser = xmlParser;
+		this.booleanUtil = booleanUtil;
+		this.styleSocket = styleSocket;
 	}
 
-	public String getString(StyleSocket styleSocket, String nodeName, String attribute) {
-		Map<String, String> styles = getStyleValue(styleSocket, nodeName);
+	private Map<String, String> getStyleValue(String attribute) {
+		String xml = "<root><" + attribute + " class=\"" + attribute + "\"/></root>";
+		Document document = xmlParser.parse(xml);
+		Element documentElement = document.getDocumentElement();
+		Element firstChild = (Element) documentElement.getFirstChild();
+		return styleSocket.getStyles(firstChild);
+	}
+
+	private String getString(String nodeName, String attribute) {
+		Map<String, String> styles = getStyleValue(nodeName);
 		return styles.get(attribute);
 	}
 
-	public boolean getBoolean(StyleSocket styleSocket, String nodeName, String attribute) {
-		String value = getString(styleSocket, nodeName, attribute);
+	public boolean getBoolean(String nodeName, String attribute) {
+		String value = getString(nodeName, attribute);
 		return booleanUtil.getBoolean(value);
 	}
 }

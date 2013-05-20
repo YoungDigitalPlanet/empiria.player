@@ -24,9 +24,11 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDa
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
@@ -146,7 +148,10 @@ public class ReportModule extends ContainerModuleBase {
 
 	private Map<String, String> getStyles() {
 		if (this.styles == null) {
-			styles = getModuleSocket().getStyles(element);
+			PlayerGinjector playerGinjector = PlayerGinjectorFactory.getPlayerGinjector();
+			StyleSocket styleSocket = playerGinjector.getStyleSocket();
+			
+			styles = styleSocket.getStyles(element);
 		}
 		return styles;
 	}

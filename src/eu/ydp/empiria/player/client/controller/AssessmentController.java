@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -30,7 +29,6 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private Assessment assessment;
 	protected PageController pageController;
 	private int controllerPageNumber = -1; // NOPMD
-	private StyleSocket styleSocket;
 	private final InteractionEventsSocket interactionEventsSocket; // NOPMD
 	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
 	private final PageControllerCache controllerCache = PlayerGinjectorFactory.getPlayerGinjector().getPageControllerCache();
@@ -42,7 +40,8 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private final ModuleHandlerManager moduleHandlerManager;
 	private final AssessmentControllerFactory controllerFactory = PlayerGinjectorFactory.getPlayerGinjector().getAssessmentControllerFactory();
 
-	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket, AssessmentSessionSocket ass, ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
+	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket, AssessmentSessionSocket ass,
+			ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
 		assessmentViewSocket = avs;
 		assessmentSessionSocket = ass;
 		interactionEventsSocket = interactionsocket;
@@ -53,7 +52,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
 	/**
 	 * zwraca true jezeli element zostal pobrany z kesza
-	 *
+	 * 
 	 * @param pageNumber
 	 * @return
 	 */
@@ -64,17 +63,12 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 			if (isInCache) {
 				pageController = controllerCache.getOrCreateAndPut(pageNumber);
 			} else {
-				pageController = controllerFactory.getPageController(assessmentViewSocket.getPageViewSocket(), flowSocket,
-																		interactionEventsSocket, assessmentSessionSocket.getPageSessionSocket(),
-																		modulesRegistrySocket, moduleHandlerManager,controllerFactory);
+				pageController = controllerFactory.getPageController(assessmentViewSocket.getPageViewSocket(), flowSocket, interactionEventsSocket,
+						assessmentSessionSocket.getPageSessionSocket(), modulesRegistrySocket, moduleHandlerManager, controllerFactory);
 				controllerCache.put(pageNumber, pageController);
 			}
 		}
 		return isInCache;
-	}
-
-	public void setStyleSocket(StyleSocket styleSocket) {
-		this.styleSocket = styleSocket;
 	}
 
 	public void setHeaderViewSocket(ViewSocket hvs) {
@@ -87,7 +81,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
 	public void init(AssessmentData data, DisplayContentOptions options) {
 		if (data != null) {
-			assessment = new Assessment(data, options, interactionEventsSocket, styleSocket, modulesRegistrySocket, itemProperties);
+			assessment = new Assessment(data, options, interactionEventsSocket, modulesRegistrySocket, itemProperties);
 			assessmentViewSocket.setAssessmentViewCarrier(new AssessmentViewCarrier(assessment, headerViewSocket, footerViewSocket));
 			assessment.setUp();
 			assessment.start();
@@ -97,7 +91,6 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	public void initPage(PageData pageData) {
 		if (!loadPageController(page.getCurrentPageNumber())) {
 			eventBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_INITIALIZING, page.getCurrentPageNumber(), this));
-			pageController.setStyleSocket(styleSocket);
 			pageController.initPage(pageData);
 			eventBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_INITIALIZED, page.getCurrentPageNumber(), this));
 		}

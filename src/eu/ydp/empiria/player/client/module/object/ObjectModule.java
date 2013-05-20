@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.object;
 
-import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
+import static eu.ydp.empiria.player.client.util.SourceUtil.*;
 
 import java.util.Map;
 
@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaTyp
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
@@ -47,7 +48,11 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	private ObjectTemplateParser<?> parser;
 	@Inject
 	private Provider<ObjectModule> moduleFactory;
-	@Inject Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
+	@Inject
+	Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
+
+	@Inject
+	private StyleSocket styleSocket;
 
 	private MediaWrapper<?> fullScreenMediaWrapper;
 
@@ -96,7 +101,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 
 	/**
 	 * tworzy element
-	 *
+	 * 
 	 * @param element
 	 */
 	private void createMedia(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
@@ -129,7 +134,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		if (element.getNodeName().equals("audioPlayer")) {
 			type = "audio";
 		}
-		Map<String, String> styles = getModuleSocket().getStyles(element);
+		Map<String, String> styles = styleSocket.getStyles(element);
 		String playerType = styles.get("-player-" + type + "-skin");
 		if ("audioPlayer".equals(element.getNodeName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
 			Map<String, String> sources = getSource(element, type);
@@ -152,7 +157,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			if (widget != null) {
 				if (defaultTemplate == null || flashPlayer) {
 					moduleView.getContainerPanel().add(widget);
-				}else{
+				} else {
 					parseTemplate(defaultTemplate, fullScreenTemplate, moduleView.getContainerPanel());
 				}
 			}

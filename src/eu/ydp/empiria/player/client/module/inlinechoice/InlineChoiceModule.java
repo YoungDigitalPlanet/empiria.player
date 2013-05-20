@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.inlinechoice;
 
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +17,8 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_INLINECHOICE_EMPTY_OPTION;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_INLINECHOICE_POPUP_POSITION;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_INLINECHOICE_TYPE;
 
 public class InlineChoiceModule extends InteractionModuleBase implements Factory<InlineChoiceModule> {
 
@@ -38,6 +38,9 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 	@Inject
 	protected Provider<InlineChoiceModule> inlineChoiceModuleProvider;
 
+	@Inject
+	private StyleSocket styleSocket;
+
 	public void initModule() {
 		setStyles();
 		controller.initModule(getModuleSocket(), getInteractionEventsListener());
@@ -49,7 +52,7 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 		if (styles != null && styles.containsKey(EMPIRIA_INLINECHOICE_TYPE) && styles.get(EMPIRIA_INLINECHOICE_TYPE).equalsIgnoreCase("popup")) {
 			controller = inlineChoicePopupControllerProvider.get();
 		} else {
-			controller =inlineChoiceDefaultControllerProvider.get();
+			controller = inlineChoiceDefaultControllerProvider.get();
 		}
 		if (styles != null && styles.containsKey(EMPIRIA_INLINECHOICE_EMPTY_OPTION) && styles.get(EMPIRIA_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase("hide")) {
 			controller.setShowEmptyOption(false);
@@ -63,7 +66,7 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 	}
 
 	protected Map<String, String> getStyles() {
-		return getModuleSocket().getStyles(xmlParser.createDocument().createElement("inlinechoiceinteraction"));
+		return styleSocket.getStyles(xmlParser.createDocument().createElement("inlinechoiceinteraction"));
 	}
 
 	@Override

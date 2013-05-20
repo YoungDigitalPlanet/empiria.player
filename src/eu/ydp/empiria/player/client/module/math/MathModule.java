@@ -38,7 +38,7 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class MathModule extends AbstractActivityContainerModuleBase implements Factory<MathModule>, ILifecycleModule, IContainerModule {
@@ -50,7 +50,8 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	private MathModuleViewUiBinder uiBinder;
 
 	@UiTemplate("MathModuleView.ui.xml")
-	interface MathModuleViewUiBinder extends UiBinder<Widget, MathModule> {};
+	interface MathModuleViewUiBinder extends UiBinder<Widget, MathModule> {
+	};
 
 	@UiField
 	protected AbsolutePanel outerPanel;
@@ -85,20 +86,20 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	private InteractionManager mathInteractionManager;
 
 	@Inject
-	private EventsBus eventsBus;
+	private Provider<MathModule> mathModuleProvider;
 
 	@Inject
-	private Provider<MathModule> mathModuleProvider;
+	private StyleSocket styleSocket;
 
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener interactionListener, BodyGeneratorSocket bodyGenerator) {
 		uiBinder = GWT.create(MathModuleViewUiBinder.class);
 		uiBinder.createAndBindUi(this);
-		
+
 		super.initModule(element, moduleSocket, interactionListener, bodyGenerator);
 
 		moduleElement = element;
-		styles = getModuleSocket().getStyles(moduleElement);
+		styles = styleSocket.getStyles(moduleElement);
 
 		readAttributes(element);
 		initStyles(styles);
@@ -112,13 +113,13 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	private void setIndexesOnGaps() {
 		int index = 0;
 
-		for (MathGap gap: getMathGaps()) {
+		for (MathGap gap : getMathGaps()) {
 			gap.setIndex(index++);
 		}
 	}
 
 	protected void setGapMathStyles() {
-		for (MathGap gap: getMathGaps()) {
+		for (MathGap gap : getMathGaps()) {
 			gap.setMathStyles(styles);
 		}
 	}
@@ -165,7 +166,7 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 
 	@Override
 	public void onSetUp() {
-		for (MathGap gap: getMathGaps()) {
+		for (MathGap gap : getMathGaps()) {
 			if (gap instanceof TextEntryGapModule) {
 				((TextEntryGapModule) gap).setUpGap();
 			}
@@ -176,7 +177,7 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 
 	@Override
 	public void onStart() {
-		for (MathGap gap: getMathGaps()) {
+		for (MathGap gap : getMathGaps()) {
 			if (gap instanceof TextEntryGapModule) {
 				((TextEntryGapModule) gap).startGap();
 			}
@@ -187,10 +188,10 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		mathInteractionManager = createMath();
 		gapsPanel.setWidth(mainPanel.getOffsetWidth() + PX);
 		gapsPanel.setHeight(mainPanel.getOffsetHeight() + PX);
-		
+
 		String verticalAlign = MINUS + mathManager.getBaseline() + PX;
 		placeholder.getElement().getStyle().setProperty("verticalAlign", verticalAlign);
-		
+
 		positionGaps();
 	}
 
@@ -198,7 +199,7 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		List<CustomFieldDescription> customFieldDescriptions = mathInteractionManager.getCustomFieldDescriptions();
 		Iterator<CustomFieldDescription> customFieldDescriptionsIterator = customFieldDescriptions.iterator();
 
-		for(MathGap gap: getMathGaps()){
+		for (MathGap gap : getMathGaps()) {
 			if (!customFieldDescriptionsIterator.hasNext()) {
 				break;
 			}
@@ -208,11 +209,11 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		}
 	}
 
-	private void setSizeOfGapDummies(){
-		for (MathGap gap: getMathGaps()) {
+	private void setSizeOfGapDummies() {
+		for (MathGap gap : getMathGaps()) {
 			GapIdentifier gapId = GapIdentifier.createIdIdentifier(gap.getUid());
 
-			if(gapId != null) {
+			if (gapId != null) {
 				int width = gap.getContainer().getOffsetWidth();
 				int height = gap.getContainer().getOffsetHeight();
 
@@ -226,7 +227,7 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	public void onClose() {
 	}
 
-	private void placeGaps(){
+	private void placeGaps() {
 		for (MathGap gap : getMathGaps()) {
 			Widget gapContainer = gap.getContainer();
 			Style gapStyle = gapContainer.getElement().getStyle();
@@ -249,7 +250,7 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		mainPanelStyle.setLeft(0, Unit.PX);
 	}
 
-	private void initializeMathPlayer(){
+	private void initializeMathPlayer() {
 		mathManager = new MathPlayerManager();
 		Integer fontColorInt = NumberUtils.tryParseInt(fontColor.trim().substring(1), 16, 0);
 		Font font = new Font(fontSize, fontName, fontItalic, fontBold, new Color(fontColorInt / (256 * 256), fontColorInt / 256 % 256, fontColorInt % 256));
@@ -257,25 +258,25 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		mathManager.setFont(font);
 	}
 
-	private InteractionManager createMath(){
+	private InteractionManager createMath() {
 		return mathManager.createMath(moduleElement.getChildNodes().toString(), mainPanel);
 	}
 
-	private void generateGaps(BodyGeneratorSocket bgs){
+	private void generateGaps(BodyGeneratorSocket bgs) {
 		NodeList gapsNodeList = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_GAP);
 
-		for(int i = 0; i < gapsNodeList.getLength(); i++){
+		for (int i = 0; i < gapsNodeList.getLength(); i++) {
 			Element gapElement = (Element) gapsNodeList.item(i);
 			bgs.processNode(gapElement, gapsPanel);
 		}
 	}
 
-	private List<MathGap> getMathGaps(){
-		if(mathGaps == null) {
+	private List<MathGap> getMathGaps() {
+		if (mathGaps == null) {
 			mathGaps = new ArrayList<MathGap>();
 
-			for(IModule child: getModuleSocket().getChildren(this)) {
-				if(child instanceof MathGap) {
+			for (IModule child : getModuleSocket().getChildren(this)) {
+				if (child instanceof MathGap) {
 					mathGaps.add((MathGap) child);
 				}
 			}

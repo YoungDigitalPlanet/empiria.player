@@ -39,7 +39,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageS
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
@@ -56,7 +55,6 @@ import eu.ydp.empiria.player.client.controller.extensions.types.ModuleHandlerExt
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.types.StyleSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.processing.DefaultFlowRequestProcessor;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
@@ -101,9 +99,9 @@ import eu.ydp.gwtutil.client.collections.QueueSet;
  * Responsible for: - loading the content, - managing the content, - delivering
  * content to player, - managing state, results and reports about the
  * assessments.
- *
+ * 
  * @author Rafal Rybacki
- *
+ * 
  */
 public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
@@ -131,10 +129,9 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private String stateAsync;
 
 	@Inject
-	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket,
-			SessionDataManager sessionDataManager, EventsBus eventsBus, ModuleFactory extensionFactory,
-			ModuleProviderFactory moduleProviderFactory, SingleModuleInstanceProvider singleModuleInstanceProvider,
-			ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater) {
+	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
+			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
+			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -167,7 +164,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(),
 				deliveryEventsHub.getInteractionSocket(), sessionDataManager, modulesRegistry, moduleHandlerManager);
-		assessmentController.setStyleSocket(styleSocket);
 
 		playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
 
@@ -361,9 +357,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	protected void integrateExtension(Extension extension) {
 		if (extension != null) {
-			if (extension instanceof StyleSocketUserExtension) {
-				((JsStyleSocketUserExtension) extension).setStyleSocket(styleSocket);
-			}
 			if (extension instanceof DeliveryEventsListenerExtension) {
 				deliveryEventsHub.addDeliveryEventsListener(((DeliveryEventsListener) extension));
 			}

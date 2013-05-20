@@ -23,9 +23,7 @@
  */
 package eu.ydp.empiria.player.client.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -39,7 +37,6 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -53,7 +50,6 @@ import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentBodyView;
 import eu.ydp.gwtutil.client.json.YJsonArray;
@@ -70,8 +66,6 @@ public class Assessment {
 	private Panel pageSlot;
 
 	public StyleLinkDeclaration styleDeclaration;
-
-	private final StyleSocket styleSocket;
 
 	private final ModulesRegistrySocket modulesRegistrySocket;
 
@@ -95,11 +89,11 @@ public class Assessment {
 	 * @param data
 	 *            XMLData object as data source
 	 */
-	public Assessment(AssessmentData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket styleSocket,
+	public Assessment(AssessmentData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener,
 			ModulesRegistrySocket modulesRegistrySocket, IItemProperties itemProperties) {
 
 		this.xmlData = data.getData();
-		this.styleSocket = styleSocket;
+
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.options = options;
 		this.itemProperties = itemProperties;
@@ -184,23 +178,6 @@ public class Assessment {
 		@Override
 		public List<Boolean> evaluateResponse(Response response) {
 			return null;
-		}
-
-		@Override
-		public Map<String, String> getStyles(Element element) {
-			return (styleSocket != null) ? styleSocket.getStyles(element) : new HashMap<String, String>();
-		}
-
-		@Override
-		public Map<String, String> getOrgStyles(Element element) {
-			return (styleSocket != null) ? styleSocket.getOrgStyles(element) : new HashMap<String, String>();
-		};
-
-		@Override
-		public void setCurrentPages(PageReference pr) {
-			if (styleSocket != null) {
-				styleSocket.setCurrentPages(pr);
-			}
 		}
 
 		@Override

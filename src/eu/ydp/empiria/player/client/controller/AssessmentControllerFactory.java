@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
@@ -26,6 +25,6 @@ public interface AssessmentControllerFactory {
 	ItemController getItemController(ItemViewSocket ivs, IFlowSocket fs, InteractionEventsSocket is, ItemSessionSocket iss, ModulesRegistrySocket mrs,
 			ModuleHandlerManager moduleHandlerManager, AssessmentControllerFactory controllerFactory);
 
-	Item getItem(XmlData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, StyleSocket ss, ModulesRegistrySocket mrs,
+	Item getItem(XmlData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, ModulesRegistrySocket mrs,
 			Map<String, Outcome> outcomeVariables, ModuleHandlerManager moduleHandlerManager, JSONArray stateArray);
 }

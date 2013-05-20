@@ -37,6 +37,7 @@ import eu.ydp.empiria.player.client.gin.module.TextEntryGinModule;
 import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.view.ViewEngine;
@@ -45,7 +46,7 @@ import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
 @GinModules(value = { PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class, TextEntryGinModule.class,
-		SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class, OrderingGinModule.class})
+		SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class, OrderingGinModule.class })
 public interface PlayerGinjector extends Ginjector {
 
 	ViewEngine getViewEngine();
@@ -107,4 +108,6 @@ public interface PlayerGinjector extends Ginjector {
 	AssessmentJsonReportExtension getAssessmentJsonReportExtension();
 
 	TouchController getTouchController();
+
+	StyleSocket getStyleSocket();
 }

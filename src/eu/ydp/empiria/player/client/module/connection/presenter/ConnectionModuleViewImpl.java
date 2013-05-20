@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NORMAL;
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,10 +74,13 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private ConnectionViewResizeHandler resizeHandler;
 	@Inject
 	private SurfacePointTranslator pointTranslator;
-	@Inject  
+	@Inject
 	private SurfaceDimensionsDelegate surfaceDimensions;
 	@Inject
 	private SurfacePositionFinder surfacePositionFinder;
+
+	@Inject
+	private ConnectionStyleChecker connectionStyleChacker;
 
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
@@ -92,7 +95,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	protected ConnectionSurfacesManager connectionSurfacesManager;
 	protected ConnectionItems connectionItems;
 	protected ConnectionsBetweenItems connectionsBetweenItems;
-	protected ConnectionStyleChecker connectionStyleChacker;
+
 	protected ConnectionSurface currentSurface = null;
 
 	@PostConstruct
@@ -182,7 +185,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		connectionSurfacesManager = connectionSurfacesManagerFactory.getConnectionSurfacesManager(surfaceDimensions);
 		connectionModuleViewStyles = new ConnectionModuleViewStyles(styleSocket, styleNames, xmlParser);
 		connectionItems = connectionItemsFactory.getConnectionItems(moduleSocket.getInlineBodyGeneratorSocket());
-		connectionStyleChacker = connectionFactory.getConnectionStyleChacker(styleSocket);
 		connectionsBetweenItems = connectionFactory.getConnectionsBetweenItems(view, connectionItems);
 		connectionColumnsBuilder = connectionFactory.getConnectionColumnsBuilder(modelInterface, connectionItems, view);
 	}
@@ -226,7 +228,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	private void resetOtherLastStartElement(ConnectionItem item) {
 		ConnectionItem source = connectionItemPair.getSource();
-		if (source != null  &&  !item.equals(source)) {
+		if (source != null && !item.equals(source)) {
 			resetIfNotConnected(getIdentifier(source));
 		}
 	}
@@ -237,7 +239,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			event.preventDefault();
 			if (wasMoved(event)) {
 				updatePointPosition(event);
-				drawLine(connectionItemPair.getSource(), (int)event.getX(), (int)event.getY());
+				drawLine(connectionItemPair.getSource(), (int) event.getX(), (int) event.getY());
 			}
 		}
 	}

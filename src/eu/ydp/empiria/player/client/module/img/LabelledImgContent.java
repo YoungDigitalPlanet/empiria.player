@@ -1,18 +1,12 @@
 package eu.ydp.empiria.player.client.module.img;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_COLOR;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_THICKNESS;
-import static eu.ydp.gwtutil.client.xml.XMLUtils.getAttributeAsDouble;
-import static eu.ydp.gwtutil.client.xml.XMLUtils.getAttributeAsInt;
-import static eu.ydp.gwtutil.client.xml.XMLUtils.getAttributeAsString;
-import static eu.ydp.gwtutil.client.xml.XMLUtils.getFirstElementWithTagName;
-import static eu.ydp.gwtutil.client.xml.XMLUtils.getText;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+import static eu.ydp.gwtutil.client.xml.XMLUtils.*;
 
 import java.util.Map;
 
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
@@ -35,16 +29,18 @@ import eu.ydp.canvasadapter.client.CanvasAdapter;
 import eu.ydp.canvasadapter.client.Context2dAdapter;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
-public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
+
+public class LabelledImgContent extends Composite implements ImgContent {// NOPMD
 
 	private static LabelledImgContentUiBinder uiBinder = GWT.create(LabelledImgContentUiBinder.class);
 
 	interface LabelledImgContentUiBinder extends UiBinder<Widget, LabelledImgContent> {
 	}
-
 
 	public LabelledImgContent() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -73,19 +69,22 @@ public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 
 	/**
 	 * Tworzy obiekt html5/canvas
-	 *
+	 * 
 	 * @param element
 	 * @param moduleSocket
 	 */
 	private void fillCanvas(final Element element, final ModuleSocket moduleSocket) {
-		styles = moduleSocket.getStyles(element);
+
+		PlayerGinjector playerGinjector = PlayerGinjectorFactory.getPlayerGinjector();
+		StyleSocket styleSocket = playerGinjector.getStyleSocket();
+
+		styles = styleSocket.getStyles(element);
 		Element titleNodes = XMLUtils.getFirstElementWithTagName(element, "title");
-		 final String title  =XMLUtils.getTextFromChilds(titleNodes);
-		 image.addLoadHandler(new LoadHandler() {
+		final String title = XMLUtils.getTextFromChilds(titleNodes);
+		image.addLoadHandler(new LoadHandler() {
 
 			@Override
 			public void onLoad(LoadEvent event) {
-				ImageElement imgelement = ImageElement.as(image.getElement());
 				canvas.setWidth(image.getWidth() + "px");
 				canvas.setCoordinateSpaceWidth(image.getWidth());
 				canvas.setHeight(image.getHeight() + "px");
@@ -122,11 +121,11 @@ public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 
 	/**
 	 * rysuje linie
-	 *
+	 * 
 	 * @param line
 	 * @param context2d
 	 */
-	private void parseLine(Element line, Context2dAdapter context2d) {//NOPMD
+	private void parseLine(Element line, Context2dAdapter context2d) {// NOPMD
 		NodeList elements = line.getChildNodes();
 		String endPoint = null;
 		String startPoint = null;
@@ -187,7 +186,7 @@ public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 
 	/**
 	 * Parsuje element text i generuje odpowiednie widgety
-	 *
+	 * 
 	 * @param text
 	 * @param anchor
 	 * @param context2d
@@ -208,7 +207,7 @@ public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 
 	/**
 	 * Rysuje zakonczenie linii
-	 *
+	 * 
 	 * @param shapeName
 	 * @param context
 	 * @param centerX
@@ -230,7 +229,7 @@ public class LabelledImgContent extends Composite implements ImgContent {//NOPMD
 
 	/**
 	 * ustawia style dla context
-	 *
+	 * 
 	 * @param context2d
 	 * @param ms
 	 */

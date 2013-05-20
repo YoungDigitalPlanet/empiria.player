@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
 import org.mockito.Mockito;
 
@@ -28,7 +27,6 @@ import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionsBetwe
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
@@ -40,6 +38,9 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 
 	@Inject
 	XMLParser xmlParser;
+
+	@Inject
+	ConnectionStyleChecker connectionStyleChecker;
 
 	@Override
 	public ConnectionModuleStructure getConnectionModuleStructure() {
@@ -81,9 +82,10 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	}
 
 	ConnectionsBetweenItems connectionsBetweenItems;
+
 	private ConnectionsBetweenItems getConnectionsBetweemItems(IsWidget widget, ConnectionItems connectionItems) {
-		if(connectionsBetweenItems == null){
-			connectionsBetweenItems =  spy(new ConnectionsBetweenItems(widget, connectionItems));
+		if (connectionsBetweenItems == null) {
+			connectionsBetweenItems = spy(new ConnectionsBetweenItems(widget, connectionItems));
 		}
 		return connectionsBetweenItems;
 	}
@@ -92,15 +94,6 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	public ConnectionColumnsBuilder getConnectionColumnsBuilder(MultiplePairBean<SimpleAssociableChoiceBean> modelInterface, ConnectionItems connectionItems,
 			ConnectionView view) {
 		return spy(new ConnectionColumnsBuilder(modelInterface, connectionItems, view));
-	}
-
-	ConnectionStyleChecker connectionStyleChecker;
-	@Override
-	public ConnectionStyleChecker getConnectionStyleChacker(StyleSocket styleSocket) {
-		if(connectionStyleChecker == null) {
-			connectionStyleChecker = new ConnectionStyleChecker(styleSocket, xmlParser);
-		}
-		return connectionStyleChecker;
 	}
 
 }

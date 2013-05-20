@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.CountM
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.StateController;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.YJsonValue;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
@@ -51,6 +52,9 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 
 	@Inject
 	private StateController stateController;
+
+	@Inject
+	private StyleSocket styleSocket;
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
@@ -168,9 +172,9 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	 */
 	protected CountMode getCountMode() {
 		CountMode mode = SINGLE;
-		boolean isMultiCount = styleAttributeHelper.getBoolean(getModuleSocket(), CORRECT_ANSWERS.getGlobalCssClassName(), CORRECT_ANSWERS.getAttributeName());
+		boolean isMultiCount = styleAttributeHelper.getBoolean(CORRECT_ANSWERS.getGlobalCssClassName(), CORRECT_ANSWERS.getAttributeName());
 		if (!isMultiCount) {
-			String attrValue = getModuleSocket().getStyles(getModuleElement()).get(CORRECT_ANSWERS.getAttributeName());
+			String attrValue = styleSocket.getStyles(getModuleElement()).get(CORRECT_ANSWERS.getAttributeName());
 			isMultiCount = booleanUtils.getBoolean(attrValue);
 		}
 

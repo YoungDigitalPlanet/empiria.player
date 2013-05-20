@@ -1,16 +1,8 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +22,7 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 @SuppressWarnings("PMD")
@@ -127,7 +120,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 	private class TextEntryModuleMock extends TextEntryModule {
 
 		public TextEntryModuleMock() {
-			super(injector.getInstance(TextEntryModuleFactory.class));
+			super(injector.getInstance(TextEntryModuleFactory.class), injector.getProvider(TextEntryModule.class), injector.getInstance(StyleSocket.class));
 		}
 
 		public void setStyles(Map<String, String> styles) {

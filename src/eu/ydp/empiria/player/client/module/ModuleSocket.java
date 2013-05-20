@@ -25,7 +25,6 @@ package eu.ydp.empiria.player.client.module;
 
 import eu.ydp.empiria.player.client.controller.IItemProperties;
 import eu.ydp.empiria.player.client.module.registry.InlineBodyGeneratorSocketProvider;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 
 /**
@@ -33,7 +32,7 @@ import eu.ydp.gwtutil.client.json.YJsonArray;
  * 
  * @author Rafal Rybacki
  */
-public interface ModuleSocket extends ResponseSocket, StyleSocket, InlineBodyGeneratorSocketProvider, ParenthoodSocket, IItemProperties {
+public interface ModuleSocket extends ResponseSocket, InlineBodyGeneratorSocketProvider, ParenthoodSocket, IItemProperties {
 
 	YJsonArray getStateById(String identifier);
 

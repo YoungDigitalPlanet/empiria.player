@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +22,6 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
@@ -55,7 +53,6 @@ import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifi
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.expression.ExpressionListBuilder;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 import eu.ydp.gwtutil.client.json.YJsonArray;
@@ -72,7 +69,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private VariableManager<Response> responseManager;
 	private BindableVariableManager<Outcome> outcomeManager;
 	private StyleLinkDeclaration styleDeclaration;
-	private StyleSocket styleSocket;
+	// private StyleSocket styleSocket;
 
 	protected ModulesRegistrySocket modulesRegistrySocket;
 	protected DisplayContentOptions options;
@@ -90,18 +87,17 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	@Inject
 	public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
-			@Assisted StyleSocket ss, @Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables,
-			@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted JSONArray stateArray, ModuleFeedbackProcessor moduleFeedbackProcessor,
-			OutcomeVariablesInitializer outcomeVariablesInitializer, FlowActivityVariablesProcessor flowActivityVariablesProcessor,
-			VariableProcessingAdapter variableProcessingAdapter, VariablesProcessingModulesInitializer variablesProcessingModulesInitializer,
-			YJsJsonConverter yJsJsonConverter, ExpressionListBuilder expressionListBuilder, final ResponseNodeParser responseNodeParser) {
+			@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables, @Assisted ModuleHandlerManager moduleHandlerManager,
+			@Assisted JSONArray stateArray, ModuleFeedbackProcessor moduleFeedbackProcessor, OutcomeVariablesInitializer outcomeVariablesInitializer,
+			FlowActivityVariablesProcessor flowActivityVariablesProcessor, VariableProcessingAdapter variableProcessingAdapter,
+			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter,
+			ExpressionListBuilder expressionListBuilder, final ResponseNodeParser responseNodeParser) {
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
 		this.yJsJsonConverter = yJsJsonConverter;
 		xmlData = data;
 
-		styleSocket = ss;
 		this.moduleFeedbackProcessor = moduleFeedbackProcessor;
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
@@ -170,23 +166,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		@Override
 		public List<Boolean> evaluateResponse(Response response) {
 			return variableProcessor.evaluateAnswer(response);
-		}
-
-		@Override
-		public Map<String, String> getStyles(Element element) {
-			return (styleSocket != null) ? styleSocket.getStyles(element) : new HashMap<String, String>();
-		}
-
-		@Override
-		public Map<String, String> getOrgStyles(Element element) {
-			return (styleSocket != null) ? styleSocket.getOrgStyles(element) : new HashMap<String, String>();
-		};
-
-		@Override
-		public void setCurrentPages(PageReference pr) {
-			if (styleSocket != null) {
-				styleSocket.setCurrentPages(pr);
-			}
 		}
 
 		@Override

@@ -25,7 +25,6 @@ import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.page.PageEvent;
 import eu.ydp.empiria.player.client.util.events.page.PageEventHandler;
@@ -61,17 +60,12 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
 	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-	private StyleSocket styleSocket;
 	private final ModuleHandlerManager moduleHandlerManager;
 
 	// @Inject
 	private final AssessmentControllerFactory controllerFactory;
 
 	IPlayerContainersAccessor accessor;
-
-	public void setStyleSocket(StyleSocket styleSocket) {
-		this.styleSocket = styleSocket;
-	}
 
 	public void init(ItemData data, DisplayContentOptions options) {
 		try {
@@ -82,8 +76,8 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 				throw new Exception("Item data is null");// NOPMD
 			}
 			itemIndex = data.itemIndex;
-			item = controllerFactory.getItem(data.data, options, interactionSocket, styleSocket, modulesRegistrySocket,
-					itemSessionSocket.getOutcomeVariablesMap(itemIndex), moduleHandlerManager, itemSessionSocket.getState(itemIndex));
+			item = controllerFactory.getItem(data.data, options, interactionSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex),
+					moduleHandlerManager, itemSessionSocket.getState(itemIndex));
 			getAccessor().registerItemBodyContainer(itemIndex, item.getContentView());
 
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));

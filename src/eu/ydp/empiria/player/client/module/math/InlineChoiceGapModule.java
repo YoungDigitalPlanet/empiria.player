@@ -22,6 +22,7 @@ import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -47,6 +48,8 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 
 	@Inject
 	protected PageScopeFactory pageScopeFactory;
+	@Inject
+	private StyleSocket styleSocket;
 
 	@Inject
 	public InlineChoiceGapModule(InlineChoiceGapModulePresenter presenter) {
@@ -76,7 +79,7 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 
 		loadUID();
 
-		Map<String, String> styles = getModuleSocket().getStyles(getModuleElement());
+		Map<String, String> styles = styleSocket.getStyles(getModuleElement());
 		mathStyles.putAll(styles);
 		initStyles();
 

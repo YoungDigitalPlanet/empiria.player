@@ -14,10 +14,12 @@ import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -102,7 +104,10 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 
 	@Override
 	public void onStart() {
-		Map<String, String> styles = getModuleSocket().getStyles(mainElement);
+		PlayerGinjector playerGinjector = PlayerGinjectorFactory.getPlayerGinjector();
+		StyleSocket styleSocket = playerGinjector.getStyleSocket();
+
+		Map<String, String> styles = styleSocket.getStyles(mainElement);
 		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT)) {
 			contentString = styles.get(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT);
 		}

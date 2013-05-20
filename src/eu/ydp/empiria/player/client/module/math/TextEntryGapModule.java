@@ -17,16 +17,20 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<TextEntryGapModule> {
 
-	@Inject
-	private Provider<TextEntryGapModule> moduleFactory;
+	private final Provider<TextEntryGapModule> textEntryGapModuleProvder;
+	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryModuleFactory moduleFactory) {
+	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, Provider<TextEntryGapModule> textEntryGapModuleProvder) {
+		this.styleSocket = styleSocket;
+		this.textEntryGapModuleProvder = textEntryGapModuleProvder;
+
 		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
 		PresenterHandler presenterHandler = new PresenterHandler() {
 			@Override
@@ -36,14 +40,14 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 
 			@Override
 			public void onBlur(BlurEvent event) {
-				if(isMobileUserAgent()){
+				if (isMobileUserAgent()) {
 					updateResponse(true);
 				}
 			}
 		};
 		presenter.addPresenterHandler(presenterHandler);
 	}
-	
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		installViewInPlaceholder(placeholders.get(0));
@@ -59,7 +63,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 	}
 
 	private void readStyles() {
-		Map<String, String> styles = getModuleSocket().getStyles(getModuleElement());
+		Map<String, String> styles = styleSocket.getStyles(getModuleElement());
 		mathStyles.putAll(styles);
 	}
 
@@ -95,9 +99,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 	}
 
 	protected boolean isSubOrSupElement(Node node) {
-		return node.getNodeName().equals("msub")
-				|| node.getNodeName().equals("msup")
-				|| node.getNodeName().equals("msubsup")
+		return node.getNodeName().equals("msub") || node.getNodeName().equals("msup") || node.getNodeName().equals("msubsup")
 				|| node.getNodeName().equals("mmultiscripts");
 	}
 
@@ -148,7 +150,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 	protected void setPreviousAnswer() {
 		presenter.setText(getCurrentResponseValue());
 	}
-	
+
 	@Override
 	public String getValue() {
 		return presenter.getText();
@@ -156,7 +158,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 
 	@Override
 	public TextEntryGapModule getNewInstance() {
-		return moduleFactory.get();
+		return textEntryGapModuleProvder.get();
 	}
 
 	public void setUpGap() {
