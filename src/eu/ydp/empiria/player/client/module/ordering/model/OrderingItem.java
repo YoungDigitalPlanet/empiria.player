@@ -4,14 +4,14 @@ import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
 public class OrderingItem {
 
-	private final String id;
+	private final String itemId;
 	private final String answerValue;
 	private boolean selected = false;
 	private UserAnswerType answerType = UserAnswerType.DEFAULT;
 	private boolean locked = false;
 
-	public OrderingItem(String id, String answerValue){
-		this.id = id;
+	public OrderingItem(String itemId, String answerValue){
+		this.itemId = itemId;
 		this.answerValue = answerValue;
 	}
 	
@@ -28,13 +28,14 @@ public class OrderingItem {
 		this.answerType = answerType;
 	}
 	public boolean isLocked() {
+		
 		return locked;
 	}
 	public void setLocked(boolean locked) {
 		this.locked = locked;
 	}
 	public String getId() {
-		return id;
+		return itemId;
 	}
 
 	public String getAnswerValue() {

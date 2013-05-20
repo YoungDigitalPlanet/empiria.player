@@ -7,7 +7,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-assessment-view")
 	public String QP_ASSESSMENT_VIEW();
-	
+
 	@DefaultStringValue("qp-body")
 	public String QP_BODY();
 
@@ -70,6 +70,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-choice-option")
 	public String QP_CHOICE_OPTION();
+
 
 	@DefaultStringValue("qp-choice-option-box")
 	public String QP_CHOICE_OPTION_BOX();
@@ -241,16 +242,16 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-labelling")
 	public String QP_LABELLING();
-	
+
 	@DefaultStringValue("qp-labelling-background")
 	public String QP_LABELLING_BACKGROUND();
-	
+
 	@DefaultStringValue("qp-labelling-inner")
 	public String QP_LABELLING_INNER();
-	
+
 	@DefaultStringValue("qp-labelling-child")
 	public String QP_LABELLING_CHILD();
-	
+
 	@DefaultStringValue("qp-labelling-children")
 	public String QP_LABELLING_CHILDREN();
 
@@ -355,7 +356,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-media-volume-scrollbar")
 	public String QP_MEDIA_VOLUME_SCROLLBAR();
-	
+
 	@DefaultStringValue("qp-media-volume-scrollbar-button")
 	public String QP_MEDIA_VOLUME_SCROLLBAR_BUTTON();
 
@@ -655,5 +656,26 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
+
+	@DefaultStringValue("qp-ordered")
+	public String QP_ORDERED();
+
+	@DefaultStringValue("qp-ordered-item")
+	public String QP_ORDERED_ITEM_DEFAULT();
+
+	@DefaultStringValue("qp-ordered-item-correct")
+	public String QP_ORDERED_ITEM_CORRECT();
+
+	@DefaultStringValue("qp-ordered-item-wrong")
+	public String QP_ORDERED_ITEM_WRONG();
+
+	@DefaultStringValue("qp-ordered-item-none")
+	public String QP_ORDERED_ITEM_NONE();
+
+	@DefaultStringValue("qp-ordered-item-selected")
+	public String QP_ORDERED_ITEM_SELECTED();
+
+	@DefaultStringValue("qp-ordered-item-locked")
+	public String QP_ORDERED_ITEM_LOCKED();
 
 }
