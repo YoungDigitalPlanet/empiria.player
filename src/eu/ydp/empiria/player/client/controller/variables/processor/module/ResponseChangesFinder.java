@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Lists;
+import com.google.common.base.Objects;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
@@ -69,13 +69,6 @@ public class ResponseChangesFinder {
 	}
 
 	private List<String> getAnswersOrEmptyList(Response response) {
-		List<String> currentAnswers = response.values;
-		List<String> answers;
-		if (currentAnswers == null) {
-			answers = Lists.newArrayList();
-		} else {
-			answers = response.values;
-		}
-		return answers;
+		return Objects.firstNonNull(response.values, new ArrayList<String>());
 	}
 }
