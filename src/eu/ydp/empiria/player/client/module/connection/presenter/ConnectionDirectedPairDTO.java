@@ -22,6 +22,6 @@ public class ConnectionDirectedPairDTO {
 
 	@Override
 	public String toString() {
-		return source.concat(" ").concat(target);
+		return source + " " + target;
 	}
 }
