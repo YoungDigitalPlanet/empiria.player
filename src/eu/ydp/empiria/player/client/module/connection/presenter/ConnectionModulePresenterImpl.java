@@ -98,7 +98,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	@Override
 	public void onConnectionEvent(PairConnectEvent event) {
 
-		DirectedPair pair = getDirectedPair(event);
+		ConnectionDirectedPairDTO pair = getDirectedPair(event);
 
 		switch (event.getType()) {
 			case CONNECTED:
@@ -122,19 +122,19 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		showAnswers(ShowAnswersType.USER);
 	}
 
-	private void disconnectOnUserAction(PairConnectEvent event, DirectedPair pair) {
+	private void disconnectOnUserAction(PairConnectEvent event, ConnectionDirectedPairDTO pair) {
 		if (event.isUserAction() && pair.getSource() != null && pair.getTarget() != null) {
 			model.removeAnswer(pair.toString());
 		}
 	}
 
-	private void addAnswerToResponseIfConnectionValidOnUserAction(PairConnectEvent event, DirectedPair pair) {
+	private void addAnswerToResponseIfConnectionValidOnUserAction(PairConnectEvent event, ConnectionDirectedPairDTO pair) {
 		if (event.isUserAction()) {
 			addAnswerToResponseIfConnectionValid(event, pair);
 		}
 	}
 
-	private void addAnswerToResponseIfConnectionValid(PairConnectEvent event, DirectedPair pair) {
+	private void addAnswerToResponseIfConnectionValid(PairConnectEvent event, ConnectionDirectedPairDTO pair) {
 		boolean isResponseExists = model.checkUserResonseContainsAnswer(pair.toString());
 		if (isConnectionValid(pair) && !isResponseExists) {
 			model.addAnswer(pair.toString());
@@ -147,15 +147,15 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		log.warning("ConnectionModulePresenter: wrong connection");
 	}
 	
-	private DirectedPair getDirectedPair(PairConnectEvent event) {
+	private ConnectionDirectedPairDTO getDirectedPair(PairConnectEvent event) {
 		String start = event.getSourceItem();
 		String end = event.getTargetItem();
 		
 		return createDirectedPair(start, end);
 	}
 
-	private DirectedPair createDirectedPair(String start, String end) {
-		DirectedPair pair = new DirectedPair();
+	private ConnectionDirectedPairDTO createDirectedPair(String start, String end) {
+		ConnectionDirectedPairDTO pair = new ConnectionDirectedPairDTO();
 		List<String> sourceChoicesIdentifiersSet = bean.getSourceChoicesIdentifiersSet();
 		List<String> targetChoicesIdentifiersSet = bean.getTargetChoicesIdentifiersSet();		
 
@@ -165,7 +165,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		return pair;
 	}
 	
-	private void setDirectedPairNodeByIdentyfier(DirectedPair pair, String choosenIdentifier, List<String> sourceChoicesIdentifiersSet, List<String> targetChoicesIdentifiersSet) {
+	private void setDirectedPairNodeByIdentyfier(ConnectionDirectedPairDTO pair, String choosenIdentifier, List<String> sourceChoicesIdentifiersSet, List<String> targetChoicesIdentifiersSet) {
 		if (sourceChoicesIdentifiersSet.contains(choosenIdentifier)) {
 			pair.setSource(choosenIdentifier);
 		} else if (targetChoicesIdentifiersSet.contains(choosenIdentifier)) {
@@ -173,7 +173,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		}
 	}
 
-	private boolean isConnectionValid(DirectedPair pair) {
+	private boolean isConnectionValid(ConnectionDirectedPairDTO pair) {
 		int errorsCount = 0;
 
 		if (isPairValid(pair)) { 
@@ -189,7 +189,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		return errorsCount == 0;
 	}
 
-	private boolean isPairValid(DirectedPair pair) {
+	private boolean isPairValid(ConnectionDirectedPairDTO pair) {
 		return pair.getSource() == null || pair.getTarget() == null;
 	}
 
@@ -204,11 +204,11 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		return matchMax > 0 && currentChoicePairingsNumber >= matchMax;
 	}
 
-	private boolean isSourceMatchMaxAchieved(DirectedPair pair) {
+	private boolean isSourceMatchMaxAchieved(ConnectionDirectedPairDTO pair) {
 		return matchMaxCondition(pair.getSource());
 	}
 	
-	private boolean isTargetMatchMaxAchieved(DirectedPair pair) {
+	private boolean isTargetMatchMaxAchieved(ConnectionDirectedPairDTO pair) {
 		return matchMaxCondition(pair.getTarget());
 	}
 	
@@ -270,32 +270,6 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		} else {
 			moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
 			moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL); 
-		}
-	}
-
-	private class DirectedPair {
-		private String source;
-		private String target;
-
-		public String getSource() {
-			return source;
-		}
-
-		public void setSource(String source) {
-			this.source = source;
-		}
-
-		public String getTarget() {
-			return target;
-		}
-
-		public void setTarget(String target) {
-			this.target = target;
-		}
-
-		@Override
-		public String toString() {
-			return source + " " + target;
 		}
 	}
 
