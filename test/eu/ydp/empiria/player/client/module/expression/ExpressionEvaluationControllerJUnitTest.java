@@ -136,7 +136,7 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase  {
 	@Test
 	public void evaluateExpressionWithComa_expectsCorrect() {		
 		// given
-		List<Response> responses = newArrayList(responsesHelper.getResponse("a", "0,1"), responsesHelper.getResponse("b", "1"), responsesHelper.getResponse("c", "1.1"));		
+		List<Response> responses = newArrayList(responsesHelper.getResponse("a", "0,1"), responsesHelper.getResponse("b", "1,1"), responsesHelper.getResponse("c", "1.2"));		
 		ExpressionBean expression = buildExpressionBean(responses, "'a'+'b'='c'");
 		
 		// when

@@ -17,7 +17,7 @@ public class SymjaExpressionAdapter {
 	}
 
 	private String fixComma(String expression) {
-		expression = expression.replaceFirst(",", ".");
+		expression = expression.replaceAll(",", ".");
 		return expression;
 	}
 
