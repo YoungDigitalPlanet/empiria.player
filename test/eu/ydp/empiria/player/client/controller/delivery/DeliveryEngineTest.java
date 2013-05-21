@@ -33,7 +33,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 	}
 
 	public void testEngineMode(){
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		DeliveryEngine de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 
@@ -51,24 +51,38 @@ public class DeliveryEngineTest extends GWTTestCase {
 			DeliveryEventType.ASSESSMENT_LOADING,
 			DeliveryEventType.ASSESSMENT_LOADED,
 			DeliveryEventType.ASSESSMENT_STARTING,
-			DeliveryEventType.ASSESSMENT_STARTED};
+			DeliveryEventType.PAGE_UNLOADING,
+			DeliveryEventType.PAGE_UNLOADED,
+			DeliveryEventType.PAGE_LOADING,
+			DeliveryEventType.TOC_PAGE_LOADED,
+			DeliveryEventType.ASSESSMENT_STARTED,
+			DeliveryEventType.ASSESSMENT_LOADED};
 	DeliveryEventType[] typesNoToc = {
 			DeliveryEventType.ASSESSMENT_LOADING,
 			DeliveryEventType.ASSESSMENT_LOADED,
 			DeliveryEventType.ASSESSMENT_STARTING,
-			DeliveryEventType.ASSESSMENT_STARTED};
+			DeliveryEventType.PAGE_UNLOADING,
+			DeliveryEventType.PAGE_UNLOADED,
+			DeliveryEventType.PAGE_LOADING,
+			DeliveryEventType.TEST_PAGE_LOADED,
+			DeliveryEventType.ASSESSMENT_STARTED,
+			DeliveryEventType.ASSESSMENT_LOADED};
 	DeliveryEventType[] typesPageSwitch = {
 			DeliveryEventType.ASSESSMENT_LOADING,
 			DeliveryEventType.ASSESSMENT_LOADED,
 			DeliveryEventType.ASSESSMENT_STARTING,
+			DeliveryEventType.PAGE_UNLOADING,
+			DeliveryEventType.PAGE_UNLOADED,
+			DeliveryEventType.PAGE_LOADING,
+			DeliveryEventType.TOC_PAGE_LOADED,
 			DeliveryEventType.ASSESSMENT_STARTED,
-			};
+			DeliveryEventType.ASSESSMENT_LOADED};
 	DeliveryEventType[] types;
 	private int counter = 0;
 
 	public void testDeliveryEventsWithToc(){
 		types = typesWithToc;
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEventsListenerExtension();
@@ -80,7 +94,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testDeliveryEventsNoToc(){
 		types = typesNoToc;
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEventsListenerExtension();
@@ -93,7 +107,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testDeliveryEventsPageSwitch(){
 		types = typesPageSwitch;
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEventsListenerExtension();
@@ -158,7 +172,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 		int itemIndex = 1;
 
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 		de.setInitialItemIndex(itemIndex);
 
@@ -173,7 +187,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 		int initialItemIndex = 2;
 		int stateItemIndex = 5;
 
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 		de.initialItemIndex =  initialItemIndex;
 
@@ -191,7 +205,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 		int stateItemIndex = 5;
 
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 
 		JSONArray arr = createJSonStateArr(stateItemIndex);
@@ -205,7 +219,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	public void testParseFlowRequestNoStateNoInitial(){
 
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 
 		IFlowRequest flowRequest = de.parseFlowRequest(null);

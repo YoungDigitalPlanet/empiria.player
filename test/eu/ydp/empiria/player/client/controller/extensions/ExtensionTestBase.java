@@ -34,12 +34,13 @@ public abstract class ExtensionTestBase extends GWTTestCase {
 	}
 
 	protected DeliveryEngine initDeliveryEngine(List<Extension> exts, boolean showTocAndSummary){
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		DeliveryEngine de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		de.setFlowOptions(new FlowOptions(showTocAndSummary, showTocAndSummary, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
-		for (Extension ext : exts)
+		for (Extension ext : exts) {
 			de.loadExtension(ext);
+		}
 		de.load(getAssessmentXMLData(), getItemXMLDatas());
 		return de;
 	}

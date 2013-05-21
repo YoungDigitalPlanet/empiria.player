@@ -22,6 +22,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityPr
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -39,6 +40,24 @@ import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 public class ItemController implements PageEventHandler, StateChangeEventHandler {
 
 	@Inject
+	private StyleNameConstants styleNames;
+	@Inject
+	private EventsBus eventsBus;
+	@Inject @PageScoped
+	private ItemData data;
+
+	private final ModuleHandlerManager moduleHandlerManager;
+	private final AssessmentControllerFactory controllerFactory;
+	private final ItemViewSocket itemViewSocket;
+	private final ItemSessionSocket itemSessionSocket;
+	private final InteractionEventsSocket interactionSocket;
+	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
+	Item item;
+	private int itemIndex;
+	private IPlayerContainersAccessor accessor;
+
+
+	@Inject
 	@SuppressWarnings("PMD")
 	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs, @Assisted InteractionEventsSocket is, @Assisted ItemSessionSocket iss,
 			@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
@@ -50,24 +69,8 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
-	protected Item item;
 
-	private int itemIndex;
-
-	private final ItemViewSocket itemViewSocket;
-	private final ItemSessionSocket itemSessionSocket;
-	private final InteractionEventsSocket interactionSocket;
-	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
-	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-	private final ModuleHandlerManager moduleHandlerManager;
-
-	// @Inject
-	private final AssessmentControllerFactory controllerFactory;
-
-	IPlayerContainersAccessor accessor;
-
-	public void init(ItemData data, DisplayContentOptions options) {
+	public void init(DisplayContentOptions options) {
 		try {
 			// Rejestrowanie na wszystkie eventy Page dawniej FLOW
 			eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this, new CurrentPageScope());
@@ -76,7 +79,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 				throw new Exception("Item data is null");// NOPMD
 			}
 			itemIndex = data.itemIndex;
-			item = controllerFactory.getItem(data.data, options, interactionSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex),
+			item = controllerFactory.getItem(options, interactionSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex),
 					moduleHandlerManager, itemSessionSocket.getState(itemIndex));
 			getAccessor().registerItemBodyContainer(itemIndex, item.getContentView());
 
@@ -181,7 +184,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 	/**
 	 * Checks whether the item body contains at least one interactive module
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasInteractiveModules() {

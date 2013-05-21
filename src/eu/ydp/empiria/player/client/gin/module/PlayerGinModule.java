@@ -128,7 +128,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		// this is unnecessary, but left for clarity - if GIN can't find a
 		// binding for a class, it falls back to calling GWT.create() on that
 		// class
-		bind(DataSourceManager.class);
+		bind(DataSourceManager.class).in(Singleton.class);
 		bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class);
 		bind(DefaultMediaProcessorExtension.class).in(Singleton.class);
 		bind(MultiPageController.class).in(Singleton.class);

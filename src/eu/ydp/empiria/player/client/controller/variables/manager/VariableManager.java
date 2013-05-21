@@ -11,7 +11,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 public class VariableManager<V extends Variable> extends VariablePossessorBase<V> {
 	
 	public VariableManager(NodeList responseDeclarationNodes, IVariableCreator<V> variableCreator){
-		super();
 		Node node;
 		String currIdentifier;
 		
@@ -21,8 +20,9 @@ public class VariableManager<V extends Variable> extends VariablePossessorBase<V
 		    	if (node.getNodeType() == Node.ELEMENT_NODE){
 			    	currIdentifier = node.getAttributes().getNamedItem("identifier").getNodeValue();
 			    	V var = variableCreator.createVariable(node);
-			    	if (var != null)
-			    		variables.put(currIdentifier, var);
+			    	if (var != null) {
+						variables.put(currIdentifier, var);
+					}
 		    	}
 		    }
 		}

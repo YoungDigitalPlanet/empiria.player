@@ -1,5 +1,10 @@
 package eu.ydp.empiria.player.client.controller;
 
+import java.util.List;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -26,83 +31,73 @@ import eu.ydp.empiria.player.client.view.page.PageViewCarrier;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
 
 public class PageController implements PageInterferenceSocket {
-	private Page page;
 	private final PageViewSocket pageViewSocket;
 	private final PageSessionSocket pageSessionSocket;
 	private final IFlowSocket flowSocket;
 	private final InteractionEventsSocket interactionSocket;
 	private final ModulesRegistrySocket modulesRegistrySocket;
 	private ParenthoodSocket parenthoodSocket;
-	protected ItemController[] items;
-	private final boolean isInitialized = false;
-
+	List<ItemController> items;
 	private final ModuleHandlerManager moduleHandlerManager;
+
 
 	private final AssessmentControllerFactory controllerFactory;
 
 	@Inject
-	public PageController(@Assisted PageViewSocket pvs, @Assisted IFlowSocket fs, @Assisted InteractionEventsSocket is, @Assisted PageSessionSocket pss,
-			@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
-		pageViewSocket = pvs;
-		flowSocket = fs;
-		interactionSocket = is;
-		pageSessionSocket = pss;
-		modulesRegistrySocket = mrs;
+	public PageController(@Assisted PageViewSocket pageViewSocket, @Assisted IFlowSocket flowSocket,
+							@Assisted InteractionEventsSocket interactionSocket, @Assisted PageSessionSocket pageSessionSocket,
+							@Assisted ModulesRegistrySocket modulesRegistrySocket, @Assisted ModuleHandlerManager moduleHandlerManager,
+							@Assisted AssessmentControllerFactory controllerFactory) {
+		this.pageViewSocket = pageViewSocket;
+		this.flowSocket = flowSocket;
+		this.interactionSocket = interactionSocket;
+		this.pageSessionSocket = pageSessionSocket;
+		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.controllerFactory = controllerFactory;
 		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
 	public void initPage(PageData pageData) {
+			items = Lists.newArrayList();
+			// conception compatibility issue
+			if (pageData.type == PageType.ERROR) {
+				pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataError) pageData));
+				OperationLogManager.logEvent(OperationLogEvent.DISPLAY_PAGE_FAILED);
+			} else if (pageData.type == PageType.TEST) {
+				PageDataTest pageDataTest = (PageDataTest) pageData;
+				pageViewSocket.initItemViewSockets(pageDataTest.datas.length);
+				pageViewSocket.setPageViewCarrier(new PageViewCarrier());
 
-		// conception compatibility issue
-		page = new Page();
-
-		if (pageData.type == PageType.ERROR) {
-
-			pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataError) pageData));
-
-			OperationLogManager.logEvent(OperationLogEvent.DISPLAY_PAGE_FAILED);
-
-		} else if (pageData.type == PageType.TEST) {
-
-			PageDataTest pageDataTest = (PageDataTest) pageData;
-
-			items = new ItemController[pageDataTest.datas.length];
-			pageViewSocket.initItemViewSockets(pageDataTest.datas.length);
-
-			pageViewSocket.setPageViewCarrier(new PageViewCarrier());
-
-			for (int i = 0; i < pageDataTest.datas.length; i++) {
-				ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket, interactionSocket,
-						pageSessionSocket.getItemSessionSocket(), modulesRegistrySocket, moduleHandlerManager, controllerFactory);
-				controller.init(pageDataTest.datas[i], pageDataTest.displayOptions);
-				controller.setAssessmentParenthoodSocket(parenthoodSocket);
-				if (pageDataTest.flowOptions.activityMode == ActivityMode.CHECK) {
-					controller.checkItem();
+				for (int i = 0; i < pageDataTest.datas.length; i++) {
+					ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket,
+																					interactionSocket, pageSessionSocket.getItemSessionSocket(),
+																					modulesRegistrySocket, moduleHandlerManager,controllerFactory);
+					controller.init(pageDataTest.displayOptions);
+					controller.setAssessmentParenthoodSocket(parenthoodSocket);
+					if (pageDataTest.flowOptions.activityMode == ActivityMode.CHECK) {
+						controller.checkItem();
+					}
+					items.add(controller);
 				}
-				items[i] = controller;
-			}
 
-		} else if (pageData.type == PageType.TOC) {
-			items = null;
-			pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataToC) pageData, flowSocket));
-		} else if (pageData.type == PageType.SUMMARY) {
-			items = null;
-			pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataSummary) pageData, flowSocket));
+			} else if (pageData.type == PageType.TOC) {
+				items.clear();
+				pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataToC) pageData, flowSocket));
+			} else if (pageData.type == PageType.SUMMARY) {
+				items.clear();
+				pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataSummary) pageData, flowSocket));
+			}
 		}
-	}
+
 
 	public void close() {
-
-		if (items != null) {
-			for (int i = 0; i < items.length; i++) {
-				items[i].close();
-			}
+		for(ItemController itemController :items){
+			itemController.close();
 		}
 	}
 
 	public void reset() {
-		items = null;
+		items.clear();
 	}
 
 	@Override
@@ -112,13 +107,9 @@ public class PageController implements PageInterferenceSocket {
 
 	private JavaScriptObject getItemJsSockets() {
 		JavaScriptObject itemSockets = JavaScriptObject.createArray();
-		if (items != null) {
-			for (int i = 0; i < items.length; i++) {
-				if (items[i] != null) {
-					JSArrayUtils.fillArray(itemSockets, i, items[i].getItemSocket().getJsSocket());
+			for (int i = 0; i < items.size(); i++) {
+					JSArrayUtils.fillArray(itemSockets, i, items.get(i).getItemSocket().getJsSocket());
 				}
-			}
-		}
 		return itemSockets;
 	}
 
@@ -133,22 +124,10 @@ public class PageController implements PageInterferenceSocket {
 
 	@Override
 	public ItemInterferenceSocket[] getItemSockets() {
-		int itemsCount = 0;
-
-		if (items != null) {
-			itemsCount = items.length;
+		ItemInterferenceSocket[] itemSockets = new ItemInterferenceSocket[items.size()];
+		for (int i = 0; i < items.size(); i++) {
+			itemSockets[i] = items.get(i).getItemSocket();
 		}
-
-		ItemInterferenceSocket[] itemSockets = new ItemInterferenceSocket[itemsCount];
-
-		if (items != null) {
-			for (int i = 0; i < items.length; i++) {
-				if (items[i] != null) {
-					itemSockets[i] = items[i].getItemSocket();
-				}
-			}
-		}
-
 		return itemSockets;
 	}
 
@@ -157,16 +136,12 @@ public class PageController implements PageInterferenceSocket {
 	}
 
 	public boolean hasInteractiveModules() {
-		boolean foundInteractive = false;
-		if (items != null) {
-			for (ItemController item : items) {
-				if (item != null && item.hasInteractiveModules()) {
-					foundInteractive = true;
-					break;
-				}
+		return Iterables.any(items, new Predicate<ItemController>() {
+			@Override
+			public boolean apply(ItemController item) {
+				return item.hasInteractiveModules();
 			}
-		}
-		return foundInteractive;
+		});
 	}
 
 }

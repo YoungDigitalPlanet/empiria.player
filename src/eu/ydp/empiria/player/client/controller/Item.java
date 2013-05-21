@@ -11,7 +11,6 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
@@ -27,19 +26,19 @@ import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
-import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
-import eu.ydp.empiria.player.client.controller.variables.IVariableCreator;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
+import eu.ydp.empiria.player.client.controller.item.ItemXMLWrapper;
 import eu.ydp.empiria.player.client.controller.variables.manager.BindableVariableManager;
 import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseNodeParser;
 import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
 import eu.ydp.empiria.player.client.controller.variables.processor.VariableProcessingAdapter;
 import eu.ydp.empiria.player.client.controller.variables.processor.VariablesProcessingModulesInitializer;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FeedbackAutoMarkInterpreter;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.OutcomeVariablesInitializer;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -53,7 +52,6 @@ import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifi
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.expression.ExpressionListBuilder;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
@@ -65,84 +63,67 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	protected ItemBodyView itemBodyView;
 	protected Panel scorePanel;
 
-	private ModuleFeedbackProcessor moduleFeedbackProcessor;
-	private VariableManager<Response> responseManager;
-	private BindableVariableManager<Outcome> outcomeManager;
-	private StyleLinkDeclaration styleDeclaration;
+	private final ModuleFeedbackProcessor moduleFeedbackProcessor;
+	private final VariableManager<Response> responseManager;
+	private final BindableVariableManager<Outcome> outcomeManager;
+
 	// private StyleSocket styleSocket;
 
 	protected ModulesRegistrySocket modulesRegistrySocket;
 	protected DisplayContentOptions options;
 
-	private String title;
-	private XmlData xmlData;
+	private final String title;
 
-	private InteractionEventsListener interactionEventsListener;
+	private final InteractionEventsListener interactionEventsListener;
 	private final FlowActivityVariablesProcessor flowActivityVariablesProcessor;
 
 	private final VariableProcessingAdapter variableProcessor;
 	private final YJsJsonConverter yJsJsonConverter;
 	private JSONArray state;
-	private final ResponseNodeParser responseNodeParser;
 
 	@Inject
-	public Item(@Assisted XmlData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
+	public Item(@Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
 			@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables, @Assisted ModuleHandlerManager moduleHandlerManager,
 			@Assisted JSONArray stateArray, ModuleFeedbackProcessor moduleFeedbackProcessor, OutcomeVariablesInitializer outcomeVariablesInitializer,
 			FlowActivityVariablesProcessor flowActivityVariablesProcessor, VariableProcessingAdapter variableProcessingAdapter,
 			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter,
-			ExpressionListBuilder expressionListBuilder, final ResponseNodeParser responseNodeParser) {
+			ExpressionListBuilder expressionListBuilder, @PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper) {
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
 		this.yJsJsonConverter = yJsJsonConverter;
-		xmlData = data;
-
+		this.responseManager = responseManager;
 		this.moduleFeedbackProcessor = moduleFeedbackProcessor;
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
-		this.responseNodeParser = responseNodeParser;
 
-		Document document = xmlData.getDocument();
-		Node rootNode = document.getElementsByTagName("assessmentItem").item(0);
-		Node itemBodyNode = document.getElementsByTagName("itemBody").item(0);
 
-		responseManager = new VariableManager<Response>(document.getElementsByTagName("responseDeclaration"), new IVariableCreator<Response>() {
-			@Override
-			public Response createVariable(Node node) {
-				return responseNodeParser.parseResponseFromNode(node.toString());
-			}
-		});
+		Element itemBodyNode = xmlMapper.getItemBody();
 		Map<String, Response> responsesMap = responseManager.getVariablesMap();
 
-		parseAndConnectExpressions(expressionListBuilder, document, responsesMap);
+		parseAndConnectExpressions(expressionListBuilder, xmlMapper, responsesMap);
 
 		this.interactionEventsListener = interactionEventsListener;
 		outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
-
-		styleDeclaration = new StyleLinkDeclaration(document.getElementsByTagName("styleDeclaration"), data.getBaseURL());
-
 		new FeedbackAutoMarkInterpreter().interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
 
 		itemBody = new ItemBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket, moduleHandlerManager);
-
 		itemBodyView = new ItemBodyView(itemBody);
 
 		setState(stateArray);
-
-		itemBodyView.init(itemBody.init((Element) itemBodyNode));
+		itemBodyView.init(itemBody.init(itemBodyNode));
 
 		variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
 
+		Node rootNode = xmlMapper.getAssessmentItems().item(0);
 		title = ((Element) rootNode).getAttribute("title");
-
 		scorePanel = new FlowPanel();
 		scorePanel.setStyleName("qp-feedback-hidden");
 
 	}
 
-	private void parseAndConnectExpressions(ExpressionListBuilder expressionListBuilder, Document document, Map<String, Response> responsesMap) {
-		NodeList expressionsNodes = document.getElementsByTagName("expressions");
+	private void parseAndConnectExpressions(ExpressionListBuilder expressionListBuilder, ItemXMLWrapper xmlMapper, Map<String, Response> responsesMap) {
+		NodeList expressionsNodes = xmlMapper.getExpressions();
 
 		for (int i = 0; i < expressionsNodes.getLength(); i++) {
 			Element expressionsElement = (Element) expressionsNodes.item(i);
@@ -445,7 +426,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	/**
 	 * Checks whether the item body contains at least one interactive module
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasInteractiveModules() {

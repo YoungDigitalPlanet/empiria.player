@@ -15,4 +15,9 @@ public class PlayerGinjectorFactory {
 
 		return playerGinjector;
 	}
+
+	public static PlayerGinjector getNewPlayerGinjectorForGWTTestCase() {
+		playerGinjector = GWT.create(PlayerGinjector.class);
+		return playerGinjector;
+	}
 }
