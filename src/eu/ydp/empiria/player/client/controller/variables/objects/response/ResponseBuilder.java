@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
@@ -58,7 +60,7 @@ public class ResponseBuilder {
 		return this;
 	}
 
-	public ResponseBuilder withCorrectAnswers(String... correctAnswers) {
+	public ResponseBuilder withCorrectAnswers(Iterable<String> correctAnswers) {
 		CorrectAnswers correctAnswersHolder = new CorrectAnswers();
 		for (String correctAnswer : correctAnswers) {
 			ResponseValue responseValue = new ResponseValue(correctAnswer);
@@ -68,8 +70,16 @@ public class ResponseBuilder {
 		return this;
 	}
 
+	public ResponseBuilder withCorrectAnswers(String... correctAnswers) {
+		return withCorrectAnswers(correctAnswers);
+	}
+
 	public ResponseBuilder withCurrentUserAnswers(String... currentUserAnswers) {
-		this.values = Arrays.asList(currentUserAnswers);
+		return withCurrentUserAnswers(Arrays.asList(currentUserAnswers));
+	}
+
+	public ResponseBuilder withCurrentUserAnswers(Iterable<String> currentUserAnswers) {
+		this.values = Lists.newArrayList(currentUserAnswers);
 		return this;
 	}
 

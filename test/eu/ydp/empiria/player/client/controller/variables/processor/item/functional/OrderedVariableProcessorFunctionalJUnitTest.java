@@ -1,9 +1,20 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.MISTAKES;
+import static junitparams.JUnitParamsRunner.$;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
-import org.junit.Ignore;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
@@ -11,56 +22,59 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
+import eu.ydp.gwtutil.client.Pair;
 
+@RunWith(JUnitParamsRunner.class)
+@SuppressWarnings("PMD")
 public class OrderedVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase{
-
-	@Ignore("Functionality not implemented yet")
-	@Test
-	public void shouldRecognizeWrongOrderOfAnswers() throws Exception {
-		// given
-		Response response = new ResponseBuilder()
-				.withCardinality(Cardinality.ORDERED)
-				.withCorrectAnswers("firstAnswer", "secondAnswer")
-				.withCurrentUserAnswers("secondAnswer", "firstAnswer")
+	private Pair<Map<String, Response>, Map<String, Outcome>> getResponseAndOutcomeMaps(Iterable<String> currentUserAnswers, Iterable<String> correctAnswers){
+		Response aResponse = builder().withIdentifier("a")
+				.withCurrentUserAnswers(currentUserAnswers).withCorrectAnswers(correctAnswers)
 				.build();
 
-		Map<String, Response> responsesMap = convertToMap(response);
+		Map<String, Response> responsesMap = convertToMap(aResponse);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
-
-		// when
-		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
-
-		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN, TODO), outcomes);
-
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(TODO, MISTAKES, LASTMISTAKEN, ERRORS), outcomes);
+		return new Pair<Map<String,Response>, Map<String,Outcome>>(responsesMap, outcomes);
 	}
 
-	@Ignore("Functionality not implemented yet")
 	@Test
 	public void shouldRecognizeCorrectOrderOfAnswers() throws Exception {
 		// given
-		Response response = new ResponseBuilder()
-				.withCardinality(Cardinality.ORDERED)
-				.withCorrectAnswers("firstAnswer", "secondAnswer")
-				.withCurrentUserAnswers("firstAnswer", "secondAnswer")
-				.build();
-
-		Map<String, Response> responsesMap = convertToMap(response);
-		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
-
+		Pair<Map<String, Response>, Map<String, Outcome>> responseAndOutcomeMaps = getResponseAndOutcomeMaps(Arrays.asList("B","O","O","K"), Arrays.asList("B","O","O","K"));
 		// when
-		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
+		defaultVariableProcessor.processResponseVariables(responseAndOutcomeMaps.getOne(), responseAndOutcomeMaps.getTwo(), processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
-
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(MISTAKES, LASTMISTAKEN, ERRORS), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), responseAndOutcomeMaps.getTwo());
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(DONE), responseAndOutcomeMaps.getTwo());
 	}
-	
+
+
+	@Test
+	@Parameters(method="testParams")
+	public void shouldRecognizeWrongOrderOfAnswers(List<String> currentUserAnswers, List<String> correctAnswers) throws Exception {
+		// given
+		Pair<Map<String, Response>, Map<String, Outcome>> responseAndOutcomeMaps = getResponseAndOutcomeMaps(currentUserAnswers, correctAnswers);
+		// when
+		defaultVariableProcessor.processResponseVariables(responseAndOutcomeMaps.getOne(), responseAndOutcomeMaps.getTwo(), processingMode);
+
+		// then
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(DONE,ERRORS, MISTAKES), responseAndOutcomeMaps.getTwo());
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(LASTMISTAKEN), responseAndOutcomeMaps.getTwo());
+	}
+
+	public Object[] testParams() {
+	        return $(
+	                 $(Arrays.asList("B","O","O","K"), Arrays.asList("B","O","K","K")),
+	                 $(Arrays.asList("B","O","","K"), Arrays.asList("B","","K","K")),
+	                 $(Arrays.asList("","","","") ,Arrays.asList("B","O","K","K"))
+	                );
+	    }
+
+
+
+	private ResponseBuilder builder() {
+		return new ResponseBuilder().withCardinality(Cardinality.ORDERED);
+	}
+
 }
