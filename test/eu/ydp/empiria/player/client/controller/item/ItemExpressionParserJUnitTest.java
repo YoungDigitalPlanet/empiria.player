@@ -46,6 +46,7 @@ public class ItemExpressionParserJUnitTest extends AbstractTestBaseWithoutAutoIn
 			binder.bind(ExpressionListBuilder.class).toInstance(expressionListBuilder);
 			binder.bind(XmlData.class).annotatedWith(PageScoped.class).toInstance(xmlData);
 			binder.bind(ItemResponseManager.class).annotatedWith(PageScoped.class).toInstance(responseManager);
+			binder.bind(ItemXMLWrapper.class).annotatedWith(PageScoped.class).to(ItemXMLWrapper.class);
 		}
 	}
 

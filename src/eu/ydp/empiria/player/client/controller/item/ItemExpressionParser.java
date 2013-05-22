@@ -15,6 +15,7 @@ public class ItemExpressionParser {
 	private ExpressionListBuilder expressionListBuilder;
 
 	@Inject
+	@PageScoped
 	private ItemXMLWrapper xmlMapper;
 
 	@Inject
