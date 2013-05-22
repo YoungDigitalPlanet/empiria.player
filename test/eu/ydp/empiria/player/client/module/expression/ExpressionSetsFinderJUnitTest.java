@@ -1,77 +1,52 @@
 package eu.ydp.empiria.player.client.module.expression;
 
-import java.util.List;
-import java.util.Set;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import static org.junit.Assert.*;
-
-import static org.mockito.Mockito.*;
+import com.google.common.collect.Multiset;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
+import eu.ydp.empiria.player.client.module.expression.evaluate.ResponseValuesFetcherFunctions;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExpressionSetsFinderJUnitTest {
 
 	private ExpressionSetsFinder expressionSetsFinder;
-	
-	@Mock
-	private IdentifiersFromExpressionExtractor identifiersFromExpressionExtractor;
-	@Mock
-	private ExpressionToPartsDivider expressionToPartsDivider;
-	
+
 	@Before
 	public void setUp() throws Exception {
-		expressionSetsFinder = new ExpressionSetsFinder(identifiersFromExpressionExtractor, expressionToPartsDivider);
+		expressionSetsFinder = new ExpressionSetsFinder(new ResponseFinder(new ExpressionToPartsDivider(), new IdentifiersFromExpressionExtractor()),
+				new ResponseValuesFetcherFunctions());
 	}
 
 	@Test
 	public void shouldUpdateExpressionSetsInBean() throws Exception {
-		//given
+		// given
 		ExpressionBean expression = new ExpressionBean();
-		String template = "template";
-		String leftPart = "leftPart";
-		String rightPart = "rightPart";
-		expression.setTemplate(template);
-		Response responseA = new ResponseBuilder().withIdentifier("a").build();
+
+		expression.setTemplate("'a'+'b'='c'");
+		Response responseA = new ResponseBuilder().withIdentifier("a").withCorrectAnswers("1").build();
 		expression.getResponses().add(responseA);
-		Response responseB = new ResponseBuilder().withIdentifier("b").build();
+		Response responseB = new ResponseBuilder().withIdentifier("b").withCorrectAnswers("2").build();
 		expression.getResponses().add(responseB);
-		Response responseC = new ResponseBuilder().withIdentifier("c").build();
+		Response responseC = new ResponseBuilder().withIdentifier("c").withCorrectAnswers("3").build();
 		expression.getResponses().add(responseC);
-		
-		List<String> expressionParts = Lists.newArrayList(leftPart, rightPart);
-		when(expressionToPartsDivider.divideExpressionOnEquality(template, expression.getResponses()))
-			.thenReturn(expressionParts);
-		
-		when(identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(leftPart))
-			.thenReturn(Lists.newArrayList("a"));
-		
-		when(identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(rightPart))
-		.thenReturn(Lists.newArrayList("b"));
-		
-		when(identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(template))
-		.thenReturn(Lists.newArrayList("a", "b", "c"));
-		
-		//when
+
+		// when
 		expressionSetsFinder.updateResponsesSetsInExpression(expression);
-		
-		//then
-		List<Set<Response>> setsOfResponses = expression.getSetsOfResponses();
-		assertEquals(3, setsOfResponses.size());
-		assertTrue(setsOfResponses.contains(Sets.newHashSet(responseA)));
-		assertTrue(setsOfResponses.contains(Sets.newHashSet(responseB)));
-		assertTrue(setsOfResponses.contains(Sets.newHashSet(responseA, responseB, responseC)));
+
+		Multiset<Multiset<String>> corectResponsesSets = expression.getCorectResponses();
+		assertEquals(3, corectResponsesSets.size());
+		assertTrue(corectResponsesSets.contains(HashMultiset.create(Lists.newArrayList("3"))));
+		assertTrue(corectResponsesSets.contains(HashMultiset.create(Lists.newArrayList("1", "2"))));
+		assertTrue(corectResponsesSets.contains(HashMultiset.create(Lists.newArrayList("1", "2", "3"))));
 	}
-	
 }

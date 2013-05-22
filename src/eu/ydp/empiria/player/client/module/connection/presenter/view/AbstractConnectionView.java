@@ -8,7 +8,6 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;

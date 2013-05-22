@@ -6,7 +6,7 @@ public class PageControllerCache extends AbstractElementCache<PageController> {
 
 	@Override
 	protected PageController getElement(Integer index) {
-		return null;
+		return getCache().get(index);
 	}
 
 }
