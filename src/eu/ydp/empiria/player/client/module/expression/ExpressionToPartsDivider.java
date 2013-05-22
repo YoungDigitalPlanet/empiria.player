@@ -17,7 +17,7 @@ public class ExpressionToPartsDivider {
 	public List<String> divideExpressionOnEquality(String template, List<Response> responses, Function<Response, String> answerFetcher) {
 		String templateWithEquality = template;
 		if (!template.contains(EQUAL_SIGN)) {
-			templateWithEquality = replaceCorrectResponseIdWithEqualitySign(template, responses, answerFetcher);
+			templateWithEquality = replaceResponseIdWithEqualitySign(template, responses, answerFetcher);
 		}
 
 		String[] leftRightExpressionParts = templateWithEquality.split(EQUAL_SIGN);
@@ -29,8 +29,8 @@ public class ExpressionToPartsDivider {
 		}
 	}
 
-	private String replaceCorrectResponseIdWithEqualitySign(String template, List<Response> responses, Function<Response, String> answerFetcher) {
-		Response response = findResponseWithCorrectAnswerAsEqualSign(responses, answerFetcher);
+	private String replaceResponseIdWithEqualitySign(String template, List<Response> responses, Function<Response, String> answerFetcher) {
+		Response response = findResponseWithAnswerAsEqualSign(responses, answerFetcher);
 
 		String responseId = response.getID();
 		String updatedTemplate = template.replace("'" + responseId + "'", EQUAL_SIGN);
@@ -38,10 +38,9 @@ public class ExpressionToPartsDivider {
 		return updatedTemplate;
 	}
 
-	private Response findResponseWithCorrectAnswerAsEqualSign(List<Response> responses, Function<Response, String> answerFetcher) {
+	private Response findResponseWithAnswerAsEqualSign(List<Response> responses, Function<Response, String> answerFetcher) {
 		for (Response response : responses) {
 			if (answerFetcher.apply(response).equals(EQUAL_SIGN)) {
-				// if (response.isCorrectAnswer(EQUAL_SIGN)) {
 				return response;
 			}
 		}

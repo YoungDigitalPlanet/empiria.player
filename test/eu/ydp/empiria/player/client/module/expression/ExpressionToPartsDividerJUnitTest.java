@@ -17,7 +17,7 @@ public class ExpressionToPartsDividerJUnitTest {
 	private final ExpressionToPartsDivider expressionToPartsDivider = new ExpressionToPartsDivider();
 
 	@Test
-	public void shouldDivideExpressionWhenEqualSignIsInTemplate() throws Exception {
+	public void shouldDivideExpressionWhenEqualSignIsInTemplate_correcAnswer() throws Exception {
 		String leftPart = "a+'b'*c:u";
 		String rightPart = "7-8+3*2";
 		String template = leftPart + ExpressionToPartsDivider.EQUAL_SIGN + rightPart;
@@ -32,7 +32,22 @@ public class ExpressionToPartsDividerJUnitTest {
 	}
 
 	@Test
-	public void shouldCorrectlyDivideExpressionWhenEqualSignShouldComeFromResponse() throws Exception {
+	public void shouldDivideExpressionWhenEqualSignIsInTemplate_userAnswer() throws Exception {
+		String leftPart = "a+'b'*c:u";
+		String rightPart = "7-8+3*2";
+		String template = leftPart + ExpressionToPartsDivider.EQUAL_SIGN + rightPart;
+		List<Response> responses = new ArrayList<Response>();
+
+		List<String> returnedParts = expressionToPartsDivider.divideExpressionOnEquality(template, responses,
+				new ResponseValuesFetcherFunctions().getUserAnswerFetcher());
+
+		assertEquals(2, returnedParts.size());
+		assertTrue(returnedParts.contains(leftPart));
+		assertTrue(returnedParts.contains(rightPart));
+	}
+
+	@Test
+	public void shouldCorrectlyDivideExpressionWhenEqualSignShouldComeFromResponse_correcAnswer() throws Exception {
 		String leftPart = "'a'";
 		String rightPart = "'c'";
 		String template = leftPart + "'sign'" + rightPart;
@@ -50,15 +65,34 @@ public class ExpressionToPartsDividerJUnitTest {
 		assertTrue(returnedParts.contains(rightPart));
 	}
 
+	@Test
+	public void shouldCorrectlyDivideExpressionWhenEqualSignShouldComeFromResponse_userAnswer() throws Exception {
+		String leftPart = "'a'";
+		String rightPart = "'c'";
+		String template = leftPart + "'sign'" + rightPart;
+
+		List<Response> responses = new ArrayList<Response>();
+		responses.add(new ResponseBuilder().withCurrentUserAnswers("2").withIdentifier("a").build());
+		responses.add(new ResponseBuilder().withCurrentUserAnswers("8").withIdentifier("c").build());
+		responses.add(new ResponseBuilder().withCurrentUserAnswers(ExpressionToPartsDivider.EQUAL_SIGN).withIdentifier("sign").build());
+
+		List<String> returnedParts = expressionToPartsDivider.divideExpressionOnEquality(template, responses,
+				new ResponseValuesFetcherFunctions().getUserAnswerFetcher());
+
+		assertEquals(2, returnedParts.size());
+		assertTrue(returnedParts.contains(leftPart));
+		assertTrue(returnedParts.contains(rightPart));
+	}
+
 	@Test(expected = CannotDivideExpressionToPartsException.class)
-	public void shouldThrowExceptionWhenCannotDivideExpression() throws Exception {
+	public void shouldThrowExceptionWhenCannotDivideExpression_correcAnswer() throws Exception {
 		String template = "'a'+'c'";
 
 		List<Response> responses = new ArrayList<Response>();
-		responses.add(new ResponseBuilder().withCorrectAnswers("2").withIdentifier("a").build());
-		responses.add(new ResponseBuilder().withCorrectAnswers("8").withIdentifier("c").build());
+		responses.add(new ResponseBuilder().withCurrentUserAnswers("2").withIdentifier("a").build());
+		responses.add(new ResponseBuilder().withCurrentUserAnswers("8").withIdentifier("c").build());
 
-		expressionToPartsDivider.divideExpressionOnEquality(template, responses, new ResponseValuesFetcherFunctions().getCorrectAnswerFetcher());
+		expressionToPartsDivider.divideExpressionOnEquality(template, responses, new ResponseValuesFetcherFunctions().getUserAnswerFetcher());
 	}
 
 }

@@ -82,6 +82,29 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 
 	@SuppressWarnings("unchecked")
 	@Test
+	public void evaluateCorrect_commutated_equalSignInGap() {
+		// given
+		ExpressionBean bean = new ExpressionBean();
+
+		List<Response> responses = Lists.newArrayList(response("=", "2", "id_equal"), response("1", "5", "id1"), response("5", "3", "id5"),
+				response("3", "1", "id3"), (response("2", "=", "id2")));
+		bean.setTemplate("'id1'+'id2'+'id3''id_equal'+'id5'");
+		bean.getResponses().addAll(responses);
+
+		Multiset<Multiset<String>> correctAnswerMultiSet = HashMultiset.create(Lists.<Multiset<String>> newArrayList(
+				HashMultiset.create(Lists.newArrayList("5")), HashMultiset.create(Lists.newArrayList("1", "2", "3")),
+				HashMultiset.create(Lists.newArrayList("1", "2", "3", "=", "5"))));
+
+		bean.setCorectResponses(correctAnswerMultiSet);
+		// when
+		boolean result = eval.evaluate(bean);
+
+		// then
+		assertThat(result, equalTo(true));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
 	public void evaluateWrong_someWrongs() {
 		// given
 		ExpressionBean bean = new ExpressionBean();
@@ -130,6 +153,15 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 		List<String> values = Lists.newArrayList("answer_" + user);
 		Response response = new Response(correctAnswers, values, Lists.<String> newArrayList(), String.valueOf(correct), Evaluate.DEFAULT, BaseType.STRING,
 				Cardinality.SINGLE, CountMode.SINGLE, new ExpressionBean(), CheckMode.EXPRESSION);
+		return response;
+	}
+
+	private Response response(String correct, String user, String id) {
+		CorrectAnswers correctAnswers = new CorrectAnswers();
+		correctAnswers.add(new ResponseValue(correct));
+		List<String> values = Lists.newArrayList(user);
+		Response response = new Response(correctAnswers, values, Lists.<String> newArrayList(), id, Evaluate.DEFAULT, BaseType.STRING, Cardinality.SINGLE,
+				CountMode.SINGLE, new ExpressionBean(), CheckMode.EXPRESSION);
 		return response;
 	}
 
