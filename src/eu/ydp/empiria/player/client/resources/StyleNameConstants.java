@@ -246,14 +246,14 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-labelling-background")
 	public String QP_LABELLING_BACKGROUND();
 
-	@DefaultStringValue("qp-labelling-inner")
-	public String QP_LABELLING_INNER();
-
 	@DefaultStringValue("qp-labelling-child")
 	public String QP_LABELLING_CHILD();
 
 	@DefaultStringValue("qp-labelling-children")
 	public String QP_LABELLING_CHILDREN();
+
+	@DefaultStringValue("qp-labelling-inner")
+	public String QP_LABELLING_INNER();
 
 	@DefaultStringValue("qp-link")
 	public String QP_LINK();
@@ -359,6 +359,27 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-media-volume-scrollbar-button")
 	public String QP_MEDIA_VOLUME_SCROLLBAR_BUTTON();
+
+	@DefaultStringValue("qp-ordered")
+	public String QP_ORDERED();
+
+	@DefaultStringValue("qp-ordered-item-correct")
+	public String QP_ORDERED_ITEM_CORRECT();
+
+	@DefaultStringValue("qp-ordered-item")
+	public String QP_ORDERED_ITEM_DEFAULT();
+
+	@DefaultStringValue("qp-ordered-item-locked")
+	public String QP_ORDERED_ITEM_LOCKED();
+
+	@DefaultStringValue("qp-ordered-item-none")
+	public String QP_ORDERED_ITEM_NONE();
+
+	@DefaultStringValue("qp-ordered-item-selected")
+	public String QP_ORDERED_ITEM_SELECTED();
+
+	@DefaultStringValue("qp-ordered-item-wrong")
+	public String QP_ORDERED_ITEM_WRONG();
 
 	@DefaultStringValue("qp-page")
 	public String QP_PAGE();
@@ -656,26 +677,5 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
-
-	@DefaultStringValue("qp-ordered")
-	public String QP_ORDERED();
-
-	@DefaultStringValue("qp-ordered-item")
-	public String QP_ORDERED_ITEM_DEFAULT();
-
-	@DefaultStringValue("qp-ordered-item-correct")
-	public String QP_ORDERED_ITEM_CORRECT();
-
-	@DefaultStringValue("qp-ordered-item-wrong")
-	public String QP_ORDERED_ITEM_WRONG();
-
-	@DefaultStringValue("qp-ordered-item-none")
-	public String QP_ORDERED_ITEM_NONE();
-
-	@DefaultStringValue("qp-ordered-item-selected")
-	public String QP_ORDERED_ITEM_SELECTED();
-
-	@DefaultStringValue("qp-ordered-item-locked")
-	public String QP_ORDERED_ITEM_LOCKED();
 
 }
