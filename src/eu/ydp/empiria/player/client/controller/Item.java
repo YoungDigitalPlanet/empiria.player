@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -26,6 +25,7 @@ import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
+import eu.ydp.empiria.player.client.controller.item.ItemExpressionParser;
 import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.item.ItemXMLWrapper;
 import eu.ydp.empiria.player.client.controller.variables.manager.BindableVariableManager;
@@ -87,7 +87,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 			@Assisted JSONArray stateArray, ModuleFeedbackProcessor moduleFeedbackProcessor, OutcomeVariablesInitializer outcomeVariablesInitializer,
 			FlowActivityVariablesProcessor flowActivityVariablesProcessor, VariableProcessingAdapter variableProcessingAdapter,
 			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter,
-			ExpressionListBuilder expressionListBuilder, @PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper) {
+			ExpressionListBuilder expressionListBuilder, @PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper,
+			ItemExpressionParser expressionParser) {
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
@@ -99,9 +100,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 
 		Element itemBodyNode = xmlMapper.getItemBody();
-		Map<String, Response> responsesMap = responseManager.getVariablesMap();
-
-		parseAndConnectExpressions(expressionListBuilder, xmlMapper, responsesMap);
+		expressionParser.parseAndConnectExpressions();
 
 		this.interactionEventsListener = interactionEventsListener;
 		outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
@@ -120,16 +119,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		scorePanel = new FlowPanel();
 		scorePanel.setStyleName("qp-feedback-hidden");
 
-	}
-
-	private void parseAndConnectExpressions(ExpressionListBuilder expressionListBuilder, ItemXMLWrapper xmlMapper, Map<String, Response> responsesMap) {
-		NodeList expressionsNodes = xmlMapper.getExpressions();
-
-		for (int i = 0; i < expressionsNodes.getLength(); i++) {
-			Element expressionsElement = (Element) expressionsNodes.item(i);
-			String expressionsXml = expressionsElement.toString();
-			expressionListBuilder.parseAndConnectExpressions(expressionsXml, responsesMap);
-		}
 	}
 
 	/**

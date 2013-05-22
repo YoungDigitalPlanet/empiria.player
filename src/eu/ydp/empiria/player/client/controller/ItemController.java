@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
@@ -45,6 +44,8 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private EventsBus eventsBus;
 	@Inject @PageScoped
 	private ItemData data;
+	@Inject
+	private IPlayerContainersAccessor accessor;
 
 	private final ModuleHandlerManager moduleHandlerManager;
 	private final AssessmentControllerFactory controllerFactory;
@@ -54,7 +55,6 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
 	Item item;
 	private int itemIndex;
-	private IPlayerContainersAccessor accessor;
 
 
 	@Inject
@@ -81,7 +81,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			itemIndex = data.itemIndex;
 			item = controllerFactory.getItem(options, interactionSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex),
 					moduleHandlerManager, itemSessionSocket.getState(itemIndex));
-			getAccessor().registerItemBodyContainer(itemIndex, item.getContentView());
+			accessor.registerItemBodyContainer(itemIndex, item.getContentView());
 
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
 			item.setUp();
@@ -173,13 +173,6 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		}
 		item.handleFlowActivityEvent(newEvent);
 
-	}
-
-	private IPlayerContainersAccessor getAccessor() {
-		if (accessor == null) {
-			accessor = PlayerGinjectorFactory.getPlayerGinjector().getPlayerContainersAccessor();
-		}
-		return accessor;
 	}
 
 	/**
