@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.ordering.view;
 
 import java.util.List;
 
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -14,7 +13,7 @@ import eu.ydp.empiria.player.client.module.ordering.view.items.OrderInteractionV
 import eu.ydp.empiria.player.client.module.ordering.view.items.OrderInteractionViewItemStyles;
 import eu.ydp.empiria.player.client.module.ordering.view.items.OrderInteractionViewItems;
 
-public class OrderInteractionViewImpl extends Composite implements OrderInteractionView {
+public class OrderInteractionViewImpl implements OrderInteractionView {
 
 	@Inject
 	private OrderInteractionViewItems viewItems;
@@ -55,6 +54,11 @@ public class OrderInteractionViewImpl extends Composite implements OrderInteract
 	public void setChildStyles(OrderingItem item) {
 		interactionViewItemStyles.applyStylesOnWidget(item, viewItems.getItem(item.getId()));
 
+	}
+
+	@Override
+	public Widget asWidget() {
+		return viewWidget.asWidget();
 	}
 
 }
