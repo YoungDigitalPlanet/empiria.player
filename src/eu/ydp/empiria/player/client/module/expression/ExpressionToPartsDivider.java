@@ -15,18 +15,18 @@ public class ExpressionToPartsDivider {
 	private static final Logger LOGGER = new Logger();
 
 	public List<String> divideExpressionOnEquality(String template, List<Response> responses, Function<Response, String> answerFetcher) {
+		String templateWithEquality = prepareTemplate(template, responses, answerFetcher);
+		String[] leftRightExpressionParts = templateWithEquality.split(EQUAL_SIGN);
+		LOGGER.severeIf(leftRightExpressionParts.length != 2, "Expression divided on EQUAL sign contains different amount of parts than 2!");
+		return Arrays.asList(leftRightExpressionParts);
+	}
+
+	private String prepareTemplate(String template, List<Response> responses, Function<Response, String> answerFetcher) {
 		String templateWithEquality = template;
 		if (!template.contains(EQUAL_SIGN)) {
 			templateWithEquality = replaceResponseIdWithEqualitySign(template, responses, answerFetcher);
 		}
-
-		String[] leftRightExpressionParts = templateWithEquality.split(EQUAL_SIGN);
-		if (leftRightExpressionParts.length == 2) {
-			return Arrays.asList(leftRightExpressionParts);
-		} else {
-			LOGGER.severe("Expression divided on EQUAL sign contains different amount of parts than 2!");
-			return Arrays.asList(leftRightExpressionParts);
-		}
+		return templateWithEquality;
 	}
 
 	private String replaceResponseIdWithEqualitySign(String template, List<Response> responses, Function<Response, String> answerFetcher) {
