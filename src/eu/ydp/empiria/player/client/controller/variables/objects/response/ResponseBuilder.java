@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
@@ -19,7 +18,6 @@ public class ResponseBuilder {
 	private List<String> values = new ArrayList<String>();
 	private List<String> groups = new ArrayList<String>();
 	private String identifier = "defaultIdentifier";
-	private BaseType baseType = BaseType.STRING;
 	private Cardinality cardinality;
 	private CountMode countMode = CountMode.SINGLE;
 	private ExpressionBean expression = null;
@@ -47,11 +45,6 @@ public class ResponseBuilder {
 
 	public ResponseBuilder withIdentifier(String identifier) {
 		this.identifier = identifier;
-		return this;
-	}
-
-	public ResponseBuilder withBaseType(BaseType baseType) {
-		this.baseType = baseType;
 		return this;
 	}
 
@@ -104,6 +97,6 @@ public class ResponseBuilder {
 	}
 
 	public Response build() {
-		return new Response(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality, countMode, expression, checkMode);
+		return new Response(correctAnswers, values, groups, identifier, evaluate, cardinality, countMode, expression, checkMode);
 	}
 }

@@ -6,21 +6,20 @@ import java.util.Set;
 import eu.ydp.empiria.player.client.controller.communication.sockets.JsSocketHolder;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemsCollectionSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderBase;
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class AssessmentVariableStorageImpl extends VariableProviderBase  implements JsSocketHolder {
-	
-	private Set<String> identifiers;
+
+	private final Set<String> identifiers;
 	private ItemsCollectionSessionDataSocket itemsCollectionSessionDataSocket;
-	
+
 	public AssessmentVariableStorageImpl(){
 		identifiers = new HashSet<String>();
 	}
-	
+
 	public void init(ItemsCollectionSessionDataSocket icsds){
 		itemsCollectionSessionDataSocket = icsds;
 		ensureVariables();
@@ -36,24 +35,23 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 		ensureVariable("MISTAKES");
 		ensureVariable("VISITED");
 	}
-	
+
 	private void ensureVariable(String identifier){
 		if (!identifiers.contains(identifier)){
 			identifiers.add(identifier);
 		}
 	}
-	
+
 	@Override
 	public Set<String> getVariableIdentifiers(){
 		return identifiers;
 	}
-	
+
 	@Override
 	public Variable getVariableValue(String identifier){
 		if (identifiers.contains(identifier)){
 			int value = getOutcomeVariableAssessmentTotal(identifier);
-			Outcome o = new Outcome(identifier, Cardinality.SINGLE, BaseType.INTEGER, String.valueOf(value) );
-			return o;
+			return new Outcome(identifier, Cardinality.SINGLE, String.valueOf(value) );
 		}
 		return null;
 	}
@@ -82,5 +80,5 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 		}
 		return total;
 	}
-	
+
 }

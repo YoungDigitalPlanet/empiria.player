@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
@@ -26,9 +25,6 @@ public class ResponseBean {
 
 	@XmlAttribute
 	private CheckMode checkMode;
-
-	@XmlAttribute
-	private BaseType baseType;
 
 	@XmlElement(name = "correctResponse")
 	private CorrectResponseBean correctResponse;
@@ -63,14 +59,6 @@ public class ResponseBean {
 
 	public void setCheckMode(CheckMode checkMode) {
 		this.checkMode = checkMode;
-	}
-
-	public BaseType getBaseType() {
-		return baseType;
-	}
-
-	public void setBaseType(BaseType baseType) {
-		this.baseType = baseType;
 	}
 
 	public CorrectResponseBean getCorrectResponse() {

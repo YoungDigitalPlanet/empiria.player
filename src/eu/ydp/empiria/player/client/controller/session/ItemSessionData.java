@@ -10,7 +10,6 @@ import com.google.gwt.json.client.JSONValue;
 
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemVariableStorageImpl;
@@ -21,8 +20,8 @@ public class ItemSessionData implements ItemSessionDataSocket {
 	private static final double MILI_TO_SECONDS_RATE = 0.001;
 	private long timeStarted;
 	private int time;
-	private JSONArray itemBodyState;	
-	private ItemVariableStorageImpl<Outcome> variableStorage;
+	private JSONArray itemBodyState;
+	private final ItemVariableStorageImpl<Outcome> variableStorage;
 
 	public ItemSessionData(){
 		timeStarted = 0;
@@ -33,7 +32,7 @@ public class ItemSessionData implements ItemSessionDataSocket {
 	
 	public void begin(){
 		timeStarted = getCurrentTimeInSeconds();
-		variableStorage.putVariable("VISITED", new Outcome("VISITED", Cardinality.SINGLE, BaseType.BOOLEAN, "TRUE"));
+		variableStorage.putVariable("VISITED", new Outcome("VISITED", Cardinality.SINGLE, "TRUE"));
 	}
 	
 	public void end(){
@@ -45,6 +44,7 @@ public class ItemSessionData implements ItemSessionDataSocket {
 		return (long)((new Date()).getTime() * MILI_TO_SECONDS_RATE);
 	}
 	
+	@Override
 	public int getActualTime(){
 		int actualTime = 0;
 		if (timeStarted != 0){
@@ -94,6 +94,7 @@ public class ItemSessionData implements ItemSessionDataSocket {
 		return this;
 	}
 	
+	@Override
 	public JavaScriptObject getJsSocket(){
 		return createJsObject();
 	}

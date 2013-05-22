@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.expression.evaluate;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
 
@@ -12,7 +12,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
 import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
@@ -151,8 +150,7 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 		CorrectAnswers correctAnswers = new CorrectAnswers();
 		correctAnswers.add(new ResponseValue("answer_" + correct));
 		List<String> values = Lists.newArrayList("answer_" + user);
-		Response response = new Response(correctAnswers, values, Lists.<String> newArrayList(), String.valueOf(correct), Evaluate.DEFAULT, BaseType.STRING,
-				Cardinality.SINGLE, CountMode.SINGLE, new ExpressionBean(), CheckMode.EXPRESSION);
+		Response response = new Response(correctAnswers, values, Lists.<String> newArrayList(), String.valueOf(correct), Evaluate.DEFAULT,				Cardinality.SINGLE, CountMode.SINGLE, new ExpressionBean(), CheckMode.EXPRESSION);
 		return response;
 	}
 
@@ -160,7 +158,7 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 		CorrectAnswers correctAnswers = new CorrectAnswers();
 		correctAnswers.add(new ResponseValue(correct));
 		List<String> values = Lists.newArrayList(user);
-		Response response = new Response(correctAnswers, values, Lists.<String> newArrayList(), id, Evaluate.DEFAULT, BaseType.STRING, Cardinality.SINGLE,
+		Response response = new Response(correctAnswers, values, Lists.<String> newArrayList(), id, Evaluate.DEFAULT, Cardinality.SINGLE,
 				CountMode.SINGLE, new ExpressionBean(), CheckMode.EXPRESSION);
 		return response;
 	}

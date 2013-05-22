@@ -15,14 +15,11 @@ public abstract class Variable {
 		values = new Vector<String>();
 		identifier = "";
 		cardinality = Cardinality.SINGLE;
-		baseType = BaseType.STRING;
 	}
 
 	public String identifier;
 
 	public Cardinality cardinality;
-
-	public BaseType baseType;
 
 	public List<String> values;
 
@@ -92,6 +89,15 @@ public abstract class Variable {
 			}
 		}
 		return result;
+	}
+
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Variable [regexMatcher=").append(regexMatcher).append(", identifier=").append(identifier).append(", cardinality=").append(cardinality)
+				.append(", values=").append(values).append("]");
+		return builder.toString();
 	}
 
 	public abstract JSONValue toJSON();

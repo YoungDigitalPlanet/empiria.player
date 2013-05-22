@@ -10,7 +10,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 
@@ -20,39 +19,35 @@ public class Outcome extends Variable {
 		super();
 	}
 
-	public Outcome(String identifier, Cardinality cardinality, BaseType baseType){
+	public Outcome(String identifier, Cardinality cardinality){
 		super();
 		this.identifier = identifier;
 		this.cardinality = cardinality;
-		this.baseType = baseType;
-		interpretation = "";		
+		interpretation = "";
 		normalMaximum = 0.0d;
 	}
-	
-	public Outcome(String identifier, Cardinality cardinality, BaseType baseType, String value0){
+
+	public Outcome(String identifier, Cardinality cardinality,  String value0){
 		super();
 		this.identifier = identifier;
 		this.cardinality = cardinality;
-		this.baseType = baseType;
 		values.add(value0);
-		interpretation = "";		
+		interpretation = "";
 		normalMaximum = 0.0d;
 	}
-	
+
 	public Outcome(Node responseDeclarationNode){
-		
+
 		values = new Vector<String>();
 
 		identifier = ((Element)responseDeclarationNode).getAttribute("identifier");
 
 		cardinality = Cardinality.fromString( ((Element)responseDeclarationNode).getAttribute("cardinality") );
-		
-		baseType = BaseType.fromString( ((Element)responseDeclarationNode).getAttribute("baseType") );
-		
+
 		interpretation = "";
-		
+
 		normalMaximum = 0.0d;
-		
+
 		NodeList defaultValueNodes = ((Element)responseDeclarationNode).getElementsByTagName("defaultValue");
 		if (defaultValueNodes.getLength() > 0){
 			NodeList valueNodes = defaultValueNodes.item(0).getChildNodes();
@@ -64,23 +59,15 @@ public class Outcome extends Variable {
 						values.add(value);
 					}
 				}
-				
+
 			}
 		}
-		
-		if (values.size() == 0  &&  cardinality == Cardinality.SINGLE){
-			if (baseType == BaseType.BOOLEAN){
-				values.add("false");
-			} else if (baseType == BaseType.INTEGER){
-				values.add("0");
-			} else if (baseType == BaseType.STRING){
-				values.add("");
-			}
-		}
+
+
 	}
-	
+
 	public String interpretation;
-	
+
 	public Double normalMaximum;
 
 
@@ -90,7 +77,7 @@ public class Outcome extends Variable {
 		jsonArr.set(0, new JSONString("Outcome"));
 		jsonArr.set(1, new JSONString(identifier));
 		jsonArr.set(2, new JSONString(cardinality.toString()));
-		jsonArr.set(3, new JSONString(baseType.toString()));
+		jsonArr.set(3, new JSONString(""));
 
 		JSONArray valuesArr = new JSONArray();
 		for (int v = 0 ; v < values.size() ; v ++){
@@ -99,19 +86,20 @@ public class Outcome extends Variable {
 		jsonArr.set(4, valuesArr);
 		jsonArr.set(5, new JSONString(interpretation));
 		jsonArr.set(6, new JSONNumber(normalMaximum));
-		
+
 		return jsonArr;
 	}
+
+
 
 	@Override
 	public void fromJSON(JSONValue value) {
 		JSONArray jsonArr = value.isArray();
-		
+
 		if (jsonArr != null){
 			identifier = jsonArr.get(1).isString().stringValue();
 			cardinality = Cardinality.valueOf( jsonArr.get(2).isString().stringValue() );
-			baseType = BaseType.valueOf( jsonArr.get(3).isString().stringValue() );
-			
+
 			JSONArray jsonValues = jsonArr.get(4).isArray();
 			values.clear();
 			if (jsonValues != null){
@@ -119,9 +107,10 @@ public class Outcome extends Variable {
 					values.add(jsonValues.get(i).isString().stringValue());
 				}
 			}
-			
+
 			interpretation = jsonArr.get(5).isString().stringValue();
 			normalMaximum = Double.valueOf( jsonArr.get(6).isNumber().doubleValue() );
 		}
-	} 
+	}
+
 }

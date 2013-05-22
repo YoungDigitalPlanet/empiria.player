@@ -7,7 +7,7 @@ public class ResponseBeanConverter {
 
 	public Response convert(ResponseBean responseBean) {
 		ResponseBuilder builder = new ResponseBuilder();
-		builder.withBaseType(responseBean.getBaseType()).withCardinality(responseBean.getCardinality());
+		builder.withCardinality(responseBean.getCardinality());
 		builder.withCheckMode(responseBean.getCheckMode());
 		builder.withEvaluate(responseBean.getEvaluate());
 		builder.withIdentifier(responseBean.getIdentifier());

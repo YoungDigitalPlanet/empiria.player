@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.expression;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,6 @@ public class ExpressionValidatorTest {
 	}
 
 	private Response getEmptyResponse() {
-		return new Response(null, null, null, null, null, null, null);
+		return new Response(null, null, null, null, null, null);
 	}
 }

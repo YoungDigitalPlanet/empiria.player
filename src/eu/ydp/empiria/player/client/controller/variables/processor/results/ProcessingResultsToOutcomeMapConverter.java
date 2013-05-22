@@ -7,7 +7,6 @@ import java.util.Set;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ConstantVariables;
@@ -123,12 +122,12 @@ public class ProcessingResultsToOutcomeMapConverter {
 	}
 	
 	private void insertVariable(String identifier, String value) {
-		Outcome outcome = new Outcome(identifier, Cardinality.SINGLE, BaseType.INTEGER, ""+value);
+		Outcome outcome = new Outcome(identifier, Cardinality.SINGLE, ""+value);
 		outcomes.put(identifier, outcome);
 	}
 	
 	private void insertVariable(String identifier, List<String> values) {
-		Outcome outcome = new Outcome(identifier, Cardinality.MULTIPLE, BaseType.INTEGER);
+		Outcome outcome = new Outcome(identifier, Cardinality.MULTIPLE);
 		outcome.values = values;
 		outcomes.put(identifier, outcome);
 	}

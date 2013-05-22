@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.objects.response;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 
@@ -25,7 +24,6 @@ public class ResponseBeanConverterTest {
 	@Test
 	public void convertTest() {
 		ResponseBean responseBean = new ResponseBean();
-		responseBean.setBaseType(BaseType.STRING);
 		responseBean.setCardinality(Cardinality.ORDERED);
 		responseBean.setCheckMode(CheckMode.EXPRESSION);
 		String identifier = "identifier";
@@ -41,7 +39,6 @@ public class ResponseBeanConverterTest {
 
 		Response response = testObj.convert(responseBean);
 
-		assertEquals(BaseType.STRING, response.baseType);
 		assertEquals(Cardinality.ORDERED, response.cardinality);
 		assertEquals(CheckMode.EXPRESSION, response.getCheckMode());
 		assertEquals(identifier, response.identifier);

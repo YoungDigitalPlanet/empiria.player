@@ -17,7 +17,6 @@ import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
-import eu.ydp.empiria.player.client.controller.variables.objects.BaseType;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
@@ -242,9 +241,8 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		List<String> groups = Lists.newArrayList();
 		String identifier = "CONNECTION_RESPONSE_1";
 		Evaluate evaluate = Evaluate.USER;
-		BaseType baseType = BaseType.IDENTIFIER;
 		Cardinality cardinality = Cardinality.MULTIPLE;
-		Response response = new Response(correctAnswers, values, groups, identifier, evaluate, baseType, cardinality);
+		Response response = new Response(correctAnswers, values, groups, identifier, evaluate, cardinality);
 		return response;
 	}
 
