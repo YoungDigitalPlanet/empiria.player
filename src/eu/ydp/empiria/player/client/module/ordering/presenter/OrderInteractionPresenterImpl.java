@@ -3,45 +3,55 @@ package eu.ydp.empiria.player.client.module.ordering.presenter;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.gin.factory.OrderInteractionModuleFactory;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
+import eu.ydp.empiria.player.client.module.ordering.model.ItemClickAction;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
-import eu.ydp.empiria.player.client.module.ordering.structure.SimpleOrderChoiceBean;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
+import eu.ydp.empiria.player.client.module.ordering.view.OrderItemClickListener;
 
 public class OrderInteractionPresenterImpl implements OrderInteractionPresenter {
 
-	private OrderInteractionView interactionView;
-	private ItemsOrderByAnswersFinder itemsOrderByAnswersFinder;
-	private ItemsMarkingController itemsMarkingController;
-	private OrderingItemsDao orderingItemsDao;
+	private final OrderInteractionView interactionView;
+	private final ItemsOrderByAnswersFinder itemsOrderByAnswersFinder;
+	private final ItemsMarkingController itemsMarkingController;
+	private final OrderingItemsDao orderingItemsDao;
+	private final OrderingAnswersShuffler orderingAnswersShuffler;
+	private final ItemClickController itemClickController;
+	private final OrderInteractionModuleFactory orderInteractionModuleFactory;
 	
 	@Inject
-	public OrderInteractionPresenterImpl(OrderInteractionView interactionView, ItemsOrderByAnswersFinder itemsOrderByAnswersFinder,
-			ItemsMarkingController itemsMarkingController, OrderingItemsDao orderingItemsDao) {
+	public OrderInteractionPresenterImpl(
+			OrderInteractionView interactionView, 
+			ItemsOrderByAnswersFinder itemsOrderByAnswersFinder,
+			ItemsMarkingController itemsMarkingController, 
+			OrderingItemsDao orderingItemsDao, 
+			OrderingAnswersShuffler orderingAnswersShuffler,
+			ItemClickController itemClickController, 
+			OrderInteractionModuleFactory orderInteractionModuleFactory) {
 		this.interactionView = interactionView;
 		this.itemsOrderByAnswersFinder = itemsOrderByAnswersFinder;
 		this.itemsMarkingController = itemsMarkingController;
 		this.orderingItemsDao = orderingItemsDao;
+		this.orderingAnswersShuffler = orderingAnswersShuffler;
+		this.itemClickController = itemClickController;
+		this.orderInteractionModuleFactory = orderInteractionModuleFactory;
 	}
 
 	private ModuleSocket socket;
 	private OrderInteractionModuleModel model;
 	private OrderInteractionBean bean;
 
-	
-	
 	@Override
 	public Widget asWidget() {
 		return interactionView.asWidget();
@@ -49,27 +59,27 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 
 	@Override
 	public void bindView() {
-		List<SimpleOrderChoiceBean> itemBeans = bean.getChoiceBeans();
+		OrderItemClickListener orderItemClickListener = new OrderItemClickListenerImpl(this);
+		interactionView.setClickListener(orderItemClickListener);
+
 		InlineBodyGeneratorSocket bodyGeneratorSocket = socket.getInlineBodyGeneratorSocket();
+		OrderingViewBuilder viewBuilder = orderInteractionModuleFactory.getViewBuilder(bodyGeneratorSocket, bean, interactionView, orderingItemsDao);
+		viewBuilder.buildView();
 		
-		for (int i=0; i<itemBeans.size(); i++) {
-			SimpleOrderChoiceBean simpleOrderChoiceBean = itemBeans.get(i);
-			XMLContent content = simpleOrderChoiceBean.getContent();
-			String answerValue = simpleOrderChoiceBean.getIdentifier();
-			String itemId = String.valueOf(i);
-			OrderingItem orderingItem = new OrderingItem(itemId, answerValue);
-			
-			interactionView.createItem(orderingItem, content, bodyGeneratorSocket);
-			
-			orderingItemsDao.addItem(orderingItem);
-		}
+		
+		initializeOtherModules();
+	}
+
+	private void initializeOtherModules() {
+		itemClickController.initialize(orderingItemsDao, model);
+		itemsMarkingController.initialize(orderingItemsDao);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-		//sprawdzic aktualn¹ kolejnoœæ
-		//mieszac poki jest taka sama
+		List<String> newAnswersOrder = orderingAnswersShuffler.shuffleAnswers(model.getCurrentAnswers(), model.getCorrectAnswers());
+		List<String> newItemsOrder = getCorrectItemsOrderByAnswers(newAnswersOrder);
+		interactionView.setChildrenOrder(newItemsOrder);
 	}
 
 	@Override
@@ -111,57 +121,44 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	public List<OrderingItem> getItemsByEvaluationType(MarkAnswersType type){
 		List<Boolean> answerEvaluations = socket.evaluateResponse(model.getResponse());
 		List<String> currentItemsOrder = getCurrentAnswersOrder();
-		List<OrderingItem> fittingTypeItems = findItemsFittingType(type, answerEvaluations, currentItemsOrder);
+		List<OrderingItem> fittingTypeItems = itemsMarkingController.findItemsFittingType(type, answerEvaluations, currentItemsOrder);
 		
 		return fittingTypeItems;
-	}
-
-	private List<OrderingItem> findItemsFittingType(MarkAnswersType type, List<Boolean> answerEvaluations, List<String> currentItemsOrder) {
-		List<OrderingItem> fittingTypeItems = Lists.newArrayList();
-		
-		for(int i=0; i<answerEvaluations.size(); i++){
-			String itemId = currentItemsOrder.get(i);
-			boolean evaluationResult = answerEvaluations.get(i);
-			
-			if(isItemFittingEvaluationType(evaluationResult, type)){
-				OrderingItem orderingItem = orderingItemsDao.getItem(itemId);
-				fittingTypeItems.add(orderingItem);
-			}
-			
-		}
-		return fittingTypeItems;
-	}
-
-	private boolean isItemFittingEvaluationType(boolean evaluationResult, MarkAnswersType type) {
-		if(evaluationResult && type == MarkAnswersType.CORRECT){
-			return true;
-		}else if( !evaluationResult && type == MarkAnswersType.WRONG){
-			return true;
-		}
-		
-		return false;
 	}
 
 	private List<String> getCurrentAnswersOrder() {
 		List<String> currentAnswers = model.getCurrentAnswers();
-		Collection<OrderingItem> items = orderingItemsDao.getItems();
-		return itemsOrderByAnswersFinder.findCorrectItemsOrderByAnswers(currentAnswers, items);
+		return getCorrectItemsOrderByAnswers(currentAnswers);
 	}
 
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		List<String> correctAnswers = model.getCorrectAnswers();
-		Collection<OrderingItem> items = orderingItemsDao.getItems();
-		List<String> correctItemsOrder = itemsOrderByAnswersFinder.findCorrectItemsOrderByAnswers(correctAnswers, items);
-		
+		List<String> correctItemsOrder = getCorrectItemsOrderByAnswers(correctAnswers);
 		interactionView.setChildrenOrder(correctItemsOrder);
+	}
+
+	private List<String> getCorrectItemsOrderByAnswers(List<String> answers) {
+		Collection<OrderingItem> items = orderingItemsDao.getItems();
+		List<String> correctItemsOrder = itemsOrderByAnswersFinder.findCorrectItemsOrderByAnswers(answers, items);
+		return correctItemsOrder;
 	}
 
 	@Override
 	public void itemClicked(String itemId) {
-		// TODO Auto-generated method stub
-		//case 1. pierwy element clickniety
-		//case 2. drugi element clickniety
-		//case 3. element odclikniety
+		ItemClickAction itemClickAction = itemClickController.itemClicked(itemId);
+		
+		if(itemClickAction == ItemClickAction.SELECT && itemClickAction == ItemClickAction.UNSELECT){
+			OrderingItem orderingItem = orderingItemsDao.getItem(itemId);
+			interactionView.setChildStyles(orderingItem);
+		}
+		
+		updateAllItemsStyles();
+		updateCurrentAnswersOrder();
+	}
+
+	private void updateCurrentAnswersOrder() {
+		List<String> currentAnswersOrder = getCurrentAnswersOrder();
+		interactionView.setChildrenOrder(currentAnswersOrder);
 	}
 }
