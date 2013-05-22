@@ -71,7 +71,7 @@ public class ResponseBuilder {
 	}
 
 	public ResponseBuilder withCorrectAnswers(String... correctAnswers) {
-		return withCorrectAnswers(correctAnswers);
+		return withCorrectAnswers(Lists.newArrayList(correctAnswers));
 	}
 
 	public ResponseBuilder withCurrentUserAnswers(String... currentUserAnswers) {
