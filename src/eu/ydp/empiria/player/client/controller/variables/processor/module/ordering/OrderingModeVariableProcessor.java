@@ -34,6 +34,12 @@ public class OrderingModeVariableProcessor implements VariableProcessor {
 
 	@Override
 	public boolean checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
+		if(answersChanges.containChanges()){
+			int done = calculateDone(response);
+			if(done == 0){
+				return true;
+			}
+		}
 		return false;
 	}
 

@@ -2,12 +2,17 @@ package eu.ydp.empiria.player.client.controller.variables.processor.module.order
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
+
+import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
 
 public class OrderingModeVariableProcessorJUnitTest {
 
@@ -29,8 +34,39 @@ public class OrderingModeVariableProcessorJUnitTest {
 	}
 
 	@Test
-	public void checkLastmistakenTest() {
-		assertFalse(orderingModeVariableProcessor.checkLastmistaken(null, null));
+	public void checkLastmistakenTest_correctSolution() {
+		Response response = new ResponseBuilder()
+											.withCurrentUserAnswers(new String[] { "a", "b", "b", "c", "a" })
+											.withCorrectAnswers(new String[] { "a", "b", "b", "c", "a" })
+											.build();
+		LastAnswersChanges lastAnswerChanges = new LastAnswersChanges(Lists.newArrayList("newAnswer"), Lists.newArrayList("a"));
+		
+		boolean result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
+		assertFalse(result);
+	}
+	
+	@Test
+	public void checkLastmistakenTest_wrongAnswers() {
+		Response response = new ResponseBuilder()
+		.withCurrentUserAnswers(new String[] { "c", "b", "b", "a", "a" })
+		.withCorrectAnswers(new String[] { "a", "b", "b", "c", "a" })
+		.build();
+		LastAnswersChanges lastAnswerChanges = new LastAnswersChanges(Lists.newArrayList("newAnswer"), Lists.newArrayList("a"));
+		
+		boolean result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
+		assertTrue(result);
+	}
+	
+	@Test
+	public void checkLastmistakenTest_wrongCurrentAnswersButWasNoChange() {
+		Response response = new ResponseBuilder()
+		.withCurrentUserAnswers(new String[] { "c", "b", "b", "a", "a" })
+		.withCorrectAnswers(new String[] { "a", "b", "b", "c", "a" })
+		.build();
+		LastAnswersChanges lastAnswerChanges = new LastAnswersChanges(new ArrayList<String>(), new ArrayList<String>());
+		
+		boolean result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
+		assertFalse(result);
 	}
 
 	@Test
