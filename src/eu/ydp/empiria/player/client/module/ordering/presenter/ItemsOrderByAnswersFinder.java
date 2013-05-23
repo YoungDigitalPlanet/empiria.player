@@ -31,7 +31,7 @@ public class ItemsOrderByAnswersFinder {
 				return orderingItem;
 			}
 		}
-		throw new RuntimeException("Cannot match ordering items to user answers!");
+		throw new CannotMatchOrderingItemsToUserAnswersException("Cannot match ordering items to user answers!");
 	}
 	
 }

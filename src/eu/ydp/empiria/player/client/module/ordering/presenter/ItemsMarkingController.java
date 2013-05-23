@@ -3,10 +3,13 @@ package eu.ydp.empiria.player.client.module.ordering.presenter;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 
-
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
@@ -14,12 +17,40 @@ import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 public class ItemsMarkingController {
 
 	private OrderingItemsDao orderingItemsDao;
+	private ItemsResponseOrderController responseOrderController;
+	private OrderInteractionModuleModel model;
+	private ResponseSocket responseSocket;
 	
-	public void initialize(OrderingItemsDao orderingItemsDao){
+	@Inject
+	public ItemsMarkingController(@PageScoped ResponseSocket responseSocket) {
+		this.responseSocket = responseSocket;
+	}
+
+	public void initialize(OrderingItemsDao orderingItemsDao, ItemsResponseOrderController responseOrderController, OrderInteractionModuleModel model){
 		this.orderingItemsDao = orderingItemsDao;
+		this.responseOrderController = responseOrderController;
+		this.model = model;
 	}
 	
-	public List<OrderingItem> findItemsFittingType(MarkAnswersType type, List<Boolean> answerEvaluations, List<String> currentItemsOrder) {
+	public void markOrUnmarkItemsByType(MarkAnswersType type, MarkAnswersMode mode) {
+		List<OrderingItem> orderingItems = getItemsByEvaluationType(type);
+		if(mode == MarkAnswersMode.MARK){
+			markItems(orderingItems, type);
+		}else if(mode == MarkAnswersMode.UNMARK){
+			unmarkItems(orderingItems);
+		}
+	}
+	
+	private List<OrderingItem> getItemsByEvaluationType(MarkAnswersType type){
+		List<Boolean> answerEvaluations = responseSocket.evaluateResponse(model.getResponse());
+		List<String> currentItemsOrder = responseOrderController.getCurrentItemsOrderByAnswers();
+		List<OrderingItem> fittingTypeItems = findItemsFittingType(type, answerEvaluations, currentItemsOrder);
+		
+		return fittingTypeItems;
+	}
+	
+	
+	private List<OrderingItem> findItemsFittingType(MarkAnswersType type, List<Boolean> answerEvaluations, List<String> currentItemsOrder) {
 		List<OrderingItem> fittingTypeItems = Lists.newArrayList();
 		
 		for(int i=0; i<answerEvaluations.size(); i++){
@@ -43,14 +74,6 @@ public class ItemsMarkingController {
 		}
 		
 		return false;
-	}
-	
-	public void marOrUnmarkItemsByType(List<OrderingItem> orderingItems, MarkAnswersType type, MarkAnswersMode mode) {
-		if(mode == MarkAnswersMode.MARK){
-			markItems(orderingItems, type);
-		}else if(mode == MarkAnswersMode.UNMARK){
-			unmarkItems(orderingItems);
-		}
 	}
 
 	private void markItems(List<OrderingItem> orderingItems, MarkAnswersType type) {

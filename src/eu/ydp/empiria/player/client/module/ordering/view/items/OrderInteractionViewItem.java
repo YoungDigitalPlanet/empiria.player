@@ -4,6 +4,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface OrderInteractionViewItem extends IsWidget {
 
-	public abstract String getItemId();
+	String getItemId();
 
 }

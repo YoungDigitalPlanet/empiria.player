@@ -1,8 +1,9 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
+import java.util.List;
+
 import com.google.common.base.Optional;
 
-import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.ItemClickAction;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
@@ -10,11 +11,9 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 public class ItemClickController {
 
 	private OrderingItemsDao orderingItemsDao;
-	private OrderInteractionModuleModel interactionModuleModel;
 	
-	public void initialize(OrderingItemsDao orderingItemsDao, OrderInteractionModuleModel interactionModuleModel){
+	public void initialize(OrderingItemsDao orderingItemsDao){
 		this.orderingItemsDao = orderingItemsDao;
-		this.interactionModuleModel = interactionModuleModel;
 	}
 	
 	public ItemClickAction itemClicked(String itemId) {
@@ -29,7 +28,7 @@ public class ItemClickController {
 			itemClickAction = ItemClickAction.UNSELECT;
 			unselectItem(clickedItem);
 		} else {
-			itemClickAction = ItemClickAction.SWICTH;
+			itemClickAction = ItemClickAction.SWITCH;
 			switchItems(lastClickedItem, clickedItem);
 		}
 		return itemClickAction;
@@ -41,6 +40,7 @@ public class ItemClickController {
 	
 	private void selectItem(OrderingItem clickedItem) {
 		clickedItem.setSelected(true);
+		orderingItemsDao.setLastClickedItem(clickedItem);
 	}
 	
 	private boolean isSameItemClickedAgain(Optional<OrderingItem> lastClickedItem, OrderingItem clickedItem) {
@@ -51,15 +51,26 @@ public class ItemClickController {
 	
 	private void unselectItem(OrderingItem clickedItem) {
 		clickedItem.setSelected(false);
+		orderingItemsDao.setLastClickedItem(null);
 	}
 
 	private void switchItems(Optional<OrderingItem> lastClickedItem, OrderingItem clickedItem) {
 		OrderingItem previousItem = lastClickedItem.get();
 		unselectItem(previousItem);
 		
-		String clickedItemAnswer = clickedItem.getAnswerValue();
-		String previousClickedItemAnswer = previousItem.getAnswerValue();
+		String previousItemId = previousItem.getId();
+		String clickedItemId = clickedItem.getId();
 		
-		interactionModuleModel.swicthAnswers(clickedItemAnswer, previousClickedItemAnswer);
+		switchItemsInCurrentOrder(previousItemId, clickedItemId);
+	}
+
+	private void switchItemsInCurrentOrder(String previousItemId, String clickedItemId) {
+		List<String> itemsOrder = orderingItemsDao.getItemsOrder();
+		
+		int previousItemIndex = itemsOrder.indexOf(previousItemId);
+		int clickedItemIndex = itemsOrder.indexOf(clickedItemId);
+		
+		itemsOrder.set(clickedItemIndex, previousItemId);
+		itemsOrder.set(previousItemIndex, clickedItemId);
 	}
 }

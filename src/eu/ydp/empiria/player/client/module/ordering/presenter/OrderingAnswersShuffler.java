@@ -8,9 +8,11 @@ import eu.ydp.gwtutil.client.collections.RandomizedSet;
 
 public class OrderingAnswersShuffler {
 
+	private static final int NUMBER_OF_ATTEMPTS = 30;
+
 	public List<String> shuffleAnswers(List<String> currentAnswers, List<String> correctAnswers){
 		List<String> randomOrder = null;
-		for(int i=0; i<30; i++){
+		for(int i=0; i<NUMBER_OF_ATTEMPTS; i++){
 			randomOrder = shuffle(currentAnswers);
 			if(isNewNotCorrectOrder(currentAnswers, correctAnswers, randomOrder)){
 				return randomOrder;

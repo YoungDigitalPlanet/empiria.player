@@ -45,6 +45,8 @@ public class OrderingViewBuilder {
 			
 			orderingItemsDao.addItem(orderingItem);
 		}
+		
+		orderingItemsDao.createInitialItemsOrder();
 	}
 	
 }

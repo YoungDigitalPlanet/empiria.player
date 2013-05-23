@@ -26,14 +26,14 @@ public class OrderInteractionModuleModel extends AbstractResponseModel<String>{
 	public Response getResponse(){
 		return this.response;
 	}
-	
-	public void swicthAnswers(String firstAnswer, String secondAnswer){
-		List<String> currentAnswers = getCurrentAnswers();
-		
-		int indexOfFirstAnswer = currentAnswers.indexOf(firstAnswer);
-		int indexOfSecondAnswer = currentAnswers.indexOf(secondAnswer);
-		
-		currentAnswers.set(indexOfFirstAnswer, secondAnswer);
-		currentAnswers.set(indexOfSecondAnswer, firstAnswer);
+
+	public void onModelChange(){
+		super.onModelChange();
 	}
+	
+	@Override
+	public void reset(){
+		
+	}
+	
 }
