@@ -32,7 +32,7 @@ import eu.ydp.gwtutil.client.json.YJsonArray;
  * 
  * @author Rafal Rybacki
  */
-public interface ModuleSocket extends /*ResponseSocket,*/ InlineBodyGeneratorSocketProvider, ParenthoodSocket, IItemProperties {
+public interface ModuleSocket extends InlineBodyGeneratorSocketProvider, ParenthoodSocket, IItemProperties {
 
 	YJsonArray getStateById(String identifier);
 
