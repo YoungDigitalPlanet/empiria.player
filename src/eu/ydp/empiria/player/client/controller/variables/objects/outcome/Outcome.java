@@ -62,7 +62,9 @@ public class Outcome extends Variable {
 
 			}
 		}
-
+		if (values.size() == 0  &&  cardinality == Cardinality.SINGLE){
+			values.add("0");
+		}
 
 	}
 

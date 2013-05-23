@@ -37,7 +37,6 @@ import eu.ydp.empiria.player.client.controller.variables.processor.VariableProce
 import eu.ydp.empiria.player.client.controller.variables.processor.VariablesProcessingModulesInitializer;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FeedbackAutoMarkInterpreter;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.OutcomeVariablesInitializer;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
@@ -84,7 +83,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	@Inject
 	public Item(@Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
 			@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables, @Assisted ModuleHandlerManager moduleHandlerManager,
-			@Assisted JSONArray stateArray, ModuleFeedbackProcessor moduleFeedbackProcessor, OutcomeVariablesInitializer outcomeVariablesInitializer,
+			@Assisted JSONArray stateArray, ModuleFeedbackProcessor moduleFeedbackProcessor,
 			FlowActivityVariablesProcessor flowActivityVariablesProcessor, @PageScoped VariableProcessingAdapter variableProcessingAdapter,
 			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter,
 			ExpressionListBuilder expressionListBuilder, @PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper,
