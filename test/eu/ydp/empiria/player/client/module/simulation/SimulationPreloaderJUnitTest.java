@@ -49,7 +49,7 @@ public class SimulationPreloaderJUnitTest extends AbstractTestBaseWithoutAutoInj
 
 	private SimulationPreloader instance;
 	private Preloader preloader;
-	private final Widget widget = mock(Widget.class);
+	private final Widget widget =  mock(Widget.class);
 
 	@Before
 	public void before() {
@@ -60,13 +60,6 @@ public class SimulationPreloaderJUnitTest extends AbstractTestBaseWithoutAutoInj
 	}
 
 	@Test
-	public void testHidePreloaderAndRemoveFromParent() {
-		instance.hidePreloaderAndRemoveFromParent();
-		verify(preloader).hide();
-		verify(widget).removeFromParent();
-	}
-
-	@Test
 	public void testShow() {
 		instance.show(10, 20);
 		verify(preloader).setPreloaderSize(Mockito.eq(10), Mockito.eq(20));
@@ -74,8 +67,16 @@ public class SimulationPreloaderJUnitTest extends AbstractTestBaseWithoutAutoInj
 	}
 
 	@Test
+	public void testHidePreloaderAndRemoveFromParent() {
+		instance.hidePreloaderAndRemoveFromParent();
+		verify(preloader).hide();
+		verify(widget).removeFromParent();
+	}
+
+	@Test
 	public void testAsWidget() {
-		verify(preloader.asWidget());
+		instance.asWidget();
+		verify(preloader).asWidget();
 	}
 
 }

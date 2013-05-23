@@ -43,6 +43,7 @@
 	<dependency org="org.easytesting" name="fest-assert-core" rev="2.0M10" conf="test->default"/>
 	<dependency org="xmlunit" name="xmlunit" rev="1.3" conf="test->default" />
 	<dependency org="eu.ydp" name="matheclipse-parser-gwt" rev="0.0.10+" conf="default, lib, test->default" />
+	<dependency org="org.reflections" name="reflections" rev="0.9.9-RC1" conf="test->default" />
 
 	<dependency org="eu.ydp" name="sonar-helper" rev="latest.release" transitive="false"  conf="*->default"/>
   </dependencies>

@@ -18,11 +18,11 @@
 	<classpathentry kind="lib" path="ivy-lib/jsfilerequest.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/gwtFlashMedia.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/gwtcreatejs.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/hamcrest-library.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/hamcrest-core.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/mockito-all.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/matheclipse-parser-gwt.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="ivy-lib/hamcrest-library.jar"/>
-	<classpathentry kind="lib" path="ivy-lib/hamcrest-core.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/jaxb4gwt.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/guava-gwt.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/guava.jar"/>
@@ -36,5 +36,6 @@
 	<classpathentry kind="lib" path="ivy-lib/xmlunit.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/fest-assert-core.jar"/>
 	<classpathentry kind="lib" path="ivy-lib/fest-util.jar"/>
+	<classpathentry kind="lib" path="ivy-lib/reflections.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
