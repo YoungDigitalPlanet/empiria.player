@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.common.base.Objects;
+
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
@@ -46,7 +48,7 @@ public class ResponseBean {
 	}
 
 	public Evaluate getEvaluate() {
-		return evaluate;
+		return Objects.firstNonNull(evaluate, Evaluate.DEFAULT);
 	}
 
 	public void setEvaluate(Evaluate evaluate) {
@@ -54,7 +56,7 @@ public class ResponseBean {
 	}
 
 	public CheckMode getCheckMode() {
-		return checkMode;
+		return Objects.firstNonNull(checkMode, CheckMode.DEFAULT);
 	}
 
 	public void setCheckMode(CheckMode checkMode) {
