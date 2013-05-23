@@ -1,8 +1,16 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +24,15 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.inject.Binder;
+import com.google.inject.Key;
 import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
+import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.xml.XMLParser;
@@ -36,12 +48,13 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 			TextEntryModulePresenter modulePresenter = mock(TextEntryModulePresenter.class);
 			when(factory.getTextEntryModulePresenter(any(IModule.class))).thenReturn(modulePresenter);
 			binder.bind(TextEntryModuleFactory.class).toInstance(factory);
+			binder.bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
 		}
 	}
 
 	@Before
 	public void before() {
-		setUp(new Class<?>[] {}, new CustomGuiceModule());
+		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGuiceModule());
 	}
 
 	@Test
@@ -120,7 +133,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 	private class TextEntryModuleMock extends TextEntryModule {
 
 		public TextEntryModuleMock() {
-			super(injector.getInstance(TextEntryModuleFactory.class), injector.getProvider(TextEntryModule.class), injector.getInstance(StyleSocket.class));
+			super(injector.getInstance(TextEntryModuleFactory.class), injector.getInstance(StyleSocket.class), injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class)));
 		}
 
 		public void setStyles(Map<String, String> styles) {

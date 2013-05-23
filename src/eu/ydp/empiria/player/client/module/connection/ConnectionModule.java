@@ -7,8 +7,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
@@ -43,13 +45,16 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	private EventsBus eventsBus;
 	@Inject
 	private StateController stateController;
+	
+	@Inject @PageScoped
+	private ResponseSocket responseSocket;
 
 	private ConnectionModuleModel connectionModel;
 
 	@Override
 	protected void initalizeModule() {
 		connectionModel = connectionModuleFactory.getConnectionModuleModel(getResponse(), this);
-		connectionModel.setResponseSocket(getModuleSocket());
+		connectionModel.setResponseSocket(responseSocket);
 		getResponse().setCountMode(getCountMode());
 	}
 

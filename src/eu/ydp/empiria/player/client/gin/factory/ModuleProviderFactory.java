@@ -11,12 +11,15 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
 import eu.ydp.empiria.player.client.module.labelling.LabellingModule;
+import eu.ydp.empiria.player.client.module.math.InlineChoiceGapModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
+import eu.ydp.empiria.player.client.module.math.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
@@ -24,6 +27,7 @@ import eu.ydp.empiria.player.client.module.selection.SelectionModule;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModule;
 import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
+import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
 
 @SuppressWarnings({"PMD"})
 public class ModuleProviderFactory {
@@ -89,6 +93,18 @@ public class ModuleProviderFactory {
 
 	@Inject
 	private Provider<OrderInteractionModule> orderInteractionModule;
+
+	@Inject
+	private Provider<ChoiceModule> choiceModule;
+
+	@Inject
+	private Provider<InlineChoiceGapModule> inlineChoiceGapModule;
+
+	@Inject
+	private Provider<TextEntryModule> textEntryModule;
+
+	@Inject
+	private Provider<TextEntryGapModule> textEntryGapModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -172,5 +188,21 @@ public class ModuleProviderFactory {
 
 	public Provider<OrderInteractionModule> getOrderInteractionModule() {
 		return orderInteractionModule;
+	}
+
+	public Provider<ChoiceModule> getChoiceModule() {
+		return choiceModule;
+	}
+
+	public Provider<InlineChoiceGapModule> getInlineChoiceGapModule() {
+		return inlineChoiceGapModule;
+	}
+
+	public Provider<TextEntryModule> getTextEntryModule() {
+		return textEntryModule;
+	}
+
+	public Provider<TextEntryGapModule> getTextEntryGapModule() {
+		return textEntryGapModule;
 	}
 }

@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
@@ -24,6 +25,9 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
 	@Inject
 	private EventsBus eventsBus;
+	
+	@Inject @PageScoped
+	private ResponseSocket responseSocket;
 
 
 	@Override
@@ -44,7 +48,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 	}
 
 	protected Response findResponse(){
-		return moduleSocket.getResponse(responseIdentifier);
+		return responseSocket.getResponse(responseIdentifier);
 	}
 
 	protected Response getResponse(){

@@ -5,10 +5,13 @@ import java.util.Map;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.StringUtils;
@@ -22,6 +25,9 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 	protected MathModule parentMathModule;
 	
 	protected Map<String, String> mathStyles;
+	
+	@Inject @PageScoped
+	ResponseSocket responseSocket;
 	
 	public abstract String getValue();
 	
@@ -62,7 +68,7 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 	}
 	
 	protected List<Boolean> getEvaluatedResponse() {
-		return getModuleSocket().evaluateResponse(getResponse());
+		return responseSocket.evaluateResponse(getResponse());
 	}
 	
 	@Override

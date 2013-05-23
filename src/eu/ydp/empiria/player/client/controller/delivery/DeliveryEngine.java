@@ -276,12 +276,12 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(new SpanModule(), ModuleTagName.SPAN));
 		loadExtension(new SimpleConnectorExtension(new TextInteractionModule(), ModuleTagName.TEXT_INTERACTION));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getImgModule(), ModuleTagName.IMG, false, true));
-		loadExtension(new SimpleConnectorExtension(extensionFactory.getChoiceModule(), ModuleTagName.CHOICE_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getChoiceModule(), ModuleTagName.CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSelectionModule(), ModuleTagName.SELECTION_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getIdentificationModule(), ModuleTagName.IDENTYFICATION_INTERACTION, true));
-		loadExtension(new SimpleConnectorExtension(extensionFactory.getTextEntryModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
-		loadExtension(new SimpleConnectorExtension(extensionFactory.getEntryGapModule(), ModuleTagName.MATH_GAP_TEXT_ENTRY_TYPE, true));
-		loadExtension(new SimpleConnectorExtension(extensionFactory.getInlineChoiceGapModule(), ModuleTagName.MATH_GAP_INLINE_CHOICE_TYPE, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryGapModule(), ModuleTagName.MATH_GAP_TEXT_ENTRY_TYPE, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceGapModule(), ModuleTagName.MATH_GAP_INLINE_CHOICE_TYPE, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(new SimpleTextModule(), ModuleTagName.SIMPLE_TEXT));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.AUDIO_PLAYER, false, true));

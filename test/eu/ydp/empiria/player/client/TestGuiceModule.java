@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
 import java.util.List;
@@ -38,7 +40,9 @@ import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
@@ -143,6 +147,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(UserAgentUtil.class).toInstance(spy(new UserAgentUtilImpl()));
 		binder.bind(IJSONService.class).to(NativeJSONService.class);
 		binder.requestStaticInjection(XMLProxyFactory.class);
+		bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
 
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));

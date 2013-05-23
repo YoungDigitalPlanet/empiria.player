@@ -1,9 +1,13 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
@@ -14,11 +18,10 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
 
 public class EvaluationVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase{
 
+	
 	@Test
 	public void shouldCorrectlyEvaluateAnswersInEvaluateUserMode() throws Exception {
 		// given
@@ -36,7 +39,7 @@ public class EvaluationVariableProcessorFunctionalJUnitTest extends VariableProc
 
 		// when
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
-		List<Boolean> evaluatedAnswer = defaultVariableProcessor.evaluateAnswer(response);
+		List<Boolean> evaluatedAnswer = answerEvaluationProvider.evaluateAnswer(response);
 
 		// then
 		assertEquals(expectedAnswersEvaluation, evaluatedAnswer);
@@ -60,7 +63,7 @@ public class EvaluationVariableProcessorFunctionalJUnitTest extends VariableProc
 
 		// when
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
-		List<Boolean> evaluatedAnswer = defaultVariableProcessor.evaluateAnswer(response);
+		List<Boolean> evaluatedAnswer = answerEvaluationProvider.evaluateAnswer(response);
 
 		// then
 		assertEquals(expectedAnswersEvaluation, evaluatedAnswer);
@@ -88,9 +91,9 @@ public class EvaluationVariableProcessorFunctionalJUnitTest extends VariableProc
 
 		// when
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
-		List<Boolean> evaluatedAnswer = defaultVariableProcessor.evaluateAnswer(correctResponse);
+		List<Boolean> evaluatedAnswer = answerEvaluationProvider.evaluateAnswer(correctResponse);
 		// then
-		assertThat(evaluatedAnswer, hasItems(true, false));
+		assertThat(evaluatedAnswer, contains(true, false));
 	}
 	
 }

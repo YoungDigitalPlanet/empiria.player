@@ -1,9 +1,12 @@
 package eu.ydp.empiria.player.client.module.math;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Map;
@@ -154,7 +157,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		private boolean evaluatedResponse;
 
 		public TextEntryGapModuleMock(Map<String, String> styles) {
-			super(injector.getInstance(TextEntryModuleFactory.class), injector.getInstance(StyleSocket.class), injector.getProvider(TextEntryGapModule.class));
+			super(injector.getInstance(TextEntryModuleFactory.class), injector.getInstance(StyleSocket.class));
 			this.mathStyles = styles;
 		}
 

@@ -37,13 +37,12 @@ public class ModulesProcessingResults {
 	}
 	
 	private DtoModuleProcessingResult getOrCreateProcessingResultForResponseId(String responseId){
-		DtoModuleProcessingResult processingResult = responseIdToProcessingResults.get(responseId);
-		if(processingResult == null){
+		if(responseIdToProcessingResults.containsKey(responseId)){
+			return responseIdToProcessingResults.get(responseId);
+		} else {
 			DtoModuleProcessingResult newProcessingResults = processingResultFactory.createProcessingResultWithInitialValues();
 			responseIdToProcessingResults.put(responseId, newProcessingResults);
 			return newProcessingResults;
-		}else{
-			return processingResult;
 		}
 	}
 }

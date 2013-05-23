@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,11 +16,13 @@ import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
 import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.OutcomeVariablesInitializer;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
@@ -35,6 +37,7 @@ public class VariableProcessorFunctionalTestBase {
 	private static final Logger LOGGER = Logger.getLogger(VariableProcessorFunctionalTestBase.class.getName());
 
 	protected VariablesProcessingInitializingWrapper defaultVariableProcessor;
+	protected AnswerEvaluationSupplier answerEvaluationProvider;
 	protected ProcessingMode processingMode;
 
 	private final OutcomeVariablesInitializer outcomeVariablesInitializer = new OutcomeVariablesInitializer();
@@ -46,6 +49,7 @@ public class VariableProcessorFunctionalTestBase {
 			@Override
 			protected void configure() {
 				bind(ModulesVariablesProcessor.class).annotatedWith(PageScoped.class).to(ModulesVariablesProcessor.class).in(Singleton.class);
+				bind(AnswerEvaluationSupplier.class).annotatedWith(PageScoped.class).to(AnswerEvaluationSupplier.class).in(Singleton.class);
 				bind(GroupedAnswersManager.class).annotatedWith(PageScoped.class).to(GroupedAnswersManager.class).in(Singleton.class);
 				bind(ModulesProcessingResults.class).annotatedWith(PageScoped.class).to(ModulesProcessingResults.class).in(Singleton.class);
 				install(new FactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
@@ -53,6 +57,8 @@ public class VariableProcessorFunctionalTestBase {
 		});
 
 		defaultVariableProcessor = injector.getInstance(VariablesProcessingInitializingWrapper.class);
+		
+		answerEvaluationProvider = injector.getInstance(Key.get(AnswerEvaluationSupplier.class, PageScoped.class));
 
 		processingMode = ProcessingMode.USER_INTERACT;
 	}

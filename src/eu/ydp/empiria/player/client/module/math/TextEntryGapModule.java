@@ -10,10 +10,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
@@ -21,15 +19,13 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<TextEntryGapModule> {
+public class TextEntryGapModule extends MathGapBase implements MathGap {
 
-	private final Provider<TextEntryGapModule> textEntryGapModuleProvder;
 	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, Provider<TextEntryGapModule> textEntryGapModuleProvder) {
+	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket) {
 		this.styleSocket = styleSocket;
-		this.textEntryGapModuleProvder = textEntryGapModuleProvder;
 
 		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
 		PresenterHandler presenterHandler = new PresenterHandler() {
@@ -155,12 +151,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Factory<
 	public String getValue() {
 		return presenter.getText();
 	}
-
-	@Override
-	public TextEntryGapModule getNewInstance() {
-		return textEntryGapModuleProvder.get();
-	}
-
+	
 	public void setUpGap() {
 		registerBindingContexts();
 	}

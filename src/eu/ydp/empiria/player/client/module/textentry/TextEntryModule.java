@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_FONT_SIZE;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH;
 
 import java.util.List;
 import java.util.Map;
@@ -11,28 +12,27 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
-import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.StringUtils;
 
-public class TextEntryModule extends GapBase implements Factory<TextEntryModule> {
+public class TextEntryModule extends GapBase {
 
-	private final Provider<TextEntryModule> textEntryModuleProvider;
 	private final StyleSocket styleSocket;
 
 	protected Map<String, String> styles;
+	private ResponseSocket responseSocket;
 
 	@Inject
-	public TextEntryModule(TextEntryModuleFactory moduleFactory, Provider<TextEntryModule> textEntryModuleProvider, StyleSocket styleSocket) {
-		this.textEntryModuleProvider = textEntryModuleProvider;
+	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket) {
 		this.styleSocket = styleSocket;
+		this.responseSocket = responseSocket;
 
 		presenter = moduleFactory.getTextEntryModulePresenter(this);
 		presenter.addPresenterHandler(new PresenterHandler() {
@@ -95,9 +95,8 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 
 	@Override
 	protected boolean isResponseCorrect() {
-		ModuleSocket moduleSocket = getModuleSocket();
 		Response response = getResponse();
-		List<Boolean> evaluateResponse = moduleSocket.evaluateResponse(response);
+		List<Boolean> evaluateResponse = responseSocket.evaluateResponse(response);
 		return evaluateResponse.get(0);
 	}
 
@@ -144,8 +143,4 @@ public class TextEntryModule extends GapBase implements Factory<TextEntryModule>
 		}
 	}
 
-	@Override
-	public TextEntryModule getNewInstance() {
-		return textEntryModuleProvider.get();
-	}
 }

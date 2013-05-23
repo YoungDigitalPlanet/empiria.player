@@ -31,7 +31,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 	public String getModuleName() {
 		return "eu.ydp.empiria.player.Player";
 	}
-
+	
 	public void testEngineMode(){
 		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		DeliveryEngine de = injector.getDeliveryEngine();

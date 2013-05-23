@@ -85,7 +85,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	public Item(@Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
 			@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables, @Assisted ModuleHandlerManager moduleHandlerManager,
 			@Assisted JSONArray stateArray, ModuleFeedbackProcessor moduleFeedbackProcessor, OutcomeVariablesInitializer outcomeVariablesInitializer,
-			FlowActivityVariablesProcessor flowActivityVariablesProcessor, VariableProcessingAdapter variableProcessingAdapter,
+			FlowActivityVariablesProcessor flowActivityVariablesProcessor, @PageScoped VariableProcessingAdapter variableProcessingAdapter,
 			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter,
 			ExpressionListBuilder expressionListBuilder, @PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper,
 			ItemExpressionParser expressionParser) {
@@ -129,16 +129,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		private InlineBodyGenerator inlineBodyGenerator;
 
 		@Override
-		public Response getResponse(String id) {
-			return responseManager.getVariable(id);
-		}
-
-		@Override
-		public List<Boolean> evaluateResponse(Response response) {
-			return variableProcessor.evaluateAnswer(response);
-		}
-
-		@Override
 		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 			if (inlineBodyGenerator == null) {
 				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, itemBody.getParenthood());
@@ -154,6 +144,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		@Override
 		public GroupIdentifier getParentGroupIdentifier(IModule module) {
 			IModule currParent = module;
+			
 			while (true) {
 				currParent = getParent(currParent);
 				if (currParent == null || currParent instanceof IGroup) {

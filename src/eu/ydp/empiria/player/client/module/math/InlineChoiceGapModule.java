@@ -13,10 +13,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
@@ -31,10 +29,8 @@ import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxChangeListener;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
-public class InlineChoiceGapModule extends MathGapBase implements MathGap, Factory<InlineChoiceGapModule>, PlayerEventHandler {
+public class InlineChoiceGapModule extends MathGapBase implements MathGap, PlayerEventHandler {
 
-	@Inject
-	private Provider<InlineChoiceGapModule> moduleProvider;
 
 	protected List<String> options;
 
@@ -174,11 +170,6 @@ public class InlineChoiceGapModule extends MathGapBase implements MathGap, Facto
 	@Override
 	protected void setPreviousAnswer() {
 		setValue(getCurrentResponseValue());
-	}
-
-	@Override
-	public InlineChoiceGapModule getNewInstance() {
-		return moduleProvider.get();
 	}
 
 	@Override

@@ -8,9 +8,11 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.OrderInteractionModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.ItemClickAction;
@@ -29,6 +31,7 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	private final OrderingAnswersShuffler orderingAnswersShuffler;
 	private final ItemClickController itemClickController;
 	private final OrderInteractionModuleFactory orderInteractionModuleFactory;
+	private final ResponseSocket responseSocket;
 	
 	@Inject
 	public OrderInteractionPresenterImpl(
@@ -38,7 +41,8 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 			OrderingItemsDao orderingItemsDao, 
 			OrderingAnswersShuffler orderingAnswersShuffler,
 			ItemClickController itemClickController, 
-			OrderInteractionModuleFactory orderInteractionModuleFactory) {
+			OrderInteractionModuleFactory orderInteractionModuleFactory,
+			@PageScoped ResponseSocket responseProvider) {
 		this.interactionView = interactionView;
 		this.itemsOrderByAnswersFinder = itemsOrderByAnswersFinder;
 		this.itemsMarkingController = itemsMarkingController;
@@ -46,6 +50,7 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 		this.orderingAnswersShuffler = orderingAnswersShuffler;
 		this.itemClickController = itemClickController;
 		this.orderInteractionModuleFactory = orderInteractionModuleFactory;
+		this.responseSocket = responseProvider;
 	}
 
 	private ModuleSocket socket;
@@ -119,7 +124,7 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	}
 	
 	public List<OrderingItem> getItemsByEvaluationType(MarkAnswersType type){
-		List<Boolean> answerEvaluations = socket.evaluateResponse(model.getResponse());
+		List<Boolean> answerEvaluations = responseSocket.evaluateResponse(model.getResponse());
 		List<String> currentItemsOrder = getCurrentAnswersOrder();
 		List<OrderingItem> fittingTypeItems = itemsMarkingController.findItemsFittingType(type, answerEvaluations, currentItemsOrder);
 		

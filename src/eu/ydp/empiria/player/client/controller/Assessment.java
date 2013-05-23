@@ -39,7 +39,6 @@ import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -170,7 +169,7 @@ public class Assessment {
 
 		private InlineBodyGenerator inlineBodyGenerator;
 
-		@Override
+		/*@Override
 		public Response getResponse(String id) {
 			return null;
 		}
@@ -178,7 +177,7 @@ public class Assessment {
 		@Override
 		public List<Boolean> evaluateResponse(Response response) {
 			return null;
-		}
+		}*/
 
 		@Override
 		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {

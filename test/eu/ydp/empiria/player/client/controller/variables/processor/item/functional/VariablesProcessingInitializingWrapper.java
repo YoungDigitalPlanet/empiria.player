@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -31,10 +30,6 @@ public class VariablesProcessingInitializingWrapper {
 		}
 
 		variableProcessingAdapter.processResponseVariables(responses, outcomes, processingMode);
-	}
-
-	public List<Boolean> evaluateAnswer(Response response) {
-		return variableProcessingAdapter.evaluateAnswer(response);
 	}
 
 }

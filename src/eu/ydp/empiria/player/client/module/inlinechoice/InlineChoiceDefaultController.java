@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.components.AccessibleListBox;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -26,6 +27,7 @@ import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
@@ -46,6 +48,8 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Inject
 	private EventsBus eventsBus;
 	protected Element moduleElement;
+	@Inject @PageScoped
+	private ResponseSocket responseSocket;
 
 	protected Panel container;
 
@@ -66,7 +70,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
 
-		response = moduleSocket.getResponse(responseIdentifier);
+		response = responseSocket.getResponse(responseIdentifier);
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
 		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 

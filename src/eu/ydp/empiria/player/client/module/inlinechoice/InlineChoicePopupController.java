@@ -22,10 +22,12 @@ import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedIn
 import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParentedModuleBase;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -69,6 +71,9 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	@Inject
 	private PageScopeFactory scopeFactory;
+	
+	@Inject @PageScoped
+	private ResponseSocket responseSocket;
 
 	protected ExListBox.PopupPosition popupPosition = ExListBox.PopupPosition.ABOVE;
 
@@ -93,7 +98,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		responseIdentifier = XMLUtils.getAttributeAsString(moduleElement, "responseIdentifier");
-		response = getModuleSocket().getResponse(responseIdentifier);
+		response = responseSocket.getResponse(responseIdentifier);
 		shuffle = XMLUtils.getAttributeAsBoolean(moduleElement, "shuffle");
 		String userClass = XMLUtils.getAttributeAsString(moduleElement, "class");
 
@@ -199,7 +204,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	private boolean isResponseCorrect() {
 		ModuleSocket moduleSocket = getModuleSocket();
-		List<Boolean> evaluateResponse = moduleSocket.evaluateResponse(response);
+		List<Boolean> evaluateResponse = responseSocket.evaluateResponse(response);
 		return evaluateResponse.get(0);
 	}
 
