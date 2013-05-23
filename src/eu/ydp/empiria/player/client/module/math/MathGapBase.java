@@ -27,7 +27,7 @@ public abstract class MathGapBase extends GapBase implements MathGap {
 	protected Map<String, String> mathStyles;
 	
 	@Inject @PageScoped
-	ResponseSocket responseSocket;
+	private ResponseSocket responseSocket;
 	
 	public abstract String getValue();
 	

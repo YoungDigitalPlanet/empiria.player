@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.expression;
 
-import static com.google.common.collect.Lists.*;
-import static org.junit.Assert.*;
+import static com.google.common.collect.Lists.newArrayList;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -217,8 +217,7 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase {
 		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);
 		
 		// then
-		// TODO
-		//assertTrue(ExpressionEvaluationResult.CORRECT.equals(result));
+		assertTrue(ExpressionEvaluationResult.CORRECT.equals(result));
 	}	
 	
 	@Test

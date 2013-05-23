@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.controller.item;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,10 +23,6 @@ public class ResponseProviderTest {
 	@InjectMocks
 	private ResponseProvider responseProvider;
 	
-	@Before
-	public void setUp() throws Exception {
-	}
-
 	@Test
 	public void getResponse_shouldDelegate() {
 		// given

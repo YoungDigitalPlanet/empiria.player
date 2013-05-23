@@ -169,16 +169,6 @@ public class Assessment {
 
 		private InlineBodyGenerator inlineBodyGenerator;
 
-		/*@Override
-		public Response getResponse(String id) {
-			return null;
-		}
-
-		@Override
-		public List<Boolean> evaluateResponse(Response response) {
-			return null;
-		}*/
-
 		@Override
 		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 			if (inlineBodyGenerator == null) {
