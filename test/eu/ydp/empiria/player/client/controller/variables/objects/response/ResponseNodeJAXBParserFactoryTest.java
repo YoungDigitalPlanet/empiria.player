@@ -44,7 +44,7 @@ public class ResponseNodeJAXBParserFactoryTest extends AbstractEmpiriaPlayerGWTT
 		builder.append("<responseDeclaration cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\"  countMode=\"\">");
 		builder.append("		<correctResponse>");
 		builder.append("			<value forIndex=\"0\"  group=\"x1\" groupMode=\"groupItem\">CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
-		builder.append("			<value>CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4</value>");
+		builder.append("			<value>&gt;</value>");
 		builder.append("		</correctResponse>");
 		builder.append("</responseDeclaration>");
 
@@ -61,7 +61,7 @@ public class ResponseNodeJAXBParserFactoryTest extends AbstractEmpiriaPlayerGWTT
 		assertEquals("CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1", responseBean.getCorrectResponse().getValues().get(0).getValue());
 		assertEquals("x1", responseBean.getCorrectResponse().getValues().get(0).getGroup());
 		assertEquals("groupItem", responseBean.getCorrectResponse().getValues().get(0).getGroupMode());
-		assertEquals("CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4", responseBean.getCorrectResponse().getValues().get(1).getValue());
+		assertEquals(">", responseBean.getCorrectResponse().getValues().get(1).getValue());
 		assertEquals(null, responseBean.getCorrectResponse().getValues().get(1).getForIndex());
 		assertEquals(null, responseBean.getCorrectResponse().getValues().get(1).getGroup());
 		assertEquals(null, responseBean.getCorrectResponse().getValues().get(1).getGroupMode());
