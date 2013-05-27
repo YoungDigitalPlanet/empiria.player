@@ -77,7 +77,7 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 
 		// then
 		assertThat(result, equalTo(true));
-	}
+	}	
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -102,6 +102,30 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 		assertThat(result, equalTo(true));
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test
+	public void evaluateCorrectWithCharsConversionAdapter_commutated_equalSignInGap() {
+		// given
+		ExpressionBean bean = new ExpressionBean();
+
+		List<Response> responses = Lists.newArrayList(response("=", "=", "id_equal"), response("/", ":", "id_oper"), response("15", "15", "id1"), response("5", "5", "id2"),
+				response("2", "2", "id3"), (response("12,5", "12,5", "id5")));
+		bean.setTemplate("'id1'-'id2''id_oper''id3''id_equal''id5'");
+		bean.getResponses().addAll(responses);
+
+		Multiset<Multiset<String>> correctAnswerMultiSet = HashMultiset.create(Lists.<Multiset<String>> newArrayList(
+				HashMultiset.create(Lists.newArrayList("12.5")), 
+				HashMultiset.create(Lists.newArrayList("15", "5", "/", "2")),
+				HashMultiset.create(Lists.newArrayList("15", "5", "/", "2", "=", "12.5"))));
+
+		bean.setCorectResponses(correctAnswerMultiSet);
+		// when
+		boolean result = eval.evaluate(bean);
+
+		// then
+		assertThat(result, equalTo(true));
+	}	
+	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void evaluateWrong_someWrongs() {

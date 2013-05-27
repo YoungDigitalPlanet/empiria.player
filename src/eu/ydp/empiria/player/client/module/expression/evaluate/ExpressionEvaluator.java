@@ -8,7 +8,7 @@ import org.matheclipse.parser.client.eval.DoubleEvaluator;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.expression.ExpressionCreator;
-import eu.ydp.empiria.player.client.module.expression.SymjaExpressionAdapter;
+import eu.ydp.empiria.player.client.module.expression.adapters.SymjaExpressionCharactersAdapter;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 import eu.ydp.gwtutil.client.debug.gwtlogger.ILogger;
 import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
@@ -19,7 +19,7 @@ public class ExpressionEvaluator implements Evaluator {
 	private ExpressionCreator expressionCreator;
 
 	@Inject
-	private SymjaExpressionAdapter symjaExpressionAdapter;
+	private SymjaExpressionCharactersAdapter symjaExpressionAdapter;
 
 	ILogger log = new Logger();
 

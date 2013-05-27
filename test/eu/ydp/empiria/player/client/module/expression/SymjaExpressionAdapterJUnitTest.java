@@ -5,13 +5,15 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.ydp.empiria.player.client.module.expression.adapters.SymjaExpressionCharactersAdapter;
+
 public class SymjaExpressionAdapterJUnitTest {
 
-	private SymjaExpressionAdapter symjaExpressionAdapter;
+	private SymjaExpressionCharactersAdapter symjaExpressionAdapter;
 
 	@Before
 	public void setUp() throws Exception {
-		symjaExpressionAdapter = new SymjaExpressionAdapter();  
+		symjaExpressionAdapter = new SymjaExpressionCharactersAdapter();  
 	}
 
 	@Test

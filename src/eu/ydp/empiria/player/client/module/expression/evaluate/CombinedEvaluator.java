@@ -18,7 +18,10 @@ public class CombinedEvaluator implements Evaluator {
 
 	@Override
 	public boolean evaluate(ExpressionBean bean) {
-		return expressionEvaluator.evaluate(bean)  &&  commutationEvaluator.evaluate(bean) ;
+		boolean expressionEvaluated = expressionEvaluator.evaluate(bean);
+		boolean commutationEvaluated = commutationEvaluator.evaluate(bean);
+		
+		return expressionEvaluated  &&  commutationEvaluated;
 	}
 	
 }
