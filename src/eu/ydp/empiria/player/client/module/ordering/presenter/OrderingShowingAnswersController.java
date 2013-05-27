@@ -12,7 +12,7 @@ public class OrderingShowingAnswersController {
 	private ItemsResponseOrderController itemsResponseOrderController;
 	private OrderInteractionModuleModel model;
 	
-	public void intialize(OrderingItemsDao orderingItemsDao, ItemsResponseOrderController itemsResponseOrderController, OrderInteractionModuleModel model){
+	public void initialize(OrderingItemsDao orderingItemsDao, ItemsResponseOrderController itemsResponseOrderController, OrderInteractionModuleModel model){
 		this.orderingItemsDao = orderingItemsDao;
 		this.itemsResponseOrderController = itemsResponseOrderController;
 		this.model = model;

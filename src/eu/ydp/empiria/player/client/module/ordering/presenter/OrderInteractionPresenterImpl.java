@@ -78,6 +78,7 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 		itemsMarkingController.initialize(orderingItemsDao, itemsResponseOrderController, model);
 		itemsResponseOrderController.initialize(orderingItemsDao, model);
 		orderingResetController.initialize(orderingItemsDao, itemsResponseOrderController, model);
+		showingAnswersController.initialize(orderingItemsDao, itemsResponseOrderController, model);
 	}
 
 	@Override

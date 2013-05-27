@@ -118,11 +118,12 @@ public class OrderInteractionPresenterImplJUnitTest {
 
 		// then
 		InOrder inOrder = Mockito.inOrder(interactionView, itemClickController, itemsMarkingController, itemsResponseOrderController, orderInteractionModuleFactory,
-				viewBuilder, orderingResetController);
+				viewBuilder, orderingResetController, showingAnswersController);
 		inOrder.verify(interactionView).setClickListener(Mockito.any(OrderItemClickListener.class));
 		inOrder.verify(itemClickController).initialize(orderingItemsDao);
 		inOrder.verify(itemsMarkingController).initialize(orderingItemsDao, itemsResponseOrderController, model);
 		inOrder.verify(itemsResponseOrderController).initialize(orderingItemsDao, model);
+		inOrder.verify(showingAnswersController).initialize(orderingItemsDao, itemsResponseOrderController, model);
 		inOrder.verify(orderInteractionModuleFactory).getViewBuilder(bodyGenerator, bean, interactionView, orderingItemsDao);
 		inOrder.verify(viewBuilder).buildView();
 		inOrder.verify(itemsResponseOrderController).updateResponseWithNewOrder(itemsOrder);
