@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.common.base.Objects;
+
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasShuffle;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
 
@@ -23,6 +25,9 @@ public class OrderInteractionBean extends ModuleBean implements HasShuffle {
 
 	@XmlAttribute
 	private String responseIdentifier;
+
+	@XmlAttribute
+	private OrderInteractionOrientation orientation;
 
 	public List<SimpleOrderChoiceBean> getChoiceBeans() {
 		return choiceBeans;
@@ -49,5 +54,12 @@ public class OrderInteractionBean extends ModuleBean implements HasShuffle {
 		this.responseIdentifier = responseIdentifier;
 	}
 
+	public OrderInteractionOrientation getOrientation() {
+		return Objects.firstNonNull(orientation, OrderInteractionOrientation.HORIZONTAL);
+	}
+
+	public void setOrientation(OrderInteractionOrientation orientation) {
+		this.orientation = orientation;
+	}
 
 }

@@ -15,15 +15,15 @@ import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 
 public class OrderingViewBuilder {
 
-	private InlineBodyGeneratorSocket bodyGeneratorSocket;
-	private OrderInteractionBean bean;
-	private OrderInteractionView interactionView;
-	private OrderingItemsDao orderingItemsDao;
-	
+	private final InlineBodyGeneratorSocket bodyGeneratorSocket;
+	private final OrderInteractionBean bean;
+	private final OrderInteractionView interactionView;
+	private final OrderingItemsDao orderingItemsDao;
+
 	@Inject
 	public OrderingViewBuilder(
-			@Assisted InlineBodyGeneratorSocket bodyGeneratorSocket, 
-			@Assisted OrderInteractionBean bean, 
+			@Assisted InlineBodyGeneratorSocket bodyGeneratorSocket,
+			@Assisted OrderInteractionBean bean,
 			@Assisted OrderInteractionView interactionView,
 			@Assisted OrderingItemsDao orderingItemsDao) {
 		this.bodyGeneratorSocket = bodyGeneratorSocket;
@@ -33,20 +33,27 @@ public class OrderingViewBuilder {
 	}
 
 	public void buildView(){
+		interactionView.setOrientation(bean.getOrientation());
 		List<SimpleOrderChoiceBean> itemBeans = bean.getChoiceBeans();
+
 		for (int i=0; i<itemBeans.size(); i++) {
 			SimpleOrderChoiceBean simpleOrderChoiceBean = itemBeans.get(i);
-			XMLContent content = simpleOrderChoiceBean.getContent();
-			String answerValue = simpleOrderChoiceBean.getIdentifier();
-			String itemId = String.valueOf(i);
-			OrderingItem orderingItem = new OrderingItem(itemId, answerValue);
-			
+			XMLContent content = getXMLContent(simpleOrderChoiceBean);
+			OrderingItem orderingItem = createOrderingItem(String.valueOf(i), simpleOrderChoiceBean);
 			interactionView.createItem(orderingItem, content, bodyGeneratorSocket);
-			
 			orderingItemsDao.addItem(orderingItem);
 		}
-		
+
 		orderingItemsDao.createInitialItemsOrder();
 	}
-	
+
+	private OrderingItem createOrderingItem(String itemId, SimpleOrderChoiceBean simpleOrderChoiceBean) {
+		String answerValue = simpleOrderChoiceBean.getIdentifier();
+		return new OrderingItem(itemId, answerValue);
+	}
+
+	private XMLContent getXMLContent(SimpleOrderChoiceBean simpleOrderChoiceBean) {
+		return simpleOrderChoiceBean.getContent();
+	}
+
 }

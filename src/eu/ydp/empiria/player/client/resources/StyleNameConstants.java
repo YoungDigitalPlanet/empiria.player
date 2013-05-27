@@ -363,6 +363,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-ordered")
 	public String QP_ORDERED();
 
+	@DefaultStringValue("qp-ordered-horizontal")
+	public String QP_ORDERED_HORIZONTAL();
+
 	@DefaultStringValue("qp-ordered-item-correct")
 	public String QP_ORDERED_ITEM_CORRECT();
 
@@ -380,6 +383,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-ordered-item-wrong")
 	public String QP_ORDERED_ITEM_WRONG();
+
+	@DefaultStringValue("qp-ordered-vertical")
+	public String QP_ORDERED_VARTICAL();
 
 	@DefaultStringValue("qp-page")
 	public String QP_PAGE();
