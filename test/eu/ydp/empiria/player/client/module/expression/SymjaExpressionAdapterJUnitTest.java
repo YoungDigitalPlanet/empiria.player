@@ -1,21 +1,23 @@
 package eu.ydp.empiria.player.client.module.expression;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 
+import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
 import eu.ydp.empiria.player.client.module.expression.adapters.SymjaExpressionCharactersAdapter;
+import eu.ydp.empiria.player.client.module.expression.evaluate.CommutationEvaluator;
 
-public class SymjaExpressionAdapterJUnitTest {
-
+public class SymjaExpressionAdapterJUnitTest extends AbstractTestWithMocksBase {
+	
 	private SymjaExpressionCharactersAdapter symjaExpressionAdapter;
 
-	@Before
-	public void setUp() throws Exception {
-		symjaExpressionAdapter = new SymjaExpressionCharactersAdapter();  
-	}
-
+	@Override
+	public void setUp() {
+		super.setUp(CommutationEvaluator.class);
+		symjaExpressionAdapter = injector.getInstance(SymjaExpressionCharactersAdapter.class);
+	}	
+	
 	@Test
 	public void testOperatorsEquation() {
 		String expression = "2+2=4";
