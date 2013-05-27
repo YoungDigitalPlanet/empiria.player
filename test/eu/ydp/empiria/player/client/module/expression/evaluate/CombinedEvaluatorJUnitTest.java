@@ -42,7 +42,7 @@ public class CombinedEvaluatorJUnitTest {
 		
 		// then
 		verify(expressionEvaluator).evaluate(eq(bean));
-		//verify(commutationEvaluator, never()).evaluate(eq(bean));
+		verify(commutationEvaluator, never()).evaluate(eq(bean));
 	}
 	
 	@Test
