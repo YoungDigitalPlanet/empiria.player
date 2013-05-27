@@ -108,7 +108,7 @@ public abstract class TextGapFocusOut extends ExtensionTestBase {
 
 	protected class MockModule extends OneViewInteractionModuleBase implements Factory<MockModule>{
 
-		private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+		private final EventsBus eventsBus = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase().getEventsBus();
 
 		public MockModule(){
 		}

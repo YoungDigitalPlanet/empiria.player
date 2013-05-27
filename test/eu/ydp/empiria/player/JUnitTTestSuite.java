@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client;
+package eu.ydp.empiria.player;
 
 import java.lang.reflect.Method;
 import java.util.Set;

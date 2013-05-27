@@ -32,7 +32,7 @@ public class DeliveryEngineSocketUserExtensionTest extends ExtensionTestBase {
 	}
 
 	protected void testStateInitialPage(String expectedPage){
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEngineSocketUserExtension();

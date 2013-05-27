@@ -272,5 +272,4 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		NativeMethodInvocator invocator = mock(NativeMethodInvocator.class);
 		return invocator;
 	}
-
 }

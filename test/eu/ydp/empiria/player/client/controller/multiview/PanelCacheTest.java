@@ -16,7 +16,7 @@ public class PanelCacheTest extends GWTTestCase {
 	}
 
 	public void testPageViewWithSwipeAndWithout() {
-		PanelCache cache =  PlayerGinjectorFactory.getPlayerGinjector().getPanelCache();
+		PanelCache cache =  PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase().getPanelCache();
 		assertTrue(cache.isEmpty());
 		KeyValue<FlowPanel, FlowPanel> value = cache.getOrCreateAndPut(0);
 		Style style = value.getKey().getElement().getStyle();

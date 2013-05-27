@@ -16,14 +16,14 @@ import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
 public class StatefulExtensionTest extends ExtensionTestBase {
 
-	
+
 	protected DeliveryEngine de;
 	protected boolean passed1 = false;
 	protected boolean passed2 = false;
 
 	public void testExtensionState(){
 
-		PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
+		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		de.setFlowOptions(new FlowOptions(false, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
