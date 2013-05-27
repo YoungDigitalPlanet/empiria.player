@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
 import eu.ydp.empiria.player.client.module.expression.adapters.SymjaExpressionCharactersAdapter;
-import eu.ydp.empiria.player.client.module.expression.evaluate.CommutationEvaluator;
 
 public class SymjaExpressionAdapterJUnitTest extends AbstractTestWithMocksBase {
 	
@@ -14,7 +13,7 @@ public class SymjaExpressionAdapterJUnitTest extends AbstractTestWithMocksBase {
 
 	@Override
 	public void setUp() {
-		super.setUp(CommutationEvaluator.class);
+		super.setUp();
 		symjaExpressionAdapter = injector.getInstance(SymjaExpressionCharactersAdapter.class);
 	}	
 	
