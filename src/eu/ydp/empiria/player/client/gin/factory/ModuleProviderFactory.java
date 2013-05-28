@@ -13,6 +13,13 @@ import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
+import eu.ydp.empiria.player.client.module.containers.DivModule;
+import eu.ydp.empiria.player.client.module.containers.HtmlContainerModule;
+import eu.ydp.empiria.player.client.module.containers.SubHtmlContainerModule;
+import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
+import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
+import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
+import eu.ydp.empiria.player.client.module.flash.FlashModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
@@ -20,13 +27,19 @@ import eu.ydp.empiria.player.client.module.labelling.LabellingModule;
 import eu.ydp.empiria.player.client.module.math.InlineChoiceGapModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.math.TextEntryGapModule;
+import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
+import eu.ydp.empiria.player.client.module.prompt.PromptModule;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
+import eu.ydp.empiria.player.client.module.shape.ShapeModule;
+import eu.ydp.empiria.player.client.module.simpletext.SimpleTextModule;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModule;
 import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
+import eu.ydp.empiria.player.client.module.span.SpanModule;
+import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
 
 @SuppressWarnings({"PMD"})
@@ -105,7 +118,43 @@ public class ModuleProviderFactory {
 
 	@Inject
 	private Provider<TextEntryGapModule> textEntryGapModule;
+	
+	@Inject
+	private Provider<DivModule> divModule;
+	
+	@Inject
+	private Provider<GroupModule> groupModule;
+	
+	@Inject
+	private Provider<SpanModule> spanModule;
+	
+	@Inject
+	private Provider<TextInteractionModule> textInteractionModule;
 
+	@Inject
+	private Provider<SimpleTextModule> simpleTextModule;
+
+	@Inject
+	private Provider<MathTextModule> mathTextModule;
+
+	@Inject
+	private Provider<FlashModule> flashModule;
+
+	@Inject
+	private Provider<PromptModule> promptModule;
+
+	@Inject
+	private Provider<TableModule> tableModule;
+
+	@Inject
+	private Provider<ShapeModule> shapeModule;
+
+	@Inject
+	private Provider<SupHtmlContainerModule> supHtmlContainerModule;
+	
+	@Inject
+	private Provider<SubHtmlContainerModule> subHtmlContainerModule;
+	
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
 	}
@@ -204,5 +253,53 @@ public class ModuleProviderFactory {
 
 	public Provider<TextEntryGapModule> getTextEntryGapModule() {
 		return textEntryGapModule;
+	}
+
+	public Provider<DivModule> getDivModule() {
+		return divModule;
+	}
+
+	public Provider<GroupModule> getGroupModule() {
+		return groupModule;
+	}
+
+	public Provider<SpanModule> getSpanModule() {
+		return spanModule;
+	}
+
+	public Provider<TextInteractionModule> getTextInteractionModule() {
+		return textInteractionModule;
+	}
+
+	public Provider<SimpleTextModule> getSimpleTextModule() {
+		return simpleTextModule;
+	}
+
+	public Provider<MathTextModule> getMathTextModule() {
+		return mathTextModule;
+	}
+
+	public Provider<FlashModule> getFlashModule() {
+		return flashModule;
+	}
+
+	public Provider<PromptModule> getPromptModule() {
+		return promptModule;
+	}
+
+	public Provider<TableModule> getTableModule() {
+		return tableModule;
+	}
+
+	public Provider<ShapeModule> getShapeModule() {
+		return shapeModule;
+	}
+
+	public Provider<SupHtmlContainerModule> getSupHtmlContainerModule() {
+		return supHtmlContainerModule;
+	}
+
+	public Provider<SubHtmlContainerModule> getSubHtmlContainerModule() {
+		return subHtmlContainerModule;
 	}
 }
