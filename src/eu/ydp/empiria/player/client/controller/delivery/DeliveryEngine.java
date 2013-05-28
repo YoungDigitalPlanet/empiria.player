@@ -104,13 +104,13 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private final ModuleFactory extensionFactory;
 	private final ModuleProviderFactory moduleProviderFactory;
 	private final SingleModuleInstanceProvider singleModuleInstanceProvider;
+	private final ModulesRegistry modulesRegistry;
 
 	private StyleLinkManager styleManager;
 	private ExtensionsManager extensionsManager;
 	private FlowManager flowManager;
 	private DeliveryEventsHub deliveryEventsHub;
 	private AssessmentController assessmentController;
-	private ModulesRegistry modulesRegistry;
 	private SoundProcessorManagerExtension soundProcessorManager;
 
 	private JavaScriptObject playerJsObject;
@@ -119,7 +119,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
 			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
-			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater) {
+			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
+			ModulesRegistry modulesRegistry) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -128,6 +129,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.moduleProviderFactory = moduleProviderFactory;
 		this.singleModuleInstanceProvider = singleModuleInstanceProvider;
 		this.moduleHandlerManager = moduleHandlerManager;
+		this.modulesRegistry = modulesRegistry;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
 		eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this);
@@ -138,7 +140,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	public void init(JavaScriptObject playerJsObject) {
 		this.playerJsObject = playerJsObject;
 
-		modulesRegistry = new ModulesRegistry();
 		styleManager = new StyleLinkManager();
 
 		extensionsManager = PlayerGinjectorFactory.getPlayerGinjector().getExtensionsManager();

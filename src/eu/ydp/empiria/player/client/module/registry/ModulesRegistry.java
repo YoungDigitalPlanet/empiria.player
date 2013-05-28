@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleCreationContext;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopeStack;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
@@ -12,9 +15,12 @@ import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
 public class ModulesRegistry implements ModulesRegistrySocket {
 
-	protected Map<String, ModuleCreator> moduleCreators;
+	protected final Map<String, ModuleCreator> moduleCreators;
+	private final ModuleScopeStack moduleScopeStack;
 	
-	public ModulesRegistry(){
+	@Inject
+	public ModulesRegistry(ModuleScopeStack moduleScopeStack){
+		this.moduleScopeStack = moduleScopeStack;
 		moduleCreators = new HashMap<String, ModuleCreator>();
 	}
 	
@@ -60,7 +66,10 @@ public class ModulesRegistry implements ModulesRegistrySocket {
 			currCreator = moduleCreators.get(nodeName);
 		}
 		
+		ModuleCreationContext context = new ModuleCreationContext(node);
+		moduleScopeStack.pushContext(context);
 		IModule module = currCreator.createModule();
+		moduleScopeStack.pop();
 		
 		return module;
 	}
