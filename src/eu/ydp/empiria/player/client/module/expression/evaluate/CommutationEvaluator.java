@@ -28,18 +28,17 @@ public class CommutationEvaluator implements Evaluator {
 		Multiset<Multiset<String>> correctAnswers = bean.getCorectResponses();
 		Multiset<Multiset<String>> userAnswers = responseFinder.getResponseMultiSet(bean, fetcherFunctions.getUserAnswerFetcher());
 				
-		HashMultiset<Multiset<String>> adaptedUserAnswers = convertSpecialCharacters(userAnswers);
-		HashMultiset<Multiset<String>> adaptedCorrectAnswers = convertSpecialCharacters(correctAnswers);
+		Multiset<Multiset<String>> adaptedUserAnswers = convertSpecialCharacters(userAnswers);
+		Multiset<Multiset<String>> adaptedCorrectAnswers = convertSpecialCharacters(correctAnswers);
 		
 		return adaptedUserAnswers.equals(adaptedCorrectAnswers);
 	}
 
-	private HashMultiset<Multiset<String>> convertSpecialCharacters(Multiset<Multiset<String>> answers) {
-		HashMultiset<Multiset<String>> modifiedAnswers = HashMultiset.create();
-		HashMultiset<String> modifiedSubSet;
+	private Multiset<Multiset<String>> convertSpecialCharacters(Multiset<Multiset<String>> answers) {
+		Multiset<Multiset<String>> modifiedAnswers = HashMultiset.create();
 		
 		for (Multiset<String> multiset : answers) {
-			modifiedSubSet = HashMultiset.create();
+			Multiset<String> modifiedSubSet = HashMultiset.create();
 			for (String string : multiset) {				
 				String modifiedString = expressionAdapter.process(string);
 				modifiedSubSet.add(modifiedString);
