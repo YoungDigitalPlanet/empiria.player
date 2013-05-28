@@ -34,13 +34,22 @@ public class SymjaExpressionAdapterJUnitTest extends AbstractTestWithMocksBase {
 		
 		assertEquals("2+2>=4", result);
 	}
-
+	
 	@Test
-	public void testDivide() {
-		String expression = "2:2=1";
+	public void testCommaIntoDot() {
+		String expression = "2,2+2,3>=4,5";
 		
 		String result = symjaExpressionAdapter.process(expression);
 		
-		assertEquals("2/2==1", result);
+		assertEquals("2.2+2.3>=4.5", result);
+	}	
+
+	@Test
+	public void testDivide() {
+		String expression = "(2:2)+(2:2)=2";
+		
+		String result = symjaExpressionAdapter.process(expression);
+		
+		assertEquals("(2/2)+(2/2)==2", result);
 	}
 }

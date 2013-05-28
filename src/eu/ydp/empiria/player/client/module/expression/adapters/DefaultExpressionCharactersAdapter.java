@@ -11,7 +11,7 @@ public class DefaultExpressionCharactersAdapter {
 	}
 
 	private String fixDivide(String expression) {
-		expression = expression.replaceFirst(":", "/");
+		expression = expression.replaceAll(":", "/");
 		return expression;
 	}
 
