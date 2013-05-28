@@ -31,7 +31,7 @@ public class JUnitTTestSuite {
 		@Override
 		public boolean apply(Class<?> clazz) {
 			if (clazz.isAnnotationPresent(RunWith.class)) {
-				if (clazz.getAnnotation(RunWith.class).value().isAssignableFrom(ExMockRunner.class)) {
+				if (ExMockRunner.class.isAssignableFrom(clazz.getAnnotation(RunWith.class).value())) {
 					return false;
 				}
 			}
@@ -55,7 +55,7 @@ public class JUnitTTestSuite {
 	};
 	public static TestSuite suite() {
 		TestSuite junitSuite = new TestSuite();
-		Iterable<Class<?>> filteredClasses = Iterables.filter(getAllTestsClass(), filterUnsupportedClazz);
+		Iterable<Class<?>> filteredClasses = getTestClasses();
 		for (Class<?> clazz :  filteredClasses) {
 			JUnit4TestAdapter adapter = new JUnit4TestAdapter(clazz);
 			junitSuite.addTest(adapter);
@@ -64,7 +64,11 @@ public class JUnitTTestSuite {
 		return junitSuite;
 	}
 
-	public static Set<Class<?>> getAllTestsClass() {
+	public static Iterable<Class<?>> getTestClasses() {
+		return Iterables.filter(getAllTestClasses(), filterUnsupportedClazz);
+	}
+
+	public static Set<Class<?>> getAllTestClasses() {
 
 		ConfigurationBuilder inputFilterByName = new ConfigurationBuilder().filterInputsBy(new FilterBuilder().add(onlyClassEndsWithTest));
 		Scanner methodFilterByTestAnnotation = new MethodAnnotationsScanner().filterResultsBy(onlyMethodWithTestAnnotation);
