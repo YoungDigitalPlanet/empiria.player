@@ -2,8 +2,6 @@ package eu.ydp.empiria.player.client.module.colorfill.structure;
 
 import java.util.List;
 
-import org.junit.Test;
-
 import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 
@@ -11,20 +9,24 @@ import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 
 public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmpiriaPlayerGWTTestCase {
 	
+	private static final String COLOR_FF0000 = "#FF0000";
+	private static final String COLOR_008000 = "#008000";
 	private static final String VAL_999 = "999";
 	private static final String VAL_777 = "777";
 	private static final String VAL_666 = "666";
 	private static final String VAL_333 = "333";
 	private static final String MEDIA_COLORFILL_PNG = "media/colorfill.png";
+	private static final int VAL_400 = 400;
+	private static final int VAL_600 = 600;
 
 	public void testXMLParseButtons() {
 		// given
 		String buttonsXMLNode = "<buttons>" +
-				"<button rgb=\"#008000\"/>" +
+				"<button rgb=\""+COLOR_008000+"\"/>" +
 				"<button rgb=\"#FFFF00\"/>" +
 				"<button rgb=\"#0000FF\"/>" +
 				"<button rgb=\"#800000\"/>" +
-				"<button rgb=\"#FF0000\"/>" +
+				"<button rgb=\""+COLOR_FF0000+"\"/>" +
 				"<eraserButton/>" +
 			"</buttons>";		
 		String xml = prepareXML(buttonsXMLNode);
@@ -37,8 +39,8 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		EraserButton eraser = buttonsContainer.getEraserButton();
 				
 		// then
-		assertEquals("#008000", button0.getRgb());
-		assertEquals("#FF0000", button4.getRgb());
+		assertEquals(COLOR_008000, button0.getRgb());
+		assertEquals(COLOR_FF0000, button4.getRgb());
 		assertNotNull(eraser);
 	}
 	
@@ -56,7 +58,7 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		EraserButton eraser = buttonsContainer.getEraserButton();
 				
 		// then
-		assertEquals("#008000", button0.getRgb());
+		assertEquals(COLOR_008000, button0.getRgb());
 		assertNull(eraser);
 	}	
 	
@@ -88,8 +90,8 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		Image image = bean.getImage();
 				
 		// then
-		assertEquals(400, image.getHeight());
-		assertEquals(601, image.getWidth());
+		assertEquals(VAL_400, image.getHeight());
+		assertEquals(VAL_600, image.getWidth());
 		assertEquals(MEDIA_COLORFILL_PNG, image.getSrc());
 	}		
 	
@@ -112,10 +114,10 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 				"<colorfillInteraction id=\"dummy1\">" +
 					buttons + 
 					"<areas>" +
-						"<area x=\"333\" y=\"666\"/>" +
-						"<area x=\"777\" y=\"999\"/>" +
+						"<area x=\""+VAL_333+"\" y=\""+VAL_666+"\"/>" +
+						"<area x=\""+VAL_777+"\" y=\""+VAL_999+"\"/>" +
 					"</areas>" +
-					"<image height=\"400\" src=\"media/colorfill.png\" width=\"601\"/>" +
+					"<image height=\""+VAL_400+"\" src=\"media/colorfill.png\" width=\""+VAL_600+"\"/>" +
 				"</colorfillInteraction>"; 
 	}
 
