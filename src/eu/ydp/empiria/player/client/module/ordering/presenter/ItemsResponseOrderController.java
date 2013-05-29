@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
@@ -14,15 +15,15 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 public class ItemsResponseOrderController {
 
 	private final ItemsOrderByAnswersFinder itemsOrderByAnswersFinder;
-	private OrderingItemsDao orderingItemsDao;
-	private OrderInteractionModuleModel model;
+	private final OrderingItemsDao orderingItemsDao;
+	private final OrderInteractionModuleModel model;
 	
 	@Inject
-	public ItemsResponseOrderController(ItemsOrderByAnswersFinder itemsOrderByAnswersFinder) {
+	public ItemsResponseOrderController(
+			ItemsOrderByAnswersFinder itemsOrderByAnswersFinder,
+			@ModuleScoped OrderingItemsDao orderingItemsDao,
+			@ModuleScoped OrderInteractionModuleModel model) {
 		this.itemsOrderByAnswersFinder = itemsOrderByAnswersFinder;
-	}
-
-	public void initialize(OrderingItemsDao orderingItemsDao, OrderInteractionModuleModel model){
 		this.orderingItemsDao = orderingItemsDao;
 		this.model = model;
 	}

@@ -48,17 +48,25 @@ public class OrderInteractionPresenterImplJUnitTest {
 	@Mock private ItemsResponseOrderController itemsResponseOrderController;
 	@Mock private OrderingResetController orderingResetController;
 	@Mock private OrderingShowingAnswersController showingAnswersController;
+	@Mock private OrderingViewBuilder viewBuilder;
 	private OrderInteractionBean bean;
 
 	
 	@Before
 	public void setUp() throws Exception {
-		presenter = new OrderInteractionPresenterImpl(interactionView, itemsMarkingController, orderingItemsDao, itemClickController, orderInteractionModuleFactory,
-				itemsResponseOrderController, orderingResetController, showingAnswersController);
+		presenter = new OrderInteractionPresenterImpl(
+				itemsMarkingController, 
+				itemClickController, 
+				itemsResponseOrderController, 
+				orderingResetController, 
+				showingAnswersController, 
+				viewBuilder, 
+				interactionView, 
+				orderingItemsDao, 
+				model);
 
 		bean = new OrderInteractionBean();
 
-		presenter.setModel(model);
 		presenter.setModuleSocket(socket);
 		presenter.setBean(bean);
 		setUpMocks();
@@ -104,9 +112,6 @@ public class OrderInteractionPresenterImplJUnitTest {
 		InlineBodyGeneratorSocket bodyGenerator = Mockito.mock(InlineBodyGeneratorSocket.class);
 		when(socket.getInlineBodyGeneratorSocket()).thenReturn(bodyGenerator);
 
-		OrderingViewBuilder viewBuilder = Mockito.mock(OrderingViewBuilder.class);
-		when(orderInteractionModuleFactory.getViewBuilder(bodyGenerator, bean, interactionView, orderingItemsDao)).thenReturn(viewBuilder);
-
 		List<String> itemsOrder = Lists.newArrayList("item1", "item2");
 		when(orderingItemsDao.getItemsOrder()).thenReturn(itemsOrder);
 
@@ -120,15 +125,24 @@ public class OrderInteractionPresenterImplJUnitTest {
 		InOrder inOrder = Mockito.inOrder(interactionView, itemClickController, itemsMarkingController, itemsResponseOrderController, orderInteractionModuleFactory,
 				viewBuilder, orderingResetController, showingAnswersController);
 		inOrder.verify(interactionView).setClickListener(Mockito.any(OrderItemClickListener.class));
-		inOrder.verify(itemClickController).initialize(orderingItemsDao);
-		inOrder.verify(itemsMarkingController).initialize(orderingItemsDao, itemsResponseOrderController, model);
-		inOrder.verify(itemsResponseOrderController).initialize(orderingItemsDao, model);
-		inOrder.verify(showingAnswersController).initialize(orderingItemsDao, itemsResponseOrderController, model);
-		inOrder.verify(orderInteractionModuleFactory).getViewBuilder(bodyGenerator, bean, interactionView, orderingItemsDao);
-		inOrder.verify(viewBuilder).buildView();
+		inOrder.verify(viewBuilder).buildView(bean, bodyGenerator);
 		inOrder.verify(itemsResponseOrderController).updateResponseWithNewOrder(itemsOrder);
 		inOrder.verify(orderingResetController).reset();
 		inOrder.verify(interactionView).setChildrenOrder(itemsOrder);
+	}
+	
+	@Test
+	public void shouldDoNothingWhenClickedLockedItem() throws Exception {
+		ItemClickAction clickAction = ItemClickAction.LOCK;
+		String itemId = "item1";
+		when(itemClickController.itemClicked(itemId))
+		.thenReturn(clickAction);
+		
+		presenter.itemClicked(itemId);
+		
+		verify(itemClickController).itemClicked(itemId);
+		verifyNoMoreInteractionsOnMocks();
+		Mockito.verifyNoMoreInteractions(item1, item2);
 	}
 	
 	@Test

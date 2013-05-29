@@ -5,19 +5,25 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 
 public class OrderInteractionModuleModel extends AbstractResponseModel<String>{
 
+	private ResponseModelChangeListener responseModelChange;
+	
 	@Inject
-	public OrderInteractionModuleModel(@Assisted Response response, @Assisted ResponseModelChangeListener responseModelChange) {
-		super(response, responseModelChange);
+	public OrderInteractionModuleModel(@ModuleScoped Response response) {
+		super(response, null);
 	}
 
+	public void initialize(ResponseModelChangeListener modelChangeListener){
+		responseModelChange = modelChangeListener;
+	}
+	
 	@Override
 	protected List<String> parseResponse(Collection<String> values) {
 		return Lists.newArrayList(values);
@@ -28,12 +34,11 @@ public class OrderInteractionModuleModel extends AbstractResponseModel<String>{
 	}
 
 	public void onModelChange(){
-		super.onModelChange();
+		responseModelChange.onResponseModelChange();
 	}
 	
 	@Override
 	public void reset(){
 		
 	}
-	
 }

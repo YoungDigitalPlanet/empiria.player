@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
@@ -22,14 +23,15 @@ public class ItemsMarkingController {
 	private ResponseSocket responseSocket;
 	
 	@Inject
-	public ItemsMarkingController(@PageScoped ResponseSocket responseSocket) {
-		this.responseSocket = responseSocket;
-	}
-
-	public void initialize(OrderingItemsDao orderingItemsDao, ItemsResponseOrderController responseOrderController, OrderInteractionModuleModel model){
-		this.orderingItemsDao = orderingItemsDao;
+	public ItemsMarkingController(
+			ItemsResponseOrderController responseOrderController, 
+			@PageScoped ResponseSocket responseSocket, 
+			@ModuleScoped OrderInteractionModuleModel model, 
+			@ModuleScoped OrderingItemsDao orderingItemsDao) {
 		this.responseOrderController = responseOrderController;
+		this.responseSocket = responseSocket;
 		this.model = model;
+		this.orderingItemsDao = orderingItemsDao;
 	}
 	
 	public void markOrUnmarkItemsByType(MarkAnswersType type, MarkAnswersMode mode) {

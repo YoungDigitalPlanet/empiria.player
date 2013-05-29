@@ -4,22 +4,23 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 
 public class OrderingResetController {
 
 	private final OrderingAnswersShuffler orderingAnswersShuffler;
-	private OrderingItemsDao orderingItemsDao;
-	private ItemsResponseOrderController itemsResponseOrderController;
-	private OrderInteractionModuleModel model;
+	private final OrderingItemsDao orderingItemsDao;
+	private final ItemsResponseOrderController itemsResponseOrderController;
+	private final OrderInteractionModuleModel model;
 	
 	@Inject
-	public OrderingResetController(OrderingAnswersShuffler orderingAnswersShuffler) {
+	public OrderingResetController(OrderingAnswersShuffler orderingAnswersShuffler, 
+			ItemsResponseOrderController itemsResponseOrderController, 
+			@ModuleScoped OrderingItemsDao orderingItemsDao, 
+			@ModuleScoped OrderInteractionModuleModel model) {
 		this.orderingAnswersShuffler = orderingAnswersShuffler;
-	}
-
-	public void initialize(OrderingItemsDao orderingItemsDao, ItemsResponseOrderController itemsResponseOrderController, OrderInteractionModuleModel model){
 		this.orderingItemsDao = orderingItemsDao;
 		this.itemsResponseOrderController = itemsResponseOrderController;
 		this.model = model;

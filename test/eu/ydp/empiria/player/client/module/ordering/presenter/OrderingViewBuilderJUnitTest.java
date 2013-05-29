@@ -37,7 +37,7 @@ public class OrderingViewBuilderJUnitTest {
 	@Before
 	public void setUp() throws Exception {
 		bean = new OrderInteractionBean();
-		orderingViewBuilder = new OrderingViewBuilder(bodyGeneratorSocket, bean, interactionView, orderingItemsDao);
+		orderingViewBuilder = new OrderingViewBuilder(interactionView, orderingItemsDao);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class OrderingViewBuilderJUnitTest {
 		
 		
 		//when
-		orderingViewBuilder.buildView();
+		orderingViewBuilder.buildView(bean, bodyGeneratorSocket);
 		
 		//then
 		verifyThatItemWasAddedToDaoWithCorrectValues(choiceBean, "0");

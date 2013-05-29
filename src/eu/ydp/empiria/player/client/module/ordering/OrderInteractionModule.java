@@ -6,6 +6,7 @@ import com.google.inject.Provider;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.gin.factory.OrderInteractionModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.Factory;
@@ -29,6 +30,7 @@ public class OrderInteractionModule extends AbstractInteractionModule<OrderInter
 	@Inject
 	private OrderInteractionModuleFactory moduleFactory;
 
+	@Inject @ModuleScoped
 	private OrderInteractionModuleModel moduleModel;
 
 	@Override
@@ -43,7 +45,7 @@ public class OrderInteractionModule extends AbstractInteractionModule<OrderInter
 
 	@Override
 	protected void initalizeModule() {
-		moduleModel = moduleFactory.getOrderInteractionModuleModel(getResponse(), this);
+		moduleModel.initialize(this);
 	}
 
 	@Override

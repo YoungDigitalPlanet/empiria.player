@@ -27,8 +27,7 @@ public class OrderingShowingAnswersControllerJUnitTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		controller = new OrderingShowingAnswersController();
-		controller.initialize(orderingItemsDao, itemsResponseOrderController, model);
+		controller = new OrderingShowingAnswersController(itemsResponseOrderController, orderingItemsDao, model);
 	}
 
 	@Test

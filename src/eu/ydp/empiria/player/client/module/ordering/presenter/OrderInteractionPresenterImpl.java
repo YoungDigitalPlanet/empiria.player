@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.gin.factory.OrderInteractionModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -25,33 +25,35 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	private final ItemsMarkingController itemsMarkingController;
 	private final OrderingItemsDao orderingItemsDao;
 	private final ItemClickController itemClickController;
-	private final OrderInteractionModuleFactory orderInteractionModuleFactory;
 	private final ItemsResponseOrderController itemsResponseOrderController;
 	private final OrderingResetController orderingResetController;
 	private final OrderingShowingAnswersController showingAnswersController;
-
+	private final OrderInteractionModuleModel model;
+	private final OrderingViewBuilder viewBuilder;
+	
 	private ModuleSocket socket;
-	private OrderInteractionModuleModel model;
 	private OrderInteractionBean bean;
 
 	@Inject
 	public OrderInteractionPresenterImpl(
-			OrderInteractionView interactionView,
-			ItemsMarkingController itemsMarkingController,
-			OrderingItemsDao orderingItemsDao,
-			ItemClickController itemClickController,
-			OrderInteractionModuleFactory orderInteractionModuleFactory,
+			ItemsMarkingController itemsMarkingController, 
+			ItemClickController itemClickController, 
 			ItemsResponseOrderController itemsResponseOrderController,
 			OrderingResetController orderingResetController,
-			OrderingShowingAnswersController showingAnswersController) {
+			OrderingShowingAnswersController showingAnswersController,
+			OrderingViewBuilder viewBuilder,
+			@ModuleScoped OrderInteractionView interactionView, 
+			@ModuleScoped OrderingItemsDao orderingItemsDao,
+			@ModuleScoped OrderInteractionModuleModel model) {
+		this.viewBuilder = viewBuilder;
 		this.interactionView = interactionView;
 		this.itemsMarkingController = itemsMarkingController;
 		this.orderingItemsDao = orderingItemsDao;
 		this.itemClickController = itemClickController;
-		this.orderInteractionModuleFactory = orderInteractionModuleFactory;
 		this.itemsResponseOrderController = itemsResponseOrderController;
 		this.orderingResetController = orderingResetController;
 		this.showingAnswersController = showingAnswersController;
+		this.model = model;
 	}
 
 	@Override
@@ -63,22 +65,12 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	public void bindView() {
 		OrderItemClickListener orderItemClickListener = new OrderItemClickListenerImpl(this);
 		interactionView.setClickListener(orderItemClickListener);
-		initializeSubModules();
 
 		InlineBodyGeneratorSocket bodyGeneratorSocket = socket.getInlineBodyGeneratorSocket();
-		OrderingViewBuilder viewBuilder = orderInteractionModuleFactory.getViewBuilder(bodyGeneratorSocket, bean, interactionView, orderingItemsDao);
-		viewBuilder.buildView();
+		viewBuilder.buildView(bean, bodyGeneratorSocket);
 
 		itemsResponseOrderController.updateResponseWithNewOrder(orderingItemsDao.getItemsOrder());
 		reset();
-	}
-
-	private void initializeSubModules() {
-		itemClickController.initialize(orderingItemsDao);
-		itemsMarkingController.initialize(orderingItemsDao, itemsResponseOrderController, model);
-		itemsResponseOrderController.initialize(orderingItemsDao, model);
-		orderingResetController.initialize(orderingItemsDao, itemsResponseOrderController, model);
-		showingAnswersController.initialize(orderingItemsDao, itemsResponseOrderController, model);
 	}
 
 	@Override
@@ -89,7 +81,7 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 
 	@Override
 	public void setModel(OrderInteractionModuleModel model) {
-		this.model = model;
+		//unused method - will be removed in the future
 	}
 
 	@Override

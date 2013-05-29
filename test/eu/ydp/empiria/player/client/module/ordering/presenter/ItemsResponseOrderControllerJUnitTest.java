@@ -30,12 +30,10 @@ public class ItemsResponseOrderControllerJUnitTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		itemsResponseOrderController = new ItemsResponseOrderController(itemsOrderByAnswersFinder);
 		orderingItemsDao = new OrderingItemsDao();
 		response = new ResponseBuilder().build();
-		model = new OrderInteractionModuleModel(response, null);
-		
-		itemsResponseOrderController.initialize(orderingItemsDao, model);
+		model = new OrderInteractionModuleModel(response);
+		itemsResponseOrderController = new ItemsResponseOrderController(itemsOrderByAnswersFinder, orderingItemsDao, model);
 	}
 
 	@Test

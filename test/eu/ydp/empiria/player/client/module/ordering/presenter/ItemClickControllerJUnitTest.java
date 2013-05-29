@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.module.ordering.model.ItemClickAction;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 
-@SuppressWarnings("PMD")
 public class ItemClickControllerJUnitTest {
 
 	private ItemClickController itemClickController;
@@ -23,10 +22,8 @@ public class ItemClickControllerJUnitTest {
 
 	@Before
 	public void setUp() throws Exception {
-		itemClickController = new ItemClickController();
 		orderingItemsDao = new OrderingItemsDao();
-		itemClickController.initialize(orderingItemsDao);
-
+		itemClickController = new ItemClickController(orderingItemsDao);
 		addInitialItems();
 	}
 

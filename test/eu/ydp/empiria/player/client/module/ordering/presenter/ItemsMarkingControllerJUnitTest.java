@@ -33,13 +33,12 @@ public class ItemsMarkingControllerJUnitTest {
 	private OrderingItem correctItem1;
 	private OrderingItem wrongItem;
 	private OrderingItem correctItem2;
-	private List<Boolean> answersEvaluation = Lists.newArrayList(true, false, true);
+	private final List<Boolean> answersEvaluation = Lists.newArrayList(true, false, true);
 	
 	@Before
 	public void setUp() throws Exception {
-		itemsMarkingController = new ItemsMarkingController(responseSocket);
 		orderingItemsDao = new OrderingItemsDao();
-		itemsMarkingController.initialize(orderingItemsDao, responseOrderController, model);
+		itemsMarkingController = new ItemsMarkingController(responseOrderController, responseSocket, model, orderingItemsDao);
 		
 		correctItem1 = createItem("correctItem1");
 		wrongItem = createItem("wrongItem");

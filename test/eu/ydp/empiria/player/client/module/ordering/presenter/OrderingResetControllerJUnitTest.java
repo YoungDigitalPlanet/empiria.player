@@ -28,8 +28,7 @@ public class OrderingResetControllerJUnitTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		controller = new OrderingResetController(orderingAnswersShuffler);
-		controller.initialize(orderingItemsDao, itemsResponseOrderController, model);
+		controller = new OrderingResetController(orderingAnswersShuffler, itemsResponseOrderController, orderingItemsDao, model);
 	}
 
 	@Test

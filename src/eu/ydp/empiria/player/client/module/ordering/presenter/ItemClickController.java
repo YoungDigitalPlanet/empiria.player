@@ -3,16 +3,19 @@ package eu.ydp.empiria.player.client.module.ordering.presenter;
 import java.util.List;
 
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ordering.model.ItemClickAction;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 
 public class ItemClickController {
 
-	private OrderingItemsDao orderingItemsDao;
-
-	public void initialize(OrderingItemsDao orderingItemsDao) {
+	private final OrderingItemsDao orderingItemsDao;
+	
+	@Inject
+	public ItemClickController(@ModuleScoped OrderingItemsDao orderingItemsDao) {
 		this.orderingItemsDao = orderingItemsDao;
 	}
 

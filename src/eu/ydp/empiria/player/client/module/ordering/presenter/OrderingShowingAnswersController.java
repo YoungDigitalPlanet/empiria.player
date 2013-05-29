@@ -2,17 +2,24 @@ package eu.ydp.empiria.player.client.module.ordering.presenter;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 
 public class OrderingShowingAnswersController {
 
-	private OrderingItemsDao orderingItemsDao;
-	private ItemsResponseOrderController itemsResponseOrderController;
-	private OrderInteractionModuleModel model;
+	private final OrderingItemsDao orderingItemsDao;
+	private final ItemsResponseOrderController itemsResponseOrderController;
+	private final OrderInteractionModuleModel model;
 	
-	public void initialize(OrderingItemsDao orderingItemsDao, ItemsResponseOrderController itemsResponseOrderController, OrderInteractionModuleModel model){
+	@Inject
+	public OrderingShowingAnswersController(
+			ItemsResponseOrderController itemsResponseOrderController, 
+			@ModuleScoped OrderingItemsDao orderingItemsDao,
+			@ModuleScoped OrderInteractionModuleModel model){
 		this.orderingItemsDao = orderingItemsDao;
 		this.itemsResponseOrderController = itemsResponseOrderController;
 		this.model = model;

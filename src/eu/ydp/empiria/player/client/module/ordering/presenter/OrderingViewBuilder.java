@@ -3,10 +3,10 @@ package eu.ydp.empiria.player.client.module.ordering.presenter;
 import java.util.List;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
@@ -15,24 +15,18 @@ import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 
 public class OrderingViewBuilder {
 
-	private final InlineBodyGeneratorSocket bodyGeneratorSocket;
-	private final OrderInteractionBean bean;
 	private final OrderInteractionView interactionView;
 	private final OrderingItemsDao orderingItemsDao;
 
 	@Inject
 	public OrderingViewBuilder(
-			@Assisted InlineBodyGeneratorSocket bodyGeneratorSocket,
-			@Assisted OrderInteractionBean bean,
-			@Assisted OrderInteractionView interactionView,
-			@Assisted OrderingItemsDao orderingItemsDao) {
-		this.bodyGeneratorSocket = bodyGeneratorSocket;
-		this.bean = bean;
+			@ModuleScoped OrderInteractionView interactionView,
+			@ModuleScoped OrderingItemsDao orderingItemsDao) {
 		this.interactionView = interactionView;
 		this.orderingItemsDao = orderingItemsDao;
 	}
 
-	public void buildView(){
+	public void buildView(OrderInteractionBean bean, InlineBodyGeneratorSocket bodyGeneratorSocket){
 		interactionView.setOrientation(bean.getOrientation());
 		List<SimpleOrderChoiceBean> itemBeans = bean.getChoiceBeans();
 
