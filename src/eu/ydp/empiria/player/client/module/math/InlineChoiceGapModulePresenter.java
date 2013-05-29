@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.math;
 
+import java.util.Map;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -117,6 +119,10 @@ public class InlineChoiceGapModulePresenter implements GapModulePresenter {
 	@Override
 	public IsExListBox getListBox() {
 		return listBox;
+	}
+	
+	@Override
+	public void makeExpressionReplacements(Map<String, String> replacements) {
 	}
 
 }

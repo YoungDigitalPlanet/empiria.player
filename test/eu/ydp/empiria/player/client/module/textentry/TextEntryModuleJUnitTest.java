@@ -33,6 +33,7 @@ import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.module.expression.ExpresionReplacementsParser;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.xml.XMLParser;
@@ -49,6 +50,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 			when(factory.getTextEntryModulePresenter(any(IModule.class))).thenReturn(modulePresenter);
 			binder.bind(TextEntryModuleFactory.class).toInstance(factory);
 			binder.bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
+			binder.bind(ExpresionReplacementsParser.class).toInstance(mock(ExpresionReplacementsParser.class));
 		}
 	}
 
@@ -133,7 +135,9 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 	private class TextEntryModuleMock extends TextEntryModule {
 
 		public TextEntryModuleMock() {
-			super(injector.getInstance(TextEntryModuleFactory.class), injector.getInstance(StyleSocket.class), injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class)));
+			super(	injector.getInstance(TextEntryModuleFactory.class), 
+					injector.getInstance(StyleSocket.class), 
+					injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class)));
 		}
 
 		public void setStyles(Map<String, String> styles) {
@@ -150,6 +154,11 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 
 		public void invokeSetMaxlengthBinding(Map<String, String> styles) {
 			setMaxlengthBinding(styles, XMLParser.parse("<gap type=\"text-entry\" uid=\"uid_0000\" />").getDocumentElement());
+		}
+		
+		@Override
+		public void maybeMakeExpressionReplacements(Map<String, String> styles) {
+			super.maybeMakeExpressionReplacements(styles);
 		}
 	}
 }

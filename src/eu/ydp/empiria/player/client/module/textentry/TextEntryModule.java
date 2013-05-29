@@ -25,9 +25,9 @@ import eu.ydp.gwtutil.client.StringUtils;
 public class TextEntryModule extends GapBase {
 
 	private final StyleSocket styleSocket;
-
-	protected Map<String, String> styles;
 	private ResponseSocket responseSocket;
+	
+	protected Map<String, String> styles;
 
 	@Inject
 	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket) {
@@ -60,6 +60,8 @@ public class TextEntryModule extends GapBase {
 		setWidthBinding(styles, getModuleElement());
 
 		installViewPanel(placeholders.get(0));
+		
+		maybeMakeExpressionReplacements(styles);
 	}
 
 	protected void setDimensions(Map<String, String> styles) {

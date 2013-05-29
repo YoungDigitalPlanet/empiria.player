@@ -36,7 +36,6 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private final IFlowSocket flowSocket;
 	private final AssessmentViewSocket assessmentViewSocket; // NOPMD
 	private final Page page = PlayerGinjectorFactory.getPlayerGinjector().getPage();
-	private final IItemProperties itemProperties = createItemProperties();
 	private final ModuleHandlerManager moduleHandlerManager;
 	private final AssessmentControllerFactory controllerFactory = PlayerGinjectorFactory.getPlayerGinjector().getAssessmentControllerFactory();
 
@@ -81,7 +80,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
 	public void init(AssessmentData data, DisplayContentOptions options) {
 		if (data != null) {
-			assessment = new Assessment(data, options, interactionEventsSocket, modulesRegistrySocket, itemProperties);
+			assessment = new Assessment(data, options, interactionEventsSocket, modulesRegistrySocket);
 			assessmentViewSocket.setAssessmentViewCarrier(new AssessmentViewCarrier(assessment, headerViewSocket, footerViewSocket));
 			assessment.setUp();
 			assessment.start();
@@ -130,15 +129,5 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	@Override
 	public PageInterferenceSocket getPageControllerSocket() {
 		return pageController;
-	}
-
-	protected IItemProperties createItemProperties() {
-		return new IItemProperties() {
-
-			@Override
-			public boolean hasInteractiveModules() {
-				return (pageController != null && pageController.hasInteractiveModules());
-			}
-		};
 	}
 }

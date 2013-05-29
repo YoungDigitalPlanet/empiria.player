@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.math;
 
+import java.util.Map;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -15,6 +17,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
@@ -40,6 +43,9 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	protected TextBox textBox;
 
 	private ChangeHandler changeHandler;
+	
+	@Inject
+	private TextBoxExpressionReplacer expressionReplacer;
 
 	@Inject
 	public TextEntryGapModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
@@ -142,5 +148,10 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	@Override
 	public IsExListBox getListBox() {
 		return null;
+	}
+
+	@Override
+	public void makeExpressionReplacements(Map<String, String> replacements) {
+		expressionReplacer.makeReplacements(textBox, replacements);
 	}
 }

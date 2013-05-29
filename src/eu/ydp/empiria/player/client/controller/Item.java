@@ -66,8 +66,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private final VariableManager<Response> responseManager;
 	private final BindableVariableManager<Outcome> outcomeManager;
 
-	// private StyleSocket styleSocket;
-
 	protected ModulesRegistrySocket modulesRegistrySocket;
 	protected DisplayContentOptions options;
 
@@ -81,13 +79,12 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private JSONArray state;
 
 	@Inject
-	public Item(@Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
-			@Assisted ModulesRegistrySocket mrs, @Assisted Map<String, Outcome> outcomeVariables, @Assisted ModuleHandlerManager moduleHandlerManager,
-			@Assisted JSONArray stateArray, ModuleFeedbackProcessor moduleFeedbackProcessor,
-			FlowActivityVariablesProcessor flowActivityVariablesProcessor, @PageScoped VariableProcessingAdapter variableProcessingAdapter,
-			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer, YJsJsonConverter yJsJsonConverter,
-			ExpressionListBuilder expressionListBuilder, @PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper,
-			ItemExpressionParser expressionParser) {
+	public Item(@Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket mrs,
+			@Assisted Map<String, Outcome> outcomeVariables, @Assisted ModuleHandlerManager moduleHandlerManager, @Assisted JSONArray stateArray,
+			ModuleFeedbackProcessor moduleFeedbackProcessor, FlowActivityVariablesProcessor flowActivityVariablesProcessor,
+			@PageScoped VariableProcessingAdapter variableProcessingAdapter, VariablesProcessingModulesInitializer variablesProcessingModulesInitializer,
+			YJsJsonConverter yJsJsonConverter, ExpressionListBuilder expressionListBuilder, @PageScoped ItemResponseManager responseManager,
+			ItemXMLWrapper xmlMapper, ItemExpressionParser expressionParser) {
 
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
@@ -96,7 +93,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		this.moduleFeedbackProcessor = moduleFeedbackProcessor;
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
-
 
 		Element itemBodyNode = xmlMapper.getItemBody();
 		expressionParser.parseAndConnectExpressions();
@@ -143,7 +139,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		@Override
 		public GroupIdentifier getParentGroupIdentifier(IModule module) {
 			IModule currParent = module;
-			
+
 			while (true) {
 				currParent = getParent(currParent);
 				if (currParent == null || currParent instanceof IGroup) {
@@ -170,11 +166,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 				currParent = getParent(currParent);
 			}
 			return hierarchy;
-		}
-
-		@Override
-		public boolean hasInteractiveModules() {
-			return Item.this.hasInteractiveModules();
 		}
 
 		@Override
@@ -405,7 +396,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	/**
 	 * Checks whether the item body contains at least one interactive module
-	 *
+	 * 
 	 * @return boolean
 	 */
 	public boolean hasInteractiveModules() {

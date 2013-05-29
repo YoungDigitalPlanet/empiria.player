@@ -46,7 +46,7 @@ public class OrderInteractionViewWidgetImpl extends Composite implements OrderIn
 		}
 	}
 
-		@Override
+	@Override
 	public <W extends IsWidget> void putItemsOnView(List<W> itemsInOrder) {
 		mainPanel.clear();
 		for (IsWidget viewItem : itemsInOrder) {

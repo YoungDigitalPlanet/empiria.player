@@ -67,6 +67,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap {
 		setDimensions();
 		setMaxlengthBinding(mathStyles, getModuleElement());
 		setWidthBinding(mathStyles, getModuleElement());
+		maybeMakeExpressionReplacements(mathStyles);
 	}
 
 	private void installViewInPlaceholder(HasWidgets placeholder) {

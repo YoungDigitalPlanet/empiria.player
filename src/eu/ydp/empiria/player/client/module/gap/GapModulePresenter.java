@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.gap;
 
+import java.util.Map;
+
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -46,5 +48,8 @@ public interface GapModulePresenter {
 
 	void removeFocusFromTextField();
 
-	public IsExListBox getListBox();
+	IsExListBox getListBox();
+	
+	void makeExpressionReplacements(Map<String, String> replacements);
+	
 }

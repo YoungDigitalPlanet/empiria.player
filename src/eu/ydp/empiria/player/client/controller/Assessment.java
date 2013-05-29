@@ -78,8 +78,6 @@ public class Assessment {
 	 * Properties instance prepared by assessmentController (based on item body
 	 * properties through the page controller)
 	 */
-	private final IItemProperties itemProperties;
-
 	private InteractionEventsListener interactionEventsListener;
 
 	/**
@@ -89,13 +87,12 @@ public class Assessment {
 	 *            XMLData object as data source
 	 */
 	public Assessment(AssessmentData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener,
-			ModulesRegistrySocket modulesRegistrySocket, IItemProperties itemProperties) {
+			ModulesRegistrySocket modulesRegistrySocket) {
 
 		this.xmlData = data.getData();
 
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.options = options;
-		this.itemProperties = itemProperties;
 
 		Document document = xmlData.getDocument();
 		Element rootNode = (Element) document.getElementsByTagName("assessmentTest").item(0);
@@ -214,11 +211,6 @@ public class Assessment {
 				currParent = getParent(currParent);
 			}
 			return hierarchy;
-		}
-
-		@Override
-		public boolean hasInteractiveModules() {
-			return itemProperties.hasInteractiveModules();
 		}
 
 		@Override

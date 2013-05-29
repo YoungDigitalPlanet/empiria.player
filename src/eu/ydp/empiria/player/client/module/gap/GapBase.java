@@ -1,12 +1,15 @@
 package eu.ydp.empiria.player.client.module.gap;
 
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH_ALIGN;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
 
 import java.util.Map;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Unit;
@@ -31,6 +34,7 @@ import eu.ydp.empiria.player.client.module.binding.gapmaxlength.GapMaxlengthBind
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingContext;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
+import eu.ydp.empiria.player.client.module.expression.ExpresionReplacementsParser;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -46,6 +50,9 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	@Inject
 	protected EventsBus eventsBus;
+	
+	@Inject
+	private ExpresionReplacementsParser replacementsParser;
 
 	public static final String INLINE_HTML_NBSP = "&nbsp;";
 
@@ -96,6 +103,16 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 				}
 			}
 		},new CurrentPageScope());
+	}
+	
+	protected void maybeMakeExpressionReplacements(Map<String, String> styles) {
+		boolean containsReplacementStyle = styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)  ||  styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
+		if (containsReplacementStyle){
+			String charactersSet = Objects.firstNonNull(styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS), styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS));
+			Map<String, String> replacements = replacementsParser.parse(charactersSet);
+			presenter.makeExpressionReplacements(replacements);
+		}
+		
 	}
 
 	@Override

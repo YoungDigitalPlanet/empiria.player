@@ -36,6 +36,7 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_MATH_GAP_WIDTH = "-empiria-math-gap-width";
 	public static final String EMPIRIA_MATH_GAP_WIDTH_ALIGN = "-empiria-math-gap-width-align";
 	public static final String EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION = "-empiria-math-drop-empty-option";
+	public static final String EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS = "-empiria-math-gap-expression-replacements";
 	public static final String EMPIRIA_REPORT_ITEMS_INCLUDE = "-empiria-report-items-include";
 	public static final String EMPIRIA_REPORT_SHOW_NON_ACTIVITES = "-empiria-report-show-non-activites";
 	public static final String EMPIRIA_SWIPE_DISABLE_ANIMATION = "-empiria-swipe-disable-animation";
@@ -45,6 +46,7 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_TEXTENTRY_GAP_MAXLENGTH = "-empiria-textentry-gap-maxlength";
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH = "-empiria-textentry-gap-width";
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN = "-empiria-textentry-gap-width-align";
+	public static final String EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS = "-empiria-textentry-gap-expression-replacements";
 
 	public static final String VALUE_BOLD = "bold";
 	public static final String VALUE_HIDE = "hide";

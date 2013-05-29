@@ -65,7 +65,7 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 		String styleName = getStyleName();
 
 		if (!isEnabled) {
-			styleName += "-disabled"; //NOPMD
+			styleName += "-disabled"; // NOPMD
 		}
 
 		return styleName;
