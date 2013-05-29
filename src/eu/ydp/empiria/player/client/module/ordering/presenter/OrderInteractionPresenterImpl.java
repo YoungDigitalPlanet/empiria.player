@@ -29,17 +29,17 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	private final ItemsResponseOrderController itemsResponseOrderController;
 	private final OrderingResetController orderingResetController;
 	private final OrderingShowingAnswersController showingAnswersController;
-	
+
 	private ModuleSocket socket;
 	private OrderInteractionModuleModel model;
 	private OrderInteractionBean bean;
-	
+
 	@Inject
 	public OrderInteractionPresenterImpl(
-			OrderInteractionView interactionView, 
-			ItemsMarkingController itemsMarkingController, 
-			OrderingItemsDao orderingItemsDao, 
-			ItemClickController itemClickController, 
+			OrderInteractionView interactionView,
+			ItemsMarkingController itemsMarkingController,
+			OrderingItemsDao orderingItemsDao,
+			ItemClickController itemClickController,
 			OrderInteractionModuleFactory orderInteractionModuleFactory,
 			ItemsResponseOrderController itemsResponseOrderController,
 			OrderingResetController orderingResetController,
@@ -68,7 +68,7 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 		InlineBodyGeneratorSocket bodyGeneratorSocket = socket.getInlineBodyGeneratorSocket();
 		OrderingViewBuilder viewBuilder = orderInteractionModuleFactory.getViewBuilder(bodyGeneratorSocket, bean, interactionView, orderingItemsDao);
 		viewBuilder.buildView();
-		
+
 		itemsResponseOrderController.updateResponseWithNewOrder(orderingItemsDao.getItemsOrder());
 		reset();
 	}
@@ -131,15 +131,16 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	@Override
 	public void itemClicked(String itemId) {
 		ItemClickAction itemClickAction = itemClickController.itemClicked(itemId);
-		
-		if(itemClickAction == ItemClickAction.SELECT || itemClickAction == ItemClickAction.UNSELECT){
-			OrderingItem orderingItem = orderingItemsDao.getItem(itemId);
-			interactionView.setChildStyles(orderingItem);
-		}else{
-			updateAllItemsStyles();
-			updateItemsOrderInView();
-			itemsResponseOrderController.updateResponseWithNewOrder(orderingItemsDao.getItemsOrder());
-			model.onModelChange();
+		if(itemClickAction != ItemClickAction.LOCK) {
+			if(itemClickAction == ItemClickAction.SELECT || itemClickAction == ItemClickAction.UNSELECT){
+				OrderingItem orderingItem = orderingItemsDao.getItem(itemId);
+				interactionView.setChildStyles(orderingItem);
+			}else{
+				updateAllItemsStyles();
+				updateItemsOrderInView();
+				itemsResponseOrderController.updateResponseWithNewOrder(orderingItemsDao.getItemsOrder());
+				model.onModelChange();
+			}
 		}
 	}
 
