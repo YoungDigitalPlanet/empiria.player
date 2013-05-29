@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
+import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModule;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
 import eu.ydp.empiria.player.client.module.containers.DivModule;
 import eu.ydp.empiria.player.client.module.containers.HtmlContainerModule;
@@ -131,6 +132,9 @@ public class ModuleProviderFactory {
 	@Inject
 	private Provider<TextInteractionModule> textInteractionModule;
 
+	@Inject
+	private Provider<ColorfillInteractionModule> colorfillInteractionModule;
+	
 	@Inject
 	private Provider<SimpleTextModule> simpleTextModule;
 
@@ -255,6 +259,10 @@ public class ModuleProviderFactory {
 		return textEntryGapModule;
 	}
 
+	public Provider<ColorfillInteractionModule> getColorfillInteractionModule() {
+		return colorfillInteractionModule;
+	}
+
 	public Provider<DivModule> getDivModule() {
 		return divModule;
 	}
@@ -302,4 +310,5 @@ public class ModuleProviderFactory {
 	public Provider<SubHtmlContainerModule> getSubHtmlContainerModule() {
 		return subHtmlContainerModule;
 	}
+
 }
