@@ -35,7 +35,8 @@ public class OrderInteractionViewItemStylesImpl implements OrderInteractionViewI
 	}
 
 	private String buildStyleName(OrderingItem orderingItem) {
-		StringBuilder styleToApply = new StringBuilder(stylesMap.get(orderingItem.getAnswerType()));
+		StringBuilder styleToApply = new StringBuilder(styleNames.QP_ORDERED_ITEM());
+		styleToApply.append(" ").append(stylesMap.get(orderingItem.getAnswerType()));
 		if (orderingItem.isLocked()) {
 			styleToApply.append(" ").append(styleNames.QP_ORDERED_ITEM_LOCKED());
 		}

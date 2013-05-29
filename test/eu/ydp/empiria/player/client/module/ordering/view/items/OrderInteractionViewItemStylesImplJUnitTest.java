@@ -41,7 +41,7 @@ public class OrderInteractionViewItemStylesImplJUnitTest extends AbstractTestBas
 											put(UserAnswerType.CORRECT,"qp-ordered-item-correct").
 											put(UserAnswerType.WRONG, "qp-ordered-item-wrong").
 											put(UserAnswerType.NONE, "qp-ordered-item-none").
-											put(UserAnswerType.DEFAULT, "qp-ordered-item").
+											put(UserAnswerType.DEFAULT, "qp-ordered-item-default").
 											build();
 
 
@@ -77,7 +77,10 @@ public class OrderInteractionViewItemStylesImplJUnitTest extends AbstractTestBas
 		for(UserAnswerType type : UserAnswerType.values()){
 			item.setAnswerType(type);
 			instance.applyStylesOnWidget(item, viewItem);
-			verify(widget).setStyleName(stylesMap.get(type));
+			ArgumentCaptor<String> styleNameCaptor = ArgumentCaptor.forClass(String.class);
+			verify(widget).setStyleName(styleNameCaptor.capture());
+			assertThat(styleNameCaptor.getValue().split(" ")).containsExactly(styleNames.QP_ORDERED_ITEM(),stylesMap.get(type));
+			reset(widget);
 		}
 	}
 

@@ -366,10 +366,13 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-ordered-horizontal")
 	public String QP_ORDERED_HORIZONTAL();
 
+	@DefaultStringValue("qp-ordered-item")
+	public String QP_ORDERED_ITEM();
+
 	@DefaultStringValue("qp-ordered-item-correct")
 	public String QP_ORDERED_ITEM_CORRECT();
 
-	@DefaultStringValue("qp-ordered-item")
+	@DefaultStringValue("qp-ordered-item-default")
 	public String QP_ORDERED_ITEM_DEFAULT();
 
 	@DefaultStringValue("qp-ordered-item-locked")
