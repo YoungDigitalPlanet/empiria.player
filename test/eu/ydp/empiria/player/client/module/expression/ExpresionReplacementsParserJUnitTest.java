@@ -24,6 +24,18 @@ public class ExpresionReplacementsParserJUnitTest {
 		// then
 		assertThat(map).isEqualTo(ImmutableMap.of("a", "b", ">=", "≥", "x", "×", "*", "×"));
 	}
+	
+	@Test
+	public void parse_shouldTrimWhitespaces(){
+		// given
+		String characters = " \n\ta|b|>=|≥|x|×|*|× ";
+		
+		// when
+		Map<String, String> map = parser.parse(characters);
+		
+		// then
+		assertThat(map).isEqualTo(ImmutableMap.of("a", "b", ">=", "≥", "x", "×", "*", "×"));
+	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void parse_InvalidSet_oddNumberOfParts(){

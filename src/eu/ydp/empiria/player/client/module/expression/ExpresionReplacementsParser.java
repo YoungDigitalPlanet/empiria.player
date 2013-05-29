@@ -19,7 +19,8 @@ public class ExpresionReplacementsParser {
 	}
 
 	private Iterator<String> getReplacementParts(String charactersSet) {
-		return Splitter.on(SEPARATOR).omitEmptyStrings().split(charactersSet).iterator();
+		String charactersSetTrimmed = charactersSet.trim();
+		return Splitter.on(SEPARATOR).omitEmptyStrings().split(charactersSetTrimmed).iterator();
 	}
 
 	private Map<String, String> createReplacementsMap(Iterator<String> characters) {
