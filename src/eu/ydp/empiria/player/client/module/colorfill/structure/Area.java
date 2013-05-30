@@ -15,6 +15,8 @@ public class Area {
 	@XmlAttribute
 	private Integer y;
 
+	public Area(){}
+	
 	public Area(int x, int y) {
 		this.x = x;
 		this.y = y;
