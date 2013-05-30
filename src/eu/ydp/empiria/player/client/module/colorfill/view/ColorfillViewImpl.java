@@ -2,20 +2,28 @@ package eu.ydp.empiria.player.client.module.colorfill.view;
 
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
-import eu.ydp.empiria.player.client.util.position.Point;
+import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 
-public class ColorfillInteractionViewImpl implements ColorfillInteractionView {
+public class ColorfillViewImpl implements ColorfillInteractionView {
 
-	@Inject
-	private ColorfillInteractionViewWidget viewWidget;
+	private static ColorfillViewWidgetUiBinder uiBinder = GWT.create(ColorfillViewWidgetUiBinder.class);
+
+	@UiTemplate("ColorfillView.ui.xml")
+	interface ColorfillViewWidgetUiBinder extends UiBinder<Widget, ColorfillViewImpl> {}
+
+	public ColorfillViewImpl() {
+		uiBinder.createAndBindUi(this);
+	}
 	
 	@Override
 	public Widget asWidget() {
-		return viewWidget.asWidget();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -43,19 +51,19 @@ public class ColorfillInteractionViewImpl implements ColorfillInteractionView {
 	}
 
 	@Override
-	public void setColor(Point point, ColorModel color) {
+	public void setColor(Area area, ColorModel color) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public ColorModel getColor(Point point) {
+	public ColorModel getColor(Area area) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void setColors(Map<Point, ColorModel> colors) {
+	public void setColors(Map<Area, ColorModel> colors) {
 		// TODO Auto-generated method stub
 		
 	}
