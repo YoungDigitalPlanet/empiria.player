@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
+import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
 
 public class ColorfillViewImpl implements ColorfillInteractionView {
 
@@ -75,6 +76,12 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	@Override
 	public void setAreaClickListener(ColorfillAreaClickListener listener) {
 		canvas.setAreaClickListener(listener);
+	}
+
+	@Override
+	public void setImage(Image image) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
