@@ -24,13 +24,21 @@ public class ResponseModuleScopedProvider implements Provider<Response>{
 	
 	@Override
 	public Response get() {
-		ModuleCreationContext context = moduleScopeStack.getCurrentTopContext();
-		Element element = context.getXmlElement();
-		String responseId = findResponseIdByXml(element);
-		
+		String responseId = findResponseIdentifier();
+		return getResponseForId(responseId);
+	}
+
+	private Response getResponseForId(String responseId) {
 		Map<String, Response> responses = responseManager.getVariablesMap();
 		Response response = responses.get(responseId);
 		return response;
+	}
+
+	private String findResponseIdentifier() {
+		ModuleCreationContext context = moduleScopeStack.getCurrentTopContext();
+		Element element = context.getXmlElement();
+		String responseId = findResponseIdByXml(element);
+		return responseId;
 	}
 
 	private String findResponseIdByXml(Element element) {

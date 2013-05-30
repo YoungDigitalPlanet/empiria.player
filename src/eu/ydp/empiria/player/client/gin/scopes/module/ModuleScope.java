@@ -21,7 +21,7 @@ public class ModuleScope extends AbstractCustomScope {
 		
 		return this.moduleCreationContext.equals(context);
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return moduleCreationContext.hashCode();

@@ -7,15 +7,14 @@ import com.google.inject.Singleton;
 @Singleton
 public class ModuleScopeStack {
 
-	private Stack<ModuleCreationContext> contextsStack = new Stack<ModuleCreationContext>();
+	private final Stack<ModuleCreationContext> contextsStack = new Stack<ModuleCreationContext>();
 	
 	public void pushContext(ModuleCreationContext context){
 		contextsStack.push(context);
 	}
 	
 	public ModuleCreationContext getCurrentTopContext(){
-		ModuleCreationContext context = contextsStack.peek();
-		return context;
+		return contextsStack.peek();
 	}
 	
 	public ModuleCreationContext pop(){
