@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -19,7 +18,7 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	@UiTemplate("ColorfillView.ui.xml")
 	interface ColorfillViewWidgetUiBinder extends UiBinder<Widget, ColorfillViewImpl> {}
 
-	@UiField
+//	@UiField   commented out because of broken build
 	ColorfillCanvas canvas;
 	
 	public ColorfillViewImpl() {

@@ -4,6 +4,6 @@
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
 	<g:FlowPanel styleName="qp-colofill">
 		<v:ColorfillPalette ui:field="palette" />
-		<v:ColorfillCanvas ui:field="canvas" />
+	<!--	<v:ColorfillCanvas ui:field="canvas" />   commented out because of broken build!    -->
 	</g:FlowPanel>
 </ui:UiBinder> 
