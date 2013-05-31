@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.Factory;
@@ -16,13 +17,13 @@ public class ColorfillInteractionModule extends AbstractInteractionModule<Colorf
 
 	@Inject
 	private Provider<ColorfillInteractionModule> moduleProvider;	
-		
-	//@Inject
-	//private ColorfillInteractionModuleFactory moduleFactory;
-	
-	private ColorfillInteractionStructure colorfillInteractionStructure;
+	@Inject
 	private ColorfillInteractionPresenter presenter;
+	@Inject @ModuleScoped
 	private ColorfillInteractionModuleModel moduleModel;
+		
+	private ColorfillInteractionStructure colorfillInteractionStructure;
+	
 
 	@Override
 	public ColorfillInteractionModule getNewInstance() {
@@ -36,7 +37,7 @@ public class ColorfillInteractionModule extends AbstractInteractionModule<Colorf
 
 	@Override
 	protected void initalizeModule() {
-		 //TODO: moduleModel = moduleFactory.getColorfillInteractionModuleModel(getResponse(), this);		
+		moduleModel.initialize(this);
 	}
 
 	@Override

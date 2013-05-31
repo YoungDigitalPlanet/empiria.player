@@ -31,6 +31,10 @@ public class ColorModel {
 	
 	private ColorModel(){}
 
+	public boolean isTransparent(){
+		return alpha < 255;
+	}
+	
 	public int getRed() {
 		return red;
 	}
@@ -73,21 +77,28 @@ public class ColorModel {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		ColorModel other = (ColorModel) obj;
-		if (alpha != other.alpha)
+		if (alpha != other.alpha) {
 			return false;
-		if (blue != other.blue)
+		}
+		if (blue != other.blue) {
 			return false;
-		if (green != other.green)
+		}
+		if (green != other.green) {
 			return false;
-		if (red != other.red)
+		}
+		if (red != other.red) {
 			return false;
+		}
 		return true;
 	}
 	

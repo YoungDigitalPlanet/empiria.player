@@ -1,14 +1,61 @@
 package eu.ydp.empiria.player.client.module.colorfill;
 
-import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
+import java.util.List;
+
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
+import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
+import eu.ydp.empiria.player.client.module.colorfill.presenter.handlers.AreaClickListener;
+import eu.ydp.empiria.player.client.module.colorfill.presenter.handlers.ColorButtonClickListener;
+import eu.ydp.empiria.player.client.module.colorfill.structure.ColorButton;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionBean;
+import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
 
 public class ColorfillViewBuilder {
 
-	public ColorfillInteractionView buildView(ColorfillInteractionBean structure, BodyGeneratorSocket bgs) {
-		// TODO Auto-generated method stub
-		return null;
+	private final ColorfillInteractionView interactionView;
+	private final ColorfillInteractionPresenter interactionPresenter;
+
+	@Inject
+	public ColorfillViewBuilder(
+			@ModuleScoped ColorfillInteractionView interactionView,
+			@ModuleScoped ColorfillInteractionPresenter interactionPresenter) {
+		this.interactionView = interactionView;
+		this.interactionPresenter = interactionPresenter;
 	}
 
+	public void buildView(ColorfillInteractionBean bean) {
+			List<ColorButton> buttons = bean.getButtons().getButtons();
+			createButtons(buttons);
+
+			setListenersOnView();
+			
+			Image image = bean.getImage();
+			interactionView.setImage(image);
+	}
+
+	private void createButtons(List<ColorButton> buttons) {
+		for (ColorButton colorButton : buttons) {
+			ColorModel colorModel = ColorModel.createFromRgbString(colorButton.getRgb());
+			interactionView.createButton(colorModel);
+		}
+	}
+
+	private void setListenersOnView() {
+		setButtonClickedListener();
+		setImageColorChangedListener();
+	}
+
+	private void setImageColorChangedListener() {
+		AreaClickListener areaClickListener = new AreaClickListener(interactionPresenter);
+		interactionView.setAreaClickListener(areaClickListener);
+	}
+
+	private void setButtonClickedListener() {
+		ColorButtonClickListener buttonClickListener = new ColorButtonClickListener(interactionPresenter);
+		interactionView.setButtonClickListener(buttonClickListener);
+	}
 }

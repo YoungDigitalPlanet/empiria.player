@@ -12,6 +12,9 @@ import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
+import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
+import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
+import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
@@ -29,7 +32,12 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bind(Response.class)
 			.annotatedWith(ModuleScoped.class)
 			.toProvider(ResponseModuleScopedProvider.class);
-		
+	
+		bindOrdering();
+		bindColorfill();
+	}
+	
+	private void bindOrdering() {
 		bind(new TypeLiteral<ModuleScopedProvider<OrderingItemsDao>>(){}).in(Singleton.class);
 		bind(OrderingItemsDao.class)
 			.annotatedWith(ModuleScoped.class)
@@ -39,11 +47,28 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bind(OrderInteractionModuleModel.class)
 			.annotatedWith(ModuleScoped.class)
 			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<OrderInteractionModuleModel>>(){}));
-
+		
 		bind(new TypeLiteral<ModuleScopedProvider<OrderInteractionView>>(){}).in(Singleton.class);
 		bind(OrderInteractionView.class)
 			.annotatedWith(ModuleScoped.class)
 			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<OrderInteractionView>>(){}));
+	}
+
+	private void bindColorfill() {
+		bind(new TypeLiteral<ModuleScopedProvider<ColorfillInteractionView>>(){}).in(Singleton.class);
+		bind(ColorfillInteractionView.class)
+			.annotatedWith(ModuleScoped.class)
+			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ColorfillInteractionView>>(){}));
+		
+		bind(new TypeLiteral<ModuleScopedProvider<ColorfillInteractionModuleModel>>(){}).in(Singleton.class);
+		bind(ColorfillInteractionModuleModel.class)
+			.annotatedWith(ModuleScoped.class)
+			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ColorfillInteractionModuleModel>>(){}));
+		
+		bind(new TypeLiteral<ModuleScopedProvider<ColorfillInteractionPresenter>>(){}).in(Singleton.class);
+		bind(ColorfillInteractionPresenter.class)
+			.annotatedWith(ModuleScoped.class)
+			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ColorfillInteractionPresenter>>(){}));
 	}
 
 }

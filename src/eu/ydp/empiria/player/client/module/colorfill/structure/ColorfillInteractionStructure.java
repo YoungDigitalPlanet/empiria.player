@@ -37,14 +37,11 @@ public class ColorfillInteractionStructure extends AbstractModuleStructure<Color
 
 	@Override
 	protected NodeList getParentNodesForFeedbacks(Document xmlDocument) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected void prepareStructure(YJsonArray structure) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
