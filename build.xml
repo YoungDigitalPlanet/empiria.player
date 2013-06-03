@@ -217,6 +217,15 @@
 	<target name="test.fast" depends="javac.tests" description="Run development fast mode tests">
   	<delete dir="${test.reports.dev_fast.dir}" />
     <mkdir dir="${test.reports.dev_fast.dir}" />
+    <taskdef name="findTestWithoutSuite" classname="eu.ydp.empiria.player.TestsWithoutSuiteFinder">
+    	  <classpath>
+    	      	<pathelement location="src" />
+    	      	<pathelement location="test" />
+    	      	<pathelement location="${bin.test.dir}" />
+    	        <path refid="project.class.path" />
+    	      </classpath>
+    	</taskdef>
+    <findTestWithoutSuite assigne="otherTests" />
     <junit fork="yes" printsummary="yes" haltonfailure="yes">
       <jvmarg line="-Xmx256m -Xss16M" />
       <sysproperty key="gwt.args" value="-logLevel WARN" />
@@ -224,13 +233,14 @@
       <classpath>
       	<pathelement location="src" />
       	<pathelement location="test" />
-
       	<pathelement location="${bin.test.dir}" />
         <path refid="project.class.path" />
       </classpath>
       <batchtest todir="${test.reports.dev_fast.dir}" >
-        <fileset dir="test" >
-          <include name="**/*Test.java" />
+      	<fileset dir="test" includes="${otherTests}" />
+      	<fileset dir="test">
+          <include name="**/*JUnitTestSuite.java" />
+          <include name="**/*GWTTestCaseSuite.java"/>
         </fileset>
       </batchtest>
       <formatter type="plain" />

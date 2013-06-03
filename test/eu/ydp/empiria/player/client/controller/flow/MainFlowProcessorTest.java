@@ -2,10 +2,12 @@ package eu.ydp.empiria.player.client.controller.flow;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
+import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
 
+@RunOutsideTestSuite
 public class MainFlowProcessorTest extends GWTTestCase {
 
 	@Override

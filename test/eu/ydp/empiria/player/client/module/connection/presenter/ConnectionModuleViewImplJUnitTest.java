@@ -1,9 +1,14 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.*;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -29,6 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
+import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.TestJAXBParser;
@@ -56,9 +62,10 @@ import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
-@SuppressWarnings("PMD")
+//@SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest({ NativeEvent.class, CssHelper.class, NodeList.class, Node.class, Style.class })
+@PrepareForTest(value={  CssHelper.class, NodeList.class, Node.class, Style.class,NativeEvent.class })
+@RunOutsideTestSuite
 public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private class CustomGinModule implements Module {
@@ -94,7 +101,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 			return cssHelper;
 		}
 
-		private void createNodeListMock(com.google.gwt.user.client.Element element) {
+		private void createNodeListMock(final com.google.gwt.user.client.Element element) {
 			NodeList<?> nodeList = mock(NodeList.class);
 			doReturn(0).when(nodeList).getLength();
 			doReturn(nodeList).when(element).getChildNodes();
@@ -168,7 +175,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		ConnectionSurfacesManagerFactory surfacesManagerFactory = injector.getInstance(ConnectionSurfacesManagerFactory.class);
 		when(surfacesManagerFactory.getConnectionSurfacesManager(Mockito.any(HasDimensions.class))).thenAnswer(new Answer<ConnectionSurfacesManager>() {
 			@Override
-			public ConnectionSurfacesManager answer(InvocationOnMock invocation) throws Throwable {
+			public ConnectionSurfacesManager answer(final InvocationOnMock invocation) throws Throwable {
 				HasDimensions view = (HasDimensions) invocation.getArguments()[0];
 				ConnectionSurfacesManager surfacesManager = new ConnectionSurfacesManager(view);
 				injector.getMembersInjector(ConnectionSurfacesManager.class).injectMembers(surfacesManager);

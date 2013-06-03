@@ -5,9 +5,11 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
+import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.controller.multiview.animation.PageSwitchAnimation;
 
 @SuppressWarnings("PMD")
+@RunOutsideTestSuite
 public class PageSwitchAnimationTest extends GWTTestCase {
 
 	public void testAnimation() {
