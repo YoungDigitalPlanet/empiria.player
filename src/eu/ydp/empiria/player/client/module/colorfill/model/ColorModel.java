@@ -1,8 +1,9 @@
 package eu.ydp.empiria.player.client.module.colorfill.model;
 
+
 public class ColorModel {
-	
-	public static ColorModel createFromRgbString(String rgb) {
+
+	public static ColorModel createFromRgbString(final String rgb) {
 		ColorModel cm = new ColorModel();
 		cm.red = Integer.parseInt(rgb.substring(0,2), 16);
 		cm.green = Integer.parseInt(rgb.substring(2, 4), 16);
@@ -10,8 +11,8 @@ public class ColorModel {
 		cm.alpha = 255;
 		return cm;
 	}
-	
-	public static ColorModel createFromRgba(int red, int green, int blue, int alpha) {
+
+	public static ColorModel createFromRgba(final int red, final int green, final int blue, final int alpha) {
 		ColorModel cm = new ColorModel();
 		cm.red = red;
 		cm.green = green;
@@ -19,7 +20,7 @@ public class ColorModel {
 		cm.alpha = alpha;
 		return cm;
 	}
-	
+
 	public static ColorModel createEraser() {
 		return new ColorModel();
 	}
@@ -28,7 +29,7 @@ public class ColorModel {
 	private int green;
 	private int blue;
 	private int alpha;
-	
+
 	private ColorModel(){}
 
 	public boolean isTransparent(){
@@ -50,16 +51,16 @@ public class ColorModel {
 	public int getAlpha() {
 		return alpha;
 	}
-	
+
 	public String toStringRgb() {
 		return toHex(red) + toHex(green) + toHex(blue);
 	}
-	
+
 	public String toStringRgba() {
 		return toHex(red) + toHex(green) + toHex(blue) + toHex(alpha);
 	}
-	
-	private String toHex(int n) {
+
+	private String toHex(final int n) {
 		String hex = Integer.toHexString(n);
 		return (hex.length() > 1) ? hex : "0" + hex;
 	}
@@ -101,5 +102,18 @@ public class ColorModel {
 		}
 		return true;
 	}
-	
+
+	public boolean equalsWithoutAlpha(final ColorModel other) {
+		if (blue != other.blue) {
+			return false;
+		}
+		if (green != other.green) {
+			return false;
+		}
+		if (red != other.red) {
+			return false;
+		}
+		return true;
+	};
+
 }
