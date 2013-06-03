@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.colorfill.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class ColorModelTest {
 		colorModel = ColorModel.createFromRgba(20, 30, 40, 50);
 		
 		// then
-		assertThat(colorModel.toStringRgb(), equalToIgnoringCase("141E28"));
+		assertThat(colorModel.toStringRgb(), equalTo("141e28"));
 	}
 
 	@Test
@@ -24,7 +24,7 @@ public class ColorModelTest {
 		colorModel = ColorModel.createFromRgba(20, 30, 40, 50);
 		
 		// then
-		assertThat(colorModel.toStringRgba(), equalToIgnoringCase("141E2832"));
+		assertThat(colorModel.toStringRgba(), equalTo("141e2832"));
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class ColorModelTest {
 		colorModel = ColorModel.createFromRgbString("141e28");
 		
 		// then
-		assertThat(colorModel.toStringRgb(), equalToIgnoringCase("141E28"));
+		assertThat(colorModel.toStringRgb(), equalTo("141e28"));
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public class ColorModelTest {
 		colorModel = ColorModel.createFromRgbString("141e28");
 		
 		// then
-		assertThat(colorModel.toStringRgba(), equalToIgnoringCase("141E28ff"));
+		assertThat(colorModel.toStringRgba(), equalTo("141e28ff"));
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class ColorModelTest {
 		colorModel = ColorModel.createEraser();
 		
 		// then
-		assertThat(colorModel.toStringRgba(), equalToIgnoringCase("00000000"));
+		assertThat(colorModel.toStringRgba(), equalTo("00000000"));
 	}
 
 }

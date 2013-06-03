@@ -71,7 +71,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-choice-option")
 	public String QP_CHOICE_OPTION();
 
-
 	@DefaultStringValue("qp-choice-option-box")
 	public String QP_CHOICE_OPTION_BOX();
 
@@ -80,6 +79,24 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-choice-option-cover")
 	public String QP_CHOICE_OPTION_COVER();
+
+	@DefaultStringValue("qp-colorfill")
+	public String QP_COLORFILL();
+
+	@DefaultStringValue("qp-colorfill-canvas")
+	public String QP_COLORFILL_CANVAS();
+
+	@DefaultStringValue("qp-colorfill-palette")
+	public String QP_COLORFILL_PALETTE();
+
+	@DefaultStringValue("qp-colorfill-palette-button")
+	public String QP_COLORFILL_PALETTE_BUTTON();
+
+	@DefaultStringValue("qp-colorfill-palette-button-container")
+	public String QP_COLORFILL_PALETTE_BUTTON_CONTAINER();
+
+	@DefaultStringValue("qp-colorfill-palette-button-container-selected")
+	public String QP_COLORFILL_PALETTE_BUTTON_CONTAINER_SELECTED();
 
 	@DefaultStringValue("qp-connection")
 	public String QP_CONNECTION();

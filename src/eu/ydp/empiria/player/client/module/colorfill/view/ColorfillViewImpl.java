@@ -4,8 +4,11 @@ import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
@@ -18,58 +21,65 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	@UiTemplate("ColorfillView.ui.xml")
 	interface ColorfillViewWidgetUiBinder extends UiBinder<Widget, ColorfillViewImpl> {}
 
-//	@UiField   commented out because of broken build
+	@UiField
+	FlowPanel container;
+	
+	@UiField(provided = true)
 	ColorfillCanvas canvas;
 	
-	public ColorfillViewImpl() {
+	@UiField(provided = true)
+	ColorfillPalette palette;
+	
+	@Inject
+	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette) {
+		this.canvas = canvas;
+		this.palette = palette;
 		uiBinder.createAndBindUi(this);
 	}
 	
 	@Override
 	public Widget asWidget() {
-		throw new UnsupportedOperationException();
+		return container;
+	}
+
+	@Override
+	public void setImage(Image image) {
+		canvas.setImage(image);
 	}
 
 	@Override
 	public void createButton(ColorModel color) {
-		// TODO Auto-generated method stub
-		
+		palette.createButton(color);
 	}
 
 	@Override
 	public void selectButton(ColorModel color) {
-		// TODO Auto-generated method stub
-		
+		palette.selectButton(color);
 	}
 
 	@Override
 	public void deselectButton(ColorModel color) {
-		// TODO Auto-generated method stub
-		
+		palette.deselectButton(color);
 	}
 
 	@Override
 	public void setButtonClickListener(ColorfillButtonClickListener listener) {
-		// TODO Auto-generated method stub
-		
+		palette.setButtonClickListener(listener);
 	}
 
 	@Override
 	public void setColor(Area area, ColorModel color) {
-		// TODO Auto-generated method stub
-		
+		canvas.setColor(area, color);
 	}
 
 	@Override
 	public ColorModel getColor(Area area) {
-		// TODO Auto-generated method stub
-		return null;
+		return canvas.getColor(area);
 	}
 
 	@Override
 	public void setColors(Map<Area, ColorModel> colors) {
-		// TODO Auto-generated method stub
-		
+		canvas.setColors(colors);
 	}
 
 	@Override
@@ -78,9 +88,8 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	}
 
 	@Override
-	public void setImage(Image image) {
-		// TODO Auto-generated method stub
-		
+	public void reset() {
+		canvas.reset();
 	}
 
 }
