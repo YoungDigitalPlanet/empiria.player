@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import static eu.ydp.gwtutil.client.util.UserAgentChecker.isMobileUserAgent;
-import static eu.ydp.gwtutil.client.util.UserAgentChecker.isUserAgent;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,9 +30,8 @@ import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
 public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
@@ -151,11 +147,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	}
 
 	private boolean isGeckoSupport(BaseMediaConfiguration bmc) {
-		boolean geckoSupport = true;
-		if (!SourceUtil.containsOgg(bmc.getSources()) && (isUserAgent(UserAgent.GECKO1_8) || isUserAgent(UserAgent.OPERA) || isMobileUserAgent(MobileUserAgent.FIREFOX))) {
-			geckoSupport = false;
-		}
-		return geckoSupport;
+		boolean containsOgg = SourceUtil.containsOgg(bmc.getSources());
+		boolean supportsMp3 = MediaChecker.isHtml5Mp3Support();
+		return containsOgg  ||  supportsMp3;
 	}
 
 	private MediaExecutor<?> createSWFVideoMediaExecutor() {
