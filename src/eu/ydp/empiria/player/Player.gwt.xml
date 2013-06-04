@@ -20,8 +20,8 @@
 
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject" />
-	<set-property name="compiler.emulatedStack" value="true" /> <!-- true | false -->
-	<set-property name="compiler.stackMode" value="strip" /> <!-- native | strip | emulated -->
+	<!-- 	<set-property name="compiler.emulatedStack" value="true" /> true | false -->
+	<set-property name="compiler.stackMode" value="native" /> <!-- native | strip | emulated -->
 	<set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true" />
 
 	<!-- Specify the app entry point class. -->
@@ -227,7 +227,7 @@
 <!-- 	</replace-with> -->
 
 	<!-- END ANIMATIONS -->
-	
+
 	<add-linker name="xsiframescripts" />
-	
+
 </module>
