@@ -21,15 +21,15 @@ import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionVi
 public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPresenter {
 
 	private final ColorfillInteractionView interactionView;
-	private final ColorfillInteractionModuleModel model;	
+	private final ColorfillInteractionModuleModel model;
 	private final ResponseUserAnswersConverter responseUserAnswersConverter;
 	private final ResponseAnswerByViewBuilder responseAnswerByViewBuilder;
 	private final ColorfillViewBuilder colorfillViewBuilder;
 	private final ColorButtonsController colorButtonsController;
-	
+
 	private ColorfillInteractionBean bean;
 	private List<Area> areas;
-	
+
 	@Inject
 	public ColorfillInteractionPresenterImpl(
 			ResponseUserAnswersConverter responseUserAnswersConverter,
@@ -49,7 +49,7 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 
 	@Override
 	public void bindView() {
-		colorfillViewBuilder.buildView(bean);
+		colorfillViewBuilder.buildView(bean,this);
 	}
 
 	@Override

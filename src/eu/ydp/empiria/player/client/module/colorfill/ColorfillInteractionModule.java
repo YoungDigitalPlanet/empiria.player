@@ -16,14 +16,15 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteract
 public class ColorfillInteractionModule extends AbstractInteractionModule<ColorfillInteractionModule, ColorfillInteractionModuleModel, ColorfillInteractionBean> implements  Factory<ColorfillInteractionModule> {
 
 	@Inject
-	private Provider<ColorfillInteractionModule> moduleProvider;	
+	private Provider<ColorfillInteractionModule> moduleProvider;
 	@Inject
 	private ColorfillInteractionPresenter presenter;
 	@Inject @ModuleScoped
 	private ColorfillInteractionModuleModel moduleModel;
-		
+
+	@Inject
 	private ColorfillInteractionStructure colorfillInteractionStructure;
-	
+
 
 	@Override
 	public ColorfillInteractionModule getNewInstance() {

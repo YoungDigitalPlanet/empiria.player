@@ -83,6 +83,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-colorfill")
 	public String QP_COLORFILL();
 
+	@DefaultStringValue("qp-colorfill-img")
+	public String QP_COLORFILL_IMG();
+
 	@DefaultStringValue("qp-colorfill-canvas")
 	public String QP_COLORFILL_CANVAS();
 

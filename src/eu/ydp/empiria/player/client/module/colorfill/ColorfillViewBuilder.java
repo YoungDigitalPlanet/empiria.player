@@ -17,22 +17,20 @@ import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionVi
 public class ColorfillViewBuilder {
 
 	private final ColorfillInteractionView interactionView;
-	private final ColorfillInteractionPresenter interactionPresenter;
+	private ColorfillInteractionPresenter interactionPresenter;
 
 	@Inject
-	public ColorfillViewBuilder(
-			@ModuleScoped ColorfillInteractionView interactionView,
-			@ModuleScoped ColorfillInteractionPresenter interactionPresenter) {
+	public ColorfillViewBuilder(@ModuleScoped ColorfillInteractionView interactionView) {
 		this.interactionView = interactionView;
-		this.interactionPresenter = interactionPresenter;
 	}
 
-	public void buildView(ColorfillInteractionBean bean) {
+	public void buildView(ColorfillInteractionBean bean,ColorfillInteractionPresenter interactionPresenter) {
+			this.interactionPresenter = interactionPresenter;
 			List<ColorButton> buttons = bean.getButtons().getButtons();
 			createButtons(buttons);
 
 			setListenersOnView();
-			
+
 			Image image = bean.getImage();
 			interactionView.setImage(image);
 	}
