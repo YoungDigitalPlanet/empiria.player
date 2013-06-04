@@ -17,7 +17,7 @@ public class DragDropHelperImpl implements DragDropHelper {
 	protected DragDropObjectFactory obFactory;
 
 	private final static boolean isNativeDragSupported =    DragEvent.isSupported()
-														&& !UserAgentChecker.isUserAgent(UserAgent.IE8,UserAgent.IE9)
+														&& !UserAgentChecker.isUserAgent(UserAgent.IE8, UserAgent.IE9, UserAgent.IE10)
 														&& !UserAgentChecker.isMobileUserAgent();
 
 	@SuppressWarnings("unchecked")

@@ -126,7 +126,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 
 	private void setAutoBehaviorForDrag() {
 		// IE bug
-		if (UserAgentChecker.isUserAgent(UserAgent.IE9, UserAgent.IE8)) {
+		if (UserAgentChecker.isUserAgent(UserAgent.IE9, UserAgent.IE8, UserAgent.IE10)) {
 			originalWidget.addDomHandler(new MouseDownHandler() {
 				@Override
 				public void onMouseDown(MouseDownEvent event) {
