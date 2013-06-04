@@ -120,6 +120,7 @@ public class ColorfillCanvasStubImpl implements ColorfillCanvas {
 
 			@Override
 			public void execute(NativeEvent event) {
+				event.preventDefault();
 				CanvasElement canvasElement = canvasStubView.getCanvas().getCanvasElement();
 				listener.onAreaClick(new Area(positionHelper.getPositionX(event, canvasElement), positionHelper.getPositionY(event, canvasElement)));
 			}
