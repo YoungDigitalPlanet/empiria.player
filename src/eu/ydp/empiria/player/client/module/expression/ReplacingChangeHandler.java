@@ -2,28 +2,41 @@ package eu.ydp.empiria.player.client.module.expression;
 
 import java.util.Map;
 
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.inject.Inject;
 
-public class ReplacingChangeHandler implements KeyPressHandler{
+import eu.ydp.empiria.player.client.components.event.InputEventListener;
+import eu.ydp.empiria.player.client.components.event.InputEventRegistrar;
+import eu.ydp.gwtutil.client.Wrapper;
+
+public class ReplacingChangeHandler {
 	
-	private HasValue<String> hasValue;
+	@Inject
+	private InputEventRegistrar eventRegistrar;
+	
+	private HasValue<String> textBox;
 	private Map<String, String> replacements;
+	
+	private InputEventListener listener = new InputEventListener() {
+		
+		@Override
+		public void onInput() {
+			replace();
+		}
+	};
 
-	public void init(HasValue<String> hasValue, Map<String, String> replacements) {
-		this.hasValue = hasValue;
+	public <T extends IsWidget &  HasValue<String>> void init(Wrapper<T> textBox, Map<String, String> replacements) {
+		this.textBox = textBox.getInstance();
 		this.replacements = replacements;
+		eventRegistrar.registerInputHandler(textBox.getInstance(), listener);
 	}
 
-	@Override
-	public void onKeyPress(KeyPressEvent event) {
-		char character = event.getCharCode();
-		String text = String.valueOf(character);
-		if (hasValue.getValue().isEmpty()  &&  replacements.containsKey(text)){
-			hasValue.setValue(replacements.get(text));
-			event.preventDefault();
-		}		
+	private void replace() {
+		String text = textBox.getValue();
+		if (replacements.containsKey(text)){
+			textBox.setValue(replacements.get(text));
+		}
 	}
 	
 }

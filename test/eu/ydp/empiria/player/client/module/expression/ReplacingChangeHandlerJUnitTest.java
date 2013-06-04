@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.expression;
 
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -9,71 +10,86 @@ import static org.mockito.Mockito.when;
 import java.util.Map;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.IsWidget;
 
+import eu.ydp.empiria.player.client.components.event.InputEventListener;
+import eu.ydp.empiria.player.client.components.event.InputEventRegistrar;
+import eu.ydp.gwtutil.client.Wrapper;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class ReplacingChangeHandlerJUnitTest {
 
+	@InjectMocks
 	private ReplacingChangeHandler handler = new ReplacingChangeHandler();
+	
+	@Mock
+	private InputEventRegistrar eventRegistrar;
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void replace_foundElement() {
 		// given
-		HasValue<String> hasValue = mock(HasValue.class);
-		when(hasValue.getValue()).thenReturn("");
+		TextBoxMock hasValue = mock(TextBoxMock.class);
+		when(hasValue.getValue()).thenReturn("a");
 		Map<String, String> replacements = ImmutableMap.of("a", "b", "c", "d");
-		handler.init(hasValue, replacements);
 		
 		KeyPressEvent event = mock(KeyPressEvent.class);
 		when(event.getCharCode()).thenReturn("a".charAt(0));
 		
+		ArgumentCaptor<InputEventListener> listenerCaptor = ArgumentCaptor.forClass(InputEventListener.class);
+		handler.init(Wrapper.of(hasValue), replacements);
+		verify(eventRegistrar).registerInputHandler(eq(hasValue), listenerCaptor.capture());
+		
 		// when
-		handler.onKeyPress(event);
+		listenerCaptor.getValue().onInput();
 		
 		// then
 		verify(hasValue).setValue("b");
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
-	public void replace_foundElement_notEmptyGap() {
+	public void replace_foundOtherElement() {
 		// given
-		HasValue<String> hasValue = mock(HasValue.class);
+		TextBoxMock hasValue = mock(TextBoxMock.class);
 		when(hasValue.getValue()).thenReturn("x");
 		Map<String, String> replacements = ImmutableMap.of("a", "b", "c", "d");
-		handler.init(hasValue, replacements);
 		
-		KeyPressEvent event = mock(KeyPressEvent.class);
-		when(event.getCharCode()).thenReturn("a".charAt(0));
+		ArgumentCaptor<InputEventListener> listenerCaptor = ArgumentCaptor.forClass(InputEventListener.class);
+		handler.init(Wrapper.of(hasValue), replacements);
+		verify(eventRegistrar).registerInputHandler(eq(hasValue), listenerCaptor.capture());
 		
 		// when
-		handler.onKeyPress(mock(KeyPressEvent.class));
+		listenerCaptor.getValue().onInput();
 		
 		// then
 		verify(hasValue, never()).setValue(anyString());
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
-	public void replace_notFoundElement() {
+	public void replace_emptyGap() {
 		// given
-		HasValue<String> hasValue = mock(HasValue.class);
+		TextBoxMock hasValue = mock(TextBoxMock.class);
 		when(hasValue.getValue()).thenReturn("");
 		Map<String, String> replacements = ImmutableMap.of("a", "b", "c", "d");
-		handler.init(hasValue, replacements);
 		
-		KeyPressEvent event = mock(KeyPressEvent.class);
-		when(event.getCharCode()).thenReturn("x".charAt(0));
+		ArgumentCaptor<InputEventListener> listenerCaptor = ArgumentCaptor.forClass(InputEventListener.class);
+		handler.init(Wrapper.of(hasValue), replacements);
+		verify(eventRegistrar).registerInputHandler(eq(hasValue), listenerCaptor.capture());
 		
 		// when
-		handler.onKeyPress(event);
+		listenerCaptor.getValue().onInput();
 		
 		// then
 		verify(hasValue, never()).setValue(anyString());
 	}
+	
+	private static interface TextBoxMock extends IsWidget, HasValue<String> { }
 }

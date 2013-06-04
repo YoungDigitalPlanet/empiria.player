@@ -6,6 +6,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.gwtutil.client.Wrapper;
+
 public class TextBoxExpressionReplacer {
 	
 	@Inject
@@ -13,8 +15,7 @@ public class TextBoxExpressionReplacer {
 
 	public void makeReplacements(final TextBox textBox, final Map<String, String> replacements){
 		ReplacingChangeHandler handler = handlerProvider.get();
-		handler.init(textBox, replacements);
-		textBox.addKeyPressHandler(handler);
+		handler.init(Wrapper.of(textBox), replacements);
 	}
 
 }
