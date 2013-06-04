@@ -41,7 +41,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest({ Context2d.class, ImageData.class })
+@PrepareForTest({ Context2d.class, ImageData.class , NativeEvent.class })
 @RunOutsideTestSuite
 public class ColorfillCanvasStubImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	private static final int POSITION_Y = 20;
@@ -122,11 +122,12 @@ public class ColorfillCanvasStubImplJUnitTest extends AbstractTestBaseWithoutAut
 		ArgumentCaptor<Command> commandCaptor = ArgumentCaptor.forClass(Command.class);
 		verify(userInteractionHandlerFactory).applyUserClickHandler(commandCaptor.capture(), eq(canvas));
 
-		commandCaptor.getValue().execute(mock(NativeEvent.class));
+		NativeEvent nativeEvent = mock(NativeEvent.class);
+		commandCaptor.getValue().execute(nativeEvent);
 
 		ArgumentCaptor<Area> areaCaptor = ArgumentCaptor.forClass(Area.class);
 		verify(colorfillAreaClickListener).onAreaClick(areaCaptor.capture());
-
+		verify(nativeEvent).preventDefault();
 		Area area = areaCaptor.getValue();
 		assertThat(area.getX()).isEqualTo(POSITION_X);
 		assertThat(area.getY()).isEqualTo(POSITION_Y);
