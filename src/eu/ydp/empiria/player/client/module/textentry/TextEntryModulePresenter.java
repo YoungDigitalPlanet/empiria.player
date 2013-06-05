@@ -112,6 +112,8 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 	@Override
 	public void installViewInContainer(HasWidgets container) {
 		container.add(moduleWidget);
+		
+		moduleWidget.setStyleName( styleNames.QP_TEXTENTRY(), true );
 	}
 
 	@Override
@@ -131,12 +133,12 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 			markStyleName = styleNames.QP_TEXT_TEXTENTRY_NONE();
 		}
 
-		moduleWidget.setStyleName(markStyleName);
+		moduleWidget.setStylePrimaryName(markStyleName);
 	}
 
 	@Override
 	public void removeMarking() {
-		moduleWidget.setStyleName(styleNames.QP_TEXT_TEXTENTRY());
+		moduleWidget.setStylePrimaryName(styleNames.QP_TEXT_TEXTENTRY());
 	}
 
 	@Override

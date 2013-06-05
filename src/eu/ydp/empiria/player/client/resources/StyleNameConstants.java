@@ -665,6 +665,13 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-text-textentry")
 	public String QP_TEXT_TEXTENTRY();
 
+	/**
+	 * Poniewa¿ podstawowa clasa gapy 'qp-text-textentry' zmienia sie na *-corect, *-wrong
+	 * Dodalem ten style aby w pewny sposob wyszukiwac gapy w testach E2E.
+	 */
+	@DefaultStringValue("qp-textentry")
+	public String QP_TEXTENTRY();
+
 	@DefaultStringValue("qp-text-textentry-content")
 	public String QP_TEXT_TEXTENTRY_CONTENT();
 
