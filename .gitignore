@@ -14,3 +14,5 @@ src/eu/ydp/empiria/player/client/version/version.txt
 cobertura-report/
 reports/
 .gwt/
+dist/
+metadata.xml
