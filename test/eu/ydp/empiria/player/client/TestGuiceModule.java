@@ -75,7 +75,6 @@ import eu.ydp.gwtutil.client.service.json.NativeJSONService;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.BrowserNativeInterface;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
-import eu.ydp.gwtutil.client.util.UserAgentUtilImpl;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxy;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxyFactory;
@@ -144,11 +143,11 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(XMLProxy.class).to(XMLProxyWrapper.class);
 		bind(BrowserNativeInterface.class).toInstance(
 				UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS));
-		bind(UserAgentUtil.class).toInstance(spy(new UserAgentUtilImpl()));
+		bind(UserAgentUtil.class).toInstance(mock(UserAgentUtil.class));
 		binder.bind(IJSONService.class).to(NativeJSONService.class);
 		binder.requestStaticInjection(XMLProxyFactory.class);
 		bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
-
+		
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));
