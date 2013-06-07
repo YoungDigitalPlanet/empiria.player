@@ -157,8 +157,8 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		}
 		
 		@Override
-		public void maybeMakeExpressionReplacements(Map<String, String> styles) {
-			super.maybeMakeExpressionReplacements(styles);
+		public void initReplacements(Map<String, String> styles) {
+			super.initReplacements(styles);
 		}
 	}
 }
