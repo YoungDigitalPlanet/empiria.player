@@ -9,7 +9,6 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
 public class DragDropHelperImpl implements DragDropHelper {
 
@@ -17,7 +16,7 @@ public class DragDropHelperImpl implements DragDropHelper {
 	protected DragDropObjectFactory obFactory;
 
 	private final static boolean isNativeDragSupported =    DragEvent.isSupported()
-														&& !UserAgentChecker.isUserAgent(UserAgent.IE8, UserAgent.IE9, UserAgent.IE10)
+														&& !UserAgentChecker.isIE()
 														&& !UserAgentChecker.isMobileUserAgent();
 
 	@SuppressWarnings("unchecked")

@@ -31,7 +31,6 @@ import eu.ydp.empiria.player.client.util.dom.drag.DragDropType;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
 public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> implements DraggableObject<W>, DroppableObject<W> {
 
@@ -126,7 +125,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 
 	private void setAutoBehaviorForDrag() {
 		// IE bug
-		if (UserAgentChecker.isUserAgent(UserAgent.IE9, UserAgent.IE8, UserAgent.IE10)) {
+		if (UserAgentChecker.isIE()) {
 			originalWidget.addDomHandler(new MouseDownHandler() {
 				@Override
 				public void onMouseDown(MouseDownEvent event) {
