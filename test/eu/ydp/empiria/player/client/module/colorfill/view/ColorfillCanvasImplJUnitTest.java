@@ -43,7 +43,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 @RunWith(ExMockRunner.class)
 @PrepareForTest({ Context2d.class, ImageData.class , NativeEvent.class })
 @RunOutsideTestSuite
-public class ColorfillCanvasStubImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
+public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	private static final int POSITION_Y = 20;
 	private static final int POSITION_X = 10;
 
@@ -59,7 +59,7 @@ public class ColorfillCanvasStubImplJUnitTest extends AbstractTestBaseWithoutAut
 	private final ColorfillCanvasStubView canvasStubView = mock(ColorfillCanvasStubView.class);
 	private final UserInteractionHandlerFactory userInteractionHandlerFactory = mock(UserInteractionHandlerFactory.class);
 	private final PositionHelper positionHelper = mock(PositionHelper.class);
-	private ColorfillCanvasStubImpl instance;
+	private ColorfillCanvasImpl instance;
 	private Context2d context2d;
 	private Canvas canvas;
 	private ImageData imageData;
@@ -77,7 +77,7 @@ public class ColorfillCanvasStubImplJUnitTest extends AbstractTestBaseWithoutAut
 	@Before
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
-		instance = injector.getInstance(ColorfillCanvasStubImpl.class);
+		instance = injector.getInstance(ColorfillCanvasImpl.class);
 		canvas = mock(Canvas.class);
 		context2d = mock(Context2d.class);
 		imageData = mock(ImageData.class);

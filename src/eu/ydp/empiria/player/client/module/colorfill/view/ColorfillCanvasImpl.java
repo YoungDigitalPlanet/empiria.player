@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
-public class ColorfillCanvasStubImpl implements ColorfillCanvas {
+public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	@Inject
 	private ColorfillCanvasStubView canvasStubView;
