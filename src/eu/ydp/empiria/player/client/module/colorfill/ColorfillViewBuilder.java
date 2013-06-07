@@ -9,50 +9,64 @@ import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.handlers.AreaClickListener;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.handlers.ColorButtonClickListener;
+import eu.ydp.empiria.player.client.module.colorfill.structure.ButtonsContainer;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorButton;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionBean;
+import eu.ydp.empiria.player.client.module.colorfill.structure.EraserButton;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
 
 public class ColorfillViewBuilder {
 
+	public static final ColorModel ERASING_COLOR = ColorModel.createFromRgba(0, 0, 0, 0);
 	private final ColorfillInteractionView interactionView;
-	private ColorfillInteractionPresenter interactionPresenter;
 
 	@Inject
 	public ColorfillViewBuilder(@ModuleScoped ColorfillInteractionView interactionView) {
 		this.interactionView = interactionView;
 	}
 
-	public void buildView(ColorfillInteractionBean bean,ColorfillInteractionPresenter interactionPresenter) {
-			this.interactionPresenter = interactionPresenter;
-			List<ColorButton> buttons = bean.getButtons().getButtons();
-			createButtons(buttons);
-
-			setListenersOnView();
+	public void buildView(ColorfillInteractionBean bean, ColorfillInteractionPresenter interactionPresenter) {
+			createButtons(bean.getButtons());
+			
+			setListenersOnView(interactionPresenter);
 
 			Image image = bean.getImage();
 			interactionView.setImage(image);
 	}
 
-	private void createButtons(List<ColorButton> buttons) {
+	private void createButtons(ButtonsContainer buttonsContainer) {
+		List<ColorButton> buttons = buttonsContainer.getButtons();
+		createColorButtons(buttons);
+
+		EraserButton eraserButton = buttonsContainer.getEraserButton();
+		if(eraserButton != null){
+			createEraserButton(eraserButton);
+		}
+	}
+
+	private void createColorButtons(List<ColorButton> buttons) {
 		for (ColorButton colorButton : buttons) {
 			ColorModel colorModel = ColorModel.createFromRgbString(colorButton.getRgb());
 			interactionView.createButton(colorModel);
 		}
 	}
-
-	private void setListenersOnView() {
-		setButtonClickedListener();
-		setImageColorChangedListener();
+	
+	private void createEraserButton(EraserButton eraserButton) {
+		interactionView.createButton(ERASING_COLOR);
 	}
 
-	private void setImageColorChangedListener() {
+	private void setListenersOnView(ColorfillInteractionPresenter interactionPresenter) {
+		setButtonClickedListener(interactionPresenter);
+		setImageColorChangedListener(interactionPresenter);
+	}
+
+	private void setImageColorChangedListener(ColorfillInteractionPresenter interactionPresenter) {
 		AreaClickListener areaClickListener = new AreaClickListener(interactionPresenter);
 		interactionView.setAreaClickListener(areaClickListener);
 	}
 
-	private void setButtonClickedListener() {
+	private void setButtonClickedListener(ColorfillInteractionPresenter interactionPresenter) {
 		ColorButtonClickListener buttonClickListener = new ColorButtonClickListener(interactionPresenter);
 		interactionView.setButtonClickListener(buttonClickListener);
 	}
