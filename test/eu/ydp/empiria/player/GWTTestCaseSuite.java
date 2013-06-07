@@ -34,15 +34,28 @@ public class GWTTestCaseSuite extends GWTTestSuite {
 		}
 		return suite;
 	}
+	
+	public static Set<Class<? extends GWTTestCase>> getTestClasses() {
+		return Sets.filter(getAllTestClasses(), unsupportedClazzFilter);
+	}
 
 	public static Set<Class<? extends GWTTestCase>> getAllTestClasses() {
 		Reflections reflections = createReflectionsForGwtTestCase();
 		Collection<String> classNames = getGwtTestCaseClassNames(reflections);
 		return convertClassNamesToClass(classNames);
 	}
-
-	public static Set<Class<? extends GWTTestCase>> getTestClasses() {
-		return Sets.filter(getAllTestClasses(), unsupportedClazzFilter);
+	
+	private static Reflections createReflectionsForGwtTestCase() {
+		ConfigurationBuilder inputFilterByName = new ConfigurationBuilder();
+		inputFilterByName.setUrls(ClasspathHelper.forPackage("eu.ydp.empiria"));
+		inputFilterByName.setScanners(new GwtTestCaseScanner(),	new SubTypesScanner());
+		return new Reflections(inputFilterByName);
+	}
+	
+	private static Collection<String> getGwtTestCaseClassNames(final Reflections reflections) {
+		Store store = reflections.getStore();
+		Multimap<String, String> multimap = store.get(GwtTestCaseScanner.class);
+		return multimap.values();
 	}
 
 	private static Set<Class<? extends GWTTestCase>> convertClassNamesToClass(final Collection<String> classNames) {
@@ -56,18 +69,5 @@ public class GWTTestCaseSuite extends GWTTestSuite {
 			}
 		}
 		return allGwtTestCaseClasses;
-	}
-
-	private static Collection<String> getGwtTestCaseClassNames(final Reflections reflections) {
-		Store store = reflections.getStore();
-		Multimap<String, String> multimap = store.get(GwtTestCaseScanner.class);
-		return multimap.values();
-	}
-
-	private static Reflections createReflectionsForGwtTestCase() {
-		ConfigurationBuilder inputFilterByName = new ConfigurationBuilder();
-		inputFilterByName.setUrls(ClasspathHelper.forPackage("eu.ydp.empiria"));
-		inputFilterByName.setScanners(new GwtTestCaseScanner(),	new SubTypesScanner());
-		return new Reflections(inputFilterByName);
 	}
 }
