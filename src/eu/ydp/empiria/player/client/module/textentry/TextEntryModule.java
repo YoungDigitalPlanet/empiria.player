@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
@@ -61,7 +62,7 @@ public class TextEntryModule extends GapBase {
 
 		installViewPanel(placeholders.get(0));
 		
-		maybeMakeExpressionReplacements(styles);
+		initReplacements(styles);
 	}
 
 	protected void setDimensions(Map<String, String> styles) {
@@ -110,7 +111,15 @@ public class TextEntryModule extends GapBase {
 
 	@Override
 	protected void setCorrectAnswer() {
-		presenter.setText(getCorrectAnswer());
+		String correctAnswer = getCorrectAnswer();
+		ExpressionReplacer replacer = gapExpressionReplacer.getReplacer();
+		
+		if (replacer.isEligibleForReplacement(correctAnswer)){
+			String replacedAnswer = replacer.replace(correctAnswer);
+			presenter.setText(replacedAnswer);			
+		} else {
+			presenter.setText(correctAnswer);
+		}
 	}
 
 	@Override

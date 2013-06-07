@@ -34,7 +34,6 @@ import eu.ydp.empiria.player.client.module.binding.gapmaxlength.GapMaxlengthBind
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingContext;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
-import eu.ydp.empiria.player.client.module.expression.ExpresionReplacementsParser;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -52,7 +51,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	protected EventsBus eventsBus;
 	
 	@Inject
-	private ExpresionReplacementsParser replacementsParser;
+	protected GapExpressionReplacer gapExpressionReplacer;
 
 	public static final String INLINE_HTML_NBSP = "&nbsp;";
 
@@ -105,12 +104,12 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		},new CurrentPageScope());
 	}
 	
-	protected void maybeMakeExpressionReplacements(Map<String, String> styles) {
+	protected void initReplacements(Map<String, String> styles) {
 		boolean containsReplacementStyle = styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)  ||  styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
 		if (containsReplacementStyle){
 			String charactersSet = Objects.firstNonNull(styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS), styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS));
-			Map<String, String> replacements = replacementsParser.parse(charactersSet);
-			presenter.makeExpressionReplacements(replacements);
+			gapExpressionReplacer.useCharacters(charactersSet);
+			presenter.makeExpressionReplacements(gapExpressionReplacer.getReplacer());
 		}
 		
 	}

@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
+import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -67,7 +68,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap {
 		setDimensions();
 		setMaxlengthBinding(mathStyles, getModuleElement());
 		setWidthBinding(mathStyles, getModuleElement());
-		maybeMakeExpressionReplacements(mathStyles);
+		initReplacements(mathStyles);
 	}
 
 	private void installViewInPlaceholder(HasWidgets placeholder) {
@@ -140,7 +141,15 @@ public class TextEntryGapModule extends MathGapBase implements MathGap {
 
 	@Override
 	protected void setCorrectAnswer() {
-		presenter.setText(getCorrectAnswer());
+		String correctAnswer = getCorrectAnswer();
+		ExpressionReplacer replacer = gapExpressionReplacer.getReplacer();
+		
+		if (replacer.isEligibleForReplacement(correctAnswer)){
+			String replacedAnswer =  replacer.replace(correctAnswer);
+			presenter.setText(replacedAnswer);			
+		} else {
+			presenter.setText(correctAnswer);
+		}
 	}
 
 	@Override

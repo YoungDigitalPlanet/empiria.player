@@ -1,10 +1,9 @@
 package eu.ydp.empiria.player.client.module.gap;
 
-import java.util.Map;
-
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
@@ -50,6 +49,6 @@ public interface GapModulePresenter {
 
 	IsExListBox getListBox();
 	
-	void makeExpressionReplacements(Map<String, String> replacements);
+	void makeExpressionReplacements(ExpressionReplacer expressionReplacer);
 	
 }

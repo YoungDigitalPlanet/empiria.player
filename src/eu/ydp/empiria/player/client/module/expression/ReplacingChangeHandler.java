@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.expression;
 
-import java.util.Map;
-
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
@@ -16,7 +14,7 @@ public class ReplacingChangeHandler {
 	private InputEventRegistrar eventRegistrar;
 	
 	private HasValue<String> textBox;
-	private Map<String, String> replacements;
+	private ExpressionReplacer expressionReplacer;
 	
 	private InputEventListener listener = new InputEventListener() {
 		
@@ -26,16 +24,18 @@ public class ReplacingChangeHandler {
 		}
 	};
 
-	public <T extends IsWidget &  HasValue<String>> void init(Wrapper<T> textBox, Map<String, String> replacements) {
+
+	public <T extends IsWidget &  HasValue<String>> void init(Wrapper<T> textBox, ExpressionReplacer expressionReplacer) {
 		this.textBox = textBox.getInstance();
-		this.replacements = replacements;
+		this.expressionReplacer = expressionReplacer;
 		eventRegistrar.registerInputHandler(textBox.getInstance(), listener);
 	}
 
 	private void replace() {
 		String text = textBox.getValue();
-		if (replacements.containsKey(text)){
-			textBox.setValue(replacements.get(text));
+		if (expressionReplacer.isEligibleForReplacement(text)){
+			String replaced = expressionReplacer.replace(text);
+			textBox.setValue(replaced);
 		}
 	}
 	
