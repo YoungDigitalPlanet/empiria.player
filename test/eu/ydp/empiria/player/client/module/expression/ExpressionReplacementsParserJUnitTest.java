@@ -9,9 +9,9 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableMap;
 
 
-public class ExpresionReplacementsParserJUnitTest {
+public class ExpressionReplacementsParserJUnitTest {
 	
-	private ExpresionReplacementsParser parser = new ExpresionReplacementsParser();
+	private ExpressionReplacementsParser parser = new ExpressionReplacementsParser();
 
 	@Test
 	public void parse(){
