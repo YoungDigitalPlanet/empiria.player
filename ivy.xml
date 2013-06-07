@@ -39,7 +39,7 @@
 	<dependency org="org.hamcrest" name="hamcrest-library" rev="1.3"  conf="test->default"/>
 	<dependency org="org.mockito" name="mockito-all" rev="1.9.5" conf="test->default"/>
 	<dependency name="junit" transitive="false" rev="4.10" org="junit" conf="test->default" />
-	<dependency name="junitparams" transitive="false" rev="0.9.0" org="eu.ydp" conf="test->default" />
+	<dependency name="JUnitParams" transitive="false" rev="1.0.1" org="pl.pragmatists" conf="test->default" />
 	<dependency org="org.easytesting" name="fest-assert-core" rev="2.0M10" conf="test->default"/>
 	<dependency org="xmlunit" name="xmlunit" rev="1.3" conf="test->default" />
 	<dependency org="eu.ydp" name="matheclipse-parser-gwt" rev="0.0.10+" conf="default, lib, test->default" />
