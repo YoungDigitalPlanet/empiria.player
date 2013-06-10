@@ -13,8 +13,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.colorfill.fill.BlackColorContourDetector;
-import eu.ydp.empiria.player.client.module.colorfill.fill.CanvasImageData;
 import eu.ydp.empiria.player.client.module.colorfill.fill.FloodFillScanLine;
+import eu.ydp.empiria.player.client.module.colorfill.fill.ICanvasImageData;
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
@@ -32,6 +32,9 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	@Inject
 	private PositionHelper positionHelper;
+	
+	@Inject
+	private CanvasImageDataProvider canvasImageDataProvider;
 
 	private boolean canvasStubViewLoded = false;
 
@@ -39,7 +42,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	private ColorfillAreaClickListener listener;
 
-	private CanvasImageData imageData;
+	private ICanvasImageData imageData;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -66,7 +69,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 	}
 
 	void reloadImageData() {
-		imageData = new CanvasImageData(canvasStubView.getCanvas().getContext2d(), canvasStubView.getWidth(), canvasStubView.getHeight());
+		imageData = canvasImageDataProvider.getCanvasImageData(canvasStubView);
 	}
 
 	@Override

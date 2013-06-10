@@ -7,7 +7,7 @@ import com.google.gwt.canvas.dom.client.ImageData;
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 
 @SuppressWarnings("PMD")
-public class CanvasImageData {
+public class CanvasImageData implements ICanvasImageData{
 
 	private final Context2d context;
 	private final int height;
@@ -27,15 +27,17 @@ public class CanvasImageData {
 		pixelArray = imageData.getData();
 	}
 
-
+	@Override
 	public int getImageHeight() {
 		return height;
 	}
 
+	@Override
 	public int getImageWidth() {
 		return width;
 	}
 
+	@Override
 	public ColorModel getRgbColor(final int x, final int y) {
 		int position = 4 * (x + y * width);
 		return ColorModel.createFromRgba(pixelArray.get(position),
@@ -45,6 +47,7 @@ public class CanvasImageData {
 
 	}
 
+	@Override
 	public void setColor(final ColorModel color, final int x, final int y) {
 		int position = 4 * (x + y * width);
 		pixelArray.set(position, color.getRed());
@@ -53,6 +56,7 @@ public class CanvasImageData {
 		pixelArray.set(position + OFFSET_ALPHA, color.getAlpha());
 	}
 
+	@Override
 	public void flush() {
 		context.putImageData(imageData, 0, 0);
 	}
