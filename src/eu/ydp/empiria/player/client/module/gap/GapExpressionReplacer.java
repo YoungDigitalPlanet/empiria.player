@@ -21,4 +21,11 @@ public class GapExpressionReplacer {
 		return replacer;
 	}
 
+	public String ensureReplacement(String text) {
+		if (replacer.isEligibleForReplacement(text)){
+			return replacer.replace(text);
+		}
+		return text;
+	}
+
 }
