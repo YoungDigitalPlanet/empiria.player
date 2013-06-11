@@ -1,9 +1,20 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
+import static com.google.gwt.user.client.Event.MOUSEEVENTS;
+import static com.google.gwt.user.client.Event.ONMOUSEDOWN;
+import static com.google.gwt.user.client.Event.ONMOUSEOUT;
+import static com.google.gwt.user.client.Event.ONMOUSEOVER;
+import static com.google.gwt.user.client.Event.ONMOUSEUP;
+import static com.google.gwt.user.client.Event.ONTOUCHEND;
+import static com.google.gwt.user.client.Event.ONTOUCHSTART;
+import static com.google.gwt.user.client.Event.TOUCHEVENTS;
+
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.Factory;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 /**
  * bazowy przycisk dla kontrolerow multimediow
@@ -19,6 +30,8 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 	private boolean active = false;
 	private final FlowPanel divElement = new FlowPanel();
 	private boolean singleClick = true;
+	
+	@Inject private UserAgentUtil userAgentUtil; 
 
 
 	/**
@@ -48,7 +61,7 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 	@Override
 	public void init() {
 		if (isSupported()) {
-			sinkEvents(Event.MOUSEEVENTS | Event.TOUCHEVENTS);
+			sinkEvents(MOUSEEVENTS | TOUCHEVENTS);
 			this.setStyleName(this.baseStyleName);
 		} else {
 			this.setStyleName(this.baseStyleName + UNSUPPORTED_SUFFIX);
@@ -63,25 +76,35 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 	@Override
 	public void onBrowserEvent(Event event) {
 		event.preventDefault();
-		switch (event.getTypeInt()) {
-		case Event.ONMOUSEDOWN:
-		case Event.ONTOUCHSTART:
+		int eventType = event.getTypeInt();
+		switch (eventType) {
+			case ONMOUSEDOWN:
+			case ONTOUCHSTART:
+				maybeClick(eventType);
+				break;
+			case ONMOUSEUP:
+				if (!singleClick) {
+					maybeClick(eventType);
+				}
+				break;
+			case ONMOUSEOVER:
+				onMouseOver();
+				break;
+			case ONTOUCHEND:
+			case ONMOUSEOUT:
+				onMouseOut();
+				break;
+		}
+	}
+	
+	private void maybeClick(int eventType){
+		boolean isStackAndroid = userAgentUtil.isStackAndroidBrowser();
+		boolean isTouchEvent = (TOUCHEVENTS & eventType) != 0;
+		
+		if (isStackAndroid  &&  isTouchEvent){
 			onClick();
-			break;
-		case Event.ONMOUSEUP:
-			if (!singleClick) {
-				onClick();
-			}
-			break;
-		case Event.ONMOUSEOVER:
-			onMouseOver();
-			break;
-		case Event.ONTOUCHEND:
-		case Event.ONMOUSEOUT:
-			onMouseOut();
-			break;
-		default:
-			break;
+		} else if (!isStackAndroid) {
+			onClick();
 		}
 	}
 
