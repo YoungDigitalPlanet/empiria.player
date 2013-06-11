@@ -1,13 +1,11 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import static com.google.gwt.user.client.Event.MOUSEEVENTS;
 import static com.google.gwt.user.client.Event.ONMOUSEDOWN;
 import static com.google.gwt.user.client.Event.ONMOUSEOUT;
 import static com.google.gwt.user.client.Event.ONMOUSEOVER;
 import static com.google.gwt.user.client.Event.ONMOUSEUP;
 import static com.google.gwt.user.client.Event.ONTOUCHEND;
 import static com.google.gwt.user.client.Event.ONTOUCHSTART;
-import static com.google.gwt.user.client.Event.TOUCHEVENTS;
 
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -61,12 +59,19 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 	@Override
 	public void init() {
 		if (isSupported()) {
-			sinkEvents(MOUSEEVENTS | TOUCHEVENTS);
+			initEvents();
 			this.setStyleName(this.baseStyleName);
 		} else {
 			this.setStyleName(this.baseStyleName + UNSUPPORTED_SUFFIX);
 		}
+	}
 
+	private void initEvents() {
+		if(userAgentUtil.isMobileUserAgent()){
+			sinkEvents(ONTOUCHSTART | ONTOUCHEND);
+		}else{	
+			sinkEvents(ONMOUSEOVER | ONMOUSEOUT | ONMOUSEDOWN | ONMOUSEUP);
+		}
 	}
 
 	public AbstractMediaButton(String baseStyleName) {
@@ -80,11 +85,11 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 		switch (eventType) {
 			case ONMOUSEDOWN:
 			case ONTOUCHSTART:
-				maybeClick(eventType);
+				onClick();
 				break;
 			case ONMOUSEUP:
 				if (!singleClick) {
-					maybeClick(eventType);
+					onClick();
 				}
 				break;
 			case ONMOUSEOVER:
@@ -94,17 +99,6 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 			case ONMOUSEOUT:
 				onMouseOut();
 				break;
-		}
-	}
-	
-	private void maybeClick(int eventType){
-		boolean isStackAndroid = userAgentUtil.isStackAndroidBrowser();
-		boolean isTouchEvent = (TOUCHEVENTS & eventType) != 0;
-		
-		if (isStackAndroid  &&  isTouchEvent){
-			onClick();
-		} else if (!isStackAndroid) {
-			onClick();
 		}
 	}
 
