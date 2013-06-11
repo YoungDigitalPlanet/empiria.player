@@ -32,7 +32,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	@Inject
 	private PositionHelper positionHelper;
-	
+
 	@Inject
 	private CanvasImageDataProvider canvasImageDataProvider;
 
@@ -125,7 +125,10 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 			public void execute(NativeEvent event) {
 				event.preventDefault();
 				CanvasElement canvasElement = canvasStubView.getCanvas().getCanvasElement();
-				listener.onAreaClick(new Area(positionHelper.getPositionX(event, canvasElement), positionHelper.getPositionY(event, canvasElement)));
+				Area area = new Area(positionHelper.getPositionX(event, canvasElement), positionHelper.getPositionY(event, canvasElement));
+				if(area.getX() >=0 && area.getY() >= 0){
+					listener.onAreaClick(area);
+				}
 			}
 		}, canvasStubView.getCanvas());
 	}

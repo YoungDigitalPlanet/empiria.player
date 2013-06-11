@@ -6,6 +6,7 @@ import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.junit.AfterClass;
@@ -131,6 +132,28 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 		Area area = areaCaptor.getValue();
 		assertThat(area.getX()).isEqualTo(POSITION_X);
 		assertThat(area.getY()).isEqualTo(POSITION_Y);
+
+	}
+
+	@Test
+	public void onAreaClickWrongCoordinates() throws Exception {
+		ColorfillAreaClickListener colorfillAreaClickListener = mock(ColorfillAreaClickListener.class);
+		instance.setAreaClickListener(colorfillAreaClickListener);
+
+		doReturn(-10).when(positionHelper).getPositionX(any(NativeEvent.class), Mockito.any(Element.class));
+		doReturn(-15).when(positionHelper).getPositionY(any(NativeEvent.class), Mockito.any(Element.class));
+
+		ArgumentCaptor<LoadHandler> loadHandlerCaptor = ArgumentCaptor.forClass(LoadHandler.class);
+		verify(canvasStubView).setImageLoadHandler(loadHandlerCaptor.capture());
+		loadHandlerCaptor.getValue().onLoad(null);
+
+		ArgumentCaptor<Command> commandCaptor = ArgumentCaptor.forClass(Command.class);
+		verify(userInteractionHandlerFactory).applyUserClickHandler(commandCaptor.capture(), eq(canvas));
+
+		NativeEvent nativeEvent = mock(NativeEvent.class);
+		commandCaptor.getValue().execute(nativeEvent);
+
+		verify(colorfillAreaClickListener,times(0)).onAreaClick(any(Area.class));
 
 	}
 
