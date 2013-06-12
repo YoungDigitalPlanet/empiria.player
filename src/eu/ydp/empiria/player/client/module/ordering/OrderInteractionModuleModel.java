@@ -12,12 +12,10 @@ import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 
 public class OrderInteractionModuleModel extends AbstractResponseModel<String>{
-
-	private ResponseModelChangeListener responseModelChange;
 	
 	@Inject
 	public OrderInteractionModuleModel(@ModuleScoped Response response) {
-		super(response, null);
+		super(response);
 	}
 
 	public void initialize(ResponseModelChangeListener modelChangeListener){
@@ -34,7 +32,7 @@ public class OrderInteractionModuleModel extends AbstractResponseModel<String>{
 	}
 
 	public void onModelChange(){
-		responseModelChange.onResponseModelChange();
+		super.onModelChange();
 	}
 	
 	@Override
