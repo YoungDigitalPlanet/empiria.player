@@ -1,11 +1,14 @@
 package eu.ydp.empiria.player.client.module.colorfill.view;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -13,6 +16,8 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
+import eu.ydp.empiria.player.client.module.colorfill.view.mark.CorrectAnswersMarkingPanel;
+import eu.ydp.empiria.player.client.module.colorfill.view.mark.WrongAnswersMarkingPanel;
 
 public class ColorfillViewImpl implements ColorfillInteractionView {
 
@@ -30,14 +35,28 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	@UiField(provided = true)
 	ColorfillPalette palette;
 	
+	@UiField
+	AbsolutePanel imageContainer;
+	
 	@UiField(provided = true)
 	ColorfillCorrectImage correctImageCanvas;
+	
+	@UiField(provided = true)
+	CorrectAnswersMarkingPanel correctAnswersMarkingPanel;
+	
+	@UiField(provided = true)
+	WrongAnswersMarkingPanel wrongAnswersMarkingPanel;
 
 	@Inject
-	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette, ColorfillCorrectImage correctImageCanvas) {
+	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette, ColorfillCorrectImage correctImageCanvas, 
+			CorrectAnswersMarkingPanel correctAnswersMarkingPanel, WrongAnswersMarkingPanel wrongAnswersMarkingPanel) {
 		this.canvas = canvas;
 		this.palette = palette;
 		this.correctImageCanvas = correctImageCanvas;
+		this.correctAnswersMarkingPanel = correctAnswersMarkingPanel;
+		this.wrongAnswersMarkingPanel = wrongAnswersMarkingPanel;
+		
+		
 		uiBinder.createAndBindUi(this);
 	}
 	
@@ -48,6 +67,11 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 
 	@Override
 	public void setImage(Image image) {
+		String px = Unit.PX.toString().toLowerCase();
+		String width = image.getWidth() + px;
+		String height = image.getHeight() + px;
+		imageContainer.setSize(width, height);
+		
 		canvas.setImage(image);
 	}
 
@@ -111,5 +135,25 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	public void showCorrectAnswers(){
 		canvas.asWidget().setVisible(false);
 		correctImageCanvas.show();
+	}
+
+	@Override
+	public void markCorrectAnswers(List<Area> pointsToMark) {
+		correctAnswersMarkingPanel.markAndShow(pointsToMark);
+	}
+
+	@Override
+	public void unmarkCorrectAnswers() {
+		correctAnswersMarkingPanel.clearAndHide();
+	}
+
+	@Override
+	public void markWrongAnswers(List<Area> pointsToMark) {
+		wrongAnswersMarkingPanel.markAndShow(pointsToMark);
+	}
+
+	@Override
+	public void unmarkWrongAnswers() {
+		wrongAnswersMarkingPanel.clearAndHide();
 	}
 }
