@@ -6,8 +6,10 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
@@ -59,6 +61,7 @@ public class UserToResponseAreaMapper {
 	}
 	
 	public Iterable<Area> mapResponseToUser(Iterable<Area> areas){
+		Preconditions.checkArgument(responseToUserAreas.keySet().equals(Sets.newHashSet(areas)));
 		return Iterables.transform(areas, transformResponseToUserAreas);
 	}
 	

@@ -13,14 +13,14 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 public class ResponseAnswerByViewBuilder {
 
 	private final ResponseUserAnswersConverter responseUserAnswersConverter;
-	private ColorfillInteractionViewColors interactionViewColors;
+	private final ColorfillInteractionViewColors interactionViewColors;
 
 	@Inject
 	public ResponseAnswerByViewBuilder(
 			@ModuleScoped ColorfillInteractionViewColors interactionViewColors,
 			ResponseUserAnswersConverter responseUserAnswersConverter) {
-				this.interactionViewColors = interactionViewColors;
-				this.responseUserAnswersConverter = responseUserAnswersConverter;
+			this.interactionViewColors = interactionViewColors;
+			this.responseUserAnswersConverter = responseUserAnswersConverter;
 	}
 
 	public List<String> buildNewResponseAnswersByCurrentImage(List<Area> areas) {
