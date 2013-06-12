@@ -52,7 +52,7 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 		ColorModel currentSelectedButtonColor = colorButtonsController.getCurrentSelectedButtonColor();
 		if(currentSelectedButtonColor != null){
 			interactionView.setColor(area, currentSelectedButtonColor);
-			modelProxy.updateUserAnswers(area);
+			modelProxy.updateUserAnswers();
 			areaMapper.updateMappings(area);
 		}
 	}
