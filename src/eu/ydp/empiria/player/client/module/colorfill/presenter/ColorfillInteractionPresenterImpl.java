@@ -70,7 +70,8 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 
 	@Override
 	public void reset() {
-		//Unused - will be implemented later
+		interactionView.reset();
+		//TODO: w YPUB-5431  Dodaæ resetowanie mapowania user point to compilator point
 	}
 
 	@Override
@@ -101,9 +102,13 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		if(mode == ShowAnswersType.USER){
+			interactionView.showUserAnswers();
+			
 			List<String> currentAnswers = model.getCurrentAnswers();
 			Map<Area, ColorModel> areasWithColors = responseUserAnswersConverter.convertResponseAnswersToAreaColorMap(currentAnswers);
 			interactionView.setColors(areasWithColors);
+		} else if (mode == ShowAnswersType.CORRECT) {
+			interactionView.showCorrectAnswers();
 		}
 	}
 

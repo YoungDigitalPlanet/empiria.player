@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.colorfill.view;
 
-import javax.annotation.PostConstruct;
-
+import com.google.common.base.Optional;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.LoadEvent;
@@ -11,11 +10,8 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-
-public class ColorfillCanvasStubView implements IsWidget {
+public class CanvasImageView implements IsWidget {
 
 	private final FlowPanel mainPanel = new FlowPanel();
 
@@ -27,15 +23,7 @@ public class ColorfillCanvasStubView implements IsWidget {
 
 	private Image imageView;
 
-	private LoadHandler loadHandler;
-
-	@Inject
-	private StyleNameConstants styleNames;
-
-	@PostConstruct
-	public void postConstruct() {
-		mainPanel.setStyleName(styleNames.QP_COLORFILL_IMG());
-	}
+	private Optional<LoadHandler> loadHandler = Optional.absent();
 
 	public void setImageUrl(String src, int width, int height) {
 		this.width = width;
@@ -49,7 +37,9 @@ public class ColorfillCanvasStubView implements IsWidget {
 			public void onLoad(final LoadEvent event) {
 				imageView.removeFromParent();
 				createCanvasAndAddToView(imageView);
-				loadHandler.onLoad(event);
+				if(loadHandler.isPresent()){
+					loadHandler.get().onLoad(event);
+				}
 			}
 		});
 	}
@@ -65,6 +55,7 @@ public class ColorfillCanvasStubView implements IsWidget {
 	}
 
 	public void reload() {
+		canvas.getContext2d().clearRect(0, 0, width, height);
 		canvas.getContext2d().drawImage((ImageElement) imageView.getElement().cast(), 0, 0);
 	}
 
@@ -86,7 +77,10 @@ public class ColorfillCanvasStubView implements IsWidget {
 	}
 
 	public void setImageLoadHandler(LoadHandler loadHandler) {
-		this.loadHandler = loadHandler;
+		this.loadHandler = Optional.fromNullable(loadHandler);
 	}
 
+	public void setPanelStyle(String panelStyle){
+		mainPanel.setStyleName(panelStyle);
+	}
 }

@@ -30,10 +30,14 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	@UiField(provided = true)
 	ColorfillPalette palette;
 	
+	@UiField(provided = true)
+	ColorfillCorrectImage correctImageCanvas;
+
 	@Inject
-	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette) {
+	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette, ColorfillCorrectImage correctImageCanvas) {
 		this.canvas = canvas;
 		this.palette = palette;
+		this.correctImageCanvas = correctImageCanvas;
 		uiBinder.createAndBindUi(this);
 	}
 	
@@ -92,4 +96,20 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 		canvas.reset();
 	}
 
+	@Override
+	public void setCorrectImage(Image correctImage) {
+		correctImageCanvas.setImageUrl(correctImage);
+	}
+
+	@Override
+	public void showUserAnswers(){
+		canvas.asWidget().setVisible(true);
+		correctImageCanvas.hide();
+	}
+	
+	@Override
+	public void showCorrectAnswers(){
+		canvas.asWidget().setVisible(false);
+		correctImageCanvas.show();
+	}
 }

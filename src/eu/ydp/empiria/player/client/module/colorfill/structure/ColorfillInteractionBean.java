@@ -19,6 +19,9 @@ public class ColorfillInteractionBean extends ModuleBean {
 
 	@XmlElement(name = "image")
 	private Image image;
+
+	@XmlElement(name = "correctImage")
+	private Image correctImage;
 	
 	public AreaContainer getAreas() {
 		return areas;
@@ -42,5 +45,13 @@ public class ColorfillInteractionBean extends ModuleBean {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public Image getCorrectImage() {
+		return correctImage;
+	}
+
+	public void setCorrectImage(Image correctImage) {
+		this.correctImage = correctImage;
 	}	
 }

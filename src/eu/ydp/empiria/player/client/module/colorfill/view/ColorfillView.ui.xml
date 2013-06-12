@@ -5,5 +5,6 @@
 	<g:FlowPanel ui:field="container" styleName="{res.QP_COLORFILL}">
 		<v:ColorfillPalette ui:field="palette" />
 		<v:ColorfillCanvas ui:field="canvas" />
+		<v:ColorfillCorrectImage ui:field="correctImageCanvas"/>
 	</g:FlowPanel>
 </ui:UiBinder> 

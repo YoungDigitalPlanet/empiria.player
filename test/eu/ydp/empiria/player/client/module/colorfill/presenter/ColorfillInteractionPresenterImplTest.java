@@ -10,6 +10,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -133,15 +134,27 @@ public class ColorfillInteractionPresenterImplTest {
 
 		presenter.showAnswers(ShowAnswersType.USER);
 
-		verify(interactionView).setColors(areaToColorMap);
+		InOrder inOrder = Mockito.inOrder(interactionView);
+		inOrder.verify(interactionView).showUserAnswers();
+		inOrder.verify(interactionView).setColors(areaToColorMap);
 	}
 
 	@Test
 	public void shouldIgnoreShowingAnswersInModeOthenThanUser() throws Exception {
 		presenter.showAnswers(ShowAnswersType.CORRECT);
+		
+		verify(interactionView).showCorrectAnswers();
+		
 		verifyNoMoreInteractionsOnAllMocks();
 	}
 
+	@Test
+	public void shouldResetViewOnReset() throws Exception {
+		presenter.reset();
+		verify(interactionView).reset();
+		verifyNoMoreInteractionsOnAllMocks();
+	}
+	
 	private void verifyNoMoreInteractionsOnAllMocks() {
 		Mockito.verifyNoMoreInteractions(responseUserAnswersConverter,
 				responseAnswerByViewBuilder,

@@ -85,6 +85,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-colorfill-img")
 	public String QP_COLORFILL_IMG();
+	
+	@DefaultStringValue("qp-colorfill-correct-img")
+	public String QP_COLORFILL_CORRECT_IMG();
 
 	@DefaultStringValue("qp-colorfill-canvas")
 	public String QP_COLORFILL_CANVAS();
@@ -100,6 +103,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-colorfill-palette-button-container-selected")
 	public String QP_COLORFILL_PALETTE_BUTTON_CONTAINER_SELECTED();
+	
+	@DefaultStringValue("qp-colorfill-answers-marking-panel")
+	public String QP_COLORFILL_ANSWERS_MARKING_PANEL();
 
 	@DefaultStringValue("qp-connection")
 	public String QP_CONNECTION();

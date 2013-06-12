@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.module.colorfill.fill.ICanvasImageData;
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
@@ -25,7 +26,7 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	@Inject
-	private ColorfillCanvasStubView canvasStubView;
+	private CanvasImageView canvasStubView;
 
 	@Inject
 	private UserInteractionHandlerFactory interactionHandlerFactory;
@@ -35,6 +36,9 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	@Inject
 	private CanvasImageDataProvider canvasImageDataProvider;
+	@Inject
+	private StyleNameConstants styleNameConstants;
+	
 
 	private boolean canvasStubViewLoded = false;
 
@@ -46,6 +50,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	@PostConstruct
 	public void postConstruct() {
+		canvasStubView.setPanelStyle(styleNameConstants.QP_COLORFILL_IMG());
 		canvasStubView.setImageLoadHandler(new LoadHandler() {
 
 			@Override

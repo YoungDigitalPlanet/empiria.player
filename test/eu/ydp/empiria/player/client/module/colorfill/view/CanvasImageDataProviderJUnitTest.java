@@ -27,7 +27,7 @@ public class CanvasImageDataProviderJUnitTest {
 
 	private CanvasImageDataProvider canvasImageDataProvider;
 	private UserAgentUtil userAgentUtil;
-	private final ColorfillCanvasStubView canvasStubView = Mockito.mock(ColorfillCanvasStubView.class);
+	private final CanvasImageView canvasStubView = Mockito.mock(CanvasImageView.class);
 	
 
 	@BeforeClass

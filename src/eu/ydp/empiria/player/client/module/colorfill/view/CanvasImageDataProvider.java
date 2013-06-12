@@ -17,7 +17,7 @@ public class CanvasImageDataProvider {
 		this.userAgentUtil = userAgentUtil;
 	}
 
-	public ICanvasImageData getCanvasImageData(ColorfillCanvasStubView canvasStubView){
+	public ICanvasImageData getCanvasImageData(CanvasImageView canvasStubView){
 		Context2d context2d = canvasStubView.getCanvas().getContext2d();
 		int width = canvasStubView.getWidth(); 
 		int height = canvasStubView.getHeight();

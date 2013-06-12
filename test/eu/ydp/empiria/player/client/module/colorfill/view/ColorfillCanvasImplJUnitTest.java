@@ -51,13 +51,13 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 	private class CustomGinModule implements Module {
 		@Override
 		public void configure(Binder binder) {
-			binder.bind(ColorfillCanvasStubView.class).toInstance(canvasStubView);
+			binder.bind(CanvasImageView.class).toInstance(canvasStubView);
 			binder.bind(UserInteractionHandlerFactory.class).toInstance(userInteractionHandlerFactory);
 			binder.bind(PositionHelper.class).toInstance(positionHelper);
 		}
 	}
 
-	private final ColorfillCanvasStubView canvasStubView = mock(ColorfillCanvasStubView.class);
+	private final CanvasImageView canvasStubView = mock(CanvasImageView.class);
 	private final UserInteractionHandlerFactory userInteractionHandlerFactory = mock(UserInteractionHandlerFactory.class);
 	private final PositionHelper positionHelper = mock(PositionHelper.class);
 	private ColorfillCanvasImpl instance;
@@ -78,6 +78,8 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 	@Before
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
+		
+		
 		instance = injector.getInstance(ColorfillCanvasImpl.class);
 		canvas = mock(Canvas.class);
 		context2d = mock(Context2d.class);
@@ -94,6 +96,7 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 	@Test
 	public void postConstruct() throws Exception {
 		ArgumentCaptor<LoadHandler> argumentCaptor = ArgumentCaptor.forClass(LoadHandler.class);
+		verify(canvasStubView).setPanelStyle("qp-colorfill-img");
 		verify(canvasStubView).setImageLoadHandler(argumentCaptor.capture());
 		assertThat(argumentCaptor.getValue()).isNotNull();
 	}
