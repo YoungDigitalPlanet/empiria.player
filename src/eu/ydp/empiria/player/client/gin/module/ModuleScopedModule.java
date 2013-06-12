@@ -12,6 +12,9 @@ import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
+import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
+import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
@@ -35,8 +38,9 @@ public class ModuleScopedModule extends AbstractGinModule{
 	
 		bindOrdering();
 		bindColorfill();
+		bindChoice();
 	}
-	
+
 	private void bindOrdering() {
 		bind(new TypeLiteral<ModuleScopedProvider<OrderingItemsDao>>(){}).in(Singleton.class);
 		bind(OrderingItemsDao.class)
@@ -71,4 +75,20 @@ public class ModuleScopedModule extends AbstractGinModule{
 			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ColorfillInteractionPresenter>>(){}));
 	}
 
+	private void bindChoice() {
+		bind(new TypeLiteral<ModuleScopedProvider<ChoiceModuleView>>(){}).in(Singleton.class);
+		bind(ChoiceModuleView.class)
+			.annotatedWith(ModuleScoped.class)
+			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ChoiceModuleView>>(){}));
+		
+		bind(new TypeLiteral<ModuleScopedProvider<ChoiceModulePresenter>>(){}).in(Singleton.class);
+		bind(ChoiceModulePresenter.class)
+			.annotatedWith(ModuleScoped.class)
+			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ChoiceModulePresenter>>(){}));
+		
+		bind(new TypeLiteral<ModuleScopedProvider<ChoiceModuleModel>>(){}).in(Singleton.class);
+		bind(ChoiceModuleModel.class)
+			.annotatedWith(ModuleScoped.class)
+			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ChoiceModuleModel>>(){}));
+	}
 }

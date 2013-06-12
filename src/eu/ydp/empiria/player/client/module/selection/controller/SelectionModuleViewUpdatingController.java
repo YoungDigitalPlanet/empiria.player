@@ -17,6 +17,7 @@ public class SelectionModuleViewUpdatingController {
 				
 				if(selectionAnswerDto.isStateChanged()){
 					updateSingleAnswer(selectionAnswerDto, itemNumber, choiceNumber, selectionModuleView);
+					selectionAnswerDto.setStateChanged(false);
 				}
 			}
 		}

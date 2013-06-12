@@ -1,22 +1,19 @@
 package eu.ydp.empiria.player.client.module.components.choicebutton;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 public class SingleChoiceButton extends ChoiceButtonBase {
 
-	protected ChoiceGroupController ctrl;
-	
-	public SingleChoiceButton(ChoiceGroupController ctrl, String moduleStyleNamePart){
+	@Inject
+	public SingleChoiceButton(@Assisted String moduleStyleNamePart){
 		super(moduleStyleNamePart);
-		this.ctrl = ctrl;
 		this.moduleStyleNamePart = moduleStyleNamePart;
-		ctrl.addButton(this);
 		updateStyle();
 	}
 	
 	@Override
 	public void setSelected(boolean value){
-		if (value){
-			ctrl.unselectAll();
-		}
 		super.setSelected(value);
 	}
 	

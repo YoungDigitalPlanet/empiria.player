@@ -1,250 +1,127 @@
 package eu.ydp.empiria.player.client.module.choice.presenter;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.gin.factory.SimpleChoiceViewFactory;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
+import eu.ydp.empiria.player.client.module.choice.view.SimpleChoiceView;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
-import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceGroupController;
-import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
-import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-public class SimpleChoicePresenterImpl implements SimpleChoicePresenter{
-
-	private static final String TYPE_SINGLE = "single";
-
-	private static final String TYPE_MULTI = "multi";
+public class SimpleChoicePresenterImpl implements SimpleChoicePresenter {
 
 	private static final String STYLE_CHOICE_SINGLE = "choice-single";
 
 	private static final String STYLE_CHOICE_MULTI = "choice-multi";
 
-	private static SimpleChoiceViewUiBinder uiBinder = GWT.create(SimpleChoiceViewUiBinder.class);
-	
-	@UiTemplate("SimpleChoiceView.ui.xml")
-	interface SimpleChoiceViewUiBinder extends UiBinder<Widget, SimpleChoicePresenterImpl> {
-	}
-	
-	private StyleNameConstants styleNameConstants = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	
-	@UiField
-	Panel optionPanel;
-	
-	@UiField
-	Panel mainPanel;
-	
-	@UiField
-	Panel cover;
-	
-	@UiField
-	Panel contentWidgetPlace;
-	
-	@UiField
-	Panel markAnswersPanel;
-	
-	@UiField
-	Panel labelPanel;
-	
-	@UiField
-	Panel buttonPlace;
-	
 	private boolean isMulti;
-	
+
 	private InlineBodyGeneratorSocket bodyGenerator;
 
-	private ChoiceButtonBase button;
-	
 	private ChoiceModuleListener listener;
 
-	public SimpleChoicePresenterImpl(SimpleChoiceBean option, ChoiceGroupController controller, InlineBodyGeneratorSocket bodyGenerator) {
+	private SimpleChoiceView view;
+
+	SimpleChoiceViewFactory simpleChoiceViewFactory;
+	
+	@Inject
+	public SimpleChoicePresenterImpl(
+			SimpleChoiceViewFactory simpleChoiceViewFactory,
+			@Assisted SimpleChoiceBean option,
+			@Assisted InlineBodyGeneratorSocket bodyGenerator) {
+		this.simpleChoiceViewFactory = simpleChoiceViewFactory;
 		bindView();
 		this.bodyGenerator = bodyGenerator;
-		
-		installChildren(option, controller);
+
+		installChildren(option);
 	}
-	
-	private void installChildren(SimpleChoiceBean choiceOption, ChoiceGroupController controller){
+
+	private void installChildren(SimpleChoiceBean choiceOption) {
 		isMulti = choiceOption.isMulti();
-		
-		createButton(controller);
-		buttonPlace.add(button);
-		addButtonListeners();
-		
+
+		ChoiceButtonBase button = createButton();
+
+		view.setButton(button);
+
 		createAndInstallContent(choiceOption);
-		
-		markAnswersPanel.addStyleName("qp-choice-button-"+getButtonType()+"-markanswers");
-		addListenersToCover();	
 	}
-	
-	private void createButton(ChoiceGroupController controller){
-		if (isMulti) {
-			button = new MultiChoiceButton(STYLE_CHOICE_MULTI); //TODO replace null with id of answer
+
+	private ChoiceButtonBase createButton() {
+		if(isMulti){
+			return simpleChoiceViewFactory.getMultiChoiceButton(STYLE_CHOICE_MULTI);
 		} else {
-			button = new SingleChoiceButton(controller, STYLE_CHOICE_SINGLE);
+			return simpleChoiceViewFactory.getSingleChoiceButton(STYLE_CHOICE_SINGLE);
 		}
 	}
-	
-	private void addButtonListeners(){
-		button.addMouseOverHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				setMouseOver();
-			}
-		});
-		
-		button.addMouseOutHandler(new MouseOutHandler() {
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				setMouseOut();
-			}
-		});
-		
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				onChoiceClick();
-			}
-		});
+
+	private void createAndInstallContent(SimpleChoiceBean choiceOption) {
+		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOption
+				.getContent().getValue(), true);
+		view.setContent(contentWidget);
 	}
-	
-	private void createAndInstallContent(SimpleChoiceBean choiceOption){
-		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOption.getContent().getValue(),true);
-		contentWidgetPlace.add(contentWidget);
-	}
-	
-	private void addListenersToCover(){
-		cover.addDomHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				setMouseOver();
-			}
-		}, MouseOverEvent.getType());
-		cover.addDomHandler(new MouseOutHandler() {
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				setMouseOut();
-			}
-		}, MouseOutEvent.getType());
-		cover.addDomHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				onChoiceClick();
-			}
-		}, ClickEvent.getType());
-	}
-	
-	private void onChoiceClick(){
+
+	public void onChoiceClick() {
 		listener.onChoiceClick(this);
-	}
-	
-	private String getButtonType(){
-		return isMulti ? TYPE_MULTI : TYPE_SINGLE;
 	}
 
 	public void setSelected(boolean select) {
-		button.setSelected(select);
+		view.setSelected(select);
 	}
-	
-	public boolean isSelected(){
-		return button.isSelected();
+
+	public boolean isSelected() {
+		return view.isSelected();
 	}
-	
-	public Widget getFeedbackPlaceHolder(){
-		return labelPanel;
+
+	public Widget getFeedbackPlaceHolder() {
+		return view.getFeedbackPlaceHolder();
 	}
 
 	public void setLocked(boolean locked) {
-		button.setButtonEnabled(!locked);
+		view.setLocked(locked);
 	}
 
 	public void reset() {
-		button.setSelected(false);
-		markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-none");
-	}
-	
-	public void setMouseOver(){
-		button.setMouseOver(true);
+		view.reset();
 	}
 
-	public void setMouseOut(){
-		button.setMouseOver(false);
-	}
-	
-	public Widget asWidget() {
-		return mainPanel;
-	}
-	
-	public void bindView() {
-		uiBinder.createAndBindUi(this);
-	}
-	
 	@Override
-	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		if(MarkAnswersMode.MARK.equals(mode)){
-			mark(type);
-		}else if(MarkAnswersMode.UNMARK.equals(mode)){
-			unmark(type);
-		}
-	}
-	
-	private void mark(MarkAnswersType type){
-		removeInactiveStyle();
-		
-		if(MarkAnswersType.CORRECT.equals(type)){
-			markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-correct");
-			markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
-			optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
-			labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
-		}else if(MarkAnswersType.WRONG.equals(type)){
-			markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers-wrong");
-			markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
-			optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
-			labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
-		}
-	}
-	
-	private void removeInactiveStyle(){
-		optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
-		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
-	}
-	
-	private void unmark(MarkAnswersType type){
-		addInactiveStyle();
-		
-		if(MarkAnswersType.CORRECT.equals(type)){
-			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
-			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
-		}else if(MarkAnswersType.WRONG.equals(type)){
-			optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
-			labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
-		}
-	}
-	
-	private void addInactiveStyle(){
-		markAnswersPanel.setStyleName("qp-choice-button-"+getButtonType()+"-markanswers");
-		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
-		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
-		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
-		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
+	public Widget asWidget() {
+		return view.asWidget();
 	}
 
+	public void bindView() {
+		view = simpleChoiceViewFactory.getSimpleChoiceView(this);
+	}
+
+	@Override
+	public void markAnswer(MarkAnswersType type, MarkAnswersMode mode) {
+		if (mode == MarkAnswersMode.MARK) {
+			if (type == MarkAnswersType.CORRECT) {
+				view.markCorrect();
+			} else if (type == MarkAnswersType.WRONG) {
+				view.markWrong();
+			}
+		} else if (mode == MarkAnswersMode.UNMARK) {
+			if (type == MarkAnswersType.CORRECT) {
+				view.unmarkCorrect();
+			} else if (type == MarkAnswersType.WRONG) {
+				view.unmarkWrong();
+			}
+		}
+	}
+
+	@Override
 	public void setListener(ChoiceModuleListener listener) {
 		this.listener = listener;
+	}
+
+	@Override
+	public boolean isMulti() {
+		return isMulti;
 	}
 }
