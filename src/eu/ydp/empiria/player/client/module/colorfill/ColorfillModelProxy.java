@@ -26,7 +26,7 @@ public class ColorfillModelProxy {
 	@Inject @ModuleScoped
 	private ColorfillBeanProxy beanProxy;
 
-	public void updateUserAnswers(Area userArea) {
+	public void updateUserAnswers() {
 		List<String> userAnswers = responseAnswerByViewBuilder.buildNewResponseAnswersByCurrentImage(beanProxy.getAreas());
 		model.setNewUserAnswers(userAnswers);
 	}
