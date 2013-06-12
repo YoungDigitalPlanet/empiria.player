@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.colorfill.presenter;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -12,6 +11,7 @@ import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
+import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillViewBuilder;
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
@@ -21,31 +21,26 @@ import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionVi
 public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPresenter {
 
 	private final ColorfillInteractionView interactionView;
-	private final ColorfillInteractionModuleModel model;
-	private final ResponseUserAnswersConverter responseUserAnswersConverter;
-	private final ResponseAnswerByViewBuilder responseAnswerByViewBuilder;
+	private final ColorfillModelProxy modelProxy;
 	private final ColorfillViewBuilder colorfillViewBuilder;
 	private final ColorButtonsController colorButtonsController;
+	private final UserToResponseAreaMapper areaMapper;
 
 	private ColorfillInteractionBean bean;
-	private List<Area> areas;
 
 	@Inject
 	public ColorfillInteractionPresenterImpl(
-			ResponseUserAnswersConverter responseUserAnswersConverter,
-			ResponseAnswerByViewBuilder responseAnswerByViewBuilder,
 			ColorfillViewBuilder colorfillViewBuilder,
 			ColorButtonsController colorButtonsController,
 			@ModuleScoped ColorfillInteractionView interactionView,
-			@ModuleScoped ColorfillInteractionModuleModel model) {
-		this.responseUserAnswersConverter = responseUserAnswersConverter;
-		this.responseAnswerByViewBuilder = responseAnswerByViewBuilder;
+			@ModuleScoped ColorfillModelProxy modelProxy,
+			@ModuleScoped UserToResponseAreaMapper areaMapper) {
 		this.colorfillViewBuilder = colorfillViewBuilder;
 		this.colorButtonsController = colorButtonsController;
 		this.interactionView = interactionView;
-		this.model = model;
+		this.modelProxy = modelProxy;
+		this.areaMapper = areaMapper;
 	}
-
 
 	@Override
 	public void bindView() {
@@ -57,8 +52,8 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 		ColorModel currentSelectedButtonColor = colorButtonsController.getCurrentSelectedButtonColor();
 		if(currentSelectedButtonColor != null){
 			interactionView.setColor(area, currentSelectedButtonColor);
-			List<String> userAnswers = responseAnswerByViewBuilder.buildNewResponseAnswersByCurrentImage(areas);
-			model.setNewUserAnswers(userAnswers);
+			modelProxy.updateUserAnswers(area);
+			areaMapper.updateMappings(area);
 		}
 	}
 
@@ -86,7 +81,6 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 	@Override
 	public void setBean(ColorfillInteractionBean bean) {
 		this.bean = bean;
-		areas = bean.getAreas().getAreas();
 	}
 
 	@Override
@@ -102,10 +96,7 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		if(mode == ShowAnswersType.USER){
-			interactionView.showUserAnswers();
-			
-			List<String> currentAnswers = model.getCurrentAnswers();
-			Map<Area, ColorModel> areasWithColors = responseUserAnswersConverter.convertResponseAnswersToAreaColorMap(currentAnswers);
+			Map<Area, ColorModel> areasWithColors = modelProxy.getUserAnswers();			
 			interactionView.setColors(areasWithColors);
 		} else if (mode == ShowAnswersType.CORRECT) {
 			interactionView.showCorrectAnswers();

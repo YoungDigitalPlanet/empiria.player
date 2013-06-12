@@ -13,13 +13,11 @@ import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 
 public class ColorfillInteractionModuleModel extends AbstractResponseModel<String> {
 
-	private ResponseModelChangeListener responseModelChange;
-
 	@Inject
 	public ColorfillInteractionModuleModel(@ModuleScoped Response response) {
-		super(response, null);
+		super(response);
 	}
-	
+
 	public void initialize(ResponseModelChangeListener modelChangeListener){
 		responseModelChange = modelChangeListener;
 	}
@@ -31,11 +29,6 @@ public class ColorfillInteractionModuleModel extends AbstractResponseModel<Strin
 	
 	public Response getResponse(){
 		return this.response;
-	}
-
-	@Override
-	public void onModelChange(){
-		responseModelChange.onResponseModelChange();
 	}
 	
 	public void setNewUserAnswers(List<String> answers){

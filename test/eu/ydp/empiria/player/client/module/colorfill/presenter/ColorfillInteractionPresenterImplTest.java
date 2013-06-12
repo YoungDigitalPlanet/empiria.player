@@ -1,29 +1,12 @@
 package eu.ydp.empiria.player.client.module.colorfill.presenter;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillViewBuilder;
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
-import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
-import eu.ydp.empiria.player.client.module.colorfill.structure.AreaContainer;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionBean;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
@@ -41,13 +24,11 @@ public class ColorfillInteractionPresenterImplTest {
 	@Mock private ColorfillInteractionModuleModel model;
 	@Mock private ColorButtonsController colorButtonController;
 	private ColorfillInteractionBean bean;
-
+/*
 
 	@Before
 	public void setUp() throws Exception {
 		presenter = new ColorfillInteractionPresenterImpl(
-				responseUserAnswersConverter,
-				responseAnswerByViewBuilder,
 				colorfillViewBuilder,
 				colorButtonController,
 				interactionView,
@@ -162,5 +143,5 @@ public class ColorfillInteractionPresenterImplTest {
 				colorButtonController,
 				interactionView,
 				model);
-	}
+	}*/
 }
