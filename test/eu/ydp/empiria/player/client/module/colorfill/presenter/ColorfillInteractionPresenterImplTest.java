@@ -135,6 +135,7 @@ public class ColorfillInteractionPresenterImplTest {
 	public void shouldResetViewOnReset() throws Exception {
 		presenter.reset();
 		verify(interactionView).reset();
+		verify(areaMapper).reset();
 		verifyNoMoreInteractionsOnAllMocks();
 	}
 	

@@ -66,7 +66,7 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 	@Override
 	public void reset() {
 		interactionView.reset();
-		//TODO: w YPUB-5431  Dodaæ resetowanie mapowania user point to compilator point
+		areaMapper.reset();
 	}
 
 	@Override
