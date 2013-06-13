@@ -83,12 +83,11 @@ public class UserToResponseAreaMapperJUnitTest {
 		Area userArea1 = new Area(21, 22);
 		ColorModel colorModel0 = ColorModel.createFromRgba(1, 2, 3, 4);
 		
-		Map<Area, ColorModel> userAnswersState0 = ImmutableMap.of(responseArea0, colorModel0);
-		Map<Area, ColorModel> userAnswersState1 = ImmutableMap.of(responseArea0, colorModel0);
+		Map<Area, ColorModel> userAnswersState = ImmutableMap.of(responseArea0, colorModel0);
 		
 		// given
-		simulateUserAnswersChange(userArea0, userAnswersState0);
-		simulateUserAnswersChange(userArea1, userAnswersState1);
+		simulateUserAnswersChange(userArea0, userAnswersState);
+		simulateUserAnswersChange(userArea1, userAnswersState);
 		
 		// when
 		Iterable<Area> userAreaFound = areaMapper.mapResponseToUser(Lists.newArrayList(responseArea0));
@@ -120,7 +119,7 @@ public class UserToResponseAreaMapperJUnitTest {
 	}
 	
 	@Test
-	public void mapResponseToUser_noColorChange(){
+	public void mapResponseToUser_reset_sameArea(){
 		Area responseArea = new Area(1, 2);
 		Area userArea0 = new Area(11, 12);
 		Area userArea1 = new Area(11, 12);
@@ -130,11 +129,12 @@ public class UserToResponseAreaMapperJUnitTest {
 		
 		// given
 		simulateUserAnswersChange(userArea0, userAnswersState);
+		areaMapper.reset();
 		simulateUserAnswersChange(userArea1, userAnswersState);
 		// when
 		Iterable<Area> userAreaFound = areaMapper.mapResponseToUser(Lists.newArrayList(responseArea));
 		// then
-		assertThat(userAreaFound).containsExactly(userArea0);
+		assertThat(userAreaFound).containsExactly(userArea1);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

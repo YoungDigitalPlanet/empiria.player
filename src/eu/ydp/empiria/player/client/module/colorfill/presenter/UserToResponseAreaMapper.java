@@ -48,7 +48,12 @@ public class UserToResponseAreaMapper {
 		if (result.isDifference()){
 			updateResponseToUserMap(userArea, result);
 		}
-		previousAnswers = currentAnswers;
+		setPreviousAnswers(currentAnswers);
+	}
+
+	private void setPreviousAnswers(Map<Area, ColorModel> currentAnswers) {
+		previousAnswers.clear();
+		previousAnswers.putAll(currentAnswers);
 	}
 
 	private void updateResponseToUserMap(Area userArea, AreasMapComparationResult result) {
