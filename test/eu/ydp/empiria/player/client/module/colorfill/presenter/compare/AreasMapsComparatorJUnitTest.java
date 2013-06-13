@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.colorfill.presenter.compare;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.junit.Test;
@@ -74,5 +75,15 @@ public class AreasMapsComparatorJUnitTest {
 		assertThat(result.isDifference()).isTrue();
 		assertThat(result.isAddedOrChanged()).isFalse();
 		assertThat(result.getArea()).isEqualTo(removedArea);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testArguments(){
+		// given
+		Map<Area, ColorModel> previous = Collections.EMPTY_MAP;
+		Map<Area, ColorModel> current = ImmutableMap.of(new Area(1, 2), ColorModel.createFromRgba(0, 1, 2, 3), new Area(11, 12), ColorModel.createFromRgba(10, 11, 12, 13));
+				
+		// when
+		comparator.findDifference(previous, current);
 	}
 }
