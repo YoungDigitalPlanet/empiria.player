@@ -1,6 +1,9 @@
 package eu.ydp.empiria.player.client.module.colorfill.presenter;
 
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -18,6 +21,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import eu.ydp.empiria.player.client.module.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillViewBuilder;
@@ -38,7 +43,7 @@ public class ColorfillInteractionPresenterImplTest {
 	@Mock private ColorfillModelProxy model;
 	@Mock private ColorButtonsController colorButtonController;
 	@Mock private UserToResponseAreaMapper areaMapper;
-	
+
 	private ColorfillInteractionBean bean;
 
 	@Before
@@ -98,6 +103,19 @@ public class ColorfillInteractionPresenterImplTest {
 	}
 
 	@Test
+	public void shouldIgnoreAreaClickWhenLock() throws Exception {
+		//given
+		Area clickedArea = new Area(123, 253);
+		presenter.setLocked(true);
+
+		//when
+		presenter.imageColorChanged(clickedArea);
+
+		//then
+		verifyNoMoreInteractionsOnAllMocks();
+	}
+
+	@Test
 	public void shouldReactOnColorButtonClicked() throws Exception {
 		ColorModel color = ColorModel.createFromRgbString("00ff00");
 
@@ -119,16 +137,53 @@ public class ColorfillInteractionPresenterImplTest {
 		presenter.showAnswers(ShowAnswersType.USER);
 
 		InOrder inOrder = Mockito.inOrder(interactionView);
+		inOrder.verify(interactionView).showUserAnswers();
 		inOrder.verify(interactionView).setColors(areaToColorMap);
 	}
 
 	@Test
 	public void shouldShowAnswersInCorrectMode() throws Exception {
 		presenter.showAnswers(ShowAnswersType.CORRECT);
-		
+
 		verify(interactionView).showCorrectAnswers();
-		
+
 		verifyNoMoreInteractionsOnAllMocks();
+	}
+
+	@Test
+	public void markCorrectAnswers(){
+		List<Area> areaList = Lists.newArrayList();
+		doReturn(areaList).when(model).getUserCorrectAnswers();
+		presenter.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.MARK);
+		verify(interactionView).markCorrectAnswers(eq(areaList));
+		verifyNoMoreInteractions(interactionView);
+	}
+
+	@Test
+	public void markWrongAnswers(){
+		List<Area> areaList = Lists.newArrayList();
+		doReturn(areaList).when(model).getUserCorrectAnswers();
+		presenter.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.MARK);
+		verify(interactionView).markWrongAnswers(eq(areaList));
+		verifyNoMoreInteractions(interactionView);
+	}
+
+	@Test
+	public void unmarkCorrectAnswers(){
+		List<Area> areaList = Lists.newArrayList();
+		doReturn(areaList).when(model).getUserCorrectAnswers();
+		presenter.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK);
+		verify(interactionView).unmarkCorrectAnswers();
+		verifyNoMoreInteractions(interactionView);
+	}
+
+	@Test
+	public void unmarkWrongAnswers(){
+		List<Area> areaList = Lists.newArrayList();
+		doReturn(areaList).when(model).getUserCorrectAnswers();
+		presenter.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.UNMARK);
+		verify(interactionView).unmarkWrongAnswers();
+		verifyNoMoreInteractions(interactionView);
 	}
 
 	@Test
@@ -138,7 +193,7 @@ public class ColorfillInteractionPresenterImplTest {
 		verify(areaMapper).reset();
 		verifyNoMoreInteractionsOnAllMocks();
 	}
-	
+
 	private void verifyNoMoreInteractionsOnAllMocks() {
 		Mockito.verifyNoMoreInteractions(responseUserAnswersConverter,
 				responseAnswerByViewBuilder,

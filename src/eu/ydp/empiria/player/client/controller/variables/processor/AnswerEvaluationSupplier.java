@@ -9,13 +9,18 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
+/**
+ * inject in {@link PageScoped}
+ *
+ */
 public class AnswerEvaluationSupplier {
 
 	private static final Logger LOGGER = Logger.getLogger(VariableProcessingAdapter.class.getName());
 
 	private ModulesProcessingResults modulesProcessingResults;
-	
+
 	public void updateModulesProcessingResults(ModulesProcessingResults modulesProcessingResults){
 		this.modulesProcessingResults = modulesProcessingResults;
 	}

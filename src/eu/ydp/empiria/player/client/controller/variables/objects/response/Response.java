@@ -31,8 +31,13 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
+/**
+ * inject in {@link ModuleScoped}
+ *
+ */
 public class Response extends Variable {
 
 	/** List of correct responses */
