@@ -9,12 +9,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasFixed;
 import eu.ydp.empiria.player.client.structure.SimpleChoiceBaseBean;
 import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="simpleChoice")
-public class SimpleChoiceBean extends SimpleChoiceBaseBean{
+public class SimpleChoiceBean extends SimpleChoiceBaseBean implements HasFixed {
 
 	@XmlAttribute
 	private boolean fixed;
@@ -36,6 +37,7 @@ public class SimpleChoiceBean extends SimpleChoiceBaseBean{
 		this.content = content;
 	}
 
+	@Override
 	public boolean isFixed() {
 		return fixed;
 	}

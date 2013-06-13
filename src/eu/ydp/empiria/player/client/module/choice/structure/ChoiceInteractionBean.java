@@ -9,12 +9,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasShuffle;
 import eu.ydp.empiria.player.client.structure.InteractionModuleBean;
 import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="choiceInteraction")
-public class ChoiceInteractionBean extends InteractionModuleBean{
+public class ChoiceInteractionBean extends InteractionModuleBean implements HasShuffle {
 
 	@XmlAttribute
 	private int maxChoices;
@@ -46,6 +47,7 @@ public class ChoiceInteractionBean extends InteractionModuleBean{
 		this.maxChoices = maxChoices;
 	}
 	
+	@Override
 	public boolean isShuffle() {
 		return shuffle;
 	}
