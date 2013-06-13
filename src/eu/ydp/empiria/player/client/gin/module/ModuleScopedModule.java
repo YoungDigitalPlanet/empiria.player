@@ -68,19 +68,8 @@ public class ModuleScopedModule extends AbstractGinModule{
 	}
 
 	private void bindChoice() {
-		bind(new TypeLiteral<ModuleScopedProvider<ChoiceModuleView>>(){}).in(Singleton.class);
-		bind(ChoiceModuleView.class)
-			.annotatedWith(ModuleScoped.class)
-			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ChoiceModuleView>>(){}));
-		
-		bind(new TypeLiteral<ModuleScopedProvider<ChoiceModulePresenter>>(){}).in(Singleton.class);
-		bind(ChoiceModulePresenter.class)
-			.annotatedWith(ModuleScoped.class)
-			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ChoiceModulePresenter>>(){}));
-		
-		bind(new TypeLiteral<ModuleScopedProvider<ChoiceModuleModel>>(){}).in(Singleton.class);
-		bind(ChoiceModuleModel.class)
-			.annotatedWith(ModuleScoped.class)
-			.toProvider(Key.get(new TypeLiteral<ModuleScopedProvider<ChoiceModuleModel>>(){}));
+		bindModuleScoped(ChoiceModuleView.class, new TypeLiteral<ModuleScopedProvider<ChoiceModuleView>>(){});
+		bindModuleScoped(ChoiceModulePresenter.class, new TypeLiteral<ModuleScopedProvider<ChoiceModulePresenter>>(){});
+		bindModuleScoped(ChoiceModuleModel.class, new TypeLiteral<ModuleScopedProvider<ChoiceModuleModel>>(){});
 	}
 }

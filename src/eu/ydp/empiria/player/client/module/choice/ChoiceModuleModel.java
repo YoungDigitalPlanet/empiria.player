@@ -13,12 +13,9 @@ import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 
 public class ChoiceModuleModel extends AbstractResponseModel<String> {
 
-	private ResponseModelChangeListener responseModelChange;
-
 	@Inject
-	public ChoiceModuleModel(@ModuleScoped Response response/*, ResponseModelChangeListener modelChangeListener*/) {
-//		super(response, modelChangeListener);
-		 super(response, null);
+	public ChoiceModuleModel(@ModuleScoped Response response) {
+		super(response);
 	}
 
 	@Override
@@ -32,10 +29,5 @@ public class ChoiceModuleModel extends AbstractResponseModel<String> {
 
 	public void initialize(ResponseModelChangeListener modelChangeListener) {
 		responseModelChange = modelChangeListener;
-	}
-
-	@Override
-	public void onModelChange() {
-		responseModelChange.onResponseModelChange();
 	}
 }

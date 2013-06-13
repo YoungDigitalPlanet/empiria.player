@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.choice;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
@@ -18,19 +17,15 @@ public class ChoiceModule extends
 
 	private ChoiceModuleStructure choiceStructure;
 
-	protected Provider<ChoiceModule> moduleFactory;
-
 	private ChoiceModuleModel moduleModel;
 
 	private ChoiceModulePresenter presenter;
 
 	@Inject
 	public ChoiceModule(ChoiceModuleStructure choiceStructure,
-			Provider<ChoiceModule> moduleFactory,
 			@ModuleScoped ChoiceModuleModel moduleModel,
 			@ModuleScoped ChoiceModulePresenter presenter) {
 		this.choiceStructure = choiceStructure;
-		this.moduleFactory = moduleFactory;
 		this.moduleModel = moduleModel;
 		this.presenter = presenter;
 	}
@@ -49,11 +44,6 @@ public class ChoiceModule extends
 
 	private boolean isMulti() {
 		return Cardinality.MULTIPLE.equals(getResponse().cardinality);
-	}
-
-	@Override
-	public ChoiceModule getNewInstance() {
-		return moduleFactory.get();
 	}
 
 	@Override
