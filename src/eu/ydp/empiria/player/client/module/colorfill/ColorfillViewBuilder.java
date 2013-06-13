@@ -33,6 +33,11 @@ public class ColorfillViewBuilder {
 
 			Image image = bean.getImage();
 			interactionView.setImage(image);
+			
+			Image correctlyColoredImage = bean.getCorrectImage();
+			if(correctlyColoredImage != null){
+				interactionView.setCorrectImage(correctlyColoredImage);
+			}
 	}
 
 	private void createButtons(ButtonsContainer buttonsContainer) {

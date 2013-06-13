@@ -6,6 +6,7 @@ import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.junit.AfterClass;
@@ -50,13 +51,13 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 	private class CustomGinModule implements Module {
 		@Override
 		public void configure(Binder binder) {
-			binder.bind(ColorfillCanvasStubView.class).toInstance(canvasStubView);
+			binder.bind(CanvasImageView.class).toInstance(canvasStubView);
 			binder.bind(UserInteractionHandlerFactory.class).toInstance(userInteractionHandlerFactory);
 			binder.bind(PositionHelper.class).toInstance(positionHelper);
 		}
 	}
 
-	private final ColorfillCanvasStubView canvasStubView = mock(ColorfillCanvasStubView.class);
+	private final CanvasImageView canvasStubView = mock(CanvasImageView.class);
 	private final UserInteractionHandlerFactory userInteractionHandlerFactory = mock(UserInteractionHandlerFactory.class);
 	private final PositionHelper positionHelper = mock(PositionHelper.class);
 	private ColorfillCanvasImpl instance;
@@ -77,6 +78,8 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 	@Before
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
+		
+		
 		instance = injector.getInstance(ColorfillCanvasImpl.class);
 		canvas = mock(Canvas.class);
 		context2d = mock(Context2d.class);
@@ -93,6 +96,7 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 	@Test
 	public void postConstruct() throws Exception {
 		ArgumentCaptor<LoadHandler> argumentCaptor = ArgumentCaptor.forClass(LoadHandler.class);
+		verify(canvasStubView).setPanelStyle("qp-colorfill-img");
 		verify(canvasStubView).setImageLoadHandler(argumentCaptor.capture());
 		assertThat(argumentCaptor.getValue()).isNotNull();
 	}
@@ -131,6 +135,28 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 		Area area = areaCaptor.getValue();
 		assertThat(area.getX()).isEqualTo(POSITION_X);
 		assertThat(area.getY()).isEqualTo(POSITION_Y);
+
+	}
+
+	@Test
+	public void onAreaClickWrongCoordinates() throws Exception {
+		ColorfillAreaClickListener colorfillAreaClickListener = mock(ColorfillAreaClickListener.class);
+		instance.setAreaClickListener(colorfillAreaClickListener);
+
+		doReturn(-10).when(positionHelper).getPositionX(any(NativeEvent.class), Mockito.any(Element.class));
+		doReturn(-15).when(positionHelper).getPositionY(any(NativeEvent.class), Mockito.any(Element.class));
+
+		ArgumentCaptor<LoadHandler> loadHandlerCaptor = ArgumentCaptor.forClass(LoadHandler.class);
+		verify(canvasStubView).setImageLoadHandler(loadHandlerCaptor.capture());
+		loadHandlerCaptor.getValue().onLoad(null);
+
+		ArgumentCaptor<Command> commandCaptor = ArgumentCaptor.forClass(Command.class);
+		verify(userInteractionHandlerFactory).applyUserClickHandler(commandCaptor.capture(), eq(canvas));
+
+		NativeEvent nativeEvent = mock(NativeEvent.class);
+		commandCaptor.getValue().execute(nativeEvent);
+
+		verify(colorfillAreaClickListener,times(0)).onAreaClick(any(Area.class));
 
 	}
 

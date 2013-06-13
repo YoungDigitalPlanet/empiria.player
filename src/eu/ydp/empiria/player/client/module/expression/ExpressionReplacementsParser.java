@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 
-public class ExpresionReplacementsParser {
+public class ExpressionReplacementsParser {
 
 	private static final Character SEPARATOR = '|';
 

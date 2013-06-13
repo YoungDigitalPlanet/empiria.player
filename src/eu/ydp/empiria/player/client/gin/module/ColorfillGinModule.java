@@ -2,11 +2,11 @@ package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 
-
+import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
+import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenterImpl;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillCanvas;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillCanvasImpl;
-import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
-import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenterImpl;import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
+import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillPalette;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillPaletteImpl;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillViewImpl;

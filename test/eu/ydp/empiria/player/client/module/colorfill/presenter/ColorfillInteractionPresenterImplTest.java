@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.colorfill.presenter;
 
-import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -10,6 +9,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -18,40 +19,30 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
-import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
+import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillViewBuilder;
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.AreaContainer;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionBean;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
-import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ColorfillInteractionPresenterImplTest {
 
-	private static final ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-
-	private ColorfillInteractionPresenterImpl presenter;
+	@InjectMocks private ColorfillInteractionPresenterImpl presenter;
 	@Mock private ResponseUserAnswersConverter responseUserAnswersConverter;
 	@Mock private ResponseAnswerByViewBuilder responseAnswerByViewBuilder;
 	@Mock private ColorfillViewBuilder colorfillViewBuilder;
 	@Mock private ColorfillInteractionView interactionView;
-	@Mock private ColorfillInteractionModuleModel model;
+	@Mock private ColorfillModelProxy model;
 	@Mock private ColorButtonsController colorButtonController;
+	@Mock private UserToResponseAreaMapper areaMapper;
+	
 	private ColorfillInteractionBean bean;
-
 
 	@Before
 	public void setUp() throws Exception {
-		presenter = new ColorfillInteractionPresenterImpl(
-				responseUserAnswersConverter,
-				responseAnswerByViewBuilder,
-				colorfillViewBuilder,
-				colorButtonController,
-				interactionView,
-				model);
-
 		prepareBean();
 		presenter.setBean(bean);
 	}
@@ -67,12 +58,7 @@ public class ColorfillInteractionPresenterImplTest {
 	@Test
 	public void shouldBuildView() throws Exception {
 		presenter.bindView();
-
 		verify(colorfillViewBuilder).buildView(bean,presenter);
-		@SuppressWarnings("unchecked")
-		List<Area> areas = (List<Area>) reflectionsUtils.getValueFromFiledInObject("areas", presenter);
-		assertThat(areas).isNotNull();
-		assertThat(areas.size()).isEqualTo(2);
 	}
 
 	@Test
@@ -93,7 +79,7 @@ public class ColorfillInteractionPresenterImplTest {
 
 		//them
 		verify(interactionView).setColor(clickedArea, currentColor);
-		verify(model).setNewUserAnswers(rebuildedAnswers);
+		verify(model).updateUserAnswers();
 	}
 
 	@Test
@@ -124,24 +110,35 @@ public class ColorfillInteractionPresenterImplTest {
 	@Test
 	public void shouldShowUserAnswers() throws Exception {
 		List<String> currentAnswers = Lists.newArrayList("a", "b");
-		when(model.getCurrentAnswers())
-			.thenReturn(currentAnswers);
-
 		Map<Area, ColorModel> areaToColorMap = Maps.newHashMap();
+		when(model.getUserAnswers()).thenReturn(areaToColorMap);
+
 		when(responseUserAnswersConverter.convertResponseAnswersToAreaColorMap(currentAnswers))
 			.thenReturn(areaToColorMap);
 
 		presenter.showAnswers(ShowAnswersType.USER);
 
-		verify(interactionView).setColors(areaToColorMap);
+		InOrder inOrder = Mockito.inOrder(interactionView);
+		inOrder.verify(interactionView).setColors(areaToColorMap);
 	}
 
 	@Test
-	public void shouldIgnoreShowingAnswersInModeOthenThanUser() throws Exception {
+	public void shouldShowAnswersInCorrectMode() throws Exception {
 		presenter.showAnswers(ShowAnswersType.CORRECT);
+		
+		verify(interactionView).showCorrectAnswers();
+		
 		verifyNoMoreInteractionsOnAllMocks();
 	}
 
+	@Test
+	public void shouldResetViewOnReset() throws Exception {
+		presenter.reset();
+		verify(interactionView).reset();
+		verify(areaMapper).reset();
+		verifyNoMoreInteractionsOnAllMocks();
+	}
+	
 	private void verifyNoMoreInteractionsOnAllMocks() {
 		Mockito.verifyNoMoreInteractions(responseUserAnswersConverter,
 				responseAnswerByViewBuilder,

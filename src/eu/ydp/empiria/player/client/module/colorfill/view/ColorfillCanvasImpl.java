@@ -13,11 +13,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.colorfill.fill.BlackColorContourDetector;
-import eu.ydp.empiria.player.client.module.colorfill.fill.CanvasImageData;
 import eu.ydp.empiria.player.client.module.colorfill.fill.FloodFillScanLine;
+import eu.ydp.empiria.player.client.module.colorfill.fill.ICanvasImageData;
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
@@ -25,7 +26,7 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	@Inject
-	private ColorfillCanvasStubView canvasStubView;
+	private CanvasImageView canvasStubView;
 
 	@Inject
 	private UserInteractionHandlerFactory interactionHandlerFactory;
@@ -33,16 +34,23 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 	@Inject
 	private PositionHelper positionHelper;
 
+	@Inject
+	private CanvasImageDataProvider canvasImageDataProvider;
+	@Inject
+	private StyleNameConstants styleNameConstants;
+	
+
 	private boolean canvasStubViewLoded = false;
 
 	private final Map<Area, ColorModel> colors = Maps.newHashMap();
 
 	private ColorfillAreaClickListener listener;
 
-	private CanvasImageData imageData;
+	private ICanvasImageData imageData;
 
 	@PostConstruct
 	public void postConstruct() {
+		canvasStubView.setPanelStyle(styleNameConstants.QP_COLORFILL_IMG());
 		canvasStubView.setImageLoadHandler(new LoadHandler() {
 
 			@Override
@@ -66,7 +74,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 	}
 
 	void reloadImageData() {
-		imageData = new CanvasImageData(canvasStubView.getCanvas().getContext2d(), canvasStubView.getWidth(), canvasStubView.getHeight());
+		imageData = canvasImageDataProvider.getCanvasImageData(canvasStubView);
 	}
 
 	@Override
@@ -122,7 +130,10 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 			public void execute(NativeEvent event) {
 				event.preventDefault();
 				CanvasElement canvasElement = canvasStubView.getCanvas().getCanvasElement();
-				listener.onAreaClick(new Area(positionHelper.getPositionX(event, canvasElement), positionHelper.getPositionY(event, canvasElement)));
+				Area area = new Area(positionHelper.getPositionX(event, canvasElement), positionHelper.getPositionY(event, canvasElement));
+				if(area.getX() >=0 && area.getY() >= 0){
+					listener.onAreaClick(area);
+				}
 			}
 		}, canvasStubView.getCanvas());
 	}

@@ -52,7 +52,8 @@ public class ColorfillViewBuilderJUnitTest {
 		bean.setButtons(buttonsContainer);
 		Image image = new Image();
 		bean.setImage(image);
-		
+		Image correctImage = new Image();
+		bean.setCorrectImage(correctImage);
 		
 		//when
 		colorfillViewBuilder.buildView(bean, interactionPresenter);
@@ -64,6 +65,7 @@ public class ColorfillViewBuilderJUnitTest {
 		verify(interactionView).setAreaClickListener(any(ColorfillAreaClickListener.class));
 		verify(interactionView).setButtonClickListener(any(ColorButtonClickListener.class));
 		verify(interactionView).setImage(image);
+		verify(interactionView).setCorrectImage(correctImage);
 	}
 	
 }

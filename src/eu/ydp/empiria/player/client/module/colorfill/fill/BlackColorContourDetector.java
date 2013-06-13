@@ -10,7 +10,7 @@ public class BlackColorContourDetector implements ContourDetector {
 		return rgbColor.getBlue() == 0
 			&& rgbColor.getGreen() == 0
 			&& rgbColor.getRed() == 0
-			&& rgbColor.getAlpha() == 255;
+			&& rgbColor.getAlpha() > 250;
 	}
 
 }

@@ -16,13 +16,13 @@ public class PositionHelper {
 	 */
 	public int getPositionY(NativeEvent event, Element target) {
 		Touch touch = getTouch(event);
-		int positionY = 0;
+		float positionY = 0;//hack dont change to int
 		if (touch == null) {
 			positionY = getRelativeY(event, target);
 		} else {
 			positionY = touch.getRelativeY(target);
 		}
-		return positionY;
+		return (int) positionY;
 	}
 
 	private int getRelativeY(NativeEvent event, Element target) {
@@ -38,13 +38,13 @@ public class PositionHelper {
 	 */
 	public int getPositionX(NativeEvent event, Element target) {
 		Touch touch = getTouch(event);
-		int positionX = 0;
+		float positionX = 0; //hack dont change to int
 		if (touch == null) {
 			positionX = getRelativeX(event, target);
 		} else {
 			positionX = touch.getRelativeX(target);
 		}
-		return positionX;
+		return (int) positionX;
 	}
 
 	private int getRelativeX(NativeEvent event, Element target) {

@@ -67,7 +67,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap {
 		setDimensions();
 		setMaxlengthBinding(mathStyles, getModuleElement());
 		setWidthBinding(mathStyles, getModuleElement());
-		maybeMakeExpressionReplacements(mathStyles);
+		initReplacements(mathStyles);
 	}
 
 	private void installViewInPlaceholder(HasWidgets placeholder) {
@@ -140,7 +140,9 @@ public class TextEntryGapModule extends MathGapBase implements MathGap {
 
 	@Override
 	protected void setCorrectAnswer() {
-		presenter.setText(getCorrectAnswer());
+		String correctAnswer = getCorrectAnswer();
+		String replaced = gapExpressionReplacer.ensureReplacement(correctAnswer);
+		presenter.setText(replaced);
 	}
 
 	@Override

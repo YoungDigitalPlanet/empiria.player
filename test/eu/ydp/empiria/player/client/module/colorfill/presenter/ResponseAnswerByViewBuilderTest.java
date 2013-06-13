@@ -1,18 +1,18 @@
 package eu.ydp.empiria.player.client.module.colorfill.presenter;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.Lists;
-
-import static org.fest.assertions.api.Assertions.*;
-
-import static org.mockito.Mockito.*;
 
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
@@ -23,12 +23,15 @@ public class ResponseAnswerByViewBuilderTest {
 
 	private ResponseAnswerByViewBuilder answerByViewBuilder;
 	private ResponseUserAnswersConverter responseUserAnswersConverter;
-	@Mock private ColorfillInteractionView interactionView;
+	@InjectMocks
+	private ColorfillInteractionViewColors interactionViewColors;
+	@Mock
+	private ColorfillInteractionView interactionView;
 	
 	@Before
 	public void setUp() throws Exception {
 		responseUserAnswersConverter = new ResponseUserAnswersConverter();
-		answerByViewBuilder = new ResponseAnswerByViewBuilder(interactionView, responseUserAnswersConverter);
+		answerByViewBuilder = new ResponseAnswerByViewBuilder(interactionViewColors, responseUserAnswersConverter);
 	}
 
 	@Test

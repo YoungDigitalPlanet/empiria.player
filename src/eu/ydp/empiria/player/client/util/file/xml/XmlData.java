@@ -52,6 +52,7 @@ public class XmlData {
 		fixLinks(document, baseUrl, "simulationPlayer", SRC_TAG);
 		fixLinks(document, baseUrl, "showUrl", "href");
 		fixLinks(document, baseUrl, "image", SRC_TAG);
+		fixLinks(document, baseUrl, "correctImage", SRC_TAG);
 	}
 
 	/**

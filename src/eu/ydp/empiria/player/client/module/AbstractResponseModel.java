@@ -16,13 +16,18 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 public abstract class AbstractResponseModel<T> implements IStateful{
 
 	protected Response response;
-	private final ResponseModelChangeListener responseModelChange;
-	protected abstract List<T> parseResponse(Collection<String> values);
+	protected ResponseModelChangeListener responseModelChange;
 
 	public AbstractResponseModel(Response response, ResponseModelChangeListener responseModelChange){
 		this.response = response;
 		this.responseModelChange = responseModelChange;
 	}
+	
+	public AbstractResponseModel(Response response){
+		this.response = response;
+	}
+	
+	protected abstract List<T> parseResponse(Collection<String> values);
 
 	public boolean isCorrectAnswer(String answer){
 		List<String> correctAnswers = response.correctAnswers.getAllAnswers();

@@ -61,7 +61,7 @@ public class TextEntryModule extends GapBase {
 
 		installViewPanel(placeholders.get(0));
 		
-		maybeMakeExpressionReplacements(styles);
+		initReplacements(styles);
 	}
 
 	protected void setDimensions(Map<String, String> styles) {
@@ -110,7 +110,9 @@ public class TextEntryModule extends GapBase {
 
 	@Override
 	protected void setCorrectAnswer() {
-		presenter.setText(getCorrectAnswer());
+		String correctAnswer = getCorrectAnswer();
+		String replaced = gapExpressionReplacer.ensureReplacement(correctAnswer);
+		presenter.setText(replaced);
 	}
 
 	@Override

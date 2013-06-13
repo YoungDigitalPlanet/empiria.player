@@ -7,13 +7,13 @@ import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 @SuppressWarnings("PMD")
 public class FloodFillScanLine {
 	private JsStack queue;
-	private final CanvasImageData imageData;
+	private final ICanvasImageData imageData;
 	private final ContourDetector contourDetector;
 	private final ColorModel color;
 	private final int width;
 	private final int height;
 
-	public FloodFillScanLine(final CanvasImageData imageData, final ContourDetector contourDetector, final ColorModel color) {
+	public FloodFillScanLine(final ICanvasImageData imageData, final ContourDetector contourDetector, final ColorModel color) {
 		this.imageData = imageData;
 		this.width = imageData.getImageWidth();
 		this.height = imageData.getImageHeight();

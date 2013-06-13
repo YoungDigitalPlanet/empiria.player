@@ -7,8 +7,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Map;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -39,13 +37,14 @@ public class ReplacingChangeHandlerJUnitTest {
 		// given
 		TextBoxMock hasValue = mock(TextBoxMock.class);
 		when(hasValue.getValue()).thenReturn("a");
-		Map<String, String> replacements = ImmutableMap.of("a", "b", "c", "d");
+		ExpressionReplacer replacer = new ExpressionReplacer();
+		replacer.useReplacements(ImmutableMap.of("a", "b", "c", "d"));
 		
 		KeyPressEvent event = mock(KeyPressEvent.class);
 		when(event.getCharCode()).thenReturn("a".charAt(0));
 		
 		ArgumentCaptor<InputEventListener> listenerCaptor = ArgumentCaptor.forClass(InputEventListener.class);
-		handler.init(Wrapper.of(hasValue), replacements);
+		handler.init(Wrapper.of(hasValue), replacer);
 		verify(eventRegistrar).registerInputHandler(eq(hasValue), listenerCaptor.capture());
 		
 		// when
@@ -60,10 +59,11 @@ public class ReplacingChangeHandlerJUnitTest {
 		// given
 		TextBoxMock hasValue = mock(TextBoxMock.class);
 		when(hasValue.getValue()).thenReturn("x");
-		Map<String, String> replacements = ImmutableMap.of("a", "b", "c", "d");
+		ExpressionReplacer replacer = new ExpressionReplacer();
+		replacer.useReplacements(ImmutableMap.of("a", "b", "c", "d"));
 		
 		ArgumentCaptor<InputEventListener> listenerCaptor = ArgumentCaptor.forClass(InputEventListener.class);
-		handler.init(Wrapper.of(hasValue), replacements);
+		handler.init(Wrapper.of(hasValue), replacer);
 		verify(eventRegistrar).registerInputHandler(eq(hasValue), listenerCaptor.capture());
 		
 		// when
@@ -78,10 +78,11 @@ public class ReplacingChangeHandlerJUnitTest {
 		// given
 		TextBoxMock hasValue = mock(TextBoxMock.class);
 		when(hasValue.getValue()).thenReturn("");
-		Map<String, String> replacements = ImmutableMap.of("a", "b", "c", "d");
+		ExpressionReplacer replacer = new ExpressionReplacer();
+		replacer.useReplacements(ImmutableMap.of("a", "b", "c", "d"));
 		
 		ArgumentCaptor<InputEventListener> listenerCaptor = ArgumentCaptor.forClass(InputEventListener.class);
-		handler.init(Wrapper.of(hasValue), replacements);
+		handler.init(Wrapper.of(hasValue), replacer);
 		verify(eventRegistrar).registerInputHandler(eq(hasValue), listenerCaptor.capture());
 		
 		// when
