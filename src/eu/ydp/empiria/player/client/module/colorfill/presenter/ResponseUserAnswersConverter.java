@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
@@ -32,13 +33,13 @@ public class ResponseUserAnswersConverter {
 		return areasWithColors;
 	}
 
-	public List<Area> convertResponseAnswersToAreaList(Iterable<String> currentAnswers) {
-		List<Area> areas = Lists.newArrayList();
-		for (String currentAnswer : currentAnswers) {
-			Area area = getAreaFromAnswer(currentAnswer);
-			areas.add(area);
-		}
-		return areas;
+	public List<Area> convertResponseAnswersToAreaList(List<String> currentAnswers) {
+		return Lists.transform(currentAnswers, new Function<String, Area>() {
+			@Override
+			public Area apply(String currentAnswer) {
+				return  getAreaFromAnswer(currentAnswer);
+			}
+		});
 	}
 
 	private ColorModel getColorFromAnswer(String currentAnswer) {

@@ -33,10 +33,6 @@ public class ColorfillInteractionModuleModel extends AbstractResponseModel<Strin
 
 	public void setNewUserAnswers(List<String> answers){
 		response.values = answers;
-	}
-
-	@Override
-	public void onModelChange() {
-		super.onModelChange();
+		onModelChange();
 	}
 }
