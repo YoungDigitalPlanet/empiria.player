@@ -16,8 +16,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
-import eu.ydp.empiria.player.client.module.colorfill.view.mark.CorrectAnswersMarkingPanel;
-import eu.ydp.empiria.player.client.module.colorfill.view.mark.WrongAnswersMarkingPanel;
+import eu.ydp.empiria.player.client.module.colorfill.view.mark.AnswersMarkingPanel;
 
 public class ColorfillViewImpl implements ColorfillInteractionView {
 
@@ -41,21 +40,17 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	@UiField(provided = true)
 	ColorfillCorrectImage correctImageCanvas;
 	
-	@UiField(provided = true)
-	CorrectAnswersMarkingPanel correctAnswersMarkingPanel;
+	@UiField
+	AnswersMarkingPanel correctAnswersMarkingPanel;
 	
-	@UiField(provided = true)
-	WrongAnswersMarkingPanel wrongAnswersMarkingPanel;
+	@UiField
+	AnswersMarkingPanel wrongAnswersMarkingPanel;
 
 	@Inject
-	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette, ColorfillCorrectImage correctImageCanvas, 
-			CorrectAnswersMarkingPanel correctAnswersMarkingPanel, WrongAnswersMarkingPanel wrongAnswersMarkingPanel) {
+	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette, ColorfillCorrectImage correctImageCanvas) {
 		this.canvas = canvas;
 		this.palette = palette;
 		this.correctImageCanvas = correctImageCanvas;
-		this.correctAnswersMarkingPanel = correctAnswersMarkingPanel;
-		this.wrongAnswersMarkingPanel = wrongAnswersMarkingPanel;
-		
 		
 		uiBinder.createAndBindUi(this);
 	}
