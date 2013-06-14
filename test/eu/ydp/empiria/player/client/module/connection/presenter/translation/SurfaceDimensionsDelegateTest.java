@@ -26,7 +26,7 @@ public class SurfaceDimensionsDelegateTest extends AbstractTestWithMocksBase {
 	private final int VIEW_HEIGHT = 100;
 	private SurfaceDimensionsDelegate delegate;
 	
-	private ConnectionItemsMockCreator creator = new ConnectionItemsMockCreator();
+	private final ConnectionItemsMockCreator creator = new ConnectionItemsMockCreator();
 
 	@Override
 	public void setUp() {

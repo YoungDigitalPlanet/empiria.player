@@ -22,7 +22,6 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.structure.Mul
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsDelegate;
-import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePointTranslator;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
@@ -73,8 +72,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	@Inject
 	private ConnectionViewResizeHandler resizeHandler;
 	@Inject
-	private SurfacePointTranslator pointTranslator;
-	@Inject
 	private SurfaceDimensionsDelegate surfaceDimensions;
 	@Inject
 	private SurfacePositionFinder surfacePositionFinder;
@@ -116,6 +113,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	protected void connect(ConnectionItem source, ConnectionItem target, MultiplePairModuleConnectType type, boolean userAction) {
 		startDrawLine(source, type);
+		
 		drawLine(source, target.getRelativeX(), target.getRelativeY());
 		connectItems(source, target, type, userAction);
 	}
@@ -299,9 +297,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	protected void drawLine(ConnectionItem item, int positionX, int positionY) {
 		if (startPositions.containsKey(item)) {
 			Point startPoint = startPositions.get(item);
-			Point startTranslated = pointTranslator.translatePoint(startPoint, currentSurface);
-			Point endPointTranslated = pointTranslator.translatePoint(new Point(positionX, positionY), currentSurface);
-			currentSurface.drawLine(startTranslated, endPointTranslated);
+			Point endPoint = new Point(positionX, positionY);
+			currentSurface.drawLine(startPoint, endPoint);
 		}
 	}
 
@@ -324,9 +321,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		Point startPoint = new Point(item.getRelativeX(), item.getRelativeY());
 		startPositions.put(item, startPoint);
 		obtainSurfaceWithStyles(item, type);
-		addSurfaceWidget();
-		Point fromTranslated = pointTranslator.translatePoint(startPoint, currentSurface);
-		currentSurface.drawLine(fromTranslated, fromTranslated);
+		addSurfaceWidget(item);
+		currentSurface.drawLine(startPoint, startPoint);
 	}
 
 	private void obtainSurfaceWithStyles(ConnectionItem item, MultiplePairModuleConnectType type) {
@@ -334,9 +330,13 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		currentSurface.applyStyles(connectionModuleViewStyles.getStyles(type));
 	}
 
-	private void addSurfaceWidget() {
+	private void addSurfaceWidget(ConnectionItem item) {
 		int offsetLeft = surfacePositionFinder.findOffsetLeft(connectionItems);
+		int offsetTop = surfacePositionFinder.findTopOffset(connectionItems);
+		
 		currentSurface.setOffsetLeft(offsetLeft);
+		currentSurface.setOffsetTop(offsetTop);
+		
 		view.addElementToMainView(currentSurface);
 	}
 
@@ -378,8 +378,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	protected void tryDisconnectConnection(NativeEvent event) {
 		Point clickPoint = getClicktPoint(event);
-		Point clickPointTranslated = pointTranslator.translatePoint(clickPoint, surfacePositionFinder.findOffsetLeft(connectionItems));
-		ConnectionPairEntry<String, String> pointOnPath = connectionSurfacesManager.findPointOnPath(clickPointTranslated);
+		ConnectionPairEntry<String, String> pointOnPath = connectionSurfacesManager.findPointOnPath(clickPoint);
 		disconnectAndPreventDefaultBehaviorIfPointNotNull(event, pointOnPath);
 	}
 
