@@ -21,6 +21,7 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.gin.factory.SimpleChoiceViewFactory;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.choice.view.SimpleChoiceView;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
@@ -30,16 +31,11 @@ public class SimpleChoicePresenterImplTest {
 
 	SimpleChoicePresenterImpl presenter;
 
-	@Mock
-	SimpleChoiceBean bean;
-	@Mock
-	InlineBodyGenerator bodyGenerator;
-	@Mock
-	SimpleChoiceViewFactory viewFactory;
-	@Mock
-	SimpleChoiceView view;
-	@Mock
-	ChoiceButtonBase button;
+	@Mock SimpleChoiceBean bean;
+	@Mock InlineBodyGenerator bodyGenerator;
+	@Mock SimpleChoiceViewFactory viewFactory;
+	@Mock SimpleChoiceView view;
+	@Mock ChoiceButtonBase button;
 
 	@Before
 	public void setUp() throws Exception {
@@ -90,11 +86,24 @@ public class SimpleChoicePresenterImplTest {
 	}
 
 	@Test
-	public void testunmarkWrongAnswers() {
+	public void testUnmarkWrongAnswers() {
 		// when
 		presenter.markAnswer(MarkAnswersType.WRONG, MarkAnswersMode.UNMARK);
 
 		// then
 		verify(view).unmarkWrong();
+	}
+	
+	@Test
+	public void shouldCallListenerWhenClicked(){
+		//given
+		ChoiceModuleListener listener = mock(ChoiceModuleListener.class);
+		presenter.setListener(listener);
+		
+		//when
+		presenter.onChoiceClick();
+		
+		//then
+		verify(listener).onChoiceClick(presenter);
 	}
 }

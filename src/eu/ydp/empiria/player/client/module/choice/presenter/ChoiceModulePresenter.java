@@ -12,4 +12,6 @@ public interface ChoiceModulePresenter extends ActivityPresenter<ChoiceModuleMod
 	void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator);
 	
 	IsWidget getFeedbackPlaceholderByIdentifier(String identifier);
+
+	String getChoiceIdentifier(SimpleChoicePresenter choice);
 }

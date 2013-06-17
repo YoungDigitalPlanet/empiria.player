@@ -1,6 +1,10 @@
 package eu.ydp.empiria.player.client.module.choice.presenter;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +14,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -18,7 +23,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.SimpleChoicePresenterFactory;
+import eu.ydp.empiria.player.client.module.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
@@ -27,6 +35,7 @@ import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
 @RunWith(MockitoJUnitRunner.class)
 public class ChoiceModulePresenterImplTest {
 
+	@InjectMocks
 	ChoiceModulePresenterImpl presenter;
 
 	@Mock ChoiceModuleModel model;
@@ -46,11 +55,11 @@ public class ChoiceModulePresenterImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		presenter = new ChoiceModulePresenterImpl(choiceModuleFactory, model, view);
-
 		prepareBean();
 		presenter.setBean(bean);
 		presenter.setInlineBodyGenerator(bodyGenerator);
+		
+		presenter.bindView();
 	}
 
 	private void prepareBean() {
@@ -74,19 +83,17 @@ public class ChoiceModulePresenterImplTest {
 
 	@Test
 	public void shouldInitializeView() {
-		// when
-		presenter.bindView();
-
 		// then
 		verify(view).clear();
 		verify(view, times(4)).addChoice(any(Widget.class));
+		verify(simplePresenter1).setListener(any(ChoiceModuleListener.class));
+		verify(simplePresenter2).setListener(any(ChoiceModuleListener.class));
+		verify(simplePresenter3).setListener(any(ChoiceModuleListener.class));
+		verify(simplePresenter4).setListener(any(ChoiceModuleListener.class));
 	}
 
 	@Test
 	public void shouldLockAlleSimplePresenters() {
-		// given
-		presenter.bindView();
-
 		// when
 		presenter.setLocked(true);
 
@@ -99,9 +106,6 @@ public class ChoiceModulePresenterImplTest {
 
 	@Test
 	public void shouldResetAllSimplePresenters() {
-		// given
-		presenter.bindView();
-
 		// when
 		presenter.reset();
 
@@ -120,8 +124,6 @@ public class ChoiceModulePresenterImplTest {
 	@Test
 	public void shouldShowUserAnswers() {
 		// given
-		presenter.bindView();
-		
 		when(model.isUserAnswer(IDENTIFIER_1)).thenReturn(true);
 		when(model.isUserAnswer(IDENTIFIER_2)).thenReturn(false);
 		when(model.isUserAnswer(IDENTIFIER_3)).thenReturn(false);
@@ -136,4 +138,51 @@ public class ChoiceModulePresenterImplTest {
 		verify(simplePresenter3).setSelected(false);
 		verify(simplePresenter4).setSelected(true);
 	}
+
+	@Test
+	public void shouldReturnCorrectPlaceholder() {
+		// when
+		presenter.getFeedbackPlaceholderByIdentifier(IDENTIFIER_2);
+
+		// then
+		verify(simplePresenter2).getFeedbackPlaceHolder();
+		verify(simplePresenter1, never()).getFeedbackPlaceHolder();
+		verify(simplePresenter3, never()).getFeedbackPlaceHolder();
+		verify(simplePresenter4, never()).getFeedbackPlaceHolder();
+	}
+
+	@Test
+	public void shouldReturnCorrectSimpleChoicePresenterIdentifier() {
+		// when
+		String identifier = presenter.getChoiceIdentifier(simplePresenter3);
+
+		// then
+		assertThat(identifier, is(equalTo(IDENTIFIER_3)));
+	}
+
+	@Test
+	public void shouldMarkAnswers() {
+		// given
+		when(simplePresenter1.isSelected()).thenReturn(true);
+		when(model.isCorrectAnswer(IDENTIFIER_1)).thenReturn(true);
+		
+		when(simplePresenter2.isSelected()).thenReturn(true);
+		when(model.isCorrectAnswer(IDENTIFIER_2)).thenReturn(false);
+
+		when(simplePresenter3.isSelected()).thenReturn(false);
+		when(model.isCorrectAnswer(IDENTIFIER_3)).thenReturn(false);
+		
+		when(simplePresenter4.isSelected()).thenReturn(false);
+		when(model.isCorrectAnswer(IDENTIFIER_4)).thenReturn(true);
+		
+		// when
+		presenter.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.MARK);
+		
+		// then
+		verify(simplePresenter1).markAnswer(MarkAnswersType.CORRECT, MarkAnswersMode.MARK);
+		verify(simplePresenter2, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
+		verify(simplePresenter3, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
+		verify(simplePresenter4, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
+	}
+
 }

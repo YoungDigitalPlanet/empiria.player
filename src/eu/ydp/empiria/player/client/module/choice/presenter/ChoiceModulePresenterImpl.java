@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListenerImpl;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
@@ -37,20 +38,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	
 	private SimpleChoicePresenterFactory choiceModuleFactory;
 
-	private final ChoiceModuleListener listener = new ChoiceModuleListener() {
-		
-		@Override
-		public void onChoiceClick(SimpleChoicePresenter choice) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
-			if (choice.isSelected()) {
-				model.removeAnswer(choiceIdentifier);
-			} else {
-				model.addAnswer(choiceIdentifier);
-			}
-	
-			showAnswers(ShowAnswersType.USER);
-		}
-	};
+	private ChoiceModuleListener listener;
 
 	@Inject
 	public ChoiceModulePresenterImpl(
@@ -60,6 +48,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		this.choiceModuleFactory = choiceModuleFactory;
 		this.model = model;
 		this.view = view;
+		listener = new ChoiceModuleListenerImpl(model, this);
 	}
 
 	@Override
@@ -139,6 +128,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		return placeholder;
 	}
 
+	@Override
 	public String getChoiceIdentifier(SimpleChoicePresenter choice) {
 		String searchedIdentifier = StringUtils.EMPTY_STRING;
 
