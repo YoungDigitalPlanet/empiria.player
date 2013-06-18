@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.colorfill.presenter;
 
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -91,13 +92,15 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
 		if (type == MarkAnswersType.CORRECT) {
 			if (mode == MarkAnswersMode.MARK) {
-				interactionView.markCorrectAnswers(modelProxy.getUserCorrectAnswers());
+				Iterable<Area> userClickPoints = areaMapper.mapResponseToUser(modelProxy.getUserCorrectAnswers());
+				interactionView.markCorrectAnswers(Lists.newArrayList(userClickPoints));
 			} else {
 				interactionView.unmarkCorrectAnswers();
 			}
 		} else {
 			if (mode == MarkAnswersMode.MARK) {
-				interactionView.markWrongAnswers(modelProxy.getUserWrongAnswers());
+				Iterable<Area> userClickPoints = areaMapper.mapResponseToUser(modelProxy.getUserWrongAnswers());
+				interactionView.markWrongAnswers(Lists.newArrayList(userClickPoints));
 			} else {
 				interactionView.unmarkWrongAnswers();
 			}
