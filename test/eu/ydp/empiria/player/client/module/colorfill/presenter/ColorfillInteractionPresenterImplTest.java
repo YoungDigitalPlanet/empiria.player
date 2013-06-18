@@ -153,18 +153,22 @@ public class ColorfillInteractionPresenterImplTest {
 	@Test
 	public void markCorrectAnswers(){
 		List<Area> areaList = Lists.newArrayList();
+		List<Area> areaMapperList = Lists.newArrayList();
+		doReturn(areaMapperList).when(areaMapper).mapResponseToUser(eq(areaList));
 		doReturn(areaList).when(model).getUserCorrectAnswers();
 		presenter.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.MARK);
-		verify(interactionView).markCorrectAnswers(eq(areaList));
+		verify(interactionView).markCorrectAnswers(eq(areaMapperList));
 		verifyNoMoreInteractions(interactionView);
 	}
 
 	@Test
 	public void markWrongAnswers(){
 		List<Area> areaList = Lists.newArrayList();
+		List<Area> areaMapperList = Lists.newArrayList();
+		doReturn(areaMapperList).when(areaMapper).mapResponseToUser(eq(areaList));
 		doReturn(areaList).when(model).getUserCorrectAnswers();
 		presenter.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.MARK);
-		verify(interactionView).markWrongAnswers(eq(areaList));
+		verify(interactionView).markWrongAnswers(eq(areaMapperList));
 		verifyNoMoreInteractions(interactionView);
 	}
 
