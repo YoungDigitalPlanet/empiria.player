@@ -152,6 +152,22 @@ public class UserToResponseAreaMapperJUnitTest {
 		// when
 		areaMapper.mapResponseToUser(Lists.newArrayList(responseArea0, responseAreaInvalid));
 	}
+	
+	@Test
+	public void mapResponseToUser_emptyAnswer(){
+		// given
+		Area responseArea0 = new Area(1, 2);
+		Area userArea0 = new Area(11, 12);
+		ColorModel colorModel0 = ColorModel.createFromRgba(1, 2, 3, 4);
+		
+		Map<Area, ColorModel> userAnswersState0 = ImmutableMap.of(responseArea0, colorModel0);
+		simulateUserAnswersChange(userArea0, userAnswersState0);
+		
+		// when
+		Iterable<Area> result = areaMapper.mapResponseToUser(Lists.<Area>newArrayList());
+		
+		assertThat(result).isEmpty();
+	}
 
 	private void simulateUserAnswersChange(Area userArea, Map<Area, ColorModel> userAnswersAfterChange) {
 		when(modelProxy.getUserAnswers()).thenReturn(userAnswersAfterChange);
