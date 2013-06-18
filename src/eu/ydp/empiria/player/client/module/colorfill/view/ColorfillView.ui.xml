@@ -13,10 +13,10 @@
 				<v:ColorfillCorrectImage ui:field="correctImageCanvas"/>
 			</g:at>	
 			<g:at left='0' top='0'>
-				<a:AnswersMarkingPanel ui:field="correctAnswersMarkingPanel" markStyle="{res.QP_COLORFILL_ANSWERS_MARKING_CORRECT_PANEL}" />
+				<a:AnswersMarkingPanel ui:field="correctAnswersMarkingPanel" markStyle="{res.QP_COLORFILL_ANSWERS_MARKING_CORRECT}" />
 			</g:at>	
 			<g:at left='0' top='0'>
-				<a:AnswersMarkingPanel ui:field="wrongAnswersMarkingPanel" markStyle="{res.QP_COLORFILL_ANSWERS_MARKING_WRONG_PANEL}" />				
+				<a:AnswersMarkingPanel ui:field="wrongAnswersMarkingPanel" markStyle="{res.QP_COLORFILL_ANSWERS_MARKING_WRONG}" />				
 			</g:at>	
 		</g:AbsolutePanel>
 		
