@@ -194,33 +194,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-header")
 	public String QP_HEADER();
 
-	@DefaultStringValue("qp-identification-option")
-	public String QP_IDENTIFICATION_OPTION();
-
-	@DefaultStringValue("qp-identification-option-cover")
-	public String QP_IDENTIFICATION_OPTION_COVER();
-	
-	@DefaultStringValue("qp-identification-option-container")
-	public String QP_IDENTIFICATION_OPTION_CONTAINER();
-	
-	@DefaultStringValue("qp-identification-option-selected")
-	public String QP_IDENTIFICATION_OPTION_SELECTED();
-	
-	@DefaultStringValue("qp-identification-option-locked")
-	public String QP_IDENTIFICATION_OPTION_LOCKED();
-	
-	@DefaultStringValue("qp-identification-option-selected-correct")
-	public String QP_IDENTIFICATION_OPTION_SELECTED_CORRECT();
-	
-	@DefaultStringValue("qp-identification-option-selected-wrong")
-	public String QP_IDENTIFICATION_OPTION_SELECTED_WRONG();
-	
-	@DefaultStringValue("qp-identification-option-notselected-correct")
-	public String QP_IDENTIFICATION_OPTION_NOTSELECTED_CORRECT();
-	
-	@DefaultStringValue("qp-identification-option-notselected-wrong")
-	public String QP_IDENTIFICATION_OPTION_NOTSELECTED_WRONG();
-	
 	@DefaultStringValue("qp-img")
 	public String QP_IMG();
 

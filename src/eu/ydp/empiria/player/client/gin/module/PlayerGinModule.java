@@ -48,7 +48,6 @@ import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
-import eu.ydp.empiria.player.client.gin.factory.IdentificationModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.LinkModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrapperFactory;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
@@ -203,7 +202,7 @@ public class PlayerGinModule extends AbstractGinModule {
 				.build(StickieFactory.class));
 		install(new GinFactoryModuleBuilder().build(SlideshowPlayerModuleFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class).build(TouchReservationFactory.class));
-		install(new GinFactoryModuleBuilder().build(IdentificationModuleFactory.class));
+
 	}
 
 	@Provides
