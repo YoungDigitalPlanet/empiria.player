@@ -7,6 +7,8 @@ war/eu.ydp*/
 war/WEB-INF/classes/
 war/WEB-INF/deploy/
 war/WEB-INF/lib/
+war/.gitignore
+.settings/
 .ruleset
 .pmd
 pmd.xml

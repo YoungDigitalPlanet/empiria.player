@@ -270,6 +270,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getIdentificationModule(), ModuleTagName.IDENTYFICATION_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryGapModule(), ModuleTagName.MATH_GAP_TEXT_ENTRY_TYPE, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getDragGapModule(), ModuleTagName.DRAG_GAP, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceGapModule(), ModuleTagName.MATH_GAP_INLINE_CHOICE_TYPE, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSimpleTextModule(), ModuleTagName.SIMPLE_TEXT));
