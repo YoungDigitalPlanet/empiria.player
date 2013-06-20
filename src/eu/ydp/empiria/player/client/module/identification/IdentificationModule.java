@@ -14,12 +14,15 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
+import eu.ydp.empiria.player.client.gin.factory.IdentificationModuleFactory;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
@@ -37,9 +40,10 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 
 	@Inject
 	private Provider<IdentificationModule> identificationModuleProvider;
-
 	@Inject
 	private UserInteractionHandlerFactory interactionHandlerFactory;
+	@Inject
+	private IdentificationModuleFactory identificationModuleFactory;
 
 	private List<SelectableChoice> options;
 
@@ -107,7 +111,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			ArrayList<Boolean> fixeds = new ArrayList<Boolean>();
 			NodeList optionNodes = element.getElementsByTagName("simpleChoice");
 			for (int i = 0; i < optionNodes.getLength(); i++) {
-				final SelectableChoice selectableChoice = new SelectableChoice((Element) optionNodes.item(i), getModuleSocket());
+				final SelectableChoice selectableChoice = createSelectableChoice((Element) optionNodes.item(i), getModuleSocket().getInlineBodyGeneratorSocket());
 				currOptions.add(selectableChoice);
 				if (shuffle && !XMLUtils.getAttributeAsBoolean((Element) optionNodes.item(i), "fixed")) {
 					optionsSet.push(selectableChoice);
@@ -141,6 +145,13 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 		}
 	}
 
+	private SelectableChoice createSelectableChoice(Element item, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+		String identifier = XMLUtils.getAttributeAsString(item, "identifier");
+		Widget contentWidget = inlineBodyGeneratorSocket.generateInlineBody(item);
+		SelectableChoice selectableChoice = identificationModuleFactory.createSelectableChoice(identifier, contentWidget);
+		return selectableChoice;
+	}
+
 	private void addClickHandler(final SelectableChoice selectableChoice) {
 		Command clickCommand = createClickCommand(selectableChoice);
 		EventHandlerProxy userClickHandler = interactionHandlerFactory.createUserClickHandler(clickCommand);
@@ -160,6 +171,9 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	@Override
 	public void lock(boolean locked) {
 		this.locked = locked;
+		for(SelectableChoice option : options){
+			option.setLocked(locked);
+		}
 	}
 
 	@Override
