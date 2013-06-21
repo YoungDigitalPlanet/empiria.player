@@ -34,4 +34,10 @@ public class DragGapViewImpl implements DragGapView {
 		
 	}
 
+	@Override
+	public void lock(boolean lock) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
