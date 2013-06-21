@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Sourcelist {
 
-	void getItemValue(String itemId);
+	String getItemValue(String itemId);
 
 	void useItem(String itemId);
 
