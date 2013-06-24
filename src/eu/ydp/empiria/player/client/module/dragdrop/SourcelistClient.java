@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.module.dragdrop;
 
-public interface SourcelistClient {
+import eu.ydp.empiria.player.client.module.IModule;
+
+public interface SourcelistClient extends IModule {
 
 	String getDragItemId();
 
