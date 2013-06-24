@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.dragdrop.DragDropManager;
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
@@ -48,6 +49,8 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 	private TextBoxExpressionReplacer expressionReplacer;
 
 	private final DroppableObject<TextBox> droppable;
+	
+	private boolean dropZoneLocked = false;
 
 	@Inject
 	public TextEntryModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
@@ -159,4 +162,21 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 	public void makeExpressionReplacements(ExpressionReplacer replacer) {
 		expressionReplacer.makeReplacements(textBox, replacer);
 	}
+	
+	public void lockDragZone() {
+		dropZoneLocked = true;
+		moduleWidget.addStyleName(DragDropManager.LOCKED_DROP_ZONE_STYLE);
+	}
+
+	public void unlockDragZone() {
+		dropZoneLocked = false;
+		moduleWidget.removeStyleName(DragDropManager.LOCKED_DROP_ZONE_STYLE);
+	}
+
+	public boolean isDropZoneLocked() {
+		return dropZoneLocked;
+	}
+
+	
+	
 }

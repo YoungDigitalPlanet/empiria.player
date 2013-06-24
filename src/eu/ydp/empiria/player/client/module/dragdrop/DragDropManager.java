@@ -27,6 +27,8 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
 public class DragDropManager extends InternalExtension implements DragDropEventHandler, PlayerEventHandler {
 
+	public static final String LOCKED_DROP_ZONE_STYLE = "dropZoneLocked"; 
+	
 	@Inject
 	EventsBus eventsBus;
 
