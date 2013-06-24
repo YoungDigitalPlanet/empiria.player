@@ -9,4 +9,8 @@ public interface SourcelistClient extends IModule {
 	void setDragItem(String itemId);
 
 	void removeDragItem();
+	
+	void lockDragZone();
+	
+	void unlockDragZone();
 }
