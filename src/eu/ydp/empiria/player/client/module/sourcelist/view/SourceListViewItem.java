@@ -12,13 +12,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
+import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
 public class SourceListViewItem extends Composite {
 
@@ -27,26 +25,14 @@ public class SourceListViewItem extends Composite {
 	interface SourceListViewItemUiBinder extends UiBinder<Widget, SourceListViewItem> {
 	}
 
-	@UiField
-	protected FlowPanel item;
-
-	private final DragDataObject dragDataObject;
-	private final IModule parentModule;
-	private final StyleNameConstants styleNames;
-
-	private final DragDropHelper dragDropHelper;
+	protected @UiField FlowPanel item;
+	private @Inject StyleNameConstants styleNames;
+	private @Inject DragDropHelper dragDropHelper;
 	private SourceListViewImpl sourceListView;
 	private DraggableObject<FlowPanel> draggable;
 	private FlowPanel container;
 
-	@Inject
-	public SourceListViewItem(@Assisted DragDataObject dragDataObject, @Assisted IModule parentModule, StyleNameConstants styleNames,
-			DragDropHelper dragDropHelper) {
-		this.dragDropHelper = dragDropHelper;
-		this.dragDataObject = dragDataObject;
-		this.parentModule = parentModule;
-		this.styleNames = styleNames;
-	}
+	private String itemContent;
 
 	public void setSourceListView(SourceListViewImpl sourceListView) {
 		this.sourceListView = sourceListView;
@@ -64,13 +50,15 @@ public class SourceListViewItem extends Composite {
 		container.setVisible(false);
 	}
 
-	public void createAndBindUi() {
+	public void createAndBindUi(String itemContent) {
+		this.itemContent = itemContent;
 		initWidget(uiBinder.createAndBindUi(this));
-		Label label = new Label(dragDataObject.getValue());
+		Label label = new Label(itemContent);
 		container = new FlowPanel();
 		container.addStyleName(styleNames.QP_DRAG_ITEM());
 		container.add(label);
-		draggable = dragDropHelper.enableDragForWidget(container, parentModule);
+		//FIXME null do wyciecia zmiana api
+		draggable = dragDropHelper.enableDragForWidget(container, null);
 		item.add(draggable.getDraggableWidget());
 		addDragHandlers();
 	}
@@ -86,8 +74,7 @@ public class SourceListViewItem extends Composite {
 			public void onDragStart(DragStartEvent event) {
 				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
-				event.setData("json", dragDataObject.toJSON());
-				sourceListView.onItemDragStarted(dragDataObject, event, SourceListViewItem.this);
+				sourceListView.onDragEvent(DragDropEventTypes.DRAG_START, SourceListViewItem.this,event);
 			}
 		});
 	}
@@ -97,8 +84,15 @@ public class SourceListViewItem extends Composite {
 			@Override
 			public void onDragEnd(DragEndEvent event) {
 				getElement().removeClassName(styleNames.QP_DRAGGED_DRAG());
-				sourceListView.onMaybeDragCanceled();
+				//FIXME drag cancel ??
+				//sourceListView.onMaybeDragCanceled();
 			}
 		});
+
+
+	}
+
+	public String getItemContent() {
+		return itemContent;
 	}
 }

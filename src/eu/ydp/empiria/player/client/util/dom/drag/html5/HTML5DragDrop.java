@@ -106,6 +106,7 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
 				}
 			}, DragLeaveEvent.getType());
+			
 		}
 		super.setAutoBehaviorForDrop(disableAutoBehavior);
 
