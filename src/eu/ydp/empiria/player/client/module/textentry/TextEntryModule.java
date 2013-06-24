@@ -17,14 +17,21 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.module.dragdrop.DataObject;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.StringUtils;
 
-public class TextEntryModule extends GapBase {
+public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	private final StyleSocket styleSocket;
+	
+	@Inject
+	private SourcelistManager sourcelistManager;
+	
 	private ResponseSocket responseSocket;
 	
 	protected Map<String, String> styles;
@@ -39,6 +46,7 @@ public class TextEntryModule extends GapBase {
 			@Override
 			public void onChange(ChangeEvent event) {
 				updateResponse(true);
+				sourcelistManager.onValueChanged();
 			}
 
 			@Override
@@ -48,6 +56,8 @@ public class TextEntryModule extends GapBase {
 				}
 			}
 		});
+		
+		sourcelistManager.registerModule(this);
 	}
 
 	@Override
@@ -145,6 +155,22 @@ public class TextEntryModule extends GapBase {
 			getResponse().add(lastValue);
 			fireStateChanged(userInteract, isReset);
 		}
+	}
+
+	@Override
+	public String getDragItemId() {
+		return getIdentifier();
+	}
+
+	@Override
+	public void setDragItem(String itemId) {
+		DataObject dataObject = sourcelistManager.getValue(itemId);
+		presenter.setText(dataObject.toString());
+	}
+
+	@Override
+	public void removeDragItem() {
+		presenter.setText("");
 	}
 
 }
