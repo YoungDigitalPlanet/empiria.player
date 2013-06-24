@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.results;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,7 +13,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 public class ModulesProcessingResults {
 
 	private final InitialProcessingResultFactory processingResultFactory;
-	private Map<String, DtoModuleProcessingResult> responseIdToProcessingResults = Maps.newHashMap();
+	private final Map<String, DtoModuleProcessingResult> responseIdToProcessingResults = Maps.newHashMap();
 
 	@Inject
 	public ModulesProcessingResults(InitialProcessingResultFactory processingResultFactory) {
@@ -27,9 +25,8 @@ public class ModulesProcessingResults {
 		return processingResult;
 	}
 	
-	public List<DtoModuleProcessingResult> getListOfProcessingResults(){
-		Collection<DtoModuleProcessingResult> processingResults = responseIdToProcessingResults.values();
-		return new ArrayList<DtoModuleProcessingResult>(processingResults);
+	public Map<String, DtoModuleProcessingResult> getMapOfProcessingResults(){
+		return Collections.unmodifiableMap(responseIdToProcessingResults);
 	}
 	
 	public Set<String> getIdsOfProcessedResponses(){
