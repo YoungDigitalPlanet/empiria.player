@@ -39,7 +39,7 @@ public class ProcessingResultsToOutcomeMapConverter {
 		insertVariable(DONE, globalVariables.getDone());
 		insertVariable(ERRORS, globalVariables.getErrors());
 		insertVariable(MISTAKES, globalVariables.getMistakes());
-		insertVariable(LASTMISTAKEN, globalVariables.isLastmistaken());
+		insertVariable(LASTMISTAKEN, globalVariables.isLastMistaken());
 	}
 	
 	public void updateOutcomeMapByModulesProcessingResults(ModulesProcessingResults modulesProcessingResults) {

@@ -1,5 +1,11 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.MISTAKES;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
+
 import java.util.Map;
 
 import org.junit.Before;
@@ -13,16 +19,12 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.module.expression.ExpressionToResponseConnector;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.MISTAKES;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
 
 public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase {
 
 	private ExpressionToResponseConnector expressionToResponseConnector;
 	
+	@Override
 	@Before
 	public void setUp(){
 		super.setUp();
@@ -107,7 +109,7 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 
 		// then
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
-		assertGlobalOutcomesHaveValue(Lists.newArrayList(responses.length+""), Lists.newArrayList(DONE, TODO), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(String.valueOf(1)), Lists.newArrayList(DONE, TODO), outcomes);
 
 		for (Response response : responses) {
 			assertCorrectExpressionEvaluationResult(response, outcomes);
@@ -140,7 +142,7 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 
 		// then
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN, DONE), outcomes);
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("3"), Lists.newArrayList(TODO), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(TODO), outcomes);
 
 		assertNotFilledExpressionResults(responseWithEmptyAnswer, outcomes);
 		assertNotFilledExpressionResults(bResponse, outcomes);
@@ -182,7 +184,7 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 		// then
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(MISTAKES, LASTMISTAKEN), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("3"), Lists.newArrayList(TODO, ERRORS), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(TODO, ERRORS), outcomes);
 
 		assertWrongExpressionEvaluationResultsForChangedResponse(aResponse, outcomes);
 		assertWrongExpressionEvaluationResultsWhenValuesNotChanged(bResponse, outcomes);
