@@ -12,6 +12,7 @@ public interface SourceListPresenter extends IsWidget {
 	void setBean(SourceListBean bean);
 	void createAndBindUi();
 	void onDragEvent(DragDropEventTypes eventType, String itemId);
+	void onDropEvent(DragDropEventTypes eventType, String itemId);
 	void setModuleId(String moduleId);
 	void useItem(String itemId);
 	void restockItem(String itemId);

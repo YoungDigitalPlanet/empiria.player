@@ -15,6 +15,8 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
+import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
 public class SourceListViewImpl extends Composite implements SourceListView {
@@ -26,10 +28,12 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 
 	@Inject private TouchReservationFactory touchReservationFactory;
 	@Inject private Provider<SourceListViewItem> sourceListViewItemProvider;
-	@UiField FlowPanel items;
+	@Inject private DragDropHelper dragDropHelper;
+	@UiField(provided=true) FlowPanel items;
 
 	private final BiMap<String,SourceListViewItem> itemIdToItemCollection = HashBiMap.create();
 	private SourceListPresenter sourceListPresenter;
+	private DroppableObject<FlowPanel> sourceListDropZone;
 
 	private SourceListViewItem getItem(String itemContent) {
 		SourceListViewItem item = sourceListViewItemProvider.get();
@@ -40,6 +44,8 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 
 	@Override
 	public void createAndBindUi() {
+		sourceListDropZone = dragDropHelper.enableDropForWidget(new FlowPanel(), true);
+		items = (FlowPanel) sourceListDropZone.getDroppableWidget();
 		initWidget(uiBinder.createAndBindUi(this));
 		touchReservationFactory.addTouchReservationHandler(items);
 	}
