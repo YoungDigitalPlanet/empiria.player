@@ -53,14 +53,17 @@ public class SourceListViewItem extends Composite {
 	public void createAndBindUi(String itemContent) {
 		this.itemContent = itemContent;
 		initWidget(uiBinder.createAndBindUi(this));
+		fillContainerWidget(itemContent);
+		draggable = dragDropHelper.enableDragForWidget(container);
+		item.add(draggable.getDraggableWidget());
+		addDragHandlers();
+	}
+
+	private void fillContainerWidget(String itemContent) {
 		Label label = new Label(itemContent);
 		container = new FlowPanel();
 		container.addStyleName(styleNames.QP_DRAG_ITEM());
 		container.add(label);
-		//FIXME null do wyciecia zmiana api
-		draggable = dragDropHelper.enableDragForWidget(container, null);
-		item.add(draggable.getDraggableWidget());
-		addDragHandlers();
 	}
 
 	private void addDragHandlers() {
@@ -84,12 +87,9 @@ public class SourceListViewItem extends Composite {
 			@Override
 			public void onDragEnd(DragEndEvent event) {
 				getElement().removeClassName(styleNames.QP_DRAGGED_DRAG());
-				//FIXME drag cancel ??
-				//sourceListView.onMaybeDragCanceled();
+				sourceListView.onDragEvent(DragDropEventTypes.DRAG_END, SourceListViewItem.this, event);
 			}
 		});
-
-
 	}
 
 	public String getItemContent() {

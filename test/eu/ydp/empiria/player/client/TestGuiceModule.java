@@ -34,29 +34,25 @@ import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
+import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
-import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
-import eu.ydp.empiria.player.client.module.sourcelist.SourceListPresenterMock;
-import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
-import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListViewMock;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParser;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
-import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParserMock;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -133,8 +129,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		}
 
 		bind(SourceListJAXBParser.class).toInstance(spy(new SourceListJAXBParserMock()));
-		bind(SourceListView.class).to(SourceListViewMock.class);
-		bind(SourceListPresenter.class).to(SourceListPresenterMock.class);
 		bind(MatcherRegistry.class).in(Singleton.class);
 		bind(OverlayTypesParser.class).toInstance(mock(OverlayTypesParserMock.class));
 		bind(TextFeedback.class).toInstance(mock(TextFeedbackPresenterMock.class));
@@ -144,10 +138,11 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(BrowserNativeInterface.class).toInstance(
 				UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS));
 		bind(UserAgentUtil.class).toInstance(mock(UserAgentUtil.class));
+		bind(SourcelistManager.class).toInstance(mock(SourcelistManager.class));
 		binder.bind(IJSONService.class).to(NativeJSONService.class);
 		binder.requestStaticInjection(XMLProxyFactory.class);
 		bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
-		
+		bind(String.class).annotatedWith(UniqueId.class).toInstance("id");
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));
@@ -246,13 +241,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		when(helper.getPositionX(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
 		when(helper.getPositionY(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
 		return helper;
-	}
-
-	@Provides
-	ModuleFactory getModuleFactory(SourceListModule sourceListModule) {
-		ModuleFactory factory = mock(ModuleFactory.class);
-		when(factory.getSourceListModule()).thenReturn(sourceListModule);
-		return factory;
 	}
 
 	@Provides

@@ -28,18 +28,19 @@ import eu.ydp.gwtutil.client.StringUtils;
 public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	private final StyleSocket styleSocket;
-	
-	@Inject
-	private SourcelistManager sourcelistManager;
-	
-	private ResponseSocket responseSocket;
-	
+
+	private final SourcelistManager sourcelistManager;
+
+	private final ResponseSocket responseSocket;
+
 	protected Map<String, String> styles;
 
+
 	@Inject
-	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket) {
+	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket, final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.responseSocket = responseSocket;
+		this.sourcelistManager = sourcelistManager;
 
 		presenter = moduleFactory.getTextEntryModulePresenter(this);
 		presenter.addPresenterHandler(new PresenterHandler() {
@@ -56,7 +57,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 				}
 			}
 		});
-		
+
 		sourcelistManager.registerModule(this);
 	}
 
@@ -70,7 +71,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 		setWidthBinding(styles, getModuleElement());
 
 		installViewPanel(placeholders.get(0));
-		
+
 		initReplacements(styles);
 	}
 
@@ -186,5 +187,5 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	TextEntryModulePresenter getTextEntryPresenter() {
 		return (TextEntryModulePresenter)presenter;
 	}
-	
+
 }

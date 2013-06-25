@@ -2,10 +2,11 @@ package eu.ydp.empiria.player.client.module.sourcelist.presenter;
 
 import java.util.List;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
@@ -22,17 +23,11 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	@Inject private OverlayTypesParser overlayTypesParser;
 
 	private SourceListBean bean;
-	private IModule module;
 	private String moduleId;
 
 	@Override
 	public void setBean(SourceListBean bean) {
 		this.bean = bean;
-	}
-
-	@Override
-	public void setModule(IModule module){
-		this.module = module;
 	}
 
 	@Override
@@ -55,7 +50,6 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 		view.setSourceListPresenter(this);
 	}
 
-
 	@Override
 	public DragDataObject getDragDataObject(String itemId) {
 		DragDataObject dataObject = (NativeDragDataObject) overlayTypesParser.get();
@@ -66,7 +60,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Override
 	public String getItemValue(String itemId) {
-		return itemId;
+		return view.getItemValue(itemId);
 	}
 
 	@Override
@@ -86,7 +80,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 			sourcelistManager.dragStart(itemId);
 			break;
 		case DRAG_END:
-			sourcelistManager.dragEndSourcelist(itemId, "");
+			sourcelistManager.dragEndSourcelist(itemId, moduleId);
 			break;
 		case DRAG_CANCELL:
 			sourcelistManager.dragCanceled();
@@ -95,8 +89,32 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 		}
 	}
 
+	private List<String> getAllItemsId(){
+		return Lists.transform(bean.getSimpleSourceListItemBeans(), new Function<SimpleSourceListItemBean, String>() {
+			@Override
+			public String apply(SimpleSourceListItemBean bean) {
+				return bean.getAlt();
+			}
+		});
+	}
+
 	@Override
 	public void useAndRestockItems(List<String> itemsIds) {
-
+		restockAllItems();
+		useItems(itemsIds);
 	}
+
+	private void useItems(List<String> itemsIds) {
+		for(String itemId: itemsIds){
+			useItem(itemId);
+		}
+	}
+
+	private void restockAllItems() {
+		List<String> allItemsId = getAllItemsId();
+		for(String itemId:allItemsId){
+			restockItem(itemId);
+		}
+	}
+
 }

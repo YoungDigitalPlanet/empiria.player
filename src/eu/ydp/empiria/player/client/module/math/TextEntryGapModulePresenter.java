@@ -17,10 +17,9 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
-import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
+import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
@@ -44,24 +43,21 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	protected TextBox textBox;
 
 	private ChangeHandler changeHandler;
-	
+
 	@Inject
 	private TextBoxExpressionReplacer expressionReplacer;
 
-	@Inject
-	private StyleNameConstants styleNames;
-	
 	private final DroppableObject<TextBox> droppable;
-	private DropZoneGuardian dropZoneGuardian;
-	
+	private final DropZoneGuardian dropZoneGuardian;
+
 	@Inject
 	public TextEntryGapModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
-		 droppable = dragDropHelper.enableDropForWidget(new TextBox(),parentModule);
+		 droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		 textBoxWidget = droppable.getDroppableWidget();
 		 textBox = droppable.getOriginalWidget();
 		 uiBinder.createAndBindUi(this);
 		 textBox.addChangeHandler(this);
-		 
+
 		 dropZoneGuardian = new DropZoneGuardian(droppable, mainPanel);
 	}
 
@@ -163,7 +159,7 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	public void makeExpressionReplacements(ExpressionReplacer replacer) {
 		expressionReplacer.makeReplacements(textBox, replacer);
 	}
-	
+
 	public void lockDragZone() {
 		dropZoneGuardian.lockDropZone();
 	}

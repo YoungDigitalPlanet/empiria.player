@@ -24,14 +24,15 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class TextEntryGapModule extends MathGapBase implements MathGap, SourcelistClient {
 
-	@Inject
-	private SourcelistManager sourcelistManager;
-	
+
+	private final SourcelistManager sourcelistManager;
+
 	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket) {
+	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket,final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
+		this.sourcelistManager = sourcelistManager;
 
 		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
 		PresenterHandler presenterHandler = new PresenterHandler() {
@@ -162,7 +163,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	public String getValue() {
 		return presenter.getText();
 	}
-	
+
 	public void setUpGap() {
 		registerBindingContexts();
 	}
@@ -196,7 +197,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	public void unlockDragZone() {
 		getTextEntryGapPresenter().unlockDragZone();
 	}
-	
+
 	TextEntryGapModulePresenter getTextEntryGapPresenter() {
 		return (TextEntryGapModulePresenter)presenter;
 	}

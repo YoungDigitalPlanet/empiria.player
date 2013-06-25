@@ -14,7 +14,6 @@ import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
-import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
@@ -27,7 +26,6 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 
 	@Inject private TouchReservationFactory touchReservationFactory;
 	@Inject private Provider<SourceListViewItem> sourceListViewItemProvider;
-	@Inject private OverlayTypesParser overlayTypesParser;
 	@UiField FlowPanel items;
 
 	private final BiMap<String,SourceListViewItem> itemIdToItemCollection = HashBiMap.create();
@@ -55,12 +53,12 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	public void onDragEvent(DragDropEventTypes dropEventType, SourceListViewItem item, DragDropEventBase<?> dragEvent) {
 		String itemId = itemIdToItemCollection.inverse().get(item);
 		if(dropEventType == DragDropEventTypes.DRAG_START){
-			setDataOnEvent(dragEvent, itemId);
+			setDataOnNativeEvent(dragEvent, itemId);
 		}
 		sourceListPresenter.onDragEvent(dropEventType, itemId);
 	}
 
-	private void setDataOnEvent(DragDropEventBase<?> dragEvent, String itemId) {
+	private void setDataOnNativeEvent(DragDropEventBase<?> dragEvent, String itemId) {
 		DragDataObject dataObject = sourceListPresenter.getDragDataObject(itemId);
 		dragEvent.setData("json", dataObject.toJSON());
 	}

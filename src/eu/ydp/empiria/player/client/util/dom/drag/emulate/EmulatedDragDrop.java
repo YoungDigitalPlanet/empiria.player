@@ -14,7 +14,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.AbstractDragDrop;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropType;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
@@ -36,23 +37,22 @@ import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
  *
  */
 public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> implements DraggableObject<W>, DroppableObject<W> {
-	private static final String JSON = "json";
 	private static final String DATA_JSON = "data-json";
-	DragStartEndHandlerWrapper dragStartEndHandlerWrapper;
-	DropEventsHandlerWrapper dropEventsHandlerWrapper;
-	DraggableWidget<W> dragWidget;
-	DroppableWidget<W> dropWidget;
+	private DragStartEndHandlerWrapper dragStartEndHandlerWrapper;
+	private DropEventsHandlerWrapper dropEventsHandlerWrapper;
+	private DraggableWidget<W> dragWidget;
+	private DroppableWidget<W> dropWidget;
 	private boolean disabled;
 	private final W originalWidget;
 	private final boolean disableAutoBehavior;
-	private final IModule imodule;
 	private final DragDropType type;
+	@Inject private OverlayTypesParser overlayTypesParser;
+	@Inject private StyleNameConstants styleNames;
 
 	@Inject
-	public EmulatedDragDrop(@Assisted("widget") W widget, @Assisted("imodule") IModule imodule, @Assisted("type") DragDropType type,
+	public EmulatedDragDrop(@Assisted("widget") W widget, @Assisted("type") DragDropType type,
 			@Assisted("disableAutoBehavior") boolean disableAutoBehavior) {
 		this.originalWidget = widget;
-		this.imodule = imodule;
 		this.disableAutoBehavior = disableAutoBehavior;
 		this.type = type;
 	}
@@ -90,20 +90,9 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 		if (!disableAutoBehavior) {
 			setAutoBehaviorForDrop(disableAutoBehavior);
 		}
-		super.setAutoBehaviorForDrop(disableAutoBehavior);
 	}
 
-	@Override
-	protected void setAutoBehaviorForDrop(boolean disableAutoBehavior) {
-		dropWidget.addDropHandler(new DropEventHandler() {
-			@Override
-			public void onDrop(DropEvent event) {
-				JsonAttr jsonAttr = overlayTypesParser.get(event.getDraggable().getAttribute(DATA_JSON));
-				if (jsonAttr.getAttrValue(JSON) != null) {
-					putValue(jsonAttr.getAttrValue(JSON));
-				}
-			}
-		});
+	private void setAutoBehaviorForDrop(boolean disableAutoBehavior) {
 		dropWidget.addDropHandler(new DropEventHandler() {
 			@Override
 			public void onDrop(DropEvent event) {
@@ -196,11 +185,6 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 		dropWidget.setDisabled(disable);
 		this.disabled = disable;
 
-	}
-
-	@Override
-	protected IModule getIModule() {
-		return imodule;
 	}
 
 }
