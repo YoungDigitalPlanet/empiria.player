@@ -9,7 +9,6 @@ import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 public class DropZoneGuardian {
 
 	private final DroppableObject<TextBox> droppable;	
-	private boolean dropZoneLocked = false;
 	protected Panel moduleWidget;
 	private StyleNameConstants styleNames;
 	
@@ -20,19 +19,12 @@ public class DropZoneGuardian {
 	}
 	
 	public void lockDropZone() {
-		dropZoneLocked = true;
 		droppable.setDisableDrop(true);
-		moduleWidget.addStyleName(styleNames.LOCKED_DROP_ZONE_STYLE());
+		moduleWidget.addStyleName(styleNames.QP_DROP_ZONE_LOCKED());
 	}
 
 	public void unlockDropZone() {
-		dropZoneLocked = false;
 		droppable.setDisableDrop(false);
-		moduleWidget.removeStyleName(styleNames.LOCKED_DROP_ZONE_STYLE());
+		moduleWidget.removeStyleName(styleNames.QP_DROP_ZONE_LOCKED());
 	}
-
-	public boolean isDropZoneLocked() {
-		return dropZoneLocked;
-	}
-	
 }

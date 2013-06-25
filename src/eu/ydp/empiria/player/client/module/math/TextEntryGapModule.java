@@ -186,7 +186,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 		presenter.setText("");
 	}
 	
-	TextEntryGapModulePresenter getTextEntryGapPresenter() {
+	private TextEntryGapModulePresenter getTextEntryGapPresenter() {
 		return (TextEntryGapModulePresenter)presenter;
 	}
 
