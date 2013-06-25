@@ -15,4 +15,6 @@ public interface DragGapView extends IsWidget {
 	void setDragDisabled(boolean disabled);
 
 	void updateStyle(UserAnswerType answerType);
+	
+	void setDropHandler(DragGapDropHandler dragGapDropHandler);
 }

@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.draggap.view;
 
 import com.google.common.base.Optional;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.DropEvent;
+import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -11,31 +13,37 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
 
 public class DragGapViewImpl implements DragGapView {
 
 	private static DragGapViewUiBinder uiBinder = GWT.create(DragGapViewUiBinder.class);
+
 	interface DragGapViewUiBinder extends UiBinder<Widget, DragGapViewImpl> {
 	}
-	
+
 	@UiField
 	FlowPanel container;
-	
+
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
+	private final DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
 
 	private Widget contentWidget;
 	private Optional<DraggableObject<Widget>> optionalDraggable;
+	private Optional<DragGapDropHandler> dragGapDropHandlerOptional;
 
-	
+
 	@Inject
-	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants) {
+	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
 		this.dragDropHelper = dragDropHelper;
 		this.styleNameConstants = styleNameConstants;
-		
+		this.dragDataObjectFromEventExtractor = dragDataObjectFromEventExtractor;
+
 		uiBinder.createAndBindUi(this);
+		addDomHandlerOnObjectDrop();
 	}
 
 	@Override
@@ -57,8 +65,8 @@ public class DragGapViewImpl implements DragGapView {
 		optionalDraggable = Optional.absent();
 	}
 
-	@Override	
-	public void updateStyle(UserAnswerType answerType){
+	@Override
+	public void updateStyle(UserAnswerType answerType) {
 		switch (answerType) {
 		case CORRECT:
 			container.setStyleName(styleNameConstants.QP_DRAG_GAP_CORRECT());
@@ -76,11 +84,10 @@ public class DragGapViewImpl implements DragGapView {
 			break;
 		}
 	}
-	
 
 	@Override
 	public void lock(boolean lock) {
-		if(lock){
+		if (lock) {
 			container.addStyleName(styleNameConstants.QP_DRAG_GAP_LOCKED());
 		} else {
 			container.removeStyleName(styleNameConstants.QP_DRAG_GAP_LOCKED());
@@ -88,10 +95,35 @@ public class DragGapViewImpl implements DragGapView {
 	}
 
 	@Override
-	public void setDragDisabled(boolean disabled){
-		if(optionalDraggable.isPresent()){
+	public void setDragDisabled(boolean disabled) {
+		if (optionalDraggable.isPresent()) {
 			DraggableObject<Widget> draggableObject = optionalDraggable.get();
 			draggableObject.setDisableDrag(disabled);
+		}
+	}
+
+	@Override
+	public void setDropHandler(DragGapDropHandler dragGapDropHandler) {
+		this.dragGapDropHandlerOptional = Optional.fromNullable(dragGapDropHandler);
+	}
+	
+	private void addDomHandlerOnObjectDrop() {
+		container.addDomHandler(new DropHandler() {
+			@Override
+			public void onDrop(DropEvent event) {
+				if (dragGapDropHandlerOptional.isPresent()) {
+					extractObjectFromEventAndCallHandler(event);
+				}
+			}
+
+		}, DropEvent.getType());
+	}
+
+	private void extractObjectFromEventAndCallHandler(DropEvent event) {
+		Optional<DragDataObject> objectFromEvent = dragDataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
+		if (objectFromEvent.isPresent()) {
+			DragGapDropHandler dragGapDropHandler = dragGapDropHandlerOptional.get();
+			dragGapDropHandler.onDrop(objectFromEvent.get());
 		}
 	}
 }
