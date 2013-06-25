@@ -731,5 +731,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
-
+	
+	@DefaultStringValue("drop-zone-locked")
+	public String LOCKED_DROP_ZONE_STYLE();
 }

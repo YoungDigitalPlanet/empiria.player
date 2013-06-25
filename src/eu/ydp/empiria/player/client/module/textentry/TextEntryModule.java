@@ -164,12 +164,8 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	@Override
 	public void setDragItem(String itemId) {
-		if( !getTextEntryPresenter().isDropZoneLocked() ){
-			DataObject dataObject = sourcelistManager.getValue(itemId, getModuleId());
-			presenter.setText(dataObject.toString());
-		
-			sourcelistManager.onUserValueChanged();
-		}
+		DataObject dataObject = sourcelistManager.getValue(itemId, getModuleId());
+		presenter.setText(dataObject.getItemId());
 	}
 
 	@Override
