@@ -28,7 +28,8 @@ import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHandler {
 
 	@UiTemplate("TextEntryGap.ui.xml")
-	interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryGapModulePresenter>{};
+	interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryGapModulePresenter> {
+	};
 
 	private final TextEntryGapModuleUiBinder uiBinder = GWT.create(TextEntryGapModuleUiBinder.class);
 
@@ -38,31 +39,31 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	@UiField
 	protected FlowPanel markPanel;
 
-	@UiField(provided=true)
+	@UiField(provided = true)
 	protected Widget textBoxWidget;
 
 	protected TextBox textBox;
 
 	private ChangeHandler changeHandler;
-	
+
 	@Inject
 	private TextBoxExpressionReplacer expressionReplacer;
 
-	@Inject
 	private StyleNameConstants styleNames;
-	
+
 	private final DroppableObject<TextBox> droppable;
 	private DropZoneGuardian dropZoneGuardian;
-	
+
 	@Inject
-	public TextEntryGapModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
-		 droppable = dragDropHelper.enableDropForWidget(new TextBox(),parentModule);
-		 textBoxWidget = droppable.getDroppableWidget();
-		 textBox = droppable.getOriginalWidget();
-		 uiBinder.createAndBindUi(this);
-		 textBox.addChangeHandler(this);
-		 
-		 dropZoneGuardian = new DropZoneGuardian(droppable, mainPanel, styleNames);
+	public TextEntryGapModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants) {
+		droppable = dragDropHelper.enableDropForWidget(new TextBox(), parentModule);
+		styleNames = styleNameConstants;
+		textBoxWidget = droppable.getDroppableWidget();
+		textBox = droppable.getOriginalWidget();
+		uiBinder.createAndBindUi(this);
+		textBox.addChangeHandler(this);
+
+		dropZoneGuardian = new DropZoneGuardian(droppable, mainPanel, styleNames);
 	}
 
 	@Override
@@ -163,7 +164,7 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	public void makeExpressionReplacements(ExpressionReplacer replacer) {
 		expressionReplacer.makeReplacements(textBox, replacer);
 	}
-	
+
 	public void lockDragZone() {
 		dropZoneGuardian.lockDropZone();
 	}

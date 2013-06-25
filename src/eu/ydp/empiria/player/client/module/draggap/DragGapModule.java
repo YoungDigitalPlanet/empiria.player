@@ -1,16 +1,22 @@
 package eu.ydp.empiria.player.client.module.draggap;
 
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenter;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapStructure;
+import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
+import eu.ydp.gwtutil.client.StringUtils;
 
-public class DragGapModule extends AbstractInteractionModule<DragGapModule, DragGapModuleModel, DragGapBean> {
+public class DragGapModule extends AbstractInteractionModule<DragGapModule, DragGapModuleModel, DragGapBean> implements SourcelistClient {
 
 	@Inject
 	private DragGapModuleModel dragGapModuleModel;
@@ -21,6 +27,10 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Inject
 	private DragGapStructure dragGapStructure; 
 	
+	private SourcelistManager sourcelistManager;
+
+	private Optional<DragDataObject> dragDataObjectOptional;
+	
 	@Override
 	protected ActivityPresenter<DragGapModuleModel, DragGapBean> getPresenter() {
 		return dragGapPresenter;
@@ -29,6 +39,24 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	protected void initalizeModule() {
 		dragGapModuleModel.initialize(this);
+		
+		dragGapPresenter.setDropHandler(new DragGapDropHandler() {
+
+			@Override
+			public void onDrop(DragDataObject dragDataObject) {
+				setDragDataObject(dragDataObject);
+				String itemID = dragDataObject.getValue();
+				String sourceModuleId = dragDataObject.getPreviousValue();
+				String targetModuleId = getModuleId();
+
+				sourcelistManager.dragEnd(itemID, sourceModuleId,
+						targetModuleId);
+			}
+		});
+	}
+	
+	private void setDragDataObject(DragDataObject dragDataObject) {
+		this.dragDataObjectOptional = Optional.fromNullable(dragDataObject);
 	}
 
 	@Override
@@ -39,5 +67,36 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	protected AbstractModuleStructure<DragGapBean, ? extends JAXBParserFactory<DragGapBean>> getStructure() {
 		return dragGapStructure;
+	}
+
+	@Override
+	public String getDragItemId() {
+		if(dragDataObjectOptional.isPresent()){
+			return dragDataObjectOptional.get().getValue();
+		} else {
+			//TODO zamiast empty stringa powinien byc zwracany optional
+			return StringUtils.EMPTY_STRING;
+		}
+	}
+
+	@Override
+	public void setDragItem(String itemId) {
+		String itemContent = sourcelistManager.getValue(itemId, getModuleId());
+		dragGapPresenter.setContent(itemContent);
+	}
+
+	@Override
+	public void removeDragItem() {
+		dragGapPresenter.removeContent();
+	}
+
+	@Override
+	public void lockDropZone() {
+		dragGapPresenter.lockDropZone();
+	}
+
+	@Override
+	public void unlockDropZone() {
+		dragGapPresenter.unlockDropZone();
 	}
 }
