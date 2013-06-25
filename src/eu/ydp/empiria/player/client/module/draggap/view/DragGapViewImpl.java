@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.draggap.view;
 
 import com.google.common.base.Optional;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.DragStartEvent;
+import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.event.dom.client.DropEvent;
 import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -35,6 +37,8 @@ public class DragGapViewImpl implements DragGapView {
 	private Optional<DraggableObject<Widget>> optionalDraggable;
 	private Optional<DragGapDropHandler> dragGapDropHandlerOptional;
 
+	private Optional<DragGapStartDragHandler> dragStartHandlerOptional;
+
 
 	@Inject
 	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
@@ -44,6 +48,7 @@ public class DragGapViewImpl implements DragGapView {
 
 		uiBinder.createAndBindUi(this);
 		addDomHandlerOnObjectDrop();
+		addDomHandlerOnDragStart();
 	}
 
 	@Override
@@ -125,5 +130,21 @@ public class DragGapViewImpl implements DragGapView {
 			DragGapDropHandler dragGapDropHandler = dragGapDropHandlerOptional.get();
 			dragGapDropHandler.onDrop(objectFromEvent.get());
 		}
+	}
+
+	@Override
+	public void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler) {
+		dragStartHandlerOptional = Optional.fromNullable(dragGapStartDragHandler);
+	}
+
+	private void addDomHandlerOnDragStart() {
+		container.addDomHandler(new DragStartHandler() {
+			@Override
+			public void onDragStart(DragStartEvent event) {
+				if(dragStartHandlerOptional.isPresent()){
+					dragStartHandlerOptional.get().onDragStart();
+				}
+			}
+		}, DragStartEvent.getType());
 	}
 }
