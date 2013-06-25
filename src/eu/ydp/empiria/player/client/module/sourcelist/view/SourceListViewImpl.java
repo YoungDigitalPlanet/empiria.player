@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
+import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
@@ -29,6 +30,7 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	@Inject private TouchReservationFactory touchReservationFactory;
 	@Inject private Provider<SourceListViewItem> sourceListViewItemProvider;
 	@Inject private DragDropHelper dragDropHelper;
+	@Inject private DragDataObjectFromEventExtractor objectFromEventExtractor;
 	@UiField(provided=true) FlowPanel items;
 
 	private final BiMap<String,SourceListViewItem> itemIdToItemCollection = HashBiMap.create();
@@ -48,6 +50,12 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 		items = (FlowPanel) sourceListDropZone.getDroppableWidget();
 		initWidget(uiBinder.createAndBindUi(this));
 		touchReservationFactory.addTouchReservationHandler(items);
+		addDropHandler();
+	}
+
+	private void addDropHandler(){
+		SourceListViewDropHandler dropHandler = new SourceListViewDropHandler(objectFromEventExtractor, sourceListPresenter);
+		sourceListDropZone.addDropHandler(dropHandler);
 	}
 
 	public void disableItems(boolean disabled) {

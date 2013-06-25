@@ -118,9 +118,9 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	}
 
 	@Override
-	public void onDropEvent(DragDropEventTypes eventType, String itemId) {
-		// TODO Auto-generated method stub
-		
+	public void onDropEvent(String itemId) {
+		sourcelistManager.dragEndSourcelist(itemId, moduleId);
+
 	}
 
 }
