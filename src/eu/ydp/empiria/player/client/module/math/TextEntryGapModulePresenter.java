@@ -62,7 +62,7 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 		 uiBinder.createAndBindUi(this);
 		 textBox.addChangeHandler(this);
 		 
-		 dropZoneGuardian = new DropZoneGuardian(droppable, mainPanel);
+		 dropZoneGuardian = new DropZoneGuardian(droppable, mainPanel, styleNames);
 	}
 
 	@Override

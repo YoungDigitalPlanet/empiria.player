@@ -178,26 +178,26 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 
 	@Override
 	public void setDragItem(String itemId) {
-		DataObject dataObject = sourcelistManager.getValue(itemId, getModuleId());
-		presenter.setText(dataObject.getItemId());
+		String value = sourcelistManager.getValue(itemId, getModuleId());
+		presenter.setText(value);
 	}
 
 	@Override
 	public void removeDragItem() {
 		presenter.setText("");
 	}
+	
+	TextEntryGapModulePresenter getTextEntryGapPresenter() {
+		return (TextEntryGapModulePresenter)presenter;
+	}
 
 	@Override
-	public void lockDragZone() {
+	public void lockDropZone() {
 		getTextEntryGapPresenter().lockDragZone();
 	}
 
 	@Override
-	public void unlockDragZone() {
+	public void unlockDropZone() {
 		getTextEntryGapPresenter().unlockDragZone();
-	}
-	
-	TextEntryGapModulePresenter getTextEntryGapPresenter() {
-		return (TextEntryGapModulePresenter)presenter;
 	}
 }
