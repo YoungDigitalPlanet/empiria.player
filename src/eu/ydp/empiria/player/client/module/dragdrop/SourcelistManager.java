@@ -14,7 +14,7 @@ public interface SourcelistManager {
 
 	void dragCanceled();
 
-	DataObject getValue(String itemId, String targetModuleId);
+	String getValue(String itemId, String targetModuleId);
 
 	void onUserValueChanged();
 }
