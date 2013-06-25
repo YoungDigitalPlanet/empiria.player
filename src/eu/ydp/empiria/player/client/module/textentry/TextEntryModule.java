@@ -164,8 +164,8 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	@Override
 	public void setDragItem(String itemId) {
-		DataObject dataObject = sourcelistManager.getValue(itemId, getModuleId());
-		presenter.setText(dataObject.getItemId());
+		String value = sourcelistManager.getValue(itemId, getModuleId());
+		presenter.setText(value);
 	}
 
 	@Override
@@ -173,18 +173,19 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 		presenter.setText("");
 	}
 
-	@Override
-	public void lockDragZone() {
-		getTextEntryPresenter().lockDragZone();
-	}
-
-	@Override
-	public void unlockDragZone() {
-		getTextEntryPresenter().unlockDragZone();
-	}
-
 	TextEntryModulePresenter getTextEntryPresenter() {
 		return (TextEntryModulePresenter)presenter;
 	}
-	
+
+	@Override
+	public void lockDropZone() {
+		getTextEntryPresenter().lockDragZone();
+		
+	}
+
+	@Override
+	public void unlockDropZone() {
+		getTextEntryPresenter().unlockDragZone();
+		
+	}
 }

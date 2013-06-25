@@ -13,7 +13,6 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
-import eu.ydp.empiria.player.client.module.dragdrop.DataObject;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;

@@ -58,7 +58,7 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 		textBox = droppable.getOriginalWidget();
 		uiBinder.createAndBindUi(this);
 		
-		dropZoneGuardian = new DropZoneGuardian(droppable, moduleWidget);
+		dropZoneGuardian = new DropZoneGuardian(droppable, moduleWidget, styleNames);
 	}
 
 	@Override
