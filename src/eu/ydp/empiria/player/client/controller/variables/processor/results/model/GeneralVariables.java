@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.results.model;
 
+import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Collections.unmodifiableList;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ public class GeneralVariables {
 	}
 
 	public GeneralVariables(List<String> answers, List<Boolean> answersEvaluation, int errors, int done) {
-		this.answers = unmodifiableList(answers);
-		this.answersEvaluation = unmodifiableList(answersEvaluation);
+		this.answers = copyOf(answers);
+		this.answersEvaluation = copyOf(answersEvaluation);
 		this.errors = errors;
 		this.done = done;
 	}
@@ -29,7 +29,7 @@ public class GeneralVariables {
 	}
 
 	public void setAnswers(List<String> answers) {
-		this.answers = unmodifiableList(answers);
+		this.answers = copyOf(answers);
 	}
 
 	public int getErrors() {
@@ -53,6 +53,6 @@ public class GeneralVariables {
 	}
 
 	public void setAnswersEvaluation(List<Boolean> answersEvaluation) {
-		this.answersEvaluation = unmodifiableList(answersEvaluation);
+		this.answersEvaluation = copyOf(answersEvaluation);
 	}
 }
