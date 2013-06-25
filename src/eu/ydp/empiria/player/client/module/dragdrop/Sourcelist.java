@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 
 import java.util.List;
 
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 
-public interface Sourcelist extends IModule {
+public interface Sourcelist extends IUniqueModule {
 
 	String getItemValue(String itemId);
 

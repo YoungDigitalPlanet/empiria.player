@@ -167,6 +167,21 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-drag-item")
 	public String QP_DRAG_ITEM();
 
+	@DefaultStringValue("qp-drag-gap-correct")
+	public String QP_DRAG_GAP_CORRECT();
+
+	@DefaultStringValue("qp-drag-gap-wrong")
+	public String QP_DRAG_GAP_WRONG();
+
+	@DefaultStringValue("qp-drag-gap-default")
+	public String QP_DRAG_GAP_DEFAULT();
+
+	@DefaultStringValue("qp-drag-gap-none")
+	public String QP_DRAG_GAP_NONE();
+
+	@DefaultStringValue("qp-drag-gap-locked")
+	public String QP_DRAG_GAP_LOCKED();
+	
 	@DefaultStringValue("qp-dragged-drag")
 	public String QP_DRAGGED_DRAG();
 
@@ -731,7 +746,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
-	
+
 	@DefaultStringValue("drop-zone-locked")
 	public String LOCKED_DROP_ZONE_STYLE();
 }
