@@ -15,6 +15,7 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
+import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -40,14 +41,15 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 
 	@Inject
 	private StyleNameConstants styleNames;
-
+	
 	@Inject
 	private TextBoxChangeHandler textBoxChangeHandler;
 	
 	@Inject
 	private TextBoxExpressionReplacer expressionReplacer;
 
-	private final DroppableObject<TextBox> droppable;
+	private final DroppableObject<TextBox> droppable;	
+	private DropZoneGuardian dropZoneGuardian;
 
 	@Inject
 	public TextEntryModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
@@ -55,6 +57,8 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 		textBoxWidget = droppable.getDroppableWidget();
 		textBox = droppable.getOriginalWidget();
 		uiBinder.createAndBindUi(this);
+		
+		dropZoneGuardian = new DropZoneGuardian(droppable, moduleWidget, styleNames);
 	}
 
 	@Override
@@ -158,5 +162,13 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 	@Override
 	public void makeExpressionReplacements(ExpressionReplacer replacer) {
 		expressionReplacer.makeReplacements(textBox, replacer);
+	}
+
+	public void lockDragZone() {
+		dropZoneGuardian.lockDropZone();
+	}
+
+	public void unlockDragZone() {
+		dropZoneGuardian.unlockDropZone();
 	}
 }

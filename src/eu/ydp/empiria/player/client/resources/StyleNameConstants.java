@@ -747,5 +747,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
 
-
+	@DefaultStringValue("qp-drop-zone-locked")
+	public String QP_DROP_ZONE_LOCKED();
 }
