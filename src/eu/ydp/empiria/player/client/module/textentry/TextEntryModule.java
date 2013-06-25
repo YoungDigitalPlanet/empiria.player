@@ -17,7 +17,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
-import eu.ydp.empiria.player.client.module.dragdrop.DataObject;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
@@ -165,8 +164,8 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	@Override
 	public void setDragItem(String itemId) {
-		DataObject dataObject = sourcelistManager.getValue(itemId, getModuleId());
-		presenter.setText(dataObject.getItemId());
+		String value = sourcelistManager.getValue(itemId, getModuleId());
+		presenter.setText(value);
 	}
 
 	@Override
@@ -175,12 +174,12 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	}
 
 	@Override
-	public void lockDragZone() {
+	public void lockDropZone() {
 		getTextEntryPresenter().lockDragZone();
 	}
 
 	@Override
-	public void unlockDragZone() {
+	public void unlockDropZone() {
 		getTextEntryPresenter().unlockDragZone();
 	}
 

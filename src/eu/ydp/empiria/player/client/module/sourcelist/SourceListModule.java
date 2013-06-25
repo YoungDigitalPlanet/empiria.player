@@ -60,4 +60,9 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 		presenter.useAndRestockItems(itemsIds);
 
 	}
+
+	@Override
+	public String getIdentifier() {
+		return moduleUniqueId;
+	}
 }

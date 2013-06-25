@@ -10,7 +10,7 @@ public interface SourcelistClient extends IUniqueModule {
 
 	void removeDragItem();
 	
-	void lockDragZone();
+	void lockDropZone();
 	
-	void unlockDragZone();
+	void unlockDropZone();
 }
