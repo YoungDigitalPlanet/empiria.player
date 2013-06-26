@@ -34,6 +34,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.xml.XMLParser;
@@ -157,7 +158,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		private boolean evaluatedResponse;
 
 		public TextEntryGapModuleMock(Map<String, String> styles) {
-			super(injector.getInstance(TextEntryModuleFactory.class), injector.getInstance(StyleSocket.class));
+			super(injector.getInstance(TextEntryModuleFactory.class), injector.getInstance(StyleSocket.class),injector.getInstance(SourcelistManager.class));
 			this.mathStyles = styles;
 		}
 

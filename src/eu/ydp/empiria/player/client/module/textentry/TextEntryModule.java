@@ -21,7 +21,6 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
-import eu.ydp.empiria.player.client.module.gap.GapDropHandlerImpl;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.NumberUtils;
@@ -30,18 +29,18 @@ import eu.ydp.gwtutil.client.StringUtils;
 public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	private final StyleSocket styleSocket;
-	
-	@Inject
+
 	private SourcelistManager sourcelistManager;
-	
-	private ResponseSocket responseSocket;
-	
+
+	private final ResponseSocket responseSocket;
+
 	protected Map<String, String> styles;
 
 	@Inject
-	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket) {
+	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket, final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.responseSocket = responseSocket;
+		this.sourcelistManager = sourcelistManager;
 
 		presenter = moduleFactory.getTextEntryModulePresenter(this);
 		presenter.addPresenterHandler(new PresenterHandler() {
@@ -59,13 +58,13 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 				}
 			}
 		});
-		
+
 		presenter.addDomHandlerOnObjectDrop(new GapDropHandler() {
 
 			@Override
 			public void onDrop(DragDataObject dragDataObject) {
-				String itemID = dragDataObject.getValue();
-				String sourceModuleId = dragDataObject.getPreviousValue();
+				String itemID = dragDataObject.getItemId();
+				String sourceModuleId = dragDataObject.getSourceId();
 				String targetModuleId = getModuleId();
 
 				sourcelistManager.dragEnd(itemID, sourceModuleId,
@@ -86,7 +85,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 		setWidthBinding(styles, getModuleElement());
 
 		installViewPanel(placeholders.get(0));
-		
+
 		initReplacements(styles);
 	}
 
@@ -196,12 +195,12 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	@Override
 	public void lockDropZone() {
 		getTextEntryPresenter().lockDragZone();
-		
+
 	}
 
 	@Override
 	public void unlockDropZone() {
 		getTextEntryPresenter().unlockDragZone();
-		
+
 	}
 }

@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.AbstractDragDrop;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropType;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
@@ -36,17 +36,14 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 
 	private final W originalWidget;
 	private final boolean disableAutoBehavior;
-
 	private boolean disabled = false;
-	private final IModule imodule;
-
 	private final DragDropType type;
+	@Inject protected StyleNameConstants styleNames;
 
 	@Inject
-	public HTML5DragDrop(final @Assisted("widget") W widget, @Assisted("imodule") IModule imodule, @Assisted("type") DragDropType type,
+	public HTML5DragDrop(final @Assisted("widget") W widget, @Assisted("type") DragDropType type,
 			@Assisted("disableAutoBehavior") boolean disableAutoBehavior) {
 		this.originalWidget = widget;
-		this.imodule = imodule;
 		this.disableAutoBehavior = disableAutoBehavior;
 		this.type = type;
 
@@ -65,18 +62,12 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 		element.dragDrop();
 	}-*/;
 
-	@Override
-	protected void setAutoBehaviorForDrop(boolean disableAutoBehavior) {
+	private void setAutoBehaviorForDrop(boolean disableAutoBehavior) {
 		if (!disableAutoBehavior) {
 			originalWidget.addDomHandler(new DropHandler() {
 				@Override
 				public void onDrop(DropEvent event) {
 					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
-					if (!disabled) {
-						putValue(event.getData("json"));
-					}
-					event.stopPropagation();
-					event.preventDefault();
 				}
 			}, DropEvent.getType());
 
@@ -106,9 +97,8 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 					removeStyleForWidget(styleNames.QP_DROPZONE_OVER(), disabled);
 				}
 			}, DragLeaveEvent.getType());
-		}
-		super.setAutoBehaviorForDrop(disableAutoBehavior);
 
+		}
 	}
 
 	/**
@@ -183,10 +173,6 @@ public class HTML5DragDrop<W extends Widget> extends AbstractDragDrop<W> impleme
 		return originalWidget;
 	}
 
-	@Override
-	protected IModule getIModule() {
-		return imodule;
-	}
 
 	@Override
 	public void setDisableDrag(boolean disable) {

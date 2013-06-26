@@ -22,8 +22,8 @@ import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventE
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
-import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
@@ -60,12 +60,12 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	@Inject
 	private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
 	
-	private final DroppableObject<TextBox> droppable;
+	private DroppableObject<TextBox> droppable;
 	private DropZoneGuardian dropZoneGuardian;
 
 	@Inject
 	public TextEntryGapModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants) {
-		droppable = dragDropHelper.enableDropForWidget(new TextBox(), parentModule);
+		droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		styleNames = styleNameConstants;
 		textBoxWidget = droppable.getDroppableWidget();
 		textBox = droppable.getOriginalWidget();
@@ -86,9 +86,8 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 				}
 			}
 		}, DropEvent.getType());
-		
 	}
-	
+
 	@Override
 	public void onChange(ChangeEvent event) {
 		if (changeHandler != null) {

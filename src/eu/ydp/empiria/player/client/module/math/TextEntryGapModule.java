@@ -16,7 +16,6 @@ import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
-import eu.ydp.empiria.player.client.module.gap.GapDropHandlerImpl;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -26,21 +25,22 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class TextEntryGapModule extends MathGapBase implements MathGap, SourcelistClient {
 
-	@Inject
+
 	private SourcelistManager sourcelistManager;
 
 	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket) {
+	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
-
+		this.sourcelistManager = sourcelistManager;
+		
 		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-				sourcelistManager.onUserValueChanged();
 				updateResponse(true);
+				sourcelistManager.onUserValueChanged();
 			}
 
 			@Override
@@ -55,8 +55,8 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 
 			@Override
 			public void onDrop(DragDataObject dragDataObject) {
-				String itemID = dragDataObject.getValue();
-				String sourceModuleId = dragDataObject.getPreviousValue();
+				String itemID = dragDataObject.getItemId();
+				String sourceModuleId = dragDataObject.getSourceId();;
 				String targetModuleId = getModuleId();
 
 				sourcelistManager.dragEnd(itemID, sourceModuleId,

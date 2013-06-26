@@ -47,26 +47,26 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 
 	@Inject
 	private StyleNameConstants styleNames;
-	
+
 	@Inject
 	private TextBoxChangeHandler textBoxChangeHandler;
-	
+
 	@Inject
 	private TextBoxExpressionReplacer expressionReplacer;
 	
 	@Inject
 	private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
 
-	private final DroppableObject<TextBox> droppable;	
-	private DropZoneGuardian dropZoneGuardian;
+	private final DroppableObject<TextBox> droppable;
+	private final DropZoneGuardian dropZoneGuardian;
 
 	@Inject
 	public TextEntryModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
-		droppable = dragDropHelper.enableDropForWidget(new TextBox(), parentModule);
+		droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		textBoxWidget = droppable.getDroppableWidget();
 		textBox = droppable.getOriginalWidget();
 		uiBinder.createAndBindUi(this);
-		
+
 		dropZoneGuardian = new DropZoneGuardian(droppable, moduleWidget, styleNames);
 	}
 
@@ -138,7 +138,7 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 	@Override
 	public void installViewInContainer(HasWidgets container) {
 		container.add(moduleWidget);
-		
+
 		moduleWidget.setStyleName( styleNames.QP_TEXTENTRY(), true );
 	}
 

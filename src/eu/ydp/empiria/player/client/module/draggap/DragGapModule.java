@@ -47,8 +47,8 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 			@Override
 			public void onDrop(DragDataObject dragDataObject) {
 				setDragDataObject(dragDataObject);
-				String itemID = dragDataObject.getValue();
-				String sourceModuleId = dragDataObject.getPreviousValue();
+				String itemID = dragDataObject.getItemId();
+				String sourceModuleId = dragDataObject.getSourceId();
 				String targetModuleId = getModuleId();
 
 				sourcelistManager.dragEnd(itemID, sourceModuleId,
@@ -82,7 +82,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	public String getDragItemId() {
 		if(dragDataObjectOptional.isPresent()){
-			return dragDataObjectOptional.get().getValue();
+			return dragDataObjectOptional.get().getItemId();
 		} else {
 			//TODO zamiast empty stringa powinien byc zwracany optional
 			return StringUtils.EMPTY_STRING;

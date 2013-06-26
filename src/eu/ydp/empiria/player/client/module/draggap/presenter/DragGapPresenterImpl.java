@@ -54,7 +54,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 	@Inject
 	public DragGapPresenterImpl(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants) {
-		droppable = dragDropHelper.enableDropForWidget(new TextBox(), parentModule);
+		droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		styleNames = styleNameConstants;
 		
 		dropZoneGuardian = new DropZoneGuardian(droppable, view.asWidget(), styleNames);
