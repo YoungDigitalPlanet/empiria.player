@@ -184,6 +184,19 @@ public class SourceListViewImplTest {
 	}
 
 	@Test
+	public void testHideItemIdNotPresent() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		addItems();
+		instance.hideItem("aa");
+
+		for(String id:  allIds){
+			viewItem = itemIdToItemCollection.get(id);
+			verify(viewItem,times(0)).hide();
+		}
+	}
+
+	@Test
 	public void testShowItem() throws Exception {
 		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
 		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
@@ -192,6 +205,18 @@ public class SourceListViewImplTest {
 		SourceListViewItem viewItem = itemIdToItemCollection.get("a");
 		verify(viewItem).show();
 		allIds.remove("a");
+		for(String id:  allIds){
+			viewItem = itemIdToItemCollection.get(id);
+			verify(viewItem,times(0)).show();
+		}
+	}
+
+	@Test
+	public void testShowItemIdNotPresent() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		addItems();
+		instance.showItem("aa");
 		for(String id:  allIds){
 			viewItem = itemIdToItemCollection.get(id);
 			verify(viewItem,times(0)).show();
