@@ -34,10 +34,9 @@ public class DragGapViewImpl implements DragGapView {
 	private final DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
 
 	private Widget contentWidget;
-	private Optional<DraggableObject<Widget>> optionalDraggable;
-	private Optional<DragGapDropHandler> dragGapDropHandlerOptional;
-
-	private Optional<DragGapStartDragHandler> dragStartHandlerOptional;
+	private Optional<DraggableObject<Widget>> optionalDraggable = Optional.absent();
+	private Optional<DragGapDropHandler> dragGapDropHandlerOptional = Optional.absent();
+	private Optional<DragGapStartDragHandler> dragStartHandlerOptional = Optional.absent();
 
 
 	@Inject
