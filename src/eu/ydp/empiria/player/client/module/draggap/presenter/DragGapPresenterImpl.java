@@ -22,6 +22,7 @@ import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
@@ -152,13 +153,14 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		dropZoneGuardian.unlockDropZone();
 	}
 
-	@Override
-	public void setDropHandler(DragGapDropHandler dragGapDropHandler) {
-		view.setDropHandler(dragGapDropHandler);
-	}
 
 	@Override
 	public void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler) {
 		view.setDragStartHandler(dragGapStartDragHandler);		
+	}
+
+	@Override
+	public void setDropHandler(DragGapDropHandler dragGapDropHandler) {
+		view.setDropHandler(dragGapDropHandler);
 	}
 }

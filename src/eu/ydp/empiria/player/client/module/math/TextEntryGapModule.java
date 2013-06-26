@@ -15,9 +15,12 @@ import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandlerImpl;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
@@ -25,7 +28,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 
 	@Inject
 	private SourcelistManager sourcelistManager;
-	
+
 	private final StyleSocket styleSocket;
 
 	@Inject
@@ -33,21 +36,34 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 		this.styleSocket = styleSocket;
 
 		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
-		PresenterHandler presenterHandler = new PresenterHandler() {
+		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-				updateResponse(true);
 				sourcelistManager.onUserValueChanged();
+				updateResponse(true);
 			}
 
 			@Override
 			public void onBlur(BlurEvent event) {
 				if (isMobileUserAgent()) {
+					sourcelistManager.onUserValueChanged();
 					updateResponse(true);
 				}
 			}
-		};
-		presenter.addPresenterHandler(presenterHandler);
+		});
+		presenter.addDomHandlerOnObjectDrop(new GapDropHandler() {
+
+			@Override
+			public void onDrop(DragDataObject dragDataObject) {
+				String itemID = dragDataObject.getValue();
+				String sourceModuleId = dragDataObject.getPreviousValue();
+				String targetModuleId = getModuleId();
+
+				sourcelistManager.dragEnd(itemID, sourceModuleId,
+						targetModuleId);
+			}
+		});
+		
 		sourcelistManager.registerModule(this);
 	}
 
@@ -161,7 +177,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	public String getValue() {
 		return presenter.getText();
 	}
-	
+
 	public void setUpGap() {
 		registerBindingContexts();
 	}
@@ -185,9 +201,9 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	public void removeDragItem() {
 		presenter.setText("");
 	}
-	
+
 	private TextEntryGapModulePresenter getTextEntryGapPresenter() {
-		return (TextEntryGapModulePresenter)presenter;
+		return (TextEntryGapModulePresenter) presenter;
 	}
 
 	@Override

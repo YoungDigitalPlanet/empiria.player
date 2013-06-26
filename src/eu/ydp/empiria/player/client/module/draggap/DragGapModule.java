@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapStructure;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.StringUtils;
 
@@ -42,7 +43,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 		dragGapModuleModel.initialize(this);
 		
 		dragGapPresenter.setDropHandler(new DragGapDropHandler() {
-
+			
 			@Override
 			public void onDrop(DragDataObject dragDataObject) {
 				setDragDataObject(dragDataObject);
