@@ -9,18 +9,18 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.style.StyleSocket;
 
-public class ExpressionAdapterReplacementsProvider {
+public class ExpressionCharacterMappingProvider {
 
 	public static final String SELECTOR = ".qp-expression-mapping";
 
 	private final StyleSocket styleSocket;
 	
-	private final ExpressionAdapterReplacementsParser parser;
+	private final ExpressionCharactersMappingParser parser;
 	
 	private Map<String, String> replacements;
 	
 	@Inject 
-	public ExpressionAdapterReplacementsProvider(StyleSocket styleSocket, ExpressionAdapterReplacementsParser parser) {
+	public ExpressionCharacterMappingProvider(StyleSocket styleSocket, ExpressionCharactersMappingParser parser) {
 		this.styleSocket = styleSocket;
 		this.parser = parser;
 	}

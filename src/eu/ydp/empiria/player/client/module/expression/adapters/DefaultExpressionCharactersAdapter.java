@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 
 public class DefaultExpressionCharactersAdapter {
 	
-	@Inject private ExpressionAdapterReplacementsProvider replacementsProvider;
+	@Inject private ExpressionCharacterMappingProvider replacementsProvider;
 
 	public String process(String expression) {
 		expression = fixDivide(expression);

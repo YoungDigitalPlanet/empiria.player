@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.expression.adapters;
 
-import static eu.ydp.empiria.player.client.module.expression.adapters.ExpressionAdapterReplacementsProvider.SELECTOR;
+import static eu.ydp.empiria.player.client.module.expression.adapters.ExpressionCharacterMappingProvider.SELECTOR;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_MAPPING;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;

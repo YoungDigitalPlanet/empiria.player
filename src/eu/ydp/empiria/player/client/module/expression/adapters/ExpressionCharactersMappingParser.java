@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.expression.PipedReplacementsParser;
 
-public class ExpressionAdapterReplacementsParser {
+public class ExpressionCharactersMappingParser {
 	
 	@Inject private PipedReplacementsParser expressionReplacementsParser;
 

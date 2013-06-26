@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.expression.adapters;
 
-import static eu.ydp.empiria.player.client.module.expression.adapters.ExpressionAdapterReplacementsProvider.SELECTOR;
+import static eu.ydp.empiria.player.client.module.expression.adapters.ExpressionCharacterMappingProvider.SELECTOR;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_MAPPING;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -18,15 +18,15 @@ import com.google.inject.Guice;
 
 import eu.ydp.empiria.player.client.style.StyleSocket;
 
-public class ExpressionAdapterReplacementsProviderJUnitTest {
+public class ExpressionCharacterMappingProviderJUnitTest {
 
-	private ExpressionAdapterReplacementsProvider provider;
+	private ExpressionCharacterMappingProvider provider;
 	private final StyleSocket styleSocket = mock(StyleSocket.class);
-	private final ExpressionAdapterReplacementsParser parser = Guice.createInjector().getInstance(ExpressionAdapterReplacementsParser.class);
+	private final ExpressionCharactersMappingParser parser = Guice.createInjector().getInstance(ExpressionCharactersMappingParser.class);
 	
 	@Before
 	public void setUp() {
-		provider = new ExpressionAdapterReplacementsProvider(styleSocket, parser);
+		provider = new ExpressionCharacterMappingProvider(styleSocket, parser);
 	}
 	
 	@Test
