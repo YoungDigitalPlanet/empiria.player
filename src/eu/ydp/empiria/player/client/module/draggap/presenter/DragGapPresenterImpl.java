@@ -95,7 +95,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		List<Boolean> evaluatedAnswers = answerEvaluationSupplier
 				.evaluateAnswer(model.getResponse());
 
-		if (evaluatedAnswers.size() < 1){
+		if (evaluatedAnswers.isEmpty()){
 			view.updateStyle(UserAnswerType.NONE);
 		}else{
 			Boolean isAnswerCorrect = evaluatedAnswers.get(0);
