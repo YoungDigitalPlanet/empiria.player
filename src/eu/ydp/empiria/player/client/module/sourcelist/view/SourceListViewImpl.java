@@ -91,12 +91,16 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 
 	@Override
 	public void hideItem(String itemId) {
-		itemIdToItemCollection.get(itemId).hide();
+		if(itemIdToItemCollection.containsKey(itemId)) {
+			itemIdToItemCollection.get(itemId).hide();
+		}
 	}
 
 	@Override
 	public void showItem(String itemId) {
-		itemIdToItemCollection.get(itemId).show();
+		if(itemIdToItemCollection.containsKey(itemId)) {
+			itemIdToItemCollection.get(itemId).show();
+		}
 	}
 
 	@Override
