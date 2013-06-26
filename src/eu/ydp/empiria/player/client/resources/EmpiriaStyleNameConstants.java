@@ -47,6 +47,7 @@ public final class EmpiriaStyleNameConstants {
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH = "-empiria-textentry-gap-width";
 	public static final String EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN = "-empiria-textentry-gap-width-align";
 	public static final String EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS = "-empiria-textentry-gap-expression-replacements";
+	public static final String EMPIRIA_EXPRESSION_REPLACEMENTS = "-empiria-expression-replacements";
 
 	public static final String VALUE_BOLD = "bold";
 	public static final String VALUE_HIDE = "hide";

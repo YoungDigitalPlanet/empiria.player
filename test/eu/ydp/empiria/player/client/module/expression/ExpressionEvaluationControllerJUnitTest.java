@@ -1,13 +1,17 @@
 package eu.ydp.empiria.player.client.module.expression;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static eu.ydp.empiria.player.client.module.expression.adapters.ExpressionAdapterReplacementsProvider.SELECTOR;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_REPLACEMENTS;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 
@@ -16,15 +20,18 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.module.expression.evaluate.ResponseValuesFetcherFunctions;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionEvaluationResult;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 
 public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase {
 
 	private ExpressionEvaluationController expressionEvaluationController;
 	private ResponsesTestingHelper responsesHelper;
+	private StyleSocket styleSocket;
 
 	@Before
 	public void setUpTest() throws Exception {
 		expressionEvaluationController = injector.getInstance(ExpressionEvaluationController.class);
+		styleSocket = injector.getInstance(StyleSocket.class);
 		responsesHelper = new ResponsesTestingHelper();
 	}
 
@@ -368,6 +375,20 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase {
 
 		// then
 		assertTrue(ExpressionEvaluationResult.WRONG.equals(result));
+	}	
+
+	@Test
+	public void replacements() {
+		// given
+		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_REPLACEMENTS, " ×|*|:,;,÷|/|≤|<= "));
+		List<Response> responses = newArrayList(responsesHelper.getResponse("a", "×"), responsesHelper.getResponse("b", "≤"));
+		ExpressionBean expression = buildExpressionBean(responses, "2'a'2'b'4");
+
+		// when
+		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);
+
+		// then
+		assertTrue(ExpressionEvaluationResult.CORRECT.equals(result));
 	}
 
 	private ExpressionBean buildExpressionBean(List<Response> inputResponses, String template) {

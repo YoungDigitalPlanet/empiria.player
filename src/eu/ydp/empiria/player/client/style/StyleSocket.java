@@ -15,5 +15,6 @@ public interface StyleSocket {
 	 * @return styles in unchanged letter case. 
 	 */
 	public Map<String,String> getOrgStyles( Element element );
+	public Map<String,String> getStyles( String selector );
 	public void setCurrentPages( PageReference pr );
 }

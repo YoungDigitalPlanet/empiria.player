@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +32,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.Modul
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 
 public class VariableProcessorFunctionalTestBase {
 
@@ -52,6 +54,7 @@ public class VariableProcessorFunctionalTestBase {
 				bind(AnswerEvaluationSupplier.class).annotatedWith(PageScoped.class).to(AnswerEvaluationSupplier.class).in(Singleton.class);
 				bind(GroupedAnswersManager.class).annotatedWith(PageScoped.class).to(GroupedAnswersManager.class).in(Singleton.class);
 				bind(ModulesProcessingResults.class).annotatedWith(PageScoped.class).to(ModulesProcessingResults.class).in(Singleton.class);
+				bind(StyleSocket.class).toInstance(mock(StyleSocket.class));
 				install(new FactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
 			}
 		});
