@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
+import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
@@ -156,4 +157,8 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		view.setDropHandler(dragGapDropHandler);
 	}
 
+	@Override
+	public void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler) {
+		view.setDragStartHandler(dragGapStartDragHandler);		
+	}
 }
