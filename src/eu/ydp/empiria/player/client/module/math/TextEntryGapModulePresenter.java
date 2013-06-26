@@ -52,11 +52,11 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	private StyleNameConstants styleNames;
 	
 	private final DroppableObject<TextBox> droppable;
-	private DropZoneGuardian dropZoneGuardian;
+	private final DropZoneGuardian dropZoneGuardian;
 	
 	@Inject
 	public TextEntryGapModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
-		 droppable = dragDropHelper.enableDropForWidget(new TextBox(),parentModule);
+		 droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		 textBoxWidget = droppable.getDroppableWidget();
 		 textBox = droppable.getOriginalWidget();
 		 uiBinder.createAndBindUi(this);

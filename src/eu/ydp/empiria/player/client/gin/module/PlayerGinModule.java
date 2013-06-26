@@ -63,6 +63,8 @@ import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.gin.providers.NewFlowPanelProvider;
+import eu.ydp.empiria.player.client.gin.providers.UniqIdStringProvider;
+import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
@@ -178,7 +180,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(IJSONService.class).to(JSONService.class).in(Singleton.class);
 		bind(LabellingView.class).to(LabellingViewImpl.class);
 		bind(LabellingChildView.class).to(LabellingChildViewImpl.class);
-
+		bind(String.class).annotatedWith(UniqueId.class).toProvider(UniqIdStringProvider.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));

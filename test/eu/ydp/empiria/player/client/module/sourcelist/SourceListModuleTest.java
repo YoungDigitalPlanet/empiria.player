@@ -1,8 +1,16 @@
 package eu.ydp.empiria.player.client.module.sourcelist;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,9 +25,10 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
+import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
-import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListViewMock;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
@@ -40,10 +49,10 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
-			binder.bind(SourceListPresenter.class).toInstance(spy(new SourceListPresenterMock()));
-			binder.bind(SourceListView.class).toInstance(spy(new SourceListViewMock()));
+			binder.bind(SourceListPresenter.class).toInstance(mock(SourceListPresenter.class));
 			binder.bind(ModuleSocket.class).toInstance(mock(ModuleSocket.class));
 			binder.bind(SourceListModuleStructure.class).toInstance(mock(SourceListModuleStructure.class));
+			binder.bind(SourcelistManager.class).toInstance(mock(SourcelistManager.class));
 		}
 	}
 
@@ -59,18 +68,15 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 
 	@Before
 	public void before() {
-		setUp(new Class<?>[] { SourceListPresenter.class, SourceListView.class }, new CustomGuiceModule());
+		GuiceModuleConfiguration moduleConfiguration = new GuiceModuleConfiguration();
+		moduleConfiguration.addAllClassToOmit( SourceListPresenter.class, SourceListView.class );
+		setUpAndOverrideMainModule(moduleConfiguration, new CustomGuiceModule());
 		instance = injector.getInstance(SourceListModule.class);
 		presenter = injector.getInstance(SourceListPresenter.class);
 		moduleSocket = injector.getInstance(ModuleSocket.class);
 		sourceListModuleStructure = injector.getInstance(SourceListModuleStructure.class);
 		reflectionsUtils = new ReflectionsUtils();
 
-	}
-
-	@Test
-	public void testFactoryMethod() {
-		assertNotNull(instance.getNewInstance());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -100,11 +106,40 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 	}
 
 	@Test
-	public void containsValueTest() {
-		when(presenter.containsValue(Mockito.anyString())).thenReturn(true);
-		assertTrue(instance.containsValue("test"));
-		when(presenter.containsValue(Mockito.anyString())).thenReturn(false);
-		assertFalse(instance.containsValue("test"));
+	public void testGetItemValue() throws Exception {
+		String itemId = "id";
+		instance.getItemValue(itemId);
+		verify(presenter).getItemValue(eq(itemId));
 	}
+
+	@Test
+	public void testUseItem() throws Exception {
+		String itemId = "id";
+		instance.useItem(itemId);
+		verify(presenter).useItem(eq(itemId));
+	}
+
+	@Test
+	public void testRestockItem() throws Exception {
+		String itemId = "id";
+		instance.restockItem(itemId);
+		verify(presenter).restockItem(eq(itemId));
+	}
+
+	@Test
+	public void testUseAndRestockItems() throws Exception {
+		List<String> items = mock(List.class);
+
+		instance.useAndRestockItems(items);
+		verify(presenter).useAndRestockItems(eq(items));
+		verifyZeroInteractions(items);
+	}
+
+	@Test
+	public void testGetView() throws Exception {
+		instance.getView();
+		verify(presenter).asWidget();
+	}
+
 
 }

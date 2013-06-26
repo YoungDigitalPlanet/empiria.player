@@ -59,7 +59,7 @@ public class DragGapViewImpl implements DragGapView {
 	public void setContent(String content) {
 		contentWidget = new HTMLPanel(content);
 		container.add(contentWidget);
-		DraggableObject<Widget> draggableObject = dragDropHelper.enableDragForWidget(contentWidget, null);
+		DraggableObject<Widget> draggableObject = dragDropHelper.enableDragForWidget(contentWidget);
 		optionalDraggable = Optional.of(draggableObject);
 	}
 
@@ -110,7 +110,7 @@ public class DragGapViewImpl implements DragGapView {
 	public void setDropHandler(DragGapDropHandler dragGapDropHandler) {
 		this.dragGapDropHandlerOptional = Optional.fromNullable(dragGapDropHandler);
 	}
-	
+
 	private void addDomHandlerOnObjectDrop() {
 		container.addDomHandler(new DropHandler() {
 			@Override
