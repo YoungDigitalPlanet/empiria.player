@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.expression.adapters;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_REPLACEMENTS;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_MAPPING;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 
 public class ExpressionAdapterReplacementsProvider {
 
-	public static final String SELECTOR = ".qp-expression-replacements";
+	public static final String SELECTOR = ".qp-expression-mapping";
 
 	private final StyleSocket styleSocket;
 	
@@ -33,8 +33,8 @@ public class ExpressionAdapterReplacementsProvider {
 	private void ensureReplacementsInitalized() {
 		if (replacements == null){
 			Map<String, String> styles = styleSocket.getStyles(SELECTOR);
-			if (styles.containsKey(EMPIRIA_EXPRESSION_REPLACEMENTS)){
-				String replacementsRaw = styles.get(EMPIRIA_EXPRESSION_REPLACEMENTS);
+			if (styles.containsKey(EMPIRIA_EXPRESSION_MAPPING)){
+				String replacementsRaw = styles.get(EMPIRIA_EXPRESSION_MAPPING);
 				replacements = parser.parse(replacementsRaw);
 			} else {
 				replacements = Maps.newHashMap();

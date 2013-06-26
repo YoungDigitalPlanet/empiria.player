@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.expression.adapters;
 
 import static eu.ydp.empiria.player.client.module.expression.adapters.ExpressionAdapterReplacementsProvider.SELECTOR;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_REPLACEMENTS;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_MAPPING;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -32,7 +32,7 @@ public class ExpressionAdapterReplacementsProviderJUnitTest {
 	@Test
 	public void getReplacements(){
 		// given
-		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_REPLACEMENTS, " ×|*|:,;,÷|/|≤|<= "));
+		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " ×|*|:,;,÷|/|≤|<= "));
 		
 		// when
 		Map<String, String> replacements = provider.getReplacements();
@@ -44,7 +44,7 @@ public class ExpressionAdapterReplacementsProviderJUnitTest {
 	@Test
 	public void caching(){
 		// given
-		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_REPLACEMENTS, " ×,•|*|:,;|/ "));
+		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " ×,•|*|:,;|/ "));
 		
 		// when
 		provider.getReplacements();
@@ -69,7 +69,7 @@ public class ExpressionAdapterReplacementsProviderJUnitTest {
 	@Test
 	public void empty(){
 		// given
-		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_REPLACEMENTS, ""));
+		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, ""));
 		
 		// when
 		Map<String, String> replacements = provider.getReplacements();
@@ -81,7 +81,7 @@ public class ExpressionAdapterReplacementsProviderJUnitTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void invalidNumberOfParts(){
 		// given
-		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_REPLACEMENTS, " *|+|/"));
+		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " *|+|/"));
 		
 		// when
 		provider.getReplacements();
@@ -90,7 +90,7 @@ public class ExpressionAdapterReplacementsProviderJUnitTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void invalidMapping(){
 		// given
-		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_REPLACEMENTS, " *||:|/"));
+		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " *||:|/"));
 		
 		// when
 		provider.getReplacements();

@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.expression;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static eu.ydp.empiria.player.client.module.expression.adapters.ExpressionAdapterReplacementsProvider.SELECTOR;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_REPLACEMENTS;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_MAPPING;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -380,7 +380,7 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase {
 	@Test
 	public void replacements() {
 		// given
-		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_REPLACEMENTS, " ×|*|:,;,÷|/|≤|<= "));
+		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " ×|*|:,;,÷|/|≤|<= "));
 		List<Response> responses = newArrayList(responsesHelper.getResponse("a", "×"), responsesHelper.getResponse("b", "≤"));
 		ExpressionBean expression = buildExpressionBean(responses, "2'a'2'b'4");
 

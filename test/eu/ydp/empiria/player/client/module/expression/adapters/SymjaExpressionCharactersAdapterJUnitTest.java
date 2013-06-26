@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.expression.adapters;
 
 import static eu.ydp.empiria.player.client.module.expression.adapters.ExpressionAdapterReplacementsProvider.SELECTOR;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_REPLACEMENTS;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_MAPPING;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -63,7 +63,7 @@ public class SymjaExpressionCharactersAdapterJUnitTest extends AbstractTestWithM
 	@Test
 	public void testReplacements() {
 		// given
-		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_REPLACEMENTS, " ×|*|:,;,÷|/|≤|<= "));
+		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " ×|*|:,;,÷|/|≤|<= "));
 		String expression = "(2×2)+(2÷2)≤2";
 
 		// when
