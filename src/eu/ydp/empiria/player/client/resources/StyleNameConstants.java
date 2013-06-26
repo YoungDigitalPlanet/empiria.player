@@ -82,13 +82,13 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-colorfill")
 	public String QP_COLORFILL();
-
+	
 	@DefaultStringValue("qp-colorfill-container")
 	public String QP_COLORFILL_CONTAINER();
 
 	@DefaultStringValue("qp-colorfill-img")
 	public String QP_COLORFILL_IMG();
-
+	
 	@DefaultStringValue("qp-colorfill-correct-img")
 	public String QP_COLORFILL_CORRECT_IMG();
 
@@ -106,16 +106,16 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-colorfill-palette-button-container-selected")
 	public String QP_COLORFILL_PALETTE_BUTTON_CONTAINER_SELECTED();
-
+	
 	@DefaultStringValue("qp-colorfill-answers-marking-correct-panel")
 	public String QP_COLORFILL_ANSWERS_MARKING_CORRECT_PANEL();
-
+	
 	@DefaultStringValue("qp-colorfill-answers-marking-wrong-panel")
 	public String QP_COLORFILL_ANSWERS_MARKING_WRONG_PANEL();
-
+	
 	@DefaultStringValue("qp-colorfill-answers-marking-correct")
 	public String QP_COLORFILL_ANSWERS_MARKING_CORRECT();
-
+	
 	@DefaultStringValue("qp-colorfill-answers-marking-wrong")
 	public String QP_COLORFILL_ANSWERS_MARKING_WRONG();
 
@@ -181,7 +181,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-drag-gap-locked")
 	public String QP_DRAG_GAP_LOCKED();
-
+	
 	@DefaultStringValue("qp-dragged-drag")
 	public String QP_DRAGGED_DRAG();
 
@@ -747,7 +747,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
 
-	@DefaultStringValue("drop-zone-locked")
-	public String LOCKED_DROP_ZONE_STYLE();
-
+	@DefaultStringValue("qp-drop-zone-locked")
+	public String QP_DROP_ZONE_LOCKED();
 }

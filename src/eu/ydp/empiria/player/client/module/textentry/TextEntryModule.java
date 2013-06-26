@@ -28,15 +28,15 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	private final StyleSocket styleSocket;
 
+	@Inject
 	private final SourcelistManager sourcelistManager;
 
 	private final ResponseSocket responseSocket;
 
 	protected Map<String, String> styles;
 
-
 	@Inject
-	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket, final SourcelistManager sourcelistManager) {
+	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.responseSocket = responseSocket;
 		this.sourcelistManager = sourcelistManager;
@@ -173,18 +173,19 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 		presenter.setText("");
 	}
 
+	TextEntryModulePresenter getTextEntryPresenter() {
+		return (TextEntryModulePresenter)presenter;
+	}
+
 	@Override
 	public void lockDropZone() {
 		getTextEntryPresenter().lockDragZone();
+
 	}
 
 	@Override
 	public void unlockDropZone() {
 		getTextEntryPresenter().unlockDragZone();
-	}
 
-	TextEntryModulePresenter getTextEntryPresenter() {
-		return (TextEntryModulePresenter)presenter;
 	}
-
 }
