@@ -30,14 +30,14 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	private final StyleSocket styleSocket;
 
-	private SourcelistManager sourcelistManager;
+	private final SourcelistManager sourcelistManager;
 
 	private final ResponseSocket responseSocket;
 
 	protected Map<String, String> styles;
 
 	@Inject
-	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket, final SourcelistManager sourcelistManager) {
+	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.responseSocket = responseSocket;
 		this.sourcelistManager = sourcelistManager;

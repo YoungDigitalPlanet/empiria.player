@@ -26,12 +26,12 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 public class TextEntryGapModule extends MathGapBase implements MathGap, SourcelistClient {
 
 
-	private SourcelistManager sourcelistManager;
+	private final SourcelistManager sourcelistManager;
 
 	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, final SourcelistManager sourcelistManager) {
+	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket,final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.sourcelistManager = sourcelistManager;
 		
