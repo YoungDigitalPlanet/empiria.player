@@ -16,6 +16,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
@@ -35,6 +36,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	private final ResponseSocket responseSocket;
 
 	protected Map<String, String> styles;
+	
 
 	@Inject
 	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,final SourcelistManager sourcelistManager) {
@@ -49,7 +51,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 				sourcelistManager.onUserValueChanged();
 				updateResponse(true);
 			}
-
+			
 			@Override
 			public void onBlur(BlurEvent event) {
 				if (isMobileUserAgent()) {
@@ -71,9 +73,10 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 						targetModuleId);
 			}
 		});
-		
-		sourcelistManager.registerModule(this);
+	
 	}
+	
+	
 	
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
@@ -117,6 +120,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	@Override
 	public void onStart() {
+		sourcelistManager.registerModule(this);
 		setBindingValues();
 	}
 
