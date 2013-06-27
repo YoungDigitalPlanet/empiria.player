@@ -2,7 +2,11 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.module.HasChildren;
@@ -10,40 +14,53 @@ import eu.ydp.empiria.player.client.module.IModule;
 
 public class SourcelistManagerHelper {
 
+	final Predicate<IModule> isSourcelist = new Predicate<IModule>() {
+
+		@Override
+		public boolean apply(@Nullable IModule module) {
+			return module instanceof Sourcelist;
+		}
+	};
+
 	public Optional<Sourcelist> findSourcelist(SourcelistClient client) {
-		Sourcelist sourcelist = searchForSourcelist(client.getParentModule());
-		return Optional.fromNullable(sourcelist);
+		return searchForSourcelist(client.getParentModule());
 	}
 
-	private Sourcelist searchForSourcelist(HasChildren module) {
+	private Optional<Sourcelist> searchForSourcelist(HasChildren module) {
 		if (module == null) {
-			return null;
+			return Optional.absent();
 		}
-		List<IModule> children = module.getChildrenModules();
-		for (IModule child : children) {
-			if (child instanceof Sourcelist) {
-				Sourcelist sourcelist = (Sourcelist) child;
-				return sourcelist;
-			}
+		Optional<IModule> sourcelistModule = checkChildren(module);
+		if (sourcelistModule.isPresent()) {
+			Sourcelist sourcelist = (Sourcelist) sourcelistModule.get();
+			return Optional.of(sourcelist);
 		}
 		return searchForSourcelist(module.getParentModule());
 	}
 
+	private Optional<IModule> checkChildren(HasChildren module) {
+		List<IModule> children = module.getChildrenModules();
+		Optional<IModule> sourcelist = Iterables
+				.tryFind(children, isSourcelist);
+		return sourcelist;
+	}
+
 	public List<SourcelistClient> findClients(Sourcelist sourcelist) {
 		List<SourcelistClient> clients = Lists.newArrayList();
-		findClients(clients, sourcelist.getParentModule());
+		searchForClients(clients, sourcelist.getParentModule());
 		return clients;
 
 	}
 
-	private void findClients(List<SourcelistClient> clients, HasChildren parent) {
+	private void searchForClients(List<SourcelistClient> clients,
+			HasChildren parent) {
 		for (IModule child : parent.getChildrenModules()) {
 			if (child instanceof SourcelistClient) {
 				SourcelistClient client = (SourcelistClient) child;
 				clients.add(client);
 			} else if (child instanceof HasChildren) {
 				HasChildren conteiner = (HasChildren) child;
-				findClients(clients, conteiner);
+				searchForClients(clients, conteiner);
 			}
 		}
 	}
