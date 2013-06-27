@@ -9,21 +9,21 @@ import eu.ydp.empiria.player.client.structure.ModuleBean;
 import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlRootElement(name = "dragInteraction")
-@XmlAccessorType(XmlAccessType.NONE)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DragGapBean extends ModuleBean {
 
 	@XmlAttribute(name = "name")
 	private String name = StringUtils.EMPTY_STRING;;
-	
+
 	@XmlAttribute(name = "expressionMode")
 	private String expressionMode = StringUtils.EMPTY_STRING;
-	
+
 	@XmlAttribute(name = "widthBindingGroup")
 	private String widthBindingGroup = StringUtils.EMPTY_STRING;
-	
+
 	@XmlAttribute(name = "responseIdentifier")
 	private String responseIdentifier = StringUtils.EMPTY_STRING;
-	
+
 	public String getName() {
 		return name;
 	}
@@ -39,5 +39,23 @@ public class DragGapBean extends ModuleBean {
 	public String getResponseIdentifier() {
 		return responseIdentifier;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setExpressionMode(String expressionMode) {
+		this.expressionMode = expressionMode;
+	}
+
+	public void setWidthBindingGroup(String widthBindingGroup) {
+		this.widthBindingGroup = widthBindingGroup;
+	}
+
+	public void setResponseIdentifier(String responseIdentifier) {
+		this.responseIdentifier = responseIdentifier;
+	}
+
+
 
 }

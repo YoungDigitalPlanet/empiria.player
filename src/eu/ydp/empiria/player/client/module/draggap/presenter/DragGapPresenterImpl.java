@@ -5,24 +5,20 @@ import java.util.List;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
-import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
@@ -38,28 +34,25 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	private DragGapView view;
 
 	@Inject
-	private SourcelistManager sourcelistManager;
-
-	@Inject
 	@PageScoped
 	private AnswerEvaluationSupplier answerEvaluationSupplier;
 
 	private DragGapBean bean;
 	private ModuleSocket socket;
 
-	private StyleNameConstants styleNames;
-	
+	private final StyleNameConstants styleNames;
+
 	private final DroppableObject<TextBox> droppable;
-	private DropZoneGuardian dropZoneGuardian;
+	private final DropZoneGuardian dropZoneGuardian;
 
 	@Inject
-	public DragGapPresenterImpl(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants) {
+	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants) {
 		droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		styleNames = styleNameConstants;
-		
+
 		dropZoneGuardian = new DropZoneGuardian(droppable, view.asWidget(), styleNames);
 	}
-	
+
 	@Override
 	public void bindView() {
 		view.updateStyle(UserAnswerType.DEFAULT);
@@ -101,7 +94,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 			view.updateStyle(UserAnswerType.NONE);
 		}else{
 			Boolean isAnswerCorrect = evaluatedAnswers.get(0);
-			
+
 			if (mode == MarkAnswersMode.MARK) {
 				if (type == MarkAnswersType.CORRECT && isAnswerCorrect) {
 					view.updateStyle(UserAnswerType.CORRECT);
@@ -156,7 +149,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 	@Override
 	public void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler) {
-		view.setDragStartHandler(dragGapStartDragHandler);		
+		view.setDragStartHandler(dragGapStartDragHandler);
 	}
 
 	@Override

@@ -7,11 +7,12 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 
 public class SourcelistManagerImpl implements SourcelistManager {
 
-	SourcelistManagerModel model;
-	SourcelistManagerHelper helper;
+	@Inject private SourcelistManagerModel model;
+	@Inject private SourcelistManagerHelper helper;
 
 	private final Function<SourcelistClient, String> clientToItemid = new Function<SourcelistClient, String>() {
 
@@ -20,12 +21,6 @@ public class SourcelistManagerImpl implements SourcelistManager {
 			return client.getDragItemId();
 		}
 	};
-
-	public SourcelistManagerImpl(SourcelistManagerModel model,
-			SourcelistManagerHelper helper) {
-		this.model = model;
-		this.helper = helper;
-	}
 
 	@Override
 	public void registerModule(SourcelistClient client) {

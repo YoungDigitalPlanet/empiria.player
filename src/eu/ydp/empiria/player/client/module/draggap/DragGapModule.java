@@ -14,7 +14,6 @@ import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapStructure;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
-import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.StringUtils;
 
@@ -22,17 +21,17 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
 	@Inject
 	private DragGapModuleModel dragGapModuleModel;
-	
+
 	@Inject
 	private DragGapPresenter dragGapPresenter;
-	
+
 	@Inject
-	private DragGapStructure dragGapStructure; 
-	
+	private DragGapStructure dragGapStructure;
+
 	private SourcelistManager sourcelistManager;
 
 	private Optional<DragDataObject> dragDataObjectOptional;
-	
+
 	@Override
 	protected ActivityPresenter<DragGapModuleModel, DragGapBean> getPresenter() {
 		return dragGapPresenter;
@@ -41,9 +40,9 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	protected void initalizeModule() {
 		dragGapModuleModel.initialize(this);
-		
+
 		dragGapPresenter.setDropHandler(new DragGapDropHandler() {
-			
+
 			@Override
 			public void onDrop(DragDataObject dragDataObject) {
 				setDragDataObject(dragDataObject);
@@ -55,16 +54,18 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 						targetModuleId);
 			}
 		});
-		
+
 		dragGapPresenter.setDragStartHandler(new DragGapStartDragHandler() {
-			
+
 			@Override
 			public void onDragStart() {
 				sourcelistManager.dragStart(getModuleId());
 			}
 		});
+
+		sourcelistManager.registerModule(this);
 	}
-	
+
 	private void setDragDataObject(DragDataObject dragDataObject) {
 		this.dragDataObjectOptional = Optional.fromNullable(dragDataObject);
 	}
