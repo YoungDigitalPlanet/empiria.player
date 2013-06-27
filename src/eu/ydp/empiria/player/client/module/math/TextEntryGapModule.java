@@ -39,8 +39,8 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-				updateResponse(true);
 				sourcelistManager.onUserValueChanged();
+				updateResponse(true);
 			}
 
 			@Override
