@@ -9,9 +9,9 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableMap;
 
 
-public class ExpressionReplacementsParserJUnitTest {
+public class PipedReplacementsParserJUnitTest {
 	
-	private ExpressionReplacementsParser parser = new ExpressionReplacementsParser();
+	private PipedReplacementsParser parser = new PipedReplacementsParser();
 
 	@Test
 	public void parse(){
