@@ -30,12 +30,12 @@ public class ExpressionCharacterMappingProviderJUnitTest {
 	}
 	
 	@Test
-	public void getReplacements(){
+	public void getMapping(){
 		// given
 		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " ×|*|:,;,÷|/|≤|<= "));
 		
 		// when
-		Map<String, String> replacements = provider.getReplacements();
+		Map<String, String> replacements = provider.getMapping();
 		
 		// then
 		assertThat(replacements).isEqualTo(ImmutableMap.of("×","*",":","/",";","/","÷","/","≤","<="));
@@ -47,20 +47,20 @@ public class ExpressionCharacterMappingProviderJUnitTest {
 		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " ×,•|*|:,;|/ "));
 		
 		// when
-		provider.getReplacements();
-		provider.getReplacements();
+		provider.getMapping();
+		provider.getMapping();
 		
 		// then
 		verify(styleSocket).getStyles(SELECTOR);
 	}
 	
 	@Test
-	public void replacementsNotSet(){
+	public void mappingNotSet(){
 		// given
 		when(styleSocket.getStyles(SELECTOR)).thenReturn(new HashMap<String, String>());
 		
 		// when
-		Map<String, String> replacements = provider.getReplacements();
+		Map<String, String> replacements = provider.getMapping();
 		
 		// then
 		assertThat(replacements).isEmpty();
@@ -72,7 +72,7 @@ public class ExpressionCharacterMappingProviderJUnitTest {
 		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, ""));
 		
 		// when
-		Map<String, String> replacements = provider.getReplacements();
+		Map<String, String> replacements = provider.getMapping();
 		
 		// then
 		assertThat(replacements).isEmpty();
@@ -84,7 +84,7 @@ public class ExpressionCharacterMappingProviderJUnitTest {
 		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " *|+|/"));
 		
 		// when
-		provider.getReplacements();
+		provider.getMapping();
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -93,7 +93,7 @@ public class ExpressionCharacterMappingProviderJUnitTest {
 		when(styleSocket.getStyles(SELECTOR)).thenReturn(ImmutableMap.of(EMPIRIA_EXPRESSION_MAPPING, " *||:|/"));
 		
 		// when
-		provider.getReplacements();
+		provider.getMapping();
 	}
 	
 }

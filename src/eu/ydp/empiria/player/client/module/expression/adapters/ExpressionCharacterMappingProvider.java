@@ -17,7 +17,7 @@ public class ExpressionCharacterMappingProvider {
 	
 	private final ExpressionCharactersMappingParser parser;
 	
-	private Map<String, String> replacements;
+	private Map<String, String> mapping;
 	
 	@Inject 
 	public ExpressionCharacterMappingProvider(StyleSocket styleSocket, ExpressionCharactersMappingParser parser) {
@@ -25,19 +25,19 @@ public class ExpressionCharacterMappingProvider {
 		this.parser = parser;
 	}
 
-	public Map<String, String> getReplacements() {
-		ensureReplacementsInitalized();
-		return replacements;
+	public Map<String, String> getMapping() {
+		ensureMappingInitalized();
+		return mapping;
 	}
 
-	private void ensureReplacementsInitalized() {
-		if (replacements == null){
+	private void ensureMappingInitalized() {
+		if (mapping == null){
 			Map<String, String> styles = styleSocket.getStyles(SELECTOR);
 			if (styles.containsKey(EMPIRIA_EXPRESSION_MAPPING)){
 				String replacementsRaw = styles.get(EMPIRIA_EXPRESSION_MAPPING);
-				replacements = parser.parse(replacementsRaw);
+				mapping = parser.parse(replacementsRaw);
 			} else {
-				replacements = Maps.newHashMap();
+				mapping = Maps.newHashMap();
 			}
 		}
 	}

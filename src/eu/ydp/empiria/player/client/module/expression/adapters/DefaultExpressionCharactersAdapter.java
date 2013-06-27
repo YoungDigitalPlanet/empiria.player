@@ -17,7 +17,7 @@ public class DefaultExpressionCharactersAdapter {
 	}
 
 	private String fixReplacements(String expression) {
-		Map<String, String> replacements = replacementsProvider.getReplacements();
+		Map<String, String> replacements = replacementsProvider.getMapping();
 		for (String from : replacements.keySet()){
 			String to = replacements.get(from);
 			expression = expression.replace(from, to);
