@@ -20,7 +20,9 @@ import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.StringUtils;
 
@@ -28,7 +30,6 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	private final StyleSocket styleSocket;
 
-	@Inject
 	private final SourcelistManager sourcelistManager;
 
 	private final ResponseSocket responseSocket;
@@ -45,21 +46,35 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-				updateResponse(true);
 				sourcelistManager.onUserValueChanged();
+				updateResponse(true);
 			}
 
 			@Override
 			public void onBlur(BlurEvent event) {
 				if (isMobileUserAgent()) {
+					sourcelistManager.onUserValueChanged();
 					updateResponse(true);
 				}
 			}
 		});
 
+		presenter.addDomHandlerOnObjectDrop(new GapDropHandler() {
+
+			@Override
+			public void onDrop(DragDataObject dragDataObject) {
+				String itemID = dragDataObject.getItemId();
+				String sourceModuleId = dragDataObject.getSourceId();
+				String targetModuleId = getModuleId();
+
+				sourcelistManager.dragEnd(itemID, sourceModuleId,
+						targetModuleId);
+			}
+		});
+		
 		sourcelistManager.registerModule(this);
 	}
-
+	
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		styles = styleSocket.getStyles(getModuleElement());
