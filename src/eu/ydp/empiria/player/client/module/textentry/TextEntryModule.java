@@ -6,6 +6,7 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Strings;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -39,12 +40,12 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	
 
 	@Inject
-	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,final SourcelistManager sourcelistManager) {
+	public TextEntryModule(TextEntryModulePresenter presenter, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.responseSocket = responseSocket;
 		this.sourcelistManager = sourcelistManager;
 
-		presenter = moduleFactory.getTextEntryModulePresenter(this);
+		this.presenter = presenter;
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -67,7 +68,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 			public void onDrop(DragDataObject dragDataObject) {
 				String itemID = dragDataObject.getItemId();
 				String sourceModuleId = dragDataObject.getSourceId();
-				String targetModuleId = getModuleId();
+				String targetModuleId = getIdentifier();
 
 				sourcelistManager.dragEnd(itemID, sourceModuleId,
 						targetModuleId);
@@ -77,6 +78,12 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	}
 	
 	
+	
+	@Override
+	public void reset() {
+		super.reset();
+		sourcelistManager.onUserValueChanged();
+	}
 	
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
@@ -183,7 +190,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	@Override
 	public void setDragItem(String itemId) {
-		String value = sourcelistManager.getValue(itemId, getModuleId());
+		String value = sourcelistManager.getValue(itemId, getIdentifier());
 		presenter.setText(value);
 	}
 

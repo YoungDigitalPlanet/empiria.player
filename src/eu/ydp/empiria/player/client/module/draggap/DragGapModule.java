@@ -48,7 +48,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 				setDragDataObject(dragDataObject);
 				String itemID = dragDataObject.getItemId();
 				String sourceModuleId = dragDataObject.getSourceId();
-				String targetModuleId = getModuleId();
+				String targetModuleId = getIdentifier();
 
 				sourcelistManager.dragEnd(itemID, sourceModuleId,
 						targetModuleId);
@@ -59,11 +59,17 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
 			@Override
 			public void onDragStart() {
-				sourcelistManager.dragStart(getModuleId());
+				sourcelistManager.dragStart(getIdentifier());
 			}
 		});
 
 		sourcelistManager.registerModule(this);
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		sourcelistManager.onUserValueChanged();
 	}
 
 	private void setDragDataObject(DragDataObject dragDataObject) {
@@ -92,7 +98,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
 	@Override
 	public void setDragItem(String itemId) {
-		String itemContent = sourcelistManager.getValue(itemId, getModuleId());
+		String itemContent = sourcelistManager.getValue(itemId, getIdentifier());
 		dragGapPresenter.setContent(itemContent);
 	}
 

@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.math;
 
+import javax.annotation.PostConstruct;
+
 import com.google.common.base.Optional;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -58,16 +60,19 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 	@Inject
 	private StyleNameConstants styleNames;
 
-@Inject
+	@Inject
 	private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
-	
+
 	private DroppableObject<TextBox> droppable;
 	private DropZoneGuardian dropZoneGuardian;
 
-
 	@Inject
-	public TextEntryGapModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
-		 droppable = dragDropHelper.enableDropForWidget(new TextBox());
+	private DragDropHelper dragDropHelper;
+	
+
+	@PostConstruct
+	public void postConstruct() {
+		droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		textBoxWidget = droppable.getDroppableWidget();
 		textBox = droppable.getOriginalWidget();
 		uiBinder.createAndBindUi(this);
@@ -82,7 +87,7 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 			@Override
 			public void onDrop(DropEvent event) {
 				Optional<DragDataObject> objectFromEvent = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
-				if(objectFromEvent.isPresent()){
+				if (objectFromEvent.isPresent()) {
 					dragGapDropHandler.onDrop(objectFromEvent.get());
 				}
 			}
@@ -196,5 +201,4 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 		dropZoneGuardian.unlockDropZone();
 	}
 
-	
 }

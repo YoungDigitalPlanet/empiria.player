@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
+import javax.annotation.PostConstruct;
+
 import com.google.common.base.Optional;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -57,11 +59,14 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 	@Inject
 	private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
 
-	private final DroppableObject<TextBox> droppable;
-	private final DropZoneGuardian dropZoneGuardian;
-
+	private DroppableObject<TextBox> droppable;
+	private DropZoneGuardian dropZoneGuardian;
+	
 	@Inject
-	public TextEntryModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
+	private DragDropHelper dragDropHelper;
+	
+	@PostConstruct
+	public void postConstruct(){
 		droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		textBoxWidget = droppable.getDroppableWidget();
 		textBox = droppable.getOriginalWidget();
@@ -69,6 +74,8 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 
 		dropZoneGuardian = new DropZoneGuardian(droppable, moduleWidget, styleNames);
 	}
+	
+	
 
 	@Override
 	public void addDomHandlerOnObjectDrop(final GapDropHandler dragGapDropHandler) {

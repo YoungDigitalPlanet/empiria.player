@@ -11,7 +11,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
@@ -31,11 +30,11 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket,final SourcelistManager sourcelistManager) {
+	public TextEntryGapModule(TextEntryGapModulePresenter presenter, StyleSocket styleSocket,final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.sourcelistManager = sourcelistManager;
 		
-		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
+		this.presenter = presenter;
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -57,7 +56,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 			public void onDrop(DragDataObject dragDataObject) {
 				String itemID = dragDataObject.getItemId();
 				String sourceModuleId = dragDataObject.getSourceId();;
-				String targetModuleId = getModuleId();
+				String targetModuleId = getIdentifier();
 
 				sourcelistManager.dragEnd(itemID, sourceModuleId,
 						targetModuleId);
@@ -67,6 +66,12 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 		sourcelistManager.registerModule(this);
 	}
 
+	@Override
+	public void reset() {
+		super.reset();
+		sourcelistManager.onUserValueChanged();
+	}
+	
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		installViewInPlaceholder(placeholders.get(0));
@@ -193,7 +198,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 
 	@Override
 	public void setDragItem(String itemId) {
-		String value = sourcelistManager.getValue(itemId, getModuleId());
+		String value = sourcelistManager.getValue(itemId, getIdentifier());
 		presenter.setText(value);
 	}
 
