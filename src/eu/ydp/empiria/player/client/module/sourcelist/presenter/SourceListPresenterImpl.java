@@ -77,10 +77,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	public void onDragEvent(DragDropEventTypes eventType, String itemId) {
 		switch (eventType) {
 		case DRAG_START:
-			sourcelistManager.dragStart(itemId);
-			break;
-		case DRAG_END:
-			sourcelistManager.dragEndSourcelist(itemId, moduleId);
+			sourcelistManager.dragStart(moduleId);
 			break;
 		case DRAG_CANCELL:
 			sourcelistManager.dragCanceled();

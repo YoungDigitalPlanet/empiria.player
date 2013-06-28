@@ -103,17 +103,13 @@ public class SourceListPresenterImplTest {
 		sourceListPresenterImpl.setModuleId(moduleId);
 
 		sourceListPresenterImpl.onDragEvent(DragDropEventTypes.DRAG_START, itemId);
-		verify(sourcelistManager).dragStart(eq(itemId));
+		verify(sourcelistManager).dragStart(eq(moduleId));
 
 		sourceListPresenterImpl.onDragEvent(DragDropEventTypes.DRAG_CANCELL, itemId);
 		verify(sourcelistManager).dragCanceled();
 
-		sourceListPresenterImpl.onDragEvent(DragDropEventTypes.DRAG_END, itemId);
-		verify(sourcelistManager).dragEndSourcelist(eq(itemId),eq(moduleId));
-
 		ArrayList<DragDropEventTypes> allEvents = Lists.newArrayList(DragDropEventTypes.values());
 		allEvents.remove(DragDropEventTypes.DRAG_START);
-		allEvents.remove(DragDropEventTypes.DRAG_END);
 		allEvents.remove(DragDropEventTypes.DRAG_CANCELL);
 
 		for(DragDropEventTypes event: allEvents){
