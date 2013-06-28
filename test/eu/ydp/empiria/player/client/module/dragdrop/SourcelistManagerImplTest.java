@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.dragdrop;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -49,6 +48,9 @@ public class SourcelistManagerImplTest {
 	private final String ITEM_1_ID = "item1";
 	private final String ITEM_2_ID = "item2";
 	private final String ITEM_3_ID = "item3";
+	
+	private final String SOURCELIST_1_ID = "SOURCELIST_1_ID";
+	private final String SOURCELIST_2_ID = "SOURCELIST_2_ID";
 
 	@Before
 	public void setUp() {
@@ -141,6 +143,7 @@ public class SourcelistManagerImplTest {
 		final String oldId = "item_3";
 
 		when(client3.getDragItemId()).thenReturn(oldId);
+		
 		// when
 		manager.dragEnd(newId, CLIENT_2_ID, CLIENT_3_ID);
 
@@ -152,13 +155,8 @@ public class SourcelistManagerImplTest {
 
 	@Test
 	public void shouldMoveItemFromSourcelist() {
-		// given
-		final String SOURCELIST_ID = "sourcelist1";
-		
-		when(model.containsClient(SOURCELIST_ID)).thenReturn(false);
-
 		// when
-		manager.dragEnd(ITEM_2_ID, SOURCELIST_ID, CLIENT_3_ID);
+		manager.dragEnd(ITEM_2_ID, SOURCELIST_2_ID, CLIENT_3_ID);
 
 		// then
 		verify(client3).setDragItem(ITEM_2_ID);
@@ -174,6 +172,17 @@ public class SourcelistManagerImplTest {
 		// then
 		verify(sourcelist2).restockItem(ITEM_2_ID);
 		verify(client2).removeDragItem();
+	}
+	
+	@Test
+	public void shouldMoveItemFromSourcelistToItself(){
+		//when 
+		manager.dragStart(SOURCELIST_2_ID);
+		manager.dragEndSourcelist(ITEM_2_ID, SOURCELIST_2_ID);
+		
+		//then
+		verify(sourcelist2).useItem(ITEM_2_ID);
+		verify(sourcelist2).restockItem(ITEM_2_ID);
 	}
 
 	@Test
@@ -207,13 +216,19 @@ public class SourcelistManagerImplTest {
 	}
 
 	private void prepareModel() {
+		when(sourcelist1.getIdentifier()).thenReturn(SOURCELIST_1_ID);
+		when(sourcelist2.getIdentifier()).thenReturn(SOURCELIST_2_ID);
 		when(client1.getDragItemId()).thenReturn(ITEM_1_ID);
 		when(client2.getDragItemId()).thenReturn(ITEM_2_ID);
 		when(client3.getDragItemId()).thenReturn(ITEM_3_ID);
-		when(model.containsClient(anyString())).thenReturn(true);
+		when(model.containsClient(CLIENT_1_ID)).thenReturn(true);
+		when(model.containsClient(CLIENT_2_ID)).thenReturn(true);
+		when(model.containsClient(CLIENT_3_ID)).thenReturn(true);
 		when(model.getClientById(CLIENT_1_ID)).thenReturn(client1);
 		when(model.getClientById(CLIENT_2_ID)).thenReturn(client2);
 		when(model.getClientById(CLIENT_3_ID)).thenReturn(client3);
+		when(model.getSourcelistById(SOURCELIST_1_ID)).thenReturn(sourcelist1);
+		when(model.getSourcelistById(SOURCELIST_2_ID)).thenReturn(sourcelist2);
 		when(model.getSourceLists()).thenReturn(
 				Sets.newHashSet(sourcelist1, sourcelist2));
 		when(model.getSourcelistByClientId(CLIENT_1_ID))

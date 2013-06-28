@@ -11,6 +11,7 @@ import com.google.common.collect.Multimap;
 public class SourcelistManagerModel {
 
 	private Map<String, SourcelistClient> clientIdCache = Maps.newHashMap();
+	private Map<String, Sourcelist> sourcelistIdCache = Maps.newHashMap();
 	private Map<SourcelistClient, Sourcelist> mapClientToSourcelist = Maps
 			.newHashMap();
 	private Multimap<Sourcelist, SourcelistClient> mapSourceListToClients = HashMultimap
@@ -24,6 +25,7 @@ public class SourcelistManagerModel {
 		}
 		mapClientToSourcelist.put(client, sourcelist);
 		clientIdCache.put(client.getIdentifier(), client);
+		sourcelistIdCache.put(sourcelist.getIdentifier(), sourcelist);
 		mapSourceListToClients.put(sourcelist, client);
 	}
 
@@ -51,5 +53,9 @@ public class SourcelistManagerModel {
 
 	public boolean containsClient(String clientId) {
 		return clientIdCache.containsKey(clientId);
+	}
+
+	public Sourcelist getSourcelistById(String sourcelistId) {
+		return sourcelistIdCache.get(sourcelistId);
 	}
 }

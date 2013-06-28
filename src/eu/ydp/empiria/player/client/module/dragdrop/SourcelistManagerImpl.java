@@ -40,8 +40,16 @@ public class SourcelistManagerImpl implements SourcelistManager {
 
 	@Override
 	public void dragStart(String sourceModuleId) {
-		Sourcelist sourcelist = model.getSourcelistByClientId(sourceModuleId);
+		Sourcelist sourcelist;
+		if (model.containsClient(sourceModuleId)) {
+			sourcelist = model.getSourcelistByClientId(sourceModuleId);
+		} else {
+			sourcelist = model.getSourcelistById(sourceModuleId);
+		}
+		lockOthers(sourcelist);
+	}
 
+	private void lockOthers(Sourcelist sourcelist) {
 		for (Sourcelist src : model.getSourceLists()) {
 			if (!sourcelist.equals(src)) {
 				Collection<SourcelistClient> clients = model.getClients(src);
@@ -85,12 +93,19 @@ public class SourcelistManagerImpl implements SourcelistManager {
 
 	@Override
 	public void dragEndSourcelist(String itemId, String sourceModuleId) {
-		SourcelistClient sourceClient = model.getClientById(sourceModuleId);
+		if (model.containsClient(sourceModuleId)) {
+			SourcelistClient sourceClient = model.getClientById(sourceModuleId);
+			Sourcelist sourcelist = model
+					.getSourcelistByClientId(sourceModuleId);
 
-		Sourcelist sourcelist = model.getSourcelistByClientId(sourceModuleId);
+			sourceClient.removeDragItem();
+			sourcelist.restockItem(itemId);
+		} else {
+			Sourcelist sourcelist = model.getSourcelistById(sourceModuleId);
 
-		sourceClient.removeDragItem();
-		sourcelist.restockItem(itemId);
+			sourcelist.useItem(itemId);
+			sourcelist.restockItem(itemId);
+		}
 
 		unlockClients();
 	}
@@ -118,7 +133,8 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	}
 
 	private List<String> clientsToItemsIds(Collection<SourcelistClient> clients) {
-		Collection<String> items = Collections2.transform(clients, clientToItemid);
+		Collection<String> items = Collections2.transform(clients,
+				clientToItemid);
 		return Lists.newArrayList(items);
 	}
 
