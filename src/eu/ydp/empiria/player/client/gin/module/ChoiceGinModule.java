@@ -19,5 +19,4 @@ public class ChoiceGinModule extends AbstractGinModule {
 		bind(ChoiceModuleStructure.class);
 		bind(InlineChoiceGapModulePresenter.class);
 	}
-
 }

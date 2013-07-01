@@ -13,25 +13,32 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class TextEntryGapModule extends MathGapBase implements MathGap {
+public class TextEntryGapModule extends MathGapBase implements MathGap, SourcelistClient {
+
+
+	private final SourcelistManager sourcelistManager;
 
 	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket) {
+	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket,final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
+		this.sourcelistManager = sourcelistManager;
 
 		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
 		PresenterHandler presenterHandler = new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
 				updateResponse(true);
+				sourcelistManager.onUserValueChanged();
 			}
 
 			@Override
@@ -42,6 +49,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap {
 			}
 		};
 		presenter.addPresenterHandler(presenterHandler);
+		sourcelistManager.registerModule(this);
 	}
 
 	@Override
@@ -154,12 +162,42 @@ public class TextEntryGapModule extends MathGapBase implements MathGap {
 	public String getValue() {
 		return presenter.getText();
 	}
-	
+
 	public void setUpGap() {
 		registerBindingContexts();
 	}
 
 	public void startGap() {
 		setBindingValues();
+	}
+
+	@Override
+	public String getDragItemId() {
+		return presenter.getText();
+	}
+
+	@Override
+	public void setDragItem(String itemId) {
+		String value = sourcelistManager.getValue(itemId, getModuleId());
+		presenter.setText(value);
+	}
+
+	@Override
+	public void removeDragItem() {
+		presenter.setText("");
+	}
+
+	private TextEntryGapModulePresenter getTextEntryGapPresenter() {
+		return (TextEntryGapModulePresenter)presenter;
+	}
+
+	@Override
+	public void lockDropZone() {
+		getTextEntryGapPresenter().lockDragZone();
+	}
+
+	@Override
+	public void unlockDropZone() {
+		getTextEntryGapPresenter().unlockDragZone();
 	}
 }

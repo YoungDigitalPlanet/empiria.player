@@ -1,69 +1,56 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-import com.google.gwt.event.dom.client.DragStartEvent;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.Lists;
+import com.google.gwt.event.dom.client.DragDropEventBase;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.inject.Binder;
-import com.google.inject.Module;
+import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.gin.factory.SourceListFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
+import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
+import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
-import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.EventScope;
 
-@SuppressWarnings("PMD")
-public class SourceListViewImplTest extends AbstractTestBaseWithoutAutoInjectorInit {
+@RunWith(MockitoJUnitRunner.class)
+public class SourceListViewImplTest {
 
-	final List<SourceListViewItem> itemMocks = new ArrayList<SourceListViewItem>();
+	@Mock
+	private SourceListPresenter sourceListPresenter;
 
-	public class SourceListModule implements Module {
-		@Override
-		public void configure(Binder binder) {
-			SourceListFactory factory = mock(SourceListFactory.class);
-			when(factory.getSourceListViewItem(Mockito.any(DragDataObject.class), Mockito.any(IModule.class))).thenAnswer(new Answer<SourceListViewItem>() {
-				@Override
-				public SourceListViewItem answer(InvocationOnMock invocation) throws Throwable {
-					SourceListViewItem mock = mock(SourceListViewItem.class);
+	@Mock private TouchReservationFactory touchReservationFactory;
+	@Mock private Provider<SourceListViewItem> sourceListViewItemProvider;
+	@Mock private SourceListViewItem viewItem;
 
-					itemMocks.add(mock);
-					return mock;
-				}
-			});
-			binder.bind(SourceListFactory.class).toInstance(factory);
-			binder.bind(TouchReservationFactory.class).toInstance(mock(TouchReservationFactory.class));
-		}
-	}
+	@InjectMocks
+	private SourceListViewImpl instance;
 
-	protected SourceListViewImpl instance;
-	protected IModule module;
-	private EventsBus eventbus;
+	private final List<String> allIds = Lists.newArrayList("a","b","c","d","e","f");
+
+	private FlowPanel items;
 
 	@BeforeClass
 	public static void disarm() {
@@ -75,75 +62,165 @@ public class SourceListViewImplTest extends AbstractTestBaseWithoutAutoInjectorI
 		GWTMockUtilities.restore();
 	}
 
+
 	@Before
 	public void before() {
-		setUp(new Class[0], new Class[0], new Class[] { EventsBus.class }, new SourceListModule());
-		instance = spy(injector.getInstance(SourceListViewImpl.class));
-		instance.items = mock(FlowPanel.class);
-		eventbus = injector.getInstance(EventsBus.class);
-		module = mock(IModule.class);
-		instance.setIModule(module);
-		Mockito.doNothing().when(instance).initWidget();
-		doReturn(new DragDataObjectImpl()).when(instance).createDragDataObject();
-		SourceListJAXBParserMock parser = new SourceListJAXBParserMock();
-		instance.setBean(parser.create().parse(SourceListJAXBParserMock.XML_WITHOUT_MOVE_ELEMENTS));
-	}
-
-	@Test
-	public void createAndBindUiTest() {
-		instance.createAndBindUi();
-		verify(eventbus).addHandlerToSource(Mockito.eq(DragDropEvent.getType(DragDropEventTypes.DRAG_END)), Mockito.eq(module),
-				Mockito.any(DragDropEventHandler.class), Mockito.any(EventScope.class));
-	}
-
-	@Test
-	public void testOnItemDragStarted() {
-		final DragDataObject dragDataObject = mock(DragDataObject.class);
-		final DragStartEvent startEvent = mock(DragStartEvent.class);
-		final SourceListViewItem item = mock(SourceListViewItem.class);
-		eventbus.addHandler(DragDropEvent.getType(DragDropEventTypes.DRAG_START), new DragDropEventHandler() {
-
+		when(sourceListViewItemProvider.get()).then(new Answer<SourceListViewItem>() {
 			@Override
-			public void onDragEvent(DragDropEvent event) {
-				assertEquals(dragDataObject, event.getDragDataObject());
-				assertEquals(module, event.getIModule());
+			public SourceListViewItem answer(InvocationOnMock invocation) throws Throwable {
+				return mock(SourceListViewItem.class);
 			}
 		});
-		instance.onItemDragStarted(dragDataObject, startEvent, item);
+		items = mock(FlowPanel.class);
+		instance.items = items;
 	}
 
-
-	@Test
-	public void findValueTest() {
-		instance.createAndBindUi();
-		assertTrue(instance.containsValue("psa"));
-		assertFalse(instance.containsValue("sss"));
-	}
-
-	@Test
-	public void hideItemTest() {
-		instance.createAndBindUi();
-		DragDropEvent event = new DragDropEvent(DragDropEventTypes.DRAG_END, null);
-		DragDataObject data = new DragDataObjectImpl();
-		data.setValue("psa");
-		event.setDragDataObject(data);
-		instance.onDragEvent(event);
-		verify(itemMocks.get(0)).hide();
+	private void addItems(){
+		for(String id : allIds){
+			instance.createItem(id, id);
+		}
 	}
 
 	@Test
-	public void restoreItemTest() {
-		instance.createAndBindUi();
-		DragDropEvent event = new DragDropEvent(DragDropEventTypes.DRAG_END, null);
-		DragDataObject data = new DragDataObjectImpl();
-		data.setValue("psa");
-		event.setDragDataObject(data);
-		instance.onDragEvent(event);
-		verify(itemMocks.get(0)).hide();
-		data.setPreviousValue("psa");
-		data.setValue("kota");
-		instance.onDragEvent(event);
-		verify(itemMocks.get(0)).show();
+	public void testDisableItems() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		addItems();
+		instance.disableItems(true);
+		for (SourceListViewItem item : itemIdToItemCollection.values()) {
+			verify(item).setDisableDrag(eq(true));
+		}
+
+		instance.disableItems(false);
+		for (SourceListViewItem item : itemIdToItemCollection.values()) {
+			verify(item).setDisableDrag(eq(false));
+		}
+	}
+
+	@Test
+	public void testOnDragEventDragStart() throws Exception {
+		String itemContent = "itemContent";
+		String itemId = "item";
+		doReturn(viewItem).when(sourceListViewItemProvider).get();
+		SourceListPresenter sourceListPresenter = mock(SourceListPresenter.class);
+		String json = "{}";
+		DragDataObject dataObject = mock(DragDataObject.class);
+		doReturn(json).when(dataObject).toJSON();
+		when(sourceListPresenter.getDragDataObject(anyString())).thenReturn(dataObject);
+		DragDropEventBase event = mock(DragDropEventBase.class);
+
+		instance.createItem(itemId, itemContent);
+		instance.setSourceListPresenter(sourceListPresenter);
+		instance.onDragEvent(DragDropEventTypes.DRAG_START, viewItem, event);
+
+		verify(event).setData(eq("json"), eq(json));
+		verify(sourceListPresenter).onDragEvent(eq(DragDropEventTypes.DRAG_START), eq(itemId));
+
+	}
+
+	@Test
+	public void testOnDragEvent() throws Exception {
+		addItems();
+		DragDropEventBase event = mock(DragDropEventBase.class);
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
+
+		instance.setSourceListPresenter(sourceListPresenter);
+
+		for (Map.Entry<String, SourceListViewItem> item : itemIdToItemCollection.entrySet()) {
+			for (DragDropEventTypes type : DragDropEventTypes.values()) {
+				if (type != DragDropEventTypes.DRAG_START) {
+					instance.onDragEvent(type, item.getValue(), event);
+					verify(event, times(0)).setData(eq("json"), anyString());
+					verify(sourceListPresenter).onDragEvent(eq(type), eq(item.getKey()));
+				}
+			}
+		}
+	}
+
+	@Test
+	public void testGetItemValue() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		addItems();
+
+		for(String id: allIds){
+			instance.getItemValue(id);
+		}
+
+		for (SourceListViewItem item : itemIdToItemCollection.values()) {
+			verify(item).getItemContent();
+		}
+	}
+
+	@Test
+	public void testCreateItem() throws Exception {
+		String itemContent = "itemContent";
+		String itemId = "item";
+		doReturn(viewItem).when(sourceListViewItemProvider).get();
+
+		instance.createItem(itemId, itemContent);
+
+		verify(sourceListViewItemProvider).get();
+		verify(items).add(eq(sourceListViewItemProvider.get()));
+		verify(sourceListViewItemProvider.get()).setSourceListView(eq(instance));
+		verify(sourceListViewItemProvider.get()).createAndBindUi(eq(itemContent));
+	}
+
+	@Test
+	public void testHideItem() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		addItems();
+		instance.hideItem("a");
+		SourceListViewItem viewItem = itemIdToItemCollection.get("a");
+		verify(viewItem).hide();
+		allIds.remove("a");
+		for(String id:  allIds){
+			viewItem = itemIdToItemCollection.get(id);
+			verify(viewItem,times(0)).hide();
+		}
+	}
+
+	@Test
+	public void testHideItemIdNotPresent() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		addItems();
+		instance.hideItem("aa");
+
+		for(String id:  allIds){
+			viewItem = itemIdToItemCollection.get(id);
+			verify(viewItem,times(0)).hide();
+		}
+	}
+
+	@Test
+	public void testShowItem() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		addItems();
+		instance.showItem("a");
+		SourceListViewItem viewItem = itemIdToItemCollection.get("a");
+		verify(viewItem).show();
+		allIds.remove("a");
+		for(String id:  allIds){
+			viewItem = itemIdToItemCollection.get(id);
+			verify(viewItem,times(0)).show();
+		}
+	}
+
+	@Test
+	public void testShowItemIdNotPresent() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		addItems();
+		instance.showItem("aa");
+		for(String id:  allIds){
+			viewItem = itemIdToItemCollection.get(id);
+			verify(viewItem,times(0)).show();
+		}
 	}
 
 }
