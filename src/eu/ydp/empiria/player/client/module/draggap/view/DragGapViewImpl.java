@@ -48,6 +48,7 @@ public class DragGapViewImpl implements DragGapView {
 		uiBinder.createAndBindUi(this);
 		addDomHandlerOnObjectDrop();
 		addDomHandlerOnDragStart();
+		container.setStyleName(styleNameConstants.QP_DRAG_GAP_DEFAULT());
 	}
 
 	@Override
