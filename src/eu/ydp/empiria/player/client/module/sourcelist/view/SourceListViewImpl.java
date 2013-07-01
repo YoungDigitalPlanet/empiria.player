@@ -104,8 +104,31 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	}
 
 	@Override
+	public void lockItemForDragDrop(String itemId) {
+		if(itemIdToItemCollection.containsKey(itemId)) {
+			itemIdToItemCollection.get(itemId).lockForDragDrop();
+		}
+	}
+
+	@Override
+	public void unlockItemForDragDrop(String itemId) {
+		if(itemIdToItemCollection.containsKey(itemId)) {
+			itemIdToItemCollection.get(itemId).unlockForDragDrop();
+		}
+	}
+
+	@Override
 	public void setSourceListPresenter(SourceListPresenter sourceListPresenter) {
 		this.sourceListPresenter = sourceListPresenter;
 	}
 
+	@Override
+	public void lockForDragDrop() {
+		sourceListDropZone.setDisableDrop(true);
+	}
+
+	@Override
+	public void unlockForDragDrop() {
+		sourceListDropZone.setDisableDrop(false);
+	}
 }

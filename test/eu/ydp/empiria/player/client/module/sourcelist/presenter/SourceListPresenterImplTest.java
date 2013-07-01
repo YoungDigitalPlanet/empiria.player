@@ -159,4 +159,33 @@ public class SourceListPresenterImplTest {
 		verify(sourcelistManager).dragEndSourcelist(eq(itemId), eq(moduleId));
 	}
 
+	@Test
+	public void testLockSourceList() throws Exception {
+		List<String> allItems = Lists.newArrayList("a","b","c","d","e","f");
+		SourceListBean bean = mock(SourceListBean.class);
+		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
+		sourceListPresenterImpl.setBean(bean);
+
+		//when
+		sourceListPresenterImpl.lockSourceList();
+		verify(view).lockForDragDrop();
+		for(String id : allItems){
+			verify(view).lockItemForDragDrop(eq(id));
+		}
+	}
+
+	@Test
+	public void testUnlockSourceList() throws Exception {
+		List<String> allItems = Lists.newArrayList("a","b","c","d","e","f");
+		SourceListBean bean = mock(SourceListBean.class);
+		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
+		sourceListPresenterImpl.setBean(bean);
+
+		sourceListPresenterImpl.unlockSourceList();
+		for(String id : allItems){
+			verify(view).unlockItemForDragDrop(eq(id));
+		}
+
+	}
+
 }

@@ -118,6 +118,23 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	@Override
 	public void onDropEvent(String itemId) {
 		sourcelistManager.dragEndSourcelist(itemId, moduleId);
+	}
+
+	@Override
+	public void lockSourceList() {
+		view.lockForDragDrop();
+		for(String itemId: getAllItemsId()){
+			view.lockItemForDragDrop(itemId);
+		}
+
+	}
+
+	@Override
+	public void unlockSourceList() {
+		view.unlockForDragDrop();
+		for(String itemId: getAllItemsId()){
+			view.unlockItemForDragDrop(itemId);
+		}
 
 	}
 

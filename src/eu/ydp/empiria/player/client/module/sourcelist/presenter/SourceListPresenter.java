@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
+import eu.ydp.empiria.player.client.module.sourcelist.SourceListLocking;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
-public interface SourceListPresenter extends IsWidget {
+public interface SourceListPresenter extends IsWidget, SourceListLocking {
 	void setBean(SourceListBean bean);
 	void createAndBindUi();
 	void onDragEvent(DragDropEventTypes eventType, String itemId);
@@ -19,5 +20,6 @@ public interface SourceListPresenter extends IsWidget {
 	void useAndRestockItems(List<String> itemsIds);
 	DragDataObject getDragDataObject(String itemId);
 	String getItemValue(String itemId);
+
 
 }

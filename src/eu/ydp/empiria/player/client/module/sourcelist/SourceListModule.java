@@ -66,4 +66,16 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 	public String getIdentifier() {
 		return moduleUniqueId;
 	}
+
+	@Override
+	public void lockSourceList() {
+		presenter.lockSourceList();
+
+	}
+
+	@Override
+	public void unlockSourceList() {
+		presenter.unlockSourceList();
+
+	}
 }
