@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -28,6 +29,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Inject
 	private DragGapStructure dragGapStructure;
 
+	@Inject @PageScoped
 	private SourcelistManager sourcelistManager;
 
 	private Optional<DragDataObject> dragDataObjectOptional;

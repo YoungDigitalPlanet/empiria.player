@@ -11,6 +11,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
@@ -30,7 +31,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryGapModulePresenter presenter, StyleSocket styleSocket,final SourcelistManager sourcelistManager) {
+	public TextEntryGapModule(TextEntryGapModulePresenter presenter, StyleSocket styleSocket,@PageScoped final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.sourcelistManager = sourcelistManager;
 		

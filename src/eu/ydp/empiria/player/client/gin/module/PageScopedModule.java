@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
+import com.google.inject.Key;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.item.AnswerEvaluationSupplierProvider;
@@ -22,7 +24,9 @@ import eu.ydp.empiria.player.client.gin.providers.ModulesVariablesProcessorPageS
 import eu.ydp.empiria.player.client.gin.providers.ResponseSocketPageScopeProvider;
 import eu.ydp.empiria.player.client.gin.providers.VariableProcessingAdapterPageScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScopedProvider;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class PageScopedModule extends AbstractGinModule {
@@ -57,7 +61,16 @@ public class PageScopedModule extends AbstractGinModule {
 		bind(ItemXMLWrapper.class).annotatedWith(PageScoped.class).toProvider(PageScopedItemXMLWrapperProvider.class);	
 
 		bind(AnswerEvaluationSupplierProvider.class).in(Singleton.class);
-		bind(AnswerEvaluationSupplier.class).annotatedWith(PageScoped.class).toProvider(AnswerEvaluationSupplierProvider.class);	
+		bind(AnswerEvaluationSupplier.class).annotatedWith(PageScoped.class).toProvider(AnswerEvaluationSupplierProvider.class);
+		
+		bindPageScoped(SourcelistManager.class, new TypeLiteral<PageScopedProvider<SourcelistManager>>(){});
+	}
+	
+	private <T> void bindPageScoped(Class<T> clazz, TypeLiteral<PageScopedProvider<T>> typeLiteral){
+		bind(typeLiteral).in(Singleton.class);
+		bind(clazz)
+			.annotatedWith(PageScoped.class)
+			.toProvider(Key.get(typeLiteral));
 	}
 
 }

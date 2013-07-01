@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
@@ -19,7 +20,7 @@ import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Inject private SourceListView view;
-	@Inject private SourcelistManager sourcelistManager;
+	@Inject @PageScoped private SourcelistManager sourcelistManager;
 	@Inject private OverlayTypesParser overlayTypesParser;
 
 	private SourceListBean bean;
