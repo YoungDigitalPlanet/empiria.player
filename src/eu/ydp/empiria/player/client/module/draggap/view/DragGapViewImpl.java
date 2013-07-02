@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.draggap.view;
 
 import com.google.common.base.Optional;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.DragEndEvent;
+import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.event.dom.client.DropEvent;
@@ -38,10 +40,12 @@ public class DragGapViewImpl implements DragGapView {
 	private Optional<DraggableObject<FlowPanel>> optionalDraggable = Optional.absent();
 	private Optional<DragGapDropHandler> dragGapDropHandlerOptional = Optional.absent();
 	private Optional<DragGapStartDragHandler> dragStartHandlerOptional = Optional.absent();
-
+	private DraggableObject<FlowPanel> draggableObject;
+	private DragEndHandler dragEndHandler;
 
 	@Inject
-	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
+	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants,
+			DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
 		this.dragDropHelper = dragDropHelper;
 		this.styleNameConstants = styleNameConstants;
 		this.dragDataObjectFromEventExtractor = dragDataObjectFromEventExtractor;
@@ -63,17 +67,37 @@ public class DragGapViewImpl implements DragGapView {
 		contentWidget = new HTMLPanel(content);
 		itemWrapper = new FlowPanel();
 		itemWrapper.add(contentWidget);
-		DraggableObject<FlowPanel> draggableObject = dragDropHelper.enableDragForWidget(itemWrapper);
+		draggableObject = dragDropHelper.enableDragForWidget(itemWrapper);
 		Widget draggableWidget = draggableObject.getDraggableWidget();
 		container.add(draggableWidget);
 		optionalDraggable = Optional.of(draggableObject);
-		
+
 		draggableObject.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
 				event.getDataTransfer().setDragImage(itemWrapper.getElement(), 0, 0);
 			}
 		});
+
+		draggableObject.addDragEndHandler(new DragEndHandler() {
+			
+			@Override
+			public void onDragEnd(DragEndEvent event) {
+				removeDraggableStyleFromItem();
+				dragEndHandler.onDragEnd(event);
+			}
+			
+		});
+	}
+
+	public void setDragEndHandler(final DragEndHandler dragEndHandler) {
+		this.dragEndHandler = dragEndHandler;
+	}
+
+	private void removeDraggableStyleFromItem() {
+		if (itemWrapper != null) {
+			itemWrapper.getElement().removeClassName(styleNameConstants.QP_DRAGGED_DRAG());
+		}
 	}
 
 	@Override
@@ -153,7 +177,7 @@ public class DragGapViewImpl implements DragGapView {
 		container.addDomHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
-				if(dragStartHandlerOptional.isPresent()){
+				if (dragStartHandlerOptional.isPresent()) {
 					dragStartHandlerOptional.get().onDragStart(event);
 				}
 			}

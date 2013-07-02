@@ -46,10 +46,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(TextEntryModulePresenter.class).toInstance(mock(TextEntryModulePresenter.class));
-			TextEntryModuleFactory factory = mock(TextEntryModuleFactory.class);
 			TextEntryModulePresenter modulePresenter = mock(TextEntryModulePresenter.class);
-			when(factory.getTextEntryModulePresenter(any(IModule.class))).thenReturn(modulePresenter);
-			binder.bind(TextEntryModuleFactory.class).toInstance(factory);
 			binder.bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
 			binder.bind(ExpressionReplacementsParser.class).toInstance(mock(ExpressionReplacementsParser.class));
 		}
@@ -136,7 +133,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 	private class TextEntryModuleMock extends TextEntryModule {
 
 		public TextEntryModuleMock() {
-			super(	injector.getInstance(TextEntryModuleFactory.class),
+			super(	injector.getInstance(TextEntryModulePresenter.class),
 					injector.getInstance(StyleSocket.class),
 					injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class)),injector.getInstance(SourcelistManager.class));
 		}

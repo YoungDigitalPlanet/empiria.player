@@ -45,15 +45,6 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(TextEntryGapModulePresenter.class).toInstance(mock(TextEntryGapModulePresenter.class));
-			TextEntryModuleFactory factory = mock(TextEntryModuleFactory.class);
-			binder.bind(TextEntryModuleFactory.class).toInstance(factory);
-
-			when(factory.getTextEntryGapModulePresenter(Mockito.any(IModule.class))).thenAnswer(new Answer<TextEntryGapModulePresenter>() {
-				@Override
-				public TextEntryGapModulePresenter answer(InvocationOnMock invocation) throws Throwable {
-					return mock(TextEntryGapModulePresenter.class);
-				}
-			});
 		}
 	}
 
@@ -158,7 +149,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		private boolean evaluatedResponse;
 
 		public TextEntryGapModuleMock(Map<String, String> styles) {
-			super(injector.getInstance(TextEntryModuleFactory.class), injector.getInstance(StyleSocket.class),injector.getInstance(SourcelistManager.class));
+			super(injector.getInstance(TextEntryGapModulePresenter.class), injector.getInstance(StyleSocket.class),injector.getInstance(SourcelistManager.class));
 			this.mathStyles = styles;
 		}
 

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.draggap.presenter;
 
 import java.util.List;
 
+import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -51,7 +52,11 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 		dropZoneGuardian = new DropZoneGuardian(droppable, view.asWidget(), styleNames);
 	}
-
+	
+	public void setDragEndHandler(DragEndHandler dragEndHandler){
+		view.setDragEndHandler(dragEndHandler);
+	}
+	
 	@Override
 	public void bindView() {
 		view.updateStyle(UserAnswerType.DEFAULT);
