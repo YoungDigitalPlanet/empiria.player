@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.draggap;
 
+import com.google.gwt.event.dom.client.DragEndEvent;
+import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
@@ -77,6 +79,14 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 			}
 		});
 
+		dragGapPresenter.setDragEndHandler(new DragEndHandler() {
+			
+			@Override
+			public void onDragEnd(DragEndEvent event) {
+				sourcelistManager.dragFinished();
+			}
+		});
+		
 		sourcelistManager.registerModule(this);
 	}
 	

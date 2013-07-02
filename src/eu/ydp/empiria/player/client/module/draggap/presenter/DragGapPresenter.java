@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.draggap.presenter;
 
+import com.google.gwt.event.dom.client.DragEndHandler;
+
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
@@ -13,4 +15,5 @@ public interface DragGapPresenter extends ActivityPresenter<DragGapModuleModel, 
 	void unlockDropZone();
 	void setDropHandler(DragGapDropHandler dragGapDropHandler);
 	void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler);
+	void setDragEndHandler(DragEndHandler dragEndHandler);
 }
