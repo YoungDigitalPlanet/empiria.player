@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
@@ -23,6 +24,7 @@ import eu.ydp.gwtutil.client.StringUtils;
 public class DragGapModule extends AbstractInteractionModule<DragGapModule, DragGapModuleModel, DragGapBean> implements SourcelistClient {
 
 	@Inject
+	@ModuleScoped
 	private DragGapModuleModel dragGapModuleModel;
 
 	@Inject
@@ -81,8 +83,8 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	public void reset() {
 		super.reset();
-		sourcelistManager.onUserValueChanged();
 		itemId = StringUtils.EMPTY_STRING;
+		sourcelistManager.onUserValueChanged();
 	}
 
 	@Override

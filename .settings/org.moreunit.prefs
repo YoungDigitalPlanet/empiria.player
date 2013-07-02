@@ -1,6 +1,5 @@
 eclipse.preferences.version=1
-org.moreunit.prefixes=
-org.moreunit.suffixes=JUnitTest
-org.moreunit.test_type=junit4
-org.moreunit.unitsourcefolder=empiria.player_DVPRefactor\:src\:empiria.player_DVPRefactor\:test
+org.moreunit.preferences.version=2
+org.moreunit.testClassNameTemplate=${srcFile}(Test|JUnitTest)
+org.moreunit.unitsourcefolder=empiria.player\:src\:empiria.player\:test
 org.moreunit.useprojectsettings=true

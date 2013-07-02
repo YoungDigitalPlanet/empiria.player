@@ -89,21 +89,21 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		List<Boolean> evaluatedAnswers = answerEvaluationSupplier
 				.evaluateAnswer(model.getResponse());
 
-		if (evaluatedAnswers.isEmpty()){
-			view.updateStyle(UserAnswerType.NONE);
-		}else{
-			Boolean isAnswerCorrect = evaluatedAnswers.get(0);
-
 			if (mode == MarkAnswersMode.MARK) {
-				if (type == MarkAnswersType.CORRECT && isAnswerCorrect) {
-					view.updateStyle(UserAnswerType.CORRECT);
-				} else if (type == MarkAnswersType.WRONG && !isAnswerCorrect) {
-					view.updateStyle(UserAnswerType.WRONG);
+				if (evaluatedAnswers.isEmpty()){
+					view.updateStyle(UserAnswerType.NONE);
+				} else {
+					Boolean isAnswerCorrect = evaluatedAnswers.get(0);
+					if (type == MarkAnswersType.CORRECT && isAnswerCorrect) {
+						view.updateStyle(UserAnswerType.CORRECT);
+					} else if (type == MarkAnswersType.WRONG && !isAnswerCorrect) {
+						view.updateStyle(UserAnswerType.WRONG);
+					}
 				}
+				
 			} else if (mode == MarkAnswersMode.UNMARK) {
 				view.updateStyle(UserAnswerType.DEFAULT);
 			}
-		}
 	}
 
 	@Override
@@ -116,8 +116,13 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		} else {
 			return;
 		}
-		String answerToSet = answers.get(0);
-		view.setContent(answerToSet);
+		
+		if(answers.size() > 0){
+			String answerToSet = answers.get(0);
+			view.setContent(answerToSet);
+		} else {
+			view.removeContent();
+		}
 	}
 
 	@Override
@@ -128,11 +133,13 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	@Override
 	public void setContent(String itemContent) {
 		view.setContent(itemContent);
+		model.addAnswer(itemContent);
 	}
 
 	@Override
 	public void removeContent() {
 		view.removeContent();
+		model.reset();
 	}
 
 	@Override
