@@ -13,7 +13,7 @@ public interface SourceListPresenter extends IsWidget, SourceListLocking {
 	void setBean(SourceListBean bean);
 	void createAndBindUi();
 	void onDragEvent(DragDropEventTypes eventType, String itemId);
-	void onDropEvent(String itemId);
+	void onDropEvent(String itemId, String sourceModuleId);
 	void setModuleId(String moduleId);
 	void useItem(String itemId);
 	void restockItem(String itemId);

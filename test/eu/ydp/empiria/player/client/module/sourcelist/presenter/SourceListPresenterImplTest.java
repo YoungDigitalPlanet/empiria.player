@@ -154,8 +154,7 @@ public class SourceListPresenterImplTest {
 	public void testOnDropEvent() throws Exception {
 		String itemId = "id";
 		String moduleId = "mId";
-		sourceListPresenterImpl.setModuleId(moduleId);
-		sourceListPresenterImpl.onDropEvent(itemId);
+		sourceListPresenterImpl.onDropEvent(itemId,moduleId);
 		verify(sourcelistManager).dragEndSourcelist(eq(itemId), eq(moduleId));
 	}
 

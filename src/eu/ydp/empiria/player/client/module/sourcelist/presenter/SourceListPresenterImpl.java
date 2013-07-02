@@ -116,8 +116,8 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	}
 
 	@Override
-	public void onDropEvent(String itemId) {
-		sourcelistManager.dragEndSourcelist(itemId, moduleId);
+	public void onDropEvent(String itemId,String sourceModuleId) {
+		sourcelistManager.dragEndSourcelist(itemId, sourceModuleId);
 	}
 
 	@Override
