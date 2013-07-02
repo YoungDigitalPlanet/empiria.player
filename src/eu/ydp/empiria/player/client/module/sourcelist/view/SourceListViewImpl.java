@@ -1,152 +1,134 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
-import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.DRAG_END;
-import static eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes.DRAG_START;
-
-import java.util.List;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.DragStartEvent;
+import com.google.gwt.event.dom.client.DragDropEventBase;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.gin.factory.SourceListFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
-import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
-import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
+import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
+import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
-import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEvent;
-import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventHandler;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
+import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
+import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
-public class SourceListViewImpl extends Composite implements SourceListView, DragDropEventHandler {
+public class SourceListViewImpl extends Composite implements SourceListView {
 
 	protected static SourceListViewImplUiBinder uiBinder = GWT.create(SourceListViewImplUiBinder.class);
 
 	interface SourceListViewImplUiBinder extends UiBinder<Widget, SourceListViewImpl> {
 	}
 
-	@Inject
-	private EventsBus eventsBus;
+	@Inject private TouchReservationFactory touchReservationFactory;
+	@Inject private Provider<SourceListViewItem> sourceListViewItemProvider;
+	@Inject private DragDropHelper dragDropHelper;
+	@Inject private DragDataObjectFromEventExtractor objectFromEventExtractor;
+	@UiField(provided=true) FlowPanel items;
 
-	@Inject
-	private PageScopeFactory pageScopeFactory;
+	private final BiMap<String,SourceListViewItem> itemIdToItemCollection = HashBiMap.create();
+	private SourceListPresenter sourceListPresenter;
+	private DroppableObject<FlowPanel> sourceListDropZone;
 
-	@Inject
-	private OverlayTypesParser overlayTypesParser;
-
-	@Inject
-	private SourceListFactory sourceListFactory;
-
-	@Inject
-	private TouchReservationFactory touchReservationFactory;
-
-	@UiField
-	FlowPanel items;
-
-	private SourceListBean bean;
-
-	private IModule parentModule;
-
-	private final BiMap<SourceListViewItem, String> itemsCollection = HashBiMap.create();
-	private final BiMap<SourceListViewItem, String> hiddenItems = HashBiMap.create();
-
-	@Override
-	public void setBean(SourceListBean bean) {
-		this.bean = bean;
-	}
-
-	@Override
-	public void setIModule(IModule module) {
-		this.parentModule = module;
-	}
-
-	private SourceListViewItem getItem(DragDataObject dragDataObject) {
-		SourceListViewItem item = sourceListFactory.getSourceListViewItem(dragDataObject, parentModule);
+	private SourceListViewItem getItem(String itemContent) {
+		SourceListViewItem item = sourceListViewItemProvider.get();
 		item.setSourceListView(this);
-		item.createAndBindUi();
+		item.createAndBindUi(itemContent);
 		return item;
-	}
-
-	protected DragDataObject createDragDataObject() {
-		return (NativeDragDataObject) overlayTypesParser.get();
-	}
-
-	protected void initWidget() {
-		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override
 	public void createAndBindUi() {
-		initWidget();
+		sourceListDropZone = dragDropHelper.enableDropForWidget(new FlowPanel(), false);
+		items = (FlowPanel) sourceListDropZone.getDroppableWidget();
+		initWidget(uiBinder.createAndBindUi(this));
 		touchReservationFactory.addTouchReservationHandler(items);
-		List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
-		for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
-			DragDataObject obj = createDragDataObject();
-			obj.setValue(simpleSourceListItemBean.getValue());
-			SourceListViewItem item = getItem(obj);
-			items.add(item);
-			itemsCollection.put(item, obj.getValue());
-		}
-
-		eventsBus.addHandlerToSource(DragDropEvent.getType(DRAG_END), parentModule, this, pageScopeFactory.getCurrentPageScope());
+		addDropHandler();
 	}
 
-	private void disableItems(boolean disabled) {
-		for (SourceListViewItem item : itemsCollection.keySet()) {
+	private void addDropHandler(){
+		SourceListViewDropHandler dropHandler = new SourceListViewDropHandler(objectFromEventExtractor, sourceListPresenter);
+		sourceListDropZone.addDropHandler(dropHandler);
+	}
+
+	public void disableItems(boolean disabled) {
+		for (SourceListViewItem item : itemIdToItemCollection.values()) {
 			item.setDisableDrag(disabled);
 		}
 	}
 
-	public void onMaybeDragCanceled() {
-		disableItems(false);
-	}
-
-	public void onItemDragStarted(DragDataObject dragDataObject, DragStartEvent startEvent, SourceListViewItem item) {
-		disableItems(true);
-		DragDropEvent event = new DragDropEvent(DRAG_START, this);
-		event.setDragDataObject(dragDataObject);
-		event.setIModule(parentModule);
-		eventsBus.fireEventFromSource(event, parentModule, pageScopeFactory.getCurrentPageScope());
-	}
-
-	private void checkSourceList(DragDataObject dragDataObject) {
-		disableItems(false);
-		if (hiddenItems.containsValue(dragDataObject.getPreviousValue())) {
-			BiMap<String, SourceListViewItem> inverse = hiddenItems.inverse();
-			SourceListViewItem sourceListViewItem = inverse.get(dragDataObject.getPreviousValue());
-			sourceListViewItem.show();
-			inverse.remove(dragDataObject.getPreviousValue());
+	public void onDragEvent(DragDropEventTypes dropEventType, SourceListViewItem item, DragDropEventBase<?> dragEvent) {
+		String itemId = itemIdToItemCollection.inverse().get(item);
+		if(dropEventType == DragDropEventTypes.DRAG_START){
+			setDataOnNativeEvent(dragEvent, itemId);
 		}
-		if (itemsCollection.containsValue(dragDataObject.getValue())) {
-			SourceListViewItem sourceListViewItem = itemsCollection.inverse().get(dragDataObject.getValue());
-			if (!bean.isMoveElements()) {
-				sourceListViewItem.hide();
-				hiddenItems.put(sourceListViewItem, dragDataObject.getValue());
-			}
+		sourceListPresenter.onDragEvent(dropEventType, itemId);
+	}
+
+	private void setDataOnNativeEvent(DragDropEventBase<?> dragEvent, String itemId) {
+		DragDataObject dataObject = sourceListPresenter.getDragDataObject(itemId);
+		dragEvent.setData("json", dataObject.toJSON());
+	}
+
+	@Override
+	public String getItemValue(String itemId) {
+		return itemIdToItemCollection.get(itemId).getItemContent();
+	}
+
+	@Override
+	public void createItem(String itemId, String itemContent) {
+		SourceListViewItem item = getItem(itemContent);
+		items.add(item);
+		itemIdToItemCollection.put(itemId, item);
+	}
+
+	@Override
+	public void hideItem(String itemId) {
+		if(itemIdToItemCollection.containsKey(itemId)) {
+			itemIdToItemCollection.get(itemId).hide();
 		}
 	}
 
 	@Override
-	public boolean containsValue(String value) {
-		return itemsCollection.containsValue(value);
-	}
-
-	@Override
-	public void onDragEvent(DragDropEvent event) {
-		if (event.getType() == DRAG_END) {
-			checkSourceList(event.getDragDataObject());
+	public void showItem(String itemId) {
+		if(itemIdToItemCollection.containsKey(itemId)) {
+			itemIdToItemCollection.get(itemId).show();
 		}
 	}
 
+	@Override
+	public void lockItemForDragDrop(String itemId) {
+		if(itemIdToItemCollection.containsKey(itemId)) {
+			itemIdToItemCollection.get(itemId).lockForDragDrop();
+		}
+	}
+
+	@Override
+	public void unlockItemForDragDrop(String itemId) {
+		if(itemIdToItemCollection.containsKey(itemId)) {
+			itemIdToItemCollection.get(itemId).unlockForDragDrop();
+		}
+	}
+
+	@Override
+	public void setSourceListPresenter(SourceListPresenter sourceListPresenter) {
+		this.sourceListPresenter = sourceListPresenter;
+	}
+
+	@Override
+	public void lockForDragDrop() {
+		sourceListDropZone.setDisableDrop(true);
+	}
+
+	@Override
+	public void unlockForDragDrop() {
+		sourceListDropZone.setDisableDrop(false);
+	}
 }

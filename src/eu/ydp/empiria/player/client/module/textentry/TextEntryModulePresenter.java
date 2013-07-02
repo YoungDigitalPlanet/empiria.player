@@ -1,7 +1,12 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
+import javax.annotation.PostConstruct;
+
+import com.google.common.base.Optional;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.DropEvent;
+import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -13,11 +18,15 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
+import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
@@ -43,20 +52,44 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 
 	@Inject
 	private TextBoxChangeHandler textBoxChangeHandler;
-	
+
 	@Inject
 	private TextBoxExpressionReplacer expressionReplacer;
-
-	private final DroppableObject<TextBox> droppable;
-
+	
 	@Inject
-	public TextEntryModulePresenter(@Assisted("imodule") IModule parentModule, DragDropHelper dragDropHelper) {
-		droppable = dragDropHelper.enableDropForWidget(new TextBox(), parentModule);
+	private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
+
+	private DroppableObject<TextBox> droppable;
+	private DropZoneGuardian dropZoneGuardian;
+	
+	@Inject
+	private DragDropHelper dragDropHelper;
+	
+	@PostConstruct
+	public void postConstruct(){
+		droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		textBoxWidget = droppable.getDroppableWidget();
 		textBox = droppable.getOriginalWidget();
 		uiBinder.createAndBindUi(this);
-	}
 
+		dropZoneGuardian = new DropZoneGuardian(droppable, moduleWidget, styleNames);
+	}
+	
+	
+
+	@Override
+	public void addDomHandlerOnObjectDrop(final GapDropHandler dragGapDropHandler) {
+		moduleWidget.addDomHandler(new DropHandler() {
+			@Override
+			public void onDrop(DropEvent event) {
+				Optional<DragDataObject> objectFromEvent = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
+				if(objectFromEvent.isPresent()){
+					dragGapDropHandler.onDrop(objectFromEvent.get());
+				}
+			}
+		}, DropEvent.getType());
+	}
+	
 	@Override
 	public void setWidth(double value, Unit unit) {
 		textBox.setWidth(value + unit.getType());
@@ -98,6 +131,7 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 		textBox.setValue(text, true);
 	}
 
+
 	@Override
 	public String getText() {
 		return textBox.getText();
@@ -111,7 +145,7 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 	@Override
 	public void installViewInContainer(HasWidgets container) {
 		container.add(moduleWidget);
-		
+
 		moduleWidget.setStyleName( styleNames.QP_TEXTENTRY(), true );
 	}
 
@@ -158,5 +192,13 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 	@Override
 	public void makeExpressionReplacements(ExpressionReplacer replacer) {
 		expressionReplacer.makeReplacements(textBox, replacer);
+	}
+
+	public void lockDragZone() {
+		dropZoneGuardian.lockDropZone();
+	}
+
+	public void unlockDragZone() {
+		dropZoneGuardian.unlockDropZone();
 	}
 }
