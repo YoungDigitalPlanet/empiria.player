@@ -66,7 +66,9 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Override
 	public void useItem(String itemId) {
-		view.hideItem(itemId);
+		if(bean.isMoveElements()) {
+			view.hideItem(itemId);
+		}
 	}
 
 	@Override

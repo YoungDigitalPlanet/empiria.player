@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +86,19 @@ public class SourceListPresenterImplTest {
 	@Test
 	public void testUseItem() throws Exception {
 		String itemId = "test";
+		SourceListBean bean = mock(SourceListBean.class);
+		doReturn(true).when(bean).isMoveElements();
+		sourceListPresenterImpl.setBean(bean);
 		sourceListPresenterImpl.useItem(itemId);
 		verify(view).hideItem(eq(itemId));
+	}
+
+	@Test
+	public void testUseItemNotMoveElements() throws Exception {
+		SourceListBean bean = mock(SourceListBean.class);
+		doReturn(false).when(bean).isMoveElements();
+		sourceListPresenterImpl.setBean(bean);
+		verifyZeroInteractions(view);
 	}
 
 	@Test
@@ -136,6 +148,7 @@ public class SourceListPresenterImplTest {
 		List<String> toUseItems = Lists.newArrayList("a","b","c","d");
 		SourceListBean bean = mock(SourceListBean.class);
 		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
+		doReturn(true).when(bean).isMoveElements();
 		sourceListPresenterImpl.setBean(bean);
 
 		sourceListPresenterImpl.useAndRestockItems(toUseItems);
