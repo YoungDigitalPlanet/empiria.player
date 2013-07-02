@@ -94,6 +94,7 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		} else {
 			sourcelist.useItem(itemId);
 		}
+		
 		sourcelist.restockItem(previousItemid);
 
 		unlockAll();
@@ -136,7 +137,8 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		for (Sourcelist sourcelist : model.getSourceLists()) {
 			Collection<SourcelistClient> clients = model.getClients(sourcelist);
 
-			sourcelist.useAndRestockItems(clientsToItemsIds(clients));
+			List<String> clientsToItemsIds = clientsToItemsIds(clients);
+			sourcelist.useAndRestockItems(clientsToItemsIds);
 		}
 	}
 

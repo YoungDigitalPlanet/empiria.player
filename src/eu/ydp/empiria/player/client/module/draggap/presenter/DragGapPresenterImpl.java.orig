@@ -2,6 +2,12 @@ package eu.ydp.empiria.player.client.module.draggap.presenter;
 
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+import javax.annotation.PostConstruct;
+
+import com.google.gwt.user.client.ui.TextBox;
+>>>>>>> 2bf330d725f54a6dd953352974354deb5348330b
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -40,18 +46,26 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 	private final StyleNameConstants styleNames;
 
+<<<<<<< HEAD
 	private final DroppableObject<Widget> droppable;
 	private final DropZoneGuardian dropZoneGuardian;
+=======
+	private final DroppableObject<TextBox> droppable;
+	private DropZoneGuardian dropZoneGuardian;
+>>>>>>> 2bf330d725f54a6dd953352974354deb5348330b
 
 	@Inject
 	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapView view) {
 		this.view = view;
 		droppable = dragDropHelper.enableDropForWidget(view.asWidget());
 		styleNames = styleNameConstants;
-
+	}
+	
+	@PostConstruct
+	public void postConstruct(){
 		dropZoneGuardian = new DropZoneGuardian(droppable, view.asWidget(), styleNames);
 	}
-
+	
 	@Override
 	public void bindView() {
 		view.updateStyle(UserAnswerType.DEFAULT);

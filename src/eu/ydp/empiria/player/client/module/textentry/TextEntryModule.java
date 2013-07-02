@@ -6,7 +6,6 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.base.Strings;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -15,9 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
@@ -27,6 +24,7 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.StringUtils;
+import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
 public class TextEntryModule extends GapBase implements SourcelistClient {
 
@@ -188,8 +186,11 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 		return presenter.getText();
 	}
 
+	private static final Logger LOGGER = new Logger();
+	
 	@Override
 	public void setDragItem(String itemId) {
+		LOGGER.methodLog("TextEntryModule", "setDragItem", itemId);
 		String value = sourcelistManager.getValue(itemId, getIdentifier());
 		presenter.setText(value);
 	}
