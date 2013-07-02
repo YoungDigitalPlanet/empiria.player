@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 
 import com.google.common.collect.ArrayListMultimap;
 //import com.google.common.collect.ImmutableMap;
@@ -82,18 +81,18 @@ public class DragDropManagerJUnitTest {
 		assertThat(dragDropManager.dropZones.size(), is(equalTo(4)));
 	}
 
-	@Test
-	public void fireDragEndEventToProperSourcelist() {
-		SourceListModule dragSource = mock(SourceListModule.class);
-		DragDropEvent startEventMock = mockDragDropEvent(dragSource, DragDropEventTypes.DRAG_START, null);
-		SimpleTextModule gap = mock(SimpleTextModule.class);
-		DragDropEvent endEventMock = mockDragDropEvent(gap, DragDropEventTypes.DRAG_END, null);
-
-		dragDropManager.onDragEvent(startEventMock);
-		dragDropManager.onDragEvent(endEventMock);
-
-		Mockito.verify(dragDropManager.helper).fireEventFromSource(dragSource, endEventMock.getDragDataObject(), DragDropEventTypes.DRAG_END, gap);
-	}
+//	@Test
+//	public void fireDragEndEventToProperSourcelist() {
+//		SourceListModule dragSource = mock(SourceListModule.class);
+//		DragDropEvent startEventMock = mockDragDropEvent(dragSource, DragDropEventTypes.DRAG_START, null);
+//		SimpleTextModule gap = mock(SimpleTextModule.class);
+//		DragDropEvent endEventMock = mockDragDropEvent(gap, DragDropEventTypes.DRAG_END, null);
+//
+//		dragDropManager.onDragEvent(startEventMock);
+//		dragDropManager.onDragEvent(endEventMock);
+//
+//		Mockito.verify(dragDropManager.helper).fireEventFromSource(dragSource, endEventMock.getDragDataObject(), DragDropEventTypes.DRAG_END, gap);
+//	}
 
 //	@Test
 //	public void fireDragEndEventPreviousValueIsNullFirstTime() {
