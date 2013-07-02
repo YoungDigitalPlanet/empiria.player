@@ -12,7 +12,7 @@ public interface SourcelistManager {
 
 	void dragEndSourcelist(String itemId, String sourceModuleId);
 
-	void dragCanceled();
+	void dragFinished();
 
 	String getValue(String itemId, String targetModuleId);
 

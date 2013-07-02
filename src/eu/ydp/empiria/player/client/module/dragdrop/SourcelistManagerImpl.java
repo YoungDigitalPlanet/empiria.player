@@ -69,7 +69,6 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		for (Sourcelist sourcelist : model.getSourceLists()) {
 			sourcelist.unlockSourceList();
 			unlockClients(sourcelist);
-			
 		}
 	}
 
@@ -120,7 +119,7 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	}
 
 	@Override
-	public void dragCanceled() {
+	public void dragFinished() {
 		unlockAll();
 	}
 
