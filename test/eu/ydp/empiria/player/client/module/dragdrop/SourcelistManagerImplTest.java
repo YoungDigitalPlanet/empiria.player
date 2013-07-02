@@ -129,9 +129,9 @@ public class SourcelistManagerImplTest {
 	}
 
 	@Test
-	public void shouldUnlockAllClientsOnDragCanceled() {
+	public void shouldUnlockAllClientsOnDragFinished() {
 		// when
-		manager.dragCanceled();
+		manager.dragFinished();
 
 		// then
 		verify(sourcelist1).unlockSourceList();
