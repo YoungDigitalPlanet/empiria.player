@@ -122,6 +122,8 @@ public class SourcelistManagerImplTest {
 		manager.dragStart(CLIENT_1_ID);
 
 		// then
+		verify(sourcelist1, never()).lockSourceList();
+		verify(sourcelist2).lockSourceList();
 		verify(client1, never()).lockDropZone();
 		verify(client2).lockDropZone();
 	}
@@ -132,6 +134,8 @@ public class SourcelistManagerImplTest {
 		manager.dragCanceled();
 
 		// then
+		verify(sourcelist1).unlockSourceList();
+		verify(sourcelist2).unlockSourceList();
 		verify(client1).unlockDropZone();
 		verify(client2).unlockDropZone();
 	}

@@ -236,7 +236,7 @@ public class SourceListViewImplTest {
 			if (!id.equals("a")) {
 				viewItem = itemIdToItemCollection.get(id);
 				verify(viewItem, times(0)).lockForDragDrop();
-				verify(viewItem, times(0)).lockForDragDrop();
+				verify(viewItem, times(0)).unlockForDragDrop();
 			}
 		}
 	}

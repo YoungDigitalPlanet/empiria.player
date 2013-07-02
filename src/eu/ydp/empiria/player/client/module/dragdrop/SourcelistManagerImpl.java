@@ -52,6 +52,7 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	private void lockOthers(Sourcelist sourcelist) {
 		for (Sourcelist src : model.getSourceLists()) {
 			if (!sourcelist.equals(src)) {
+				src.lockSourceList();
 				Collection<SourcelistClient> clients = model.getClients(src);
 				lockClients(clients);
 			}
@@ -64,8 +65,16 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		}
 	}
 
-	private void unlockClients() {
-		for (SourcelistClient client : model.getClients()) {
+	private void unlockAll() {
+		for (Sourcelist sourcelist : model.getSourceLists()) {
+			sourcelist.unlockSourceList();
+			unlockClients(sourcelist);
+			
+		}
+	}
+
+	private void unlockClients(Sourcelist sourcelist) {
+		for (SourcelistClient client : model.getClients(sourcelist)) {
 			client.unlockDropZone();
 		}
 	}
@@ -89,7 +98,7 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		
 		sourcelist.restockItem(previousItemid);
 
-		unlockClients();
+		unlockAll();
 	}
 
 	@Override
@@ -108,12 +117,12 @@ public class SourcelistManagerImpl implements SourcelistManager {
 			sourcelist.restockItem(itemId);
 		}
 
-		unlockClients();
+		unlockAll();
 	}
 
 	@Override
 	public void dragCanceled() {
-		unlockClients();
+		unlockAll();
 	}
 
 	@Override
