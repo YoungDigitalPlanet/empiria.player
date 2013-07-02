@@ -53,7 +53,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Override
 	public DragDataObject getDragDataObject(String itemId) {
-		DragDataObject dataObject = (NativeDragDataObject) overlayTypesParser.get();
+		DragDataObject dataObject = overlayTypesParser.<NativeDragDataObject>get();
 		dataObject.setItemId(itemId);
 		dataObject.setSourceId(moduleId);
 		return dataObject;
@@ -80,8 +80,8 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 		case DRAG_START:
 			sourcelistManager.dragStart(moduleId);
 			break;
-		case DRAG_CANCELL:
-			sourcelistManager.dragCanceled();
+		case DRAG_END:
+			sourcelistManager.dragFinished();
 		default:
 			break;
 		}
