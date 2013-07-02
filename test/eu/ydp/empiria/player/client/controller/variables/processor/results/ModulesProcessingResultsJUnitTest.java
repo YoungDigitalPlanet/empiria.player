@@ -1,20 +1,18 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.results;
 
-import java.util.List;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.hamcrest.Matchers.*;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import static org.junit.Assert.*;
-
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
-import static org.mockito.Mockito.when;
 
 
 public class ModulesProcessingResultsJUnitTest {
@@ -64,9 +62,9 @@ public class ModulesProcessingResultsJUnitTest {
 		DtoModuleProcessingResult processingResult = createProcessingResult("id1");
 		DtoModuleProcessingResult otherProcessingResult = createProcessingResult("id2");
 		
-		List<DtoModuleProcessingResult> listOfProcessingResults = modulesProcessingResults.getListOfProcessingResults();
+		Map<String, DtoModuleProcessingResult> listOfProcessingResults = modulesProcessingResults.getMapOfProcessingResults();
 		
-		assertThat(listOfProcessingResults, hasItems(processingResult, otherProcessingResult));
+		assertThat(listOfProcessingResults.values(), hasItems(processingResult, otherProcessingResult));
 	}
 
 	private DtoModuleProcessingResult createProcessingResult(String responseId) {

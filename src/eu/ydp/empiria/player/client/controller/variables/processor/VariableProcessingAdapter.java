@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -37,9 +36,9 @@ public class VariableProcessingAdapter {
 	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, ProcessingMode processingMode){
 		ModulesProcessingResults modulesProcessingResults = modulesVariablesProcessor.processVariablesForResponses(responses, processingMode);
 		
-		List<DtoModuleProcessingResult> listOfProcessingResults = modulesProcessingResults.getListOfProcessingResults();
+		Map<String, DtoModuleProcessingResult> mapOfProcessingResults = modulesProcessingResults.getMapOfProcessingResults();
 		
-		GlobalVariables globalVariables = globalVariablesProcessor.calculateGlobalVariables(listOfProcessingResults);
+		GlobalVariables globalVariables = globalVariablesProcessor.calculateGlobalVariables(mapOfProcessingResults, responses);
 		
 		mapConverterFacade.convert(outcomes, modulesProcessingResults, globalVariables);
 		

@@ -34,7 +34,7 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
-import eu.ydp.empiria.player.client.module.expression.ExpressionReplacementsParser;
+import eu.ydp.empiria.player.client.module.expression.PipedReplacementsParser;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.xml.XMLParser;
@@ -48,7 +48,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 			binder.bind(TextEntryModulePresenter.class).toInstance(mock(TextEntryModulePresenter.class));
 			TextEntryModulePresenter modulePresenter = mock(TextEntryModulePresenter.class);
 			binder.bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
-			binder.bind(ExpressionReplacementsParser.class).toInstance(mock(ExpressionReplacementsParser.class));
+			binder.bind(PipedReplacementsParser.class).toInstance(mock(PipedReplacementsParser.class));
 		}
 	}
 

@@ -9,6 +9,7 @@ war/WEB-INF/deploy/
 war/WEB-INF/lib/
 war/.gitignore
 .settings/
+www-test/
 .ruleset
 .pmd
 pmd.xml
@@ -18,3 +19,4 @@ reports/
 .gwt/
 dist/
 metadata.xml
+.settings/

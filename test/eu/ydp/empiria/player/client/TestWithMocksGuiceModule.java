@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client;
 
+import static org.mockito.Mockito.withSettings;
+
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
@@ -31,6 +33,7 @@ import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
 import eu.ydp.empiria.player.client.module.media.external.FullscreenVideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoImpl;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
@@ -41,7 +44,6 @@ import eu.ydp.gwtutil.client.timer.Timer;
 import eu.ydp.gwtutil.client.timer.TimerAccessibleMock;
 import eu.ydp.gwtutil.test.AbstractMockingTestModule;
 import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
-import static org.mockito.Mockito.withSettings;
 
 public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 
@@ -73,6 +75,7 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToSingletonOrMockInstance(LabellingChildView.class);
 		bindToSingletonOrMockInstance(LabellingModuleJAXBParserFactory.class);
 		bindToSingletonOrMockInstance(PageScopeFactory.class);
+		bindToSingletonOrMockInstance(StyleSocket.class);
 		
 		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
 		bindToClassOrMockProvider(IStickieView.class);

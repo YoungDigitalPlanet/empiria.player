@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -15,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.common.collect.ImmutableMap;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
@@ -54,16 +53,16 @@ public class VariableProcessingAdapterJUnitTest {
 		Map<String, Response> responses = Maps.newHashMap();
 		Map<String, Outcome> outcomes = Maps.newHashMap();
 		ProcessingMode processingMode = ProcessingMode.USER_INTERACT;
+		final String ID = "ID";
 
 		when(modulesVariablesProcessor.processVariablesForResponses(responses, processingMode))
 			.thenReturn(modulesProcessingResults);
 
-		List<DtoModuleProcessingResult> collectionOfProcessingResults = Lists.newArrayList(DtoModuleProcessingResult.fromDefaultVariables());
-		when(modulesProcessingResults.getListOfProcessingResults())
-			.thenReturn(collectionOfProcessingResults);
+		Map<String, DtoModuleProcessingResult> processingResults = ImmutableMap.of(ID, DtoModuleProcessingResult.fromDefaultVariables());
+		when(modulesProcessingResults.getMapOfProcessingResults()).thenReturn(processingResults);
 
 		GlobalVariables globalVariables = new GlobalVariables();
-		when(globalVariablesProcessor.calculateGlobalVariables(collectionOfProcessingResults))
+		when(globalVariablesProcessor.calculateGlobalVariables(processingResults, responses))
 			.thenReturn(globalVariables);
 
 		// when
@@ -71,8 +70,8 @@ public class VariableProcessingAdapterJUnitTest {
 
 		// then
 		verify(modulesVariablesProcessor).processVariablesForResponses(responses, processingMode);
-		verify(modulesProcessingResults).getListOfProcessingResults();
-		verify(globalVariablesProcessor).calculateGlobalVariables(collectionOfProcessingResults);
+		verify(modulesProcessingResults).getMapOfProcessingResults();
+		verify(globalVariablesProcessor).calculateGlobalVariables(processingResults, responses);
 		verify(resultsToOutcomeMapConverterFacade).convert(outcomes, modulesProcessingResults, globalVariables);
 	}
 

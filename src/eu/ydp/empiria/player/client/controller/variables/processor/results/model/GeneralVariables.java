@@ -1,23 +1,25 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.results.model;
 
+import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.List;
-
-import com.google.common.collect.Lists;
-
 
 public class GeneralVariables {
 
-	private List<String> answers = Lists.newArrayList();
-	private List<Boolean> answersEvaluation = Lists.newArrayList();
-	private int errors = 0;
-	private int done = 0;
+	private List<String> answers;
+	private List<Boolean> answersEvaluation;
+	private int errors;
+	private int done;
 
 	public GeneralVariables() {
+		answers = newArrayList();
+		answersEvaluation = newArrayList();
 	}
 
 	public GeneralVariables(List<String> answers, List<Boolean> answersEvaluation, int errors, int done) {
-		this.answers = Lists.newArrayList(answers);
-		this.answersEvaluation = answersEvaluation;
+		this.answers = copyOf(answers);
+		this.answersEvaluation = copyOf(answersEvaluation);
 		this.errors = errors;
 		this.done = done;
 	}
@@ -27,7 +29,7 @@ public class GeneralVariables {
 	}
 
 	public void setAnswers(List<String> answers) {
-		this.answers = answers;
+		this.answers = copyOf(answers);
 	}
 
 	public int getErrors() {
@@ -51,6 +53,6 @@ public class GeneralVariables {
 	}
 
 	public void setAnswersEvaluation(List<Boolean> answersEvaluation) {
-		this.answersEvaluation = answersEvaluation;
+		this.answersEvaluation = copyOf(answersEvaluation);
 	}
 }
