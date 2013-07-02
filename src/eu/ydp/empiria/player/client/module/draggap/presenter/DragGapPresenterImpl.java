@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.draggap.presenter;
 
 import java.util.List;
 
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -30,8 +29,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	@ModuleScoped
 	private DragGapModuleModel model;
 
-	@Inject
-	private DragGapView view;
+	private final DragGapView view;
 
 	@Inject
 	@PageScoped
@@ -42,12 +40,13 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 	private final StyleNameConstants styleNames;
 
-	private final DroppableObject<TextBox> droppable;
+	private final DroppableObject<Widget> droppable;
 	private final DropZoneGuardian dropZoneGuardian;
 
 	@Inject
-	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants) {
-		droppable = dragDropHelper.enableDropForWidget(new TextBox());
+	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapView view) {
+		this.view = view;
+		droppable = dragDropHelper.enableDropForWidget(view.asWidget());
 		styleNames = styleNameConstants;
 
 		dropZoneGuardian = new DropZoneGuardian(droppable, view.asWidget(), styleNames);

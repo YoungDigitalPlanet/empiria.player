@@ -28,13 +28,14 @@ public class DragGapViewImpl implements DragGapView {
 
 	@UiField
 	FlowPanel container;
+	FlowPanel itemWrapper;
 
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
 	private final DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
 
 	private Widget contentWidget;
-	private Optional<DraggableObject<Widget>> optionalDraggable = Optional.absent();
+	private Optional<DraggableObject<FlowPanel>> optionalDraggable = Optional.absent();
 	private Optional<DragGapDropHandler> dragGapDropHandlerOptional = Optional.absent();
 	private Optional<DragGapStartDragHandler> dragStartHandlerOptional = Optional.absent();
 
@@ -58,15 +59,26 @@ public class DragGapViewImpl implements DragGapView {
 
 	@Override
 	public void setContent(String content) {
+		container.clear();
 		contentWidget = new HTMLPanel(content);
-		container.add(contentWidget);
-		DraggableObject<Widget> draggableObject = dragDropHelper.enableDragForWidget(contentWidget);
+		itemWrapper = new FlowPanel();
+		itemWrapper.add(contentWidget);
+		DraggableObject<FlowPanel> draggableObject = dragDropHelper.enableDragForWidget(itemWrapper);
+		Widget draggableWidget = draggableObject.getDraggableWidget();
+		container.add(draggableWidget);
 		optionalDraggable = Optional.of(draggableObject);
+		
+		draggableObject.addDragStartHandler(new DragStartHandler() {
+			@Override
+			public void onDragStart(DragStartEvent event) {
+				event.getDataTransfer().setDragImage(itemWrapper.getElement(), 0, 0);
+			}
+		});
 	}
 
 	@Override
 	public void removeContent() {
-		container.remove(contentWidget);
+		container.clear();
 		optionalDraggable = Optional.absent();
 	}
 
@@ -102,7 +114,7 @@ public class DragGapViewImpl implements DragGapView {
 	@Override
 	public void setDragDisabled(boolean disabled) {
 		if (optionalDraggable.isPresent()) {
-			DraggableObject<Widget> draggableObject = optionalDraggable.get();
+			DraggableObject<?> draggableObject = optionalDraggable.get();
 			draggableObject.setDisableDrag(disabled);
 		}
 	}
@@ -142,7 +154,7 @@ public class DragGapViewImpl implements DragGapView {
 			@Override
 			public void onDragStart(DragStartEvent event) {
 				if(dragStartHandlerOptional.isPresent()){
-					dragStartHandlerOptional.get().onDragStart();
+					dragStartHandlerOptional.get().onDragStart(event);
 				}
 			}
 		}, DragStartEvent.getType());
