@@ -43,12 +43,12 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Override
 	public void createAndBindUi() {
+		view.setSourceListPresenter(this);
 		view.createAndBindUi();
 		List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
 		for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
 			view.createItem(simpleSourceListItemBean.getAlt(), simpleSourceListItemBean.getValue());
 		}
-		view.setSourceListPresenter(this);
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 
 	@Override
 	public void createAndBindUi() {
-		sourceListDropZone = dragDropHelper.enableDropForWidget(new FlowPanel(), true);
+		sourceListDropZone = dragDropHelper.enableDropForWidget(new FlowPanel(), false);
 		items = (FlowPanel) sourceListDropZone.getDroppableWidget();
 		initWidget(uiBinder.createAndBindUi(this));
 		touchReservationFactory.addTouchReservationHandler(items);
