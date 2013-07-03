@@ -35,20 +35,21 @@ public class DragGapViewImpl implements DragGapView {
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
 	private final DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
+	private final DragGapStylesProvider dragGapStylesProvider;
 
 	private Widget contentWidget;
 	private Optional<DraggableObject<FlowPanel>> optionalDraggable = Optional.absent();
 	private Optional<DragGapDropHandler> dragGapDropHandlerOptional = Optional.absent();
 	private Optional<DragGapStartDragHandler> dragStartHandlerOptional = Optional.absent();
-	private DraggableObject<FlowPanel> draggableObject;
 	private DragEndHandler dragEndHandler;
 
 	@Inject
 	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants,
-			DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
+			DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor, DragGapStylesProvider dragGapStylesProvider) {
 		this.dragDropHelper = dragDropHelper;
 		this.styleNameConstants = styleNameConstants;
 		this.dragDataObjectFromEventExtractor = dragDataObjectFromEventExtractor;
+		this.dragGapStylesProvider = dragGapStylesProvider;
 
 		uiBinder.createAndBindUi(this);
 		addDomHandlerOnObjectDrop();
@@ -63,22 +64,30 @@ public class DragGapViewImpl implements DragGapView {
 
 	@Override
 	public void setContent(String content) {
-		container.clear();
+		removeContent();
+		DraggableObject<FlowPanel> draggableObject = createDraggableObjectWithContent(content);
+		addDragHandlersToItem(draggableObject);
+	}
+
+	private DraggableObject<FlowPanel> createDraggableObjectWithContent(String content) {
 		contentWidget = new HTMLPanel(content);
 		itemWrapper = new FlowPanel();
 		itemWrapper.add(contentWidget);
-		draggableObject = dragDropHelper.enableDragForWidget(itemWrapper);
+		
+		DraggableObject<FlowPanel> draggableObject = dragDropHelper.enableDragForWidget(itemWrapper);
 		Widget draggableWidget = draggableObject.getDraggableWidget();
+		
 		container.add(draggableWidget);
 		optionalDraggable = Optional.of(draggableObject);
+		return draggableObject;
+	}
 
-		draggableObject.addDragStartHandler(new DragStartHandler() {
-			@Override
-			public void onDragStart(DragStartEvent event) {
-				event.getDataTransfer().setDragImage(itemWrapper.getElement(), 0, 0);
-			}
-		});
+	private void addDragHandlersToItem(DraggableObject<FlowPanel> draggableObject) {
+		addDragStartHandlerToItem(draggableObject);
+		addDragEndHandlerToItem(draggableObject);
+	}
 
+	private void addDragEndHandlerToItem(DraggableObject<FlowPanel> draggableObject) {
 		draggableObject.addDragEndHandler(new DragEndHandler() {
 			
 			@Override
@@ -86,10 +95,19 @@ public class DragGapViewImpl implements DragGapView {
 				removeDraggableStyleFromItem();
 				dragEndHandler.onDragEnd(event);
 			}
-			
 		});
 	}
 
+	private void addDragStartHandlerToItem(DraggableObject<FlowPanel> draggableObject) {
+		draggableObject.addDragStartHandler(new DragStartHandler() {
+			@Override
+			public void onDragStart(DragStartEvent event) {
+				event.getDataTransfer().setDragImage(itemWrapper.getElement(), 0, 0);
+			}
+		});
+	}
+
+	@Override
 	public void setDragEndHandler(final DragEndHandler dragEndHandler) {
 		this.dragEndHandler = dragEndHandler;
 	}
@@ -108,22 +126,8 @@ public class DragGapViewImpl implements DragGapView {
 
 	@Override
 	public void updateStyle(UserAnswerType answerType) {
-		switch (answerType) {
-		case CORRECT:
-			container.setStyleName(styleNameConstants.QP_DRAG_GAP_CORRECT());
-			break;
-		case WRONG:
-			container.setStyleName(styleNameConstants.QP_DRAG_GAP_WRONG());
-			break;
-		case DEFAULT:
-			container.setStyleName(styleNameConstants.QP_DRAG_GAP_DEFAULT());
-			break;
-		case NONE:
-			container.setStyleName(styleNameConstants.QP_DRAG_GAP_NONE());
-			break;
-		default:
-			break;
-		}
+		String gapStyleName = dragGapStylesProvider.getCorrectGapStyleName(answerType);
+		container.setStyleName(gapStyleName);
 	}
 
 	@Override
