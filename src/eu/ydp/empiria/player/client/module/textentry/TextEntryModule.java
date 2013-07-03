@@ -14,54 +14,77 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.StringUtils;
+import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
 public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	private final StyleSocket styleSocket;
 
-	@Inject
 	private final SourcelistManager sourcelistManager;
 
 	private final ResponseSocket responseSocket;
 
 	protected Map<String, String> styles;
+	
 
 	@Inject
-	public TextEntryModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,final SourcelistManager sourcelistManager) {
+	public TextEntryModule(TextEntryModulePresenter presenter, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,@PageScoped final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.responseSocket = responseSocket;
 		this.sourcelistManager = sourcelistManager;
 
-		presenter = moduleFactory.getTextEntryModulePresenter(this);
+		this.presenter = presenter;
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-				updateResponse(true);
 				sourcelistManager.onUserValueChanged();
+				updateResponse(true);
 			}
-
+			
 			@Override
 			public void onBlur(BlurEvent event) {
 				if (isMobileUserAgent()) {
+					sourcelistManager.onUserValueChanged();
 					updateResponse(true);
 				}
 			}
 		});
 
-		sourcelistManager.registerModule(this);
-	}
+		presenter.addDomHandlerOnObjectDrop(new GapDropHandler() {
 
+			@Override
+			public void onDrop(DragDataObject dragDataObject) {
+				String itemID = dragDataObject.getItemId();
+				String sourceModuleId = dragDataObject.getSourceId();
+				String targetModuleId = getIdentifier();
+
+				sourcelistManager.dragEnd(itemID, sourceModuleId,
+						targetModuleId);
+			}
+		});
+	
+	}
+	
+	
+	
+	@Override
+	public void reset() {
+		super.reset();
+		sourcelistManager.onUserValueChanged();
+	}
+	
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		styles = styleSocket.getStyles(getModuleElement());
@@ -104,6 +127,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	@Override
 	public void onStart() {
+		sourcelistManager.registerModule(this);
 		setBindingValues();
 	}
 
@@ -164,9 +188,12 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 		return presenter.getText();
 	}
 
+	private static final Logger LOGGER = new Logger();
+	
 	@Override
 	public void setDragItem(String itemId) {
-		SourcelistItemValue itemValue = sourcelistManager.getValue(itemId, getModuleId());
+		LOGGER.methodLog("TextEntryModule", "setDragItem", itemId);
+		SourcelistItemValue itemValue = sourcelistManager.getValue(itemId, getIdentifier());
 		presenter.setText(itemValue.getContent()); // TODO YPUB-5441 use factory to get value as string
 	}
 

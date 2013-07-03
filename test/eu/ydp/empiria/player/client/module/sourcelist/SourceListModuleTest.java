@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.sourcelist;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -7,6 +8,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +28,8 @@ import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
+import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
@@ -45,14 +49,15 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 	private ModuleSocket moduleSocket;
 	private ReflectionsUtils reflectionsUtils;
 	private SourceListModuleStructure sourceListModuleStructure;
-
+	private final static String moduleID = "id1";
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(SourceListPresenter.class).toInstance(mock(SourceListPresenter.class));
 			binder.bind(ModuleSocket.class).toInstance(mock(ModuleSocket.class));
 			binder.bind(SourceListModuleStructure.class).toInstance(mock(SourceListModuleStructure.class));
-			binder.bind(SourcelistManager.class).toInstance(mock(SourcelistManager.class));
+			binder.bind(SourcelistManager.class).annotatedWith(PageScoped.class).toInstance(mock(SourcelistManager.class));
+			binder.bind(String.class).annotatedWith(UniqueId.class).toInstance(moduleID);
 		}
 	}
 
@@ -139,6 +144,25 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 	public void testGetView() throws Exception {
 		instance.getView();
 		verify(presenter).asWidget();
+	}
+
+	@Test
+	public void testGetIdentifier() throws Exception {
+		assertThat(instance.getIdentifier()).isEqualTo(moduleID);
+	}
+
+	@Test
+	public void testLockSourceList() throws Exception {
+		instance.lockSourceList();
+		verify(presenter).lockSourceList();
+		verifyNoMoreInteractions(presenter);
+	}
+
+	@Test
+	public void testUnlockSourceList() throws Exception {
+		instance.unlockSourceList();
+		verify(presenter).unlockSourceList();
+		verifyNoMoreInteractions(presenter);
 	}
 
 

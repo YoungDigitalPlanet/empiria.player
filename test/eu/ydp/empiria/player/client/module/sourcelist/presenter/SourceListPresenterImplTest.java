@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +88,19 @@ public class SourceListPresenterImplTest {
 	@Test
 	public void testUseItem() throws Exception {
 		String itemId = "test";
+		SourceListBean bean = mock(SourceListBean.class);
+		doReturn(true).when(bean).isMoveElements();
+		sourceListPresenterImpl.setBean(bean);
 		sourceListPresenterImpl.useItem(itemId);
 		verify(view).hideItem(eq(itemId));
+	}
+
+	@Test
+	public void testUseItemNotMoveElements() throws Exception {
+		SourceListBean bean = mock(SourceListBean.class);
+		doReturn(false).when(bean).isMoveElements();
+		sourceListPresenterImpl.setBean(bean);
+		verifyZeroInteractions(view);
 	}
 
 	@Test
@@ -105,18 +117,14 @@ public class SourceListPresenterImplTest {
 		sourceListPresenterImpl.setModuleId(moduleId);
 
 		sourceListPresenterImpl.onDragEvent(DragDropEventTypes.DRAG_START, itemId);
-		verify(sourcelistManager).dragStart(eq(itemId));
-
-		sourceListPresenterImpl.onDragEvent(DragDropEventTypes.DRAG_CANCELL, itemId);
-		verify(sourcelistManager).dragCanceled();
+		verify(sourcelistManager).dragStart(eq(moduleId));
 
 		sourceListPresenterImpl.onDragEvent(DragDropEventTypes.DRAG_END, itemId);
-		verify(sourcelistManager).dragEndSourcelist(eq(itemId),eq(moduleId));
+		verify(sourcelistManager).dragFinished();
 
 		ArrayList<DragDropEventTypes> allEvents = Lists.newArrayList(DragDropEventTypes.values());
 		allEvents.remove(DragDropEventTypes.DRAG_START);
 		allEvents.remove(DragDropEventTypes.DRAG_END);
-		allEvents.remove(DragDropEventTypes.DRAG_CANCELL);
 
 		for(DragDropEventTypes event: allEvents){
 			sourceListPresenterImpl.onDragEvent(event, itemId);
@@ -142,6 +150,7 @@ public class SourceListPresenterImplTest {
 		List<String> toUseItems = Lists.newArrayList("a","b","c","d");
 		SourceListBean bean = mock(SourceListBean.class);
 		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
+		doReturn(true).when(bean).isMoveElements();
 		sourceListPresenterImpl.setBean(bean);
 
 		sourceListPresenterImpl.useAndRestockItems(toUseItems);
@@ -160,9 +169,37 @@ public class SourceListPresenterImplTest {
 	public void testOnDropEvent() throws Exception {
 		String itemId = "id";
 		String moduleId = "mId";
-		sourceListPresenterImpl.setModuleId(moduleId);
-		sourceListPresenterImpl.onDropEvent(itemId);
+		sourceListPresenterImpl.onDropEvent(itemId,moduleId);
 		verify(sourcelistManager).dragEndSourcelist(eq(itemId), eq(moduleId));
+	}
+
+	@Test
+	public void testLockSourceList() throws Exception {
+		List<String> allItems = Lists.newArrayList("a","b","c","d","e","f");
+		SourceListBean bean = mock(SourceListBean.class);
+		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
+		sourceListPresenterImpl.setBean(bean);
+
+		//when
+		sourceListPresenterImpl.lockSourceList();
+		verify(view).lockForDragDrop();
+		for(String id : allItems){
+			verify(view).lockItemForDragDrop(eq(id));
+		}
+	}
+
+	@Test
+	public void testUnlockSourceList() throws Exception {
+		List<String> allItems = Lists.newArrayList("a","b","c","d","e","f");
+		SourceListBean bean = mock(SourceListBean.class);
+		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
+		sourceListPresenterImpl.setBean(bean);
+
+		sourceListPresenterImpl.unlockSourceList();
+		for(String id : allItems){
+			verify(view).unlockItemForDragDrop(eq(id));
+		}
+
 	}
 
 }

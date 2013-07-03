@@ -87,9 +87,9 @@ import eu.ydp.gwtutil.client.collections.QueueSet;
  * Responsible for: - loading the content, - managing the content, - delivering
  * content to player, - managing state, results and reports about the
  * assessments.
- * 
+ *
  * @author Rafal Rybacki
- * 
+ *
  */
 public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
@@ -305,7 +305,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getConnectionModule(), ModuleTagName.MATCH_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextActionProcessor(), ModuleTagName.TEXT_FEEDBACK));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getImageActionProcessor(), ModuleTagName.IMAGE_FEEDBACK));
-		loadExtension(extensionFactory.getDragDropManager());
 		loadExtension(moduleProviderFactory.getMediaProcessor().get());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getMultiPage());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getPage());

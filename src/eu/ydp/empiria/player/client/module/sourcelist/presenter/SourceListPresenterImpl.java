@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
@@ -19,7 +20,7 @@ import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Inject private SourceListView view;
-	@Inject private SourcelistManager sourcelistManager;
+	@Inject @PageScoped private SourcelistManager sourcelistManager;
 	@Inject private OverlayTypesParser overlayTypesParser;
 
 	private SourceListBean bean;
@@ -42,17 +43,17 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Override
 	public void createAndBindUi() {
+		view.setSourceListPresenter(this);
 		view.createAndBindUi();
 		List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
 		for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
 			view.createItem(simpleSourceListItemBean.getAlt(), simpleSourceListItemBean.getItemValue().getContent()); // TODO YPUB-5441
 		}
-		view.setSourceListPresenter(this);
 	}
 
 	@Override
 	public DragDataObject getDragDataObject(String itemId) {
-		DragDataObject dataObject = (NativeDragDataObject) overlayTypesParser.get();
+		DragDataObject dataObject = overlayTypesParser.<NativeDragDataObject>get();
 		dataObject.setItemId(itemId);
 		dataObject.setSourceId(moduleId);
 		return dataObject;
@@ -65,7 +66,9 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Override
 	public void useItem(String itemId) {
-		view.hideItem(itemId);
+		if(bean.isMoveElements()) {
+			view.hideItem(itemId);
+		}
 	}
 
 	@Override
@@ -77,13 +80,10 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	public void onDragEvent(DragDropEventTypes eventType, String itemId) {
 		switch (eventType) {
 		case DRAG_START:
-			sourcelistManager.dragStart(itemId);
+			sourcelistManager.dragStart(moduleId);
 			break;
 		case DRAG_END:
-			sourcelistManager.dragEndSourcelist(itemId, moduleId);
-			break;
-		case DRAG_CANCELL:
-			sourcelistManager.dragCanceled();
+			sourcelistManager.dragFinished();
 		default:
 			break;
 		}
@@ -118,8 +118,25 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	}
 
 	@Override
-	public void onDropEvent(String itemId) {
-		sourcelistManager.dragEndSourcelist(itemId, moduleId);
+	public void onDropEvent(String itemId,String sourceModuleId) {
+		sourcelistManager.dragEndSourcelist(itemId, sourceModuleId);
+	}
+
+	@Override
+	public void lockSourceList() {
+		view.lockForDragDrop();
+		for(String itemId: getAllItemsId()){
+			view.lockItemForDragDrop(itemId);
+		}
+
+	}
+
+	@Override
+	public void unlockSourceList() {
+		view.unlockForDragDrop();
+		for(String itemId: getAllItemsId()){
+			view.unlockItemForDragDrop(itemId);
+		}
 
 	}
 

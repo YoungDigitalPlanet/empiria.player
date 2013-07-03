@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
-public class SourceListViewItem extends Composite {
+public class SourceListViewItem extends Composite implements LockUnlockDragDrop {
 
 	private static SourceListViewItemUiBinder uiBinder = GWT.create(SourceListViewItemUiBinder.class);
 
@@ -94,5 +94,16 @@ public class SourceListViewItem extends Composite {
 
 	public String getItemContent() {
 		return itemContent;
+	}
+
+	@Override
+	public void lockForDragDrop() {
+		draggable.setDisableDrag(true);
+
+	}
+
+	@Override
+	public void unlockForDragDrop() {
+		draggable.setDisableDrag(false);
 	}
 }

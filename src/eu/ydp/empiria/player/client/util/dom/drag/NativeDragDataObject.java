@@ -24,7 +24,7 @@ public class NativeDragDataObject extends JavaScriptObject implements DragDataOb
 	}-*/;
 
 	@Override
-	public final native void setSourceId(String value) /*-{
+	public final native void setSourceId(String sourceId) /*-{
 		 this.sourceId = sourceId;
 	}-*/;
 

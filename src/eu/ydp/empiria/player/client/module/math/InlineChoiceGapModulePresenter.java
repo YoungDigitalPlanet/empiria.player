@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
@@ -124,4 +125,8 @@ public class InlineChoiceGapModulePresenter implements GapModulePresenter {
 	public void makeExpressionReplacements(ExpressionReplacer replacer) {
 	}
 
+	@Override
+	public void addDomHandlerOnObjectDrop(GapDropHandler dragGapDropHandler) {
+		// TODO unused in this module - refactor needed
+	}
 }

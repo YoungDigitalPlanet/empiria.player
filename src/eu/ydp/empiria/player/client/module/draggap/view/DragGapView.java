@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.draggap.view;
 
+import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
@@ -19,4 +20,6 @@ public interface DragGapView extends IsWidget {
 	void setDropHandler(DragGapDropHandler dragGapDropHandler);
 	
 	void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler);
+	
+	void setDragEndHandler( DragEndHandler dragEndHandler);
 }

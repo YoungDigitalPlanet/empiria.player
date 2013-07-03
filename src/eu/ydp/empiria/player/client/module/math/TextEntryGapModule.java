@@ -11,15 +11,16 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
@@ -31,29 +32,48 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryModuleFactory moduleFactory, StyleSocket styleSocket,final SourcelistManager sourcelistManager) {
+	public TextEntryGapModule(TextEntryGapModulePresenter presenter, StyleSocket styleSocket,@PageScoped final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.sourcelistManager = sourcelistManager;
-
-		presenter = moduleFactory.getTextEntryGapModulePresenter(this);
-		PresenterHandler presenterHandler = new PresenterHandler() {
+		
+		this.presenter = presenter;
+		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-				updateResponse(true);
 				sourcelistManager.onUserValueChanged();
+				updateResponse(true);
 			}
 
 			@Override
 			public void onBlur(BlurEvent event) {
 				if (isMobileUserAgent()) {
+					sourcelistManager.onUserValueChanged();
 					updateResponse(true);
 				}
 			}
-		};
-		presenter.addPresenterHandler(presenterHandler);
+		});
+		presenter.addDomHandlerOnObjectDrop(new GapDropHandler() {
+
+			@Override
+			public void onDrop(DragDataObject dragDataObject) {
+				String itemID = dragDataObject.getItemId();
+				String sourceModuleId = dragDataObject.getSourceId();;
+				String targetModuleId = getIdentifier();
+
+				sourcelistManager.dragEnd(itemID, sourceModuleId,
+						targetModuleId);
+			}
+		});
+		
 		sourcelistManager.registerModule(this);
 	}
 
+	@Override
+	public void reset() {
+		super.reset();
+		sourcelistManager.onUserValueChanged();
+	}
+	
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		installViewInPlaceholder(placeholders.get(0));
@@ -180,7 +200,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 
 	@Override
 	public void setDragItem(String itemId) {
-		SourcelistItemValue itemValue = sourcelistManager.getValue(itemId, getModuleId());
+		SourcelistItemValue itemValue = sourcelistManager.getValue(itemId, getIdentifier());
 		presenter.setText(itemValue.getContent()); // TODO YPUB-5441 use factory to get value as string
 	}
 
@@ -190,7 +210,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	}
 
 	private TextEntryGapModulePresenter getTextEntryGapPresenter() {
-		return (TextEntryGapModulePresenter)presenter;
+		return (TextEntryGapModulePresenter) presenter;
 	}
 
 	@Override

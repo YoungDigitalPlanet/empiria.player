@@ -223,4 +223,40 @@ public class SourceListViewImplTest {
 		}
 	}
 
+	@Test
+	public void testLockForDragDrop() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
+		addItems();
+		instance.lockItemForDragDrop("a");
+		viewItem = itemIdToItemCollection.get("a");
+		verify(viewItem).lockForDragDrop();
+		for (String id : allIds) {
+			if (!id.equals("a")) {
+				viewItem = itemIdToItemCollection.get(id);
+				verify(viewItem, times(0)).lockForDragDrop();
+				verify(viewItem, times(0)).unlockForDragDrop();
+			}
+		}
+	}
+
+	@Test
+	public void testUnlockForDragDrop() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
+		addItems();
+		instance.unlockItemForDragDrop("a");
+		viewItem = itemIdToItemCollection.get("a");
+		verify(viewItem).unlockForDragDrop();
+		for (String id : allIds) {
+			if (!id.equals("a")) {
+				viewItem = itemIdToItemCollection.get(id);
+				verify(viewItem, times(0)).unlockForDragDrop();
+				verify(viewItem, times(0)).lockForDragDrop();
+			}
+		}
+	}
+
 }
