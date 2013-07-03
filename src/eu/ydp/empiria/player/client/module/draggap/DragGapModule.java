@@ -12,12 +12,14 @@ import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenter;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapStructure;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
@@ -115,8 +117,8 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	public void setDragItem(String itemId) {
 		this.itemId = itemId;
-		String itemContent = sourcelistManager.getValue(itemId, getIdentifier());
-		dragGapPresenter.setContent(itemContent);
+		SourcelistItemValue itemContent = sourcelistManager.getValue(itemId, getIdentifier());
+		dragGapPresenter.setContent(itemContent.getContent());
 	}
 
 	@Override
@@ -133,5 +135,11 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	public void unlockDropZone() {
 		dragGapPresenter.unlockDropZone();
+	}
+
+	@Override
+	public void setSize(HasDimensions size) {
+		// TODO YPUB-5441
+		
 	}
 }

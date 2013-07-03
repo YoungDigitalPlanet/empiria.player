@@ -125,10 +125,9 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	}
 
 	@Override
-	public String getValue(String itemId, String targetModuleId) {
+	public SourcelistItemValue getValue(String itemId, String targetModuleId) {
 		Sourcelist sourcelist = model.getSourcelistByClientId(targetModuleId);
-		String value = sourcelist.getItemValue(itemId);
-
+		SourcelistItemValue value = sourcelist.getItemValue(itemId);
 		return value;
 	}
 
