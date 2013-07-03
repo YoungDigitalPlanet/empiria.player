@@ -14,7 +14,9 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -178,8 +180,8 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 
 	@Override
 	public void setDragItem(String itemId) {
-		String value = sourcelistManager.getValue(itemId, getModuleId());
-		presenter.setText(value);
+		SourcelistItemValue itemValue = sourcelistManager.getValue(itemId, getModuleId());
+		presenter.setText(itemValue.getContent()); // TODO YPUB-5441 use factory to get value as string
 	}
 
 	@Override
@@ -199,5 +201,10 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	@Override
 	public void unlockDropZone() {
 		getTextEntryGapPresenter().unlockDragZone();
+	}
+
+	@Override
+	public void setSize(HasDimensions size) {
+		// intentionally empty - text gap does not fit its size
 	}
 }

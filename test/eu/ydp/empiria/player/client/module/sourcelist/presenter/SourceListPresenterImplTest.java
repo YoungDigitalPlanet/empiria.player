@@ -21,6 +21,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
@@ -128,7 +130,7 @@ public class SourceListPresenterImplTest {
 			public SimpleSourceListItemBean apply(String id) {
 				SimpleSourceListItemBean bean = mock(SimpleSourceListItemBean.class);
 				doReturn(id).when(bean).getAlt();
-				doReturn(id).when(bean).getValue();
+				doReturn(new SourcelistItemValue(SourcelistItemType.TEXT, id)).when(bean).getItemValue();
 				return bean;
 			}
 		});
