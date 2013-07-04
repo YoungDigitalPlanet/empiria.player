@@ -26,12 +26,12 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.Lists;
 import com.google.gwt.event.dom.client.DragDropEventBase;
 import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
+import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
@@ -50,7 +50,7 @@ public class SourceListViewImplTest {
 
 	private final List<String> allIds = Lists.newArrayList("a","b","c","d","e","f");
 
-	private FlowPanel items;
+	private FlowPanelWithDropZone items;
 
 	@BeforeClass
 	public static void disarm() {
@@ -71,7 +71,7 @@ public class SourceListViewImplTest {
 				return mock(SourceListViewItem.class);
 			}
 		});
-		items = mock(FlowPanel.class);
+		items = mock(FlowPanelWithDropZone.class);
 		instance.items = items;
 	}
 

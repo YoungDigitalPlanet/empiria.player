@@ -17,9 +17,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
@@ -68,7 +66,7 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 
 	@Inject
 	private DragDropHelper dragDropHelper;
-	
+
 
 	@PostConstruct
 	public void postConstruct() {
@@ -83,7 +81,7 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 
 	@Override
 	public void addDomHandlerOnObjectDrop(final GapDropHandler dragGapDropHandler) {
-		mainPanel.addDomHandler(new DropHandler() {
+		droppable.addDropHandler(new DropHandler() {
 			@Override
 			public void onDrop(DropEvent event) {
 				Optional<DragDataObject> objectFromEvent = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
@@ -91,7 +89,7 @@ public class TextEntryGapModulePresenter implements GapModulePresenter, ChangeHa
 					dragGapDropHandler.onDrop(objectFromEvent.get());
 				}
 			}
-		}, DropEvent.getType());
+		});
 	}
 
 	@Override
