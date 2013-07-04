@@ -81,10 +81,17 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	@Override
 	public void dragEnd(String itemId, String sourceModuleId,
 			String targetModuleId) {
+		if(!sourceModuleId.equals(targetModuleId)) {
+			moveItemFromSourceToTarget(itemId, sourceModuleId, targetModuleId);
+		}
+	}
+
+	private void moveItemFromSourceToTarget(String itemId, String sourceModuleId, String targetModuleId) {
 		Sourcelist sourcelist = model.getSourcelistByClientId(targetModuleId);
 		SourcelistClient targetClient = model.getClientById(targetModuleId);
 
 		String previousItemid = targetClient.getDragItemId();
+		sourcelist.restockItem(previousItemid);
 
 		targetClient.setDragItem(itemId);
 
@@ -95,8 +102,6 @@ public class SourcelistManagerImpl implements SourcelistManager {
 			sourcelist.useItem(itemId);
 		}
 		
-		sourcelist.restockItem(previousItemid);
-
 		unlockAll();
 	}
 
