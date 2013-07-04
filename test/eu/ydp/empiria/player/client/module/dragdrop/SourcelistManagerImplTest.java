@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.base.Optional;
@@ -155,6 +156,18 @@ public class SourcelistManagerImplTest {
 		verify(client3).setDragItem(newId);
 		verify(client2).removeDragItem();
 		verify(sourcelist2).restockItem(oldId);
+	}
+	
+	@Test
+	public void shouldIgnoreMovingItemBetweenSameClient() {
+		// given
+		final String newId = "item_2";
+		
+		// when
+		manager.dragEnd(newId, CLIENT_2_ID, CLIENT_2_ID);
+		
+		// then
+		Mockito.verifyNoMoreInteractions(client2);
 	}
 
 	@Test
