@@ -30,17 +30,12 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	@ModuleScoped
 	private DragGapModuleModel model;
 
-	private final DragGapView view;
 
 	@Inject
 	@PageScoped
 	private AnswerEvaluationSupplier answerEvaluationSupplier;
 
-	private DragGapBean bean;
-	private ModuleSocket socket;
-
-	private final StyleNameConstants styleNames;
-
+	private final DragGapView view;
 	private final DroppableObject<Widget> droppable;
 	private final DropZoneGuardian dropZoneGuardian;
 
@@ -48,15 +43,15 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapView view) {
 		this.view = view;
 		droppable = dragDropHelper.enableDropForWidget(view.asWidget());
-		styleNames = styleNameConstants;
-
-		dropZoneGuardian = new DropZoneGuardian(droppable, view.asWidget(), styleNames);
+		
+		dropZoneGuardian = new DropZoneGuardian(droppable, view.asWidget(), styleNameConstants);
 	}
-	
-	public void setDragEndHandler(DragEndHandler dragEndHandler){
+
+	@Override
+	public void setDragEndHandler(DragEndHandler dragEndHandler) {
 		view.setDragEndHandler(dragEndHandler);
 	}
-	
+
 	@Override
 	public void bindView() {
 		view.updateStyle(UserAnswerType.DEFAULT);
@@ -76,39 +71,39 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 	@Override
 	public void setModuleSocket(ModuleSocket socket) {
-		this.socket = socket;
 	}
 
 	@Override
 	public void setBean(DragGapBean bean) {
-		this.bean = bean;
 	}
 
 	@Override
 	public void setLocked(boolean locked) {
 		view.lock(locked);
+		view.setDragDisabled(locked);
 	}
 
 	@Override
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		List<Boolean> evaluatedAnswers = answerEvaluationSupplier
-				.evaluateAnswer(model.getResponse());
+		if (mode == MarkAnswersMode.MARK) {
+			markAnswers(type);
+		} else if (mode == MarkAnswersMode.UNMARK) {
+			view.updateStyle(UserAnswerType.DEFAULT);
+		}
+	}
 
-			if (mode == MarkAnswersMode.MARK) {
-				if (evaluatedAnswers.isEmpty()){
-					view.updateStyle(UserAnswerType.NONE);
-				} else {
-					Boolean isAnswerCorrect = evaluatedAnswers.get(0);
-					if (type == MarkAnswersType.CORRECT && isAnswerCorrect) {
-						view.updateStyle(UserAnswerType.CORRECT);
-					} else if (type == MarkAnswersType.WRONG && !isAnswerCorrect) {
-						view.updateStyle(UserAnswerType.WRONG);
-					}
-				}
-				
-			} else if (mode == MarkAnswersMode.UNMARK) {
-				view.updateStyle(UserAnswerType.DEFAULT);
+	private void markAnswers(MarkAnswersType type) {
+		List<Boolean> evaluatedAnswers = answerEvaluationSupplier.evaluateAnswer(model.getResponse());
+		if (evaluatedAnswers.isEmpty()) {
+			view.updateStyle(UserAnswerType.NONE);
+		} else {
+			Boolean isAnswerCorrect = evaluatedAnswers.get(0);
+			if (type == MarkAnswersType.CORRECT && isAnswerCorrect) {
+				view.updateStyle(UserAnswerType.CORRECT);
+			} else if (type == MarkAnswersType.WRONG && !isAnswerCorrect) {
+				view.updateStyle(UserAnswerType.WRONG);
 			}
+		}
 	}
 
 	@Override
@@ -121,8 +116,8 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		} else {
 			return;
 		}
-		
-		if(answers.size() > 0){
+
+		if (answers.size() > 0) {
 			String answerToSet = answers.get(0);
 			view.setContent(answerToSet);
 		} else {
@@ -156,7 +151,6 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	public void unlockDropZone() {
 		dropZoneGuardian.unlockDropZone();
 	}
-
 
 	@Override
 	public void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler) {
