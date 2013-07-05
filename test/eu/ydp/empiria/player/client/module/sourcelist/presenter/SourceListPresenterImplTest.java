@@ -138,7 +138,7 @@ public class SourceListPresenterImplTest {
 			public SimpleSourceListItemBean apply(String id) {
 				SimpleSourceListItemBean bean = mock(SimpleSourceListItemBean.class);
 				doReturn(id).when(bean).getAlt();
-				doReturn(new SourcelistItemValue(SourcelistItemType.TEXT, id)).when(bean).getItemValue();
+				doReturn(new SourcelistItemValue(SourcelistItemType.TEXT, id, id+id)).when(bean).getItemValue();
 				return bean;
 			}
 		});

@@ -20,7 +20,7 @@ import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapt
 @XmlRootElement(name = "simpleSourceListItem")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SimpleSourceListItemBean implements HasFixed{
-	
+
 	private static final String SRC_ATTR = "src";
 	private static final String IMG_NODE = "img";
 
@@ -45,9 +45,9 @@ public class SimpleSourceListItemBean implements HasFixed{
 	public SourcelistItemValue getItemValue(){
 		NodeList imgNodes = content.getValue().getElementsByTagName(IMG_NODE);
 		if (imgNodes.getLength() > 0){
-			return createImageItemValue();			
+			return createImageItemValue();
 		} else {
-			return createTextItemValue();			
+			return createTextItemValue();
 		}
 	}
 
@@ -55,13 +55,13 @@ public class SimpleSourceListItemBean implements HasFixed{
 		NodeList imgNodes = content.getValue().getElementsByTagName(IMG_NODE);
 		Element imgElement = (Element)imgNodes.item(0);
 		String src = imgElement.getAttribute(SRC_ATTR);
-		return new SourcelistItemValue(SourcelistItemType.IMAGE, src);
+		return new SourcelistItemValue(SourcelistItemType.IMAGE, src, alt);
 	}
-	
+
 	private SourcelistItemValue createTextItemValue() {
 		Node textNode = content.getValue().getChildNodes().item(0);
 		String text = textNode.getNodeValue();
-		return new SourcelistItemValue(SourcelistItemType.TEXT, text);
+		return new SourcelistItemValue(SourcelistItemType.TEXT, text, alt);
 	}
 
 	public void setContent(XMLContent content) {

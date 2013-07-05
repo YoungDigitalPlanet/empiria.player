@@ -44,7 +44,7 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 
 	@Override
 	public SourcelistItemValue getItemValue(String itemId) {
-		return new SourcelistItemValue(SourcelistItemType.TEXT, presenter.getItemValue(itemId));  // TODO YPUB-5441 change type
+		return new SourcelistItemValue(SourcelistItemType.TEXT, presenter.getItemValue(itemId),"");  // TODO YPUB-5441 change type
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 		presenter.unlockSourceList();
 
 	}
-	
+
 	@Override
 	public HasDimensions getItemSize() { // TODO YPUB-5441
 		// TODO Auto-generated method stub
