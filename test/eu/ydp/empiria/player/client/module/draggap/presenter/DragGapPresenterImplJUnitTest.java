@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.event.dom.client.DragEndHandler;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
@@ -215,8 +216,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 	@Test
 	public void shouldShowAnswers_CorrectAndEmptyAnswers() {
 		// given
-		List<String> answers = mock(List.class);
-		when(answers.size()).thenReturn(0);
+		List<String> answers = Lists.newArrayList();
 		when(model.getCorrectAnswers()).thenReturn(answers);
 
 		// when
@@ -229,10 +229,8 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 	@Test
 	public void shouldShowAnswers_CorrectAndAnswerExists() {
 		// given
-		List<String> answers = mock(List.class);
-		when(answers.size()).thenReturn(1);
 		String answerToSet = "answer";
-		when(answers.get(0)).thenReturn(answerToSet);
+		List<String> answers = Lists.newArrayList(answerToSet);
 		when(model.getCorrectAnswers()).thenReturn(answers);
 
 		// when
@@ -245,8 +243,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 	@Test
 	public void shouldShowAnswers_UserAndEmptyAnswers() {
 		// given
-		List<String> answers = mock(List.class);
-		when(answers.size()).thenReturn(0);
+		List<String> answers = Lists.newArrayList();
 		when(model.getCurrentAnswers()).thenReturn(answers);
 
 		// when
@@ -259,10 +256,8 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 	@Test
 	public void shouldShowAnswers_UserAndAnswerExists() {
 		// given
-		List<String> answers = mock(List.class);
-		when(answers.size()).thenReturn(1);
 		String answerToSet = "answer";
-		when(answers.get(0)).thenReturn(answerToSet);
+		List<String> answers = Lists.newArrayList(answerToSet);
 		when(model.getCurrentAnswers()).thenReturn(answers);
 
 		// when
@@ -270,6 +265,25 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 
 		// then
 		verify(view).setContent(answerToSet);
+	}
+
+	@Test
+	public void shouldSetLocked_true() {
+		setLockedAndVerify(true);
+	}
+
+	@Test
+	public void shouldSetLocked_false() {
+		setLockedAndVerify(false);
+	}
+
+	private void setLockedAndVerify(boolean locked) {
+		// when
+		presenter.setLocked(locked);
+
+		// then
+		verify(view).lock(locked);
+		verify(view).setDragDisabled(locked);
 	}
 
 }
