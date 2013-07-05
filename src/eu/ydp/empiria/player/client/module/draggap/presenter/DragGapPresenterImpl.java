@@ -2,12 +2,6 @@ package eu.ydp.empiria.player.client.module.draggap.presenter;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
-import com.google.common.base.Optional;
-import com.google.gwt.event.dom.client.DragEndHandler;
-import com.google.gwt.event.dom.client.DropEvent;
-import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -20,71 +14,22 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
-import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
-import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
-import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
-import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
-import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
-import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 
 public class DragGapPresenterImpl implements DragGapPresenter {
 
-	private AnswerEvaluationSupplier answerEvaluationSupplier;
-	private DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
+	private final AnswerEvaluationSupplier answerEvaluationSupplier;
 	private final DragGapModuleModel model;
 	private final DragGapView view;
-	private DroppableObject<?> droppable;
-	private DropZoneGuardian dropZoneGuardian;
-	private DragGapDropHandler dragGapDropHandler;
-	private DragDropHelper dragDropHelper;
-	private StyleNameConstants styleNameConstants;
 
 	@Inject
-	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapView view, @ModuleScoped DragGapModuleModel model,
-			@PageScoped AnswerEvaluationSupplier answerEvaluationSupplier, DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
+	public DragGapPresenterImpl(DragGapView view, @ModuleScoped DragGapModuleModel model, @PageScoped AnswerEvaluationSupplier answerEvaluationSupplier) {
 
-		this.dragDropHelper = dragDropHelper;
-		this.styleNameConstants = styleNameConstants;
 		this.view = view;
 		this.model = model;
 		this.answerEvaluationSupplier = answerEvaluationSupplier;
-		this.dragDataObjectFromEventExtractor = dragDataObjectFromEventExtractor;
-	}
-
-	@PostConstruct
-	public void postConstruct() {
-		initializeDropCapabilities();
-	}
-
-	private void initializeDropCapabilities() {
-		droppable = dragDropHelper.enableDropForWidget(view.getDropZoneWidget());
-		dropZoneGuardian = new DropZoneGuardian(droppable, droppable.getDroppableWidget(), styleNameConstants);
-		addDomHandlerOnObjectDrop();
-	}
-
-	private void addDomHandlerOnObjectDrop() {
-		droppable.addDropHandler(new DropHandler() {
-			@Override
-			public void onDrop(DropEvent event) {
-				extractObjectFromEventAndCallHandler(event);
-			}
-		});
-	}
-
-	private void extractObjectFromEventAndCallHandler(DropEvent event) {
-		Optional<DragDataObject> objectFromEvent = dragDataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
-		if (objectFromEvent.isPresent()) {
-			dragGapDropHandler.onDrop(objectFromEvent.get());
-		}
-	}
-
-	@Override
-	public void setDragEndHandler(DragEndHandler dragEndHandler) {
-		view.setDragEndHandler(dragEndHandler);
 	}
 
 	@Override
@@ -178,22 +123,8 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	}
 
 	@Override
-	public void lockDropZone() {
-		dropZoneGuardian.lockDropZone();
-	}
-
-	@Override
-	public void unlockDropZone() {
-		dropZoneGuardian.unlockDropZone();
-	}
-
-	@Override
-	public void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler) {
-		view.setDragStartHandler(dragGapStartDragHandler);
-	}
-
-	@Override
-	public void setDropHandler(DragGapDropHandler dragGapDropHandler) {
-		this.dragGapDropHandler = dragGapDropHandler;
+	public void setGapDimensions(HasDimensions size) {
+		view.setWidth(size.getWidth());
+		view.setHeight(size.getHeight());
 	}
 }
