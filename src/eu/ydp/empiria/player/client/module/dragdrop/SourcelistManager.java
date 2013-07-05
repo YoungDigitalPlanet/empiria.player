@@ -14,7 +14,7 @@ public interface SourcelistManager {
 
 	void dragFinished();
 
-	String getValue(String itemId, String targetModuleId);
+	SourcelistItemValue getValue(String itemId, String targetModuleId);
 
 	void onUserValueChanged();
 }

@@ -47,7 +47,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 		view.createAndBindUi();
 		List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
 		for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
-			view.createItem(simpleSourceListItemBean.getAlt(), simpleSourceListItemBean.getValue());
+			view.createItem(simpleSourceListItemBean.getAlt(), simpleSourceListItemBean.getItemValue().getContent()); // TODO YPUB-5441
 		}
 	}
 
