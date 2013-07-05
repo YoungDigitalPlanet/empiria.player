@@ -7,16 +7,16 @@ import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
 public class DropZoneGuardian {
 
-	private final DroppableObject<? extends Widget> droppable;	
+	private final DroppableObject<? extends Widget> droppable;
 	protected Widget moduleWidget;
 	private final StyleNameConstants styleNames;
-	
-	public DropZoneGuardian(DroppableObject<? extends Widget> droppable, Widget moduleWidget, StyleNameConstants styleNameConstants) {
+
+	public DropZoneGuardian(DroppableObject<?> droppable, Widget moduleWidget, StyleNameConstants styleNameConstants) {
 		this.droppable = droppable;
 		this.moduleWidget  = moduleWidget;
 		this.styleNames = styleNameConstants;
 	}
-	
+
 	public void lockDropZone() {
 		droppable.setDisableDrop(true);
 		moduleWidget.addStyleName(styleNames.QP_DROP_ZONE_LOCKED());

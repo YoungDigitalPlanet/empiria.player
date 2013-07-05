@@ -15,15 +15,13 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
-import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
@@ -55,16 +53,16 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 
 	@Inject
 	private TextBoxExpressionReplacer expressionReplacer;
-	
+
 	@Inject
 	private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
 
 	private DroppableObject<TextBox> droppable;
 	private DropZoneGuardian dropZoneGuardian;
-	
+
 	@Inject
 	private DragDropHelper dragDropHelper;
-	
+
 	@PostConstruct
 	public void postConstruct(){
 		droppable = dragDropHelper.enableDropForWidget(new TextBox());
@@ -74,12 +72,12 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 
 		dropZoneGuardian = new DropZoneGuardian(droppable, moduleWidget, styleNames);
 	}
-	
-	
+
+
 
 	@Override
 	public void addDomHandlerOnObjectDrop(final GapDropHandler dragGapDropHandler) {
-		moduleWidget.addDomHandler(new DropHandler() {
+		droppable.addDropHandler(new DropHandler() {
 			@Override
 			public void onDrop(DropEvent event) {
 				Optional<DragDataObject> objectFromEvent = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
@@ -87,9 +85,9 @@ public class TextEntryModulePresenter implements GapModulePresenter {
 					dragGapDropHandler.onDrop(objectFromEvent.get());
 				}
 			}
-		}, DropEvent.getType());
+		});
 	}
-	
+
 	@Override
 	public void setWidth(double value, Unit unit) {
 		textBox.setWidth(value + unit.getType());

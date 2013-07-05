@@ -7,7 +7,6 @@ import com.google.gwt.event.dom.client.DragDropEventBase;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -15,6 +14,7 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
+import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
@@ -31,11 +31,11 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	@Inject private Provider<SourceListViewItem> sourceListViewItemProvider;
 	@Inject private DragDropHelper dragDropHelper;
 	@Inject private DragDataObjectFromEventExtractor objectFromEventExtractor;
-	@UiField(provided=true) FlowPanel items;
+	@UiField FlowPanelWithDropZone items;
 
 	private final BiMap<String,SourceListViewItem> itemIdToItemCollection = HashBiMap.create();
 	private SourceListPresenter sourceListPresenter;
-	private DroppableObject<FlowPanel> sourceListDropZone;
+	private DroppableObject<FlowPanelWithDropZone> sourceListDropZone;
 
 	private SourceListViewItem getItem(String itemContent) {
 		SourceListViewItem item = sourceListViewItemProvider.get();
@@ -46,9 +46,8 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 
 	@Override
 	public void createAndBindUi() {
-		sourceListDropZone = dragDropHelper.enableDropForWidget(new FlowPanel(), false);
-		items = (FlowPanel) sourceListDropZone.getDroppableWidget();
 		initWidget(uiBinder.createAndBindUi(this));
+		sourceListDropZone = dragDropHelper.enableDropForWidget(items, false);
 		touchReservationFactory.addTouchReservationHandler(items);
 		addDropHandler();
 	}
@@ -85,6 +84,7 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	@Override
 	public void createItem(String itemId, String itemContent) {
 		SourceListViewItem item = getItem(itemContent);
+
 		items.add(item);
 		itemIdToItemCollection.put(itemId, item);
 	}

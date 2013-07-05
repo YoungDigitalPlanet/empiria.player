@@ -71,18 +71,27 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 		options.setHelper(HelperType.CLONE);
 		options.setRevert(RevertOption.ON_INVALID_DROP);
 		options.setCursor(Cursor.MOVE);
-		dragWidget = new DraggableWidget<W>(widget, options);
+		if(widget instanceof DraggableWidget){
+			dragWidget = (DraggableWidget<W>) widget;
+		}else{
+			dragWidget = new DraggableWidget<W>(widget, options);
+		}
 		dragWidget.setDraggableOptions(options);
 		dragWidget.setDraggingOpacity(.8f);
 
 	}
 
 	private void createDrop(W widget) {
-		dropWidget = new DroppableWidget<W>(widget);
+		if(widget instanceof DroppableWidget){
+			dropWidget = (DroppableWidget<W>) widget;
+		}else{
+			dropWidget = new DroppableWidget<W>(widget);
+		}
 		dropWidget.addDropHandler(new DropEventHandler() {
 			@Override
 			public void onDrop(DropEvent event) {
-				JsonAttr jsonAttr = overlayTypesParser.get(event.getDraggable().getAttribute(DATA_JSON));
+				String attribute = event.getDraggable().getAttribute(DATA_JSON);
+				JsonAttr jsonAttr = overlayTypesParser.get(attribute);
 				getDropEventsHandlerWrapper().setJsonAttr(jsonAttr);
 			}
 		});
@@ -124,7 +133,7 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 
 	public DropEventsHandlerWrapper getDropEventsHandlerWrapper() {
 		if (dropEventsHandlerWrapper == null) {
-			dropEventsHandlerWrapper = new DropEventsHandlerWrapper(dropWidget);
+			dropEventsHandlerWrapper = new DropEventsHandlerWrapper(dropWidget,overlayTypesParser);
 		}
 		return dropEventsHandlerWrapper;
 	}
