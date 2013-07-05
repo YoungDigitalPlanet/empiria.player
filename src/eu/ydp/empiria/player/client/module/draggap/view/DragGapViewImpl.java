@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.draggap.view;
 
 import com.google.common.base.Optional;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.DragEndEvent;
 import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragStartEvent;
@@ -19,7 +18,7 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
-import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
+import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 public class DragGapViewImpl implements DragGapView {
 
@@ -30,17 +29,16 @@ public class DragGapViewImpl implements DragGapView {
 
 	@UiField
 	FlowPanelWithDropZone container;
+	FlowPanel itemWrapper;
 
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
 	private final DragGapStylesProvider dragGapStylesProvider;
 
 	private Widget contentWidget;
-	private FlowPanel itemWrapper;
 	private Optional<DraggableObject<FlowPanel>> optionalDraggable = Optional.absent();
-	private Optional<DragStartHandler> dragStartHandlerOptional = Optional.absent();
+	private Optional<DragGapStartDragHandler> dragStartHandlerOptional = Optional.absent();
 	private DragEndHandler dragEndHandler;
-	
 
 	@Inject
 	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider) {
@@ -144,29 +142,16 @@ public class DragGapViewImpl implements DragGapView {
 	}
 
 	@Override
-	public void setDragStartHandler(DragStartHandler dragStartHandler) {
-		dragStartHandlerOptional = Optional.fromNullable(dragStartHandler);
-	}
-	
-	@Override
-	public DroppableObject<FlowPanelWithDropZone> enableDropCapabilities() {
-		DroppableObject<FlowPanelWithDropZone> droppable = dragDropHelper.enableDropForWidget(container);
-		return droppable;
+	public void setDropHandler(DragGapDropHandler dragGapDropHandler) {
 	}
 
 	@Override
-	public void setHeight(int height) {
-		container.setHeight(toPxUnit(height));
+	public void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler) {
+		dragStartHandlerOptional = Optional.fromNullable(dragGapStartDragHandler);
 	}
 
 	@Override
-	public void setWidth(int width) {
-		container.setWidth(toPxUnit(width));
-	}
-	
-	private String toPxUnit(int value) {
-		String px = Unit.PX.toString().toLowerCase();
-		String valueInPxUnit = value + px;
-		return valueInPxUnit;
+	public DroppableWidget<FlowPanel> getDropZoneWidget() {
+		return container;
 	}
 }

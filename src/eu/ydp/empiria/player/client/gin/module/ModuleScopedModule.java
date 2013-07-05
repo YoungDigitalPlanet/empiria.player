@@ -22,7 +22,6 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillBeanProx
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionStructure;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
-import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
@@ -61,7 +60,6 @@ public class ModuleScopedModule extends AbstractGinModule{
 
 	private void bindDragGap() {
 		bindModuleScoped(DragGapModuleModel.class, new TypeLiteral<ModuleScopedProvider<DragGapModuleModel>>(){});
-		bindModuleScoped(DragGapView.class, new TypeLiteral<ModuleScopedProvider<DragGapView>>(){});
 	}
 
 	private <T> void bindModuleScoped(Class<T> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){

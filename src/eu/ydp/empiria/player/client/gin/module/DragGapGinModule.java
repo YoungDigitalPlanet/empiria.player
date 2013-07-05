@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
-import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 
-import eu.ydp.empiria.player.client.module.draggap.DragGapModuleFactory;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenter;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenterImpl;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
@@ -15,7 +13,5 @@ public class DragGapGinModule extends AbstractGinModule{
 	protected void configure() {
 		bind(DragGapPresenter.class).to(DragGapPresenterImpl.class);
 		bind(DragGapView.class).to(DragGapViewImpl.class);
-		
-		install(new GinFactoryModuleBuilder().build(DragGapModuleFactory.class));
 	}
 }

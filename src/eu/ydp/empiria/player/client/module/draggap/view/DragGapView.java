@@ -1,11 +1,11 @@
 package eu.ydp.empiria.player.client.module.draggap.view;
 
 import com.google.gwt.event.dom.client.DragEndHandler;
-import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
+
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
-import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
+import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 public interface DragGapView extends IsWidget {
 
@@ -19,13 +19,11 @@ public interface DragGapView extends IsWidget {
 
 	void updateStyle(UserAnswerType answerType);
 
-	void setDragStartHandler(DragStartHandler dragGapStartDragHandler);
+	void setDropHandler(DragGapDropHandler dragGapDropHandler);
 
-	void setDragEndHandler(DragEndHandler dragEndHandler);
+	void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler);
 
-	DroppableObject<FlowPanelWithDropZone> enableDropCapabilities();
+	void setDragEndHandler( DragEndHandler dragEndHandler);
 
-	void setHeight(int height);
-
-	void setWidth(int width);
+	<W extends DroppableWidget<? extends Widget>> W getDropZoneWidget();
 }

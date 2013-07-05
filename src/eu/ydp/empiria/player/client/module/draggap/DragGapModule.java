@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.draggap;
 
+import com.google.gwt.event.dom.client.DragEndEvent;
+import com.google.gwt.event.dom.client.DragEndHandler;
+import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
@@ -11,30 +14,36 @@ import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModu
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
-import eu.ydp.empiria.player.client.module.draggap.dragging.DragDropController;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenter;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapStructure;
+import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
+import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
+import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
 import eu.ydp.gwtutil.client.StringUtils;
-import eu.ydp.gwtutil.client.Wrapper;
 
 public class DragGapModule extends AbstractInteractionModule<DragGapModule, DragGapModuleModel, DragGapBean> implements SourcelistClient {
 
 	@Inject
-	private DragGapPresenter dragGapPresenter;
-	@Inject
-	private DragGapStructure dragGapStructure;
-	@Inject
 	@ModuleScoped
 	private DragGapModuleModel dragGapModuleModel;
+
+	@Inject
+	private DragGapPresenter dragGapPresenter;
+
+	@Inject
+	private DragGapStructure dragGapStructure;
+
 	@Inject @PageScoped
 	private SourcelistManager sourcelistManager;
-	@Inject 
-	private DragDropController dragDropController;
-	
-	
-	private Wrapper<String> itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
+
+	@Inject
+	OverlayTypesParser overlayTypesParser;
+
+	private String itemId = StringUtils.EMPTY_STRING;
 
 	@Override
 	protected ActivityPresenter<DragGapModuleModel, DragGapBean> getPresenter() {
@@ -44,15 +53,48 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	protected void initalizeModule() {
 		dragGapModuleModel.initialize(this);
-		dragDropController.initializeDrop(getIdentifier());
-		dragDropController.initializeDrag(getIdentifier(), itemIdWrapper);
+
+		dragGapPresenter.setDropHandler(new DragGapDropHandler() {
+
+			@Override
+			public void onDrop(DragDataObject dragDataObject) {
+				String itemID = dragDataObject.getItemId();
+				String sourceModuleId = dragDataObject.getSourceId();
+				String targetModuleId = getIdentifier();
+
+				sourcelistManager.dragEnd(itemID, sourceModuleId,
+						targetModuleId);
+			}
+		});
+
+		dragGapPresenter.setDragStartHandler(new DragGapStartDragHandler() {
+
+			@Override
+			public void onDragStart(DragStartEvent event) {
+				sourcelistManager.dragStart(getIdentifier());
+
+				DragDataObject dataObject = overlayTypesParser.<NativeDragDataObject>get();
+				dataObject.setItemId(itemId);
+				dataObject.setSourceId(getIdentifier());
+				event.setData("json", dataObject.toJSON());
+			}
+		});
+
+		dragGapPresenter.setDragEndHandler(new DragEndHandler() {
+
+			@Override
+			public void onDragEnd(DragEndEvent event) {
+				sourcelistManager.dragFinished();
+			}
+		});
+
 		sourcelistManager.registerModule(this);
 	}
 
 	@Override
 	public void reset() {
 		super.reset();
-		itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
+		itemId = StringUtils.EMPTY_STRING;
 		sourcelistManager.onUserValueChanged();
 	}
 
@@ -68,12 +110,12 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
 	@Override
 	public String getDragItemId() {
-		return itemIdWrapper.getInstance();
+		return itemId;
 	}
 
 	@Override
 	public void setDragItem(String itemId) {
-		this.itemIdWrapper = Wrapper.of(itemId);
+		this.itemId = itemId;
 		SourcelistItemValue itemContent = sourcelistManager.getValue(itemId, getIdentifier());
 		dragGapPresenter.setContent(itemContent.getContent());
 	}
@@ -81,21 +123,22 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	public void removeDragItem() {
 		dragGapPresenter.removeContent();
-		itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
+		itemId = StringUtils.EMPTY_STRING;
 	}
 
 	@Override
 	public void lockDropZone() {
-		dragDropController.lockDropZone();
+		dragGapPresenter.lockDropZone();
 	}
 
 	@Override
 	public void unlockDropZone() {
-		dragDropController.unlockDropZone();
+		dragGapPresenter.unlockDropZone();
 	}
 
 	@Override
 	public void setSize(HasDimensions size) {
-		dragGapPresenter.setGapDimensions(size);
+		// TODO YPUB-5441
+		
 	}
 }
