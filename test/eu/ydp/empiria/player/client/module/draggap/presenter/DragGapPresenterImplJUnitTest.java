@@ -133,9 +133,18 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 	}
 
 	@Test
-	public void shouldMarkAnswers_Unmark() {
+	public void shouldMarkAnswers_UnmarkCorrect() {
 		// when
 		presenter.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK);
+
+		// then
+		verify(view).updateStyle(UserAnswerType.DEFAULT);
+	}
+	
+	@Test
+	public void shouldMarkAnswers_UnmarkWrong() {
+		// when
+		presenter.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.UNMARK);
 
 		// then
 		verify(view).updateStyle(UserAnswerType.DEFAULT);
