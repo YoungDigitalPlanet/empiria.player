@@ -9,9 +9,11 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+
 public class SourcelistManagerImpl implements SourcelistManager {
 
-	@Inject private SourcelistManagerModel model;
+	@Inject @PageScoped	private SourcelistManagerModel model;
 	@Inject private SourcelistManagerHelper helper;
 
 	private final Function<SourcelistClient, String> clientToItemid = new Function<SourcelistClient, String>() {
