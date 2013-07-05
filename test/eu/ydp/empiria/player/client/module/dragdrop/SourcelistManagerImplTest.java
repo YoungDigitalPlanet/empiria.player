@@ -236,7 +236,7 @@ public class SourcelistManagerImplTest {
 	}
 	
 	@Test
-	public void should(){
+	public void shouldResizeAllClients(){
 		// given
 		PlayerEvent event = mock(PlayerEvent.class);
 		HasDimensions dim1 = mock(HasDimensions.class);
