@@ -9,9 +9,11 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+
 public class SourcelistManagerImpl implements SourcelistManager {
 
-	@Inject private SourcelistManagerModel model;
+	@Inject @PageScoped	private SourcelistManagerModel model;
 	@Inject private SourcelistManagerHelper helper;
 
 	private final Function<SourcelistClient, String> clientToItemid = new Function<SourcelistClient, String>() {
@@ -81,10 +83,17 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	@Override
 	public void dragEnd(String itemId, String sourceModuleId,
 			String targetModuleId) {
+		if(!sourceModuleId.equals(targetModuleId)) {
+			moveItemFromSourceToTarget(itemId, sourceModuleId, targetModuleId);
+		}
+	}
+
+	private void moveItemFromSourceToTarget(String itemId, String sourceModuleId, String targetModuleId) {
 		Sourcelist sourcelist = model.getSourcelistByClientId(targetModuleId);
 		SourcelistClient targetClient = model.getClientById(targetModuleId);
 
 		String previousItemid = targetClient.getDragItemId();
+		sourcelist.restockItem(previousItemid);
 
 		targetClient.setDragItem(itemId);
 
@@ -95,8 +104,6 @@ public class SourcelistManagerImpl implements SourcelistManager {
 			sourcelist.useItem(itemId);
 		}
 		
-		sourcelist.restockItem(previousItemid);
-
 		unlockAll();
 	}
 

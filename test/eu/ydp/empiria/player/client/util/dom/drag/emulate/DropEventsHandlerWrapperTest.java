@@ -47,7 +47,7 @@ public class DropEventsHandlerWrapperTest {
 	public void before() {
 		AbstractHTML5DragDropWrapper.parser = new OverlayTypesParserMock();
 		droppableWidget = mock(DroppableWidget.class);
-		instance = new DropEventsHandlerWrapper(droppableWidget);
+		instance = new DropEventsHandlerWrapper(droppableWidget,AbstractHTML5DragDropWrapper.parser);
 	}
 
 	@Test

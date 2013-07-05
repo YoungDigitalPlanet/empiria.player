@@ -2,7 +2,10 @@ package eu.ydp.empiria.player.client.module.draggap.presenter;
 
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.DragEndHandler;
+import com.google.gwt.event.dom.client.DropEvent;
+import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -15,48 +18,56 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
+import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
 public class DragGapPresenterImpl implements DragGapPresenter {
 
-	@Inject
-	@ModuleScoped
-	private DragGapModuleModel model;
-
+	@Inject	@ModuleScoped private DragGapModuleModel model;
+	@Inject	@PageScoped	private AnswerEvaluationSupplier answerEvaluationSupplier;
+	@Inject	private DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
 	private final DragGapView view;
-
-	@Inject
-	@PageScoped
-	private AnswerEvaluationSupplier answerEvaluationSupplier;
-
-	private DragGapBean bean;
-	private ModuleSocket socket;
-
-	private final StyleNameConstants styleNames;
-
-	private final DroppableObject<Widget> droppable;
+	private final DroppableObject<?> droppable;
 	private final DropZoneGuardian dropZoneGuardian;
+	private DragGapDropHandler dragGapDropHandler;
 
 	@Inject
 	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapView view) {
 		this.view = view;
-		droppable = dragDropHelper.enableDropForWidget(view.asWidget());
-		styleNames = styleNameConstants;
-
-		dropZoneGuardian = new DropZoneGuardian(droppable, view.asWidget(), styleNames);
+		droppable = dragDropHelper.enableDropForWidget(view.getDropZoneWidget());
+		dropZoneGuardian = new DropZoneGuardian(droppable, droppable.getDroppableWidget(), styleNameConstants);
+		addDomHandlerOnObjectDrop();
 	}
-	
-	public void setDragEndHandler(DragEndHandler dragEndHandler){
+
+	private void addDomHandlerOnObjectDrop() {
+		droppable.addDropHandler(new DropHandler() {
+			@Override
+			public void onDrop(DropEvent event) {
+				extractObjectFromEventAndCallHandler(event);
+			}
+		});
+	}
+
+	private void extractObjectFromEventAndCallHandler(DropEvent event) {
+		Optional<DragDataObject> objectFromEvent = dragDataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
+		if (objectFromEvent.isPresent()) {
+			dragGapDropHandler.onDrop(objectFromEvent.get());
+		}
+	}
+
+	@Override
+	public void setDragEndHandler(DragEndHandler dragEndHandler) {
 		view.setDragEndHandler(dragEndHandler);
 	}
-	
+
 	@Override
 	public void bindView() {
 		view.updateStyle(UserAnswerType.DEFAULT);
@@ -76,39 +87,39 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 	@Override
 	public void setModuleSocket(ModuleSocket socket) {
-		this.socket = socket;
 	}
 
 	@Override
 	public void setBean(DragGapBean bean) {
-		this.bean = bean;
 	}
 
 	@Override
 	public void setLocked(boolean locked) {
 		view.lock(locked);
+		view.setDragDisabled(locked);
 	}
 
 	@Override
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		List<Boolean> evaluatedAnswers = answerEvaluationSupplier
-				.evaluateAnswer(model.getResponse());
+		if (mode == MarkAnswersMode.MARK) {
+			markAnswers(type);
+		} else if (mode == MarkAnswersMode.UNMARK) {
+			view.updateStyle(UserAnswerType.DEFAULT);
+		}
+	}
 
-			if (mode == MarkAnswersMode.MARK) {
-				if (evaluatedAnswers.isEmpty()){
-					view.updateStyle(UserAnswerType.NONE);
-				} else {
-					Boolean isAnswerCorrect = evaluatedAnswers.get(0);
-					if (type == MarkAnswersType.CORRECT && isAnswerCorrect) {
-						view.updateStyle(UserAnswerType.CORRECT);
-					} else if (type == MarkAnswersType.WRONG && !isAnswerCorrect) {
-						view.updateStyle(UserAnswerType.WRONG);
-					}
-				}
-				
-			} else if (mode == MarkAnswersMode.UNMARK) {
-				view.updateStyle(UserAnswerType.DEFAULT);
+	private void markAnswers(MarkAnswersType type) {
+		List<Boolean> evaluatedAnswers = answerEvaluationSupplier.evaluateAnswer(model.getResponse());
+		if (evaluatedAnswers.isEmpty()) {
+			view.updateStyle(UserAnswerType.NONE);
+		} else {
+			Boolean isAnswerCorrect = evaluatedAnswers.get(0);
+			if (type == MarkAnswersType.CORRECT && isAnswerCorrect) {
+				view.updateStyle(UserAnswerType.CORRECT);
+			} else if (type == MarkAnswersType.WRONG && !isAnswerCorrect) {
+				view.updateStyle(UserAnswerType.WRONG);
 			}
+		}
 	}
 
 	@Override
@@ -121,8 +132,8 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		} else {
 			return;
 		}
-		
-		if(answers.size() > 0){
+
+		if (answers.size() > 0) {
 			String answerToSet = answers.get(0);
 			view.setContent(answerToSet);
 		} else {
@@ -157,7 +168,6 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		dropZoneGuardian.unlockDropZone();
 	}
 
-
 	@Override
 	public void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler) {
 		view.setDragStartHandler(dragGapStartDragHandler);
@@ -165,6 +175,6 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 	@Override
 	public void setDropHandler(DragGapDropHandler dragGapDropHandler) {
-		view.setDropHandler(dragGapDropHandler);
+		this.dragGapDropHandler = dragGapDropHandler;
 	}
 }

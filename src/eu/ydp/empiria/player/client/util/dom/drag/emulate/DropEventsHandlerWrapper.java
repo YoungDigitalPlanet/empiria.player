@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.util.dom.drag.emulate;
 
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import gwtquery.plugins.droppable.client.events.DropEvent;
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.events.OutDroppableEvent;
@@ -9,6 +10,7 @@ import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppable
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 import com.google.gwt.dom.client.DataTransfer;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DragEnterEvent;
 import com.google.gwt.event.dom.client.DragEnterHandler;
 import com.google.gwt.event.dom.client.DragLeaveEvent;
@@ -63,20 +65,31 @@ public class DropEventsHandlerWrapper extends AbstractHTML5DragDropWrapper {
 	protected class DropEventWrapper extends com.google.gwt.event.dom.client.DropEvent {
 		private final DragDropSetGetData setGetData;
 
-		public DropEventWrapper(DragDropSetGetData data) {
+		public DropEventWrapper(DragDropSetGetData data, NativeEvent nativeEvent) {
 			this.setGetData = data;
+			setNativeEvent(nativeEvent);
 		}
 
 		@Override
 		public DataTransfer getDataTransfer() {
 			return setGetData.getDataTransfer();
 		}
+
+		@Override
+		public void stopPropagation() {
+		}
+
+		@Override
+		public void preventDefault() {
+		}
 	}
 
 	private final DroppableWidget<?> droppableWidget;
+	private final OverlayTypesParser overlayTypesParser;
 
-	public DropEventsHandlerWrapper(DroppableWidget<?> droppableWidget) {
+	public DropEventsHandlerWrapper(DroppableWidget<?> droppableWidget, OverlayTypesParser overlayTypesParser) {
 		this.droppableWidget = droppableWidget;
+		this.overlayTypesParser = overlayTypesParser;
 	}
 
 
@@ -115,7 +128,7 @@ public class DropEventsHandlerWrapper extends AbstractHTML5DragDropWrapper {
 
 			@Override
 			public void onDrop(DropEvent event) {
-				dropHandler.onDrop(new DropEventWrapper(DropEventsHandlerWrapper.this));
+				dropHandler.onDrop(new DropEventWrapper(DropEventsHandlerWrapper.this,overlayTypesParser.<NativeEvent>get()));
 			}
 		});
 	}

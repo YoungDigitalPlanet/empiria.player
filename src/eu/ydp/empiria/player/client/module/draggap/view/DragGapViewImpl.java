@@ -6,8 +6,6 @@ import com.google.gwt.event.dom.client.DragEndEvent;
 import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.event.dom.client.DragStartHandler;
-import com.google.gwt.event.dom.client.DropEvent;
-import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -17,9 +15,10 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
+import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
+import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 public class DragGapViewImpl implements DragGapView {
 
@@ -29,30 +28,25 @@ public class DragGapViewImpl implements DragGapView {
 	}
 
 	@UiField
-	FlowPanel container;
+	FlowPanelWithDropZone container;
 	FlowPanel itemWrapper;
 
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
-	private final DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
+	private final DragGapStylesProvider dragGapStylesProvider;
 
 	private Widget contentWidget;
 	private Optional<DraggableObject<FlowPanel>> optionalDraggable = Optional.absent();
-	private Optional<DragGapDropHandler> dragGapDropHandlerOptional = Optional.absent();
 	private Optional<DragGapStartDragHandler> dragStartHandlerOptional = Optional.absent();
-	private DraggableObject<FlowPanel> draggableObject;
 	private DragEndHandler dragEndHandler;
 
 	@Inject
-	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants,
-			DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
+	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider) {
 		this.dragDropHelper = dragDropHelper;
 		this.styleNameConstants = styleNameConstants;
-		this.dragDataObjectFromEventExtractor = dragDataObjectFromEventExtractor;
+		this.dragGapStylesProvider = dragGapStylesProvider;
 
 		uiBinder.createAndBindUi(this);
-		addDomHandlerOnObjectDrop();
-		addDomHandlerOnDragStart();
 		container.setStyleName(styleNameConstants.QP_DRAG_GAP_DEFAULT());
 	}
 
@@ -63,33 +57,51 @@ public class DragGapViewImpl implements DragGapView {
 
 	@Override
 	public void setContent(String content) {
-		container.clear();
+		removeContent();
+		DraggableObject<FlowPanel> draggableObject = createDraggableObjectWithContent(content);
+		addDragHandlersToItem(draggableObject);
+	}
+
+	private DraggableObject<FlowPanel> createDraggableObjectWithContent(String content) {
 		contentWidget = new HTMLPanel(content);
 		itemWrapper = new FlowPanel();
 		itemWrapper.add(contentWidget);
-		draggableObject = dragDropHelper.enableDragForWidget(itemWrapper);
+
+		DraggableObject<FlowPanel> draggableObject = dragDropHelper.enableDragForWidget(itemWrapper);
 		Widget draggableWidget = draggableObject.getDraggableWidget();
+
 		container.add(draggableWidget);
 		optionalDraggable = Optional.of(draggableObject);
+		return draggableObject;
+	}
 
-		draggableObject.addDragStartHandler(new DragStartHandler() {
-			@Override
-			public void onDragStart(DragStartEvent event) {
-				event.getDataTransfer().setDragImage(itemWrapper.getElement(), 0, 0);
-			}
-		});
+	private void addDragHandlersToItem(DraggableObject<FlowPanel> draggableObject) {
+		addDragStartHandlerToItem(draggableObject);
+		addDragEndHandlerToItem(draggableObject);
+	}
 
+	private void addDragEndHandlerToItem(DraggableObject<FlowPanel> draggableObject) {
 		draggableObject.addDragEndHandler(new DragEndHandler() {
-			
+
 			@Override
 			public void onDragEnd(DragEndEvent event) {
 				removeDraggableStyleFromItem();
 				dragEndHandler.onDragEnd(event);
 			}
-			
 		});
 	}
 
+	private void addDragStartHandlerToItem(DraggableObject<FlowPanel> draggableObject) {
+		draggableObject.addDragStartHandler(new DragStartHandler() {
+			@Override
+			public void onDragStart(DragStartEvent event) {
+				event.getDataTransfer().setDragImage(itemWrapper.getElement(), 0, 0);
+				dragStartHandlerOptional.get().onDragStart(event);
+			}
+		});
+	}
+
+	@Override
 	public void setDragEndHandler(final DragEndHandler dragEndHandler) {
 		this.dragEndHandler = dragEndHandler;
 	}
@@ -108,22 +120,8 @@ public class DragGapViewImpl implements DragGapView {
 
 	@Override
 	public void updateStyle(UserAnswerType answerType) {
-		switch (answerType) {
-		case CORRECT:
-			container.setStyleName(styleNameConstants.QP_DRAG_GAP_CORRECT());
-			break;
-		case WRONG:
-			container.setStyleName(styleNameConstants.QP_DRAG_GAP_WRONG());
-			break;
-		case DEFAULT:
-			container.setStyleName(styleNameConstants.QP_DRAG_GAP_DEFAULT());
-			break;
-		case NONE:
-			container.setStyleName(styleNameConstants.QP_DRAG_GAP_NONE());
-			break;
-		default:
-			break;
-		}
+		String gapStyleName = dragGapStylesProvider.getCorrectGapStyleName(answerType);
+		container.setStyleName(gapStyleName);
 	}
 
 	@Override
@@ -145,27 +143,6 @@ public class DragGapViewImpl implements DragGapView {
 
 	@Override
 	public void setDropHandler(DragGapDropHandler dragGapDropHandler) {
-		this.dragGapDropHandlerOptional = Optional.fromNullable(dragGapDropHandler);
-	}
-
-	private void addDomHandlerOnObjectDrop() {
-		container.addDomHandler(new DropHandler() {
-			@Override
-			public void onDrop(DropEvent event) {
-				if (dragGapDropHandlerOptional.isPresent()) {
-					extractObjectFromEventAndCallHandler(event);
-				}
-			}
-
-		}, DropEvent.getType());
-	}
-
-	private void extractObjectFromEventAndCallHandler(DropEvent event) {
-		Optional<DragDataObject> objectFromEvent = dragDataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
-		if (objectFromEvent.isPresent()) {
-			DragGapDropHandler dragGapDropHandler = dragGapDropHandlerOptional.get();
-			dragGapDropHandler.onDrop(objectFromEvent.get());
-		}
 	}
 
 	@Override
@@ -173,14 +150,8 @@ public class DragGapViewImpl implements DragGapView {
 		dragStartHandlerOptional = Optional.fromNullable(dragGapStartDragHandler);
 	}
 
-	private void addDomHandlerOnDragStart() {
-		container.addDomHandler(new DragStartHandler() {
-			@Override
-			public void onDragStart(DragStartEvent event) {
-				if (dragStartHandlerOptional.isPresent()) {
-					dragStartHandlerOptional.get().onDragStart(event);
-				}
-			}
-		}, DragStartEvent.getType());
+	@Override
+	public DroppableWidget<FlowPanel> getDropZoneWidget() {
+		return container;
 	}
 }

@@ -39,7 +39,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
 	@Inject @PageScoped
 	private SourcelistManager sourcelistManager;
-	
+
 	@Inject
 	OverlayTypesParser overlayTypesParser;
 
@@ -72,26 +72,25 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 			@Override
 			public void onDragStart(DragStartEvent event) {
 				sourcelistManager.dragStart(getIdentifier());
-				
+
 				DragDataObject dataObject = overlayTypesParser.<NativeDragDataObject>get();
 				dataObject.setItemId(itemId);
 				dataObject.setSourceId(getIdentifier());
-				
 				event.setData("json", dataObject.toJSON());
 			}
 		});
 
 		dragGapPresenter.setDragEndHandler(new DragEndHandler() {
-			
+
 			@Override
 			public void onDragEnd(DragEndEvent event) {
 				sourcelistManager.dragFinished();
 			}
 		});
-		
+
 		sourcelistManager.registerModule(this);
 	}
-	
+
 	@Override
 	public void reset() {
 		super.reset();
@@ -113,7 +112,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	public String getDragItemId() {
 		return itemId;
 	}
-	
+
 	@Override
 	public void setDragItem(String itemId) {
 		this.itemId = itemId;
