@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.draggap.presenter;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DropEvent;
@@ -31,17 +33,34 @@ import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
 public class DragGapPresenterImpl implements DragGapPresenter {
 
-	@Inject	@ModuleScoped private DragGapModuleModel model;
-	@Inject	@PageScoped	private AnswerEvaluationSupplier answerEvaluationSupplier;
-	@Inject	private DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
+	private AnswerEvaluationSupplier answerEvaluationSupplier;
+	private DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
+	private final DragGapModuleModel model;
 	private final DragGapView view;
-	private final DroppableObject<?> droppable;
-	private final DropZoneGuardian dropZoneGuardian;
+	private DroppableObject<?> droppable;
+	private DropZoneGuardian dropZoneGuardian;
 	private DragGapDropHandler dragGapDropHandler;
+	private DragDropHelper dragDropHelper;
+	private StyleNameConstants styleNameConstants;
 
 	@Inject
-	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapView view) {
+	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapView view, @ModuleScoped DragGapModuleModel model,
+			@PageScoped AnswerEvaluationSupplier answerEvaluationSupplier, DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
+
+		this.dragDropHelper = dragDropHelper;
+		this.styleNameConstants = styleNameConstants;
 		this.view = view;
+		this.model = model;
+		this.answerEvaluationSupplier = answerEvaluationSupplier;
+		this.dragDataObjectFromEventExtractor = dragDataObjectFromEventExtractor;
+	}
+
+	@PostConstruct
+	public void postConstruct() {
+		initializeDropCapabilities();
+	}
+
+	private void initializeDropCapabilities() {
 		droppable = dragDropHelper.enableDropForWidget(view.getDropZoneWidget());
 		dropZoneGuardian = new DropZoneGuardian(droppable, droppable.getDroppableWidget(), styleNameConstants);
 		addDomHandlerOnObjectDrop();
