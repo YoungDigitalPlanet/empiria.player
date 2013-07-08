@@ -26,22 +26,26 @@ import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
+import eu.ydp.empiria.player.client.module.sourcelist.view.DisableDefaultBehaviorCommand;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
+import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class DragGapPresenterImpl implements DragGapPresenter {
 
-	private AnswerEvaluationSupplier answerEvaluationSupplier;
-	private DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
+	private final AnswerEvaluationSupplier answerEvaluationSupplier;
+	private final DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
 	private final DragGapModuleModel model;
 	private final DragGapView view;
+	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
 	private DroppableObject<?> droppable;
 	private DropZoneGuardian dropZoneGuardian;
 	private DragGapDropHandler dragGapDropHandler;
-	private DragDropHelper dragDropHelper;
-	private StyleNameConstants styleNameConstants;
+	private final DragDropHelper dragDropHelper;
+	private final StyleNameConstants styleNameConstants;
 
 	@Inject
 	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapView view, @ModuleScoped DragGapModuleModel model,
@@ -58,6 +62,12 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	@PostConstruct
 	public void postConstruct() {
 		initializeDropCapabilities();
+		disableTextMark();
+	}
+
+	private void disableTextMark() {
+		EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(new DisableDefaultBehaviorCommand());
+		userOverHandler.apply(view.asWidget());
 	}
 
 	private void initializeDropCapabilities() {
