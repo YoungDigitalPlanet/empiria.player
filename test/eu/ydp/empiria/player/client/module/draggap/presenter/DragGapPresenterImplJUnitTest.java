@@ -1,10 +1,5 @@
 package eu.ydp.empiria.player.client.module.draggap.presenter;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
 import java.util.List;
 
 import org.junit.Before;
@@ -16,74 +11,40 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.Lists;
-import com.google.gwt.event.dom.client.DragEndHandler;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
-import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
-import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
-import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.empiria.player.client.util.geom.Size;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 
 	private DragGapPresenterImpl presenter;
 	@Mock
-	private DragDropHelper dragDropHelper;
-	@Mock
-	private StyleNameConstants styleNameConstants;
-	@Mock
 	private DragGapView view;
 	@Mock
 	private DragGapModuleModel model;
 	@Mock
-	private ModuleSocket socket;
-	@Mock
 	private AnswerEvaluationSupplier answerEvaluationSupplier;
-	@Mock
-	private DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
-
-	private DragGapBean bean;
 
 	List<Boolean> evaluatedAnswers;
 
+	@Override
 	@Before
 	public void setUp() {
-		presenter = new DragGapPresenterImpl(dragDropHelper, styleNameConstants, view, model, answerEvaluationSupplier, dragDataObjectFromEventExtractor);
-	}
-
-	@Test
-	public void shouldSetDragStartHandler() {
-		// given
-		DragGapStartDragHandler handler = mock(DragGapStartDragHandler.class);
-
-		// when
-		presenter.setDragStartHandler(handler);
-
-		// then
-		verify(view).setDragStartHandler(handler);
-	}
-
-	@Test
-	public void shouldSetDragEndHandler() {
-		// given
-		DragEndHandler dragEndHandler = mock(DragEndHandler.class);
-
-		// when
-		presenter.setDragEndHandler(dragEndHandler);
-
-		// then
-		verify(view).setDragEndHandler(dragEndHandler);
+		presenter = new DragGapPresenterImpl(view, model, answerEvaluationSupplier);
 	}
 
 	@Test
@@ -284,6 +245,18 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		// then
 		verify(view).lock(locked);
 		verify(view).setDragDisabled(locked);
+	}
+	
+	@Test
+	public void shouldSetWidthAndHeightOnView() throws Exception {
+		int width = 123;
+		int height = 456;
+		HasDimensions size = new Size(width, height);
+		
+		presenter.setGapDimensions(size);
+		
+		verify(view).setWidth(width);
+		verify(view).setHeight(height);
 	}
 
 }
