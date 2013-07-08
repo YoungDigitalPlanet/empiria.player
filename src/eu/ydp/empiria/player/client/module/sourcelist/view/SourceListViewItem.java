@@ -11,7 +11,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
@@ -28,7 +30,8 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	protected @UiField FlowPanel item;
 	private @Inject StyleNameConstants styleNames;
 	private @Inject DragDropHelper dragDropHelper;
-
+	private @Inject TouchController touchController;
+	private @Inject Provider<SourceListViewItemWidget> sourceListViewItemWidgetProvider;
 	private SourceListViewImpl sourceListView;
 	private DraggableObject<SourceListViewItemWidget> draggable;
 	private SourceListViewItemWidget container;
@@ -61,7 +64,9 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	}
 
 	private SourceListViewItemWidget getDraggableWidget(SourcelistItemValue itemValue) {
-		return new SourceListViewItemWidget(itemValue.getType(), itemValue.getContent(), styleNames.QP_DRAG_ITEM());
+		SourceListViewItemWidget itemWidget = sourceListViewItemWidgetProvider.get();
+		itemWidget.initView(itemValue.getType(), itemValue.getContent(), styleNames.QP_DRAG_ITEM());
+		return itemWidget;
 	}
 
 	private void addDragHandlers() {
@@ -73,6 +78,7 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
+				touchController.setTouchReservation(true);
 				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
 				sourceListView.onDragEvent(DragDropEventTypes.DRAG_START, SourceListViewItem.this, event);

@@ -22,6 +22,8 @@ import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 import eu.ydp.empiria.player.client.util.geom.Size;
+import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class SourceListViewImpl extends Composite implements SourceListView {
 
@@ -34,6 +36,7 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	@Inject	private Provider<SourceListViewItem> sourceListViewItemProvider;
 	@Inject	private DragDropHelper dragDropHelper;
 	@Inject	private DragDataObjectFromEventExtractor objectFromEventExtractor;
+	@Inject private UserInteractionHandlerFactory interactionHandlerFactory;
 	@UiField FlowPanelWithDropZone items;
 
 	private final BiMap<String, SourceListViewItem> itemIdToItemCollection = HashBiMap.create();
@@ -53,7 +56,13 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 		sourceListDropZone = dragDropHelper.enableDropForWidget(items, false);
 		touchReservationFactory.addTouchReservationHandler(items);
 		addDropHandler();
-	}
+        disableAutoBehaviorOnSelect();
+     }
+
+     private void disableAutoBehaviorOnSelect() {
+             final EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(new DisableDefaultBehaviorCommand());
+             userOverHandler.apply(this);
+     }
 
 	private void addDropHandler() {
 		SourceListViewDropHandler dropHandler = new SourceListViewDropHandler(objectFromEventExtractor, sourceListPresenter);
