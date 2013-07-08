@@ -49,20 +49,30 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		lockOthers(sourcelist);
 	}
 
+	private void lockGroup(Sourcelist sourcelist) {
+		sourcelist.lockSourceList();
+		lockClients(sourcelist);
+	}
+
 	private void lockOthers(Sourcelist sourcelist) {
 		for (Sourcelist src : model.getSourceLists()) {
 			if (!sourcelist.equals(src)) {
 				src.lockSourceList();
-				Collection<SourcelistClient> clients = model.getClients(src);
-				lockClients(clients);
+				lockClients(src);
 			}
 		}
 	}
 
-	private void lockClients(Collection<SourcelistClient> clients) {
+	private void lockClients(Sourcelist sourcelist) {
+		Collection<SourcelistClient> clients = model.getClients(sourcelist);
 		for (SourcelistClient client : clients) {
 			client.lockDropZone();
 		}
+	}
+
+	private void unlockGroup(Sourcelist sourcelist) {
+		sourcelist.unlockSourceList();
+		unlockClients(sourcelist);
 	}
 
 	private void unlockAll() {
@@ -73,15 +83,15 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	}
 
 	private void unlockClients(Sourcelist sourcelist) {
-		for (SourcelistClient client : model.getClients(sourcelist)) {
+		Collection<SourcelistClient> clients = model.getClients(sourcelist);
+		for (SourcelistClient client : clients) {
 			client.unlockDropZone();
 		}
 	}
 
 	@Override
-	public void dragEnd(String itemId, String sourceModuleId,
-			String targetModuleId) {
-		if(!sourceModuleId.equals(targetModuleId)) {
+	public void dragEnd(String itemId, String sourceModuleId, String targetModuleId) {
+		if (!sourceModuleId.equals(targetModuleId)) {
 			moveItemFromSourceToTarget(itemId, sourceModuleId, targetModuleId);
 		}
 	}
@@ -101,7 +111,7 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		} else {
 			sourcelist.useItem(itemId);
 		}
-		
+
 		unlockAll();
 	}
 
@@ -109,8 +119,7 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	public void dragEndSourcelist(String itemId, String sourceModuleId) {
 		if (model.containsClient(sourceModuleId)) {
 			SourcelistClient sourceClient = model.getClientById(sourceModuleId);
-			Sourcelist sourcelist = model
-					.getSourcelistByClientId(sourceModuleId);
+			Sourcelist sourcelist = model.getSourcelistByClientId(sourceModuleId);
 
 			sourceClient.removeDragItem();
 			sourcelist.restockItem(itemId);
@@ -148,9 +157,24 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	}
 
 	private List<String> clientsToItemsIds(Collection<SourcelistClient> clients) {
-		Collection<String> items = Collections2.transform(clients,
-				clientToItemid);
+		Collection<String> items = Collections2.transform(clients, clientToItemid);
 		return Lists.newArrayList(items);
+	}
+
+	@Override
+	public void lockGroup(String clientId) {
+		if (model.containsClient(clientId)) {
+			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
+			lockGroup(sourcelist);
+		}
+	}
+
+	@Override
+	public void unlockGroup(String clientId) {
+		if (model.containsClient(clientId)) {
+			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
+			unlockGroup(sourcelist);
+		}
 	}
 
 }

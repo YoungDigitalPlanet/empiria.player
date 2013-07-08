@@ -60,8 +60,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 				String sourceModuleId = dragDataObject.getSourceId();
 				String targetModuleId = getIdentifier();
 
-				sourcelistManager.dragEnd(itemID, sourceModuleId,
-						targetModuleId);
+				sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
 			}
 		});
 
@@ -71,7 +70,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 			public void onDragStart(DragStartEvent event) {
 				sourcelistManager.dragStart(getIdentifier());
 
-				DragDataObject dataObject = overlayTypesParser.<NativeDragDataObject>get();
+				DragDataObject dataObject = overlayTypesParser.<NativeDragDataObject> get();
 				dataObject.setItemId(itemId);
 				dataObject.setSourceId(getIdentifier());
 				event.setData("json", dataObject.toJSON());
@@ -133,4 +132,15 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	public void unlockDropZone() {
 		dragGapPresenter.unlockDropZone();
 	}
+
+	@Override
+	public void lock(boolean lock) {
+		super.lock(lock);
+		if (lock) {
+			sourcelistManager.lockGroup(getIdentifier());
+		} else {
+			sourcelistManager.unlockGroup(getIdentifier());
+		}
+	}
+
 }

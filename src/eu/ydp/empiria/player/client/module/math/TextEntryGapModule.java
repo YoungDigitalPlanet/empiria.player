@@ -221,4 +221,15 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	public void unlockDropZone() {
 		getTextEntryGapPresenter().unlockDragZone();
 	}
+
+	@Override
+	public void lock(boolean lock) {
+		super.lock(lock);
+		if (lock) {
+			sourcelistManager.lockGroup(getIdentifier());
+		} else {
+			sourcelistManager.unlockGroup(getIdentifier());
+		}
+	}
+
 }

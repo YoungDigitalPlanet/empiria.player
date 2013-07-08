@@ -213,6 +213,16 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	@Override
 	public void unlockDropZone() {
 		getTextEntryPresenter().unlockDragZone();
-
 	}
+	
+	@Override
+	public void lock(boolean lock) {
+		super.lock(lock);
+		if (lock) {
+			sourcelistManager.lockGroup(getIdentifier());
+		} else {
+			sourcelistManager.unlockGroup(getIdentifier());
+		}
+	}
+
 }
