@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
@@ -27,10 +28,9 @@ public class DragGapViewImpl implements DragGapView {
 	interface DragGapViewUiBinder extends UiBinder<Widget, DragGapViewImpl> {
 	}
 
-	@UiField
-	FlowPanelWithDropZone container;
+	@UiField FlowPanelWithDropZone container;
 	FlowPanel itemWrapper;
-
+	private @Inject TouchController touchController;
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
 	private final DragGapStylesProvider dragGapStylesProvider;
@@ -95,6 +95,7 @@ public class DragGapViewImpl implements DragGapView {
 		draggableObject.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
+				touchController.setTouchReservation(true);
 				event.getDataTransfer().setDragImage(itemWrapper.getElement(), 0, 0);
 				dragStartHandlerOptional.get().onDragStart(event);
 			}

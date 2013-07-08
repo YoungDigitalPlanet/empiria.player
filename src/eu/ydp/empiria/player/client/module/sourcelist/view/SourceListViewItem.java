@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
@@ -28,6 +29,7 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	protected @UiField FlowPanel item;
 	private @Inject StyleNameConstants styleNames;
 	private @Inject DragDropHelper dragDropHelper;
+	private @Inject TouchController touchController;
 	private SourceListViewImpl sourceListView;
 	private DraggableObject<FlowPanel> draggable;
 	private FlowPanel container;
@@ -75,6 +77,7 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
+				touchController.setTouchReservation(true);
 				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
 				sourceListView.onDragEvent(DragDropEventTypes.DRAG_START, SourceListViewItem.this,event);
