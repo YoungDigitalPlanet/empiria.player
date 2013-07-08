@@ -10,7 +10,6 @@ import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.dragdrop.Sourcelist;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
@@ -44,7 +43,7 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 
 	@Override
 	public SourcelistItemValue getItemValue(String itemId) {
-		return new SourcelistItemValue(SourcelistItemType.TEXT, presenter.getItemValue(itemId),"");  // TODO YPUB-5441 change type
+		return presenter.getItemValue(itemId);
 	}
 
 	@Override
@@ -83,9 +82,8 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 	}
 
 	@Override
-	public HasDimensions getItemSize() { // TODO YPUB-5441
-		// TODO Auto-generated method stub
-		return null;
+	public HasDimensions getItemSize() {
+		return presenter.getMaxItemSize();
 	}
 
 }

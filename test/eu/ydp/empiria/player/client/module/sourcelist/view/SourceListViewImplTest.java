@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -29,10 +30,14 @@ import com.google.gwt.junit.GWTMockUtilities;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
+import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -51,6 +56,8 @@ public class SourceListViewImplTest {
 	private final List<String> allIds = Lists.newArrayList("a","b","c","d","e","f");
 
 	private FlowPanelWithDropZone items;
+	private final int sourceListViewItemHeight = 11;
+	private final int sourceListViewItemWidth = 12;
 
 	@BeforeClass
 	public static void disarm() {
@@ -68,7 +75,10 @@ public class SourceListViewImplTest {
 		when(sourceListViewItemProvider.get()).then(new Answer<SourceListViewItem>() {
 			@Override
 			public SourceListViewItem answer(InvocationOnMock invocation) throws Throwable {
-				return mock(SourceListViewItem.class);
+				SourceListViewItem mock = mock(SourceListViewItem.class);
+				doReturn(sourceListViewItemHeight).when(mock).getHeight();
+				doReturn(sourceListViewItemWidth).when(mock).getWidth();
+				return mock;
 			}
 		});
 		items = mock(FlowPanelWithDropZone.class);
@@ -77,7 +87,7 @@ public class SourceListViewImplTest {
 
 	private void addItems(){
 		for(String id : allIds){
-			instance.createItem(id, id);
+			instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, id, id));
 		}
 	}
 
@@ -109,7 +119,7 @@ public class SourceListViewImplTest {
 		when(sourceListPresenter.getDragDataObject(anyString())).thenReturn(dataObject);
 		DragDropEventBase event = mock(DragDropEventBase.class);
 
-		instance.createItem(itemId, itemContent);
+		instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT,itemContent,itemId));
 		instance.setSourceListPresenter(sourceListPresenter);
 		instance.onDragEvent(DragDropEventTypes.DRAG_START, viewItem, event);
 
@@ -160,12 +170,13 @@ public class SourceListViewImplTest {
 		String itemId = "item";
 		doReturn(viewItem).when(sourceListViewItemProvider).get();
 
-		instance.createItem(itemId, itemContent);
+		SourcelistItemValue sourcelistItemValue = new SourcelistItemValue(SourcelistItemType.TEXT, itemId, itemContent);
+		instance.createItem(sourcelistItemValue);
 
 		verify(sourceListViewItemProvider).get();
 		verify(items).add(eq(sourceListViewItemProvider.get()));
 		verify(sourceListViewItemProvider.get()).setSourceListView(eq(instance));
-		verify(sourceListViewItemProvider.get()).createAndBindUi(eq(itemContent));
+		verify(sourceListViewItemProvider.get()).createAndBindUi(eq(sourcelistItemValue));
 	}
 
 	@Test
@@ -257,6 +268,40 @@ public class SourceListViewImplTest {
 				verify(viewItem, times(0)).lockForDragDrop();
 			}
 		}
+	}
+
+	@Test
+	public void lockForDragDrop() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		DroppableObject sourceListDropZone = mock(DroppableObject.class);
+		reflectionsUtils.setValueInObjectOnField("sourceListDropZone", instance, sourceListDropZone);
+		instance.lockForDragDrop();
+		verify(sourceListDropZone).setDisableDrop(true);
+	}
+
+	@Test
+	public void unlockForDragDrop() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		DroppableObject sourceListDropZone = mock(DroppableObject.class);
+		reflectionsUtils.setValueInObjectOnField("sourceListDropZone", instance, sourceListDropZone);
+		instance.unlockForDragDrop();
+		verify(sourceListDropZone).setDisableDrop(false);
+	}
+
+	@Test
+	public void getMaxItemSize() throws Exception {
+		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
+		addItems();
+		HasDimensions maxItemSize = instance.getMaxItemSize();
+		for (String id : allIds) {
+				viewItem = itemIdToItemCollection.get(id);
+				verify(viewItem, times(1)).getWidth();
+				verify(viewItem, times(1)).getHeight();
+		}
+		assertThat(maxItemSize.getHeight()).isEqualTo(sourceListViewItemHeight);
+		assertThat(maxItemSize.getWidth()).isEqualTo(sourceListViewItemWidth);
 	}
 
 }
