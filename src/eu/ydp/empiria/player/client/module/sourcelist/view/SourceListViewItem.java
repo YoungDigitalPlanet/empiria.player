@@ -13,10 +13,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class SourceListViewItem extends Composite implements LockUnlockDragDrop {
 
@@ -28,12 +32,15 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	protected @UiField FlowPanel item;
 	private @Inject StyleNameConstants styleNames;
 	private @Inject DragDropHelper dragDropHelper;
+	private @Inject TouchController touchController;
+	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
 	private SourceListViewImpl sourceListView;
 	private DraggableObject<FlowPanel> draggable;
 	private FlowPanel container;
 
 	private String itemContent;
 
+	private final Command disableTextMark = new DisableDefaultBehaviorCommand();
 	public void setSourceListView(SourceListViewImpl sourceListView) {
 		this.sourceListView = sourceListView;
 	}
@@ -61,6 +68,8 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 
 	private void fillContainerWidget(String itemContent) {
 		Label label = new Label(itemContent);
+		EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(disableTextMark);
+		userOverHandler.apply(label);
 		container = new FlowPanel();
 		container.addStyleName(styleNames.QP_DRAG_ITEM());
 		container.add(label);
@@ -75,6 +84,7 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
+				touchController.setTouchReservation(true);
 				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
 				sourceListView.onDragEvent(DragDropEventTypes.DRAG_START, SourceListViewItem.this,event);
