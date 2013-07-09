@@ -93,6 +93,26 @@ public class JsAnimationTest {
 	}
 	
 	@Test
+	public void zeroFps(){
+		// given
+		final Size IMAGE_SIZE = new Size(100, 40);
+		final String SOURCE = "image.png";
+		final int FPS = 0;
+		final int FRAME_WIDHT = 20;
+		final AnimationConfig config = new AnimationConfig(FPS, new Size(FRAME_WIDHT, 40), SOURCE);
+		AnimationEndHandler handler = mock(AnimationEndHandler.class);
+		initPreloaderMock(IMAGE_SIZE);
+		
+		animation.init(config, holder);
+		
+		// when
+		animation.start(handler);
+		
+		// then
+		verify(timer).scheduleRepeating(1000);
+	}
+	
+	@Test
 	public void zeroSizeAnimation(){
 		// given
 		final Size IMAGE_SIZE = new Size(0, 40);

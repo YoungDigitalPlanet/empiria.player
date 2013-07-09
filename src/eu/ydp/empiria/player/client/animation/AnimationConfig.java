@@ -4,6 +4,7 @@ import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class AnimationConfig {
 
+	private static final int MS_IN_SECONDS = 1000;
 	private final int fps;
 	private final Size frameSize;
 	private final String source;
@@ -19,7 +20,11 @@ public class AnimationConfig {
 	}
 	
 	public int getIntervalMs(){
-		return 1000 / fps;
+		if (fps > 0){
+			return MS_IN_SECONDS / fps;
+		} else {
+			return MS_IN_SECONDS;
+		}
 	}
 
 	public Size getFrameSize() {
