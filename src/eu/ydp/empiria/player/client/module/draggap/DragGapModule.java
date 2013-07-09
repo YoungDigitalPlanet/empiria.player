@@ -130,7 +130,8 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
 	@Override
 	public void unlockDropZone() {
-		dragGapPresenter.unlockDropZone();
+		if (!locked)
+			dragGapPresenter.unlockDropZone();
 	}
 
 	@Override
@@ -140,6 +141,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 			sourcelistManager.lockGroup(getIdentifier());
 		} else {
 			sourcelistManager.unlockGroup(getIdentifier());
+			dragGapPresenter.unlockDropZone();
 		}
 	}
 
