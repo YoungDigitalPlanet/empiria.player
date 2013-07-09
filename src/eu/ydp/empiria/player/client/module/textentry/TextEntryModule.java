@@ -35,10 +35,10 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	private final ResponseSocket responseSocket;
 
 	protected Map<String, String> styles;
-	
 
 	@Inject
-	public TextEntryModule(TextEntryModulePresenter presenter, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,@PageScoped final SourcelistManager sourcelistManager) {
+	public TextEntryModule(TextEntryModulePresenter presenter, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,
+			@PageScoped final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.responseSocket = responseSocket;
 		this.sourcelistManager = sourcelistManager;
@@ -50,7 +50,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 				sourcelistManager.onUserValueChanged();
 				updateResponse(true);
 			}
-			
+
 			@Override
 			public void onBlur(BlurEvent event) {
 				if (isMobileUserAgent()) {
@@ -68,21 +68,18 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 				String sourceModuleId = dragDataObject.getSourceId();
 				String targetModuleId = getIdentifier();
 
-				sourcelistManager.dragEnd(itemID, sourceModuleId,
-						targetModuleId);
+				sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
 			}
 		});
-	
+
 	}
-	
-	
-	
+
 	@Override
 	public void reset() {
 		super.reset();
 		sourcelistManager.onUserValueChanged();
 	}
-	
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		styles = styleSocket.getStyles(getModuleElement());
@@ -187,7 +184,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	}
 
 	private static final Logger LOGGER = new Logger();
-	
+
 	@Override
 	public void setDragItem(String itemId) {
 		LOGGER.methodLog("TextEntryModule", "setDragItem", itemId);
@@ -201,7 +198,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	}
 
 	TextEntryModulePresenter getTextEntryPresenter() {
-		return (TextEntryModulePresenter)presenter;
+		return (TextEntryModulePresenter) presenter;
 	}
 
 	@Override
@@ -212,9 +209,10 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	@Override
 	public void unlockDropZone() {
-		getTextEntryPresenter().unlockDragZone();
+		if (!locked)
+			getTextEntryPresenter().unlockDragZone();
 	}
-	
+
 	@Override
 	public void lock(boolean lock) {
 		super.lock(lock);
@@ -222,6 +220,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 			sourcelistManager.lockGroup(getIdentifier());
 		} else {
 			sourcelistManager.unlockGroup(getIdentifier());
+			getTextEntryPresenter().unlockDragZone();
 		}
 	}
 
