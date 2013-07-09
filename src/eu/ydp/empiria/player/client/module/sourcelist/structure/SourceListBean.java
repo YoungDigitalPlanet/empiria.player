@@ -24,6 +24,12 @@ public class SourceListBean extends ModuleBean implements HasShuffle {
 	@XmlAttribute
 	private boolean shuffle;
 
+	@XmlAttribute
+	private int imagesWidth;
+
+	@XmlAttribute
+	private int imagesHeight;
+
 	@XmlElement(name = "simpleSourceListItem")
 	private List<SimpleSourceListItemBean> simpleSourceListItemBeans = Lists.newArrayList();
 
@@ -50,6 +56,22 @@ public class SourceListBean extends ModuleBean implements HasShuffle {
 
 	public void setSimpleSourceListItemBeans(List<SimpleSourceListItemBean> simpleSourceListItemBeans) {
 		this.simpleSourceListItemBeans = simpleSourceListItemBeans;
+	}
+
+	public int getImagesHeight() {
+		return imagesHeight;
+	}
+
+	public void setImagesHeight(int imagesHeight) {
+		this.imagesHeight = imagesHeight;
+	}
+
+	public int getImagesWidth() {
+		return imagesWidth;
+	}
+
+	public void setImagesWidth(int imagesWidth) {
+		this.imagesWidth = imagesWidth;
 	}
 
 }

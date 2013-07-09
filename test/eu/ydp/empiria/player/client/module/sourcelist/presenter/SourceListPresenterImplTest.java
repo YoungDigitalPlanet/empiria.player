@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.sourcelist.presenter;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -28,6 +29,7 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
@@ -39,6 +41,8 @@ public class SourceListPresenterImplTest {
 	@Mock private SourcelistManager sourcelistManager;
 	@Mock private OverlayTypesParser overlayTypesParser;
 	@Mock private DragDataObject dragDataObject;
+	private final int imagesWidth = 400;
+	private final int imagesHeight = 300;
 
 	@InjectMocks
 	private final SourceListPresenterImpl sourceListPresenterImpl = spy(new SourceListPresenterImpl());
@@ -68,7 +72,7 @@ public class SourceListPresenterImplTest {
 		sourceListPresenterImpl.createAndBindUi();
 
 		for(String id : allItems){
-			verify(view).createItem(eq(id), eq(id));
+			verify(view).createItem(eq(new SourcelistItemValue(SourcelistItemType.TEXT, id, id+id)));
 		}
 
 		verify(view).createAndBindUi();
@@ -95,11 +99,14 @@ public class SourceListPresenterImplTest {
 		verify(view).hideItem(eq(itemId));
 	}
 
+
 	@Test
 	public void testUseItemNotMoveElements() throws Exception {
+		String itemId = "test";
 		SourceListBean bean = mock(SourceListBean.class);
 		doReturn(false).when(bean).isMoveElements();
 		sourceListPresenterImpl.setBean(bean);
+		sourceListPresenterImpl.useItem(itemId);
 		verifyZeroInteractions(view);
 	}
 
@@ -199,6 +206,23 @@ public class SourceListPresenterImplTest {
 		for(String id : allItems){
 			verify(view).unlockItemForDragDrop(eq(id));
 		}
+
+	}
+
+	@Test
+	public void getMaxItemSize() throws Exception {
+		SourceListBean bean = mock(SourceListBean.class);
+		doReturn(imagesHeight).when(bean).getImagesHeight();
+		doReturn(imagesWidth).when(bean).getImagesWidth();
+		sourceListPresenterImpl.setBean(bean);
+		HasDimensions dimension = mock(HasDimensions.class);
+		int width = 900;
+		doReturn(width).when(dimension).getWidth();
+		doReturn(dimension).when(view).getMaxItemSize();
+		HasDimensions itemSize = sourceListPresenterImpl.getMaxItemSize();
+		verify(view).getMaxItemSize();
+		assertThat(width).isEqualTo(itemSize.getWidth());
+		assertThat(imagesHeight).isEqualTo(itemSize.getHeight());
 
 	}
 

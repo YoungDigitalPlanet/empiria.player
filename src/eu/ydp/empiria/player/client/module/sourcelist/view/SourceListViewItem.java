@@ -9,10 +9,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
@@ -28,11 +30,13 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	protected @UiField FlowPanel item;
 	private @Inject StyleNameConstants styleNames;
 	private @Inject DragDropHelper dragDropHelper;
+	private @Inject TouchController touchController;
+	private @Inject Provider<SourceListViewItemWidget> sourceListViewItemWidgetProvider;
 	private SourceListViewImpl sourceListView;
-	private DraggableObject<FlowPanel> draggable;
-	private FlowPanel container;
+	private DraggableObject<SourceListViewItemWidget> draggable;
+	private SourceListViewItemWidget container;
 
-	private String itemContent;
+	private SourcelistItemValue itemContent;
 
 	public void setSourceListView(SourceListViewImpl sourceListView) {
 		this.sourceListView = sourceListView;
@@ -50,20 +54,19 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 		container.setVisible(false);
 	}
 
-	public void createAndBindUi(String itemContent) {
-		this.itemContent = itemContent;
+	public void createAndBindUi(SourcelistItemValue itemValue) {
+		this.itemContent = itemValue;
 		initWidget(uiBinder.createAndBindUi(this));
-		fillContainerWidget(itemContent);
+		container = getDraggableWidget(itemValue);
 		draggable = dragDropHelper.enableDragForWidget(container);
 		item.add(draggable.getDraggableWidget());
 		addDragHandlers();
 	}
 
-	private void fillContainerWidget(String itemContent) {
-		Label label = new Label(itemContent);
-		container = new FlowPanel();
-		container.addStyleName(styleNames.QP_DRAG_ITEM());
-		container.add(label);
+	private SourceListViewItemWidget getDraggableWidget(SourcelistItemValue itemValue) {
+		SourceListViewItemWidget itemWidget = sourceListViewItemWidgetProvider.get();
+		itemWidget.initView(itemValue.getType(), itemValue.getContent(), styleNames.QP_DRAG_ITEM());
+		return itemWidget;
 	}
 
 	private void addDragHandlers() {
@@ -75,9 +78,10 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
+				touchController.setTouchReservation(true);
 				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
-				sourceListView.onDragEvent(DragDropEventTypes.DRAG_START, SourceListViewItem.this,event);
+				sourceListView.onDragEvent(DragDropEventTypes.DRAG_START, SourceListViewItem.this, event);
 			}
 		});
 	}
@@ -92,7 +96,7 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 		});
 	}
 
-	public String getItemContent() {
+	public SourcelistItemValue getItemContent() {
 		return itemContent;
 	}
 
@@ -105,5 +109,13 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	@Override
 	public void unlockForDragDrop() {
 		draggable.setDisableDrag(false);
+	}
+
+	public int getWidth() {
+		return container.getWidth();
+	}
+
+	public int getHeight() {
+		return container.getHeight();
 	}
 }
