@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.animation.js;
 
+import static java.lang.Math.floor;
+import static java.lang.Math.min;
+
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.animation.Animation;
@@ -9,42 +12,42 @@ import eu.ydp.empiria.player.client.animation.holder.AnimationHolder;
 import eu.ydp.empiria.player.client.animation.preload.ImagePreloadHandler;
 import eu.ydp.empiria.player.client.animation.preload.ImagePreloader;
 import eu.ydp.empiria.player.client.util.geom.Size;
-import eu.ydp.gwtutil.client.timer.Timer;
 
 public class JsAnimation implements Animation {
 
+	private static final double PROGRESS_MAX = 1.0;
 	private final AnimationAnalyzer animationAnalyzer;
 	private final ImagePreloader preloader;
-	private final Timer timer;
+	private final FrameworkAnimation frameworkAnimation;
 	
 	@Inject
-	public JsAnimation(AnimationAnalyzer animationAnalyzer, ImagePreloader preloader, Timer timer) {
+	public JsAnimation(AnimationAnalyzer animationAnalyzer, ImagePreloader preloader, FrameworkAnimation frameworkAnimation) {
 		this.animationAnalyzer = animationAnalyzer;
 		this.preloader = preloader;
-		this.timer = timer;
+		this.frameworkAnimation = frameworkAnimation;
+		
+		frameworkAnimation.setListener(frameworkAnimationListener);
 	}
 
-	private final Runnable timerAction = new Runnable() {
+	private final FrameworkAnimationListener frameworkAnimationListener = new FrameworkAnimationListener() {
 		
 		@Override
-		public void run() {
-			onTimer();
+		public void onUpdate(double progress) {
+			onAnimationUpdate(progress);
 		}
-
 	};
 	
 	private AnimationConfig config;
 	private AnimationHolder holder;
 	private AnimationEndHandler handler;
+	private int framesCount;
 
-	private int animationCounter;
-	private int animationLeft;
+//	private int animationCounter;
+//	private int animationLeft;
 
 	public void init(AnimationConfig config, AnimationHolder holder){
 		this.config = config;
 		this.holder = holder;
-		
-		timer.init(timerAction);
 	}
 	
 	@Override
@@ -65,45 +68,58 @@ public class JsAnimation implements Animation {
 	}
 	
 	private void computeAndPlay(Size imageSize) {
-		int framesCount = animationAnalyzer.findFramesCount(imageSize, config.getFrameSize());
+		findFramesCount(imageSize);
 		if (framesCount > 0){
-			play(framesCount);
+			play();
 		} else {
 			handler.onEnd();
 		}
 	}
 
-	private void play(int framesCount) {
+	private void findFramesCount(Size imageSize) {
+		Size frameSize = config.getFrameSize();
+		framesCount = animationAnalyzer.findFramesCount(imageSize, frameSize);
+	}
+
+	private void play() {
+		initHolder();
+		runAnimation();
+	}
+	
+	private void initHolder() {
 		String src = config.getSource();
 		holder.setAnimationImage(src);
 		holder.setAnimationLeft(0);
-		
-		animationCounter = framesCount - 1;
-		animationLeft = 0;
-		
-		timer.scheduleRepeating(config.getIntervalMs());
 	}
 
-	private void onTimer() {
-		updateAnimation();
-		checkAnimationEnd();
+	private void runAnimation() {
+		int duration = findAnimationDuration();
+		frameworkAnimation.run(duration);
+	}
+	
+	private int findAnimationDuration(){
+		return framesCount * config.getIntervalMs();
 	}
 
-	private void checkAnimationEnd() {
-		if (animationCounter == 0){
-			timer.cancel();
+	private void onAnimationUpdate(double progress) {
+		updateAnimation(progress);
+		checkAnimationEnd(progress);
+	}
+
+	private void checkAnimationEnd(double progress) {
+		if (progress == PROGRESS_MAX){
 			handler.onEnd();
 		}
 	}
 
-	private void updateAnimation() {
-		animationLeft -= config.getFrameSize().getWidth();
+	private void updateAnimation(double progress) {
+		int currentFrame = min( (int) floor( framesCount * progress) , framesCount - 1);
+		int animationLeft = -1 * config.getFrameSize().getWidth() * currentFrame;
 		holder.setAnimationLeft(animationLeft);
-		animationCounter--;
 	}
 
 	@Override
 	public void terminate() {
-		timer.cancel();
+		frameworkAnimation.cancel();
 	}
 }
