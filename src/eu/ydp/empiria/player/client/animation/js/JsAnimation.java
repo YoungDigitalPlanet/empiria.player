@@ -42,9 +42,6 @@ public class JsAnimation implements Animation {
 	private AnimationEndHandler handler;
 	private int framesCount;
 
-//	private int animationCounter;
-//	private int animationLeft;
-
 	public void init(AnimationConfig config, AnimationHolder holder){
 		this.config = config;
 		this.holder = holder;
