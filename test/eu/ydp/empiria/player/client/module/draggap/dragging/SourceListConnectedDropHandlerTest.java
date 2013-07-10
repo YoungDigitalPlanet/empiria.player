@@ -12,7 +12,7 @@ import com.google.gwt.event.dom.client.DropEvent;
 
 import static org.mockito.Mockito.*;
 
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
+import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 
@@ -20,15 +20,14 @@ import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 public class SourceListConnectedDropHandlerTest {
 
 	private SourceListConnectedDropHandler dropHandler;
-	private final String moduleIdentifier = "moduleId";
-	@Mock
-	private SourcelistManager sourcelistManager;
 	@Mock
 	private DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
+	@Mock
+	private SourceListManagerAdapter sourceListManagerAdapter;
 	
 	@Before
 	public void setUp() throws Exception {
-		dropHandler = new SourceListConnectedDropHandler(moduleIdentifier, sourcelistManager, dragDataObjectFromEventExtractor);
+		dropHandler = new SourceListConnectedDropHandler(sourceListManagerAdapter, dragDataObjectFromEventExtractor);
 	}
 
 	@Test
@@ -50,6 +49,6 @@ public class SourceListConnectedDropHandlerTest {
 		
 		dropHandler.onDrop(event);
 		
-		verify(sourcelistManager).dragEnd(itemId, sourceId, moduleIdentifier);
+		verify(sourceListManagerAdapter).dragEnd(itemId, sourceId);
 	}
 }

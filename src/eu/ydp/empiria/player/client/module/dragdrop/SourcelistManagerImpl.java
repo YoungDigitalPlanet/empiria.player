@@ -21,9 +21,13 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHandler {
 
-	@Inject	@PageScoped	private SourcelistManagerModel model;
-	@Inject	private SourcelistManagerHelper helper;
-	@Inject	private EventsBus eventsBus;
+	@Inject
+	@PageScoped
+	private SourcelistManagerModel model;
+	@Inject
+	private SourcelistManagerHelper helper;
+	@Inject
+	private EventsBus eventsBus;
 
 	private final Function<SourcelistClient, String> clientToItemid = new Function<SourcelistClient, String>() {
 
@@ -173,7 +177,10 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 	private void resizeSourcelists() {
 		for (Sourcelist sourcelist : model.getSourceLists()) {
 			HasDimensions size = sourcelist.getItemSize();
-			resizeClients(sourcelist, size);
+
+			if (size != null) {
+				resizeClients(sourcelist, size);
+			}
 		}
 	}
 

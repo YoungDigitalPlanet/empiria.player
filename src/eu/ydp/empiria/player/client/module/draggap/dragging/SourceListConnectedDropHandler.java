@@ -4,26 +4,21 @@ import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.DropEvent;
 import com.google.gwt.event.dom.client.DropHandler;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-
-import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 
 public class SourceListConnectedDropHandler implements DropHandler{
 
-		private final String moduleIdentifier;
-		private final SourcelistManager sourcelistManager;
 		private final DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
+		private final SourceListManagerAdapter sourceListManagerAdapter;
 		
 		@Inject
 		public SourceListConnectedDropHandler(
-				@Assisted String moduleIdentifier, 
-				@PageScoped SourcelistManager sourcelistManager,
+				@ModuleScoped SourceListManagerAdapter sourceListManagerAdapter,
 				DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
-			this.moduleIdentifier = moduleIdentifier;
-			this.sourcelistManager = sourcelistManager;
+			this.sourceListManagerAdapter = sourceListManagerAdapter;
 			this.dragDataObjectFromEventExtractor = dragDataObjectFromEventExtractor;
 		}
 
@@ -38,9 +33,7 @@ public class SourceListConnectedDropHandler implements DropHandler{
 		private void informSourceListManagerAboutDrop(DragDataObject dragDataObject) {
 			String itemID = dragDataObject.getItemId();
 			String sourceModuleId = dragDataObject.getSourceId();
-			String targetModuleId = moduleIdentifier;
 
-			sourcelistManager.dragEnd(itemID, sourceModuleId,
-					targetModuleId);
+			sourceListManagerAdapter.dragEnd(itemID, sourceModuleId);
 		}
 }

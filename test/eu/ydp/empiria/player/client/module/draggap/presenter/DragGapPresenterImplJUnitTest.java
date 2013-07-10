@@ -18,7 +18,10 @@ import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluat
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
+import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
@@ -38,13 +41,15 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 	private DragGapModuleModel model;
 	@Mock
 	private AnswerEvaluationSupplier answerEvaluationSupplier;
+	@Mock
+	private SourceListManagerAdapter sourceListManagerAdapter;
 
 	List<Boolean> evaluatedAnswers;
 
 	@Override
 	@Before
 	public void setUp() {
-		presenter = new DragGapPresenterImpl(view, model, answerEvaluationSupplier);
+		presenter = new DragGapPresenterImpl(view, model, answerEvaluationSupplier, sourceListManagerAdapter);
 	}
 
 	@Test
@@ -71,15 +76,19 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 	@Test
 	public void shouldSetContent() {
 		// given
-		String itemContent = "content";
+		String itemId = "content";
+		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", itemId);
 
+		when(sourceListManagerAdapter.getItemById(itemId))
+			.thenReturn(item);
+		
 		// when
-		presenter.setContent(itemContent);
+		presenter.setContent(itemId);
 
 		// then
 		InOrder inOrder = Mockito.inOrder(view, model);
-		inOrder.verify(view).setContent(itemContent);
-		inOrder.verify(model).addAnswer(itemContent);
+		inOrder.verify(view).setItemContent(item);
+		inOrder.verify(model).addAnswer(itemId);
 	}
 
 	@Test
@@ -194,11 +203,16 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		List<String> answers = Lists.newArrayList(answerToSet);
 		when(model.getCorrectAnswers()).thenReturn(answers);
 
+		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", answerToSet);
+		when(sourceListManagerAdapter.getItemById(answerToSet))
+			.thenReturn(item);
+		
+		
 		// when
 		presenter.showAnswers(ShowAnswersType.CORRECT);
 
 		// then
-		verify(view).setContent(answerToSet);
+		verify(view).setItemContent(item);
 	}
 
 	@Test
@@ -221,11 +235,16 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		List<String> answers = Lists.newArrayList(answerToSet);
 		when(model.getCurrentAnswers()).thenReturn(answers);
 
+
+		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", answerToSet);
+		when(sourceListManagerAdapter.getItemById(answerToSet))
+			.thenReturn(item);
+		
 		// when
 		presenter.showAnswers(ShowAnswersType.USER);
 
 		// then
-		verify(view).setContent(answerToSet);
+		verify(view).setItemContent(item);
 	}
 
 	@Test

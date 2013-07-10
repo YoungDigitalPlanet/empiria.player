@@ -5,10 +5,8 @@ import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-
-import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
@@ -16,26 +14,27 @@ import eu.ydp.gwtutil.client.Wrapper;
 
 public class SourceListConnectedDragHandler implements DragStartHandler, DragEndHandler{
 
-	private final SourcelistManager sourcelistManager;
-	private final String moduleIdentifier;
+	private final SourceListManagerAdapter sourceListManagerAdapter;
 	private final OverlayTypesParser overlayTypesParser;
-	private final Wrapper<String> itemIdWrapper;
+	private String moduleIdentifier;
+	private Wrapper<String> itemIdWrapper;
 	
 	@Inject
 	public SourceListConnectedDragHandler(
-			@Assisted String moduleIdentifier, 
-			@Assisted Wrapper<String> itemIdWrapper,
-			@PageScoped SourcelistManager sourcelistManager, 
+			@ModuleScoped SourceListManagerAdapter sourceListManagerAdapter, 
 			OverlayTypesParser overlayTypesParser) {
-		this.sourcelistManager = sourcelistManager;
-		this.moduleIdentifier = moduleIdentifier;
+		this.sourceListManagerAdapter = sourceListManagerAdapter;
 		this.overlayTypesParser = overlayTypesParser;
+	}
+	
+	public void initialize(String moduleIdentifier, Wrapper<String> itemIdWrapper) {
+		this.moduleIdentifier = moduleIdentifier;
 		this.itemIdWrapper = itemIdWrapper;
 	}
 
 	@Override
 	public void onDragStart(DragStartEvent event) {
-		sourcelistManager.dragStart(moduleIdentifier);
+		sourceListManagerAdapter.dragStart();
 
 		DragDataObject dataObject = overlayTypesParser.<NativeDragDataObject> get();
 		dataObject.setItemId(itemIdWrapper.getInstance());
@@ -45,6 +44,6 @@ public class SourceListConnectedDragHandler implements DragStartHandler, DragEnd
 
 	@Override
 	public void onDragEnd(DragEndEvent event) {
-		sourcelistManager.dragFinished();
+		sourceListManagerAdapter.dragFinished();
 	}
 }

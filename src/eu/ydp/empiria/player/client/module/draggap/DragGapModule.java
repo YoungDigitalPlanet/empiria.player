@@ -4,13 +4,10 @@ import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.draggap.dragging.DragDropController;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenter;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
@@ -28,8 +25,8 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Inject
 	@ModuleScoped
 	private DragGapModuleModel dragGapModuleModel;
-	@Inject @PageScoped
-	private SourcelistManager sourcelistManager;
+	@Inject @ModuleScoped
+	private SourceListManagerAdapter sourceListManagerAdapter;
 	@Inject 
 	private DragDropController dragDropController;
 	
@@ -43,17 +40,18 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
 	@Override
 	protected void initalizeModule() {
+		sourceListManagerAdapter.initialize(getIdentifier());
 		dragGapModuleModel.initialize(this);
 		dragDropController.initializeDrop(getIdentifier());
 		dragDropController.initializeDrag(getIdentifier(), itemIdWrapper);
-		sourcelistManager.registerModule(this);
+		sourceListManagerAdapter.registerModule(this);
 	}
 
 	@Override
 	public void reset() {
 		super.reset();
 		itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
-		sourcelistManager.onUserValueChanged();
+		sourceListManagerAdapter.onUserValueChanged();
 	}
 
 	@Override
@@ -74,8 +72,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	public void setDragItem(String itemId) {
 		this.itemIdWrapper = Wrapper.of(itemId);
-		SourcelistItemValue itemContent = sourcelistManager.getValue(itemId, getIdentifier());
-		dragGapPresenter.setContent(itemContent.getContent());
+		dragGapPresenter.setContent(itemId);
 	}
 
 	@Override
