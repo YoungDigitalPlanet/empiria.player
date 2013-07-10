@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.module.view.HasDimensions;
 
 public interface DragGapPresenter extends ActivityPresenter<DragGapModuleModel, DragGapBean> {
 
-	void setContent(String itemContent);
+	void setContent(String itemId);
 
 	void removeContent();
 

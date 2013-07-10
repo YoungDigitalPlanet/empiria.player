@@ -12,7 +12,9 @@ import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
+import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
@@ -23,13 +25,18 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	private final AnswerEvaluationSupplier answerEvaluationSupplier;
 	private final DragGapModuleModel model;
 	private final DragGapView view;
+	private final SourceListManagerAdapter sourceListManagerAdapter;
 
 	@Inject
-	public DragGapPresenterImpl(DragGapView view, @ModuleScoped DragGapModuleModel model, @PageScoped AnswerEvaluationSupplier answerEvaluationSupplier) {
-
+	public DragGapPresenterImpl(
+			@ModuleScoped DragGapView view, 
+			@ModuleScoped DragGapModuleModel model, 
+			@PageScoped AnswerEvaluationSupplier answerEvaluationSupplier, 
+			@ModuleScoped SourceListManagerAdapter sourceListManagerAdapter) {
 		this.view = view;
 		this.model = model;
 		this.answerEvaluationSupplier = answerEvaluationSupplier;
+		this.sourceListManagerAdapter = sourceListManagerAdapter;
 	}
 
 	@Override
@@ -99,7 +106,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 		if (answers.size() > 0) {
 			String answerToSet = answers.get(0);
-			view.setContent(answerToSet);
+			setContentOfItemOnView(answerToSet);
 		} else {
 			view.removeContent();
 		}
@@ -111,9 +118,14 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	}
 
 	@Override
-	public void setContent(String itemContent) {
-		view.setContent(itemContent);
-		model.addAnswer(itemContent);
+	public void setContent(String itemId) {
+		setContentOfItemOnView(itemId);
+		model.addAnswer(itemId);
+	}
+	
+	private void setContentOfItemOnView(String itemId) {
+		SourcelistItemValue item = sourceListManagerAdapter.getItemById(itemId);
+		view.setItemContent(item);
 	}
 
 	@Override

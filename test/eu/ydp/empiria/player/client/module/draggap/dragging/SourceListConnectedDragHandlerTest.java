@@ -16,7 +16,7 @@ import com.google.gwt.junit.GWTMockUtilities;
 
 import static org.mockito.Mockito.*;
 
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
+import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
 import eu.ydp.gwtutil.client.Wrapper;
@@ -24,13 +24,13 @@ import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
-@PrepareForTest({JavaScriptObject.class, JSONObject.class})
+@PrepareForTest({JavaScriptObject.class, JSONObject.class, NativeDragDataObject.class})
 public class SourceListConnectedDragHandlerTest {
 
 	private SourceListConnectedDragHandler dragHandler;
 	private final String moduleIdentifier = "moduleId";
 	private final Wrapper<String> itemIdWrapper = Wrapper.of("itemId");
-	private SourcelistManager sourcelistManager;
+	private SourceListManagerAdapter sourcelistManagerAdapter;
 	private OverlayTypesParser overlayTypesParser;
 	
 	@BeforeClass
@@ -45,9 +45,10 @@ public class SourceListConnectedDragHandlerTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		sourcelistManager = Mockito.mock(SourcelistManager.class);
+		sourcelistManagerAdapter = Mockito.mock(SourceListManagerAdapter.class);
 		overlayTypesParser = Mockito.mock(OverlayTypesParser.class);
-		dragHandler = new SourceListConnectedDragHandler(moduleIdentifier, itemIdWrapper, sourcelistManager, overlayTypesParser);
+		dragHandler = new SourceListConnectedDragHandler(sourcelistManagerAdapter, overlayTypesParser);
+		dragHandler.initialize(moduleIdentifier, itemIdWrapper);
 	}
 
 	@Test
@@ -56,7 +57,7 @@ public class SourceListConnectedDragHandlerTest {
 		
 		dragHandler.onDragEnd(event);
 		
-		verify(sourcelistManager).dragFinished();
+		verify(sourcelistManagerAdapter).dragFinished();
 	}
 	
 	@Test
@@ -73,7 +74,7 @@ public class SourceListConnectedDragHandlerTest {
 		
 		dragHandler.onDragStart(event);
 		
-		verify(sourcelistManager).dragStart(moduleIdentifier);
+		verify(sourcelistManagerAdapter).dragStart();
 		
 		InOrder inOrder = Mockito.inOrder(overlayTypesParser, dragDataObject);
 		inOrder.verify(overlayTypesParser).get();

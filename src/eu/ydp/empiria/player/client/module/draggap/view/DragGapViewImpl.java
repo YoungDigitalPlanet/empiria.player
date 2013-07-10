@@ -10,10 +10,10 @@ import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
@@ -34,19 +34,22 @@ public class DragGapViewImpl implements DragGapView {
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
 	private final DragGapStylesProvider dragGapStylesProvider;
+	private final ContentWidgetFactory contentWidgetFactory;
 
 	private Widget contentWidget;
 	private FlowPanel itemWrapper;
 	private Optional<DraggableObject<FlowPanel>> optionalDraggable = Optional.absent();
 	private Optional<DragStartHandler> dragStartHandlerOptional = Optional.absent();
 	private DragEndHandler dragEndHandler;
+
 	
 
 	@Inject
-	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider) {
+	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider, ContentWidgetFactory contentWidgetFactory) {
 		this.dragDropHelper = dragDropHelper;
 		this.styleNameConstants = styleNameConstants;
 		this.dragGapStylesProvider = dragGapStylesProvider;
+		this.contentWidgetFactory = contentWidgetFactory;
 
 		uiBinder.createAndBindUi(this);
 		container.setStyleName(styleNameConstants.QP_DRAG_GAP_DEFAULT());
@@ -58,17 +61,20 @@ public class DragGapViewImpl implements DragGapView {
 	}
 
 	@Override
-	public void setContent(String content) {
+	public void setItemContent(SourcelistItemValue item) {
 		removeContent();
-		DraggableObject<FlowPanel> draggableObject = createDraggableObjectWithContent(content);
+		fullFillItemWrapperWithContent(item);
+		DraggableObject<FlowPanel> draggableObject = createDragableObjectOnItemWrapper();
 		addDragHandlersToItem(draggableObject);
 	}
-
-	private DraggableObject<FlowPanel> createDraggableObjectWithContent(String content) {
-		contentWidget = new HTMLPanel(content);
+	
+	private void fullFillItemWrapperWithContent(SourcelistItemValue item) {
+		contentWidget = contentWidgetFactory.createContentWidgetById(item);
 		itemWrapper = new FlowPanel();
 		itemWrapper.add(contentWidget);
+	}
 
+	private DraggableObject<FlowPanel> createDragableObjectOnItemWrapper() {
 		DraggableObject<FlowPanel> draggableObject = dragDropHelper.enableDragForWidget(itemWrapper);
 		Widget draggableWidget = draggableObject.getDraggableWidget();
 

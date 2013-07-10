@@ -15,24 +15,29 @@ public class DragDropController {
 	private final DragGapView dragGapView;
 	private final DragGapModuleFactory dragGapModuleFactory;
 	private DropZoneGuardian dropZoneGuardian;
+	private final SourceListConnectedDragHandler dragHandler;
+	private final SourceListConnectedDropHandler dropHandler;
 
 	@Inject
 	public DragDropController(
 			@ModuleScoped DragGapView dragGapView, 
-			DragGapModuleFactory dragGapModuleFactory) {
+			DragGapModuleFactory dragGapModuleFactory, 
+			SourceListConnectedDragHandler dragHandler, 
+			SourceListConnectedDropHandler dropHandler) {
 		this.dragGapView = dragGapView;
 		this.dragGapModuleFactory = dragGapModuleFactory;
+		this.dragHandler = dragHandler;
+		this.dropHandler = dropHandler;
 	}
 	
 	public void initializeDrop(String moduleIdentifier) {
 		DroppableObject<FlowPanelWithDropZone> droppable = dragGapView.enableDropCapabilities();
-		SourceListConnectedDropHandler dropHandler = dragGapModuleFactory.createSourceListConnectedDropHandler(moduleIdentifier);
 		droppable.addDropHandler(dropHandler);
 		dropZoneGuardian = dragGapModuleFactory.createDropZoneGuardian(droppable, droppable.getDroppableWidget());
 	}
 
 	public void initializeDrag(String moduleIdentifier, Wrapper<String> itemIdWrapper) {
-		SourceListConnectedDragHandler dragHandler = dragGapModuleFactory.createSourceListConnectedDragHandler(moduleIdentifier, itemIdWrapper);
+		dragHandler.initialize(moduleIdentifier, itemIdWrapper);
 		dragGapView.setDragStartHandler(dragHandler);
 		dragGapView.setDragEndHandler(dragHandler);
 	}

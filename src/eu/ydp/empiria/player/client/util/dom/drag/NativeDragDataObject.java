@@ -14,7 +14,7 @@ public class NativeDragDataObject extends JavaScriptObject implements DragDataOb
 	}-*/;
 
 	@Override
-	public native void setItemId(String itemId)/*-{
+	public final native void setItemId(String itemId)/*-{
 		this.itemId = itemId;
 	}-*/;
 
@@ -24,12 +24,12 @@ public class NativeDragDataObject extends JavaScriptObject implements DragDataOb
 	}-*/;
 
 	@Override
-	public native void setSourceId(String sourceId) /*-{
+	public final native void setSourceId(String sourceId) /*-{
 		 this.sourceId = sourceId;
 	}-*/;
 
 	@Override
-	public String toJSON() {
+	public final String toJSON() {
 		return new JSONObject(this).toString();
 	}
 

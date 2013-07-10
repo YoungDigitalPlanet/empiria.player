@@ -32,6 +32,7 @@ public class DragDropControllerTest {
 	private final Wrapper<String> itemIdWrapper = Wrapper.of("itemId");
 	private DropZoneGuardian dropZoneGuardian;
 	private SourceListConnectedDragHandler dragHandler;
+	private SourceListConnectedDropHandler dropHandler;
 	
 	@BeforeClass
 	public static void disarm() {
@@ -47,17 +48,18 @@ public class DragDropControllerTest {
 	public void setUp() throws Exception {
 		dragGapView = Mockito.mock(DragGapView.class);
 		dragGapModuleFactory = Mockito.mock(DragGapModuleFactory.class);
-		dragDropController = new DragDropController(dragGapView, dragGapModuleFactory);
+		dragHandler = Mockito.mock(SourceListConnectedDragHandler.class);
+		dropHandler = Mockito.mock(SourceListConnectedDropHandler.class);
+		dragDropController = new DragDropController(dragGapView, dragGapModuleFactory, dragHandler, dropHandler);
 	}
 
 	@Test
 	public void shouldSetUpDragHandlers() throws Exception {
-		mockDragHandlerCreation();
-		
 		dragDropController.initializeDrag(moduleIdentifier, itemIdWrapper);
 		
 		verify(dragGapView).setDragStartHandler(dragHandler);
 		verify(dragGapView).setDragEndHandler(dragHandler);
+		verify(dragHandler).initialize(moduleIdentifier, itemIdWrapper);
 	}
 
 	@Test
@@ -84,17 +86,7 @@ public class DragDropControllerTest {
 		verify(dropZoneGuardian).unlockDropZone();
 	}
 	
-	private void mockDragHandlerCreation() {
-		dragHandler = Mockito.mock(SourceListConnectedDragHandler.class);
-		when(dragGapModuleFactory.createSourceListConnectedDragHandler(moduleIdentifier, itemIdWrapper))
-			.thenReturn(dragHandler);
-	}
-
 	private void mockDropEnabling() {
-		SourceListConnectedDropHandler dropHandler = Mockito.mock(SourceListConnectedDropHandler.class);
-		when(dragGapModuleFactory.createSourceListConnectedDropHandler(moduleIdentifier))
-			.thenReturn(dropHandler);
-
 		@SuppressWarnings("unchecked")
 		DroppableObject<FlowPanelWithDropZone> droppable = Mockito.mock(DroppableObject.class);
 		when(dragGapView.enableDropCapabilities())
