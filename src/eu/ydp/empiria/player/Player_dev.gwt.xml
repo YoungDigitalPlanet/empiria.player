@@ -3,8 +3,8 @@
 	<inherits name="eu.ydp.empiria.player.Player"/>
 
 	<!-- Debug -->
-<!-- 	<set-property name="application.debug" value="on" /> -->
-<!-- 	<set-property name="user.agent" value="safari"/> -->
+	<set-property name="application.debug" value="on" />
+	<set-property name="user.agent" value="safari"/>
 	<!-- END DEBUG -->
 
 </module>

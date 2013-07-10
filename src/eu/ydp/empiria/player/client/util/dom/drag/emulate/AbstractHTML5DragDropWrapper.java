@@ -62,7 +62,7 @@ public abstract class AbstractHTML5DragDropWrapper implements DragDropSetGetData
 				dataObject.@eu.ydp.empiria.player.client.util.dom.drag.emulate.DragDropSetGetData::cleatData(Ljava/lang/String;)();
 			},
 			getData : function(format) {
-				dataObject.@eu.ydp.empiria.player.client.util.dom.drag.emulate.DragDropSetGetData::getData(Ljava/lang/String;)(format);
+				return dataObject.@eu.ydp.empiria.player.client.util.dom.drag.emulate.DragDropSetGetData::getData(Ljava/lang/String;)(format);
 			},
 			setData : function(format, data) {
 				dataObject.@eu.ydp.empiria.player.client.util.dom.drag.emulate.DragDropSetGetData::setData(Ljava/lang/String;Ljava/lang/String;)(format,data);

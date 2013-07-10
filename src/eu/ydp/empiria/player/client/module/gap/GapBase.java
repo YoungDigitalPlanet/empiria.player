@@ -74,6 +74,8 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	protected BindingContext maxlengthBindingContext;
 
 	protected String maxLength = StringUtils.EMPTY_STRING;
+	
+	protected boolean locked;
 
 	protected abstract boolean isResponseCorrect();
 
@@ -148,6 +150,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	@Override
 	public void lock(boolean lock) {
+		locked = lock;
 		presenter.setViewEnabled(!lock);
 	}
 

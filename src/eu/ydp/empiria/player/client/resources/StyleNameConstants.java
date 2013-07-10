@@ -167,6 +167,21 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-drag-item")
 	public String QP_DRAG_ITEM();
 
+	@DefaultStringValue("qp-drag-gap-correct")
+	public String QP_DRAG_GAP_CORRECT();
+
+	@DefaultStringValue("qp-drag-gap-wrong")
+	public String QP_DRAG_GAP_WRONG();
+
+	@DefaultStringValue("qp-drag-gap-default")
+	public String QP_DRAG_GAP_DEFAULT();
+
+	@DefaultStringValue("qp-drag-gap-none")
+	public String QP_DRAG_GAP_NONE();
+
+	@DefaultStringValue("qp-drag-gap-locked")
+	public String QP_DRAG_GAP_LOCKED();
+	
 	@DefaultStringValue("qp-dragged-drag")
 	public String QP_DRAGGED_DRAG();
 
@@ -194,6 +209,33 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-header")
 	public String QP_HEADER();
 
+	@DefaultStringValue("qp-identification-option")
+	public String QP_IDENTIFICATION_OPTION();
+
+	@DefaultStringValue("qp-identification-option-cover")
+	public String QP_IDENTIFICATION_OPTION_COVER();
+	
+	@DefaultStringValue("qp-identification-option-container")
+	public String QP_IDENTIFICATION_OPTION_CONTAINER();
+	
+	@DefaultStringValue("qp-identification-option-selected")
+	public String QP_IDENTIFICATION_OPTION_SELECTED();
+	
+	@DefaultStringValue("qp-identification-option-locked")
+	public String QP_IDENTIFICATION_OPTION_LOCKED();
+	
+	@DefaultStringValue("qp-identification-option-selected-correct")
+	public String QP_IDENTIFICATION_OPTION_SELECTED_CORRECT();
+	
+	@DefaultStringValue("qp-identification-option-selected-wrong")
+	public String QP_IDENTIFICATION_OPTION_SELECTED_WRONG();
+	
+	@DefaultStringValue("qp-identification-option-notselected-correct")
+	public String QP_IDENTIFICATION_OPTION_NOTSELECTED_CORRECT();
+	
+	@DefaultStringValue("qp-identification-option-notselected-wrong")
+	public String QP_IDENTIFICATION_OPTION_NOTSELECTED_WRONG();
+	
 	@DefaultStringValue("qp-img")
 	public String QP_IMG();
 
@@ -732,4 +774,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
 
+	@DefaultStringValue("qp-drop-zone-locked")
+	public String QP_DROP_ZONE_LOCKED();
 }

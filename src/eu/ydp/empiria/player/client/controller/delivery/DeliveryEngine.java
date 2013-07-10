@@ -87,9 +87,9 @@ import eu.ydp.gwtutil.client.collections.QueueSet;
  * Responsible for: - loading the content, - managing the content, - delivering
  * content to player, - managing state, results and reports about the
  * assessments.
- * 
+ *
  * @author Rafal Rybacki
- * 
+ *
  */
 public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
@@ -270,6 +270,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getIdentificationModule(), ModuleTagName.IDENTYFICATION_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryGapModule(), ModuleTagName.MATH_GAP_TEXT_ENTRY_TYPE, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getDragGapModule(), ModuleTagName.DRAG_GAP, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceGapModule(), ModuleTagName.MATH_GAP_INLINE_CHOICE_TYPE, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSimpleTextModule(), ModuleTagName.SIMPLE_TEXT));
@@ -304,7 +305,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getConnectionModule(), ModuleTagName.MATCH_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextActionProcessor(), ModuleTagName.TEXT_FEEDBACK));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getImageActionProcessor(), ModuleTagName.IMAGE_FEEDBACK));
-		loadExtension(extensionFactory.getDragDropManager());
 		loadExtension(moduleProviderFactory.getMediaProcessor().get());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getMultiPage());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getPage());

@@ -20,6 +20,7 @@ import eu.ydp.empiria.player.client.module.containers.SubHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
+import eu.ydp.empiria.player.client.module.draggap.DragGapModule;
 import eu.ydp.empiria.player.client.module.flash.FlashModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
@@ -120,6 +121,9 @@ public class ModuleProviderFactory {
 	@Inject
 	private Provider<TextEntryGapModule> textEntryGapModule;
 	
+	@Inject
+	private Provider<DragGapModule> dragGapModule;
+
 	@Inject
 	private Provider<DivModule> divModule;
 	
@@ -258,6 +262,10 @@ public class ModuleProviderFactory {
 	public Provider<TextEntryGapModule> getTextEntryGapModule() {
 		return textEntryGapModule;
 	}
+	
+	public Provider<DragGapModule> getDragGapModule() {
+		return dragGapModule;
+	}
 
 	public Provider<ColorfillInteractionModule> getColorfillInteractionModule() {
 		return colorfillInteractionModule;
@@ -310,5 +318,4 @@ public class ModuleProviderFactory {
 	public Provider<SubHtmlContainerModule> getSubHtmlContainerModule() {
 		return subHtmlContainerModule;
 	}
-
 }
