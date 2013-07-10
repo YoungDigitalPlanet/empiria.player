@@ -79,6 +79,12 @@ public class SourcelistManagerImpl implements SourcelistManager {
 
 	private void unlockAll() {
 		for (Sourcelist sourcelist : model.getSourceLists()) {
+			unlockGroupIfNotBlocked(sourcelist);
+		}
+	}
+
+	private void unlockGroupIfNotBlocked(Sourcelist sourcelist) {
+		if (!model.isGroupLocked(sourcelist)) {
 			sourcelist.unlockSourceList();
 			unlockClients(sourcelist);
 		}
@@ -168,6 +174,7 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		if (model.containsClient(clientId)) {
 			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
 			lockGroup(sourcelist);
+			model.lockGroup(sourcelist);
 		}
 	}
 
@@ -176,6 +183,7 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		if (model.containsClient(clientId)) {
 			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
 			unlockGroup(sourcelist);
+			model.unlockGroup(sourcelist);
 		}
 	}
 

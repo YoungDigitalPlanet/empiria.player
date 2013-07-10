@@ -2,12 +2,7 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 
@@ -125,6 +120,10 @@ public class SourcelistManagerImplTest {
 
 	@Test
 	public void shouldUnlockAllClientsOnDragFinished() {
+		//given
+		when(model.isGroupLocked(sourcelist1)).thenReturn(false);
+		when(model.isGroupLocked(sourcelist2)).thenReturn(false);
+		
 		// when
 		manager.dragFinished();
 
@@ -228,12 +227,12 @@ public class SourcelistManagerImplTest {
 		// then
 		verify(client1, never()).lockDropZone();
 		verify(sourcelist1, never()).lockSourceList();
-		
+
 		verify(client2).lockDropZone();
 		verify(client3).lockDropZone();
 		verify(sourcelist2).lockSourceList();
 	}
-	
+
 	@Test
 	public void shouldUnlockOnlyGroupWithGivenClient() {
 		// when
@@ -242,10 +241,26 @@ public class SourcelistManagerImplTest {
 		// then
 		verify(client1, never()).unlockDropZone();
 		verify(sourcelist1, never()).unlockSourceList();
-		
+
 		verify(client2).unlockDropZone();
 		verify(client3).unlockDropZone();
 		verify(sourcelist2).unlockSourceList();
+	}
+
+	@Test
+	public void shouldUnlockAllSourcelistsAndClientsWhichGroupIsNotLocked() {
+		// given
+		when(model.isGroupLocked(sourcelist1)).thenReturn(true);
+		when(model.isGroupLocked(sourcelist2)).thenReturn(false);
+
+		// when
+		manager.dragFinished();
+
+		// then
+		verify(sourcelist1, never()).unlockSourceList();
+		verify(sourcelist2).unlockSourceList();
+		verify(client1, never()).unlockDropZone();
+		verify(client2).unlockDropZone();
 	}
 
 	private SourcelistClient mockClient(String string) {

@@ -12,14 +12,12 @@ public class SourcelistManagerModel {
 
 	private Map<String, SourcelistClient> clientIdCache = Maps.newHashMap();
 	private Map<String, Sourcelist> sourcelistIdCache = Maps.newHashMap();
-	private Map<SourcelistClient, Sourcelist> mapClientToSourcelist = Maps
-			.newHashMap();
-	private Multimap<Sourcelist, SourcelistClient> mapSourceListToClients = HashMultimap
-			.create();
+	private Map<SourcelistClient, Sourcelist> mapClientToSourcelist = Maps.newHashMap();
+	private Multimap<Sourcelist, SourcelistClient> mapSourceListToClients = HashMultimap.create();
+	private Map<Sourcelist, Boolean> lockedModules = Maps.newHashMap();
 
 	public void addRelation(Sourcelist sourcelist, SourcelistClient client) {
-		Sourcelist currentSourcelist = getSourcelistByClientId(client
-				.getIdentifier());
+		Sourcelist currentSourcelist = getSourcelistByClientId(client.getIdentifier());
 		if (currentSourcelist != null) {
 			mapSourceListToClients.get(currentSourcelist).remove(client);
 		}
@@ -27,6 +25,7 @@ public class SourcelistManagerModel {
 		clientIdCache.put(client.getIdentifier(), client);
 		sourcelistIdCache.put(sourcelist.getIdentifier(), sourcelist);
 		mapSourceListToClients.put(sourcelist, client);
+		lockedModules.put(sourcelist, false);
 	}
 
 	public Set<Sourcelist> getSourceLists() {
@@ -57,5 +56,17 @@ public class SourcelistManagerModel {
 
 	public Sourcelist getSourcelistById(String sourcelistId) {
 		return sourcelistIdCache.get(sourcelistId);
+	}
+
+	public void lockGroup(Sourcelist sourcelist) {
+		lockedModules.put(sourcelist, true);
+	}
+
+	public void unlockGroup(Sourcelist sourcelist) {
+		lockedModules.put(sourcelist, false);
+	}
+
+	public boolean isGroupLocked(Sourcelist sourcelist) {
+		return lockedModules.get(sourcelist);
 	}
 }

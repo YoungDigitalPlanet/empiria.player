@@ -130,8 +130,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
 	@Override
 	public void unlockDropZone() {
-		if (!locked)
-			dragGapPresenter.unlockDropZone();
+		dragGapPresenter.unlockDropZone();
 	}
 
 	@Override
