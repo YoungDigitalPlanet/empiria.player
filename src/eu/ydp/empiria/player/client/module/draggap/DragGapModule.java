@@ -31,7 +31,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	private DragDropController dragDropController;
 	
 	
-	private Wrapper<String> itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
+	private final Wrapper<String> itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
 
 	@Override
 	protected ActivityPresenter<DragGapModuleModel, DragGapBean> getPresenter() {
@@ -50,7 +50,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Override
 	public void reset() {
 		super.reset();
-		itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
+		itemIdWrapper.setInstance(StringUtils.EMPTY_STRING);
 		sourceListManagerAdapter.onUserValueChanged();
 	}
 
@@ -71,14 +71,14 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
 	@Override
 	public void setDragItem(String itemId) {
-		this.itemIdWrapper = Wrapper.of(itemId);
+		itemIdWrapper.setInstance(itemId);
 		dragGapPresenter.setContent(itemId);
 	}
 
 	@Override
 	public void removeDragItem() {
 		dragGapPresenter.removeContent();
-		itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
+		itemIdWrapper.setInstance(StringUtils.EMPTY_STRING);
 	}
 
 	@Override

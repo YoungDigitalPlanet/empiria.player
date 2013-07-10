@@ -24,7 +24,7 @@ import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
-@PrepareForTest({JavaScriptObject.class, JSONObject.class})
+@PrepareForTest({JavaScriptObject.class, JSONObject.class, NativeDragDataObject.class})
 public class SourceListConnectedDragHandlerTest {
 
 	private SourceListConnectedDragHandler dragHandler;
