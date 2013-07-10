@@ -10,11 +10,12 @@ public class ContentWidgetFactory {
 
 	public Widget createContentWidgetById(SourcelistItemValue item) {
 		SourcelistItemType type = item.getType();
-		
+		String content = item.getContent();
+
 		if(type == SourcelistItemType.IMAGE) {
-			return new Image(item.getContent());
+			return new Image(content);
 		} else {
-			return new HTMLPanel(item.getItemId());
+			return new HTMLPanel(content);
 		}
 	}
 	
