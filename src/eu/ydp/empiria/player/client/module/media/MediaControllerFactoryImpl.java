@@ -72,7 +72,7 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 				mediaController = muteMediaButtonProvider.get();
 				break;
 			case MEDIA_PROGRESS_BAR:
-				mediaController = (AbstractMediaController<?>) mediaProgressBarProvider.get();//GWT.create(MediaProgressBar.class);
+				mediaController = (AbstractMediaController<?>) mediaProgressBarProvider.get();
 				break;
 			case MEDIA_FULL_SCREEN_BUTTON:
 				mediaController = fullScreenMediaButtonProvider.get();
