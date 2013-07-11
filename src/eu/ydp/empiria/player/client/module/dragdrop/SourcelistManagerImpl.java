@@ -69,31 +69,48 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 		lockOthers(sourcelist);
 	}
 
+	private void lockGroup(Sourcelist sourcelist) {
+		sourcelist.lockSourceList();
+		lockClients(sourcelist);
+	}
+
 	private void lockOthers(Sourcelist sourcelist) {
 		for (Sourcelist src : model.getSourceLists()) {
 			if (!sourcelist.equals(src)) {
 				src.lockSourceList();
-				Collection<SourcelistClient> clients = model.getClients(src);
-				lockClients(clients);
+				lockClients(src);
 			}
 		}
 	}
 
-	private void lockClients(Collection<SourcelistClient> clients) {
+	private void lockClients(Sourcelist src) {
+		Collection<SourcelistClient> clients = model.getClients(src);
 		for (SourcelistClient client : clients) {
 			client.lockDropZone();
 		}
 	}
 
+	private void unlockGroup(Sourcelist sourcelist) {
+		sourcelist.unlockSourceList();
+		unlockClients(sourcelist);
+	}
+
 	private void unlockAll() {
 		for (Sourcelist sourcelist : model.getSourceLists()) {
+			unlockGroupIfNotBlocked(sourcelist);
+		}
+	}
+
+	private void unlockGroupIfNotBlocked(Sourcelist sourcelist) {
+		if (!model.isGroupLocked(sourcelist)) {
 			sourcelist.unlockSourceList();
 			unlockClients(sourcelist);
 		}
 	}
 
 	private void unlockClients(Sourcelist sourcelist) {
-		for (SourcelistClient client : model.getClients(sourcelist)) {
+		Collection<SourcelistClient> clients = model.getClients(sourcelist);
+		for (SourcelistClient client : clients) {
 			client.unlockDropZone();
 		}
 	}
@@ -167,6 +184,24 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 	private List<String> clientsToItemsIds(Collection<SourcelistClient> clients) {
 		Collection<String> items = Collections2.transform(clients, clientToItemid);
 		return Lists.newArrayList(items);
+	}
+
+	@Override
+	public void lockGroup(String clientId) {
+		if (model.containsClient(clientId)) {
+			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
+			lockGroup(sourcelist);
+			model.lockGroup(sourcelist);
+		}
+	}
+
+	@Override
+	public void unlockGroup(String clientId) {
+		if (model.containsClient(clientId)) {
+			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
+			unlockGroup(sourcelist);
+			model.unlockGroup(sourcelist);
+		}
 	}
 
 	@Override

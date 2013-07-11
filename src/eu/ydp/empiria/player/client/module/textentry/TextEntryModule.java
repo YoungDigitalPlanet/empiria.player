@@ -39,7 +39,6 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	private final DragContentController dragContentController;
 	
-
 	@Inject
 	public TextEntryModule(TextEntryModulePresenter presenter, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,@PageScoped final SourcelistManager sourcelistManager, DragContentController dragContentController) {
 		this.styleSocket = styleSocket;
@@ -54,7 +53,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 				sourcelistManager.onUserValueChanged();
 				updateResponse(true);
 			}
-			
+
 			@Override
 			public void onBlur(BlurEvent event) {
 				if (isMobileUserAgent()) {
@@ -72,21 +71,18 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 				String sourceModuleId = dragDataObject.getSourceId();
 				String targetModuleId = getIdentifier();
 
-				sourcelistManager.dragEnd(itemID, sourceModuleId,
-						targetModuleId);
+				sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
 			}
 		});
-	
+
 	}
-	
-	
-	
+
 	@Override
 	public void reset() {
 		super.reset();
 		sourcelistManager.onUserValueChanged();
 	}
-	
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		styles = styleSocket.getStyles(getModuleElement());
@@ -204,7 +200,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	}
 
 	TextEntryModulePresenter getTextEntryPresenter() {
-		return (TextEntryModulePresenter)presenter;
+		return (TextEntryModulePresenter) presenter;
 	}
 
 	@Override
@@ -215,12 +211,23 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	@Override
 	public void unlockDropZone() {
-		getTextEntryPresenter().unlockDragZone();
-
+		getTextEntryPresenter().unlockDragZone();	
 	}
 
 	@Override
 	public void setSize(HasDimensions size) {
-		// intentionally empty - text gap does not fit its size		
+		// intentionally empty - text gap does not fit its size
 	}
+			
+	@Override
+	public void lock(boolean lock) {
+		super.lock(lock);
+		if (lock) {
+			sourcelistManager.lockGroup(getIdentifier());
+		} else {
+			sourcelistManager.unlockGroup(getIdentifier());
+			getTextEntryPresenter().unlockDragZone();
+		}
+	}
+
 }

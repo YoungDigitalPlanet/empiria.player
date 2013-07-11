@@ -56,12 +56,12 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 		sourceListDropZone = dragDropHelper.enableDropForWidget(items, false);
 		touchReservationFactory.addTouchReservationHandler(items);
 		addDropHandler();
-        disableAutoBehaviorOnSelect();
-     }
+		disableAutoBehaviorOnSelect();
+	}
 
-     private void disableAutoBehaviorOnSelect() {
-             final EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(new DisableDefaultBehaviorCommand());
-             userOverHandler.apply(this);
+	private void disableAutoBehaviorOnSelect() {
+		final EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(new DisableDefaultBehaviorCommand());
+		userOverHandler.apply(this);
      }
 
 	private void addDropHandler() {

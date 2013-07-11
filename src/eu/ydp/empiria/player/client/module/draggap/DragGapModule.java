@@ -95,4 +95,16 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	public void setSize(HasDimensions size) {
 		dragGapPresenter.setGapDimensions(size);
 	}
+
+	@Override
+	public void lock(boolean lock) {
+		super.lock(lock);
+		if (lock) {
+			sourceListManagerAdapter.lockGroup();
+		} else {
+			sourceListManagerAdapter.unlockGroup();
+			dragDropController.unlockDropZone();
+		}
+	}
+
 }

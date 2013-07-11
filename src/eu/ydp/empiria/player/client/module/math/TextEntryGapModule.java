@@ -28,7 +28,6 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class TextEntryGapModule extends MathGapBase implements MathGap, SourcelistClient {
 
-
 	private final SourcelistManager sourcelistManager;
 
 	private final StyleSocket styleSocket;
@@ -62,14 +61,13 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 			@Override
 			public void onDrop(DragDataObject dragDataObject) {
 				String itemID = dragDataObject.getItemId();
-				String sourceModuleId = dragDataObject.getSourceId();;
+				String sourceModuleId = dragDataObject.getSourceId();
 				String targetModuleId = getIdentifier();
 
-				sourcelistManager.dragEnd(itemID, sourceModuleId,
-						targetModuleId);
+				sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
 			}
 		});
-		
+
 		sourcelistManager.registerModule(this);
 	}
 
@@ -78,7 +76,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 		super.reset();
 		sourcelistManager.onUserValueChanged();
 	}
-	
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		installViewInPlaceholder(placeholders.get(0));
@@ -234,4 +232,16 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	public void setSize(HasDimensions size) {
 		// intentionally empty - text gap does not fit its size
 	}
+
+	@Override
+	public void lock(boolean lock) {
+		super.lock(lock);
+		if (lock) {
+			sourcelistManager.lockGroup(getIdentifier());
+		} else {
+			sourcelistManager.unlockGroup(getIdentifier());
+			getTextEntryGapPresenter().unlockDragZone();
+		}
+	}
+
 }

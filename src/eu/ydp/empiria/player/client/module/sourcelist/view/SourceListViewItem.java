@@ -19,6 +19,9 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class SourceListViewItem extends Composite implements LockUnlockDragDrop {
 
@@ -32,12 +35,14 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	private @Inject DragDropHelper dragDropHelper;
 	private @Inject TouchController touchController;
 	private @Inject Provider<SourceListViewItemWidget> sourceListViewItemWidgetProvider;
+	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
 	private SourceListViewImpl sourceListView;
 	private DraggableObject<SourceListViewItemWidget> draggable;
 	private SourceListViewItemWidget container;
 
 	private SourcelistItemValue itemContent;
 
+	private final Command disableTextMark = new DisableDefaultBehaviorCommand();
 	public void setSourceListView(SourceListViewImpl sourceListView) {
 		this.sourceListView = sourceListView;
 	}
@@ -66,6 +71,8 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	private SourceListViewItemWidget getDraggableWidget(SourcelistItemValue itemValue) {
 		SourceListViewItemWidget itemWidget = sourceListViewItemWidgetProvider.get();
 		itemWidget.initView(itemValue.getType(), itemValue.getContent(), styleNames.QP_DRAG_ITEM());
+		EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(disableTextMark);
+		userOverHandler.apply(itemWidget);
 		return itemWidget;
 	}
 

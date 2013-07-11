@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.draggap.presenter;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -19,6 +21,9 @@ import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.empiria.player.client.module.sourcelist.view.DisableDefaultBehaviorCommand;
+import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class DragGapPresenterImpl implements DragGapPresenter {
 
@@ -26,6 +31,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	private final DragGapModuleModel model;
 	private final DragGapView view;
 	private final SourceListManagerAdapter sourceListManagerAdapter;
+	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
 
 	@Inject
 	public DragGapPresenterImpl(
@@ -39,6 +45,16 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		this.sourceListManagerAdapter = sourceListManagerAdapter;
 	}
 
+	@PostConstruct
+	public void postConstruct() {
+		disableTextMark();
+	}
+
+	private void disableTextMark() {
+		EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(new DisableDefaultBehaviorCommand());
+		userOverHandler.apply(view.asWidget());
+	}
+	
 	@Override
 	public void bindView() {
 		view.updateStyle(UserAnswerType.DEFAULT);

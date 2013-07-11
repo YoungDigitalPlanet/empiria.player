@@ -44,4 +44,12 @@ public class SourceListManagerAdapter {
 	public void onUserValueChanged() {
 		sourcelistManager.onUserValueChanged();
 	}
+
+	public void lockGroup() {
+		sourcelistManager.lockGroup(moduleId);
+	}
+
+	public void unlockGroup() {
+		sourcelistManager.unlockGroup(moduleId);
+	}
 }
