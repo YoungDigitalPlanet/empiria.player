@@ -1,7 +1,11 @@
 package eu.ydp.empiria.player.client.module.sourcelist.structure;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType.TEXT;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,17 +15,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.google.common.collect.Lists;
+
 import eu.ydp.empiria.player.client.AbstractTestBase;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 
 @SuppressWarnings("PMD")
 public class SourceListModuleStructureTest extends AbstractTestBase {
+
 	private SourceListModuleStructure instance;
-
+	
+	@Override
 	@Before
-	public void before() {
+	public void setUp(){
+		super.setUp();
 		instance = spy(injector.getInstance(SourceListModuleStructure.class));
-
 	}
 
 	@Test
@@ -38,49 +47,81 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 	}
 
 	@Test
-	public void parseBeanTestAttributeCheck() {
+	public void parseBean() {
+		// given
 		YJsonArray state = Mockito.mock(YJsonArray.class);
 
+		// when
 		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE, state);
+		
+		// then
 		SourceListBean bean = instance.getBean();
 		assertTrue(bean.isMoveElements());
 		assertTrue(!bean.isShuffle());
 		assertEquals("dummy2", bean.getId());
-		assertNotNull(bean.getSimpleSourceListItemBeans());
-		assertTrue(bean.getSimpleSourceListItemBeans().size() == 3);
 
-		List<String> list = new ArrayList<String>(Arrays.asList("psa", "kota", "tygrysa"));
-		for (SimpleSourceListItemBean benItem : bean.getSimpleSourceListItemBeans()) {
-			assertNotNull(benItem.getAlt());
-			assertNotNull(benItem.getValue());
-			String value = list.remove(0);
-			assertEquals(value, benItem.getAlt());
-			assertEquals(value, benItem.getValue());
-		}
+		List<SimpleSourceListItemBean> items = bean.getSimpleSourceListItemBeans();
+
+		List<SourcelistItemType> types = extractTypes(items);
+		List<String> contents = extractContents(items);
+		List<String> alts = extractAlts(items);
+		
+		assertThat(types).containsSequence(TEXT, TEXT, TEXT);
+		assertThat(contents).containsSequence("psa", "kota", "tygrysa");
+		assertThat(alts).containsSequence("psa", "kota", "tygrysa");
 	}
 
 	@Test
 	public void noShuffleTest() {
+		// given
 		YJsonArray state = Mockito.mock(YJsonArray.class);
 
+		// when
 		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE, state);
-		Mockito.verify(instance, times(0)).shuffle();
+		
+		// then
+		List<String> contents = extractContents(instance.getBean().getSimpleSourceListItemBeans());
+		assertThat(contents).containsSequence("psa", "kota", "tygrysa");
 	}
 
 	@Test
 	public void shuffleTest() {
 		YJsonArray state = Mockito.mock(YJsonArray.class);
 
+		// when
 		instance.createFromXml(SourceListJAXBParserMock.XML_WITH_MORE_ITEMS, state);
-		Mockito.verify(instance, times(1)).shuffle();
+
+		// then
 		SourceListBean bean = instance.getBean();
 		List<String> list = new ArrayList<String>(Arrays.asList("psa", "kota", "tygrysa", "psa1", "kota1", "tygrysa1", "psa2", "kota2", "tygrysa2"));
-		List<String> listToCompare = new ArrayList<String>();
-		List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
-		for (int x = 0; x < simpleSourceListItemBeans.size(); ++x) {
-			listToCompare.add(simpleSourceListItemBeans.get(x).getValue());
+		List<SimpleSourceListItemBean> items = bean.getSimpleSourceListItemBeans();
+		List<String> contents = extractContents(items);
+		
+		assertThat(contents).isNotEqualTo(list);
+	}
+
+	private List<String> extractContents(List<SimpleSourceListItemBean> items) {
+		List<String> values = Lists.newArrayList();
+		for (SimpleSourceListItemBean beanItem : items) {
+			values.add(beanItem.getItemValue().getContent());
 		}
-		assertNotSame(list, listToCompare);
+		return values;
+	}
+
+	private List<SourcelistItemType> extractTypes(List<SimpleSourceListItemBean> items) {
+		List<SourcelistItemType> types = Lists.newArrayList();
+		for (SimpleSourceListItemBean beanItem : items) {
+			types.add(beanItem.getItemValue().getType());
+		}
+		return types;
+	}
+
+	private List<String> extractAlts(List<SimpleSourceListItemBean> items) {
+		List<String> alts = Lists.newArrayList();
+		for (SimpleSourceListItemBean beanItem : items) {
+			alts.add(beanItem.getAlt());
+		}
+		return alts;
 	}
 
 }

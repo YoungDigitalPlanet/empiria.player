@@ -18,6 +18,9 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+
 @RunWith(MockitoJUnitRunner.class)
 public class SourcelistManagerImplTest {
 
@@ -217,6 +220,25 @@ public class SourcelistManagerImplTest {
 		// then
 		verify(sourcelist1).useAndRestockItems(sourcelist1ItemsIds);
 		verify(sourcelist2).useAndRestockItems(sourcelist2ItemsIds);
+	}
+	
+	@Test
+	public void shouldResizeAllClients(){
+		// given
+		PlayerEvent event = mock(PlayerEvent.class);
+		HasDimensions dim1 = mock(HasDimensions.class);
+		HasDimensions dim2 = mock(HasDimensions.class);
+		when(sourcelist1.getItemSize()).thenReturn(dim1);
+		when(sourcelist2.getItemSize()).thenReturn(dim2);
+				
+		//when
+		manager.onPlayerEvent(event);
+		
+		//then
+		verify(client1).setSize(dim1);
+		verify(client2).setSize(dim2);
+		verify(client3).setSize(dim2);
+		verifyNoMoreInteractions(client1, client2, client3);
 	}
 
 	@Test
