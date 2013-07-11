@@ -1,0 +1,73 @@
+package eu.ydp.empiria.player.client.module.tutor;
+
+import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.OUTCOME_STATE_CHANGED;
+
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
+import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
+
+public class TutorModule extends SimpleModuleBase {
+
+	@Inject private EventsBus eventsBus;
+	@Inject private PageScopeFactory eventScopeFactory;
+	@Inject @ModuleScoped private TutorPresenter presenter;
+	@Inject @ModuleScoped private TutorView view;
+	@Inject @ModuleScoped private ActionEventGenerator eventGenerator;
+	@Inject @ModuleScoped private TutorConfig config;
+	
+	@Override
+	protected void initModule(Element element) {
+		addHandlers();
+		init();
+	}
+
+	private void init() {
+		presenter.init();
+	}
+
+	private void addHandlers() {
+		final CurrentPageScope modulePageScope = eventScopeFactory.getCurrentPageScope();
+		eventsBus.addHandler(StateChangeEvent.getType(OUTCOME_STATE_CHANGED), new StateChangeEventHandler() {
+			
+			@Override
+			public void onStateChange(StateChangeEvent event) {
+				eventGenerator.stateChanged();
+			}
+		}, modulePageScope);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_UNLOADED), new PlayerEventHandler() {
+			
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				eventGenerator.stop();
+			}
+		}, modulePageScope);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), new PlayerEventHandler() {
+			
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				eventGenerator.start();
+			}
+
+		}, modulePageScope);
+	}
+	
+	@Override
+	public Widget getView() {
+		return view.asWidget();
+	}
+
+}
