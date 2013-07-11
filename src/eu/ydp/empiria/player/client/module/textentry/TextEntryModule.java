@@ -26,7 +26,6 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.StringUtils;
-import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
 public class TextEntryModule extends GapBase implements SourcelistClient {
 
@@ -37,15 +36,18 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	private final ResponseSocket responseSocket;
 
 	protected Map<String, String> styles;
+
+	private final DragContentController dragContentController;
 	
 
 	@Inject
-	public TextEntryModule(TextEntryModulePresenter presenter, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,@PageScoped final SourcelistManager sourcelistManager) {
+	public TextEntryModule(TextEntryModulePresenter presenter, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,@PageScoped final SourcelistManager sourcelistManager, DragContentController dragContentController) {
 		this.styleSocket = styleSocket;
 		this.responseSocket = responseSocket;
 		this.sourcelistManager = sourcelistManager;
 
 		this.presenter = presenter;
+		this.dragContentController = dragContentController;
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -188,13 +190,12 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 		return presenter.getText();
 	}
 
-	private static final Logger LOGGER = new Logger();
-	
 	@Override
 	public void setDragItem(String itemId) {
-		LOGGER.methodLog("TextEntryModule", "setDragItem", itemId);
-		SourcelistItemValue itemValue = sourcelistManager.getValue(itemId, getIdentifier());
-		presenter.setText(itemValue.getContent()); // TODO YPUB-5441 use factory to get value as string
+		SourcelistItemValue item = sourcelistManager.getValue(itemId, getIdentifier());
+		String newText = dragContentController.getTextFromItemAppropriateToType(item);
+		
+		presenter.setText(newText);
 	}
 
 	@Override
