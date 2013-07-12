@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.animation.AnimationEndHandler;
 import eu.ydp.empiria.player.client.animation.AnimationRuntimeConfig;
 import eu.ydp.empiria.player.client.animation.AnimationWithRuntimeConfig;
 import eu.ydp.empiria.player.client.animation.holder.AnimationHolder;
+import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class JsAnimation implements AnimationWithRuntimeConfig {
 
@@ -47,7 +48,9 @@ public class JsAnimation implements AnimationWithRuntimeConfig {
 
 	private void initHolder() {
 		String src = getAnimateConfig().getSource();
-		getAnimationHolder().setAnimationImage(src);
+		Size size = animationRuntimeConfig.getImageSize();
+		
+		getAnimationHolder().setAnimationImage(src, size);
 		getAnimationHolder().setAnimationLeft(0);
 	}
 
