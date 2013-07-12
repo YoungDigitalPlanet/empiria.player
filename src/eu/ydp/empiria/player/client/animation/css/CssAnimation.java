@@ -27,7 +27,7 @@ public class CssAnimation implements AnimationWithRuntimeConfig {
 	}
 
 	private void play() {
-		currentAnimationClassName = animationClassBuilder.getAnimationCssClassName(getAnimationConfig(), animationRuntimeConfig.getImageSize());
+		currentAnimationClassName = animationClassBuilder.createAnimationCssClassName(getAnimationConfig(), animationRuntimeConfig.getImageSize());
 		endHandlerRegistration = getAnimationHolder().addAnimationEndHandler(new AnimationEndHandler() {
 
 			@Override

@@ -1,11 +1,7 @@
 package eu.ydp.empiria.player.client.animation.css;
 
-import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
@@ -13,88 +9,63 @@ import eu.ydp.empiria.player.client.animation.AnimationConfig;
 import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class CssAnimationClassBuilder {
-	private @Inject @Nonnull StyleAppender styleInjector;
-	private final String webkitPrefix = "-webkit-";
-	private final String mozPrefix = "-moz-";
-	private final String w3cPrefix = "";
+	private static final String ANIMATE_CLASS_TEMPLATE = " .$name { $styleProperty background-image: url($backgroundImage) } ";
+	private static final String ANIMATE_PROPERTY = " $prefixanimation: $keyframesName $animationTimems steps($stepsCount, end);";
 
-	List<String> prefixes = Lists.newArrayList(webkitPrefix,mozPrefix, w3cPrefix);
-	private final static String ANIMATE_KEYFRAMES_TEMPLATE = "@$prefixkeyframes $name { from {background-position:$from} to {background-position:$to} }";
-	private final static String ANIMATE_CLASS_TEMPLATE = " .$name { $styleProperty background-image: url($backgroundImage) } ";
-	private final static String ANIMATE_PROPERTY = " $prefixanimation: $keyframesName $animationTimems steps($stepsCount, end);";
 	private final Set<String> generatedClassNames = Sets.newHashSet();
-
-	private String getRawStyleName(AnimationConfig animationConfig) {
-		String imgSource = animationConfig.getSource();
-		return imgSource.toUpperCase().replaceAll("[\\/.: ]", "_");
+	private final StyleAppender styleInjector;
+	private final CssKeyFrameBuilder cssKeyFrameBuilder;
+	
+	@Inject
+	public CssAnimationClassBuilder(StyleAppender styleInjector, CssKeyFrameBuilder cssKeyFrameBuilder) {
+		this.styleInjector = styleInjector;
+		this.cssKeyFrameBuilder = cssKeyFrameBuilder;
 	}
 
-	private void appendStyleToDocument(String template) {
-		styleInjector.appendStyleToDocument(template);
-	}
-
-	private String getAnimationKeyframesName(AnimationConfig animationConfig, Size imgSize){
-		String animationStyleName = getRawStyleName(animationConfig);
-		animationStyleName += "_keyframes";
-		for(String prefix : prefixes){
-			String keyframes = createSingleKeyframesProperty(imgSize, animationStyleName, prefix);
-			appendStyleToDocument(keyframes);
+	public String createAnimationCssClassName(AnimationConfig animationConfig, Size imgSize){
+		CssAnimationConfig cssAnimationConfig = new CssAnimationConfig(animationConfig, imgSize);
+		String animationStyleName = cssAnimationConfig.getAnimationStyleName();
+		
+		if(!generatedClassNames.contains(animationStyleName)){
+			createAnimationCss(cssAnimationConfig);
+			generatedClassNames.add(animationStyleName);
 		}
+		
 		return animationStyleName;
 	}
 
-	private String createSingleKeyframesProperty(Size imgSize, String animationStyleName, String prefix) {
-		String keyframes = ANIMATE_KEYFRAMES_TEMPLATE
-								.replaceAll("\\$prefix",prefix)
-								.replaceAll("\\$name", animationStyleName)
-								.replaceAll("\\$from", "0px")
-								.replaceAll("\\$to", -imgSize.getWidth()+"px");
-		return keyframes;
+	private void createAnimationCss(CssAnimationConfig cssAnimationConfig) {
+		String animationClassBody = generateAnimationClassBody(cssAnimationConfig);
+		String animationCssClass = generateAnimationCssClass(cssAnimationConfig, animationClassBody);
+		styleInjector.appendStyleToDocument(animationCssClass);
 	}
 
-	public String getAnimationCssClassName(AnimationConfig animationConfig, Size imgSize){
-		String animationStyleName = getRawStyleName(animationConfig);
-		if(generatedClassNames.contains(animationStyleName)){
-			return animationStyleName;
-		}
-		createAnimationCss(animationConfig, imgSize, animationStyleName);
-		generatedClassNames.add(animationStyleName);
-		return animationStyleName;
-	}
-
-	private void createAnimationCss(AnimationConfig animationConfig, Size imgSize, String animationStyleName) {
-		String keyframesName = getAnimationKeyframesName(animationConfig, imgSize);
+	private String generateAnimationClassBody(CssAnimationConfig cssAnimationConfig) {
+		String keyframesName = cssKeyFrameBuilder.generateAnimationKeyframesName(cssAnimationConfig);
+		
 		StringBuilder animationClassBody = new StringBuilder();
-		int framesCount = imgSize.getWidth() / animationConfig.getFrameSize().getWidth();
-		for (String prefix : prefixes) {
-			String styleProperty = generateCssAnimationPropertyValue(animationConfig, keyframesName, framesCount, prefix);
+		for (CssAnimationPrefix prefix : CssAnimationPrefix.values()) {
+			String styleProperty = generateCssAnimationPropertyValue(cssAnimationConfig, keyframesName, prefix);
 			animationClassBody.append(styleProperty);
 		}
-
-		String animationCssClass = generateAnimationStyleBodyWithProperties(animationConfig, animationStyleName, animationClassBody);
-		appendStyleToDocument(animationCssClass);
+		
+		return animationClassBody.toString();
 	}
-
-	private String generateCssAnimationPropertyValue(AnimationConfig animationConfig, String keyframesName, int framesCount, String prefix) {
+	
+	private String generateCssAnimationPropertyValue(CssAnimationConfig animationConfig, String keyframesName, CssAnimationPrefix prefix) {
 		String styleProperty = ANIMATE_PROPERTY
-									.replaceAll("\\$prefix", prefix)
-									.replaceAll("\\$animationTime", getAnimationTime(animationConfig, framesCount))
-									.replaceAll("\\$stepsCount", String.valueOf(framesCount))
+									.replaceAll("\\$prefix", prefix.toCss())
+									.replaceAll("\\$animationTime", animationConfig.getAnimationTime())
+									.replaceAll("\\$stepsCount", String.valueOf(animationConfig.getFramesCount()))
 									.replaceAll("\\$keyframesName", keyframesName);
 		return styleProperty;
 	}
 
-	private String generateAnimationStyleBodyWithProperties(AnimationConfig animationConfig, String animationStyleName, StringBuilder animationClassBody) {
+	private String generateAnimationCssClass(CssAnimationConfig animationConfig, String animationClassBody) {
 		String animationCssClass = ANIMATE_CLASS_TEMPLATE
-										.replaceAll("\\$name", animationStyleName)
-							  			.replaceAll("\\$styleProperty", animationClassBody.toString())
+										.replaceAll("\\$name", animationConfig.getAnimationStyleName())
+							  			.replaceAll("\\$styleProperty", animationClassBody)
 							  			.replaceAll("\\$backgroundImage", animationConfig.getSource());
 		return animationCssClass;
 	}
-
-	private String getAnimationTime(AnimationConfig animationConfig, int framesCount) {
-		return String.valueOf(animationConfig.getIntervalMs() * framesCount);
-	}
-
-
 }

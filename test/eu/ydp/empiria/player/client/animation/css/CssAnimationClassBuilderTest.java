@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -26,7 +25,7 @@ import eu.ydp.empiria.player.client.util.geom.Size;
 @RunWith(MockitoJUnitRunner.class)
 public class CssAnimationClassBuilderTest {
 	@Mock StyleAppender styleAppender;
-	@InjectMocks CssAnimationClassBuilder instance;
+	private CssAnimationClassBuilder instance;
 	private Size frameSize;
 	private String source;
 	private AnimationConfig animationConfig;
@@ -36,6 +35,9 @@ public class CssAnimationClassBuilderTest {
 
 	@Before
 	public void before() {
+		CssKeyFrameBuilder cssKeyFrameBuilder = new CssKeyFrameBuilder(styleAppender);
+		instance = new CssAnimationClassBuilder(styleAppender, cssKeyFrameBuilder);
+		
 		frameSize = new Size(20,30);
 		source = "http://dummy/jj.png";
 		animationConfig = new AnimationConfig(20, frameSize, source);
@@ -47,16 +49,16 @@ public class CssAnimationClassBuilderTest {
 
 	@Test
 	public void getAnimationCssClassName() throws Exception {
-		String animationCssClassName = instance.getAnimationCssClassName(animationConfig, imageSize);
+		String animationCssClassName = instance.createAnimationCssClassName(animationConfig, imageSize);
 		assertThat(animationCssClassName).isNotNull().isNotEmpty();
 		assertThat(animationCssClassName).isEqualTo(animationStyleName);
 	}
 
 	@Test
 	public void shouldReturnSameAnimationCssClassName() throws Exception {
-		String animationCssClassName = instance.getAnimationCssClassName(animationConfig, imageSize);
+		String animationCssClassName = instance.createAnimationCssClassName(animationConfig, imageSize);
 		assertThat(animationCssClassName).isNotNull().isNotEmpty();
-		String secondAnimationCssClassName = instance.getAnimationCssClassName(animationConfig, imageSize);
+		String secondAnimationCssClassName = instance.createAnimationCssClassName(animationConfig, imageSize);
 		assertThat(secondAnimationCssClassName).isNotNull().isNotEmpty();
 		assertThat(animationCssClassName).isEqualTo(secondAnimationCssClassName);
 		verify(styleAppender,times(4)).appendStyleToDocument(anyString());
@@ -65,7 +67,7 @@ public class CssAnimationClassBuilderTest {
 	@Test
 	public void keyframesAnimationCssClassBody() throws Exception {
 		ArgumentCaptor<String> classBodyCaptor = ArgumentCaptor.<String>forClass(String.class);
-		String animationCssClassName = instance.getAnimationCssClassName(animationConfig, imageSize);
+		String animationCssClassName = instance.createAnimationCssClassName(animationConfig, imageSize);
 		verify(styleAppender,times(4)).appendStyleToDocument(classBodyCaptor.capture());
 
 		String webkitKeyframes = "@-webkit-keyframes HTTP___DUMMY_JJ_PNG_keyframes { from {background-position:0px} to {background-position:-200px}}";
@@ -97,7 +99,7 @@ public class CssAnimationClassBuilderTest {
 	@Test
 	public void animationClassBody(){
 		ArgumentCaptor<String> classBodyCaptor = ArgumentCaptor.<String>forClass(String.class);
-		String animationCssClassName = instance.getAnimationCssClassName(animationConfig, imageSize);
+		String animationCssClassName = instance.createAnimationCssClassName(animationConfig, imageSize);
 		verify(styleAppender,times(4)).appendStyleToDocument(classBodyCaptor.capture());
 		List<String> generatedClass = classBodyCaptor.getAllValues();
 		String animationClassBody = generatedClass.get(3);
