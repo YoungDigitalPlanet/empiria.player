@@ -5,97 +5,69 @@ import static java.lang.Math.min;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.animation.Animation;
 import eu.ydp.empiria.player.client.animation.AnimationConfig;
 import eu.ydp.empiria.player.client.animation.AnimationEndHandler;
+import eu.ydp.empiria.player.client.animation.AnimationRuntimeConfig;
+import eu.ydp.empiria.player.client.animation.AnimationWithRuntimeConfig;
 import eu.ydp.empiria.player.client.animation.holder.AnimationHolder;
-import eu.ydp.empiria.player.client.animation.preload.ImagePreloadHandler;
-import eu.ydp.empiria.player.client.animation.preload.ImagePreloader;
-import eu.ydp.empiria.player.client.util.geom.Size;
 
-public class JsAnimation implements Animation {
-
-	private static final double PROGRESS_MAX = 1.0;
-	private final AnimationAnalyzer animationAnalyzer;
-	private final ImagePreloader preloader;
-	private final FrameworkAnimation frameworkAnimation;
-	
-	@Inject
-	public JsAnimation(AnimationAnalyzer animationAnalyzer, ImagePreloader preloader, FrameworkAnimation frameworkAnimation) {
-		this.animationAnalyzer = animationAnalyzer;
-		this.preloader = preloader;
-		this.frameworkAnimation = frameworkAnimation;
-		
-		frameworkAnimation.setListener(frameworkAnimationListener);
-	}
+public class JsAnimation implements AnimationWithRuntimeConfig {
 
 	private final FrameworkAnimationListener frameworkAnimationListener = new FrameworkAnimationListener() {
-		
+
 		@Override
 		public void onUpdate(double progress) {
 			onAnimationUpdate(progress);
 		}
 	};
-	
-	private AnimationConfig config;
-	private AnimationHolder holder;
-	private AnimationEndHandler handler;
-	private int framesCount;
 
-	public void init(AnimationConfig config, AnimationHolder holder){
-		this.config = config;
-		this.holder = holder;
+	private static final double PROGRESS_MAX = 1.0;
+	private final FrameworkAnimation frameworkAnimation;
+
+	private AnimationEndHandler handler;
+	private AnimationRuntimeConfig animationRuntimeConfig;
+
+	@Inject
+	public JsAnimation(FrameworkAnimation frameworkAnimation) {
+		this.frameworkAnimation = frameworkAnimation;
+		frameworkAnimation.setListener(frameworkAnimationListener);
 	}
-	
+
+
 	@Override
 	public void start(AnimationEndHandler handler) {
 		this.handler = handler;
-		preloadAndPlay();
-	}
-
-	private void preloadAndPlay() {
-		String src = config.getSource();
-		preloader.preload(src, new ImagePreloadHandler() {
-			
-			@Override
-			public void onLoad(Size imageSize) {
-				computeAndPlay(imageSize);
-			}
-		});
-	}
-	
-	private void computeAndPlay(Size imageSize) {
-		findFramesCount(imageSize);
-		if (framesCount > 0){
-			play();
-		} else {
-			handler.onEnd();
-		}
-	}
-
-	private void findFramesCount(Size imageSize) {
-		Size frameSize = config.getFrameSize();
-		framesCount = animationAnalyzer.findFramesCount(imageSize, frameSize);
+		play();
 	}
 
 	private void play() {
 		initHolder();
 		runAnimation();
 	}
-	
+
 	private void initHolder() {
-		String src = config.getSource();
-		holder.setAnimationImage(src);
-		holder.setAnimationLeft(0);
+		String src = getAnimateConfig().getSource();
+		getAnimationHolder().setAnimationImage(src);
+		getAnimationHolder().setAnimationLeft(0);
+	}
+
+
+	private AnimationHolder getAnimationHolder() {
+		return animationRuntimeConfig.getAnimationHolder();
+	}
+
+
+	private AnimationConfig getAnimateConfig() {
+		return animationRuntimeConfig.getAnimationConfig();
 	}
 
 	private void runAnimation() {
 		int duration = findAnimationDuration();
 		frameworkAnimation.run(duration);
 	}
-	
+
 	private int findAnimationDuration(){
-		return framesCount * config.getIntervalMs();
+		return animationRuntimeConfig.getFramesCount() * getAnimateConfig().getIntervalMs();
 	}
 
 	private void onAnimationUpdate(double progress) {
@@ -110,13 +82,19 @@ public class JsAnimation implements Animation {
 	}
 
 	private void updateAnimation(double progress) {
+		int framesCount = animationRuntimeConfig.getFramesCount();
 		int currentFrame = min( (int) floor( framesCount * progress) , framesCount - 1);
-		int animationLeft = -1 * config.getFrameSize().getWidth() * currentFrame;
-		holder.setAnimationLeft(animationLeft);
+		int animationLeft = -1 * getAnimateConfig().getFrameSize().getWidth() * currentFrame;
+		getAnimationHolder().setAnimationLeft(animationLeft);
 	}
 
 	@Override
 	public void terminate() {
 		frameworkAnimation.cancel();
+	}
+
+	@Override
+	public void setRuntimeConfiguration(AnimationRuntimeConfig animationRuntimeConfig) {
+		this.animationRuntimeConfig = animationRuntimeConfig;
 	}
 }

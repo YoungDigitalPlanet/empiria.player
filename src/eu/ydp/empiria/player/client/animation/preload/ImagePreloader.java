@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -16,13 +17,14 @@ public class ImagePreloader {
 
 	private static final int WIDGET_COORD_PX = -1000;
 
-	public void preload(final String src, final ImagePreloadHandler preloadHandler){
+	public HandlerRegistration preload(final String src, final ImagePreloadHandler preloadHandler){
 		Image img = new Image(src);
 		updateStyles(img);
-		addHandler(preloadHandler, img);
+		HandlerRegistration handlerRegistration = addHandler(preloadHandler, img);
 		RootPanel.get().add(img);
+		return handlerRegistration;
 	}
-	
+
 	private void updateStyles(final Image img) {
 		Style style = img.getElement().getStyle();
 		style.setLeft(WIDGET_COORD_PX, Unit.PX);
@@ -33,14 +35,15 @@ public class ImagePreloader {
 		style.setBorderStyle(NONE);
 	}
 
-	private void addHandler(final ImagePreloadHandler preloadHandler, final Image img) {
-		img.addLoadHandler(new LoadHandler() {
-			
+	private HandlerRegistration addHandler(final ImagePreloadHandler preloadHandler, final Image img) {
+		HandlerRegistration handlerRegistration = img.addLoadHandler(new LoadHandler() {
+
 			@Override
 			public void onLoad(LoadEvent event) {
 				preloadHandler.onLoad(new Size(img.getOffsetWidth(), img.getOffsetHeight()));
 				img.removeFromParent();
 			}
 		});
+		return handlerRegistration;
 	}
 }
