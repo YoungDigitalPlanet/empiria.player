@@ -29,6 +29,29 @@ public class TutorModule extends SimpleModuleBase {
 	@Inject @ModuleScoped private ActionEventGenerator eventGenerator;
 	@Inject @ModuleScoped private TutorConfig config;
 	
+	private final PlayerEventHandler testPageLoadedHandler = new PlayerEventHandler() {
+		
+		@Override
+		public void onPlayerEvent(PlayerEvent event) {
+			eventGenerator.start();
+		}
+
+	};
+	private final PlayerEventHandler pageUnloadedhandler = new PlayerEventHandler() {
+		
+		@Override
+		public void onPlayerEvent(PlayerEvent event) {
+			eventGenerator.stop();
+		}
+	};
+	private final StateChangeEventHandler stateChangedHandler = new StateChangeEventHandler() {
+		
+		@Override
+		public void onStateChange(StateChangeEvent event) {
+			eventGenerator.stateChanged();
+		}
+	};
+	
 	@Override
 	protected void initModule(Element element) {
 		addHandlers();
@@ -41,28 +64,9 @@ public class TutorModule extends SimpleModuleBase {
 
 	private void addHandlers() {
 		final CurrentPageScope modulePageScope = eventScopeFactory.getCurrentPageScope();
-		eventsBus.addHandler(StateChangeEvent.getType(OUTCOME_STATE_CHANGED), new StateChangeEventHandler() {
-			
-			@Override
-			public void onStateChange(StateChangeEvent event) {
-				eventGenerator.stateChanged();
-			}
-		}, modulePageScope);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_UNLOADED), new PlayerEventHandler() {
-			
-			@Override
-			public void onPlayerEvent(PlayerEvent event) {
-				eventGenerator.stop();
-			}
-		}, modulePageScope);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), new PlayerEventHandler() {
-			
-			@Override
-			public void onPlayerEvent(PlayerEvent event) {
-				eventGenerator.start();
-			}
-
-		}, modulePageScope);
+		eventsBus.addHandler(StateChangeEvent.getType(OUTCOME_STATE_CHANGED), stateChangedHandler, modulePageScope);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_UNLOADED), pageUnloadedhandler , modulePageScope);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), testPageLoadedHandler, modulePageScope);
 	}
 	
 	@Override
