@@ -28,6 +28,8 @@ import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
+import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
+import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
@@ -74,6 +76,8 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(ActionEventGenerator.class, new TypeLiteral<ModuleScopedProvider<ActionEventGenerator>>(){});
 		bindModuleScoped(TutorPresenter.class, new TypeLiteral<ModuleScopedProvider<TutorPresenterImpl>>(){});
 		bindModuleScoped(TutorView.class, new TypeLiteral<ModuleScopedProvider<TutorViewImpl>>(){});
+		bindModuleScoped(ActionExecutorService.class, new TypeLiteral<ModuleScopedProvider<ActionExecutorService>>(){});
+		bindModuleScoped(CommandFactory.class, new TypeLiteral<ModuleScopedProvider<CommandFactory>>(){});
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 	}
 

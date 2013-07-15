@@ -2,13 +2,15 @@ package eu.ydp.empiria.player.client.module.tutor;
 
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
+
 public class ActionExecutorServiceImpl implements ActionExecutorService {
 
 	private CommandFactory commandFactory;
 	private TutorCommand currentCommand = null;
 	
 	@Inject
-	public ActionExecutorServiceImpl(CommandFactory commandFactory) {
+	public ActionExecutorServiceImpl(@ModuleScoped CommandFactory commandFactory) {
 		this.commandFactory = commandFactory;
 	}
 
