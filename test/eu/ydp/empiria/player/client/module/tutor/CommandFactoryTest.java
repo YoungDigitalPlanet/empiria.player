@@ -48,18 +48,8 @@ public class CommandFactoryTest {
 	TutorPersonaProperties properties = new TutorPersonaPropertiesStub();
 
 	@Test(expected = RuntimeException.class)
-	public void shouldThrowExceptionForUnsupportedAction() {
-		// given
-		when(tutorConfig.supportsAction(ActionType.DEFAULT)).thenReturn(false);
-
-		// when
-		factory.createCommand(ActionType.DEFAULT, handler);
-	}
-
-	@Test(expected = RuntimeException.class)
 	public void shouldThrowExceptionForEmptyConfig() {
 		// given
-		when(tutorConfig.supportsAction(ActionType.DEFAULT)).thenReturn(true);
 		when(tutorConfig.getCommandsForAction(ActionType.DEFAULT)).thenReturn(Lists.<TutorCommandConfig> newArrayList());
 
 		// when
@@ -93,13 +83,13 @@ public class CommandFactoryTest {
 
 		TutorCommand showImageCommand = mock(ShowImageCommand.class);
 
-		when(commandsModuleFactory.createShowImageCommand(eq(moduleView), anyString(), eq(handler))).thenReturn(showImageCommand);
+		when(commandsModuleFactory.createShowImageCommand(eq(moduleView), anyString())).thenReturn(showImageCommand);
 
 		// when
 		TutorCommand command = factory.createCommand(ActionType.DEFAULT, handler);
 
 		// then
-		verify(commandsModuleFactory).createShowImageCommand(moduleView, "ALEX_JUMPS", handler);
+		verify(commandsModuleFactory).createShowImageCommand(moduleView, "ALEX_JUMPS");
 		assertThat(command, is(showImageCommand));
 	}
 

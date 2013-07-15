@@ -33,9 +33,6 @@ public class CommandFactory {
 	}
 
 	public TutorCommand createCommand(ActionType actionType, EndHandler handler) {
-		if (!tutorConfig.supportsAction(actionType)) {
-			throw new RuntimeException("Action unsupported");
-		}
 		Iterable<TutorCommandConfig> commandsConfig = tutorConfig.getCommandsForAction(actionType);
 		Iterator<TutorCommandConfig> commandsIterator = commandsConfig.iterator();
 		if (!commandsIterator.hasNext()) {
@@ -52,7 +49,7 @@ public class CommandFactory {
 		case ANIMATION:
 			return createAnimationCommand(asset, handler);
 		case IMAGE:
-			return createImageCommand(asset, handler);
+			return createImageCommand(asset);
 		default:
 			throw new RuntimeException("Command type not supported");
 		}
@@ -73,10 +70,10 @@ public class CommandFactory {
 		return commandsModuleFactory.createAnimationCommand(animation, handler);
 	}
 
-	private TutorCommand createImageCommand(String assetName, EndHandler handler) {
+	private TutorCommand createImageCommand(String assetName) {
 		String assetPath = createAssetPath(assetName);
 
-		return commandsModuleFactory.createShowImageCommand(moduleView, assetPath, handler);
+		return commandsModuleFactory.createShowImageCommand(moduleView, assetPath);
 	}
 
 	private String createAssetPath(String assetName) {

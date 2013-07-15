@@ -12,6 +12,6 @@ public interface TutorCommandsModuleFactory {
 	TutorCommand createAnimationCommand(Animation animation, EndHandler handler);
 
 	@Named("image")
-	TutorCommand createShowImageCommand(TutorView moduleView, String assetPath, EndHandler handler);
+	TutorCommand createShowImageCommand(TutorView moduleView, String assetPath);
 
 }
