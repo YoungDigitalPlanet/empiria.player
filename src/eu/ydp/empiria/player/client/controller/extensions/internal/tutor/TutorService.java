@@ -8,10 +8,6 @@ public class TutorService {
 
 	private final Map<String, TutorConfig> tutors = newHashMap();
 	
-	public boolean containsTutorConfig(String tutorId){
-		return tutors.containsKey(tutorId);
-	}
-	
 	public TutorConfig getTutorConfig(String tutorId){
 		return tutors.get(tutorId);
 	}
