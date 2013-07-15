@@ -10,60 +10,38 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtcreatejs.client.handler.CompleteHandler;
 import eu.ydp.gwtcreatejs.client.handler.ManifestLoadHandler;
 import eu.ydp.gwtcreatejs.client.loader.CreateJsLoader;
 import eu.ydp.gwtcreatejs.client.loader.Manifest;
 
-public class SimulationModule extends SimpleModuleBase implements Factory<SimulationModule>, ILifecycleModule, ManifestLoadHandler, PlayerEventHandler {
+public class SimulationModule extends SimpleModuleBase implements ILifecycleModule, ManifestLoadHandler, PlayerEventHandler {
 
 	protected final class TouchReservationHandler implements TouchStartHandler {
 		@Override
 		public void onTouchStart(TouchStartEvent event) {
-			eventBus.fireAsyncEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+			touchController.setTouchReservation(true);
 		}
 	}
 
 	protected CreateJsLoader loader;
-
-	@Inject
-	private EventsBus eventBus;
-
-	@Inject
-	private Provider<SimulationModule> simulationModuleProvider;
-
-	@Inject
-	private Instance<SimulationModuleView> viewInstance;
-
-	@Inject
-	private SimulationPreloader preloader;
-
-	@Inject
-	private Instance<CreateJsLoader> createJsLoader;
-
-	@Inject
-	private PageScopeFactory pageScopeFactory;
-
-	@Inject
-	private SimulationController simulationController;
-
+	@Inject private EventsBus eventBus;
+	@Inject private TouchController touchController;
+	@Inject	private Instance<SimulationModuleView> viewInstance;
+	@Inject	private SimulationPreloader preloader;
+	@Inject	private Instance<CreateJsLoader> createJsLoader;
+	@Inject	private PageScopeFactory pageScopeFactory;
+	@Inject	private SimulationController simulationController;
 	private int pageIndex = -1;
-
-	@Override
-	public SimulationModule getNewInstance() {
-		return simulationModuleProvider.get();
-	}
 
 	@Override
 	public Widget getView() {

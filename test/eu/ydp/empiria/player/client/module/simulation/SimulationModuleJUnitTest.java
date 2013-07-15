@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -119,11 +118,6 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 		verify(createJsLoader).setLibraryURL(Mockito.eq("http://dummyurl/../../../common/jslibs/"));
 		verify(createJsLoader).addCompleteHandler(Mockito.any(CompleteHandler.class));
 		verify(createJsLoader).load(Mockito.eq(URL));
-	}
-
-	@Test
-	public void testGetNewInstance() {
-		assertNotNull(instance.getNewInstance());
 	}
 
 	@Test
