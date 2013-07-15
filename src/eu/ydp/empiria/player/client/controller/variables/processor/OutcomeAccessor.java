@@ -21,23 +21,23 @@ public class OutcomeAccessor {
 	@Inject
 	private FlowDataSupplier flowDataSupplier;
 	
-	public int getTodo(){
+	public int getCurrentPageTodo(){
 		return getVariableAsInt(TODO);
 	}
 	
-	public int getDone(){
+	public int getCurrentPageDone(){
 		return getVariableAsInt(DONE);
 	}
 	
-	public int getErrors(){
+	public int getCurrentPageErrors(){
 		return getVariableAsInt(ERRORS);
 	}
 	
-	public int getMistakes(){
+	public int getCurrentPageMistakes(){
 		return getVariableAsInt(MISTAKES);
 		
 	}
-	public boolean isLastMistaken(){
+	public boolean isCurrentPageLastMistaken(){
 		int lastmistaken = getVariableAsInt(LASTMISTAKEN);
 		return lastmistaken > 0;
 	}

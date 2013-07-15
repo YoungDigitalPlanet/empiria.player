@@ -34,78 +34,78 @@ public class OutcomeAccessorTest {
 	}
 	
 	@Test
-	public void getTodo() {
+	public void getCurrentPageTodo() {
 		final Integer TODO = 5;
 		// given
 		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("TODO").getValuesShort()).thenReturn(TODO.toString());
 		
 		// when
-		int todo = accessor.getTodo();
+		int todo = accessor.getCurrentPageTodo();
 		
 		// then
 		assertThat(todo).isEqualTo(TODO);
 	}
 	
 	@Test
-	public void getDone() {
+	public void getCurrentPageDone() {
 		final Integer DONE = 6;
 		// given
 		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("DONE").getValuesShort()).thenReturn(DONE.toString());
 		
 		// when
-		int done = accessor.getDone();
+		int done = accessor.getCurrentPageDone();
 		
 		// then
 		assertThat(done).isEqualTo(DONE);
 	}
 	
 	@Test
-	public void getErrors() {
+	public void getCurrentPageErrors() {
 		final Integer ERRORS = 7;
 		// given
 		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("ERRORS").getValuesShort()).thenReturn(ERRORS.toString());
 		
 		// when
-		int errors = accessor.getErrors();
+		int errors = accessor.getCurrentPageErrors();
 		
 		// then
 		assertThat(errors).isEqualTo(ERRORS);
 	}
 	
 	@Test
-	public void getMistakes() {
+	public void getCurrentPageMistakes() {
 		final Integer MISTAKES = 8;
 		// given
 		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("MISTAKES").getValuesShort()).thenReturn(MISTAKES.toString());
 		
 		// when
-		int mistakes = accessor.getMistakes();
+		int mistakes = accessor.getCurrentPageMistakes();
 		
 		// then
 		assertThat(mistakes).isEqualTo(MISTAKES);
 	}
 	
 	@Test
-	public void getLastMistaken_false() {
+	public void getCurrentPageLastMistaken_false() {
 		final boolean LAST_MISTAKEN = false;
 		// given
 		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("0");
 		
 		// when
-		boolean lastMistaken = accessor.isLastMistaken();
+		boolean lastMistaken = accessor.isCurrentPageLastMistaken();
 		
 		// then
 		assertThat(lastMistaken).isEqualTo(LAST_MISTAKEN);
 	}
 	
 	@Test
-	public void getLastMistaken_true() {
+	public void getCurrentPageLastMistaken_true() {
 		final boolean LAST_MISTAKEN = true;
 		// given
 		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("1");
 		
 		// when
-		boolean lastMistaken = accessor.isLastMistaken();
+		boolean lastMistaken = accessor.isCurrentPageLastMistaken();
 		
 		// then
 		assertThat(lastMistaken).isEqualTo(LAST_MISTAKEN);
