@@ -8,8 +8,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.animation.AnimationEndHandler;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
 import eu.ydp.empiria.player.client.util.events.animation.AnimationEndEvent;
 import eu.ydp.empiria.player.client.util.geom.Size;
 
@@ -26,16 +29,17 @@ public class TutorViewImpl implements TutorView {
 	
 	@UiField
 	FlowPanel content;
+
+	private final TutorConfig tutorConfig;
 	
+	@Inject
+	public TutorViewImpl(TutorConfig tutorConfig) {
+		this.tutorConfig = tutorConfig;
+	}
+
 	@Override
-	public void setAnimationImage(String src, Size size) {
-		Style style = content.getElement().getStyle();
-		style.setBackgroundImage(src);
-		
-		String width = size.getWidth()+DIMENSIONS_UNIT;
-		String height = size.getHeight()+DIMENSIONS_UNIT;
-		content.setWidth(width);
-		content.setHeight(height);
+	public void setAnimationImage(String src) {
+		setBackgroundImage(src);
 	}
 
 	@Override
@@ -46,7 +50,13 @@ public class TutorViewImpl implements TutorView {
 
 	@Override
 	public void setAnimationStyleName(String styleName) {
+		clearAllStyles();
 		content.setStyleName(styleName);
+		setSizeOfContent(getSize());
+	}
+
+	private void clearAllStyles() {
+		content.getElement().setAttribute("style", "");
 	}
 
 	@Override
@@ -61,8 +71,8 @@ public class TutorViewImpl implements TutorView {
 
 	@Override
 	public void setBackgroundImage(String src) {
-		Style style = content.getElement().getStyle();
-		style.setBackgroundImage(src);
+		Size size = getSize();
+		setBackgroundImageWithSize(src, size);
 	}
 
 	@Override
@@ -80,5 +90,25 @@ public class TutorViewImpl implements TutorView {
 			}
 		}, AnimationEndEvent.getType());
 	}
-
+	
+	private Size getSize() {
+		TutorPersonaProperties personaProperties = tutorConfig.getTutorPersonaProperties(0);
+		return personaProperties.getAnimationSize();
+	}
+	
+	private void setBackgroundImageWithSize(String src, Size size) {
+		Style style = content.getElement().getStyle();
+		String srcWithUrlInside = "url("+src+")";
+		style.setBackgroundImage(srcWithUrlInside);
+		style.setProperty("backgroundPosition", 0+DIMENSIONS_UNIT);
+		
+		setSizeOfContent(size);
+	}
+	
+	private void setSizeOfContent(Size size) {
+		String width = size.getWidth()+DIMENSIONS_UNIT;
+		String height = size.getHeight()+DIMENSIONS_UNIT;
+		content.setWidth(width);
+		content.setHeight(height);
+	}
 }

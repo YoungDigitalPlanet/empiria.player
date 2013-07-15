@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.animation.js;
 
-import static java.lang.Math.floor;
-import static java.lang.Math.min;
-
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.animation.AnimationConfig;
@@ -11,6 +8,8 @@ import eu.ydp.empiria.player.client.animation.AnimationRuntimeConfig;
 import eu.ydp.empiria.player.client.animation.AnimationWithRuntimeConfig;
 import eu.ydp.empiria.player.client.animation.holder.AnimationHolder;
 import eu.ydp.empiria.player.client.util.geom.Size;
+import static java.lang.Math.floor;
+import static java.lang.Math.min;
 
 public class JsAnimation implements AnimationWithRuntimeConfig {
 
@@ -50,7 +49,7 @@ public class JsAnimation implements AnimationWithRuntimeConfig {
 		String src = getAnimateConfig().getSource();
 		Size size = animationRuntimeConfig.getImageSize();
 		
-		getAnimationHolder().setAnimationImage(src, size);
+		getAnimationHolder().setAnimationImage(src);
 		getAnimationHolder().setAnimationLeft(0);
 	}
 
