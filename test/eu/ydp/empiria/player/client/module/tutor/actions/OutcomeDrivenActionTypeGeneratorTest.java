@@ -20,8 +20,7 @@ public class OutcomeDrivenActionTypeGeneratorTest {
 	@InjectMocks
 	private OutcomeDrivenActionTypeGenerator actionTypeGenerator;
 	
-	@Mock 
-	private OnPageAllOkAction pageAllOk;
+	@Mock private OnPageAllOkAction pageAllOk;
 	@Mock private TutorConfig tutorConfig;
 	
 	@Test
