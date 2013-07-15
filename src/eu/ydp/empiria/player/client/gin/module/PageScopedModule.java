@@ -13,6 +13,7 @@ import eu.ydp.empiria.player.client.controller.item.ItemXMLWrapper;
 import eu.ydp.empiria.player.client.controller.item.PageScopedItemResponseManagerProvider;
 import eu.ydp.empiria.player.client.controller.item.PageScopedItemXMLWrapperProvider;
 import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
+import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.VariableProcessingAdapter;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
@@ -66,6 +67,7 @@ public class PageScopedModule extends AbstractGinModule {
 		
 		bindPageScoped(SourcelistManager.class, new TypeLiteral<PageScopedProvider<SourcelistManager>>(){});
 		bindPageScoped(SourcelistManagerModel.class, new TypeLiteral<PageScopedProvider<SourcelistManagerModel>>(){});
+		bindPageScoped(OutcomeAccessor.class, new TypeLiteral<PageScopedProvider<OutcomeAccessor>>(){});
 	}
 	
 	private <F, T extends F> void bindPageScoped(Class<F> clazz, TypeLiteral<PageScopedProvider<T>> typeLiteral){
