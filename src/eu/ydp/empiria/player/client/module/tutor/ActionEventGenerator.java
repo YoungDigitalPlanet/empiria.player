@@ -22,21 +22,29 @@ public class ActionEventGenerator {
 	};
 	
 	public void start(){
-		executorService.execute(ActionType.DEFAULT, endHandler);
+		executeDefaultAction();
 	}
 	
 	public void stop(){
-		executorService.execute(ActionType.DEFAULT, endHandler);
+		executeDefaultAction();
 	}
 	
 	public void stateChanged(){
 		Optional<ActionType> actionType = actionTypeGenerator.findActionType();
 		if (actionType.isPresent()){
-			executorService.execute(actionType.get(), endHandler);
+			executeAction(actionType.get());
 		}
 	}
 
 	private void onActionEnd() {
-		executorService.execute(ActionType.DEFAULT, endHandler);
+		executeDefaultAction();
+	}
+
+	private void executeDefaultAction() {
+		executeAction(ActionType.DEFAULT);
+	}
+
+	private void executeAction(ActionType action) {
+		executorService.execute(action, endHandler);
 	}
 }
