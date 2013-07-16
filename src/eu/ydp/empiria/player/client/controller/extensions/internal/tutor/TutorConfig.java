@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
-
 import static com.google.common.collect.Iterables.any;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;
@@ -57,6 +56,9 @@ public class TutorConfig {
 	}
 	
 	public TutorPersonaProperties getTutorPersonaProperties(int tutorPersonaIndex){
+		if (tutorPersonaIndex >= tutorConfigJs.getTutors().length()){
+			throw new IndexOutOfBoundsException("No persona with index " + tutorPersonaIndex + " found in tutor configuration.");
+		}
 		TutorJs persona = tutorConfigJs.getTutors().get(tutorPersonaIndex);
 		return fromJs(persona);
 	}
