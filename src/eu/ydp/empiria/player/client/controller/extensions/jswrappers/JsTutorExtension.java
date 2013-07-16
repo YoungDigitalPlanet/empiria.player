@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorConfigJs;
 import eu.ydp.empiria.player.client.controller.extensions.types.TutorExtension;
 
 public class JsTutorExtension extends AbstractJsExtension implements TutorExtension {
@@ -23,8 +24,9 @@ public class JsTutorExtension extends AbstractJsExtension implements TutorExtens
 
 	@Override
 	public TutorConfig getTutorConfig() {
-		JavaScriptObject tutorConfigJs = getTutorConfigNative(extensionJsObject);
-		return null; // TODO implement me
+		JavaScriptObject tutorConfigJso = getTutorConfigNative(extensionJsObject);
+		TutorConfigJs tutorConfigJs = tutorConfigJso.cast();
+		return new TutorConfig(tutorConfigJs);
 	}
 
 	private final native JavaScriptObject getTutorConfigNative(JavaScriptObject extensionJsObject)/*-{
