@@ -73,35 +73,4 @@ public class ActionExecutorServiceImplTest {
 		verify(command1).terminate();
 		verify(command2).execute();
 	}
-
-	@Test
-	public void shouldTerminateRunningCommand() {
-		// given
-		TutorCommand command = mock(TutorCommand.class);
-		when(command.isFinished()).thenReturn(false);
-		when(commandFactory.createCommand(ActionType.DEFAULT, handler)).thenReturn(command);
-
-		// when
-		executor.execute(ActionType.DEFAULT, handler);
-		executor.terminate();
-
-		// then
-		verify(command).terminate();
-	}
-
-	@Test
-	public void shouldNotTerminateCommandOnlyOnce() {
-		// given
-		TutorCommand command = mock(TutorCommand.class);
-		when(command.isFinished()).thenReturn(false).thenReturn(true);
-		when(commandFactory.createCommand(ActionType.DEFAULT, handler)).thenReturn(command);
-
-		// when
-		executor.execute(ActionType.DEFAULT, handler);
-		executor.terminate();
-		executor.terminate();
-
-		// then
-		verify(command).terminate();
-	}
 }

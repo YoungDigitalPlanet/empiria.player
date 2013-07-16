@@ -8,7 +8,7 @@ public class ActionExecutorServiceImpl implements ActionExecutorService {
 
 	private CommandFactory commandFactory;
 	private TutorCommand currentCommand = null;
-	
+
 	@Inject
 	public ActionExecutorServiceImpl(@ModuleScoped CommandFactory commandFactory) {
 		this.commandFactory = commandFactory;
@@ -23,12 +23,4 @@ public class ActionExecutorServiceImpl implements ActionExecutorService {
 		currentCommand = commandFactory.createCommand(type, handler);
 		currentCommand.execute();
 	}
-
-	@Override
-	public void terminate() {
-		if (!currentCommand.isFinished()) {
-			currentCommand.terminate();
-		}
-	}
-
 }
