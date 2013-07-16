@@ -6,4 +6,5 @@ import eu.ydp.empiria.player.client.animation.holder.AnimationHolder;
 
 public interface TutorView extends AnimationHolder, IsWidget {
 	void bindUi();
+	void setBackgroundImage(String src);
 }

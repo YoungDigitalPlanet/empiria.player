@@ -33,6 +33,7 @@ public class ImagePreloader {
 		style.setPadding(0, Unit.PX);
 		style.setMargin(0, Unit.PX);
 		style.setBorderStyle(NONE);
+		style.setProperty("maxWidth", "none");
 	}
 
 	private HandlerRegistration addHandler(final ImagePreloadHandler preloadHandler, final Image img) {
