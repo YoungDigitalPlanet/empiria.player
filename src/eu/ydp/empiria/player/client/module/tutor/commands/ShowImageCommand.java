@@ -20,7 +20,7 @@ public class ShowImageCommand implements TutorCommand {
 
 	@Override
 	public void execute() {
-		view.setAnimationImage(assetPath);
+		view.setBackgroundImage(assetPath);
 		finished = true;
 	}
 

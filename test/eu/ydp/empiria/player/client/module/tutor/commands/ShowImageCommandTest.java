@@ -32,7 +32,7 @@ public class ShowImageCommandTest {
 		command.execute();
 
 		// then
-		verify(view).setAnimationImage(ASSET_PATH);
+		verify(view).setBackgroundImage(ASSET_PATH);
 		assertThat(command.isFinished(), is(true));
 	}
 
