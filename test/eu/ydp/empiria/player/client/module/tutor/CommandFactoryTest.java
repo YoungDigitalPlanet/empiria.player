@@ -89,7 +89,7 @@ public class CommandFactoryTest {
 		TutorCommand command = factory.createCommand(ActionType.DEFAULT, handler);
 
 		// then
-		verify(commandsModuleFactory).createShowImageCommand(moduleView, "ALEX_JUMPS");
+		verify(commandsModuleFactory).createShowImageCommand(moduleView, "ALEX_JUMPS.png");
 		assertThat(command, is(showImageCommand));
 	}
 
@@ -122,7 +122,7 @@ public class CommandFactoryTest {
 
 			@Override
 			public boolean matches(Object argument) {
-				return ((AnimationConfig) argument).getSource().equals("ALEX_JUMPS");
+				return ((AnimationConfig) argument).getSource().equals("ALEX_JUMPS.png");
 			}
 		};
 	}
@@ -145,7 +145,7 @@ public class CommandFactoryTest {
 
 		@Override
 		public String getAsset() {
-			return "JUMPS";
+			return "_JUMPS.png";
 		}
 
 	}

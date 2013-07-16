@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.tutor;
 
 import java.util.Iterator;
 
-import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.animation.Animation;
@@ -80,7 +79,7 @@ public class CommandFactory {
 		TutorPersonaProperties personaProperties = getPersonaProperties();
 		String personaName = personaProperties.getName();
 
-		return Joiner.on("_").join(personaName, assetName);
+		return personaName + assetName;
 	}
 
 	private TutorPersonaProperties getPersonaProperties() {
