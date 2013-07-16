@@ -130,7 +130,7 @@ public class DragGapViewImpl implements DragGapView {
 	@Override
 	public void updateStyle(UserAnswerType answerType) {
 		String gapStyleName = dragGapStylesProvider.getCorrectGapStyleName(answerType);
-		container.setStyleName(gapStyleName);
+		container.setStylePrimaryName(gapStyleName);
 	}
 
 	@Override
