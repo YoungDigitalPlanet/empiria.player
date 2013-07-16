@@ -1,24 +1,62 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
+
+import static com.google.common.collect.Iterables.any;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.transform;
+
+import java.util.Iterator;
+
+import com.google.gwt.core.client.JsArray;
+
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorActionJs;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorCommandJs;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorConfigJs;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorJs;
 import eu.ydp.empiria.player.client.module.tutor.ActionType;
+import eu.ydp.gwtutil.client.collections.JsArrayIterable;
 
 public class TutorConfig {
-	private TutorConfigJs js;
+	private final TutorConfigJs tutorConfigJs;
+	
+	public TutorConfig(TutorConfigJs tutorConfigJs) {
+		this.tutorConfigJs = tutorConfigJs;
+	}
 
-	public boolean supportsAction(ActionType type){
-		throw new UnsupportedOperationException();
+	public boolean supportsAction(final ActionType type){
+		JsArray<TutorActionJs> actions = tutorConfigJs.getActions();
+		ActionTypePredicate predicate = new ActionTypePredicate(type);
+		return any(JsArrayIterable.create(actions), predicate);
 	}
 	
 	public Iterable<TutorCommandConfig> getCommandsForAction(ActionType type){
-		throw new UnsupportedOperationException();
+		Iterator<TutorActionJs> iterator = findActionJsForType(type);
+		if (!iterator.hasNext()){
+			throw new IllegalArgumentException("Action type not defined in tutor configuration");
+		}
+		TutorActionJs actionJs = iterator.next();
+		return extractActionCommands(actionJs); 
+	}
+
+	private Iterable<TutorCommandConfig> extractActionCommands(TutorActionJs actionJs) {
+		JsArray<TutorCommandJs> commands = actionJs.getCommands();
+		JsArrayIterable<TutorCommandJs> commandsIterable = JsArrayIterable.create( commands );
+		return transform(commandsIterable, new TutorCommandTransformation());
+	}
+
+	private Iterator<TutorActionJs> findActionJsForType(ActionType type) {
+		JsArray<TutorActionJs> actions = tutorConfigJs.getActions();
+		ActionTypePredicate predicate = new ActionTypePredicate(type);
+		Iterable<TutorActionJs> actionsFiltered = filter(JsArrayIterable.create(actions), predicate);
+		return actionsFiltered.iterator();
 	}
 	
 	public int getTutorPersonasCount(){
-		throw new UnsupportedOperationException();
+		return tutorConfigJs.getTutors().length();
 	}
 	
-	public TutorPersonaProperties getTutorPersonaProperties(int tutorPersona){
-		throw new UnsupportedOperationException();
+	public TutorPersonaProperties getTutorPersonaProperties(int tutorPersonaIndex){
+		TutorJs persona = tutorConfigJs.getTutors().get(tutorPersonaIndex);
+		return new TutorPersonaProperties(persona);
 	}
 }
