@@ -767,6 +767,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
+	
+	@DefaultStringValue("qp-tutor-container")
+	public String QP_TUTOR_CONTAINER();
 
 	@DefaultStringValue("selection")
 	public String SELECTION();
