@@ -4,6 +4,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 import static com.google.common.collect.Iterables.any;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;
+import static eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties.fromJs;
 
 import java.util.Iterator;
 
@@ -57,6 +58,6 @@ public class TutorConfig {
 	
 	public TutorPersonaProperties getTutorPersonaProperties(int tutorPersonaIndex){
 		TutorJs persona = tutorConfigJs.getTutors().get(tutorPersonaIndex);
-		return new TutorPersonaProperties(persona);
+		return fromJs(persona);
 	}
 }

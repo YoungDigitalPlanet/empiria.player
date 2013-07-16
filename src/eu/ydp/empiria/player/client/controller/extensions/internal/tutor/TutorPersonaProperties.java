@@ -5,22 +5,34 @@ import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class TutorPersonaProperties {
 	
-	private final TutorJs tutorJs;
+	public static TutorPersonaProperties fromJs(TutorJs tutorJs){
+		Size size = new Size(tutorJs.getWidth(), tutorJs.getHeight());
+		int fps = tutorJs.getFps();
+		String name = tutorJs.getName();
+		return new TutorPersonaProperties(size, fps, name);
+	}
 	
-	public TutorPersonaProperties(TutorJs tutorJs) {
-		this.tutorJs = tutorJs;
+	private final Size size;
+	private final int fps;
+	private final String name;
+	
+	private TutorPersonaProperties(Size size, int fps, String name) {
+		super();
+		this.size = size;
+		this.fps = fps;
+		this.name = name;
 	}
 
 	public Size getAnimationSize() {
-		return new Size(tutorJs.getWidth(), tutorJs.getHeight());
+		return size;
 	}
 
 	public int getAnimationFps() {
-		return tutorJs.getFps();
+		return fps;
 	}
 
 	public String getName() {
-		return tutorJs.getName();
+		return name;
 	}
 
 }

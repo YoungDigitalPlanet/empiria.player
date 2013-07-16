@@ -11,7 +11,7 @@ public class TutorCommandTransformation implements Function<TutorCommandJs, Tuto
 	@Override
 	@Nullable
 	public TutorCommandConfig apply(@Nullable TutorCommandJs commandJs) {
-		return new TutorCommandConfig(commandJs);
+		return TutorCommandConfig.fromJs(commandJs);
 	}
 
 }
