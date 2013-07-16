@@ -28,7 +28,7 @@ import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
-@PrepareForTest({JsArray.class, JavaScriptObject.class})
+@PrepareForTest({JsArray.class, JavaScriptObject.class, TutorCommandJs.class, TutorConfigJs.class, TutorActionJs.class, TutorJs.class})
 public class TutorConfigTest {
 	
 	private final TutorConfig tutorConfig = new TutorConfig( createTutorConfigJs() );

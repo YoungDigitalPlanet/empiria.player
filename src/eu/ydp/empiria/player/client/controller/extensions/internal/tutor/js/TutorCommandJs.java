@@ -7,11 +7,11 @@ public class TutorCommandJs extends JavaScriptObject {
 	protected TutorCommandJs() {
 	}
 
-	public native String getType()/*-{
+	public final native String getType()/*-{
 		return this.type;
 	}-*/;
 
-	public native String getAsset()/*-{
+	public final native String getAsset()/*-{
 		return this.asset;
 	}-*/;
 }

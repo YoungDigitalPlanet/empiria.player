@@ -8,11 +8,11 @@ public class TutorConfigJs extends JavaScriptObject {
 	protected TutorConfigJs() {
 	}
 
-	public native JsArray<TutorActionJs> getActions()/*-{
+	public final native JsArray<TutorActionJs> getActions()/*-{
 		return this.tutors;
 	}-*/;
 
-	public native JsArray<TutorJs> getTutors()/*-{
+	public final native JsArray<TutorJs> getTutors()/*-{
 		return this.actions;
 	}-*/;
 }

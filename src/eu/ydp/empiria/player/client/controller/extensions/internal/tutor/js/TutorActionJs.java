@@ -8,11 +8,11 @@ public class TutorActionJs extends JavaScriptObject {
 	protected TutorActionJs() {
 	}
 
-	public native String getType()/*-{
+	public final native String getType()/*-{
 		return this.type;
 	}-*/;
 
-	public native JsArray<TutorCommandJs> getCommands()/*-{
+	public final native JsArray<TutorCommandJs> getCommands()/*-{
 		return this.commands;
 	}-*/;
 }
