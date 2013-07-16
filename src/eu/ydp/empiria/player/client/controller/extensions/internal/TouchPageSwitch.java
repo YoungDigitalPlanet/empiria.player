@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -21,89 +22,60 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 @SuppressWarnings("PMD")
 public class TouchPageSwitch extends InternalExtension implements FlowRequestSocketUserExtension,PlayerEventHandler {
-	private int start = 0;
-	private int end = 0;
-	private int startY = 0, endY = 0;
-	private final int swipeLength = 220;
+
+	private int startX = 0;
+	private int startY = 0; 
+	private int endX = 0;
+	private int endY = 0;
+	private final int minSwipeLength = 220;
 	private final int stackAndroidSwipeLength = 20;
 	private FlowRequestInvoker flowRequestInvoker;
 	private boolean touchReservation = false;
+
 	public TouchPageSwitch() {
-		RootPanel.get().addDomHandler(new TouchEndHandler() {
-			@Override
-			public void onTouchEnd(TouchEndEvent event) {
-				JsArray<Touch> touches = event.getChangedTouches();
-				if (touches != null) {
-					for (int x = 0; x < touches.length();) {
-						Touch touch = touches.get(x);
-						end = touch.getPageX();
-						endY = touch.getScreenY();
-						break;
-					}
-				}
-				if (end > 0 && (Window.getClientHeight() / 2.5) > (startY > endY ? startY - endY : endY - startY)) {
-					switchPage(swipeLength);
-				}
-			}
-		}, TouchEndEvent.getType());
-		RootPanel.get().addDomHandler(new TouchMoveHandler() {
-			@Override
-			public void onTouchMove(TouchMoveEvent event) {
-				JsArray<Touch> touches = event.getTouches();
-				if (touches != null) {
-					for (int x = 0; x < touches.length();) {
-						Touch touch = touches.get(x);
-						end = touch.getPageX();
-						endY = touch.getScreenY();
-						break;
-					}
-				}
-				if (UserAgentChecker.isStackAndroidBrowser() && end > 0) {
-						switchPage(stackAndroidSwipeLength);
-				}
-
-			}
-		}, TouchMoveEvent.getType());
-
-		RootPanel.get().addDomHandler(new TouchStartHandler() {
-			@Override
-			public void onTouchStart(TouchStartEvent event) {
-				JsArray<Touch> touches = event.getTouches();
-				if (touches != null) {
-					for (int x = 0; x < touches.length();) {
-						Touch touch = touches.get(x);
-						start = touch.getPageX();
-						startY = touch.getScreenY();
-						end = -1;
-						break;
-					}
-				}
-				touchReservation = false;
-			}
-		}, TouchStartEvent.getType());
+		RootPanel rp = RootPanel.get();
+		rp.addDomHandler(new TouchStartHandlerForPageSwitch(), TouchStartEvent.getType());
+		rp.addDomHandler(new TouchMoveHandlerForPageSwitch(), TouchMoveEvent.getType());
+		rp.addDomHandler(new TouchEndHandlerForPageSwitch(), TouchEndEvent.getType());
 	}
 
 	private void switchPage(int swipeLength) {
 		if(touchReservation){
 			return;
 		}
-		if (end > start && swipeLength < end - start) {
-			flowRequestInvoker.invokeRequest(NavigationButtonDirection.getRequest(NavigationButtonDirection.PREVIOUS));
-		} else if (start > end && swipeLength < start - end) {
-			flowRequestInvoker.invokeRequest(NavigationButtonDirection.getRequest(NavigationButtonDirection.NEXT));
-		}
+		NavigationButtonDirection direction = getDirectionIfSwipe(swipeLength);
 
+		if( direction != null ){
+			FlowRequest request = NavigationButtonDirection.getRequest( direction );
+			flowRequestInvoker.invokeRequest( request );
+		}
+	}
+
+	private NavigationButtonDirection getDirectionIfSwipe(int swipeLength) {
+		NavigationButtonDirection direction = null;
+
+		if (wasSwipeToLeft(swipeLength)) {
+			direction = NavigationButtonDirection.PREVIOUS;
+		} else if (wasSwipeToRight(swipeLength)) {
+			direction = NavigationButtonDirection.NEXT;
+		}
+		return direction;
+	}
+
+	private boolean wasSwipeToLeft(int swipeLength) {
+		return (endX > startX) && (swipeLength < endX - startX);
+	}
+	private boolean wasSwipeToRight(int swipeLength) {
+		return (startX > endX) && (swipeLength < startX - endX);
 	}
 
 	@Override
 	public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
 		flowRequestInvoker = fri;
-
 	}
 
 	@Override
 	public void init() {//NOPMD
-
 	}
 
 	@Override
@@ -115,4 +87,95 @@ public class TouchPageSwitch extends InternalExtension implements FlowRequestSoc
 
 	}
 
+
+
+	private class TouchStartHandlerForPageSwitch extends TouchEventHandler implements TouchStartHandler {
+		@Override
+		public void onTouchStart(TouchStartEvent event) {
+			JsArray<Touch> touches = event.getTouches();
+			processTouches(touches);
+			touchReservation = false;
+		}
+
+		@Override
+		protected void updateCoordinates(Touch touch) {
+			updateStartCoordinates(touch);
+			endX = -1;
+		}
+		@Override
+		protected boolean shouldSwitchPage() {
+			return false;
+		}
+		@Override
+		protected int getSwipeLength() {
+			return 0;
+		}
+	}
+
+	private class TouchEndHandlerForPageSwitch extends TouchEventHandler implements TouchEndHandler {
+		@Override
+		public void onTouchEnd(TouchEndEvent event) {
+			JsArray<Touch> touches = event.getChangedTouches();
+			processTouches(touches);
+		}
+
+		@Override
+		protected void updateCoordinates(Touch touch) {
+			updateEndCoordinates(touch);
+		}
+		@Override
+		protected boolean shouldSwitchPage() {
+			return (endX > 0 && (Window.getClientHeight() / 2.5) > (startY > endY ? startY - endY : endY - startY));
+		}
+		@Override
+		protected int getSwipeLength() {
+			return minSwipeLength;
+		}
+	}
+
+	private class TouchMoveHandlerForPageSwitch extends TouchEventHandler implements TouchMoveHandler {
+		@Override
+		public void onTouchMove(TouchMoveEvent event) {
+			JsArray<Touch> touches = event.getTouches();
+			processTouches(touches);
+		}
+
+		@Override
+		protected void updateCoordinates(Touch touch) {
+			updateEndCoordinates(touch);
+		}
+		@Override
+		protected boolean shouldSwitchPage() {
+			return (UserAgentChecker.isStackAndroidBrowser() && endX > 0);
+		}
+		@Override
+		protected int getSwipeLength() {
+			return stackAndroidSwipeLength;
+		}
+	}
+
+	private abstract class TouchEventHandler {
+		protected void processTouches(JsArray<Touch> touches) {
+			if (touchIsInArray(touches)) {
+				updateCoordinates( touches.get(0) );
+			}
+			if ( shouldSwitchPage() ) {
+				switchPage( getSwipeLength() );
+			}
+		}
+		protected void updateStartCoordinates(Touch touch){
+			startX = touch.getPageX();
+			startY = touch.getScreenY();
+		}
+		protected void updateEndCoordinates(Touch touch){
+			endX = touch.getPageX();
+			endY = touch.getScreenY();
+		}
+		private boolean touchIsInArray( JsArray<Touch> touches ) {
+			return ( touches != null ) && ( touches.length() > 0 );
+		}
+		protected abstract void updateCoordinates(Touch touch);
+		protected abstract boolean shouldSwitchPage();
+		protected abstract int getSwipeLength();
+	}
 }
