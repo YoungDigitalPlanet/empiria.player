@@ -28,6 +28,7 @@ import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsPlayerJsO
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsSessionDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStatefulExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsTutorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
 import eu.ydp.empiria.player.client.module.IStateful;
 
@@ -97,6 +98,9 @@ public class ExtensionsManager implements IStateful {
 				break;
 			case EXTENSION_PLAYER_JS_OBJECT_USER:
 				currExt = new JsPlayerJsObjectUserExtension();
+				break;
+			case EXTENSION_TUTOR:
+				currExt = new JsTutorExtension();
 				break;
 			default:
 				break;

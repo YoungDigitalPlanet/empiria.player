@@ -9,6 +9,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
@@ -45,7 +46,15 @@ public class CommandFactoryTest {
 	private AnimationFactory animationFactory;
 	@Mock
 	private EndHandler handler;
-	TutorPersonaProperties properties = new TutorPersonaPropertiesStub();
+	TutorPersonaProperties properties;
+
+	@Before
+	public void setUp() {
+		properties = mock(TutorPersonaProperties.class);
+		when(properties.getAnimationSize()).thenReturn(new Size(30, 40));
+		when(properties.getAnimationFps()).thenReturn(30);
+		when(properties.getName()).thenReturn("ALEX");
+	}
 
 	@Test(expected = RuntimeException.class)
 	public void shouldThrowExceptionForEmptyConfig() {
@@ -59,7 +68,7 @@ public class CommandFactoryTest {
 	@Test
 	public void shouldCreateAnimationCommand() {
 		// given
-		prepareConfig();
+		prepareConfigForType(CommandType.ANIMATION);
 		Animation animation = mock(Animation.class);
 
 		when(animationFactory.getAnimation(argThat(isAnimationConfigOfJumpingAlex()), eq(moduleView))).thenReturn(animation);
@@ -79,7 +88,7 @@ public class CommandFactoryTest {
 	@Test
 	public void shouldCreateShowImageCommand() {
 		// given
-		prepareConfig(CommandType.IMAGE);
+		prepareConfigForType(CommandType.IMAGE);
 
 		TutorCommand showImageCommand = mock(ShowImageCommand.class);
 
@@ -96,22 +105,22 @@ public class CommandFactoryTest {
 	@Test(expected = RuntimeException.class)
 	public void shouldThrowExceptionForUnsupportedComandType() {
 		// given
-		prepareConfig(CommandType.SOUND);
+		prepareConfigForType(CommandType.SOUND);
 
 		// when
 		factory.createCommand(ActionType.DEFAULT, handler);
 	}
 
-	private void prepareConfig() {
-		prepareConfig(CommandType.ANIMATION);
+	private void prepareConfigForType(CommandType type) {
+		mockTutorConfig(type);
 	}
 
-	private void prepareConfig(CommandType type) {
-		prepareTutorConfig(new TutorCommandConfigStub(type));
-	}
+	private void mockTutorConfig(CommandType type) {
+		TutorCommandConfig tutorCommandConfig = mock(TutorCommandConfig.class);
+		when(tutorCommandConfig.getType()).thenReturn(type);
+		when(tutorCommandConfig.getAsset()).thenReturn("_JUMPS.png");
 
-	private void prepareTutorConfig(TutorCommandConfig config) {
-		when(tutorConfig.getCommandsForAction(ActionType.DEFAULT)).thenReturn(Lists.newArrayList(config));
+		when(tutorConfig.getCommandsForAction(ActionType.DEFAULT)).thenReturn(Lists.newArrayList(tutorCommandConfig));
 		when(tutorConfig.supportsAction(ActionType.DEFAULT)).thenReturn(true);
 		when(tutorConfig.getTutorPersonaProperties(0)).thenReturn(properties);
 	}
@@ -125,48 +134,6 @@ public class CommandFactoryTest {
 				return ((AnimationConfig) argument).getSource().equals("ALEX_JUMPS.png");
 			}
 		};
-	}
-
-	class TutorCommandConfigStub implements TutorCommandConfig {
-		public TutorCommandConfigStub() {
-			this(CommandType.ANIMATION);
-		}
-
-		public TutorCommandConfigStub(CommandType type) {
-			this.type = type;
-		}
-
-		CommandType type;
-
-		@Override
-		public CommandType getType() {
-			return type;
-		}
-
-		@Override
-		public String getAsset() {
-			return "_JUMPS.png";
-		}
-
-	}
-
-	class TutorPersonaPropertiesStub implements TutorPersonaProperties {
-
-		@Override
-		public Size getAnimationSize() {
-			return new Size();
-		}
-
-		@Override
-		public int getAnimationFps() {
-			return 30;
-		}
-
-		@Override
-		public String getName() {
-			return "ALEX";
-		}
-
 	}
 
 }

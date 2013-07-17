@@ -19,6 +19,7 @@ public enum ExtensionType {
 	EXTENSION_PLAYER_JS_OBJECT_USER,
 	// MODULE (not defined yet)
 	EXTENSION_MODULE,
+	EXTENSION_TUTOR,
 	MULTITYPE;
 
 

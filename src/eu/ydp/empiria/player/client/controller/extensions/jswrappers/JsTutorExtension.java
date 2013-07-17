@@ -2,16 +2,15 @@ package eu.ydp.empiria.player.client.controller.extensions.jswrappers;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorConfigJs;
 import eu.ydp.empiria.player.client.controller.extensions.types.TutorExtension;
 
-public class JsTutorExtension implements JsExtension, TutorExtension {
-
-	private JavaScriptObject extensionJsObject;
-
+public class JsTutorExtension extends AbstractJsExtension implements TutorExtension {
+	
 	@Override
-	public void initJs(JavaScriptObject extensionJsObject) {
-		this.extensionJsObject = extensionJsObject;
+	public void init() {	
 	}
 	
 	@Override
@@ -25,7 +24,18 @@ public class JsTutorExtension implements JsExtension, TutorExtension {
 
 	@Override
 	public TutorConfig getTutorConfig() {
-		return null; // TODO implement me
+		JavaScriptObject tutorConfigJso = getTutorConfigNative(extensionJsObject);
+		TutorConfigJs tutorConfigJs = tutorConfigJso.cast();
+		return new TutorConfig(tutorConfigJs);
+	}
+
+	private final native JavaScriptObject getTutorConfigNative(JavaScriptObject extensionJsObject)/*-{
+		return extensionJsObject.getTutorConfig(); 
+	}-*/;
+
+	@Override
+	public ExtensionType getType() {
+		return ExtensionType.EXTENSION_TUTOR;
 	}
 
 }
