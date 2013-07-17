@@ -36,7 +36,7 @@ public class SourceListModuleStructure extends AbstractModuleStructure<SourceLis
 
 	protected void shuffle() {
 		ShuffleHelper shuffleHelper = new ShuffleHelper();
-		List<SimpleSourceListItemBean> randomizeList = shuffleHelper.randomize(bean, bean.getSimpleSourceListItemBeans());
+		List<SimpleSourceListItemBean> randomizeList = shuffleHelper.randomizeIfShould(bean, bean.getSimpleSourceListItemBeans());
 		bean.setSimpleSourceListItemBeans(randomizeList);
 	}
 
