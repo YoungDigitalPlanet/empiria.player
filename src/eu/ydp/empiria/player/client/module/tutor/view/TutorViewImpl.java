@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.animation.AnimationEndHandler;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.util.events.animation.AnimationEndEvent;
 import eu.ydp.empiria.player.client.util.geom.Size;
 
@@ -33,7 +34,7 @@ public class TutorViewImpl implements TutorView {
 	private final TutorConfig tutorConfig;
 	
 	@Inject
-	public TutorViewImpl(TutorConfig tutorConfig) {
+	public TutorViewImpl(@ModuleScoped TutorConfig tutorConfig) {
 		this.tutorConfig = tutorConfig;
 	}
 
