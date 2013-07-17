@@ -22,7 +22,6 @@ import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.util.dom.drag.html5.HTML5DragDrop;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
@@ -42,8 +41,7 @@ public class HTML5DragDropTest {
 		widget = mock(Widget.class);
 		Element element = mock(Element.class);
 		when(widget.getElement()).thenReturn(element);
-		IModule module = mock(IModule.class);
-		instance = new HTML5DragDrop(widget, module,DragDropType.DRAG, false);
+		instance = new HTML5DragDrop(widget,DragDropType.DRAG, false);
 
 	}
 
@@ -52,7 +50,7 @@ public class HTML5DragDropTest {
 		before("Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2");
 	}
 
-	
+
 
 	@BeforeClass
 	public static void disarm() {

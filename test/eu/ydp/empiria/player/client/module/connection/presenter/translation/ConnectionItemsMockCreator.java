@@ -4,6 +4,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.stub;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionItems;
@@ -18,6 +21,12 @@ public class ConnectionItemsMockCreator {
 
 		ArrayList<ConnectionItem> rights = createItemsCollection(countRight, itemOffsetRight, itemWidth);
 		stub(items.getRightItems()).toReturn(rights);
+		
+		List<ConnectionItem> allItems = Lists.newArrayList();
+		allItems.addAll(lefts);
+		allItems.addAll(rights);
+		stub(items.getAllItems()).toReturn(allItems);
+		
 		
 		return items;
 	}

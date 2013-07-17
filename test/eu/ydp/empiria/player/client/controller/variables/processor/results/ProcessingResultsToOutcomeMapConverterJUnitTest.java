@@ -1,5 +1,14 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.results;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTCHANGE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.MISTAKES;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,14 +26,6 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTCHANGE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.MISTAKES;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class ProcessingResultsToOutcomeMapConverterJUnitTest {
 
@@ -50,7 +51,7 @@ public class ProcessingResultsToOutcomeMapConverterJUnitTest {
 		int done = 23424;
 		boolean lastmistaken = true;
 		int mistakes = 14234;
-		GlobalVariables globalVariables = new GlobalVariables(todo, errors, done, lastmistaken, mistakes);
+		GlobalVariables globalVariables = new GlobalVariables(todo, done, errors, mistakes, lastmistaken);
 		
 		resultsToOutcomeMapConverter.updateOutcomeMapWithGlobalVariables(globalVariables);
 		

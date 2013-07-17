@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -27,6 +26,7 @@ import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModule.TouchReservationHandler;
 import eu.ydp.empiria.player.client.preloader.Preloader;
 import eu.ydp.empiria.player.client.preloader.view.ProgressView;
@@ -56,6 +56,7 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 			binder.bind(CreateJsLoader.class).toInstance(createJsLoaderMock());
 			binder.bind(SimulationPreloader.class).toInstance(mock(SimulationPreloader.class));
 			binder.bind(SimulationController.class).toInstance(mock(SimulationController.class));
+			binder.bind(TouchController.class).toInstance(mock(TouchController.class));
 		}
 
 		private ProgressView createProgressViewMock() {
@@ -79,8 +80,8 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 	private CreateJsLoader createJsLoader;
 	private SimulationModuleView moduleView;
 	private SimulationPreloader preloader;
-	private EventsBus eventsBus;
 	private SimulationController simulationController;
+	private TouchController touchController;
 
 	@BeforeClass
 	public static void disarm() {
@@ -108,7 +109,7 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 		createJsLoader = injector.getInstance(CreateJsLoader.class);
 		moduleView = injector.getInstance(SimulationModuleView.class);
 		preloader = injector.getInstance(SimulationPreloader.class);
-		eventsBus = injector.getInstance(EventsBus.class);
+		touchController = injector.getInstance(TouchController.class);
 		simulationController = injector.getInstance(SimulationController.class);
 	}
 
@@ -119,11 +120,6 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 		verify(createJsLoader).setLibraryURL(Mockito.eq("http://dummyurl/../../../common/jslibs/"));
 		verify(createJsLoader).addCompleteHandler(Mockito.any(CompleteHandler.class));
 		verify(createJsLoader).load(Mockito.eq(URL));
-	}
-
-	@Test
-	public void testGetNewInstance() {
-		assertNotNull(instance.getNewInstance());
 	}
 
 	@Test
@@ -197,15 +193,14 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 	public void touchReservationTest() {
 		Canvas canvas = Mockito.mock(Canvas.class);
 		ArgumentCaptor<TouchReservationHandler> touchReservationCaptor = ArgumentCaptor.forClass(TouchReservationHandler.class);
-		ArgumentCaptor<PlayerEvent> playerEventCaptor = ArgumentCaptor.forClass(PlayerEvent.class);
 
 		instance.initializeCanvas(canvas);
 		verify(canvas).addTouchStartHandler(touchReservationCaptor.capture());
 		TouchReservationHandler reservationHandler = touchReservationCaptor.getValue();
 		reservationHandler.onTouchStart(null);
-		verify(eventsBus).fireAsyncEvent(playerEventCaptor.capture());
-
-		assertTrue(playerEventCaptor.getValue().getType() == PlayerEventTypes.TOUCH_EVENT_RESERVATION);
+		
+		// then
+		verify(touchController).setTouchReservation(eq(true));
 	}
 
 	@Test

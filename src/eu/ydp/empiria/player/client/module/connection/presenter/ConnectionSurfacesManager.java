@@ -3,13 +3,11 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.base.Supplier;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
-import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsFinder;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.position.Point;
 

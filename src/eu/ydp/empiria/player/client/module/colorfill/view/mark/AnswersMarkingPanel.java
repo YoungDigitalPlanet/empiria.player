@@ -8,12 +8,15 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 
 public class AnswersMarkingPanel extends AbsolutePanel{
 
-	private final String markStyle;
+	private String markStyle;
 
-	public AnswersMarkingPanel(String markStyle){
-		this.markStyle = markStyle;
+	public AnswersMarkingPanel(){
 		setSize("100%", "100%");
 		hide();
+	}
+	
+	public void setMarkStyle(String markStyle){
+		this.markStyle = markStyle;
 	}
 
 	public void markAndShow(List<Area> points){

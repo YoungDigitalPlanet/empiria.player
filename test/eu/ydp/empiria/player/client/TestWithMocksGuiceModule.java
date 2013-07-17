@@ -26,7 +26,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.pres
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsDelegate;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsFinder;
-import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePointTranslator;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
 import eu.ydp.empiria.player.client.module.labelling.structure.LabellingModuleJAXBParserFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
@@ -34,6 +33,7 @@ import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
 import eu.ydp.empiria.player.client.module.media.external.FullscreenVideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoImpl;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
@@ -75,6 +75,7 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToSingletonOrMockInstance(LabellingChildView.class);
 		bindToSingletonOrMockInstance(LabellingModuleJAXBParserFactory.class);
 		bindToSingletonOrMockInstance(PageScopeFactory.class);
+		bindToSingletonOrMockInstance(StyleSocket.class);
 		
 		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
 		bindToClassOrMockProvider(IStickieView.class);
@@ -89,7 +90,6 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToClassOrMockProvider(ExternalFullscreenVideoImpl.class);
 		bindToClassOrMockProvider(Scheduler.class, SchedulerMockImpl.class);
 		bindToClassOrMockProvider(Timer.class, TimerAccessibleMock.class);
-		bindToClassOrMockProvider(SurfacePointTranslator.class);
 		bindToClassOrMockProvider(SurfaceDimensionsFinder.class);
 		bindToClassOrMockProvider(SurfacePositionFinder.class);
 		bindToClassOrMockProvider(SurfaceDimensionsDelegate.class);		

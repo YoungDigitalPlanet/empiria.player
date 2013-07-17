@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasShuffle;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
 
@@ -21,8 +24,14 @@ public class SourceListBean extends ModuleBean implements HasShuffle {
 	@XmlAttribute
 	private boolean shuffle;
 
+	@XmlAttribute
+	private int imagesWidth;
+
+	@XmlAttribute
+	private int imagesHeight;
+
 	@XmlElement(name = "simpleSourceListItem")
-	private List<SimpleSourceListItemBean> simpleSourceListItemBeans;
+	private List<SimpleSourceListItemBean> simpleSourceListItemBeans = Lists.newArrayList();
 
 	public boolean isMoveElements() {
 		return moveElements;
@@ -42,11 +51,27 @@ public class SourceListBean extends ModuleBean implements HasShuffle {
 	}
 
 	public List<SimpleSourceListItemBean> getSimpleSourceListItemBeans() {
-		return simpleSourceListItemBeans;
+		return ImmutableList.copyOf(simpleSourceListItemBeans);
 	}
 
 	public void setSimpleSourceListItemBeans(List<SimpleSourceListItemBean> simpleSourceListItemBeans) {
 		this.simpleSourceListItemBeans = simpleSourceListItemBeans;
+	}
+
+	public int getImagesHeight() {
+		return imagesHeight;
+	}
+
+	public void setImagesHeight(int imagesHeight) {
+		this.imagesHeight = imagesHeight;
+	}
+
+	public int getImagesWidth() {
+		return imagesWidth;
+	}
+
+	public void setImagesWidth(int imagesWidth) {
+		this.imagesWidth = imagesWidth;
 	}
 
 }

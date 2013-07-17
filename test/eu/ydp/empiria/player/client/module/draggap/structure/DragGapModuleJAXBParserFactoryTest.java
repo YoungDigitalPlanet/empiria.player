@@ -1,0 +1,38 @@
+package eu.ydp.empiria.player.client.module.draggap.structure;
+
+import com.google.gwt.core.client.GWT;
+import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
+
+import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
+
+public class DragGapModuleJAXBParserFactoryTest  extends AbstractEmpiriaPlayerGWTTestCase {
+
+	public void testParseDragGapModule() throws Exception {
+		StringBuilder fullXmlStringBuilder = new StringBuilder();
+		fullXmlStringBuilder.append("<dragInteraction ");
+		fullXmlStringBuilder.append("id=\"id1\" ");
+		fullXmlStringBuilder.append("name=\"name1\" ");
+		fullXmlStringBuilder.append("expressionMode=\"expressionMode1\" ");
+		fullXmlStringBuilder.append("widthBindingGroup=\"widthBindingGroup1\" ");
+		fullXmlStringBuilder.append("responseIdentifier=\"responseIdentifier1\">");
+		fullXmlStringBuilder.append("</dragInteraction>");
+		String xml = fullXmlStringBuilder.toString();
+
+		DragGapBean dragGapBean = parse(xml);
+		assertNotNull(dragGapBean);
+		assertEquals(dragGapBean.getId(), "id1");
+		assertEquals(dragGapBean.getName(), "name1");
+		assertEquals(dragGapBean.getExpressionMode(),"expressionMode1");
+		assertEquals(dragGapBean.getWidthBindingGroup(), "widthBindingGroup1");
+		assertEquals(dragGapBean.getResponseIdentifier(), "responseIdentifier1");
+	}
+
+
+	private DragGapBean parse(String xml) {
+		DragGapModuleJAXBParserFactory jaxbParserFactory = GWT.create(DragGapModuleJAXBParserFactory.class);
+		JAXBParser<DragGapBean> jaxbParser = jaxbParserFactory.create();
+		DragGapBean dragGapBean = jaxbParser.parse(xml);
+		return dragGapBean;
+	}
+
+}

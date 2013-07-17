@@ -66,7 +66,7 @@ public class UserToResponseAreaMapper {
 	}
 	
 	public Iterable<Area> mapResponseToUser(Iterable<Area> areas){
-		Preconditions.checkArgument(responseToUserAreas.keySet().equals(Sets.newHashSet(areas)));
+		Preconditions.checkArgument(responseToUserAreas.keySet().containsAll(Sets.newHashSet(areas)));
 		return Iterables.transform(areas, transformResponseToUserAreas);
 	}
 	

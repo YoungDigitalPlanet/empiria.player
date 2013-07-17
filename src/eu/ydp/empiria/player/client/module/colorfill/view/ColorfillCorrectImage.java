@@ -2,6 +2,9 @@ package eu.ydp.empiria.player.client.module.colorfill.view;
 
 import javax.annotation.PostConstruct;
 
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -11,36 +14,42 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ColorfillCorrectImage implements IsWidget{
 
-	private final CanvasImageView canvasImageView;
+	private final FlowPanel image;
 	private final StyleNameConstants styleNameConstants;
 
 	@Inject
-	public ColorfillCorrectImage(CanvasImageView canvasImageView, StyleNameConstants styleNameConstants) {
-		this.canvasImageView = canvasImageView;
+	public ColorfillCorrectImage(StyleNameConstants styleNameConstants) {
 		this.styleNameConstants = styleNameConstants;
+		image = new FlowPanel();
 	}
 	
 	@PostConstruct
 	public void initializeView(){
 		hide();
-		canvasImageView.setPanelStyle(styleNameConstants.QP_COLORFILL_CORRECT_IMG());
+		image.setStyleName(styleNameConstants.QP_COLORFILL_CORRECT_IMG());
 	}
 
 	public void setImageUrl(Image correctImage) {
-		canvasImageView.setImageUrl(correctImage.getSrc(), correctImage.getWidth(), correctImage.getHeight());
+		Style style = image.getElement().getStyle();
+		style.setBackgroundImage("url("+correctImage.getSrc()+")");
+		
+		String px = Unit.PX.toString().toLowerCase();
+		String width = correctImage.getWidth() + px;
+		String height = correctImage.getHeight() + px;
+		image.setSize(width, height);
 	}
 
 	@Override
 	public Widget asWidget() {
-		return canvasImageView.asWidget();
+		return image;
 	}
 	
 	public void hide(){
-		canvasImageView.asWidget().setVisible(false);
+		image.setVisible(false);
 	}
 	
 	public void show(){
-		canvasImageView.asWidget().setVisible(true);
+		image.setVisible(true);
 	}
 	
 }

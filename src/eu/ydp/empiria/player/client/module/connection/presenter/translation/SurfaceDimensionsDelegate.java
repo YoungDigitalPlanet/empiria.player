@@ -19,7 +19,7 @@ public class SurfaceDimensionsDelegate implements HasDimensions {
 
 	@Override
 	public int getHeight() {
-		return finder.findHeight(view);
+		return finder.findHeight(view, items);
 	}
 
 	@Override

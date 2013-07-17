@@ -26,12 +26,13 @@ public class ColorfillInteractionModuleModel extends AbstractResponseModel<Strin
 	protected List<String> parseResponse(Collection<String> values) {
 		return new ArrayList<String>(values);
 	}
-	
+
 	public Response getResponse(){
 		return this.response;
 	}
-	
+
 	public void setNewUserAnswers(List<String> answers){
 		response.values = answers;
+		onModelChange();
 	}
 }

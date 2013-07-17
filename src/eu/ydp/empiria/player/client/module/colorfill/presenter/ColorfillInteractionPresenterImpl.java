@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.colorfill.presenter;
 
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -27,13 +28,11 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 	private final UserToResponseAreaMapper areaMapper;
 
 	private ColorfillInteractionBean bean;
+	private boolean locked;
 
 	@Inject
-	public ColorfillInteractionPresenterImpl(
-			ColorfillViewBuilder colorfillViewBuilder,
-			ColorButtonsController colorButtonsController,
-			@ModuleScoped ColorfillInteractionView interactionView,
-			@ModuleScoped ColorfillModelProxy modelProxy,
+	public ColorfillInteractionPresenterImpl(ColorfillViewBuilder colorfillViewBuilder, ColorButtonsController colorButtonsController,
+			@ModuleScoped ColorfillInteractionView interactionView, @ModuleScoped ColorfillModelProxy modelProxy,
 			@ModuleScoped UserToResponseAreaMapper areaMapper) {
 		this.colorfillViewBuilder = colorfillViewBuilder;
 		this.colorButtonsController = colorButtonsController;
@@ -44,19 +43,20 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 
 	@Override
 	public void bindView() {
-		colorfillViewBuilder.buildView(bean,this);
+		colorfillViewBuilder.buildView(bean, this);
 	}
 
 	@Override
 	public void imageColorChanged(Area area) {
-		ColorModel currentSelectedButtonColor = colorButtonsController.getCurrentSelectedButtonColor();
-		if(currentSelectedButtonColor != null){
-			interactionView.setColor(area, currentSelectedButtonColor);
-			modelProxy.updateUserAnswers();
-			areaMapper.updateMappings(area);
+		if (!locked) {
+			ColorModel currentSelectedButtonColor = colorButtonsController.getCurrentSelectedButtonColor();
+			if (currentSelectedButtonColor != null) {
+				interactionView.setColor(area, currentSelectedButtonColor);
+				modelProxy.updateUserAnswers();
+				areaMapper.updateMappings(area);
+			}
 		}
 	}
-
 
 	@Override
 	public void buttonClicked(ColorModel color) {
@@ -71,7 +71,7 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 
 	@Override
 	public void setModel(ColorfillInteractionModuleModel model) {
-		//Unused - will be removed in the future
+		// Unused - will be removed in the future
 	}
 
 	@Override
@@ -85,18 +85,33 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 
 	@Override
 	public void setLocked(boolean locked) {
-		//Unused - will be implemented later
+		this.locked = locked;
 	}
 
 	@Override
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		//Unused - will be implemented later
+		if (type == MarkAnswersType.CORRECT) {
+			if (mode == MarkAnswersMode.MARK) {
+				Iterable<Area> userClickPoints = areaMapper.mapResponseToUser(modelProxy.getUserCorrectAnswers());
+				interactionView.markCorrectAnswers(Lists.newArrayList(userClickPoints));
+			} else {
+				interactionView.unmarkCorrectAnswers();
+			}
+		} else {
+			if (mode == MarkAnswersMode.MARK) {
+				Iterable<Area> userClickPoints = areaMapper.mapResponseToUser(modelProxy.getUserWrongAnswers());
+				interactionView.markWrongAnswers(Lists.newArrayList(userClickPoints));
+			} else {
+				interactionView.unmarkWrongAnswers();
+			}
+		}
 	}
 
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
-		if(mode == ShowAnswersType.USER){
-			Map<Area, ColorModel> areasWithColors = modelProxy.getUserAnswers();			
+		if (mode == ShowAnswersType.USER) {
+			interactionView.showUserAnswers();
+			Map<Area, ColorModel> areasWithColors = modelProxy.getUserAnswers();
 			interactionView.setColors(areasWithColors);
 		} else if (mode == ShowAnswersType.CORRECT) {
 			interactionView.showCorrectAnswers();

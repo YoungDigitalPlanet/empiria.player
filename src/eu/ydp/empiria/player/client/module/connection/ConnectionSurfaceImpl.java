@@ -18,6 +18,8 @@ import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
  */
 public class ConnectionSurfaceImpl implements ConnectionSurface {
 	private final ConnectionSurfaceView view;
+	private int offsetTop;
+	private int offsetLeft;
 
 	@Inject
 	public ConnectionSurfaceImpl(StyleToPropertyMappingHelper styleHelper,@Assisted("width") Integer width, @Assisted("height") Integer height) {
@@ -32,7 +34,7 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 
 	@Override
 	public void drawLine(Point from, Point to) {
-		view.drawLine(from.getX(), from.getY(), to.getX(), to.getY());
+		view.drawLine(from.getX()-offsetLeft, from.getY()-offsetTop, to.getX()-offsetLeft, to.getY()-offsetTop);
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 
 	@Override
 	public boolean isPointOnPath(int xPos, int yPos, int approximation) {
-		return view.isPointOnPath(xPos, yPos, approximation);
+		return view.isPointOnPath(xPos-offsetLeft, yPos-offsetTop, approximation);
 	}
 
 	@Override
@@ -63,8 +65,15 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 	}
 
 	@Override
-	public void setOffsetLeft(int left) {
-		view.getElement().getStyle().setLeft(left, Unit.PX);
+	public void setOffsetLeft(int offsetLeft) {
+		this.offsetLeft = offsetLeft;
+		view.getElement().getStyle().setLeft(offsetLeft, Unit.PX);
+	}
+
+	@Override
+	public void setOffsetTop(int offsetTop) {
+		this.offsetTop = offsetTop;
+		view.getElement().getStyle().setTop(offsetTop, Unit.PX);
 	}
 
 }

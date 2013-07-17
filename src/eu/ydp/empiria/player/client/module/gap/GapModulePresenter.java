@@ -51,4 +51,5 @@ public interface GapModulePresenter {
 	
 	void makeExpressionReplacements(ExpressionReplacer expressionReplacer);
 	
+	void addDomHandlerOnObjectDrop(GapDropHandler dragGapDropHandler);
 }

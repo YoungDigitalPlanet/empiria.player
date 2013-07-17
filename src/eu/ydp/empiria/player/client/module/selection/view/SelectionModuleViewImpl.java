@@ -62,7 +62,7 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 
 	@Override
 	public void setItemDisplayedName(XMLContent itemName, int itemNumber){
-		Widget itemTextLabel = inlineBodyGeneratorSocket.generateInlineBody(itemName.getValue());
+		Widget itemTextLabel = inlineBodyGeneratorSocket.generateInlineBody(itemName.getValue(), true);
 
 		itemTextLabel.setStyleName(styleNameConstants.QP_SELECTION_ITEM_LABEL());
 		itemTextLabel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());

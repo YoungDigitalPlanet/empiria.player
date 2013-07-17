@@ -37,7 +37,6 @@
 
 	<path id="project.class.path">
 		<pathelement location="${bin.dir}"/>
-		<fileset dir="${lib.dir}"/>
 		<fileset dir="${ivylib.dir}" includes="**/*.jar"/>
 		<fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
 	</path>

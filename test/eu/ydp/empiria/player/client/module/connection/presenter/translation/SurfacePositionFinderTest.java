@@ -1,57 +1,59 @@
 package eu.ydp.empiria.player.client.module.connection.presenter.translation;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
+import static org.fest.assertions.api.Assertions.*;
+
+import static org.mockito.Mockito.*;
+
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionItems;
 
-@RunWith(JUnitParamsRunner.class)
-public class SurfacePositionFinderTest extends AbstractTestWithMocksBase {
-
-	private static final int ITEM_WIDTH = 10;
-
-	private static final int RIGHT_OFFSET = 50;
-
-	private static final int LEFT_OFFSET = 20;
+@RunWith(MockitoJUnitRunner.class)
+public class SurfacePositionFinderTest  {
 
 	private SurfacePositionFinder finder;
-	
-	private ConnectionItemsMockCreator creator = new ConnectionItemsMockCreator();
-	
-	@Override
-	public void setUp() {
-		super.setUp(SurfacePositionFinder.class);
-		finder = injector.getInstance(SurfacePositionFinder.class);
-	}
-	
-	@SuppressWarnings("unused")
-	private Object[] parametersForAlignSurfaceToItem(){
-		return $(
-				$(2, 3, LEFT_OFFSET),
-				$(0, 0, 0),
-				$(2, 0, LEFT_OFFSET),
-				$(0, 2, 0)
-				);
+	@Mock
+	private SurfacesOffsetsUtils surfacesOffsetsUtils;
+
+	@Before
+	public void setUp(){
+		finder = new SurfacePositionFinder(surfacesOffsetsUtils);
 	}
 	
 	@Test
-	@Parameters
-	public void alignSurfaceToItem(int countLeft, int countRight, int expectedLeft) {
-		// given
-		ConnectionItems items = creator.createConnectionItems(countLeft, LEFT_OFFSET, countRight, RIGHT_OFFSET, ITEM_WIDTH);
+	public void shouldReturnMinLeftOffsetOfAllItems() throws Exception {
+		//given
+		ConnectionItems items = Mockito.mock(ConnectionItems.class);
 		
-		// when
-		int left = finder.findOffsetLeft(items);
+		int minLeftOffset = 123;
+		when(surfacesOffsetsUtils.findMinOffsetLeft(items))
+			.thenReturn(minLeftOffset);
 		
-		// then
-		assertThat(left, equalTo(expectedLeft));
+		//when
+		int result = finder.findOffsetLeft(items);
+		
+		//then
+		assertThat(result).isEqualTo(minLeftOffset);
 	}
-
+	
+	@Test
+	public void shouldReturnMinTopOffsetOfAllItems() throws Exception {
+		//given
+		ConnectionItems items = Mockito.mock(ConnectionItems.class);
+		
+		int minTopOffset = 1232342;
+		when(surfacesOffsetsUtils.findMinTopOffset(items))
+		.thenReturn(minTopOffset);
+		
+		//when
+		int result = finder.findTopOffset(items);
+		
+		//then
+		assertThat(result).isEqualTo(minTopOffset);
+	}
 }

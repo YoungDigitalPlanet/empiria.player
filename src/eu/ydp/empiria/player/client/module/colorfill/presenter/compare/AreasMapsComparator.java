@@ -13,6 +13,8 @@ public class AreasMapsComparator {
 	public AreasMapComparationResult findDifference(Map<Area, ColorModel> previous, Map<Area, ColorModel> current){
 		MapDifference<Area, ColorModel> differences = Maps.difference(previous, current);
 		
+		checkDifferencesCount(differences);
+		
 		if (isAdded(differences)){
 			return getAdded(differences);
 		}
@@ -26,6 +28,13 @@ public class AreasMapsComparator {
 		return AreasMapComparationResult.ofSame();
 	}
 	
+	private void checkDifferencesCount(MapDifference<Area, ColorModel> differences) {
+		int differencesCount = differences.entriesDiffering().size() + differences.entriesOnlyOnLeft().size() + differences.entriesOnlyOnRight().size();
+		if (differencesCount > 1){
+			throw new IllegalArgumentException("There must be at most one difference between previous and currrent map.");
+		}
+	}
+
 	private boolean isChanged(MapDifference<Area, ColorModel> differences) {
 		return !differences.entriesDiffering().isEmpty();
 	}

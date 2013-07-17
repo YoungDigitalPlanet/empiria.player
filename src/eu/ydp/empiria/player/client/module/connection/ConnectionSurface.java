@@ -22,4 +22,6 @@ public interface ConnectionSurface extends IsWidget {
 	
 	void setOffsetLeft(int left);
 
+	void setOffsetTop(int offsetTop);
+
 }

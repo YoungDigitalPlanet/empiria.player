@@ -5,8 +5,7 @@ import com.google.inject.Inject;
 
 public class SymjaExpressionCharactersAdapter {
 
-	@Inject
-	DefaultExpressionCharactersAdapter defaultAdapter;
+	@Inject private DefaultExpressionCharactersAdapter defaultAdapter;
 	
 	public String process(String expression) {
 		expression = fixOperators(expression);
