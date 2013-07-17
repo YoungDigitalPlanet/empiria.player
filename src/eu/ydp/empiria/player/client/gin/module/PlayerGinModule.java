@@ -31,6 +31,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.Stic
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
@@ -189,6 +190,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(LabellingChildView.class).to(LabellingChildViewImpl.class);
 		bind(String.class).annotatedWith(UniqueId.class).toProvider(UniqIdStringProvider.class);
 		bind(ExpressionCharacterMappingProvider.class).in(Singleton.class);
+		bind(TutorService.class).in(Singleton.class);
+		
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
