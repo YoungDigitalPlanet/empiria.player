@@ -6,8 +6,6 @@ import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 
 public interface SimpleChoicePresenterFactory {
 
-	SimpleChoicePresenter getSimpleChoicePresenter(
-			SimpleChoiceBean choice,
-			InlineBodyGeneratorSocket bodyGenerator);
+	SimpleChoicePresenter getSimpleChoicePresenter(SimpleChoiceBean choice, InlineBodyGeneratorSocket bodyGenerator);
 
 }

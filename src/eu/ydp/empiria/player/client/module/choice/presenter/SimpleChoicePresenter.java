@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 
-public interface SimpleChoicePresenter extends IsWidget{
+public interface SimpleChoicePresenter extends IsWidget {
 
 	void setLocked(boolean locked);
 

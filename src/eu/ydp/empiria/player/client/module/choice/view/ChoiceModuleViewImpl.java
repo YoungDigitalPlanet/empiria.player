@@ -10,12 +10,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ChoiceModuleViewImpl implements ChoiceModuleView {
 
-	private static ChoiceModuleViewUiBinder uiBinder = GWT
-			.create(ChoiceModuleViewUiBinder.class);
+	private static ChoiceModuleViewUiBinder uiBinder = GWT.create(ChoiceModuleViewUiBinder.class);
 
 	@UiTemplate("ChoiceModuleView.ui.xml")
-	interface ChoiceModuleViewUiBinder extends
-			UiBinder<Widget, ChoiceModuleViewImpl> {
+	interface ChoiceModuleViewUiBinder extends UiBinder<Widget, ChoiceModuleViewImpl> {
 	}
 
 	@UiField

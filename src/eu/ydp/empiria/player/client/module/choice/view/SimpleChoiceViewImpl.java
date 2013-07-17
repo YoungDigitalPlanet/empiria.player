@@ -53,12 +53,10 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	@Inject
 	private StyleNameConstants styleNameConstants;
 
-	private static SimpleChoiceViewUiBinder uiBinder = GWT
-			.create(SimpleChoiceViewUiBinder.class);
+	private static SimpleChoiceViewUiBinder uiBinder = GWT.create(SimpleChoiceViewUiBinder.class);
 
 	@UiTemplate("SimpleChoiceView.ui.xml")
-	interface SimpleChoiceViewUiBinder extends
-			UiBinder<Widget, SimpleChoiceViewImpl> {
+	interface SimpleChoiceViewUiBinder extends UiBinder<Widget, SimpleChoiceViewImpl> {
 	}
 
 	@Inject
@@ -76,65 +74,46 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	@Override
 	public void markCorrect() {
 		removeInactiveStyle();
-		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType()
-				+ "-markanswers-correct");
-		markAnswersPanel.addStyleName(styleNameConstants
-				.QP_MARKANSWERS_MARKER_CORRECT());
-		optionPanel.addStyleName(styleNameConstants
-				.QP_MARKANSWERS_BUTTON_CORRECT());
-		labelPanel.addStyleName(styleNameConstants
-				.QP_MARKANSWERS_LABEL_CORRECT());
+		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType() + "-markanswers-correct");
+		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
+		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
 	}
 
 	@Override
 	public void markWrong() {
 		removeInactiveStyle();
-		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType()
-				+ "-markanswers-wrong");
-		markAnswersPanel.addStyleName(styleNameConstants
-				.QP_MARKANSWERS_MARKER_WRONG());
-		optionPanel.addStyleName(styleNameConstants
-				.QP_MARKANSWERS_BUTTON_WRONG());
-		labelPanel
-				.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
+		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType() + "-markanswers-wrong");
+		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
+		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
 	}
 
 	@Override
 	public void unmarkCorrect() {
 		addInactiveStyle();
-		optionPanel.removeStyleName(styleNameConstants
-				.QP_MARKANSWERS_BUTTON_CORRECT());
-		labelPanel.removeStyleName(styleNameConstants
-				.QP_MARKANSWERS_LABEL_CORRECT());
+		optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
+		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
 	}
 
 	@Override
 	public void unmarkWrong() {
 		addInactiveStyle();
-		optionPanel.removeStyleName(styleNameConstants
-				.QP_MARKANSWERS_BUTTON_WRONG());
-		labelPanel.removeStyleName(styleNameConstants
-				.QP_MARKANSWERS_LABEL_WRONG());
+		optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
+		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
 	}
 
 	private void addInactiveStyle() {
-		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType()
-				+ "-markanswers");
-		markAnswersPanel.addStyleName(styleNameConstants
-				.QP_MARKANSWERS_MARKER_INACTIVE());
-		optionPanel.addStyleName(styleNameConstants
-				.QP_MARKANSWERS_BUTTON_INACTIVE());
-		labelPanel.addStyleName(styleNameConstants
-				.QP_MARKANSWERS_LABEL_INACTIVE());
-		labelPanel.removeStyleName(styleNameConstants
-				.QP_MARKANSWERS_LABEL_NONE());
+		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType() + "-markanswers");
+		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
+		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
+		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
+		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_NONE());
 	}
 
 	private void removeInactiveStyle() {
-		optionPanel.removeStyleName(styleNameConstants
-				.QP_MARKANSWERS_BUTTON_INACTIVE());
-		labelPanel.removeStyleName(styleNameConstants
-				.QP_MARKANSWERS_LABEL_INACTIVE());
+		optionPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
+		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
 	}
 
 	private String getButtonType() {
@@ -149,8 +128,7 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	@Override
 	public void reset() {
 		button.setSelected(false);
-		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType()
-				+ "-markanswers-none");
+		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType() + "-markanswers-none");
 	}
 
 	@Override
@@ -167,8 +145,7 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	}
 
 	private void setAnswerePanelStyle() {
-		markAnswersPanel.addStyleName("qp-choice-button-" + getButtonType()
-				+ "-markanswers");
+		markAnswersPanel.addStyleName("qp-choice-button-" + getButtonType() + "-markanswers");
 	}
 
 	@Override

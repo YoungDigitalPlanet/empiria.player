@@ -35,15 +35,13 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	private ChoiceModuleModel model;
 
 	private ChoiceModuleView view;
-	
+
 	private SimpleChoicePresenterFactory choiceModuleFactory;
 
 	private ChoiceModuleListener listener;
 
 	@Inject
-	public ChoiceModulePresenterImpl(
-			SimpleChoicePresenterFactory choiceModuleFactory,
-			@ModuleScoped ChoiceModuleModel model,
+	public ChoiceModulePresenterImpl(SimpleChoicePresenterFactory choiceModuleFactory, @ModuleScoped ChoiceModuleModel model,
 			@ModuleScoped ChoiceModuleView view) {
 		this.choiceModuleFactory = choiceModuleFactory;
 		this.model = model;
@@ -67,19 +65,16 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		view.clear();
 
 		for (SimpleChoiceBean choice : bean.getSimpleChoices()) {
-			SimpleChoicePresenter choicePresenter = createSimpleChoicePresenter(
-					choice, bodyGenerator);
+			SimpleChoicePresenter choicePresenter = createSimpleChoicePresenter(choice, bodyGenerator);
 			id2choices.put(choice.getIdentifier(), choicePresenter);
 			view.addChoice(choicePresenter.asWidget());
 			choicePresenter.setListener(listener);
 		}
 	}
 
-	private SimpleChoicePresenter createSimpleChoicePresenter(
-			SimpleChoiceBean choice, InlineBodyGeneratorSocket bodyGenerator) {
+	private SimpleChoicePresenter createSimpleChoicePresenter(SimpleChoiceBean choice, InlineBodyGeneratorSocket bodyGenerator) {
 
-		return choiceModuleFactory.getSimpleChoicePresenter(choice,
-				bodyGenerator);
+		return choiceModuleFactory.getSimpleChoicePresenter(choice, bodyGenerator);
 	}
 
 	@Override
@@ -154,8 +149,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		}
 	}
 
-	private boolean isChoiceMarkType(MarkAnswersType type,
-			String choiceIdentifier) {
+	private boolean isChoiceMarkType(MarkAnswersType type, String choiceIdentifier) {
 		boolean is = false;
 
 		if (type == MarkAnswersType.CORRECT) {
@@ -176,8 +170,7 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		}
 	}
 
-	private boolean isChoiceAnswerType(ShowAnswersType type,
-			String choiceIdentifier) {
+	private boolean isChoiceAnswerType(ShowAnswersType type, String choiceIdentifier) {
 		boolean select = false;
 
 		if (type == ShowAnswersType.CORRECT) {

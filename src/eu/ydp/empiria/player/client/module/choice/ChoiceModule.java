@@ -12,8 +12,7 @@ import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBea
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleJAXBParser;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
 
-public class ChoiceModule extends
-		AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
+public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
 
 	private ChoiceModuleStructure choiceStructure;
 
@@ -22,9 +21,7 @@ public class ChoiceModule extends
 	private ChoiceModulePresenter presenter;
 
 	@Inject
-	public ChoiceModule(ChoiceModuleStructure choiceStructure,
-			@ModuleScoped ChoiceModuleModel moduleModel,
-			@ModuleScoped ChoiceModulePresenter presenter) {
+	public ChoiceModule(ChoiceModuleStructure choiceStructure, @ModuleScoped ChoiceModuleModel moduleModel, @ModuleScoped ChoiceModulePresenter presenter) {
 		this.choiceStructure = choiceStructure;
 		this.moduleModel = moduleModel;
 		this.presenter = presenter;
@@ -36,14 +33,13 @@ public class ChoiceModule extends
 		if (isMulti()) {
 			getResponse().setCountMode(getCountMode());
 		}
-		presenter.setInlineBodyGenerator(getModuleSocket()
-				.getInlineBodyGeneratorSocket());
+		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
 
 		moduleModel.initialize(this);
 	}
 
 	private boolean isMulti() {
-		return Cardinality.MULTIPLE.equals(getResponse().cardinality);
+		return Cardinality.MULTIPLE == getResponse().cardinality;
 	}
 
 	@Override

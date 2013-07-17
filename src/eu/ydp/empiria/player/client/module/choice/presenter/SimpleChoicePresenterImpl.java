@@ -28,11 +28,9 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter {
 	private SimpleChoiceView view;
 
 	SimpleChoiceViewFactory simpleChoiceViewFactory;
-	
+
 	@Inject
-	public SimpleChoicePresenterImpl(
-			SimpleChoiceViewFactory simpleChoiceViewFactory,
-			@Assisted SimpleChoiceBean option,
+	public SimpleChoicePresenterImpl(SimpleChoiceViewFactory simpleChoiceViewFactory, @Assisted SimpleChoiceBean option,
 			@Assisted InlineBodyGeneratorSocket bodyGenerator) {
 		this.simpleChoiceViewFactory = simpleChoiceViewFactory;
 		bindView();
@@ -52,7 +50,7 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter {
 	}
 
 	private ChoiceButtonBase createButton() {
-		if(isMulti){
+		if (isMulti) {
 			return simpleChoiceViewFactory.getMultiChoiceButton(STYLE_CHOICE_MULTI);
 		} else {
 			return simpleChoiceViewFactory.getSingleChoiceButton(STYLE_CHOICE_SINGLE);
@@ -60,8 +58,7 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter {
 	}
 
 	private void createAndInstallContent(SimpleChoiceBean choiceOption) {
-		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOption
-				.getContent().getValue(), true);
+		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOption.getContent().getValue(), true);
 		view.setContent(contentWidget);
 	}
 

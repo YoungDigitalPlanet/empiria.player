@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.choice;
 
-import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
 import eu.ydp.empiria.player.client.module.choice.presenter.SimpleChoicePresenter;
@@ -11,12 +9,8 @@ public class ChoiceModuleListenerImpl implements ChoiceModuleListener {
 	ChoiceModuleModel model;
 	ChoiceModulePresenter presenter;
 
-	@Inject
-	public ChoiceModuleListenerImpl(
-			ChoiceModuleModel model,
-			ChoiceModulePresenter presenter
-			) {
-		this.model= model;
+	public ChoiceModuleListenerImpl(ChoiceModuleModel model, ChoiceModulePresenter presenter) {
+		this.model = model;
 		this.presenter = presenter;
 	}
 

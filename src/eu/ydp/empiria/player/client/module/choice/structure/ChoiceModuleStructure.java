@@ -27,7 +27,7 @@ public class ChoiceModuleStructure extends AbstractModuleStructure<ChoiceInterac
 
 	@Inject
 	private ShuffleHelper shuffleHelper;
-	
+
 	@Override
 	protected void prepareStructure(YJsonArray structure) {
 		List<SimpleChoiceBean> randomizedChoices = shuffleHelper.randomize(bean, bean.getSimpleChoices());

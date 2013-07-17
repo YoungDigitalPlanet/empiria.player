@@ -19,7 +19,7 @@ public interface SimpleChoiceView extends IsWidget {
 	void reset();
 
 	void setLocked(boolean locked);
-	
+
 	void setButton(ChoiceButtonBase button);
 
 	void setContent(Widget contentWidget);
