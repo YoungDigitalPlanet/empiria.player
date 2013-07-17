@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.gin.factory.SimpleChoiceViewFactory;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
+import eu.ydp.empiria.player.client.module.choice.providers.SimpleChoiceStyleProvider;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.choice.view.SimpleChoiceView;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
@@ -91,8 +92,14 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter {
 		return view.asWidget();
 	}
 
-	public void bindView() {
-		view = simpleChoiceViewFactory.getSimpleChoiceView(this);
+	private void bindView() {
+		SimpleChoiceStyleProvider styleProvider;
+		if (isMulti()) {
+			styleProvider = simpleChoiceViewFactory.getMultiChoiceStyleProvider();
+		} else {
+			styleProvider = simpleChoiceViewFactory.getSingleChoiceStyleProvider();
+		}
+		view = simpleChoiceViewFactory.getSimpleChoiceView(this, styleProvider);
 	}
 
 	@Override

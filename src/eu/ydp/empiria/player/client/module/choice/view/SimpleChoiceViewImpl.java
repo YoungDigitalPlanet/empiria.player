@@ -16,13 +16,11 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.choice.presenter.SimpleChoicePresenter;
+import eu.ydp.empiria.player.client.module.choice.providers.SimpleChoiceStyleProvider;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class SimpleChoiceViewImpl implements SimpleChoiceView {
-	private static final String TYPE_SINGLE = "single";
-
-	private static final String TYPE_MULTI = "multi";
 	@UiField
 	Panel optionPanel;
 
@@ -48,6 +46,8 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 
 	private SimpleChoicePresenter presenter;
 
+	private SimpleChoiceStyleProvider styleProvider;
+
 	private ChoiceButtonBase button;
 
 	@Inject
@@ -60,9 +60,10 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	}
 
 	@Inject
-	public SimpleChoiceViewImpl(@Assisted SimpleChoicePresenter presenter) {
+	public SimpleChoiceViewImpl(@Assisted SimpleChoicePresenter presenter, @Assisted SimpleChoiceStyleProvider styleProvider) {
 		widget = uiBinder.createAndBindUi(this);
 		this.presenter = presenter;
+		this.styleProvider = styleProvider;
 		addListenersToCover();
 	}
 
@@ -74,7 +75,8 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	@Override
 	public void markCorrect() {
 		removeInactiveStyle();
-		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType() + "-markanswers-correct");
+
+		markAnswersPanel.setStyleName(styleProvider.getMarkCorrectStyle());
 		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_CORRECT());
 		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
 		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_CORRECT());
@@ -83,7 +85,7 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	@Override
 	public void markWrong() {
 		removeInactiveStyle();
-		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType() + "-markanswers-wrong");
+		markAnswersPanel.setStyleName(styleProvider.getMarkWrongStyle());
 		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_WRONG());
 		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
 		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_WRONG());
@@ -104,7 +106,7 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	}
 
 	private void addInactiveStyle() {
-		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType() + "-markanswers");
+		markAnswersPanel.setStyleName(styleProvider.getInactiveStyle());
 		markAnswersPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
 		optionPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
 		labelPanel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
@@ -116,10 +118,6 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 		labelPanel.removeStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
 	}
 
-	private String getButtonType() {
-		return presenter.isMulti() ? TYPE_MULTI : TYPE_SINGLE;
-	}
-
 	@Override
 	public Widget getFeedbackPlaceHolder() {
 		return labelPanel;
@@ -128,7 +126,7 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	@Override
 	public void reset() {
 		button.setSelected(false);
-		markAnswersPanel.setStyleName("qp-choice-button-" + getButtonType() + "-markanswers-none");
+		markAnswersPanel.setStyleName(styleProvider.getResetStyle());
 	}
 
 	@Override
@@ -145,7 +143,7 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
 	}
 
 	private void setAnswerePanelStyle() {
-		markAnswersPanel.addStyleName("qp-choice-button-" + getButtonType() + "-markanswers");
+		markAnswersPanel.addStyleName(styleProvider.getAnswereStyle());
 	}
 
 	@Override

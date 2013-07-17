@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleSc
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
+import eu.ydp.empiria.player.client.module.choice.providers.MultiChoiceStyleProvider;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
@@ -74,6 +75,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(ChoiceModuleView.class, new TypeLiteral<ModuleScopedProvider<ChoiceModuleView>>(){});
 		bindModuleScoped(ChoiceModulePresenter.class, new TypeLiteral<ModuleScopedProvider<ChoiceModulePresenter>>(){});
 		bindModuleScoped(ChoiceModuleModel.class, new TypeLiteral<ModuleScopedProvider<ChoiceModuleModel>>(){});
+		bindModuleScoped(MultiChoiceStyleProvider.class, new TypeLiteral<ModuleScopedProvider<MultiChoiceStyleProvider>>(){});
 	}
 
 	private <T> void bindModuleScoped(Class<T> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){

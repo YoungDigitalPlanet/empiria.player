@@ -10,6 +10,9 @@ import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresente
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenterImpl;
 import eu.ydp.empiria.player.client.module.choice.presenter.SimpleChoicePresenter;
 import eu.ydp.empiria.player.client.module.choice.presenter.SimpleChoicePresenterImpl;
+import eu.ydp.empiria.player.client.module.choice.providers.MultiChoiceStyleProvider;
+import eu.ydp.empiria.player.client.module.choice.providers.SimpleChoiceStyleProvider;
+import eu.ydp.empiria.player.client.module.choice.providers.SingleChoiceStyleProvider;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleViewImpl;
@@ -31,6 +34,8 @@ public class ChoiceGinModule extends AbstractGinModule {
 			.implement(SimpleChoiceView.class, SimpleChoiceViewImpl.class)
 			.implement(ChoiceButtonBase.class, Names.named("single"), SingleChoiceButton.class)
 			.implement(ChoiceButtonBase.class, Names.named("multi"), MultiChoiceButton.class)
+			.implement(SimpleChoiceStyleProvider.class, Names.named("single"), SingleChoiceStyleProvider.class)
+			.implement(SimpleChoiceStyleProvider.class, Names.named("multi"), MultiChoiceStyleProvider.class)
 			.build(SimpleChoiceViewFactory.class));
 
 		bind(ChoiceModulePresenter.class).to(ChoiceModulePresenterImpl.class);

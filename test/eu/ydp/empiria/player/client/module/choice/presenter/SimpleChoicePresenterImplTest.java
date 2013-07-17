@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.gin.factory.SimpleChoiceViewFactory;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
+import eu.ydp.empiria.player.client.module.choice.providers.SimpleChoiceStyleProvider;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.choice.view.SimpleChoiceView;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
@@ -46,7 +47,7 @@ public class SimpleChoicePresenterImplTest {
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		when(viewFactory.getSimpleChoiceView(any(SimpleChoicePresenter.class))).thenReturn(view);
+		when(viewFactory.getSimpleChoiceView(any(SimpleChoicePresenter.class), any(SimpleChoiceStyleProvider.class))).thenReturn(view);
 		when(viewFactory.getSingleChoiceButton(anyString())).thenReturn(button);
 		when(bean.getContent()).thenReturn(mock(XMLContent.class));
 		when(bean.isMulti()).thenReturn(true);
