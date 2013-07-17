@@ -98,7 +98,7 @@ public class CommandFactoryTest {
 		TutorCommand command = factory.createCommand(ActionType.DEFAULT, handler);
 
 		// then
-		verify(commandsModuleFactory).createShowImageCommand(moduleView, "ALEX_JUMPS");
+		verify(commandsModuleFactory).createShowImageCommand(moduleView, "ALEX_JUMPS.png");
 		assertThat(command, is(showImageCommand));
 	}
 
@@ -118,7 +118,7 @@ public class CommandFactoryTest {
 	private void mockTutorConfig(CommandType type) {
 		TutorCommandConfig tutorCommandConfig = mock(TutorCommandConfig.class);
 		when(tutorCommandConfig.getType()).thenReturn(type);
-		when(tutorCommandConfig.getAsset()).thenReturn("JUMPS");
+		when(tutorCommandConfig.getAsset()).thenReturn("_JUMPS.png");
 
 		when(tutorConfig.getCommandsForAction(ActionType.DEFAULT)).thenReturn(Lists.newArrayList(tutorCommandConfig));
 		when(tutorConfig.supportsAction(ActionType.DEFAULT)).thenReturn(true);
@@ -131,7 +131,7 @@ public class CommandFactoryTest {
 
 			@Override
 			public boolean matches(Object argument) {
-				return ((AnimationConfig) argument).getSource().equals("ALEX_JUMPS");
+				return ((AnimationConfig) argument).getSource().equals("ALEX_JUMPS.png");
 			}
 		};
 	}
