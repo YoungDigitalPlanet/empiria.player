@@ -97,18 +97,35 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter {
 
 	@Override
 	public void markAnswer(MarkAnswersType type, MarkAnswersMode mode) {
-		if (mode == MarkAnswersMode.MARK) {
-			if (type == MarkAnswersType.CORRECT) {
-				view.markCorrect();
-			} else if (type == MarkAnswersType.WRONG) {
-				view.markWrong();
-			}
-		} else if (mode == MarkAnswersMode.UNMARK) {
-			if (type == MarkAnswersType.CORRECT) {
-				view.unmarkCorrect();
-			} else if (type == MarkAnswersType.WRONG) {
-				view.unmarkWrong();
-			}
+		switch (mode) {
+		case MARK:
+			markAnswer(type);
+			break;
+		case UNMARK:
+			unmarkAnswer(type);
+			break;
+		}
+	}
+
+	private void unmarkAnswer(MarkAnswersType type) {
+		switch (type) {
+		case CORRECT:
+			view.unmarkCorrect();
+			break;
+		case WRONG:
+			view.unmarkWrong();
+			break;
+		}
+	}
+
+	private void markAnswer(MarkAnswersType type) {
+		switch (type) {
+		case CORRECT:
+			view.markCorrect();
+			break;
+		case WRONG:
+			view.markWrong();
+			break;
 		}
 	}
 

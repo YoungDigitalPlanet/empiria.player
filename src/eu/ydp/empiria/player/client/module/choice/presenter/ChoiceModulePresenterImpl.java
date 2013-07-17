@@ -152,10 +152,13 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	private boolean isChoiceMarkType(MarkAnswersType type, String choiceIdentifier) {
 		boolean is = false;
 
-		if (type == MarkAnswersType.CORRECT) {
+		switch (type) {
+		case CORRECT:
 			is = model.isCorrectAnswer(choiceIdentifier);
-		} else if (type == MarkAnswersType.WRONG) {
+			break;
+		case WRONG:
 			is = model.isWrongAnswer(choiceIdentifier);
+			break;
 		}
 
 		return is;
@@ -173,10 +176,13 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	private boolean isChoiceAnswerType(ShowAnswersType type, String choiceIdentifier) {
 		boolean select = false;
 
-		if (type == ShowAnswersType.CORRECT) {
+		switch (type) {
+		case CORRECT:
 			select = model.isCorrectAnswer(choiceIdentifier);
-		} else if (type == ShowAnswersType.USER) {
+			break;
+		case USER:
 			select = model.isUserAnswer(choiceIdentifier);
+			break;
 		}
 
 		return select;
