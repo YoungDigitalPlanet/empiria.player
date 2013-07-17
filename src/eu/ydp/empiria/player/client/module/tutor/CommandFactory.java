@@ -13,6 +13,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPe
 import eu.ydp.empiria.player.client.gin.factory.TutorCommandsModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
+import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class CommandFactory {
@@ -21,14 +22,16 @@ public class CommandFactory {
 	private TutorView moduleView;
 	private AnimationFactory animationFactory;
 	private TutorCommandsModuleFactory commandsModuleFactory;
+	private EmpiriaPaths paths;
 
 	@Inject
 	public CommandFactory(@ModuleScoped TutorConfig tutorConfig, @ModuleScoped TutorView moduleView, AnimationFactory animationFactory,
-			TutorCommandsModuleFactory commandsModuleFactory) {
+			TutorCommandsModuleFactory commandsModuleFactory, EmpiriaPaths paths) {
 		this.tutorConfig = tutorConfig;
 		this.moduleView = moduleView;
 		this.animationFactory = animationFactory;
 		this.commandsModuleFactory = commandsModuleFactory;
+		this.paths = paths;
 	}
 
 	public TutorCommand createCommand(ActionType actionType, EndHandler handler) {
@@ -78,8 +81,8 @@ public class CommandFactory {
 	private String createAssetPath(String assetName) {
 		TutorPersonaProperties personaProperties = getPersonaProperties();
 		String personaName = personaProperties.getName();
-
-		return personaName + assetName;
+		String commonsPath = paths.getCommonsPath();
+		return commonsPath + "/" + personaName + assetName;
 	}
 
 	private TutorPersonaProperties getPersonaProperties() {
