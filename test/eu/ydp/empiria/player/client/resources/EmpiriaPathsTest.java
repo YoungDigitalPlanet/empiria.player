@@ -37,6 +37,7 @@ public class EmpiriaPathsTest {
 		String commonsPath = empiriaPaths.getCommonsPath();
 
 		// then
+		verify(dataSourceManager.getAssessmentData()).getData();
 		verify(dataSourceManager.getAssessmentData(), never()).getSkinData(); // skin specific data
 		assertThat(commonsPath, is("http://url/test/common"));
 	}
