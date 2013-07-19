@@ -25,8 +25,6 @@ public class SimpleChoiceBean extends SimpleChoiceBaseBean implements HasFixed {
 	private boolean multi;
 
 	public SimpleChoiceBean() {
-		// identifier = StringUtils.EMPTY_STRING;
-		// content = StringUtils.EMPTY_STRING;
 	}
 
 	public XMLContent getContent() {

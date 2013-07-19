@@ -6,8 +6,8 @@ import eu.ydp.empiria.player.client.module.choice.presenter.SimpleChoicePresente
 
 public class ChoiceModuleListenerImpl implements ChoiceModuleListener {
 
-	ChoiceModuleModel model;
-	ChoiceModulePresenter presenter;
+	private ChoiceModuleModel model;
+	private ChoiceModulePresenter presenter;
 
 	public ChoiceModuleListenerImpl(ChoiceModuleModel model, ChoiceModulePresenter presenter) {
 		this.model = model;

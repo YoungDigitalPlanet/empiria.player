@@ -4,7 +4,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -109,32 +113,54 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	}
 
 	@Override
-	public IsWidget getFeedbackPlaceholderByIdentifier(String identifier) {
-		IsWidget placeholder = null;
+	public IsWidget getFeedbackPlaceholderByIdentifier(final String identifier) {
+		IsWidget widget = null;
+		Collection<SimpleChoicePresenter> simpleChoices = getSimpleChoices();
+		Predicate<SimpleChoicePresenter> placeHolderPredicate = getPlaceHolderPredicate(identifier);
+		Optional<SimpleChoicePresenter> optionalPlaceholder = Iterables.tryFind(simpleChoices, placeHolderPredicate);
 
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
-			if (identifier.equals(choiceIdentifier)) {
-				placeholder = choice.getFeedbackPlaceHolder();
-				break;
-			}
+		if (optionalPlaceholder.isPresent()) {
+			widget = optionalPlaceholder.get().getFeedbackPlaceHolder();
 		}
 
-		return placeholder;
+		return widget;
+	}
+
+	private Predicate<SimpleChoicePresenter> getPlaceHolderPredicate(final String identifier) {
+		Predicate<SimpleChoicePresenter> predicate = new Predicate<SimpleChoicePresenter>() {
+
+			@Override
+			public boolean apply(SimpleChoicePresenter simpleChoicePresenter) {
+				String choiceIdentifier = getChoiceIdentifier(simpleChoicePresenter);
+				return identifier.equals(choiceIdentifier);
+			}
+		};
+		return predicate;
 	}
 
 	@Override
-	public String getChoiceIdentifier(SimpleChoicePresenter choice) {
+	public String getChoiceIdentifier(final SimpleChoicePresenter choice) {
 		String searchedIdentifier = StringUtils.EMPTY_STRING;
+		Set<Entry<String, SimpleChoicePresenter>> choices = id2choices.entrySet();
+		Predicate<Entry<String, SimpleChoicePresenter>> predicate = getIdentifierPredicate(choice);
+		Optional<Entry<String, SimpleChoicePresenter>> optionalIdentifier = Iterables.tryFind(choices, predicate);
 
-		for (Entry<String, SimpleChoicePresenter> entry : id2choices.entrySet()) {
-			if (choice.equals(entry.getValue())) {
-				searchedIdentifier = entry.getKey();
-				break;
-			}
+		if (optionalIdentifier.isPresent()) {
+			searchedIdentifier = optionalIdentifier.get().getKey();
 		}
 
 		return searchedIdentifier;
+	}
+
+	private Predicate<Entry<String, SimpleChoicePresenter>> getIdentifierPredicate(final SimpleChoicePresenter choice) {
+		Predicate<Entry<String, SimpleChoicePresenter>> predicate = new Predicate<Entry<String, SimpleChoicePresenter>>() {
+
+			@Override
+			public boolean apply(Entry<String, SimpleChoicePresenter> entry) {
+				return choice.equals(entry.getValue());
+			}
+		};
+		return predicate;
 	}
 
 	@Override
