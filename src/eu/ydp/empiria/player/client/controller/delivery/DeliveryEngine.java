@@ -39,6 +39,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageS
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
@@ -55,6 +56,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.ModuleHandlerExt
 import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.TutorExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.processing.DefaultFlowRequestProcessor;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
@@ -78,6 +80,7 @@ import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
@@ -112,15 +115,17 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private DeliveryEventsHub deliveryEventsHub;
 	private AssessmentController assessmentController;
 	private SoundProcessorManagerExtension soundProcessorManager;
+	private final TutorService tutorService;
 
 	private JavaScriptObject playerJsObject;
 	private String stateAsync;
+
 
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
 			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
 			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
-			ModulesRegistry modulesRegistry) {
+			ModulesRegistry modulesRegistry, TutorService tutorService) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -130,6 +135,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.singleModuleInstanceProvider = singleModuleInstanceProvider;
 		this.moduleHandlerManager = moduleHandlerManager;
 		this.modulesRegistry = modulesRegistry;
+		this.tutorService = tutorService;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
 		eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this);
@@ -286,6 +292,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getLabellingModule(), ModuleTagName.LABELLING_INTERACTION));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getOrderInteractionModule(), ModuleTagName.ORDER_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getColorfillInteractionModule(), ModuleTagName.COLORFILL_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTutorModule(), ModuleTagName.TUTOR, false));
 		loadExtension(new InfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(singleModuleInstanceProvider.getLinkModuleConnectorExtension());
@@ -387,6 +394,10 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			if (extension instanceof ModuleHandlerExtension) {
 				moduleHandlerManager.addModuleHandler((ModuleHandlerExtension) extension);
 			}
+			if (extension instanceof TutorExtension) {
+				TutorExtension tutorExtension = (TutorExtension) extension;
+				tutorService.registerTutor(tutorExtension.getTutorId(), tutorExtension.getTutorConfig());
+			}
 		}
 	}
 
@@ -443,6 +454,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			}
 			if (pageData.type == PageType.TEST) {
 				getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.TEST_PAGE_LOADED));
+				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TEST_PAGE_LOADED), new CurrentPageScope());
 			}
 			updatePageStyle();
 		}

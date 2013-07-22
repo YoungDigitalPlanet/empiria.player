@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller;
 
+import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.OUTCOME_STATE_CHANGED;
+
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
@@ -115,6 +117,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			item.process(scie.isUserInteract(), scie.isReset(), scie.getSender());
 			// STATE
 			itemSessionSocket.setState(itemIndex, item.getState());
+			eventsBus.fireEvent(new StateChangeEvent(OUTCOME_STATE_CHANGED, scie), new CurrentPageScope());
 		}
 	}
 
