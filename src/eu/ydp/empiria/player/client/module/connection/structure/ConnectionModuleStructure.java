@@ -54,7 +54,7 @@ public class ConnectionModuleStructure extends AbstractModuleStructure<MatchInte
 	}
 
 	private List<SimpleAssociableChoiceBean> randomizeChoices(List<SimpleAssociableChoiceBean> associableChoices) {
-		return shuffleHelper.randomize(bean, associableChoices);
+		return shuffleHelper.randomizeIfShould(bean, associableChoices);
 	}
 
 	@Override
