@@ -29,6 +29,7 @@ import eu.ydp.empiria.player.client.gin.factory.TutorCommandsModuleFactory;
 import eu.ydp.empiria.player.client.module.tutor.commands.AnimationCommand;
 import eu.ydp.empiria.player.client.module.tutor.commands.ShowImageCommand;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
+import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.empiria.player.client.util.geom.Size;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,6 +47,8 @@ public class CommandFactoryTest {
 	private AnimationFactory animationFactory;
 	@Mock
 	private EndHandler handler;
+	@Mock
+	EmpiriaPaths paths;
 	TutorPersonaProperties properties;
 
 	@Before
@@ -54,6 +57,7 @@ public class CommandFactoryTest {
 		when(properties.getAnimationSize()).thenReturn(new Size(30, 40));
 		when(properties.getAnimationFps()).thenReturn(30);
 		when(properties.getName()).thenReturn("ALEX");
+		when(paths.getCommonsPath()).thenReturn("http://url/path");
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -98,7 +102,7 @@ public class CommandFactoryTest {
 		TutorCommand command = factory.createCommand(ActionType.DEFAULT, handler);
 
 		// then
-		verify(commandsModuleFactory).createShowImageCommand(moduleView, "ALEX_JUMPS.png");
+		verify(commandsModuleFactory).createShowImageCommand(moduleView, "http://url/path/ALEX_JUMPS.png");
 		assertThat(command, is(showImageCommand));
 	}
 
@@ -131,7 +135,7 @@ public class CommandFactoryTest {
 
 			@Override
 			public boolean matches(Object argument) {
-				return ((AnimationConfig) argument).getSource().equals("ALEX_JUMPS.png");
+				return ((AnimationConfig) argument).getSource().equals("http://url/path/ALEX_JUMPS.png");
 			}
 		};
 	}
