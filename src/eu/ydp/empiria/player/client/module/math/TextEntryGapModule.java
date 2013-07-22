@@ -25,16 +25,15 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class TextEntryGapModule extends MathGapBase implements MathGap, SourcelistClient {
 
-
 	private final SourcelistManager sourcelistManager;
 
 	private final StyleSocket styleSocket;
 
 	@Inject
-	public TextEntryGapModule(TextEntryGapModulePresenter presenter, StyleSocket styleSocket,@PageScoped final SourcelistManager sourcelistManager) {
+	public TextEntryGapModule(TextEntryGapModulePresenter presenter, StyleSocket styleSocket, @PageScoped final SourcelistManager sourcelistManager) {
 		this.styleSocket = styleSocket;
 		this.sourcelistManager = sourcelistManager;
-		
+
 		this.presenter = presenter;
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
@@ -56,15 +55,18 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 			@Override
 			public void onDrop(DragDataObject dragDataObject) {
 				String itemID = dragDataObject.getItemId();
-				String sourceModuleId = dragDataObject.getSourceId();;
+				String sourceModuleId = dragDataObject.getSourceId();
 				String targetModuleId = getIdentifier();
 
-				sourcelistManager.dragEnd(itemID, sourceModuleId,
-						targetModuleId);
+				sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
 			}
 		});
-		
+	}
+
+	@Override
+	public void onStart() {
 		sourcelistManager.registerModule(this);
+		super.onStart();
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 		super.reset();
 		sourcelistManager.onUserValueChanged();
 	}
-	
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		installViewInPlaceholder(placeholders.get(0));
