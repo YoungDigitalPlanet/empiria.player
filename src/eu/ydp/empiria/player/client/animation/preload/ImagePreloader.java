@@ -5,6 +5,8 @@ import static com.google.gwt.dom.client.Style.BorderStyle.NONE;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -37,14 +39,50 @@ public class ImagePreloader {
 	}
 
 	private HandlerRegistration addHandler(final ImagePreloadHandler preloadHandler, final Image img) {
-		HandlerRegistration handlerRegistration = img.addLoadHandler(new LoadHandler() {
+		final HandlerRegistration handlerRegistration = addPreloadHandler(preloadHandler, img);
+		return handlerRegistration;
+	}
+
+	private HandlerRegistration addPreloadHandler(final ImagePreloadHandler preloadHandler, final Image img) {
+		final HandlerRegistration loadHandlerRegistration = addLoadHandler(preloadHandler, img);
+		final HandlerRegistration errorHandlerRegistration = addErrorHandler(preloadHandler, img);
+		return getGroupedRegistrationHandler(loadHandlerRegistration, errorHandlerRegistration);
+	}
+
+	private HandlerRegistration addErrorHandler(final ImagePreloadHandler preloadHandler, final Image img) {
+		final HandlerRegistration errorHandlerRegistration = img.addErrorHandler(new ErrorHandler() {
 
 			@Override
-			public void onLoad(LoadEvent event) {
+			public void onError(final ErrorEvent event) {
+				preloadHandler.onError();
+				img.removeFromParent();
+			}
+		});
+		return errorHandlerRegistration;
+	}
+
+	private HandlerRegistration addLoadHandler(final ImagePreloadHandler preloadHandler, final Image img) {
+		final HandlerRegistration loadHandlerRegistration = img.addLoadHandler(new LoadHandler() {
+
+			@Override
+			public void onLoad(final LoadEvent event) {
 				preloadHandler.onLoad(new Size(img.getOffsetWidth(), img.getOffsetHeight()));
 				img.removeFromParent();
 			}
 		});
-		return handlerRegistration;
+		return loadHandlerRegistration;
 	}
+
+	private HandlerRegistration getGroupedRegistrationHandler(final HandlerRegistration loadHandlerRegistration, final HandlerRegistration errorHandlerRegistration) {
+		return new HandlerRegistration() {
+
+			@Override
+			public void removeHandler() {
+				loadHandlerRegistration.removeHandler();
+				errorHandlerRegistration.removeHandler();
+
+			}
+		};
+	}
+
 }

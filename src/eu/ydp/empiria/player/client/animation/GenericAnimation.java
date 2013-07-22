@@ -37,14 +37,26 @@ public class GenericAnimation implements Animation, AnimationEndHandler {
 	private void preloadAndPlay() {
 		String src = animationConfig.getSource();
 		resetPreloadHandler();
-		currentPreloadHandlerRegistration = imagePreloader.preload(src, new ImagePreloadHandler() {
+		currentPreloadHandlerRegistration = imagePreloader.preload(src, getImagePreloadHandler());
+	}
+
+
+
+	private ImagePreloadHandler getImagePreloadHandler() {
+		return new ImagePreloadHandler() {
 
 			@Override
 			public void onLoad(Size imageSize) {
 				playAnimation(imageSize);
 				currentPreloadHandlerRegistration = null;
 			}
-		});
+
+			@Override
+			public void onError() {
+				onEnd();
+				currentPreloadHandlerRegistration = null;
+			}
+		};
 	}
 
 	private void resetPreloadHandler() {

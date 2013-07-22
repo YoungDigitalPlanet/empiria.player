@@ -87,7 +87,20 @@ public class GenericAnimationTest {
 	}
 
 	@Test
+	public void errorOnImgLoaded() throws Exception {
+		instance = spy(instance);
+		HandlerRegistration handlerRegistration = mock(HandlerRegistration.class);
+		ArgumentCaptor<ImagePreloadHandler> imagePreloadHandler = ArgumentCaptor.<ImagePreloadHandler> forClass(ImagePreloadHandler.class);
+		doReturn(handlerRegistration).when(imagePreloader).preload(anyString(),imagePreloadHandler.capture());
+		instance.init(animation, animationConfig, animationHolder);
+		instance.start(animationEndHandler);
+		ImagePreloadHandler preloadHandler = imagePreloadHandler.getValue();
+		preloadHandler.onError();
+		instance.onEnd();
+	}
+	@Test
 	public void terminate() {
+
 		doReturn(1).when(animationAnalyzer).findFramesCount(any(Size.class), any(Size.class));
 		ArgumentCaptor<ImagePreloadHandler> imagePreloadHandler = ArgumentCaptor.<ImagePreloadHandler> forClass(ImagePreloadHandler.class);
 		instance.init(animation, animationConfig, animationHolder);
