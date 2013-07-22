@@ -23,6 +23,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.animation.holder.AnimationHolder;
 import eu.ydp.empiria.player.client.animation.js.AnimationAnalyzer;
+import eu.ydp.empiria.player.client.animation.preload.ImagePreloadErrorHandler;
 import eu.ydp.empiria.player.client.animation.preload.ImagePreloadHandler;
 import eu.ydp.empiria.player.client.animation.preload.ImagePreloader;
 import eu.ydp.empiria.player.client.util.geom.Size;
@@ -54,7 +55,7 @@ public class GenericAnimationTest {
 		instance.start(animationEndHandler);
 		doReturn(1).when(animationAnalyzer).findFramesCount(any(Size.class), any(Size.class));
 		ArgumentCaptor<ImagePreloadHandler> imagePreloadHandler = ArgumentCaptor.<ImagePreloadHandler> forClass(ImagePreloadHandler.class);
-		verify(imagePreloader).preload(eq(source), imagePreloadHandler.capture());
+		verify(imagePreloader).preload(eq(source), imagePreloadHandler.capture(),any(ImagePreloadErrorHandler.class));
 		imagePreloadHandler.getValue().onLoad(frameSize);
 		verify(animation).start(eq(instance));
 		verify(animation).setRuntimeConfiguration(any(AnimationRuntimeConfig.class));
@@ -69,7 +70,7 @@ public class GenericAnimationTest {
 		instance.start(animationEndHandler);
 		doReturn(0).when(animationAnalyzer).findFramesCount(any(Size.class), any(Size.class));
 		ArgumentCaptor<ImagePreloadHandler> imagePreloadHandler = ArgumentCaptor.<ImagePreloadHandler> forClass(ImagePreloadHandler.class);
-		verify(imagePreloader).preload(eq(source), imagePreloadHandler.capture());
+		verify(imagePreloader).preload(eq(source), imagePreloadHandler.capture(),any(ImagePreloadErrorHandler.class));
 		imagePreloadHandler.getValue().onLoad(frameSize);
 		verify(animation, never()).start(eq(instance));
 		verify(animation, never()).setRuntimeConfiguration(any(AnimationRuntimeConfig.class));
@@ -79,7 +80,7 @@ public class GenericAnimationTest {
 	@Test
 	public void terminateBeforeImgLoaded() throws Exception {
 		HandlerRegistration handlerRegistration = mock(HandlerRegistration.class);
-		doReturn(handlerRegistration).when(imagePreloader).preload(anyString(), any(ImagePreloadHandler.class));
+		doReturn(handlerRegistration).when(imagePreloader).preload(anyString(), any(ImagePreloadHandler.class),any(ImagePreloadErrorHandler.class));
 		instance.init(animation, animationConfig, animationHolder);
 		instance.start(animationEndHandler);
 		instance.terminate();
@@ -87,12 +88,25 @@ public class GenericAnimationTest {
 	}
 
 	@Test
+	public void errorOnImgLoaded() throws Exception {
+		instance = spy(instance);
+		HandlerRegistration handlerRegistration = mock(HandlerRegistration.class);
+		ArgumentCaptor<ImagePreloadErrorHandler> imagePreloadErrorHandler = ArgumentCaptor.<ImagePreloadErrorHandler> forClass(ImagePreloadErrorHandler.class);
+		doReturn(handlerRegistration).when(imagePreloader).preload(anyString(), any(ImagePreloadHandler.class),imagePreloadErrorHandler.capture());
+		instance.init(animation, animationConfig, animationHolder);
+		instance.start(animationEndHandler);
+		ImagePreloadErrorHandler errorHandler = imagePreloadErrorHandler.getValue();
+		errorHandler.onError();
+		instance.onEnd();
+	}
+	@Test
 	public void terminate() {
+
 		doReturn(1).when(animationAnalyzer).findFramesCount(any(Size.class), any(Size.class));
 		ArgumentCaptor<ImagePreloadHandler> imagePreloadHandler = ArgumentCaptor.<ImagePreloadHandler> forClass(ImagePreloadHandler.class);
 		instance.init(animation, animationConfig, animationHolder);
 		instance.start(animationEndHandler);
-		verify(imagePreloader).preload(eq(source), imagePreloadHandler.capture());
+		verify(imagePreloader).preload(eq(source), imagePreloadHandler.capture(),any(ImagePreloadErrorHandler.class));
 		imagePreloadHandler.getValue().onLoad(frameSize);
 		verify(animation).start(eq(instance));
 		instance.terminate();
@@ -116,7 +130,7 @@ public class GenericAnimationTest {
 		doReturn(framesCount).when(animationAnalyzer).findFramesCount(any(Size.class), any(Size.class));
 
 		ArgumentCaptor<ImagePreloadHandler> imagePreloadHandler = ArgumentCaptor.<ImagePreloadHandler> forClass(ImagePreloadHandler.class);
-		verify(imagePreloader).preload(eq(source), imagePreloadHandler.capture());
+		verify(imagePreloader).preload(eq(source), imagePreloadHandler.capture(),any(ImagePreloadErrorHandler.class));
 		imagePreloadHandler.getValue().onLoad(frameSize);
 		verify(animation).start(eq(instance));
 

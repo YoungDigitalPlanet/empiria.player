@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.animation.holder.AnimationHolder;
 import eu.ydp.empiria.player.client.animation.js.AnimationAnalyzer;
+import eu.ydp.empiria.player.client.animation.preload.ImagePreloadErrorHandler;
 import eu.ydp.empiria.player.client.animation.preload.ImagePreloadHandler;
 import eu.ydp.empiria.player.client.animation.preload.ImagePreloader;
 import eu.ydp.empiria.player.client.util.geom.Size;
@@ -37,14 +38,28 @@ public class GenericAnimation implements Animation, AnimationEndHandler {
 	private void preloadAndPlay() {
 		String src = animationConfig.getSource();
 		resetPreloadHandler();
-		currentPreloadHandlerRegistration = imagePreloader.preload(src, new ImagePreloadHandler() {
+		currentPreloadHandlerRegistration = imagePreloader.preload(src, getImagePreloadHandler(), getImagePreloadErrorHandler());
+	}
+
+	private ImagePreloadErrorHandler getImagePreloadErrorHandler() {
+		return new ImagePreloadErrorHandler() {
+
+			@Override
+			public void onError() {
+				onEnd();
+			}
+		};
+	}
+
+	private ImagePreloadHandler getImagePreloadHandler() {
+		return new ImagePreloadHandler() {
 
 			@Override
 			public void onLoad(Size imageSize) {
 				playAnimation(imageSize);
 				currentPreloadHandlerRegistration = null;
 			}
-		});
+		};
 	}
 
 	private void resetPreloadHandler() {
