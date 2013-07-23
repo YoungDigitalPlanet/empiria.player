@@ -9,13 +9,13 @@ import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
 public interface SelectionModuleView extends IsWidget{
 
-	void initialize(int amountOfItems, int amountOfChoices, InlineBodyGeneratorSocket inlineBodyGeneratorSocket);
+	void initialize(InlineBodyGeneratorSocket inlineBodyGeneratorSocket);
 
 	void setItemDisplayedName(XMLContent itemName, int itemNumber);
 
 	void setChoiceOptionDisplayedName(XMLContent choiceName, int choiceNumber);
 
-	void createButtonForItemChoicePair(int itemNumber, int choiceNumber, String moduleStyleName);
+	void createButtonForItemChoicePair(int itemNumber, int choiceNumber, boolean isMulti);
 
 	void selectButton(int itemNumber, int choiceNumber);
 
@@ -26,4 +26,6 @@ public interface SelectionModuleView extends IsWidget{
 	void updateButtonStyle(int itemNumber, int choiceNumber, UserAnswerType styleState);
 
 	void addClickHandlerToButton(int itemNumber, int choiceNumber, ClickHandler clickHandler);
+
+	void setGridSize(int amountOfItems, int amountOfChoices);
 }

@@ -27,6 +27,9 @@ import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
+import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
+import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
+import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
@@ -50,6 +53,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindColorfill();
 		bindDragGap();
 		bindTutor();
+		bindSelection();
 	}
 
 	private void bindOrdering() {
@@ -85,11 +89,16 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 	}
 
+	private void bindSelection() {
+		bindModuleScoped(SelectionModuleModel.class, new TypeLiteral<ModuleScopedProvider<SelectionModuleModel>>(){});
+		bindModuleScoped(SelectionModuleView.class, new TypeLiteral<ModuleScopedProvider<SelectionModuleView>>(){});
+		bindModuleScoped(SelectionViewBuilder.class, new TypeLiteral<ModuleScopedProvider<SelectionViewBuilder>>(){});
+	}
+
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)
 			.annotatedWith(ModuleScoped.class)
 			.toProvider(Key.get(typeLiteral));
 	}
-
 }

@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
-import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -17,18 +17,19 @@ public class SelectionModule extends AbstractInteractionModule<SelectionModule, 
 	private final Provider<SelectionModule> selectionModuleProvider;
 	private final SelectionModulePresenter selectionModulePresenter;
 	private final SelectionModuleStructure structure;
-	private final SelectionModuleFactory selectionModuleFactory;
+	private final SelectionModuleModel model;
 
 	@Inject
-	public SelectionModule(Provider<SelectionModule> selectionModuleProvider, SelectionModulePresenter selectionModulePresenter,
-			SelectionModuleStructure structure, SelectionModuleFactory selectionModuleFactory) {
+	public SelectionModule(
+			Provider<SelectionModule> selectionModuleProvider, 
+			SelectionModulePresenter selectionModulePresenter,
+			SelectionModuleStructure structure, 
+			@ModuleScoped SelectionModuleModel model) {
 		this.selectionModuleProvider = selectionModuleProvider;
 		this.selectionModulePresenter = selectionModulePresenter;
 		this.structure = structure;
-		this.selectionModuleFactory = selectionModuleFactory;
+		this.model = model;
 	}
-
-	private SelectionModuleModel model;
 
 	@Override
 	public SelectionModule getNewInstance() {
@@ -42,8 +43,8 @@ public class SelectionModule extends AbstractInteractionModule<SelectionModule, 
 
 	@Override
 	protected void initalizeModule() {
-		model = selectionModuleFactory.createSelectionModuleModel(getResponse(), this);
 		getResponse().setCountMode(getCountMode());
+		model.initialize(this);
 	}
 
 	@Override
