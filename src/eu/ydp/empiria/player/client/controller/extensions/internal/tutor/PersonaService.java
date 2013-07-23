@@ -12,7 +12,7 @@ public class PersonaService {
 		return 0;
 	}
 	
-	public void setPersonaProperties(int personaIndex){
+	public void setCurrentPersonaIndex(int personaIndex){
 		// TODO implement me YPUB-5476
 	}
 }
