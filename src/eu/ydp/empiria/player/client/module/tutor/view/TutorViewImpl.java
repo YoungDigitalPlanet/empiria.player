@@ -39,11 +39,6 @@ public class TutorViewImpl implements TutorView {
 	}
 
 	@Override
-	public void setAnimationImage(String src) {
-		setBackgroundImage(src);
-	}
-
-	@Override
 	public void setAnimationLeft(int left) {
 		Style style = content.getElement().getStyle();
 		style.setProperty("backgroundPosition", left+DIMENSIONS_UNIT);
@@ -53,6 +48,7 @@ public class TutorViewImpl implements TutorView {
 	public void setAnimationStyleName(String styleName) {
 		clearAllStyles();
 		content.setStyleName(styleName);
+		// TODO refactor YPUB-5476
 		setSizeOfContent(getSize());
 	}
 
@@ -71,8 +67,8 @@ public class TutorViewImpl implements TutorView {
 	}
 
 	@Override
-	public void setBackgroundImage(String src) {
-		Size size = getSize();
+	public void setBackgroundImage(String src, Size size) {
+		// TODO refactor YPUB-5476
 		setBackgroundImageWithSize(src, size);
 	}
 
@@ -98,6 +94,7 @@ public class TutorViewImpl implements TutorView {
 	}
 	
 	private void setBackgroundImageWithSize(String src, Size size) {
+		// TODO refactor YPUB-5476
 		Style style = content.getElement().getStyle();
 		String srcWithUrlInside = "url("+src+")";
 		style.setBackgroundImage(srcWithUrlInside);
@@ -107,6 +104,7 @@ public class TutorViewImpl implements TutorView {
 	}
 	
 	private void setSizeOfContent(Size size) {
+		// TODO refactor YPUB-5476
 		String width = size.getWidth()+DIMENSIONS_UNIT;
 		String height = size.getHeight()+DIMENSIONS_UNIT;
 		content.setWidth(width);

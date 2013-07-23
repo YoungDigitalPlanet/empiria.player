@@ -15,4 +15,9 @@ public class TutorService {
 	public void registerTutor(String tutorId, TutorConfig tutorConfig){
 		tutors.put(tutorId, tutorConfig);
 	}
+	
+	public PersonaService getTutorPersonaService(String tutorId){
+		// TODO implement me YPUB-5476
+		return null;
+	}
 }
