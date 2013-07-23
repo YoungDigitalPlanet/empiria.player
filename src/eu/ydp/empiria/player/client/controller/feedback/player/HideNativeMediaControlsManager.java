@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.feedback.player;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.components.HiddenWidgetCreator;
+import eu.ydp.empiria.player.client.components.hidden.HiddenWidgetCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 /**
