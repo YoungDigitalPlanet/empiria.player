@@ -2,12 +2,7 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 
@@ -22,6 +17,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SourcelistManagerImplTest {
@@ -125,6 +123,10 @@ public class SourcelistManagerImplTest {
 
 	@Test
 	public void shouldUnlockAllClientsOnDragFinished() {
+		//given
+		when(model.isGroupLocked(sourcelist1)).thenReturn(false);
+		when(model.isGroupLocked(sourcelist2)).thenReturn(false);
+		
 		// when
 		manager.dragFinished();
 
@@ -219,6 +221,25 @@ public class SourcelistManagerImplTest {
 		verify(sourcelist1).useAndRestockItems(sourcelist1ItemsIds);
 		verify(sourcelist2).useAndRestockItems(sourcelist2ItemsIds);
 	}
+	
+	@Test
+	public void shouldResizeAllClients(){
+		// given
+		PlayerEvent event = mock(PlayerEvent.class);
+		HasDimensions dim1 = mock(HasDimensions.class);
+		HasDimensions dim2 = mock(HasDimensions.class);
+		when(sourcelist1.getItemSize()).thenReturn(dim1);
+		when(sourcelist2.getItemSize()).thenReturn(dim2);
+				
+		//when
+		manager.onPlayerEvent(event);
+		
+		//then
+		verify(client1).setSize(dim1);
+		verify(client2).setSize(dim2);
+		verify(client3).setSize(dim2);
+		verifyNoMoreInteractions(client1, client2, client3);
+	}
 
 	@Test
 	public void shouldLockOnlyGroupWithGivenClient() {
@@ -228,12 +249,12 @@ public class SourcelistManagerImplTest {
 		// then
 		verify(client1, never()).lockDropZone();
 		verify(sourcelist1, never()).lockSourceList();
-		
+
 		verify(client2).lockDropZone();
 		verify(client3).lockDropZone();
 		verify(sourcelist2).lockSourceList();
 	}
-	
+
 	@Test
 	public void shouldUnlockOnlyGroupWithGivenClient() {
 		// when
@@ -242,10 +263,26 @@ public class SourcelistManagerImplTest {
 		// then
 		verify(client1, never()).unlockDropZone();
 		verify(sourcelist1, never()).unlockSourceList();
-		
+
 		verify(client2).unlockDropZone();
 		verify(client3).unlockDropZone();
 		verify(sourcelist2).unlockSourceList();
+	}
+
+	@Test
+	public void shouldUnlockAllSourcelistsAndClientsWhichGroupIsNotLocked() {
+		// given
+		when(model.isGroupLocked(sourcelist1)).thenReturn(true);
+		when(model.isGroupLocked(sourcelist2)).thenReturn(false);
+
+		// when
+		manager.dragFinished();
+
+		// then
+		verify(sourcelist1, never()).unlockSourceList();
+		verify(sourcelist2).unlockSourceList();
+		verify(client1, never()).unlockDropZone();
+		verify(client2).unlockDropZone();
 	}
 
 	private SourcelistClient mockClient(String string) {

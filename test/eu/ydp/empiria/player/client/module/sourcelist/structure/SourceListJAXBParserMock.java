@@ -35,6 +35,25 @@ public class SourceListJAXBParserMock implements SourceListJAXBParser {
 			"<simpleSourceListItem alt=\"kota\">kota2</simpleSourceListItem>"+
 			"<simpleSourceListItem alt=\"tygrysa\">tygrysa2</simpleSourceListItem>"+
 						"</sourceList>";
+
+	public static final String XML_TEXTS = "<sourceList id=\"dummy2\" moveElements=\"true\" shuffle=\"false\">"+
+			"<simpleSourceListItem alt=\"psa\">psa</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"kota\">kota</simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"tygrysa\">tygrysa</simpleSourceListItem>"+
+						"</sourceList>";
+
+	public static final String XML_IMAGES = "<sourceList id=\"dummy2\" moveElements=\"true\" shuffle=\"false\">"+
+			"<simpleSourceListItem alt=\"psa\"><img src='psa.png'/></simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"kota\"><img src='kota.png'/></simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"tygrysa\"><img src='tygrysa.png'/></simpleSourceListItem>"+
+						"</sourceList>";
+
+	public static final String XML_IMAGES_WITH_DIMENSION = "<sourceList id=\"dummy2\" moveElements=\"true\" shuffle=\"false\" imagesWidth=\"600\" imagesHeight=\"602\">"+
+			"<simpleSourceListItem alt=\"psa\"><img src='psa.png'/></simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"kota\"><img src='kota.png'/></simpleSourceListItem>"+
+			"<simpleSourceListItem alt=\"tygrysa\"><img src='tygrysa.png'/></simpleSourceListItem>"+
+						"</sourceList>";
+
 	@Override
 	public JAXBParser<SourceListBean> create() {
 		return new JAXBParserImpl<SourceListBean>(SourceListJAXBParser.class);

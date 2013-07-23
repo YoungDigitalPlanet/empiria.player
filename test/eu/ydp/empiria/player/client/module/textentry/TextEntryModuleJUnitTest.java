@@ -29,9 +29,7 @@ import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
-import eu.ydp.empiria.player.client.gin.factory.TextEntryModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.expression.PipedReplacementsParser;
@@ -135,7 +133,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		public TextEntryModuleMock() {
 			super(	injector.getInstance(TextEntryModulePresenter.class),
 					injector.getInstance(StyleSocket.class),
-					injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class)),injector.getInstance(SourcelistManager.class));
+					injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class)),injector.getInstance(SourcelistManager.class), injector.getInstance(DragContentController.class));
 		}
 
 		public void setStyles(Map<String, String> styles) {

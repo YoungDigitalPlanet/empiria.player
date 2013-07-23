@@ -3,6 +3,8 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
@@ -10,11 +12,22 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class SourcelistManagerImpl implements SourcelistManager {
+public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHandler {
 
-	@Inject @PageScoped	private SourcelistManagerModel model;
-	@Inject private SourcelistManagerHelper helper;
+	@Inject
+	@PageScoped
+	private SourcelistManagerModel model;
+	@Inject
+	private SourcelistManagerHelper helper;
+	@Inject
+	private EventsBus eventsBus;
 
 	private final Function<SourcelistClient, String> clientToItemid = new Function<SourcelistClient, String>() {
 
@@ -23,6 +36,11 @@ public class SourcelistManagerImpl implements SourcelistManager {
 			return client.getDragItemId();
 		}
 	};
+
+	@PostConstruct
+	public void init() {
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), this, new CurrentPageScope());
+	}
 
 	@Override
 	public void registerModule(SourcelistClient client) {
@@ -65,8 +83,8 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		}
 	}
 
-	private void lockClients(Sourcelist sourcelist) {
-		Collection<SourcelistClient> clients = model.getClients(sourcelist);
+	private void lockClients(Sourcelist src) {
+		Collection<SourcelistClient> clients = model.getClients(src);
 		for (SourcelistClient client : clients) {
 			client.lockDropZone();
 		}
@@ -79,6 +97,12 @@ public class SourcelistManagerImpl implements SourcelistManager {
 
 	private void unlockAll() {
 		for (Sourcelist sourcelist : model.getSourceLists()) {
+			unlockGroupIfNotBlocked(sourcelist);
+		}
+	}
+
+	private void unlockGroupIfNotBlocked(Sourcelist sourcelist) {
+		if (!model.isGroupLocked(sourcelist)) {
 			sourcelist.unlockSourceList();
 			unlockClients(sourcelist);
 		}
@@ -141,10 +165,9 @@ public class SourcelistManagerImpl implements SourcelistManager {
 	}
 
 	@Override
-	public String getValue(String itemId, String targetModuleId) {
+	public SourcelistItemValue getValue(String itemId, String targetModuleId) {
 		Sourcelist sourcelist = model.getSourcelistByClientId(targetModuleId);
-		String value = sourcelist.getItemValue(itemId);
-
+		SourcelistItemValue value = sourcelist.getItemValue(itemId);
 		return value;
 	}
 
@@ -168,6 +191,7 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		if (model.containsClient(clientId)) {
 			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
 			lockGroup(sourcelist);
+			model.lockGroup(sourcelist);
 		}
 	}
 
@@ -176,7 +200,28 @@ public class SourcelistManagerImpl implements SourcelistManager {
 		if (model.containsClient(clientId)) {
 			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
 			unlockGroup(sourcelist);
+			model.unlockGroup(sourcelist);
 		}
 	}
 
+	@Override
+	public void onPlayerEvent(PlayerEvent event) {
+		resizeSourcelists();
+	}
+
+	private void resizeSourcelists() {
+		for (Sourcelist sourcelist : model.getSourceLists()) {
+			HasDimensions size = sourcelist.getItemSize();
+
+			if (size != null) {
+				resizeClients(sourcelist, size);
+			}
+		}
+	}
+
+	private void resizeClients(Sourcelist sourcelist, HasDimensions size) {
+		for (SourcelistClient client : model.getClients(sourcelist)) {
+			client.setSize(size);
+		}
+	}
 }

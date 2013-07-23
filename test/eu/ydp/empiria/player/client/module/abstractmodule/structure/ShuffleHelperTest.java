@@ -61,7 +61,7 @@ public class ShuffleHelperTest {
 		Bean bean = Mockito.mock(Bean.class);
 		when(bean.isShuffle()).thenReturn(true);
 		testList.clear();
-		List<BeanItem> randomizeChoices = instance.randomize(bean, testList);
+		List<BeanItem> randomizeChoices = instance.randomizeIfShould(bean, testList);
 		assertTrue(testList.size() == randomizeChoices.size());
 	}
 
@@ -70,7 +70,7 @@ public class ShuffleHelperTest {
 		ShuffleHelper instance = new ShuffleHelper();
 		Bean bean = Mockito.mock(Bean.class);
 		when(bean.isShuffle()).thenReturn(true);
-		List<BeanItem> randomizeChoices = instance.randomize(bean, testList);
+		List<BeanItem> randomizeChoices = instance.randomizeIfShould(bean, testList);
 		assertTrue(testList.size() == randomizeChoices.size());
 	}
 
@@ -79,7 +79,7 @@ public class ShuffleHelperTest {
 		ShuffleHelper instance = new ShuffleHelper();
 		Bean bean = Mockito.mock(Bean.class);
 		when(bean.isShuffle()).thenReturn(false);
-		List<BeanItem> randomizeChoices = instance.randomize(bean, testList);
+		List<BeanItem> randomizeChoices = instance.randomizeIfShould(bean, testList);
 		assertTrue(testList.size() == randomizeChoices.size());
 	}
 
@@ -88,7 +88,7 @@ public class ShuffleHelperTest {
 		ShuffleHelper instance = new ShuffleHelper();
 		Bean bean = Mockito.mock(Bean.class);
 		when(bean.isShuffle()).thenReturn(true);
-		List<BeanItem> randomizeChoices = instance.randomize(bean, testList);
+		List<BeanItem> randomizeChoices = instance.randomizeIfShould(bean, testList);
 		assertNotSame(testList, randomizeChoices);
 	}
 
@@ -97,7 +97,7 @@ public class ShuffleHelperTest {
 		ShuffleHelper instance = new ShuffleHelper();
 		Bean bean = Mockito.mock(Bean.class);
 		when(bean.isShuffle()).thenReturn(false);
-		List<BeanItem> randomizeChoices = instance.randomize(bean, testList);
+		List<BeanItem> randomizeChoices = instance.randomizeIfShould(bean, testList);
 		assertEquals(testList, randomizeChoices);
 	}
 
@@ -106,7 +106,7 @@ public class ShuffleHelperTest {
 		ShuffleHelper instance = new ShuffleHelper();
 		Bean bean = Mockito.mock(Bean.class);
 		when(bean.isShuffle()).thenReturn(true);
-		List<BeanItem> randomizeChoices = instance.randomize(bean, testList);
+		List<BeanItem> randomizeChoices = instance.randomizeIfShould(bean, testList);
 		for (int x = 0; x < testList.size(); ++x) {
 			if (testList.get(x).isFixed()) {
 				assertEquals(testList.get(x), randomizeChoices.get(x));
@@ -119,7 +119,7 @@ public class ShuffleHelperTest {
 		ShuffleHelper instance = new ShuffleHelper();
 		Bean bean = Mockito.mock(Bean.class);
 		when(bean.isShuffle()).thenReturn(false);
-		List<BeanItem> randomizeChoices = instance.randomize(bean, testList);
+		List<BeanItem> randomizeChoices = instance.randomizeIfShould(bean, testList);
 		for (int x = 0; x < testList.size(); ++x) {
 			if (testList.get(x).isFixed()) {
 				assertEquals(testList.get(x), randomizeChoices.get(x));

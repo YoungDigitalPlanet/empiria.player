@@ -4,10 +4,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import com.google.common.base.Optional;
-import com.google.gwt.event.dom.client.DragEndHandler;
-import com.google.gwt.event.dom.client.DropEvent;
-import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -18,50 +14,39 @@ import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
+import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
-import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
-import eu.ydp.empiria.player.client.module.draggap.view.DragGapDropHandler;
-import eu.ydp.empiria.player.client.module.draggap.view.DragGapStartDragHandler;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
-import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.module.sourcelist.view.DisableDefaultBehaviorCommand;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
-import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
-import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class DragGapPresenterImpl implements DragGapPresenter {
 
 	private final AnswerEvaluationSupplier answerEvaluationSupplier;
-	private final DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor;
 	private final DragGapModuleModel model;
 	private final DragGapView view;
+	private final SourceListManagerAdapter sourceListManagerAdapter;
 	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
-	private DroppableObject<?> droppable;
-	private DropZoneGuardian dropZoneGuardian;
-	private DragGapDropHandler dragGapDropHandler;
-	private final DragDropHelper dragDropHelper;
-	private final StyleNameConstants styleNameConstants;
 
 	@Inject
-	public DragGapPresenterImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapView view, @ModuleScoped DragGapModuleModel model,
-			@PageScoped AnswerEvaluationSupplier answerEvaluationSupplier, DragDataObjectFromEventExtractor dragDataObjectFromEventExtractor) {
-
-		this.dragDropHelper = dragDropHelper;
-		this.styleNameConstants = styleNameConstants;
+	public DragGapPresenterImpl(
+			@ModuleScoped DragGapView view, 
+			@ModuleScoped DragGapModuleModel model, 
+			@PageScoped AnswerEvaluationSupplier answerEvaluationSupplier, 
+			@ModuleScoped SourceListManagerAdapter sourceListManagerAdapter) {
 		this.view = view;
 		this.model = model;
 		this.answerEvaluationSupplier = answerEvaluationSupplier;
-		this.dragDataObjectFromEventExtractor = dragDataObjectFromEventExtractor;
+		this.sourceListManagerAdapter = sourceListManagerAdapter;
 	}
 
 	@PostConstruct
 	public void postConstruct() {
-		initializeDropCapabilities();
 		disableTextMark();
 	}
 
@@ -69,34 +54,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(new DisableDefaultBehaviorCommand());
 		userOverHandler.apply(view.asWidget());
 	}
-
-	private void initializeDropCapabilities() {
-		droppable = dragDropHelper.enableDropForWidget(view.getDropZoneWidget());
-		dropZoneGuardian = new DropZoneGuardian(droppable, droppable.getDroppableWidget(), styleNameConstants);
-		addDomHandlerOnObjectDrop();
-	}
-
-	private void addDomHandlerOnObjectDrop() {
-		droppable.addDropHandler(new DropHandler() {
-			@Override
-			public void onDrop(DropEvent event) {
-				extractObjectFromEventAndCallHandler(event);
-			}
-		});
-	}
-
-	private void extractObjectFromEventAndCallHandler(DropEvent event) {
-		Optional<DragDataObject> objectFromEvent = dragDataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
-		if (objectFromEvent.isPresent()) {
-			dragGapDropHandler.onDrop(objectFromEvent.get());
-		}
-	}
-
-	@Override
-	public void setDragEndHandler(DragEndHandler dragEndHandler) {
-		view.setDragEndHandler(dragEndHandler);
-	}
-
+	
 	@Override
 	public void bindView() {
 		view.updateStyle(UserAnswerType.DEFAULT);
@@ -164,7 +122,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 		if (answers.size() > 0) {
 			String answerToSet = answers.get(0);
-			view.setContent(answerToSet);
+			setContentOfItemOnView(answerToSet);
 		} else {
 			view.removeContent();
 		}
@@ -176,9 +134,14 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	}
 
 	@Override
-	public void setContent(String itemContent) {
-		view.setContent(itemContent);
-		model.addAnswer(itemContent);
+	public void setContent(String itemId) {
+		setContentOfItemOnView(itemId);
+		model.addAnswer(itemId);
+	}
+	
+	private void setContentOfItemOnView(String itemId) {
+		SourcelistItemValue item = sourceListManagerAdapter.getItemById(itemId);
+		view.setItemContent(item);
 	}
 
 	@Override
@@ -188,22 +151,8 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	}
 
 	@Override
-	public void lockDropZone() {
-		dropZoneGuardian.lockDropZone();
-	}
-
-	@Override
-	public void unlockDropZone() {
-		dropZoneGuardian.unlockDropZone();
-	}
-
-	@Override
-	public void setDragStartHandler(DragGapStartDragHandler dragGapStartDragHandler) {
-		view.setDragStartHandler(dragGapStartDragHandler);
-	}
-
-	@Override
-	public void setDropHandler(DragGapDropHandler dragGapDropHandler) {
-		this.dragGapDropHandler = dragGapDropHandler;
+	public void setGapDimensions(HasDimensions size) {
+		view.setWidth(size.getWidth());
+		view.setHeight(size.getHeight());
 	}
 }
