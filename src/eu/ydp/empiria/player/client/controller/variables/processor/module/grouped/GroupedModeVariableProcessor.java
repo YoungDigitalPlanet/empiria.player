@@ -16,9 +16,9 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
 public class GroupedModeVariableProcessor implements VariableProcessor {
 
-	private GroupedAnswersManager groupedAnswersManager;
-	private ErrorsToCountModeAdjuster errorsToCountModeAdjuster;
-	private DoneToCountModeAdjuster doneToCountModeAdjuster;
+	private final GroupedAnswersManager groupedAnswersManager;
+	private final ErrorsToCountModeAdjuster errorsToCountModeAdjuster;
+	private final DoneToCountModeAdjuster doneToCountModeAdjuster;
 
 	@Inject
 	public GroupedModeVariableProcessor(
@@ -52,7 +52,7 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 		CountMode countMode = response.getCountMode();
 
 		int amountOfCorrectAnswers = countAmountOfCorrectAnswers(response, currentAnswers);
-		int done = doneToCountModeAdjuster.adjustValueToCountMode(amountOfCorrectAnswers, response.correctAnswers, countMode);
+		int done = doneToCountModeAdjuster.adjustValueToCountMode(amountOfCorrectAnswers, response, countMode);
 		return done;
 	}
 
