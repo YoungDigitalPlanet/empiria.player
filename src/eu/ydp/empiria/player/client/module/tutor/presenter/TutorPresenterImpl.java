@@ -19,5 +19,10 @@ public class TutorPresenterImpl implements TutorPresenter {
 		tutorView.bindUi();
 	}
 
+	@Override
+	public void clicked() {
+		// TODO YPUB-5476
+	}
+
 
 }

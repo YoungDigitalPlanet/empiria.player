@@ -32,7 +32,8 @@ public class ShowImageCommandTest {
 		command.execute();
 
 		// then
-		verify(view).setBackgroundImage(ASSET_PATH);
+		// TODO Implement size - YPUB-5476
+		verify(view).setBackgroundImage(ASSET_PATH, null);
 		assertThat(command.isFinished(), is(true));
 	}
 

@@ -20,7 +20,8 @@ public class ShowImageCommand implements TutorCommand {
 
 	@Override
 	public void execute() {
-		view.setBackgroundImage(assetPath);
+		// TODO implement size YPUB-5476
+		view.setBackgroundImage(assetPath, null);
 		finished = true;
 	}
 
