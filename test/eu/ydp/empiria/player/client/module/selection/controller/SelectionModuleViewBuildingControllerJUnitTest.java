@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.Any;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
@@ -33,7 +34,7 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 @SuppressWarnings("PMD")
 public class SelectionModuleViewBuildingControllerJUnitTest {
 
-	private SelectionModuleViewBuildingController viewBuildingController;
+	private SelectionViewBuilder viewBuilder;
 	
 	@Mock
 	private StyleNameConstants styleNameConstants;
@@ -54,13 +55,11 @@ public class SelectionModuleViewBuildingControllerJUnitTest {
 		bean = new SelectionInteractionBean();
 		bean.setMulti(true);
 		
-		viewBuildingController = new SelectionModuleViewBuildingController(
-				styleNameConstants, 
+		viewBuilder = new SelectionViewBuilder(
 				selectionModuleFactory,
-				selectionModuleView,
-				selectionModulePresenter,
-				model,
-				bean);
+				styleNameConstants,
+				selectionModuleView);
+		viewBuilder.bindView(selectionModulePresenter, bean);
 	}
 
 	@After
@@ -83,7 +82,7 @@ public class SelectionModuleViewBuildingControllerJUnitTest {
 		List<SelectionItemBean> items = Lists.newArrayList(itemBean);
 		
 		//then
-		viewBuildingController.fillFirstColumnWithItems(items);
+		viewBuilder.fillFirstColumnWithItems(items);
 		
 		verify(selectionModuleView).setItemDisplayedName(itemBean.getXmlContent(), items.indexOf(itemBean));
 	}
@@ -97,7 +96,7 @@ public class SelectionModuleViewBuildingControllerJUnitTest {
 		List<SelectionSimpleChoiceBean> simpleChoices = Lists.newArrayList(choiceBean);;
 		
 		//then
-		viewBuildingController.fillFirstRowWithChoices(simpleChoices);
+		viewBuilder.fillFirstRowWithChoices(simpleChoices);
 		
 		verify(selectionModuleView).setChoiceOptionDisplayedName(choiceBean.getXmlContent(), simpleChoices.indexOf(choiceBean));
 	}
@@ -128,7 +127,7 @@ public class SelectionModuleViewBuildingControllerJUnitTest {
 		List<SelectionSimpleChoiceBean> simpleChoices = Lists.newArrayList(choice1, choice2);
 		
 		GroupAnswersController groupController = mock(GroupAnswersController.class);
-		when(selectionModuleFactory.createGroupAnswerController(bean.isMulti(), itemBean.getMatchMax(), model))
+		when(selectionModuleFactory.createGroupAnswerController(bean.isMulti(), itemBean.getMatchMax()))
 			.thenReturn(groupController);
 		
 		String multiStylePart = "selectionStylePart";
@@ -161,10 +160,10 @@ public class SelectionModuleViewBuildingControllerJUnitTest {
 		.thenReturn(answer2);
 		
 		//then
-		List<GroupAnswersController> resultControllers = viewBuildingController.fillGridWithButtons(items, simpleChoices);
+		List<GroupAnswersController> resultControllers = viewBuilder.fillGridWithButtons(items, simpleChoices);
 		
 		
-		verify(selectionModuleFactory).createGroupAnswerController(bean.isMulti(), itemBean.getMatchMax(), model);
+		verify(selectionModuleFactory).createGroupAnswerController(bean.isMulti(), itemBean.getMatchMax());
 		if(bean.isMulti()){
 			verify(styleNameConstants).SELECTION_MULTI();
 		}else{
@@ -176,6 +175,9 @@ public class SelectionModuleViewBuildingControllerJUnitTest {
 		verify(selectionModuleFactory).createChoiceButtonClickHandler(groupController, answer1Id, selectionModulePresenter);
 		verify(selectionModuleView).addClickHandlerToButton(0, 0, clickHandler1);
 		verify(selectionModuleFactory).createSelectionAnswerDto(answer1Id);
+		verify(selectionModuleView).setItemDisplayedName(null, 0);
+		verify(selectionModuleView).setChoiceOptionDisplayedName(null, 0);
+		
 		verify(groupController).addSelectionAnswer(answer1);
 		
 		
@@ -184,6 +186,8 @@ public class SelectionModuleViewBuildingControllerJUnitTest {
 		verify(selectionModuleFactory).createChoiceButtonClickHandler(groupController, answer2Id, selectionModulePresenter);
 		verify(selectionModuleView).addClickHandlerToButton(0, 1, clickHandler2);
 		verify(selectionModuleFactory).createSelectionAnswerDto(answer2Id);
+		verify(selectionModuleView).setChoiceOptionDisplayedName(null, 1);
+
 		verify(groupController).addSelectionAnswer(answer2);
 		
 		assertEquals(1, resultControllers.size());

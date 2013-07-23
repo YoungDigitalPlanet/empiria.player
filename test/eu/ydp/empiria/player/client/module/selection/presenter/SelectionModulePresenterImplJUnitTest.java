@@ -27,8 +27,8 @@ import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
 import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnswersByTypeFinder;
-import eu.ydp.empiria.player.client.module.selection.controller.SelectionModuleViewBuildingController;
-import eu.ydp.empiria.player.client.module.selection.controller.SelectionModuleViewUpdatingController;
+import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
+import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewUpdater;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteractionBean;
@@ -52,24 +52,24 @@ public class SelectionModulePresenterImplJUnitTest {
 	@Mock
 	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
 	@Mock
-	private SelectionModuleViewUpdatingController selectionModuleViewUpdatingController;
+	private SelectionViewUpdater selectionViewUpdater;
 	@Mock
 	private SelectionModuleModel model;
 	@Mock
 	private ModuleSocket moduleSocket;
 	@Mock
-	private SelectionModuleViewBuildingController viewBuildingController; 
+	private SelectionViewBuilder viewBuilder; 
 
 	private SelectionInteractionBean bean;
 
-	
 	@Before
 	public void setUp() throws Exception {
 		presenter = new SelectionModulePresenterImpl(
-				selectionModuleView,
-				selectionModuleFactory,
 				identifiableAnswersByTypeFinder,
-				selectionModuleViewUpdatingController);
+				selectionViewUpdater,
+				selectionModuleView,
+				model,
+				viewBuilder);
 		
 		bean = new SelectionInteractionBean();
 		presenter.setBean(bean);
@@ -83,7 +83,7 @@ public class SelectionModulePresenterImplJUnitTest {
 				selectionModuleView,
 				selectionModuleFactory,
 				identifiableAnswersByTypeFinder,
-				selectionModuleViewUpdatingController,
+				selectionViewUpdater,
 				model,
 				moduleSocket
 				);
@@ -101,21 +101,18 @@ public class SelectionModulePresenterImplJUnitTest {
 		when(moduleSocket.getInlineBodyGeneratorSocket())
 			.thenReturn(inlineBodyGeneratorSocket );
 		
-		when(selectionModuleFactory.createViewBuildingController(selectionModuleView, presenter, model, bean))
-			.thenReturn(viewBuildingController);
-		
-		when(viewBuildingController.fillGridWithButtons(items, choices))
+		when(viewBuilder.fillGridWithButtons(items, choices))
 			.thenReturn(groupChoicesControllers);
 		
 		//then
 		presenter.bindView();
+
 		
+		verify(viewBuilder).bindView(presenter, bean);
 		verify(moduleSocket).getInlineBodyGeneratorSocket();
-		verify(selectionModuleView).initialize(items.size(), choices.size(), inlineBodyGeneratorSocket);
-		verify(selectionModuleFactory).createViewBuildingController(selectionModuleView, presenter, model, bean);
-		verify(viewBuildingController).fillFirstRowWithChoices(choices);
-		verify(viewBuildingController).fillFirstColumnWithItems(items);
-		verify(viewBuildingController).fillGridWithButtons(items, choices);
+		verify(selectionModuleView).initialize(inlineBodyGeneratorSocket);
+		verify(viewBuilder).setGridSize(items.size(), choices.size());
+		verify(viewBuilder).fillGridWithButtons(items, choices);
 		assertEquals(groupChoicesControllers, getGroupControllers());
 		
 		Mockito.verifyNoMoreInteractions(inlineBodyGeneratorSocket);
@@ -168,7 +165,10 @@ public class SelectionModulePresenterImplJUnitTest {
 		
 		verify(groupController1).setLockedAllAnswers(true);
 		verify(groupController2).setLockedAllAnswers(true);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, groupControllers);
+		
+		for(GroupAnswersController groupCtrl : groupControllers) {
+			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
+		}
 		
 		Mockito.verifyNoMoreInteractions(groupController1, groupController2);
 	}
@@ -198,7 +198,10 @@ public class SelectionModulePresenterImplJUnitTest {
 		verify(groupController).getSelectedAnswers();
 		verify(groupController).getNotSelectedAnswers();
 		verify(identifiableAnswersByTypeFinder).findAnswersObjectsOfGivenType(MarkAnswersType.CORRECT, selectedAnswers, model);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, getGroupControllers());
+		
+		for (GroupAnswersController groupCtrl : groupControllers) {
+			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
+		}
 		
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
 			assertEquals(UserAnswerType.DEFAULT, selectionAnswerDto.getSelectionAnswerType());
@@ -243,7 +246,10 @@ public class SelectionModulePresenterImplJUnitTest {
 		verify(groupController).getSelectedAnswers();
 		verify(groupController).getNotSelectedAnswers();
 		verify(identifiableAnswersByTypeFinder).findAnswersObjectsOfGivenType(markAnswerType, selectedAnswers, model);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, getGroupControllers());
+		
+		for(GroupAnswersController groupCtrl : groupControllers) {
+			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
+		}
 		
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
 			assertEquals(UserAnswerType.NONE, selectionAnswerDto.getSelectionAnswerType());
@@ -273,7 +279,10 @@ public class SelectionModulePresenterImplJUnitTest {
 		verify(model).getCorrectAnswers();
 		verify(groupController1).selectOnlyAnswersMatchingIds(correctAnswers);
 		verify(groupController2).selectOnlyAnswersMatchingIds(correctAnswers);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, groupControllers);
+		
+		for(GroupAnswersController groupCtrl : groupControllers) {
+			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
+		}
 		
 		Mockito.verifyNoMoreInteractions(groupController1, groupController2);
 	}
@@ -297,7 +306,9 @@ public class SelectionModulePresenterImplJUnitTest {
 		verify(model).getCurrentAnswers();
 		verify(groupController1).selectOnlyAnswersMatchingIds(userAnswers);
 		verify(groupController2).selectOnlyAnswersMatchingIds(userAnswers);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, groupControllers);
+		for (GroupAnswersController groupCtrl : groupControllers) {
+			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
+		}
 		
 		Mockito.verifyNoMoreInteractions(groupController1, groupController2);
 	}

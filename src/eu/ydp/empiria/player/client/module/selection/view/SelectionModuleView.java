@@ -15,7 +15,7 @@ public interface SelectionModuleView extends IsWidget{
 
 	void setChoiceOptionDisplayedName(XMLContent choiceName, int choiceNumber);
 
-	void createButtonForItemChoicePair(int itemNumber, int choiceNumber, boolean isMulti);
+	void createButtonForItemChoicePair(int itemNumber, int choiceNumber, String moduleStyleName);
 
 	void selectButton(int itemNumber, int choiceNumber);
 

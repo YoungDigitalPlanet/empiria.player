@@ -84,8 +84,7 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	}
 
 	@Override
-	public void createButtonForItemChoicePair(int itemNumber, int choiceNumber, boolean isMulti){
-		String moduleStyleName = getModuleStyleName(isMulti);
+	public void createButtonForItemChoicePair(int itemNumber, int choiceNumber, String moduleStyleName){
 		SelectionChoiceButton choiceButton = createSelectionChoiceButton(moduleStyleName);
 		Panel buttonPanel = new FlowPanel();
 		buttonPanel.setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
@@ -186,14 +185,6 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 		}
 
 		return selectionChoiceButton;
-	}
-	
-	public String getModuleStyleName(boolean multi) {
-		if(multi) {
-			return styleNameConstants.SELECTION_MULTI();
-		} else {
-			return styleNameConstants.SELECTION();
-		}
 	}
 	
 	public String getButtonStyleNameForState(UserAnswerType styleState) {

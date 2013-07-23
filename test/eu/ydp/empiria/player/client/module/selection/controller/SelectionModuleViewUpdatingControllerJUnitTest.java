@@ -19,12 +19,12 @@ import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 
 public class SelectionModuleViewUpdatingControllerJUnitTest {
 
-	private SelectionModuleViewUpdatingController viewUpdatingController;
+	private SelectionViewUpdater viewUpdater;
 	private SelectionModuleView selectionModuleView;
 	
 	@Before
 	public void setUp() throws Exception {
-		viewUpdatingController = new SelectionModuleViewUpdatingController();
+		viewUpdater = new SelectionViewUpdater();
 		selectionModuleView = mock(SelectionModuleView.class);
 	}
 
@@ -54,7 +54,9 @@ public class SelectionModuleViewUpdatingControllerJUnitTest {
 			.thenReturn(answers2 );
 		
 		//then
-		viewUpdatingController.updateView(selectionModuleView, groupChoicesControllers);
+		for(GroupAnswersController groupCtrl : groupChoicesControllers) {
+			viewUpdater.updateView(selectionModuleView, groupCtrl, groupChoicesControllers.indexOf(groupCtrl));
+		}
 		
 		verify(selectionModuleView).unselectButton(0, 0);
 		verify(selectionModuleView).lockButton(false, 0, 0);

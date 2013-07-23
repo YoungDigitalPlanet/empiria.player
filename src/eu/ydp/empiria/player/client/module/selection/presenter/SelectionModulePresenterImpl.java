@@ -67,8 +67,6 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 		List<SelectionSimpleChoiceBean> simpleChoices = bean.getSimpleChoices();
 		
 		viewBuilder.setGridSize(items.size(), simpleChoices.size());
-		viewBuilder.fillFirstRowWithChoices(simpleChoices);
-		viewBuilder.fillFirstColumnWithItems(items);
 		
 		this.groupChoicesControllers = viewBuilder.fillGridWithButtons(items, simpleChoices);
 	}
