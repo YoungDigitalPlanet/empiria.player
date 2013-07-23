@@ -37,7 +37,7 @@ public class GroupedModeVariableProcessorJUnitTest {
 	@Mock
 	private DoneToCountModeAdjuster doneToCountModeAdjuster;
 
-	private CountMode countMode = CountMode.SINGLE;
+	private final CountMode countMode = CountMode.SINGLE;
 
 	@Before
 	public void setUp() throws Exception {
@@ -73,7 +73,7 @@ public class GroupedModeVariableProcessorJUnitTest {
 		when(groupedAnswersManager.isAnswerCorrectInAnyOfGroups("doneAnswer1", response, response.groups))
 			.thenReturn(true);
 
-		when(doneToCountModeAdjuster.adjustValueToCountMode(1, response.correctAnswers, countMode))
+		when(doneToCountModeAdjuster.adjustValueToCountMode(1, response, countMode))
 			.thenReturn(1);
 
 		int done = groupedModeVariableProcessor.calculateDone(response);
