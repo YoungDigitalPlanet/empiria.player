@@ -28,7 +28,7 @@ public class CorrectAnswersCounterJUnitTest {
 	@Test
 	public void shouldCountEvenOneErrorAsNoCorrectAnswersAtAllInSingleCountMode() throws Exception {
 		Response response = new ResponseBuilder().withCorrectAnswers("correct1", "correct2")
-				.withCurrentUserAnswers("correct1", "wrong")
+				.withCurrentUserAnswers("correct1", "correct2", "wrong")
 				.withCountMode(CountMode.SINGLE)
 				.build();
 
