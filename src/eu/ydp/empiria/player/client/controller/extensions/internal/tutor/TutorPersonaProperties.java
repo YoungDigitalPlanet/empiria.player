@@ -20,12 +20,12 @@ public class TutorPersonaProperties {
 	private final boolean interactive;
 	private final String avatarFilename;
 	
-	private TutorPersonaProperties(Size size, int fps, String name, boolean interactive, String avatar) {
+	private TutorPersonaProperties(Size size, int fps, String name, boolean interactive, String avatarFilename) {
 		this.size = size;
 		this.fps = fps;
 		this.name = name;
 		this.interactive = interactive;
-		this.avatarFilename = avatar;
+		this.avatarFilename = avatarFilename;
 	}
 
 	public Size getAnimationSize() {

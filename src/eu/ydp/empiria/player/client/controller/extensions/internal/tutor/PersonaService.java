@@ -7,7 +7,7 @@ public class PersonaService {
 		return null;
 	}
 	
-	public int setCurrentPersonaIndex(){
+	public int getCurrentPersonaIndex(){
 		// TODO implement me YPUB-5476
 		return 0;
 	}
