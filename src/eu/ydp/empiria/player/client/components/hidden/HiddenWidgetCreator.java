@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.components.hidden;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -19,11 +18,10 @@ public class HiddenWidgetCreator {
 	/**
 	 * Returns reference to hidden flow panel
 	 */
-	public IsWidget addWidgetToDocumentAndHide(final Widget widget) {
+	public void addWidgetToHiddenContainerOnRootPanel(final Widget widget) {
 		HiddenContainerWidget hiddenContainerWidget = containerWidget.get();
 		hiddenContainerWidget.addWidgetToContainer(widget);
 		addPanelToRootPanel(hiddenContainerWidget);
-		return hiddenContainerWidget;
 	}
 
 	private void addPanelToRootPanel(Widget hiddenPanel) {

@@ -18,7 +18,7 @@ public class HideNativeMediaControlsManager {
 	
 	public void addToDocumentAndHideControls(MediaWrapper<Widget> mediaWrapper) {
 		Widget mediaObject = mediaWrapper.getMediaObject();				
-		hiddenWidgetCreator.addWidgetToDocumentAndHide(mediaObject);
+		hiddenWidgetCreator.addWidgetToHiddenContainerOnRootPanel(mediaObject);
 	}
 
 }
