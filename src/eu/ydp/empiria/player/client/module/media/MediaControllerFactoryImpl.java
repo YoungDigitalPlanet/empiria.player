@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.media;
 
-import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -22,8 +21,6 @@ import eu.ydp.empiria.player.client.module.media.info.PositionInMediaStream;
 
 public class MediaControllerFactoryImpl implements MediaControllerFactory {
 
-	//@Inject
-	protected MediaProgressBar mediaProgerssBar;
 	@Inject
 	protected VideoTextTrackElementFactory videoTextTrackElementFactory;
 
@@ -35,6 +32,27 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 
 	@Inject
 	private Provider<PlayStopMediaButton> playStopMediaButtonProvider;	
+
+	@Inject
+	private Provider<StopMediaButton> stopMediaButtonProvider;	
+
+	@Inject
+	private Provider<MuteMediaButton> muteMediaButtonProvider;	
+
+	@Inject
+	private Provider<MediaProgressBar> mediaProgressBarProvider;	
+
+	@Inject
+	private Provider<PositionInMediaStream> positionInMediaStreamProvider;	
+
+	@Inject
+	private Provider<VolumeMediaButton> volumeMediaButton;	
+
+	@Inject
+	private Provider<MediaCurrentTime> mediaCurrentTimeProvider;	
+
+	@Inject
+	private Provider<MediaTotalTime> mediaTotalTimeProvider;	
 	
 	@Override
 	public AbstractMediaController<?> get(ModuleTagName moduleType) {
@@ -48,28 +66,28 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 				mediaController = playStopMediaButtonProvider.get();
 				break;				
 			case MEDIA_STOP_BUTTON:
-				mediaController = new StopMediaButton();
+				mediaController = stopMediaButtonProvider.get();
 				break;
 			case MEDIA_MUTE_BUTTON:
-				mediaController = new MuteMediaButton();
+				mediaController = muteMediaButtonProvider.get();
 				break;
 			case MEDIA_PROGRESS_BAR:
-				mediaController = GWT.create(MediaProgressBar.class);
+				mediaController = (AbstractMediaController<?>) mediaProgressBarProvider.get();
 				break;
 			case MEDIA_FULL_SCREEN_BUTTON:
 				mediaController = fullScreenMediaButtonProvider.get();
 				break;
 			case MEDIA_POSITION_IN_STREAM:
-				mediaController = new PositionInMediaStream();
+				mediaController = positionInMediaStreamProvider.get();
 				break;
 			case MEDIA_VOLUME_BAR:
-				mediaController = new VolumeMediaButton();
+				mediaController = volumeMediaButton.get();
 				break;
 			case MEDIA_CURRENT_TIME:
-				mediaController = new MediaCurrentTime();
+				mediaController = mediaCurrentTimeProvider.get();
 				break;
 			case MEDIA_TOTAL_TIME:
-				mediaController = new MediaTotalTime();
+				mediaController = mediaTotalTimeProvider.get();
 				break;
 			default:
 				break;

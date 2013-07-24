@@ -8,14 +8,17 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class SourceListPresenterImpl implements SourceListPresenter {
 
@@ -47,7 +50,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 		view.createAndBindUi();
 		List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
 		for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
-			view.createItem(simpleSourceListItemBean.getAlt(), simpleSourceListItemBean.getValue());
+			view.createItem(simpleSourceListItemBean.getItemValue()); // TODO YPUB-5441
 		}
 	}
 
@@ -60,7 +63,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	}
 
 	@Override
-	public String getItemValue(String itemId) {
+	public SourcelistItemValue getItemValue(String itemId) {
 		return view.getItemValue(itemId);
 	}
 
@@ -137,7 +140,14 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 		for(String itemId: getAllItemsId()){
 			view.unlockItemForDragDrop(itemId);
 		}
+	}
 
+	@Override
+	public HasDimensions getMaxItemSize() {
+		 HasDimensions maxItemSize = view.getMaxItemSize();
+		 int width = Math.max(maxItemSize.getWidth(), bean.getImagesWidth());
+		 int height = Math.max(maxItemSize.getHeight(), bean.getImagesHeight());
+		 return new Size(width, height);
 	}
 
 }

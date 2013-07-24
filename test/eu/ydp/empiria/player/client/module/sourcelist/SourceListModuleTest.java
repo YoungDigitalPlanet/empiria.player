@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -31,12 +32,15 @@ import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.xml.XMLParser;
@@ -113,6 +117,7 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 	@Test
 	public void testGetItemValue() throws Exception {
 		String itemId = "id";
+		SourcelistItemValue itemValue = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", itemId);
 		instance.getItemValue(itemId);
 		verify(presenter).getItemValue(eq(itemId));
 	}
@@ -163,6 +168,15 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 		instance.unlockSourceList();
 		verify(presenter).unlockSourceList();
 		verifyNoMoreInteractions(presenter);
+	}
+
+	@Test
+	public void getItemSize() throws Exception {
+		HasDimensions dimension = mock(HasDimensions.class);
+		doReturn(dimension).when(presenter).getMaxItemSize();
+		HasDimensions itemSize = instance.getItemSize();
+		assertThat(dimension).isSameAs(itemSize);
+
 	}
 
 

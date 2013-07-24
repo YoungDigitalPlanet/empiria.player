@@ -1,46 +1,63 @@
 package eu.ydp.empiria.player.client.module.abstractmodule.structure;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import eu.ydp.empiria.player.client.structure.ModuleBean;
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
 
 public class ShuffleHelper {
 
-	public <B extends ModuleBean & HasShuffle, I extends HasFixed> List<I> randomize(B bean, List<I> associableChoices) {
-		List<I> resultList = associableChoices;
+	public <B extends ModuleBean & HasShuffle, I extends HasFixed> List<I> randomizeIfShould(B bean, List<I> associableChoices) {
+
+		List<I> resultList;
 		if (bean.isShuffle()) {
-			resultList = new ArrayList<I>(associableChoices.size());
-			List<I> copyList = new ArrayList<I>(associableChoices);
-			Map<Integer, I> fixedMap = new TreeMap<Integer, I>();
-			TreeSet<Integer> reverseOrder = new TreeSet<Integer>(Collections.reverseOrder());
-			for (int x = 0; x < associableChoices.size(); ++x) {
-				I item = associableChoices.get(x);
-				if (item.isFixed()) {
-					fixedMap.put(x, item);
-					reverseOrder.add(x);
-				}
-			}
-
-			for (Integer index : reverseOrder) {
-				copyList.remove(index.intValue());
-			}
-
-			if (!copyList.isEmpty()) {
-				RandomizedSet<I> randomSet = new RandomizedSet<I>(copyList);
-				while (randomSet.hasMore()) {
-					resultList.add(randomSet.pull());
-				}
-			}
-			for (Map.Entry<Integer, I> fixedEntry : fixedMap.entrySet()) {
-				resultList.add(fixedEntry.getKey(), fixedEntry.getValue());
-			}
+			resultList = randomize(associableChoices);
+		}else{
+			resultList = associableChoices;
 		}
 		return resultList;
+	}
+
+	private <I extends HasFixed> List<I> randomize(List<I> associableChoices) {
+
+		Map<Integer, I> fixedItemsMap = new TreeMap<Integer, I>();
+		List<I> randomItems = new ArrayList<I>();
+		List<I> resultList = new ArrayList<I>(associableChoices.size());
+
+		devideByFixedProperty(associableChoices, fixedItemsMap, randomItems);
+
+		addRandomItems(resultList, randomItems);
+		addFixedItems(resultList, fixedItemsMap);
+
+		return resultList;
+	}
+
+	private <I extends HasFixed> void devideByFixedProperty( List<I> source, Map<Integer, I> fixedItemsMap, List<I> randomItems) {
+		for (int x = 0; x < source.size(); ++x) {
+			I item = source.get(x);
+			if (item.isFixed()) {
+				fixedItemsMap.put(x, item);
+			}else{
+				randomItems.add(item);
+			}
+		}
+	}
+
+	private  <I extends HasFixed> void addRandomItems( List<I> target, List<I> source) {
+		if (!source.isEmpty()) {
+			RandomizedSet<I> randomSet = new RandomizedSet<I>(source);
+			while (randomSet.hasMore()) {
+				target.add(randomSet.pull());
+			}
+		}
+	}
+
+	private  <I extends HasFixed> void addFixedItems(List<I> target,  Map<Integer, I> source) {
+		for (Map.Entry<Integer, I> fixedEntry : source.entrySet()) {
+			target.add(fixedEntry.getKey(), fixedEntry.getValue());
+		}
 	}
 }

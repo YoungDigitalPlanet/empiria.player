@@ -17,14 +17,15 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.StringUtils;
-import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
 public class TextEntryModule extends GapBase implements SourcelistClient {
 
@@ -36,14 +37,16 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	protected Map<String, String> styles;
 
+	private final DragContentController dragContentController;
+	
 	@Inject
-	public TextEntryModule(TextEntryModulePresenter presenter, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,
-			@PageScoped final SourcelistManager sourcelistManager) {
+	public TextEntryModule(TextEntryModulePresenter presenter, StyleSocket styleSocket, @PageScoped ResponseSocket responseSocket,@PageScoped final SourcelistManager sourcelistManager, DragContentController dragContentController) {
 		this.styleSocket = styleSocket;
 		this.responseSocket = responseSocket;
 		this.sourcelistManager = sourcelistManager;
 
 		this.presenter = presenter;
+		this.dragContentController = dragContentController;
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -183,13 +186,12 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 		return presenter.getText();
 	}
 
-	private static final Logger LOGGER = new Logger();
-
 	@Override
 	public void setDragItem(String itemId) {
-		LOGGER.methodLog("TextEntryModule", "setDragItem", itemId);
-		String value = sourcelistManager.getValue(itemId, getIdentifier());
-		presenter.setText(value);
+		SourcelistItemValue item = sourcelistManager.getValue(itemId, getIdentifier());
+		String newText = dragContentController.getTextFromItemAppropriateToType(item);
+		
+		presenter.setText(newText);
 	}
 
 	@Override
@@ -209,9 +211,14 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 
 	@Override
 	public void unlockDropZone() {
-		getTextEntryPresenter().unlockDragZone();
+		getTextEntryPresenter().unlockDragZone();	
 	}
 
+	@Override
+	public void setSize(HasDimensions size) {
+		// intentionally empty - text gap does not fit its size
+	}
+			
 	@Override
 	public void lock(boolean lock) {
 		super.lock(lock);

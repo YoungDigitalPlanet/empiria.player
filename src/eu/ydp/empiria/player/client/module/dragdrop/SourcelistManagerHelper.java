@@ -23,7 +23,11 @@ public class SourcelistManagerHelper {
 	};
 
 	public Optional<Sourcelist> findSourcelist(SourcelistClient client) {
-		return searchForSourcelist(client.getParentModule());
+		HasChildren parentModule = client.getParentModule();
+		if (parentModule == null) {
+			return Optional.absent();
+		}
+		return searchForSourcelist(parentModule);
 	}
 
 	private Optional<Sourcelist> searchForSourcelist(HasChildren module) {
@@ -40,8 +44,7 @@ public class SourcelistManagerHelper {
 
 	private Optional<IModule> checkChildren(HasChildren module) {
 		List<IModule> children = module.getChildrenModules();
-		Optional<IModule> sourcelist = Iterables
-				.tryFind(children, isSourcelist);
+		Optional<IModule> sourcelist = Iterables.tryFind(children, isSourcelist);
 		return sourcelist;
 	}
 
@@ -52,8 +55,7 @@ public class SourcelistManagerHelper {
 
 	}
 
-	private void searchForClients(List<SourcelistClient> clients,
-			HasChildren parent) {
+	private void searchForClients(List<SourcelistClient> clients, HasChildren parent) {
 		for (IModule child : parent.getChildrenModules()) {
 			if (child instanceof SourcelistClient) {
 				SourcelistClient client = (SourcelistClient) child;

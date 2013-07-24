@@ -68,7 +68,7 @@ public class PageScopedModule extends AbstractGinModule {
 		bindPageScoped(SourcelistManagerModel.class, new TypeLiteral<PageScopedProvider<SourcelistManagerModel>>(){});
 	}
 	
-	private <T> void bindPageScoped(Class<T> clazz, TypeLiteral<PageScopedProvider<T>> typeLiteral){
+	private <F, T extends F> void bindPageScoped(Class<F> clazz, TypeLiteral<PageScopedProvider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)
 			.annotatedWith(PageScoped.class)

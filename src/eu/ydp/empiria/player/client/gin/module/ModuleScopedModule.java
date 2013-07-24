@@ -6,11 +6,13 @@ import com.google.inject.Key;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopeStack;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
+import eu.ydp.empiria.player.client.gin.scopes.module.providers.TutorConfigModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
@@ -22,9 +24,20 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillBeanProx
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionStructure;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
+import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
+import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
+import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
+import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
+import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
+import eu.ydp.empiria.player.client.module.tutor.actions.OnPageAllOkAction;
+import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeGenerator;
+import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
+import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
+import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
+import eu.ydp.empiria.player.client.module.tutor.view.TutorViewImpl;
 
 public class ModuleScopedModule extends AbstractGinModule{
 
@@ -38,6 +51,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindOrdering();
 		bindColorfill();
 		bindDragGap();
+		bindTutor();
 	}
 
 	private void bindOrdering() {
@@ -60,9 +74,22 @@ public class ModuleScopedModule extends AbstractGinModule{
 
 	private void bindDragGap() {
 		bindModuleScoped(DragGapModuleModel.class, new TypeLiteral<ModuleScopedProvider<DragGapModuleModel>>(){});
+		bindModuleScoped(DragGapView.class, new TypeLiteral<ModuleScopedProvider<DragGapView>>(){});
+		bindModuleScoped(SourceListManagerAdapter.class, new TypeLiteral<ModuleScopedProvider<SourceListManagerAdapter>>(){});
+	}
+	
+	private void bindTutor() {
+		bindModuleScoped(ActionEventGenerator.class, new TypeLiteral<ModuleScopedProvider<ActionEventGenerator>>(){});
+		bindModuleScoped(TutorPresenter.class, new TypeLiteral<ModuleScopedProvider<TutorPresenterImpl>>(){});
+		bindModuleScoped(TutorView.class, new TypeLiteral<ModuleScopedProvider<TutorViewImpl>>(){});
+		bindModuleScoped(ActionExecutorService.class, new TypeLiteral<ModuleScopedProvider<ActionExecutorService>>(){});
+		bindModuleScoped(CommandFactory.class, new TypeLiteral<ModuleScopedProvider<CommandFactory>>(){});
+		bindModuleScoped(OutcomeDrivenActionTypeGenerator.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeGenerator>>(){});
+		bindModuleScoped(OnPageAllOkAction.class, new TypeLiteral<ModuleScopedProvider<OnPageAllOkAction>>(){});
+		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 	}
 
-	private <T> void bindModuleScoped(Class<T> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
+	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)
 			.annotatedWith(ModuleScoped.class)

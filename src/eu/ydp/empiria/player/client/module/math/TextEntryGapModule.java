@@ -14,8 +14,11 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
+import eu.ydp.empiria.player.client.module.textentry.DragContentController;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -29,12 +32,15 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 
 	private final StyleSocket styleSocket;
 
+	private final DragContentController dragContentController;
+
 	@Inject
-	public TextEntryGapModule(TextEntryGapModulePresenter presenter, StyleSocket styleSocket, @PageScoped final SourcelistManager sourcelistManager) {
+	public TextEntryGapModule(TextEntryGapModulePresenter presenter, StyleSocket styleSocket,@PageScoped final SourcelistManager sourcelistManager, DragContentController dragContentController) {
 		this.styleSocket = styleSocket;
 		this.sourcelistManager = sourcelistManager;
 
 		this.presenter = presenter;
+		this.dragContentController = dragContentController;
 		presenter.addPresenterHandler(new PresenterHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -61,8 +67,12 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 				sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
 			}
 		});
+	}
 
+	@Override
+	public void onStart() {
 		sourcelistManager.registerModule(this);
+		super.onStart();
 	}
 
 	@Override
@@ -197,8 +207,10 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 
 	@Override
 	public void setDragItem(String itemId) {
-		String value = sourcelistManager.getValue(itemId, getIdentifier());
-		presenter.setText(value);
+		SourcelistItemValue item = sourcelistManager.getValue(itemId, getIdentifier());
+		String newText = dragContentController.getTextFromItemAppropriateToType(item);
+		
+		presenter.setText(newText);
 	}
 
 	@Override
@@ -218,6 +230,11 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	@Override
 	public void unlockDropZone() {
 		getTextEntryGapPresenter().unlockDragZone();
+	}
+
+	@Override
+	public void setSize(HasDimensions size) {
+		// intentionally empty - text gap does not fit its size
 	}
 
 	@Override

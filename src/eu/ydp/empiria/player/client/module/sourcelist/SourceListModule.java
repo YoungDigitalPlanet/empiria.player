@@ -10,10 +10,12 @@ import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.dragdrop.Sourcelist;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
+import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
 
 public class SourceListModule extends SimpleModuleBase implements Sourcelist {
@@ -40,7 +42,7 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 	}
 
 	@Override
-	public String getItemValue(String itemId) {
+	public SourcelistItemValue getItemValue(String itemId) {
 		return presenter.getItemValue(itemId);
 	}
 
@@ -78,4 +80,10 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 		presenter.unlockSourceList();
 
 	}
+
+	@Override
+	public HasDimensions getItemSize() {
+		return presenter.getMaxItemSize();
+	}
+
 }

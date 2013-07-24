@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.feedback.player;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.components.HiddenWidgetCreator;
+import eu.ydp.empiria.player.client.components.hidden.HiddenWidgetCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 /**
@@ -18,7 +18,7 @@ public class HideNativeMediaControlsManager {
 	
 	public void addToDocumentAndHideControls(MediaWrapper<Widget> mediaWrapper) {
 		Widget mediaObject = mediaWrapper.getMediaObject();				
-		hiddenWidgetCreator.addWidgetToDocumentAndHide(mediaObject);
+		hiddenWidgetCreator.addWidgetToHiddenContainerOnRootPanel(mediaObject);
 	}
 
 }
