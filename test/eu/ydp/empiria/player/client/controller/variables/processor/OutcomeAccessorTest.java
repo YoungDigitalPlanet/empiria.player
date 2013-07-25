@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -14,6 +16,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.variables.VariablePossessorBase;
+import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OutcomeAccessorTest {
@@ -111,5 +115,36 @@ public class OutcomeAccessorTest {
 		assertThat(lastMistaken).isEqualTo(LAST_MISTAKEN);
 	}
 	
+	@Test
+	@SuppressWarnings("unchecked")
+	public void isLastActionSelection_true() {
+		// given
+		VariablePossessorBase<Variable> variablePossessorBase = mock(VariablePossessorBase.class);
+		when(variablePossessorBase.isLastAnswerSelectAction()).thenReturn(true);
+		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket()).thenReturn(variablePossessorBase);
+
+		// when
+		boolean lastActionSelection = accessor.isLastActionSelection();
+
+		// then
+		assertThat(lastActionSelection).isEqualTo(true);
+		verify(variablePossessorBase).isLastAnswerSelectAction();
+	}
+	
+	@Test
+	@SuppressWarnings("unchecked")
+	public void isLastActionSelection_false() {
+		// given
+		VariablePossessorBase<Variable> variablePossessorBase = mock(VariablePossessorBase.class);
+		when(variablePossessorBase.isLastAnswerSelectAction()).thenReturn(false);
+		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket()).thenReturn(variablePossessorBase);
+
+		// when
+		boolean lastActionSelection = accessor.isLastActionSelection();
+
+		// then
+		assertThat(lastActionSelection).isEqualTo(false);
+		verify(variablePossessorBase).isLastAnswerSelectAction();
+	}
 	
 }
