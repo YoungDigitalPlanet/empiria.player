@@ -24,6 +24,9 @@ public class DragGapBean extends ModuleBean {
 	@XmlAttribute(name = "responseIdentifier")
 	private String responseIdentifier = StringUtils.EMPTY_STRING;
 
+	@XmlAttribute(name = "sourceListId")
+	private String sourceListId = StringUtils.EMPTY_STRING;
+	
 	public String getName() {
 		return name;
 	}
@@ -56,6 +59,12 @@ public class DragGapBean extends ModuleBean {
 		this.responseIdentifier = responseIdentifier;
 	}
 
+	public String getSourceListId() {
+		return sourceListId;
+	}
 
+	public void setSourceListId(String sourceListId) {
+		this.sourceListId = sourceListId;
+	}
 
 }
