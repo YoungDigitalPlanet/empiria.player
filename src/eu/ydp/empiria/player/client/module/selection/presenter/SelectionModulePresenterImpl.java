@@ -36,14 +36,17 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
 	private SelectionViewUpdater viewUpdater;
 	private SelectionViewBuilder viewBuilder;
+	private SelectionAnswersMarker answersMarker;
 	
 	@Inject
 	public SelectionModulePresenterImpl(
 			IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder,
 			SelectionViewUpdater selectionViewUpdater,
+			SelectionAnswersMarker answersMarker,
 			@ModuleScoped SelectionModuleView selectionModuleView,
 			@ModuleScoped SelectionModuleModel selectionModuleModel,
 			@ModuleScoped SelectionViewBuilder selectionViewBuilder) {
+		this.answersMarker = answersMarker;
 		this.selectionModuleView = selectionModuleView;
 		this.identifiableAnswersByTypeFinder = identifiableAnswersByTypeFinder;
 		this.viewUpdater = selectionViewUpdater;
@@ -111,39 +114,12 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 	@Override
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
 		for(GroupAnswersController groupChoicesController : groupChoicesControllers){
-			markAnswersOnButtonsFromController(type, mode, groupChoicesController);
+			answersMarker.markAnswers(type, mode, groupChoicesController);
 
 			updateGroupAnswerView(groupChoicesController);
 		}
 	}
 
-	private void markAnswersOnButtonsFromController(MarkAnswersType type, MarkAnswersMode mode, GroupAnswersController groupChoicesController) {
-		List<SelectionAnswerDto> selectedButtons = groupChoicesController.getSelectedAnswers();
-		List<SelectionAnswerDto> buttonsToMark = identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(type, selectedButtons, model);
-		List<SelectionAnswerDto> notSelectedButtons = groupChoicesController.getNotSelectedAnswers();
-		
-		if(MarkAnswersMode.MARK.equals(mode)){
-			if(MarkAnswersType.CORRECT.equals(type)){
-				applyAnswerTypeToCollection(UserAnswerType.CORRECT, buttonsToMark);
-			}else{
-				applyAnswerTypeToCollection(UserAnswerType.WRONG, buttonsToMark);
-			}
-			
-			applyAnswerTypeToCollection(UserAnswerType.NONE, notSelectedButtons);
-			
-		}else if(MarkAnswersMode.UNMARK.equals(mode)){
-			List<SelectionAnswerDto> buttonsToMarkDefaultState = new ArrayList<SelectionAnswerDto>(buttonsToMark);
-			buttonsToMarkDefaultState.addAll(notSelectedButtons);
-			applyAnswerTypeToCollection(UserAnswerType.DEFAULT, buttonsToMarkDefaultState);
-		}
-	}
-
-	private void applyAnswerTypeToCollection(UserAnswerType userAnswerType, Collection<SelectionAnswerDto> answers){
-		for (SelectionAnswerDto selectionAnswerDto : answers) {
-			selectionAnswerDto.setSelectionAnswerType(userAnswerType);
-		}
-	}
-	
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		List<String> answersToSelect;
