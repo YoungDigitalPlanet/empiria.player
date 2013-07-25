@@ -107,4 +107,10 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 		}
 	}
 
+	@Override
+	public String sourceListId() {
+		DragGapBean dragGapBean = getStructure().getBean();
+		return dragGapBean.getSourceListId();
+	}
+
 }

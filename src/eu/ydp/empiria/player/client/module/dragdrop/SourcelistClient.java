@@ -16,4 +16,6 @@ public interface SourcelistClient extends IUniqueModule {
 	void unlockDropZone();
 	
 	void setSize(HasDimensions size);
+	
+	String sourceListId();
 }

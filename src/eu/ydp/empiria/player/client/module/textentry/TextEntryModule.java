@@ -29,6 +29,8 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 public class TextEntryModule extends GapBase implements SourcelistClient {
 
+	private static final String SOURCE_LIST_ID = "sourceListId";
+
 	private final StyleSocket styleSocket;
 
 	private final SourcelistManager sourcelistManager;
@@ -228,6 +230,12 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 			sourcelistManager.unlockGroup(getIdentifier());
 			getTextEntryPresenter().unlockDragZone();
 		}
+	}
+
+	@Override
+	public String sourceListId() {
+		String sourceListId = getElementAttributeValue(SOURCE_LIST_ID);
+		return sourceListId;
 	}
 
 }

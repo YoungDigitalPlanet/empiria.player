@@ -14,17 +14,19 @@ public class DragGapModuleJAXBParserFactoryTest  extends AbstractEmpiriaPlayerGW
 		fullXmlStringBuilder.append("name=\"name1\" ");
 		fullXmlStringBuilder.append("expressionMode=\"expressionMode1\" ");
 		fullXmlStringBuilder.append("widthBindingGroup=\"widthBindingGroup1\" ");
-		fullXmlStringBuilder.append("responseIdentifier=\"responseIdentifier1\">");
+		fullXmlStringBuilder.append("responseIdentifier=\"responseIdentifier1\" ");
+		fullXmlStringBuilder.append("sourceListId=\"idOfSourceList\">");
 		fullXmlStringBuilder.append("</dragInteraction>");
 		String xml = fullXmlStringBuilder.toString();
 
 		DragGapBean dragGapBean = parse(xml);
 		assertNotNull(dragGapBean);
-		assertEquals(dragGapBean.getId(), "id1");
-		assertEquals(dragGapBean.getName(), "name1");
-		assertEquals(dragGapBean.getExpressionMode(),"expressionMode1");
-		assertEquals(dragGapBean.getWidthBindingGroup(), "widthBindingGroup1");
-		assertEquals(dragGapBean.getResponseIdentifier(), "responseIdentifier1");
+		assertEquals("id1", dragGapBean.getId());
+		assertEquals("name1", dragGapBean.getName());
+		assertEquals("expressionMode1", dragGapBean.getExpressionMode());
+		assertEquals("widthBindingGroup1", dragGapBean.getWidthBindingGroup());
+		assertEquals("responseIdentifier1", dragGapBean.getResponseIdentifier());
+		assertEquals("idOfSourceList", dragGapBean.getSourceListId());
 	}
 
 
