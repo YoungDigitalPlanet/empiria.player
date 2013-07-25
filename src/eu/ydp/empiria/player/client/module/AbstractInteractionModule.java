@@ -36,7 +36,7 @@ import eu.ydp.gwtutil.client.util.BooleanUtils;
  *            typ beana
  */
 public abstract class AbstractInteractionModule<T extends AbstractInteractionModule<?, ?, ?>, H extends AbstractResponseModel<?>, U extends ModuleBean> extends
-		OneViewInteractionModuleBase implements Factory<T>, ResponseModelChangeListener {
+		OneViewInteractionModuleBase implements ResponseModelChangeListener {
 
 	protected boolean locked = false;
 
@@ -85,14 +85,6 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 		presenter.setBean(getStructure().getBean());
 		presenter.setModel(getResponseModel());
 		presenter.bindView();
-	}
-
-	/**
-	 * Modules should be created with {@link ModuleProviderFactory} .
-	 */
-	@Deprecated
-	public T getNewInstance() {
-		throw new UnsupportedOperationException("Modules should be created with ModuleProviderFactory");
 	}
 
 	protected abstract ActivityPresenter<H, U> getPresenter();
@@ -217,5 +209,4 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	public void onClose() { // NOPMD by MKaldonek on 15.10.12 08:31
 		// eu.ydp.empiria.player.client.module.ILifecycleModule.onClose
 	}
-
 }

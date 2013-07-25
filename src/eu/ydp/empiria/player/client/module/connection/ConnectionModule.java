@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
@@ -36,9 +35,6 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	private ConnectionModuleStructure connectionStructure;
 
 	@Inject
-	protected Provider<ConnectionModule> moduleFactory;
-
-	@Inject
 	private ConnectionModuleFactory connectionModuleFactory;
 
 	@Inject
@@ -56,11 +52,6 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 		connectionModel = connectionModuleFactory.getConnectionModuleModel(getResponse(), this);
 		connectionModel.setResponseSocket(responseSocket);
 		getResponse().setCountMode(getCountMode());
-	}
-
-	@Override
-	public ConnectionModule getNewInstance() {
-		return moduleFactory.get();
 	}
 
 	@Override
