@@ -38,7 +38,7 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 	public TextEntryGapModule(TextEntryGapModulePresenter presenter, StyleSocket styleSocket,@PageScoped final SourcelistManager sourcelistManager, DragContentController dragContentController) {
 		this.styleSocket = styleSocket;
 		this.sourcelistManager = sourcelistManager;
-		
+
 		this.presenter = presenter;
 		this.dragContentController = dragContentController;
 		presenter.addPresenterHandler(new PresenterHandler() {
@@ -67,8 +67,12 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 				sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
 			}
 		});
+	}
 
+	@Override
+	public void onStart() {
 		sourcelistManager.registerModule(this);
+		super.onStart();
 	}
 
 	@Override

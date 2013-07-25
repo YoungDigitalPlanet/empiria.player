@@ -46,8 +46,7 @@ public class SourcelistManagerHelperTest {
 		HasChildren parentModule = mockClientParent(client);
 		Sourcelist sourcelist = mock(Sourcelist.class);
 
-		when(parentModule.getChildrenModules()).thenReturn(
-				Lists.<IModule> newArrayList(client, sourcelist));
+		when(parentModule.getChildrenModules()).thenReturn(Lists.<IModule> newArrayList(client, sourcelist));
 
 		// when
 		Optional<Sourcelist> foundSourcelist = helper.findSourcelist(client);
@@ -66,8 +65,7 @@ public class SourcelistManagerHelperTest {
 		Sourcelist sourcelist = mock(Sourcelist.class);
 
 		when(parentModule.getParentModule()).thenReturn(parentModule2);
-		when(parentModule2.getChildrenModules()).thenReturn(
-				Lists.<IModule> newArrayList(parentModule, sourcelist));
+		when(parentModule2.getChildrenModules()).thenReturn(Lists.<IModule> newArrayList(parentModule, sourcelist));
 
 		// when
 		Optional<Sourcelist> foundSourcelist = helper.findSourcelist(client);
@@ -78,6 +76,19 @@ public class SourcelistManagerHelperTest {
 	}
 
 	@Test
+	public void shouldReturnAbsentOptionalIfClientHasNoParent() {
+		// given
+		SourcelistClient client = mock(SourcelistClient.class);
+		when(client.getParentModule()).thenReturn(null);
+
+		// when
+		Optional<Sourcelist> foundSourcelist = helper.findSourcelist(client);
+
+		// then
+		assertThat(foundSourcelist.isPresent(), is(equalTo(false)));
+	}
+
+	@Test
 	public void shouldFindOnlyFirstSourcelist() {
 		// given
 		SourcelistClient client = mockClient("id1");
@@ -85,8 +96,7 @@ public class SourcelistManagerHelperTest {
 		Sourcelist sourcelist1 = mock(Sourcelist.class);
 		Sourcelist sourcelist2 = mock(Sourcelist.class);
 
-		when(parentModule.getChildrenModules()).thenReturn(
-				Lists.<IModule> newArrayList(client, sourcelist1, sourcelist2));
+		when(parentModule.getChildrenModules()).thenReturn(Lists.<IModule> newArrayList(client, sourcelist1, sourcelist2));
 
 		// when
 		Optional<Sourcelist> foundSourcelist = helper.findSourcelist(client);
@@ -103,8 +113,7 @@ public class SourcelistManagerHelperTest {
 		SourcelistClient client = mockClient("id1");
 
 		HasChildren parentModule = mockSourcelistParent(sourcelist);
-		when(parentModule.getChildrenModules()).thenReturn(
-				Lists.<IModule> newArrayList(sourcelist, client));
+		when(parentModule.getChildrenModules()).thenReturn(Lists.<IModule> newArrayList(sourcelist, client));
 
 		// when
 		List<SourcelistClient> clients = helper.findClients(sourcelist);
@@ -121,8 +130,7 @@ public class SourcelistManagerHelperTest {
 		SourcelistClient client2 = mockClient("id2");
 
 		HasChildren parentModule = mockSourcelistParent(sourcelist);
-		when(parentModule.getChildrenModules()).thenReturn(
-				Lists.<IModule> newArrayList(sourcelist, client, client2));
+		when(parentModule.getChildrenModules()).thenReturn(Lists.<IModule> newArrayList(sourcelist, client, client2));
 
 		// when
 		List<SourcelistClient> clients = helper.findClients(sourcelist);
@@ -137,8 +145,7 @@ public class SourcelistManagerHelperTest {
 		Sourcelist sourcelist = mock(Sourcelist.class);
 		HasChildren parentModule = mockSourcelistParent(sourcelist);
 
-		when(parentModule.getChildrenModules()).thenReturn(
-				Lists.<IModule> newArrayList(sourcelist));
+		when(parentModule.getChildrenModules()).thenReturn(Lists.<IModule> newArrayList(sourcelist));
 
 		// when
 		List<SourcelistClient> clients = helper.findClients(sourcelist);
@@ -156,16 +163,14 @@ public class SourcelistManagerHelperTest {
 	private HasChildren mockClientParent(SourcelistClient client) {
 		HasChildren parentModule = mock(HasChildren.class);
 		when(client.getParentModule()).thenReturn(parentModule);
-		when(parentModule.getChildrenModules()).thenReturn(
-				Lists.<IModule> newArrayList(client));
+		when(parentModule.getChildrenModules()).thenReturn(Lists.<IModule> newArrayList(client));
 		return parentModule;
 	}
 
 	private HasChildren mockSourcelistParent(Sourcelist sourcelist) {
 		HasChildren parentModule = mock(HasChildren.class);
 		when(sourcelist.getParentModule()).thenReturn(parentModule);
-		when(parentModule.getChildrenModules()).thenReturn(
-				Lists.<IModule> newArrayList(sourcelist));
+		when(parentModule.getChildrenModules()).thenReturn(Lists.<IModule> newArrayList(sourcelist));
 		return parentModule;
 	}
 

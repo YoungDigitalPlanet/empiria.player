@@ -39,7 +39,7 @@ public class OrderInteractionStructure extends AbstractModuleStructure<OrderInte
 
 	@Override
 	protected void prepareStructure(YJsonArray structure) {
-		List<SimpleOrderChoiceBean> randomizedBeans = shuffleHelper.randomize(bean, bean.getChoiceBeans());
+		List<SimpleOrderChoiceBean> randomizedBeans = shuffleHelper.randomizeIfShould(bean, bean.getChoiceBeans());
 		bean.setChoiceBeans(randomizedBeans);
 	}
 

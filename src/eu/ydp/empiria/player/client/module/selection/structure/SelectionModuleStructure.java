@@ -29,7 +29,7 @@ public class SelectionModuleStructure extends AbstractModuleStructure<SelectionI
 
 	@Override
 	protected void prepareStructure(YJsonArray structure) {
-		shuffleHelper.randomize(bean, bean.getItems());
+		shuffleHelper.randomizeIfShould(bean, bean.getItems());
 	}
 
 	@Override

@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		/* overflow:hidden aby nie rozszerzal sie do wielkosci dziecka*/
+		.hidden{
+			position: absolute;
+			top: 1px;
+			left: 1px;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			visibility: hidden;
+		}
+		/* wewnetrzny element przsueniety o 2 pixele w dol poza widoczny obszar parenta*/
+		.container{
+			visibility: hidden;
+			width: 1px;
+			height:1px;
+			margin-top: 2px;
+		}
+
+	</ui:style>
+	<g:FlowPanel styleName="{style.hidden}">
+		<g:FlowPanel ui:field="container" styleName="{style.container}" />
+	</g:FlowPanel>
+</ui:UiBinder>

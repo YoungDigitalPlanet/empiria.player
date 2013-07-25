@@ -31,10 +31,12 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.Stic
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
+import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
@@ -43,6 +45,7 @@ import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchReservationHandler;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
+import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
@@ -85,6 +88,8 @@ import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelpe
 import eu.ydp.empiria.player.client.preloader.view.InfinityProgressWidget;
 import eu.ydp.empiria.player.client.preloader.view.ProgressView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.ComputedStyle;
+import eu.ydp.empiria.player.client.style.ComputedStyleImpl;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelperImpl;
@@ -176,7 +181,10 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(FlowPanel.class).annotatedWith(Names.named("multiPageControllerMainPanel")).toProvider(NewFlowPanelProvider.class).in(Singleton.class);
 		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class).in(Singleton.class);
 		bind(SingleModuleInstanceProvider.class);
+		bind(SessionDataSupplier.class).to(SessionDataManager.class);
 		bind(SessionDataManager.class).in(Singleton.class);
+		bind(FlowDataSupplier.class).to(MainFlowProcessor.class);
+		bind(MainFlowProcessor.class).in(Singleton.class);
 		bind(SessionTimeUpdater.class).in(Singleton.class);
 		bind(YJsJsonConverter.class).in(Singleton.class);
 		bind(IJSONService.class).to(JSONService.class).in(Singleton.class);
@@ -184,6 +192,9 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(LabellingChildView.class).to(LabellingChildViewImpl.class);
 		bind(String.class).annotatedWith(UniqueId.class).toProvider(UniqIdStringProvider.class);
 		bind(ExpressionCharacterMappingProvider.class).in(Singleton.class);
+		bind(TutorService.class).in(Singleton.class);
+		bind(ComputedStyle.class).to(ComputedStyleImpl.class).in(Singleton.class);
+
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));

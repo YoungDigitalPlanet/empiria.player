@@ -70,22 +70,6 @@
 
 	<!-- END VIDEO -->
 
-	<!-- Progressbar dla androida w media -->
-	<replace-with class="eu.ydp.empiria.player.client.module.media.button.MediaProgressBarImpl">
-		<when-type-is class="eu.ydp.empiria.player.client.module.media.button.MediaProgressBar" />
-	</replace-with>
-	<replace-with class="eu.ydp.empiria.player.client.module.media.button.MediaProgressBarAndroid">
-		<when-type-is class="eu.ydp.empiria.player.client.module.media.button.MediaProgressBar" />
-		<any>
-			<when-property-is name="mobile.user.agent" value="android23" />
-			<when-property-is name="mobile.user.agent" value="android321" />
-			<when-property-is name="mobile.user.agent" value="android4" />
-			<when-property-is name="mobile.user.agent" value="android3" />
-		</any>
-	</replace-with>
-	<!-- end progressbar -->
-
-
 	<!-- AUDIO - OLD -->
 	<replace-with class="eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule">
 		<when-type-is class="eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule" />

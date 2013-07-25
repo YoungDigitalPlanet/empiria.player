@@ -37,6 +37,7 @@ import eu.ydp.empiria.player.client.gin.module.SimulationGinModule;
 import eu.ydp.empiria.player.client.gin.module.SlideshowGinModule;
 import eu.ydp.empiria.player.client.gin.module.SourceListGinModule;
 import eu.ydp.empiria.player.client.gin.module.TextEntryGinModule;
+import eu.ydp.empiria.player.client.gin.module.TutorGinModule;
 import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -53,7 +54,7 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 		SourceListGinModule.class, TextEntryGinModule.class, SelectionGinModule.class,
 		SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
 		OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class,
-		DragGapGinModule.class})
+		DragGapGinModule.class, TutorGinModule.class})
 
 public interface PlayerGinjector extends Ginjector {
 

@@ -15,7 +15,6 @@ import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModule;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
 import eu.ydp.empiria.player.client.module.containers.DivModule;
-import eu.ydp.empiria.player.client.module.containers.HtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.SubHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
@@ -43,6 +42,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
+import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 
 @SuppressWarnings({"PMD"})
 public class ModuleProviderFactory {
@@ -162,6 +162,9 @@ public class ModuleProviderFactory {
 	
 	@Inject
 	private Provider<SubHtmlContainerModule> subHtmlContainerModule;
+
+	@Inject
+	private Provider<TutorModule> tutor;
 	
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -317,5 +320,9 @@ public class ModuleProviderFactory {
 
 	public Provider<SubHtmlContainerModule> getSubHtmlContainerModule() {
 		return subHtmlContainerModule;
+	}
+
+	public Provider<TutorModule> getTutorModule() {
+		return tutor;
 	}
 }
