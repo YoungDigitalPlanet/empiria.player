@@ -25,4 +25,6 @@ public interface SimpleChoicePresenter extends IsWidget {
 	boolean isMulti();
 
 	void onChoiceClick();
+	
+	String getIdentifier();
 }

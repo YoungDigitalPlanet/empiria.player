@@ -10,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -27,11 +26,7 @@ import eu.ydp.empiria.player.client.module.choice.providers.SimpleChoiceStylePro
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.choice.view.SimpleChoiceView;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
-@RunWith(ExMockRunner.class)
-@PrepareForTest(Widget.class)
 public class SimpleChoicePresenterImplTest {
 
 	SimpleChoicePresenterImpl presenter;
@@ -41,7 +36,6 @@ public class SimpleChoicePresenterImplTest {
 	@Mock SimpleChoiceViewFactory viewFactory;
 	@Mock SimpleChoiceView view;
 	@Mock ChoiceButtonBase button;
-	@Mock Widget widget;
 	@Mock Widget feedbackPlaceHolderMock;
 
 	@Before
@@ -52,7 +46,6 @@ public class SimpleChoicePresenterImplTest {
 		when(bean.getContent()).thenReturn(mock(XMLContent.class));
 		when(bean.isMulti()).thenReturn(true);
 		when(view.getFeedbackPlaceHolder()).thenReturn(feedbackPlaceHolderMock);
-		when(view.asWidget()).thenReturn(widget);
 
 		presenter = new SimpleChoicePresenterImpl(viewFactory, bean, bodyGenerator);
 	}
@@ -154,16 +147,6 @@ public class SimpleChoicePresenterImplTest {
 		// then
 		verify(view).getFeedbackPlaceHolder();
 		assertThat(feedbackPlaceHolder, is(feedbackPlaceHolderMock));
-	}
-
-	@Test
-	public void shouldReturnWidget() {
-		// when
-		Widget aswWidget = presenter.asWidget();
-
-		// then
-		verify(view).asWidget();
-		assertThat(aswWidget, is(widget));
 	}
 
 	@Test

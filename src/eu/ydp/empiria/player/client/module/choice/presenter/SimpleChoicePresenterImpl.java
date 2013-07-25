@@ -22,32 +22,35 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter {
 
 	private boolean isMulti;
 
-	private InlineBodyGeneratorSocket bodyGenerator;
+	private final InlineBodyGeneratorSocket bodyGenerator;
 
 	private ChoiceModuleListener listener;
 
 	private SimpleChoiceView view;
 
-	SimpleChoiceViewFactory simpleChoiceViewFactory;
+	private final SimpleChoiceViewFactory simpleChoiceViewFactory;
+
+	private final SimpleChoiceBean choiceOptionBean;
 
 	@Inject
-	public SimpleChoicePresenterImpl(SimpleChoiceViewFactory simpleChoiceViewFactory, @Assisted SimpleChoiceBean option,
+	public SimpleChoicePresenterImpl(SimpleChoiceViewFactory simpleChoiceViewFactory, @Assisted SimpleChoiceBean choiceOptionBean,
 			@Assisted InlineBodyGeneratorSocket bodyGenerator) {
 		this.simpleChoiceViewFactory = simpleChoiceViewFactory;
+		this.choiceOptionBean = choiceOptionBean;
 		bindView();
 		this.bodyGenerator = bodyGenerator;
 
-		installChildren(option);
+		installChildren();
 	}
 
-	private void installChildren(SimpleChoiceBean choiceOption) {
-		isMulti = choiceOption.isMulti();
+	private void installChildren() {
+		isMulti = choiceOptionBean.isMulti();
 
 		ChoiceButtonBase button = createButton();
 
 		view.setButton(button);
 
-		createAndInstallContent(choiceOption);
+		createAndInstallContent();
 	}
 
 	private ChoiceButtonBase createButton() {
@@ -58,31 +61,37 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter {
 		}
 	}
 
-	private void createAndInstallContent(SimpleChoiceBean choiceOption) {
-		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOption.getContent().getValue(), true);
+	private void createAndInstallContent() {
+		Widget contentWidget = bodyGenerator.generateInlineBody(choiceOptionBean.getContent().getValue(), true);
 		view.setContent(contentWidget);
 	}
 
+	@Override
 	public void onChoiceClick() {
 		listener.onChoiceClick(this);
 	}
 
+	@Override
 	public void setSelected(boolean select) {
 		view.setSelected(select);
 	}
 
+	@Override
 	public boolean isSelected() {
 		return view.isSelected();
 	}
 
+	@Override
 	public Widget getFeedbackPlaceHolder() {
 		return view.getFeedbackPlaceHolder();
 	}
 
+	@Override
 	public void setLocked(boolean locked) {
 		view.setLocked(locked);
 	}
 
+	@Override
 	public void reset() {
 		view.reset();
 	}
@@ -144,5 +153,10 @@ public class SimpleChoicePresenterImpl implements SimpleChoicePresenter {
 	@Override
 	public boolean isMulti() {
 		return isMulti;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return choiceOptionBean.getIdentifier();
 	}
 }

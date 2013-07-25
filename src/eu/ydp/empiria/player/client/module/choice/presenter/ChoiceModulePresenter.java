@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.choice.presenter;
 
-import com.google.gwt.user.client.ui.IsWidget;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
@@ -11,7 +9,4 @@ public interface ChoiceModulePresenter extends ActivityPresenter<ChoiceModuleMod
 
 	void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator);
 
-	IsWidget getFeedbackPlaceholderByIdentifier(String identifier);
-
-	String getChoiceIdentifier(SimpleChoicePresenter choice);
 }

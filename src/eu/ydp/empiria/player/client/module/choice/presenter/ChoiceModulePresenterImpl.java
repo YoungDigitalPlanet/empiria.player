@@ -1,15 +1,7 @@
 package eu.ydp.empiria.player.client.module.choice.presenter;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.gwt.user.client.ui.IsWidget;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -26,23 +18,22 @@ import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
-import eu.ydp.gwtutil.client.StringUtils;
 
 public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
-	private Map<String, SimpleChoicePresenter> id2choices;
+	private List<SimpleChoicePresenter> choices;
 
 	private InlineBodyGeneratorSocket bodyGenerator;
 
 	private ChoiceInteractionBean bean;
 
-	private ChoiceModuleModel model;
+	private final ChoiceModuleModel model;
 
-	private ChoiceModuleView view;
+	private final ChoiceModuleView view;
 
-	private SimpleChoicePresenterFactory choiceModuleFactory;
+	private final SimpleChoicePresenterFactory choiceModuleFactory;
 
-	private ChoiceModuleListener listener;
+	private final ChoiceModuleListener listener;
 
 	@Inject
 	public ChoiceModulePresenterImpl(SimpleChoicePresenterFactory choiceModuleFactory, @ModuleScoped ChoiceModuleModel model,
@@ -64,13 +55,13 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	}
 
 	private void initializeChoices() {
-		id2choices = new HashMap<String, SimpleChoicePresenter>();
+		choices = new ArrayList<SimpleChoicePresenter>();
 
 		view.clear();
 
 		for (SimpleChoiceBean choice : bean.getSimpleChoices()) {
 			SimpleChoicePresenter choicePresenter = createSimpleChoicePresenter(choice, bodyGenerator);
-			id2choices.put(choice.getIdentifier(), choicePresenter);
+			choices.add(choicePresenter);
 			view.addChoice(choicePresenter.asWidget());
 			choicePresenter.setListener(listener);
 		}
@@ -93,19 +84,15 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void setLocked(boolean locked) {
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
+		for (SimpleChoicePresenter choice : choices) {
 			choice.setLocked(locked);
 		}
 	}
 
-	private Collection<SimpleChoicePresenter> getSimpleChoices() {
-		return id2choices.values();
-	}
-
 	@Override
 	public void reset() {
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
+		for (SimpleChoicePresenter choice : choices) {
+			String choiceIdentifier = choice.getIdentifier();
 			model.removeAnswer(choiceIdentifier);
 
 			choice.reset();
@@ -113,60 +100,9 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	}
 
 	@Override
-	public IsWidget getFeedbackPlaceholderByIdentifier(final String identifier) {
-		IsWidget widget = null;
-		Collection<SimpleChoicePresenter> simpleChoices = getSimpleChoices();
-		Predicate<SimpleChoicePresenter> placeHolderPredicate = getPlaceHolderPredicate(identifier);
-		Optional<SimpleChoicePresenter> optionalPlaceholder = Iterables.tryFind(simpleChoices, placeHolderPredicate);
-
-		if (optionalPlaceholder.isPresent()) {
-			widget = optionalPlaceholder.get().getFeedbackPlaceHolder();
-		}
-
-		return widget;
-	}
-
-	private Predicate<SimpleChoicePresenter> getPlaceHolderPredicate(final String identifier) {
-		Predicate<SimpleChoicePresenter> predicate = new Predicate<SimpleChoicePresenter>() {
-
-			@Override
-			public boolean apply(SimpleChoicePresenter simpleChoicePresenter) {
-				String choiceIdentifier = getChoiceIdentifier(simpleChoicePresenter);
-				return identifier.equals(choiceIdentifier);
-			}
-		};
-		return predicate;
-	}
-
-	@Override
-	public String getChoiceIdentifier(final SimpleChoicePresenter choice) {
-		String searchedIdentifier = StringUtils.EMPTY_STRING;
-		Set<Entry<String, SimpleChoicePresenter>> choices = id2choices.entrySet();
-		Predicate<Entry<String, SimpleChoicePresenter>> predicate = getIdentifierPredicate(choice);
-		Optional<Entry<String, SimpleChoicePresenter>> optionalIdentifier = Iterables.tryFind(choices, predicate);
-
-		if (optionalIdentifier.isPresent()) {
-			searchedIdentifier = optionalIdentifier.get().getKey();
-		}
-
-		return searchedIdentifier;
-	}
-
-	private Predicate<Entry<String, SimpleChoicePresenter>> getIdentifierPredicate(final SimpleChoicePresenter choice) {
-		Predicate<Entry<String, SimpleChoicePresenter>> predicate = new Predicate<Entry<String, SimpleChoicePresenter>>() {
-
-			@Override
-			public boolean apply(Entry<String, SimpleChoicePresenter> entry) {
-				return choice.equals(entry.getValue());
-			}
-		};
-		return predicate;
-	}
-
-	@Override
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
+		for (SimpleChoicePresenter choice : choices) {
+			String choiceIdentifier = choice.getIdentifier();
 			boolean mark = isChoiceMarkType(type, choiceIdentifier);
 
 			if (choice.isSelected() && mark) {
@@ -192,8 +128,8 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
 	@Override
 	public void showAnswers(ShowAnswersType type) {
-		for (SimpleChoicePresenter choice : getSimpleChoices()) {
-			String choiceIdentifier = getChoiceIdentifier(choice);
+		for (SimpleChoicePresenter choice : choices) {
+			String choiceIdentifier = choice.getIdentifier();
 			boolean select = isChoiceAnswerType(type, choiceIdentifier);
 			choice.setSelected(select);
 		}

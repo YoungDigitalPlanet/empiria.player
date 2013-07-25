@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.choice;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +31,7 @@ public class ChoiceModuleListenerImplTest {
 	public void shouldRemoveAnswerWhenChoiceIsSelected() {
 		// given
 		when(choice.isSelected()).thenReturn(true);
-		when(presenter.getChoiceIdentifier(choice)).thenReturn(IDENTIFIER);
+		when(choice.getIdentifier()).thenReturn(IDENTIFIER);
 
 		// when
 		listener.onChoiceClick(choice);
@@ -46,7 +45,7 @@ public class ChoiceModuleListenerImplTest {
 	public void shouldAddAnswerWhenChoiceIsNotSelected() {
 		// given
 		when(choice.isSelected()).thenReturn(false);
-		when(presenter.getChoiceIdentifier(choice)).thenReturn(IDENTIFIER);
+		when(choice.getIdentifier()).thenReturn(IDENTIFIER);
 
 		// when
 		listener.onChoiceClick(choice);

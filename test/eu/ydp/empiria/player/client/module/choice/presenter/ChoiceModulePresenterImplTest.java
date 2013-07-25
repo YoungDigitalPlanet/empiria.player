@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.module.choice.presenter;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -15,11 +12,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import com.google.common.collect.Lists;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.Widget;
@@ -34,11 +29,7 @@ import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
-@RunWith(ExMockRunner.class)
-@PrepareForTest(Widget.class)
 public class ChoiceModulePresenterImplTest {
 
 	@InjectMocks
@@ -46,14 +37,13 @@ public class ChoiceModulePresenterImplTest {
 
 	@Mock ChoiceModuleModel model;
 	@Mock ChoiceModuleView view;
-	@Mock ChoiceInteractionBean bean;
 	@Mock SimpleChoicePresenterFactory choiceModuleFactory;
 	@Mock InlineBodyGeneratorSocket bodyGenerator;
 	@Mock SimpleChoicePresenter simplePresenter1;
 	@Mock SimpleChoicePresenter simplePresenter2;
 	@Mock SimpleChoicePresenter simplePresenter3;
 	@Mock SimpleChoicePresenter simplePresenter4;
-	@Mock Widget widget;
+	ChoiceInteractionBean bean;
 
 	private static final String IDENTIFIER_1 = "1";
 	private static final String IDENTIFIER_2 = "2";
@@ -86,13 +76,16 @@ public class ChoiceModulePresenterImplTest {
 				createSimpleBean(IDENTIFIER_2, simplePresenter2), createSimpleBean(IDENTIFIER_3, simplePresenter3),
 				createSimpleBean(IDENTIFIER_4, simplePresenter4));
 		bean.setSimpleChoices(simpleChoices);
-		when(view.asWidget()).thenReturn(widget);
 	}
 
 	private SimpleChoiceBean createSimpleBean(String id, SimpleChoicePresenter simplePresenter) {
 		SimpleChoiceBean bean = new SimpleChoiceBean();
 		bean.setIdentifier(id);
 		when(choiceModuleFactory.getSimpleChoicePresenter(bean, bodyGenerator)).thenReturn(simplePresenter);
+		
+		when(simplePresenter.getIdentifier())
+			.thenReturn(id);
+		
 		return bean;
 	}
 
@@ -170,27 +163,6 @@ public class ChoiceModulePresenterImplTest {
 		verify(simplePresenter2).setSelected(false);
 		verify(simplePresenter3).setSelected(false);
 		verify(simplePresenter4).setSelected(true);
-	}
-
-	@Test
-	public void shouldReturnCorrectPlaceholder() {
-		// when
-		presenter.getFeedbackPlaceholderByIdentifier(IDENTIFIER_2);
-
-		// then
-		verify(simplePresenter2).getFeedbackPlaceHolder();
-		verify(simplePresenter1, never()).getFeedbackPlaceHolder();
-		verify(simplePresenter3, never()).getFeedbackPlaceHolder();
-		verify(simplePresenter4, never()).getFeedbackPlaceHolder();
-	}
-
-	@Test
-	public void shouldReturnCorrectSimpleChoicePresenterIdentifier() {
-		// when
-		String identifier = presenter.getChoiceIdentifier(simplePresenter3);
-
-		// then
-		assertThat(identifier, is(equalTo(IDENTIFIER_3)));
 	}
 
 	@Test
@@ -291,15 +263,5 @@ public class ChoiceModulePresenterImplTest {
 		verify(simplePresenter2).markAnswer(MarkAnswersType.WRONG,MarkAnswersMode.UNMARK);
 		verify(simplePresenter3, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
 		verify(simplePresenter4, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
-	}
-
-	@Test
-	public void shouldReturnWidget() {
-		// when
-		Widget asWidget = presenter.asWidget();
-
-		// then
-		verify(view).asWidget();
-		assertThat(asWidget, is(widget));
 	}
 }
