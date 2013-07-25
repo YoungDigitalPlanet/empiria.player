@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.selection.controller;
 import java.util.List;
 
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
+import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 
 public class SelectionViewUpdater {
@@ -14,20 +15,21 @@ public class SelectionViewUpdater {
 			SelectionAnswerDto selectionAnswerDto = allAnswers.get(choiceNumber);
 			
 			if(selectionAnswerDto.isStateChanged()){
-				updateSingleAnswer(selectionAnswerDto, itemNumber, choiceNumber, selectionModuleView);
+				SelectionGridElementPosition position = new SelectionGridElementPosition(choiceNumber + 1, itemNumber + 1);
+				updateSingleAnswer(selectionAnswerDto, position, selectionModuleView);
 				selectionAnswerDto.setStateChanged(false);
 			}
 		}
 	}
 
-	private void updateSingleAnswer(SelectionAnswerDto selectionAnswerDto, int itemNumber, int choiceNumber, SelectionModuleView selectionModuleView) {
+	private void updateSingleAnswer(SelectionAnswerDto selectionAnswerDto, SelectionGridElementPosition position, SelectionModuleView selectionModuleView) {
 		if(selectionAnswerDto.isSelected()){
-			selectionModuleView.selectButton(itemNumber, choiceNumber);
+			selectionModuleView.selectButton(position);
 		}else{
-			selectionModuleView.unselectButton(itemNumber, choiceNumber);
+			selectionModuleView.unselectButton(position);
 		}
 		
-		selectionModuleView.lockButton(selectionAnswerDto.isLocked(), itemNumber, choiceNumber);
-		selectionModuleView.updateButtonStyle(itemNumber, choiceNumber, selectionAnswerDto.getSelectionAnswerType());
+		selectionModuleView.lockButton(position, selectionAnswerDto.isLocked());
+		selectionModuleView.updateButtonStyle(position, selectionAnswerDto.getSelectionAnswerType());
 	}
 }

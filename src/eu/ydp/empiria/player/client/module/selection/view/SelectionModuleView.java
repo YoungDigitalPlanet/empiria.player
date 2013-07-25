@@ -5,27 +5,28 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
 public interface SelectionModuleView extends IsWidget{
 
 	void initialize(InlineBodyGeneratorSocket inlineBodyGeneratorSocket);
 
-	void setItemDisplayedName(XMLContent itemName, int itemNumber);
+	void setItemDisplayedName(XMLContent itemName, SelectionGridElementPosition gridElementPosition);
 
-	void setChoiceOptionDisplayedName(XMLContent choiceName, int choiceNumber);
+	void setChoiceOptionDisplayedName(XMLContent choiceName, SelectionGridElementPosition gridElementPosition);
 
-	void createButtonForItemChoicePair(int itemNumber, int choiceNumber, String moduleStyleName);
+	void createButtonForItemChoicePair(SelectionGridElementPosition gridElementPosition, String moduleStyleName);
 
-	void selectButton(int itemNumber, int choiceNumber);
+	void selectButton(SelectionGridElementPosition gridElementPosition);
 
-	void unselectButton(int itemNumber, int choiceNumber);
+	void unselectButton(SelectionGridElementPosition gridElementPosition);
 
-	void lockButton(boolean lock, int itemNumber, int choiceNumber);
+	void lockButton(SelectionGridElementPosition gridElementPosition, boolean lock);
 
-	void updateButtonStyle(int itemNumber, int choiceNumber, UserAnswerType styleState);
+	void updateButtonStyle(SelectionGridElementPosition gridElementPosition, UserAnswerType styleState);
 
-	void addClickHandlerToButton(int itemNumber, int choiceNumber, ClickHandler clickHandler);
+	void addClickHandlerToButton(SelectionGridElementPosition gridElementPosition, ClickHandler clickHandler);
 
 	void setGridSize(int amountOfItems, int amountOfChoices);
 }
