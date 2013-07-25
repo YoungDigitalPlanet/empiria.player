@@ -147,4 +147,13 @@ public class OutcomeAccessorTest {
 		verify(variablePossessorBase).isLastAnswerSelectAction();
 	}
 	
+	@Test
+	public void isLastActionSelection_variableProviderSocketIsNotInstanceOfVariablePossessorBase() {
+		// when
+		boolean lastActionSelection = accessor.isLastActionSelection();
+
+		// then
+		assertThat(lastActionSelection).isEqualTo(false);
+	}
+	
 }
