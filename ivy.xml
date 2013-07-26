@@ -32,7 +32,7 @@
 	<dependency org="eu.ydp" name="mathPlayer" rev="latest.integration"  conf="default, lib, test->default"/>
 	<dependency org="eu.ydp" name="canvasadapter" rev="latest.integration"  conf="default, lib, test->default"/>
 	<dependency org="eu.ydp" name="jsfilerequest" rev="latest.integration"  conf="default, lib, test->default"/>
-	<dependency org="eu.ydp" name="ydpgwtutils" rev="[1.11,1.12[" force="true"  conf="default, lib, test->default"/>
+	<dependency org="eu.ydp" name="ydpgwtutils" rev="[1.11.0,1.11.1[" force="true"  conf="default, lib, test->default"/>
 	<dependency org="eu.ydp" name="gwtFlashMedia" rev="latest.integration"  conf="default, lib, test->default"/>
 	<dependency org="eu.ydp" name="gwtCreateJs" rev="latest.integration" conf="default, lib, test->default"/>
 	<dependency org="eu.ydp" name="jaxb4gwt" rev="latest.integration" conf="default, lib, test->default"/>
