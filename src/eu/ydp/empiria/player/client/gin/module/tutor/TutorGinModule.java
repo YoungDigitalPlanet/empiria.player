@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.gin.module;
+package eu.ydp.empiria.player.client.gin.module.tutor;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
