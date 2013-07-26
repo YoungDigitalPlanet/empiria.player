@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.media.button;
+package eu.ydp.empiria.player.client.module.media.progress;
 
 import com.google.gwt.dom.client.NativeEvent;
 
