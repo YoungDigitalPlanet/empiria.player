@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -88,5 +89,20 @@ public class VariablePossessorBaseTest {
 	}
 
 	class VariablePossessorBaseMock<V extends Variable> extends VariablePossessorBase<V> {
+	}
+
+	@Test
+	public void shouldResetEveryVariable() {
+		// given
+		Variable variableMock1 = mock(Variable.class);
+		Variable variableMock2 = mock(Variable.class);
+		variablePossessor.variables = new ImmutableMap.Builder<String, Variable>().put("MOCK_1", variableMock1).put("MOCK_2", variableMock2).build();
+
+		// when
+		variablePossessor.reset();
+
+		// then
+		verify(variableMock1).reset();
+		verify(variableMock2).reset();
 	}
 }

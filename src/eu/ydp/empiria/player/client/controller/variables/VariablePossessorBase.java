@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.variables;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -37,21 +36,29 @@ public abstract class VariablePossessorBase<V extends Variable> extends Variable
 	}
 
 	public boolean isLastAnswerSelectAction() {
-		Set<String> keySet = variables.keySet();
-		for (String variableName : keySet) {
-			String lastchange = VariableName.LASTCHANGE.toString();
-			if (variableName.endsWith(lastchange)) {
-				V variable = variables.get(variableName);
-				if (hasSelectChanges(variable.values)) {
-					return true;
-				}
+		Set<String> identifiers = getVariableIdentifiers();
+		for (String variableName : identifiers) {
+			if (checkVariable(variableName)) {
+				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean hasSelectChanges(List<String> values) {
-		for (String answer : values) {
+	private boolean checkVariable(String variableName) {
+		String lastchange = VariableName.LASTCHANGE.toString();
+		if (variableName.endsWith(lastchange)) {
+			V variable = getVariablesMap().get(variableName);
+			if (hasSelectChange(variable)) {
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+	private boolean hasSelectChange(V variable) {
+		for (String answer : variable.values) {
 			if (!answer.equals("+") && answer.startsWith("+")) {
 				return true;
 			}
