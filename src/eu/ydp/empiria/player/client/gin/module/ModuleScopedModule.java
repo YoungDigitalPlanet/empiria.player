@@ -14,6 +14,10 @@ import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.TutorConfigModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
+import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
+import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
+import eu.ydp.empiria.player.client.module.choice.providers.MultiChoiceStyleProvider;
+import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
@@ -54,6 +58,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindOrdering();
 		bindColorfill();
 		bindDragGap();
+		bindChoice();
 		bindTutor();
 	}
 
@@ -81,6 +86,13 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(SourceListManagerAdapter.class, new TypeLiteral<ModuleScopedProvider<SourceListManagerAdapter>>(){});
 	}
 	
+	private void bindChoice() {
+		bindModuleScoped(ChoiceModuleView.class, new TypeLiteral<ModuleScopedProvider<ChoiceModuleView>>(){});
+		bindModuleScoped(ChoiceModulePresenter.class, new TypeLiteral<ModuleScopedProvider<ChoiceModulePresenter>>(){});
+		bindModuleScoped(ChoiceModuleModel.class, new TypeLiteral<ModuleScopedProvider<ChoiceModuleModel>>(){});
+		bindModuleScoped(MultiChoiceStyleProvider.class, new TypeLiteral<ModuleScopedProvider<MultiChoiceStyleProvider>>(){});
+	}
+
 	private void bindTutor() {
 		bindModuleScoped(ActionEventGenerator.class, new TypeLiteral<ModuleScopedProvider<ActionEventGenerator>>(){});
 		bindModuleScoped(TutorPresenter.class, new TypeLiteral<ModuleScopedProvider<TutorPresenterImpl>>(){});

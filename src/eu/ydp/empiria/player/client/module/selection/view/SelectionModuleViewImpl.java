@@ -126,13 +126,6 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	@Override
 	public void addClickHandlerToButton(int itemNumber, int choiceNumber, ClickHandler clickHandler){
 		final SelectionChoiceButton button = getButton(itemNumber, choiceNumber);
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				button.setSelected(!button.isSelected());
-				button.updateStyle();
-			}
-		});
 		button.addClickHandler(clickHandler);
 	}
 
