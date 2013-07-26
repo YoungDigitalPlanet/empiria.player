@@ -9,7 +9,7 @@ public class SelectionGridElementPosition {
 		setColumnNumber(columnNumber);
 		setRowNumber(rowNumber);
 	}
-	
+
 	private int columnNumber;
 	public int getColumnNumber() {
 		return columnNumber;
@@ -34,8 +34,8 @@ public class SelectionGridElementPosition {
 			return false;
 		}
 		SelectionGridElementPosition positionToCompare = (SelectionGridElementPosition)objectToCompare; 
-		if(positionToCompare.columnNumber == getColumnNumber() &&
-			positionToCompare.rowNumber == getRowNumber()) {
+		if(positionToCompare.columnNumber == columnNumber &&
+			positionToCompare.rowNumber == rowNumber) {
 			return true;
 		} else {
 			return false;
@@ -48,6 +48,6 @@ public class SelectionGridElementPosition {
 	}
 	
 	public String toString() {
-		return "17" + String.valueOf(getColumnNumber()) + String.valueOf(getRowNumber());
+		return "17" + String.valueOf(columnNumber) + String.valueOf(rowNumber);
 	}
 }

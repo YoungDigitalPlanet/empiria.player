@@ -20,10 +20,17 @@ import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
 public class SelectionModuleViewImpl implements SelectionModuleView{
 
+	public SelectionModuleViewImpl() {};
+	
 	@Inject
-	private SelectionGridElementGenerator gridElementGenerator;
+	public SelectionModuleViewImpl(
+			SelectionElementGenerator gridElementGenerator) {
+		this.gridElementGenerator = gridElementGenerator;
+	}
+	
+	private SelectionElementGenerator gridElementGenerator;
 
-	private Map<SelectionGridElementPosition, SelectionGridElement> gridMap;
+	private Map<SelectionGridElementPosition, SelectionGridElement> gridMap = new HashMap<SelectionGridElementPosition, SelectionGridElement>();
 
 	@UiField
 	Panel mainPanel;
@@ -43,8 +50,6 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 		SelectionModuleUiBinder uiBinder = GWT.create(SelectionModuleUiBinder.class);
 		uiBinder.createAndBindUi(this);
 		gridElementGenerator.setInlineBodyGenerator(inlineBodyGeneratorSocket);
-		
-		gridMap = new HashMap<SelectionGridElementPosition, SelectionGridElement>();
 	}
 
 	@Override

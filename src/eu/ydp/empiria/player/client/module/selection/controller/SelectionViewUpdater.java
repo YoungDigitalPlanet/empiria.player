@@ -2,12 +2,22 @@ package eu.ydp.empiria.player.client.module.selection.controller;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
+import eu.ydp.empiria.player.client.module.selection.view.SelectionElementPositionGenerator;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 
 public class SelectionViewUpdater {
 
+	private SelectionElementPositionGenerator elementPositionGenerator;
+	
+	@Inject
+	public SelectionViewUpdater(SelectionElementPositionGenerator elementPositionGenerator) {
+		this.elementPositionGenerator = elementPositionGenerator;
+	}
+	
 	public void updateView(SelectionModuleView selectionModuleView, GroupAnswersController groupChoicesController, int itemNumber) {
 		List<SelectionAnswerDto> allAnswers = groupChoicesController.getAllAnswers();
 		
@@ -15,7 +25,7 @@ public class SelectionViewUpdater {
 			SelectionAnswerDto selectionAnswerDto = allAnswers.get(choiceNumber);
 			
 			if(selectionAnswerDto.isStateChanged()){
-				SelectionGridElementPosition position = new SelectionGridElementPosition(choiceNumber + 1, itemNumber + 1);
+				SelectionGridElementPosition position = elementPositionGenerator.getButtonElementPositionFor(itemNumber, choiceNumber);
 				updateSingleAnswer(selectionAnswerDto, position, selectionModuleView);
 				selectionAnswerDto.setStateChanged(false);
 			}

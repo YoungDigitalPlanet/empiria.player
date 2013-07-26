@@ -5,22 +5,27 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
-public class SelectionGridElementGenerator {
+public class SelectionGridElementGeneratorImpl implements SelectionElementPositionGenerator, SelectionElementGenerator {
+
+	public static final int ROWS_RESERVED_FOR_COLUMN_HEADER = 1;
+	public static final int COLUMNS_RESERVED_FOR_ROW_HEADER = 1;
 
 	private StyleNameConstants styleNameConstants;
 	private UserInteractionHandlerFactory userInteractionHandlerFactory;
 	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+	
 	
 	public void setInlineBodyGenerator(InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
 		this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
 	}
 	
 	@Inject
-	public SelectionGridElementGenerator(
+	public SelectionGridElementGeneratorImpl(
 			StyleNameConstants styleNameConstants,
 			UserInteractionHandlerFactory userInteractionHandlerFactory) {
 		this.styleNameConstants = styleNameConstants;
@@ -58,6 +63,18 @@ public class SelectionGridElementGenerator {
 		// TODO choiceTextLabel wasn't placed inside flowPanel
 		choiceLabelElement.add(choiceTextLabel);
 		return choiceLabelElement;
+	}
+	
+	public SelectionGridElementPosition getButtonElementPositionFor(int itemIndex, int choiceIndex) {
+		return new SelectionGridElementPosition(choiceIndex + COLUMNS_RESERVED_FOR_ROW_HEADER, itemIndex + ROWS_RESERVED_FOR_COLUMN_HEADER);
+	}
+	
+	public SelectionGridElementPosition getChoiceLabelElementPosition(int choiceIndex) {
+		return new SelectionGridElementPosition(choiceIndex + COLUMNS_RESERVED_FOR_ROW_HEADER, 0);
+	}
+	
+	public SelectionGridElementPosition getItemLabelElementPosition(int itemIndex) {
+		return new SelectionGridElementPosition(0, itemIndex + COLUMNS_RESERVED_FOR_ROW_HEADER);
 	}
 	
 	private void addMouseOverHandler(final SelectionChoiceButton button) {

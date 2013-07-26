@@ -15,27 +15,28 @@ import eu.ydp.empiria.player.client.module.selection.presenter.SelectionModulePr
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteractionBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionItemBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleChoiceBean;
+import eu.ydp.empiria.player.client.module.selection.view.SelectionElementPositionGenerator;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class SelectionViewBuilder {
 
-	public static final int ROWS_RESERVED_FOR_COLUMN_HEADER = 1;
-	public static final int COLUMNS_RESERVED_FOR_ROW_HEADER = 1;
-	
 	private SelectionModuleView selectionModuleView;
 	private SelectionModuleFactory selectionModuleFactory;
 	private SelectionModulePresenter selectionModulePresenter;
 	private SelectionInteractionBean bean;
 	private StyleNameConstants styleNameConstants;
+	private SelectionElementPositionGenerator elementPositionGenerator;
 	
 	@Inject
 	public SelectionViewBuilder(
 			SelectionModuleFactory selectionModuleFactory,
 			StyleNameConstants styleNameConstants,
+			SelectionElementPositionGenerator elementPositionGenerator,
 			@ModuleScoped SelectionModuleView selectionModuleView) { 
 		this.styleNameConstants = styleNameConstants;
 		this.selectionModuleView = selectionModuleView;
+		this.elementPositionGenerator = elementPositionGenerator;
 		this.selectionModuleFactory = selectionModuleFactory;
 	}
 	
@@ -50,7 +51,7 @@ public class SelectionViewBuilder {
 		for(int rowNumber=0; rowNumber<items.size(); rowNumber++){
 			SelectionItemBean selectionItemBean = items.get(rowNumber);
 			XMLContent xmlContent = selectionItemBean.getXmlContent();
-			SelectionGridElementPosition position = new SelectionGridElementPosition(0, rowNumber + COLUMNS_RESERVED_FOR_ROW_HEADER);
+			SelectionGridElementPosition position = elementPositionGenerator.getItemLabelElementPosition(rowNumber);
 			selectionModuleView.setItemDisplayedName(xmlContent, position);
 		}
 	}
@@ -59,12 +60,12 @@ public class SelectionViewBuilder {
 		for (int columnNumber=0; columnNumber<simpleChoices.size(); columnNumber++) {
 			SelectionSimpleChoiceBean selectionSimpleChoiceBean = simpleChoices.get(columnNumber);
 			XMLContent xmlContent = selectionSimpleChoiceBean.getXmlContent();
-			SelectionGridElementPosition position = new SelectionGridElementPosition(columnNumber + ROWS_RESERVED_FOR_COLUMN_HEADER, 0);
+			SelectionGridElementPosition position = elementPositionGenerator.getChoiceLabelElementPosition(columnNumber);
 			selectionModuleView.setChoiceOptionDisplayedName(xmlContent, position);
 		}
 	}
 	
-	public List<GroupAnswersController> fillGridWithButtons(List<SelectionItemBean> items, List<SelectionSimpleChoiceBean> simpleChoices) {
+	public List<GroupAnswersController> fillGrid(List<SelectionItemBean> items, List<SelectionSimpleChoiceBean> simpleChoices) {
 		fillFirstRowWithChoices(simpleChoices);
 		fillFirstColumnWithItems(items);
 
@@ -90,7 +91,7 @@ public class SelectionViewBuilder {
 			SelectionSimpleChoiceBean selectionSimpleChoiceBean = simpleChoices.get(columnNumber);
 			String buttonIdentifier = buildPairedIdentifier(itemIdentifier, selectionSimpleChoiceBean.getIdentifier());
 			
-			SelectionGridElementPosition position = new SelectionGridElementPosition(columnNumber + COLUMNS_RESERVED_FOR_ROW_HEADER, rowNumber + ROWS_RESERVED_FOR_COLUMN_HEADER);
+			SelectionGridElementPosition position = elementPositionGenerator.getButtonElementPositionFor(rowNumber, columnNumber);
 			
 			selectionModuleView.createButtonForItemChoicePair(position, moduleStyleName);
 			

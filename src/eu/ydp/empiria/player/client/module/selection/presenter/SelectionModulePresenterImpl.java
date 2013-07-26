@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.selection.presenter;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -15,11 +13,8 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
-import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnswersByTypeFinder;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewUpdater;
-import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
-import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteractionBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionItemBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleChoiceBean;
@@ -33,14 +28,12 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 	private List<GroupAnswersController> groupChoicesControllers;
 
 	private SelectionModuleView selectionModuleView;
-	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
 	private SelectionViewUpdater viewUpdater;
 	private SelectionViewBuilder viewBuilder;
 	private SelectionAnswersMarker answersMarker;
 	
 	@Inject
 	public SelectionModulePresenterImpl(
-			IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder,
 			SelectionViewUpdater selectionViewUpdater,
 			SelectionAnswersMarker answersMarker,
 			@ModuleScoped SelectionModuleView selectionModuleView,
@@ -48,7 +41,6 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 			@ModuleScoped SelectionViewBuilder selectionViewBuilder) {
 		this.answersMarker = answersMarker;
 		this.selectionModuleView = selectionModuleView;
-		this.identifiableAnswersByTypeFinder = identifiableAnswersByTypeFinder;
 		this.viewUpdater = selectionViewUpdater;
 		this.model = selectionModuleModel;
 		this.viewBuilder = selectionViewBuilder;
@@ -71,7 +63,7 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 		
 		viewBuilder.setGridSize(items.size(), simpleChoices.size());
 		
-		this.groupChoicesControllers = viewBuilder.fillGridWithButtons(items, simpleChoices);
+		this.groupChoicesControllers = viewBuilder.fillGrid(items, simpleChoices);
 	}
 
 	@Override

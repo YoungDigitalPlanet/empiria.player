@@ -26,11 +26,8 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
-import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnswersByTypeFinder;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewUpdater;
-import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
-import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteractionBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionItemBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleChoiceBean;
@@ -50,23 +47,23 @@ public class SelectionModulePresenterImplJUnitTest {
 	@Mock
 	private SelectionModuleFactory selectionModuleFactory;
 	@Mock
-	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
-	@Mock
 	private SelectionViewUpdater selectionViewUpdater;
 	@Mock
 	private SelectionModuleModel model;
 	@Mock
 	private ModuleSocket moduleSocket;
 	@Mock
-	private SelectionViewBuilder viewBuilder; 
+	private SelectionViewBuilder viewBuilder;
+	@Mock
+	private SelectionAnswersMarker answersMarker;
 
 	private SelectionInteractionBean bean;
 
 	@Before
 	public void setUp() throws Exception {
 		presenter = new SelectionModulePresenterImpl(
-				identifiableAnswersByTypeFinder,
 				selectionViewUpdater,
+				answersMarker,
 				selectionModuleView,
 				model,
 				viewBuilder);
@@ -81,8 +78,8 @@ public class SelectionModulePresenterImplJUnitTest {
 	public void tearDown() throws Exception {
 		Mockito.verifyNoMoreInteractions(
 				selectionModuleView,
+				answersMarker,
 				selectionModuleFactory,
-				identifiableAnswersByTypeFinder,
 				selectionViewUpdater,
 				model,
 				moduleSocket
@@ -101,7 +98,7 @@ public class SelectionModulePresenterImplJUnitTest {
 		when(moduleSocket.getInlineBodyGeneratorSocket())
 			.thenReturn(inlineBodyGeneratorSocket );
 		
-		when(viewBuilder.fillGridWithButtons(items, choices))
+		when(viewBuilder.fillGrid(items, choices))
 			.thenReturn(groupChoicesControllers);
 		
 		//then
@@ -112,7 +109,7 @@ public class SelectionModulePresenterImplJUnitTest {
 		verify(moduleSocket).getInlineBodyGeneratorSocket();
 		verify(selectionModuleView).initialize(inlineBodyGeneratorSocket);
 		verify(viewBuilder).setGridSize(items.size(), choices.size());
-		verify(viewBuilder).fillGridWithButtons(items, choices);
+		verify(viewBuilder).fillGrid(items, choices);
 		assertEquals(groupChoicesControllers, getGroupControllers());
 		
 		Mockito.verifyNoMoreInteractions(inlineBodyGeneratorSocket);
@@ -174,92 +171,19 @@ public class SelectionModulePresenterImplJUnitTest {
 	}
 
 	@Test
-	public void testMarkAnswers_unmark() throws Exception {
+	public void testMarkAnswers() throws Exception {
 		GroupAnswersController groupController = mock(GroupAnswersController.class);
 		
 		List<GroupAnswersController> groupControllers = Lists.newArrayList(groupController);
 		setGroupController(groupControllers);
-		
-		List<SelectionAnswerDto> selectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getSelectedAnswers())
-			.thenReturn(selectedAnswers );
-		
-		List<SelectionAnswerDto> notSelectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getNotSelectedAnswers())
-			.thenReturn(notSelectedAnswers);
-
-		when(identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(MarkAnswersType.CORRECT, selectedAnswers, model))
-			.thenReturn(selectedAnswers);
 		
 		//then
 		presenter.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK);
 
-		
-		verify(groupController).getSelectedAnswers();
-		verify(groupController).getNotSelectedAnswers();
-		verify(identifiableAnswersByTypeFinder).findAnswersObjectsOfGivenType(MarkAnswersType.CORRECT, selectedAnswers, model);
-		
-		for (GroupAnswersController groupCtrl : groupControllers) {
-			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
-		}
-		
-		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
-			assertEquals(UserAnswerType.DEFAULT, selectionAnswerDto.getSelectionAnswerType());
-		}
-		
-		for (SelectionAnswerDto selectionAnswerDto : selectedAnswers) {
-			assertEquals(UserAnswerType.DEFAULT, selectionAnswerDto.getSelectionAnswerType());
-		}
+		verify(answersMarker).markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK, groupController);
+		verify(selectionViewUpdater).updateView(Mockito.any(SelectionModuleView.class), Mockito.any(GroupAnswersController.class), Mockito.anyInt());
 	}
 	
-	@Test
-	public void testMarkAnswers_markCorrectAnswers() {
-		testMarkAnswers(MarkAnswersType.CORRECT, UserAnswerType.CORRECT);
-	}
-	
-	@Test
-	public void testMarkAnswers_markWrongAnswers() {
-		testMarkAnswers(MarkAnswersType.WRONG, UserAnswerType.WRONG);
-	}
-
-	private void testMarkAnswers(MarkAnswersType markAnswerType, UserAnswerType userAnswerType) {
-		GroupAnswersController groupController = mock(GroupAnswersController.class);
-		
-		List<GroupAnswersController> groupControllers = Lists.newArrayList(groupController);
-		setGroupController(groupControllers);
-		
-		List<SelectionAnswerDto> selectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getSelectedAnswers())
-			.thenReturn(selectedAnswers );
-		
-		List<SelectionAnswerDto> notSelectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getNotSelectedAnswers())
-			.thenReturn(notSelectedAnswers);
-		
-		when(identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(markAnswerType, selectedAnswers, model))
-			.thenReturn(selectedAnswers);
-		
-		//then
-		presenter.markAnswers(markAnswerType, MarkAnswersMode.MARK);
-
-		
-		verify(groupController).getSelectedAnswers();
-		verify(groupController).getNotSelectedAnswers();
-		verify(identifiableAnswersByTypeFinder).findAnswersObjectsOfGivenType(markAnswerType, selectedAnswers, model);
-		
-		for(GroupAnswersController groupCtrl : groupControllers) {
-			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
-		}
-		
-		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
-			assertEquals(UserAnswerType.NONE, selectionAnswerDto.getSelectionAnswerType());
-		}
-		
-		for (SelectionAnswerDto selectionAnswerDto : selectedAnswers) {
-			assertEquals(userAnswerType, selectionAnswerDto.getSelectionAnswerType());
-		}
-	}
-
 	@Test
 	public void testShowAnswers_showCorrectAnswers() {
 		GroupAnswersController groupController1 = mock(GroupAnswersController.class);
