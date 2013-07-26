@@ -1,10 +1,9 @@
 package eu.ydp.empiria.player.client.module.choice;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
-import eu.ydp.empiria.player.client.gin.factory.ChoiceModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -15,44 +14,42 @@ import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructur
 
 public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
 
-	@Inject
+	private ChoiceModuleStructure choiceStructure;
+
+	private ChoiceModuleModel moduleModel;
+
 	private ChoiceModulePresenter presenter;
 
 	@Inject
-	private ChoiceModuleStructure choiceStructure;
-
-	@Inject
-	protected Provider<ChoiceModule> moduleFactory;
-
-	@Inject
-	protected ChoiceModuleFactory choiceModuleFactory;
+	public ChoiceModule(ChoiceModuleStructure choiceStructure, @ModuleScoped ChoiceModuleModel moduleModel, @ModuleScoped ChoiceModulePresenter presenter) {
+		this.choiceStructure = choiceStructure;
+		this.moduleModel = moduleModel;
+		this.presenter = presenter;
+	}
 
 	@Override
 	protected void initalizeModule() {
 		choiceStructure.setMulti(isMulti());
-		if(isMulti()){
+		if (isMulti()) {
 			getResponse().setCountMode(getCountMode());
 		}
 		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
+
+		moduleModel.initialize(this);
 	}
 
 	private boolean isMulti() {
-		return Cardinality.MULTIPLE.equals(getResponse().cardinality);
+		return Cardinality.MULTIPLE == getResponse().cardinality;
 	}
 
 	@Override
-	public ChoiceModule getNewInstance() {
-		return moduleFactory.get();
-	}
-
-	@Override
-	protected ActivityPresenter<ChoiceModuleModel, ChoiceInteractionBean> getPresenter(){
+	protected ActivityPresenter<ChoiceModuleModel, ChoiceInteractionBean> getPresenter() {
 		return presenter;
 	}
 
 	@Override
 	protected ChoiceModuleModel getResponseModel() {
-		return choiceModuleFactory.getChoiceModuleModel(getResponse(), this);
+		return moduleModel;
 	}
 
 	@Override
