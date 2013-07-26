@@ -4,69 +4,112 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
 public class SourcelistManagerModel {
 
-	private Map<String, SourcelistClient> clientIdCache = Maps.newHashMap();
-	private Map<String, Sourcelist> sourcelistIdCache = Maps.newHashMap();
-	private Map<SourcelistClient, Sourcelist> mapClientToSourcelist = Maps.newHashMap();
-	private Multimap<Sourcelist, SourcelistClient> mapSourceListToClients = HashMultimap.create();
-	private Map<Sourcelist, Boolean> lockedModules = Maps.newHashMap();
+	private Map<String, SourcelistGroup> groups = Maps.newHashMap();
+	private Map<String, String> clientIdToSourcelistIdCache = Maps.newHashMap();
 
-	public void addRelation(Sourcelist sourcelist, SourcelistClient client) {
-		Sourcelist currentSourcelist = getSourcelistByClientId(client.getIdentifier());
-		if (currentSourcelist != null) {
-			mapSourceListToClients.get(currentSourcelist).remove(client);
-		}
-		mapClientToSourcelist.put(client, sourcelist);
-		clientIdCache.put(client.getIdentifier(), client);
-		sourcelistIdCache.put(sourcelist.getIdentifier(), sourcelist);
-		mapSourceListToClients.put(sourcelist, client);
-		lockedModules.put(sourcelist, false);
+	public void registerClient(SourcelistClient client) {
+		String sourceListId = client.sourceListId();
+		SourcelistGroup group = getOrCreateSourcelistGroup(sourceListId);
+		group.addClient(client);
+	}
+
+	public void registerSourcelist(Sourcelist sourcelist) {
+		String sourceListId = sourcelist.getIdentifier();
+		SourcelistGroup group = getOrCreateSourcelistGroup(sourceListId);
+		group.setSourcelist(sourcelist);
 	}
 
 	public Set<Sourcelist> getSourceLists() {
-		return mapSourceListToClients.keySet();
+		return FluentIterable.from(groups.values()).transform(sourcelistsFromGroups).toSet();
 	}
 
 	public Collection<SourcelistClient> getClients(Sourcelist sourcelist) {
-		return mapSourceListToClients.get(sourcelist);
-	}
-
-	public Collection<SourcelistClient> getClients() {
-		return clientIdCache.values();
+		String sourcelistId = sourcelist.getIdentifier();
+		return groups.get(sourcelistId).getClients();
 	}
 
 	public SourcelistClient getClientById(String clientId) {
-		return clientIdCache.get(clientId);
+		String sourcelistId = clientIdToSourcelistIdCache.get(clientId);
+		SourcelistGroup group = groups.get(sourcelistId);
+		Optional<SourcelistClient> optionalClient = group.getClientById(clientId);
+		return optionalClient.orNull();
 	}
 
 	public Sourcelist getSourcelistByClientId(String clientId) {
-		SourcelistClient client = clientIdCache.get(clientId);
-
-		return mapClientToSourcelist.get(client);
+		String sourcelistId = clientIdToSourcelistIdCache.get(clientId);
+		return groups.get(sourcelistId).getSourcelist();
 	}
 
 	public boolean containsClient(String clientId) {
-		return clientIdCache.containsKey(clientId);
+		return clientIdToSourcelistIdCache.containsKey(clientId);
 	}
 
 	public Sourcelist getSourcelistById(String sourcelistId) {
-		return sourcelistIdCache.get(sourcelistId);
+		return groups.get(sourcelistId).getSourcelist();
 	}
 
 	public void lockGroup(Sourcelist sourcelist) {
-		lockedModules.put(sourcelist, true);
+		String sourcelistId = sourcelist.getIdentifier();
+		groups.get(sourcelistId).setLocked(true);
 	}
 
 	public void unlockGroup(Sourcelist sourcelist) {
-		lockedModules.put(sourcelist, false);
+		String sourcelistId = sourcelist.getIdentifier();
+		groups.get(sourcelistId).setLocked(false);
 	}
 
 	public boolean isGroupLocked(Sourcelist sourcelist) {
-		return lockedModules.get(sourcelist);
+		String sourcelistId = sourcelist.getIdentifier();
+		return groups.get(sourcelistId).isLocked();
 	}
+
+	public void bind() {
+		groups = Maps.filterValues(groups, notEmptyGroup);
+		buildCache();
+	}
+
+	private void buildCache() {
+		for (SourcelistGroup group : groups.values()) {
+			buildClientCache(group);
+		}
+	}
+
+	private void buildClientCache(SourcelistGroup group) {
+		String sourcelistId = group.getSourcelist().getIdentifier();
+		for (SourcelistClient client : group.getClients()) {
+			clientIdToSourcelistIdCache.put(client.getIdentifier(), sourcelistId);
+		}
+	}
+
+	private SourcelistGroup getOrCreateSourcelistGroup(String sourceListId) {
+		if (!groups.containsKey(sourceListId)) {
+			SourcelistGroup group = new SourcelistGroup();
+			groups.put(sourceListId, group);
+		}
+		return groups.get(sourceListId);
+	}
+
+	private final Function<SourcelistGroup, Sourcelist> sourcelistsFromGroups = new Function<SourcelistGroup, Sourcelist>() {
+
+		@Override
+		public Sourcelist apply(SourcelistGroup group) {
+			return group.getSourcelist();
+		}
+	};
+
+	private final Predicate<SourcelistGroup> notEmptyGroup = new Predicate<SourcelistGroup>() {
+
+		@Override
+		public boolean apply(SourcelistGroup group) {
+			return group.getSourcelist() != null && !group.getClients().isEmpty();
+		}
+	};
 }
