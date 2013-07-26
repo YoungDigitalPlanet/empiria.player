@@ -5,7 +5,9 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;
 import static eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties.fromJs;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.google.gwt.core.client.JsArray;
 
@@ -60,6 +62,16 @@ public class TutorConfig {
 			throw new IndexOutOfBoundsException("No persona with index " + tutorPersonaIndex + " found in tutor configuration.");
 		}
 		TutorJs persona = tutorConfigJs.getTutors().get(tutorPersonaIndex);
-		return fromJs(persona);
+		return fromJs(persona, tutorPersonaIndex);
+	}
+	
+	public List<TutorPersonaProperties> getPersonas() {
+		JsArray<TutorJs> tutors = tutorConfigJs.getTutors();
+		List<TutorPersonaProperties> personas = new ArrayList<TutorPersonaProperties>();
+		for(int i = 0; i < tutors.length(); i++) {
+			TutorPersonaProperties persona = fromJs(tutors.get(i), i);
+			personas.add(persona);
+		}
+		return personas;
 	}
 }
