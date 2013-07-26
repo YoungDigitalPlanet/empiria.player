@@ -137,8 +137,9 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	private void setAfterButtonPositionAndStyle(final int leftOffsetForProgressButton) {
 		Style afterButtonStyle = afterButton.getElement().getStyle();
 		int leftPositionForAfterProgress = progressBarPositionCalculator.getLeftPositionForAfterProgressElement(leftOffsetForProgressButton);
-		afterButtonStyle.setLeft(leftPositionForAfterProgress, Unit.PX);
 		afterButtonStyle.setWidth(progressBarPositionCalculator.getWidthForAfterProgressElement(leftOffsetForProgressButton), Unit.PX);
+		afterButtonStyle.setLeft(leftPositionForAfterProgress, Unit.PX);
+
 	}
 
 	private void setBeforeButtonPositionAndStyle(final int leftOffsetForProgressButton) {
