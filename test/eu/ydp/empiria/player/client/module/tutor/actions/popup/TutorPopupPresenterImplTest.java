@@ -28,7 +28,7 @@ public class TutorPopupPresenterImplTest {
 	@Mock
 	private TutorService tutorService;
 	@Mock
-	private PersonaViewDtoConverter personaConverter;
+	private PersonaToViewDtoConverter personaConverter;
 	@Mock
 	private TutorConfig tutorConfig;
 	

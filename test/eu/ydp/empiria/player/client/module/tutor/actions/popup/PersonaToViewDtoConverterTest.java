@@ -13,13 +13,13 @@ import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
 import eu.ydp.empiria.player.client.util.geom.Size;
 
-public class PersonaViewDtoConverterTest {
+public class PersonaToViewDtoConverterTest {
 
-	private PersonaViewDtoConverter converter;
+	private PersonaToViewDtoConverter converter;
 	
 	@Before
 	public void setUp() {
-		converter = new PersonaViewDtoConverter();
+		converter = new PersonaToViewDtoConverter();
 	}
 	
 	@Test

@@ -12,6 +12,8 @@ import eu.ydp.empiria.player.client.gin.factory.TutorCommandsModuleFactory;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorServiceImpl;
 import eu.ydp.empiria.player.client.module.tutor.TutorCommand;
+import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupPresenter;
+import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.commands.AnimationCommand;
 import eu.ydp.empiria.player.client.module.tutor.commands.ShowImageCommand;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
@@ -28,6 +30,7 @@ public class TutorGinModule extends AbstractGinModule {
 		bind(TutorView.class).to(TutorViewImpl.class);
 		bind(TutorPresenter.class).to(TutorPresenterImpl.class);
 		bind(ActionExecutorService.class).to(ActionExecutorServiceImpl.class);
+		bind(TutorPopupPresenter.class).to(TutorPopupPresenterImpl.class);
 		install(new GinFactoryModuleBuilder()
 				.implement(TutorCommand.class, Names.named("image"), ShowImageCommand.class)
 				.implement(TutorCommand.class, Names.named("animation"), AnimationCommand.class)

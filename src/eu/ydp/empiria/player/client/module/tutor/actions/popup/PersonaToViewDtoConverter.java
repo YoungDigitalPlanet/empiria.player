@@ -5,7 +5,7 @@ import java.util.List;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
 
-public class PersonaViewDtoConverter {
+public class PersonaToViewDtoConverter {
 
 	public List<PersonaViewDto> createPersonasDtos(List<TutorPersonaProperties> personas) {
 		List<PersonaViewDto> viewDtos = new ArrayList<PersonaViewDto>();

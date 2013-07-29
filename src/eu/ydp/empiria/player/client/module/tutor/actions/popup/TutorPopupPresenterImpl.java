@@ -12,14 +12,14 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorSe
 public class TutorPopupPresenterImpl implements TutorPopupPresenter {
 
 	private TutorService tutorService;
-	private TutorPopupView tutorPopupView;
+	private TutorPopupView view;
 	private String tutorId;
-	private PersonaViewDtoConverter personaViewDtoConverter;
+	private PersonaToViewDtoConverter personaViewDtoConverter;
 	
 	@Inject
-	public TutorPopupPresenterImpl(TutorService tutorService, TutorPopupView tutorPopupView, PersonaViewDtoConverter personaViewDtoConverter) {
+	public TutorPopupPresenterImpl(TutorService tutorService, TutorPopupView tutorPopupView, PersonaToViewDtoConverter personaViewDtoConverter) {
 		this.tutorService = tutorService;
-		this.tutorPopupView = tutorPopupView;
+		this.view = tutorPopupView;
 		this.personaViewDtoConverter = personaViewDtoConverter;
 	}
 
@@ -36,8 +36,8 @@ public class TutorPopupPresenterImpl implements TutorPopupPresenter {
 	public void show() {
 		PersonaService tutorPersonaService = tutorService.getTutorPersonaService(tutorId);
 		int currentPersonaIndex = tutorPersonaService.getCurrentPersonaIndex();
-		tutorPopupView.setSelected(currentPersonaIndex);
-		tutorPopupView.show();
+		view.setSelected(currentPersonaIndex);
+		view.show();
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public class TutorPopupPresenterImpl implements TutorPopupPresenter {
 
 	private void initilizeView(List<PersonaViewDto> viewDtos) {
 		for (final PersonaViewDto personaViewDto : viewDtos) {
-			tutorPopupView.addPersona(personaViewDto);
-			tutorPopupView.addClickHandlerToPersona(new PopupClickCommand(personaViewDto, this));
+			view.addPersona(personaViewDto);
+			view.addClickHandlerToPersona(new PopupClickCommand(personaViewDto, this));
 		}
 	}
 }
