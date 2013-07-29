@@ -1,8 +1,11 @@
 package eu.ydp.empiria.player.client.module.dragdrop;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
@@ -14,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -26,8 +28,6 @@ public class SourcelistManagerImplTest {
 
 	@InjectMocks
 	SourcelistManagerImpl manager;
-	@Mock
-	SourcelistManagerHelper helper;
 	@Mock
 	SourcelistManagerModel model;
 	@Mock
@@ -61,52 +61,21 @@ public class SourcelistManagerImplTest {
 	}
 
 	@Test
-	public void shouldNotRegisterClientWithoutSourcelist() {
-		// given
-		when(helper.findSourcelist(client1)).thenReturn(Optional.<Sourcelist> absent());
-
+	public void shouldRegisterClient() {
 		// when
 		manager.registerModule(client1);
 
 		// then
-		verify(model, never()).addRelation(any(Sourcelist.class), eq(client1));
+		verify(model).registerClient(client1);
 	}
 
 	@Test
-	public void shouldRegisterClientWithSourcelist() {
-		// given
-
-		when(helper.findSourcelist(client1)).thenReturn(Optional.of(sourcelist1));
-
-		// when
-		manager.registerModule(client1);
-
-		// then
-		verify(model).addRelation(sourcelist1, client1);
-	}
-
-	@Test
-	public void shouldNotRegisterSourcelistWithoutClients() {
-		// given
-		when(helper.findClients(sourcelist1)).thenReturn(Lists.<SourcelistClient> newArrayList());
-
+	public void shouldRegisterSourcelist() {
 		// when
 		manager.registerSourcelist(sourcelist1);
 
 		// then
-		verify(model, never()).addRelation(eq(sourcelist1), any(SourcelistClient.class));
-	}
-
-	@Test
-	public void shouldRegisterSourcelistWithClients() {
-		// given
-		when(helper.findClients(sourcelist1)).thenReturn(Lists.newArrayList(client1, client2));
-
-		// when
-		manager.registerSourcelist(sourcelist1);
-
-		// then
-		verify(model, times(2)).addRelation(eq(sourcelist1), any(SourcelistClient.class));
+		verify(model).registerSourcelist(sourcelist1);
 	}
 
 	@Test
@@ -123,10 +92,10 @@ public class SourcelistManagerImplTest {
 
 	@Test
 	public void shouldUnlockAllClientsOnDragFinished() {
-		//given
+		// given
 		when(model.isGroupLocked(sourcelist1)).thenReturn(false);
 		when(model.isGroupLocked(sourcelist2)).thenReturn(false);
-		
+
 		// when
 		manager.dragFinished();
 
@@ -221,20 +190,20 @@ public class SourcelistManagerImplTest {
 		verify(sourcelist1).useAndRestockItems(sourcelist1ItemsIds);
 		verify(sourcelist2).useAndRestockItems(sourcelist2ItemsIds);
 	}
-	
+
 	@Test
-	public void shouldResizeAllClients(){
+	public void shouldResizeAllClients() {
 		// given
 		PlayerEvent event = mock(PlayerEvent.class);
 		HasDimensions dim1 = mock(HasDimensions.class);
 		HasDimensions dim2 = mock(HasDimensions.class);
 		when(sourcelist1.getItemSize()).thenReturn(dim1);
 		when(sourcelist2.getItemSize()).thenReturn(dim2);
-				
-		//when
+
+		// when
 		manager.onPlayerEvent(event);
-		
-		//then
+
+		// then
 		verify(client1).setSize(dim1);
 		verify(client2).setSize(dim2);
 		verify(client3).setSize(dim2);
@@ -256,6 +225,18 @@ public class SourcelistManagerImplTest {
 	}
 
 	@Test
+	public void shouldNotLockAnythingOnNotMatchingClient() {
+		// given
+		when(model.containsClient(CLIENT_2_ID)).thenReturn(false);
+
+		// when
+		manager.lockGroup(CLIENT_2_ID);
+
+		// then
+		verifyZeroInteractions(client1, client2, client3, sourcelist1, sourcelist2);
+	}
+
+	@Test
 	public void shouldUnlockOnlyGroupWithGivenClient() {
 		// when
 		manager.unlockGroup(CLIENT_2_ID);
@@ -267,6 +248,18 @@ public class SourcelistManagerImplTest {
 		verify(client2).unlockDropZone();
 		verify(client3).unlockDropZone();
 		verify(sourcelist2).unlockSourceList();
+	}
+
+	@Test
+	public void shouldNotUnlockAnythingOnNotMatchingClient() {
+		// given
+		when(model.containsClient(CLIENT_2_ID)).thenReturn(false);
+
+		// when
+		manager.unlockGroup(CLIENT_2_ID);
+
+		// then
+		verifyZeroInteractions(client1, client2, client3, sourcelist1, sourcelist2);
 	}
 
 	@Test
@@ -311,6 +304,5 @@ public class SourcelistManagerImplTest {
 		when(model.getSourcelistByClientId(CLIENT_3_ID)).thenReturn(sourcelist2);
 		when(model.getClients(sourcelist1)).thenReturn(Lists.newArrayList(client1));
 		when(model.getClients(sourcelist2)).thenReturn(Lists.newArrayList(client2, client3));
-		when(model.getClients()).thenReturn(Sets.newHashSet(client1, client2));
 	}
 }

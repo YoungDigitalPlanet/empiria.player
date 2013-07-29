@@ -1,22 +1,30 @@
 package eu.ydp.empiria.player.client.module.dragdrop;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Collection;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class SourcelistManagerModelTest {
 
+	private static final String CLIENT_1_ID = "id1";
+	private static final String CLIENT_2_ID = "id2";
+	private static final String CLIENT_3_ID = "id3";
+	private static final String CLIENT_4_ID = "id4";
+	private static final String SOURCELIST_1_ID = "SRC_1";
+	private static final String SOURCELIST_2_ID = "SRC_2";
+
 	SourcelistManagerModel model;
 
 	SourcelistClient client1;
 	SourcelistClient client2;
 	SourcelistClient client3;
+	SourcelistClient client4;
 	Sourcelist sourcelist1;
 	Sourcelist sourcelist2;
 
@@ -24,103 +32,138 @@ public class SourcelistManagerModelTest {
 	public void setUp() {
 		model = new SourcelistManagerModel();
 
-		client1 = mockClien("id1");
-		client2 = mockClien("id2");
-		client3 = mockClien("id3");
+		client1 = mockClient(CLIENT_1_ID, SOURCELIST_1_ID);
+		client2 = mockClient(CLIENT_2_ID, SOURCELIST_1_ID);
+		client3 = mockClient(CLIENT_3_ID, SOURCELIST_2_ID);
+		client4 = mockClient(CLIENT_4_ID, null);
 
-		sourcelist1 = mock(Sourcelist.class);
-		sourcelist2 = mock(Sourcelist.class);
+		sourcelist1 = mockSourcelist(SOURCELIST_1_ID);
+		sourcelist2 = mockSourcelist(SOURCELIST_2_ID);
 	}
 
 	@Test
-	public void shouldRegisterSingleClient() {
+	public void shouldRegisterOnlyClientsWithSourcelist() {
 		// when
-		model.addRelation(sourcelist1, client1);
+		model.registerClient(client1);
+		model.registerClient(client2);
+		model.registerSourcelist(sourcelist1);
+		model.registerClient(client4);
 
 		// then
-		assertThat(model.getClients(sourcelist1).size(), is(equalTo(1)));
+		assertThat(model.containsClient(CLIENT_1_ID)).isTrue();
+		assertThat(model.containsClient(CLIENT_2_ID)).isTrue();
+		assertThat(model.containsClient(CLIENT_4_ID)).isFalse();
 	}
 
 	@Test
-	public void shouldRegisterMultipleClients() {
+	public void shouldReturnAllBindedSourcelists() {
+		// given
+		model.registerClient(client1);
+		model.registerSourcelist(sourcelist1);
+		model.registerClient(client3);
+		model.registerSourcelist(sourcelist2);
+
 		// when
-		model.addRelation(sourcelist1, client1);
-		model.addRelation(sourcelist1, client2);
+		Set<Sourcelist> sourceLists = model.getSourceLists();
 
 		// then
-		assertThat(model.getClients(sourcelist1).size(), is(equalTo(2)));
+		assertThat(sourceLists).containsOnly(sourcelist1, sourcelist2);
 	}
 
 	@Test
-	public void shouldRegisterClientsForDiffrentSourcelists() {
+	public void shouldReturnClientsForSourcelist() {
+		// given
+		buildModel();
+
 		// when
-		model.addRelation(sourcelist1, client1);
-		model.addRelation(sourcelist1, client2);
-		model.addRelation(sourcelist2, client3);
+		Collection<SourcelistClient> clients = model.getClients(sourcelist1);
 
 		// then
-		assertThat(model.getClients(sourcelist1), hasItems(client1, client2));
-		assertThat(model.getClients(sourcelist2), hasItem(client3));
+		assertThat(clients).containsOnly(client1, client2);
 	}
 
 	@Test
-	public void shouldRegisterRelationOnlyOnce() {
+	public void shouldReturnClientById() {
+		// given
+		buildModel();
+
 		// when
-		model.addRelation(sourcelist1, client1);
-		model.addRelation(sourcelist1, client1);
+		SourcelistClient client = model.getClientById(CLIENT_2_ID);
 
 		// then
-		assertThat(model.getClients().size(), is(equalTo(1)));
+		assertThat(client).isEqualTo(client2);
 	}
 
 	@Test
-	public void shouldRegisterClientOnlyForOneSourcelist() {
-		// when
-		model.addRelation(sourcelist1, client1);
-		model.addRelation(sourcelist1, client2);
+	public void shouldReturnSourcelistByClientId() {
+		// given
+		buildModel();
 
-		model.addRelation(sourcelist2, client1);
-		model.addRelation(sourcelist2, client3);
+		// when
+		Sourcelist sourcelist = model.getSourcelistByClientId(CLIENT_2_ID);
 
 		// then
-		assertThat(model.getClients(sourcelist1).size(), is(equalTo(1)));
-		assertThat(model.getClients(sourcelist2).size(), is(equalTo(2)));
+		assertThat(sourcelist).isEqualTo(sourcelist1);
+	}
+
+	@Test
+	public void shouldReturnSourcelistById() {
+		// given
+		buildModel();
+
+		// when
+		Sourcelist sourcelist = model.getSourcelistById(SOURCELIST_2_ID);
+
+		// then
+		assertThat(sourcelist).isEqualTo(sourcelist2);
 	}
 
 	@Test
 	public void shouldLockGivenGroup() {
 		// given
-		model.addRelation(sourcelist1, client1);
-		model.addRelation(sourcelist1, client2);
-		model.addRelation(sourcelist2, client3);
+		buildModel();
 
 		// when
 		model.lockGroup(sourcelist1);
 
 		// then
-		assertThat(model.isGroupLocked(sourcelist1), is(true));
-		assertThat(model.isGroupLocked(sourcelist2), is(false));
+		assertThat(model.isGroupLocked(sourcelist1)).isTrue();
+		assertThat(model.isGroupLocked(sourcelist2)).isFalse();
 	}
 
 	@Test
 	public void shouldUnlockGivenGroup() {
 		// given
-		model.addRelation(sourcelist1, client1);
-		model.addRelation(sourcelist1, client2);
-		model.addRelation(sourcelist2, client3);
+		buildModel();
 
 		// when
 		model.lockGroup(sourcelist1);
 		model.unlockGroup(sourcelist1);
 
 		// then
-		assertThat(model.isGroupLocked(sourcelist1), is(false));
-		assertThat(model.isGroupLocked(sourcelist2), is(false));
+		assertThat(model.isGroupLocked(sourcelist1)).isFalse();
+		assertThat(model.isGroupLocked(sourcelist2)).isFalse();
 	}
 
-	private SourcelistClient mockClien(String clientId) {
+	private void buildModel() {
+		model.registerClient(client1);
+		model.registerClient(client2);
+		model.registerSourcelist(sourcelist1);
+		model.registerClient(client3);
+		model.registerSourcelist(sourcelist2);
+	}
+
+	private SourcelistClient mockClient(String clientId, String sourcelistId) {
 		SourcelistClient client = mock(SourcelistClient.class);
 		when(client.getIdentifier()).thenReturn(clientId);
+		when(client.sourceListId()).thenReturn(sourcelistId);
 		return client;
 	}
+
+	private Sourcelist mockSourcelist(String sourcelistId) {
+		Sourcelist sourcelist = mock(Sourcelist.class);
+		when(sourcelist.getIdentifier()).thenReturn(sourcelistId);
+		return sourcelist;
+	}
+
 }
