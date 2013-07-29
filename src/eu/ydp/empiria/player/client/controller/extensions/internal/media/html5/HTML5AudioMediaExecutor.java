@@ -16,10 +16,21 @@ public class HTML5AudioMediaExecutor extends AbstractHTML5MediaExecutor<Audio> {
 	public HTML5AudioMediaExecutor(Instance<IosAudioPlayHack> iosPlayHack, UserAgentUtil userAgentUtil) {
 		this.iosPlayHack = iosPlayHack;
 		this.userAgentUtil = userAgentUtil;
-		applyIosHckIfNeeded(userAgentUtil);
+		applyIosHackIfNeeded(userAgentUtil);
+	}
+	
+	@Override
+	public void initExecutor() {
+		//
+	}
+	
+	@Override
+	public void setMedia(Audio media) {
+		super.setMedia(media);
+		applyIosHackIfNeeded(userAgentUtil);
 	}
 
-	private void applyIosHckIfNeeded(UserAgentUtil userAgentUtil) {
+	private void applyIosHackIfNeeded(UserAgentUtil userAgentUtil) {
 		if (isPlayOnTouchHackNeeded(userAgentUtil)) {
 			addIosAudioHack();
 		}
@@ -33,18 +44,7 @@ public class HTML5AudioMediaExecutor extends AbstractHTML5MediaExecutor<Audio> {
 	private boolean isMobileSafari(UserAgentUtil userAgentUtil) {
 		return userAgentUtil.isMobileUserAgent(MobileUserAgent.SAFARI) || userAgentUtil.isMobileUserAgent(MobileUserAgent.SAFARI_WEBVIEW);
 	}
-
-	@Override
-	public void initExecutor() {
-		//
-	}
-
-	@Override
-	public void setMedia(Audio media) {
-		super.setMedia(media);
-		applyIosHckIfNeeded(userAgentUtil);
-
-	}
+	
 	protected void addIosAudioHack() {
 		iosPlayHack.get().applyHack(this);
 	}
