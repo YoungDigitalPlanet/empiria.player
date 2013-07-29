@@ -30,7 +30,9 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	
 	private SelectionElementGenerator gridElementGenerator;
 
-	private Map<SelectionGridElementPosition, SelectionGridElement> gridMap = new HashMap<SelectionGridElementPosition, SelectionGridElement>();
+	private Map<SelectionGridElementPosition, SelectionButtonGridElement> buttonsGridMap = new HashMap<SelectionGridElementPosition, SelectionButtonGridElement>();
+	private Map<SelectionGridElementPosition, SelectionItemGridElement> itemsGridMap = new HashMap<SelectionGridElementPosition, SelectionItemGridElement>();
+	private Map<SelectionGridElementPosition, SelectionChoiceGridElement> choicesGridMap = new HashMap<SelectionGridElementPosition, SelectionChoiceGridElement>();
 
 	@UiField
 	Panel mainPanel;
@@ -59,49 +61,52 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	
 	@Override
 	public void setItemDisplayedName(XMLContent itemName, SelectionGridElementPosition position){
-		SelectionGridElement itemTextGridElement = gridElementGenerator.createItemDisplayElement(itemName.getValue());
-		addNewGridElement(itemTextGridElement, position);
+		SelectionItemGridElement itemTextGridElement = gridElementGenerator.createItemDisplayElement(itemName.getValue());
+		addToGrid(itemTextGridElement, position);
+		itemsGridMap.put(position, itemTextGridElement);
 	}
 
 	@Override
 	public void setChoiceOptionDisplayedName(XMLContent choiceName, SelectionGridElementPosition position){
-		SelectionGridElement choiseTextGridElement = gridElementGenerator.createChoiceDisplayElement(choiceName.getValue());
-		addNewGridElement(choiseTextGridElement, position);
+		SelectionChoiceGridElement choiseTextGridElement = gridElementGenerator.createChoiceDisplayElement(choiceName.getValue());
+		addToGrid(choiseTextGridElement, position);
+		choicesGridMap.put(position, choiseTextGridElement);
 	}
 
 	@Override
 	public void createButtonForItemChoicePair(SelectionGridElementPosition position, String moduleStyleName){
-		SelectionGridElement choiceButtonGridElement = gridElementGenerator.createChoiceButtonElement(moduleStyleName);
-		addNewGridElement(choiceButtonGridElement, position);
+		SelectionButtonGridElement choiceButtonGridElement = gridElementGenerator.createChoiceButtonElement(moduleStyleName);
+		addToGrid(choiceButtonGridElement, position);
+		buttonsGridMap.put(position, choiceButtonGridElement);
 	}
 	
 	@Override
 	public void addClickHandlerToButton(SelectionGridElementPosition position, ClickHandler clickHandler){
-		final SelectionGridElement gridElement = gridMap.get(position);
+		final SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
 		gridElement.addClickHandler(clickHandler);
 	}
 
 	@Override
 	public void selectButton(SelectionGridElementPosition position){
-		SelectionGridElement gridElement = gridMap.get(position);
+		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
 		gridElement.select();
 	}
 
 	@Override
 	public void unselectButton(SelectionGridElementPosition position) {
-		SelectionGridElement gridElement = gridMap.get(position);
+		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
 		gridElement.unselect();
 	}
 
 	@Override
 	public void lockButton(SelectionGridElementPosition position, boolean lock){
-		SelectionGridElement gridElement = gridMap.get(position);
+		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
 		gridElement.setButtonEnabled(!lock);
 	}
 
 	@Override
 	public void updateButtonStyle(SelectionGridElementPosition position, UserAnswerType styleState){
-		SelectionGridElement gridElement = gridMap.get(position);
+		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
 		gridElement.updateStyle(styleState);
 	}
 
@@ -110,10 +115,7 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 		return mainPanel;
 	}
 	
-	private void addNewGridElement(SelectionGridElement gridElement, SelectionGridElementPosition position) {
+	private <V extends SelectionGridElement> void addToGrid(V gridElement, SelectionGridElementPosition position) {
 		selectionGrid.setWidget(position.getRowNumber(), position.getColumnNumber(), gridElement.asWidget());
-		if(gridMap.get(position) == null) {
-			gridMap.put(position, gridElement);
-		}
 	}
 }

@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
+import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
@@ -102,6 +103,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(CommandFactory.class, new TypeLiteral<ModuleScopedProvider<CommandFactory>>(){});
 		bindModuleScoped(OutcomeDrivenActionTypeGenerator.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeGenerator>>(){});
 		bindModuleScoped(OnPageAllOkAction.class, new TypeLiteral<ModuleScopedProvider<OnPageAllOkAction>>(){});
+		bindModuleScoped(GroupAnswersControllerModel.class, new TypeLiteral<ModuleScopedProvider<GroupAnswersControllerModel>>(){});
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 	}
 

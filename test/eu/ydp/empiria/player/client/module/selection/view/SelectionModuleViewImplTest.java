@@ -33,8 +33,8 @@ public class SelectionModuleViewImplTest {
 	private Grid grid;
 	private Panel panel;
 	private ClickHandler clickHandler;
-	private SelectionButtonGridElement firstButtonGridElement;
-	private SelectionButtonGridElement secondButtonGridElement;
+	private SelectionButtonGridElementImpl firstButtonGridElement;
+	private SelectionButtonGridElementImpl secondButtonGridElement;
 	private SelectionElementGenerator gridGenerator;
 	
 	private SelectionModuleViewImpl selectionView;
@@ -59,8 +59,8 @@ public class SelectionModuleViewImplTest {
 		selectionView.mainPanel = panel = mock(Panel.class);
 		selectionView.promptWidget = mock(Widget.class);
 		clickHandler = mock(ClickHandler.class);
-		firstButtonGridElement = mock(SelectionButtonGridElement.class);
-		secondButtonGridElement = mock(SelectionButtonGridElement.class);
+		firstButtonGridElement = mock(SelectionButtonGridElementImpl.class);
+		secondButtonGridElement = mock(SelectionButtonGridElementImpl.class);
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class SelectionModuleViewImplTest {
 	public void testSetItemDisplayedName(){
 		//when
 		SelectionGridElementPosition position = new SelectionGridElementPosition(0, 0);
-		SelectionItemLabelGridElement gridElement = mock(SelectionItemLabelGridElement.class);
+		SelectionItemGridElementImpl gridElement = mock(SelectionItemGridElementImpl.class);
 		XMLContent item =  new XMLContent() {
 			@Override
 			public Element getValue() {
@@ -101,7 +101,7 @@ public class SelectionModuleViewImplTest {
 	public void testSetChoiceOptionDisplayedName(){
 		//when
 		SelectionGridElementPosition position = new SelectionGridElementPosition(0, 0);
-		SelectionChoiceLabelGridElement gridElement = mock(SelectionChoiceLabelGridElement.class);
+		SelectionChoiceGridElementImpl gridElement = mock(SelectionChoiceGridElementImpl.class);
 		XMLContent item =  new XMLContent() {
 			@Override
 			public Element getValue() {

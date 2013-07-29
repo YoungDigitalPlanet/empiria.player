@@ -14,7 +14,6 @@ public class SelectionGinModule extends AbstractGinModule {
 
 	@Override
 	protected void configure() {
-		bind(SelectionGridElementGeneratorImpl.class);
 		bind(SelectionModulePresenter.class).to(SelectionModulePresenterImpl.class);
 		bind(SelectionModuleView.class).to(SelectionModuleViewImpl.class);
 		bind(SelectionElementGenerator.class).to(SelectionGridElementGeneratorImpl.class);

@@ -10,28 +10,21 @@ import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AnswersMarkingTemplate;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
-import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
-import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnswersByTypeFinder;
+import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
 public class SelectionAnswersMarker extends AnswersMarkingTemplate {
-
-	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
-	private SelectionModuleModel model;
-	private List<SelectionAnswerDto> selectedButtons;
-	private List<SelectionAnswerDto> buttonsToMark;
-	private List<SelectionAnswerDto> notSelectedButtons;
-
+	
+	private GroupAnswersControllerModel answersControllerModel;
+	private MarkAnswersType type;
+	
 	@Inject
 	public SelectionAnswersMarker(
-			IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder,
-			@ModuleScoped SelectionModuleModel selectionModuleModel) {
-				this.model = selectionModuleModel;
-				this.identifiableAnswersByTypeFinder = identifiableAnswersByTypeFinder;
+			@ModuleScoped GroupAnswersControllerModel answersControllerModel) {
+				this.answersControllerModel = answersControllerModel;
 	}
-
 	
 	@Override
 	public void unmarkWrong() {
@@ -40,8 +33,8 @@ public class SelectionAnswersMarker extends AnswersMarkingTemplate {
 
 	@Override
 	public void markWrong() {
-		applyAnswerTypeToCollection(UserAnswerType.WRONG, buttonsToMark);
-		applyAnswerTypeToCollection(UserAnswerType.NONE, notSelectedButtons);
+		applyAnswerTypeToCollection(UserAnswerType.WRONG, answersControllerModel.getButtonsToMarkForType(type));
+		applyAnswerTypeToCollection(UserAnswerType.NONE, answersControllerModel.getNotSelectedAnswers());
 	}
 
 	@Override
@@ -51,25 +44,19 @@ public class SelectionAnswersMarker extends AnswersMarkingTemplate {
 
 	@Override
 	public void markCorrect() {
-		applyAnswerTypeToCollection(UserAnswerType.CORRECT, buttonsToMark);
-		applyAnswerTypeToCollection(UserAnswerType.NONE, notSelectedButtons);
+		applyAnswerTypeToCollection(UserAnswerType.CORRECT, answersControllerModel.getButtonsToMarkForType(type));
+		applyAnswerTypeToCollection(UserAnswerType.NONE, answersControllerModel.getNotSelectedAnswers());
 	}
 
-	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode, GroupAnswersController groupChoicesController) {
-		getButtonsListFromController(type, groupChoicesController);
-		markAnswers(type, mode);
+	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+		this.type = type;
+		super.markAnswers(type, mode);
 	}
 	
 	private void unMark() {
-		List<SelectionAnswerDto> buttonsToMarkDefaultState = new ArrayList<SelectionAnswerDto>(buttonsToMark);
-		buttonsToMarkDefaultState.addAll(notSelectedButtons);
+		List<SelectionAnswerDto> buttonsToMarkDefaultState = new ArrayList<SelectionAnswerDto>(answersControllerModel.getButtonsToMarkForType(type));
+		buttonsToMarkDefaultState.addAll(answersControllerModel.getNotSelectedAnswers());
 		applyAnswerTypeToCollection(UserAnswerType.DEFAULT, buttonsToMarkDefaultState);
-	}
-
-	private void getButtonsListFromController(MarkAnswersType type, GroupAnswersController groupChoicesController) {
-		selectedButtons = groupChoicesController.getSelectedAnswers();
-		buttonsToMark = identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(type, selectedButtons, model);
-		notSelectedButtons = groupChoicesController.getNotSelectedAnswers();
 	}
 
 	private void applyAnswerTypeToCollection(UserAnswerType userAnswerType, Collection<SelectionAnswerDto> answers){

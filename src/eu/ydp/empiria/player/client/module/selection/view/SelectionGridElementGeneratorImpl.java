@@ -32,8 +32,8 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
 		this.userInteractionHandlerFactory = userInteractionHandlerFactory;
 	}
 	
-	public SelectionButtonGridElement createChoiceButtonElement(String styleName) {
-		SelectionButtonGridElement choiceButtonGridElement = new SelectionButtonGridElement(styleNameConstants);
+	public SelectionButtonGridElementImpl createChoiceButtonElement(String styleName) {
+		SelectionButtonGridElementImpl choiceButtonGridElement = new SelectionButtonGridElementImpl(styleNameConstants);
 		SelectionChoiceButton choiceButton = new SelectionChoiceButton(styleName);
 		addMouseOverHandler(choiceButton);
 		
@@ -42,8 +42,8 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
 		return choiceButtonGridElement;
 	}
 	
-	public SelectionItemLabelGridElement createItemDisplayElement(Element item) {
-		SelectionItemLabelGridElement itemLabelElement = new SelectionItemLabelGridElement();
+	public SelectionItemGridElementImpl createItemDisplayElement(Element item) {
+		SelectionItemGridElementImpl itemLabelElement = new SelectionItemGridElementImpl();
 		Widget itemTextLabel = inlineBodyGeneratorSocket.generateInlineBody(item, true);
 
 		itemTextLabel.setStyleName(styleNameConstants.QP_SELECTION_ITEM_LABEL());
@@ -55,12 +55,11 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
 		return itemLabelElement;
 	}
 	
-	public SelectionChoiceLabelGridElement createChoiceDisplayElement(Element item) {
-		SelectionChoiceLabelGridElement choiceLabelElement = new SelectionChoiceLabelGridElement();
+	public SelectionChoiceGridElementImpl createChoiceDisplayElement(Element item) {
+		SelectionChoiceGridElementImpl choiceLabelElement = new SelectionChoiceGridElementImpl();
 		Widget choiceTextLabel = inlineBodyGeneratorSocket.generateInlineBody(item);
 		choiceTextLabel.setStyleName(styleNameConstants.QP_SELECTION_CHOICE());
 
-		// TODO choiceTextLabel wasn't placed inside flowPanel
 		choiceLabelElement.add(choiceTextLabel);
 		return choiceLabelElement;
 	}

@@ -15,22 +15,14 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
-import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
-import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
-import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnswersByTypeFinder;
+import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SelectionAnswersMarkerTest {
 	@Mock
-	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
-
-	@Mock
-	private SelectionModuleModel selectionModuleModel;
-	
-	@Mock
-	private GroupAnswersController groupController;
+	private GroupAnswersControllerModel answersControllerModel;
 	
 	private SelectionAnswersMarker answersMarker;
 	
@@ -40,26 +32,26 @@ public class SelectionAnswersMarkerTest {
 	
 	@Before
 	public void setup() {
-		answersMarker = new SelectionAnswersMarker(identifiableAnswersByTypeFinder, selectionModuleModel);
+		answersMarker = new SelectionAnswersMarker(answersControllerModel);
 
 		selectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getSelectedAnswers())
+		when(answersControllerModel.getSelectedAnswers())
 			.thenReturn(selectedAnswers );
 		
 		notSelectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getNotSelectedAnswers())
+		when(answersControllerModel.getNotSelectedAnswers())
 			.thenReturn(notSelectedAnswers);
 	}
 	
 	@Test
 	public void testUnmarkWrong() throws Exception {
 		List<SelectionAnswerDto> buttonsToMark = Lists.newArrayList(new SelectionAnswerDto());
-		when(identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(MarkAnswersType.WRONG, selectedAnswers, selectionModuleModel))
+		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.WRONG))
 			.thenReturn(buttonsToMark);
 		
 		//then
 		
-		answersMarker.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.UNMARK, groupController);
+		answersMarker.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.UNMARK);
 		
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
 			assertEquals(UserAnswerType.DEFAULT, selectionAnswerDto.getSelectionAnswerType());
@@ -73,12 +65,12 @@ public class SelectionAnswersMarkerTest {
 	@Test
 	public void testMarkWrong() throws Exception {
 		List<SelectionAnswerDto> buttonsToMark = Lists.newArrayList(new SelectionAnswerDto());
-		when(identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(MarkAnswersType.WRONG, selectedAnswers, selectionModuleModel))
-			.thenReturn(buttonsToMark);
+		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.WRONG))
+		.thenReturn(buttonsToMark);
 		
 		//then 
 		
-		answersMarker.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.MARK, groupController);
+		answersMarker.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.MARK);
 
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
 			assertEquals(UserAnswerType.NONE, selectionAnswerDto.getSelectionAnswerType());
@@ -92,12 +84,12 @@ public class SelectionAnswersMarkerTest {
 	@Test
 	public void testUnmarkCorrect() throws Exception {
 		List<SelectionAnswerDto> buttonsToMark = Lists.newArrayList(new SelectionAnswerDto());
-		when(identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(MarkAnswersType.CORRECT, selectedAnswers, selectionModuleModel))
+		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.CORRECT))
 			.thenReturn(buttonsToMark);
 		
 		//then 
 		
-		answersMarker.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK, groupController);
+		answersMarker.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK);
 
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
 			assertEquals(UserAnswerType.DEFAULT, selectionAnswerDto.getSelectionAnswerType());
@@ -111,12 +103,12 @@ public class SelectionAnswersMarkerTest {
 	@Test
 	public void testMarkCorrect() throws Exception {
 		List<SelectionAnswerDto> buttonsToMark = Lists.newArrayList(new SelectionAnswerDto());
-		when(identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(MarkAnswersType.CORRECT, selectedAnswers, selectionModuleModel))
+		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.CORRECT))
 			.thenReturn(buttonsToMark);
 		
 		//then 
 		
-		answersMarker.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.MARK, groupController);
+		answersMarker.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.MARK);
 
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
 			assertEquals(UserAnswerType.NONE, selectionAnswerDto.getSelectionAnswerType());
@@ -126,5 +118,4 @@ public class SelectionAnswersMarkerTest {
 			assertEquals(UserAnswerType.CORRECT, selectionAnswerDto.getSelectionAnswerType());
 		}
 	}
-
 }
