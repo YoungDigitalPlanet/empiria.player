@@ -10,7 +10,7 @@ import com.google.common.base.Function;
 
 public enum ActionType {
 
-	DEFAULT, ON_PAGE_ALL_OK;
+	DEFAULT, ON_PAGE_ALL_OK, ON_OK, ON_WRONG;
 
 	private static final Function<ActionType, String> function = new Function<ActionType, String>() {
 

@@ -36,8 +36,11 @@ import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
+import eu.ydp.empiria.player.client.module.tutor.actions.OnOkAction;
 import eu.ydp.empiria.player.client.module.tutor.actions.OnPageAllOkAction;
+import eu.ydp.empiria.player.client.module.tutor.actions.OnWrongAction;
 import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeGenerator;
+import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeProvider;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
@@ -98,6 +101,9 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(CommandFactory.class, new TypeLiteral<ModuleScopedProvider<CommandFactory>>(){});
 		bindModuleScoped(OutcomeDrivenActionTypeGenerator.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeGenerator>>(){});
 		bindModuleScoped(OnPageAllOkAction.class, new TypeLiteral<ModuleScopedProvider<OnPageAllOkAction>>(){});
+		bindModuleScoped(OnOkAction.class, new TypeLiteral<ModuleScopedProvider<OnOkAction>>(){});
+		bindModuleScoped(OnWrongAction.class, new TypeLiteral<ModuleScopedProvider<OnWrongAction>>(){});
+		bindModuleScoped(OutcomeDrivenActionTypeProvider.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeProvider>>(){});
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 	}
 
