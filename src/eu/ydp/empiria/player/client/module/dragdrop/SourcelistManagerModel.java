@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Maps;
 
@@ -16,9 +16,12 @@ public class SourcelistManagerModel {
 	private Map<String, String> clientIdToSourcelistIdCache = Maps.newHashMap();
 
 	public void registerClient(SourcelistClient client) {
-		String sourceListId = client.sourceListId();
-		SourcelistGroup group = getOrCreateSourcelistGroup(sourceListId);
-		group.addClient(client);
+		String sourcelistId = client.sourceListId();
+		if (!Strings.isNullOrEmpty(sourcelistId)) {
+			SourcelistGroup group = getOrCreateSourcelistGroup(sourcelistId);
+			group.addClient(client);
+			clientIdToSourcelistIdCache.put(client.getIdentifier(), sourcelistId);
+		}
 	}
 
 	public void registerSourcelist(Sourcelist sourcelist) {
@@ -71,24 +74,6 @@ public class SourcelistManagerModel {
 		return groups.get(sourcelistId).isLocked();
 	}
 
-	public void bind() {
-		groups = Maps.filterValues(groups, notEmptyGroup);
-		buildCache();
-	}
-
-	private void buildCache() {
-		for (SourcelistGroup group : groups.values()) {
-			buildClientCache(group);
-		}
-	}
-
-	private void buildClientCache(SourcelistGroup group) {
-		String sourcelistId = group.getSourcelist().getIdentifier();
-		for (SourcelistClient client : group.getClients()) {
-			clientIdToSourcelistIdCache.put(client.getIdentifier(), sourcelistId);
-		}
-	}
-
 	private SourcelistGroup getOrCreateSourcelistGroup(String sourceListId) {
 		if (!groups.containsKey(sourceListId)) {
 			SourcelistGroup group = new SourcelistGroup();
@@ -102,14 +87,6 @@ public class SourcelistManagerModel {
 		@Override
 		public Sourcelist apply(SourcelistGroup group) {
 			return group.getSourcelist();
-		}
-	};
-
-	private final Predicate<SourcelistGroup> notEmptyGroup = new Predicate<SourcelistGroup>() {
-
-		@Override
-		public boolean apply(SourcelistGroup group) {
-			return group.getSourcelist() != null && !group.getClients().isEmpty();
 		}
 	};
 }

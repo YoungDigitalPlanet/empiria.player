@@ -192,18 +192,6 @@ public class SourcelistManagerImplTest {
 	}
 
 	@Test
-	public void shouldBindModel() {
-		// given
-		PlayerEvent event = mock(PlayerEvent.class);
-
-		// when
-		manager.onPlayerEvent(event);
-
-		// then
-		verify(model).bind();
-	}
-
-	@Test
 	public void shouldResizeAllClients() {
 		// given
 		PlayerEvent event = mock(PlayerEvent.class);

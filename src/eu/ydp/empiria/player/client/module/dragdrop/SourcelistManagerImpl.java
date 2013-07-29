@@ -197,7 +197,6 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		model.bind();
 		resizeSourcelists();
 	}
 
