@@ -28,7 +28,7 @@ public class TutorPopupPresenterImpl implements TutorPopupPresenter {
 		this.tutorId = tutorId;
 		TutorConfig tutorConfig = tutorService.getTutorConfig(tutorId);
 		List<TutorPersonaProperties> personas = tutorConfig.getPersonas();
-		List<PersonaViewDto> viewDtos = personaViewDtoConverter.createPersonasDtos(personas);
+		List<PersonaViewDto> viewDtos = personaViewDtoConverter.convert(personas);
 		initilizeView(viewDtos);
 	}
 

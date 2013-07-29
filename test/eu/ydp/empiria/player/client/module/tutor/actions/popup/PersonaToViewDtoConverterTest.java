@@ -23,7 +23,7 @@ public class PersonaToViewDtoConverterTest {
 	}
 	
 	@Test
-	public void testCreatePersonasDtos() throws Exception {
+	public void testConvert() throws Exception {
 		//given
 		int firstIndex = 3;
 		String firstAvatarFileName = "fileURL";
@@ -35,7 +35,7 @@ public class PersonaToViewDtoConverterTest {
 		List<TutorPersonaProperties> personasProperties = Lists.newArrayList(firstPersonaProperties, secondPersonaProperties);
 		
 		//when
-		List<PersonaViewDto> createPersonasDtos = converter.createPersonasDtos(personasProperties);
+		List<PersonaViewDto> createPersonasDtos = converter.convert(personasProperties);
 		
 		
 		//then

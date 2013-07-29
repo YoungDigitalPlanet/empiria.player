@@ -46,7 +46,7 @@ public class TutorPopupPresenterImplTest {
 		when(tutorConfig.getPersonas())
 			.thenReturn(personas);
 		
-		when(personaConverter.createPersonasDtos(personas))
+		when(personaConverter.convert(personas))
 			.thenReturn(viewPersonas);
 		
 		tutorPopupPresenterImpl.init(tutorId);
