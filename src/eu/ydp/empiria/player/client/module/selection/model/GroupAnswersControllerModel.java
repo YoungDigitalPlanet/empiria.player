@@ -13,11 +13,17 @@ import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnsw
 
 public class GroupAnswersControllerModel {
 
-	@Inject
 	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
-	@Inject @ModuleScoped
 	private SelectionModuleModel model;
 	
+	@Inject
+	public GroupAnswersControllerModel(
+			IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder, 
+			@ModuleScoped SelectionModuleModel model) {
+		this.identifiableAnswersByTypeFinder = identifiableAnswersByTypeFinder;
+		this.model = model;
+	}
+
 	private List<GroupAnswersController> groupChoicesControllers;
 
 	public void setGroupChoicesControllers(List<GroupAnswersController> groupChoicesControllers) {

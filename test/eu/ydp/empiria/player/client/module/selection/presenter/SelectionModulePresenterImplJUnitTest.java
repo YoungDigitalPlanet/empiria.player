@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.selection.presenter;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,7 +19,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -34,15 +32,12 @@ import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteract
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionItemBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
-import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("PMD")
 public class SelectionModulePresenterImplJUnitTest {
 
 	private SelectionModulePresenterImpl presenter;
-	
-	private ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
 	
 	@Mock
 	private SelectionModuleView selectionModuleView;
