@@ -131,40 +131,30 @@ public class MediaProgressBarPositionCalculatorTest {
 
 	@Test
 	public void getLeftPositionForAfterProgressElementRTL() throws Exception {
-		int leftPositionForAfterProgressElement = instance.getLeftPositionForAfterProgressElement(23);
-		assertThat(leftPositionForAfterProgressElement).isEqualTo(0);
+		String positionPropertyForAfterProgressElement = instance.getPositionPropertyForAfterProgressElement();
+		assertThat(positionPropertyForAfterProgressElement).isEqualTo("left");
 	}
 
 	@Test
 	public void getLeftPositionForAfterProgressElementLTR() throws Exception {
 		doReturn(" ").when(computedStyle).getDirectionFromBody();
-		int buttonWidth = 20;
-		doReturn(buttonWidth).when(mediaProgressBar).getButtonWidth();
-		int leftPositionForAfterProgressElement = instance.getLeftPositionForAfterProgressElement(23);
-		assertThat(leftPositionForAfterProgressElement).isEqualTo(23 + buttonWidth / 2);
+		String positionPropertyForAfterProgressElement = instance.getPositionPropertyForAfterProgressElement();
+		assertThat(positionPropertyForAfterProgressElement).isEqualTo("right");
 	}
 
 	@Test
 	public void getLeftPositionForBeforeProgressElementLTR() throws Exception {
 		doReturn(" ").when(computedStyle).getDirectionFromBody();
-		int buttonWidth = 20;
-		doReturn(buttonWidth).when(mediaProgressBar).getButtonWidth();
-		int scrollWidth = 200;
-		doReturn(scrollWidth).when(mediaProgressBar).getScrollWidth();
+		String positionPropertyForBeforeProgressElement = instance.getPositionPropertyForBeforeProgressElement();
+		assertThat(positionPropertyForBeforeProgressElement).isEqualTo("left");
 
-		int leftPosition = instance.getLeftPositionForBeforeProgressElement(40);
-		assertThat(leftPosition).isEqualTo(0);
 	}
 
 	@Test
 	public void getLeftPositionForBeforeProgressElementRTL() throws Exception {
-		int buttonWidth = 20;
-		doReturn(buttonWidth).when(mediaProgressBar).getButtonWidth();
-		int scrollWidth = 200;
-		doReturn(scrollWidth).when(mediaProgressBar).getScrollWidth();
+		String positionPropertyForBeforeProgressElement = instance.getPositionPropertyForBeforeProgressElement();
+		assertThat(positionPropertyForBeforeProgressElement).isEqualTo("right");
 
-		int leftPosition = instance.getLeftPositionForBeforeProgressElement(40);
-		assertThat(leftPosition).isEqualTo(scrollWidth - 40 + buttonWidth / 2);
 	}
 
 	@Test
