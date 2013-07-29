@@ -30,9 +30,7 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	
 	private SelectionElementGenerator gridElementGenerator;
 
-	private Map<SelectionGridElementPosition, SelectionButtonGridElement> buttonsGridMap = new HashMap<SelectionGridElementPosition, SelectionButtonGridElement>();
-	private Map<SelectionGridElementPosition, SelectionItemGridElement> itemsGridMap = new HashMap<SelectionGridElementPosition, SelectionItemGridElement>();
-	private Map<SelectionGridElementPosition, SelectionChoiceGridElement> choicesGridMap = new HashMap<SelectionGridElementPosition, SelectionChoiceGridElement>();
+	private final Map<SelectionGridElementPosition, SelectionButtonGridElement> buttonsGridMap = new HashMap<SelectionGridElementPosition, SelectionButtonGridElement>();
 
 	@UiField
 	Panel mainPanel;
@@ -63,14 +61,12 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	public void setItemDisplayedName(XMLContent itemName, SelectionGridElementPosition position){
 		SelectionItemGridElement itemTextGridElement = gridElementGenerator.createItemDisplayElement(itemName.getValue());
 		addToGrid(itemTextGridElement, position);
-		itemsGridMap.put(position, itemTextGridElement);
 	}
 
 	@Override
 	public void setChoiceOptionDisplayedName(XMLContent choiceName, SelectionGridElementPosition position){
 		SelectionChoiceGridElement choiseTextGridElement = gridElementGenerator.createChoiceDisplayElement(choiceName.getValue());
 		addToGrid(choiseTextGridElement, position);
-		choicesGridMap.put(position, choiseTextGridElement);
 	}
 
 	@Override
