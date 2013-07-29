@@ -8,6 +8,8 @@ import com.google.inject.TypeLiteral;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
+import eu.ydp.empiria.player.client.gin.module.tutor.TutorIdProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopeStack;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopedProvider;
@@ -98,6 +100,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(CommandFactory.class, new TypeLiteral<ModuleScopedProvider<CommandFactory>>(){});
 		bindModuleScoped(OutcomeDrivenActionTypeGenerator.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeGenerator>>(){});
 		bindModuleScoped(OnPageAllOkAction.class, new TypeLiteral<ModuleScopedProvider<OnPageAllOkAction>>(){});
+		bind(String.class).annotatedWith(TutorId.class).toProvider(TutorIdProvider.class);
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 	}
 
