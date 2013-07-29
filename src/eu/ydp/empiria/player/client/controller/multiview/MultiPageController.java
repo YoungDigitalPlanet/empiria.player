@@ -63,7 +63,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	@Inject private TouchRecognitionFactory touchRecognitionFactory;
 	@Inject private PageScopeFactory pageScopeFactory;
 	@Inject private MultiPageTouchHandler multiPageTouchHandler;
-	@Inject private ForceRedrawHack forceRedrowHack;
+	@Inject private ForceRedrawHack forceRedrawHack;
 
 	@Inject @Named("multiPageControllerMainPanel") private FlowPanel mainPanel;
 	@Inject private PagePlaceHolderPanelCreator pagePlaceHolderPanelCreator;
@@ -450,7 +450,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), this);
 
-		ResizeContinousUpdater resizeContinousUpdater = new ResizeContinousUpdater(pageScopeFactory, eventsBus, this, forceRedrowHack);
+		ResizeContinousUpdater resizeContinousUpdater = new ResizeContinousUpdater(pageScopeFactory, eventsBus, this, forceRedrawHack);
 		resizeTimer = new ResizeTimer(resizeContinousUpdater);
 		view.add(mainPanel);
 
