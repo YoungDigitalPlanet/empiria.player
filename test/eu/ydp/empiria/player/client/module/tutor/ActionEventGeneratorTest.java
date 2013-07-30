@@ -68,8 +68,11 @@ public class ActionEventGeneratorTest {
 		boolean interactive = true;
 		TutorPersonaProperties personaProperties = new TutorPersonaProperties(7, new Size(), 60, "name", interactive, "avatarFilename");
 		
-		when(actionTypeGenerator.findActionType()).thenReturn(Optional.of(ActionType.ON_PAGE_ALL_OK));
-		when(personaService.getPersonaProperties()).thenReturn(personaProperties);
+		when(personaService.getPersonaProperties())
+			.thenReturn(personaProperties);
+		
+		when(actionTypeGenerator.findActionType())
+			.thenReturn(Optional.of(ActionType.ON_PAGE_ALL_OK));
 		
 		// when
 		actionEventGenerator.stateChanged();
@@ -98,19 +101,14 @@ public class ActionEventGeneratorTest {
 	@Test
 	public void stateChanged_noActionType(){
 		// given
-		when(actionTypeGenerator.findActionType()).thenReturn(Optional.<ActionType>absent());
+		boolean interactive = true;
+		TutorPersonaProperties personaProperties = new TutorPersonaProperties(7, new Size(), 60, "name", interactive, "avatarFilename");
 		
-		// when
-		actionEventGenerator.stateChanged();
+		when(personaService.getPersonaProperties())
+			.thenReturn(personaProperties);
 		
-		// then
-		verify(executorService, never()).execute(any(ActionType.class), any(EndHandler.class));
-	}
-	
-	@Test
-	public void actionEndHandling(){
-		// given
-		when(actionTypeGenerator.findActionType()).thenReturn(Optional.<ActionType>absent());
+		when(actionTypeGenerator.findActionType())
+			.thenReturn(Optional.<ActionType>absent());
 		
 		// when
 		actionEventGenerator.stateChanged();
