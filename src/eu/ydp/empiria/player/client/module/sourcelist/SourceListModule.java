@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.dragdrop.Sourcelist;
@@ -24,7 +23,7 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 	@Inject private SourceListPresenter presenter;
 	@Inject private IJSONService ijsonService;
 	@Inject @PageScoped private SourcelistManager sourcelistManager;
-	@Inject @UniqueId private String moduleUniqueId;
+	private String sourcelistId;
 
 	@Override
 	public Widget getView() {
@@ -35,8 +34,9 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 	protected void initModule(Element element) {
 		moduleStructure.createFromXml(element.toString(), ijsonService.createArray());
 		SourceListBean bean = moduleStructure.getBean();
+		sourcelistId = bean.getSourcelistId();
 		presenter.setBean(bean);
-		presenter.setModuleId(moduleUniqueId);
+		presenter.setModuleId(sourcelistId);
 		presenter.createAndBindUi();
 		sourcelistManager.registerSourcelist(this);
 	}
@@ -66,7 +66,7 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 
 	@Override
 	public String getIdentifier() {
-		return moduleUniqueId;
+		return sourcelistId;
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
@@ -25,8 +24,6 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 	@PageScoped
 	private SourcelistManagerModel model;
 	@Inject
-	private SourcelistManagerHelper helper;
-	@Inject
 	private EventsBus eventsBus;
 
 	private final Function<SourcelistClient, String> clientToItemid = new Function<SourcelistClient, String>() {
@@ -44,18 +41,12 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 
 	@Override
 	public void registerModule(SourcelistClient client) {
-		Optional<Sourcelist> sourcelist = helper.findSourcelist(client);
-		if (sourcelist.isPresent()) {
-			model.addRelation(sourcelist.get(), client);
-		}
+		model.registerClient(client);
 	}
 
 	@Override
 	public void registerSourcelist(Sourcelist sourcelist) {
-		List<SourcelistClient> clients = helper.findClients(sourcelist);
-		for (SourcelistClient client : clients) {
-			model.addRelation(sourcelist, client);
-		}
+		model.registerSourcelist(sourcelist);
 	}
 
 	@Override
