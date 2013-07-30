@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHack;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
@@ -51,34 +52,21 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 public class MultiPageController extends InternalExtension implements PlayerEventHandler, FlowRequestSocketUserExtension, FlowDataSocketUserExtension,
 		Extension, IMultiPageController {
 
-	@Inject
-	private EventsBus eventsBus;
-	@Inject
-	private StyleNameConstants styleNames;
-	@Inject
-	private Scheduler scheduler;
-	@Inject
-	private PanelCache panelsCache;
-	@Inject
-	private Page page;
-	@Inject
-	private MultiPageView view;
-	@Inject
-	private StyleSocket styleSocket;
-	@Inject
-	private Animation animation;
-	@Inject
-	private TouchRecognitionFactory touchRecognitionFactory;
-	@Inject
-	private PageScopeFactory pageScopeFactory;
-	@Inject
-	private MultiPageTouchHandler multiPageTouchHandler;
+	@Inject private EventsBus eventsBus;
+	@Inject private StyleNameConstants styleNames;
+	@Inject private Scheduler scheduler;
+	@Inject private PanelCache panelsCache;
+	@Inject private Page page;
+	@Inject private MultiPageView view;
+	@Inject private StyleSocket styleSocket;
+	@Inject private Animation animation;
+	@Inject private TouchRecognitionFactory touchRecognitionFactory;
+	@Inject private PageScopeFactory pageScopeFactory;
+	@Inject private MultiPageTouchHandler multiPageTouchHandler;
+	@Inject private ForceRedrawHack forceRedrawHack;
 
-	@Inject
-	@Named("multiPageControllerMainPanel")
-	private FlowPanel mainPanel;
-	@Inject
-	private PagePlaceHolderPanelCreator pagePlaceHolderPanelCreator;
+	@Inject @Named("multiPageControllerMainPanel") private FlowPanel mainPanel;
+	@Inject private PagePlaceHolderPanelCreator pagePlaceHolderPanelCreator;
 
 	private static int activePageCount = 3;
 	private int currentVisiblePage = -1;
@@ -169,7 +157,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	/**
 	 * zwraca Panel bdacy kontenerem dla widgetow ze strony pageNumber
-	 * 
+	 *
 	 * @param pageNumber
 	 * @return
 	 */
@@ -281,7 +269,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	/**
 	 * animacja
-	 * 
+	 *
 	 * @param from
 	 *            absolutna pozycja elementu
 	 * @param to
@@ -462,7 +450,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), this);
 
-		ResizeContinousUpdater resizeContinousUpdater = new ResizeContinousUpdater(pageScopeFactory, eventsBus, this);
+		ResizeContinousUpdater resizeContinousUpdater = new ResizeContinousUpdater(pageScopeFactory, eventsBus, this, forceRedrawHack);
 		resizeTimer = new ResizeTimer(resizeContinousUpdater);
 		view.add(mainPanel);
 
