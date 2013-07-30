@@ -1,18 +1,36 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
+import eu.ydp.empiria.player.client.module.tutor.TutorEvent;
+import eu.ydp.empiria.player.client.module.tutor.TutorEventTypes;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+
 public class PersonaService {
 
-	public TutorPersonaProperties getPersonaProperties(){
-		// TODO implement me YPUB-5476
-		return null;
+	private int currentPersonaIndex = 0;
+	private final TutorConfig tutorConfig;
+	private final EventsBus eventsBus;
+
+	@Inject
+	public PersonaService(@Assisted TutorConfig tutorConfig, EventsBus eventsBus) {
+		this.tutorConfig = tutorConfig;
+		this.eventsBus = eventsBus;
 	}
-	
-	public int getCurrentPersonaIndex(){
-		// TODO implement me YPUB-5476
-		return 0;
+
+	public TutorPersonaProperties getPersonaProperties() {
+		return tutorConfig.getTutorPersonaProperties(currentPersonaIndex);
 	}
-	
-	public void setCurrentPersonaIndex(int personaIndex){
-		// TODO implement me YPUB-5476
+
+	public int getCurrentPersonaIndex() {
+		return currentPersonaIndex;
+	}
+
+	public void setCurrentPersonaIndex(int personaIndex) {
+		if (personaIndex != currentPersonaIndex) {
+			this.currentPersonaIndex = personaIndex;
+			eventsBus.fireAsyncEvent(new TutorEvent(TutorEventTypes.TUTOR_CHANGED, this, personaIndex));
+		}
 	}
 }

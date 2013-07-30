@@ -4,10 +4,21 @@ import static com.google.common.collect.Maps.newHashMap;
 
 import java.util.Map;
 
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.gin.factory.PersonaServiceFactory;
+
 public class TutorService {
 
 	private final Map<String, TutorConfig> tutors = newHashMap();
+	private final Map<String, PersonaService> personaServices = newHashMap();
+	private final PersonaServiceFactory personaServiceFactory;
 	
+	@Inject
+	public TutorService(PersonaServiceFactory personaServiceFactory) {
+		this.personaServiceFactory = personaServiceFactory;
+	}
+
 	public TutorConfig getTutorConfig(String tutorId){
 		return tutors.get(tutorId);
 	}
@@ -17,7 +28,14 @@ public class TutorService {
 	}
 	
 	public PersonaService getTutorPersonaService(String tutorId){
-		// TODO implement me YPUB-5476
-		return null;
+		PersonaService personaService = personaServices.get(tutorId);
+		
+		if(personaService == null) {
+			TutorConfig tutorConfig = getTutorConfig(tutorId);
+			personaService = personaServiceFactory.createPersonaService(tutorConfig);
+			personaServices.put(tutorId, personaService);
+		}
+		
+		return personaService;
 	}
 }
