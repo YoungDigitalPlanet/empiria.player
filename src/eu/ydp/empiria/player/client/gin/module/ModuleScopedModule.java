@@ -6,6 +6,7 @@ import com.google.inject.Key;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
@@ -102,6 +103,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(OnPageAllOkAction.class, new TypeLiteral<ModuleScopedProvider<OnPageAllOkAction>>(){});
 		bind(String.class).annotatedWith(TutorId.class).toProvider(TutorIdProvider.class);
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
+		bindModuleScoped(PersonaService.class, new TypeLiteral<ModuleScopedProvider<PersonaService>>(){});
 	}
 
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
