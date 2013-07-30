@@ -15,7 +15,7 @@ public class DragGapModuleJAXBParserFactoryTest  extends AbstractEmpiriaPlayerGW
 		fullXmlStringBuilder.append("expressionMode=\"expressionMode1\" ");
 		fullXmlStringBuilder.append("widthBindingGroup=\"widthBindingGroup1\" ");
 		fullXmlStringBuilder.append("responseIdentifier=\"responseIdentifier1\" ");
-		fullXmlStringBuilder.append("sourceListId=\"idOfSourceList\">");
+		fullXmlStringBuilder.append("sourcelistId=\"idOfSourceList\">");
 		fullXmlStringBuilder.append("</dragInteraction>");
 		String xml = fullXmlStringBuilder.toString();
 
