@@ -35,11 +35,12 @@ public class ActionEventGenerator {
 	}
 	
 	public void stateChanged(){
-		Optional<ActionType> actionType = actionTypeGenerator.findActionType();
 		TutorPersonaProperties currentPersona = personaService.getPersonaProperties();
-		if (actionType.isPresent() &&
-			currentPersona.isInteractive()){
-			executeAction(actionType.get());
+		if(currentPersona.isInteractive()){
+			Optional<ActionType> actionType = actionTypeGenerator.findActionType();
+			if (actionType.isPresent()) {
+				executeAction(actionType.get());
+			}
 		}
 	}
 
