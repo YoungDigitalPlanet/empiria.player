@@ -36,7 +36,8 @@ public class DragGapBeanTest extends AbstractJAXBTestBase<DragGapBean> {
 		fullXmlStringBuilder.append("name=\"name1\" ");
 		fullXmlStringBuilder.append("expressionMode=\"expressionMode1\" ");
 		fullXmlStringBuilder.append("widthBindingGroup=\"widthBindingGroup1\" ");
-		fullXmlStringBuilder.append("responseIdentifier=\"responseIdentifier1\">");
+		fullXmlStringBuilder.append("responseIdentifier=\"responseIdentifier1\" ");
+		fullXmlStringBuilder.append("sourcelistId=\"sourceListIdentifier1\">");
 		fullXmlStringBuilder.append("</dragInteraction>");
 		
 //		when
@@ -48,6 +49,7 @@ public class DragGapBeanTest extends AbstractJAXBTestBase<DragGapBean> {
 		assertThat(dragGapBean.getExpressionMode(), equalTo("expressionMode1"));
 		assertThat(dragGapBean.getWidthBindingGroup(), equalTo("widthBindingGroup1"));
 		assertThat(dragGapBean.getResponseIdentifier(), equalTo("responseIdentifier1"));
+		assertThat(dragGapBean.getSourcelistId(), equalTo("sourceListIdentifier1"));
 	}
 	
 

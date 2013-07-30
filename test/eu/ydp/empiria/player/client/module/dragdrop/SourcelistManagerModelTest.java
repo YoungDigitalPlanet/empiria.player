@@ -156,7 +156,7 @@ public class SourcelistManagerModelTest {
 	private SourcelistClient mockClient(String clientId, String sourcelistId) {
 		SourcelistClient client = mock(SourcelistClient.class);
 		when(client.getIdentifier()).thenReturn(clientId);
-		when(client.sourceListId()).thenReturn(sourcelistId);
+		when(client.getSourcelistId()).thenReturn(sourcelistId);
 		return client;
 	}
 

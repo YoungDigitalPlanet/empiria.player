@@ -29,7 +29,7 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 public class TextEntryModule extends GapBase implements SourcelistClient {
 
-	private static final String SOURCE_LIST_ID = "sourceListId";
+	private static final String SOURCE_LIST_ID = "sourcelistId";
 
 	private final StyleSocket styleSocket;
 
@@ -233,7 +233,7 @@ public class TextEntryModule extends GapBase implements SourcelistClient {
 	}
 
 	@Override
-	public String sourceListId() {
+	public String getSourcelistId() {
 		String sourceListId = getElementAttributeValue(SOURCE_LIST_ID);
 		return sourceListId;
 	}
