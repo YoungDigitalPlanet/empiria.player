@@ -17,7 +17,6 @@ public class TutorPopupViewWidgetImpl extends Composite implements TutorPopupVie
 	}
 
 	@UiField protected FlowPanel itemsContainer;
-	@UiField protected FlowPanel mainPanel;
 
 	@PostConstruct
 	public void postConstruct() {
