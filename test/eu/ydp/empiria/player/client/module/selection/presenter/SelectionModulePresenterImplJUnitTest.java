@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.selection.presenter;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,16 +25,13 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
-import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnswersByTypeFinder;
-import eu.ydp.empiria.player.client.module.selection.controller.SelectionModuleViewBuildingController;
-import eu.ydp.empiria.player.client.module.selection.controller.SelectionModuleViewUpdatingController;
-import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
-import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
+import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
+import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewUpdater;
+import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteractionBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionItemBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
-import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("PMD")
@@ -43,33 +39,34 @@ public class SelectionModulePresenterImplJUnitTest {
 
 	private SelectionModulePresenterImpl presenter;
 	
-	private ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-	
 	@Mock
 	private SelectionModuleView selectionModuleView;
 	@Mock
 	private SelectionModuleFactory selectionModuleFactory;
 	@Mock
-	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
-	@Mock
-	private SelectionModuleViewUpdatingController selectionModuleViewUpdatingController;
+	private SelectionViewUpdater selectionViewUpdater;
 	@Mock
 	private SelectionModuleModel model;
 	@Mock
 	private ModuleSocket moduleSocket;
 	@Mock
-	private SelectionModuleViewBuildingController viewBuildingController; 
-
+	private SelectionViewBuilder viewBuilder;
+	@Mock
+	private SelectionAnswersMarker answersMarker;
+	@Mock
+	private GroupAnswersControllerModel answersControllerModel;
+	
 	private SelectionInteractionBean bean;
 
-	
 	@Before
 	public void setUp() throws Exception {
 		presenter = new SelectionModulePresenterImpl(
+				selectionViewUpdater,
+				answersMarker,
 				selectionModuleView,
-				selectionModuleFactory,
-				identifiableAnswersByTypeFinder,
-				selectionModuleViewUpdatingController);
+				model,
+				viewBuilder,
+				answersControllerModel);
 		
 		bean = new SelectionInteractionBean();
 		presenter.setBean(bean);
@@ -81,9 +78,9 @@ public class SelectionModulePresenterImplJUnitTest {
 	public void tearDown() throws Exception {
 		Mockito.verifyNoMoreInteractions(
 				selectionModuleView,
+				answersMarker,
 				selectionModuleFactory,
-				identifiableAnswersByTypeFinder,
-				selectionModuleViewUpdatingController,
+				selectionViewUpdater,
 				model,
 				moduleSocket
 				);
@@ -91,6 +88,7 @@ public class SelectionModulePresenterImplJUnitTest {
 
 	@Test
 	public void testBindView()throws Exception {
+		//given
 		InlineBodyGeneratorSocket inlineBodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
 		List<SelectionItemBean> items = Lists.newArrayList(new SelectionItemBean());
 		List<SelectionSimpleChoiceBean> choices = Lists.newArrayList(new SelectionSimpleChoiceBean());
@@ -98,53 +96,41 @@ public class SelectionModulePresenterImplJUnitTest {
 		bean.setSimpleChoices(choices);
 		List<GroupAnswersController> groupChoicesControllers = Lists.newArrayList(mock(GroupAnswersController.class));
 		
+		//when		
 		when(moduleSocket.getInlineBodyGeneratorSocket())
 			.thenReturn(inlineBodyGeneratorSocket );
 		
-		when(selectionModuleFactory.createViewBuildingController(selectionModuleView, presenter, model, bean))
-			.thenReturn(viewBuildingController);
-		
-		when(viewBuildingController.fillGridWithButtons(items, choices))
+		when(viewBuilder.fillGrid(items, choices))
 			.thenReturn(groupChoicesControllers);
+		
+		when(answersControllerModel.getGroupChoicesControllers())
+			.thenReturn(groupChoicesControllers);
+
 		
 		//then
 		presenter.bindView();
+
 		
+		verify(viewBuilder).bindView(presenter, bean);
 		verify(moduleSocket).getInlineBodyGeneratorSocket();
-		verify(selectionModuleView).initialize(items.size(), choices.size(), inlineBodyGeneratorSocket);
-		verify(selectionModuleFactory).createViewBuildingController(selectionModuleView, presenter, model, bean);
-		verify(viewBuildingController).fillFirstRowWithChoices(choices);
-		verify(viewBuildingController).fillFirstColumnWithItems(items);
-		verify(viewBuildingController).fillGridWithButtons(items, choices);
-		assertEquals(groupChoicesControllers, getGroupControllers());
+		verify(selectionModuleView).initialize(inlineBodyGeneratorSocket);
+		verify(viewBuilder).setGridSize(items.size(), choices.size());
+		verify(viewBuilder).fillGrid(items, choices);
 		
 		Mockito.verifyNoMoreInteractions(inlineBodyGeneratorSocket);
 	}
 
-	@SuppressWarnings("unchecked")
-	private List<GroupAnswersController> getGroupControllers(){
-		try {
-			return (List<GroupAnswersController>) reflectionsUtils.getValueFromFiledInObject("groupChoicesControllers", presenter);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	private void setGroupController(List<GroupAnswersController> groupControllers){
-		try {
-			reflectionsUtils.setValueInObjectOnField("groupChoicesControllers", presenter, groupControllers);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 	@Test
 	public void testReset() {
+		//given
 		GroupAnswersController groupController1 = mock(GroupAnswersController.class);
 		GroupAnswersController groupController2 = mock(GroupAnswersController.class);
 		
 		List<GroupAnswersController> groupControllers = Lists.newArrayList(groupController1, groupController2);
-		setGroupController(groupControllers);
+
+		//when
+		when(answersControllerModel.getGroupChoicesControllers())
+			.thenReturn(groupControllers);
 		
 		//then
 		presenter.reset();
@@ -157,113 +143,71 @@ public class SelectionModulePresenterImplJUnitTest {
 
 	@Test
 	public void testSetLocked() {
+		//given
 		GroupAnswersController groupController1 = mock(GroupAnswersController.class);
 		GroupAnswersController groupController2 = mock(GroupAnswersController.class);
 		
 		List<GroupAnswersController> groupControllers = Lists.newArrayList(groupController1, groupController2);
-		setGroupController(groupControllers);
+		
+		//when
+		when(answersControllerModel.getGroupChoicesControllers())
+			.thenReturn(groupControllers);
+		
+		when(answersControllerModel.indexOf(groupController1))
+			.thenReturn(0);
+
+		when(answersControllerModel.indexOf(groupController2))
+			.thenReturn(1);
 		
 		//then
 		presenter.setLocked(true);
 		
 		verify(groupController1).setLockedAllAnswers(true);
 		verify(groupController2).setLockedAllAnswers(true);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, groupControllers);
+		
+		for(GroupAnswersController groupCtrl : groupControllers) {
+			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
+		}
 		
 		Mockito.verifyNoMoreInteractions(groupController1, groupController2);
 	}
 
 	@Test
-	public void testMarkAnswers_unmark() throws Exception {
+	public void testMarkAnswers() throws Exception {
+		//given
 		GroupAnswersController groupController = mock(GroupAnswersController.class);
-		
 		List<GroupAnswersController> groupControllers = Lists.newArrayList(groupController);
-		setGroupController(groupControllers);
 		
-		List<SelectionAnswerDto> selectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getSelectedAnswers())
-			.thenReturn(selectedAnswers );
-		
-		List<SelectionAnswerDto> notSelectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getNotSelectedAnswers())
-			.thenReturn(notSelectedAnswers);
-
-		when(identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(MarkAnswersType.CORRECT, selectedAnswers, model))
-			.thenReturn(selectedAnswers);
+		//when
+		when(answersControllerModel.getGroupChoicesControllers())
+			.thenReturn(groupControllers);
 		
 		//then
 		presenter.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK);
 
-		
-		verify(groupController).getSelectedAnswers();
-		verify(groupController).getNotSelectedAnswers();
-		verify(identifiableAnswersByTypeFinder).findAnswersObjectsOfGivenType(MarkAnswersType.CORRECT, selectedAnswers, model);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, getGroupControllers());
-		
-		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
-			assertEquals(UserAnswerType.DEFAULT, selectionAnswerDto.getSelectionAnswerType());
-		}
-		
-		for (SelectionAnswerDto selectionAnswerDto : selectedAnswers) {
-			assertEquals(UserAnswerType.DEFAULT, selectionAnswerDto.getSelectionAnswerType());
-		}
+		verify(answersMarker).markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK);
+		verify(selectionViewUpdater).updateView(Mockito.any(SelectionModuleView.class), Mockito.any(GroupAnswersController.class), Mockito.anyInt());
 	}
 	
-	@Test
-	public void testMarkAnswers_markCorrectAnswers() {
-		testMarkAnswers(MarkAnswersType.CORRECT, UserAnswerType.CORRECT);
-	}
-	
-	@Test
-	public void testMarkAnswers_markWrongAnswers() {
-		testMarkAnswers(MarkAnswersType.WRONG, UserAnswerType.WRONG);
-	}
-
-	private void testMarkAnswers(MarkAnswersType markAnswerType, UserAnswerType userAnswerType) {
-		GroupAnswersController groupController = mock(GroupAnswersController.class);
-		
-		List<GroupAnswersController> groupControllers = Lists.newArrayList(groupController);
-		setGroupController(groupControllers);
-		
-		List<SelectionAnswerDto> selectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getSelectedAnswers())
-			.thenReturn(selectedAnswers );
-		
-		List<SelectionAnswerDto> notSelectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(groupController.getNotSelectedAnswers())
-			.thenReturn(notSelectedAnswers);
-		
-		when(identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(markAnswerType, selectedAnswers, model))
-			.thenReturn(selectedAnswers);
-		
-		//then
-		presenter.markAnswers(markAnswerType, MarkAnswersMode.MARK);
-
-		
-		verify(groupController).getSelectedAnswers();
-		verify(groupController).getNotSelectedAnswers();
-		verify(identifiableAnswersByTypeFinder).findAnswersObjectsOfGivenType(markAnswerType, selectedAnswers, model);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, getGroupControllers());
-		
-		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
-			assertEquals(UserAnswerType.NONE, selectionAnswerDto.getSelectionAnswerType());
-		}
-		
-		for (SelectionAnswerDto selectionAnswerDto : selectedAnswers) {
-			assertEquals(userAnswerType, selectionAnswerDto.getSelectionAnswerType());
-		}
-	}
-
 	@Test
 	public void testShowAnswers_showCorrectAnswers() {
+		//given
 		GroupAnswersController groupController1 = mock(GroupAnswersController.class);
 		GroupAnswersController groupController2 = mock(GroupAnswersController.class);
 		
 		List<GroupAnswersController> groupControllers = Lists.newArrayList(groupController1, groupController2);
-		setGroupController(groupControllers);
-		
-		
 		List<String> correctAnswers = Lists.newArrayList("correctAnswer");
+
+		//when
+		when(answersControllerModel.getGroupChoicesControllers())
+			.thenReturn(groupControllers);
+		
+		when(answersControllerModel.indexOf(groupController1))
+			.thenReturn(0);
+
+		when(answersControllerModel.indexOf(groupController2))
+			.thenReturn(1);
+		
 		when(model.getCorrectAnswers())
 			.thenReturn(correctAnswers);
 		
@@ -273,21 +217,33 @@ public class SelectionModulePresenterImplJUnitTest {
 		verify(model).getCorrectAnswers();
 		verify(groupController1).selectOnlyAnswersMatchingIds(correctAnswers);
 		verify(groupController2).selectOnlyAnswersMatchingIds(correctAnswers);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, groupControllers);
+		
+		for(GroupAnswersController groupCtrl : groupControllers) {
+			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
+		}
 		
 		Mockito.verifyNoMoreInteractions(groupController1, groupController2);
 	}
 	
 	@Test
 	public void testShowAnswers_showUserAnswers() {
+		//given
 		GroupAnswersController groupController1 = mock(GroupAnswersController.class);
 		GroupAnswersController groupController2 = mock(GroupAnswersController.class);
 		
 		List<GroupAnswersController> groupControllers = Lists.newArrayList(groupController1, groupController2);
-		setGroupController(groupControllers);
-		
-		
 		List<String> userAnswers = Lists.newArrayList("userAnswer");
+
+		//when
+		when(answersControllerModel.getGroupChoicesControllers())
+			.thenReturn(groupControllers);
+		
+		when(answersControllerModel.indexOf(groupController1))
+			.thenReturn(0);
+
+		when(answersControllerModel.indexOf(groupController2))
+			.thenReturn(1);
+	
 		when(model.getCurrentAnswers())
 			.thenReturn(userAnswers);
 		
@@ -297,7 +253,9 @@ public class SelectionModulePresenterImplJUnitTest {
 		verify(model).getCurrentAnswers();
 		verify(groupController1).selectOnlyAnswersMatchingIds(userAnswers);
 		verify(groupController2).selectOnlyAnswersMatchingIds(userAnswers);
-		verify(selectionModuleViewUpdatingController).updateView(selectionModuleView, groupControllers);
+		for (GroupAnswersController groupCtrl : groupControllers) {
+			verify(selectionViewUpdater).updateView(selectionModuleView, groupCtrl, groupControllers.indexOf(groupCtrl));
+		}
 		
 		Mockito.verifyNoMoreInteractions(groupController1, groupController2);
 	}
@@ -308,5 +266,4 @@ public class SelectionModulePresenterImplJUnitTest {
 		
 		verify(selectionModuleView).asWidget();
 	}
-
 }

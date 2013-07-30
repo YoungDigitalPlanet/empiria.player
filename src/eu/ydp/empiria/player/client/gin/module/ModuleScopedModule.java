@@ -33,6 +33,10 @@ import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
+import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
+import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
+import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
+import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
@@ -60,6 +64,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindDragGap();
 		bindChoice();
 		bindTutor();
+		bindSelection();
 	}
 
 	private void bindOrdering() {
@@ -101,10 +106,17 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(CommandFactory.class, new TypeLiteral<ModuleScopedProvider<CommandFactory>>(){});
 		bindModuleScoped(OutcomeDrivenActionTypeGenerator.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeGenerator>>(){});
 		bindModuleScoped(OnPageAllOkAction.class, new TypeLiteral<ModuleScopedProvider<OnPageAllOkAction>>(){});
+		bindModuleScoped(GroupAnswersControllerModel.class, new TypeLiteral<ModuleScopedProvider<GroupAnswersControllerModel>>(){});
 		bindModuleScoped(OnOkAction.class, new TypeLiteral<ModuleScopedProvider<OnOkAction>>(){});
 		bindModuleScoped(OnWrongAction.class, new TypeLiteral<ModuleScopedProvider<OnWrongAction>>(){});
 		bindModuleScoped(OutcomeDrivenActionTypeProvider.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeProvider>>(){});
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
+	}
+
+	private void bindSelection() {
+		bindModuleScoped(SelectionModuleModel.class, new TypeLiteral<ModuleScopedProvider<SelectionModuleModel>>(){});
+		bindModuleScoped(SelectionModuleView.class, new TypeLiteral<ModuleScopedProvider<SelectionModuleView>>(){});
+		bindModuleScoped(SelectionViewBuilder.class, new TypeLiteral<ModuleScopedProvider<SelectionViewBuilder>>(){});
 	}
 
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){

@@ -1,15 +1,13 @@
 package eu.ydp.empiria.player.client.module.selection.view;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,26 +15,22 @@ import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
+import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
-import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class SelectionModuleViewImpl implements SelectionModuleView{
 
-	public static final int ROWS_RESERVED_FOR_COLUMN_HEADER = 1;
-	public static final int COLUMNS_RESERVED_FOR_ROW_HEADER = 1;
+	public SelectionModuleViewImpl() {};
+	
+	@Inject
+	public SelectionModuleViewImpl(
+			SelectionElementGenerator gridElementGenerator) {
+		this.gridElementGenerator = gridElementGenerator;
+	}
+	
+	private SelectionElementGenerator gridElementGenerator;
 
-	@Inject
-	private StyleNameConstants styleNameConstants;
-	@Inject
-	private SelectionModuleFactory selectionModuleFactory;
-	@Inject
-	private UserInteractionHandlerFactory userInteractionHandlerFactory;
-
-	private List<List<SelectionChoiceButton>> choiceButtons;
-	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+	private final Map<SelectionGridElementPosition, SelectionButtonGridElement> buttonsGridMap = new HashMap<SelectionGridElementPosition, SelectionButtonGridElement>();
 
 	@UiField
 	Panel mainPanel;
@@ -52,148 +46,72 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	};
 
 	@Override
-	public void initialize(int amountOfItems, int amountOfChoices, InlineBodyGeneratorSocket inlineBodyGeneratorSocket){
-		this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
+	public void initialize(InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
 		SelectionModuleUiBinder uiBinder = GWT.create(SelectionModuleUiBinder.class);
 		uiBinder.createAndBindUi(this);
-		selectionGrid.resize(amountOfItems+1, amountOfChoices+1);
-		choiceButtons = new ArrayList<List<SelectionChoiceButton>>();
+		gridElementGenerator.setInlineBodyGenerator(inlineBodyGeneratorSocket);
 	}
 
 	@Override
-	public void setItemDisplayedName(XMLContent itemName, int itemNumber){
-		Widget itemTextLabel = inlineBodyGeneratorSocket.generateInlineBody(itemName.getValue(), true);
-
-		itemTextLabel.setStyleName(styleNameConstants.QP_SELECTION_ITEM_LABEL());
-		itemTextLabel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
-		Panel itemContainer = new FlowPanel();
-		itemContainer.setStyleName(styleNameConstants.QP_SELECTION_ITEM());
-		itemContainer.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
-		itemContainer.add(itemTextLabel);
-
-		selectionGrid.setWidget(itemNumber + ROWS_RESERVED_FOR_COLUMN_HEADER, 0, itemContainer);
+	public void setGridSize(int amountOfItems, int amountOfChoices) {
+		selectionGrid.resize(amountOfItems + 1, amountOfChoices + 1);
+	}
+	
+	@Override
+	public void setItemDisplayedName(XMLContent itemName, SelectionGridElementPosition position){
+		SelectionItemGridElement itemTextGridElement = gridElementGenerator.createItemDisplayElement(itemName.getValue());
+		addToGrid(itemTextGridElement, position);
 	}
 
 	@Override
-	public void setChoiceOptionDisplayedName(XMLContent choiceName, int choiceNumber){
-		Widget choiseTextWidget = inlineBodyGeneratorSocket.generateInlineBody(choiceName.getValue());
-		choiseTextWidget.setStyleName(styleNameConstants.QP_SELECTION_CHOICE());
-
-		selectionGrid.setWidget(0, choiceNumber+COLUMNS_RESERVED_FOR_ROW_HEADER, choiseTextWidget);
+	public void setChoiceOptionDisplayedName(XMLContent choiceName, SelectionGridElementPosition position){
+		SelectionChoiceGridElement choiseTextGridElement = gridElementGenerator.createChoiceDisplayElement(choiceName.getValue());
+		addToGrid(choiseTextGridElement, position);
 	}
 
 	@Override
-	public void createButtonForItemChoicePair(int itemNumber, int choiceNumber, String moduleStyleName){
-		SelectionChoiceButton choiceButton = selectionModuleFactory.createSelectionChoiceButton(moduleStyleName);
-		Panel buttonPanel = new FlowPanel();
-		buttonPanel.setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
-		buttonPanel.add(choiceButton);
-
-		selectionGrid.setWidget(
-				itemNumber+ROWS_RESERVED_FOR_COLUMN_HEADER,
-				choiceNumber+COLUMNS_RESERVED_FOR_ROW_HEADER,
-				buttonPanel);
-
-		addNewChoiceButton(choiceButton, itemNumber);
-
-		addMouseOverHandler(choiceButton);
+	public void createButtonForItemChoicePair(SelectionGridElementPosition position, String moduleStyleName){
+		SelectionButtonGridElement choiceButtonGridElement = gridElementGenerator.createChoiceButtonElement(moduleStyleName);
+		addToGrid(choiceButtonGridElement, position);
+		buttonsGridMap.put(position, choiceButtonGridElement);
 	}
-
-	private void addMouseOverHandler(final SelectionChoiceButton button) {
-		EventHandlerProxy userOverHandler = userInteractionHandlerFactory.createUserOverHandler(new ChoiceButtonMouseInteractionCommand(button, true));
-		userOverHandler.apply(button);
-
-		EventHandlerProxy userOutHandler = userInteractionHandlerFactory.createUserOutHandler(new ChoiceButtonMouseInteractionCommand(button, false));
-		userOutHandler.apply(button);
-	}
-
-	private void addNewChoiceButton(SelectionChoiceButton choiceButton, int itemNumber) {
-		List<SelectionChoiceButton> buttonsOfItem;
-		if(buttonsOfItemNotExists(itemNumber)){
-			buttonsOfItem = new ArrayList<SelectionChoiceButton>();
-			choiceButtons.add(buttonsOfItem);
-		}else{
-			buttonsOfItem = choiceButtons.get(itemNumber);
-		}
-
-		buttonsOfItem.add(choiceButton);
-	}
-
-	private boolean buttonsOfItemNotExists(int itemNumber) {
-		return choiceButtons.isEmpty() || itemNumber >= choiceButtons.size();
+	
+	@Override
+	public void addClickHandlerToButton(SelectionGridElementPosition position, ClickHandler clickHandler){
+		final SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+		gridElement.addClickHandler(clickHandler);
 	}
 
 	@Override
-	public void addClickHandlerToButton(int itemNumber, int choiceNumber, ClickHandler clickHandler){
-		final SelectionChoiceButton button = getButton(itemNumber, choiceNumber);
-		button.addClickHandler(clickHandler);
+	public void selectButton(SelectionGridElementPosition position){
+		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+		gridElement.select();
 	}
 
 	@Override
-	public void selectButton(int itemNumber, int choiceNumber){
-		SelectionChoiceButton selectionChoiceButton = getButton(itemNumber, choiceNumber);
-		selectionChoiceButton.select();
+	public void unselectButton(SelectionGridElementPosition position) {
+		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+		gridElement.unselect();
 	}
 
 	@Override
-	public void unselectButton(int itemNumber, int choiceNumber) {
-		SelectionChoiceButton selectionChoiceButton = getButton(itemNumber, choiceNumber);
-		selectionChoiceButton.unselect();
-	}
-
-	private SelectionChoiceButton getButton(int itemNumber, int choiceNumber) {
-		List<SelectionChoiceButton> buttonsOfItem;
-		String exceptionMessage = "Cannot select button of itemNumber: "+itemNumber+", choiceNumber:"+choiceNumber+" that is not existing!";
-
-		try{
-			buttonsOfItem = choiceButtons.get(itemNumber);
-		}catch(ArrayIndexOutOfBoundsException e){
-			throw new RuntimeException(exceptionMessage);
-		}
-
-		SelectionChoiceButton selectionChoiceButton;
-		try{
-			selectionChoiceButton = buttonsOfItem.get(choiceNumber);
-		}catch(ArrayIndexOutOfBoundsException e){
-			throw new RuntimeException(exceptionMessage);
-		}
-
-		return selectionChoiceButton;
+	public void lockButton(SelectionGridElementPosition position, boolean lock){
+		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+		gridElement.setButtonEnabled(!lock);
 	}
 
 	@Override
-	public void lockButton(boolean lock, int itemNumber, int choiceNumber){
-		SelectionChoiceButton button = getButton(itemNumber, choiceNumber);
-		button.setButtonEnabled(!lock);
-	}
-
-	@Override
-	public void updateButtonStyle(int itemNumber, int choiceNumber, UserAnswerType styleState){
-		SelectionChoiceButton button = getButton(itemNumber, choiceNumber);
-		Widget parentPanel = button.getParent();
-
-		switch (styleState) {
-			case CORRECT:
-				parentPanel.setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_CORRECT());
-				break;
-			case WRONG:
-				parentPanel.setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_WRONG());
-				break;
-			case DEFAULT:
-				parentPanel.setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_INACTIVE());
-				break;
-			case NONE:
-				parentPanel.setStyleName(styleNameConstants.QP_MARKANSWERS_BUTTON_NONE());
-				break;
-			default:
-				break;
-		}
-
-		button.updateStyle();
+	public void updateButtonStyle(SelectionGridElementPosition position, UserAnswerType styleState){
+		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+		gridElement.updateStyle(styleState);
 	}
 
 	@Override
 	public Widget asWidget() {
 		return mainPanel;
+	}
+	
+	private <V extends SelectionGridElement> void addToGrid(V gridElement, SelectionGridElementPosition position) {
+		selectionGrid.setWidget(position.getRowNumber(), position.getColumnNumber(), gridElement.asWidget());
 	}
 }

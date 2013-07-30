@@ -15,8 +15,8 @@ import org.mockito.Mockito;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
-import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
+import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 
@@ -28,17 +28,17 @@ public class GroupAnswersControllerJUnitTest {
 	private GroupAnswersController groupAnswerController;
 	private boolean isMulti = true;
 	private int maxSelected = 1;
-	private AbstractResponseModel<?> responseModel;
+	private SelectionModuleModel responseModel;
 	private NoAnswerPriorityComparator noAnswerPriorityComparator = new NoAnswerPriorityComparator();
 
 	@Before
 	public void setUp() throws Exception {
-		responseModel = mock(AbstractResponseModel.class);
+		responseModel = mock(SelectionModuleModel.class);
 
 		groupAnswerController = createGroupChoicesController(isMulti, maxSelected, responseModel);
 	}
 
-	private GroupAnswersController createGroupChoicesController(boolean isMulti, int maxSelected, AbstractResponseModel<?> responseModel) {
+	private GroupAnswersController createGroupChoicesController(boolean isMulti, int maxSelected, SelectionModuleModel responseModel) {
 		return new GroupAnswersController(isMulti, maxSelected, responseModel, noAnswerPriorityComparator);
 	}
 
