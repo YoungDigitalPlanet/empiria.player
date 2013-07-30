@@ -29,6 +29,7 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	HTML5MediaEventMapper mediaEventMapper;
 
 	private final Set<HandlerRegistration> allEventsRegistration = new HashSet<HandlerRegistration>();
+	private boolean hideOnPlayEvent;
 
 	@Override
 	public void init() {
@@ -96,9 +97,18 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	}
 
 	private void mapAndFireEvent(HTML5MediaEvent event) {
-		mediaEventMapper.mapAndFireEvent(event, listener, mediaDescriptor);
+		if(canPopagateThisEvent(event)) {
+			mediaEventMapper.mapAndFireEvent(event, listener, mediaDescriptor);
+		}
 	}
 
+	private boolean canPopagateThisEvent(HTML5MediaEvent event){
+		if(event.getType() == HTML5MediaEventsType.play && hideOnPlayEvent){
+			hideOnPlayEvent = false;
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	public void play(String src) {
@@ -111,6 +121,15 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 
 	@Override
 	public void play() {
+		media.play();
+	}
+
+
+	/**
+	 * For iosAudoHack {@link IosAudioPlayHack}
+	 */
+	public void playWithoutOnPlayEventPropagation() {
+		hideOnPlayEvent = true;
 		media.play();
 	}
 

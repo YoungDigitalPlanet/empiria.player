@@ -9,22 +9,31 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
+import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
+import eu.ydp.empiria.player.client.module.selection.view.SelectionElementPositionGenerator;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 
-public class SelectionModuleViewUpdatingControllerJUnitTest {
+@RunWith(MockitoJUnitRunner.class)
+public class SelectionViewUpdaterJUnitTest {
 
-	private SelectionModuleViewUpdatingController viewUpdatingController;
+	private SelectionViewUpdater viewUpdater;
 	private SelectionModuleView selectionModuleView;
+	
+	@Mock
+	private SelectionElementPositionGenerator elementPositionGenerator;
 	
 	@Before
 	public void setUp() throws Exception {
-		viewUpdatingController = new SelectionModuleViewUpdatingController();
+		viewUpdater = new SelectionViewUpdater(elementPositionGenerator);
 		selectionModuleView = mock(SelectionModuleView.class);
 	}
 
@@ -53,16 +62,27 @@ public class SelectionModuleViewUpdatingControllerJUnitTest {
 		when(groupController2.getAllAnswers())
 			.thenReturn(answers2 );
 		
+		SelectionGridElementPosition firstUpdatedPostion = new SelectionGridElementPosition(1, 1);
+		SelectionGridElementPosition secondUpdatedPostion = new SelectionGridElementPosition(2, 1);
+		when(elementPositionGenerator.getButtonElementPositionFor(0, 0)).thenReturn(firstUpdatedPostion);
+		when(elementPositionGenerator.getButtonElementPositionFor(1, 0)).thenReturn(secondUpdatedPostion);
+		when(elementPositionGenerator.getButtonElementPositionFor(1, 1)).thenReturn(firstUpdatedPostion);
+		when(elementPositionGenerator.getButtonElementPositionFor(2, 1)).thenReturn(secondUpdatedPostion);
+		
 		//then
-		viewUpdatingController.updateView(selectionModuleView, groupChoicesControllers);
+		for(GroupAnswersController groupCtrl : groupChoicesControllers) {
+			viewUpdater.updateView(selectionModuleView, groupCtrl, groupChoicesControllers.indexOf(groupCtrl));
+		}
 		
-		verify(selectionModuleView).unselectButton(0, 0);
-		verify(selectionModuleView).lockButton(false, 0, 0);
-		verify(selectionModuleView).updateButtonStyle(0, 0, UserAnswerType.CORRECT);
+		SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(1, 1);
+		verify(selectionModuleView).unselectButton(firstPosition);
+		verify(selectionModuleView).lockButton(firstPosition, false);
+		verify(selectionModuleView).updateButtonStyle(firstPosition, UserAnswerType.CORRECT);
 		
-		verify(selectionModuleView).selectButton(1, 0);
-		verify(selectionModuleView).lockButton(false, 1, 0);
-		verify(selectionModuleView).updateButtonStyle(1, 0, UserAnswerType.CORRECT);
+		SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(2, 1);
+		verify(selectionModuleView).selectButton(secondPosition);
+		verify(selectionModuleView).lockButton(secondPosition, false);
+		verify(selectionModuleView).updateButtonStyle(secondPosition, UserAnswerType.CORRECT);
 	}
 	
 	private SelectionAnswerDto createAnswer(String id, boolean isSelected, boolean stateChanged){

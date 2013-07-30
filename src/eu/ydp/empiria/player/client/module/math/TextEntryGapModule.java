@@ -28,6 +28,8 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class TextEntryGapModule extends MathGapBase implements MathGap, SourcelistClient {
 
+	private static final String SOURCE_LIST_ID = "sourcelistId";
+
 	private final SourcelistManager sourcelistManager;
 
 	private final StyleSocket styleSocket;
@@ -246,6 +248,12 @@ public class TextEntryGapModule extends MathGapBase implements MathGap, Sourceli
 			sourcelistManager.unlockGroup(getIdentifier());
 			getTextEntryGapPresenter().unlockDragZone();
 		}
+	}
+
+	@Override
+	public String getSourcelistId() {
+		String sourceListId = getElementAttributeValue(SOURCE_LIST_ID);
+		return sourceListId;
 	}
 
 }

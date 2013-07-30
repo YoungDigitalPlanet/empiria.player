@@ -18,23 +18,23 @@ public class LastGivenAnswersCheckerJUnitTest {
 	private LastGivenAnswersChecker lastGivenAnswersChecker = new LastGivenAnswersChecker();
 	
 	@Test
-	public void shouldRecognizeThatAnswerIsCorrect() throws Exception {
-		List<String> answers = Lists.newArrayList("wrong", "correct");
+	public void shouldRecognizeThatAnswerIsIncorrect() throws Exception {
+		List<String> answers = Lists.newArrayList("correct","incorrect");
 		CorrectAnswers correctAnswers = createCorrectAnswers("correct");
 		
-		boolean anyAnswerCorrect = lastGivenAnswersChecker.isAnyAnswerCorrect(answers, correctAnswers);
+		boolean anyAnswerIncorrect = lastGivenAnswersChecker.isAnyAsnwerIncorrect(answers, correctAnswers);
 		
-		assertThat(anyAnswerCorrect, equalTo(true));
+		assertThat(anyAnswerIncorrect, equalTo(true));
 	}
 
 	@Test
 	public void shouldRecognizeThatAllAnswersAreWrong() throws Exception {
-		List<String> answers = Lists.newArrayList("wrong", "wrong2");
-		CorrectAnswers correctAnswers = createCorrectAnswers("correct");
+		List<String> answers = Lists.newArrayList("correct1", "correct2");
+		CorrectAnswers correctAnswers = createCorrectAnswers("correct1", "correct2");
 		
-		boolean anyAnswerCorrect = lastGivenAnswersChecker.isAnyAnswerCorrect(answers, correctAnswers);
+		boolean anyAnswerIncorrect = lastGivenAnswersChecker.isAnyAsnwerIncorrect(answers, correctAnswers);
 		
-		assertThat(anyAnswerCorrect, equalTo(false));
+		assertThat(anyAnswerIncorrect, equalTo(false));
 	}
 
 	private CorrectAnswers createCorrectAnswers(String ... answers) {

@@ -8,7 +8,6 @@ import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
-import eu.ydp.empiria.player.client.module.media.button.MediaProgressBar;
 import eu.ydp.empiria.player.client.module.media.button.MuteMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.PlayPauseMediaButton;
 import eu.ydp.empiria.player.client.module.media.button.PlayStopMediaButton;
@@ -18,7 +17,12 @@ import eu.ydp.empiria.player.client.module.media.button.VolumeMediaButton;
 import eu.ydp.empiria.player.client.module.media.info.MediaCurrentTime;
 import eu.ydp.empiria.player.client.module.media.info.MediaTotalTime;
 import eu.ydp.empiria.player.client.module.media.info.PositionInMediaStream;
+import eu.ydp.empiria.player.client.module.media.progress.MediaProgressBarAndroid;
+import eu.ydp.empiria.player.client.module.media.progress.MediaProgressBarImpl;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
+@SuppressWarnings("PMD")
 public class MediaControllerFactoryImpl implements MediaControllerFactory {
 
 	@Inject
@@ -31,29 +35,37 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 	private Provider<PlayPauseMediaButton> playPauseMediaButtonProvider;
 
 	@Inject
-	private Provider<PlayStopMediaButton> playStopMediaButtonProvider;	
+	private Provider<PlayStopMediaButton> playStopMediaButtonProvider;
 
 	@Inject
-	private Provider<StopMediaButton> stopMediaButtonProvider;	
+	private Provider<StopMediaButton> stopMediaButtonProvider;
 
 	@Inject
-	private Provider<MuteMediaButton> muteMediaButtonProvider;	
+	private Provider<MuteMediaButton> muteMediaButtonProvider;
 
 	@Inject
-	private Provider<MediaProgressBar> mediaProgressBarProvider;	
+	private Provider<MediaProgressBarImpl> mediaProgressBarProvider;
 
 	@Inject
-	private Provider<PositionInMediaStream> positionInMediaStreamProvider;	
+	private Provider<MediaProgressBarAndroid> mediaProgressBarAndroidProvider;
+
 
 	@Inject
-	private Provider<VolumeMediaButton> volumeMediaButton;	
+	private Provider<PositionInMediaStream> positionInMediaStreamProvider;
 
 	@Inject
-	private Provider<MediaCurrentTime> mediaCurrentTimeProvider;	
+	private Provider<VolumeMediaButton> volumeMediaButton;
 
 	@Inject
-	private Provider<MediaTotalTime> mediaTotalTimeProvider;	
-	
+	private Provider<MediaCurrentTime> mediaCurrentTimeProvider;
+
+	@Inject
+	private Provider<MediaTotalTime> mediaTotalTimeProvider;
+
+	@Inject
+	private UserAgentUtil userAgentUtil;
+
+
 	@Override
 	public AbstractMediaController<?> get(ModuleTagName moduleType) {
 		AbstractMediaController<?> mediaController = null;
@@ -64,7 +76,7 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 				break;
 			case MEDIA_PLAY_STOP_BUTTON:
 				mediaController = playStopMediaButtonProvider.get();
-				break;				
+				break;
 			case MEDIA_STOP_BUTTON:
 				mediaController = stopMediaButtonProvider.get();
 				break;
@@ -72,7 +84,7 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 				mediaController = muteMediaButtonProvider.get();
 				break;
 			case MEDIA_PROGRESS_BAR:
-				mediaController = (AbstractMediaController<?>) mediaProgressBarProvider.get();
+				mediaController = getMediaProgressBar();
 				break;
 			case MEDIA_FULL_SCREEN_BUTTON:
 				mediaController = fullScreenMediaButtonProvider.get();
@@ -94,6 +106,16 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 			}
 		}
 		return mediaController;
+	}
+
+	private AbstractMediaController<?> getMediaProgressBar() {
+		if(userAgentUtil.isMobileUserAgent(MobileUserAgent.ANDROID23,
+										   MobileUserAgent.ANDROID3,
+										   MobileUserAgent.ANDROID321,
+										   MobileUserAgent.ANDROID4)){
+			return mediaProgressBarAndroidProvider.get();
+		}
+		return mediaProgressBarProvider.get();
 	}
 
 	@Override
