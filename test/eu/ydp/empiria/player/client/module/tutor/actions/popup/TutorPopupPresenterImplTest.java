@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,41 +32,43 @@ public class TutorPopupPresenterImplTest {
 	private PersonaToViewDtoConverter personaConverter;
 	@Mock
 	private TutorConfig tutorConfig;
-	
+
 	@InjectMocks
 	private TutorPopupPresenterImpl tutorPopupPresenterImpl;
-	private String tutorId = "tutorId";
-	private List<TutorPersonaProperties> personas = Lists.newArrayList();
-	private List<PersonaViewDto> viewPersonas = Lists.newArrayList();
+	private final String tutorId = "tutorId";
+	private final List<TutorPersonaProperties> personas = Lists.newArrayList();
+	private final List<PersonaViewDto> viewPersonas = Lists.newArrayList();
 
 	@Before
 	public void setUp() {
 		when(tutorService.getTutorConfig(tutorId))
 			.thenReturn(tutorConfig);
-		
+
 		when(tutorConfig.getPersonas())
 			.thenReturn(personas);
-		
+
 		when(personaConverter.convert(personas))
 			.thenReturn(viewPersonas);
-		
+
 		tutorPopupPresenterImpl.init(tutorId);
 	}
-	
+
 	@Test
 	public void testInit() throws Exception {
 		//given
 		int index = 5;
 		PersonaViewDto viewPersona = new PersonaViewDto(index, "URL");
 		viewPersonas.add(viewPersona);
-		
+		viewPersona = new PersonaViewDto(++index, "URL");
+		viewPersonas.add(viewPersona);
+
 		//when
 		tutorPopupPresenterImpl.init(tutorId);
-		
+
 		//then
 		for (PersonaViewDto personaViewDto : viewPersonas) {
 			verify(tutorPopupView).addPersona(personaViewDto);
-			verify(tutorPopupView).addClickHandlerToPersona(Mockito.any(PopupClickCommand.class));
+			verify(tutorPopupView).addClickHandlerToPersona(Mockito.any(PopupClickCommand.class),eq(personaViewDto.getPersonaIndex()));
 		}
 	}
 
@@ -73,15 +76,15 @@ public class TutorPopupPresenterImplTest {
 	public void testShow() throws Exception {
 		//given
 		Integer index = 5;
-		
+
 		PersonaService personaService = mock(PersonaService.class);
 		when(tutorService.getTutorPersonaService(tutorId)).thenReturn(personaService);
 		when(personaService.getCurrentPersonaIndex()).thenReturn(index);
-		
-		
+
+
 		//when
 		tutorPopupPresenterImpl.show();
-		
+
 
 		//then
 		verify(tutorPopupView).setSelected(index);
@@ -96,12 +99,12 @@ public class TutorPopupPresenterImplTest {
 		PersonaService personaService = mock(PersonaService.class);
 		when(tutorService.getTutorPersonaService(tutorId))
 			.thenReturn(personaService);
-		
-		
+
+
 		//then
 		tutorPopupPresenterImpl.clicked(personaView);
-		
-		
+
+
 		//when
 		verify(personaService).setCurrentPersonaIndex(index);
 	}

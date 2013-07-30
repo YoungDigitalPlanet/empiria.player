@@ -11,11 +11,11 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorSe
 
 public class TutorPopupPresenterImpl implements TutorPopupPresenter {
 
-	private TutorService tutorService;
-	private TutorPopupView view;
+	private final TutorService tutorService;
+	private final TutorPopupView view;
 	private String tutorId;
-	private PersonaToViewDtoConverter personaViewDtoConverter;
-	
+	private final PersonaToViewDtoConverter personaViewDtoConverter;
+
 	@Inject
 	public TutorPopupPresenterImpl(TutorService tutorService, TutorPopupView tutorPopupView, PersonaToViewDtoConverter personaViewDtoConverter) {
 		this.tutorService = tutorService;
@@ -49,8 +49,8 @@ public class TutorPopupPresenterImpl implements TutorPopupPresenter {
 	private void initilizeView(List<PersonaViewDto> viewDtos) {
 		for (final PersonaViewDto personaViewDto : viewDtos) {
 			view.addPersona(personaViewDto);
-			view.addClickHandlerToPersona(new PopupClickCommand(personaViewDto, this));
+			PopupClickCommand popupClickCommand = new PopupClickCommand(personaViewDto, this);
+			view.addClickHandlerToPersona(popupClickCommand, personaViewDto.getPersonaIndex());
 		}
 	}
 }
-
