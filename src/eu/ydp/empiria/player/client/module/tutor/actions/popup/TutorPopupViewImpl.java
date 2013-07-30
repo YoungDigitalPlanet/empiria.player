@@ -1,37 +1,65 @@
 package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
-import eu.ydp.gwtutil.client.event.factory.Command;
+import javax.annotation.PostConstruct;
 
-public class TutorPopupViewImpl implements TutorPopupView {
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
+import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
+
+public class TutorPopupViewImpl implements TutorPopupView  {
+
+	@Inject private TutorPopupViewWidget popupViewWidget;
+	@Inject private StyleNameConstants styleNameConstants;
+	@Inject private Provider<TutorPopupViewPersonaView> personasViewProvider;
+	@Inject private RootPanelDelegate rootPanelDelegate;
+	@Inject private UserInteractionHandlerFactory userInteractionHandlerFactory;
+
+	private final Command hideCommand = new Command() {
+
+		@Override
+		public void execute(NativeEvent event) {
+			hide();
+		}
+	};
+
+
+	@PostConstruct
+	public void postConstruct() {
+		userInteractionHandlerFactory.applyUserClickHandler(hideCommand, popupViewWidget);
+	}
 
 	@Override
 	public void setSelected(int personaIndex) {
-		// TODO Auto-generated method stub
-
+		popupViewWidget.getWidget(personaIndex).setStyleName(styleNameConstants.QP_TUTOR_POPUP_SELECTED_PERSONA());
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-
+		rootPanelDelegate.getRootPanel().add(popupViewWidget);
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-
+		rootPanelDelegate.getRootPanel().remove(popupViewWidget);
 	}
 
 	@Override
 	public void addPersona(PersonaViewDto personaViewDto) {
-		// TODO Auto-generated method stub
-
+		final TutorPopupViewPersonaView personaView = personasViewProvider.get();
+		personaView.setAvatarUrl(personaViewDto.getAvatarUrl());
+		popupViewWidget.addWidget(personaView);
 	}
 
 	@Override
-	public void addClickHandlerToPersona(Command command) {
-		// TODO Auto-generated method stub
-
+	public void addClickHandlerToPersona(Command command, int personaIndex) {
+		Widget personaWidget = popupViewWidget.getWidget(personaIndex);
+		userInteractionHandlerFactory.applyUserClickHandler(command, personaWidget);
 	}
 
 }

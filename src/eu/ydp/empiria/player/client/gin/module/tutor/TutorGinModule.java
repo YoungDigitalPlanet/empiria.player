@@ -17,6 +17,10 @@ import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupPresent
 import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupView;
 import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupViewImpl;
+import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupViewPersonaView;
+import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupViewPersonaViewImpl;
+import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupViewWidget;
+import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupViewWidgetImpl;
 import eu.ydp.empiria.player.client.module.tutor.commands.AnimationCommand;
 import eu.ydp.empiria.player.client.module.tutor.commands.ShowImageCommand;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
@@ -35,6 +39,8 @@ public class TutorGinModule extends AbstractGinModule {
 		bind(ActionExecutorService.class).to(ActionExecutorServiceImpl.class);
 		bind(TutorPopupPresenter.class).to(TutorPopupPresenterImpl.class);
 		bind(TutorPopupView.class).to(TutorPopupViewImpl.class);
+		bind(TutorPopupViewWidget.class).to(TutorPopupViewWidgetImpl.class);
+		bind(TutorPopupViewPersonaView.class).to(TutorPopupViewPersonaViewImpl.class);
 		install(new GinFactoryModuleBuilder()
 				.implement(TutorCommand.class, Names.named("image"), ShowImageCommand.class)
 				.implement(TutorCommand.class, Names.named("animation"), AnimationCommand.class)

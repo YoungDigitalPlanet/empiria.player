@@ -8,5 +8,5 @@ public interface TutorPopupView {
 	void show();
 	void hide();
 	void addPersona(PersonaViewDto personaViewDto);
-	void addClickHandlerToPersona(Command command);
+	void addClickHandlerToPersona(Command command, int presonaIndex);
 }
