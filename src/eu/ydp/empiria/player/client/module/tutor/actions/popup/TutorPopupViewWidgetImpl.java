@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import com.google.gwt.core.client.GWT;
@@ -31,6 +34,17 @@ public class TutorPopupViewWidgetImpl extends Composite implements TutorPopupVie
 	@Override
 	public void addWidget(TutorPopupViewPersonaView personaView) {
 		itemsContainer.add(personaView);
+	}
+	
+	@Override
+	public List<Widget> getAllWidgets() {
+		int widgetCount = itemsContainer.getWidgetCount();
+		List<Widget> widgets = new ArrayList<Widget>();
+		
+		for(int i=0; i<widgetCount; i++) {
+			widgets.add(itemsContainer.getWidget(i));
+		}
+		return widgets;
 	}
 
 }

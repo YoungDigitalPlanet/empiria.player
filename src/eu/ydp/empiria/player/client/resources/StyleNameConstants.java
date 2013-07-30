@@ -810,6 +810,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-tutor-popup-items")
 	public String QP_TUTOR_POPUP_ITEMS();
+	
+	@DefaultStringValue("qp-tutor-popup-item")
+	public String QP_TUTOR_POPUP_ITEM();
 
 	@DefaultStringValue("selection")
 	public String SELECTION();
