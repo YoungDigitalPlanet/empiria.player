@@ -1,29 +1,38 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
-import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.event.dom.client.TouchStartHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.media.client.Audio;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 
-import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
-import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
-import eu.ydp.gwtutil.client.util.UserAgentUtil;
+import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
-public class HTML5AudioMediaExecutor extends AbstractHTML5MediaExecutor<Audio> implements TouchStartHandler{
-	
-	private static final Logger LOGGER = new Logger();
-	private HandlerRegistration touchHandlerRegistration;
-	private final RootPanelDelegate rootPanelDelegate;
-	
+public class HTML5AudioMediaExecutor extends AbstractHTML5MediaExecutor<Audio> {
+
+	private final Instance<IosAudioPlayHack> iosPlayHack;
+	private final UserAgentUtil userAgentUtil;
+
 	@Inject
-	public HTML5AudioMediaExecutor(UserAgentUtil userAgentUtil, RootPanelDelegate rootPanelDelegate) {
-		this.rootPanelDelegate = rootPanelDelegate;
-		
-		if(isPlayOnTouchHackNeeded(userAgentUtil)){
-			addPlayOnTouchHandler();
+	public HTML5AudioMediaExecutor(Instance<IosAudioPlayHack> iosPlayHack, UserAgentUtil userAgentUtil) {
+		this.iosPlayHack = iosPlayHack;
+		this.userAgentUtil = userAgentUtil;
+		applyIosHackIfNeeded(userAgentUtil);
+	}
+	
+	@Override
+	public void initExecutor() {
+		//
+	}
+	
+	@Override
+	public void setMedia(Audio media) {
+		super.setMedia(media);
+		applyIosHackIfNeeded(userAgentUtil);
+	}
+
+	private void applyIosHackIfNeeded(UserAgentUtil userAgentUtil) {
+		if (isPlayOnTouchHackNeeded(userAgentUtil)) {
+			addIosAudioHack();
 		}
 	}
 
@@ -31,23 +40,13 @@ public class HTML5AudioMediaExecutor extends AbstractHTML5MediaExecutor<Audio> i
 		return userAgentUtil.isInsideIframe() && isMobileSafari(userAgentUtil);
 	}
 
+
 	private boolean isMobileSafari(UserAgentUtil userAgentUtil) {
 		return userAgentUtil.isMobileUserAgent(MobileUserAgent.SAFARI) || userAgentUtil.isMobileUserAgent(MobileUserAgent.SAFARI_WEBVIEW);
 	}
-
-	@Override
-	public void initExecutor() {
-		//
-	}
-
-	protected void addPlayOnTouchHandler() {
-		RootPanel root = rootPanelDelegate.getRootPanel();
-		touchHandlerRegistration = root.addDomHandler(this, TouchStartEvent.getType());
-	}
 	
-	@Override
-	public void onTouchStart(TouchStartEvent event) {
-		touchHandlerRegistration.removeHandler();
-		super.play();
+	protected void addIosAudioHack() {
+		iosPlayHack.get().applyHack(this);
 	}
+
 }

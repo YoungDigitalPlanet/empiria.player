@@ -1,28 +1,33 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.configuration.MockitoConfiguration;
 
 import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.event.dom.client.TouchStartHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
+import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
-import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
-import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
-import eu.ydp.gwtutil.client.util.UserAgentUtil;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
@@ -31,11 +36,10 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 @PrepareForTest({ MediaBase.class, HTML5MediaEvent.class, RootPanel.class, TouchStartEvent.class})
 public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutorJUnitBase {
 
-	private final ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-	
 	@Override
 	@Before
 	public void before() {
+		MockitoConfiguration.setenableClassCache(false);
 		setUpGuice();
 		super.before();
 	}
@@ -47,7 +51,7 @@ public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 
 	@Override
 	public MediaBase getMediaBaseMock() {
-		return mock(MediaBase.class);
+		return mock(Audio.class);
 	}
 
 	@Override
@@ -64,36 +68,30 @@ public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 		verify(instance).initExecutor();
 		verifyNoMoreInteractions(instance);
 	}
-	
+
 	@Test
 	public void shouldApplyPlayOnTouchIosHackWhenInIframe() throws Exception {
 		UserAgentUtil userAgentUtil = Mockito.mock(UserAgentUtil.class);
-		Audio media = Mockito.mock(Audio.class);
-		RootPanelDelegate rootPanelDelegate = Mockito.mock(RootPanelDelegate.class);
-		RootPanel rootPanel = Mockito.mock(RootPanel.class);
-		TouchStartEvent event = Mockito.mock(TouchStartEvent.class);
-		
+
 		when(userAgentUtil.isInsideIframe())
 			.thenReturn(true);
-		
+
 		when(userAgentUtil.isMobileUserAgent(MobileUserAgent.SAFARI))
 			.thenReturn(true);
-		
-		when(rootPanelDelegate.getRootPanel())
-			.thenReturn(rootPanel);
-		
-		HandlerRegistration mockHandlerRegistration = Mockito.mock(HandlerRegistration.class);
-		when(rootPanel.addDomHandler(any(TouchStartHandler.class), eq(TouchStartEvent.getType())))
-			.thenReturn(mockHandlerRegistration);
-		
-		HTML5AudioMediaExecutor audioMediaExecutor = new HTML5AudioMediaExecutor(userAgentUtil, rootPanelDelegate);
-		audioMediaExecutor.setMedia(media);
-		audioMediaExecutor.onTouchStart(event);
-		
-		
-		verify(rootPanel).addDomHandler(any(TouchStartHandler.class), eq(TouchStartEvent.getType()));
-		verify(mockHandlerRegistration).removeHandler();
-		verify(media).play();
+
+		Instance<IosAudioPlayHack> iosPlayHack = createIosAudoHackMock();
+		HTML5AudioMediaExecutor audioMediaExecutor = new HTML5AudioMediaExecutor(iosPlayHack,userAgentUtil);
+		verify(iosPlayHack.get()).applyHack(eq(audioMediaExecutor));
+
+
+	}
+
+	public Instance<IosAudioPlayHack> createIosAudoHackMock(){
+		Instance<IosAudioPlayHack> iosPlayHack = mock(Instance.class);
+		IosAudioPlayHack iosHack = mock(IosAudioPlayHack.class);
+		doReturn(iosHack).when(iosPlayHack).get();
+		return iosPlayHack;
+
 	}
 
 }

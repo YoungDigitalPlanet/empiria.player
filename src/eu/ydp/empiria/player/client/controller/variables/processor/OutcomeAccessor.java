@@ -11,7 +11,9 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.variables.VariablePossessorBase;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
+import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 
 public class OutcomeAccessor {
@@ -20,26 +22,36 @@ public class OutcomeAccessor {
 	private SessionDataSupplier sessionDataSupplier;
 	@Inject
 	private FlowDataSupplier flowDataSupplier;
-	
-	public int getCurrentPageTodo(){
+
+	public int getCurrentPageTodo() {
 		return getVariableAsInt(TODO);
 	}
-	
-	public int getCurrentPageDone(){
+
+	public int getCurrentPageDone() {
 		return getVariableAsInt(DONE);
 	}
-	
-	public int getCurrentPageErrors(){
+
+	public int getCurrentPageErrors() {
 		return getVariableAsInt(ERRORS);
 	}
-	
-	public int getCurrentPageMistakes(){
+
+	public int getCurrentPageMistakes() {
 		return getVariableAsInt(MISTAKES);
-		
 	}
-	public boolean isCurrentPageLastMistaken(){
+
+	public boolean isCurrentPageLastMistaken() {
 		int lastmistaken = getVariableAsInt(LASTMISTAKEN);
 		return lastmistaken > 0;
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean isLastActionSelection() {
+		VariableProviderSocket variableProviderSocket = getVariableProvider();
+		if (variableProviderSocket instanceof VariablePossessorBase<?>) {
+			VariablePossessorBase<Variable> variablePossessor = (VariablePossessorBase<Variable>) variableProviderSocket;
+			return variablePossessor.isLastAnswerSelectAction();
+		}
+		return false;
 	}
 
 	private int getVariableAsInt(VariableName variable) {
@@ -49,13 +61,15 @@ public class OutcomeAccessor {
 
 	private String getVariableAsString(VariableName variable) {
 		VariableProviderSocket variableProvider = getVariableProvider();
-		String todoString = variableProvider.getVariableValue(variable.toString()).getValuesShort();
+		Variable variableValue = variableProvider.getVariableValue(variable.toString());
+		String todoString = variableValue.getValuesShort();
 		return todoString;
 	}
-	
+
 	private VariableProviderSocket getVariableProvider() {
 		int currentPageIndex = flowDataSupplier.getCurrentPageIndex();
 		VariableProviderSocket variableProvider = sessionDataSupplier.getItemSessionDataSocket(currentPageIndex).getVariableProviderSocket();
 		return variableProvider;
 	}
+
 }

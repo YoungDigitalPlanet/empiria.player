@@ -45,12 +45,12 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	@Inject private PositionHelper positionHelper;
 	@Inject private ComputedStyle computedStyle;
 	private ProgressBarUpdateEventHandler progressBarEventHandler;
-	private MediaProgressBarPositionCalculator progressBarPositionCalculator;
+	private MediaProgressBarPositionCalculator positionCalculator;
 
 	@PostConstruct
 	public void postConstruct() {
 		button = new SimpleMediaButton(styleNames.QP_MEDIA_CENTER_PROGRESS_BUTTON(), false);
-		progressBarPositionCalculator = new MediaProgressBarPositionCalculator(this, computedStyle);
+		positionCalculator = new MediaProgressBarPositionCalculator(this, computedStyle);
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
@@ -136,19 +136,18 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	private void setAfterButtonPositionAndStyle(final int leftOffsetForProgressButton) {
 		Style afterButtonStyle = afterButton.getElement().getStyle();
-		int leftPositionForAfterProgress = progressBarPositionCalculator.getLeftPositionForAfterProgressElement(leftOffsetForProgressButton);
-		afterButtonStyle.setLeft(leftPositionForAfterProgress, Unit.PX);
-		afterButtonStyle.setWidth(progressBarPositionCalculator.getWidthForAfterProgressElement(leftOffsetForProgressButton), Unit.PX);
+		afterButtonStyle.setWidth(positionCalculator.getWidthForAfterProgressElement(leftOffsetForProgressButton), Unit.PX);
+		afterButtonStyle.setProperty(positionCalculator.getPositionPropertyForAfterProgressElement(), "0px");
 	}
 
 	private void setBeforeButtonPositionAndStyle(final int leftOffsetForProgressButton) {
 		Style beforeButtonStyle = beforeButton.getElement().getStyle();
 		beforeButtonStyle.setWidth(leftOffsetForProgressButton + getHalfOfProgressButtonWidth(), Unit.PX);
-		beforeButtonStyle.setLeft( progressBarPositionCalculator.getLeftPositionForBeforeProgressElement(leftOffsetForProgressButton), Unit.PX);
+		beforeButtonStyle.setProperty(positionCalculator.getPositionPropertyForBeforeProgressElement(), "0px");
 	}
 
 	private void setButtonPosition(final int leftOffsetForProgressButton) {
-		int leftOffsetForProgress = progressBarPositionCalculator.calculateCurrentPosistionForScroll(leftOffsetForProgressButton);
+		int leftOffsetForProgress = positionCalculator.calculateCurrentPosistionForScroll(leftOffsetForProgressButton);
 		button.getElement().getStyle().setLeft(leftOffsetForProgress, Unit.PX);
 	}
 
@@ -161,7 +160,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	 */
 	protected void seekInMedia(int positionX) {
 		if (isAttached()) {
-			double position = progressBarPositionCalculator.calculateCurrentPosistion(positionX);
+			double position = positionCalculator.calculateCurrentPosistion(positionX);
 			fireSetCurrentTimeEvent(position);
 		}
 	}
