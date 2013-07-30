@@ -17,5 +17,5 @@ public interface SourcelistClient extends IUniqueModule {
 	
 	void setSize(HasDimensions size);
 	
-	String sourceListId();
+	String getSourcelistId();
 }

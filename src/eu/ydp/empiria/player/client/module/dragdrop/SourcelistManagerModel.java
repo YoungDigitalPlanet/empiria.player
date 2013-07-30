@@ -16,7 +16,7 @@ public class SourcelistManagerModel {
 	private Map<String, String> clientIdToSourcelistIdCache = Maps.newHashMap();
 
 	public void registerClient(SourcelistClient client) {
-		String sourcelistId = client.sourceListId();
+		String sourcelistId = client.getSourcelistId();
 		if (!Strings.isNullOrEmpty(sourcelistId)) {
 			SourcelistGroup group = getOrCreateSourcelistGroup(sourcelistId);
 			group.addClient(client);

@@ -26,7 +26,7 @@ public class DragGapModuleJAXBParserFactoryTest  extends AbstractEmpiriaPlayerGW
 		assertEquals("expressionMode1", dragGapBean.getExpressionMode());
 		assertEquals("widthBindingGroup1", dragGapBean.getWidthBindingGroup());
 		assertEquals("responseIdentifier1", dragGapBean.getResponseIdentifier());
-		assertEquals("idOfSourceList", dragGapBean.getSourceListId());
+		assertEquals("idOfSourceList", dragGapBean.getSourcelistId());
 	}
 
 
