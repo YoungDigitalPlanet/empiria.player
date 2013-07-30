@@ -35,7 +35,6 @@ public class TutorModule extends SimpleModuleBase {
 		public void onPlayerEvent(PlayerEvent event) {
 			eventGenerator.start();
 		}
-
 	};
 	private final PlayerEventHandler pageUnloadedhandler = new PlayerEventHandler() {
 		
@@ -49,6 +48,13 @@ public class TutorModule extends SimpleModuleBase {
 		@Override
 		public void onStateChange(StateChangeEvent event) {
 			eventGenerator.stateChanged();
+		}
+	};
+	private final TutorEventHandler tutorEventHandler = new TutorEventHandler() {
+		
+		@Override
+		public void onTutorChanged(TutorEvent event) {
+			eventGenerator.tutorChanged(event.getPersonaIndex());
 		}
 	};
 	
@@ -67,11 +73,11 @@ public class TutorModule extends SimpleModuleBase {
 		eventsBus.addHandler(StateChangeEvent.getType(OUTCOME_STATE_CHANGED), stateChangedHandler, modulePageScope);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_UNLOADED), pageUnloadedhandler , modulePageScope);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), testPageLoadedHandler, modulePageScope);
+		eventsBus.addHandler(TutorEvent.getType(TutorEventTypes.TUTOR_CHANGED), tutorEventHandler, modulePageScope);
 	}
 	
 	@Override
 	public Widget getView() {
 		return view.asWidget();
 	}
-
 }
