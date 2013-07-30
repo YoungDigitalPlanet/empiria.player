@@ -164,6 +164,17 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 	}
 
 	@Test
+	public void testOnEventWithDisabledEventPropagationForPlay(){
+		MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
+		doReturn(mediaBase).when(mediaWrapper).getMediaObject();
+		instance.playWithoutOnPlayEventPropagation();
+		HTML5MediaEvent event = mock(HTML5MediaEvent.class);
+		doReturn(HTML5MediaEventsType.play).when(event).getType();
+		instance.onEvent(event);
+		verifyZeroInteractions(eventsBus);
+	}
+
+	@Test
 	public void testOnEventSoundExecutorListener() {
 
 		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = creatEventsPairMap();
