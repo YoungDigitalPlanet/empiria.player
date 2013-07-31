@@ -14,14 +14,15 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.TextEntryGapBase;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.empiria.player.client.module.gap.TextEntryPresenterUnlocker;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class TextEntryGapModule extends TextEntryGapBase implements SourcelistClient {
+
+	protected Map<String, String> styles;
 	
 	@Inject
 	public TextEntryGapModule(TextEntryModulePresenter presenter,
@@ -32,15 +33,6 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 		super(presenter, styleSocket, sourcelistManager, dragContentController, responseSocket);
 	}
 
-	protected Map<String, String> styles;
-	
-
-
-	@Override
-	public void reset() {
-		super.reset();
-		sourcelistManager.onUserValueChanged();
-	}
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
@@ -56,6 +48,12 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 		initReplacements(styles);
 	}
 
+	private void installViewPanel(HasWidgets placeholder) {
+		applyIdAndClassToView((Widget) presenter.getContainer());
+		presenter.installViewInContainer(placeholder);
+	}
+	
+	
 	protected void setDimensions(Map<String, String> styles) {
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE)) {
 			fontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE), null);
@@ -69,13 +67,6 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 		}
 	}
 
-	private void installViewPanel(HasWidgets placeholder) {
-		applyIdAndClassToView((Widget) presenter.getContainer());
-		presenter.installViewInContainer(placeholder);
-	}
-
-	// ------------------------ INTERFACES ------------------------
-
 	@Override
 	public void onSetUp() {
 		updateResponse(false);
@@ -83,59 +74,7 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 	}
 
 	@Override
-	public void onStart() {
-		sourcelistManager.registerModule(this);
-		setBindingValues();
+	protected TextEntryPresenterUnlocker getTextEntryGapPresenter() {
+		return (TextEntryPresenterUnlocker) presenter;
 	}
-
-
-	@Override
-	public String getDragItemId() {
-		return presenter.getText();
-	}
-
-	@Override
-	public void setDragItem(String itemId) {
-		SourcelistItemValue item = sourcelistManager.getValue(itemId, getIdentifier());
-		String newText = dragContentController.getTextFromItemAppropriateToType(item);
-		
-		presenter.setText(newText);
-	}
-
-	@Override
-	public void removeDragItem() {
-		presenter.setText("");
-	}
-
-	TextEntryModulePresenter getTextEntryPresenter() {
-		return (TextEntryModulePresenter) presenter;
-	}
-
-	@Override
-	public void lockDropZone() {
-		getTextEntryPresenter().lockDragZone();
-
-	}
-
-	@Override
-	public void unlockDropZone() {
-		getTextEntryPresenter().unlockDragZone();	
-	}
-
-	@Override
-	public void setSize(HasDimensions size) {
-		// intentionally empty - text gap does not fit its size
-	}
-			
-	@Override
-	public void lock(boolean lock) {
-		super.lock(lock);
-		if (lock) {
-			sourcelistManager.lockGroup(getIdentifier());
-		} else {
-			sourcelistManager.unlockGroup(getIdentifier());
-			getTextEntryPresenter().unlockDragZone();
-		}
-	}
-
 }
