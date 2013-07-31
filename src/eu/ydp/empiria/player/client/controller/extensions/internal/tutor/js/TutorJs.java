@@ -22,4 +22,12 @@ public abstract class TutorJs extends JavaScriptObject {
 	public final native int getHeight()/*-{
 		return this.height;
 	}-*/;
+
+	public final native boolean isInteractive()/*-{
+		return !!this.interactive;
+	}-*/;
+
+	public final native String getAvatar()/*-{
+		return this.avatar;
+	}-*/;
 }

@@ -798,9 +798,24 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
-	
+
 	@DefaultStringValue("qp-tutor-container")
 	public String QP_TUTOR_CONTAINER();
+
+	@DefaultStringValue("qp-tutor-popup-selected-persona")
+	public String QP_TUTOR_POPUP_SELECTED_PERSONA();
+
+	@DefaultStringValue("qp-tutor-popup")
+	public String QP_TUTOR_POPUP();
+	
+	@DefaultStringValue("qp-tutor-popup-close-button")
+	public String QP_TUTOR_POPUP_CLOSE_BUTTON();
+
+	@DefaultStringValue("qp-tutor-popup-items")
+	public String QP_TUTOR_POPUP_ITEMS();
+	
+	@DefaultStringValue("qp-tutor-popup-item")
+	public String QP_TUTOR_POPUP_ITEM();
 
 	@DefaultStringValue("selection")
 	public String SELECTION();

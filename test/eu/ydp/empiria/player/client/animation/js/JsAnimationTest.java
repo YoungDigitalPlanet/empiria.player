@@ -59,7 +59,7 @@ public class JsAnimationTest {
 
 		// then
 
-		verify(holder).setAnimationImage(SOURCE);
+		verify(holder).setBackgroundImage(SOURCE, IMAGE_SIZE);
 		verify(holder).setAnimationLeft(0);
 		verify(fwAnim).run(200);
 

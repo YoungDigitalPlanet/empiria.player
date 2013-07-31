@@ -7,6 +7,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
@@ -26,19 +27,44 @@ public class EmpiriaPathsTest {
 	@InjectMocks
 	private EmpiriaPaths empiriaPaths;
 
-	@Test
-	public void testGetCommonsPath() throws Exception {
-		// given
-		XmlData xmlData = mock(XmlData.class);
+	private XmlData xmlData;
+
+	@Before
+	public void setUp() {
+		xmlData = mock(XmlData.class);
 		when(dataSourceManager.getAssessmentData().getData()).thenReturn(xmlData);
 		when(xmlData.getBaseURL()).thenReturn("http://url/test");
+	}
 
+	@Test
+	public void shouldGetBasePath() {
 		// when
-		String commonsPath = empiriaPaths.getCommonsPath();
+		String basePath = empiriaPaths.getBasePath();
 
 		// then
 		verify(dataSourceManager.getAssessmentData()).getData();
 		verify(dataSourceManager.getAssessmentData(), never()).getSkinData(); // skin specific data
+		assertThat(basePath, is("http://url/test"));
+	}
+
+	@Test
+	public void testGetCommonsPath() throws Exception {
+		// when
+		String commonsPath = empiriaPaths.getCommonsPath();
+
+		// then
 		assertThat(commonsPath, is("http://url/test/common"));
+	}
+
+	@Test
+	public void shouldGetFilePath() {
+		// given
+		String filename = "file.png";
+
+		// when
+		String filepath = empiriaPaths.getCommonsFilePath(filename);
+
+		// then
+		assertThat(filepath, is("http://url/test/common/file.png"));
 	}
 }

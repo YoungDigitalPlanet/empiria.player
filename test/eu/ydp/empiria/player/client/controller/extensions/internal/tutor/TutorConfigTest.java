@@ -1,13 +1,18 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
+import static eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties.fromJs;
 import static eu.ydp.empiria.player.client.module.tutor.ActionType.DEFAULT;
 import static eu.ydp.empiria.player.client.module.tutor.ActionType.ON_PAGE_ALL_OK;
 import static eu.ydp.empiria.player.client.module.tutor.CommandType.ANIMATION;
 import static eu.ydp.empiria.player.client.module.tutor.CommandType.SOUND;
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -113,7 +118,21 @@ public class TutorConfigTest {
 		// when
 		tutorConfig.getTutorPersonaProperties(2);
 	}
-
+	
+	@Test
+	public void testGetPersonas() throws Exception {
+		//when
+		List<TutorPersonaProperties> personas = tutorConfig.getPersonas();
+		
+		
+		//then
+		assertEquals(0, personas.get(0).getIndex());
+		assertEquals("avatar0", personas.get(0).getAvatarFilename());
+		assertEquals(1, personas.get(1).getIndex());
+		assertEquals("avatar1", personas.get(1).getAvatarFilename());
+		
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private TutorConfigJs createTutorConfigJs() {
 		TutorConfigJs config = mock(TutorConfigJs.class, RETURNS_DEEP_STUBS);
@@ -149,13 +168,15 @@ public class TutorConfigTest {
 		when(tutor0.getFps()).thenReturn(25);
 		when(tutor0.getWidth()).thenReturn(100);
 		when(tutor0.getHeight()).thenReturn(200);
-		
+		when(tutor0.getAvatar()).thenReturn("avatar0");
+
 		TutorJs tutor1 = mock(TutorJs.class, RETURNS_DEEP_STUBS);
 		when(tutors.get(1)).thenReturn(tutor1);
 		when(tutor1.getName()).thenReturn("persona1");
 		when(tutor1.getFps()).thenReturn(20);
 		when(tutor1.getWidth()).thenReturn(300);
 		when(tutor1.getHeight()).thenReturn(400);
+		when(tutor1.getAvatar()).thenReturn("avatar1");
 		
 		return config;
 	}
