@@ -40,7 +40,8 @@ public class JsInteractionEventSocketUserExtension extends AbstractJsExtension i
 		//FIXME state change
 		InteractionEvent event = InteractionEvent.fromJsObject(requestJs);
 		if (event instanceof StateChangedInteractionEvent) {
-			eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, event), new CurrentPageScope());
+			StateChangedInteractionEvent scie = (StateChangedInteractionEvent) event;
+			eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, scie), new CurrentPageScope());
 		}
 		if (event instanceof FeedbackInteractionEvent) {
 			interactionEventsListener.onFeedbackSound( (FeedbackInteractionEvent)event);

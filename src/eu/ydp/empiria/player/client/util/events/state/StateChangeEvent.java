@@ -1,18 +1,19 @@
 package eu.ydp.empiria.player.client.util.events.state;
 
+import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.util.events.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.EventTypes;
 
 public class StateChangeEvent extends AbstractEvent<StateChangeEventHandler, StateChangeEventTypes> {
 	public static EventTypes<StateChangeEventHandler, StateChangeEventTypes> types = new EventTypes<StateChangeEventHandler, StateChangeEventTypes>();
-	private final Object value;
+	private final StateChangedInteractionEvent value;
 
-	public StateChangeEvent(StateChangeEventTypes type, Object value) {
+	public StateChangeEvent(StateChangeEventTypes type, StateChangedInteractionEvent value) {
 		super(type,null);
 		this.value = value;
 	}
 
-	public Object getValue() {
+	public StateChangedInteractionEvent getValue() {
 		return value;
 	}
 

@@ -53,7 +53,7 @@ public class ActionEventGenerator {
 		executeDefaultAction();
 	}
 
-	private void executeDefaultAction() {
+	public void executeDefaultAction() {
 		executeAction(ActionType.DEFAULT);
 	}
 

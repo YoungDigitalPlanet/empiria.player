@@ -18,6 +18,7 @@ import org.mockito.stubbing.Answer;
 
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
@@ -79,12 +80,35 @@ public class TutorModuleTest {
 		initEventHandlersInterception();
 		mockScopeFactoryToReturnSinglePageScope();
 		tutorModule.initModule(mock(Element.class));
+		StateChangeEvent event = mock(StateChangeEvent.class);
+		StateChangedInteractionEvent scie = mock(StateChangedInteractionEvent.class);
+		when(event.getValue()).thenReturn(scie);
+		when(scie.isReset()).thenReturn(false);
+		when(scie.isUserInteract()).thenReturn(true);
 
 		// when
-		stateChangeHandler.onStateChange(mock(StateChangeEvent.class));
+		stateChangeHandler.onStateChange(event);
 
 		// then
 		verify(eventGenerator).stateChanged();
+	}
+	
+	@Test
+	public void shouldExecuteDefaultActionOnReset() {
+		// given
+		initEventHandlersInterception();
+		mockScopeFactoryToReturnSinglePageScope();
+		tutorModule.initModule(mock(Element.class));
+		StateChangeEvent event = mock(StateChangeEvent.class);
+		StateChangedInteractionEvent scie = mock(StateChangedInteractionEvent.class);
+		when(event.getValue()).thenReturn(scie);
+		when(scie.isReset()).thenReturn(true);
+
+		// when
+		stateChangeHandler.onStateChange(event);
+
+		// then
+		verify(eventGenerator).executeDefaultAction();
 	}
 
 	@Test
