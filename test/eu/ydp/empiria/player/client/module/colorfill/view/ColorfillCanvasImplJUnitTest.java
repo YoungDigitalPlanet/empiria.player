@@ -27,7 +27,6 @@ import com.google.gwt.user.client.Element;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
-import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.module.colorfill.fill.CanvasImageData;
@@ -43,7 +42,6 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
 @PrepareForTest({ Context2d.class, ImageData.class , NativeEvent.class })
-@RunOutsideTestSuite
 public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	private static final int POSITION_Y = 20;
 	private static final int POSITION_X = 10;
@@ -78,8 +76,8 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 	@Before
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
-		
-		
+
+
 		instance = injector.getInstance(ColorfillCanvasImpl.class);
 		canvas = mock(Canvas.class);
 		context2d = mock(Context2d.class);

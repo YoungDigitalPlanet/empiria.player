@@ -34,7 +34,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
-import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.TestJAXBParser;
@@ -65,7 +64,6 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 //@SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
 @PrepareForTest(value={  CssHelper.class, NodeList.class, Node.class, Style.class,NativeEvent.class })
-@RunOutsideTestSuite
 public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private class CustomGinModule implements Module {
