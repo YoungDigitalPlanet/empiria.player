@@ -128,7 +128,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		return instance;
 	}
 
-	private class TextEntryModuleMock extends TextEntryModule {
+	private class TextEntryModuleMock extends TextEntryGapModule {
 
 		public TextEntryModuleMock() {
 			super(	injector.getInstance(TextEntryModulePresenter.class),

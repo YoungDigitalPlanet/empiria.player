@@ -37,7 +37,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
-			binder.bind(TextEntryGapModulePresenter.class).toInstance(mock(TextEntryGapModulePresenter.class));
+			binder.bind(TextEntryMathGapModulePresenter.class).toInstance(mock(TextEntryMathGapModulePresenter.class));
 		}
 	}
 
@@ -48,7 +48,7 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 
 	@Test
 	public void testIfSubOrSupIsCorrectlyDetected() {
-		TextEntryGapModule textGap = mockTextGap();
+		TextEntryMathGapModule textGap = mockTextGap();
 
 		Element node = XMLParser.parse("<gap type=\"text-entry\" uid=\"uid_0000\" />").getDocumentElement();
 		Element parentNode = XMLParser.parse(
@@ -60,13 +60,13 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 
 	@Test
 	public void testIfCorrectAnswerIsFound() {
-		TextEntryGapModule textGap = mockTextGap();
+		TextEntryMathGapModule textGap = mockTextGap();
 		Assert.assertTrue(textGap.getCorrectAnswer().equals("13"));
 	}
 
 	@Test
 	public void testLongestAnswerLength() {
-		TextEntryGapModule textGap = mockTextGap();
+		TextEntryMathGapModule textGap = mockTextGap();
 		int answerLength = textGap.getLongestAnswerLength();
 		assertThat(answerLength, is(4));
 	}
@@ -137,12 +137,12 @@ public class TextEntryGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInje
 		return new TextEntryGapModuleMock(new HashMap<String, String>());
 	}
 
-	private class TextEntryGapModuleMock extends TextEntryGapModule {
+	private class TextEntryGapModuleMock extends TextEntryMathGapModule {
 
 		private boolean evaluatedResponse;
 
 		public TextEntryGapModuleMock(Map<String, String> styles) {
-			super(injector.getInstance(TextEntryGapModulePresenter.class), injector.getInstance(StyleSocket.class),injector.getInstance(SourcelistManager.class), injector.getInstance(DragContentController.class));
+			super(injector.getInstance(TextEntryMathGapModulePresenter.class), injector.getInstance(StyleSocket.class),injector.getInstance(SourcelistManager.class), injector.getInstance(DragContentController.class));
 			this.mathStyles = styles;
 		}
 

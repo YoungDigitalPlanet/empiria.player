@@ -26,7 +26,7 @@ public class InlineChoiceGapModuleJUnitTest {
 
 	@Test
 	public void properValueAccessWithEmptyOption() {
-		InlineChoiceGapModule choiceGap = mockChoiceGap(true);
+		InlineChoiceMathGapModule choiceGap = mockChoiceGap(true);
 
 		choiceGap.setValue("MATH_RESPONSE_7_5");
 		String received = choiceGap.getValue();
@@ -36,7 +36,7 @@ public class InlineChoiceGapModuleJUnitTest {
 
 	@Test
 	public void properValueAccessWithoutEmptyOption() {
-		InlineChoiceGapModule choiceGap = mockChoiceGap(false);
+		InlineChoiceMathGapModule choiceGap = mockChoiceGap(false);
 
 		choiceGap.setValue("MATH_RESPONSE_7_5");
 		String received = choiceGap.getValue();
@@ -46,7 +46,7 @@ public class InlineChoiceGapModuleJUnitTest {
 
 	@Test
 	public void resetSetsNoItemsWhenChoiceGapWithoutEmptyOption() {
-		InlineChoiceGapModule choiceGap = mockChoiceGap(false);
+		InlineChoiceMathGapModule choiceGap = mockChoiceGap(false);
 
 		choiceGap.reset();
 
@@ -55,7 +55,7 @@ public class InlineChoiceGapModuleJUnitTest {
 
 	@Test
 	public void resetSetsNoItemsWhenChoiceGapWithEmptyOption() {
-		InlineChoiceGapModule choiceGap = mockChoiceGap(true);
+		InlineChoiceMathGapModule choiceGap = mockChoiceGap(true);
 
 		choiceGap.reset();
 
@@ -78,7 +78,7 @@ public class InlineChoiceGapModuleJUnitTest {
     	GWTMockUtilities.restore();
     }
 
-	public InlineChoiceGapModule mockChoiceGap(boolean hasEmptyOption) {
+	public InlineChoiceMathGapModule mockChoiceGap(boolean hasEmptyOption) {
 		Map<String, String> mathStyles = new HashMap<String, String>();
 
 		String styleValue = (hasEmptyOption)?
@@ -90,12 +90,12 @@ public class InlineChoiceGapModuleJUnitTest {
 		return new InlineChoiceGapModuleMock(mathStyles);
 	}
 
-    private class InlineChoiceGapModuleMock extends InlineChoiceGapModule {
+    private class InlineChoiceGapModuleMock extends InlineChoiceMathGapModule {
 
     	private IsExListBox mockedListBox;
 
 		public InlineChoiceGapModuleMock(Map<String, String> mathStyles) {
-			super(mock(InlineChoiceGapModulePresenter.class));
+			super(mock(InlineChoiceMathGapModulePresenter.class));
 			this.mathStyles = mathStyles;
 			initStyles();
 			options = createOptions(getModuleElement(), getModuleSocket());

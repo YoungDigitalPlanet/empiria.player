@@ -167,8 +167,8 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	@Override
 	public void onSetUp() {
 		for (MathGap gap : getMathGaps()) {
-			if (gap instanceof TextEntryGapModule) {
-				((TextEntryGapModule) gap).setUpGap();
+			if (gap instanceof TextEntryMathGapModule) {
+				((TextEntryMathGapModule) gap).setUpGap();
 			}
 		}
 
@@ -178,8 +178,8 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	@Override
 	public void onStart() {
 		for (MathGap gap : getMathGaps()) {
-			if (gap instanceof TextEntryGapModule) {
-				((TextEntryGapModule) gap).startGap();
+			if (gap instanceof TextEntryMathGapModule) {
+				((TextEntryMathGapModule) gap).startGap();
 			}
 		}
 

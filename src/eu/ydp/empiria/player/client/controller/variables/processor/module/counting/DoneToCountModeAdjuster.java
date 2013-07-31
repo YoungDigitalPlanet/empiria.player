@@ -33,7 +33,7 @@ public class DoneToCountModeAdjuster {
 	}
 
 	private boolean allRequiredAnswersGiven(int amountOfGivenCorrectAnswers, CorrectAnswers correctAnswers) {
-		return amountOfGivenCorrectAnswers == correctAnswers.getResponseValuesCount();
+		return amountOfGivenCorrectAnswers == correctAnswers.getAnswersCount();
 	}
 
 	private boolean areAllGivenAnswersCorrect(int amountOfGivenCorrectAnswers, Response response) {

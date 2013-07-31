@@ -29,7 +29,7 @@ import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 
 @SuppressWarnings("PMD")
 public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
-	InlineChoiceGapModule instance;
+	InlineChoiceMathGapModule instance;
 	ExListBox listBox;
 	EventsBus eventsBus;
 
@@ -44,26 +44,26 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
 	}
 
 	private static class CustomGuiceModule implements Module {
-		private final InlineChoiceGapModulePresenter presenter;
+		private final InlineChoiceMathGapModulePresenter presenter;
 
-		public CustomGuiceModule(InlineChoiceGapModulePresenter presenter) {
+		public CustomGuiceModule(InlineChoiceMathGapModulePresenter presenter) {
 			this.presenter = presenter;
 		}
 
 		@Override
 		public void configure(Binder binder) {
-			binder.bind(InlineChoiceGapModulePresenter.class).toInstance(presenter);
+			binder.bind(InlineChoiceMathGapModulePresenter.class).toInstance(presenter);
 		}
 	}
 
 	@Before
 	public void before() {
-		InlineChoiceGapModulePresenter presenter = mock(InlineChoiceGapModulePresenter.class);
+		InlineChoiceMathGapModulePresenter presenter = mock(InlineChoiceMathGapModulePresenter.class);
 		listBox = mock(ExListBox.class);
 		doReturn(listBox).when(presenter).getListBox();
 		setUp(new Class<?>[] {}, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule(presenter));
 		eventsBus = injector.getInstance(EventsBus.class);
-		instance = injector.getInstance(InlineChoiceGapModule.class);
+		instance = injector.getInstance(InlineChoiceMathGapModule.class);
 	}
 
 	@Test

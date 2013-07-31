@@ -30,6 +30,7 @@ import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionVi
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
+import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
@@ -60,7 +61,9 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindDragGap();
 		bindChoice();
 		bindTutor();
+//		bindMathGap();
 	}
+	
 
 	private void bindOrdering() {
 		bindModuleScoped(OrderingItemsDao.class, new TypeLiteral<ModuleScopedProvider<OrderingItemsDao>>(){});
@@ -107,6 +110,10 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 	}
 
+	private void bindMathGap() {
+		bindModuleScoped(MathGapModel.class, new TypeLiteral<ModuleScopedProvider<MathGapModel>>(){});
+	}
+	
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)

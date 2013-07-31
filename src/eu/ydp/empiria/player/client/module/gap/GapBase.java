@@ -7,6 +7,7 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Objects;
@@ -20,8 +21,10 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.binding.Bindable;
 import eu.ydp.empiria.player.client.module.binding.BindingContext;
 import eu.ydp.empiria.player.client.module.binding.BindingGroupIdentifier;
@@ -77,20 +80,66 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	
 	protected boolean locked;
 
-	protected abstract boolean isResponseCorrect();
-
-	protected abstract String getCurrentResponseValue();
-
-	protected abstract void updateResponse(boolean userInteract, boolean isReset);
-
-	protected abstract void setCorrectAnswer();
 
 	protected abstract void setPreviousAnswer();
-
-	public abstract String getCorrectAnswer();
-
+	
 	public interface PresenterHandler extends BlurHandler, ChangeHandler {
+	}
+	
+	protected abstract ResponseSocket getResponseSocket();
+	protected void updateResponse(boolean userInteract, boolean isReset) {
+		if (showingAnswer) {
+			return;
+		}
 
+		if (getResponse() != null) {
+			if (lastValue != null) {
+				getResponse().remove(lastValue);
+			}
+
+			lastValue = presenter.getText();
+			getResponse().add(lastValue);
+			fireStateChanged(userInteract, isReset);
+		}
+	}
+	
+	protected void setCorrectAnswer() {
+		String correctAnswer = getCorrectAnswer();
+		String replaced = gapExpressionReplacer.ensureReplacement(correctAnswer);
+		presenter.setText(replaced);
+	}
+	
+	public String getCorrectAnswer() {
+		Response response = getResponse();
+		String answer;
+		if(response.correctAnswers.answersExists()){
+			answer = response.correctAnswers.getSingleAnswer();
+		}else{
+			answer = ""; 
+		}
+		return answer;
+	}
+
+
+	
+	protected String getCurrentResponseValue() {
+		String answer = StringUtils.EMPTY_STRING;
+		
+		if (getResponse().values.size() > 0) {
+			answer = getResponse().values.get(0);
+		}
+		
+		return answer;
+	}
+	
+	protected boolean isResponseCorrect() {
+		boolean isCorrect = false;
+		List<Boolean> evaluateResponse = getResponseSocket().evaluateResponse(getResponse());
+		
+		if (evaluateResponse.size() > 0) {
+			isCorrect = evaluateResponse.get(0);				
+		}
+		return isCorrect;
 	}
 
 	protected void addPlayerEventHandlers(){
@@ -201,7 +250,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	public int getLongestAnswerLength() {
 		int longestLength = 0;
 
-		for (int i = 0; i < getResponse().correctAnswers.getResponseValuesCount(); i++) {
+		for (int i = 0; i < getResponse().correctAnswers.getAnswersCount(); i++) {
 			for (String a : getResponse().correctAnswers.getResponseValue(i).getAnswers()){
 				if (a.length() > longestLength) {
 					longestLength = a.length();

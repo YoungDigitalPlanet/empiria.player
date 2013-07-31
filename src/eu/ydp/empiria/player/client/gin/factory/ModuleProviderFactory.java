@@ -25,9 +25,9 @@ import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
 import eu.ydp.empiria.player.client.module.labelling.LabellingModule;
-import eu.ydp.empiria.player.client.module.math.InlineChoiceGapModule;
+import eu.ydp.empiria.player.client.module.math.InlineChoiceMathGapModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
-import eu.ydp.empiria.player.client.module.math.TextEntryGapModule;
+import eu.ydp.empiria.player.client.module.math.TextEntryMathGapModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
@@ -41,7 +41,7 @@ import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
-import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
+import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 
 @SuppressWarnings({"PMD"})
@@ -113,13 +113,13 @@ public class ModuleProviderFactory {
 	private Provider<ChoiceModule> choiceModule;
 
 	@Inject
-	private Provider<InlineChoiceGapModule> inlineChoiceGapModule;
+	private Provider<InlineChoiceMathGapModule> inlineChoiceGapModule;
 
 	@Inject
-	private Provider<TextEntryModule> textEntryModule;
+	private Provider<TextEntryGapModule> textEntryModule;
 
 	@Inject
-	private Provider<TextEntryGapModule> textEntryGapModule;
+	private Provider<TextEntryMathGapModule> textEntryGapModule;
 	
 	@Inject
 	private Provider<DragGapModule> dragGapModule;
@@ -254,15 +254,15 @@ public class ModuleProviderFactory {
 		return choiceModule;
 	}
 
-	public Provider<InlineChoiceGapModule> getInlineChoiceGapModule() {
+	public Provider<InlineChoiceMathGapModule> getInlineChoiceGapModule() {
 		return inlineChoiceGapModule;
 	}
 
-	public Provider<TextEntryModule> getTextEntryModule() {
+	public Provider<TextEntryGapModule> getTextEntryModule() {
 		return textEntryModule;
 	}
 
-	public Provider<TextEntryGapModule> getTextEntryGapModule() {
+	public Provider<TextEntryMathGapModule> getTextEntryGapModule() {
 		return textEntryGapModule;
 	}
 	

@@ -89,7 +89,7 @@ public class Response extends Variable {
 
 		String output = "";
 
-		for (int i = 0; i < correctAnswers.getResponseValuesCount(); i++) {
+		for (int i = 0; i < correctAnswers.getAnswersCount(); i++) {
 			for (String answer : correctAnswers.getResponseValue(i).getAnswers()) {
 				output += answer + ";";
 			}

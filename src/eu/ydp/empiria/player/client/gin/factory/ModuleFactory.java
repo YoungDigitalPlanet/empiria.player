@@ -6,11 +6,11 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.As
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
-import eu.ydp.empiria.player.client.module.math.InlineChoiceGapModule;
-import eu.ydp.empiria.player.client.module.math.TextEntryGapModule;
+import eu.ydp.empiria.player.client.module.math.InlineChoiceMathGapModule;
+import eu.ydp.empiria.player.client.module.math.TextEntryMathGapModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
-import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
+import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
 
 public interface ModuleFactory {
 	ConnectionModule getConnectionModule();
@@ -18,9 +18,9 @@ public interface ModuleFactory {
 	ObjectModule getObjectModule();
 	SourceListModule getSourceListModule();
 	StickiesProcessorExtension getStickiesProcessorExtension();
-	TextEntryGapModule getEntryGapModule();
-	TextEntryModule getTextEntryModule();
-	InlineChoiceGapModule getInlineChoiceGapModule();
+	TextEntryMathGapModule getEntryGapModule();
+	TextEntryGapModule getTextEntryModule();
+	InlineChoiceMathGapModule getInlineChoiceGapModule();
 	AssessmentJsonReportExtension getAssessmentJsonReportExtension();
 	ScormSupportExtension getScormSupportExtension();
 	PlayerCoreApiExtension getPlayerCoreApiExtension();
