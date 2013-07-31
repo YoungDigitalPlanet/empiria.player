@@ -19,8 +19,12 @@ public class TutorPopupViewWidgetImpl extends Composite implements TutorPopupVie
 	interface TutorPopupViewWidgetUiBinder extends UiBinder<Widget, TutorPopupViewWidgetImpl> {
 	}
 
-	@UiField protected FlowPanel itemsContainer;
+	@UiField 
+	protected FlowPanel itemsContainer;
 
+	@UiField 
+	protected FlowPanel closeButton;
+	
 	@PostConstruct
 	public void postConstruct() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -45,6 +49,11 @@ public class TutorPopupViewWidgetImpl extends Composite implements TutorPopupVie
 			widgets.add(itemsContainer.getWidget(i));
 		}
 		return widgets;
+	}
+
+	@Override
+	public Widget getCloseButton() {
+		return closeButton;
 	}
 
 }

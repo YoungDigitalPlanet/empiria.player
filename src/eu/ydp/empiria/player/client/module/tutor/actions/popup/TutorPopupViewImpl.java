@@ -34,6 +34,7 @@ public class TutorPopupViewImpl implements TutorPopupView  {
 	@PostConstruct
 	public void postConstruct() {
 		userInteractionHandlerFactory.applyUserClickHandler(hideCommand, popupViewWidget);
+		userInteractionHandlerFactory.applyUserClickHandler(hideCommand, popupViewWidget.getCloseButton());
 	}
 
 	@Override

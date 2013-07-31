@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 public class PersonaToViewDtoConverter {
 
 	private final EmpiriaPaths empiriaPaths;
-	
+
 	@Inject
 	public PersonaToViewDtoConverter(EmpiriaPaths empiriaPaths) {
 		this.empiriaPaths = empiriaPaths;
@@ -27,8 +27,10 @@ public class PersonaToViewDtoConverter {
 	}
 
 	private PersonaViewDto convert(TutorPersonaProperties tutorPersonaProperties) {
-		String avatarFilename = tutorPersonaProperties.getAvatarFilename();
-		String avatarFilenamePath = empiriaPaths.getCommonsFilePath(avatarFilename);
+		String name = tutorPersonaProperties.getName();
+		String avatarFilenameSuffix = tutorPersonaProperties.getAvatarFilename();
+		String avatarFileName = name + avatarFilenameSuffix;
+		String avatarFilenamePath = empiriaPaths.getCommonsFilePath(avatarFileName);
 		PersonaViewDto viewPersona = new PersonaViewDto(tutorPersonaProperties.getIndex(), avatarFilenamePath);
 		return viewPersona;
 	}

@@ -30,20 +30,23 @@ public class PersonaToViewDtoConverterTest {
 	public void testConvert() throws Exception {
 		//given
 		int firstIndex = 3;
-		String firstAvatarFileName = "firstAcatarFileName";
+		String firstAvatarSuffix = "firstAcatarFileName";
+		String name1 = "name1";
+
 		int secondIndex = 3;
 		String secondAvatarFileName = "secondAvatarFileName";
+		String name2 = "name2";
 		
-		TutorPersonaProperties firstPersonaProperties = createPersonaProperties(firstIndex, firstAvatarFileName);
-		TutorPersonaProperties secondPersonaProperties = createPersonaProperties(secondIndex, secondAvatarFileName);
+		TutorPersonaProperties firstPersonaProperties = createPersonaProperties(firstIndex, firstAvatarSuffix, name1);
+		TutorPersonaProperties secondPersonaProperties = createPersonaProperties(secondIndex, secondAvatarFileName, name2);
 		List<TutorPersonaProperties> personasProperties = Lists.newArrayList(firstPersonaProperties, secondPersonaProperties);
 		
 		String firstAvatarFileFullPath = "firstAvatarFileFullPath";
-		when(empiriaPaths.getCommonsFilePath(firstAvatarFileName))
+		when(empiriaPaths.getCommonsFilePath(name1 + firstAvatarSuffix))
 			.thenReturn(firstAvatarFileFullPath);
 		
 		String secondAvatarFileFullPath = "secondAvatarFileFullPath";
-		when(empiriaPaths.getCommonsFilePath(secondAvatarFileName))
+		when(empiriaPaths.getCommonsFilePath(name2 + secondAvatarFileName))
 		.thenReturn(secondAvatarFileFullPath);
 		
 		//when
@@ -59,7 +62,7 @@ public class PersonaToViewDtoConverterTest {
 		assertEquals(2, createPersonasDtos.size());
 	}
 	
-	private TutorPersonaProperties createPersonaProperties(int index, String avatarFileName) {
-		return new TutorPersonaProperties(index, new Size(), 60, "name", false, avatarFileName);
+	private TutorPersonaProperties createPersonaProperties(int index, String avatarFileName, String name) {
+		return new TutorPersonaProperties(index, new Size(), 60, name, false, avatarFileName);
 	}
 }
