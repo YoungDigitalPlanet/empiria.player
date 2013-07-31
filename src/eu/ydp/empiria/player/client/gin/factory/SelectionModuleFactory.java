@@ -1,38 +1,42 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
-import com.google.inject.assistedinject.Assisted;
+import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.module.AbstractResponseModel;
-import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
-import eu.ydp.empiria.player.client.module.selection.controller.SelectionModuleViewBuildingController;
+import eu.ydp.empiria.player.client.module.selection.controller.NoAnswerPriorityComparator;
 import eu.ydp.empiria.player.client.module.selection.handlers.ChoiceButtonClickHandler;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.module.selection.presenter.SelectionModulePresenter;
-import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteractionBean;
-import eu.ydp.empiria.player.client.module.selection.view.SelectionChoiceButton;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 
-public interface SelectionModuleFactory {
+public class SelectionModuleFactory {
 	
-	SelectionModuleModel createSelectionModuleModel(Response response, ResponseModelChangeListener modelChangeListener);
+	private SelectionModuleModel responseModel;
+	private NoAnswerPriorityComparator noPriorityComparator;
 	
-	SelectionChoiceButton createSelectionChoiceButton(@Assisted("moduleStyleNamePart") String moduleStyleNamePart);
+	@Inject
+	public SelectionModuleFactory(
+			@ModuleScoped SelectionModuleModel responseModel,
+			@ModuleScoped SelectionModuleView selectionModuleView,
+			NoAnswerPriorityComparator noPriorityComparator) {
+		this.responseModel = responseModel;
+		this.noPriorityComparator = noPriorityComparator;
+	}
 	
-	SelectionAnswerDto createSelectionAnswerDto(String id);
+	public SelectionAnswerDto createSelectionAnswerDto(String id) {
+		return new SelectionAnswerDto(id);
+	}
 	
-	GroupAnswersController createGroupAnswerController(boolean isMulti, int maxSelected, AbstractResponseModel<?> responseModel);
+	public GroupAnswersController createGroupAnswerController(boolean isMulti, int maxSelected) {
+		return new GroupAnswersController(isMulti, maxSelected, responseModel, noPriorityComparator);
+	}
 
-	SelectionModuleViewBuildingController  createViewBuildingController(
-			SelectionModuleView selectionModuleView, 
-			SelectionModulePresenter selectionModulePresenter,
-			SelectionModuleModel model,
-			SelectionInteractionBean bean);
-	
-	ChoiceButtonClickHandler createChoiceButtonClickHandler(
+	public ChoiceButtonClickHandler createChoiceButtonClickHandler(
 			GroupAnswersController groupAnswerController,
 			String buttonId,
-			SelectionModulePresenter selectionModulePresenter);
+			SelectionModulePresenter selectionModulePresenter) {
+		return new ChoiceButtonClickHandler(groupAnswerController, buttonId, selectionModulePresenter);
+	}
 }

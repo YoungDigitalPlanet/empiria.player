@@ -40,7 +40,7 @@ public class ChoiceButtonClickHandlerJUnitTest {
 		handler.onClick(event);
 
 		verify(groupAnswerController).selectToggleAnswer(buttonId);
-		verify(selectionModulePresenter).updateView();
+		verify(selectionModulePresenter).updateGroupAnswerView(groupAnswerController);
 	}
 
 }

@@ -1,10 +1,9 @@
 package eu.ydp.empiria.player.client.module.selection;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
-import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -14,25 +13,18 @@ import eu.ydp.empiria.player.client.module.selection.structure.SelectionModuleSt
 
 public class SelectionModule extends AbstractInteractionModule<SelectionModule, SelectionModuleModel, SelectionInteractionBean> {
 
-	private final Provider<SelectionModule> selectionModuleProvider;
 	private final SelectionModulePresenter selectionModulePresenter;
 	private final SelectionModuleStructure structure;
-	private final SelectionModuleFactory selectionModuleFactory;
+	private final SelectionModuleModel model;
 
 	@Inject
-	public SelectionModule(Provider<SelectionModule> selectionModuleProvider, SelectionModulePresenter selectionModulePresenter,
-			SelectionModuleStructure structure, SelectionModuleFactory selectionModuleFactory) {
-		this.selectionModuleProvider = selectionModuleProvider;
+	public SelectionModule(
+			SelectionModulePresenter selectionModulePresenter,
+			SelectionModuleStructure structure, 
+			@ModuleScoped SelectionModuleModel model) {
 		this.selectionModulePresenter = selectionModulePresenter;
 		this.structure = structure;
-		this.selectionModuleFactory = selectionModuleFactory;
-	}
-
-	private SelectionModuleModel model;
-
-	@Override
-	public SelectionModule getNewInstance() {
-		return selectionModuleProvider.get();
+		this.model = model;
 	}
 
 	@Override
@@ -42,8 +34,8 @@ public class SelectionModule extends AbstractInteractionModule<SelectionModule, 
 
 	@Override
 	protected void initalizeModule() {
-		model = selectionModuleFactory.createSelectionModuleModel(getResponse(), this);
 		getResponse().setCountMode(getCountMode());
+		model.initialize(this);
 	}
 
 	@Override
@@ -55,5 +47,4 @@ public class SelectionModule extends AbstractInteractionModule<SelectionModule, 
 	protected AbstractModuleStructure<SelectionInteractionBean, ? extends JAXBParserFactory<SelectionInteractionBean>> getStructure() {
 		return structure;
 	}
-
 }
