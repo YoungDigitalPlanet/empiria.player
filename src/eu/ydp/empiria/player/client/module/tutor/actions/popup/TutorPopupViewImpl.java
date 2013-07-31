@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import com.google.gwt.dom.client.NativeEvent;
@@ -32,11 +34,20 @@ public class TutorPopupViewImpl implements TutorPopupView  {
 	@PostConstruct
 	public void postConstruct() {
 		userInteractionHandlerFactory.applyUserClickHandler(hideCommand, popupViewWidget);
+		userInteractionHandlerFactory.applyUserClickHandler(hideCommand, popupViewWidget.getCloseButton());
 	}
 
 	@Override
 	public void setSelected(int personaIndex) {
+		unselectAllPersonas();
 		popupViewWidget.getWidget(personaIndex).setStyleName(styleNameConstants.QP_TUTOR_POPUP_SELECTED_PERSONA());
+	}
+
+	private void unselectAllPersonas() {
+		List<Widget> allWidgets = popupViewWidget.getAllWidgets();
+		for (Widget widget : allWidgets) {
+			widget.setStyleName(styleNameConstants.QP_TUTOR_POPUP_ITEM());
+		}
 	}
 
 	@Override

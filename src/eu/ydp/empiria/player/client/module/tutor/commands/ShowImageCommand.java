@@ -15,7 +15,7 @@ public class ShowImageCommand implements TutorCommand {
 	private boolean finished = false;
 
 	@Inject
-	public ShowImageCommand(TutorView view, @Assisted String assetPath, @Assisted Size size) {
+	public ShowImageCommand(@Assisted TutorView view, @Assisted String assetPath, @Assisted Size size) {
 		this.view = view;
 		this.assetPath = assetPath;
 		this.size = size;

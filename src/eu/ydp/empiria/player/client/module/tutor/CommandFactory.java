@@ -19,12 +19,12 @@ import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class CommandFactory {
 
-	private TutorConfig tutorConfig;
-	private TutorView moduleView;
-	private AnimationFactory animationFactory;
-	private TutorCommandsModuleFactory commandsModuleFactory;
-	private EmpiriaPaths paths;
-	private PersonaService personaService;
+	private final TutorConfig tutorConfig;
+	private final TutorView moduleView;
+	private final AnimationFactory animationFactory;
+	private final TutorCommandsModuleFactory commandsModuleFactory;
+	private final EmpiriaPaths paths;
+	private final PersonaService personaService;
 
 	@Inject
 	public CommandFactory(@ModuleScoped TutorConfig tutorConfig, @ModuleScoped TutorView moduleView, @ModuleScoped PersonaService personaService,
@@ -81,7 +81,7 @@ public class CommandFactory {
 
 		String assetPath = createAssetPath(assetName);
 
-		return commandsModuleFactory.createShowImageCommand(assetPath, size);
+		return commandsModuleFactory.createShowImageCommand(moduleView, assetPath, size);
 	}
 
 	private String createAssetPath(String assetName) {
