@@ -166,23 +166,11 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 
 	@Override
 	public void onSetUp() {
-		for (MathGap gap : getMathGaps()) {
-			if (gap instanceof TextEntryMathGapModule) {
-				((TextEntryMathGapModule) gap).setUpGap();
-			}
-		}
-
 		placeGaps();
 	}
 
 	@Override
 	public void onStart() {
-		for (MathGap gap : getMathGaps()) {
-			if (gap instanceof TextEntryMathGapModule) {
-				((TextEntryMathGapModule) gap).startGap();
-			}
-		}
-
 		setSizeOfGapDummies();
 
 		mathInteractionManager = createMath();

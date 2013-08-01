@@ -10,7 +10,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
@@ -51,28 +50,19 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 		initStyles();
 	}
 
-	private void initStyles() {
-		readStyles();
-		updateStyles();
+	@Override
+	public String getUid() {
+		return mathGapModel.getUid();
 	}
 
-	private void readStyles() {
-		Map<String, String> styles = styleSocket.getStyles(getModuleElement());
-		mathGapModel.getMathStyles().putAll(styles);
+	@Override
+	public void setIndex(int index) {
+		mathGapModel.getUid();
 	}
 
-	private void updateStyles() {
-		setDimensions();
-		setMaxlengthBinding(mathGapModel.getMathStyles(), getModuleElement());
-		setWidthBinding(mathGapModel.getMathStyles(), getModuleElement());
-		initReplacements(mathGapModel.getMathStyles());
-	}
-
-	private void installViewInPlaceholder(HasWidgets placeholder) {
-		Widget placeholderWidget = (Widget) placeholder;
-		HasWidgets placeholderParent = (HasWidgets) placeholderWidget.getParent();
-		presenter.installViewInContainer(placeholderParent);
-		placeholderWidget.removeFromParent();
+	@Override
+	protected TextEntryPresenterUnlocker getTextEntryGapPresenter() {
+		return (TextEntryPresenterUnlocker) presenter;
 	}
 
 	public boolean isSubOrSup(Element node, Node parentNode) {
@@ -93,6 +83,33 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 		return subsupParentFound;
 	}
 
+	public Widget getContainer() {
+		return (Widget) presenter.getContainer();
+	}
+	public void setGapHeight(int gapHeight) {
+		presenter.setHeight(gapHeight, Unit.PX);
+	}
+	
+	public int getGapHeight() {
+		return presenter.getOffsetHeight();
+	}
+	
+	public void setGapWidth(int gapWidth) {
+		presenter.setWidth(gapWidth, Unit.PX);
+	}
+	
+	public int getGapWidth() {
+		return presenter.getOffsetWidth();
+	}
+
+	public void setGapFontSize(int gapFontSize) {
+		presenter.setFontSize(gapFontSize, Unit.PX);
+	}
+
+	public void setMathStyles(Map<String, String> mathStyles) {
+		mathGapModel.setMathStyles(mathStyles);
+	}
+	
 	protected boolean isSubOrSupElement(Node node) {
 		return node.getNodeName().equals("msub") || node.getNodeName().equals("msup") || node.getNodeName().equals("msubsup")
 				|| node.getNodeName().equals("mmultiscripts");
@@ -135,56 +152,29 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 			}
 		}
 	}
-
-
-	public void setUpGap() {
-		registerBindingContexts();
-	}
-
-	public void startGap() {
-		setBindingValues();
-	}
-
 	
-	public Widget getContainer() {
-		return (Widget) presenter.getContainer();
-	}
-	public void setGapHeight(int gapHeight) {
-		presenter.setHeight(gapHeight, Unit.PX);
-	}
-	
-	public int getGapHeight() {
-		return presenter.getOffsetHeight();
-	}
-	
-	public void setGapWidth(int gapWidth) {
-		presenter.setWidth(gapWidth, Unit.PX);
-	}
-	
-	public int getGapWidth() {
-		return presenter.getOffsetWidth();
+	private void initStyles() {
+		readStyles();
+		updateStyles();
 	}
 
-	public void setGapFontSize(int gapFontSize) {
-		presenter.setFontSize(gapFontSize, Unit.PX);
+	private void readStyles() {
+		Map<String, String> styles = styleSocket.getStyles(getModuleElement());
+		mathGapModel.getMathStyles().putAll(styles);
 	}
 
-	public void setMathStyles(Map<String, String> mathStyles) {
-		mathGapModel.setMathStyles(mathStyles);
+	private void updateStyles() {
+		setDimensions();
+		setMaxlengthBinding(mathGapModel.getMathStyles(), getModuleElement());
+		setWidthBinding(mathGapModel.getMathStyles(), getModuleElement());
+		initReplacements(mathGapModel.getMathStyles());
 	}
 
-	@Override
-	public String getUid() {
-		return mathGapModel.getUid();
-	}
 
-	@Override
-	public void setIndex(int index) {
-		mathGapModel.getUid();
-	}
-
-	@Override
-	protected TextEntryPresenterUnlocker getTextEntryGapPresenter() {
-		return (TextEntryPresenterUnlocker) presenter;
+	private void installViewInPlaceholder(HasWidgets placeholder) {
+		Widget placeholderWidget = (Widget) placeholder;
+		HasWidgets placeholderParent = (HasWidgets) placeholderWidget.getParent();
+		presenter.installViewInContainer(placeholderParent);
+		placeholderWidget.removeFromParent();
 	}
 }

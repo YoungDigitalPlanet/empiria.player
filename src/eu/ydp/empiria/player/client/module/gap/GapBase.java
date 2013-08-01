@@ -1,16 +1,13 @@
 package eu.ydp.empiria.player.client.module.gap;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH_ALIGN;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
 
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Unit;
@@ -39,13 +36,7 @@ import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.StringUtils;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public abstract class GapBase extends OneViewInteractionModuleBase implements Bindable {
@@ -55,137 +46,183 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	
 	@Inject
 	protected GapExpressionReplacer gapExpressionReplacer;
-
+	
 	public static final String INLINE_HTML_NBSP = "&nbsp;";
 
-	protected GapModulePresenter presenter;
-
-	protected boolean markingAnswer = false;
-
-	protected boolean showingAnswer = false;
-
-	protected String lastValue = null;
-
-	protected Integer fontSize = 16;
-
-	protected DefaultBindingGroupIdentifier widthBindingIdentifier;
-
-	protected DefaultBindingGroupIdentifier maxlengthBindingIdentifier;
-
-	protected BindingContext widthBindingContext;
-
-	protected BindingContext maxlengthBindingContext;
-
-	protected String maxLength = StringUtils.EMPTY_STRING;
+	public interface PresenterHandler extends BlurHandler, ChangeHandler {}
 	
-	protected boolean locked;
-
-
+	public String maxLength = StringUtils.EMPTY_STRING;
+	
 	protected abstract void setPreviousAnswer();
-	
-	public interface PresenterHandler extends BlurHandler, ChangeHandler {
-	}
-	
 	protected abstract ResponseSocket getResponseSocket();
-	protected void updateResponse(boolean userInteract, boolean isReset) {
-		if (showingAnswer) {
-			return;
-		}
-
-		if (getResponse() != null) {
-			if (lastValue != null) {
-				getResponse().remove(lastValue);
-			}
-
-			lastValue = presenter.getText();
-			getResponse().add(lastValue);
-			fireStateChanged(userInteract, isReset);
-		}
-	}
 	
-	protected void setCorrectAnswer() {
-		String correctAnswer = getCorrectAnswer();
-		String replaced = gapExpressionReplacer.ensureReplacement(correctAnswer);
-		presenter.setText(replaced);
-	}
+	protected GapModulePresenter presenter;
+	protected String lastValue = null;
+	protected boolean markingAnswer = false;
+	protected boolean showingAnswer = false;
+	protected boolean locked;
 	
-	public String getCorrectAnswer() {
-		Response response = getResponse();
-		String answer;
-		if(response.correctAnswers.answersExists()){
-			answer = response.correctAnswers.getSingleAnswer();
-		}else{
-			answer = ""; 
-		}
-		return answer;
-	}
-
-
-	
-	protected String getCurrentResponseValue() {
-		String answer = StringUtils.EMPTY_STRING;
-		
-		if (getResponse().values.size() > 0) {
-			answer = getResponse().values.get(0);
-		}
-		
-		return answer;
-	}
-	
-	protected boolean isResponseCorrect() {
-		boolean isCorrect = false;
-		List<Boolean> evaluateResponse = getResponseSocket().evaluateResponse(getResponse());
-		
-		if (evaluateResponse.size() > 0) {
-			isCorrect = evaluateResponse.get(0);				
-		}
-		return isCorrect;
-	}
-
-	protected void addPlayerEventHandlers(){
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
-
-			@Override
-			public void onPlayerEvent(PlayerEvent event) {
-				if(event.getType() == PlayerEventTypes.BEFORE_FLOW){
-					updateResponse(false, false);
-					presenter.removeFocusFromTextField();
-				}
-			}
-		},new CurrentPageScope());
-	}
-	
-	protected void initReplacements(Map<String, String> styles) {
-		boolean containsReplacementStyle = styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)  ||  styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
-		if (containsReplacementStyle){
-			String charactersSet = Objects.firstNonNull(styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS), styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS));
-			gapExpressionReplacer.useCharacters(charactersSet);
-			presenter.makeExpressionReplacements(gapExpressionReplacer.getReplacer());
-		}
+	@Override
+	public void onBodyLoad() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void markAnswers(boolean mark) {
-		if (mark  && !markingAnswer) {
-			if (isResponseEmpty()) {
-				presenter.setMarkMode(GapModulePresenter.NONE);
-			} else if (isResponseCorrect()) {
-				presenter.setMarkMode(GapModulePresenter.CORRECT);
-			} else {
-				presenter.setMarkMode(GapModulePresenter.WRONG);
-			}
-		} else if (!mark && markingAnswer) {
-			presenter.removeMarking();
+	public void onBodyUnload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onClose() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void onSetUp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		
+	}
+	protected DefaultBindingGroupIdentifier widthBindingIdentifier;
+	protected DefaultBindingGroupIdentifier maxlengthBindingIdentifier;
+	
+	protected BindingContext widthBindingContext;
+	protected BindingContext maxlengthBindingContext;
+
+	@Override
+	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
+		BindingGroupIdentifier groupIndentifier = null;
+
+		if (bindingType == BindingType.GAP_WIDTHS){
+			groupIndentifier = widthBindingIdentifier;
 		}
 
-		markingAnswer = mark;
+		if (bindingType == BindingType.GAP_MAXLENGHTS) {
+			groupIndentifier = maxlengthBindingIdentifier;
+		}
+
+		return groupIndentifier;
 	}
 
-	protected boolean isResponseEmpty(){
-		return StringUtils.EMPTY_STRING.equals(getCurrentResponseValue());
+	@Override
+	public BindingValue getBindingValue(BindingType bindingType) {
+		BindingValue bindingValue = null;
+
+		if (bindingType == BindingType.GAP_WIDTHS) {
+			bindingValue = new GapWidthBindingValue(getLongestAnswerLength());
+		}
+
+		if (bindingType == BindingType.GAP_MAXLENGHTS) {
+			bindingValue = new GapMaxlengthBindingValue(getLongestAnswerLength());
+		}
+
+		return bindingValue;
 	}
 
+	protected void registerBindingContexts() {
+		if (widthBindingIdentifier != null) {
+			widthBindingContext = BindingUtil.register(BindingType.GAP_WIDTHS, this, this);
+		}
+
+		if (maxlengthBindingIdentifier != null) {
+			maxlengthBindingContext = BindingUtil.register(BindingType.GAP_MAXLENGHTS, this, this);
+		}
+	}
+	
+	protected void setWidthBinding(Map<String, String> styles, Element moduleElement) {
+		GapWidthMode widthMode = getGapWidthMode(styles);
+
+		if (widthMode == GapWidthMode.GROUP){
+			widthBindingIdentifier = getBindindIdentifier(moduleElement);
+		} else if (widthMode == GapWidthMode.GAP){
+			if (getCurrentResponse().groups.size() > 0) {
+				widthBindingIdentifier = new DefaultBindingGroupIdentifier(getCurrentResponse().groups.get(0));
+			} else {
+				int longestAnswer = getLongestAnswerLength();
+				presenter.setWidth((longestAnswer * getFontSize()), Unit.PX);
+			}
+		}
+	}
+	
+	protected GapWidthMode getGapWidthMode(Map<String, String> styles){
+		GapWidthMode widthMode = null;
+		String gapWidthAlign = StringUtils.EMPTY_STRING;
+
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN)) {
+			gapWidthAlign = styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN).trim().toUpperCase();
+		} else if (styles.containsKey(EMPIRIA_MATH_GAP_WIDTH_ALIGN)) {
+			gapWidthAlign = styles.get(EMPIRIA_MATH_GAP_WIDTH_ALIGN).trim().toUpperCase();
+		}
+
+		if ( !gapWidthAlign.equals(StringUtils.EMPTY_STRING) ) {
+			widthMode = GapWidthMode.valueOf(gapWidthAlign);
+		}
+
+		return widthMode;
+	}
+
+	protected void setMaxlengthBinding(Map<String, String> styles, Element moduleElement) {
+		String gapMaxlength = StringUtils.EMPTY_STRING;
+
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH)) {
+			gapMaxlength = styles.get(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH).trim().toUpperCase();
+		} else if (styles.containsKey(EMPIRIA_MATH_GAP_MAXLENGTH)) {
+			gapMaxlength = styles.get(EMPIRIA_MATH_GAP_MAXLENGTH).trim().toUpperCase();
+		}
+
+		if ( !gapMaxlength.equals(StringUtils.EMPTY_STRING) ) {
+			maxLength = gapMaxlength;
+
+			if (maxLength.matches("ANSWER")) {
+				maxlengthBindingIdentifier = getBindindIdentifier(moduleElement);
+			} else {
+				presenter.setMaxLength(Integer.parseInt(maxLength));
+			}
+		}
+		else if (getCurrentModuleElement().hasAttribute("expectedLength")) {
+			presenter.setMaxLength(XMLUtils.getAttributeAsInt(getCurrentModuleElement(), "expectedLength"));
+		}
+	}
+
+	protected DefaultBindingGroupIdentifier getBindindIdentifier(Element moduleElement) {
+		DefaultBindingGroupIdentifier bindingIdentifier;
+
+		if (moduleElement.hasAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP)){
+			bindingIdentifier = new DefaultBindingGroupIdentifier(moduleElement.getAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP));
+		} else {
+			bindingIdentifier = new DefaultBindingGroupIdentifier(StringUtils.EMPTY_STRING);
+		}
+
+		return bindingIdentifier;
+	}
+
+	protected void setBindingValues() {
+		if (widthBindingContext != null) {
+			int longestAnswerLength = ((GapWidthBindingContext) widthBindingContext).getGapWidthBindingOutcomeValue().getGapCharactersCount();
+			int textBoxWidth = calculateTextBoxWidth(longestAnswerLength);
+			presenter.setWidth(textBoxWidth, Unit.PX);
+		}
+
+		if (maxlengthBindingContext != null) {
+			int longestAnswerLength = ((GapMaxlengthBindingContext) maxlengthBindingContext).getGapMaxlengthBindingOutcomeValue().getGapCharactersCount();
+			presenter.setMaxLength(longestAnswerLength);
+		}
+	}
+	
+	protected int calculateTextBoxWidth(int longestAnswerLength) {
+		return longestAnswerLength * getFontSize();
+	}
+
+	
+	
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (show  &&  !showingAnswer) {
@@ -237,6 +274,105 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
 
+	@Override
+	public void markAnswers(boolean mark) {
+		if (mark  && !markingAnswer) {
+			if (isResponseEmpty()) {
+				presenter.setMarkMode(GapModulePresenter.NONE);
+			} else if (isResponseCorrect()) {
+				presenter.setMarkMode(GapModulePresenter.CORRECT);
+			} else {
+				presenter.setMarkMode(GapModulePresenter.WRONG);
+			}
+		} else if (!mark && markingAnswer) {
+			presenter.removeMarking();
+		}
+
+		markingAnswer = mark;
+	}
+	
+	protected int getFontSize() {
+		return presenter.getFontSize();
+	}
+
+	public String getCorrectAnswer() {
+		Response response = getResponse();
+		String answer;
+		if(response.correctAnswers.answersExists()){
+			answer = response.correctAnswers.getSingleAnswer();
+		}else{
+			answer = ""; 
+		}
+		return answer;
+	}
+	
+	public int getLongestAnswerLength() {
+		int longestLength = 0;
+		
+		for (int i = 0; i < getResponse().correctAnswers.getAnswersCount(); i++) {
+			for (String a : getResponse().correctAnswers.getResponseValue(i).getAnswers()){
+				if (a.length() > longestLength) {
+					longestLength = a.length();
+				}
+			}
+		}
+		
+		return longestLength;
+	}
+	
+	public Element getCurrentModuleElement() {
+		return getModuleElement();
+	}
+	
+	protected Response getCurrentResponse(){
+		return getResponse();
+	}
+
+	protected void updateResponse(boolean userInteract, boolean isReset) {
+		if (showingAnswer) {
+			return;
+		}
+		if (getResponse() != null) {
+			if (lastValue != null) {
+				getResponse().remove(lastValue);
+			}
+
+			lastValue = presenter.getText();
+			getResponse().add(lastValue);
+			fireStateChanged(userInteract, isReset);
+		}
+	}
+	
+	protected void setCorrectAnswer() {
+		String correctAnswer = getCorrectAnswer();
+		String replaced = gapExpressionReplacer.ensureReplacement(correctAnswer);
+		presenter.setText(replaced);
+	}
+	
+	protected String getCurrentResponseValue() {
+		String answer = StringUtils.EMPTY_STRING;
+		
+		if (getResponse().values.size() > 0) {
+			answer = getResponse().values.get(0);
+		}
+		
+		return answer;
+	}
+	
+	protected boolean isResponseCorrect() {
+		boolean isCorrect = false;
+		List<Boolean> evaluateResponse = getResponseSocket().evaluateResponse(getResponse());
+		
+		if (evaluateResponse.size() > 0) {
+			isCorrect = evaluateResponse.get(0);				
+		}
+		return isCorrect;
+	}
+
+	protected boolean isResponseEmpty(){
+		return StringUtils.EMPTY_STRING.equals(getCurrentResponseValue());
+	}
+
 	protected String getElementAttributeValue(String attrName){
 		String attrValue = null;
 
@@ -246,171 +382,4 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 		return attrValue;
 	}
-
-	public int getLongestAnswerLength() {
-		int longestLength = 0;
-
-		for (int i = 0; i < getResponse().correctAnswers.getAnswersCount(); i++) {
-			for (String a : getResponse().correctAnswers.getResponseValue(i).getAnswers()){
-				if (a.length() > longestLength) {
-					longestLength = a.length();
-				}
-			}
-		}
-
-		return longestLength;
-	}
-
-	@Override
-	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
-		BindingGroupIdentifier groupIndentifier = null;
-
-		if (bindingType == BindingType.GAP_WIDTHS){
-			groupIndentifier = widthBindingIdentifier;
-		}
-
-		if (bindingType == BindingType.GAP_MAXLENGHTS) {
-			groupIndentifier = maxlengthBindingIdentifier;
-		}
-
-		return groupIndentifier;
-	}
-
-	@Override
-	public BindingValue getBindingValue(BindingType bindingType) {
-		BindingValue bindingValue = null;
-
-		if (bindingType == BindingType.GAP_WIDTHS) {
-			bindingValue = new GapWidthBindingValue(getLongestAnswerLength());
-		}
-
-		if (bindingType == BindingType.GAP_MAXLENGHTS) {
-			bindingValue = new GapMaxlengthBindingValue(getLongestAnswerLength());
-		}
-
-		return bindingValue;
-	}
-
-	protected void setWidthBinding(Map<String, String> styles, Element moduleElement) {
-		GapWidthMode widthMode = getGapWidthMode(styles);
-
-		if (widthMode == GapWidthMode.GROUP){
-			widthBindingIdentifier = getBindindIdentifier(moduleElement);
-		} else if (widthMode == GapWidthMode.GAP){
-			if (getResponse().groups.size() > 0) {
-				widthBindingIdentifier = new DefaultBindingGroupIdentifier(getResponse().groups.get(0));
-			} else {
-				int longestAnswer = getLongestAnswerLength();
-				presenter.setWidth((longestAnswer * getFontSize()), Unit.PX);
-			}
-		}
-	}
-
-	protected GapWidthMode getGapWidthMode(Map<String, String> styles){
-		GapWidthMode widthMode = null;
-		String gapWidthAlign = StringUtils.EMPTY_STRING;
-
-		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN)) {
-			gapWidthAlign = styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN).trim().toUpperCase();
-		} else if (styles.containsKey(EMPIRIA_MATH_GAP_WIDTH_ALIGN)) {
-			gapWidthAlign = styles.get(EMPIRIA_MATH_GAP_WIDTH_ALIGN).trim().toUpperCase();
-		}
-
-		if ( !gapWidthAlign.equals(StringUtils.EMPTY_STRING) ) {
-			widthMode = GapWidthMode.valueOf(gapWidthAlign);
-		}
-
-		return widthMode;
-	}
-
-	protected DefaultBindingGroupIdentifier getBindindIdentifier(Element moduleElement) {
-		DefaultBindingGroupIdentifier bindingIdentifier;
-
-		if (moduleElement.hasAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP)){
-			bindingIdentifier = new DefaultBindingGroupIdentifier(moduleElement.getAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP));
-		} else {
-			bindingIdentifier = new DefaultBindingGroupIdentifier(StringUtils.EMPTY_STRING);
-		}
-
-		return bindingIdentifier;
-	}
-
-	protected void setMaxlengthBinding(Map<String, String> styles, Element moduleElement) {
-		String gapMaxlength = StringUtils.EMPTY_STRING;
-
-		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH)) {
-			gapMaxlength = styles.get(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH).trim().toUpperCase();
-		} else if (styles.containsKey(EMPIRIA_MATH_GAP_MAXLENGTH)) {
-			gapMaxlength = styles.get(EMPIRIA_MATH_GAP_MAXLENGTH).trim().toUpperCase();
-		}
-
-		if ( !gapMaxlength.equals(StringUtils.EMPTY_STRING) ) {
-			maxLength = gapMaxlength;
-
-			if (maxLength.matches("ANSWER")) {
-				maxlengthBindingIdentifier = getBindindIdentifier(moduleElement);
-			} else {
-				presenter.setMaxLength(Integer.parseInt(maxLength));
-			}
-		}
-		else if (getModuleElement().hasAttribute("expectedLength")) {
-			presenter.setMaxLength(XMLUtils.getAttributeAsInt(getModuleElement(), "expectedLength"));
-		}
-	}
-
-	protected void registerBindingContexts() {
-		if (widthBindingIdentifier != null) {
-			widthBindingContext = BindingUtil.register(BindingType.GAP_WIDTHS, this, this);
-		}
-
-		if (maxlengthBindingIdentifier != null) {
-			maxlengthBindingContext = BindingUtil.register(BindingType.GAP_MAXLENGHTS, this, this);
-		}
-	}
-
-	protected void setBindingValues() {
-		if (widthBindingContext != null) {
-			int longestAnswerLength = ((GapWidthBindingContext) widthBindingContext).getGapWidthBindingOutcomeValue().getGapCharactersCount();
-			int textBoxWidth = calculateTextBoxWidth(longestAnswerLength);
-			presenter.setWidth(textBoxWidth, Unit.PX);
-		}
-
-		if (maxlengthBindingContext != null) {
-			int longestAnswerLength = ((GapMaxlengthBindingContext) maxlengthBindingContext).getGapMaxlengthBindingOutcomeValue().getGapCharactersCount();
-			presenter.setMaxLength(longestAnswerLength);
-		}
-	}
-
-	protected int calculateTextBoxWidth(int longestAnswerLength) {
-		return longestAnswerLength * getFontSize();
-	}
-	
-	protected boolean isMobileUserAgent(){
-		return UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN;
-	}
-
-	public int getFontSize() {
-		return presenter.getFontSize();
-	}
-
-	@Override
-	public void onBodyLoad() {
-	}
-
-	@Override
-	public void onBodyUnload() {
-	}
-
-	@Override
-	public void onSetUp() {
-	}
-
-	@Override
-	public void onStart() {
-	}
-
-	@Override
-	public void onClose() {
-	}
-
 }
