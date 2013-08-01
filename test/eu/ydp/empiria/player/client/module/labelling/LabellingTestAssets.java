@@ -8,6 +8,7 @@ import eu.ydp.empiria.player.client.module.labelling.structure.ImgBean;
 
 public class LabellingTestAssets {
 
+	public static final String ID = "id";
 	public static final ChildData CHILD_0 = new ChildData(0, 0, "<node/>");
 	public static final ChildData CHILD_1 = new ChildData(10, 20, "<nodeWithDescendants>\n\n<innerNode attr='val'/>\t\ninnerText\n</nodeWithDescendants>");
 	public static final ChildData CHILD_2 = new ChildData(-10, -20, "<siblingNode1/><siblingNode2/>");
@@ -20,8 +21,19 @@ public class LabellingTestAssets {
 	public static final int IMAGE_WIDTH = 400;
 	public static final int IMAGE_HEIGHT = 300;
 	public static final ImgBean IMAGE_BEAN = createImgBean();
-	
-	public static final String XML_FULL = 
+
+	public static final String XML_FULL =
+			"<labellingInteraction id=\"" + ID + "\">" +
+			"<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"+IMAGE_HEIGHT+"'/>" +
+			"<children>"+
+			CHILD_0.xml() +
+			CHILD_1.xml() +
+			CHILD_2.xml() +
+			CHILD_3.xml() +
+			"</children>" +
+			"</labellingInteraction>";
+
+	public static final String XML_WITHOUT_ID =
 			"<labellingInteraction>" +
 			"<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"+IMAGE_HEIGHT+"'/>" +
 			"<children>"+
@@ -30,20 +42,20 @@ public class LabellingTestAssets {
 			CHILD_2.xml() +
 			CHILD_3.xml() +
 			"</children>" +
-			"</labellingInteraction>"; 
-	
-	public static final String XML_NO_CHILDREN = 
+			"</labellingInteraction>";
+
+	public static final String XML_NO_CHILDREN =
 			"<labellingInteraction>" +
 			"<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"+IMAGE_HEIGHT+"'/>" +
 			"<children>" +
 			"</children>" +
 			"</labellingInteraction>";
-	
-	public static final String XML_NO_CHILDREN_NODE = 
+
+	public static final String XML_NO_CHILDREN_NODE =
 			"<labellingInteraction>" +
 			"<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"+IMAGE_HEIGHT+"'/>" +
 			"</labellingInteraction>";
-	
+
 	private static ImgBean createImgBean() {
 		ImgBean bean = new ImgBean();
 		bean.setSrc(IMAGE_SRC);
@@ -51,5 +63,5 @@ public class LabellingTestAssets {
 		bean.setHeight(IMAGE_HEIGHT);
 		return bean;
 	}
-	
+
 }
