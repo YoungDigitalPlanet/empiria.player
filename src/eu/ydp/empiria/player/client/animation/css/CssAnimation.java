@@ -61,13 +61,14 @@ public class CssAnimation implements AnimationWithRuntimeConfig {
 	}
 
 	private void animationEnd() {
+		if (endHandlerRegistration != null) {
+			endHandlerRegistration.removeHandler();
+		}
+		removeAnimationStyleName();
 		if (animationEndHandler != null) {
 			animationEndHandler.onEnd();
 		}
-		removeAnimationStyleName();
-		endHandlerRegistration.removeHandler();
 	}
-
 
 	@Override
 	public void setRuntimeConfiguration(AnimationRuntimeConfig animationRuntimeConfig) {

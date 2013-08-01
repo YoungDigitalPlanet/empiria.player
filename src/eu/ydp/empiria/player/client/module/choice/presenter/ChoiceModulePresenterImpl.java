@@ -92,11 +92,9 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	@Override
 	public void reset() {
 		for (SimpleChoicePresenter choice : choices) {
-			String choiceIdentifier = choice.getIdentifier();
-			model.removeAnswer(choiceIdentifier);
-
 			choice.reset();
 		}
+		model.reset();
 	}
 
 	@Override
