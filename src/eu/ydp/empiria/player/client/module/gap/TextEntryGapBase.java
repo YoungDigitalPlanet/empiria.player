@@ -1,12 +1,7 @@
 package eu.ydp.empiria.player.client.module.gap;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS;
-
 import java.util.List;
-import java.util.Map;
 
-import com.google.common.base.Objects;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -19,23 +14,15 @@ import eu.ydp.empiria.player.client.module.textentry.DragContentController;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 public abstract class TextEntryGapBase extends GapBase implements SourcelistClient {
 
-	protected abstract TextEntryPresenterUnlocker getTextEntryGapPresenter();
-	
 	protected final SourcelistManager sourcelistManager;
 	protected final StyleSocket styleSocket;
 	protected final DragContentController dragContentController;
-
-
 	private ResponseSocket responseSocket;
+	
+	protected abstract TextEntryPresenterUnlocker getTextEntryGapPresenter();
 
 	public TextEntryGapBase(
 			GapModulePresenter presenter, 
@@ -83,12 +70,6 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 	public void onStart() {
 		sourcelistManager.registerModule(this);
 		setBindingValues();
-	}
-	
-	@Override
-	public void onSetUp() {
-		updateResponse(false);
-		registerBindingContexts();
 	}
 	
 	@Override
@@ -160,32 +141,5 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 			sourcelistManager.unlockGroup(getIdentifier());
 			getTextEntryGapPresenter().unlockDragZone();
 		}
-	}
-	
-	protected void addPlayerEventHandlers(){
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
-
-			@Override
-			public void onPlayerEvent(PlayerEvent event) {
-				if(event.getType() == PlayerEventTypes.BEFORE_FLOW){
-					updateResponse(false, false);
-					presenter.removeFocusFromTextField();
-				}
-			}
-		},new CurrentPageScope());
-	}
-	
-	protected void initReplacements(Map<String, String> styles) {
-		boolean containsReplacementStyle = styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)  ||  styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
-		if (containsReplacementStyle){
-			String charactersSet = Objects.firstNonNull(styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS), styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS));
-			gapExpressionReplacer.useCharacters(charactersSet);
-			presenter.makeExpressionReplacements(gapExpressionReplacer.getReplacer());
-		}
-		
-	}
-	
-	protected boolean isMobileUserAgent(){
-		return UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN;
 	}
 }

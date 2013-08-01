@@ -23,7 +23,6 @@ import eu.ydp.gwtutil.client.NumberUtils;
 public class TextEntryGapModule extends TextEntryGapBase implements SourcelistClient {
 
 	protected Map<String, String> styles;
-	protected Integer fontSize = 16;
 	
 	@Inject
 	public TextEntryGapModule(TextEntryModulePresenter presenter,
@@ -66,6 +65,12 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 			Integer gapWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH), null);
 			presenter.setWidth(gapWidth, Unit.PX);
 		}
+	}
+
+	@Override
+	public void onSetUp() {
+		updateResponse(false);
+		registerBindingContexts();
 	}
 
 	@Override
