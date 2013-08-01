@@ -164,7 +164,7 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 
 	@Override
 	public String getDragItemId() {
-		return presenter.getText();
+		return getTextEntryGapPresenter().getText();
 	}
 
 	@Override
@@ -180,6 +180,7 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 		presenter.setText("");
 	}
 
+	// ANTI-LISKOV
 	private TextEntryMathGapModulePresenter getTextEntryGapPresenter() {
 		return (TextEntryMathGapModulePresenter) presenter;
 	}

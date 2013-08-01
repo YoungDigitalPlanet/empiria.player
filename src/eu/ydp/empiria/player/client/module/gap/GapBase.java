@@ -1,17 +1,13 @@
 package eu.ydp.empiria.player.client.module.gap;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH_ALIGN;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
 
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Strings;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurHandler;
@@ -39,10 +35,6 @@ import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingValue
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthMode;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
@@ -87,27 +79,10 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	}
 	
 	protected abstract ResponseSocket getResponseSocket();
-	protected void updateResponse(boolean userInteract, boolean isReset) {
-		if (showingAnswer) {
-			return;
-		}
-
-		if (getResponse() != null) {
-			if (lastValue != null) {
-				getResponse().remove(lastValue);
-			}
-
-			lastValue = presenter.getText();
-			getResponse().add(lastValue);
-			fireStateChanged(userInteract, isReset);
-		}
-	}
+	protected abstract void updateResponse(boolean userInteract, boolean isReset);
+	protected abstract void setCorrectAnswer();
 	
-	protected void setCorrectAnswer() {
-		String correctAnswer = getCorrectAnswer();
-		String replaced = gapExpressionReplacer.ensureReplacement(correctAnswer);
-		presenter.setText(replaced);
-	}
+	
 	
 	public String getCorrectAnswer() {
 		Response response = getResponse();
@@ -142,28 +117,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		return isCorrect;
 	}
 
-	protected void addPlayerEventHandlers(){
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
-
-			@Override
-			public void onPlayerEvent(PlayerEvent event) {
-				if(event.getType() == PlayerEventTypes.BEFORE_FLOW){
-					updateResponse(false, false);
-					presenter.removeFocusFromTextField();
-				}
-			}
-		},new CurrentPageScope());
-	}
-	
-	protected void initReplacements(Map<String, String> styles) {
-		boolean containsReplacementStyle = styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)  ||  styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
-		if (containsReplacementStyle){
-			String charactersSet = Objects.firstNonNull(styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS), styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS));
-			gapExpressionReplacer.useCharacters(charactersSet);
-			presenter.makeExpressionReplacements(gapExpressionReplacer.getReplacer());
-		}
-		
-	}
 
 	@Override
 	public void markAnswers(boolean mark) {
@@ -203,13 +156,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 		presenter.setViewEnabled(!lock);
 	}
 
-	@Override
-	public void reset() {
-		if (!Strings.isNullOrEmpty(presenter.getText())) {
-			presenter.setText(StringUtils.EMPTY_STRING);
-			updateResponse(false, true);
-		}
-	}
 
 	@Override
 	public JSONArray getState() {

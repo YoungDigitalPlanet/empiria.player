@@ -91,7 +91,7 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 
 	@Override
 	public String getDragItemId() {
-		return presenter.getText();
+		return getTextEntryPresenter().getText();
 	}
 
 	@Override

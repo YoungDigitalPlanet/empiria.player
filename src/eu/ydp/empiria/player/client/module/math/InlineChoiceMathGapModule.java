@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Widget;
@@ -81,8 +82,12 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		return responseSocket;
 	}
 
+	private InlineChoiceMathGapModulePresenter getInlineChoicePresenter() {
+		return (InlineChoiceMathGapModulePresenter)presenter;
+	}
+	
 	protected IsExListBox getListBox() {
-		return presenter.getListBox();
+		return getInlineChoicePresenter().getListBox();
 	}
 
 	@Override
@@ -163,7 +168,6 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		updateResponse(true);
 	}
 	
-	
 
 	@Override
 	protected void setCorrectAnswer() {
@@ -182,7 +186,19 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		}
 	}
 	
-	
+	protected void updateResponse(boolean userInteract, boolean isReset) {
+		if (showingAnswer) {
+			return;
+		}
+
+		if (getResponse() != null) {
+			if (lastValue != null) {
+				getResponse().remove(lastValue);
+			}
+			getResponse().add("");
+			fireStateChanged(userInteract, isReset);
+		}
+	}
 
 	public Widget getContainer() {
 		return (Widget) presenter.getContainer();
@@ -225,4 +241,10 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	public void setIndex(int index) {
 		mathGapModel.getUid();
 	}
+	
+	@Override
+	public void setState(JSONArray newState) {
+		super.setState(newState);
+	}
+	
 }

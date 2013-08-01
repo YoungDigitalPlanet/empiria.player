@@ -61,7 +61,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindDragGap();
 		bindChoice();
 		bindTutor();
-//		bindMathGap();
+		bindMathGap();
 	}
 	
 
