@@ -15,6 +15,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
@@ -52,6 +53,7 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	private ResponseSocket responseSocket;
 	
 	@Inject
+	@ModuleScoped
 	MathGapModel mathGapModel;
 	
 	@Inject

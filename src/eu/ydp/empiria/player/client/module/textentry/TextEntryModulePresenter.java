@@ -23,14 +23,13 @@ import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
-import eu.ydp.empiria.player.client.module.gap.TextEntryPresenterUnlocker;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
-public class TextEntryModulePresenter implements GapModulePresenter, TextEntryPresenterUnlocker {
+public class TextEntryModulePresenter implements GapModulePresenter {
 
 	@UiTemplate("TextEntryModule.ui.xml")
 	interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModulePresenter> {

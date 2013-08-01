@@ -61,6 +61,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindDragGap();
 		bindChoice();
 		bindTutor();
+//		bindMathGap();
 	}
 	
 
@@ -109,6 +110,10 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 	}
 
+	private void bindMathGap() {
+		bindModuleScoped(MathGapModel.class, new TypeLiteral<ModuleScopedProvider<MathGapModel>>(){});
+	}
+	
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)
