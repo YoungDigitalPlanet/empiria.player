@@ -24,10 +24,9 @@ import eu.ydp.empiria.player.client.module.flash.FlashModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
+import eu.ydp.empiria.player.client.module.inlinechoice.math.InlineChoiceMathGapModule;
 import eu.ydp.empiria.player.client.module.labelling.LabellingModule;
-import eu.ydp.empiria.player.client.module.math.InlineChoiceMathGapModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
-import eu.ydp.empiria.player.client.module.math.TextEntryMathGapModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
@@ -42,6 +41,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
+import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule;
 import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 
 @SuppressWarnings({"PMD"})

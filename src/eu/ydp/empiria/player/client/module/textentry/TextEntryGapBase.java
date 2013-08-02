@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.gap;
+package eu.ydp.empiria.player.client.module.textentry;
 
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS;
@@ -14,7 +14,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
-import eu.ydp.empiria.player.client.module.textentry.DragContentController;
+import eu.ydp.empiria.player.client.module.gap.GapBase;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -28,7 +29,7 @@ public class TextEntryGapBase extends GapBase {
 	protected final SourcelistManager sourcelistManager;
 	protected final StyleSocket styleSocket;
 	protected final DragContentController dragContentController;
-	private ResponseSocket responseSocket;
+	protected final ResponseSocket responseSocket;
 
 	public TextEntryGapBase(
 			TextEntryGapModulePresenterBase presenter, 
@@ -94,10 +95,8 @@ public class TextEntryGapBase extends GapBase {
 		},new CurrentPageScope());
 	}
 	
-	// ANTI-LISKOV 
-	private TextEntryGapModulePresenterBase getTextEntryPresenter() {
+	protected TextEntryGapModulePresenterBase getTextEntryPresenter() {
 		return (TextEntryGapModulePresenterBase)presenter;
-
 	}
 	
 	protected void updateResponse(boolean userInteract) {

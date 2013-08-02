@@ -109,14 +109,17 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	
 	protected boolean isResponseCorrect() {
 		boolean isCorrect = false;
-		List<Boolean> evaluateResponse = getResponseSocket().evaluateResponse(getResponse());
+		List<Boolean> evaluateResponse = getEvaluatedResponse();
 		
 		if (evaluateResponse.size() > 0) {
 			isCorrect = evaluateResponse.get(0);				
 		}
 		return isCorrect;
 	}
-
+	
+	protected List<Boolean> getEvaluatedResponse() {
+		return getResponseSocket().evaluateResponse(getResponse());
+	}
 
 	@Override
 	public void markAnswers(boolean mark) {

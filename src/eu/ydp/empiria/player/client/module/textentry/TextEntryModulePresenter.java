@@ -15,7 +15,6 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
-import eu.ydp.empiria.player.client.module.gap.TextEntryGapModulePresenterBase;
 
 public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 

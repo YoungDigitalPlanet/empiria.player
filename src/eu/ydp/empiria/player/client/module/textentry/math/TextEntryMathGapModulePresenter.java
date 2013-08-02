@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.math;
+package eu.ydp.empiria.player.client.module.textentry.math;
 
 import javax.annotation.PostConstruct;
 
@@ -16,11 +16,11 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
-import eu.ydp.empiria.player.client.module.gap.TextEntryGapModulePresenterBase;
+import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModulePresenterBase;
 
 public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenterBase implements ChangeHandler {
 
-	@UiTemplate("TextEntryGap.ui.xml")
+	@UiTemplate("TextEntryMathGap.ui.xml")
 	interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryMathGapModulePresenter> {
 	};
 

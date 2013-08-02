@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.gap;
+package eu.ydp.empiria.player.client.module.textentry;
 
 import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.DropEvent;
@@ -10,7 +10,10 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
+import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
+import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
+import eu.ydp.empiria.player.client.module.gap.GapModulePesenterBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;

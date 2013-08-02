@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.math;
+package eu.ydp.empiria.player.client.module.inlinechoice.math;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -18,7 +18,7 @@ import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
 public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 
-	@UiTemplate("InlineChoiceGap.ui.xml")
+	@UiTemplate("InlineChoiceMathGap.ui.xml")
 	interface InlineChoiceGapModuleUiBinder extends UiBinder<Widget, InlineChoiceMathGapModulePresenter> {
 	};
 

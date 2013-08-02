@@ -16,7 +16,6 @@ import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
-import eu.ydp.empiria.player.client.module.gap.TextEntryGapBase;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
@@ -107,7 +106,7 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 		presenter.setText("");
 	}
 
-	TextEntryModulePresenter getTextEntryPresenter() {
+	protected TextEntryModulePresenter getTextEntryPresenter() {
 		return (TextEntryModulePresenter) presenter;
 	}
 

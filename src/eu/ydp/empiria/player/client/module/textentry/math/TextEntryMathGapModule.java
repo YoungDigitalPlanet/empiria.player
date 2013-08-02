@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.math;
+package eu.ydp.empiria.player.client.module.textentry.math;
 
 import java.util.List;
 import java.util.Map;
@@ -17,8 +17,10 @@ import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
-import eu.ydp.empiria.player.client.module.gap.TextEntryGapBase;
+import eu.ydp.empiria.player.client.module.math.MathGap;
+import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.textentry.DragContentController;
+import eu.ydp.empiria.player.client.module.textentry.TextEntryGapBase;
 import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
@@ -164,7 +166,7 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 
 	@Override
 	public String getDragItemId() {
-		return getTextEntryGapPresenter().getText();
+		return getTextEntryPresenter().getText();
 	}
 
 	@Override
@@ -180,19 +182,15 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 		presenter.setText("");
 	}
 
-	// ANTI-LISKOV
-	private TextEntryMathGapModulePresenter getTextEntryGapPresenter() {
-		return (TextEntryMathGapModulePresenter) presenter;
-	}
 
 	@Override
 	public void lockDropZone() {
-		getTextEntryGapPresenter().lockDragZone();
+		getTextEntryPresenter().lockDragZone();
 	}
 
 	@Override
 	public void unlockDropZone() {
-		getTextEntryGapPresenter().unlockDragZone();
+		getTextEntryPresenter().unlockDragZone();
 	}
 
 	@Override
@@ -207,7 +205,7 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 			sourcelistManager.lockGroup(getIdentifier());
 		} else {
 			sourcelistManager.unlockGroup(getIdentifier());
-			getTextEntryGapPresenter().unlockDragZone();
+			getTextEntryPresenter().unlockDragZone();
 		}
 	}
 	

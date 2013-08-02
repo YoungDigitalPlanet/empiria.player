@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.module.choice.view.SimpleChoiceViewImpl;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
-import eu.ydp.empiria.player.client.module.math.InlineChoiceMathGapModulePresenter;
+import eu.ydp.empiria.player.client.module.inlinechoice.math.InlineChoiceMathGapModulePresenter;
 
 public class ChoiceGinModule extends AbstractGinModule {
 

@@ -84,6 +84,9 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		verify(textEntryModule.getPresenter(), times(1)).setWidth(Double.parseDouble("60"), Unit.PX);
 	}
 
+	/*
+	 * update response() przeniesione do TextEntryGapBase
+	 * 
 	@Test
 	public void shouldSendUpdateResponseWithoutUserInteractionWhen_gapHasAnswer() {
 		TextEntryModuleMock textEntryModule = spy(mockTextGap());
@@ -99,6 +102,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		textEntryModule.reset();
 		verify(textEntryModule, never()).updateResponse(anyBoolean(), anyBoolean());
 	}
+	*/
 
 	@BeforeClass
 	public static void prepareTestEnviroment() {
@@ -133,9 +137,14 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		public TextEntryModuleMock() {
 			super(	injector.getInstance(TextEntryModulePresenter.class),
 					injector.getInstance(StyleSocket.class),
-					injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class)),injector.getInstance(SourcelistManager.class), injector.getInstance(DragContentController.class));
+					injector.getInstance(SourcelistManager.class), 
+					injector.getInstance(DragContentController.class),
+					injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class))
+					);
 		}
 
+		
+		
 		public void setStyles(Map<String, String> styles) {
 			this.styles = styles;
 		}
