@@ -20,7 +20,7 @@ public class HasPostConstructMethod extends AbstractMatcher<TypeLiteral<?>> {
 	public boolean matches(TypeLiteral<?> tpe) {
 		try {
 			if (!classWithDisabledPostConstruct.contains(tpe.getRawType())) {
-				Method[] methods = tpe.getRawType().getMethods();
+				Method[] methods = tpe.getRawType().getDeclaredMethods();
 				for (Method method : methods) {
 					if (method.isAnnotationPresent(PostConstruct.class)) {
 						return true;
