@@ -1,8 +1,16 @@
 package eu.ydp.empiria.player.client.module.media.progress;
 
+import javax.annotation.PostConstruct;
+
 import com.google.gwt.dom.client.NativeEvent;
 
 public class MediaProgressBarAndroid extends MediaProgressBarImpl {
+
+	@Override
+	@PostConstruct
+	public void postConstruct() {
+		super.postConstruct();
+	}
 
 	@Override
 	public MediaProgressBarImpl getNewInstance() {
