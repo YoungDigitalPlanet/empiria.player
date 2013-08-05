@@ -118,8 +118,10 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	}
 
 	private void repaintViewFromResponseModel() {
-		reset();
-		showAnswers(ShowAnswersType.USER);
+		if(moduleView.isAttached()) {
+			reset();
+			showAnswers(ShowAnswersType.USER);
+		}
 	}
 
 	private void disconnectOnUserAction(PairConnectEvent event, ConnectionDirectedPairDTO pair) {
