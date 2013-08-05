@@ -94,7 +94,6 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 		for (SimpleChoicePresenter choice : choices) {
 			choice.reset();
 		}
-		model.reset();
 	}
 
 	@Override
