@@ -3,8 +3,7 @@ package eu.ydp.empiria.player.client.components.hidden;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
-import eu.ydp.empiria.player.client.inject.Instance;
+import com.google.inject.Provider;
 
 /**
  * Provides possibility to add widget to RootPanel and hide it.
@@ -14,14 +13,18 @@ import eu.ydp.empiria.player.client.inject.Instance;
 public class HiddenWidgetCreator {
 
 
-	@Inject Instance<HiddenContainerWidget> containerWidget;
 	/**
-	 * Returns reference to hidden flow panel
+	 * IOS nie lubi jak kilka elelemntow audio znajduje sie obok siebie
+	 * dlatego dla kazdego nowo dodawanego elementu tworzymy nowy kontener.
 	 */
+	@Inject Provider<HiddenContainerWidget> containerWidget;
+
 	public void addWidgetToHiddenContainerOnRootPanel(final Widget widget) {
+
 		HiddenContainerWidget hiddenContainerWidget = containerWidget.get();
 		hiddenContainerWidget.addWidgetToContainer(widget);
 		addPanelToRootPanel(hiddenContainerWidget);
+
 	}
 
 	private void addPanelToRootPanel(Widget hiddenPanel) {
