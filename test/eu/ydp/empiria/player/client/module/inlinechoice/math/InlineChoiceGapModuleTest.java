@@ -157,7 +157,7 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
 		}
 
 		@Override
-		List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket) {
+		protected List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket) {
 			ArrayList<String> mockedListBoxIdentifiers = new ArrayList<String>();
 
 			mockedListBoxIdentifiers.add("MATH_RESPONSE_7_3");

@@ -15,13 +15,11 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.math.MathGap;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.textentry.DragContentController;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapBase;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -44,20 +42,6 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 		super(presenter, styleSocket, sourcelistManager, dragContentController, responseSocket);
 	}
 
-	
-	@Override
-	public void onStart() {
-		sourcelistManager.registerModule(this);
-		super.onStart();
-	}
-
-	
-	@Override
-	public void reset() {
-		super.reset();
-		sourcelistManager.onUserValueChanged();
-	}
-
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		installViewInPlaceholder(placeholders.get(0));
@@ -68,30 +52,6 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 		
 		applyIdAndClassToView((Widget) presenter.getContainer());
 		initStyles();
-	}
-
-	private void initStyles() {
-		readStyles();
-		updateStyles();
-	}
-
-	private void readStyles() {
-		Map<String, String> styles = styleSocket.getStyles(getModuleElement());
-		mathGapModel.getMathStyles().putAll(styles);
-	}
-
-	private void updateStyles() {
-		setDimensions();
-		setMaxlengthBinding(mathGapModel.getMathStyles(), getModuleElement());
-		setWidthBinding(mathGapModel.getMathStyles(), getModuleElement());
-		initReplacements(mathGapModel.getMathStyles());
-	}
-
-	private void installViewInPlaceholder(HasWidgets placeholder) {
-		Widget placeholderWidget = (Widget) placeholder;
-		HasWidgets placeholderParent = (HasWidgets) placeholderWidget.getParent();
-		presenter.installViewInContainer(placeholderParent);
-		placeholderWidget.removeFromParent();
 	}
 
 	public boolean isSubOrSup(Element node, Node parentNode) {
@@ -110,6 +70,51 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 		}
 
 		return subsupParentFound;
+	}
+
+	public void setUpGap() {
+		registerBindingContexts();
+	}
+
+	public void startGap() {
+		setBindingValues();
+	}
+
+	public Widget getContainer() {
+		return (Widget) presenter.getContainer();
+	}
+	public void setGapHeight(int gapHeight) {
+		presenter.setHeight(gapHeight, Unit.PX);
+	}
+	
+	public int getGapHeight() {
+		return presenter.getOffsetHeight();
+	}
+	
+	public void setGapWidth(int gapWidth) {
+		presenter.setWidth(gapWidth, Unit.PX);
+	}
+	
+	public int getGapWidth() {
+		return presenter.getOffsetWidth();
+	}
+
+	public void setGapFontSize(int gapFontSize) {
+		presenter.setFontSize(gapFontSize, Unit.PX);
+	}
+
+	public void setMathStyles(Map<String, String> mathStyles) {
+		mathGapModel.setMathStyles(mathStyles);
+	}
+
+	@Override
+	public String getUid() {
+		return mathGapModel.getUid();
+	}
+
+	@Override
+	public void setIndex(int index) {
+		mathGapModel.getUid();
 	}
 
 	protected boolean isSubOrSupElement(Node node) {
@@ -154,98 +159,28 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 			}
 		}
 	}
-
-
-	public void setUpGap() {
-		registerBindingContexts();
-	}
-
-	public void startGap() {
-		setBindingValues();
-	}
-
-	@Override
-	public String getDragItemId() {
-		return getTextEntryPresenter().getText();
-	}
-
-	@Override
-	public void setDragItem(String itemId) {
-		SourcelistItemValue item = sourcelistManager.getValue(itemId, getIdentifier());
-		String newText = dragContentController.getTextFromItemAppropriateToType(item);
-		
-		presenter.setText(newText);
-	}
-
-	@Override
-	public void removeDragItem() {
-		presenter.setText("");
-	}
-
-
-	@Override
-	public void lockDropZone() {
-		getTextEntryPresenter().lockDragZone();
-	}
-
-	@Override
-	public void unlockDropZone() {
-		getTextEntryPresenter().unlockDragZone();
-	}
-
-	@Override
-	public void setSize(HasDimensions size) {
-		// intentionally empty - text gap does not fit its size
-	}
-
-	@Override
-	public void lock(boolean lock) {
-		super.lock(lock);
-		if (lock) {
-			sourcelistManager.lockGroup(getIdentifier());
-		} else {
-			sourcelistManager.unlockGroup(getIdentifier());
-			getTextEntryPresenter().unlockDragZone();
-		}
-	}
 	
-	
-	
-	public Widget getContainer() {
-		return (Widget) presenter.getContainer();
-	}
-	public void setGapHeight(int gapHeight) {
-		presenter.setHeight(gapHeight, Unit.PX);
-	}
-	
-	public int getGapHeight() {
-		return presenter.getOffsetHeight();
-	}
-	
-	public void setGapWidth(int gapWidth) {
-		presenter.setWidth(gapWidth, Unit.PX);
-	}
-	
-	public int getGapWidth() {
-		return presenter.getOffsetWidth();
+	private void initStyles() {
+		readStyles();
+		updateStyles();
 	}
 
-	public void setGapFontSize(int gapFontSize) {
-		presenter.setFontSize(gapFontSize, Unit.PX);
+	private void readStyles() {
+		Map<String, String> styles = styleSocket.getStyles(getModuleElement());
+		mathGapModel.getMathStyles().putAll(styles);
 	}
 
-	public void setMathStyles(Map<String, String> mathStyles) {
-		mathGapModel.setMathStyles(mathStyles);
+	private void updateStyles() {
+		setDimensions();
+		setMaxlengthBinding(mathGapModel.getMathStyles(), getModuleElement());
+		setWidthBinding(mathGapModel.getMathStyles(), getModuleElement());
+		initReplacements(mathGapModel.getMathStyles());
 	}
 
-	@Override
-	public String getUid() {
-		return mathGapModel.getUid();
+	private void installViewInPlaceholder(HasWidgets placeholder) {
+		Widget placeholderWidget = (Widget) placeholder;
+		HasWidgets placeholderParent = (HasWidgets) placeholderWidget.getParent();
+		presenter.installViewInContainer(placeholderParent);
+		placeholderWidget.removeFromParent();
 	}
-
-	@Override
-	public void setIndex(int index) {
-		mathGapModel.getUid();
-	}
-
 }
