@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
 public class ExpressionValidatorTest {
@@ -95,6 +96,6 @@ public class ExpressionValidatorTest {
 	}
 
 	private Response getEmptyResponse() {
-		return new Response(null, null, null, null, null, null);
+		return new ResponseBuilder().build();
 	}
 }

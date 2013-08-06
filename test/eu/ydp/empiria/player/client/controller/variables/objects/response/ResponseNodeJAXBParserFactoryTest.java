@@ -12,7 +12,7 @@ public class ResponseNodeJAXBParserFactoryTest extends AbstractEmpiriaPlayerGWTT
 
 	public void testParse() throws Exception {
 		StringBuilder builder = new StringBuilder();
-		builder.append("<responseDeclaration cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\" checkMode=\"expression\" countMode=\"\" evaluate =\"correct\">");
+		builder.append("<responseDeclaration cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\" checkMode=\"expression\" countMode=\"correctAnswers\" evaluate =\"correct\">");
 		builder.append("		<correctResponse>");
 		builder.append("			<value forIndex=\"0\"  group=\"x1\" groupMode=\"groupItem\">CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
 		builder.append("			<value>CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4</value>");
@@ -33,15 +33,16 @@ public class ResponseNodeJAXBParserFactoryTest extends AbstractEmpiriaPlayerGWTT
 		assertEquals("x1", responseBean.getCorrectResponse().getValues().get(0).getGroup());
 		assertEquals("groupItem", responseBean.getCorrectResponse().getValues().get(0).getGroupMode());
 		assertEquals("CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4", responseBean.getCorrectResponse().getValues().get(1).getValue());
+		assertEquals(CountMode.CORRECT_ANSWERS, responseBean.getCountMode());
 		assertEquals(null, responseBean.getCorrectResponse().getValues().get(1).getForIndex());
 		assertEquals(null, responseBean.getCorrectResponse().getValues().get(1).getGroup());
 		assertEquals(null, responseBean.getCorrectResponse().getValues().get(1).getGroupMode());
 
 	}
 
-	public void testParseOldContentWithoutCheckModeAndEvaluate() throws Exception {
+	public void testParseOldContentWithoutCheckModeAndEvaluateAndCountMode() throws Exception {
 		StringBuilder builder = new StringBuilder();
-		builder.append("<responseDeclaration cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\"  countMode=\"\">");
+		builder.append("<responseDeclaration cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\" >");
 		builder.append("		<correctResponse>");
 		builder.append("			<value forIndex=\"0\"  group=\"x1\" groupMode=\"groupItem\">CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
 		builder.append("			<value>&gt;</value>");

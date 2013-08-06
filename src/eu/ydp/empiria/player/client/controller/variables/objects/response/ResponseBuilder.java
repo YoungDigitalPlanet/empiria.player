@@ -18,10 +18,11 @@ public class ResponseBuilder {
 	private List<String> values = new ArrayList<String>();
 	private List<String> groups = new ArrayList<String>();
 	private String identifier = "defaultIdentifier";
-	private Cardinality cardinality;
+	private Cardinality cardinality;// = Cardinality.SINGLE;
 	private CountMode countMode = CountMode.SINGLE;
 	private ExpressionBean expression = null;
 	private CheckMode checkMode = CheckMode.DEFAULT;
+	private CountMode compilerCountMode;
 
 	public ResponseBuilder withEvaluate(Evaluate evaluate) {
 		this.evaluate = evaluate;
@@ -95,8 +96,13 @@ public class ResponseBuilder {
 		this.checkMode = checkMode;
 		return this;
 	}
+	
+	public ResponseBuilder withCompilerCountMode(CountMode compilerCountMode) {
+		this.compilerCountMode = compilerCountMode;
+		return this;
+	}
 
 	public Response build() {
-		return new Response(correctAnswers, values, groups, identifier, evaluate, cardinality, countMode, expression, checkMode);
+		return new Response(correctAnswers, values, groups, identifier, evaluate, cardinality, countMode, expression, checkMode, compilerCountMode);
 	}
 }
