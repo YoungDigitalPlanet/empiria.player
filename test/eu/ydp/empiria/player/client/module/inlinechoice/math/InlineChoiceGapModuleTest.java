@@ -32,6 +32,7 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.module.gap.GapBinder;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -47,6 +48,8 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
 	InlineChoiceMathGapModule instance;
 	ExListBox listBox;
 	EventsBus eventsBus;
+	
+	GapBinder gapBinder;
 
 	@BeforeClass
 	public static void disarm() {
@@ -83,6 +86,8 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
 		setUp(new Class<?>[] {}, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule(presenter, mathGapModel ));
 		eventsBus = injector.getInstance(EventsBus.class);
 		instance = injector.getInstance(InlineChoiceMathGapModule.class);
+		gapBinder = mock(GapBinder.class);
+		instance.gapBinder = gapBinder;
 	}
 
 	@Test

@@ -80,32 +80,6 @@ public class TextEntryMathGapModuleJUnitTest extends AbstractTestBaseWithoutAuto
 	}
 
 	@Test
-	public void testLongestAnswerLength() {
-		TextEntryMathGapModule textGap = mockTextGap();
-		int answerLength = textGap.getLongestAnswerLength();
-		assertThat(answerLength, is(4));
-	}
-
-	@Test
-	public void testMaxlengthBindingValue() {
-		Map<String, String> styles = new HashMap<String, String>();
-		styles.put(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH, "3");
-		TextEntryGapModuleMock textGap = mockTextGap();
-		textGap.invokeSetMaxlengthBinding(styles);
-		verify(textGap.getPresenter()).setMaxLength(3);
-	}
-
-	@Test
-	public void testWidthBindingValue() {
-		Map<String, String> styles = new HashMap<String, String>();
-		styles.put(EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN, "gap");
-		TextEntryGapModuleMock textGap = mockTextGap();
-		textGap.invokeSetWidthBinding(styles);
-		int width = textGap.invokeCalculateTextBoxWidth();
-		assertThat(width, is(80));
-	}
-
-	@Test
 	public void testIfMarkAnswersWorksCorrectly() {
 		
 		TextEntryGapModuleMock gap1 = mockTextGap();

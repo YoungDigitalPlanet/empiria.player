@@ -33,6 +33,7 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.expression.PipedReplacementsParser;
+import eu.ydp.empiria.player.client.module.gap.GapBinder;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.xml.XMLParser;
@@ -53,6 +54,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 	@Before
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGuiceModule());
+		mockTextGap().gapBinder = mock(GapBinder.class);
 	}
 
 	@Test

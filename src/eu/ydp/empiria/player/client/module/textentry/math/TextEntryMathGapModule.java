@@ -31,7 +31,6 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 	@Inject
 	@ModuleScoped
 	MathGapModel mathGapModel;
-	
 
 	@Inject
 	public TextEntryMathGapModule(TextEntryMathGapModulePresenter presenter,

@@ -80,6 +80,19 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	}
 	
 	@Override
+	protected ResponseSocket getResponseSocket() {
+		return responseSocket;
+	}
+
+	private InlineChoiceMathGapModulePresenter getInlineChoicePresenter() {
+		return (InlineChoiceMathGapModulePresenter)presenter;
+	}
+	
+	protected IsExListBox getListBox() {
+		return getInlineChoicePresenter().getListBox();
+	}
+
+	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		HasWidgets placeholder = placeholders.get(0);
 		presenter.installViewInContainer(((HasWidgets) ((Widget) placeholder).getParent()));
@@ -94,6 +107,50 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		setListBoxEmptyOption();
 		options = createOptions(getModuleElement(), getModuleSocket());
 	}
+
+	protected void setListBoxEmptyOption() {
+		if (hasEmptyOption) {
+			Widget emptyOptionInBody = new InlineHTML(GapBase.INLINE_HTML_NBSP);
+			emptyOptionInBody.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
+			Widget emptyOptionInPopup = new InlineHTML(GapBase.INLINE_HTML_NBSP);
+			emptyOptionInPopup.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
+			getListBox().addOption(emptyOptionInBody, emptyOptionInPopup);
+			getListBox().setSelectedIndex(0);
+		} else {
+			getListBox().setSelectedIndex(-1);
+		}
+	}
+
+	List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket) {
+		NodeList optionNodes = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_INLINE_CHOICE);
+		List<String> options = new ArrayList<String>();
+
+		for (int o = 0; o < optionNodes.getLength(); o++) {
+			String currId = ((Element) optionNodes.item(o)).getAttribute(EmpiriaTagConstants.ATTR_IDENTIFIER);
+			options.add(currId);
+			Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
+			Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
+			getListBox().addOption(baseBody, popupBody);
+		}
+
+		return options;
+	}
+
+	protected void initStyles() {
+		if (mathGapModel.getMathStyles().containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
+			presenter.setWidth(NumberUtils.tryParseInt(mathGapModel.getMathStyles().get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)), Unit.PX);
+		}
+
+		if (mathGapModel.getMathStyles().containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
+			presenter.setHeight(NumberUtils.tryParseInt(mathGapModel.getMathStyles().get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)), Unit.PX);
+		}
+
+		if (mathGapModel.getMathStyles().containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
+			hasEmptyOption = mathGapModel.getMathStyles().get(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(
+					EmpiriaStyleNameConstants.VALUE_SHOW);
+		}
+	}
+
 
 	public void setValue(String valueIdentifier) {
 		getListBox().setSelectedIndex(indexInternalToView(valueIdentifier));
@@ -179,63 +236,7 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 			fireStateChanged(userInteract, isReset);
 		}
 	}
-	
-	protected void setListBoxEmptyOption() {
-		if (hasEmptyOption) {
-			Widget emptyOptionInBody = new InlineHTML(GapBase.INLINE_HTML_NBSP);
-			emptyOptionInBody.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
-			Widget emptyOptionInPopup = new InlineHTML(GapBase.INLINE_HTML_NBSP);
-			emptyOptionInPopup.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
-			getListBox().addOption(emptyOptionInBody, emptyOptionInPopup);
-			getListBox().setSelectedIndex(0);
-		} else {
-			getListBox().setSelectedIndex(-1);
-		}
-	}
 
-	protected List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket) {
-		NodeList optionNodes = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_INLINE_CHOICE);
-		List<String> options = new ArrayList<String>();
-
-		for (int o = 0; o < optionNodes.getLength(); o++) {
-			String currId = ((Element) optionNodes.item(o)).getAttribute(EmpiriaTagConstants.ATTR_IDENTIFIER);
-			options.add(currId);
-			Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
-			Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
-			getListBox().addOption(baseBody, popupBody);
-		}
-
-		return options;
-	}
-
-	protected void initStyles() {
-		if (mathGapModel.getMathStyles().containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
-			presenter.setWidth(NumberUtils.tryParseInt(mathGapModel.getMathStyles().get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)), Unit.PX);
-		}
-
-		if (mathGapModel.getMathStyles().containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
-			presenter.setHeight(NumberUtils.tryParseInt(mathGapModel.getMathStyles().get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)), Unit.PX);
-		}
-
-		if (mathGapModel.getMathStyles().containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
-			hasEmptyOption = mathGapModel.getMathStyles().get(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(
-					EmpiriaStyleNameConstants.VALUE_SHOW);
-		}
-	}
-
-	@Override
-	protected ResponseSocket getResponseSocket() {
-		return responseSocket;
-	}
-
-	protected IsExListBox getListBox() {
-		return getInlineChoicePresenter().getListBox();
-	}
-
-	private InlineChoiceMathGapModulePresenter getInlineChoicePresenter() {
-		return (InlineChoiceMathGapModulePresenter)presenter;
-	}
-	
 	private void updateResponse(boolean userInteract) {
 		updateResponse(userInteract, false);
 	}

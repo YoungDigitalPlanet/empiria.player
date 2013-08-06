@@ -178,7 +178,6 @@ public class TextEntryGapBase extends GapBase implements SourcelistClient {
 			gapExpressionReplacer.useCharacters(charactersSet);
 			getTextEntryPresenter().makeExpressionReplacements(gapExpressionReplacer.getReplacer());
 		}
-		
 	}
 	
 	protected void addPlayerEventHandlers(){
