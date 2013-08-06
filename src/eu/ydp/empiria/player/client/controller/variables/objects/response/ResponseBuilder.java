@@ -18,7 +18,7 @@ public class ResponseBuilder {
 	private List<String> values = new ArrayList<String>();
 	private List<String> groups = new ArrayList<String>();
 	private String identifier = "defaultIdentifier";
-	private Cardinality cardinality;// = Cardinality.SINGLE;
+	private Cardinality cardinality;
 	private CountMode countMode = CountMode.SINGLE;
 	private ExpressionBean expression = null;
 	private CheckMode checkMode = CheckMode.DEFAULT;
