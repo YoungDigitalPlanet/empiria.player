@@ -18,6 +18,7 @@ import org.mockito.stubbing.Answer;
 
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
@@ -59,6 +60,9 @@ public class TutorModuleTest {
 	private PlayerEventHandler testPageLoadedHandler;
 	private final Type<PlayerEventHandler, PlayerEventTypes> TEST_PAGE_LOADED_TYPE = PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED);
 
+	private TutorEventHandler tutorEventHandler;
+	private final Type<TutorEventHandler, TutorEventTypes> TUTOR_CHANGED = TutorEvent.getType(TutorEventTypes.TUTOR_CHANGED);
+	
 	private final CurrentPageScope singlePageScope = mock(CurrentPageScope.class);
 
 	@Test
@@ -76,12 +80,35 @@ public class TutorModuleTest {
 		initEventHandlersInterception();
 		mockScopeFactoryToReturnSinglePageScope();
 		tutorModule.initModule(mock(Element.class));
+		StateChangeEvent event = mock(StateChangeEvent.class);
+		StateChangedInteractionEvent scie = mock(StateChangedInteractionEvent.class);
+		when(event.getValue()).thenReturn(scie);
+		when(scie.isReset()).thenReturn(false);
+		when(scie.isUserInteract()).thenReturn(true);
 
 		// when
-		stateChangeHandler.onStateChange(mock(StateChangeEvent.class));
+		stateChangeHandler.onStateChange(event);
 
 		// then
 		verify(eventGenerator).stateChanged();
+	}
+	
+	@Test
+	public void shouldExecuteDefaultActionOnReset() {
+		// given
+		initEventHandlersInterception();
+		mockScopeFactoryToReturnSinglePageScope();
+		tutorModule.initModule(mock(Element.class));
+		StateChangeEvent event = mock(StateChangeEvent.class);
+		StateChangedInteractionEvent scie = mock(StateChangedInteractionEvent.class);
+		when(event.getValue()).thenReturn(scie);
+		when(scie.isReset()).thenReturn(true);
+
+		// when
+		stateChangeHandler.onStateChange(event);
+
+		// then
+		verify(eventGenerator).executeDefaultAction();
 	}
 
 	@Test
@@ -111,6 +138,21 @@ public class TutorModuleTest {
 		// then
 		verify(eventGenerator).start();
 	}
+	
+	@Test
+	public void testTutorChangedEvent() {
+		//given
+		initEventHandlersInterception();
+		mockScopeFactoryToReturnSinglePageScope();
+		tutorModule.initModule(mock(Element.class));
+		TutorEvent tutorEvent = mock(TutorEvent.class);
+		
+		//when
+		tutorEventHandler.onTutorChanged(tutorEvent);
+		
+		//then
+		verify(eventGenerator).tutorChanged(any(Integer.class));
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initEventHandlersInterception() {
@@ -127,6 +169,8 @@ public class TutorModuleTest {
 					pageUnloadedHandler = (PlayerEventHandler) handler;
 				} else if (handler instanceof PlayerEventHandler && type == TEST_PAGE_LOADED_TYPE) {
 					testPageLoadedHandler = (PlayerEventHandler) handler;
+				} else if(handler instanceof TutorEventHandler && type == TUTOR_CHANGED) {
+					tutorEventHandler = (TutorEventHandler) handler;
 				}
 				
 				return null;

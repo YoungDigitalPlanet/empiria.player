@@ -33,6 +33,9 @@ public class SourceListBean extends ModuleBean implements HasShuffle {
 	@XmlElement(name = "simpleSourceListItem")
 	private List<SimpleSourceListItemBean> simpleSourceListItemBeans = Lists.newArrayList();
 
+	@XmlAttribute
+	private String sourcelistId;
+
 	public boolean isMoveElements() {
 		return moveElements;
 	}
@@ -72,6 +75,14 @@ public class SourceListBean extends ModuleBean implements HasShuffle {
 
 	public void setImagesWidth(int imagesWidth) {
 		this.imagesWidth = imagesWidth;
+	}
+
+	public String getSourcelistId() {
+		return sourcelistId;
+	}
+
+	public void setSourcelistId(String sourcelistId) {
+		this.sourcelistId = sourcelistId;
 	}
 
 }

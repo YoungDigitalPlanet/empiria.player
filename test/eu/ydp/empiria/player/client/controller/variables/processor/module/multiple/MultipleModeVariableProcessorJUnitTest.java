@@ -103,13 +103,15 @@ public class MultipleModeVariableProcessorJUnitTest {
 	}
 	
 	@Test
-	public void shouldSetLastmistakenWhenNotCorrectAnswersWasAdded() throws Exception {
-		Response response = new ResponseBuilder().build();
+	public void shouldSetLastmistakenWhenIncorrectAnswerWasAdded() throws Exception {
 		LastAnswersChanges answersChanges = createSampleAnswerChanges();
 		CorrectAnswers correctAnswers = createCorrectAnswers("correct");
 		
-		when(lastGivenAnswersChecker.isAnyAnswerCorrect(answersChanges.getAddedAnswers(), correctAnswers))
-			.thenReturn(false);
+		Response response = new ResponseBuilder().withCorrectAnswers(correctAnswers)
+				.build();
+		
+		when(lastGivenAnswersChecker.isAnyAsnwerIncorrect(answersChanges.getAddedAnswers(), correctAnswers))
+			.thenReturn(true);
 		
 		boolean lastmistaken = multipleModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
@@ -117,15 +119,15 @@ public class MultipleModeVariableProcessorJUnitTest {
 	}
 	
 	@Test
-	public void shouldNotSetLastmistakenWhenAtLeastOneCorrectAnswerWasAdded() throws Exception {
+	public void shouldNotSetLastmistakenWhenNoIncorrectAnswerWasAdded() throws Exception {
 		LastAnswersChanges answersChanges = createSampleAnswerChanges();
 		CorrectAnswers correctAnswers = createCorrectAnswers("correct");
 		
 		Response response = new ResponseBuilder().withCorrectAnswers(correctAnswers)
 				.build();
 		
-		when(lastGivenAnswersChecker.isAnyAnswerCorrect(answersChanges.getAddedAnswers(), correctAnswers))
-		.thenReturn(true);
+		when(lastGivenAnswersChecker.isAnyAsnwerIncorrect(answersChanges.getAddedAnswers(), correctAnswers))
+		.thenReturn(false);
 		
 		boolean lastmistaken = multipleModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		

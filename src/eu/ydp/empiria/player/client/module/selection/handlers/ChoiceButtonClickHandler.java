@@ -27,6 +27,6 @@ public class ChoiceButtonClickHandler implements ClickHandler{
 	@Override
 	public void onClick(ClickEvent event) {
 		groupAnswerController.selectToggleAnswer(buttonId);
-		selectionModulePresenter.updateView();
+		selectionModulePresenter.updateGroupAnswerView(groupAnswerController);
 	}
 }

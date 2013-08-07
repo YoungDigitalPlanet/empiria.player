@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.resources;
 
+import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
@@ -10,11 +11,21 @@ public class EmpiriaPaths {
 
 	@Inject
 	DataSourceManager dataSourceManager;
+	private static final String SEPARATOR = "/";
 
-	public String getCommonsPath() {
+	public String getBasePath() {
 		AssessmentData assessmentData = dataSourceManager.getAssessmentData();
 		XmlData data = assessmentData.getData();
-		String baseURL = data.getBaseURL();
-		return baseURL + "/common";
+		return data.getBaseURL();
+	}
+
+	public String getCommonsPath() {
+		String baseURL = getBasePath();
+		return Joiner.on(SEPARATOR).join(baseURL, "common");
+	}
+
+	public String getCommonsFilePath(String filename) {
+		String commonsPath = getCommonsPath();
+		return Joiner.on(SEPARATOR).join(commonsPath, filename);
 	}
 }

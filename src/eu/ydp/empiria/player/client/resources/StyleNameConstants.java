@@ -80,15 +80,45 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-choice-option-cover")
 	public String QP_CHOICE_OPTION_COVER();
 
+	@DefaultStringValue("qp-choice-button-multi-markanswers")
+	public String QP_CHOICE_BUTTON_MULTI_MARK();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers")
+	public String QP_CHOICE_BUTTON_SINGLE_MARK();
+
+	@DefaultStringValue("qp-choice-button-multi-markanswers-correct")
+	public String QP_CHOICE_BUTTON_MULTI_MARK_CORRECT();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers-correct")
+	public String QP_CHOICE_BUTTON_SINGLE_MARK_CORRECT();
+
+	@DefaultStringValue("qp-choice-button-multi-markanswers-wrong")
+	public String QP_CHOICE_BUTTON_MULTI_MARK_WRONG();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers-wrong")
+	public String QP_CHOICE_BUTTON_SINGLE_MARK_WRONG();
+
+	@DefaultStringValue("qp-choice-button-multi-markanswers")
+	public String QP_CHOICE_BUTTON_MULTI_INACTIVE();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers")
+	public String QP_CHOICE_BUTTON_SINGLE_INACTIVE();
+
+	@DefaultStringValue("qp-choice-button-multi-markanswers-none")
+	public String QP_CHOICE_BUTTON_MULTI_MARK_NONE();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers-none")
+	public String QP_CHOICE_BUTTON_SINGLE_MARK_NONE();
+
 	@DefaultStringValue("qp-colorfill")
 	public String QP_COLORFILL();
-	
+
 	@DefaultStringValue("qp-colorfill-container")
 	public String QP_COLORFILL_CONTAINER();
 
 	@DefaultStringValue("qp-colorfill-img")
 	public String QP_COLORFILL_IMG();
-	
+
 	@DefaultStringValue("qp-colorfill-correct-img")
 	public String QP_COLORFILL_CORRECT_IMG();
 
@@ -106,16 +136,16 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-colorfill-palette-button-container-selected")
 	public String QP_COLORFILL_PALETTE_BUTTON_CONTAINER_SELECTED();
-	
+
 	@DefaultStringValue("qp-colorfill-answers-marking-correct-panel")
 	public String QP_COLORFILL_ANSWERS_MARKING_CORRECT_PANEL();
-	
+
 	@DefaultStringValue("qp-colorfill-answers-marking-wrong-panel")
 	public String QP_COLORFILL_ANSWERS_MARKING_WRONG_PANEL();
-	
+
 	@DefaultStringValue("qp-colorfill-answers-marking-correct")
 	public String QP_COLORFILL_ANSWERS_MARKING_CORRECT();
-	
+
 	@DefaultStringValue("qp-colorfill-answers-marking-wrong")
 	public String QP_COLORFILL_ANSWERS_MARKING_WRONG();
 
@@ -181,7 +211,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-drag-gap-locked")
 	public String QP_DRAG_GAP_LOCKED();
-	
+
 	@DefaultStringValue("qp-dragged-drag")
 	public String QP_DRAGGED_DRAG();
 
@@ -214,28 +244,28 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-identification-option-cover")
 	public String QP_IDENTIFICATION_OPTION_COVER();
-	
+
 	@DefaultStringValue("qp-identification-option-container")
 	public String QP_IDENTIFICATION_OPTION_CONTAINER();
-	
+
 	@DefaultStringValue("qp-identification-option-selected")
 	public String QP_IDENTIFICATION_OPTION_SELECTED();
-	
+
 	@DefaultStringValue("qp-identification-option-locked")
 	public String QP_IDENTIFICATION_OPTION_LOCKED();
-	
+
 	@DefaultStringValue("qp-identification-option-selected-correct")
 	public String QP_IDENTIFICATION_OPTION_SELECTED_CORRECT();
-	
+
 	@DefaultStringValue("qp-identification-option-selected-wrong")
 	public String QP_IDENTIFICATION_OPTION_SELECTED_WRONG();
-	
+
 	@DefaultStringValue("qp-identification-option-notselected-correct")
 	public String QP_IDENTIFICATION_OPTION_NOTSELECTED_CORRECT();
-	
+
 	@DefaultStringValue("qp-identification-option-notselected-wrong")
 	public String QP_IDENTIFICATION_OPTION_NOTSELECTED_WRONG();
-	
+
 	@DefaultStringValue("qp-img")
 	public String QP_IMG();
 
@@ -726,8 +756,9 @@ public interface StyleNameConstants extends Constants {
 	public String QP_TEXT_TEXTENTRY();
 
 	/**
-	 * Poniewa¿ podstawowa clasa gapy 'qp-text-textentry' zmienia sie na *-corect, *-wrong
-	 * Dodalem ten style aby w pewny sposob wyszukiwac gapy w testach E2E.
+	 * Poniewa¿ podstawowa clasa gapy 'qp-text-textentry' zmienia sie na
+	 * *-corect, *-wrong Dodalem ten style aby w pewny sposob wyszukiwac gapy w
+	 * testach E2E.
 	 */
 	@DefaultStringValue("qp-textentry")
 	public String QP_TEXTENTRY();
@@ -767,9 +798,24 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-toc-title")
 	public String QP_TOC_TITLE();
-	
+
 	@DefaultStringValue("qp-tutor-container")
 	public String QP_TUTOR_CONTAINER();
+
+	@DefaultStringValue("qp-tutor-popup-selected-persona")
+	public String QP_TUTOR_POPUP_SELECTED_PERSONA();
+
+	@DefaultStringValue("qp-tutor-popup")
+	public String QP_TUTOR_POPUP();
+	
+	@DefaultStringValue("qp-tutor-popup-close-button")
+	public String QP_TUTOR_POPUP_CLOSE_BUTTON();
+
+	@DefaultStringValue("qp-tutor-popup-items")
+	public String QP_TUTOR_POPUP_ITEMS();
+	
+	@DefaultStringValue("qp-tutor-popup-item")
+	public String QP_TUTOR_POPUP_ITEM();
 
 	@DefaultStringValue("selection")
 	public String SELECTION();

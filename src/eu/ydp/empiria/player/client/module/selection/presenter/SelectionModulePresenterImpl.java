@@ -1,25 +1,21 @@
 package eu.ydp.empiria.player.client.module.selection.presenter;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
-import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnswersByTypeFinder;
-import eu.ydp.empiria.player.client.module.selection.controller.SelectionModuleViewBuildingController;
-import eu.ydp.empiria.player.client.module.selection.controller.SelectionModuleViewUpdatingController;
-import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
-import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
+import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
+import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewUpdater;
+import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteractionBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionItemBean;
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleChoiceBean;
@@ -30,56 +26,59 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 	private SelectionModuleModel model;
 	private SelectionInteractionBean bean;
 	private ModuleSocket moduleSocket;
-	private List<GroupAnswersController> groupChoicesControllers;
+	private GroupAnswersControllerModel groupChoicesControllersModel;
 
 	private SelectionModuleView selectionModuleView;
-	private SelectionModuleFactory selectionModuleFactory;
-	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
-	private SelectionModuleViewUpdatingController selectionModuleViewUpdatingController;
-	private SelectionModuleViewBuildingController viewBuildingController;
-	
+	private SelectionViewUpdater viewUpdater;
+	private SelectionViewBuilder viewBuilder;
+	private SelectionAnswersMarker answersMarker;
 	
 	@Inject
 	public SelectionModulePresenterImpl(
-			SelectionModuleView selectionModuleView, 
-			SelectionModuleFactory selectionModuleFactory, 
-			IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder,
-			SelectionModuleViewUpdatingController selectionModuleViewUpdatingController) {
+			SelectionViewUpdater selectionViewUpdater,
+			SelectionAnswersMarker answersMarker,
+			@ModuleScoped SelectionModuleView selectionModuleView,
+			@ModuleScoped SelectionModuleModel selectionModuleModel,
+			@ModuleScoped SelectionViewBuilder selectionViewBuilder,
+			@ModuleScoped GroupAnswersControllerModel groupChoicesControllers) {
+		this.answersMarker = answersMarker;
 		this.selectionModuleView = selectionModuleView;
-		this.selectionModuleFactory = selectionModuleFactory;
-		this.identifiableAnswersByTypeFinder = identifiableAnswersByTypeFinder;
-		this.selectionModuleViewUpdatingController = selectionModuleViewUpdatingController;
+		this.viewUpdater = selectionViewUpdater;
+		this.model = selectionModuleModel;
+		this.viewBuilder = selectionViewBuilder;
+		groupChoicesControllersModel = groupChoicesControllers;
 	}
 
 	@Override
 	public void bindView() {
-		List<SelectionItemBean> items = bean.getItems();
-		List<SelectionSimpleChoiceBean> simpleChoices = bean.getSimpleChoices();
 		InlineBodyGeneratorSocket inlineBodyGeneratorSocket = moduleSocket.getInlineBodyGeneratorSocket();
 		
-		selectionModuleView.initialize(items.size(), simpleChoices.size(), inlineBodyGeneratorSocket);
-		viewBuildingController = selectionModuleFactory.createViewBuildingController(selectionModuleView, this, model, bean);
+		selectionModuleView.initialize(inlineBodyGeneratorSocket);
+
+		viewBuilder.bindView(this, bean);
 		
-		fillSelectionGrid(items, simpleChoices);
+		fillSelectionGrid();
 	}
 
-	private void fillSelectionGrid(List<SelectionItemBean> items, List<SelectionSimpleChoiceBean> simpleChoices) {
-		viewBuildingController.fillFirstRowWithChoices(simpleChoices);
-		viewBuildingController.fillFirstColumnWithItems(items);
+	private void fillSelectionGrid() {
+		List<SelectionItemBean> items = bean.getItems();
+		List<SelectionSimpleChoiceBean> simpleChoices = bean.getSimpleChoices();
 		
-		this.groupChoicesControllers = viewBuildingController.fillGridWithButtons(items, simpleChoices);
+		viewBuilder.setGridSize(items.size(), simpleChoices.size());
+		
+		groupChoicesControllersModel.setGroupChoicesControllers(viewBuilder.fillGrid(items, simpleChoices));
 	}
 
 	@Override
 	public void reset() {
-		for (GroupAnswersController groupChoicesController : groupChoicesControllers) {
+		for (GroupAnswersController groupChoicesController : groupChoicesControllersModel.getGroupChoicesControllers()) {
 			groupChoicesController.reset();
 		}
 	}
 
 	@Override
 	public void setModel(SelectionModuleModel model) {
-		this.model = model;
+		// SelectionModuleModel is now being injected in moduleScope 
 	}
 
 	@Override
@@ -94,52 +93,27 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 
 	@Override
 	public void setLocked(boolean locked) {
-		for (GroupAnswersController groupChoicesController : groupChoicesControllers) {
+		for (GroupAnswersController groupChoicesController : groupChoicesControllersModel.getGroupChoicesControllers()) {
 			groupChoicesController.setLockedAllAnswers(locked);
+
+			updateGroupAnswerView(groupChoicesController);
 		}
-		updateView();
 	}
 
 	@Override
-	public void updateView() {
-		selectionModuleViewUpdatingController.updateView(selectionModuleView, groupChoicesControllers);
-	}
-
-	@Override
-	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		for(GroupAnswersController groupChoicesController : groupChoicesControllers){
-			markAnswersOnButtonsFromController(type, mode, groupChoicesController);
-		}
-		updateView();
-	}
-
-	private void markAnswersOnButtonsFromController(MarkAnswersType type, MarkAnswersMode mode, GroupAnswersController groupChoicesController) {
-		List<SelectionAnswerDto> selectedButtons = groupChoicesController.getSelectedAnswers();
-		List<SelectionAnswerDto> buttonsToMark = identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(type, selectedButtons, model);
-		List<SelectionAnswerDto> notSelectedButtons = groupChoicesController.getNotSelectedAnswers();
-		
-		if(MarkAnswersMode.MARK.equals(mode)){
-			if(MarkAnswersType.CORRECT.equals(type)){
-				applyAnswerTypeToCollection(UserAnswerType.CORRECT, buttonsToMark);
-			}else{
-				applyAnswerTypeToCollection(UserAnswerType.WRONG, buttonsToMark);
-			}
-			
-			applyAnswerTypeToCollection(UserAnswerType.NONE, notSelectedButtons);
-			
-		}else if(MarkAnswersMode.UNMARK.equals(mode)){
-			List<SelectionAnswerDto> buttonsToMarkDefaultState = new ArrayList<SelectionAnswerDto>(buttonsToMark);
-			buttonsToMarkDefaultState.addAll(notSelectedButtons);
-			applyAnswerTypeToCollection(UserAnswerType.DEFAULT, buttonsToMarkDefaultState);
-		}
-	}
-
-	private void applyAnswerTypeToCollection(UserAnswerType userAnswerType, Collection<SelectionAnswerDto> answers){
-		for (SelectionAnswerDto selectionAnswerDto : answers) {
-			selectionAnswerDto.setSelectionAnswerType(userAnswerType);
-		}
+	public void updateGroupAnswerView(GroupAnswersController groupChoicesController) {
+		int itemNumber = groupChoicesControllersModel.indexOf(groupChoicesController);
+		viewUpdater.updateView(selectionModuleView, groupChoicesController, itemNumber);
 	}
 	
+	@Override
+	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+		answersMarker.markAnswers(type, mode);
+		for(GroupAnswersController groupChoicesController : groupChoicesControllersModel.getGroupChoicesControllers()){
+			updateGroupAnswerView(groupChoicesController);
+		}
+	}
+
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		List<String> answersToSelect;
@@ -148,15 +122,15 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 		else
 			answersToSelect = model.getCurrentAnswers();
 		
-		for (GroupAnswersController groupChoicesController : groupChoicesControllers) {
+		for (GroupAnswersController groupChoicesController : groupChoicesControllersModel.getGroupChoicesControllers()) {
 			groupChoicesController.selectOnlyAnswersMatchingIds(answersToSelect);
+			
+			updateGroupAnswerView(groupChoicesController);
 		}
-		updateView();
 	}
 
 	@Override
 	public Widget asWidget() {
 		return selectionModuleView.asWidget();
 	}
-
 }

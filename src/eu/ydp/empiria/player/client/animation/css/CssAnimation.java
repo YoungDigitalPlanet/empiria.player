@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.animation.AnimationEndHandler;
 import eu.ydp.empiria.player.client.animation.AnimationRuntimeConfig;
 import eu.ydp.empiria.player.client.animation.AnimationWithRuntimeConfig;
 import eu.ydp.empiria.player.client.animation.holder.AnimationHolder;
+import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class CssAnimation implements AnimationWithRuntimeConfig {
 	private @Inject @Nonnull CssAnimationClassBuilder animationClassBuilder;
@@ -28,6 +29,7 @@ public class CssAnimation implements AnimationWithRuntimeConfig {
 
 	private void play() {
 		currentAnimationClassName = animationClassBuilder.createAnimationCssClassName(getAnimationConfig(), animationRuntimeConfig.getImageSize());
+		Size frameSize = getAnimationConfig().getFrameSize();
 		endHandlerRegistration = getAnimationHolder().addAnimationEndHandler(new AnimationEndHandler() {
 
 			@Override
@@ -35,7 +37,7 @@ public class CssAnimation implements AnimationWithRuntimeConfig {
 				animationEnd();
 			}
 		});
-		getAnimationHolder().setAnimationStyleName(currentAnimationClassName);
+		getAnimationHolder().setAnimationStyleName(currentAnimationClassName, frameSize);
 	}
 
 	private AnimationConfig getAnimationConfig() {
@@ -59,13 +61,14 @@ public class CssAnimation implements AnimationWithRuntimeConfig {
 	}
 
 	private void animationEnd() {
+		if (endHandlerRegistration != null) {
+			endHandlerRegistration.removeHandler();
+		}
+		removeAnimationStyleName();
 		if (animationEndHandler != null) {
 			animationEndHandler.onEnd();
 		}
-		removeAnimationStyleName();
-		endHandlerRegistration.removeHandler();
 	}
-
 
 	@Override
 	public void setRuntimeConfiguration(AnimationRuntimeConfig animationRuntimeConfig) {

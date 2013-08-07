@@ -11,7 +11,9 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
+import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 
 public class GroupAnswersController {
@@ -27,7 +29,7 @@ public class GroupAnswersController {
 	public GroupAnswersController(
 			@Assisted boolean isMulti, 
 			@Assisted int maxSelected,			
-			@Assisted AbstractResponseModel<?> responseModel,
+			@ModuleScoped SelectionModuleModel responseModel,
 			NoAnswerPriorityComparator noPriorityComparator){
 		this.maxSelected = maxSelected;
 		this.responseModel = responseModel;

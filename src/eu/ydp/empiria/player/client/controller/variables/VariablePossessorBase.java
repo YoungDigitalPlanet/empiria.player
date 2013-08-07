@@ -5,21 +5,22 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 
-public abstract class VariablePossessorBase<V extends Variable> extends VariableProviderBase  {
+public abstract class VariablePossessorBase<V extends Variable> extends VariableProviderBase {
 
 	public Map<String, V> variables;
 
-	public VariablePossessorBase(){
+	public VariablePossessorBase() {
 		variables = new TreeMap<String, V>();
 	}
 
-	public V getVariable(String identifier){
+	public V getVariable(String identifier) {
 		return variables.get(identifier);
 	}
 
-	public void reset(){
-		for(Variable currVariable: variables.values()) {
+	public void reset() {
+		for (Variable currVariable : variables.values()) {
 			currVariable.reset();
 		}
 	}
@@ -34,7 +35,38 @@ public abstract class VariablePossessorBase<V extends Variable> extends Variable
 		return variables.get(identifier);
 	}
 
-	public Map<String, V> getVariablesMap(){
+	public boolean isLastAnswerSelectAction() {
+		Set<String> identifiers = getVariableIdentifiers();
+		for (String variableName : identifiers) {
+			if (checkVariable(variableName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean checkVariable(String variableName) {
+		String lastchange = VariableName.LASTCHANGE.toString();
+		if (variableName.endsWith(lastchange)) {
+			V variable = getVariablesMap().get(variableName);
+			if (hasSelectChange(variable)) {
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+	private boolean hasSelectChange(V variable) {
+		for (String answer : variable.values) {
+			if (!answer.equals("+") && answer.startsWith("+")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Map<String, V> getVariablesMap() {
 		return variables;
 	}
 

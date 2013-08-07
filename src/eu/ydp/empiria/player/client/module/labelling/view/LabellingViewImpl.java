@@ -45,7 +45,8 @@ public class LabellingViewImpl extends Composite implements LabellingView {
 	public void addChild(IsWidget widget, int left, int top) {
 		container.add(widget, left, top);
 	}
-	
+
+	@Override
 	public IsWidget getView(){
 		return this;
 	}
@@ -54,7 +55,12 @@ public class LabellingViewImpl extends Composite implements LabellingView {
 	public HasWidgets.ForIsWidget getContainer() {
 		return container;
 	}
-	
-	
+
+	@Override
+	public void setViewId(String id) {
+		this.getElement().setId(id);
+	}
+
+
 
 }

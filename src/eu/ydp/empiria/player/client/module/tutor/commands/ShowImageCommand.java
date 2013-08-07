@@ -5,22 +5,25 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.tutor.TutorCommand;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
+import eu.ydp.empiria.player.client.util.geom.Size;
 
 public class ShowImageCommand implements TutorCommand {
 
 	private final TutorView view;
 	private final String assetPath;
+	private final Size size;
 	private boolean finished = false;
 
 	@Inject
-	public ShowImageCommand(@Assisted TutorView view, @Assisted String assetPath) {
+	public ShowImageCommand(@Assisted TutorView view, @Assisted String assetPath, @Assisted Size size) {
 		this.view = view;
 		this.assetPath = assetPath;
+		this.size = size;
 	}
 
 	@Override
 	public void execute() {
-		view.setBackgroundImage(assetPath);
+		view.setBackgroundImage(assetPath, size);
 		finished = true;
 	}
 

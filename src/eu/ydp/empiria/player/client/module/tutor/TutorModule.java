@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
@@ -26,32 +27,43 @@ public class TutorModule extends SimpleModuleBase {
 	@Inject private PageScopeFactory eventScopeFactory;
 	@Inject @ModuleScoped private TutorPresenter presenter;
 	@Inject @ModuleScoped private TutorView view;
-	@Inject @ModuleScoped private ActionEventGenerator eventGenerator;
-	@Inject @ModuleScoped private TutorConfig config;
-	
+	@Inject	@ModuleScoped private ActionEventGenerator eventGenerator;
+	@Inject	@ModuleScoped private TutorConfig config;
+
 	private final PlayerEventHandler testPageLoadedHandler = new PlayerEventHandler() {
-		
+
 		@Override
 		public void onPlayerEvent(PlayerEvent event) {
 			eventGenerator.start();
 		}
-
 	};
 	private final PlayerEventHandler pageUnloadedhandler = new PlayerEventHandler() {
-		
+
 		@Override
 		public void onPlayerEvent(PlayerEvent event) {
 			eventGenerator.stop();
 		}
 	};
 	private final StateChangeEventHandler stateChangedHandler = new StateChangeEventHandler() {
-		
+
 		@Override
 		public void onStateChange(StateChangeEvent event) {
-			eventGenerator.stateChanged();
+			StateChangedInteractionEvent scie = event.getValue();
+			if(scie.isReset()){
+				eventGenerator.executeDefaultAction();
+			} else if(scie.isUserInteract()){
+				eventGenerator.stateChanged();
+			}
 		}
 	};
-	
+	private final TutorEventHandler tutorEventHandler = new TutorEventHandler() {
+
+		@Override
+		public void onTutorChanged(TutorEvent event) {
+			eventGenerator.tutorChanged(event.getPersonaIndex());
+		}
+	};
+
 	@Override
 	protected void initModule(Element element) {
 		addHandlers();
@@ -65,13 +77,13 @@ public class TutorModule extends SimpleModuleBase {
 	private void addHandlers() {
 		final CurrentPageScope modulePageScope = eventScopeFactory.getCurrentPageScope();
 		eventsBus.addHandler(StateChangeEvent.getType(OUTCOME_STATE_CHANGED), stateChangedHandler, modulePageScope);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_UNLOADED), pageUnloadedhandler , modulePageScope);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_UNLOADED), pageUnloadedhandler, modulePageScope);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), testPageLoadedHandler, modulePageScope);
+		eventsBus.addHandler(TutorEvent.getType(TutorEventTypes.TUTOR_CHANGED), tutorEventHandler, modulePageScope);
 	}
-	
+
 	@Override
 	public Widget getView() {
 		return view.asWidget();
 	}
-
 }

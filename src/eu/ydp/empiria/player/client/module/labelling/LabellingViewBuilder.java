@@ -16,10 +16,11 @@ public class LabellingViewBuilder {
 
 	@Inject private Provider<LabellingView> viewProvider;
 	@Inject private Provider<LabellingChildView> childContainerProvider;
-	
+
 	public LabellingView buildView(LabellingInteractionBean structure, BodyGeneratorSocket bgs) {
 		LabellingView view = viewProvider.get();
 		view.setBackground(structure.getImg());
+		view.setViewId(structure.getId());
 		processChildren(structure, bgs, view);
 		return view;
 	}
@@ -41,7 +42,7 @@ public class LabellingViewBuilder {
 	private void createAndAddChild(LabellingView container, ChildBean child, BodyGeneratorSocket bgs) {
 		LabellingChildView childContainer = createChild(child, bgs);
 		container.addChild(childContainer.getView(), child.getX(), child.getY());
-		
+
 	}
 
 	private LabellingChildView createChild(ChildBean child, BodyGeneratorSocket bgs) {

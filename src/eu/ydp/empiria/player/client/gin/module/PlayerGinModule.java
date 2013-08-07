@@ -88,9 +88,13 @@ import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelpe
 import eu.ydp.empiria.player.client.preloader.view.InfinityProgressWidget;
 import eu.ydp.empiria.player.client.preloader.view.ProgressView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.ComputedStyle;
+import eu.ydp.empiria.player.client.style.ComputedStyleImpl;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelperImpl;
+import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHack;
+import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHackImpl;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
@@ -191,7 +195,9 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(String.class).annotatedWith(UniqueId.class).toProvider(UniqIdStringProvider.class);
 		bind(ExpressionCharacterMappingProvider.class).in(Singleton.class);
 		bind(TutorService.class).in(Singleton.class);
-		
+		bind(ForceRedrawHack.class).to(ForceRedrawHackImpl.class).in(Singleton.class);
+		bind(ComputedStyle.class).to(ComputedStyleImpl.class).in(Singleton.class);
+
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));

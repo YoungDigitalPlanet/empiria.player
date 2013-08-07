@@ -29,7 +29,6 @@ import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
-import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
@@ -53,7 +52,9 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 	private ModuleSocket moduleSocket;
 	private ReflectionsUtils reflectionsUtils;
 	private SourceListModuleStructure sourceListModuleStructure;
-	private final static String moduleID = "id1";
+	private final static String sourcelistId = "id1";
+	private SourceListBean bean;
+
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
@@ -61,7 +62,6 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 			binder.bind(ModuleSocket.class).toInstance(mock(ModuleSocket.class));
 			binder.bind(SourceListModuleStructure.class).toInstance(mock(SourceListModuleStructure.class));
 			binder.bind(SourcelistManager.class).annotatedWith(PageScoped.class).toInstance(mock(SourcelistManager.class));
-			binder.bind(String.class).annotatedWith(UniqueId.class).toInstance(moduleID);
 		}
 	}
 
@@ -78,14 +78,16 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 	@Before
 	public void before() {
 		GuiceModuleConfiguration moduleConfiguration = new GuiceModuleConfiguration();
-		moduleConfiguration.addAllClassToOmit( SourceListPresenter.class, SourceListView.class );
+		moduleConfiguration.addAllClassToOmit(SourceListPresenter.class, SourceListView.class);
 		setUpAndOverrideMainModule(moduleConfiguration, new CustomGuiceModule());
 		instance = injector.getInstance(SourceListModule.class);
 		presenter = injector.getInstance(SourceListPresenter.class);
 		moduleSocket = injector.getInstance(ModuleSocket.class);
 		sourceListModuleStructure = injector.getInstance(SourceListModuleStructure.class);
+		bean = mock(SourceListBean.class);
+		when(bean.getSourcelistId()).thenReturn(sourcelistId);
+		when(sourceListModuleStructure.getBean()).thenReturn(bean);
 		reflectionsUtils = new ReflectionsUtils();
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -153,7 +155,13 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 
 	@Test
 	public void testGetIdentifier() throws Exception {
-		assertThat(instance.getIdentifier()).isEqualTo(moduleID);
+		// given
+		Element documentElement = XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement();
+		instance.initModule(documentElement);
+		// when
+		String identifier = instance.getIdentifier();
+		// then
+		assertThat(identifier).isEqualTo(sourcelistId);
 	}
 
 	@Test
@@ -178,6 +186,5 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 		assertThat(dimension).isSameAs(itemSize);
 
 	}
-
 
 }
