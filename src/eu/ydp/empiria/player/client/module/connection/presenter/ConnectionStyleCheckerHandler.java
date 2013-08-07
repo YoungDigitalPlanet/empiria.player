@@ -10,6 +10,7 @@ public class ConnectionStyleCheckerHandler implements Handler {
 
 	private final IsWidget view;
 	private final ConnectionStyleChecker connectionStyleChecker;
+	private boolean wasChecked = false;
 
 	public ConnectionStyleCheckerHandler(IsWidget view, ConnectionStyleChecker connectionStyleChecker) {
 		this.view = view;
@@ -19,7 +20,10 @@ public class ConnectionStyleCheckerHandler implements Handler {
 
 	@Override
 	public void onAttachOrDetach(AttachEvent event) {
-		checkStylesAndShowError();
+		if(!wasChecked) {
+			checkStylesAndShowError();
+			wasChecked = true;
+		}
 	}
 
 	private void checkStylesAndShowError() {

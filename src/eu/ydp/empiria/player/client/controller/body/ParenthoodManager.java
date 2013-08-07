@@ -2,7 +2,10 @@ package eu.ydp.empiria.player.client.controller.body;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+
+import com.google.common.collect.Maps;
 
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -14,12 +17,13 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 	protected StackMap<HasChildren, List<IModule>> parenthood;
 	protected Stack<HasChildren> parentsStack;
 	protected ParenthoodSocket upperLevelParenthoodSocket;
-	
+	protected Map<IModule, HasChildren> childToParent = Maps.newHashMap();
+
 	public ParenthoodManager(){
 		parenthood = new StackMap<HasChildren, List<IModule>>();
 		parentsStack = new Stack<HasChildren>();
 	}
-	
+
 	@Override
 	public void addChild(IModule child){
 		addChildToMap(child);
@@ -42,25 +46,51 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 	public void popParent() {
 		parentsStack.pop();
 	}
-	
-	public HasChildren getParent(IModule child){
-		for (HasChildren parent : parenthood.keySet()){
-			if (parenthood.get(parent).contains(child)){
-				return parent;
-			}
+
+	public HasChildren getParent(IModule child) {
+		HasChildren hasChildren;
+		if ((hasChildren = childToParent.get(child)) != null) {
+			return hasChildren;
 		}
+
+		hasChildren = findParentInParentHood(child);
+		if (hasChildren == null) {
+			hasChildren = findParentInUpperLevelParentHoodSocket(child);
+		}
+
+		addChildToParentRelation(child, hasChildren);
+		return hasChildren;
+	}
+
+	private void addChildToParentRelation(IModule child, HasChildren hasChildren) {
+		if(hasChildren!=null){
+			childToParent.put(child, hasChildren);
+		}
+	}
+
+	private HasChildren findParentInUpperLevelParentHoodSocket(IModule child) {
 		if (upperLevelParenthoodSocket != null){
-			return upperLevelParenthoodSocket.getParent(child);
+			return  upperLevelParenthoodSocket.getParent(child);
+		}
+		return null;
+	}
+
+	private HasChildren findParentInParentHood(IModule child) {
+		for ( HasChildren parent : parenthood.keySet()){
+			if (parenthood.get(parent).contains(child)){
+				return  parent;
+			}
 		}
 		return null;
 	}
 
 	public List<IModule> getChildren(IModule parent) {
 		if (parent instanceof HasChildren){
-			if (parenthood.containsKey((HasChildren)parent))
-				return parenthood.get((HasChildren)parent);
-			else if (upperLevelParenthoodSocket != null)
-				return upperLevelParenthoodSocket.getChildren((HasChildren)parent);
+			if (parenthood.containsKey(parent)) {
+				return parenthood.get(parent);
+			} else if (upperLevelParenthoodSocket != null) {
+				return upperLevelParenthoodSocket.getChildren(parent);
+			}
 		}
 		return new ArrayList<IModule>();
 	}
