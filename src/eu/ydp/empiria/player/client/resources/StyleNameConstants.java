@@ -148,6 +148,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-colorfill-palette-button")
 	public String QP_COLORFILL_PALETTE_BUTTON();
+	
+	@DefaultStringValue("qp-colorfill-palette-button-description")
+	public String QP_COLORFILL_PALETTE_BUTTON_DESCRIPTION();
 
 	@DefaultStringValue("qp-colorfill-palette-button-container")
 	public String QP_COLORFILL_PALETTE_BUTTON_CONTAINER();

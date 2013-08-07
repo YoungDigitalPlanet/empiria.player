@@ -22,12 +22,9 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 	public void testXMLParseButtons() {
 		// given
 		String buttonsXMLNode = "<buttons>" +
-				"<button rgb=\""+COLOR_008000+"\"/>" +
-				"<button rgb=\"#FFFF00\"/>" +
-				"<button rgb=\"#0000FF\"/>" +
-				"<button rgb=\"#800000\"/>" +
-				"<button rgb=\""+COLOR_FF0000+"\"/>" +
-				"<eraserButton/>" +
+				"<button rgb=\""+COLOR_008000+"\"><![CDATA[Zielony]]></button>" +
+				"<button rgb=\""+COLOR_FF0000+"\"><![CDATA[Czerwony]]></button>" +
+				"<eraserButton><![CDATA[Gumka]]></eraserButton>" +
 			"</buttons>";		
 		String xml = prepareXML(buttonsXMLNode);
 		
@@ -35,13 +32,18 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		ButtonsContainer buttonsContainer = getButtonsContainer(xml);
 		List<ColorButton> buttons = buttonsContainer.getButtons();
 		ColorButton button0 = buttons.get(0);
-		ColorButton button4 = buttons.get(4);
+		ColorButton button1 = buttons.get(1);
 		EraserButton eraser = buttonsContainer.getEraserButton();
 				
 		// then
 		assertEquals(COLOR_008000, button0.getRgb());
-		assertEquals(COLOR_FF0000, button4.getRgb());
+		assertEquals("Zielony", button0.getDescription());
+		
+		assertEquals(COLOR_FF0000, button1.getRgb());
+		assertEquals("Czerwony", button1.getDescription());
+		
 		assertNotNull(eraser);
+		assertEquals("Gumka", eraser.getDescription());
 	}
 	
 	public void testXMLParseButtonEraser() {
