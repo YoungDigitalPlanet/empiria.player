@@ -80,6 +80,27 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		assertEquals(VAL_777, area1.getX().toString());
 		assertEquals(VAL_999, area1.getY().toString());
 	}	
+	
+	public void testXMLParseFakeAreas() {
+		// given		
+		String xml = prepareXML("<fakeAreas>"
+				+ "<area x=\"1\" y=\"2\" />"
+				+ "<area x=\"3\" y=\"4\" />"
+				+ "</fakeAreas>");
+		
+		// when
+		ColorfillInteractionBean bean = parse(xml);
+		List<Area> fakeAreas = bean.getFakeAreas().getAreas();
+		assertEquals(2, fakeAreas.size());
+		
+		Area area = fakeAreas.get(0);
+		assertEquals(1, (int)area.getX());
+		assertEquals(2, (int)area.getY());
+		
+		Area area2 = fakeAreas.get(1);
+		assertEquals(3, (int)area2.getX());
+		assertEquals(4, (int)area2.getY());
+	}	
 
 	public void testXMLParseImage() {
 		// given		
@@ -109,10 +130,10 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		return expressionsBean;
 	}	
 	
-	private String prepareXML(String buttons) {
+	private String prepareXML(String content) {
 		return 
 				"<colorfillInteraction id=\"dummy1\">" +
-					buttons + 
+					content + 
 					"<areas>" +
 						"<area x=\""+VAL_333+"\" y=\""+VAL_666+"\"/>" +
 						"<area x=\""+VAL_777+"\" y=\""+VAL_999+"\"/>" +
