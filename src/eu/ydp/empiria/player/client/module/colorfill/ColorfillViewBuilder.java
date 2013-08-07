@@ -53,12 +53,12 @@ public class ColorfillViewBuilder {
 	private void createColorButtons(List<ColorButton> buttons) {
 		for (ColorButton colorButton : buttons) {
 			ColorModel colorModel = ColorModel.createFromRgbString(colorButton.getRgb());
-			interactionView.createButton(colorModel);
+			interactionView.createButton(colorModel, colorButton.getDescription());
 		}
 	}
 	
 	private void createEraserButton(EraserButton eraserButton) {
-		interactionView.createButton(ERASING_COLOR);
+		interactionView.createButton(ERASING_COLOR, eraserButton.getDescription());
 	}
 
 	private void setListenersOnView(ColorfillInteractionPresenter interactionPresenter) {

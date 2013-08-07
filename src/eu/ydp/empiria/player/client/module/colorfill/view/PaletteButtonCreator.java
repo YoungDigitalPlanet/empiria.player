@@ -16,8 +16,8 @@ public class PaletteButtonCreator {
 	@Inject
 	private UserInteractionHandlerFactory userInteractionHandlerFactory;
 	
-	public PaletteButton createButton(ColorModel color, Command command){
-		PaletteButton button = produceButton(color);
+	public PaletteButton createButton(ColorModel color, Command command, String description){
+		PaletteButton button = produceButton(color, description);
 		applyEventHandler(command, button);
 		return button;
 	}
@@ -26,9 +26,10 @@ public class PaletteButtonCreator {
 		userInteractionHandlerFactory.applyUserClickHandler(command, widget);
 	}
 
-	private PaletteButton produceButton(ColorModel color) {
+	private PaletteButton produceButton(ColorModel color, String description) {
 		PaletteButton button = buttonProvider.get();
 		button.setColor(color);
+		button.setDescription(description);
 		return button;
 	}
 }
