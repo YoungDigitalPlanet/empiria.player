@@ -28,6 +28,9 @@ public class ResponseBean {
 	@XmlAttribute
 	private CheckMode checkMode;
 
+	@XmlAttribute
+	private CountMode countMode;
+	
 	@XmlElement(name = "correctResponse")
 	private CorrectResponseBean correctResponse;
 
@@ -69,6 +72,14 @@ public class ResponseBean {
 
 	public void setCorrectResponse(CorrectResponseBean correctResponse) {
 		this.correctResponse = correctResponse;
+	}
+
+	public CountMode getCountMode() {
+		return countMode;
+	}
+
+	public void setCountMode(CountMode countMode) {
+		this.countMode = countMode;
 	}
 
 }

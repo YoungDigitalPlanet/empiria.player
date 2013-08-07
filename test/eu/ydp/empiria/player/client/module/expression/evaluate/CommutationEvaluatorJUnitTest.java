@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.expression.evaluate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
@@ -12,12 +13,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
 import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
-import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
@@ -174,19 +174,30 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 		CorrectAnswers correctAnswers = new CorrectAnswers();
 		correctAnswers.add(new ResponseValue("answer_" + correct));
 		List<String> values = Lists.newArrayList("answer_" + user);
-		Response response = new Response(correctAnswers, values, Lists.<String> newArrayList(), String.valueOf(correct), Evaluate.DEFAULT,				Cardinality.SINGLE, CountMode.SINGLE, new ExpressionBean(), CheckMode.EXPRESSION);
-		return response;
+		
+		return getBuilder()
+			.withCorrectAnswers(correctAnswers)
+			.withValues(values)
+			.withIdentifier(String.valueOf(correct))
+		.build();
 	}
 
 	private Response response(String correct, String user, String id) {
 		CorrectAnswers correctAnswers = new CorrectAnswers();
 		correctAnswers.add(new ResponseValue(correct));
 		List<String> values = Lists.newArrayList(user);
-		Response response = new Response(correctAnswers, values, Lists.<String> newArrayList(), id, Evaluate.DEFAULT, Cardinality.SINGLE,
-				CountMode.SINGLE, new ExpressionBean(), CheckMode.EXPRESSION);
-		return response;
+
+		return getBuilder()
+					.withCorrectAnswers(correctAnswers)
+					.withValues(values)
+					.withIdentifier(id)
+				.build();
 	}
 
+	private ResponseBuilder getBuilder() {
+		return new ResponseBuilder().withEvaluate(Evaluate.DEFAULT).withExpression(new ExpressionBean()).withCheckMode(CheckMode.EXPRESSION);
+	}
+	
 	private Response correctResponse() {
 		Response response = response(COUNTER, COUNTER);
 		COUNTER++;
