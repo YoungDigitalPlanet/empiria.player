@@ -59,6 +59,9 @@ public class ColorfillInteractionBean extends ModuleBean {
 	}
 
 	public FakeAreas getFakeAreas() {
+		if(fakeAreas == null) {
+			fakeAreas = new FakeAreas();
+		}
 		return fakeAreas;
 	}
 

@@ -104,6 +104,18 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		assertEquals(4, (int)area2.getY());
 	}	
 
+	public void testShouldReturnEmptyFakeAreasWhenNoElement() {
+		// given		
+		String noFakeAreasElement = "";
+		String xml = prepareXML(noFakeAreasElement);
+		
+		// when
+		ColorfillInteractionBean bean = parse(xml);
+		assertNotNull(bean.getFakeAreas());
+		List<Area> fakeAreas = bean.getFakeAreas().getAreas();
+		assertEquals(0, fakeAreas.size());
+	}	
+
 	public void testXMLParseImage() {
 		// given		
 		String xml = prepareXML("<buttons></buttons>");
