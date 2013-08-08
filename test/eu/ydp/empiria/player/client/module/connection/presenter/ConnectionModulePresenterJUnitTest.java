@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
@@ -257,7 +258,13 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		String identifier = "CONNECTION_RESPONSE_1";
 		Evaluate evaluate = Evaluate.USER;
 		Cardinality cardinality = Cardinality.MULTIPLE;
-		Response response = new Response(correctAnswers, values, groups, identifier, evaluate, cardinality);
+		Response response = new ResponseBuilder()
+										.withCorrectAnswers(correctAnswers)
+										.withValues(values).withGroups(groups)
+										.withIdentifier(identifier)
+										.withEvaluate(evaluate)
+										.withCardinality(cardinality)
+										.build();
 		return response;
 	}
 

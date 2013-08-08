@@ -33,7 +33,7 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	@Override
 	public int calculateErrors(Response response) {
 		List<String> currentAnswers = response.values;
-		CountMode countMode = response.getCountMode();
+		CountMode countMode = response.getAppropriateCountMode();
 
 		int errors = countErrorsInResponse(response, currentAnswers);
 		int errorsAdjustValueToCountMode = errorsToCountModeAdjuster.adjustValueToCountMode(errors, countMode);
@@ -49,7 +49,7 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	@Override
 	public int calculateDone(Response response) {
 		List<String> currentAnswers = response.values;
-		CountMode countMode = response.getCountMode();
+		CountMode countMode = response.getAppropriateCountMode();
 
 		int amountOfCorrectAnswers = countAmountOfCorrectAnswers(response, currentAnswers);
 		int done = doneToCountModeAdjuster.adjustValueToCountMode(amountOfCorrectAnswers, response, countMode);
