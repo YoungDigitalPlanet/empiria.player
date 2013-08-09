@@ -113,7 +113,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 		} else if (!mark && markingAnswer) {
 			presenter.removeMarking();
 		}
-
 		markingAnswer = mark;
 	}
 
@@ -124,7 +123,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 		} else if (!show  &&  showingAnswer) {
 			setPreviousAnswer();
 		}
-
 		showingAnswer = show;
 	}
 
