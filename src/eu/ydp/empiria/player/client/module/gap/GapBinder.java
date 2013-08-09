@@ -10,6 +10,7 @@ import java.util.Map;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.module.binding.Bindable;
 import eu.ydp.empiria.player.client.module.binding.BindingContext;
 import eu.ydp.empiria.player.client.module.binding.BindingGroupIdentifier;
@@ -42,8 +43,9 @@ public class GapBinder implements Bindable {
 	public int getLongestAnswerLength() {
 		int longestLength = 0;
 
-		for (int i = 0; i < gapBase.getModuleResponse().correctAnswers.getAnswersCount(); i++) {
-			for (String a : gapBase.getModuleResponse().correctAnswers.getResponseValue(i).getAnswers()){
+		CorrectAnswers correctAnswers = gapBase.getModuleResponse().correctAnswers;
+		for (int i = 0; i < correctAnswers.getAnswersCount(); i++) {
+			for (String a : correctAnswers.getResponseValue(i).getAnswers()){
 				if (a.length() > longestLength) {
 					longestLength = a.length();
 				}
