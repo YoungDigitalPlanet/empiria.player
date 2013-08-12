@@ -6,6 +6,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
 @SuppressWarnings("PMD")
@@ -30,7 +31,7 @@ public class PanelCacheTest extends GWTTestCase {
 		assertEquals("0px", style.getTop());
 		assertEquals("200.0%", style.getLeft());
 		assertEquals("100.0%", style.getWidth());
-		cache.setSwipeDisabled(true);
+		cache.setSwipeType(SwipeType.DISABLED);
 		value = cache.getOrCreateAndPut(3);
 		assertNotSame(Position.ABSOLUTE.getCssName(), style.getPosition());
 		assertNotSame("0px", style.getTop());
