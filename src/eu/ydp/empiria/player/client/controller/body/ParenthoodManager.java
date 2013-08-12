@@ -48,11 +48,11 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 	}
 
 	public HasChildren getParent(IModule child) {
-		HasChildren hasChildren;
-		if ((hasChildren = childToParent.get(child)) != null) {
-			return hasChildren;
+		if (childToParent.containsKey(child)) {
+			return childToParent.get(child);
 		}
 
+		HasChildren hasChildren;
 		hasChildren = findParentInParentHood(child);
 		if (hasChildren == null) {
 			hasChildren = findParentInUpperLevelParentHoodSocket(child);

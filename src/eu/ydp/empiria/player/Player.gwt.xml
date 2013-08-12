@@ -195,20 +195,6 @@
 			<when-property-is name="user.agent" value="safari" />
 		</all>
 	</replace-with>
-<!-- 	<replace-with class="eu.ydp.empiria.player.client.controller.multiview.animation.AnimationBase"> -->
-<!-- 		<when-type-is class="eu.ydp.empiria.player.client.controller.multiview.animation.Animation" /> -->
-<!-- 	</replace-with> -->
-
-<!-- 	<replace-with class="eu.ydp.empiria.player.client.controller.multiview.animation.AnimationWebkit"> -->
-<!-- 		<when-type-is class="eu.ydp.empiria.player.client.controller.multiview.animation.Animation" /> -->
-<!-- 		<any> -->
-<!-- 		    <when-property-is name="mobile.user.agent" value="android321" /> -->
-<!-- 			<when-property-is name="mobile.user.agent" value="android4" /> -->
-<!-- 			<when-property-is name="mobile.user.agent" value="android3" /> -->
-<!-- 			<when-property-is name="mobile.user.agent" value="safari" /> -->
-<!-- 			<when-property-is name="user.agent" value="safari" /> -->
-<!-- 		</any> -->
-<!-- 	</replace-with> -->
 
 	<!-- END ANIMATIONS -->
 
