@@ -43,52 +43,47 @@ public class Response extends Variable {
 	/** List of correct responses */
 	public CorrectAnswers correctAnswers;
 	public List<String> groups;
+	public Evaluate evaluate;
 	/**
 	 * Determines whether the module corresponding to the response variable
 	 * exists in the document
 	 */
 	private boolean initialized = false;
-	public Evaluate evaluate;
+	
+	/*
+	 * Two CountModes are stored for backward compatibility with xml content. CompilerCountMode is defined in newer content and cannot be overridden by countMode defined in content CSS.
+	 * When compilerCountMode is not defined in xml then countMode from CSS should be used, if defined. Otherwise default value is CountMode.SINGLE.
+	 */
 	private CountMode countMode = CountMode.SINGLE;
+	private final CountMode compilerCountMode;
+	
 	private ExpressionBean expression;
 	private CheckMode checkMode = CheckMode.DEFAULT;
 
-	public Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate,
-			Cardinality cardinality) {
+	Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate,
+			Cardinality cardinality, CountMode countMode, ExpressionBean expression, CheckMode checkMode, CountMode compilerCountMode) {
 		this.correctAnswers = correctAnswers;
 		this.values = values;
 		this.groups = groups;
 		this.identifier = identifier;
 		this.evaluate = evaluate;
 		this.cardinality = cardinality;
-	}
-
-	public Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate,
-			Cardinality cardinality, CountMode countMode, ExpressionBean expression, CheckMode checkMode) {
-		this(correctAnswers, values, groups, identifier, evaluate, cardinality);
 		this.countMode = countMode;
 		this.expression = expression;
 		this.checkMode = checkMode;
+		this.compilerCountMode = compilerCountMode;
 	}
 
-	/**
-	 * @return id
-	 */
 	public String getID() {
 		return identifier;
 	}
 
-	/**
-	 * @see IResponse#isCorrect(String)
-	 */
 	public boolean isCorrectAnswer(String key) {
 		return correctAnswers.containsAnswer(key);
 	}
 
 	public String getCorrectAnswersValuesShort() {
-
 		String output = "";
-
 		for (int i = 0; i < correctAnswers.getAnswersCount(); i++) {
 			for (String answer : correctAnswers.getResponseValue(i).getAnswers()) {
 				output += answer + ";";
@@ -99,11 +94,6 @@ public class Response extends Variable {
 		return output;
 	}
 
-	/**
-	 * implementation of IResponse interface
-	 *
-	 * @param key
-	 */
 	public void add(String key) {
 		if (cardinality == Cardinality.SINGLE) {
 			values.clear();
@@ -113,20 +103,13 @@ public class Response extends Variable {
 		initialized = true;
 	}
 
-	/**
-	 * implementation of IResponse interface
-	 *
-	 * @param key
-	 */
 	public void remove(String key) {
-
 		for (int i = 0; i < values.size(); i++) {
 			if (values.get(i).equals(key)) {
 				values.remove(i);
 				return;
 			}
 		}
-
 	}
 
 	public void set(List<String> keys) {
@@ -138,7 +121,14 @@ public class Response extends Variable {
 		this.countMode = mode;
 	}
 
-	public CountMode getCountMode() {
+	public CountMode getAppropriateCountMode() {
+		CountMode countMode;
+		if(compilerCountMode != null) {
+			countMode = compilerCountMode;
+		} else {
+			countMode = this.countMode;
+		}
+		
 		return cardinality == Cardinality.SINGLE ? CountMode.SINGLE : countMode;
 	}
 
@@ -160,9 +150,6 @@ public class Response extends Variable {
 		return initialized;
 	}
 
-	/**
-	 * Reset results
-	 */
 	@Override
 	public void reset() {
 		values.clear();

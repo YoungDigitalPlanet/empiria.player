@@ -21,7 +21,7 @@ public class ErrorAnswersCounter {
 
 	public int countErrorAnswersAdjustedToMode(Response response){
 		int amountOfErrorAnswers = countErrorsForNotOrderedAnswersInResponse(response);
-		CountMode countMode = response.getCountMode();
+		CountMode countMode = response.getAppropriateCountMode();
 		int adjustedValue = errorsToCountModeAdjuster.adjustValueToCountMode(amountOfErrorAnswers, countMode);
 		return adjustedValue;
 	}

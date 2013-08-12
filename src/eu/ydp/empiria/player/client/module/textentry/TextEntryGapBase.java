@@ -29,6 +29,8 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 public class TextEntryGapBase extends GapBase implements SourcelistClient {
 
+	private static final String SOURCE_LIST_ID = "sourceListId";
+
 	protected final SourcelistManager sourcelistManager;
 	protected final StyleSocket styleSocket;
 	protected final DragContentController dragContentController;
@@ -195,6 +197,12 @@ public class TextEntryGapBase extends GapBase implements SourcelistClient {
 	
 	protected void updateResponse(boolean userInteract) {
 		updateResponse(userInteract, false);
+	}
+
+	@Override
+	public String getSourcelistId() {
+		String sourceListId = getElementAttributeValue(SOURCE_LIST_ID);
+		return sourceListId;
 	}
 	
 	private TextEntryGapModulePresenterBase getTextEntryPresenter() {

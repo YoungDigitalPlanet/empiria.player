@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.animation.Animation;
 import eu.ydp.empiria.player.client.animation.AnimationConfig;
 import eu.ydp.empiria.player.client.animation.AnimationFactory;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorCommandConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
@@ -34,6 +35,9 @@ import eu.ydp.empiria.player.client.util.geom.Size;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommandFactoryTest {
+
+	private static final String ASSET_PATH_JUMPING_ALEX = "http://url/path/ALEX_JUMPS.png";
+
 	@InjectMocks
 	CommandFactory factory;
 
@@ -49,15 +53,20 @@ public class CommandFactoryTest {
 	private EndHandler handler;
 	@Mock
 	EmpiriaPaths paths;
+	@Mock
+	PersonaService personaService;
 	TutorPersonaProperties properties;
+
+	private final Size size = new Size(30, 40);
 
 	@Before
 	public void setUp() {
 		properties = mock(TutorPersonaProperties.class);
-		when(properties.getAnimationSize()).thenReturn(new Size(30, 40));
+		when(properties.getAnimationSize()).thenReturn(size);
 		when(properties.getAnimationFps()).thenReturn(30);
 		when(properties.getName()).thenReturn("ALEX");
-		when(paths.getCommonsPath()).thenReturn("http://url/path");
+		when(personaService.getPersonaProperties()).thenReturn(properties);
+		when(paths.getCommonsFilePath("ALEX_JUMPS.png")).thenReturn(ASSET_PATH_JUMPING_ALEX);
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -96,13 +105,13 @@ public class CommandFactoryTest {
 
 		TutorCommand showImageCommand = mock(ShowImageCommand.class);
 
-		when(commandsModuleFactory.createShowImageCommand(eq(moduleView), anyString())).thenReturn(showImageCommand);
+		when(commandsModuleFactory.createShowImageCommand(eq(moduleView), anyString(), eq(size))).thenReturn(showImageCommand);
 
 		// when
 		TutorCommand command = factory.createCommand(ActionType.DEFAULT, handler);
 
 		// then
-		verify(commandsModuleFactory).createShowImageCommand(moduleView, "http://url/path/ALEX_JUMPS.png");
+		verify(commandsModuleFactory).createShowImageCommand(moduleView, ASSET_PATH_JUMPING_ALEX, size);
 		assertThat(command, is(showImageCommand));
 	}
 
@@ -126,7 +135,6 @@ public class CommandFactoryTest {
 
 		when(tutorConfig.getCommandsForAction(ActionType.DEFAULT)).thenReturn(Lists.newArrayList(tutorCommandConfig));
 		when(tutorConfig.supportsAction(ActionType.DEFAULT)).thenReturn(true);
-		when(tutorConfig.getTutorPersonaProperties(0)).thenReturn(properties);
 	}
 
 	private ArgumentMatcher<AnimationConfig> isAnimationConfigOfJumpingAlex() {
@@ -135,7 +143,7 @@ public class CommandFactoryTest {
 
 			@Override
 			public boolean matches(Object argument) {
-				return ((AnimationConfig) argument).getSource().equals("http://url/path/ALEX_JUMPS.png");
+				return ((AnimationConfig) argument).getSource().equals(ASSET_PATH_JUMPING_ALEX);
 			}
 		};
 	}

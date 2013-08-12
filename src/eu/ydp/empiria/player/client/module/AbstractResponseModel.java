@@ -74,7 +74,6 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 
 	public void reset(){
 		response.reset();
-		onModelChange();
 	}
 
 	public void addAnswer(String answerIdentifier) {

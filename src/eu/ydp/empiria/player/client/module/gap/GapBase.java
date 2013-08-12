@@ -33,7 +33,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 	protected GapExpressionReplacer gapExpressionReplacer;
 	
 	@Inject
-	public GapBinder gapBinder;
+	protected GapBinder gapBinder;
 	
 	public static final String INLINE_HTML_NBSP = "&nbsp;";
 	

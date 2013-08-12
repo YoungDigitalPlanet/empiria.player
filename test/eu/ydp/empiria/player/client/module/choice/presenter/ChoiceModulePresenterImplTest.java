@@ -122,11 +122,6 @@ public class ChoiceModulePresenterImplTest {
 		verify(simplePresenter2).reset();
 		verify(simplePresenter3).reset();
 		verify(simplePresenter4).reset();
-
-		verify(model).removeAnswer(IDENTIFIER_1);
-		verify(model).removeAnswer(IDENTIFIER_2);
-		verify(model).removeAnswer(IDENTIFIER_3);
-		verify(model).removeAnswer(IDENTIFIER_4);
 	}
 
 	@Test

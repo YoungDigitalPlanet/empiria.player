@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.colorfill.structure;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -12,10 +13,18 @@ public class ColorfillBeanProxy {
 	private ColorfillInteractionStructure structure;
 	
 	public ColorfillInteractionBean getColofillBean(){
-		return structure.getBean();
+		return getBean();
 	}
 	
 	public List<Area> getAreas(){
-		return structure.getBean().getAreas().getAreas();
+		return getBean().getAreas().getAreas();
+	}
+
+	public Collection<? extends Area> getFakeAreas() {
+		return getBean().getFakeAreas().getAreas();
+	}
+
+	private ColorfillInteractionBean getBean() {
+		return structure.getBean();
 	}
 }

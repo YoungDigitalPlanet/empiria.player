@@ -11,8 +11,8 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTyp
 
 public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidget {
 
-	public void bindView();
-	public void setBean(MultiplePairBean<T> modelInterface);
+	void bindView();
+	void setBean(MultiplePairBean<T> modelInterface);
 	/**
 	 * Jezeli istnieja jakies polaczenia i zostanie wywolana ta metoda to dla
 	 * wszystkich usunietych polaczen zostana wywolane handlery
@@ -22,7 +22,7 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 *
 	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#reset()
 	 */
-	public void reset();
+	void reset();
 
 	/**
 	 * Blokowanie widoku
@@ -31,7 +31,7 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 *
 	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#setLocked()
 	 */
-	public void setLocked(boolean locked);
+	void setLocked(boolean locked);
 
 	/**
 	 * Laczy wskazane elementy wywolanie tej metody jest rownowazne z
@@ -44,7 +44,7 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 * @param sourceIdentifier
 	 * @param targetIdentifier
 	 */
-	public void connect(String sourceIdentifier, String targetIdentifier, MultiplePairModuleConnectType type);
+	void connect(String sourceIdentifier, String targetIdentifier, MultiplePairModuleConnectType type);
 
 //	/**
 //	 * Laczy wskazane elementy Wykonanie polaczenia musi zostac zakomunikowane
@@ -70,7 +70,7 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 * @param sourceIdentifier
 	 * @param targetIdentifier
 	 */
-	public void disconnect(String sourceIdentifier, String targetIdentifier);
+	void disconnect(String sourceIdentifier, String targetIdentifier);
 //
 //	/**
 //	 * Powoduje oznaczenie polaczenia sourceIdentifier->targetIdentifier stylem
@@ -98,8 +98,9 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 * @see PairConnectEventTypes
 	 * @param handler
 	 */
-	public void addPairConnectEventHandler(PairConnectEventHandler handler);
+	void addPairConnectEventHandler(PairConnectEventHandler handler);
 
-	public void setModuleSocket(ModuleSocket socket);
+	void setModuleSocket(ModuleSocket socket);
+	boolean isAttached();
 
 }

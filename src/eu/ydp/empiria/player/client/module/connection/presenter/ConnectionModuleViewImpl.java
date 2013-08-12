@@ -390,4 +390,9 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		}
 	}
 
+	@Override
+	public boolean isAttached() {
+		return asWidget().isAttached();
+	}
+
 }

@@ -10,7 +10,7 @@ public class ModuleTodoCalculator {
 	private static final Logger LOGGER = Logger.getLogger(ModuleTodoCalculator.class.getName());
 	
 	public int calculateTodoForResponse(Response response){
-		CountMode countMode = response.getCountMode();
+		CountMode countMode = response.getAppropriateCountMode();
 		
 		int todoCount = 0;
 		if(countMode == CountMode.SINGLE){

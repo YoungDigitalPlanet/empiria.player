@@ -11,4 +11,5 @@ public interface LabellingView   {
 	void addChild(IsWidget widget, int left, int top);
 	IsWidget getView();
 	HasWidgets.ForIsWidget getContainer();
+	void setViewId(String id);
 }

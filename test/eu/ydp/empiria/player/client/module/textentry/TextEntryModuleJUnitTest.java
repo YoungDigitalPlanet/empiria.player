@@ -45,7 +45,6 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(TextEntryModulePresenter.class).toInstance(mock(TextEntryModulePresenter.class));
-			TextEntryModulePresenter modulePresenter = mock(TextEntryModulePresenter.class);
 			binder.bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
 			binder.bind(PipedReplacementsParser.class).toInstance(mock(PipedReplacementsParser.class));
 		}
@@ -54,7 +53,6 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 	@Before
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGuiceModule());
-		mockTextGap().gapBinder = mock(GapBinder.class);
 	}
 
 	@Test
@@ -86,25 +84,6 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		verify(textEntryModule.getPresenter(), times(1)).setWidth(Double.parseDouble("60"), Unit.PX);
 	}
 
-	/*
-	 * update response() przeniesione do TextEntryGapBase
-	 * 
-	@Test
-	public void shouldSendUpdateResponseWithoutUserInteractionWhen_gapHasAnswer() {
-		TextEntryModuleMock textEntryModule = spy(mockTextGap());
-		when(textEntryModule.getPresenter().getText()).thenReturn("answer");
-		textEntryModule.reset();
-		verify(textEntryModule).updateResponse(false, true);
-	}
-
-	@Test
-	public void shouldNotSendUpdateResponseAfterResetWhen_gapIsEmpty() {
-		TextEntryModuleMock textEntryModule = spy(mockTextGap());
-		when(textEntryModule.getPresenter().getText()).thenReturn("");
-		textEntryModule.reset();
-		verify(textEntryModule, never()).updateResponse(anyBoolean(), anyBoolean());
-	}
-	*/
 
 	@BeforeClass
 	public static void prepareTestEnviroment() {
@@ -143,6 +122,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 					injector.getInstance(DragContentController.class),
 					injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class))
 					);
+			gapBinder = new GapBinder();
 		}
 
 		

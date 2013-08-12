@@ -30,7 +30,7 @@ public class ColorfillPaletteImpl implements ColorfillPalette {
 
 	private ColorfillButtonClickListener listener;
 	
-	private Map<ColorModel, PaletteButton> buttons = Maps.newHashMap();
+	private final Map<ColorModel, PaletteButton> buttons = Maps.newHashMap();
 
 	public ColorfillPaletteImpl() {
 		uiBinder.createAndBindUi(this);
@@ -42,9 +42,9 @@ public class ColorfillPaletteImpl implements ColorfillPalette {
 	}
 
 	@Override
-	public void createButton(final ColorModel color) {
+	public void createButton(final ColorModel color, String description) {
 		Command command = createButtonClickCommand(color);
-		PaletteButton button = buttonCreator.createButton(color, command);
+		PaletteButton button = buttonCreator.createButton(color, command, description);
 		integrateButton(color, button);
 	}
 

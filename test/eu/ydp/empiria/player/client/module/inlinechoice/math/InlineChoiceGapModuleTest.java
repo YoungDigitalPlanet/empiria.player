@@ -86,8 +86,8 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
 		setUp(new Class<?>[] {}, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule(presenter, mathGapModel ));
 		eventsBus = injector.getInstance(EventsBus.class);
 		instance = injector.getInstance(InlineChoiceMathGapModule.class);
-		gapBinder = mock(GapBinder.class);
-		instance.gapBinder = gapBinder;
+//		gapBinder = mock(GapBinder.class);
+//		instance.gapBinder = gapBinder;
 	}
 
 	@Test

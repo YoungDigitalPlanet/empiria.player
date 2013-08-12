@@ -11,11 +11,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.animation.AnimationEndHandler;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.util.events.animation.AnimationEndEvent;
 import eu.ydp.empiria.player.client.util.geom.Size;
+import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class TutorViewImpl implements TutorView {
 
@@ -31,16 +30,11 @@ public class TutorViewImpl implements TutorView {
 	@UiField
 	FlowPanel content;
 
-	private final TutorConfig tutorConfig;
-	
-	@Inject
-	public TutorViewImpl(@ModuleScoped TutorConfig tutorConfig) {
-		this.tutorConfig = tutorConfig;
-	}
+	private final UserInteractionHandlerFactory userInteractionHandlerFactory;
 
-	@Override
-	public void setAnimationImage(String src) {
-		setBackgroundImage(src);
+	@Inject
+	public TutorViewImpl(UserInteractionHandlerFactory userInteractionHandlerFactory) {
+		this.userInteractionHandlerFactory = userInteractionHandlerFactory;
 	}
 
 	@Override
@@ -50,10 +44,10 @@ public class TutorViewImpl implements TutorView {
 	}
 
 	@Override
-	public void setAnimationStyleName(String styleName) {
+	public void setAnimationStyleName(String styleName, Size size) {
 		clearAllStyles();
 		content.setStyleName(styleName);
-		setSizeOfContent(getSize());
+		setSizeOfContent(size);
 	}
 
 	private void clearAllStyles() {
@@ -71,9 +65,13 @@ public class TutorViewImpl implements TutorView {
 	}
 
 	@Override
-	public void setBackgroundImage(String src) {
-		Size size = getSize();
-		setBackgroundImageWithSize(src, size);
+	public void setBackgroundImage(String src, Size size) {
+		Style style = content.getElement().getStyle();
+		String srcWithUrlInside = "url("+src+")";
+		style.setBackgroundImage(srcWithUrlInside);
+		style.setProperty("backgroundPosition", 0+DIMENSIONS_UNIT);
+		
+		setSizeOfContent(size);
 	}
 
 	@Override
@@ -92,24 +90,15 @@ public class TutorViewImpl implements TutorView {
 		}, AnimationEndEvent.getType());
 	}
 	
-	private Size getSize() {
-		TutorPersonaProperties personaProperties = tutorConfig.getTutorPersonaProperties(0);
-		return personaProperties.getAnimationSize();
-	}
-	
-	private void setBackgroundImageWithSize(String src, Size size) {
-		Style style = content.getElement().getStyle();
-		String srcWithUrlInside = "url("+src+")";
-		style.setBackgroundImage(srcWithUrlInside);
-		style.setProperty("backgroundPosition", 0+DIMENSIONS_UNIT);
-		
-		setSizeOfContent(size);
-	}
-	
 	private void setSizeOfContent(Size size) {
 		String width = size.getWidth()+DIMENSIONS_UNIT;
 		String height = size.getHeight()+DIMENSIONS_UNIT;
 		content.setWidth(width);
 		content.setHeight(height);
+	}
+
+	@Override
+	public void addClickHandler(Command command) {
+		userInteractionHandlerFactory.applyUserClickHandler(command, container);
 	}
 }

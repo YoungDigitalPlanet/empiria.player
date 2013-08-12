@@ -45,9 +45,14 @@ public class ColorfillViewBuilderJUnitTest {
 		ButtonsContainer buttonsContainer = new ButtonsContainer();
 		ColorButton colorButton = new ColorButton();
 		colorButton.setRgb("00ff00");
+		colorButton.setDescription("colorButtonDescription");
+		
 		List<ColorButton> buttons = Lists.newArrayList(colorButton);
 		buttonsContainer.setButtons(buttons);
+		
 		EraserButton eraserButton = new EraserButton();
+		eraserButton.setDescription("eraserDescription");
+		
 		buttonsContainer.setEraserButton(eraserButton);
 		bean.setButtons(buttonsContainer);
 		Image image = new Image();
@@ -60,8 +65,8 @@ public class ColorfillViewBuilderJUnitTest {
 		
 		
 		//then
-		verify(interactionView).createButton(ColorModel.createFromRgbString("00ff00"));
-		verify(interactionView).createButton(ColorfillViewBuilder.ERASING_COLOR);
+		verify(interactionView).createButton(ColorModel.createFromRgbString("00ff00"), colorButton.getDescription());
+		verify(interactionView).createButton(ColorfillViewBuilder.ERASING_COLOR, eraserButton.getDescription());
 		verify(interactionView).setAreaClickListener(any(ColorfillAreaClickListener.class));
 		verify(interactionView).setButtonClickListener(any(ColorButtonClickListener.class));
 		verify(interactionView).setImage(image);

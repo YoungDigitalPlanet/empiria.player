@@ -22,12 +22,9 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 	public void testXMLParseButtons() {
 		// given
 		String buttonsXMLNode = "<buttons>" +
-				"<button rgb=\""+COLOR_008000+"\"/>" +
-				"<button rgb=\"#FFFF00\"/>" +
-				"<button rgb=\"#0000FF\"/>" +
-				"<button rgb=\"#800000\"/>" +
-				"<button rgb=\""+COLOR_FF0000+"\"/>" +
-				"<eraserButton/>" +
+				"<button rgb=\""+COLOR_008000+"\"><![CDATA[Zielony]]></button>" +
+				"<button rgb=\""+COLOR_FF0000+"\"><![CDATA[Czerwony]]></button>" +
+				"<eraserButton><![CDATA[Gumka]]></eraserButton>" +
 			"</buttons>";		
 		String xml = prepareXML(buttonsXMLNode);
 		
@@ -35,13 +32,18 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		ButtonsContainer buttonsContainer = getButtonsContainer(xml);
 		List<ColorButton> buttons = buttonsContainer.getButtons();
 		ColorButton button0 = buttons.get(0);
-		ColorButton button4 = buttons.get(4);
+		ColorButton button1 = buttons.get(1);
 		EraserButton eraser = buttonsContainer.getEraserButton();
 				
 		// then
 		assertEquals(COLOR_008000, button0.getRgb());
-		assertEquals(COLOR_FF0000, button4.getRgb());
+		assertEquals("Zielony", button0.getDescription());
+		
+		assertEquals(COLOR_FF0000, button1.getRgb());
+		assertEquals("Czerwony", button1.getDescription());
+		
 		assertNotNull(eraser);
+		assertEquals("Gumka", eraser.getDescription());
 	}
 	
 	public void testXMLParseButtonEraser() {
@@ -80,6 +82,39 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		assertEquals(VAL_777, area1.getX().toString());
 		assertEquals(VAL_999, area1.getY().toString());
 	}	
+	
+	public void testXMLParseFakeAreas() {
+		// given		
+		String xml = prepareXML("<fakeAreas>"
+				+ "<area x=\"1\" y=\"2\" />"
+				+ "<area x=\"3\" y=\"4\" />"
+				+ "</fakeAreas>");
+		
+		// when
+		ColorfillInteractionBean bean = parse(xml);
+		List<Area> fakeAreas = bean.getFakeAreas().getAreas();
+		assertEquals(2, fakeAreas.size());
+		
+		Area area = fakeAreas.get(0);
+		assertEquals(1, (int)area.getX());
+		assertEquals(2, (int)area.getY());
+		
+		Area area2 = fakeAreas.get(1);
+		assertEquals(3, (int)area2.getX());
+		assertEquals(4, (int)area2.getY());
+	}	
+
+	public void testShouldReturnEmptyFakeAreasWhenNoElement() {
+		// given		
+		String noFakeAreasElement = "";
+		String xml = prepareXML(noFakeAreasElement);
+		
+		// when
+		ColorfillInteractionBean bean = parse(xml);
+		assertNotNull(bean.getFakeAreas());
+		List<Area> fakeAreas = bean.getFakeAreas().getAreas();
+		assertEquals(0, fakeAreas.size());
+	}	
 
 	public void testXMLParseImage() {
 		// given		
@@ -109,10 +144,10 @@ public class ColorfillInteractionModuleJAXBParserFactoryTest extends AbstractEmp
 		return expressionsBean;
 	}	
 	
-	private String prepareXML(String buttons) {
+	private String prepareXML(String content) {
 		return 
 				"<colorfillInteraction id=\"dummy1\">" +
-					buttons + 
+					content + 
 					"<areas>" +
 						"<area x=\""+VAL_333+"\" y=\""+VAL_666+"\"/>" +
 						"<area x=\""+VAL_777+"\" y=\""+VAL_999+"\"/>" +

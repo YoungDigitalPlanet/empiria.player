@@ -37,7 +37,10 @@ public class ColorfillModelProxy {
 	Response response;
 
 	public void updateUserAnswers() {
-		List<String> userAnswers = responseAnswerByViewBuilder.buildNewResponseAnswersByCurrentImage(beanProxy.getAreas());
+		List<Area> areas = beanProxy.getAreas();
+		areas.addAll(beanProxy.getFakeAreas());
+		
+		List<String> userAnswers = responseAnswerByViewBuilder.buildNewResponseAnswersByCurrentImage(areas);
 		model.setNewUserAnswers(userAnswers);
 
 	}
