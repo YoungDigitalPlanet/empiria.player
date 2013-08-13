@@ -6,5 +6,5 @@ public interface ResultVariables {
 	int getDone();
 	int getMistakes();
 	int getErrors();
-	boolean isLastMistaken();
+	LastMistaken getLastMistaken();
 }

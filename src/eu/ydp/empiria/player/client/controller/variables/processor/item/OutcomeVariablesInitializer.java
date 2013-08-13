@@ -10,6 +10,7 @@ import java.util.Map;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 
 public class OutcomeVariablesInitializer {
@@ -19,7 +20,7 @@ public class OutcomeVariablesInitializer {
 		ensureVariable(outcomes, new Outcome(VariableName.DONE.toString(), Cardinality.SINGLE,"0"));
 		ensureVariable(outcomes, new Outcome(VariableName.TODO.toString(), Cardinality.SINGLE, "0"));
 		ensureVariable(outcomes, new Outcome(VariableName.ERRORS.toString(), Cardinality.SINGLE, "0"));
-		ensureVariable(outcomes, new Outcome(VariableName.LASTMISTAKEN.toString(), Cardinality.SINGLE, "0"));
+		ensureVariable(outcomes, new Outcome(VariableName.LASTMISTAKEN.toString(), Cardinality.SINGLE, LastMistaken.NONE.toString()));
 		ensureVariable(outcomes, new Outcome(CHECKS, Cardinality.SINGLE, "0"));
 		ensureVariable(outcomes, new Outcome(SHOW_ANSWERS, Cardinality.SINGLE, "0"));
 		ensureVariable(outcomes, new Outcome(RESET, Cardinality.SINGLE, "0"));
@@ -37,7 +38,7 @@ public class OutcomeVariablesInitializer {
 				ensureVariable(outcomes, new Outcome(prefix + VariableName.DONE, Cardinality.SINGLE, "0"));
 				ensureVariable(outcomes, new Outcome(prefix + VariableName.TODO, Cardinality.SINGLE, "0"));
 				ensureVariable(outcomes, new Outcome(prefix + VariableName.ERRORS, Cardinality.SINGLE, "0"));
-				ensureVariable(outcomes, new Outcome(prefix + VariableName.LASTMISTAKEN, Cardinality.SINGLE, "0"));
+				ensureVariable(outcomes, new Outcome(prefix + VariableName.LASTMISTAKEN, Cardinality.SINGLE, LastMistaken.NONE.toString()));
 				ensureVariable(outcomes, new Outcome(prefix + VariableName.MISTAKES, Cardinality.SINGLE, "0"));
 
 				ensureVariable(outcomes, new Outcome(prefix + VariableName.LASTCHANGE, Cardinality.MULTIPLE));

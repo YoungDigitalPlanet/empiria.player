@@ -8,17 +8,18 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
 
 public class DtoModuleProcessingResultBuilder {
 
 	private int todo = 0;
-	private List<String> answers = Lists.newArrayList();
+	private final List<String> answers = Lists.newArrayList();
 	private List<Boolean> answersEvaluation = Lists.newArrayList();
 	private int errors = 0;
 	private int done = 0;
-	private LastAnswersChanges lastAnswerChanges = new LastAnswersChanges();
-	private boolean lastmistaken = false;
+	private final LastAnswersChanges lastAnswerChanges = new LastAnswersChanges();
+	private LastMistaken lastmistaken = LastMistaken.NONE;
 	private int mistakes = 0;
 	
 	public DtoModuleProcessingResultBuilder withTodo(int todo){
@@ -41,7 +42,7 @@ public class DtoModuleProcessingResultBuilder {
 		return this;
 	}
 	
-	public DtoModuleProcessingResultBuilder withLastmistaken(boolean lastmistaken) {
+	public DtoModuleProcessingResultBuilder withLastmistaken(LastMistaken lastmistaken) {
 		this.lastmistaken = lastmistaken;
 		return this;
 	}

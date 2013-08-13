@@ -10,9 +10,11 @@ import org.junit.Test;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
+import static org.fest.assertions.api.Assertions.*;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 
 public class OrderingModeVariableProcessorJUnitTest {
 
@@ -30,7 +32,7 @@ public class OrderingModeVariableProcessorJUnitTest {
 
 	@Test
 	public void calculateMistakesTest() {
-		assertEquals(0, orderingModeVariableProcessor.calculateMistakes(false, 0));
+		assertEquals(0, orderingModeVariableProcessor.calculateMistakes(LastMistaken.CORRECT, 0));
 	}
 
 	@Test
@@ -41,8 +43,8 @@ public class OrderingModeVariableProcessorJUnitTest {
 											.build();
 		LastAnswersChanges lastAnswerChanges = new LastAnswersChanges(Lists.newArrayList("newAnswer"), Lists.newArrayList("a"));
 		
-		boolean result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
-		assertFalse(result);
+		LastMistaken result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
+		assertThat(result).isEqualTo(LastMistaken.CORRECT);
 	}
 	
 	@Test
@@ -53,8 +55,8 @@ public class OrderingModeVariableProcessorJUnitTest {
 		.build();
 		LastAnswersChanges lastAnswerChanges = new LastAnswersChanges(Lists.newArrayList("newAnswer"), Lists.newArrayList("a"));
 		
-		boolean result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
-		assertTrue(result);
+		LastMistaken result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
+		assertThat(result).isEqualTo(LastMistaken.NONE);
 	}
 	
 	@Test
@@ -65,8 +67,8 @@ public class OrderingModeVariableProcessorJUnitTest {
 		.build();
 		LastAnswersChanges lastAnswerChanges = new LastAnswersChanges(new ArrayList<String>(), new ArrayList<String>());
 		
-		boolean result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
-		assertFalse(result);
+		LastMistaken result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
+		assertThat(result).isEqualTo(LastMistaken.NONE);
 	}
 
 	@Test

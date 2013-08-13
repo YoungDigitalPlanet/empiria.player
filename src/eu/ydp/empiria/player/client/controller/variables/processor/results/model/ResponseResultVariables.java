@@ -32,8 +32,8 @@ public class ResponseResultVariables implements ResultVariables {
 	}
 
 	@Override
-	public boolean isLastMistaken() {
-		return processingResult.getUserInteractionVariables().isLastmistaken();
+	public LastMistaken getLastMistaken() {
+		return processingResult.getUserInteractionVariables().getLastmistaken();
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ResponseResultVariables implements ResultVariables {
 		int result = 1;
 		result = prime * result + getDone();
 		result = prime * result + getErrors();
-		result = prime * result + (isLastMistaken() ? 1231 : 1237);
+		result = prime * result + ((getLastMistaken() == null) ? 0 : getLastMistaken().hashCode());
 		result = prime * result + getMistakes();
 		result = prime * result + getTodo();
 		return result;
@@ -68,8 +68,10 @@ public class ResponseResultVariables implements ResultVariables {
 				.compare(getDone(), other.getDone())
 				.compare(getErrors(), other.getErrors())
 				.compare(getMistakes(), other.getMistakes())
-				.compareFalseFirst(isLastMistaken(), other.isLastMistaken())
+				.compare(getLastMistaken(), other.getLastMistaken())
 				.result() == 0;
 	}
+
+	
 
 }

@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.module.Variab
 import eu.ydp.empiria.player.client.controller.variables.processor.module.counting.DoneToCountModeAdjuster;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.counting.ErrorsToCountModeAdjuster;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
 public class GroupedModeVariableProcessor implements VariableProcessor {
@@ -69,8 +70,8 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	}
 
 	@Override
-	public boolean checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
-		boolean lastmistaken = false;
+	public LastMistaken checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
+		LastMistaken lastmistaken = LastMistaken.NONE;
 		if(answersChanges.containChanges()){
 			lastmistaken = checkLastAnswerChangesIfWasMistaken(response, answersChanges);
 		}
@@ -78,15 +79,15 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 		return lastmistaken;
 	}
 
-	private boolean checkLastAnswerChangesIfWasMistaken(Response response, LastAnswersChanges answersChanges) {
+	private LastMistaken checkLastAnswerChangesIfWasMistaken(Response response, LastAnswersChanges answersChanges) {
 		List<String> addedAnswers = answersChanges.getAddedAnswers();
 		boolean addedCorrectAnswer = hasAddedAnyCorrectAnswer(addedAnswers, response);
-		boolean lastmistaken; 
+		LastMistaken lastmistaken; 
 		
 		if(addedCorrectAnswer){
-			lastmistaken = false;
+			lastmistaken = LastMistaken.CORRECT;
 		}else{
-			lastmistaken = true;
+			lastmistaken = LastMistaken.WRONG;
 		}
 		return lastmistaken;
 	}
@@ -98,9 +99,9 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	}
 
 	@Override
-	public int calculateMistakes(boolean lastmistaken, int previousMistakes) {
+	public int calculateMistakes(LastMistaken lastmistaken, int previousMistakes) {
 		int newMistakes = previousMistakes;
-		if (lastmistaken) {
+		if (lastmistaken == LastMistaken.WRONG) {
 			newMistakes = previousMistakes + 1;
 		}
 		return newMistakes;

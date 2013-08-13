@@ -24,6 +24,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 
@@ -49,7 +50,7 @@ public class ProcessingResultsToOutcomeMapConverterJUnitTest {
 		int todo = 13;
 		int errors = 3123;
 		int done = 23424;
-		boolean lastmistaken = true;
+		LastMistaken lastmistaken = LastMistaken.WRONG;
 		int mistakes = 14234;
 		GlobalVariables globalVariables = new GlobalVariables(todo, done, errors, mistakes, lastmistaken);
 		
@@ -84,11 +85,11 @@ public class ProcessingResultsToOutcomeMapConverterJUnitTest {
 		resultsToOutcomeMapConverter.updateOutcomeMapByModulesProcessingResults(modulesProcessingResults);
 		
 		UserInteractionVariables userInteractionVariables = processingResult.getUserInteractionVariables();
-		assertModuleVariableExists(LASTMISTAKEN, booleanToInt(userInteractionVariables.isLastmistaken()));
+		assertModuleVariableExists(LASTMISTAKEN, userInteractionVariables.getLastmistaken());
 		assertModuleVariableExists(MISTAKES, userInteractionVariables.getMistakes());
 		assertModuleVariableExistsWithValues(LASTCHANGE, Lists.newArrayList("+addedAnswer", "-removedAnswer"));
 	}
-	
+
 	private void assertModuleVariableExistsWithValues(VariableName variableName, List<String> values) {
 		String variableId = (variableIdentifier+"-"+variableName);
 		Outcome outcome = outcomes.get(variableId);
@@ -106,30 +107,28 @@ public class ProcessingResultsToOutcomeMapConverterJUnitTest {
 		assertModuleVariableExists(TODO, constantVariables.getTodo());
 	}
 
-	
-	
 	private void assertModuleVariableExists(VariableName variableName, int done) {
 		assertVariableExists(variableIdentifier+"-"+variableName, ""+done);
+	}
+	
+	private void assertModuleVariableExists(VariableName variableName, LastMistaken lastmistaken) {
+		assertVariableExists(variableIdentifier+"-"+variableName, lastmistaken.toString());
 	}
 
 	private DtoModuleProcessingResult createProcessingResult(String id) {
 		return modulesProcessingResults.getProcessingResultsForResponseId(id);
 	}
 
-	private void assertGlobalVariableExists(VariableName variableName, boolean variableValue) {
-		assertGlobalVariableExists(variableName, booleanToInt(variableValue));
-	}
-	
-	private int booleanToInt(boolean value){
-		if(value){
-			return 1;
-		}else{
-			return 0;
-		}
+	private void assertGlobalVariableExists(VariableName variableName, LastMistaken variableValue) {
+		assertGlobalVariableExists(variableName, variableValue.toString());
 	}
 	
 	private void assertGlobalVariableExists(VariableName variableName, int todo) {
 		assertVariableExists(variableName.toString(), ""+todo);
+	}
+	
+	private void assertGlobalVariableExists(VariableName variableName, String variableValue) {
+		assertVariableExists(variableName.toString(), variableValue);
 	}
 	private void assertVariableExists(String variableId, String variableValue) {
 		Outcome outcome = outcomes.get(variableId);
