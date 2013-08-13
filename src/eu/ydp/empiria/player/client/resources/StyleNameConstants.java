@@ -65,6 +65,15 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-bookmark-selected")
 	public String QP_BOOKMARK_SELECTED();
 
+	@DefaultStringValue("qp-button-module")
+	public String QP_BUTTON_MODULE();
+
+	@DefaultStringValue("qp-button-module-button")
+	public String QP_BUTTON_MODULE_BUTTON();
+
+	@DefaultStringValue("qp-button-module-description")
+	public String QP_BUTTON_MODULE_DESCRIPTION();
+
 	@DefaultStringValue("qp-choice-button-multi-markanswers")
 	public String QP_CHOICE_BUTTON_MULTI_INACTIVE();
 
@@ -148,15 +157,15 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-colorfill-palette-button")
 	public String QP_COLORFILL_PALETTE_BUTTON();
-	
-	@DefaultStringValue("qp-colorfill-palette-button-description")
-	public String QP_COLORFILL_PALETTE_BUTTON_DESCRIPTION();
 
 	@DefaultStringValue("qp-colorfill-palette-button-container")
 	public String QP_COLORFILL_PALETTE_BUTTON_CONTAINER();
 
 	@DefaultStringValue("qp-colorfill-palette-button-container-selected")
 	public String QP_COLORFILL_PALETTE_BUTTON_CONTAINER_SELECTED();
+
+	@DefaultStringValue("qp-colorfill-palette-button-description")
+	public String QP_COLORFILL_PALETTE_BUTTON_DESCRIPTION();
 
 	@DefaultStringValue("qp-connection")
 	public String QP_CONNECTION();
@@ -834,5 +843,4 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
-
 }
