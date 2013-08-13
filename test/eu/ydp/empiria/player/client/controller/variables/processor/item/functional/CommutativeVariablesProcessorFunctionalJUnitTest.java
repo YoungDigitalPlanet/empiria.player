@@ -85,7 +85,7 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 
 		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList("1"), Lists.newArrayList(ERRORS), outcomes);
 		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
-		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList(LastMistaken.NONE.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 	}
 
 	@Test

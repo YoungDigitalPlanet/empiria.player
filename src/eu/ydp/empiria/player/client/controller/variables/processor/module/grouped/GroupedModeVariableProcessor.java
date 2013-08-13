@@ -71,7 +71,7 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 
 	@Override
 	public LastMistaken checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
-		LastMistaken lastmistaken = LastMistaken.CORRECT;
+		LastMistaken lastmistaken = LastMistaken.NONE;
 		if(answersChanges.containChanges()){
 			lastmistaken = checkLastAnswerChangesIfWasMistaken(response, answersChanges);
 		}

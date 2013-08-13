@@ -100,7 +100,7 @@ public class GroupedModeVariableProcessorJUnitTest {
 	}
 
 	@Test
-	public void shouldNotSetLastmistakenBecauseAnyAnswerChangedWasChanged() throws Exception {		
+	public void shouldNotSetLastmistakenBecauseAnyAnswerWasChanged() throws Exception {		
 		Response response = builder().withCorrectAnswers("doneAnswer1")
 				.withGroups("group1")
 				.build();
@@ -113,7 +113,7 @@ public class GroupedModeVariableProcessorJUnitTest {
 		
 		LastMistaken lastmistaken = groupedModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
-		assertThat(lastmistaken, equalTo(LastMistaken.CORRECT));
+		assertThat(lastmistaken, equalTo(LastMistaken.NONE));
 	}
 	
 	@SuppressWarnings("unchecked")

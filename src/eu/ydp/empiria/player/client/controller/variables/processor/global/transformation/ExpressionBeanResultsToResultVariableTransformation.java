@@ -63,10 +63,13 @@ public class ExpressionBeanResultsToResultVariableTransformation implements
 		Function<DtoModuleProcessingResult, LastMistaken> extractLastMistakenFunction = extractingFunctionsProvider.getExtractLastMistakenFunction();
 		Iterable<LastMistaken> lastMistakens = Iterables.transform(results, extractLastMistakenFunction);
 		boolean containsAnyWrong = Iterables.contains(lastMistakens, LastMistaken.WRONG);
+		boolean containsAnyCorrect = Iterables.contains(lastMistakens, LastMistaken.CORRECT);
 		if(containsAnyWrong) {
 			return LastMistaken.WRONG;
-		} else {
+		} else if (containsAnyCorrect) {
 			return LastMistaken.CORRECT;
+		} else {
+			return LastMistaken.NONE;
 		}
 	}
 
