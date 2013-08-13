@@ -19,7 +19,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
-import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
+import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;

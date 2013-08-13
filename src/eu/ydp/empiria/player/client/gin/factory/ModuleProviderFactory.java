@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import eu.ydp.empiria.player.client.module.button.download.ButtonModule;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModule;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
@@ -46,126 +47,48 @@ import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 
 @SuppressWarnings({"PMD"})
 public class ModuleProviderFactory {
-	@Inject
-	private Provider<ConnectionModule> connectionModule;
+	@Inject private Provider<ConnectionModule> connectionModule;
+	@Inject private Provider<SourceListModule> sourceListModule;
+	@Inject private Provider<ObjectModule> objectModule;
+	@Inject private Provider<PageInPageModule> pageInPageModule;
+	@Inject private Provider<TextActionProcessor> textActionProcessor;
+	@Inject private Provider<ImageActionProcessor> imageActionProcessor;
+	@Inject private Provider<ImgModule> imgModule;
+	@Inject private Provider<SelectionModule> selectionModule;
+	@Inject private Provider<InlineContainerModule> inlineContainerModule;
+	@Inject private Provider<DefaultMediaProcessorExtension> mediaProcessor;
+	@Inject private Provider<MathModule> mathModule;
+	@Inject private Provider<CheckButtonModuleConnectorExtension> checkButtonModuleConnectorExtension;
+	@Inject private Provider<ShowAnswersButtonModuleConnectorExtension> showAnswersButtonModuleConnectorExtension;
+	@Inject private Provider<AudioMuteButtonModuleConnectorExtension> audioMuteButtonModuleConnectorExtension;
+	@Inject private Provider<ResetButtonModuleConnectorExtension> resetButtonModuleConnectorExtension;
+	@Inject private Provider<InlineChoiceModule> inlineChoiceModule;
+	@Inject private Provider<IdentificationModule> identificationModule;
+	@Inject private Provider<SimulationModule> simulationModule;
+	@Inject private Provider<SlideshowPlayerModule> slideshowPlayerModule;
+	@Inject private Provider<LabellingModule> labellingModule;
+	@Inject private Provider<OrderInteractionModule> orderInteractionModule;
+	@Inject private Provider<ChoiceModule> choiceModule;
+	@Inject private Provider<InlineChoiceMathGapModule> inlineChoiceMathGapModule;
+	@Inject private Provider<TextEntryGapModule> textEntryGapModule;
+	@Inject private Provider<TextEntryMathGapModule> textEntryMathGapModule;
+	@Inject private Provider<DragGapModule> dragGapModule;
+	@Inject private Provider<DivModule> divModule;
+	@Inject private Provider<GroupModule> groupModule;
+	@Inject private Provider<SpanModule> spanModule;
+	@Inject private Provider<TextInteractionModule> textInteractionModule;
+	@Inject private Provider<ColorfillInteractionModule> colorfillInteractionModule;
+	@Inject private Provider<SimpleTextModule> simpleTextModule;
+	@Inject private Provider<MathTextModule> mathTextModule;
+	@Inject private Provider<FlashModule> flashModule;
+	@Inject private Provider<PromptModule> promptModule;
+	@Inject private Provider<TableModule> tableModule;
+	@Inject private Provider<ShapeModule> shapeModule;
+	@Inject private Provider<SupHtmlContainerModule> supHtmlContainerModule;
+	@Inject private Provider<SubHtmlContainerModule> subHtmlContainerModule;
+	@Inject private Provider<TutorModule> tutor;
+	@Inject private Provider<ButtonModule> buttonModule;
 
-	@Inject
-	private Provider<SourceListModule> sourceListModule;
-
-	@Inject
-	private Provider<ObjectModule> objectModule;
-
-	@Inject
-	private Provider<PageInPageModule> pageInPageModule;
-
-	@Inject
-	private Provider<TextActionProcessor> textActionProcessor;
-
-	@Inject
-	private Provider<ImageActionProcessor> imageActionProcessor;
-
-	@Inject
-	private Provider<ImgModule> imgModule;
-
-	@Inject
-	private Provider<SelectionModule> selectionModule;
-
-	@Inject
-	private Provider<InlineContainerModule> inlineContainerModule;
-
-	@Inject
-	private Provider<DefaultMediaProcessorExtension> mediaProcessor;
-
-	@Inject
-	private Provider<MathModule> mathModule;
-
-	@Inject
-	private Provider<CheckButtonModuleConnectorExtension> checkButtonModuleConnectorExtension;
-
-	@Inject
-	private Provider<ShowAnswersButtonModuleConnectorExtension> showAnswersButtonModuleConnectorExtension;
-
-	@Inject
-	private Provider<AudioMuteButtonModuleConnectorExtension> audioMuteButtonModuleConnectorExtension;
-
-	@Inject
-	private Provider<ResetButtonModuleConnectorExtension> resetButtonModuleConnectorExtension;
-
-	@Inject
-	private Provider<InlineChoiceModule> inlineChoiceModule;
-
-	@Inject
-	private Provider<IdentificationModule> identificationModule;
-
-	@Inject
-	private Provider<SimulationModule> simulationModule;
-
-	@Inject
-	private Provider<SlideshowPlayerModule> slideshowPlayerModule;
-
-	@Inject
-	private Provider<LabellingModule> labellingModule;
-
-	@Inject
-	private Provider<OrderInteractionModule> orderInteractionModule;
-
-	@Inject
-	private Provider<ChoiceModule> choiceModule;
-
-	@Inject
-	private Provider<InlineChoiceMathGapModule> inlineChoiceGapModule;
-
-	@Inject
-	private Provider<TextEntryGapModule> textEntryModule;
-
-	@Inject
-	private Provider<TextEntryMathGapModule> textEntryGapModule;
-	
-	@Inject
-	private Provider<DragGapModule> dragGapModule;
-
-	@Inject
-	private Provider<DivModule> divModule;
-	
-	@Inject
-	private Provider<GroupModule> groupModule;
-	
-	@Inject
-	private Provider<SpanModule> spanModule;
-	
-	@Inject
-	private Provider<TextInteractionModule> textInteractionModule;
-
-	@Inject
-	private Provider<ColorfillInteractionModule> colorfillInteractionModule;
-	
-	@Inject
-	private Provider<SimpleTextModule> simpleTextModule;
-
-	@Inject
-	private Provider<MathTextModule> mathTextModule;
-
-	@Inject
-	private Provider<FlashModule> flashModule;
-
-	@Inject
-	private Provider<PromptModule> promptModule;
-
-	@Inject
-	private Provider<TableModule> tableModule;
-
-	@Inject
-	private Provider<ShapeModule> shapeModule;
-
-	@Inject
-	private Provider<SupHtmlContainerModule> supHtmlContainerModule;
-	
-	@Inject
-	private Provider<SubHtmlContainerModule> subHtmlContainerModule;
-
-	@Inject
-	private Provider<TutorModule> tutor;
-	
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
 	}
@@ -254,18 +177,18 @@ public class ModuleProviderFactory {
 		return choiceModule;
 	}
 
-	public Provider<InlineChoiceMathGapModule> getInlineChoiceGapModule() {
-		return inlineChoiceGapModule;
+	public Provider<InlineChoiceMathGapModule> getInlineChoiceMathGapModule() {
+		return inlineChoiceMathGapModule;
 	}
 
-	public Provider<TextEntryGapModule> getTextEntryModule() {
-		return textEntryModule;
-	}
-
-	public Provider<TextEntryMathGapModule> getTextEntryGapModule() {
+	public Provider<TextEntryGapModule> getTextEntryGapModule() {
 		return textEntryGapModule;
 	}
-	
+
+	public Provider<TextEntryMathGapModule> getTextEntryMathGapModule() {
+		return textEntryMathGapModule;
+	}
+
 	public Provider<DragGapModule> getDragGapModule() {
 		return dragGapModule;
 	}
@@ -324,5 +247,9 @@ public class ModuleProviderFactory {
 
 	public Provider<TutorModule> getTutorModule() {
 		return tutor;
+	}
+
+	public Provider<ButtonModule> getButtonModule() {
+		return buttonModule;
 	}
 }

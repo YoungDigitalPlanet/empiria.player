@@ -15,6 +15,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.controller.CurrentPageProperties;
+import eu.ydp.empiria.player.client.module.button.FeedbackAudioMuteButtonModule;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;

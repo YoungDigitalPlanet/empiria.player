@@ -12,8 +12,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.XMLParser;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -28,11 +26,12 @@ import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
 import eu.ydp.empiria.player.client.controller.multiview.animation.AnimationEndCallback;
+import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
 import eu.ydp.empiria.player.client.controller.multiview.touch.MultiPageTouchHandler;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
+import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
-import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHack;
@@ -59,7 +58,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	@Inject private Page page;
 	@Inject private MultiPageView view;
 	@Inject private StyleSocket styleSocket;
-	@Inject private Animation animation;
+	@Inject private Instance<Animation> animation;
 	@Inject private TouchRecognitionFactory touchRecognitionFactory;
 	@Inject private PageScopeFactory pageScopeFactory;
 	@Inject private MultiPageTouchHandler multiPageTouchHandler;
@@ -67,6 +66,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	@Inject @Named("multiPageControllerMainPanel") private FlowPanel mainPanel;
 	@Inject private PagePlaceHolderPanelCreator pagePlaceHolderPanelCreator;
+	@Inject private Instance<SwipeType> swipeType;
 
 	private static int activePageCount = 3;
 	private int currentVisiblePage = -1;
@@ -90,7 +90,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	private ResizeTimer resizeTimer;
 	private AnimationEndCallback animationCallback = null;
-	private boolean swipeDisabled = false;
 	private FlowDataSupplier flowDataSupplier;
 
 	private final Set<HandlerRegistration> touchHandlers = new HashSet<HandlerRegistration>();
@@ -287,11 +286,10 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 			if (!onlyPositionReset) {
 				Window.scrollTo(0, 0);
 			}
-			animation.removeAnimationEndCallback(animationCallback);
+			animation.get().removeAnimationEndCallback(animationCallback);
 			animationCallback = new AnimationEndCallback() {
 				@Override
 				public void onComplate(int position) {
-
 					scheduler.scheduleDeferred(new ScheduledCommand() {
 						@Override
 						public void execute() {
@@ -302,13 +300,14 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 							if (!onlyPositionReset) {
 								eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
 							}
+
 							currentPosition = to;
 						}
 					});
 				}
 			};
-			animation.addAnimationEndCallback(animationCallback);
-			animation.goTo(mainPanel, Math.round((to / WIDTH)) * WIDTH, duration);
+			animation.get().addAnimationEndCallback(animationCallback);
+			animation.get().goTo(mainPanel, Math.round((to / WIDTH)) * WIDTH, duration);
 		} else if (!onlyPositionReset) {
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
 		}
@@ -431,13 +430,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	}
 
 	private void configure() {
-		String xml = "<root><swipeoptions class=\"qp-swipe-options\"/></root>";
-		Map<String, String> styles = styleSocket.getStyles((Element) XMLParser.parse(xml).getDocumentElement().getFirstChild());
-		if (styles.get(EmpiriaStyleNameConstants.EMPIRIA_SWIPE_DISABLE_ANIMATION) != null) {
-			setSwipeDisabled(true);
-		} else {
-			setSwipeDisabled(false);
-		}
+			configureSwipe();
 	}
 
 	@Override
@@ -446,7 +439,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 		view.setController(this);
 		configure();
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW), this);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), this);
 
@@ -462,12 +454,11 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	}
 
 	public boolean isSwipeDisabled() {
-		return swipeDisabled;
+		return swipeType.get() == SwipeType.DISABLED;
 	}
 
-	public void setSwipeDisabled(boolean swipeDisabled) {
-		this.swipeDisabled = swipeDisabled;
-		if (swipeDisabled) {
+	public void configureSwipe() {
+		if (swipeType.get() == SwipeType.DISABLED) {
 			for (HandlerRegistration registration : touchHandlers) {
 				registration.removeHandler();
 			}
@@ -479,7 +470,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_MOVE)));
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_END)));
 		}
-		panelsCache.setSwipeDisabled(swipeDisabled);
+		panelsCache.setSwipeType(swipeType.get());
 	}
 
 	public int getCurrentVisiblePage() {
@@ -504,7 +495,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	@Override
 	public boolean isAnimationRunning() {
-		return animation.isRunning();
+		return animation.get().isRunning();
 	}
 
 	private float getCurrentPosition() {
