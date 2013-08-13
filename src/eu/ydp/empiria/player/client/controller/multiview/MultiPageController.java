@@ -470,7 +470,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_MOVE)));
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_END)));
 		}
-		panelsCache.setSwipeType(SwipeType.DISABLED);
+		panelsCache.setSwipeType(swipeType.get());
 	}
 
 	public int getCurrentVisiblePage() {
