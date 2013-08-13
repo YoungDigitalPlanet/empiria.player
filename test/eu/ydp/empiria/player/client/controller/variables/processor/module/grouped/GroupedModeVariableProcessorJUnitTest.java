@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.processor.module.counting.DoneToCountModeAdjuster;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.counting.ErrorsToCountModeAdjuster;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -93,9 +94,9 @@ public class GroupedModeVariableProcessorJUnitTest {
 		when(groupedAnswersManager.isAnswerCorrectInAnyOfGroups("wrongAnswer", response, response.groups))
 			.thenReturn(false);
 		
-		boolean lastmistaken = groupedModeVariableProcessor.checkLastmistaken(response, answersChanges);
+		LastMistaken lastmistaken = groupedModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
-		assertThat(lastmistaken, equalTo(true));
+		assertThat(lastmistaken, equalTo(LastMistaken.WRONG));
 	}
 
 	@Test
@@ -110,9 +111,9 @@ public class GroupedModeVariableProcessorJUnitTest {
 		when(groupedAnswersManager.isAnswerCorrectInAnyOfGroups("wrongAnswer", response, response.groups))
 		.thenReturn(false);
 		
-		boolean lastmistaken = groupedModeVariableProcessor.checkLastmistaken(response, answersChanges);
+		LastMistaken lastmistaken = groupedModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
-		assertThat(lastmistaken, equalTo(false));
+		assertThat(lastmistaken, equalTo(LastMistaken.CORRECT));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -128,14 +129,14 @@ public class GroupedModeVariableProcessorJUnitTest {
 		when(groupedAnswersManager.isAnswerCorrectInAnyOfGroups("doneAnswer1", response, response.groups))
 		.thenReturn(true);
 		
-		boolean lastmistaken = groupedModeVariableProcessor.checkLastmistaken(response, answersChanges);
+		LastMistaken lastmistaken = groupedModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
-		assertThat(lastmistaken, equalTo(false));
+		assertThat(lastmistaken, equalTo(LastMistaken.CORRECT));
 	}
 	
 	@Test
 	public void shouldCalculateMistakesWhenLastAnswerWasMistake() throws Exception {
-		boolean lastmistaken = true;
+		LastMistaken lastmistaken = LastMistaken.WRONG;
 		int previousMistakes = 123;
 		
 		int newMistakes = groupedModeVariableProcessor.calculateMistakes(lastmistaken, previousMistakes);
@@ -145,7 +146,7 @@ public class GroupedModeVariableProcessorJUnitTest {
 	
 	@Test
 	public void shouldCalculateMistakesWhenLastAnswerWasCorrect() throws Exception {
-		boolean lastmistaken = false;
+		LastMistaken lastmistaken = LastMistaken.CORRECT;
 		int previousMistakes = 123;
 		
 		int newMistakes = groupedModeVariableProcessor.calculateMistakes(lastmistaken, previousMistakes);

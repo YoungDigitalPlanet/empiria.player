@@ -10,10 +10,10 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps.EntryTransformer;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.variables.processor.global.function.ModuleProcessingResultExtractingFunctions;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ResultVariables;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
@@ -31,7 +31,7 @@ public class ExpressionBeanResultsToResultVariableTransformation implements
 		int done = findDone(values);
 		int errors = findErrors(values);
 		int mistakes = findMistakes(values);
-		boolean lastMistaken = findLastMistaken(values);
+		LastMistaken lastMistaken = findLastMistaken(values);
 		return new GlobalVariables(todo, done, errors, mistakes, lastMistaken);
 	}
 
@@ -59,10 +59,15 @@ public class ExpressionBeanResultsToResultVariableTransformation implements
 		return atLeastOneError ? EXPRESSION_TODO : 0;
 	}
 
-	private boolean findLastMistaken(Collection<DtoModuleProcessingResult> results) {
-		Function<DtoModuleProcessingResult, Boolean> extractLastMistakenFunction = extractingFunctionsProvider.getExtractLastMistakenFunction();
-		Iterable<Boolean> lastMistakens = Iterables.transform(results, extractLastMistakenFunction);
-		return Iterables.contains(lastMistakens, true);
+	private LastMistaken findLastMistaken(Collection<DtoModuleProcessingResult> results) {
+		Function<DtoModuleProcessingResult, LastMistaken> extractLastMistakenFunction = extractingFunctionsProvider.getExtractLastMistakenFunction();
+		Iterable<LastMistaken> lastMistakens = Iterables.transform(results, extractLastMistakenFunction);
+		boolean containsAnyWrong = Iterables.contains(lastMistakens, LastMistaken.WRONG);
+		if(containsAnyWrong) {
+			return LastMistaken.WRONG;
+		} else {
+			return LastMistaken.CORRECT;
+		}
 	}
 
 	private int extractFromIterable(Iterable<DtoModuleProcessingResult> modulesProcessingResults,

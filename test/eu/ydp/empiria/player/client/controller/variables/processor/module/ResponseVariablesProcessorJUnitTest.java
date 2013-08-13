@@ -13,9 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
 import static org.junit.Assert.*;
-
 import static org.mockito.Mockito.*;
-
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.DtoProcessedResponse;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -24,6 +22,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMod
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,15 +35,15 @@ public class ResponseVariablesProcessorJUnitTest {
 	@Mock
 	private VariableProcessor variableProcessor;
 
-	private Cardinality cardinality = Cardinality.SINGLE;
-	private boolean hasGroups = false;
-	private boolean isInExpression = false;
-	private List<String> newUserAnswers = Lists.newArrayList("newUserAnswer");
-	private Response currentResponse = new ResponseBuilder().withValues(newUserAnswers)
+	private final Cardinality cardinality = Cardinality.SINGLE;
+	private final boolean hasGroups = false;
+	private final boolean isInExpression = false;
+	private final List<String> newUserAnswers = Lists.newArrayList("newUserAnswer");
+	private final Response currentResponse = new ResponseBuilder().withValues(newUserAnswers)
 			.withCardinality(cardinality)
 			.build();
-	private int previousMistakes = 1;
-	private List<Boolean> userAnswersEvaluation = Lists.newArrayList(true, true);
+	private final int previousMistakes = 1;
+	private final List<Boolean> userAnswersEvaluation = Lists.newArrayList(true, true);
 
 
 	@Before
@@ -86,7 +85,7 @@ public class ResponseVariablesProcessorJUnitTest {
 		DtoModuleProcessingResult processingResult = processedResponse.getPreviousProcessingResult();
 		UserInteractionVariables userInteractionVariables = processingResult.getUserInteractionVariables();
 		
-		assertEquals(true, userInteractionVariables.isLastmistaken());
+		assertEquals(LastMistaken.WRONG, userInteractionVariables.getLastmistaken());
 		assertEquals(previousMistakes+1, userInteractionVariables.getMistakes());
 	}
 
@@ -94,7 +93,7 @@ public class ResponseVariablesProcessorJUnitTest {
 		DtoModuleProcessingResult processingResult = processedResponse.getPreviousProcessingResult();
 		UserInteractionVariables userInteractionVariables = processingResult.getUserInteractionVariables();
 		
-		assertEquals(false, userInteractionVariables.isLastmistaken());
+		assertEquals(LastMistaken.NONE, userInteractionVariables.getLastmistaken());
 		assertEquals(false, userInteractionVariables.getLastAnswerChanges().containChanges());
 		assertEquals(previousMistakes, userInteractionVariables.getMistakes());   //mistakes cannot be reset, but cannot change from previous mistakes
 	}
@@ -116,11 +115,11 @@ public class ResponseVariablesProcessorJUnitTest {
 		when(variableProcessor.calculateErrors(currentResponse))
 			.thenReturn(1);
 		
-		when(variableProcessor.calculateMistakes(true, previousMistakes))
+		when(variableProcessor.calculateMistakes(LastMistaken.WRONG, previousMistakes))
 			.thenReturn(previousMistakes+1);
 		
 		when(variableProcessor.checkLastmistaken(eq(currentResponse), Mockito.any(LastAnswersChanges.class)))
-			.thenReturn(true);
+			.thenReturn(LastMistaken.WRONG);
 		
 		when(variableProcessor.evaluateAnswers(currentResponse))
 			.thenReturn(userAnswersEvaluation );

@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
@@ -30,7 +31,7 @@ public class GlobalVariablesTestHelper {
 	}
 
 	public static DtoModuleProcessingResult prepareProcessingResults(final int todo, final int done, final int errors, final int mistakes,
-			final boolean lastMistaken) {
+			final LastMistaken lastMistaken) {
 		DtoModuleProcessingResult processingResult = DtoModuleProcessingResult.fromDefaultVariables();
 		processingResult.setConstantVariables(new ConstantVariables(todo));
 		processingResult.setGeneralVariables(new GeneralVariables(Lists.<String> newArrayList(), Lists.<Boolean> newArrayList(), errors, done));

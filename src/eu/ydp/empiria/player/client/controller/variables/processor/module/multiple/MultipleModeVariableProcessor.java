@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.module.Variab
 import eu.ydp.empiria.player.client.controller.variables.processor.module.counting.CorrectAnswersCounter;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.counting.ErrorAnswersCounter;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 
 public class MultipleModeVariableProcessor implements VariableProcessor {
 
@@ -40,13 +41,13 @@ public class MultipleModeVariableProcessor implements VariableProcessor {
 
 	
 	@Override
-	public boolean checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
+	public LastMistaken checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
 		boolean areAddedAnswers = answersChanges.getAddedAnswers().size() > 0;
-		boolean lastmistaken = false;
+		LastMistaken lastmistaken = LastMistaken.CORRECT;
 		if(areAddedAnswers){
 			boolean isAnyAsnwerIncorrect = lastGivenAnswersChecker.isAnyAsnwerIncorrect(answersChanges.getAddedAnswers(), response.correctAnswers);
 			if( isAnyAsnwerIncorrect ){
-				lastmistaken = true;
+				lastmistaken = LastMistaken.WRONG;
 			}
 		}
 		return lastmistaken;
@@ -54,8 +55,8 @@ public class MultipleModeVariableProcessor implements VariableProcessor {
 	
 
 	@Override
-	public int calculateMistakes(boolean lastmistaken, int previousMistakes) {
-		if (lastmistaken) {
+	public int calculateMistakes(LastMistaken lastmistaken, int previousMistakes) {
+		if (lastmistaken == LastMistaken.WRONG) {
 			return previousMistakes + 1;
 		} else {
 			return previousMistakes;

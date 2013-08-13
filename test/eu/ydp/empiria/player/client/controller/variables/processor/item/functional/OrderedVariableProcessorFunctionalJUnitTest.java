@@ -22,6 +22,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.gwtutil.client.Pair;
 
 @RunWith(JUnitParamsRunner.class)
@@ -45,7 +46,8 @@ public class OrderedVariableProcessorFunctionalJUnitTest extends VariableProcess
 		defaultVariableProcessor.processResponseVariables(responseAndOutcomeMaps.getOne(), responseAndOutcomeMaps.getTwo(), processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), responseAndOutcomeMaps.getTwo());
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), responseAndOutcomeMaps.getTwo());
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), responseAndOutcomeMaps.getTwo());
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(DONE), responseAndOutcomeMaps.getTwo());
 	}
 
@@ -60,7 +62,7 @@ public class OrderedVariableProcessorFunctionalJUnitTest extends VariableProcess
 
 		// then
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(DONE,ERRORS, MISTAKES), responseAndOutcomeMaps.getTwo());
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(LASTMISTAKEN), responseAndOutcomeMaps.getTwo());
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.NONE.toString()), Lists.newArrayList(LASTMISTAKEN), responseAndOutcomeMaps.getTwo());
 	}
 
 	public Object[] testParams() {

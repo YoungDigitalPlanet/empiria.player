@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 
 public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase {
 
@@ -36,14 +37,17 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(DONE), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("2"), Lists.newArrayList(TODO), outcomes);
 
-		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswerInGroup, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswerInGroup, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswerInGroup, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswerInGroup, Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
 
-		assertResponseRelatedOutcomesHaveValue(responseWithWrongAnswer, Lists.newArrayList("1"), Lists.newArrayList(ERRORS, TODO, MISTAKES, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithWrongAnswer, Lists.newArrayList("1"), Lists.newArrayList(ERRORS, TODO, MISTAKES), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithWrongAnswer, Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(responseWithWrongAnswer, Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
 	}
 
@@ -73,13 +77,15 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 
 		// then
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS, DONE), outcomes);
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(LASTMISTAKEN), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 
-		assertResponseRelatedOutcomesHaveValue(correctResponse, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(correctResponse, Lists.newArrayList("0"), Lists.newArrayList(ERRORS), outcomes);
+		assertResponseRelatedOutcomesHaveValue(correctResponse, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(correctResponse, Lists.newArrayList("1"), Lists.newArrayList(DONE), outcomes);
 
 		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList("1"), Lists.newArrayList(ERRORS), outcomes);
-		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList("0"), Lists.newArrayList(DONE, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
+		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 	}
 
 	@Test
@@ -101,8 +107,10 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS, LASTMISTAKEN), outcomes);
-		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList("1"), Lists.newArrayList(ERRORS, LASTMISTAKEN), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList("1"), Lists.newArrayList(ERRORS), outcomes);
+		assertResponseRelatedOutcomesHaveValue(wrongResponse, Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 	}
 
 	@Test
@@ -123,13 +131,16 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("2"), Lists.newArrayList(DONE, TODO), outcomes);
 
-		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswer, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswer, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswer, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswer, Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
 
-		assertResponseRelatedOutcomesHaveValue(anotherResponseWithCorrectAnswer, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(anotherResponseWithCorrectAnswer, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertResponseRelatedOutcomesHaveValue(anotherResponseWithCorrectAnswer, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(anotherResponseWithCorrectAnswer, Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
 	}
 
@@ -155,7 +166,8 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(DONE), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("2"), Lists.newArrayList(TODO), outcomes);
 	}
