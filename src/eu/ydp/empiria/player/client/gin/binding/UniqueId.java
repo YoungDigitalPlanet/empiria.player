@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.gin.scopes;
+package eu.ydp.empiria.player.client.gin.binding;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

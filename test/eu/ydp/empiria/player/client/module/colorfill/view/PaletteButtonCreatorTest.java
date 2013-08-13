@@ -32,15 +32,17 @@ public class PaletteButtonCreatorTest  {
 	@Test
 	public void createButton() {
 		// given
+		String description = "buttonDescription";
 		ColorModel color = ColorModel.createEraser();
 		Command command = mock(Command.class);
 		when(buttonProvider.get()).thenReturn(mock(PaletteButton.class));
 		
 		// when
-		PaletteButton button = creator.createButton(color, command);
+		PaletteButton button = creator.createButton(color, command, description);
 		
 		// then
 		verify(button).setColor(eq(color));
+		verify(button).setDescription(description);
 		verify(userInteractionHandlerFactory).applyUserClickHandler(eq(command), eq(button));
 	}
 

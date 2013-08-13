@@ -23,6 +23,9 @@ public class ColorfillInteractionBean extends ModuleBean {
 	@XmlElement(name = "correctImage")
 	private Image correctImage;
 	
+	@XmlElement(name = "fakeAreas")
+	private FakeAreas fakeAreas;
+	
 	public AreaContainer getAreas() {
 		return areas;
 	}
@@ -53,5 +56,16 @@ public class ColorfillInteractionBean extends ModuleBean {
 
 	public void setCorrectImage(Image correctImage) {
 		this.correctImage = correctImage;
+	}
+
+	public FakeAreas getFakeAreas() {
+		if(fakeAreas == null) {
+			fakeAreas = new FakeAreas();
+		}
+		return fakeAreas;
+	}
+
+	public void setFakeAreas(FakeAreas fakeAreas) {
+		this.fakeAreas = fakeAreas;
 	}	
 }

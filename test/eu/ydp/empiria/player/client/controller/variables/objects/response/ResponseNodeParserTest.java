@@ -28,14 +28,14 @@ public class ResponseNodeParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEquals(response.correctAnswers.getAllAnswers().get(1), "CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_2");
 		assertEquals(response.correctAnswers.getAllAnswers().get(2), "CONNECTION_RESPONSE_1_3 CONNECTION_RESPONSE_1_4");
 		assertEquals(response.getID(), "CONNECTION_RESPONSE_1"); // checkMode
-		assertEquals(response.getCountMode(), CountMode.SINGLE);
+		assertEquals(response.getAppropriateCountMode(), CountMode.SINGLE);
 		assertEquals(response.groups.get(0), "x1");
 		assertEquals(response.groups.get(1), "x2");
 	}
 
 	private String getResponseDeclaration() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("<responseDeclaration cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\" checkMode=\"expression\" countMode=\"\" evaluate =\"correct\">");
+		builder.append("<responseDeclaration cardinality=\"multiple\" identifier=\"CONNECTION_RESPONSE_1\" checkMode=\"expression\" evaluate =\"correct\">");
 		builder.append("		<correctResponse>");
 		builder.append("			<value forIndex=\"0\"  group=\"x1\" groupMode=\"groupItem\">CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_1</value>");
 		builder.append("			<value forIndex=\"0\"  group=\"x2\" groupMode=\"groupItem\">CONNECTION_RESPONSE_1_0 CONNECTION_RESPONSE_1_2</value>");

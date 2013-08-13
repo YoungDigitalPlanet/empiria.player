@@ -54,9 +54,7 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 
 	@Override
 	public void removeFromParent() {
-		if (view.isAttached()){
-			view.removeFromParent();
-		}
+		view.removeFromParent();
 	}
 
 	@Override

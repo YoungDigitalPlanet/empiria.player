@@ -6,18 +6,17 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.view.player.AbstractElementCache;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
 public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPanel>> {
-	@Inject
-	protected StyleNameConstants styleNames;
-	@Inject
-	protected GWTPanelFactory panelFactory;
+	@Inject protected StyleNameConstants styleNames;
+	@Inject protected GWTPanelFactory panelFactory;
 
-	protected boolean swipeDisabled;
+	protected SwipeType swipeType;
 
 	private FlowPanel parent;
 
@@ -31,7 +30,7 @@ public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPan
 		Style style = parent.getElement().getStyle();
 		parent.getElement().setId(styleNames.QP_PAGE() + index.intValue());
 
-		if (!swipeDisabled) {
+		if (swipeType != SwipeType.DISABLED) {
 			style.setPosition(Position.ABSOLUTE);
 			style.setTop(0, Unit.PX);
 			style.setLeft(WIDTH * index, Unit.PCT);
@@ -44,15 +43,15 @@ public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPan
 		return new KeyValue<FlowPanel, FlowPanel>(parent, childPanel);
 	}
 
-	public void setSwipeDisabled(boolean swipeDisabled) {
-		this.swipeDisabled = swipeDisabled;
-		if (parent != null){
+	public void setSwipeType(SwipeType swipeType) {
+		this.swipeType = swipeType;
+		if (parent != null) {
 			Style style = parent.getElement().getStyle();
 
-			if(swipeDisabled){
+			if (swipeType == SwipeType.DISABLED) {
 				style.clearTop();
 				style.clearPosition();
-			}else{
+			} else {
 				style.setTop(0, Unit.PX);
 				style.setPosition(Position.ABSOLUTE);
 			}

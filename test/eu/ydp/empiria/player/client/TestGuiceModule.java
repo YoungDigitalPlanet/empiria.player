@@ -32,6 +32,7 @@ import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
+import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
@@ -39,7 +40,6 @@ import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
-import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
