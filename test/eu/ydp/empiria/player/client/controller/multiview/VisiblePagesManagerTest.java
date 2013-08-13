@@ -82,11 +82,12 @@ public class VisiblePagesManagerTest {
 			for(int x =0;x<10;++x){
 				panelCache.getOrCreateAndPut(x);
 			}
+			instance.setVisiblePageCount(0);
 			int currentPage = 2;
 			Set<Integer> pagesToDeatach = instance.getPagesToDetach(currentPage);
 			assertThat(pagesToDeatach).isNotEmpty();
 			assertThat(pagesToDeatach).hasSize(5);
-	
+
 		}
 
 	@Test
@@ -114,7 +115,7 @@ public class VisiblePagesManagerTest {
 					return true;
 				}
 			});
-	
+
 			for(int x =0;x<10;++x){
 				panelCache.getOrCreateAndPut(x);
 			}

@@ -6,7 +6,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.Inject;
@@ -16,28 +20,27 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 public class VisiblePagesManager {
 
 	@Inject private PanelCache panelCache;
-	private int visiblePageCount;
+	private int visiblePageCount = 1;
 
 	public void setVisiblePageCount(int visiblePageCount) {
 		this.visiblePageCount = visiblePageCount;
 	}
 
-	private List<Integer> getPageIndexScanRange(int currentVisiblePage) {
-		int halfToShowPages = (int) Math.ceil(visiblePageCount / 2d);
-		int start = currentVisiblePage - halfToShowPages + 1;
-		int end = currentVisiblePage + halfToShowPages;
-		List<Integer> range = Lists.newArrayList();
-		for (int page = start; page < end; ++page) {
-			range.add(page);
+	private Set<Integer> getPageIndexScanRange(int currentVisiblePage) {
+		if(visiblePageCount == 0){
+			return ImmutableSet.of();
 		}
-		return range;
+		int halfToShowPages = (int) Math.ceil(visiblePageCount / 2d);
+		int start = currentVisiblePage - halfToShowPages;
+		int end = currentVisiblePage + halfToShowPages;
+		return ContiguousSet.create(Range.open(start, end), DiscreteDomain.integers());
 	}
 
 	public List<Integer> getPagesToAttache(int currentVisiblePage) {
 		Set<Integer> deatachedPageIds = getDetachedPagesIds();
 		ArrayList<Integer> toAttacheIds = Lists.newArrayList();
 
-		List<Integer> indexScanRange = getPageIndexScanRange(currentVisiblePage);
+		Set<Integer> indexScanRange = getPageIndexScanRange(currentVisiblePage);
 		for (int page : indexScanRange) {
 			if (deatachedPageIds.contains(page)) {
 				toAttacheIds.add(page);
@@ -56,7 +59,7 @@ public class VisiblePagesManager {
 	public Set<Integer> getPagesToDetach(int currentVisiblePage) {
 		Set<Integer> activePanels = getActivePagesIds();
 
-		List<Integer> indexScanRange = getPageIndexScanRange(currentVisiblePage);
+		Set<Integer> indexScanRange = getPageIndexScanRange(currentVisiblePage);
 		for (int page : indexScanRange) {
 			activePanels.remove(page);
 		}
