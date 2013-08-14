@@ -30,6 +30,7 @@ import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBinder;
@@ -86,8 +87,6 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
 		setUp(new Class<?>[] {}, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule(presenter, mathGapModel ));
 		eventsBus = injector.getInstance(EventsBus.class);
 		instance = injector.getInstance(InlineChoiceMathGapModule.class);
-//		gapBinder = mock(GapBinder.class);
-//		instance.gapBinder = gapBinder;
 	}
 
 	@Test
@@ -155,9 +154,8 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
     	private IsExListBox mockedListBox;
 
 		public InlineChoiceGapModuleMock() {
-			super(mock(InlineChoiceMathGapModulePresenter.class), mock(ResponseSocket.class));
 			mathGapModel = injector.getInstance(Key.get(MathGapModel.class, ModuleScoped.class));
-			initStyles();
+			initParametersBasedOnMathStyles();
 			options = createOptions(getModuleElement(), getModuleSocket());
 		}
 

@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public abstract class GapBase extends OneViewInteractionModuleBase  implements Bindable {
 
@@ -44,8 +45,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 	
 	protected String lastValue = null;
 	
-	protected Integer fontSize = 16;
-	
 	protected boolean locked;
 	
 	protected abstract void setPreviousAnswer();
@@ -58,11 +57,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 	
 	private boolean isGapBinderInitialized = false;
 	
-	public GapBase() {
-		super();
-	}
-
-	// ILifecycleModule interface implementation
 	
 	@Override
 	public void onBodyLoad() {
@@ -197,12 +191,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 	}
 
 	protected String getElementAttributeValue(String attrName){
-		String attrValue = null;
-
-		if(getModuleElement().hasAttribute(attrName)){
-			attrValue = getModuleElement().getAttribute(attrName);
-		}
-
+		String attrValue = XMLUtils.getAttributeAsString(getModuleElement(), attrName, null);
 		return attrValue;
 	}
 

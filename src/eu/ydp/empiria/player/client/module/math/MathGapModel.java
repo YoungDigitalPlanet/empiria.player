@@ -35,4 +35,12 @@ public class MathGapModel {
 	public void setMathStyles(Map<String, String> mathStyles) {
 		this.mathStyles = mathStyles;
 	}
+	
+	public boolean containsStyle(String key) {
+		return mathStyles.containsKey(key);
+	}
+	
+	public String getStyle(String key) {
+		return mathStyles.get(key);
+	}
 }

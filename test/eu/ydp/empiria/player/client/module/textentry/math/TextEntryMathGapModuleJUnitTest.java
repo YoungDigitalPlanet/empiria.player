@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.textentry.DragContentController;
+import eu.ydp.empiria.player.client.module.textentry.TextEntryModulePresenter;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.xml.XMLParser;
 
@@ -59,18 +60,6 @@ public class TextEntryMathGapModuleJUnitTest extends AbstractTestBaseWithoutAuto
 	public void before() {
 		MathGapModel mathGapModel = new MathGapModel();
 		setUp(new Class<?>[] {}, new CustomGuiceModule(mathGapModel));
-	}
-
-	@Test
-	public void testIfSubOrSupIsCorrectlyDetected() {
-		TextEntryMathGapModule textGap = mockTextGap();
-
-		Element node = XMLParser.parse("<gap type=\"text-entry\" uid=\"uid_0000\" />").getDocumentElement();
-		Element parentNode = XMLParser.parse(
-				"<mmultiscripts>" + "<gap type=\"text-entry\" uid=\"uid_0000\" />" + "<none/>" + "<mprescripts/>" + "<none/>" + "<none/>" + "</mmultiscripts>")
-				.getDocumentElement();
-
-		Assert.assertTrue(textGap.isSubOrSup(node, parentNode));
 	}
 
 	@Test
@@ -132,15 +121,9 @@ public class TextEntryMathGapModuleJUnitTest extends AbstractTestBaseWithoutAuto
 		private boolean evaluatedResponse;
 
 		public TextEntryGapModuleMock(Map<String, String> styles) {
-			
-			super(
-					injector.getInstance(TextEntryMathGapModulePresenter.class), 
-					injector.getInstance(StyleSocket.class),
-					injector.getInstance(SourcelistManager.class), 
-					injector.getInstance(DragContentController.class),
-					injector.getInstance(ResponseSocket.class)
-					);
 			mathGapModel = injector.getInstance(Key.get(MathGapModel.class, ModuleScoped.class));
+			textEntryPresenter = injector.getInstance(TextEntryMathGapModulePresenter.class);
+			postConstruct();
 		}
 
 		protected String mockedResponse;
@@ -160,18 +143,6 @@ public class TextEntryMathGapModuleJUnitTest extends AbstractTestBaseWithoutAuto
 		@Override
 		public int getFontSize() {
 			return 20;
-		}
-
-		public void invokeSetMaxlengthBinding(Map<String, String> styles) {
-			setMaxlengthBinding(styles, XMLParser.parse("<gap type=\"text-entry\" uid=\"uid_0000\" />").getDocumentElement());
-		}
-
-		public void invokeSetWidthBinding(Map<String, String> styles) {
-			setWidthBinding(styles, XMLParser.parse("<gap type=\"text-entry\" uid=\"uid_0000\" />").getDocumentElement());
-		}
-
-		public int invokeCalculateTextBoxWidth() {
-			return getLongestAnswerLength() * getFontSize();
 		}
 
 		public void setMockedResponse(String response) {

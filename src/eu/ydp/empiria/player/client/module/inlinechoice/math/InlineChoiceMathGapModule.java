@@ -53,6 +53,8 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	@Inject
 	private StyleSocket styleSocket;
 
+	@Inject
+	@PageScoped
 	private ResponseSocket responseSocket;
 	
 	@Inject
@@ -60,22 +62,19 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	MathGapModel mathGapModel;
 	
 	@Inject
-	public InlineChoiceMathGapModule(
-			InlineChoiceMathGapModulePresenter presenter,
-			@PageScoped ResponseSocket responseSocket) {
-		this.presenter = presenter;
-		this.responseSocket = responseSocket;
+	private InlineChoiceMathGapModulePresenter inlineChoicePresenter;
 
+	
+	@PostConstruct
+	public void postConstruct() {
+		this.presenter = inlineChoicePresenter;
+		
 		getListBox().setChangeListener(new ExListBoxChangeListener() {
 			@Override
 			public void onChange() {
 				updateResponse(true);
 			}
 		});
-	}
-
-	@PostConstruct
-	public void postConstruct() {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED), this, pageScopeFactory.getCurrentPageScope());
 	}
 	
@@ -84,12 +83,9 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		return responseSocket;
 	}
 
-	private InlineChoiceMathGapModulePresenter getInlineChoicePresenter() {
-		return (InlineChoiceMathGapModulePresenter)presenter;
-	}
 	
 	protected IsExListBox getListBox() {
-		return getInlineChoicePresenter().getListBox();
+		return inlineChoicePresenter.getListBox();
 	}
 
 	@Override
@@ -102,7 +98,7 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 
 		Map<String, String> styles = styleSocket.getStyles(getModuleElement());
 		mathGapModel.getMathStyles().putAll(styles);
-		initStyles();
+		initParametersBasedOnMathStyles();
 
 		setListBoxEmptyOption();
 		options = createOptions(getModuleElement(), getModuleSocket());
@@ -136,21 +132,26 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		return options;
 	}
 
-	protected void initStyles() {
-		if (mathGapModel.getMathStyles().containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
-			presenter.setWidth(NumberUtils.tryParseInt(mathGapModel.getMathStyles().get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)), Unit.PX);
-		}
+	protected void initParametersBasedOnMathStyles() {
+		initDimensionBasedOnMathStyles();
+		checkHasEmptyOptionBasedOnMathStyles();
+	}
 
-		if (mathGapModel.getMathStyles().containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
-			presenter.setHeight(NumberUtils.tryParseInt(mathGapModel.getMathStyles().get(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)), Unit.PX);
-		}
-
-		if (mathGapModel.getMathStyles().containsKey(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
-			hasEmptyOption = mathGapModel.getMathStyles().get(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(
+	private void checkHasEmptyOptionBasedOnMathStyles() {
+		if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
+			hasEmptyOption = mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(
 					EmpiriaStyleNameConstants.VALUE_SHOW);
 		}
 	}
 
+	private void initDimensionBasedOnMathStyles() {
+		if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
+			presenter.setWidth(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)), Unit.PX);
+		}
+		if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
+			presenter.setHeight(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)), Unit.PX);
+		}
+	}
 
 	public void setValue(String valueIdentifier) {
 		getListBox().setSelectedIndex(indexInternalToView(valueIdentifier));

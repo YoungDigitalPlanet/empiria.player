@@ -11,7 +11,9 @@ import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
@@ -27,56 +29,34 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.StringUtils;
 
-public class TextEntryGapBase extends GapBase implements SourcelistClient {
-
+public abstract class TextEntryGapBase extends GapBase implements SourcelistClient {
+	
 	private static final String SOURCE_LIST_ID = "sourceListId";
 
-	protected final SourcelistManager sourcelistManager;
-	protected final StyleSocket styleSocket;
-	protected final DragContentController dragContentController;
-	protected final ResponseSocket responseSocket;
+	@Inject
+	@PageScoped
+	protected SourcelistManager sourcelistManager;
+	
+	@Inject
+	protected StyleSocket styleSocket;
+	
+	@Inject
+	protected DragContentController dragContentController;
+	
+	@Inject
+	@PageScoped
+	protected ResponseSocket responseSocket;
 
-	public TextEntryGapBase(
-			TextEntryGapModulePresenterBase presenter, 
-			StyleSocket styleSocket,
-			final SourcelistManager sourcelistManager, 
-			DragContentController dragContentController, 
-			ResponseSocket responseSocket) {
-		
-		this.styleSocket = styleSocket;
-		this.sourcelistManager = sourcelistManager;
-		this.presenter = presenter;
-		this.dragContentController = dragContentController;
-		this.responseSocket = responseSocket;
-		
-		presenter.addPresenterHandler(new PresenterHandler() {
-			@Override
-			public void onChange(ChangeEvent event) {
-				sourcelistManager.onUserValueChanged();
-				updateResponse(true);
-			}
-
-			@Override
-			public void onBlur(BlurEvent event) {
-				if (isMobileUserAgent()) {
-					sourcelistManager.onUserValueChanged();
-					updateResponse(true);
-				}
-			}
-		});
-		presenter.addDomHandlerOnObjectDrop(new GapDropHandler() {
-
-			@Override
-			public void onDrop(DragDataObject dragDataObject) {
-				String itemID = dragDataObject.getItemId();
-				String sourceModuleId = dragDataObject.getSourceId();
-				String targetModuleId = getIdentifier();
-
-				sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
-			}
-		});
+	
+	public void postConstruct() {
+		addHandlersInPresenter();
 	}
 	
+	private void addHandlersInPresenter() {
+		getTextEntryPresenter().addPresenterHandler(new TextEntryPresenterHandler());
+		getTextEntryPresenter().addDomHandlerOnObjectDrop(new TextEntryDomHandler());
+	}
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		// implementacja wy¿ej
@@ -207,5 +187,34 @@ public class TextEntryGapBase extends GapBase implements SourcelistClient {
 	
 	private TextEntryGapModulePresenterBase getTextEntryPresenter() {
 		return (TextEntryGapModulePresenterBase) presenter;
+	}
+	
+	
+	
+	private final class TextEntryDomHandler implements GapDropHandler {
+		@Override
+		public void onDrop(DragDataObject dragDataObject) {
+			String itemID = dragDataObject.getItemId();
+			String sourceModuleId = dragDataObject.getSourceId();
+			String targetModuleId = getIdentifier();
+
+			sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
+		}
+	}
+
+	private final class TextEntryPresenterHandler implements PresenterHandler {
+		@Override
+		public void onChange(ChangeEvent event) {
+			sourcelistManager.onUserValueChanged();
+			updateResponse(true);
+		}
+
+		@Override
+		public void onBlur(BlurEvent event) {
+			if (isMobileUserAgent()) {
+				sourcelistManager.onUserValueChanged();
+				updateResponse(true);
+			}
+		}
 	}
 }
