@@ -33,7 +33,6 @@ public class GapBinder implements Bindable {
 	protected DefaultBindingGroupIdentifier maxlengthBindingIdentifier;
 	protected BindingContext widthBindingContext;
 	protected BindingContext maxlengthBindingContext;
-	protected String maxLength = StringUtils.EMPTY_STRING;
 	protected GapBase gapBase;
 	
 	public void setGapBase(GapBase gapBase) {
@@ -89,12 +88,16 @@ public class GapBinder implements Bindable {
 		if (widthMode == GapWidthMode.GROUP){
 			widthBindingIdentifier = getBindindIdentifier(moduleElement);
 		} else if (widthMode == GapWidthMode.GAP){
-			if (gapBase.getModuleResponse().groups.size() > 0) {
-				widthBindingIdentifier = new DefaultBindingGroupIdentifier(gapBase.getModuleResponse().groups.get(0));
-			} else {
-				int longestAnswer = getLongestAnswerLength();
-				gapBase.presenter.setWidth((longestAnswer * gapBase.getFontSize()), Unit.PX);
-			}
+			setWithBindingForGap();
+		}
+	}
+
+	private void setWithBindingForGap() {
+		if (gapBase.getModuleResponse().groups.size() > 0) {
+			widthBindingIdentifier = new DefaultBindingGroupIdentifier(gapBase.getModuleResponse().groups.get(0));
+		} else {
+			int longestAnswer = getLongestAnswerLength();
+			gapBase.presenter.setWidth((longestAnswer * gapBase.getFontSize()), Unit.PX);
 		}
 	}
 
@@ -128,26 +131,36 @@ public class GapBinder implements Bindable {
 	}
 
 	protected void setMaxlengthBinding(Map<String, String> styles, Element moduleElement) {
-		String gapMaxlength = StringUtils.EMPTY_STRING;
+		String maxlength = getMaxLengthFromStyles(styles);
 
-		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH)) {
-			gapMaxlength = styles.get(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH).trim().toUpperCase();
-		} else if (styles.containsKey(EMPIRIA_MATH_GAP_MAXLENGTH)) {
-			gapMaxlength = styles.get(EMPIRIA_MATH_GAP_MAXLENGTH).trim().toUpperCase();
-		}
-
-		if ( !gapMaxlength.equals(StringUtils.EMPTY_STRING) ) {
-			maxLength = gapMaxlength;
-
-			if (maxLength.matches("ANSWER")) {
-				maxlengthBindingIdentifier = getBindindIdentifier(moduleElement);
-			} else {
-				gapBase.presenter.setMaxLength(Integer.parseInt(maxLength));
-			}
+		if ( !maxlength.equals(StringUtils.EMPTY_STRING) ) {
+			setMaxLengthBindingFromStyleString(maxlength, moduleElement);
 		}
 		else if (gapBase.getModuleElement().hasAttribute("expectedLength")) {
 			gapBase.presenter.setMaxLength(XMLUtils.getAttributeAsInt(gapBase.getModuleElement(), "expectedLength"));
 		}
+	}
+
+	private void setMaxLengthBindingFromStyleString(String maxLength, Element moduleElement) {
+		if (maxLength.matches("ANSWER")) {
+			maxlengthBindingIdentifier = getBindindIdentifier(moduleElement);
+		} else {
+			gapBase.presenter.setMaxLength(Integer.parseInt(maxLength));
+		}
+		
+	}
+
+	private String getMaxLengthFromStyles(Map<String, String> styles) {
+		String gapMaxlength;
+		
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH)) {
+			gapMaxlength = styles.get(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH).trim().toUpperCase();
+		} else if (styles.containsKey(EMPIRIA_MATH_GAP_MAXLENGTH)) {
+			gapMaxlength = styles.get(EMPIRIA_MATH_GAP_MAXLENGTH).trim().toUpperCase();
+		}else{
+			gapMaxlength = StringUtils.EMPTY_STRING;
+		}
+		return gapMaxlength;
 	}
 
 	protected void registerBindingContexts() {
