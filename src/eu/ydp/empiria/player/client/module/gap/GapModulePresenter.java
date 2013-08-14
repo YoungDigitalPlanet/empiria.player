@@ -3,10 +3,6 @@ package eu.ydp.empiria.player.client.module.gap;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasWidgets;
 
-import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
-import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
-import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
-
 public interface GapModulePresenter {
 
 	public static final String WRONG = "wrong";
@@ -31,8 +27,6 @@ public interface GapModulePresenter {
 
 	void setText(String text);
 
-	String getText();
-
 	HasWidgets getContainer();
 
 	void installViewInContainer(HasWidgets container);
@@ -42,14 +36,4 @@ public interface GapModulePresenter {
 	void setMarkMode(String mode);
 
 	void removeMarking();
-
-	void addPresenterHandler(PresenterHandler handler);
-
-	void removeFocusFromTextField();
-
-	IsExListBox getListBox();
-	
-	void makeExpressionReplacements(ExpressionReplacer expressionReplacer);
-	
-	void addDomHandlerOnObjectDrop(GapDropHandler dragGapDropHandler);
 }

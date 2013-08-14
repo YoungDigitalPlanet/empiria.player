@@ -42,6 +42,10 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		return responseIdentifier;
 	}
 
+	protected Response getResponse(){
+		return response;
+	}
+
 	protected final void setResponseFromElement(Element element){
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 		response = findResponse();
@@ -51,9 +55,6 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		return responseSocket.getResponse(responseIdentifier);
 	}
 
-	protected Response getResponse(){
-		return response;
-	}
 
 	protected final InteractionEventsListener getInteractionEventsListener() {
 		return interactionEventsListener;

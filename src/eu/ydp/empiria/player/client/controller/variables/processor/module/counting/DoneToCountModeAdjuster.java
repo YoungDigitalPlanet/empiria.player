@@ -13,7 +13,7 @@ public class DoneToCountModeAdjuster {
 		}else{
 			adjustedValue = adjustDoneValueToSingleCountMode(amountOfGivenCorrectAnswers, response);
 		}
-		
+
 		return adjustedValue;
 	}
 
@@ -32,12 +32,13 @@ public class DoneToCountModeAdjuster {
 		return isSolvedWithoutErrors;
 	}
 
+
 	private boolean allRequiredAnswersGiven(int amountOfGivenCorrectAnswers, Response response) {
 		Cardinality cardinality = response.cardinality;
 		if(cardinality == Cardinality.SINGLE) {
 			return amountOfGivenCorrectAnswers == 1;
 		} else {
-			return amountOfGivenCorrectAnswers == response.correctAnswers.getResponseValuesCount();
+			return amountOfGivenCorrectAnswers == response.correctAnswers.getAnswersCount();
 		}
 	}
 
@@ -45,5 +46,5 @@ public class DoneToCountModeAdjuster {
 		int amountOfGivenAnswers = response.values.size();
 		return amountOfGivenAnswers == amountOfGivenCorrectAnswers;
 	}
-	
+
 }

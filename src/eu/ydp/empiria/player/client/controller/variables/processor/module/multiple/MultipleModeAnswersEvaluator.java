@@ -43,7 +43,7 @@ public class MultipleModeAnswersEvaluator {
 	
 	private List<Boolean> evaluateCorrectAnswers(List<String> userAnswers, CorrectAnswers correctAnswers) {
 		List<Boolean> correctAnswersEvaluation = Lists.newArrayList();
-		for (ResponseValue correctAnswerResponseValue : correctAnswers.getAllResponseValues()) {
+		for (ResponseValue correctAnswerResponseValue : correctAnswers.getAllResponsValues()) {
 			boolean isCorrectAnswer = checkIfUserGaveAnswerFittingToResponseValue(correctAnswerResponseValue, userAnswers);
 			correctAnswersEvaluation.add(isCorrectAnswer);
 		}
