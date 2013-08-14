@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.multiview;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -63,7 +64,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	@Inject private PageScopeFactory pageScopeFactory;
 	@Inject private MultiPageTouchHandler multiPageTouchHandler;
 	@Inject private ForceRedrawHack forceRedrawHack;
-
+	@Inject private VisiblePagesManager visiblePagesManager;
 	@Inject @Named("multiPageControllerMainPanel") private FlowPanel mainPanel;
 	@Inject private PagePlaceHolderPanelCreator pagePlaceHolderPanelCreator;
 	@Inject private Instance<SwipeType> swipeType;
@@ -78,14 +79,12 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	private FlowRequestInvoker flowRequestInvoker;
 	private final Set<Integer> measuredPanels = new HashSet<Integer>();
-	private final Set<Integer> detachedPages = new HashSet<Integer>();
 	private int swipeLength = 220;
 
 	/**
 	 * ktore strony zostaly zaladowane
 	 */
 	private final Set<Integer> loadedPages = new HashSet<Integer>();
-	private static int visblePageCount = 3;
 	private int pageProgressBar = -1;
 
 	private ResizeTimer resizeTimer;
@@ -239,30 +238,16 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	}
 
 	private void detachAttachPanels() {
-		Set<Integer> activePanels = new HashSet<Integer>(panelsCache.getCache().keySet());
-		activePanels.removeAll(detachedPages);
-		int min = (int) Math.ceil(visblePageCount / 2);
-		int max = (int) Math.floor(visblePageCount / 2);
-		for (int page = currentVisiblePage - min; page <= currentVisiblePage + max; ++page) {
-			activePanels.remove(page);
+		Set<Integer> pagesToDetach = visiblePagesManager.getPagesToDetach(currentVisiblePage);
+		for (final Integer pageIndex : pagesToDetach) {
+			scheduleDeferedRemoveFromParent(pageIndex);
 		}
 
-		for (final Integer page : activePanels) {
-			scheduleDeferedRemoveFromParent(page);
-			detachedPages.add(page);
-		}
+		List<Integer> pagesToAttache = visiblePagesManager.getPagesToAttache(currentVisiblePage);
 
-		activePanels.clear();
-		for (int page = currentVisiblePage - min; page <= currentVisiblePage + max; ++page) {
-			activePanels.add(page);
-		}
-		for (Integer page : activePanels) {
-			final int pageNumber = page;
-			if (panelsCache.isPresent(page) && detachedPages.contains(page)) {
-				final KeyValue<FlowPanel, FlowPanel> pair = panelsCache.getOrCreateAndPut(page);
-				scheduleDeferedAttachToParent(pair, pageNumber);
-				detachedPages.remove(page);
-			}
+		for (Integer pageIndex : pagesToAttache) {
+			final KeyValue<FlowPanel, FlowPanel> pair = panelsCache.getOrCreateAndPut(pageIndex);
+			scheduleDeferedAttachToParent(pair, pageIndex);
 		}
 	}
 
@@ -431,6 +416,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	private void configure() {
 			configureSwipe();
+			setVisiblePageCount(3);
 	}
 
 	@Override
@@ -463,7 +449,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 				registration.removeHandler();
 			}
 			touchHandlers.clear();
-			visblePageCount = 1;
+			setVisiblePageCount(1);
 		} else {
 			HasTouchHandlers touchHandler = touchRecognitionFactory.getTouchRecognition(RootPanel.get(), false);
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_START)));
@@ -471,6 +457,10 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_END)));
 		}
 		panelsCache.setSwipeType(swipeType.get());
+	}
+
+	private void setVisiblePageCount(int count) {
+		visiblePagesManager.setVisiblePageCount(count);
 	}
 
 	public int getCurrentVisiblePage() {
