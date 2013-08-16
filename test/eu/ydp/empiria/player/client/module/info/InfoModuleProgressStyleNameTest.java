@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.common.base.Optional;
+
 @RunWith(MockitoJUnitRunner.class)
 public class InfoModuleProgressStyleNameTest {
 	private static final String TEST_RESULT_KEY = "$[test.result]";
@@ -23,18 +25,10 @@ public class InfoModuleProgressStyleNameTest {
 	@InjectMocks private InfoModuleProgressStyleName instance;
 
 	@Test
-	public void getCurrentStyleName_NullValueFromFiledRegistry() throws Exception {
-		for (int x = 0; x < 89; ++x) {
-			String currentStyleName = instance.getCurrentStyleName(x);
-			assertThat(currentStyleName).isNotNull();
-			assertThat(currentStyleName).isEmpty();
-		}
-	}
-
-	@Test
 	public void getCurrentStyleName_NullValueFromFieldInfo() throws Exception {
 		ContentFieldInfo fieldInfo = mock(ContentFieldInfo.class);
-		doReturn(fieldInfo).when(fieldRegistry).getFieldInfo(eq(TEST_RESULT_KEY));
+
+		doReturn(Optional.<ContentFieldInfo>of(fieldInfo)).when(fieldRegistry).getFieldInfo(eq(TEST_RESULT_KEY));
 		instance.getCurrentStyleName(21);
 		verify(infoModuleProgressMapping).getStyleNameForProgress(any(Integer.class));
 	}
@@ -46,7 +40,7 @@ public class InfoModuleProgressStyleNameTest {
 
 		ContentFieldInfo fieldInfo = mock(ContentFieldInfo.class);
 		doReturn("21").when(fieldInfo).getValue(anyInt());
-		doReturn(fieldInfo).when(fieldRegistry).getFieldInfo(eq(TEST_RESULT_KEY));
+		doReturn(Optional.<ContentFieldInfo>of(fieldInfo)).when(fieldRegistry).getFieldInfo(eq(TEST_RESULT_KEY));
 		doReturn(toReturnStyleName).when(infoModuleProgressMapping).getStyleNameForProgress(eq(percent));
 
 
