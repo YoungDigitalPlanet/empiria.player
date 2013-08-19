@@ -20,8 +20,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SourcelistManagerImplTest {

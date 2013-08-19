@@ -7,9 +7,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListLocking;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public interface SourceListPresenter extends IsWidget, SourceListLocking {
 	void setBean(SourceListBean bean);

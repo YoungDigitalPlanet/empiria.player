@@ -48,6 +48,7 @@ import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.view.ViewEngine;
 import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
+import eu.ydp.gwtutil.client.gin.module.AnimationGinModule;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
 @GinModules(value = {
@@ -55,7 +56,8 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 		SourceListGinModule.class, TextEntryGinModule.class, SelectionGinModule.class,
 		SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
 		OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class,
-		DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class})
+		DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
+		AnimationGinModule.class})
 
 public interface PlayerGinjector extends Ginjector {
 

@@ -1,9 +1,10 @@
 package eu.ydp.empiria.player.client.module.tutor.commands;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,18 +12,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.animation.Animation;
-import eu.ydp.empiria.player.client.animation.AnimationEndHandler;
 import eu.ydp.empiria.player.client.module.tutor.EndHandler;
+import eu.ydp.gwtutil.client.animation.Animation;
+import eu.ydp.gwtutil.client.animation.AnimationEndHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AnimationCommandTest {
-	@InjectMocks
-	AnimationCommand command;
-	@Mock
-	private EndHandler handler;
-	@Mock
-	private Animation animation;
+	@InjectMocks AnimationCommand command;
+	@Mock private EndHandler handler;
+	@Mock private Animation animation;
 
 	@Test
 	public void shouldStartAnimation() {
