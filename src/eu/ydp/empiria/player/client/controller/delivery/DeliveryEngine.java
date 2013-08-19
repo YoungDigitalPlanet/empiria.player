@@ -398,6 +398,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			if (extension instanceof TutorExtension) {
 				TutorExtension tutorExtension = (TutorExtension) extension;
 				tutorService.registerTutor(tutorExtension.getTutorId(), tutorExtension.getTutorConfig());
+				tutorExtension.initJsApi(playerJsObject, tutorService);
 			}
 		}
 	}
