@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.info;
 
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
 import eu.ydp.gwtutil.client.NumberUtils;
@@ -12,9 +13,9 @@ public class InfoModuleProgressStyleName {
 
 
 	public String getCurrentStyleName(int refItemIndex){
-		ContentFieldInfo fieldInfo = fieldRegistry.getFieldInfo(TEST_RESULT_KEY);
-		if(fieldInfo!=null){
-			 Integer percent = NumberUtils.tryParseInt(fieldInfo.getValue(refItemIndex),null);
+		Optional<ContentFieldInfo> fieldInfo = fieldRegistry.getFieldInfo(TEST_RESULT_KEY);
+		if(fieldInfo.isPresent()){
+			 Integer percent = NumberUtils.tryParseInt(fieldInfo.get().getValue(refItemIndex),null);
 			 return infoModuleProgressMapping.getStyleNameForProgress(percent);
 		}
 		return "";

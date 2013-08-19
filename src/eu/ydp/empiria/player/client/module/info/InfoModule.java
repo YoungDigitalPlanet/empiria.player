@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.info;
 
+import java.util.List;
+
 import com.google.common.base.Strings;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.InlineHTML;
@@ -11,10 +13,11 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
@@ -27,18 +30,18 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 public class InfoModule extends SimpleModuleBase implements ILifecycleModule, PlayerEventHandler {
 
-	@Inject @FlowManagerDataSupplier protected FlowDataSupplier flowDataSupplier;
-	@Inject @ModuleScoped private ModuleStyle moduleStyle;
+	@Inject @FlowManagerDataSupplier private FlowDataSupplier flowDataSupplier;
+	@Inject @CachedModuleScoped private ModuleStyle moduleStyle;
 	@Inject private StyleNameConstants styleNames;
 	@Inject private EventsBus eventsBus;
 	@Inject private VariableInterpreter variableInterpreter;
 	@Inject private InfoModuleProgressStyleName infoModuleProgressStyleName;
-
+	@Inject private InfoModuleContentTokenizer contentTokenizer;
 	private InfoModuleUnloadListener unloadListener;
 	private Panel mainPanel;
 	private Panel contentPanel;
 	private Element mainElement;
-	private String contentString;
+	private List<Token> tokensFromContent;
 
 	public void setModuleUnloadListener(InfoModuleUnloadListener imul) {
 		unloadListener = imul;
@@ -101,13 +104,14 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	@Override
 	public void onStart() {
 		if (moduleStyle.containsKey(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT)) {
-			contentString = moduleStyle.get(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT);
+			String contentString  = moduleStyle.get(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT);
+			tokensFromContent = contentTokenizer.getAllTokens(contentString);
 		}
 		update();
 	}
 
-	protected String replaceTemplates(String content, int refItemIndex) {// NOPMD
-		return variableInterpreter.replaceAllTags(content, refItemIndex);
+	protected String replaceTemplates(List<Token> tokensFromContent, int refItemIndex) {// NOPMD
+		return variableInterpreter.replaceAllTags(tokensFromContent, refItemIndex);
 	}
 
 	protected String getVariableValue(VariableProviderSocket vps, String name, String defaultValue) {
@@ -121,8 +125,8 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 
 	public void update() {
 		int refItemIndex = getRefItemIndex();
-		if (contentString != null && contentString.length() > 0) {
-			String output = replaceTemplates(contentString, refItemIndex);
+		if (!tokensFromContent.isEmpty()) {
+			String output = replaceTemplates(tokensFromContent, refItemIndex);
 			replaceContent(output);
 		}
 		updateProgressStyleName(refItemIndex);

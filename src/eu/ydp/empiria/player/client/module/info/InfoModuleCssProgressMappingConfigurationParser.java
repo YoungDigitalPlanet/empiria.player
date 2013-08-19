@@ -6,14 +6,14 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class InfoModuleCssProgressMappingConfigurationParser {
 	private static final String REPORT_PROGRESS_PREFIX = "report-progress-";
 
-	@Inject @ModuleScoped private ModuleStyle moduleStyle;
+	@Inject @CachedModuleScoped private ModuleStyle moduleStyle;
 
 	public Map<Integer, String> getCssProgressToStyleMapping() {
 		final Map<Integer, String> progressToStyleNameMapping = Maps.newHashMap();

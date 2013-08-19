@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
@@ -92,8 +93,16 @@ public class ContentFieldRegistry {
 		return !fieldInfos.isEmpty();
 	}
 
-	public ContentFieldInfo getFieldInfo(final String fieldName) {
+	public Optional<ContentFieldInfo> getFieldInfo(final String fieldName) {
 		registerIfRequired();
+		ContentFieldInfo fieldInfo = findFiledInfoByName(fieldName);
+		if (fieldInfo == null) {
+			return Optional.absent();
+		}
+		return Optional.of(fieldInfo);
+	}
+
+	private ContentFieldInfo findFiledInfoByName(final String fieldName) {
 		return Iterables.find(fieldInfos, new Predicate<ContentFieldInfo>() {
 			@Override
 			public boolean apply(ContentFieldInfo fieldInfo) {
@@ -103,7 +112,7 @@ public class ContentFieldRegistry {
 	}
 
 	private void registerIfRequired() {
-		if(!isRegistered()){
+		if (!isRegistered()) {
 			register();
 		}
 	}

@@ -30,6 +30,7 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDa
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
+import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit{
@@ -47,7 +48,7 @@ public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInj
 
 	@Mock private DataSourceDataSupplier sourceSupplier;
 	@Mock private SessionDataSupplier sessionSupplier;
-
+	private final InfoModuleContentTokenizer contentTokenizer = new InfoModuleContentTokenizer();
 	@Before
 	public void initialize() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
@@ -144,8 +145,8 @@ public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInj
 		String template = "This is %1$s.";
 		String content = String.format(template, info.getContentTag());
 		String expectedValue = String.format(template, info.getExpectedValue());
-
-		assertThat(info.getContentTag() + " page: " + info.getRefItemIndex(), interpreter.replaceAllTags(content, info.getRefItemIndex()), is(equalTo(expectedValue)));
+		List<Token> allTokens = contentTokenizer.getAllTokens(content);
+		assertThat(info.getContentTag() + " page: " + info.getRefItemIndex(), interpreter.replaceAllTags(allTokens, info.getRefItemIndex()), is(equalTo(expectedValue)));
 	}
 
 	private static class ContentInfo {

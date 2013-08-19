@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,8 @@ public class StyleDataSourceManager implements StyleSocket {
 	// TODO consider using WeakHashMap to avoid problems with vector size at
 	// lines 50, 96
 	private final Vector<QueueSet<StyleDocument>> itemStyle;
+
+	private final ElementStyleSelectorBuilder elementStyleSelectorBuilder = new ElementStyleSelectorBuilder();
 
 	/**
 	 * Style declarations that should be searched for styles. When player
@@ -77,7 +78,7 @@ public class StyleDataSourceManager implements StyleSocket {
 	}
 
 	public Map<String, String> getStyleProperties(Element element, boolean lowerCase) {
-		List<String> selectors = getElementSelectors(element);
+		List<String> selectors = elementStyleSelectorBuilder.getElementSelectors(element);
 		return getStylePropertiesForSelectors(selectors, lowerCase);
 	}
 
@@ -97,39 +98,6 @@ public class StyleDataSourceManager implements StyleSocket {
 		return result;
 	}
 
-	protected List<String> getElementSelectors(Element element) {
-		String name = element.getNodeName().toLowerCase();
-		String[] classes = null;
-		String id = null; // NOPMD
-		if (element.hasAttribute("class") && !"".equals(element.getAttribute("class"))) {
-			classes = element.getAttribute("class").split(" ");
-		}
-		if (element.hasAttribute("id") && !"".equals(element.getAttribute("id"))) {
-			id = element.getAttribute("id");
-		}
-
-		return buildSelectors(name, classes, id);
-	}
-
-	protected List<String> buildSelectors(String name, String[] classes, String id) {// NOPMD
-		List<String> selectors = new ArrayList<String>();
-
-		selectors.add(name);
-		if (classes != null) {
-			for (int i = 0; i < classes.length; i++) {
-				selectors.add("." + classes[i]);
-			}
-			for (int i = 0; i < classes.length; i++) {
-				selectors.add(name + "." + classes[i]);
-			}
-		}
-		if (id != null) {
-			selectors.add("#" + id);
-			selectors.add(name + "#" + id);
-		}
-
-		return selectors;
-	}
 
 	@Override
 	public void setCurrentPages(PageReference pageReference) {
