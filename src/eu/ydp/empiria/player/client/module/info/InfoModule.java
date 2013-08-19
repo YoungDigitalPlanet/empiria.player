@@ -1,25 +1,26 @@
 package eu.ydp.empiria.player.client.module.info;
 
-import java.util.Map;
+import java.util.List;
 
+import com.google.common.base.Strings;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
-import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
+import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
+import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.style.ModuleStyle;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -29,26 +30,18 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 public class InfoModule extends SimpleModuleBase implements ILifecycleModule, PlayerEventHandler {
 
-	protected DataSourceDataSupplier dataSourceDataSupplier;
-	protected SessionDataSupplier sessionDataSupplier;
-	protected FlowDataSupplier flowDataSupplier;
-	protected InfoModuleUnloadListener unloadListener;
-	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-
-	protected Panel mainPanel;
-	protected Panel contentPanel;
-	protected Element mainElement;
-	protected String contentString;
-	protected VariableInterpreter variableInterpreter;
-	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	private final VariableInterpreterFactory interpreterFactory = PlayerGinjectorFactory.getPlayerGinjector().getVariableInterpreterFactory();
-
-	public InfoModule(DataSourceDataSupplier dsds, SessionDataSupplier sds, FlowDataSupplier fds) {
-		dataSourceDataSupplier = dsds;
-		sessionDataSupplier = sds;
-		flowDataSupplier = fds;
-		variableInterpreter = interpreterFactory.getInterpreter(dataSourceDataSupplier, sessionDataSupplier);
-	}
+	@Inject @FlowManagerDataSupplier private FlowDataSupplier flowDataSupplier;
+	@Inject @CachedModuleScoped private ModuleStyle moduleStyle;
+	@Inject private StyleNameConstants styleNames;
+	@Inject private EventsBus eventsBus;
+	@Inject private VariableInterpreter variableInterpreter;
+	@Inject private InfoModuleProgressStyleName infoModuleProgressStyleName;
+	@Inject private InfoModuleContentTokenizer contentTokenizer;
+	private InfoModuleUnloadListener unloadListener;
+	private Panel mainPanel;
+	private Panel contentPanel;
+	private Element mainElement;
+	private List<Token> tokensFromContent;
 
 	public void setModuleUnloadListener(InfoModuleUnloadListener imul) {
 		unloadListener = imul;
@@ -57,20 +50,25 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	@Override
 	public void initModule(Element element) {
 		eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_REMOVED), this, new CurrentPageScope());
-		contentPanel = new FlowPanel();
-		contentPanel.setStyleName(styleNames.QP_INFO_CONTENT());
-
-		mainPanel = new FlowPanel();
-		mainPanel.setStyleName(styleNames.QP_INFO());
-		mainPanel.add(contentPanel);
-
+		createContentPanel();
+		createMainPanel();
 		String cls = element.getAttribute("class");
 		if (cls != null) {
 			mainPanel.addStyleName(cls);
 		}
 
 		mainElement = element;
+	}
 
+	private void createMainPanel() {
+		mainPanel = new FlowPanel();
+		mainPanel.setStyleName(styleNames.QP_INFO());
+		mainPanel.add(contentPanel);
+	}
+
+	private void createContentPanel() {
+		contentPanel = new FlowPanel();
+		contentPanel.setStyleName(styleNames.QP_INFO_CONTENT());
 	}
 
 	@Override
@@ -102,20 +100,18 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	public void onClose() {// NOPMD
 	}
 
+
 	@Override
 	public void onStart() {
-		PlayerGinjector playerGinjector = PlayerGinjectorFactory.getPlayerGinjector();
-		StyleSocket styleSocket = playerGinjector.getStyleSocket();
-
-		Map<String, String> styles = styleSocket.getStyles(mainElement);
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT)) {
-			contentString = styles.get(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT);
+		if (moduleStyle.containsKey(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT)) {
+			String contentString  = moduleStyle.get(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT);
+			tokensFromContent = contentTokenizer.getAllTokens(contentString);
 		}
 		update();
 	}
 
-	protected String replaceTemplates(String content, int refItemIndex) {// NOPMD
-		return variableInterpreter.replaceAllTags(content, refItemIndex);
+	protected String replaceTemplates(List<Token> tokensFromContent, int refItemIndex) {// NOPMD
+		return variableInterpreter.replaceAllTags(tokensFromContent, refItemIndex);
 	}
 
 	protected String getVariableValue(VariableProviderSocket vps, String name, String defaultValue) {
@@ -128,20 +124,37 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	}
 
 	public void update() {
-		if (contentString != null && contentString.length() > 0) {
-			int refItemIndex = -1;
-			if (mainElement.hasAttribute("itemIndex")) {
-				refItemIndex = NumberUtils.tryParseInt(mainElement.getAttribute("itemIndex"), -1);
-			}
-			if (refItemIndex == -1) {
-				refItemIndex = flowDataSupplier.getCurrentPageIndex();
-			}
+		int refItemIndex = getRefItemIndex();
+		if (!tokensFromContent.isEmpty()) {
+			String output = replaceTemplates(tokensFromContent, refItemIndex);
+			replaceContent(output);
+		}
+		updateProgressStyleName(refItemIndex);
+	}
 
-			String output = replaceTemplates(contentString, refItemIndex);
-			InlineHTML html = new InlineHTML(output);
-			html.setStyleName(styleNames.QP_INFO_TEXT());
-			contentPanel.clear();
-			contentPanel.add(html);
+	private void replaceContent(String output) {
+		InlineHTML html = new InlineHTML(output);
+		html.setStyleName(styleNames.QP_INFO_TEXT());
+		contentPanel.clear();
+		contentPanel.add(html);
+	}
+
+	private int getRefItemIndex() {
+		int refItemIndex = -1;
+		if (mainElement.hasAttribute("itemIndex")) {
+			refItemIndex = NumberUtils.tryParseInt(mainElement.getAttribute("itemIndex"), -1);
+		}
+		if (refItemIndex == -1) {
+			refItemIndex = flowDataSupplier.getCurrentPageIndex();
+		}
+		return refItemIndex;
+	}
+
+	private void updateProgressStyleName(int refItemIndex) {
+		String styleName = infoModuleProgressStyleName.getCurrentStyleName(refItemIndex);
+		mainPanel.setStyleName(styleNames.QP_INFO());
+		if(!Strings.isNullOrEmpty(styleName)){
+			mainPanel.addStyleName(styleName);
 		}
 	}
 

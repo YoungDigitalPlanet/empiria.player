@@ -9,14 +9,17 @@ import com.google.inject.TypeLiteral;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorIdProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopeStack;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopedProvider;
+import eu.ydp.empiria.player.client.gin.scopes.module.providers.CssStylesModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.PersonaServiceModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.TutorConfigModuleScopedProvider;
+import eu.ydp.empiria.player.client.gin.scopes.module.providers.WithCacheCssStylesModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
@@ -54,6 +57,7 @@ import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorViewImpl;
+import eu.ydp.empiria.player.client.style.ModuleStyle;
 
 public class ModuleScopedModule extends AbstractGinModule{
 
@@ -63,7 +67,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 
 		bind(Element.class).annotatedWith(ModuleScoped.class).toProvider(XmlElementModuleScopedProvider.class);
 		bind(Response.class).annotatedWith(ModuleScoped.class).toProvider(ResponseModuleScopedProvider.class);
-
+		bindCssStyle();
 		bindOrdering();
 		bindColorfill();
 		bindDragGap();
@@ -72,7 +76,14 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindMathGap();
 		bindSelection();
 	}
-	
+
+	private void bindCssStyle() {
+		bind(CssStylesModuleScopedProvider.class).in(Singleton.class);
+		bind(WithCacheCssStylesModuleScopedProvider.class).in(Singleton.class);
+
+		bind(ModuleStyle.class).annotatedWith(ModuleScoped.class).toProvider(CssStylesModuleScopedProvider.class);
+		bind(ModuleStyle.class).annotatedWith(CachedModuleScoped.class).toProvider(WithCacheCssStylesModuleScopedProvider.class);
+	}
 
 	private void bindOrdering() {
 		bindModuleScoped(OrderingItemsDao.class, new TypeLiteral<ModuleScopedProvider<OrderingItemsDao>>(){});
@@ -97,7 +108,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(DragGapView.class, new TypeLiteral<ModuleScopedProvider<DragGapView>>(){});
 		bindModuleScoped(SourceListManagerAdapter.class, new TypeLiteral<ModuleScopedProvider<SourceListManagerAdapter>>(){});
 	}
-	
+
 	private void bindChoice() {
 		bindModuleScoped(ChoiceModuleView.class, new TypeLiteral<ModuleScopedProvider<ChoiceModuleView>>(){});
 		bindModuleScoped(ChoiceModulePresenter.class, new TypeLiteral<ModuleScopedProvider<ChoiceModulePresenter>>(){});
@@ -131,7 +142,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 	private void bindMathGap() {
 		bindModuleScoped(MathGapModel.class, new TypeLiteral<ModuleScopedProvider<MathGapModel>>(){});
 	}
-	
+
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)

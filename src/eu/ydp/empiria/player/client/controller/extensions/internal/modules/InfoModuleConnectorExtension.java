@@ -1,18 +1,15 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
-import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
-import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
@@ -20,23 +17,17 @@ import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.info.InfoModule;
 import eu.ydp.empiria.player.client.module.info.InfoModuleUnloadListener;
 
-public class InfoModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, DataSourceDataSocketUserExtension, SessionDataSocketUserExtension, FlowDataSocketUserExtension, DeliveryEventsListenerExtension {
+public class InfoModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, DeliveryEventsListenerExtension {
 
-	protected DataSourceDataSupplier dataSourceDataSupplier;
-	protected SessionDataSupplier sessionDataSupplier;
-	protected FlowDataSupplier flowDataSupplier;
-	protected List<InfoModule> modules;
-
-	public InfoModuleConnectorExtension(){
-		modules = new ArrayList<InfoModule>();
-	}
+	@Inject private Provider<InfoModule> infoModuleProvider;
+	protected List<InfoModule> modules = Lists.newArrayList();
 
 	@Override
 	public ModuleCreator getModuleCreator() {
 		return new AbstractModuleCreator(false,true) {
 			@Override
 			public IModule createModule() {
-				final InfoModule infoModule = new InfoModule(dataSourceDataSupplier, sessionDataSupplier, flowDataSupplier);
+				final InfoModule infoModule = infoModuleProvider.get();
 				infoModule.setModuleUnloadListener(new InfoModuleUnloadListener() {
 
 					@Override
@@ -55,20 +46,6 @@ public class InfoModuleConnectorExtension extends ModuleExtension implements Mod
 		return ModuleTagName.INFO.tagName();
 	}
 
-	@Override
-	public void setDataSourceDataSupplier(DataSourceDataSupplier supplier) {
-		dataSourceDataSupplier = supplier;
-	}
-
-	@Override
-	public void setSessionDataSupplier(SessionDataSupplier supplier) {
-		sessionDataSupplier = supplier;
-	}
-
-	@Override
-	public void setFlowDataSupplier(FlowDataSupplier supplier) {
-		flowDataSupplier = supplier;
-	}
 
 	@Override
 	public void onDeliveryEvent(DeliveryEvent event) {
