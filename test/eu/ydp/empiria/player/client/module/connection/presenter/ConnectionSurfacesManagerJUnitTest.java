@@ -31,8 +31,8 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionSurfacesManagerFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.position.Point;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 @SuppressWarnings("PMD")
 public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {

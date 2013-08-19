@@ -1,5 +1,10 @@
 package eu.ydp.empiria.player.client.module.draggap.presenter;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 
 import org.junit.Before;
@@ -24,12 +29,8 @@ import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
-import eu.ydp.empiria.player.client.util.geom.Size;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
+import eu.ydp.gwtutil.client.util.geom.Size;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
@@ -81,7 +82,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 
 		when(sourceListManagerAdapter.getItemById(itemId))
 			.thenReturn(item);
-		
+
 		// when
 		presenter.setContent(itemId);
 
@@ -110,7 +111,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		// then
 		verify(view).updateStyle(UserAnswerType.DEFAULT);
 	}
-	
+
 	@Test
 	public void shouldMarkAnswers_UnmarkWrong() {
 		// when
@@ -215,8 +216,8 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", answerToSet);
 		when(sourceListManagerAdapter.getItemById(answerToSet))
 			.thenReturn(item);
-		
-		
+
+
 		// when
 		presenter.showAnswers(ShowAnswersType.CORRECT);
 
@@ -248,7 +249,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", answerToSet);
 		when(sourceListManagerAdapter.getItemById(answerToSet))
 			.thenReturn(item);
-		
+
 		// when
 		presenter.showAnswers(ShowAnswersType.USER);
 
@@ -274,15 +275,15 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		verify(view).lock(locked);
 		verify(view).setDragDisabled(locked);
 	}
-	
+
 	@Test
 	public void shouldSetWidthAndHeightOnView() throws Exception {
 		int width = 123;
 		int height = 456;
 		HasDimensions size = new Size(width, height);
-		
+
 		presenter.setGapDimensions(size);
-		
+
 		verify(view).setWidth(width);
 		verify(view).setHeight(height);
 	}

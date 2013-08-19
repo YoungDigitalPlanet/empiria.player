@@ -20,7 +20,6 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -28,30 +27,31 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.StringUtils;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public abstract class TextEntryGapBase extends GapBase implements SourcelistClient {
-	
+
 	private static final String SOURCE_LIST_ID = "sourceListId";
 
 	@Inject
 	@PageScoped
 	protected SourcelistManager sourcelistManager;
-	
+
 	@Inject
 	protected StyleSocket styleSocket;
-	
+
 	@Inject
 	protected DragContentController dragContentController;
-	
+
 	@Inject
 	@PageScoped
 	protected ResponseSocket responseSocket;
 
-	
+
 	public void postConstruct() {
 		addHandlersInPresenter();
 	}
-	
+
 	private void addHandlersInPresenter() {
 		getTextEntryPresenter().addPresenterHandler(new TextEntryPresenterHandler());
 		getTextEntryPresenter().addDomHandlerOnObjectDrop(new TextEntryDomHandler());
@@ -80,7 +80,7 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 		}
 		sourcelistManager.onUserValueChanged();
 	}
-	
+
 	@Override
 	public void onStart() {
 		sourcelistManager.registerModule(this);
@@ -91,7 +91,7 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 	public String getDragItemId() {
 		return getTextEntryPresenter().getText();
 	}
-	
+
 	@Override
 	public void removeDragItem() {
 		presenter.setText("");
@@ -101,10 +101,10 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 	public void setDragItem(String itemId) {
 		SourcelistItemValue item = sourcelistManager.getValue(itemId, getIdentifier());
 		String newText = dragContentController.getTextFromItemAppropriateToType(item);
-		
+
 		presenter.setText(newText);
 	}
-	
+
 	@Override
 	public void lockDropZone() {
 		getTextEntryPresenter().lockDragZone();
@@ -119,7 +119,7 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 	public void setSize(HasDimensions size) {
 		// intentionally empty - text gap does not fit its size
 	}
-	
+
 	@Override
 	public void lock(boolean lock) {
 		super.lock(lock);
@@ -130,13 +130,15 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 			getTextEntryPresenter().unlockDragZone();
 		}
 	}
-	
+
+	@Override
 	protected void setCorrectAnswer() {
 		String correctAnswer = getCorrectAnswer();
 		String replaced = gapExpressionReplacer.ensureReplacement(correctAnswer);
 		presenter.setText(replaced);
 	}
-	
+
+	@Override
 	protected void updateResponse(boolean userInteract, boolean isReset) {
 		if (showingAnswer) {
 			return;
@@ -161,7 +163,7 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 			getTextEntryPresenter().makeExpressionReplacements(gapExpressionReplacer.getReplacer());
 		}
 	}
-	
+
 	protected void addPlayerEventHandlers(){
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
 
@@ -174,7 +176,7 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 			}
 		},new CurrentPageScope());
 	}
-	
+
 	protected void updateResponse(boolean userInteract) {
 		updateResponse(userInteract, false);
 	}
@@ -184,13 +186,13 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 		String sourceListId = getElementAttributeValue(SOURCE_LIST_ID);
 		return sourceListId;
 	}
-	
+
 	private TextEntryGapModulePresenterBase getTextEntryPresenter() {
 		return (TextEntryGapModulePresenterBase) presenter;
 	}
-	
-	
-	
+
+
+
 	private final class TextEntryDomHandler implements GapDropHandler {
 		@Override
 		public void onDrop(DragDataObject dragDataObject) {

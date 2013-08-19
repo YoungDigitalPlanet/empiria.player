@@ -11,12 +11,12 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHandler {
 

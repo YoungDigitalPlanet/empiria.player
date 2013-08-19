@@ -17,21 +17,21 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class TextEntryGapModule extends TextEntryGapBase implements SourcelistClient {
-	
+
 	protected Map<String, String> styles;
-	
+
 	@Inject
 	TextEntryModulePresenter textEntryPresenter;
-	
+
 	protected Integer fontSize = 16;
-	
+
 	@PostConstruct
 	@Override
 	public void postConstruct() {
 		this.presenter = textEntryPresenter;
 		super.postConstruct();
 	}
-	
+
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		styles = styleSocket.getStyles(getModuleElement());
@@ -52,7 +52,7 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 		updateResponse(false);
 		registerBindingContexts();
 	}
-	
+
 	protected void setFontSize(Map<String, String> styles) {
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE)) {
 			fontSize = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_FONT_SIZE), null);
@@ -60,7 +60,7 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 
 		presenter.setFontSize(fontSize, Unit.PX);
 	}
-	
+
 	protected void setDimensions(Map<String, String> styles) {
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_WIDTH)) {
 			Integer gapWidth = NumberUtils.tryParseInt(styles.get(EMPIRIA_TEXTENTRY_GAP_WIDTH), null);

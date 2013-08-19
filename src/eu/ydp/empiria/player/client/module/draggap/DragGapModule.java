@@ -12,9 +12,9 @@ import eu.ydp.empiria.player.client.module.draggap.dragging.DragDropController;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenter;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapStructure;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.Wrapper;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public class DragGapModule extends AbstractInteractionModule<DragGapModule, DragGapModuleModel, DragGapBean> implements SourcelistClient {
 
@@ -27,10 +27,10 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	private DragGapModuleModel dragGapModuleModel;
 	@Inject @ModuleScoped
 	private SourceListManagerAdapter sourceListManagerAdapter;
-	@Inject 
+	@Inject
 	private DragDropController dragDropController;
-	
-	
+
+
 	private final Wrapper<String> itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
 
 	@Override
