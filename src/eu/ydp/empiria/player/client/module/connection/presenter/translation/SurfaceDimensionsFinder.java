@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionItems;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public class SurfaceDimensionsFinder {
 
@@ -24,9 +24,9 @@ public class SurfaceDimensionsFinder {
 	private int findHeight(ConnectionItems items) {
 		int maxOffsetTop = surfacesOffsetsUtils.findMaxTopOffset(items);
 		int minOffsetTop = surfacesOffsetsUtils.findMinTopOffset(items);
-		
+
 		int heightOfElement = findHeightOfAnyElement(items);
-		
+
 		return maxOffsetTop - minOffsetTop +heightOfElement;
 	}
 

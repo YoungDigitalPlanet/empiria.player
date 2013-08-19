@@ -1,12 +1,14 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
-import static com.google.common.collect.Maps.newHashMap;
-
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.PersonaServiceFactory;
+import eu.ydp.gwtutil.client.collections.MapStringToInt;
+import static com.google.common.collect.Maps.newHashMap;
 
 public class TutorService {
 
@@ -37,5 +39,25 @@ public class TutorService {
 		}
 		
 		return personaService;
+	}
+	
+	public Map<String, Integer> buildTutorIdToCurrentPersonaIndexMap() {
+		Set<String> tutorsIds = tutors.keySet();
+		Map<String, Integer> tutorIdToCurrentPersonaMap = new HashMap<String, Integer>();
+		
+		for (String tutorId : tutorsIds) {
+			PersonaService personaService = getTutorPersonaService(tutorId);
+			int personaIndex = personaService.getCurrentPersonaIndex();
+			tutorIdToCurrentPersonaMap.put(tutorId, personaIndex);
+		}
+		return tutorIdToCurrentPersonaMap;
+	}
+	
+	public void setCurrentPersonasForTutors(MapStringToInt tutorIdToPersonaIndex) {
+		for(String tutorId : tutorIdToPersonaIndex.keys() ) {
+			int selectedPersonaIndex = tutorIdToPersonaIndex.get(tutorId);
+			PersonaService personaService = getTutorPersonaService(tutorId);
+			personaService.setCurrentPersonaIndex(selectedPersonaIndex);
+		}
 	}
 }

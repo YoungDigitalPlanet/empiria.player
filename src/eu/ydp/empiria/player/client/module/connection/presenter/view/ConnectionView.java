@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public interface ConnectionView extends IsWidget ,HasDimensions{
 
