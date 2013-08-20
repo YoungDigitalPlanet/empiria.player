@@ -416,7 +416,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	private void configure() {
 			configureSwipe();
-			setVisiblePageCount(3);
 	}
 
 	@Override
@@ -455,6 +454,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_START)));
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_MOVE)));
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_END)));
+			setVisiblePageCount(3);
 		}
 		panelsCache.setSwipeType(swipeType.get());
 	}
