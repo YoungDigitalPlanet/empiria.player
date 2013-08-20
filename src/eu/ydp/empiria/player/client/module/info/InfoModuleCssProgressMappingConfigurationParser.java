@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.style.ModuleStyle;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class InfoModuleCssProgressMappingConfigurationParser {
-	private static final String REPORT_PROGRESS_PREFIX = "report-progress-";
+	private static final String REPORT_PROGRESS_PREFIX = "-empiria-info-item-result-";
 
 	@Inject @CachedModuleScoped private ModuleStyle moduleStyle;
 
