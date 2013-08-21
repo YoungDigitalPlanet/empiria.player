@@ -25,7 +25,7 @@ import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
-@PrepareForTest({Composite.class,Widget.class,Element.class})
+@PrepareForTest({Composite.class,Widget.class,Element.class,DivElement.class})
 public class ButtonModuleViewImplTest {
 	@Mock private DivElement description;
 	@Mock private Element element;
