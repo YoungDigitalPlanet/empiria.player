@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.style.ModuleStyle;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InfoModuleCssProgressMappingConfigurationParserTest {
-	private static final String REPORT_PROGRESS_PREFIX = "report-progress-";
+	private static final String REPORT_PROGRESS_PREFIX = "-empiria-info-item-result-";
 	private final String styleName = "xxx-x";
 
 	@Spy private final ModuleStyle moduleStyle = new ModuleStyle(new HashMap<String, String>());
@@ -38,7 +38,7 @@ public class InfoModuleCssProgressMappingConfigurationParserTest {
 		assertThat(styleMapping).hasSize(12);
 
 		for (int x = 0; x <= 100; x += 9) {
-			assertThat(styleMapping.get(x)).isEqualTo(styleName+x);
+			assertThat(styleMapping.get(x)).isEqualTo(styleName + x);
 		}
 
 	}
