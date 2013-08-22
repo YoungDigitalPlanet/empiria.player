@@ -10,10 +10,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.util.events.animation.AnimationEndEvent;
 import eu.ydp.gwtutil.client.animation.AnimationEndHandler;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
+import eu.ydp.gwtutil.client.util.events.animation.AnimationEndEvent;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
 public class TutorViewImpl implements TutorView {
@@ -81,7 +81,7 @@ public class TutorViewImpl implements TutorView {
 
 	@Override
 	public HandlerRegistration addAnimationEndHandler(final AnimationEndHandler animationEndHandler) {
-		return content.addDomHandler(new eu.ydp.empiria.player.client.util.events.animation.AnimationEndHandler() {
+		return content.addDomHandler(new eu.ydp.gwtutil.client.util.events.animation.AnimationEndHandler() {
 
 			@Override
 			public void onAnimationEnd(AnimationEndEvent event) {
