@@ -15,4 +15,12 @@ public class ResponseValue {
 	public List<String> getAnswers(){
 		return answers;
 	}
+	
+	public boolean answersExists() {
+		return answers.size() > 0;
+	}
+	
+	public String getSingleAnswer() {
+		return answers.get(0);
+	}
 }

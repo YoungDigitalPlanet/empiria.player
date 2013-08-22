@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
+import java.util.Map;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -9,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import eu.ydp.empiria.player.client.gin.factory.PersonaServiceFactory;
+import eu.ydp.gwtutil.client.collections.MapStringToIntMock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TutorServiceTest {
@@ -81,6 +84,55 @@ public class TutorServiceTest {
 		assertThat(personaService1).isEqualTo(createdPersonaService1);
 		assertThat(personaService2).isEqualTo(createdPersonaService2);
 		assertThat(personaService1).isNotEqualTo(personaService2);
+	}
+	
+	@Test
+	public void shouldBuildTutorToCurrentPersonaIndexMap() throws Exception {
+		//given
+		String tutorId1 = "tutorId1";
+		PersonaService createdPersonaService1 = expectPersonaServiceCreationForTutorId(tutorId1);
+		int firstTutorPersonaIndex = 1;
+		
+		String tutorId2 = "tutorId2";
+		int secondTutorPersonaIndex = 2;
+		PersonaService createdPersonaService2 = expectPersonaServiceCreationForTutorId(tutorId2);
+		
+		when(createdPersonaService1.getCurrentPersonaIndex())
+			.thenReturn(firstTutorPersonaIndex);
+		
+		when(createdPersonaService2.getCurrentPersonaIndex())
+			.thenReturn(secondTutorPersonaIndex);
+		
+		//when
+		Map<String, Integer> tutorIdToCurrentPersonaIndexMap = tutorService.buildTutorIdToCurrentPersonaIndexMap();
+		
+		//then
+		assertThat(tutorIdToCurrentPersonaIndexMap.size()).isEqualTo(2);
+		assertThat(tutorIdToCurrentPersonaIndexMap.get(tutorId1)).isEqualTo(firstTutorPersonaIndex);
+		assertThat(tutorIdToCurrentPersonaIndexMap.get(tutorId2)).isEqualTo(secondTutorPersonaIndex);
+	}
+	
+	@Test
+	public void shouldSetCurrentPersonasForTutors() throws Exception {
+		//given
+		String tutorId1 = "tutorId1";
+		PersonaService createdPersonaService1 = expectPersonaServiceCreationForTutorId(tutorId1);
+		int firstTutorPersonaIndex = 1;
+		
+		String tutorId2 = "tutorId2";
+		int secondTutorPersonaIndex = 2;
+		PersonaService createdPersonaService2 = expectPersonaServiceCreationForTutorId(tutorId2);
+		
+		MapStringToIntMock tutorIdToCurrentPersonaMap = new MapStringToIntMock();
+		tutorIdToCurrentPersonaMap.put(tutorId1, firstTutorPersonaIndex);
+		tutorIdToCurrentPersonaMap.put(tutorId2, secondTutorPersonaIndex);
+		
+		//when
+		tutorService.setCurrentPersonasForTutors(tutorIdToCurrentPersonaMap);
+		
+		//then
+		verify(createdPersonaService1).setCurrentPersonaIndex(firstTutorPersonaIndex);
+		verify(createdPersonaService2).setCurrentPersonaIndex(secondTutorPersonaIndex);
 	}
 	
 	private PersonaService expectPersonaServiceCreationForTutorId(String tutorId) {

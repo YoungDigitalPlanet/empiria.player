@@ -11,9 +11,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-import eu.ydp.empiria.player.client.util.events.animation.TransitionEndEvent;
-import eu.ydp.empiria.player.client.util.events.animation.TransitionEndHandler;
 import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.util.events.animation.TransitionEndEvent;
+import eu.ydp.gwtutil.client.util.events.animation.TransitionEndHandler;
 
 /**
  * <code>

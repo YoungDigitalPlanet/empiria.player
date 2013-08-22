@@ -1,43 +1,43 @@
 package eu.ydp.empiria.player.client.module.info;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
+import java.util.List;
 
-import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Optional;
+import com.google.common.collect.Iterables;
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
 
 public class VariableInterpreter {
-	
-	private ContentFieldRegistry fieldRegistry;
-	
-	@Inject
-	public VariableInterpreter(@Assisted DataSourceDataSupplier dataSourceDataSupplier, 
-								@Assisted SessionDataSupplier sessionDataSupplier, 
-								VariableInterpreterFactory factory) {
-		this.fieldRegistry = factory.getRegistry(dataSourceDataSupplier, sessionDataSupplier);
+
+	@Inject private ContentFieldRegistry fieldRegistry;
+
+	public String replaceAllTags(List<Token> tokensFromContent, int refItemIndex) {
+		return replaceItemTags(tokensFromContent, refItemIndex);
 	}
-	
-	public String replaceAllTags(String content, int refItemIndex) {
-		return replaceItemTags(content, refItemIndex);
+
+	private String replaceItemTags(List<Token> tokensFromContent, final int refItemIndex) {
+		return Joiner.on("").join(transformTokens(tokensFromContent, refItemIndex));
 	}
-	
-	private String replaceItemTags(String contentWithTags, int refItemIndex){
-		String content = contentWithTags;
-		
-		for(ContentFieldInfo info: fieldRegistry.getFieldInfos()){
-			content = replaceTag(info, content, refItemIndex);
-		}
-		
-		return content;
+
+	private Iterable<String> transformTokens(List<Token> tokensFromContent, final int refItemIndex) {
+		return Iterables.transform(tokensFromContent, new Function<Token, String>() {
+			@Override
+			public String apply(Token token) {
+				if(token.isFieldInfo()){
+					return getFieldInfoValue(refItemIndex, token);
+				}
+				return token.getName();
+			}
+
+		});
 	}
-	
-	private String replaceTag(ContentFieldInfo info, String contentWithTags, int refItemIndex){
-		String content = contentWithTags;
-		
-		if (content.contains(info.getTag())) {
-			content = content.replaceAll(info.getPattern(), info.getValue(refItemIndex));
-		}
-		
-		return content;
+
+	private String getFieldInfoValue(final int refItemIndex, Token token) {
+		Optional<ContentFieldInfo> fieldInfo = fieldRegistry.getFieldInfo(token.getName());
+		return fieldInfo.isPresent() ? fieldInfo.get().getValue(refItemIndex) : token.getName();
 	}
+
 }

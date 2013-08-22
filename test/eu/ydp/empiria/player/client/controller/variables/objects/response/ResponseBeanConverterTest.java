@@ -43,7 +43,7 @@ public class ResponseBeanConverterTest {
 		assertEquals(CheckMode.EXPRESSION, response.getCheckMode());
 		assertEquals(identifier, response.identifier);
 		CorrectAnswers correctAnswers = response.correctAnswers;
-		assertEquals(2, correctAnswers.getResponseValuesCount());
+		assertEquals(2, correctAnswers.getAnswersCount());
 		assertEquals(value0, correctAnswers.getResponseValue(0).getAnswers().get(0));
 		assertEquals(value1, correctAnswers.getResponseValue(1).getAnswers().get(0));
 		assertEquals("group", response.groups.get(0));

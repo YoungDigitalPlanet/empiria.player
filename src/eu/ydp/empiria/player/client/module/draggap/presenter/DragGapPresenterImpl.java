@@ -20,10 +20,10 @@ import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.module.sourcelist.view.DisableDefaultBehaviorCommand;
 import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public class DragGapPresenterImpl implements DragGapPresenter {
 
@@ -35,9 +35,9 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
 	@Inject
 	public DragGapPresenterImpl(
-			@ModuleScoped DragGapView view, 
-			@ModuleScoped DragGapModuleModel model, 
-			@PageScoped AnswerEvaluationSupplier answerEvaluationSupplier, 
+			@ModuleScoped DragGapView view,
+			@ModuleScoped DragGapModuleModel model,
+			@PageScoped AnswerEvaluationSupplier answerEvaluationSupplier,
 			@ModuleScoped SourceListManagerAdapter sourceListManagerAdapter) {
 		this.view = view;
 		this.model = model;
@@ -54,7 +54,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(new DisableDefaultBehaviorCommand());
 		userOverHandler.apply(view.asWidget());
 	}
-	
+
 	@Override
 	public void bindView() {
 		view.updateStyle(UserAnswerType.DEFAULT);
@@ -138,7 +138,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 		setContentOfItemOnView(itemId);
 		model.addAnswer(itemId);
 	}
-	
+
 	private void setContentOfItemOnView(String itemId) {
 		SourcelistItemValue item = sourceListManagerAdapter.getItemById(itemId);
 		view.setItemContent(item);

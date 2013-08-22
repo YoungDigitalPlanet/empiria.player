@@ -10,5 +10,4 @@ public class TextEntryGinModule extends AbstractGinModule {
 	protected void configure() {
 		install(new GinFactoryModuleBuilder().build(TextEntryModuleFactory.class));
 	}
-
 }

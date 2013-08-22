@@ -42,7 +42,7 @@ public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends Varia
 		// given
 		Response response = builder()
 				.withCorrectAnswers("CorrectAnswer1", "CorrectAnswer2")
-				.withCurrentUserAnswers("CorrectAnswer1", "CorrectAnswer2")
+				.withCurrentUserAnswers("CorrectAnswer2")
 				.build();
 
 		Map<String, Response> responsesMap = convertToMap(response);

@@ -33,8 +33,10 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.expression.PipedReplacementsParser;
+import eu.ydp.empiria.player.client.module.gap.GapBinder;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 @SuppressWarnings("PMD")
@@ -44,7 +46,6 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(TextEntryModulePresenter.class).toInstance(mock(TextEntryModulePresenter.class));
-			TextEntryModulePresenter modulePresenter = mock(TextEntryModulePresenter.class);
 			binder.bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
 			binder.bind(PipedReplacementsParser.class).toInstance(mock(PipedReplacementsParser.class));
 		}
@@ -61,6 +62,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_FONT_SIZE, "12");
 		TextEntryModuleMock textEntryModule = mockTextGap(styles);
 		doNothing().when(textEntryModule.getPresenter()).setFontSize(anyDouble(), (Style.Unit) any());
+		textEntryModule.invokeSetFontSize();
 		textEntryModule.invokeSetDimensions();
 		verify(textEntryModule.getPresenter(), times(1)).setFontSize(Double.parseDouble("12"), Unit.PX);
 	}
@@ -80,25 +82,11 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		styles.put(EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH, "60");
 		TextEntryModuleMock textEntryModule = mockTextGap(styles);
 		doNothing().when(textEntryModule.getPresenter()).setWidth(anyDouble(), (Style.Unit) any());
+		textEntryModule.invokeSetFontSize();
 		textEntryModule.invokeSetDimensions();
 		verify(textEntryModule.getPresenter(), times(1)).setWidth(Double.parseDouble("60"), Unit.PX);
 	}
 
-	@Test
-	public void shouldSendUpdateResponseWithoutUserInteractionWhen_gapHasAnswer() {
-		TextEntryModuleMock textEntryModule = spy(mockTextGap());
-		when(textEntryModule.getPresenter().getText()).thenReturn("answer");
-		textEntryModule.reset();
-		verify(textEntryModule).updateResponse(false, true);
-	}
-
-	@Test
-	public void shouldNotSendUpdateResponseAfterResetWhen_gapIsEmpty() {
-		TextEntryModuleMock textEntryModule = spy(mockTextGap());
-		when(textEntryModule.getPresenter().getText()).thenReturn("");
-		textEntryModule.reset();
-		verify(textEntryModule, never()).updateResponse(anyBoolean(), anyBoolean());
-	}
 
 	@BeforeClass
 	public static void prepareTestEnviroment() {
@@ -128,12 +116,12 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		return instance;
 	}
 
-	private class TextEntryModuleMock extends TextEntryModule {
+	private class TextEntryModuleMock extends TextEntryGapModule {
 
 		public TextEntryModuleMock() {
-			super(	injector.getInstance(TextEntryModulePresenter.class),
-					injector.getInstance(StyleSocket.class),
-					injector.getInstance(Key.get(ResponseSocket.class, PageScoped.class)),injector.getInstance(SourcelistManager.class), injector.getInstance(DragContentController.class));
+			gapBinder = new GapBinder();
+			textEntryPresenter = injector.getInstance(TextEntryModulePresenter.class);
+			postConstruct();
 		}
 
 		public void setStyles(Map<String, String> styles) {
@@ -144,6 +132,10 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 			return (TextEntryModulePresenter) presenter;
 		}
 
+		public void invokeSetFontSize() {
+			setFontSize(styles);
+		}
+		
 		public void invokeSetDimensions() {
 			setDimensions(styles);
 		}

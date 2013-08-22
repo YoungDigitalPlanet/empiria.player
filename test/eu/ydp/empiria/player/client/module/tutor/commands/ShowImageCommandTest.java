@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
-import eu.ydp.empiria.player.client.util.geom.Size;
+import eu.ydp.gwtutil.client.util.geom.Size;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ShowImageCommandTest {
@@ -21,7 +21,7 @@ public class ShowImageCommandTest {
 	TutorView view;
 
 	final static String ASSET_PATH = "ALEX_JUMP";
-	private Size size = new Size(43, 15);
+	private final Size size = new Size(43, 15);
 
 	@Before
 	public void setUp() {

@@ -5,7 +5,8 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.tutor.TutorCommand;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
-import eu.ydp.empiria.player.client.util.geom.Size;
+import eu.ydp.gwtutil.client.util.geom.Size;
+
 
 public class ShowImageCommand implements TutorCommand {
 
