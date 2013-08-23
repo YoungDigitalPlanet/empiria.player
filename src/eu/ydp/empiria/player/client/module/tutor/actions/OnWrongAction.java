@@ -1,8 +1,11 @@
 package eu.ydp.empiria.player.client.module.tutor.actions;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
+
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.module.tutor.ActionType;
 
 public class OnWrongAction implements OutcomeDrivenAction {
@@ -13,8 +16,8 @@ public class OnWrongAction implements OutcomeDrivenAction {
 	@Override
 	public boolean actionOccured() {
 		boolean selection = outcomeAccessor.isLastActionSelection();
-		boolean lastMistaken = outcomeAccessor.isCurrentPageLastMistaken();
-		return selection && lastMistaken;
+		LastMistaken lastMistaken = outcomeAccessor.getCurrentPageLastMistaken();
+		return selection && WRONG.equals(lastMistaken);
 	}
 
 	@Override

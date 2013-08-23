@@ -7,6 +7,8 @@ import static eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertyN
 import static eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertyName.RESULT;
 import static eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertyName.TODO;
 import static eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertyName.WRONG;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.NONE;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -20,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class FeedbackPropertiesCreatorJUnitTest {
@@ -36,21 +39,41 @@ public class FeedbackPropertiesCreatorJUnitTest {
 
 	@Test
 	public void shouldApplyOkProperty() {
-		OutcomeListBuilder builder = OutcomeListBuilder.init().
-										put(creator.createLastMistakenOutcome(0));
+		// given
+		OutcomeListBuilder builder = OutcomeListBuilder.init().put(creator.createLastMistakenOutcome(CORRECT));
+		
+		// when
 		FeedbackProperties properties = getProperties(builder);
 
+		// then
 		assertThat("not null", properties, is(notNullValue()));
 		assertThat("wrong", properties.getBooleanProperty(WRONG), is(equalTo(false)));
 		assertThat("ok", properties.getBooleanProperty(OK), is(equalTo(true)));
 	}
+
+	@Test
+	public void shouldApplyNoProperty() {
+		// given
+		OutcomeListBuilder builder = OutcomeListBuilder.init().put(creator.createLastMistakenOutcome(NONE));
+		
+		// when
+		FeedbackProperties properties = getProperties(builder);
+
+		// then
+		assertThat("not null", properties, is(notNullValue()));
+		assertThat("wrong", properties.getBooleanProperty(WRONG), is(equalTo(false)));
+		assertThat("ok", properties.getBooleanProperty(OK), is(equalTo(false)));
+	}
 	
 	@Test
 	public void shouldApplyWrongProperty() {
-		OutcomeListBuilder builder = OutcomeListBuilder.init().
-										put(creator.createLastMistakenOutcome(1));
+		// given
+		OutcomeListBuilder builder = OutcomeListBuilder.init().put(creator.createLastMistakenOutcome(LastMistaken.WRONG));
+		
+		// when
 		FeedbackProperties properties = getProperties(builder);
 
+		// then
 		assertThat("not null", properties, is(notNullValue()));
 		assertThat("wrong", properties.getBooleanProperty(WRONG), is(equalTo(true)));
 		assertThat("ok", properties.getBooleanProperty(OK), is(equalTo(false)));
@@ -133,10 +156,9 @@ public class FeedbackPropertiesCreatorJUnitTest {
 	private FeedbackProperties getProperties(OutcomeListBuilder builder){
 		IUniqueModule module = mock(IUniqueModule.class);
 		when(module.getIdentifier()).thenReturn(moduleId);
-		
+		FeedbackPropertiesCreator creator = new FeedbackPropertiesCreator();
 		Map<String, Outcome> outcomes = builder.getMap();
-		FeedbackPropertiesCreator converter = new FeedbackPropertiesCreator();
-		return converter.getPropertiesFromVariables(module.getIdentifier(), outcomes);
+		return creator.getPropertiesFromVariables(module.getIdentifier(), outcomes);
 	}
 
 }
