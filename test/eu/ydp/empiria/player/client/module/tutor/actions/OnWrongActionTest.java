@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.tutor.actions;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.NONE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -22,10 +25,10 @@ public class OnWrongActionTest {
 	private OutcomeAccessor accessor;
 
 	@Test
-	public void actionOccured_selectionNoMistake() {
+	public void actionOccured_selectionCorrect() {
 		// given
 		when(accessor.isLastActionSelection()).thenReturn(true);
-		when(accessor.isCurrentPageLastMistaken()).thenReturn(false);
+		when(accessor.getCurrentPageLastMistaken()).thenReturn(CORRECT);
 
 		// when
 		boolean occured = action.actionOccured();
@@ -35,10 +38,23 @@ public class OnWrongActionTest {
 	}
 
 	@Test
-	public void actionOccured_selectionMistake() {
+	public void actionOccured_selectionNone() {
 		// given
 		when(accessor.isLastActionSelection()).thenReturn(true);
-		when(accessor.isCurrentPageLastMistaken()).thenReturn(true);
+		when(accessor.getCurrentPageLastMistaken()).thenReturn(NONE);
+
+		// when
+		boolean occured = action.actionOccured();
+
+		// then
+		assertThat(occured).isFalse();
+	}
+
+	@Test
+	public void actionOccured_selectionWrong() {
+		// given
+		when(accessor.isLastActionSelection()).thenReturn(true);
+		when(accessor.getCurrentPageLastMistaken()).thenReturn(WRONG);
 
 		// when
 		boolean occured = action.actionOccured();
@@ -48,10 +64,10 @@ public class OnWrongActionTest {
 	}
 
 	@Test
-	public void actionOccured_unselectionNoMistake() {
+	public void actionOccured_unselectionCorrect() {
 		// given
 		when(accessor.isLastActionSelection()).thenReturn(false);
-		when(accessor.isCurrentPageLastMistaken()).thenReturn(false);
+		when(accessor.getCurrentPageLastMistaken()).thenReturn(CORRECT);
 
 		// when
 		boolean occured = action.actionOccured();
@@ -61,10 +77,23 @@ public class OnWrongActionTest {
 	}
 
 	@Test
-	public void actionOccured_unselectionMistake() {
+	public void actionOccured_unselectionNone() {
 		// given
 		when(accessor.isLastActionSelection()).thenReturn(false);
-		when(accessor.isCurrentPageLastMistaken()).thenReturn(true);
+		when(accessor.getCurrentPageLastMistaken()).thenReturn(NONE);
+
+		// when
+		boolean occured = action.actionOccured();
+
+		// then
+		assertThat(occured).isFalse();
+	}
+
+	@Test
+	public void actionOccured_unselectionWrong() {
+		// given
+		when(accessor.isLastActionSelection()).thenReturn(false);
+		when(accessor.getCurrentPageLastMistaken()).thenReturn(WRONG);
 
 		// when
 		boolean occured = action.actionOccured();

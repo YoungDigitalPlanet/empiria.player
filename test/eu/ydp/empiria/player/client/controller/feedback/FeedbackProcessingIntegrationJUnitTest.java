@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -58,7 +60,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessOkFeedback(){		
-		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(true).setDone(1).setTodo(3).setErrors(0);		
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0);		
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(1)));
@@ -68,7 +70,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldIgnoreFeedbackBecauseIsOnUnselect(){		
-		ModuleInfo info = ModuleInfo.create("-"+MODULE_1).setLastOk(true).setDone(1).setTodo(3).setErrors(0);		
+		ModuleInfo info = ModuleInfo.create("-"+MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0);		
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(0)));
@@ -76,7 +78,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessWrongFeedback(){		
-		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(false).setDone(1).setTodo(3).setErrors(0);
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0);
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(1)));
@@ -86,7 +88,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessAllOkFeedback(){		
-		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(true).setDone(3).setTodo(3).setErrors(0);
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0);
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(2)));
@@ -100,7 +102,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessOkFeedbackWhen_allAreDoneWithOneError(){		
-		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(true).setDone(3).setTodo(3).setErrors(1);
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(1);
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(1)));
@@ -109,7 +111,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	
 	@Test
 	public void shouldProcessWrongFeedbackWhen_allAreDoneWithOneError(){		
-		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(false).setDone(3).setTodo(3).setErrors(1);
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(3).setTodo(3).setErrors(1);
 		List<FeedbackAction> actions = processUserAction(info);
 		
 		assertThat(actions.size(), is(equalTo(1)));
@@ -141,7 +143,6 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 		assertThat(showUrlAction.getHref(), is(equalTo(expectedUrl)));
 	}
 	
-	
 	private IModule createSender(ModuleInfo info){
 		FeedbackPropertiesCollectorTestHelper helper = new FeedbackPropertiesCollectorTestHelper();
 		variables = helper.createOutcomeVariables(info);
@@ -154,7 +155,6 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 		
 		@Override
 		public void configure(Binder binder) {
-			//aaaa
 		}
 		
 		@Provides

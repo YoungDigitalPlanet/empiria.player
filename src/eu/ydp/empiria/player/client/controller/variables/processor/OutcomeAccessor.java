@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataS
 import eu.ydp.empiria.player.client.controller.variables.VariablePossessorBase;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 
 public class OutcomeAccessor {
@@ -39,9 +40,9 @@ public class OutcomeAccessor {
 		return getVariableAsInt(MISTAKES);
 	}
 
-	public boolean isCurrentPageLastMistaken() {
-		int lastmistaken = getVariableAsInt(LASTMISTAKEN);
-		return lastmistaken > 0;
+	public LastMistaken getCurrentPageLastMistaken() {
+		String lastmistaken = getVariableAsString(LASTMISTAKEN);
+		return LastMistaken.valueOf(lastmistaken.toUpperCase());
 	}
 
 	@SuppressWarnings("unchecked")

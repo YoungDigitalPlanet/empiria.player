@@ -12,6 +12,7 @@ import static eu.ydp.empiria.player.client.controller.variables.processor.result
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 
 public class OutcomeCreator {
 	
@@ -42,8 +43,8 @@ public class OutcomeCreator {
 		return createOutcome(LASTCHANGE.toString(), SINGLE,  identifier);
 	}
 	
-	public Outcome createLastMistakenOutcome(int isMistake){
-		return createOutcome(LASTMISTAKEN.toString(), SINGLE,  String.valueOf(isMistake));
+	public Outcome createLastMistakenOutcome(LastMistaken lastMistaken){
+		return createOutcome(LASTMISTAKEN.toString(), SINGLE,  lastMistaken.toString());
 	}
 	
 	public Outcome createMistakesOutcome(int mistakesNum){
