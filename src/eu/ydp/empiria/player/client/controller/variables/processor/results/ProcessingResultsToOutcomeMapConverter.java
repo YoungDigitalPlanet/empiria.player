@@ -117,11 +117,6 @@ public class ProcessingResultsToOutcomeMapConverter {
 		insertVariable(identifier, String.valueOf(value));
 	}
 	
-	private void insertVariable(String identifier, boolean value) {
-		int valueConvertedToInt = convertBooleanToInt(value);
-		insertVariable(identifier, valueConvertedToInt);
-	}
-	
 	private void insertVariable(String identifier, String value) {
 		Outcome outcome = new Outcome(identifier, Cardinality.SINGLE, ""+value);
 		outcomes.put(identifier, outcome);
