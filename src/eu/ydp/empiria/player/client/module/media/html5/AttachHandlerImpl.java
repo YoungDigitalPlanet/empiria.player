@@ -28,14 +28,9 @@ public class AttachHandlerImpl implements Handler {
 	public void onAttachOrDetach(AttachEvent event) {
 		if (firstTimeInitialization) {
 			firstTimeInitialization = false;
-			return;
-		}
-
-		if (event.isAttached()) {
-			if( isUserAgent(MobileUserAgent.SAFARI) ){
-				HTML5VideoReattachHack html5VideoReattachHack = html5VideoReattachHackProvider.get();
-				html5VideoReattachHack.reAttachVideo(mediaWrapper, mediaExecutor, this);
-			}
+		}else if (event.isAttached() && isUserAgent(MobileUserAgent.SAFARI)) {
+			HTML5VideoReattachHack html5VideoReattachHack = html5VideoReattachHackProvider.get();
+			html5VideoReattachHack.reAttachVideo(mediaWrapper, mediaExecutor, this);
 		}
 	}
 
