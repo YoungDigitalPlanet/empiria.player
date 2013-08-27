@@ -31,7 +31,7 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public abstract class TextEntryGapBase extends GapBase implements SourcelistClient {
 
-	private static final String SOURCE_LIST_ID = "sourceListId";
+	private static final String SOURCE_LIST_ID = "sourcelistId";
 
 	@Inject
 	@PageScoped
