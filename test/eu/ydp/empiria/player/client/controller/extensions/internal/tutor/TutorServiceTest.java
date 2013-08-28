@@ -1,5 +1,12 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.Map;
 
 import org.junit.Test;
@@ -8,19 +15,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import eu.ydp.empiria.player.client.gin.factory.PersonaServiceFactory;
+import com.google.common.base.Optional;
+import com.google.inject.Provider;
+
 import eu.ydp.gwtutil.client.collections.MapStringToIntMock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TutorServiceTest {
 	@Mock
-	private PersonaServiceFactory personaServiceFactory;
+	private Provider<PersonaService> personaServiceProvider;
 	@InjectMocks
 	private TutorService tutorService;
 	private TutorConfig tutorConfig;
-
+	
 	@Test
 	public void shouldReturnRegisteredTutorConfig() throws Exception {
 		//given
@@ -48,7 +55,6 @@ public class TutorServiceTest {
 		assertThat(result).isEqualTo(createdPersonaService);
 	}
 
-	
 	@Test
 	public void shouldReturnPreviouslyCreatedPersonaService() throws Exception {
 		//given
@@ -61,88 +67,117 @@ public class TutorServiceTest {
 		
 		//then
 		assertThat(personaService).isEqualTo(createdPersonaService);
-		verify(personaServiceFactory, times(1)).createPersonaService(tutorConfig);
+		verify(personaService).init(tutorConfig, 0);
 	}
 	
 	@Test
 	public void shouldReturnDifferentServicesForDifferentTutors() throws Exception {
 		//given
 		String tutorId1 = "tutorId1";
-		PersonaService createdPersonaService1 = expectPersonaServiceCreationForTutorId(tutorId1);
-		
 		String tutorId2 = "tutorId2";
-		PersonaService createdPersonaService2 = expectPersonaServiceCreationForTutorId(tutorId2);
+		when(personaServiceProvider.get()).thenReturn(mock(PersonaService.class), mock(PersonaService.class));
 		
 		//when
-		tutorService.getTutorPersonaService(tutorId1);
 		PersonaService personaService1 = tutorService.getTutorPersonaService(tutorId1);
-
-		tutorService.getTutorPersonaService(tutorId2);
 		PersonaService personaService2 = tutorService.getTutorPersonaService(tutorId2);
 		
-		
-		assertThat(personaService1).isEqualTo(createdPersonaService1);
-		assertThat(personaService2).isEqualTo(createdPersonaService2);
-		assertThat(personaService1).isNotEqualTo(personaService2);
+		// then
+		verify(personaService1).init(any(TutorConfig.class), eq(0));
+		verify(personaService2).init(any(TutorConfig.class), eq(0));
 	}
 	
 	@Test
-	public void shouldBuildTutorToCurrentPersonaIndexMap() throws Exception {
+	public void buildTutorToCurrentPersonaIndexMap() throws Exception {
 		//given
+		PersonaService persona1 = mock(PersonaService.class);
+		PersonaService persona2 = mock(PersonaService.class);
+		when(personaServiceProvider.get()).thenReturn(persona1, persona2);
+		
 		String tutorId1 = "tutorId1";
-		PersonaService createdPersonaService1 = expectPersonaServiceCreationForTutorId(tutorId1);
-		int firstTutorPersonaIndex = 1;
-		
 		String tutorId2 = "tutorId2";
-		int secondTutorPersonaIndex = 2;
-		PersonaService createdPersonaService2 = expectPersonaServiceCreationForTutorId(tutorId2);
 		
-		when(createdPersonaService1.getCurrentPersonaIndex())
-			.thenReturn(firstTutorPersonaIndex);
-		
-		when(createdPersonaService2.getCurrentPersonaIndex())
-			.thenReturn(secondTutorPersonaIndex);
+		tutorService.registerTutor(tutorId1, mock(TutorConfig.class));
+		tutorService.registerTutor(tutorId2, mock(TutorConfig.class));
 		
 		//when
 		Map<String, Integer> tutorIdToCurrentPersonaIndexMap = tutorService.buildTutorIdToCurrentPersonaIndexMap();
 		
 		//then
 		assertThat(tutorIdToCurrentPersonaIndexMap.size()).isEqualTo(2);
-		assertThat(tutorIdToCurrentPersonaIndexMap.get(tutorId1)).isEqualTo(firstTutorPersonaIndex);
-		assertThat(tutorIdToCurrentPersonaIndexMap.get(tutorId2)).isEqualTo(secondTutorPersonaIndex);
+		assertThat(tutorIdToCurrentPersonaIndexMap.get(tutorId1)).isEqualTo(0);
+		assertThat(tutorIdToCurrentPersonaIndexMap.get(tutorId2)).isEqualTo(0);
+		verify(persona1).init(any(TutorConfig.class), eq(0));
+		verify(persona2).init(any(TutorConfig.class), eq(0));
 	}
 	
 	@Test
-	public void shouldSetCurrentPersonasForTutors() throws Exception {
+	public void importPersonaIndexes() throws Exception {
 		//given
+		PersonaService persona0 = mock(PersonaService.class);
+		PersonaService persona1 = mock(PersonaService.class);
+		when(personaServiceProvider.get()).thenReturn(persona0, persona1);
+
 		String tutorId1 = "tutorId1";
-		PersonaService createdPersonaService1 = expectPersonaServiceCreationForTutorId(tutorId1);
-		int firstTutorPersonaIndex = 1;
-		
 		String tutorId2 = "tutorId2";
-		int secondTutorPersonaIndex = 2;
-		PersonaService createdPersonaService2 = expectPersonaServiceCreationForTutorId(tutorId2);
+		
+		int tutorPersonaIndex1 = 1;
+		int tutorPersonaIndex2 = 2;
 		
 		MapStringToIntMock tutorIdToCurrentPersonaMap = new MapStringToIntMock();
-		tutorIdToCurrentPersonaMap.put(tutorId1, firstTutorPersonaIndex);
-		tutorIdToCurrentPersonaMap.put(tutorId2, secondTutorPersonaIndex);
+		tutorIdToCurrentPersonaMap.put(tutorId1, tutorPersonaIndex1);
+		tutorIdToCurrentPersonaMap.put(tutorId2, tutorPersonaIndex2);
 		
 		//when
-		tutorService.setCurrentPersonasForTutors(tutorIdToCurrentPersonaMap);
+		tutorService.importCurrentPersonasForTutors(tutorIdToCurrentPersonaMap);
+		PersonaService tutorPersonaService1 = tutorService.getTutorPersonaService(tutorId1);
+		PersonaService tutorPersonaService2 = tutorService.getTutorPersonaService(tutorId2);
 		
 		//then
-		verify(createdPersonaService1).setCurrentPersonaIndex(firstTutorPersonaIndex);
-		verify(createdPersonaService2).setCurrentPersonaIndex(secondTutorPersonaIndex);
+		verify(tutorPersonaService1).init(any(TutorConfig.class), eq(tutorPersonaIndex1));
+		verify(tutorPersonaService2).init(any(TutorConfig.class), eq(tutorPersonaIndex2));
 	}
 	
+	@Test
+	public void askForOtherPersonaThanImported() throws Exception {
+		//given
+		PersonaService persona0 = mock(PersonaService.class);
+		PersonaService persona1 = mock(PersonaService.class);
+		when(personaServiceProvider.get()).thenReturn(persona0, persona1);
+
+		String tutorId1 = "tutorId1";
+		String tutorId2 = "tutorId2";
+		
+		int tutorPersonaIndex1 = 1;
+		
+		MapStringToIntMock tutorIdToCurrentPersonaMap = new MapStringToIntMock();
+		tutorIdToCurrentPersonaMap.put(tutorId1, tutorPersonaIndex1);
+		
+		//when
+		tutorService.importCurrentPersonasForTutors(tutorIdToCurrentPersonaMap);
+		PersonaService personaService1 = tutorService.getTutorPersonaService(tutorId1);
+		PersonaService personaService2 = tutorService.getTutorPersonaService(tutorId2);
+		
+		//then
+		verify(personaService1).init(any(TutorConfig.class), eq(tutorPersonaIndex1));
+		verify(personaService2).init(any(TutorConfig.class), eq(0));
+	}
+
 	private PersonaService expectPersonaServiceCreationForTutorId(String tutorId) {
+		return expectPersonaServiceCreationForTutorId(tutorId, Optional.<Integer>absent());
+	}
+	
+	private PersonaService expectPersonaServiceCreationForTutorId(String tutorId, Optional<Integer> index) {
 		tutorConfig = mock(TutorConfig.class);
 		PersonaService createdPersonaService = mock(PersonaService.class);
+		when(personaServiceProvider.get()).thenReturn(createdPersonaService);
 		
 		tutorService.registerTutor(tutorId, tutorConfig);
 		
-		when(personaServiceFactory.createPersonaService(tutorConfig))
-			.thenReturn(createdPersonaService);
+		if (index.isPresent()){
+			when(createdPersonaService.getCurrentPersonaIndex()).thenReturn(index.get());
+		} else {
+			when(createdPersonaService.getCurrentPersonaIndex()).thenReturn(0);
+		}
 		
 		return createdPersonaService;
 	}

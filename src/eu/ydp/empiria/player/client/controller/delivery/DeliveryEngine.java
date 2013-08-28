@@ -317,6 +317,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getPage());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getBookmarkProcessorExtension());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getStickiesProcessorExtension());
+		loadExtension(moduleProviderFactory.getTutorApiExtension().get());
 	}
 
 	protected void loadLibraryExtensions() {
@@ -397,7 +398,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			if (extension instanceof TutorExtension) {
 				TutorExtension tutorExtension = (TutorExtension) extension;
 				tutorService.registerTutor(tutorExtension.getTutorId(), tutorExtension.getTutorConfig());
-				tutorExtension.initJsApi(playerJsObject, tutorService);
 			}
 		}
 	}
