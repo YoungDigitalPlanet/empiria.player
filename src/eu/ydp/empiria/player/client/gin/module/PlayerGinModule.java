@@ -13,8 +13,10 @@ import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
+import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
+import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkPopup;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBookmarkPopupView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
@@ -37,6 +39,7 @@ import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
+import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
@@ -53,6 +56,7 @@ import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataS
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
+import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
@@ -71,6 +75,7 @@ import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
+import eu.ydp.empiria.player.client.gin.providers.FlowDataSupplierProvider;
 import eu.ydp.empiria.player.client.gin.providers.NewFlowPanelProvider;
 import eu.ydp.empiria.player.client.gin.providers.UniqIdStringProvider;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
@@ -80,7 +85,6 @@ import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedbackPresenter;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedbackPresenter;
-import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildViewImpl;
@@ -144,6 +148,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		// binding for a class, it falls back to calling GWT.create() on that
 		// class
 		bind(DataSourceManager.class).in(Singleton.class);
+		bind(DataSourceDataSupplier.class).to(DataSourceManager.class);
 		bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class);
 		bind(DefaultMediaProcessorExtension.class).in(Singleton.class);
 		bind(MultiPageController.class).in(Singleton.class);
@@ -201,9 +206,11 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(Animation.class).toProvider(SwipeAnimationProvider.class);
 		bind(ExpressionCharacterMappingProvider.class).in(Singleton.class);
 		bind(TutorService.class).in(Singleton.class);
+		bind(TutorApiExtension.class).in(Singleton.class);
 		bind(ForceRedrawHack.class).to(ForceRedrawHackImpl.class).in(Singleton.class);
 		bind(ComputedStyle.class).to(ComputedStyleImpl.class).in(Singleton.class);
-
+		bind(FlowManager.class).in(Singleton.class);
+		bind(FlowDataSupplier.class).annotatedWith(FlowManagerDataSupplier.class).toProvider(FlowDataSupplierProvider.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
@@ -218,7 +225,6 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class).build(TouchRecognitionFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrappersPairFactory.class));
 		install(new GinFactoryModuleBuilder().build(FieldValueHandlerFactory.class));
-		install(new GinFactoryModuleBuilder().build(VariableInterpreterFactory.class));
 		install(new GinFactoryModuleBuilder().build(AssessmentReportFactory.class));
 		install(new GinFactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
 		install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));

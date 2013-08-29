@@ -1,17 +1,21 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTCHANGE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
+
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTCHANGE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
 
 /*
  EDIT_RESPONSE_2-DONE - ile zrobionych poprawnie
@@ -45,8 +49,8 @@ public class FeedbackPropertiesCreator {
 	private FeedbackProperties createProperties() {
 		FeedbackProperties properties = new FeedbackProperties();
 
-		properties.addBooleanProperty(FeedbackPropertyName.OK, getIntegerVariable(LASTMISTAKEN) == 0);
-		properties.addBooleanProperty(FeedbackPropertyName.WRONG, getIntegerVariable(LASTMISTAKEN) > 0);
+		properties.addBooleanProperty(FeedbackPropertyName.OK, CORRECT.equals(getLastmistaken()) );
+		properties.addBooleanProperty(FeedbackPropertyName.WRONG, WRONG.equals(getLastmistaken()) );
 		properties.addBooleanProperty(FeedbackPropertyName.ALL_OK, isAllOk());
 		properties.addIntegerProperty(FeedbackPropertyName.DONE, getIntegerVariable(DONE));
 		properties.addIntegerProperty(FeedbackPropertyName.TODO, getIntegerVariable(TODO));
@@ -58,6 +62,19 @@ public class FeedbackPropertiesCreator {
 		properties.addBooleanProperty(FeedbackPropertyName.UNSELECT, !isSelect);
 
 		return properties;
+	}
+
+	private LastMistaken getLastmistaken() {
+		String lastmistaken = getVariableValue(LASTMISTAKEN);
+		return lastmistakenStringToEnum(lastmistaken);
+	}
+
+	private LastMistaken lastmistakenStringToEnum(String lastmistaken) {
+		if (lastmistaken == null){
+			return LastMistaken.NONE;
+		} else {
+			return LastMistaken.valueOf(lastmistaken);
+		}
 	}
 
 	private boolean checkIfFeedbackIsOnSelectAction() {

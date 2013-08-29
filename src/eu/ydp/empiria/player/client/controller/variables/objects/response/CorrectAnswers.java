@@ -20,9 +20,14 @@ public class CorrectAnswers {
 			values.get(forIndex).getAnswers().add(answer);
 	}
 	
-	public int getResponseValuesCount(){
+	public int getAnswersCount(){
 		return values.size();
 	}
+	
+	public boolean answersExists(){
+		return values.size() > 0;
+	}
+	
 	
 	public boolean containsAnswer(String test){
 		for (ResponseValue rv : values){
@@ -37,7 +42,14 @@ public class CorrectAnswers {
 	}
 	
 	public String getSingleAnswer(){
-		return values.get(0).getAnswers().get(0);
+		ResponseValue response = getResponseValue(0);
+		String answer;
+		if(response.answersExists()){
+			answer = response.getSingleAnswer();
+		}else{
+			answer = "";
+		}
+		return answer;
 	}
 	
 	public List<String> getAllAnswers(){
@@ -50,7 +62,7 @@ public class CorrectAnswers {
 		return answers;
 	}
 	
-	public List<ResponseValue> getAllResponseValues(){
+	public List<ResponseValue> getAllResponsValues(){
 		return this.values;
 	}
 

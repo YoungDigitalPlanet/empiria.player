@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.NONE;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -18,6 +21,7 @@ import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariablePossessorBase;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OutcomeAccessorTest {
@@ -90,26 +94,39 @@ public class OutcomeAccessorTest {
 	}
 	
 	@Test
-	public void getCurrentPageLastMistaken_false() {
-		final boolean LAST_MISTAKEN = false;
+	public void getCurrentPageLastMistaken_correct() {
+		final LastMistaken LAST_MISTAKEN = CORRECT;
 		// given
-		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("0");
+		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("CORRECT");
 		
 		// when
-		boolean lastMistaken = accessor.isCurrentPageLastMistaken();
+		LastMistaken lastMistaken = accessor.getCurrentPageLastMistaken();
 		
 		// then
 		assertThat(lastMistaken).isEqualTo(LAST_MISTAKEN);
 	}
 	
 	@Test
-	public void getCurrentPageLastMistaken_true() {
-		final boolean LAST_MISTAKEN = true;
+	public void getCurrentPageLastMistaken_none() {
+		final LastMistaken LAST_MISTAKEN = NONE;
 		// given
-		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("1");
+		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("NONE");
 		
 		// when
-		boolean lastMistaken = accessor.isCurrentPageLastMistaken();
+		LastMistaken lastMistaken = accessor.getCurrentPageLastMistaken();
+		
+		// then
+		assertThat(lastMistaken).isEqualTo(LAST_MISTAKEN);
+	}
+	
+	@Test
+	public void getCurrentPageLastMistaken_wrong() {
+		final LastMistaken LAST_MISTAKEN = WRONG;
+		// given
+		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("WRONG");
+		
+		// when
+		LastMistaken lastMistaken = accessor.getCurrentPageLastMistaken();
 		
 		// then
 		assertThat(lastMistaken).isEqualTo(LAST_MISTAKEN);

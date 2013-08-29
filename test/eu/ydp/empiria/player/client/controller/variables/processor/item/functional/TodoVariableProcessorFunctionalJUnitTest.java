@@ -32,7 +32,7 @@ public class TodoVariableProcessorFunctionalJUnitTest extends VariableProcessorF
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		// then
-		Integer expectedTODOCount = responseWithCorrectAnswersCountMode.correctAnswers.getResponseValuesCount();
+		Integer expectedTODOCount = responseWithCorrectAnswersCountMode.correctAnswers.getAnswersCount();
 		String expectedTODOVariableValue = expectedTODOCount.toString();
 		assertGlobalOutcomesHaveValue(Lists.newArrayList(expectedTODOVariableValue), Lists.newArrayList(TODO), outcomes);
 		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswersCountMode, Lists.newArrayList(expectedTODOVariableValue), Lists.newArrayList(TODO), outcomes);

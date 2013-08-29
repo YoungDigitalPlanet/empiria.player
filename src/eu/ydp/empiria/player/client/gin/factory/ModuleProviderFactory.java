@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.gin.factory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
@@ -25,10 +26,9 @@ import eu.ydp.empiria.player.client.module.flash.FlashModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
+import eu.ydp.empiria.player.client.module.inlinechoice.math.InlineChoiceMathGapModule;
 import eu.ydp.empiria.player.client.module.labelling.LabellingModule;
-import eu.ydp.empiria.player.client.module.math.InlineChoiceGapModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
-import eu.ydp.empiria.player.client.module.math.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
@@ -42,7 +42,8 @@ import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
-import eu.ydp.empiria.player.client.module.textentry.TextEntryModule;
+import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
+import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule;
 import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 
 @SuppressWarnings({"PMD"})
@@ -69,9 +70,9 @@ public class ModuleProviderFactory {
 	@Inject private Provider<LabellingModule> labellingModule;
 	@Inject private Provider<OrderInteractionModule> orderInteractionModule;
 	@Inject private Provider<ChoiceModule> choiceModule;
-	@Inject private Provider<InlineChoiceGapModule> inlineChoiceGapModule;
-	@Inject private Provider<TextEntryModule> textEntryModule;
+	@Inject private Provider<InlineChoiceMathGapModule> inlineChoiceMathGapModule;
 	@Inject private Provider<TextEntryGapModule> textEntryGapModule;
+	@Inject private Provider<TextEntryMathGapModule> textEntryMathGapModule;
 	@Inject private Provider<DragGapModule> dragGapModule;
 	@Inject private Provider<DivModule> divModule;
 	@Inject private Provider<GroupModule> groupModule;
@@ -88,6 +89,7 @@ public class ModuleProviderFactory {
 	@Inject private Provider<SubHtmlContainerModule> subHtmlContainerModule;
 	@Inject private Provider<TutorModule> tutor;
 	@Inject private Provider<ButtonModule> buttonModule;
+	@Inject private Provider<TutorApiExtension> tutorApiExtension;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -177,16 +179,16 @@ public class ModuleProviderFactory {
 		return choiceModule;
 	}
 
-	public Provider<InlineChoiceGapModule> getInlineChoiceGapModule() {
-		return inlineChoiceGapModule;
-	}
-
-	public Provider<TextEntryModule> getTextEntryModule() {
-		return textEntryModule;
+	public Provider<InlineChoiceMathGapModule> getInlineChoiceMathGapModule() {
+		return inlineChoiceMathGapModule;
 	}
 
 	public Provider<TextEntryGapModule> getTextEntryGapModule() {
 		return textEntryGapModule;
+	}
+
+	public Provider<TextEntryMathGapModule> getTextEntryMathGapModule() {
+		return textEntryMathGapModule;
 	}
 
 	public Provider<DragGapModule> getDragGapModule() {
@@ -251,5 +253,9 @@ public class ModuleProviderFactory {
 
 	public Provider<ButtonModule> getButtonModule() {
 		return buttonModule;
+	}
+
+	public Provider<TutorApiExtension> getTutorApiExtension() {
+		return tutorApiExtension;
 	}
 }

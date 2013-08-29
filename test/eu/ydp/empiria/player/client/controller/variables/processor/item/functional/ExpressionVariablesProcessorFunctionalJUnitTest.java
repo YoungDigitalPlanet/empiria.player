@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.module.expression.ExpressionToResponseConnector;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
@@ -108,7 +109,8 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList(String.valueOf(1)), Lists.newArrayList(DONE, TODO), outcomes);
 
 		for (Response response : responses) {
@@ -141,7 +143,8 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN, DONE), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, DONE), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.NONE.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(TODO), outcomes);
 
 		assertNotFilledExpressionResults(responseWithEmptyAnswer, outcomes);
@@ -182,7 +185,8 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(MISTAKES, LASTMISTAKEN), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(MISTAKES), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(TODO, ERRORS), outcomes);
 
@@ -192,22 +196,26 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 	}
 
 	private void assertWrongExpressionEvaluationResultsWhenValuesNotChanged(Response response, Map<String, Outcome> outcomes) {
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(DONE, MISTAKES, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(DONE, MISTAKES), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList(LastMistaken.NONE.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(ERRORS, TODO), outcomes);
 	}
 
 	private void assertWrongExpressionEvaluationResultsForChangedResponse(Response response, Map<String, Outcome> outcomes) {
 		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN, TODO), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES, TODO), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 	}
 
 	private void assertNotFilledExpressionResults(Response response, Map<String, Outcome> outcomes) {
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN, DONE), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, DONE), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList(LastMistaken.NONE.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(TODO), outcomes);
 	}
 
 	private void assertCorrectExpressionEvaluationResult(Response response, Map<String, Outcome> outcomes) {
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
 	}
 

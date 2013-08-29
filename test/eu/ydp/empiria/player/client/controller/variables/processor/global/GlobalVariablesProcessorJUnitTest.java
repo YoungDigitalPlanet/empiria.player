@@ -4,6 +4,7 @@ import static eu.ydp.empiria.player.client.controller.variables.processor.global
 import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.createResponse;
 import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.prepareProcessingResults;
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.google.inject.Guice;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
 public class GlobalVariablesProcessorJUnitTest {
@@ -27,14 +29,14 @@ public class GlobalVariablesProcessorJUnitTest {
 	final int TODO_0 = 1;
 	final int DONE_0 = 0;
 	final int ERRORS_0 = 1;
-	final boolean LAST_MISTAKEN_0 = false;
+	final LastMistaken LAST_MISTAKEN_0 = LastMistaken.CORRECT;
 	final int MISTAKES_0 = 9;
 
 	String ID_1 = "id1";
 	final int TODO_1 = 1;
 	final int DONE_1 = 1;
 	final int ERRORS_1 = 0;
-	final boolean LAST_MISTAKEN_1 = false;
+	final LastMistaken LAST_MISTAKEN_1 = LastMistaken.CORRECT;
 	final int MISTAKES_1 = 83;
 
 	// default 1
@@ -42,7 +44,7 @@ public class GlobalVariablesProcessorJUnitTest {
 	final int TODO_2 = 4;
 	final int DONE_2 = 1;
 	final int ERRORS_2 = 3;
-	final boolean LAST_MISTAKEN_2 = true;
+	final LastMistaken LAST_MISTAKEN_2 = LastMistaken.WRONG;
 	final int MISTAKES_2 = 9;
 
 	// default 2
@@ -50,7 +52,7 @@ public class GlobalVariablesProcessorJUnitTest {
 	final int TODO_3 = 1;
 	final int DONE_3 = 1;
 	final int ERRORS_3 = 0;
-	final boolean LAST_MISTAKEN_3 = false;
+	final LastMistaken LAST_MISTAKEN_3 = LastMistaken.CORRECT;
 	final int MISTAKES_3 = 2;
 
 	@Test
@@ -115,20 +117,20 @@ public class GlobalVariablesProcessorJUnitTest {
 		GlobalVariables globalVariables = globalVariablesProcessor.calculateGlobalVariables(modulesProcessingResults, responses);
 
 		// then
-		assertThat(globalVariables.isLastMistaken(), equalTo(true));
+		assertThat(globalVariables.getLastMistaken(), equalTo(LastMistaken.WRONG));
 	}
 
 	@Test
 	public void shouldNotSetGlobalLastmistakenWhenAllLocalAreWithoutLastmistaken() throws Exception {
 		// given
-		Map<String, DtoModuleProcessingResult> modulesProcessingResults = createResults(false);
+		Map<String, DtoModuleProcessingResult> modulesProcessingResults = createResults(LastMistaken.CORRECT);
 		Map<String, Response> responses = createResponses();
 
 		// when
 		GlobalVariables globalVariables = globalVariablesProcessor.calculateGlobalVariables(modulesProcessingResults, responses);
 
 		// then
-		assertThat(globalVariables.isLastMistaken(), equalTo(false));
+		assertThat(globalVariables.getLastMistaken(), equalTo(LastMistaken.CORRECT));
 	}
 
 
@@ -146,7 +148,7 @@ public class GlobalVariablesProcessorJUnitTest {
 		return createResults(LAST_MISTAKEN_2);
 	}
 
-	private Map<String, DtoModuleProcessingResult> createResults(boolean lastMistaken2) {
+	private Map<String, DtoModuleProcessingResult> createResults(LastMistaken lastMistaken2) {
 		DtoModuleProcessingResult processingResult0 = prepareProcessingResults(TODO_0, DONE_0, ERRORS_0, MISTAKES_0, LAST_MISTAKEN_0);
 		DtoModuleProcessingResult processingResult1 = prepareProcessingResults(TODO_1, DONE_1, ERRORS_1, MISTAKES_1, LAST_MISTAKEN_1);
 		DtoModuleProcessingResult processingResult2 = prepareProcessingResults(TODO_2, DONE_2, ERRORS_2, MISTAKES_2, lastMistaken2);

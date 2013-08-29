@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase{
 
@@ -28,9 +29,11 @@ public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends Varia
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 
 		// then
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES, TODO, LASTMISTAKEN), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES, TODO), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES, TODO, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(ERRORS, MISTAKES, TODO), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
 	}
 
@@ -39,7 +42,7 @@ public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends Varia
 		// given
 		Response response = builder()
 				.withCorrectAnswers("CorrectAnswer1", "CorrectAnswer2")
-				.withCurrentUserAnswers("CorrectAnswer1", "CorrectAnswer2")
+				.withCurrentUserAnswers("CorrectAnswer2")
 				.build();
 
 		Map<String, Response> responsesMap = convertToMap(response);
@@ -50,9 +53,11 @@ public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends Varia
 
 		// then
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
-		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
+		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 	}
 	
 	@Test
@@ -71,10 +76,12 @@ public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends Varia
 
 		// then
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("1"), Lists.newArrayList(TODO), outcomes);
-		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, LASTMISTAKEN, DONE), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES, DONE), outcomes);
+		assertGlobalOutcomesHaveValue(Lists.newArrayList(LastMistaken.NONE.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 
 		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList("1"), Lists.newArrayList(TODO), outcomes);
-		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList("0"), Lists.newArrayList(DONE, MISTAKES, LASTMISTAKEN, ERRORS), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList("0"), Lists.newArrayList(DONE, MISTAKES, ERRORS), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList(LastMistaken.NONE.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 	}
 	
 	private ResponseBuilder builder(){

@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMod
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
 
 public class ResponseVariablesProcessor {
@@ -23,7 +24,7 @@ public class ResponseVariablesProcessor {
 
 	public void resetLastUserInteractionVariables(UserInteractionVariables userInteractionVariables) {
 		userInteractionVariables.setLastAnswerChanges(new LastAnswersChanges());
-		userInteractionVariables.setLastmistaken(false);
+		userInteractionVariables.setLastmistaken(LastMistaken.NONE);
 	}
 
 	public void processChangedResponse(DtoProcessedResponse processedResponse, ProcessingMode processingMode) {
@@ -57,7 +58,7 @@ public class ResponseVariablesProcessor {
 		LastAnswersChanges answersChanges = dtoChangedResponse.getLastAnswersChanges();
 		UserInteractionVariables previousUserInteractionVariables = dtoChangedResponse.getPreviousProcessingResult().getUserInteractionVariables();
 		
-		boolean lastmistaken = variableProcessor.checkLastmistaken(currentResponse, answersChanges);
+		LastMistaken lastmistaken = variableProcessor.checkLastmistaken(currentResponse, answersChanges);
 		int mistakes = variableProcessor.calculateMistakes(lastmistaken, previousUserInteractionVariables.getMistakes());
 		
 		return new UserInteractionVariables(answersChanges, lastmistaken, mistakes);

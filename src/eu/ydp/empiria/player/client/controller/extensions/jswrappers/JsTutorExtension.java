@@ -9,6 +9,8 @@ import eu.ydp.empiria.player.client.controller.extensions.types.TutorExtension;
 
 public class JsTutorExtension extends AbstractJsExtension implements TutorExtension {
 	
+	private JavaScriptObject playerJsObject;
+
 	@Override
 	public void init() {	
 	}
@@ -37,5 +39,5 @@ public class JsTutorExtension extends AbstractJsExtension implements TutorExtens
 	public ExtensionType getType() {
 		return ExtensionType.EXTENSION_TUTOR;
 	}
-
+	
 }

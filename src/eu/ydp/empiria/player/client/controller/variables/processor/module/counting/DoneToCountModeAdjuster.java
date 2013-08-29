@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module.counting;
 
-import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
+import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 
@@ -13,7 +13,7 @@ public class DoneToCountModeAdjuster {
 		}else{
 			adjustedValue = adjustDoneValueToSingleCountMode(amountOfGivenCorrectAnswers, response);
 		}
-		
+
 		return adjustedValue;
 	}
 
@@ -28,17 +28,23 @@ public class DoneToCountModeAdjuster {
 	}
 
 	private boolean isSolvedWithoutErrors(int amountOfGivenCorrectAnswers, Response response) {
-		boolean isSolvedWithoutErrors = areAllGivenAnswersCorrect(amountOfGivenCorrectAnswers, response) && allRequiredAnswersGiven(amountOfGivenCorrectAnswers, response.correctAnswers);
+		boolean isSolvedWithoutErrors = areAllGivenAnswersCorrect(amountOfGivenCorrectAnswers, response) && allRequiredAnswersGiven(amountOfGivenCorrectAnswers, response);
 		return isSolvedWithoutErrors;
 	}
 
-	private boolean allRequiredAnswersGiven(int amountOfGivenCorrectAnswers, CorrectAnswers correctAnswers) {
-		return amountOfGivenCorrectAnswers == correctAnswers.getResponseValuesCount();
+
+	private boolean allRequiredAnswersGiven(int amountOfGivenCorrectAnswers, Response response) {
+		Cardinality cardinality = response.cardinality;
+		if(cardinality == Cardinality.SINGLE) {
+			return amountOfGivenCorrectAnswers == 1;
+		} else {
+			return amountOfGivenCorrectAnswers == response.correctAnswers.getAnswersCount();
+		}
 	}
 
 	private boolean areAllGivenAnswersCorrect(int amountOfGivenCorrectAnswers, Response response) {
 		int amountOfGivenAnswers = response.values.size();
 		return amountOfGivenAnswers == amountOfGivenCorrectAnswers;
 	}
-	
+
 }

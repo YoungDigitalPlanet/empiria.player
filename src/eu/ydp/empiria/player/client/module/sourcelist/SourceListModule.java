@@ -14,8 +14,8 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 

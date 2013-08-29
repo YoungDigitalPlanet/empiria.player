@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -70,8 +72,8 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	@Test
 	public void shouldProcessOkFeedback(){		
 		ModuleInfo[] infos = new ModuleInfo[]{
-									ModuleInfo.create(MODULE_1).setLastOk(true).setDone(1).setTodo(3).setErrors(0),
-									ModuleInfo.create(MODULE_2).setLastOk(false).setDone(2).setTodo(6).setErrors(0)
+									ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0),
+									ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0)
 								};
 		
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -82,10 +84,10 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	@Test
 	public void shouldIgnoreUnselectFeedback(){		
 		ModuleInfo[] infos = new ModuleInfo[]{
-				ModuleInfo.create("-"+MODULE_1).setLastOk(true).setDone(1).setTodo(3).setErrors(0),
-				ModuleInfo.create("-"+MODULE_2).setLastOk(false).setDone(2).setTodo(6).setErrors(0),
-				ModuleInfo.create(null).setLastOk(false).setDone(1).setTodo(3).setErrors(0),
-				ModuleInfo.create("+").setLastOk(false).setDone(1).setTodo(3).setErrors(0)
+				ModuleInfo.create("-"+MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0),
+				ModuleInfo.create("-"+MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0),
+				ModuleInfo.create(null).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0),
+				ModuleInfo.create("+").setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0)
 		};
 		
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -96,8 +98,8 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	@Test
 	public void shouldProcessWrongFeedback(){		
 		ModuleInfo[] infos = new ModuleInfo[]{
-									ModuleInfo.create(MODULE_1).setLastOk(false).setDone(1).setTodo(3).setErrors(0),
-									ModuleInfo.create(MODULE_2).setLastOk(false).setDone(2).setTodo(6).setErrors(0)
+									ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0),
+									ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0)
 								};
 		
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -108,8 +110,8 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	@Test
 	public void shouldProcessAllOkFeedback(){		
 		ModuleInfo[] infos = new ModuleInfo[]{
-									ModuleInfo.create(MODULE_1).setLastOk(true).setDone(3).setTodo(3).setErrors(0),
-									ModuleInfo.create(MODULE_2).setLastOk(false).setDone(6).setTodo(6).setErrors(0)
+									ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0),
+									ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(0)
 								};
 		
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -120,8 +122,8 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	@Test
 	public void shouldProcessOkFeedbackWhen_allAreDoneWithOneError(){
 		ModuleInfo[] infos = new ModuleInfo[]{
-				ModuleInfo.create(MODULE_1).setLastOk(true).setDone(3).setTodo(3).setErrors(0),
-				ModuleInfo.create(MODULE_2).setLastOk(false).setDone(6).setTodo(6).setErrors(1)
+				ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(1)
 			};
 		
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -132,8 +134,8 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	@Test
 	public void shouldProcessWrongFeedbackWhen_allAreDoneWithOneError(){
 		ModuleInfo[] infos = new ModuleInfo[]{
-				ModuleInfo.create(MODULE_1).setLastOk(false).setDone(3).setTodo(3).setErrors(0),
-				ModuleInfo.create(MODULE_2).setLastOk(false).setDone(6).setTodo(6).setErrors(1)
+				ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(3).setTodo(3).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(1)
 			};
 		
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);

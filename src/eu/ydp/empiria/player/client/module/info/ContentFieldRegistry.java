@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
@@ -18,23 +20,12 @@ import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory
 
 public class ContentFieldRegistry {
 
-	private DataSourceDataSupplier dataSourceDataSupplier;
-	
-	private SessionDataSupplier sessionDataSupplier;
+	@Inject private DataSourceDataSupplier dataSourceDataSupplier;
+	@Inject private SessionDataSupplier sessionDataSupplier;
+	@Inject private FieldValueHandlerFactory handlerFactory;
 
-	private FieldValueHandlerFactory handlerFactory;
-	
 	private final List<ContentFieldInfo> fieldInfos = Lists.newArrayList();
 
-	@Inject
-	public ContentFieldRegistry(@Assisted DataSourceDataSupplier dataSourceDataSupplier, 
-								@Assisted SessionDataSupplier sessionDataSupplier, 
-								FieldValueHandlerFactory handlerFactory){
-		this.dataSourceDataSupplier = dataSourceDataSupplier;
-		this.sessionDataSupplier = sessionDataSupplier;
-		this.handlerFactory = handlerFactory;
-	}
-	
 	public void register(){
 		FieldValueHandler itemValueHandler = handlerFactory.getProviderValueHandler(sessionDataSupplier);
 		FieldValueHandler assessmentValueHandler = handlerFactory.getProviderAssessmentValueHandler(getAssessmentVariableProvider());
@@ -43,7 +34,7 @@ public class ContentFieldRegistry {
 		FieldValueHandler pageCountValueHandler = handlerFactory.getPageCountValueHandler(dataSourceDataSupplier);
 		FieldValueHandler testResultValueHandler = handlerFactory.getAssessmentResultValueHandler(getAssessmentVariableProvider());
 		FieldValueHandler itemResultValueHandler = handlerFactory.getResultValueHandler(sessionDataSupplier);
-		
+
 		Map<String, FieldValueHandler> registry = ImmutableMap.<String, FieldValueHandler>builder().
 															put("item.todo", itemValueHandler).
 															put("item.done", itemValueHandler).
@@ -67,20 +58,20 @@ public class ContentFieldRegistry {
 														build();
 		createFields(registry);
 	}
-	
+
 	private void createFields(Map<String, FieldValueHandler> registry){
 		Iterator<Entry<String, FieldValueHandler>> iterator = registry.entrySet().iterator();
-		
+
 		while(iterator.hasNext()){
 			Entry<String, FieldValueHandler> registryEntry = iterator.next();
 			String tagName = registryEntry.getKey();
 			FieldValueHandler handler = registryEntry.getValue();
 			ContentFieldInfo fieldInfo = createFieldInfo(tagName).setHandler(handler);
-			
+
 			fieldInfos.add(fieldInfo);
 		}
 	}
-	
+
 	protected VariableProviderSocket getAssessmentVariableProvider() {
 		return sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket();
 	}
@@ -88,20 +79,42 @@ public class ContentFieldRegistry {
 	protected VariableProviderSocket getItemVariableProvider(int refItemIndex) {
 		return sessionDataSupplier.getItemSessionDataSocket(refItemIndex).getVariableProviderSocket();
 	}
-	
+
 	private ContentFieldInfo createFieldInfo(String tagName){
 		return new ContentFieldInfo().setTagName(tagName);
 	}
 
 	public List<ContentFieldInfo> getFieldInfos() {
-		if(!isRegistered()){
-			register();
-		}
+		registerIfRequired();
 		return Lists.newArrayList(fieldInfos);
-	}	
-	
+	}
+
 	private boolean isRegistered(){
 		return !fieldInfos.isEmpty();
 	}
-	
+
+	public Optional<ContentFieldInfo> getFieldInfo(final String fieldName) {
+		registerIfRequired();
+		ContentFieldInfo fieldInfo = findFiledInfoByName(fieldName);
+		if (fieldInfo == null) {
+			return Optional.absent();
+		}
+		return Optional.of(fieldInfo);
+	}
+
+	private ContentFieldInfo findFiledInfoByName(final String fieldName) {
+		return Iterables.find(fieldInfos, new Predicate<ContentFieldInfo>() {
+			@Override
+			public boolean apply(ContentFieldInfo fieldInfo) {
+				return fieldInfo.getTag().equals(fieldName);
+			}
+		}, null);
+	}
+
+	private void registerIfRequired() {
+		if (!isRegistered()) {
+			register();
+		}
+	}
+
 }

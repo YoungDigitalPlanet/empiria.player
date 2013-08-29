@@ -4,26 +4,19 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results.mode
 public class UserInteractionVariables {
 
 	private LastAnswersChanges lastAnswerChanges;
-	private boolean lastmistaken;
+	private LastMistaken lastmistaken;
 	private int mistakes;
 
 	public UserInteractionVariables() {
 		lastAnswerChanges = new LastAnswersChanges();
-		lastmistaken = false;
+		lastmistaken = LastMistaken.NONE;
 		mistakes = 0;
 	}
 
-	public UserInteractionVariables(LastAnswersChanges lastAnswerChanges, boolean lastmistaken, int mistakes) {
+	public UserInteractionVariables(LastAnswersChanges lastAnswerChanges, LastMistaken lastmistaken, int mistakes) {
 		this.lastAnswerChanges = lastAnswerChanges;
 		this.lastmistaken = lastmistaken;
 		this.mistakes = mistakes;
-	}
-
-	public boolean isLastmistaken() {
-		return lastmistaken;
-	}
-	public void setLastmistaken(boolean lastmistaken) {
-		this.lastmistaken = lastmistaken;
 	}
 	public int getMistakes() {
 		return mistakes;
@@ -36,5 +29,13 @@ public class UserInteractionVariables {
 	}
 	public void setLastAnswerChanges(LastAnswersChanges lastAnswerChanges) {
 		this.lastAnswerChanges = lastAnswerChanges;
+	}
+
+	public LastMistaken getLastmistaken() {
+		return lastmistaken;
+	}
+
+	public void setLastmistaken(LastMistaken lastmistaken) {
+		this.lastmistaken = lastmistaken;
 	}
 }

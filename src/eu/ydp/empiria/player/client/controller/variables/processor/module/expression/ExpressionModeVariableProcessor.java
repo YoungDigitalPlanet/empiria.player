@@ -8,13 +8,14 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.VariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.module.expression.ExpressionEvaluationController;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionEvaluationResult;
 
 public class ExpressionModeVariableProcessor implements VariableProcessor {
 
-	private ExpressionEvaluationController expressionEvaluationController;
+	private final ExpressionEvaluationController expressionEvaluationController;
 	
 	@Inject
 	public ExpressionModeVariableProcessor(
@@ -45,20 +46,23 @@ public class ExpressionModeVariableProcessor implements VariableProcessor {
 	}
 
 	@Override
-	public boolean checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
+	public LastMistaken checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
+		LastMistaken lastMistaken = LastMistaken.NONE;
 		if(answersChanges.containChanges()){
 			ExpressionEvaluationResult evaluationResult = calculateExpressionOfResponse(response);
 			if(evaluationResult == ExpressionEvaluationResult.WRONG){
-				return true;
+				lastMistaken = LastMistaken.WRONG;
+			} else if(evaluationResult == ExpressionEvaluationResult.CORRECT) {
+				lastMistaken = LastMistaken.CORRECT;
 			}
 		}
 		
-		return false;
+		return lastMistaken;
 	}
 
 	@Override
-	public int calculateMistakes(boolean lastMistaken, int previousMistakes) {
-		if (lastMistaken) {
+	public int calculateMistakes(LastMistaken lastMistaken, int previousMistakes) {
+		if (lastMistaken == LastMistaken.WRONG) {
 			return previousMistakes + 1;
 		} else {
 			return previousMistakes;

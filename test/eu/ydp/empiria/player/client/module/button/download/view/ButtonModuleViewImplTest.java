@@ -14,20 +14,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
-@PrepareForTest({Composite.class,Widget.class,Element.class})
+@PrepareForTest({Composite.class,Widget.class,Element.class,DivElement.class})
 public class ButtonModuleViewImplTest {
-	@Mock private FlowPanel description;
+	@Mock private DivElement description;
 	@Mock private Element element;
 	@Mock private Anchor anchor;
 	@InjectMocks private final ButtonModuleViewImpl instance = spy(new ButtonModuleViewImpl());
@@ -46,7 +46,6 @@ public class ButtonModuleViewImplTest {
 	public void before() {
 		MockitoAnnotations.initMocks(this);
 		doReturn(element).when(instance).getElement();
-		doReturn(element).when(description).getElement();
 	}
 
 	@Test
@@ -58,9 +57,9 @@ public class ButtonModuleViewImplTest {
 
 	@Test
 	public void setDescription(){
-		String description = "ddesc";
-		instance.setDescription(description);
-		verify(element).setInnerText(eq(description));
+		String descriptionText = "ddesc";
+		instance.setDescription(descriptionText);
+		verify(description).setInnerText(eq(descriptionText));
 	}
 
 	@Test

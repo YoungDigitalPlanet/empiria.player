@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.processor.module.counting.CorrectAnswersCounter;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.counting.ErrorAnswersCounter;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -84,7 +85,7 @@ public class MultipleModeVariableProcessorJUnitTest {
 	
 	@Test
 	public void shouldCalculateMistakesWhenLastAnswerWasMistake() throws Exception {
-		boolean lastmistaken = true;
+		LastMistaken lastmistaken = LastMistaken.WRONG;
 		int previousMistakes = 123;
 		
 		int newMistakes = multipleModeVariableProcessor.calculateMistakes(lastmistaken, previousMistakes);
@@ -94,7 +95,7 @@ public class MultipleModeVariableProcessorJUnitTest {
 	
 	@Test
 	public void shouldCalculateMistakesWhenLastAnswerWasCorrect() throws Exception {
-		boolean lastmistaken = false;
+		LastMistaken lastmistaken = LastMistaken.CORRECT;
 		int previousMistakes = 123;
 		
 		int newMistakes = multipleModeVariableProcessor.calculateMistakes(lastmistaken, previousMistakes);
@@ -113,9 +114,9 @@ public class MultipleModeVariableProcessorJUnitTest {
 		when(lastGivenAnswersChecker.isAnyAsnwerIncorrect(answersChanges.getAddedAnswers(), correctAnswers))
 			.thenReturn(true);
 		
-		boolean lastmistaken = multipleModeVariableProcessor.checkLastmistaken(response, answersChanges);
+		LastMistaken lastmistaken = multipleModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
-		assertThat(lastmistaken, equalTo(true));
+		assertThat(lastmistaken, equalTo(LastMistaken.WRONG));
 	}
 	
 	@Test
@@ -129,9 +130,9 @@ public class MultipleModeVariableProcessorJUnitTest {
 		when(lastGivenAnswersChecker.isAnyAsnwerIncorrect(answersChanges.getAddedAnswers(), correctAnswers))
 		.thenReturn(false);
 		
-		boolean lastmistaken = multipleModeVariableProcessor.checkLastmistaken(response, answersChanges);
+		LastMistaken lastmistaken = multipleModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
-		assertThat(lastmistaken, equalTo(false));
+		assertThat(lastmistaken, equalTo(LastMistaken.CORRECT));
 	}
 	
 	private LastAnswersChanges createSampleAnswerChanges(){

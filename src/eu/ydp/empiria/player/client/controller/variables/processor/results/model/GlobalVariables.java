@@ -7,12 +7,12 @@ public class GlobalVariables implements ResultVariables {
 	private int done;
 	private int mistakes;
 	private int errors;
-	private boolean lastMistaken;
+	private LastMistaken lastMistaken;
 
 	public GlobalVariables() {
 	}
 
-	public GlobalVariables(int todo, int done, int errors, int mistakes, boolean lastMistaken) {
+	public GlobalVariables(int todo, int done, int errors, int mistakes, LastMistaken lastMistaken) {
 		this.todo = todo;
 		this.done = done;
 		this.mistakes = mistakes;
@@ -54,12 +54,20 @@ public class GlobalVariables implements ResultVariables {
 	}
 
 	@Override
-	public boolean isLastMistaken() {
+	public LastMistaken getLastMistaken() {
 		return lastMistaken;
 	}
 
-	public void setLastMistaken(boolean lastMistaken) {
+	public void setLastMistaken(LastMistaken lastMistaken) {
 		this.lastMistaken = lastMistaken;
+	}
+
+	
+
+	@Override
+	public String toString() {
+		return "GlobalVariables [todo=" + todo + ", done=" + done + ", mistakes=" + mistakes + ", errors=" + errors + ", lastMistaken=" + lastMistaken
+				+ "]";
 	}
 
 	@Override
@@ -68,7 +76,7 @@ public class GlobalVariables implements ResultVariables {
 		int result = 1;
 		result = prime * result + done;
 		result = prime * result + errors;
-		result = prime * result + (lastMistaken ? 1231 : 1237);
+		result = prime * result + ((lastMistaken == null) ? 0 : lastMistaken.hashCode());
 		result = prime * result + mistakes;
 		result = prime * result + todo;
 		return result;
@@ -92,7 +100,7 @@ public class GlobalVariables implements ResultVariables {
 		if (errors != other.getErrors()) {
 			return false;
 		}
-		if (lastMistaken != other.isLastMistaken()) {
+		if (lastMistaken != other.getLastMistaken()) {
 			return false;
 		}
 		if (mistakes != other.getMistakes()) {
@@ -102,11 +110,5 @@ public class GlobalVariables implements ResultVariables {
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "GlobalVariables [todo=" + todo + ", done=" + done + ", mistakes=" + mistakes + ", errors=" + errors + ", lastMistaken=" + lastMistaken
-				+ "]";
 	}
 }

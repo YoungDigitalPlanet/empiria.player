@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IContainerModule;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -54,7 +55,7 @@ class FeedbackPropertiesCollectorTestHelper {
 						put(creator.createTodoOutcome(info.getTodo())).
 						put(creator.createErrorsOutcome(info.getErrors())).
 						put(creator.createLastChangeOutcome(info.getId())).
-						put(creator.createLastMistakenOutcome(info.isLastOk()? 0: 1)).
+						put(creator.createLastMistakenOutcome(info.getLastMistaken())).
 						getMap();
 	}
 	
@@ -84,7 +85,7 @@ class FeedbackPropertiesCollectorTestHelper {
 		
 		private final String id;
 		
-		private boolean lastOk;
+		private LastMistaken lastMistaken;
 		
 		private int todo;
 		
@@ -104,13 +105,13 @@ class FeedbackPropertiesCollectorTestHelper {
 			return id;
 		}
 		
-		public ModuleInfo setLastOk(boolean isLastOk) {
-			this.lastOk = isLastOk;
+		public ModuleInfo setLastOk(LastMistaken isLastOk) {
+			this.lastMistaken = isLastOk;
 			return this;
 		}
 		
-		public boolean isLastOk() {
-			return lastOk;
+		public LastMistaken getLastMistaken() {
+			return lastMistaken;
 		}
 		
 		public ModuleInfo setTodo(int todo) {

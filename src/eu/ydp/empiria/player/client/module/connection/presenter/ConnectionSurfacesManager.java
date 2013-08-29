@@ -8,8 +8,8 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.position.Point;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public class ConnectionSurfacesManager {
 
@@ -65,7 +65,7 @@ public class ConnectionSurfacesManager {
 		}
 		return surface;
 	}
-	
+
 	public void removeSurfaceForItem(String identifier){
 		surfaces.remove(identifier);
 	}
