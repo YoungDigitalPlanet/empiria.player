@@ -15,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.base.Optional;
 import com.google.inject.Provider;
 
 import eu.ydp.gwtutil.client.collections.MapStringToIntMock;
@@ -163,21 +162,13 @@ public class TutorServiceTest {
 	}
 
 	private PersonaService expectPersonaServiceCreationForTutorId(String tutorId) {
-		return expectPersonaServiceCreationForTutorId(tutorId, Optional.<Integer>absent());
-	}
-	
-	private PersonaService expectPersonaServiceCreationForTutorId(String tutorId, Optional<Integer> index) {
 		tutorConfig = mock(TutorConfig.class);
 		PersonaService createdPersonaService = mock(PersonaService.class);
 		when(personaServiceProvider.get()).thenReturn(createdPersonaService);
 		
 		tutorService.registerTutor(tutorId, tutorConfig);
 		
-		if (index.isPresent()){
-			when(createdPersonaService.getCurrentPersonaIndex()).thenReturn(index.get());
-		} else {
-			when(createdPersonaService.getCurrentPersonaIndex()).thenReturn(0);
-		}
+		when(createdPersonaService.getCurrentPersonaIndex()).thenReturn(0);
 		
 		return createdPersonaService;
 	}
