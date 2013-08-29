@@ -4,7 +4,6 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.name.Names;
 
-import eu.ydp.empiria.player.client.gin.factory.PersonaServiceFactory;
 import eu.ydp.empiria.player.client.gin.factory.TutorCommandsModuleFactory;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorServiceImpl;
@@ -39,8 +38,5 @@ public class TutorGinModule extends AbstractGinModule {
 				.implement(TutorCommand.class, Names.named("image"), ShowImageCommand.class)
 				.implement(TutorCommand.class, Names.named("animation"), AnimationCommand.class)
 				.build(TutorCommandsModuleFactory.class));
-
-		install(new GinFactoryModuleBuilder()
-				.build(PersonaServiceFactory.class));
 	}
 }

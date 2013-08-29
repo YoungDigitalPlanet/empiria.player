@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -8,8 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
-import static org.fest.assertions.api.Assertions.*;
 import eu.ydp.empiria.player.client.module.tutor.TutorEvent;
 import eu.ydp.empiria.player.client.module.tutor.TutorEventTypes;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -27,7 +29,6 @@ public class PersonaServiceTest {
 
 	@Test
 	public void shouldInitialyReturnZeroIndexAsPersonaIndex() throws Exception {
-		
 		int currentPersonaIndex = personaService.getCurrentPersonaIndex();
 		
 		assertThat(currentPersonaIndex).isEqualTo(0);

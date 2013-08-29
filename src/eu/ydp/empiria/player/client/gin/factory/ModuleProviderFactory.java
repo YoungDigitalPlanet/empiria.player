@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.gin.factory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
@@ -88,6 +89,7 @@ public class ModuleProviderFactory {
 	@Inject private Provider<SubHtmlContainerModule> subHtmlContainerModule;
 	@Inject private Provider<TutorModule> tutor;
 	@Inject private Provider<ButtonModule> buttonModule;
+	@Inject private Provider<TutorApiExtension> tutorApiExtension;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -251,5 +253,9 @@ public class ModuleProviderFactory {
 
 	public Provider<ButtonModule> getButtonModule() {
 		return buttonModule;
+	}
+
+	public Provider<TutorApiExtension> getTutorApiExtension() {
+		return tutorApiExtension;
 	}
 }

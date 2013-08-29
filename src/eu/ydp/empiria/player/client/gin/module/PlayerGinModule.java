@@ -16,6 +16,7 @@ import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
+import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkPopup;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBookmarkPopupView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
@@ -205,6 +206,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(Animation.class).toProvider(SwipeAnimationProvider.class);
 		bind(ExpressionCharacterMappingProvider.class).in(Singleton.class);
 		bind(TutorService.class).in(Singleton.class);
+		bind(TutorApiExtension.class).in(Singleton.class);
 		bind(ForceRedrawHack.class).to(ForceRedrawHackImpl.class).in(Singleton.class);
 		bind(ComputedStyle.class).to(ComputedStyleImpl.class).in(Singleton.class);
 		bind(FlowManager.class).in(Singleton.class);
