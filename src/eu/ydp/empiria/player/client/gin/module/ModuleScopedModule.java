@@ -12,9 +12,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorIdProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopeStack;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.CssStylesModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.PersonaServiceModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
@@ -58,6 +55,9 @@ import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorViewImpl;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
 public class ModuleScopedModule extends AbstractGinModule{
 

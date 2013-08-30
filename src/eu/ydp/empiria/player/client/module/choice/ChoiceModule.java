@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.choice;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -11,6 +10,7 @@ import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresente
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleJAXBParser;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
 

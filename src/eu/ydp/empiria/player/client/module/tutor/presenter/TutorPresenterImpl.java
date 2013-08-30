@@ -4,11 +4,11 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupPresenter;
 import eu.ydp.empiria.player.client.module.tutor.actions.popup.TutorPopupProvider;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class TutorPresenterImpl implements TutorPresenter {
 

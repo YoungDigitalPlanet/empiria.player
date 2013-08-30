@@ -6,12 +6,12 @@ import java.util.Map;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleCreationContext;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopeStack;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleCreationContext;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 
 public class ModulesRegistry implements ModulesRegistrySocket {
 

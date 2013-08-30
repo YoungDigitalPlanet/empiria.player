@@ -11,10 +11,10 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class GroupAnswersController {
 
