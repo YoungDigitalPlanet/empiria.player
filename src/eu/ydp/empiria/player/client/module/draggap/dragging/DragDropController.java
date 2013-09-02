@@ -2,13 +2,13 @@ package eu.ydp.empiria.player.client.module.draggap.dragging;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleFactory;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.gwtutil.client.Wrapper;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class DragDropController {
 

@@ -8,13 +8,13 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ResponseAnswerByViewBuilder;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ResponseUserAnswersConverter;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillBeanProxy;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ColorfillModelProxy {
 

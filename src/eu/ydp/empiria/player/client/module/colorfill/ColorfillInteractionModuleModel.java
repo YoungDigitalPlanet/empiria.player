@@ -7,9 +7,9 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ColorfillInteractionModuleModel extends AbstractResponseModel<String> {
 

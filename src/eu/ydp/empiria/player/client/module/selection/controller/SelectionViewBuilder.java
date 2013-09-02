@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.selection.handlers.ChoiceButtonClickHandler;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
@@ -18,6 +17,7 @@ import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleCh
 import eu.ydp.empiria.player.client.module.selection.view.SelectionElementPositionGenerator;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SelectionViewBuilder {
 

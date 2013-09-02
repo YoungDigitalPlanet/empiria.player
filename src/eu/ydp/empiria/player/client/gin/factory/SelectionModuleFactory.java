@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.gin.factory;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
 import eu.ydp.empiria.player.client.module.selection.controller.NoAnswerPriorityComparator;
@@ -10,6 +9,7 @@ import eu.ydp.empiria.player.client.module.selection.handlers.ChoiceButtonClickH
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.module.selection.presenter.SelectionModulePresenter;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SelectionModuleFactory {
 	

@@ -8,8 +8,8 @@ import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.tutor.ActionType;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class OutcomeDrivenActionTypeGenerator {
 

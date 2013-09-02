@@ -5,8 +5,8 @@ import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleCreationContext;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopeStack;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleCreationContext;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 
 public class PersonaServiceModuleScopedProvider implements Provider<PersonaService> {
 

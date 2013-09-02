@@ -4,7 +4,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class TutorIdProvider implements Provider<String>{
 
