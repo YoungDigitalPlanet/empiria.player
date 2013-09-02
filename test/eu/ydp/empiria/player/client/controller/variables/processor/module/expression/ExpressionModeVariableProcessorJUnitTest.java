@@ -13,9 +13,9 @@ import com.google.common.collect.Lists;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.module.expression.ExpressionEvaluationController;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionEvaluationResult;
@@ -97,9 +97,9 @@ public class ExpressionModeVariableProcessorJUnitTest {
 		when(answersChanges.containChanges())
 			.thenReturn(true);
 		
-		boolean lastmistaken = expressionModeVariableProcessor.checkLastmistaken(response, answersChanges);
+		LastMistaken lastmistaken = expressionModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
-		assertEquals(true, lastmistaken);
+		assertEquals(LastMistaken.WRONG, lastmistaken);
 	}
 	
 	@Test
@@ -110,9 +110,9 @@ public class ExpressionModeVariableProcessorJUnitTest {
 		when(answersChanges.containChanges())
 		.thenReturn(true);
 		
-		boolean lastmistaken = expressionModeVariableProcessor.checkLastmistaken(response, answersChanges);
+		LastMistaken lastmistaken = expressionModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
-		assertEquals(false, lastmistaken);
+		assertEquals(LastMistaken.CORRECT, lastmistaken);
 	}
 	
 	@Test
@@ -123,14 +123,14 @@ public class ExpressionModeVariableProcessorJUnitTest {
 		when(answersChanges.containChanges())
 		.thenReturn(false);
 		
-		boolean lastmistaken = expressionModeVariableProcessor.checkLastmistaken(response, answersChanges);
+		LastMistaken lastmistaken = expressionModeVariableProcessor.checkLastmistaken(response, answersChanges);
 		
-		assertEquals(false, lastmistaken);
+		assertEquals(LastMistaken.NONE, lastmistaken);
 	}
 	
 	@Test
 	public void shouldCalculateMistakesWhenWasLastmistake() throws Exception {
-		boolean lastmistaken = true;
+		LastMistaken lastmistaken = LastMistaken.WRONG;
 		int previousMistakes = 12;
 		
 		int mistakes = expressionModeVariableProcessor.calculateMistakes(lastmistaken, previousMistakes);
@@ -140,7 +140,7 @@ public class ExpressionModeVariableProcessorJUnitTest {
 	
 	@Test
 	public void shouldCalculateMistakesWhenWasNotLastmistake() throws Exception {
-		boolean lastmistaken = false;
+		LastMistaken lastmistaken = LastMistaken.CORRECT;
 		int previousMistakes = 12;
 		
 		int mistakes = expressionModeVariableProcessor.calculateMistakes(lastmistaken, previousMistakes);

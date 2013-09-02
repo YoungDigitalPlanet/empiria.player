@@ -1,9 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +18,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
@@ -59,14 +57,32 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 	}
 
 	@Test
-	public void shouldResetViewAndSetUserAnswers() {
+	public void shouldResetViewAndSetUserAnswersWhenIsAttachedOnRepaintEvent() {
 		String source = CONNECTION_RESPONSE_1_0;
 		String target = CONNECTION_RESPONSE_1_3;
 		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.REPAINT_VIEW, source, target, true);
 
+		when(moduleView.isAttached())
+			.thenReturn(true);
+		
 		connectionModulePresenter.onConnectionEvent(event);
 		verify(connectionModulePresenter).reset();
 		verify(connectionModulePresenter).showAnswers(Mockito.eq(ShowAnswersType.USER));
+	}
+	
+	@Test
+	public void shouldDoNothingIsDeAttachedOnRepaintEvent() {
+		String source = CONNECTION_RESPONSE_1_0;
+		String target = CONNECTION_RESPONSE_1_3;
+		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.REPAINT_VIEW, source, target, true);
+		
+		when(moduleView.isAttached())
+		.thenReturn(false);
+		
+		connectionModulePresenter.onConnectionEvent(event);
+		
+		verify(connectionModulePresenter, times(0)).reset();
+		verify(connectionModulePresenter, times(0)).showAnswers(ShowAnswersType.USER);
 	}
 
 	@Test
@@ -242,7 +258,13 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		String identifier = "CONNECTION_RESPONSE_1";
 		Evaluate evaluate = Evaluate.USER;
 		Cardinality cardinality = Cardinality.MULTIPLE;
-		Response response = new Response(correctAnswers, values, groups, identifier, evaluate, cardinality);
+		Response response = new ResponseBuilder()
+										.withCorrectAnswers(correctAnswers)
+										.withValues(values).withGroups(groups)
+										.withIdentifier(identifier)
+										.withEvaluate(evaluate)
+										.withCardinality(cardinality)
+										.build();
 		return response;
 	}
 

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.global.funct
 
 import com.google.common.base.Function;
 
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ResultVariables;
 
 public class ResultVariablesExtractingFunctions {
@@ -34,10 +35,10 @@ public class ResultVariablesExtractingFunctions {
 		}
 	};
 
-	private final Function<ResultVariables, Boolean> extractLastMistakenFunction = new Function<ResultVariables, Boolean>() {
+	private final Function<ResultVariables, LastMistaken> extractLastMistakenFunction = new Function<ResultVariables, LastMistaken>() {
 		@Override
-		public Boolean apply(ResultVariables processingResult) {
-			return processingResult.isLastMistaken();
+		public LastMistaken apply(ResultVariables processingResult) {
+			return processingResult.getLastMistaken();
 		}
 	};
 
@@ -57,7 +58,7 @@ public class ResultVariablesExtractingFunctions {
 		return extractDoneFunction;
 	}
 
-	public Function<ResultVariables, Boolean> getExtractLastMistakenFunction() {
+	public Function<ResultVariables, LastMistaken> getExtractLastMistakenFunction() {
 		return extractLastMistakenFunction;
 	}
 }

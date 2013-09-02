@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GeneralVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
 
 public class ProcessingResultsToOutcomeMapConverter {
@@ -39,7 +40,7 @@ public class ProcessingResultsToOutcomeMapConverter {
 		insertVariable(DONE, globalVariables.getDone());
 		insertVariable(ERRORS, globalVariables.getErrors());
 		insertVariable(MISTAKES, globalVariables.getMistakes());
-		insertVariable(LASTMISTAKEN, globalVariables.isLastMistaken());
+		insertVariable(LASTMISTAKEN, globalVariables.getLastMistaken().toString());
 	}
 	
 	public void updateOutcomeMapByModulesProcessingResults(ModulesProcessingResults modulesProcessingResults) {
@@ -65,8 +66,8 @@ public class ProcessingResultsToOutcomeMapConverter {
 		int mistakesValue = userInteractionVariables.getMistakes();
 		insertModuleVariable(MISTAKES, responseId, mistakesValue);
 		
-		boolean lastMistakenValue = userInteractionVariables.isLastmistaken();
-		insertModuleVariable(LASTMISTAKEN, responseId, lastMistakenValue);
+		LastMistaken lastMistakenValue = userInteractionVariables.getLastmistaken();
+		insertModuleVariable(LASTMISTAKEN, responseId, lastMistakenValue.toString());
 		
 		LastAnswersChanges lastAnswerChanges = userInteractionVariables.getLastAnswerChanges();
 		List<String> lastchanges = answersChangesFormater.formatLastAnswerChanges(lastAnswerChanges);
@@ -114,11 +115,6 @@ public class ProcessingResultsToOutcomeMapConverter {
 
 	private void insertVariable(String identifier, int value) {
 		insertVariable(identifier, String.valueOf(value));
-	}
-	
-	private void insertVariable(String identifier, boolean value) {
-		int valueConvertedToInt = convertBooleanToInt(value);
-		insertVariable(identifier, valueConvertedToInt);
 	}
 	
 	private void insertVariable(String identifier, String value) {

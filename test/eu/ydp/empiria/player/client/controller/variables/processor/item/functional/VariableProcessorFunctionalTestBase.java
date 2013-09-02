@@ -30,6 +30,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.module.Module
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -70,7 +71,7 @@ public class VariableProcessorFunctionalTestBase {
 		for (String outcomeId : outcomes.keySet()) {
 			Outcome outcome = outcomes.get(outcomeId);
 			if (outcomeId.contains(VariableName.LASTMISTAKEN.toString())) {
-				outcome.values = Lists.newArrayList("0");
+				outcome.values = Lists.newArrayList(LastMistaken.NONE.toString());
 			} else if (outcomeId.contains(VariableName.LASTCHANGE.toString())) {
 				outcome.values = Lists.newArrayList();
 			}

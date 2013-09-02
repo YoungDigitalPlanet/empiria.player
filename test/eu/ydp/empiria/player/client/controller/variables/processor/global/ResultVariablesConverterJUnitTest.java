@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableMap;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ResultVariables;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
@@ -34,7 +35,7 @@ public class ResultVariablesConverterJUnitTest {
 		Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
 
 		// then
-		assertThat(resultVariables).containsOnly(new GlobalVariables(0, 0, 0, 0, false));
+		assertThat(resultVariables).containsOnly(new GlobalVariables(0, 0, 0, 0, LastMistaken.NONE));
 	}
 
 	@Test
@@ -44,7 +45,7 @@ public class ResultVariablesConverterJUnitTest {
 		final int TODO = 4;
 		final int ERRORS = 3;
 		final int DONE = 1;
-		final boolean LAST_MISTAKEN = true;
+		final LastMistaken LAST_MISTAKEN = LastMistaken.WRONG;
 		final int MISTAKES = 9;
 
 		DtoModuleProcessingResult processingResult = prepareProcessingResults(TODO, DONE, ERRORS, MISTAKES, LAST_MISTAKEN);
@@ -70,7 +71,7 @@ public class ResultVariablesConverterJUnitTest {
 		Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
 
 		// then
-		assertThat(resultVariables).containsOnly(new GlobalVariables(0, 0, 0, 0, false), new GlobalVariables(0, 0, 0, 0, false));
+		assertThat(resultVariables).containsOnly(new GlobalVariables(0, 0, 0, 0, LastMistaken.NONE), new GlobalVariables(0, 0, 0, 0, LastMistaken.NONE));
 	}
 
 	@Test
@@ -80,14 +81,14 @@ public class ResultVariablesConverterJUnitTest {
 		final int TODO_0 = 4;
 		final int ERRORS_0 = 3;
 		final int DONE_0 = 1;
-		final boolean LAST_MISTAKEN_0 = true;
+		final LastMistaken LAST_MISTAKEN_0 = LastMistaken.WRONG;
 		final int MISTAKES_0 = 9;
 
 		String ID_1 = "id1";
 		final int TODO_1 = 2;
 		final int ERRORS_1 = 2;
 		final int DONE_1 = 3;
-		final boolean LAST_MISTAKEN_1 = false;
+		final LastMistaken LAST_MISTAKEN_1 = LastMistaken.CORRECT;
 		final int MISTAKES_1 = 83;
 
 		DtoModuleProcessingResult processingResult0 = prepareProcessingResults(TODO_0, DONE_0, ERRORS_0, MISTAKES_0, LAST_MISTAKEN_0);
@@ -111,20 +112,20 @@ public class ResultVariablesConverterJUnitTest {
 		final int TODO_0 = 1;
 		final int DONE_0 = 0;
 		final int ERRORS_0 = 1;
-		final boolean LAST_MISTAKEN_0 = true;
+		final LastMistaken LAST_MISTAKEN_0 = LastMistaken.WRONG;
 		final int MISTAKES_0 = 9;
 
 		String ID_1 = "id1";
 		final int TODO_1 = 1;
 		final int DONE_1 = 1;
 		final int ERRORS_1 = 0;
-		final boolean LAST_MISTAKEN_1 = false;
+		final LastMistaken LAST_MISTAKEN_1 = LastMistaken.CORRECT;
 		final int MISTAKES_1 = 83;
 
 		final int EXPR_TODO = 1;
 		final int EXPR_DONE = 0;
 		final int EXPR_ERRORS = 1;
-		final boolean EXPR_LAST_MISTAKEN = true;
+		final LastMistaken EXPR_LAST_MISTAKEN = LastMistaken.WRONG;
 		final int EXPR_MISTAKES = 92;
 
 		DtoModuleProcessingResult processingResult0 = prepareProcessingResults(TODO_0, DONE_0, ERRORS_0, MISTAKES_0, LAST_MISTAKEN_0);
@@ -151,20 +152,20 @@ public class ResultVariablesConverterJUnitTest {
 		final int TODO_0_0 = 1;
 		final int DONE_0_0 = 0;
 		final int ERRORS_0_0 = 1;
-		final boolean LAST_MISTAKEN_0_0 = true;
+		final LastMistaken LAST_MISTAKEN_0_0 = LastMistaken.WRONG;
 		final int MISTAKES_0_0 = 9;
 
 		String ID_0_1 = "id01";
 		final int TODO_0_1 = 1;
 		final int DONE_0_1 = 1;
 		final int ERRORS_0_1 = 0;
-		final boolean LAST_MISTAKEN_0_1 = false;
+		final LastMistaken LAST_MISTAKEN_0_1 = LastMistaken.CORRECT;
 		final int MISTAKES_0_1 = 83;
 
 		final int EXPR_TODO_0 = 1;
 		final int EXPR_DONE_0 = 0;
 		final int EXPR_ERRORS_0 = 1;
-		final boolean EXPR_LAST_MISTAKEN_0 = true;
+		final LastMistaken EXPR_LAST_MISTAKEN_0 = LastMistaken.WRONG;
 		final int EXPR_MISTAKES_0 = 92;
 
 		// expression 1
@@ -172,20 +173,20 @@ public class ResultVariablesConverterJUnitTest {
 		final int TODO_1_0 = 1;
 		final int DONE_1_0 = 1;
 		final int ERRORS_1_0 = 0;
-		final boolean LAST_MISTAKEN_1_0 = false;
+		final LastMistaken LAST_MISTAKEN_1_0 = LastMistaken.CORRECT;
 		final int MISTAKES_1_0 = 2;
 
 		String ID_1_1 = "id11";
 		final int TODO_1_1 = 1;
 		final int DONE_1_1 = 1;
 		final int ERRORS_1_1 = 0;
-		final boolean LAST_MISTAKEN_1_1 = false;
+		final LastMistaken LAST_MISTAKEN_1_1 = LastMistaken.CORRECT;
 		final int MISTAKES_1_1 = 3;
 
 		final int EXPR_TODO_1 = 1;
 		final int EXPR_DONE_1 = 1;
 		final int EXPR_ERRORS_1 = 0;
-		final boolean EXPR_LAST_MISTAKEN_1 = false;
+		final LastMistaken EXPR_LAST_MISTAKEN_1 = LastMistaken.CORRECT;
 		final int EXPR_MISTAKES_1 = 5;
 
 		DtoModuleProcessingResult processingResult00 = prepareProcessingResults(TODO_0_0, DONE_0_0, ERRORS_0_0, MISTAKES_0_0, LAST_MISTAKEN_0_0);
@@ -223,20 +224,20 @@ public class ResultVariablesConverterJUnitTest {
 		final int TODO_0 = 1;
 		final int DONE_0 = 0;
 		final int ERRORS_0 = 1;
-		final boolean LAST_MISTAKEN_0 = true;
+		final LastMistaken LAST_MISTAKEN_0 = LastMistaken.WRONG;
 		final int MISTAKES_0 = 9;
 
 		String ID_1 = "id1";
 		final int TODO_1 = 1;
 		final int DONE_1 = 1;
 		final int ERRORS_1 = 0;
-		final boolean LAST_MISTAKEN_1 = false;
+		final LastMistaken LAST_MISTAKEN_1 = LastMistaken.CORRECT;
 		final int MISTAKES_1 = 83;
 
 		final int EXPR_TODO = 1;
 		final int EXPR_DONE = 0;
 		final int EXPR_ERRORS = 1;
-		final boolean EXPR_LAST_MISTAKEN = true;
+		final LastMistaken EXPR_LAST_MISTAKEN = LastMistaken.WRONG;
 		final int EXPR_MISTAKES = 92;
 
 		// default
@@ -244,7 +245,7 @@ public class ResultVariablesConverterJUnitTest {
 		final int TODO_2 = 4;
 		final int ERRORS_2 = 3;
 		final int DONE_2 = 1;
-		final boolean LAST_MISTAKEN_2 = true;
+		final LastMistaken LAST_MISTAKEN_2 = LastMistaken.WRONG;
 		final int MISTAKES_2 = 9;
 
 		DtoModuleProcessingResult processingResult0 = prepareProcessingResults(TODO_0, DONE_0, ERRORS_0, MISTAKES_0, LAST_MISTAKEN_0);

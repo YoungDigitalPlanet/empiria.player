@@ -2,13 +2,8 @@ package eu.ydp.empiria.player.client.gin.module.tutor;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
-import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
-import eu.ydp.empiria.player.client.animation.css.CssAnimationClassBuilder;
-import eu.ydp.empiria.player.client.animation.js.FrameworkAnimation;
-import eu.ydp.empiria.player.client.animation.js.FrameworkAnimationNative;
-import eu.ydp.empiria.player.client.gin.factory.PersonaServiceFactory;
 import eu.ydp.empiria.player.client.gin.factory.TutorCommandsModuleFactory;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorServiceImpl;
@@ -32,8 +27,6 @@ public class TutorGinModule extends AbstractGinModule {
 
 	@Override
 	protected void configure() {
-		bind(FrameworkAnimation.class).to(FrameworkAnimationNative.class);
-		bind(CssAnimationClassBuilder.class).in(Singleton.class);
 		bind(TutorView.class).to(TutorViewImpl.class);
 		bind(TutorPresenter.class).to(TutorPresenterImpl.class);
 		bind(ActionExecutorService.class).to(ActionExecutorServiceImpl.class);
@@ -45,8 +38,5 @@ public class TutorGinModule extends AbstractGinModule {
 				.implement(TutorCommand.class, Names.named("image"), ShowImageCommand.class)
 				.implement(TutorCommand.class, Names.named("animation"), AnimationCommand.class)
 				.build(TutorCommandsModuleFactory.class));
-		
-		install(new GinFactoryModuleBuilder()
-				.build(PersonaServiceFactory.class));
 	}
 }

@@ -29,10 +29,10 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SourceListPresenterImplTest {

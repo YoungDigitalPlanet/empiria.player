@@ -33,7 +33,6 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsLis
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.InfoModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageSwitchModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
@@ -111,7 +110,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	private StyleLinkManager styleManager;
 	private ExtensionsManager extensionsManager;
-	private FlowManager flowManager;
+	private final FlowManager flowManager;
 	private DeliveryEventsHub deliveryEventsHub;
 	private AssessmentController assessmentController;
 	private SoundProcessorManagerExtension soundProcessorManager;
@@ -125,7 +124,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
 			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
 			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
-			ModulesRegistry modulesRegistry, TutorService tutorService) {
+			ModulesRegistry modulesRegistry, TutorService tutorService, FlowManager flowManager) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -136,6 +135,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.moduleHandlerManager = moduleHandlerManager;
 		this.modulesRegistry = modulesRegistry;
 		this.tutorService = tutorService;
+		this.flowManager = flowManager;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
 		eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this);
@@ -154,7 +154,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 		soundProcessorManager = new SoundProcessorManagerExtension();
 
-		flowManager = new FlowManager();
 		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(flowManager.getFlowCommandsExecutor()));
 
 		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(),
@@ -274,10 +273,10 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getChoiceModule(), ModuleTagName.CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSelectionModule(), ModuleTagName.SELECTION_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getIdentificationModule(), ModuleTagName.IDENTYFICATION_INTERACTION, true));
-		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
-		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryGapModule(), ModuleTagName.MATH_GAP_TEXT_ENTRY_TYPE, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryGapModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEntryMathGapModule(), ModuleTagName.MATH_GAP_TEXT_ENTRY_TYPE, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getDragGapModule(), ModuleTagName.DRAG_GAP, true));
-		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceGapModule(), ModuleTagName.MATH_GAP_INLINE_CHOICE_TYPE, true));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceMathGapModule(), ModuleTagName.MATH_GAP_INLINE_CHOICE_TYPE, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSimpleTextModule(), ModuleTagName.SIMPLE_TEXT));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.AUDIO_PLAYER, false, true));
@@ -293,7 +292,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getOrderInteractionModule(), ModuleTagName.ORDER_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getColorfillInteractionModule(), ModuleTagName.COLORFILL_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTutorModule(), ModuleTagName.TUTOR, false));
-		loadExtension(new InfoModuleConnectorExtension());
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getButtonModule(), ModuleTagName.BUTTON, false));
+		loadExtension(singleModuleInstanceProvider.getInfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(singleModuleInstanceProvider.getLinkModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getPromptModule(), ModuleTagName.PROMPT));
@@ -317,6 +317,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getPage());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getBookmarkProcessorExtension());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector().getStickiesProcessorExtension());
+		loadExtension(moduleProviderFactory.getTutorApiExtension().get());
 	}
 
 	protected void loadLibraryExtensions() {

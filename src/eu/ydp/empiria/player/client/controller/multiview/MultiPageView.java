@@ -53,6 +53,8 @@ public class MultiPageView extends FlowPanel implements ResizeHandler {
 	}
 
 	private void setSwipeLength() {
-		controller.setSwipeLength(RootPanel.get().getOffsetWidth() / 5);
+		if(controller!=null) {
+			controller.setSwipeLength(RootPanel.get().getOffsetWidth() / 5);
+		}
 	}
 }

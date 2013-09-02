@@ -21,7 +21,7 @@ public class CorrectAnswersCounter {
 
 	public int countCorrectAnswersAdjustedToCountMode(Response response){
 		int amountOfGivenCorrectAnswers = countCorrectForNotOrderedAnswers(response);
-		CountMode countMode = response.getCountMode();
+		CountMode countMode = response.getAppropriateCountMode();
 		int adjustedValue = doneToCountModeAdjuster.adjustValueToCountMode(amountOfGivenCorrectAnswers, response, countMode);
 		return adjustedValue;
 	}

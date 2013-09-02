@@ -30,8 +30,12 @@ import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.TextFeedbackPresenterMock;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
+import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
+import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
@@ -39,7 +43,6 @@ import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
-import eu.ydp.empiria.player.client.gin.scopes.UniqueId;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
@@ -48,7 +51,6 @@ import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionV
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
-import eu.ydp.empiria.player.client.module.info.VariableInterpreterFactory;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParser;
@@ -139,6 +141,9 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 				UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS));
 		bind(UserAgentUtil.class).toInstance(mock(UserAgentUtil.class));
 		bind(SourcelistManager.class).toInstance(mock(SourcelistManager.class));
+		bind(OutcomeAccessor.class).toInstance(mock(OutcomeAccessor.class));
+		bind(FlowDataSupplier.class).toInstance(mock(FlowDataSupplier.class));
+		bind(SessionDataSupplier.class).toInstance(mock(SessionDataSupplier.class));
 		binder.bind(IJSONService.class).to(NativeJSONService.class);
 		binder.requestStaticInjection(XMLProxyFactory.class);
 		bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
@@ -147,7 +152,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));
 		install(new FactoryModuleBuilder().build(MatcherRegistryFactory.class));
-		install(new FactoryModuleBuilder().build(VariableInterpreterFactory.class));
 		install(new FactoryModuleBuilder().build(FieldValueHandlerFactory.class));
 		install(new FactoryModuleBuilder().build(AssessmentReportFactory.class));
 		install(new FactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));

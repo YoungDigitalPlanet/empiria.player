@@ -50,13 +50,13 @@ import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModule
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.style.CssHelper;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;

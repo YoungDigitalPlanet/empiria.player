@@ -7,6 +7,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Correc
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.VariableProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 
 public class OrderingModeVariableProcessor implements VariableProcessor {
 
@@ -33,18 +34,18 @@ public class OrderingModeVariableProcessor implements VariableProcessor {
 	}
 
 	@Override
-	public boolean checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
+	public LastMistaken checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
 		if(answersChanges.containChanges()){
 			int done = calculateDone(response);
-			if(done == 0){
-				return true;
+			if(done == 1){
+				return LastMistaken.CORRECT;
 			}
 		}
-		return false;
+		return LastMistaken.NONE;
 	}
 
 	@Override
-	public int calculateMistakes(boolean lastmistaken, int previousMistakes) {
+	public int calculateMistakes(LastMistaken lastmistaken, int previousMistakes) {
 		return 0;
 	}
 

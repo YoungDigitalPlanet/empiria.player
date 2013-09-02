@@ -39,12 +39,12 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.pres
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.scroll.WindowToStickieScroller;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.animation.TransitionEndEvent;
-import eu.ydp.empiria.player.client.util.events.animation.TransitionEndHandler;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
+import eu.ydp.gwtutil.client.util.events.animation.TransitionEndEvent;
+import eu.ydp.gwtutil.client.util.events.animation.TransitionEndHandler;
 
 public class StickieView extends Composite implements IStickieView {
 

@@ -8,6 +8,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-assessment-view")
 	public String QP_ASSESSMENT_VIEW();
 
+	@DefaultStringValue("qp-audioplayer-button")
+	public String QP_AUDIOPLAYER_BUTTON();
+
+	@DefaultStringValue("qp-audioplayer-button-playing")
+	public String QP_AUDIOPLAYER_BUTTON_PLAYING();
+
 	@DefaultStringValue("qp-body")
 	public String QP_BODY();
 
@@ -59,8 +65,47 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-bookmark-selected")
 	public String QP_BOOKMARK_SELECTED();
 
+	@DefaultStringValue("qp-button-module")
+	public String QP_BUTTON_MODULE();
+
+	@DefaultStringValue("qp-button-module-button")
+	public String QP_BUTTON_MODULE_BUTTON();
+
+	@DefaultStringValue("qp-button-module-description")
+	public String QP_BUTTON_MODULE_DESCRIPTION();
+
+	@DefaultStringValue("qp-choice-button-multi-markanswers")
+	public String QP_CHOICE_BUTTON_MULTI_INACTIVE();
+
+	@DefaultStringValue("qp-choice-button-multi-markanswers")
+	public String QP_CHOICE_BUTTON_MULTI_MARK();
+
+	@DefaultStringValue("qp-choice-button-multi-markanswers-correct")
+	public String QP_CHOICE_BUTTON_MULTI_MARK_CORRECT();
+
+	@DefaultStringValue("qp-choice-button-multi-markanswers-none")
+	public String QP_CHOICE_BUTTON_MULTI_MARK_NONE();
+
+	@DefaultStringValue("qp-choice-button-multi-markanswers-wrong")
+	public String QP_CHOICE_BUTTON_MULTI_MARK_WRONG();
+
 	@DefaultStringValue("qp-choice-button-place")
 	public String QP_CHOICE_BUTTON_PLACE();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers")
+	public String QP_CHOICE_BUTTON_SINGLE_INACTIVE();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers")
+	public String QP_CHOICE_BUTTON_SINGLE_MARK();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers-correct")
+	public String QP_CHOICE_BUTTON_SINGLE_MARK_CORRECT();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers-none")
+	public String QP_CHOICE_BUTTON_SINGLE_MARK_NONE();
+
+	@DefaultStringValue("qp-choice-button-single-markanswers-wrong")
+	public String QP_CHOICE_BUTTON_SINGLE_MARK_WRONG();
 
 	@DefaultStringValue("qp-choice-label")
 	public String QP_CHOICE_LABEL();
@@ -80,50 +125,32 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-choice-option-cover")
 	public String QP_CHOICE_OPTION_COVER();
 
-	@DefaultStringValue("qp-choice-button-multi-markanswers")
-	public String QP_CHOICE_BUTTON_MULTI_MARK();
-
-	@DefaultStringValue("qp-choice-button-single-markanswers")
-	public String QP_CHOICE_BUTTON_SINGLE_MARK();
-
-	@DefaultStringValue("qp-choice-button-multi-markanswers-correct")
-	public String QP_CHOICE_BUTTON_MULTI_MARK_CORRECT();
-
-	@DefaultStringValue("qp-choice-button-single-markanswers-correct")
-	public String QP_CHOICE_BUTTON_SINGLE_MARK_CORRECT();
-
-	@DefaultStringValue("qp-choice-button-multi-markanswers-wrong")
-	public String QP_CHOICE_BUTTON_MULTI_MARK_WRONG();
-
-	@DefaultStringValue("qp-choice-button-single-markanswers-wrong")
-	public String QP_CHOICE_BUTTON_SINGLE_MARK_WRONG();
-
-	@DefaultStringValue("qp-choice-button-multi-markanswers")
-	public String QP_CHOICE_BUTTON_MULTI_INACTIVE();
-
-	@DefaultStringValue("qp-choice-button-single-markanswers")
-	public String QP_CHOICE_BUTTON_SINGLE_INACTIVE();
-
-	@DefaultStringValue("qp-choice-button-multi-markanswers-none")
-	public String QP_CHOICE_BUTTON_MULTI_MARK_NONE();
-
-	@DefaultStringValue("qp-choice-button-single-markanswers-none")
-	public String QP_CHOICE_BUTTON_SINGLE_MARK_NONE();
-
 	@DefaultStringValue("qp-colorfill")
 	public String QP_COLORFILL();
+
+	@DefaultStringValue("qp-colorfill-answers-marking-correct")
+	public String QP_COLORFILL_ANSWERS_MARKING_CORRECT();
+
+	@DefaultStringValue("qp-colorfill-answers-marking-correct-panel")
+	public String QP_COLORFILL_ANSWERS_MARKING_CORRECT_PANEL();
+
+	@DefaultStringValue("qp-colorfill-answers-marking-wrong")
+	public String QP_COLORFILL_ANSWERS_MARKING_WRONG();
+
+	@DefaultStringValue("qp-colorfill-answers-marking-wrong-panel")
+	public String QP_COLORFILL_ANSWERS_MARKING_WRONG_PANEL();
+
+	@DefaultStringValue("qp-colorfill-canvas")
+	public String QP_COLORFILL_CANVAS();
 
 	@DefaultStringValue("qp-colorfill-container")
 	public String QP_COLORFILL_CONTAINER();
 
-	@DefaultStringValue("qp-colorfill-img")
-	public String QP_COLORFILL_IMG();
-
 	@DefaultStringValue("qp-colorfill-correct-img")
 	public String QP_COLORFILL_CORRECT_IMG();
 
-	@DefaultStringValue("qp-colorfill-canvas")
-	public String QP_COLORFILL_CANVAS();
+	@DefaultStringValue("qp-colorfill-img")
+	public String QP_COLORFILL_IMG();
 
 	@DefaultStringValue("qp-colorfill-palette")
 	public String QP_COLORFILL_PALETTE();
@@ -137,17 +164,8 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-colorfill-palette-button-container-selected")
 	public String QP_COLORFILL_PALETTE_BUTTON_CONTAINER_SELECTED();
 
-	@DefaultStringValue("qp-colorfill-answers-marking-correct-panel")
-	public String QP_COLORFILL_ANSWERS_MARKING_CORRECT_PANEL();
-
-	@DefaultStringValue("qp-colorfill-answers-marking-wrong-panel")
-	public String QP_COLORFILL_ANSWERS_MARKING_WRONG_PANEL();
-
-	@DefaultStringValue("qp-colorfill-answers-marking-correct")
-	public String QP_COLORFILL_ANSWERS_MARKING_CORRECT();
-
-	@DefaultStringValue("qp-colorfill-answers-marking-wrong")
-	public String QP_COLORFILL_ANSWERS_MARKING_WRONG();
+	@DefaultStringValue("qp-colorfill-palette-button-description")
+	public String QP_COLORFILL_PALETTE_BUTTON_DESCRIPTION();
 
 	@DefaultStringValue("qp-connection")
 	public String QP_CONNECTION();
@@ -194,29 +212,32 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-connection-wrong")
 	public String QP_CONNECTION_WRONG();
 
-	@DefaultStringValue("qp-drag-item")
-	public String QP_DRAG_ITEM();
-
 	@DefaultStringValue("qp-drag-gap-correct")
 	public String QP_DRAG_GAP_CORRECT();
-
-	@DefaultStringValue("qp-drag-gap-wrong")
-	public String QP_DRAG_GAP_WRONG();
 
 	@DefaultStringValue("qp-drag-gap-default")
 	public String QP_DRAG_GAP_DEFAULT();
 
+	@DefaultStringValue("qp-drag-gap-locked")
+	public String QP_DRAG_GAP_LOCKED();
+
 	@DefaultStringValue("qp-drag-gap-none")
 	public String QP_DRAG_GAP_NONE();
 
-	@DefaultStringValue("qp-drag-gap-locked")
-	public String QP_DRAG_GAP_LOCKED();
+	@DefaultStringValue("qp-drag-gap-wrong")
+	public String QP_DRAG_GAP_WRONG();
+
+	@DefaultStringValue("qp-drag-item")
+	public String QP_DRAG_ITEM();
 
 	@DefaultStringValue("qp-dragged-drag")
 	public String QP_DRAGGED_DRAG();
 
 	@DefaultStringValue("qp-dragged-over-dropzone")
 	public String QP_DRAGGED_OVER_DROPZONE();
+
+	@DefaultStringValue("qp-drop-zone-locked")
+	public String QP_DROP_ZONE_LOCKED();
 
 	@DefaultStringValue("qp-dropzone-over")
 	public String QP_DROPZONE_OVER();
@@ -242,29 +263,29 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-identification-option")
 	public String QP_IDENTIFICATION_OPTION();
 
-	@DefaultStringValue("qp-identification-option-cover")
-	public String QP_IDENTIFICATION_OPTION_COVER();
-
 	@DefaultStringValue("qp-identification-option-container")
 	public String QP_IDENTIFICATION_OPTION_CONTAINER();
 
-	@DefaultStringValue("qp-identification-option-selected")
-	public String QP_IDENTIFICATION_OPTION_SELECTED();
+	@DefaultStringValue("qp-identification-option-cover")
+	public String QP_IDENTIFICATION_OPTION_COVER();
 
 	@DefaultStringValue("qp-identification-option-locked")
 	public String QP_IDENTIFICATION_OPTION_LOCKED();
-
-	@DefaultStringValue("qp-identification-option-selected-correct")
-	public String QP_IDENTIFICATION_OPTION_SELECTED_CORRECT();
-
-	@DefaultStringValue("qp-identification-option-selected-wrong")
-	public String QP_IDENTIFICATION_OPTION_SELECTED_WRONG();
 
 	@DefaultStringValue("qp-identification-option-notselected-correct")
 	public String QP_IDENTIFICATION_OPTION_NOTSELECTED_CORRECT();
 
 	@DefaultStringValue("qp-identification-option-notselected-wrong")
 	public String QP_IDENTIFICATION_OPTION_NOTSELECTED_WRONG();
+
+	@DefaultStringValue("qp-identification-option-selected")
+	public String QP_IDENTIFICATION_OPTION_SELECTED();
+
+	@DefaultStringValue("qp-identification-option-selected-correct")
+	public String QP_IDENTIFICATION_OPTION_SELECTED_CORRECT();
+
+	@DefaultStringValue("qp-identification-option-selected-wrong")
+	public String QP_IDENTIFICATION_OPTION_SELECTED_WRONG();
 
 	@DefaultStringValue("qp-img")
 	public String QP_IMG();
@@ -755,14 +776,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-text-textentry")
 	public String QP_TEXT_TEXTENTRY();
 
-	/**
-	 * Poniewa¿ podstawowa clasa gapy 'qp-text-textentry' zmienia sie na
-	 * *-corect, *-wrong Dodalem ten style aby w pewny sposob wyszukiwac gapy w
-	 * testach E2E.
-	 */
-	@DefaultStringValue("qp-textentry")
-	public String QP_TEXTENTRY();
-
 	@DefaultStringValue("qp-text-textentry-content")
 	public String QP_TEXT_TEXTENTRY_CONTENT();
 
@@ -780,6 +793,14 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-text-textentry-wrong")
 	public String QP_TEXT_TEXTENTRY_WRONG();
+
+	/**
+	 * Poniewa¿ podstawowa clasa gapy 'qp-text-textentry' zmienia sie na
+	 * *-corect, *-wrong Dodalem ten style aby w pewny sposob wyszukiwac gapy w
+	 * testach E2E.
+	 */
+	@DefaultStringValue("qp-textentry")
+	public String QP_TEXTENTRY();
 
 	@DefaultStringValue("qp-textinteraction")
 	public String QP_TEXTINTERACTION();
@@ -802,27 +823,24 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-tutor-container")
 	public String QP_TUTOR_CONTAINER();
 
-	@DefaultStringValue("qp-tutor-popup-selected-persona")
-	public String QP_TUTOR_POPUP_SELECTED_PERSONA();
-
 	@DefaultStringValue("qp-tutor-popup")
 	public String QP_TUTOR_POPUP();
-	
+
 	@DefaultStringValue("qp-tutor-popup-close-button")
 	public String QP_TUTOR_POPUP_CLOSE_BUTTON();
 
-	@DefaultStringValue("qp-tutor-popup-items")
-	public String QP_TUTOR_POPUP_ITEMS();
-	
 	@DefaultStringValue("qp-tutor-popup-item")
 	public String QP_TUTOR_POPUP_ITEM();
+
+	@DefaultStringValue("qp-tutor-popup-items")
+	public String QP_TUTOR_POPUP_ITEMS();
+
+	@DefaultStringValue("qp-tutor-popup-selected-persona")
+	public String QP_TUTOR_POPUP_SELECTED_PERSONA();
 
 	@DefaultStringValue("selection")
 	public String SELECTION();
 
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
-
-	@DefaultStringValue("qp-drop-zone-locked")
-	public String QP_DROP_ZONE_LOCKED();
 }

@@ -44,6 +44,7 @@ public class XmlData {
 		fixLinks(document, baseUrl, "object", "poster");
 		fixLinks(document, baseUrl, "source", SRC_TAG);
 		fixLinks(document, baseUrl, "a", "href");
+		fixLinks(document, baseUrl, "button", "href");
 		fixLinks(document, baseUrl, "object", "data");
 		fixLinks(document, baseUrl, "audioPlayer", "data");
 		fixLinks(document, baseUrl, "audioPlayer", SRC_TAG);

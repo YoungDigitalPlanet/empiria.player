@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.tutor.TutorEvent;
 import eu.ydp.empiria.player.client.module.tutor.TutorEventTypes;
@@ -9,14 +8,14 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class PersonaService {
 
-	private int currentPersonaIndex = 0;
-	private final TutorConfig tutorConfig;
-	private final EventsBus eventsBus;
+	@Inject private EventsBus eventsBus;
+	
+	private int currentPersonaIndex;
+	private TutorConfig tutorConfig;
 
-	@Inject
-	public PersonaService(@Assisted TutorConfig tutorConfig, EventsBus eventsBus) {
+	public void init(TutorConfig tutorConfig, Integer initialPersonaIndex) {
 		this.tutorConfig = tutorConfig;
-		this.eventsBus = eventsBus;
+		this.currentPersonaIndex = initialPersonaIndex;
 	}
 
 	public TutorPersonaProperties getPersonaProperties() {

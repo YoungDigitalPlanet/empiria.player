@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.processor.global.function.ResultVariablesExtractingFunctions;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ResultVariables;
 
 public class GlobalVariablesProcessor {
@@ -29,7 +30,7 @@ public class GlobalVariablesProcessor {
 		int mistakes = calculateSumOfMistakes(resultVariables);
 		int errors = calculateSumOfErrors(resultVariables);
 
-		boolean lastmistaken = checkIfLastmistakenInAnyModule(resultVariables);
+		LastMistaken lastmistaken = findLastmistakenForModules(resultVariables);
 
 		return new GlobalVariables(todo, done, errors, mistakes, lastmistaken);
 	}
@@ -58,10 +59,20 @@ public class GlobalVariablesProcessor {
 		return errorsSum;
 	}
 
-	private boolean checkIfLastmistakenInAnyModule(Iterable<ResultVariables> results) {
-		for (ResultVariables result : results) {
-			boolean lastmistakenOfModule = result.isLastMistaken();
-			if (lastmistakenOfModule) {
+	private LastMistaken findLastmistakenForModules(Iterable<ResultVariables> results) {
+		if(containsAnyResultWithGivenLastMistakenType(results, LastMistaken.WRONG)) {
+			return LastMistaken.WRONG;
+		} else if(containsAnyResultWithGivenLastMistakenType(results, LastMistaken.CORRECT)) {
+			return LastMistaken.CORRECT;
+		} else {
+			return LastMistaken.NONE;
+		}
+	}
+	
+	private boolean containsAnyResultWithGivenLastMistakenType(Iterable<ResultVariables> results, LastMistaken searchedLastMistaken) {
+		for (ResultVariables resultVariables : results) {
+			LastMistaken currentLastMistaken = resultVariables.getLastMistaken();
+			if(searchedLastMistaken == currentLastMistaken) {
 				return true;
 			}
 		}

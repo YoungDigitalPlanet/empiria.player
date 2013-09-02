@@ -71,8 +71,8 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	}
 
 	@Override
-	public void createButton(ColorModel color) {
-		palette.createButton(color);
+	public void createButton(ColorModel color, String description) {
+		palette.createButton(color, description);
 	}
 
 	@Override

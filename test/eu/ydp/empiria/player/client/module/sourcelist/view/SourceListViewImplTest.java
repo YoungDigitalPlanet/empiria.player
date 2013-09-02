@@ -33,12 +33,12 @@ import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
-import eu.ydp.empiria.player.client.module.view.HasDimensions;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SourceListViewImplTest {
