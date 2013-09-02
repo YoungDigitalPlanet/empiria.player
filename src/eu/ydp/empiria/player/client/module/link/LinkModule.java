@@ -18,6 +18,11 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.command.SetStyleNameCommand;
 import eu.ydp.gwtutil.client.event.factory.Command;
@@ -26,17 +31,14 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 
 	protected FlowRequestInvoker flowRequestInvoker;
-
 	protected Panel mainPanel;
-
 	protected int itemIndex = -1;
 	protected String url;
 
-	@Inject
-	private StyleNameConstants styleNames;
+	@Inject private StyleNameConstants styleNames;
+	@Inject private UserInteractionHandlerFactory userInteractionHandlerFactory;
+	@Inject private EventsBus eventsBus;
 
-	@Inject
-	private UserInteractionHandlerFactory userInteractionHandlerFactory;
 
 	@Inject
 	public LinkModule(@Assisted FlowRequestInvoker flowRequestInvoker) {
@@ -50,6 +52,20 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 		addClickHandler();
 		addMouseOverHandler();
 		addMouseOutHandler();
+		addLinkResetStyleNameOnPageChangeHandler();
+	}
+
+	private void addLinkResetStyleNameOnPageChangeHandler() {
+		final CurrentPageScope modulePage = new CurrentPageScope();
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), new PlayerEventHandler() {
+
+			@Override
+			public void onPlayerEvent(PlayerEvent event) {
+				if(modulePage.equals(new CurrentPageScope())){
+					setPrimaryStyleName();
+				}
+			}
+		});
 	}
 
 	private void setLinkContentStyle() {
@@ -58,7 +74,7 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 
 	private void prepareMainPanel() {
 		mainPanel = new FlowPanel();
-		mainPanel.setStyleName(styleNames.QP_LINK());
+		setPrimaryStyleName();
 		mainPanel.add(getContainer());
 	}
 
@@ -101,7 +117,6 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 		if (itemIndex == -1 && element.hasAttribute("url")) {
 			url = element.getAttribute("url");
 		}
-
 	}
 
 	@Override
@@ -115,6 +130,11 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 		} else if (url != null) {
 			Window.open(url, "_blank", "");
 		}
+
+	}
+
+	private void setPrimaryStyleName(){
+		mainPanel.setStyleName(styleNames.QP_LINK());
 	}
 
 	@Override
