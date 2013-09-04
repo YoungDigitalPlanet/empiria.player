@@ -285,7 +285,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 							if (!onlyPositionReset) {
 								eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
 							}
-
 							currentPosition = to;
 						}
 					});

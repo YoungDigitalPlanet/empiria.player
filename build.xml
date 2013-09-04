@@ -34,7 +34,7 @@
 	<condition property="compile.disableCastChecking" value="-XdisableCastChecking" else="">
 		<equals arg1="${compiler.castchecking}" arg2="false" />
 	</condition>
-
+	
 	<path id="project.class.path">
 		<pathelement location="${bin.dir}"/>
 		<fileset dir="${ivylib.dir}" includes="**/*.jar"/>
@@ -94,6 +94,7 @@
 			<jvmarg line="${XstartOnFirstThread} -Xmx512M -Xss16M"/>
 			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
 			<arg line="${compile.disableCastChecking}" />
+			<arg value="-XenableClosureCompiler"/>
 			<arg value="${module.name}"/>
 		</java>
 	</target>
@@ -109,6 +110,7 @@
 			<arg value="test.html"/>
 			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
 			<arg line="${compile.disableCastChecking}" />
+			<arg value="-XenableClosureCompiler"/>
 			<arg value="com.qtitools.player.Player"/>
 		</java>
 	</target>

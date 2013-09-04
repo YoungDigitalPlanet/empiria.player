@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.info;
 import java.util.List;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Panel;
@@ -41,7 +42,7 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	private Panel mainPanel;
 	private Panel contentPanel;
 	private Element mainElement;
-	private List<Token> tokensFromContent;
+	private List<Token> tokensFromContent = Lists.newArrayList();
 
 	public void setModuleUnloadListener(InfoModuleUnloadListener imul) {
 		unloadListener = imul;
