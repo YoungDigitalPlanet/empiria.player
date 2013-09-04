@@ -11,14 +11,13 @@ import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.data.ElementStyleSelectorBuilder;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class WithCacheCssStylesModuleScopedProvider implements Provider<ModuleStyle> {
 
 	@Inject private ElementStyleSelectorBuilder elementStyleSelectorBuilder;
-	@Inject private StyleSocket styleSocket;
 	@Inject @ModuleScoped private Provider<Element> xmlProvider;
+	@Inject @ModuleScoped private Provider<ModuleStyle> moduleStyleProvider;
 
 	private final Map<String, ModuleStyle> cache = Maps.newHashMap();
 
@@ -29,19 +28,17 @@ public class WithCacheCssStylesModuleScopedProvider implements Provider<ModuleSt
 		if (cache.containsKey(cacheKey)) {
 			return cache.get(cacheKey);
 		}
-		return createModuleStyleAndPutToCache(currentElement, cacheKey);
+		return createModuleStyleAndPutToCache(cacheKey);
 	}
 
-	private ModuleStyle createModuleStyleAndPutToCache(Element currentElement, String cacheKey) {
-		ModuleStyle moduleStyle = createModuleStyle(currentElement);
+	private ModuleStyle createModuleStyleAndPutToCache(String cacheKey) {
+		ModuleStyle moduleStyle = createModuleStyle();
 		cache.put(cacheKey, moduleStyle);
 		return moduleStyle;
 	}
 
-	private ModuleStyle createModuleStyle(Element currentElement) {
-		Map<String, String> styles = styleSocket.getStyles(currentElement);
-		ModuleStyle moduleStyle = new ModuleStyle(styles);
-		return moduleStyle;
+	private ModuleStyle createModuleStyle() {
+		return moduleStyleProvider.get();
 	}
 
 	private String getCacheKey(Element currentElement) {
