@@ -28,10 +28,10 @@ public class WithCacheCssStylesModuleScopedProvider implements Provider<ModuleSt
 		if (cache.containsKey(cacheKey)) {
 			return cache.get(cacheKey);
 		}
-		return createModuleStyleAndPutToCache(currentElement, cacheKey);
+		return createModuleStyleAndPutToCache(cacheKey);
 	}
 
-	private ModuleStyle createModuleStyleAndPutToCache(Element currentElement, String cacheKey) {
+	private ModuleStyle createModuleStyleAndPutToCache(String cacheKey) {
 		ModuleStyle moduleStyle = createModuleStyle();
 		cache.put(cacheKey, moduleStyle);
 		return moduleStyle;
