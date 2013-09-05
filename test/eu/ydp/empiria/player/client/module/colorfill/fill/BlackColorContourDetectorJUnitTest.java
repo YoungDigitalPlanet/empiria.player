@@ -7,7 +7,7 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
+import eu.ydp.empiria.player.client.color.ColorModel;
 
 @RunWith(JUnitParamsRunner.class)
 @SuppressWarnings("PMD")

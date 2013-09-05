@@ -21,9 +21,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
+import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ResponseAnswerByViewBuilder;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ResponseUserAnswersConverter;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;

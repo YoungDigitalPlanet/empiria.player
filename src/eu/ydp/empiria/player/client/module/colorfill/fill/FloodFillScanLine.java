@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.module.colorfill.fill;
 
+import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.fill.stack.JsPoint;
 import eu.ydp.empiria.player.client.module.colorfill.fill.stack.JsStack;
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 
 @SuppressWarnings("PMD")
 public class FloodFillScanLine {

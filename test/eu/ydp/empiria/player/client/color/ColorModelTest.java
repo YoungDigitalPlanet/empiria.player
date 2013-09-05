@@ -1,9 +1,11 @@
-package eu.ydp.empiria.player.client.module.colorfill.model;
+package eu.ydp.empiria.player.client.color;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Test;
+
+import eu.ydp.empiria.player.client.color.ColorModel;
 
 public class ColorModelTest {
 	

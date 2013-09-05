@@ -34,6 +34,8 @@ import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionVi
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
+import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
+import eu.ydp.empiria.player.client.module.drawing.model.DrawingModelProvider;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
@@ -75,6 +77,12 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindTutor();
 		bindMathGap();
 		bindSelection();
+		bindDrawing();
+	}
+
+	private void bindDrawing() {
+		bind(DrawingModelProvider.class).in(Singleton.class);
+		bind(DrawingBean.class).annotatedWith(ModuleScoped.class).toProvider(DrawingModelProvider.class);
 	}
 
 	private void bindCssStyle() {

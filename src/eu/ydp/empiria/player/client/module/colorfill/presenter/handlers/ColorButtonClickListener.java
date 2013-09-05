@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.colorfill.presenter.handlers;
 
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
+import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillButtonClickListener;
 
