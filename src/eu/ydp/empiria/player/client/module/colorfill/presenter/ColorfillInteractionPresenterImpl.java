@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -13,7 +14,6 @@ import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillViewBuilder;
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionBean;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;

@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
+import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 
 public class AreasMapsComparator {
