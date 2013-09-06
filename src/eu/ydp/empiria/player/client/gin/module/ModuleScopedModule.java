@@ -34,11 +34,11 @@ import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionVi
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
-import eu.ydp.empiria.player.client.module.drawing.command.ClearAllDrawCommand;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingModelProvider;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
+import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
@@ -86,8 +86,9 @@ public class ModuleScopedModule extends AbstractGinModule{
 	private void bindDrawing() {
 		bind(DrawingModelProvider.class).in(Singleton.class);
 		bind(DrawingBean.class).annotatedWith(ModuleScoped.class).toProvider(DrawingModelProvider.class);
+		bind(CanvasView.class).to(CanvasViewImpl.class);
+		bind(DrawCanvas.class).to(CanvasViewImpl.class);
 		bindModuleScoped(CanvasView.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>(){});
-		bindModuleScopedLazyProvider(ClearAllDrawCommand.class, new TypeLiteral<ModuleScopedLazyProvider<ClearAllDrawCommand>>(){});
 	}
 
 	private void bindCssStyle() {
@@ -161,12 +162,6 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bind(clazz)
 			.annotatedWith(ModuleScoped.class)
 			.toProvider(Key.get(typeLiteral));
-	}
-	private <F, T extends F> void bindModuleScopedLazyProvider(Class<F> clazz, TypeLiteral<ModuleScopedLazyProvider<T>> typeLiteral){
-		bind(typeLiteral).in(Singleton.class);
-		bind(clazz)
-		.annotatedWith(ModuleScoped.class)
-		.toProvider(Key.get(typeLiteral));
 	}
 
 }

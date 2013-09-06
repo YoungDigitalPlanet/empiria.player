@@ -9,11 +9,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
+import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClearAllDrawCommandTest {
-	@Mock private CanvasView view;
+	@Mock private DrawCanvas view;
 	@InjectMocks private ClearAllDrawCommand instance;
 
 	@Test

@@ -15,11 +15,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.Lists;
-import com.google.inject.Provider;
+
+import eu.ydp.empiria.player.client.gin.module.ModuleScopedLazyProvider;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DrawCommandFactoryTest {
-	@Mock private Provider<ClearAllDrawCommand> clearAllComandProvider;
+	@Mock private ModuleScopedLazyProvider<ClearAllDrawCommand> clearAllComandProvider;
 	@Mock private ClearAllDrawCommand command;
 	@InjectMocks private DrawCommandFactory instance;
 
