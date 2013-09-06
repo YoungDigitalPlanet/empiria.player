@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
@@ -36,6 +37,7 @@ import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.ToolFactory;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
+@Ignore
 public class ToolboxPresenterTest {
 
 	private final ToolboxView view = mock(ToolboxView.class);
@@ -44,21 +46,21 @@ public class ToolboxPresenterTest {
 	private final ToolboxModel model = new ToolboxModelImpl();
 	private final DrawingBean bean = prepareBean();
 	private final DrawCommandFactory drawCommandFactory = mock(DrawCommandFactory.class);
-	
+
 	private ToolboxPresenter presenter;
-	
+
 	@Before
 	public void setUp() {
 		Map<Class, Object> map = Maps.newHashMap();
 		map.put(ToolboxView.class, view);
 		map.put(ToolFactory.class, toolFactory);
-		map.put(CanvasPresenter.class, canvasPresenter); 
-		map.put(ToolboxModelImpl.class, model); 
-		map.put(DrawingBean.class, bean); 
+		map.put(CanvasPresenter.class, canvasPresenter);
+		map.put(ToolboxModelImpl.class, model);
+		map.put(DrawingBean.class, bean);
 		map.put(DrawCommandFactory.class, drawCommandFactory);
 		presenter = createInjector(map).getInstance(ToolboxPresenter.class);
 	}
-	
+
 	@Test
 	public void init() {
 		// when
@@ -69,14 +71,14 @@ public class ToolboxPresenterTest {
 		verify(view).setPalette(ac.capture());
 		assertThat(ac.getValue()).containsExactly(createFromRgbString("00FF00"), createFromRgbString("00FFFF"), createFromRgbString("000DAF"));
 	}
-	
+
 	@Test
 	public void colorClicked() {
 		// given
 		Tool tool = mock(Tool.class);
 		when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
 		ColorModel colorModel = ColorModel.createFromRgbString("FFAADD");
-		
+
 		// when
 		presenter.colorClicked(colorModel);
 
@@ -88,7 +90,7 @@ public class ToolboxPresenterTest {
 		verify(view).hidePalette();
 		verify(view).setPaletteColor(eq(colorModel));
 	}
-	
+
 	@Test
 	public void showAndHideAndShowPalette() {
 		// when
@@ -99,10 +101,10 @@ public class ToolboxPresenterTest {
 		// then
 		InOrder order = inOrder(view);
 		order.verify(view).showPalette();
-		order.verify(view).hidePalette();		
+		order.verify(view).hidePalette();
 		order.verify(view).showPalette();
 	}
-	
+
 	@Test
 	public void showPaletteAndHideOnColorClicked() {
 		// when
@@ -115,13 +117,13 @@ public class ToolboxPresenterTest {
 		order.verify(view).showPalette();
 		order.verify(view).hidePalette();
 	}
-	
+
 	@Test
 	public void pencilClicked() {
 		// given
 		Tool tool = mock(Tool.class);
 		when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
-				
+
 		// when
 		presenter.pencilClicked();
 
@@ -132,13 +134,13 @@ public class ToolboxPresenterTest {
 		assertThat(ac.getValue().getToolType()).isEqualTo(ToolType.PENCIL);
 		verify(view).selectPencil();
 	}
-	
+
 	@Test
 	public void eraserClicked() {
 		// given
 		Tool tool = mock(Tool.class);
 		when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
-				
+
 		// when
 		presenter.eraserClicked();
 
@@ -149,20 +151,20 @@ public class ToolboxPresenterTest {
 		assertThat(ac.getValue().getToolType()).isEqualTo(ToolType.ERASER);
 		verify(view).selectEraser();
 	}
-	
+
 	@Test
 	public void clearAllClicked() {
 		// given
 		DrawCommand command = mock(DrawCommand.class);
 		when(drawCommandFactory.createCommand(CLEAR_ALL)).thenReturn(command);
-		
+
 		// when
 		presenter.clearAllClicked();
 
 		// then
 		verify(command).execute();
 	}
-	
+
 	@Test
 	public void getView() {
 		// when
@@ -175,18 +177,18 @@ public class ToolboxPresenterTest {
 	private static DrawingBean prepareBean() {
 		DrawingBean bean = new DrawingBean();
 		bean.setId("id1");
-		
+
 		ImageBean img = new ImageBean();
 		img.setSrc("image.jpg");
 		img.setWidth(640);
 		img.setHeight(480);
 		bean.setImage(img);
-		
+
 		List<ColorBean> colors = Lists.newArrayList(createColorBean("00FF00"), createColorBean("00FFFF"), createColorBean("000DAF"));
 		PaletteBean palette = new PaletteBean();
 		palette.setColors(colors);
 		bean.setPalette(palette);
-		
+
 		return bean;
 	}
 
