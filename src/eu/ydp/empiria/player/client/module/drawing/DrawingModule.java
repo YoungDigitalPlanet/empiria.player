@@ -6,6 +6,9 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.IResetable;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.drawing.command.DrawCommand;
+import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
+import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandType;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
 import eu.ydp.empiria.player.client.module.drawing.model.ImageBean;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxPresenter;
@@ -24,10 +27,13 @@ public class DrawingModule extends SimpleModuleBase implements IResetable {
 	private ToolboxPresenter toolboxPresenter;
 	@Inject
 	private CanvasPresenter canvasPresenter;
+	@Inject
+	private DrawCommandFactory factory;
 	
 	@Override
 	public void reset() {
-		canvasPresenter.getView().clear();
+		DrawCommand clearCommand = factory.createCommand(DrawCommandType.CLEAR_ALL);
+		clearCommand.execute();
 	}
 	
 	@Override
