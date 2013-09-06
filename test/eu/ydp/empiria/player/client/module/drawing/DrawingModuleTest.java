@@ -11,13 +11,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 
 
+
+
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import eu.ydp.empiria.player.client.module.drawing.command.DrawCommand;
+import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
+import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandType;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
 import eu.ydp.empiria.player.client.module.drawing.model.ImageBean;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxPresenter;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
-import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,19 +39,22 @@ public class DrawingModuleTest {
 	private ToolboxPresenter toolboxPresenter;
 	@Mock
 	private CanvasPresenter canvasPresenter;
+	@Mock
+	private DrawCommandFactory factory;
+	
 	
 	@Test
 	public void shouldResetViewOnCanvas() throws Exception {
 		//given
-		CanvasView canvasView = Mockito.mock(CanvasView.class);
-		when(canvasPresenter.getView())
-			.thenReturn(canvasView);
+		DrawCommand clearAllCommand = Mockito.mock(DrawCommand.class);
+		when(factory.createCommand(DrawCommandType.CLEAR_ALL))
+			.thenReturn(clearAllCommand);
 		
 		//when
 		drawingModule.reset();
 		
 		//then
-		verify(canvasView).clear();
+		verify(clearAllCommand).execute();
 	}
 	
 	@Test
