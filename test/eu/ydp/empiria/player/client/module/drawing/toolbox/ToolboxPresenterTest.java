@@ -86,6 +86,7 @@ public class ToolboxPresenterTest {
 		verify(toolFactory).createTool(ac.capture());
 		assertThat(ac.getValue().getColorModel()).isEqualTo(colorModel);
 		verify(view).hidePalette();
+		verify(view).setPaletteColor(eq(colorModel));
 	}
 	
 	@Test
@@ -129,6 +130,7 @@ public class ToolboxPresenterTest {
 		ArgumentCaptor<ToolboxModelImpl> ac = ArgumentCaptor.forClass(ToolboxModelImpl.class);
 		verify(toolFactory).createTool(ac.capture());
 		assertThat(ac.getValue().getToolType()).isEqualTo(ToolType.PENCIL);
+		verify(view).selectPencil();
 	}
 	
 	@Test
@@ -145,6 +147,7 @@ public class ToolboxPresenterTest {
 		ArgumentCaptor<ToolboxModelImpl> ac = ArgumentCaptor.forClass(ToolboxModelImpl.class);
 		verify(toolFactory).createTool(ac.capture());
 		assertThat(ac.getValue().getToolType()).isEqualTo(ToolType.ERASER);
+		verify(view).selectEraser();
 	}
 	
 	@Test

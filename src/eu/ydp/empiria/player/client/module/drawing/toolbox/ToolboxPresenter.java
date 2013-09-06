@@ -32,8 +32,9 @@ public class ToolboxPresenter {
 	}
 	 
 	public void colorClicked(ColorModel colorModel){
-		model.setColorModel(colorModel);
 		view.hidePalette();
+		view.setPaletteColor(colorModel);
+		model.setColorModel(colorModel);
 		update();
 	}
 
@@ -47,11 +48,13 @@ public class ToolboxPresenter {
 	}
 	
 	public void pencilClicked(){
+		view.selectPencil();
 		model.setToolType(PENCIL);
 		update();
 	}
 	
 	public void eraserClicked(){
+		view.selectEraser();
 		model.setToolType(ERASER);
 		update();
 	}
