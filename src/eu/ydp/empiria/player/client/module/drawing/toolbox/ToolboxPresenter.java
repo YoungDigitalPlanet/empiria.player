@@ -15,9 +15,11 @@ import eu.ydp.empiria.player.client.module.drawing.toolbox.model.ToolboxModelImp
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.Tool;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.ToolFactory;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ToolboxPresenter {
-	@Inject private ToolboxView view;
+	@Inject @ModuleScoped private ToolboxView view;
+	@Inject @ModuleScoped private ToolboxButtonCreator buttonCreator;
 	@Inject private ToolboxModelImpl model;
 	@Inject private ToolFactory toolFactory;
 	@Inject private CanvasPresenter canvasPresenter;
@@ -27,13 +29,20 @@ public class ToolboxPresenter {
 	private boolean paletteVisible;
 
 	public void init(){
-		initPalette();
+		initView();
 		initTool();
+		initPalette();
+	}
+
+	private void initView() {
+		view.setPresenterAndBind(this);
+		buttonCreator.setPresenter(this);
 	}
 
 	private void initPalette() {
 		List<ColorModel> colorModels = paletteColorsProvider.getColors();
 		view.setPalette(colorModels);
+		selectColor(colorModels.get(0));
 	}
 
 	private void initTool() {
@@ -41,7 +50,11 @@ public class ToolboxPresenter {
 	}
 	 
 	public void colorClicked(ColorModel colorModel){
-		view.hidePalette();
+		paletteClicked();
+		selectColor(colorModel);
+	}
+
+	private void selectColor(ColorModel colorModel) {
 		view.setPaletteColor(colorModel);
 		model.setColorModel(colorModel);
 		update();

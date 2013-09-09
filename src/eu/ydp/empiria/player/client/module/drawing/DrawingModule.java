@@ -23,7 +23,7 @@ public class DrawingModule extends SimpleModuleBase implements IResetable {
 	private DrawingBean bean;
 	@Inject
 	private DrawingView drawingView;
-	@Inject
+	@Inject @ModuleScoped
 	private ToolboxPresenter toolboxPresenter;
 	@Inject
 	private CanvasPresenter canvasPresenter;

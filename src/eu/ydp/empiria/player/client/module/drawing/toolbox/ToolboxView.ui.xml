@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:t="urn:import:eu.ydp.empiria.player.client.module.drawing.toolbox.view">
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants"
+		field="res" />
+	<g:FlowPanel ui:field="container">
+		<g:FlowPanel ui:field="toolbox" styleName="{res.QP_DRAW_TOOLBOX}" >
+			<t:ToolboxButton ui:field="pencilButton" addStyleNames="{res.QP_DRAW_TOOLBOX_BUTTON_PENCIL}" />
+			<t:ToolboxButton ui:field="paletteButton" addStyleNames="{res.QP_DRAW_TOOLBOX_BUTTON_PALETTE}" />
+			<t:ToolboxButton ui:field="eraserButton" addStyleNames="{res.QP_DRAW_TOOLBOX_BUTTON_ERASER}" />
+			<t:ToolboxButton ui:field="clearAllButton" addStyleNames="{res.QP_DRAW_TOOLBOX_BUTTON_CLEARALL}" />
+		</g:FlowPanel>
+		<t:ToolboxPalette ui:field="palette"/>
+	</g:FlowPanel>
+</ui:UiBinder>

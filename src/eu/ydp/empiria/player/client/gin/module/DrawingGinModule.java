@@ -5,7 +5,6 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxView;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxViewImpl;
 
-
 public class DrawingGinModule extends AbstractGinModule {
 
 	@Override
