@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox;
 
+import java.util.List;
+
 import com.google.gwt.user.client.ui.IsWidget;
 
 import eu.ydp.empiria.player.client.color.ColorModel;
@@ -11,5 +13,5 @@ public interface ToolboxView extends IsWidget {
 	 void selectEraser();
 	 void unselectTools();
 	 void setPaletteColor( ColorModel colorModel );
-	 void setPalette(ColorModel colorModel);
+	 void setPalette(List<ColorModel> colorModel);
 }

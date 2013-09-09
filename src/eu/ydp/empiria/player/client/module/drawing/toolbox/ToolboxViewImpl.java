@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox;
 
+import java.util.List;
+
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.color.ColorModel;
@@ -49,7 +51,7 @@ public class ToolboxViewImpl implements ToolboxView {
 	}
 
 	@Override
-	public void setPalette(ColorModel colorModel) {
+	public void setPalette(List<ColorModel> colorModel) {
 		// TODO Auto-generated method stub
 
 	}

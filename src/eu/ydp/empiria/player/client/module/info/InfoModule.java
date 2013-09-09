@@ -43,6 +43,7 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	private Panel contentPanel;
 	private Element mainElement;
 	private List<Token> tokensFromContent = Lists.newArrayList();
+	private String initialStyleName;
 
 	public void setModuleUnloadListener(InfoModuleUnloadListener imul) {
 		unloadListener = imul;
@@ -58,6 +59,7 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 			mainPanel.addStyleName(cls);
 		}
 
+		initialStyleName = mainPanel.getStyleName();
 		mainElement = element;
 	}
 
@@ -152,11 +154,16 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	}
 
 	private void updateProgressStyleName(int refItemIndex) {
+		resetMainPanelStyleToInitialState();
 		String styleName = infoModuleProgressStyleName.getCurrentStyleName(refItemIndex);
 		mainPanel.setStyleName(styleNames.QP_INFO());
 		if(!Strings.isNullOrEmpty(styleName)){
 			mainPanel.addStyleName(styleName);
 		}
+	}
+
+	private void resetMainPanelStyleToInitialState() {
+		mainPanel.setStyleName(initialStyleName);
 	}
 
 }

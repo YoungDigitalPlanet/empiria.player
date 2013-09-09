@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.drawing.view;
 
 import javax.annotation.PostConstruct;
-
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
