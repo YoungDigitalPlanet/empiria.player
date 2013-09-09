@@ -95,4 +95,9 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 		canvas.setHeight(size.getHeight() + "px");
 	}
 
+	@Override
+	public void initializeInteractionHandlers(CanvasPresenter canvasPresenter) {
+		
+	}
+
 }
