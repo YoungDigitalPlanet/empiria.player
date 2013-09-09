@@ -12,10 +12,12 @@ public class CanvasPresenter {
 	private final CanvasView canvasView;
 	private Tool currentTool;
 	private Point previousPoint;
+	private boolean mouseOut = false;
 
 	@Inject
 	public CanvasPresenter(@ModuleScoped CanvasView canvasView) {
 		this.canvasView = canvasView;
+		this.canvasView.initializeInteractionHandlers(this);
 	}
 
 	public void mouseDown(Point point) {
@@ -24,6 +26,11 @@ public class CanvasPresenter {
 	}
 
 	public void mouseMove(Point point) {
+		if(mouseOut) {
+			previousPoint = point;
+			mouseOut = false;
+		}
+		
 		if(previousPoint != null) {
 			currentTool.move(previousPoint, point);
 			previousPoint = point;
@@ -35,7 +42,9 @@ public class CanvasPresenter {
 	}
 
 	public void mouseOut() {
-		previousPoint = null;
+		if(previousPoint != null) { 
+			this.mouseOut = true;
+		}
 	}
 
 	public void setTool(Tool tool) {

@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.drawing.view;
 
-import javax.annotation.PostConstruct;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
@@ -10,6 +9,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.util.position.Point;
@@ -24,14 +24,16 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 	@UiField(provided = true) protected Canvas canvas;
 	@UiField protected FlowPanel container;
 
-	private String defaultGlobalCompositeOperation;
+	private final String defaultGlobalCompositeOperation;
 	private final String destinationOutCompositeOperation = com.google.gwt.canvas.dom.client.Context2d.Composite.XOR.getValue();
 
 	private final String eraserColor = "#ff0000";
 	private final int lineWidth = 4;
+	private final CanvasDragHandlers canvasDragHandlers;
 
-	@PostConstruct
-	public void postConstruct() {
+	@Inject
+	public CanvasViewImpl(CanvasDragHandlers canvasDragHandlers) {
+		this.canvasDragHandlers = canvasDragHandlers;
 		canvas = Canvas.createIfSupported();
 		defaultGlobalCompositeOperation = canvas.getContext2d().getGlobalCompositeOperation();
 		initWidget(uiBinder.createAndBindUi(this));
@@ -96,7 +98,6 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 
 	@Override
 	public void initializeInteractionHandlers(CanvasPresenter canvasPresenter) {
-		CanvasDragHandlers canvasDragHandlers = new CanvasDragHandlers();
 		canvasDragHandlers.addHandlersToView(canvasPresenter, canvas);
 	}
 

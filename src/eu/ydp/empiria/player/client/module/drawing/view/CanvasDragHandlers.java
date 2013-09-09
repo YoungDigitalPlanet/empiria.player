@@ -19,12 +19,25 @@ import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchMoveHandler;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
+import com.google.gwt.user.client.Element;
+import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 
 public class CanvasDragHandlers {
 
+	private final EventsBus eventsBus;
+	
+	@Inject
+	public CanvasDragHandlers(EventsBus eventsBus) {
+		this.eventsBus = eventsBus;
+	}
+
 	public void addHandlersToView(final CanvasPresenter canvasPresenter, Canvas canvas) {
+		final Element canvasElement = canvas.asWidget().getElement();
 		
 		canvas.addMouseDownHandler(new MouseDownHandler() {
 			@Override
@@ -59,7 +72,9 @@ public class CanvasDragHandlers {
 		canvas.addTouchStartHandler(new TouchStartHandler() {
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
-				Point point = getTouchPoint(event.getTouches());
+				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+				event.preventDefault();
+				Point point = getTouchPoint(event.getTouches(), canvasElement);
 				canvasPresenter.mouseDown(point);
 			}
 		});
@@ -67,7 +82,7 @@ public class CanvasDragHandlers {
 		canvas.addTouchMoveHandler(new TouchMoveHandler() {
 			@Override
 			public void onTouchMove(TouchMoveEvent event) {
-				Point point = getTouchPoint(event.getTouches());
+				Point point = getTouchPoint(event.getTouches(), canvasElement);
 				canvasPresenter.mouseMove(point);
 			}
 		});
@@ -87,9 +102,9 @@ public class CanvasDragHandlers {
 		});
 	}
 	
-	private Point getTouchPoint(JsArray<Touch> touches) {
+	private Point getTouchPoint(JsArray<Touch> touches, Element canvasElement) {
 		Touch touch = touches.get(0);
-		Point point = new Point(touch.getScreenX(), touch.getScreenY());
+		Point point = new Point(touch.getRelativeX(canvasElement), touch.getRelativeY(canvasElement));
 		return point;
 	}
 }
