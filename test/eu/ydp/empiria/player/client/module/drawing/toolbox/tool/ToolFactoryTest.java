@@ -8,7 +8,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.*;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolType;
-import eu.ydp.empiria.player.client.module.drawing.toolbox.model.ToolboxModel;
+import eu.ydp.empiria.player.client.module.drawing.toolbox.model.ToolboxModelImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -23,7 +23,7 @@ public class ToolFactoryTest {
 	@Test
 	public void shouldCreatePencilTool() throws Exception {
 		//given
-		ToolboxModel toolModel = new ToolboxModel();
+		ToolboxModelImpl toolModel = new ToolboxModelImpl();
 		toolModel.setToolType(ToolType.PENCIL);
 		
 		//when
@@ -36,7 +36,7 @@ public class ToolFactoryTest {
 	@Test
 	public void shouldCreateEraserTool() throws Exception {
 		//given
-		ToolboxModel toolModel = new ToolboxModel();
+		ToolboxModelImpl toolModel = new ToolboxModelImpl();
 		toolModel.setToolType(ToolType.ERASER);
 		
 		//when
