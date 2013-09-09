@@ -57,6 +57,10 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
 
 	@Test
 	public void init() {
+		// given
+		Tool tool = mock(Tool.class);
+		when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
+		
 		// when
 		presenter.init();
 
@@ -64,6 +68,8 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
 		ArgumentCaptor<List<ColorModel>> ac = (ArgumentCaptor)ArgumentCaptor.forClass(List.class);
 		verify(view).setPalette(ac.capture());
 		assertThat(ac.getValue()).containsExactly(createFromRgbString("00FF00"), createFromRgbString("00FFFF"), createFromRgbString("000DAF"));
+		verify(view).selectPencil();
+		verify(canvasPresenter).setTool(tool);
 	}
 
 	@Test

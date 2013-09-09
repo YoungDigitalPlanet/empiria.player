@@ -27,8 +27,17 @@ public class ToolboxPresenter {
 	private boolean paletteVisible;
 
 	public void init(){
+		initPalette();
+		initTool();
+	}
+
+	private void initPalette() {
 		List<ColorModel> colorModels = paletteColorsProvider.getColors();
 		view.setPalette(colorModels);
+	}
+
+	private void initTool() {
+		pencilClicked();
 	}
 	 
 	public void colorClicked(ColorModel colorModel){
