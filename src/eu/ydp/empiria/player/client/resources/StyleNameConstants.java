@@ -236,6 +236,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-dragged-over-dropzone")
 	public String QP_DRAGGED_OVER_DROPZONE();
 
+	@DefaultStringValue("qp-drawing-canvas")
+	public String  QP_DRAWING_CANVAS();
+
+	@DefaultStringValue("qp-drawing-canvas-container")
+	public String QP_DRAWING_CANVAS_CONTAINER();
+
 	@DefaultStringValue("qp-drop-zone-locked")
 	public String QP_DROP_ZONE_LOCKED();
 
