@@ -1,20 +1,19 @@
 package eu.ydp.empiria.player.client.module.drawing.view;
 
-import com.mathplayer.player.geom.Color;
-
+import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
 public class CanvasViewImpl implements CanvasView {
 
 	@Override
-	public void drawPoint(Point point, Color color) {
+	public void drawPoint(Point point, ColorModel color) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void drawLine(Point startPoint, Point endPoint, Color color) {
+	public void drawLine(Point startPoint, Point endPoint, ColorModel color) {
 		// TODO Auto-generated method stub
 
 	}
