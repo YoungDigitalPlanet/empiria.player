@@ -96,7 +96,8 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 
 	@Override
 	public void initializeInteractionHandlers(CanvasPresenter canvasPresenter) {
-		
+		CanvasDragHandlers canvasDragHandlers = new CanvasDragHandlers();
+		canvasDragHandlers.addHandlersToView(canvasPresenter, canvas);
 	}
 
 }

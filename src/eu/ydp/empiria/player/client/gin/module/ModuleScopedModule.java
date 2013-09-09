@@ -36,6 +36,7 @@ import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingModelProvider;
+import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
@@ -89,6 +90,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bind(CanvasView.class).annotatedWith(ModuleScoped.class).to(CanvasViewImpl.class);
 		bind(DrawCanvas.class).annotatedWith(ModuleScoped.class).to(CanvasViewImpl.class);
 		bindModuleScoped(CanvasViewImpl.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>(){});
+		bindModuleScoped(CanvasPresenter.class, new TypeLiteral<ModuleScopedProvider<CanvasPresenter>>(){});
 	}
 
 	private void bindCssStyle() {
