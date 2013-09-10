@@ -12,7 +12,7 @@ public class CanvasPresenter {
 	private final CanvasView canvasView;
 	private Tool currentTool;
 	private Point previousPoint;
-	private boolean mouseOut = false;
+	private boolean mouseOutWhileActive = false;
 
 	@Inject
 	public CanvasPresenter(@ModuleScoped CanvasView canvasView) {
@@ -26,15 +26,31 @@ public class CanvasPresenter {
 	}
 
 	public void mouseMove(Point point) {
-		if(mouseOut) {
-			previousPoint = point;
-			mouseOut = false;
+		if(cameBackToScreen()) {
+			overridePreviousPosition(point);
 		}
 		
-		if(previousPoint != null) {
-			currentTool.move(previousPoint, point);
-			previousPoint = point;
+		if(isActive()) {
+			moveTool(point);
 		}
+	}
+
+	private void overridePreviousPosition(Point point) {
+		previousPoint = point;
+		mouseOutWhileActive = false;
+	}
+
+	private boolean cameBackToScreen() {
+		return mouseOutWhileActive && isActive();
+	}
+
+	private void moveTool(Point point) {
+		currentTool.move(previousPoint, point);
+		previousPoint = point;
+	}
+
+	private boolean isActive() {
+		return previousPoint != null;
 	}
 
 	public void mouseUp() {
@@ -42,8 +58,8 @@ public class CanvasPresenter {
 	}
 
 	public void mouseOut() {
-		if(previousPoint != null) { 
-			this.mouseOut = true;
+		if(isActive()) { 
+			this.mouseOutWhileActive = true;
 		}
 	}
 
