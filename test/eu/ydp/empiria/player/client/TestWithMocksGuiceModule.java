@@ -31,6 +31,7 @@ import eu.ydp.empiria.player.client.module.connection.presenter.translation.Surf
 import eu.ydp.empiria.player.client.module.drawing.command.ClearAllDrawCommand;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
+import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxButtonCreator;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxView;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.ToolFactory;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
@@ -85,7 +86,8 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToSingletonOrMockInstance(LabellingModuleJAXBParserFactory.class);
 		bindToSingletonOrMockInstance(PageScopeFactory.class);
 		bindToSingletonOrMockInstance(StyleSocket.class);
-		bindToSingletonOrMockInstance(ToolboxView.class);
+		bindToSingletonInModuleScoped(ToolboxView.class);
+		bindToSingletonInModuleScoped(ToolboxButtonCreator.class);
 		bindToSingletonOrMockInstance(ToolFactory.class);
 		bindToSingletonOrMockInstance(CanvasPresenter.class);
 		bindToSingletonOrMockInstance(DrawCommandFactory.class);

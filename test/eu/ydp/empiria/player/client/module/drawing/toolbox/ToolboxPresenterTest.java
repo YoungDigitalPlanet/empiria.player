@@ -7,6 +7,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +50,7 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
 		presenter = injector.getInstance(ToolboxPresenter.class);
 		bean = injector.getInstance(Key.get(DrawingBean.class, ModuleScoped.class));
 		when(bean.getPalette()).thenReturn(createPalette());
-		view = injector.getInstance(ToolboxView.class);
+		view = presenter.getView();
 		toolFactory = injector.getInstance(ToolFactory.class);
 		canvasPresenter = injector.getInstance(CanvasPresenter.class);
 		drawCommandFactory = injector.getInstance(DrawCommandFactory.class);
@@ -68,8 +69,10 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
 		ArgumentCaptor<List<ColorModel>> ac = (ArgumentCaptor)ArgumentCaptor.forClass(List.class);
 		verify(view).setPalette(ac.capture());
 		assertThat(ac.getValue()).containsExactly(createFromRgbString("00FF00"), createFromRgbString("00FFFF"), createFromRgbString("000DAF"));
+		verify(view).setPresenterAndBind(presenter);
 		verify(view).selectPencil();
-		verify(canvasPresenter).setTool(tool);
+		verify(view).setPaletteColor(createFromRgbString("00FF00"));
+		verify(canvasPresenter, times(2)).setTool(tool);
 	}
 
 	@Test
@@ -78,6 +81,7 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
 		Tool tool = mock(Tool.class);
 		when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
 		ColorModel colorModel = ColorModel.createFromRgbString("FFAADD");
+		presenter.paletteClicked();
 
 		// when
 		presenter.colorClicked(colorModel);
