@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 
 

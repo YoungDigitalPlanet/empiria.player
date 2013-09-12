@@ -7,8 +7,8 @@ import java.util.List;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.drawing.model.ColorBean;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public class ColorBeanConverter {
 

@@ -12,12 +12,12 @@ import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.fill.BlackColorContourDetector;
 import eu.ydp.empiria.player.client.module.colorfill.fill.FloodFillScanLine;
 import eu.ydp.empiria.player.client.module.colorfill.fill.ICanvasImageData;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.event.factory.Command;

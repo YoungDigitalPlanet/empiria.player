@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.drawing.view;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.empiria.player.client.util.position.Point;
 
 public interface DrawCanvas {

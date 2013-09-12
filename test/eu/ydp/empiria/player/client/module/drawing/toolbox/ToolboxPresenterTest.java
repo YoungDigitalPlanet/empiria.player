@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox;
 
-import static eu.ydp.empiria.player.client.color.ColorModel.createFromRgbString;
 import static eu.ydp.empiria.player.client.module.drawing.command.DrawCommandType.CLEAR_ALL;
+import static eu.ydp.empiria.player.client.module.model.color.ColorModel.createFromRgbString;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -21,7 +21,6 @@ import com.google.common.collect.Lists;
 import com.google.inject.Key;
 
 import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommand;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
 import eu.ydp.empiria.player.client.module.drawing.model.ColorBean;
@@ -32,6 +31,7 @@ import eu.ydp.empiria.player.client.module.drawing.toolbox.model.ToolboxModelImp
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.Tool;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.ToolFactory;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })

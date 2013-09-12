@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommand;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandType;
@@ -15,6 +14,7 @@ import eu.ydp.empiria.player.client.module.drawing.toolbox.model.ToolboxModelImp
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.Tool;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.ToolFactory;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ToolboxPresenter {

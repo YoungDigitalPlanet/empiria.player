@@ -4,9 +4,9 @@ import java.util.Map;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public interface ColorfillCanvas extends IsWidget {
 

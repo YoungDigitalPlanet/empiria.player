@@ -11,7 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.collect.Lists;
 
 import static org.mockito.Mockito.*;
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.handlers.ColorButtonClickListener;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ButtonsContainer;
@@ -21,6 +20,7 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.EraserButton;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillAreaClickListener;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ColorfillViewBuilderJUnitTest {

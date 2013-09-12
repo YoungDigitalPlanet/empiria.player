@@ -7,8 +7,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.empiria.player.client.util.position.Point;
 
 @RunWith(MockitoJUnitRunner.class)
