@@ -33,11 +33,11 @@ public class ToolboxButton extends Composite implements HasClickHandlers {
 	}
 
 	public void select() {
-		button.addStyleName(styleNames.QP_DRAW_TOOLBOX_TOOL_SELECTED());
+		button.addStyleName(styleNames.QP_DRAWING_TOOLBOX_TOOL_SELECTED());
 	}
 
 	public void unselect() {
-		button.removeStyleName(styleNames.QP_DRAW_TOOLBOX_TOOL_SELECTED());
+		button.removeStyleName(styleNames.QP_DRAWING_TOOLBOX_TOOL_SELECTED());
 	}
 
 	public void setColor(ColorModel colorModel) {

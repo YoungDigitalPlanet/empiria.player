@@ -236,41 +236,44 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-dragged-over-dropzone")
 	public String QP_DRAGGED_OVER_DROPZONE();
 
+	@DefaultStringValue("qp-drawing-module")
+	public String  QP_DRAWING_MODULE();
+	
 	@DefaultStringValue("qp-drawing-canvas")
 	public String  QP_DRAWING_CANVAS();
 
 	@DefaultStringValue("qp-drawing-canvas-container")
 	public String QP_DRAWING_CANVAS_CONTAINER();
 
-	@DefaultStringValue("qp-draw-toolbox")
-	public String QP_DRAW_TOOLBOX();
+	@DefaultStringValue("qp-drawing-toolbox")
+	public String QP_DRAWING_TOOLBOX();
 	
-	@DefaultStringValue("qp-draw-toolbox-button")
-	public String QP_DRAW_TOOLBOX_BUTTON();
+	@DefaultStringValue("qp-drawing-toolbox-button")
+	public String QP_DRAWING_TOOLBOX_BUTTON();
 
-	@DefaultStringValue("qp-draw-toolbox-button-pencil")
-	public String QP_DRAW_TOOLBOX_BUTTON_PENCIL();
+	@DefaultStringValue("qp-drawing-toolbox-button-pencil")
+	public String QP_DRAWING_TOOLBOX_BUTTON_PENCIL();
 
-	@DefaultStringValue("qp-draw-toolbox-button-palette")
-	public String QP_DRAW_TOOLBOX_BUTTON_PALETTE();
+	@DefaultStringValue("qp-drawing-toolbox-button-palette")
+	public String QP_DRAWING_TOOLBOX_BUTTON_PALETTE();
 
-	@DefaultStringValue("qp-draw-toolbox-button-eraser")
-	public String QP_DRAW_TOOLBOX_BUTTON_ERASER();
+	@DefaultStringValue("qp-drawing-toolbox-button-eraser")
+	public String QP_DRAWING_TOOLBOX_BUTTON_ERASER();
 
-	@DefaultStringValue("qp-draw-toolbox-button-clearall")
-	public String QP_DRAW_TOOLBOX_BUTTON_CLEARALL();
+	@DefaultStringValue("qp-drawing-toolbox-button-clearall")
+	public String QP_DRAWING_TOOLBOX_BUTTON_CLEARALL();
 
-	@DefaultStringValue("qp-draw-toolbox-tool-selected")
-	public String QP_DRAW_TOOLBOX_TOOL_SELECTED();
+	@DefaultStringValue("qp-drawing-toolbox-tool-selected")
+	public String QP_DRAWING_TOOLBOX_TOOL_SELECTED();
 
-	@DefaultStringValue("qp-draw-toolbox-palette-container")
-	public String QP_DRAW_TOOLBOX_PALETTE_CONTAINER();
+	@DefaultStringValue("qp-drawing-toolbox-palette-container")
+	public String QP_DRAWING_TOOLBOX_PALETTE_CONTAINER();
 
-	@DefaultStringValue("qp-draw-toolbox-palette")
-	public String QP_DRAW_TOOLBOX_PALETTE();
+	@DefaultStringValue("qp-drawing-toolbox-palette")
+	public String QP_DRAWING_TOOLBOX_PALETTE();
 	
-	@DefaultStringValue("qp-draw-toolbox-palette-hidden")
-	public String QP_DRAW_TOOLBOX_PALETTE_HIDDEN();
+	@DefaultStringValue("qp-drawing-toolbox-palette-hidden")
+	public String QP_DRAWING_TOOLBOX_PALETTE_HIDDEN();
 
 	@DefaultStringValue("qp-drop-zone-locked")
 	public String QP_DROP_ZONE_LOCKED();

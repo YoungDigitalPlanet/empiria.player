@@ -38,11 +38,11 @@ public class ToolboxPalette extends Composite {
 	}
 
 	public void hide() {
-		container.addStyleName(styleNames.QP_DRAW_TOOLBOX_PALETTE_HIDDEN());
+		container.addStyleName(styleNames.QP_DRAWING_TOOLBOX_PALETTE_HIDDEN());
 	}
 
 	public void show() {
-		container.removeStyleName(styleNames.QP_DRAW_TOOLBOX_PALETTE_HIDDEN());
+		container.removeStyleName(styleNames.QP_DRAWING_TOOLBOX_PALETTE_HIDDEN());
 	}
 
 	public void init(List<ColorModel> colorsModel) {

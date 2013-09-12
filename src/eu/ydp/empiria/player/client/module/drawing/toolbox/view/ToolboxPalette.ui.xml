@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants"
 		field="res" />
-	<g:FlowPanel ui:field="container" styleName="{res.QP_DRAW_TOOLBOX_PALETTE_HIDDEN} {res.QP_DRAW_TOOLBOX_PALETTE}">
+	<g:FlowPanel ui:field="container" styleName="{res.QP_DRAWING_TOOLBOX_PALETTE_HIDDEN} {res.QP_DRAWING_TOOLBOX_PALETTE}">
 		<g:FlowPanel ui:field="palette" />
 	</g:FlowPanel>
 </ui:UiBinder> 

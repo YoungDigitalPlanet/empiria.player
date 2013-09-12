@@ -3,7 +3,9 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:t="urn:import:eu.ydp.empiria.player.client.module.drawing.toolbox"
 	xmlns:v="urn:import:eu.ydp.empiria.player.client.module.drawing.view">
-	<g:FlowPanel>
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants"
+		field="res" />
+	<g:FlowPanel styleName="{res.QP_DRAWING_MODULE}">
 		<t:ToolboxView ui:field="toolboxView" />
 		<v:CanvasView ui:field="canvasView" />
 	</g:FlowPanel>
