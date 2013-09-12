@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -91,8 +92,13 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 	public void setSize(Size size) {
 		canvas.setCoordinateSpaceHeight(size.getHeight());
 		canvas.setCoordinateSpaceWidth(size.getWidth());
-		canvas.setWidth(size.getWidth() + "px");
-		canvas.setHeight(size.getHeight() + "px");
+		applySize(canvas, size);
+		applySize(container, size);
+	}
+
+	private void applySize(UIObject uiObject, Size size) {
+		uiObject.setWidth(size.getWidth() + "px");
+		uiObject.setHeight(size.getHeight() + "px");
 	}
 
 	@Override
