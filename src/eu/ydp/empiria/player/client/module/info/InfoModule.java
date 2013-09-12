@@ -156,7 +156,6 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	private void updateProgressStyleName(int refItemIndex) {
 		resetMainPanelStyleToInitialState();
 		String styleName = infoModuleProgressStyleName.getCurrentStyleName(refItemIndex);
-		mainPanel.setStyleName(styleNames.QP_INFO());
 		if(!Strings.isNullOrEmpty(styleName)){
 			mainPanel.addStyleName(styleName);
 		}
