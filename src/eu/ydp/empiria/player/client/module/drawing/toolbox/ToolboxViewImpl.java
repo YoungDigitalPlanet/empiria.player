@@ -78,7 +78,6 @@ public class ToolboxViewImpl extends Composite implements ToolboxView {
 	private void unselectTools() {
 		pencilButton.unselect();
 		eraserButton.unselect();
-		paletteButton.unselect();
 	}
 
 	@Override
