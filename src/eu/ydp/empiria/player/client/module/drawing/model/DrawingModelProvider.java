@@ -11,11 +11,14 @@ public class DrawingModelProvider implements Provider<DrawingBean> {
 
 	@Inject private DrawingModuleJAXBParserFactory jaxbFactory;
 	@Inject @ModuleScoped Provider<Element> xmlProvider;
+	private DrawingBean bean;
 
 	@Override
 	public DrawingBean get() {
-		JAXBParser<DrawingBean> parser = jaxbFactory.create();
-		DrawingBean bean = parser.parse(xmlProvider.get().toString());
+		if (bean == null) {
+			JAXBParser<DrawingBean> parser = jaxbFactory.create();
+			bean = parser.parse(xmlProvider.get().toString());
+		}
 		return bean;
 	}
 

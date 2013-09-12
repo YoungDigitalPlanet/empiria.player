@@ -242,6 +242,36 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-drawing-canvas-container")
 	public String QP_DRAWING_CANVAS_CONTAINER();
 
+	@DefaultStringValue("qp-draw-toolbox")
+	public String QP_DRAW_TOOLBOX();
+	
+	@DefaultStringValue("qp-draw-toolbox-button")
+	public String QP_DRAW_TOOLBOX_BUTTON();
+
+	@DefaultStringValue("qp-draw-toolbox-button-pencil")
+	public String QP_DRAW_TOOLBOX_BUTTON_PENCIL();
+
+	@DefaultStringValue("qp-draw-toolbox-button-palette")
+	public String QP_DRAW_TOOLBOX_BUTTON_PALETTE();
+
+	@DefaultStringValue("qp-draw-toolbox-button-eraser")
+	public String QP_DRAW_TOOLBOX_BUTTON_ERASER();
+
+	@DefaultStringValue("qp-draw-toolbox-button-clearall")
+	public String QP_DRAW_TOOLBOX_BUTTON_CLEARALL();
+
+	@DefaultStringValue("qp-draw-toolbox-tool-selected")
+	public String QP_DRAW_TOOLBOX_TOOL_SELECTED();
+
+	@DefaultStringValue("qp-draw-toolbox-palette-container")
+	public String QP_DRAW_TOOLBOX_PALETTE_CONTAINER();
+
+	@DefaultStringValue("qp-draw-toolbox-palette")
+	public String QP_DRAW_TOOLBOX_PALETTE();
+	
+	@DefaultStringValue("qp-draw-toolbox-palette-hidden")
+	public String QP_DRAW_TOOLBOX_PALETTE_HIDDEN();
+
 	@DefaultStringValue("qp-drop-zone-locked")
 	public String QP_DROP_ZONE_LOCKED();
 
