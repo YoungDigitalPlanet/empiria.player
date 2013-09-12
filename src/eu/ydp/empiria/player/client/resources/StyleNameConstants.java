@@ -263,6 +263,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-draw-toolbox-tool-selected")
 	public String QP_DRAW_TOOLBOX_TOOL_SELECTED();
 
+	@DefaultStringValue("qp-draw-toolbox-palette-container")
+	public String QP_DRAW_TOOLBOX_PALETTE_CONTAINER();
+
 	@DefaultStringValue("qp-draw-toolbox-palette")
 	public String QP_DRAW_TOOLBOX_PALETTE();
 	

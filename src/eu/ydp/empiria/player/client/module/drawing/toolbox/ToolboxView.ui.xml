@@ -7,8 +7,10 @@
 	<g:FlowPanel ui:field="container">
 		<g:FlowPanel ui:field="toolbox" styleName="{res.QP_DRAW_TOOLBOX}" >
 			<t:ToolboxButton ui:field="pencilButton" addStyleNames="{res.QP_DRAW_TOOLBOX_BUTTON_PENCIL}" />
-			<t:ToolboxButton ui:field="paletteButton" addStyleNames="{res.QP_DRAW_TOOLBOX_BUTTON_PALETTE}" />
-			<t:ToolboxPalette ui:field="palette"/>
+			<g:FlowPanel styleName="{res.QP_DRAW_TOOLBOX_PALETTE_CONTAINER}">
+				<t:ToolboxButton ui:field="paletteButton" addStyleNames="{res.QP_DRAW_TOOLBOX_BUTTON_PALETTE}" />
+				<t:ToolboxPalette ui:field="palette"/>
+			</g:FlowPanel>
 			<t:ToolboxButton ui:field="eraserButton" addStyleNames="{res.QP_DRAW_TOOLBOX_BUTTON_ERASER}" />
 			<t:ToolboxButton ui:field="clearAllButton" addStyleNames="{res.QP_DRAW_TOOLBOX_BUTTON_CLEARALL}" />
 		</g:FlowPanel>
