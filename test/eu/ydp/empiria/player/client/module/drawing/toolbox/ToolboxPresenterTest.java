@@ -50,9 +50,9 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
 		presenter = injector.getInstance(ToolboxPresenter.class);
 		bean = injector.getInstance(Key.get(DrawingBean.class, ModuleScoped.class));
 		when(bean.getPalette()).thenReturn(createPalette());
-		view = presenter.getView();
+		view = injector.getInstance(Key.get(ToolboxView.class, ModuleScoped.class));
 		toolFactory = injector.getInstance(ToolFactory.class);
-		canvasPresenter = injector.getInstance(CanvasPresenter.class);
+		canvasPresenter = injector.getInstance(Key.get(CanvasPresenter.class, ModuleScoped.class));
 		drawCommandFactory = injector.getInstance(DrawCommandFactory.class);
 	}
 
