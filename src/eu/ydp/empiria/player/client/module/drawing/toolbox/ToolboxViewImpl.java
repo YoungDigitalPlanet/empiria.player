@@ -3,9 +3,10 @@ package eu.ydp.empiria.player.client.module.drawing.toolbox;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -14,13 +15,9 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.view.ToolboxButton;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.view.ToolboxPalette;
-import eu.ydp.gwtutil.client.event.factory.Command;
-import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class ToolboxViewImpl extends Composite implements ToolboxView {
 
-	@Inject
-	private UserInteractionHandlerFactory userInteractionHandlerFactory;
 	private ToolboxPresenter presenter;
 
 	private static ToolboxViewImplUiBinder uiBinder = GWT.create(ToolboxViewImplUiBinder.class);
@@ -93,37 +90,25 @@ public class ToolboxViewImpl extends Composite implements ToolboxView {
 	@Override
 	public void setPresenterAndBind(ToolboxPresenter toolboxPresenter) {
 		this.presenter = toolboxPresenter;
-		bindEvents();
 	}
 
-	private void bindEvents() {
-		userInteractionHandlerFactory.applyUserClickHandler(new Command() {
+	@UiHandler("pencilButton")
+	void pencilButtonClicked(ClickEvent e) {
+		presenter.pencilClicked();
+	}
 
-			@Override
-			public void execute(NativeEvent event) {
-				presenter.pencilClicked();
-			}
-		}, pencilButton);
-		userInteractionHandlerFactory.applyUserClickHandler(new Command() {
+	@UiHandler("paletteButton")
+	void paletteButtonClicked(ClickEvent e) {
+		presenter.paletteClicked();
+	}
 
-			@Override
-			public void execute(NativeEvent event) {
-				presenter.paletteClicked();
-			}
-		}, paletteButton);
-		userInteractionHandlerFactory.applyUserClickHandler(new Command() {
+	@UiHandler("eraserButton")
+	void eraserButtonClicked(ClickEvent e) {
+		presenter.eraserClicked();
+	}
 
-			@Override
-			public void execute(NativeEvent event) {
-				presenter.eraserClicked();
-			}
-		}, eraserButton);
-		userInteractionHandlerFactory.applyUserClickHandler(new Command() {
-
-			@Override
-			public void execute(NativeEvent event) {
-				presenter.clearAllClicked();
-			}
-		}, clearAllButton);
+	@UiHandler("clearAllButton")
+	void clearAllButtonClicked(ClickEvent e) {
+		presenter.clearAllClicked();
 	}
 }

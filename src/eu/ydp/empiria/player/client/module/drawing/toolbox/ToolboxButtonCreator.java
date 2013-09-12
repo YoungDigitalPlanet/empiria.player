@@ -1,21 +1,17 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox;
 
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.view.ToolboxButton;
-import eu.ydp.gwtutil.client.event.factory.Command;
-import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class ToolboxButtonCreator {
 
 	@Inject
 	private Provider<ToolboxButton> buttonProvider;
-	@Inject
-	private UserInteractionHandlerFactory userInteractionHandlerFactory;
 	private ToolboxPresenter presenter;
 
 	public void setPresenter(ToolboxPresenter presenter) {
@@ -29,16 +25,16 @@ public class ToolboxButtonCreator {
 		return toolboxButton;
 	}
 
-	private void addClickHandler(ColorModel colorModel, IsWidget toolboxButton) {
-		Command command = createPaletteButtonClickCommand(colorModel);
-		userInteractionHandlerFactory.applyUserClickHandler(command, toolboxButton);
+	private void addClickHandler(ColorModel colorModel, ToolboxButton toolboxButton) {
+		ClickHandler handler = createPaletteButtonClickHandler(colorModel);
+		toolboxButton.addClickHandler(handler);
 	}
 
-	private Command createPaletteButtonClickCommand(final ColorModel color) {
-		return new Command() {
+	private ClickHandler createPaletteButtonClickHandler(final ColorModel color) {
+		return new ClickHandler() {
 
 			@Override
-			public void execute(NativeEvent event) {
+			public void onClick(ClickEvent event) {
 				if (presenter != null) {
 					presenter.colorClicked(color);
 				}
