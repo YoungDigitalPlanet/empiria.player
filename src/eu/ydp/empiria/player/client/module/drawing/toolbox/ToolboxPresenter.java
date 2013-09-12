@@ -22,7 +22,7 @@ public class ToolboxPresenter {
 	@Inject @ModuleScoped private ToolboxButtonCreator buttonCreator;
 	@Inject private ToolboxModelImpl model;
 	@Inject private ToolFactory toolFactory;
-	@Inject private CanvasPresenter canvasPresenter;
+	@Inject @ModuleScoped private CanvasPresenter canvasPresenter;
 	@Inject private DrawCommandFactory drawCommandFactory;
 	@Inject private PaletteColorsProvider paletteColorsProvider;
 	

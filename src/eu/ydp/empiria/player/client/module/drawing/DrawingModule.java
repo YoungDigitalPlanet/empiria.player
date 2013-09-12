@@ -25,7 +25,7 @@ public class DrawingModule extends SimpleModuleBase implements IResetable {
 	private DrawingView drawingView;
 	@Inject @ModuleScoped
 	private ToolboxPresenter toolboxPresenter;
-	@Inject
+	@Inject @ModuleScoped
 	private CanvasPresenter canvasPresenter;
 	@Inject
 	private DrawCommandFactory factory;
