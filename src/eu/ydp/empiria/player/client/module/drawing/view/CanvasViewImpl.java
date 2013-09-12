@@ -25,9 +25,9 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 	@UiField protected FlowPanel container;
 
 	private final String defaultGlobalCompositeOperation;
-	private final String destinationOutCompositeOperation = com.google.gwt.canvas.dom.client.Context2d.Composite.XOR.getValue();
+	private final String destinationOutCompositeOperation = com.google.gwt.canvas.dom.client.Context2d.Composite.DESTINATION_OUT.getValue();
 
-	private final String eraserColor = "#ff0000";
+	private final String eraserColor = "#0000ff";
 	private final int lineWidth = 4;
 	private final CanvasDragHandlers canvasDragHandlers;
 
@@ -74,7 +74,6 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 		context2d.lineTo(endPoint.getX(), endPoint.getY());
 		context2d.setStrokeStyle(eraserColor);
 		context2d.stroke();
-
 	}
 
 	@Override
