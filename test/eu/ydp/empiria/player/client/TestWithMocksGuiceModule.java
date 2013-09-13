@@ -24,9 +24,19 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.posi
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.gin.module.ModuleScopedLazyProvider;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsDelegate;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
+import eu.ydp.empiria.player.client.module.drawing.command.ClearAllDrawCommand;
+import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
+import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
+import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxButtonCreator;
+import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxView;
+import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.ToolFactory;
+import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
+import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
+import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.labelling.structure.LabellingModuleJAXBParserFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
@@ -38,6 +48,7 @@ import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.gwtutil.client.date.DateService;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.scheduler.SchedulerMockImpl;
 import eu.ydp.gwtutil.client.timer.Timer;
@@ -76,7 +87,19 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToSingletonOrMockInstance(LabellingModuleJAXBParserFactory.class);
 		bindToSingletonOrMockInstance(PageScopeFactory.class);
 		bindToSingletonOrMockInstance(StyleSocket.class);
-		
+		bindToSingletonOrMockInstance(ToolFactory.class);
+		bindToSingletonOrMockInstance(DrawCommandFactory.class);
+		bindToSingletonOrMockInstance(ModuleScopeStack.class);
+		bindToSingletonOrMockInstance(ClearAllDrawCommand.class);
+		bindToSingletonOrMockInstance(ModuleScopedLazyProvider.class);
+
+		bindToSingletonInModuleScoped(ToolboxView.class);
+		bindToSingletonInModuleScoped(ToolboxButtonCreator.class);
+		bindToSingletonInModuleScoped(CanvasPresenter.class);
+		bindToSingletonInModuleScoped(DrawingBean.class);
+		bindToSingletonInModuleScoped(DrawCanvas.class);
+		bindToSingletonInModuleScoped(CanvasView.class);
+
 		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
 		bindToClassOrMockProvider(IStickieView.class);
 		bindToClassOrMockProvider(StickiesProcessorExtension.class);

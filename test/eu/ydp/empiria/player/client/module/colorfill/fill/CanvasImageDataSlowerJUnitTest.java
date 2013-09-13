@@ -10,10 +10,8 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.ImageData;
 
 import static org.fest.assertions.api.Assertions.*;
-
 import static org.mockito.Mockito.*;
-
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 

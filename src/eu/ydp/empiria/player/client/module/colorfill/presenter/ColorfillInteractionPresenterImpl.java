@@ -13,10 +13,10 @@ import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillViewBuilder;
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionBean;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPresenter {

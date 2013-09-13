@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class PaletteButtonImpl extends Composite implements PaletteButton {
