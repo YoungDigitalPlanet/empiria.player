@@ -31,6 +31,8 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.page.PageEvent;
 import eu.ydp.empiria.player.client.util.events.page.PageEventHandler;
 import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
@@ -88,6 +90,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
 			item.setUp();
 			item.start();
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CREATED_AND_STARTED), new CurrentPageScope());
 		} catch (Exception e) {
 			item = null;
 
