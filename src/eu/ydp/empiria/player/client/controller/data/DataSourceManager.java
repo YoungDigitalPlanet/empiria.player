@@ -88,7 +88,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	/**
 	 * Zwraca wezel assessmentItemRef o wskazanym id
-	 * 
+	 *
 	 * @param index
 	 *            index wezla
 	 * @return Element lub null gdy element o podanym indeksie nie istnieje
@@ -188,8 +188,9 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 		itemDataCollectionManager.initItemDataCollection(urls.length);
 
-		if (urls.length == 0)
+		if (urls.length == 0) {
 			onItemCollectionLoaded();
+		}
 
 		for (int i = 0; i < urls.length; i++) {
 			final int ii = i;
@@ -249,8 +250,9 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	}
 
 	public QueueSet<String> getPageStyleLinksForUserAgent(PageReference ref, String userAgent) {
-		if (ref.pageIndices.length == 0)
+		if (ref.pageIndices.length == 0) {
 			return new QueueSet<String>();
+		}
 
 		return itemDataCollectionManager.getStyleLinksForUserAgent(ref.pageIndices[0], userAgent);
 	}

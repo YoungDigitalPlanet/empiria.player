@@ -9,7 +9,6 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
@@ -20,6 +19,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class TutorModule extends SimpleModuleBase {
 

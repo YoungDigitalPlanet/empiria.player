@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
@@ -14,6 +13,7 @@ import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ItemsMarkingController {
 

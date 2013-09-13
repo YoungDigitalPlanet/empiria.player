@@ -29,7 +29,6 @@ import com.google.inject.Key;
 import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
@@ -42,6 +41,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.EventScope;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
 
 @SuppressWarnings("PMD")

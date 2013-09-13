@@ -8,6 +8,9 @@ import org.mockito.Mockito;
 
 import com.google.gwt.xml.client.Element;
 
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleCreationContext;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
+
 import static org.junit.Assert.*;
 
 import static org.fest.assertions.api.Assertions.assertThat;

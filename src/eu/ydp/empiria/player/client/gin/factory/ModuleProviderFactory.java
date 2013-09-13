@@ -22,6 +22,7 @@ import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModule;
+import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
 import eu.ydp.empiria.player.client.module.flash.FlashModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
@@ -90,6 +91,7 @@ public class ModuleProviderFactory {
 	@Inject private Provider<TutorModule> tutor;
 	@Inject private Provider<ButtonModule> buttonModule;
 	@Inject private Provider<TutorApiExtension> tutorApiExtension;
+	@Inject private Provider<DrawingModule> drawingModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -257,5 +259,9 @@ public class ModuleProviderFactory {
 
 	public Provider<TutorApiExtension> getTutorApiExtension() {
 		return tutorApiExtension;
+	}
+
+	public Provider<DrawingModule> getDrawingModule() {
+		return drawingModule;
 	}
 }

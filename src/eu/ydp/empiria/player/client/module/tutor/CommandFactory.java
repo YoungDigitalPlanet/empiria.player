@@ -9,12 +9,12 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorCo
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
 import eu.ydp.empiria.player.client.gin.factory.TutorCommandsModuleFactory;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.gwtutil.client.animation.Animation;
 import eu.ydp.gwtutil.client.animation.AnimationConfig;
 import eu.ydp.gwtutil.client.animation.AnimationFactory;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
 public class CommandFactory {

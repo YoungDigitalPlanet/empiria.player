@@ -5,10 +5,10 @@ import java.util.List;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ordering.model.ItemClickAction;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ItemClickController {
 

@@ -12,9 +12,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorIdProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopeStack;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.CssStylesModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.PersonaServiceModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
@@ -37,6 +34,16 @@ import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionVi
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
+import eu.ydp.empiria.player.client.module.drawing.DrawingView;
+import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
+import eu.ydp.empiria.player.client.module.drawing.model.DrawingModelProvider;
+import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxButtonCreator;
+import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxPresenter;
+import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxView;
+import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
+import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
+import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
+import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
@@ -58,6 +65,9 @@ import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorViewImpl;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
 public class ModuleScopedModule extends AbstractGinModule{
 
@@ -75,6 +85,20 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindTutor();
 		bindMathGap();
 		bindSelection();
+		bindDrawing();
+	}
+
+	private void bindDrawing() {
+		bind(DrawingModelProvider.class).in(Singleton.class);
+		bind(DrawingBean.class).annotatedWith(ModuleScoped.class).toProvider(DrawingModelProvider.class);
+		bindModuleScoped(DrawingView.class, new TypeLiteral<ModuleScopedProvider<DrawingView>>(){});
+		bindModuleScoped(CanvasView.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>(){});
+		bindModuleScoped(DrawCanvas.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>(){});
+		bindModuleScoped(CanvasViewImpl.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>(){});
+		bindModuleScoped(ToolboxPresenter.class, new TypeLiteral<ModuleScopedProvider<ToolboxPresenter>>(){});
+		bindModuleScoped(ToolboxView.class, new TypeLiteral<ModuleScopedProvider<ToolboxView>>(){});
+		bindModuleScoped(ToolboxButtonCreator.class, new TypeLiteral<ModuleScopedProvider<ToolboxButtonCreator>>(){});
+		bindModuleScoped(CanvasPresenter.class, new TypeLiteral<ModuleScopedProvider<CanvasPresenter>>(){});
 	}
 
 	private void bindCssStyle() {

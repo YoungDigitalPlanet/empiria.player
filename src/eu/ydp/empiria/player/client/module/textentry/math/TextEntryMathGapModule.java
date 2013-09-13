@@ -13,7 +13,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.math.MathGap;
@@ -22,6 +21,7 @@ import eu.ydp.empiria.player.client.module.textentry.TextEntryGapBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap, SourcelistClient {

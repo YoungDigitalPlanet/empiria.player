@@ -29,7 +29,6 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
@@ -37,6 +36,7 @@ import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.textentry.DragContentController;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryModulePresenter;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 public class TextEntryMathGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {

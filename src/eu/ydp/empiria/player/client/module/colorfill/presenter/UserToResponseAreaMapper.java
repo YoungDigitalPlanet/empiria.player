@@ -12,12 +12,12 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.compare.AreasMapComparationResult;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.compare.AreasMapsComparator;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class UserToResponseAreaMapper {
 

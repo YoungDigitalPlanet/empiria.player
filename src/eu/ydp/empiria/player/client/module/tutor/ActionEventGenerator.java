@@ -5,8 +5,8 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeGenerator;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ActionEventGenerator {
 
