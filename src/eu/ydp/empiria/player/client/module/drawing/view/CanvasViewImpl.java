@@ -8,10 +8,11 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
@@ -25,9 +26,9 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 	@UiField protected FlowPanel container;
 
 	private final String defaultGlobalCompositeOperation;
-	private final String destinationOutCompositeOperation = com.google.gwt.canvas.dom.client.Context2d.Composite.XOR.getValue();
+	private final String destinationOutCompositeOperation = com.google.gwt.canvas.dom.client.Context2d.Composite.DESTINATION_OUT.getValue();
 
-	private final String eraserColor = "#ff0000";
+	private final String eraserColor = "#000000ff";
 	private final int lineWidth = 4;
 	private final CanvasDragHandlers canvasDragHandlers;
 
@@ -74,7 +75,6 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 		context2d.lineTo(endPoint.getX(), endPoint.getY());
 		context2d.setStrokeStyle(eraserColor);
 		context2d.stroke();
-
 	}
 
 	@Override
@@ -92,8 +92,13 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 	public void setSize(Size size) {
 		canvas.setCoordinateSpaceHeight(size.getHeight());
 		canvas.setCoordinateSpaceWidth(size.getWidth());
-		canvas.setWidth(size.getWidth() + "px");
-		canvas.setHeight(size.getHeight() + "px");
+		applySize(canvas, size);
+		applySize(container, size);
+	}
+
+	private void applySize(UIObject uiObject, Size size) {
+		uiObject.setWidth(size.getWidth() + "px");
+		uiObject.setHeight(size.getHeight() + "px");
 	}
 
 	@Override

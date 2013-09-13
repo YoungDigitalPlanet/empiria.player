@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.drawing.model.ColorBean;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class PaletteColorsProvider {

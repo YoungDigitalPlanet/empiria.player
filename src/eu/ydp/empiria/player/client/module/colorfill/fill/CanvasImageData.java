@@ -4,7 +4,7 @@ import com.google.gwt.canvas.dom.client.CanvasPixelArray;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.ImageData;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 @SuppressWarnings("PMD")
 public class CanvasImageData implements ICanvasImageData{

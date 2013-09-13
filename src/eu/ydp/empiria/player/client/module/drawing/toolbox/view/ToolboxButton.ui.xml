@@ -3,5 +3,5 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:eu.ydp.gwtutil.client.ui.button">
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants"
 		field="res" />
-	<b:CustomPushButton ui:field="button" styleName="{res.QP_DRAW_TOOLBOX_BUTTON}"  />
+	<b:CustomPushButton ui:field="button" styleName="{res.QP_DRAWING_TOOLBOX_BUTTON}"  />
 </ui:UiBinder> 

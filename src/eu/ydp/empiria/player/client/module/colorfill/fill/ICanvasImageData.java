@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.colorfill.fill;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public interface ICanvasImageData {
 

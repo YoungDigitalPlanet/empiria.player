@@ -13,10 +13,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
 import eu.ydp.empiria.player.client.module.colorfill.view.mark.AnswersMarkingPanel;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public class ColorfillViewImpl implements ColorfillInteractionView {
 

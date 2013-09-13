@@ -13,10 +13,10 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.compare.AreasMapsComparator;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 
 public class UserToResponseAreaMapperJUnitTest {

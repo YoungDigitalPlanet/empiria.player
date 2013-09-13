@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.fest.assertions.api.Assertions.*;
-import eu.ydp.empiria.player.client.color.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 
 public class ColorButtonsControllerTest {

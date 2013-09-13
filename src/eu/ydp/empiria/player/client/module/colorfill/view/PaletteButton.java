@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.colorfill.view;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
-import eu.ydp.empiria.player.client.color.ColorModel;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public interface PaletteButton extends IsWidget {
 

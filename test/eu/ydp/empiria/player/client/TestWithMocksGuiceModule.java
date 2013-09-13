@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxButtonCreator;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxView;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.ToolFactory;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
+import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.labelling.structure.LabellingModuleJAXBParserFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
@@ -86,17 +87,19 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToSingletonOrMockInstance(LabellingModuleJAXBParserFactory.class);
 		bindToSingletonOrMockInstance(PageScopeFactory.class);
 		bindToSingletonOrMockInstance(StyleSocket.class);
-		bindToSingletonInModuleScoped(ToolboxView.class);
-		bindToSingletonInModuleScoped(ToolboxButtonCreator.class);
 		bindToSingletonOrMockInstance(ToolFactory.class);
-		bindToSingletonOrMockInstance(CanvasPresenter.class);
 		bindToSingletonOrMockInstance(DrawCommandFactory.class);
 		bindToSingletonOrMockInstance(ModuleScopeStack.class);
 		bindToSingletonOrMockInstance(ClearAllDrawCommand.class);
 		bindToSingletonOrMockInstance(ModuleScopedLazyProvider.class);
+
+		bindToSingletonInModuleScoped(ToolboxView.class);
+		bindToSingletonInModuleScoped(ToolboxButtonCreator.class);
+		bindToSingletonInModuleScoped(CanvasPresenter.class);
 		bindToSingletonInModuleScoped(DrawingBean.class);
 		bindToSingletonInModuleScoped(DrawCanvas.class);
-		
+		bindToSingletonInModuleScoped(CanvasView.class);
+
 		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
 		bindToClassOrMockProvider(IStickieView.class);
 		bindToClassOrMockProvider(StickiesProcessorExtension.class);

@@ -1,5 +1,4 @@
-package eu.ydp.empiria.player.client.color;
-
+package eu.ydp.empiria.player.client.module.model.color;
 
 public class ColorModel {
 
