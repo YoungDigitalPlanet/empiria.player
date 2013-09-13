@@ -28,7 +28,7 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 	private final String defaultGlobalCompositeOperation;
 	private final String destinationOutCompositeOperation = com.google.gwt.canvas.dom.client.Context2d.Composite.DESTINATION_OUT.getValue();
 
-	private final String eraserColor = "#0000ff";
+	private final String eraserColor = "#000000ff";
 	private final int lineWidth = 4;
 	private final CanvasDragHandlers canvasDragHandlers;
 
