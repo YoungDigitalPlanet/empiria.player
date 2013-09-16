@@ -21,7 +21,7 @@ public class PlayerCoreApiExtension extends
 	private EventsBus eventsBus;
 
 	@Inject
-	FlowDataSupplier flowDataSupplier;
+	private FlowDataSupplier flowDataSupplier;
 	
 	private JavaScriptObject playerJsObject;
 	private DeliveryEngineSocket deliveryEngineSocket;
