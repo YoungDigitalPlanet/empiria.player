@@ -31,7 +31,7 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	}
 
 	private boolean isPageAllOkFirstTime() {
-		throw new UnsupportedOperationException();
+		return false;
 	}
 
 	private void setPageAllOkCompleted() {

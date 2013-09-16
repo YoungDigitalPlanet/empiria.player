@@ -6,6 +6,6 @@ public class BonusService {
 	}
 	
 	public BonusConfig getBonusConfig(String bonusId){
-		throw new UnsupportedOperationException();
+		return null;
 	}
 }
