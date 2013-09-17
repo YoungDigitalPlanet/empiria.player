@@ -14,17 +14,18 @@ public class DrawingModelProvider implements Provider<DrawingBean> {
 
 	@Inject private DrawingModuleJAXBParserFactory jaxbFactory;
 	@Inject @ModuleScoped Provider<Element> elementProvider;
-	private final Map<Element, DrawingBean> cache = Maps.newHashMap();
+	private final Map<String, DrawingBean> cache = Maps.newHashMap();
 
 	@Override
 	public DrawingBean get() {
 		Element element = elementProvider.get();
-		if (!cache.containsKey(element)) {
+		String stringElement = element.toString();
+		if (!cache.containsKey(stringElement)) {
 			JAXBParser<DrawingBean> parser = jaxbFactory.create();
-			DrawingBean bean = parser.parse(element.toString());
-			cache.put(element, bean);
+			DrawingBean bean = parser.parse(stringElement);
+			cache.put(stringElement, bean);
 		}
-		return cache.get(element);
+		return cache.get(stringElement);
 	}
 
 }
