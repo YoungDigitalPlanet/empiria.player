@@ -19,9 +19,12 @@ import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.module.media.button.MediaControllerWrapper;
 import eu.ydp.empiria.player.client.module.media.button.VideoFullScreenMediaButton;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
+import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ObjectTemplateParser<T extends Widget> extends AbstractTemplateParser {
+	
+	private static final Logger LOGGER = new Logger();
 	protected static final Set<String> CONTROLLERS = new HashSet<String>();
 	protected MediaWrapper<?> mediaWrapper;
 	protected MediaWrapper<?> fullScreenMediaWrapper;
@@ -68,7 +71,16 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 	@Override
 	public void beforeParse(Node mainNode, Widget parent) {
 		// kompatybilnosc wsteczna z szablonami bez media_screen
-		if (!isModuleInTemplate(ModuleTagName.MEDIA_SCREEN.tagName()) && parent instanceof HasWidgets) {
+		if(fullScreen && !isModuleInTemplate(ModuleTagName.MEDIA_SCREEN.tagName())) {
+			Widget parentWrapper = parent.getParent();
+			if(parentWrapper instanceof FlowPanel) {
+				FlowPanel parentPanel = (FlowPanel) parentWrapper;
+				parentPanel.add(getMediaObject());
+			} else {
+				LOGGER.warning("Cannot attach mediaScreen to: "+parentWrapper.getClass().getName());
+			}
+		} else 
+			if (!isModuleInTemplate(ModuleTagName.MEDIA_SCREEN.tagName()) && parent instanceof HasWidgets) {
 			((HasWidgets) parent).add(getMediaObject());
 		}
 	}
