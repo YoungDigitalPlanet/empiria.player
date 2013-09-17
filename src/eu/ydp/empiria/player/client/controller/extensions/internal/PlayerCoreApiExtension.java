@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
+import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class PlayerCoreApiExtension extends
@@ -18,13 +19,16 @@ public class PlayerCoreApiExtension extends
 
 	@Inject
 	private EventsBus eventsBus;
+
+	@Inject
+	private FlowDataSupplier flowDataSupplier;
 	
 	private JavaScriptObject playerJsObject;
 	private DeliveryEngineSocket deliveryEngineSocket;
 	
 	@Override
 	public void init() {
-		initExportStateStringJs(playerJsObject);
+		initApiJs(playerJsObject);
 	}
 
 	@Override
@@ -93,11 +97,19 @@ public class PlayerCoreApiExtension extends
 		return deliveryEngineSocket.getStateString();
 	}
 
-	private native void initExportStateStringJs(JavaScriptObject playerJsObject)/*-{
+	private int exportItemIndex(){
+		return flowDataSupplier.getCurrentPageIndex();
+	}
+	
+	private native void initApiJs(JavaScriptObject playerJsObject)/*-{
 		var instance = this;
 		playerJsObject.exportStateString = function(){
 			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension::exportState()();
+		}		
+		playerJsObject.exportItemIndex = function(){
+			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension::exportItemIndex()();
 		}
+		
 	}-*/;
 	
 	private void importInitialItemIndex(){
