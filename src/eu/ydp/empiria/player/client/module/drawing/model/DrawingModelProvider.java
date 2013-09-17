@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.drawing.model;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -10,16 +13,18 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 public class DrawingModelProvider implements Provider<DrawingBean> {
 
 	@Inject private DrawingModuleJAXBParserFactory jaxbFactory;
-	@Inject @ModuleScoped Provider<Element> xmlProvider;
-	private DrawingBean bean;
+	@Inject @ModuleScoped Provider<Element> elementProvider;
+	private final Map<Element, DrawingBean> cache = Maps.newHashMap();
 
 	@Override
 	public DrawingBean get() {
-		if (bean == null) {
+		Element element = elementProvider.get();
+		if (!cache.containsKey(element)) {
 			JAXBParser<DrawingBean> parser = jaxbFactory.create();
-			bean = parser.parse(xmlProvider.get().toString());
+			DrawingBean bean = parser.parse(element.toString());
+			cache.put(element, bean);
 		}
-		return bean;
+		return cache.get(element);
 	}
 
 }
