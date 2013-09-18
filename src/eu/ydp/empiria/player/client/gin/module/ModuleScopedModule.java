@@ -90,7 +90,8 @@ public class ModuleScopedModule extends AbstractGinModule{
 	}
 
 	private void bindDrawing() {
-		bindModuleScoped(DrawingBean.class, new TypeLiteral<DrawingModelProvider>(){});
+		bindModuleScoped(DrawingBean.class, new TypeLiteral<ModuleScopedProvider<DrawingBean>>(){});
+		bind(DrawingBean.class).toProvider(DrawingModelProvider.class);
 		bindModuleScoped(DrawingView.class, new TypeLiteral<ModuleScopedProvider<DrawingView>>(){});
 		bindModuleScoped(CanvasView.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>(){});
 		bindModuleScoped(DrawCanvas.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>(){});
