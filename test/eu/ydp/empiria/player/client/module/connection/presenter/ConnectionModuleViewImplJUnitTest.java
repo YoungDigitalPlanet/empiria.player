@@ -10,7 +10,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.AfterClass;
@@ -28,6 +31,7 @@ import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwt.query.client.css.WidthProperty;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -43,11 +47,15 @@ import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionSurfacesManagerFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
+import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
+import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
+import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceStyleHelper;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructureMock;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
+import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
@@ -63,7 +71,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 //@SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest(value={  CssHelper.class, NodeList.class, Node.class, Style.class,NativeEvent.class })
+@PrepareForTest(value = { CssHelper.class, NodeList.class, Node.class, Style.class, NativeEvent.class })
 public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private class CustomGinModule implements Module {
@@ -79,6 +87,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 			binder.bind(CssHelper.class).toInstance(createCssHelperMock());
 			binder.bind(ConnectionView.class).toInstance(createConnectionViewMock());
 
+			binder.bind(ConnectionSurfaceStyleHelper.class).toInstance(mock(ConnectionSurfaceStyleHelper.class));
 		}
 
 		private ConnectionView createConnectionViewMock() {
@@ -323,6 +332,103 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		verify(item2, times(2)).reset();
 		verify(item1, times(1)).reset();
 
+	}
+
+	@Test
+	public void prepareAndAddStyleToSurfaceTest_startIsLeft() {
+		// given
+		ConnectionModuleViewImpl spyView = spy(instance);
+
+		ConnectionSurfaceStyleHelper styleHelper = injector.getInstance(ConnectionSurfaceStyleHelper.class);
+		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.NORMAL;
+
+		connectionItems.addItemToLeftColumn(mock(PairChoiceBean.class));
+		connectionItems.addItemToRightColumn(mock(PairChoiceBean.class));
+
+		ConnectionItem leftItem = getFirstLeftItem();
+		ConnectionItem rightItem = getFirstRightItem();
+
+		MultiplePairBean<SimpleAssociableChoiceBean> modelInterface = mock(MatchInteractionBean.class);
+
+		int leftIndex = 0;
+		int rightIndex = 1;
+
+		when(modelInterface.isLeftItem(leftItem.getBean())).thenReturn(true);
+		when(modelInterface.getLeftItemIndex(leftItem.getBean())).thenReturn(leftIndex);
+		when(modelInterface.getRightItemIndex(rightItem.getBean())).thenReturn(rightIndex);
+
+		spyView.setBean(modelInterface);
+
+		List<String> styles = Arrays.asList("qp-connection-line-0-1");
+		when(styleHelper.getStylesForSurface(type, leftIndex, rightIndex)).thenReturn(styles);
+
+		Widget widget = mockSurfaceWidget(spyView);
+
+		// when
+		spyView.connect(leftItem, rightItem, type, false);
+
+		// then
+		verify(styleHelper).getStylesForSurface(eq(type), eq(leftIndex), eq(rightIndex));
+		verify(widget).addStyleName("qp-connection-line-0-1");
+	}
+
+	@Test
+	public void prepareAndAddStyleToSurfaceTest_startIsNotLeft() {
+		// given
+		ConnectionModuleViewImpl spyView = spy(instance);
+
+		ConnectionSurfaceStyleHelper styleHelper = injector.getInstance(ConnectionSurfaceStyleHelper.class);
+		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.NORMAL;
+
+		connectionItems.addItemToLeftColumn(mock(PairChoiceBean.class));
+		connectionItems.addItemToRightColumn(mock(PairChoiceBean.class));
+
+		ConnectionItem leftItem = getFirstLeftItem();
+		ConnectionItem rightItem = getFirstRightItem();
+
+		MultiplePairBean<SimpleAssociableChoiceBean> modelInterface = mock(MatchInteractionBean.class);
+
+		int leftIndex = 1;
+		int rightIndex = 0;
+
+		when(modelInterface.isLeftItem(leftItem.getBean())).thenReturn(false);
+		when(modelInterface.getLeftItemIndex(leftItem.getBean())).thenReturn(leftIndex);
+		when(modelInterface.getRightItemIndex(rightItem.getBean())).thenReturn(rightIndex);
+
+		spyView.setBean(modelInterface);
+
+		List<String> styles = Arrays.asList("qp-connection-line-1-0");
+		when(styleHelper.getStylesForSurface(type, leftIndex, rightIndex)).thenReturn(styles);
+
+		Widget widget = mockSurfaceWidget(spyView);
+
+		// when
+		spyView.connect(leftItem, rightItem, type, false);
+
+		// then
+		verify(styleHelper).getStylesForSurface(eq(type), eq(leftIndex), eq(rightIndex));
+		verify(widget).addStyleName("qp-connection-line-1-0");
+	}
+
+	private Widget mockSurfaceWidget(ConnectionModuleViewImpl spyView) {
+		ConnectionSurface surface = mock(ConnectionSurface.class);
+		Widget widget = mock(Widget.class);
+		when(surface.asWidget()).thenReturn(widget);
+		doReturn(surface).when(spyView).getCurrentSurface();
+		return widget;
+	}
+
+	private ConnectionItem getFirstRightItem() {
+		return getFirstItem(connectionItems.getRightItems());
+	}
+
+	private ConnectionItem getFirstLeftItem() {
+		return getFirstItem(connectionItems.getLeftItems());
+	}
+
+	private ConnectionItem getFirstItem(Collection<ConnectionItem> items) {
+		ConnectionItem item = (ConnectionItem) items.toArray()[0];
+		return item;
 	}
 
 	@Test

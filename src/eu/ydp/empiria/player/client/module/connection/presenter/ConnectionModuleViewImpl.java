@@ -1,8 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.*;
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NORMAL;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +21,7 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairM
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
+import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceStyleHelper;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsDelegate;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
@@ -79,6 +81,9 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	@Inject
 	private ConnectionStyleChecker connectionStyleChacker;
 
+	@Inject
+	private ConnectionSurfaceStyleHelper surfaceStyleHelper;
+
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
 	private final ConnectionPairEntry<ConnectionItem, ConnectionItem> connectionItemPair = new ConnectionPairEntry<ConnectionItem, ConnectionItem>();
@@ -113,9 +118,9 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	protected void connect(ConnectionItem source, ConnectionItem target, MultiplePairModuleConnectType type, boolean userAction) {
 		startDrawLine(source, type);
-		
 		drawLine(source, target.getRelativeX(), target.getRelativeY());
 		connectItems(source, target, type, userAction);
+		prepareAndAddStyleToSurface(source, target, type);
 	}
 
 	@Override
@@ -333,10 +338,10 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private void addSurfaceWidget(ConnectionItem item) {
 		int offsetLeft = surfacePositionFinder.findOffsetLeft(connectionItems);
 		int offsetTop = surfacePositionFinder.findTopOffset(connectionItems);
-		
+
 		currentSurface.setOffsetLeft(offsetLeft);
 		currentSurface.setOffsetTop(offsetTop);
-		
+
 		view.addElementToMainView(currentSurface);
 	}
 
@@ -360,6 +365,36 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			connectionSurfacesManager.putSurface(connectionPair, currentSurface);
 			connectionEventHandler.fireConnectEvent(PairConnectEventTypes.CONNECTED, getIdentifier(sourceItem), getIdentifier(targetItem), userAction);
 		}
+	}
+
+	private void prepareAndAddStyleToSurface(ConnectionItem sourceItem, ConnectionItem targetItem, MultiplePairModuleConnectType type) {
+		ConnectionItem startItem = targetItem;
+		ConnectionItem enditem = sourceItem;
+
+		boolean startIsLeft = modelInterface.isLeftItem(startItem.getBean());
+		int leftIndex;
+		int rightIndex;
+
+		if (startIsLeft) {
+			leftIndex = modelInterface.getLeftItemIndex(startItem.getBean());
+			rightIndex = modelInterface.getRightItemIndex(enditem.getBean());
+		} else {
+			leftIndex = modelInterface.getLeftItemIndex(enditem.getBean());
+			rightIndex = modelInterface.getRightItemIndex(startItem.getBean());
+		}
+
+		List<String> stylesToAdd = surfaceStyleHelper.getStylesForSurface(type, leftIndex, rightIndex);
+		addStylesToSurface(stylesToAdd);
+	}
+
+	protected void addStylesToSurface(List<String> styles) {
+		for (String style : styles) {
+			getCurrentSurface().asWidget().addStyleName(style);
+		}
+	}
+
+	public ConnectionSurface getCurrentSurface() {
+		return currentSurface;
 	}
 
 	@Override
