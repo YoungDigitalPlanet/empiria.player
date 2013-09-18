@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.gin.module;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Key;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
@@ -89,8 +90,8 @@ public class ModuleScopedModule extends AbstractGinModule{
 	}
 
 	private void bindDrawing() {
-		bind(DrawingModelProvider.class).in(Singleton.class);
-		bind(DrawingBean.class).annotatedWith(ModuleScoped.class).toProvider(DrawingModelProvider.class);
+		bindModuleScoped(DrawingBean.class, new TypeLiteral<ModuleScopedProvider<DrawingBean>>(){});
+		bind(DrawingBean.class).toProvider(DrawingModelProvider.class);
 		bindModuleScoped(DrawingView.class, new TypeLiteral<ModuleScopedProvider<DrawingView>>(){});
 		bindModuleScoped(CanvasView.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>(){});
 		bindModuleScoped(DrawCanvas.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>(){});
@@ -167,7 +168,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(MathGapModel.class, new TypeLiteral<ModuleScopedProvider<MathGapModel>>(){});
 	}
 
-	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
+	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<? extends Provider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)
 			.annotatedWith(ModuleScoped.class)

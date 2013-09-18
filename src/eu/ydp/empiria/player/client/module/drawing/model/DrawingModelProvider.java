@@ -10,16 +10,13 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 public class DrawingModelProvider implements Provider<DrawingBean> {
 
 	@Inject private DrawingModuleJAXBParserFactory jaxbFactory;
-	@Inject @ModuleScoped Provider<Element> xmlProvider;
-	private DrawingBean bean;
+	@Inject @ModuleScoped Provider<Element> elementProvider;
 
 	@Override
 	public DrawingBean get() {
-		if (bean == null) {
-			JAXBParser<DrawingBean> parser = jaxbFactory.create();
-			bean = parser.parse(xmlProvider.get().toString());
-		}
-		return bean;
+		Element element = elementProvider.get();
+		JAXBParser<DrawingBean> parser = jaxbFactory.create();
+		return parser.parse(element.toString());
 	}
 
 }
