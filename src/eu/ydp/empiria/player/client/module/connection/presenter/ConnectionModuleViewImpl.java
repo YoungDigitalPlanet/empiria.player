@@ -120,7 +120,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		startDrawLine(source, type);
 		drawLine(source, target.getRelativeX(), target.getRelativeY());
 		connectItems(source, target, type, userAction);
-		prepareAndAddStyleToSurface(source, target, type);
 	}
 
 	@Override
@@ -257,7 +256,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		}
 		clearSurface(connectionStartItem);
 	}
-
+	
 	private void updatePointPosition(ConnectionMoveEvent event) {
 		lastPoint.setSource(event.getX());
 		lastPoint.setTarget(event.getY());
@@ -364,6 +363,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			targetItem.setConnected(true, type);
 			connectionSurfacesManager.putSurface(connectionPair, currentSurface);
 			connectionEventHandler.fireConnectEvent(PairConnectEventTypes.CONNECTED, getIdentifier(sourceItem), getIdentifier(targetItem), userAction);
+			
+			prepareAndAddStyleToSurface(sourceItem, targetItem, type);
 		}
 	}
 
