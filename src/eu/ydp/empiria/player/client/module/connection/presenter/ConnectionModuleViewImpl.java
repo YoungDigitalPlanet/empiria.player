@@ -79,10 +79,10 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private SurfacePositionFinder surfacePositionFinder;
 
 	@Inject
-	private ConnectionStyleChecker connectionStyleChacker;
+	private ConnectionStyleChecker connectionStyleChecker;
 
 	@Inject
-	private ConnectionSurfaceStyleProvider surfaceStyleHelper;
+	private ConnectionSurfaceStyleProvider surfaceStyleProvider;
 
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
@@ -175,7 +175,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void addCheckStyleHandler() {
-		view.asWidget().addAttachHandler(new ConnectionStyleCheckerHandler(view, connectionStyleChacker));
+		view.asWidget().addAttachHandler(new ConnectionStyleCheckerHandler(view, connectionStyleChecker));
 	}
 
 	private void initColumns() {
@@ -380,7 +380,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			rightIndex = modelInterface.getRightItemIndex(startItem.getBean());
 		}
 
-		List<String> stylesToAdd = surfaceStyleHelper.getStylesForSurface(type, leftIndex, rightIndex);
+		List<String> stylesToAdd = surfaceStyleProvider.getStylesForSurface(type, leftIndex, rightIndex);
 		addStylesToSurface(stylesToAdd);
 	}
 

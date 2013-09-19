@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.connection;
 
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
@@ -17,24 +18,23 @@ public class ConnectionSurfaceStyleProvider {
 
 		Preconditions.checkArgument(leftIndex >= 0 && rightIndex >= 0, "Index of item could not be negative");
 
-		List<String> styles = Lists.newArrayList();
-		styles.add(getStyleForNormalSurface(leftIndex, rightIndex));
+		String normalStyle = getStyleForNormalSurface(leftIndex, rightIndex);
+		List<String> styles = Lists.newArrayList( normalStyle );
 
-		String additionalStyle = getAdditionalStyle(type, leftIndex, rightIndex);
-
-		if (additionalStyle != null) {
-			styles.add(additionalStyle);
+		Optional<String> additionalStyle = getAdditionalStyle(type, leftIndex, rightIndex);
+		if (additionalStyle.isPresent()) {
+			styles.add(additionalStyle.get());
 		}
 		return styles;
 	}
 
-	private String getAdditionalStyle(MultiplePairModuleConnectType type, int leftIndex, int rightIndex) {
-		String additionalStyle = null;
+	private Optional<String> getAdditionalStyle(MultiplePairModuleConnectType type, int leftIndex, int rightIndex) {
+		Optional<String> additionalStyle = Optional.absent();
 
 		if (type == MultiplePairModuleConnectType.CORRECT) {
-			additionalStyle = getStyleForCorrectSurface(leftIndex, rightIndex);
+			additionalStyle = Optional.of(getStyleForCorrectSurface(leftIndex, rightIndex));
 		} else if (type == MultiplePairModuleConnectType.WRONG) {
-			additionalStyle = getStyleForWrongSurface(leftIndex, rightIndex);
+			additionalStyle = Optional.of(getStyleForWrongSurface(leftIndex, rightIndex));
 		}
 		return additionalStyle;
 	}
