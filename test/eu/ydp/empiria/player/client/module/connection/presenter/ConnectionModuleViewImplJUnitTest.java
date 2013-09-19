@@ -50,7 +50,7 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairM
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
-import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceStyleHelper;
+import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceStyleProvider;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructureMock;
@@ -87,7 +87,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 			binder.bind(CssHelper.class).toInstance(createCssHelperMock());
 			binder.bind(ConnectionView.class).toInstance(createConnectionViewMock());
 
-			binder.bind(ConnectionSurfaceStyleHelper.class).toInstance(mock(ConnectionSurfaceStyleHelper.class));
+			binder.bind(ConnectionSurfaceStyleProvider.class).toInstance(mock(ConnectionSurfaceStyleProvider.class));
 		}
 
 		private ConnectionView createConnectionViewMock() {
@@ -339,7 +339,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		// given
 		ConnectionModuleViewImpl spyView = spy(instance);
 
-		ConnectionSurfaceStyleHelper styleHelper = injector.getInstance(ConnectionSurfaceStyleHelper.class);
+		ConnectionSurfaceStyleProvider styleHelper = injector.getInstance(ConnectionSurfaceStyleProvider.class);
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.NORMAL;
 
 		connectionItems.addItemToLeftColumn(mock(PairChoiceBean.class));
@@ -377,7 +377,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		// given
 		ConnectionModuleViewImpl spyView = spy(instance);
 
-		ConnectionSurfaceStyleHelper styleHelper = injector.getInstance(ConnectionSurfaceStyleHelper.class);
+		ConnectionSurfaceStyleProvider styleHelper = injector.getInstance(ConnectionSurfaceStyleProvider.class);
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.NORMAL;
 
 		connectionItems.addItemToLeftColumn(mock(PairChoiceBean.class));

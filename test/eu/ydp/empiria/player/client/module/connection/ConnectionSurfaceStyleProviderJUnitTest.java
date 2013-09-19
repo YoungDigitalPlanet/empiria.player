@@ -14,13 +14,13 @@ import org.junit.runner.RunWith;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 
 @RunWith(JUnitParamsRunner.class)
-public class ConnectionSurfaceStyleHelperJUnitTest {
+public class ConnectionSurfaceStyleProviderJUnitTest {
 
-	private ConnectionSurfaceStyleHelper helper;
+	private ConnectionSurfaceStyleProvider provider;
 
 	@Before
 	public void setUp() {
-		helper = new ConnectionSurfaceStyleHelper();
+		provider = new ConnectionSurfaceStyleProvider();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -34,7 +34,7 @@ public class ConnectionSurfaceStyleHelperJUnitTest {
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.NORMAL;
 
 		// when
-		List<String> styles = helper.getStylesForSurface(type, leftIndex, rightIndex);
+		List<String> styles = provider.getStylesForSurface(type, leftIndex, rightIndex);
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class ConnectionSurfaceStyleHelperJUnitTest {
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.NORMAL;
 
 		// when
-		List<String> styles = helper.getStylesForSurface(type, leftIndex, rightIndex);
+		List<String> styles = provider.getStylesForSurface(type, leftIndex, rightIndex);
 
 		// then
 		assertEquals(styles.size(), 1);
@@ -65,7 +65,7 @@ public class ConnectionSurfaceStyleHelperJUnitTest {
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.CORRECT;
 
 		// when
-		List<String> styles = helper.getStylesForSurface(type, leftIndex, rightIndex);
+		List<String> styles = provider.getStylesForSurface(type, leftIndex, rightIndex);
 
 		// then
 		assertEquals(styles.size(), 2);
@@ -84,7 +84,7 @@ public class ConnectionSurfaceStyleHelperJUnitTest {
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.WRONG;
 
 		// when
-		List<String> styles = helper.getStylesForSurface(type, leftIndex, rightIndex);
+		List<String> styles = provider.getStylesForSurface(type, leftIndex, rightIndex);
 
 		// then
 		assertEquals(styles.size(), 2);

@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairM
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
-import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceStyleHelper;
+import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceStyleProvider;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsDelegate;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
@@ -82,7 +82,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private ConnectionStyleChecker connectionStyleChacker;
 
 	@Inject
-	private ConnectionSurfaceStyleHelper surfaceStyleHelper;
+	private ConnectionSurfaceStyleProvider surfaceStyleHelper;
 
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
@@ -367,10 +367,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		}
 	}
 
-	private void prepareAndAddStyleToSurface(ConnectionItem sourceItem, ConnectionItem targetItem, MultiplePairModuleConnectType type) {
-		ConnectionItem startItem = targetItem;
-		ConnectionItem enditem = sourceItem;
-
+	private void prepareAndAddStyleToSurface(ConnectionItem enditem, ConnectionItem startItem, MultiplePairModuleConnectType type) {
 		boolean startIsLeft = modelInterface.isLeftItem(startItem.getBean());
 		int leftIndex;
 		int rightIndex;

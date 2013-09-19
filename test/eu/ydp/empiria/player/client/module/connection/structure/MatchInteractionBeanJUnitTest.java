@@ -8,9 +8,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-
-import java.util.Collection;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -19,8 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
-import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
-import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 
 @RunWith(JUnitParamsRunner.class)
 public class MatchInteractionBeanJUnitTest extends AbstractJAXBTestBase<MatchInteractionBean> {
@@ -33,7 +28,7 @@ public class MatchInteractionBeanJUnitTest extends AbstractJAXBTestBase<MatchInt
 	}
 
 	@Test
-	public void shouldReturnMartchInteraction() {
+	public void shouldReturnMatchInteraction() {
 
 		assertThat(bean.getId(), is(equalTo("dummy1")));
 		assertThat(bean.isShuffle(), is(equalTo(true)));
