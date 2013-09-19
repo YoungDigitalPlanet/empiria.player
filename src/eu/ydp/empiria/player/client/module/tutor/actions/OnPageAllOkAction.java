@@ -12,9 +12,7 @@ public class OnPageAllOkAction implements OutcomeDrivenAction {
 	
 	@Override
 	public boolean actionOccured() {
-		int todo = outcomeAccessor.getCurrentPageTodo();
-		int done = outcomeAccessor.getCurrentPageDone();
-		return todo > 0  &&  todo == done;
+		return outcomeAccessor.isPageAllOk();
 	}
 
 	@Override
