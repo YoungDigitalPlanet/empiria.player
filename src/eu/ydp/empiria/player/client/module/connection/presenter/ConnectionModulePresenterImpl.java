@@ -264,13 +264,14 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	private void connectOrDisconnectByMarkMode(boolean markMode, MultiplePairModuleConnectType type,
 			KeyValue<String, String> answersPair) {
+		
+		moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
+
 		if (markMode) {
-			moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
 			moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
 			// TODO: jesli dana pozycja nie jest zaznaczona wcale to
 			// wyslac MultiplePairModuleConnectType.NONE ??
 		} else {
-			moduleView.disconnect(answersPair.getKey(), answersPair.getValue());
 			moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL); 
 		}
 	}
