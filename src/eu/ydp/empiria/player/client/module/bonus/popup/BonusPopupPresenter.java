@@ -12,9 +12,10 @@ public class BonusPopupPresenter {
 
 	@Inject
 	private BonusPopupView view;
-	private Optional<EndHandler> lastEndHandler;
+	private Optional<EndHandler> lastEndHandler = Optional.absent();
 	
 	public void showImage(String url, Size size){
+		lastEndHandler = Optional.absent();
 		view.showImage(url, size);
 		view.attachToRoot();
 	}
@@ -32,6 +33,7 @@ public class BonusPopupPresenter {
 		
 		if(lastEndHandler.isPresent()) {
 			lastEndHandler.get().onEnd();
+			lastEndHandler = Optional.absent();
 		}
 	}
 }
