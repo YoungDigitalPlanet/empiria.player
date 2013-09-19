@@ -6,7 +6,7 @@ public class PowerFeedbackMediator {
 
 	}
 
-	public void registerBonus(PowerFeedbackClient client) {
+	public void registerBonus(PowerFeedbackBonusClient client) {
 
 	}
 
