@@ -19,7 +19,6 @@ import eu.ydp.empiria.player.client.gin.scopes.module.providers.TutorConfigModul
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.WithCacheCssStylesModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
 import eu.ydp.empiria.player.client.module.bonus.BonusProvider;
-import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
 import eu.ydp.empiria.player.client.module.choice.providers.MultiChoiceStyleProvider;
@@ -174,7 +173,6 @@ public class ModuleScopedModule extends AbstractGinModule{
 	private void bindBonus() {
 		bindModuleScoped(PowerFeedbackMediator.class, new TypeLiteral<ModuleScopedProvider<PowerFeedbackMediator>>(){});
 		bindModuleScoped(BonusProvider.class, new TypeLiteral<ModuleScopedProvider<BonusProvider>>(){});
-		bindModuleScoped(BonusPopupPresenter.class, new TypeLiteral<ModuleScopedProvider<BonusPopupPresenter>>(){});
 	}
 	
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
