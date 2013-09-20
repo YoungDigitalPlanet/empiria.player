@@ -3,7 +3,8 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
 	<g:FlowPanel ui:field="container" styleName="{res.QP_BONUS}">
-		<g:FlowPanel ui:field="closableWrapper" styleName="{res.QP_BONUS_CLOSABLE_WRAPPER}"
+		<g:FlowPanel ui:field="closableWrapper" styleName="{res.QP_BONUS_CLOSABLE_WRAPPER}">
 			<g:FlowPanel ui:field="content" styleName="{res.QP_BONUS_CONTENT}" />
+		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

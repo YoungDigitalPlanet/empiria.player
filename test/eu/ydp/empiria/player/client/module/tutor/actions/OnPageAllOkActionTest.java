@@ -24,8 +24,7 @@ public class OnPageAllOkActionTest {
 	@Test
 	public void actionOccured(){
 		// given
-		when(accessor.getCurrentPageTodo()).thenReturn(5);
-		when(accessor.getCurrentPageDone()).thenReturn(5);
+		when(accessor.isPageAllOk()).thenReturn(true);
 		
 		// when
 		boolean occured = action.actionOccured();
@@ -37,8 +36,7 @@ public class OnPageAllOkActionTest {
 	@Test
 	public void actionNotOccured(){
 		// given
-		when(accessor.getCurrentPageTodo()).thenReturn(5);
-		when(accessor.getCurrentPageDone()).thenReturn(3);
+		when(accessor.isPageAllOk()).thenReturn(false);
 		
 		// when
 		boolean occured = action.actionOccured();
@@ -50,8 +48,7 @@ public class OnPageAllOkActionTest {
 	@Test
 	public void actionNotOccured_noActivities(){
 		// given
-		when(accessor.getCurrentPageTodo()).thenReturn(0);
-		when(accessor.getCurrentPageDone()).thenReturn(0);
+		when(accessor.isPageAllOk()).thenReturn(false);
 		
 		// when
 		boolean occured = action.actionOccured();
