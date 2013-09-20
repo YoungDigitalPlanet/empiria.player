@@ -17,8 +17,8 @@ import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
 
 public class PowerFeedbackMediator {
 
-	private PowerFeedbackTutorClient tutor = new NullPowerFeedbackTutorClient();
-	private PowerFeedbackBonusClient bonus = new NullPowerFeedbackBonusClient();
+	private PowerFeedbackTutorClient tutor;
+	private PowerFeedbackBonusClient bonus;
 	private final EndHandler endHandler = new EndHandler() {
 
 		@Override
@@ -55,7 +55,9 @@ public class PowerFeedbackMediator {
 	};
 
 	@Inject
-	public PowerFeedbackMediator(EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
+	public PowerFeedbackMediator(EventsBus eventsBus, PageScopeFactory pageScopeFactory, PowerFeedbackTutorClient defaultTutorClient, PowerFeedbackBonusClient defaultBonusClient) {
+		this.tutor = defaultTutorClient;
+		this.bonus = defaultBonusClient;
 		final CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), testPageLoadedHandler, currentPageScope);
 		eventsBus.addHandler(StateChangeEvent.getType(OUTCOME_STATE_CHANGED), stateChangedHandler, currentPageScope);

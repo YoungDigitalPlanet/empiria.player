@@ -45,7 +45,7 @@ public class PowerFeedbackMediatorTest {
 	public void setUp() {
 		initMocks();
 		initEventHandlersInterception();
-		mediator = new PowerFeedbackMediator(eventsBus, pageScopeFactory);
+		mediator = new PowerFeedbackMediator(eventsBus, pageScopeFactory, new NullPowerFeedbackTutorClient(), new NullPowerFeedbackBonusClient());
 	}
 
 	@Test
