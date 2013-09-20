@@ -50,7 +50,7 @@ public class CommandFactoryTest {
 	@Mock
 	private AnimationFactory animationFactory;
 	@Mock
-	private EndHandler handler;
+	private TutorEndHandler handler;
 	@Mock
 	EmpiriaPaths paths;
 	@Mock
@@ -105,13 +105,13 @@ public class CommandFactoryTest {
 
 		TutorCommand showImageCommand = mock(ShowImageCommand.class);
 
-		when(commandsModuleFactory.createShowImageCommand(eq(moduleView), anyString(), eq(size))).thenReturn(showImageCommand);
+		when(commandsModuleFactory.createShowImageCommand(eq(moduleView), anyString(), eq(size), eq(handler))).thenReturn(showImageCommand);
 
 		// when
 		TutorCommand command = factory.createCommand(ActionType.DEFAULT, handler);
 
 		// then
-		verify(commandsModuleFactory).createShowImageCommand(moduleView, ASSET_PATH_JUMPING_ALEX, size);
+		verify(commandsModuleFactory).createShowImageCommand(moduleView, ASSET_PATH_JUMPING_ALEX, size, handler);
 		assertThat(command, is(showImageCommand));
 	}
 
