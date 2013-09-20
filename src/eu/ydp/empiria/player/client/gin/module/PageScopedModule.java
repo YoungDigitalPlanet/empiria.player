@@ -28,6 +28,7 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScopedProvider;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManagerModel;
+import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class PageScopedModule extends AbstractGinModule {
@@ -66,6 +67,8 @@ public class PageScopedModule extends AbstractGinModule {
 		
 		bindPageScoped(SourcelistManager.class, new TypeLiteral<PageScopedProvider<SourcelistManager>>(){});
 		bindPageScoped(SourcelistManagerModel.class, new TypeLiteral<PageScopedProvider<SourcelistManagerModel>>(){});
+		
+		bindPageScoped(PowerFeedbackMediator.class, new TypeLiteral<PageScopedProvider<PowerFeedbackMediator>>(){});
 	}
 	
 	private <F, T extends F> void bindPageScoped(Class<F> clazz, TypeLiteral<PageScopedProvider<T>> typeLiteral){
