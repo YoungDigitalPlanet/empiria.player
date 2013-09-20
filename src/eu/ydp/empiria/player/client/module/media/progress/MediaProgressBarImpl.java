@@ -46,6 +46,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	@Inject private ComputedStyle computedStyle;
 	private ProgressBarUpdateEventHandler progressBarEventHandler;
 	private MediaProgressBarPositionCalculator positionCalculator;
+	private int lastScrollElementWidth;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -85,7 +86,11 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	 */
 	@Override
 	public int getScrollWidth() {
-		return elementSizeCalculator.getWidth(mainProgressDiv) - getButtonWidth();
+		int scrollElementWidth = elementSizeCalculator.getWidth(mainProgressDiv) - getButtonWidth();
+		if(scrollElementWidth > 0) {
+			this.lastScrollElementWidth = scrollElementWidth;
+		}
+		return this.lastScrollElementWidth;
 	}
 
 	@Override
