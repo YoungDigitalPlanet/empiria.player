@@ -71,16 +71,35 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 	@Override
 	public void beforeParse(Node mainNode, Widget parent) {
 		// kompatybilnosc wsteczna z szablonami bez media_screen
-		if(fullScreen && !isModuleInTemplate(ModuleTagName.MEDIA_SCREEN.tagName())) {
-			Widget parentWrapper = parent.getParent();
-			if(parentWrapper instanceof FlowPanel) {
-				FlowPanel parentPanel = (FlowPanel) parentWrapper;
-				parentPanel.add(getMediaObject());
-			} else {
-				LOGGER.warning("Cannot attach mediaScreen to: "+parentWrapper.getClass().getName());
-			}
-		} else 
-			if (!isModuleInTemplate(ModuleTagName.MEDIA_SCREEN.tagName()) && parent instanceof HasWidgets) {
+		if(isNotMediaScreenDefinedInTemplate()) {
+			attachMediaScreenToRootOfTemplate(parent);
+		}
+	}
+	
+	private boolean isNotMediaScreenDefinedInTemplate() {
+		return !isModuleInTemplate(ModuleTagName.MEDIA_SCREEN.tagName());
+	}
+
+	private void attachMediaScreenToRootOfTemplate(Widget parent) {
+		if(fullScreen) {
+			attachMediaScreenToFullscreenTemplate(parent);
+		} else {
+			attachMediaScreenToNotFullscreenTemplate(parent);
+		}
+	}
+	
+	private void attachMediaScreenToFullscreenTemplate(Widget parent) {
+		Widget parentWrapper = parent.getParent();
+		if(parentWrapper instanceof HasWidgets) {
+			HasWidgets parentPanel = (HasWidgets) parentWrapper;
+			parentPanel.add(getMediaObject());
+		} else {
+			LOGGER.warning("Cannot attach mediaScreen to: "+parentWrapper.getClass().getName());
+		}
+	}
+
+	private void attachMediaScreenToNotFullscreenTemplate(Widget parent) {
+		if (parent instanceof HasWidgets) {
 			((HasWidgets) parent).add(getMediaObject());
 		}
 	}
