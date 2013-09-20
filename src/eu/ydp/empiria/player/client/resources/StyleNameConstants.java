@@ -64,6 +64,15 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-bookmark-selected")
 	public String QP_BOOKMARK_SELECTED();
+	
+	@DefaultStringValue("qp-bonus")
+	public String QP_BONUS();
+	
+	@DefaultStringValue("qp-bonus-closable-wrapper")
+	public String QP_BONUS_CLOSABLE_WRAPPER();
+	
+	@DefaultStringValue("qp-bonus-content")
+	public String QP_BONUS_CONTENT();
 
 	@DefaultStringValue("qp-button-module")
 	public String QP_BUTTON_MODULE();
