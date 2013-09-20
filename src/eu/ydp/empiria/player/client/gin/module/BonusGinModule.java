@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupView;
+import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupViewImpl;
 
 public class BonusGinModule extends AbstractGinModule {
 
@@ -12,6 +13,7 @@ public class BonusGinModule extends AbstractGinModule {
 	protected void configure() {
 		bind(BonusPopupPresenter.class).in(Singleton.class);
 		bind(BonusPopupView.class).in(Singleton.class);
+		bind(BonusPopupView.class).to(BonusPopupViewImpl.class);
 	}
 
 }
