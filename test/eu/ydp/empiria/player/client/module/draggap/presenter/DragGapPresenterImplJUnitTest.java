@@ -100,7 +100,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		// then
 		InOrder inOrder = Mockito.inOrder(view, model);
 		inOrder.verify(view).removeContent();
-		inOrder.verify(model).reset();
+		inOrder.verify(model).clearAnswers();
 	}
 
 	@Test

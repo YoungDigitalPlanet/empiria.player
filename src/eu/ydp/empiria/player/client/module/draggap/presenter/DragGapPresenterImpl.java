@@ -147,7 +147,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	@Override
 	public void removeContent() {
 		view.removeContent();
-		model.reset();
+		model.clearAnswers();
 	}
 
 	@Override
