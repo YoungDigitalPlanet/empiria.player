@@ -80,8 +80,10 @@ public class CommandFactory {
 		Size size = tutorPersonaProperties.getAnimationSize();
 
 		String assetPath = createAssetPath(assetName);
+		
+		ShowImageDTO showImageDTO = new ShowImageDTO(assetPath, size);
 
-		return commandsModuleFactory.createShowImageCommand(moduleView, assetPath, size, handler);
+		return commandsModuleFactory.createShowImageCommand(moduleView, showImageDTO, handler);
 	}
 
 	private String createAssetPath(String assetName) {

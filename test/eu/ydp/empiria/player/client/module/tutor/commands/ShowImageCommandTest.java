@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import eu.ydp.empiria.player.client.module.tutor.ShowImageDTO;
 import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.gwtutil.client.util.geom.Size;
@@ -30,7 +31,8 @@ public class ShowImageCommandTest {
 
 	@Before
 	public void setUp() {
-		command = new ShowImageCommand(view, ASSET_PATH, size, endHandler);
+		ShowImageDTO showImageDTO = new ShowImageDTO(ASSET_PATH, size);
+		command = new ShowImageCommand(view, showImageDTO, endHandler);
 	}
 
 	@Test
@@ -39,7 +41,6 @@ public class ShowImageCommandTest {
 		command.execute();
 
 		// then
-		// TODO Implement size - YPUB-5476
 		verify(view).setBackgroundImage(ASSET_PATH, size);
 		assertThat(command.isFinished(), is(true));
 		verify(endHandler).onEnd(false);

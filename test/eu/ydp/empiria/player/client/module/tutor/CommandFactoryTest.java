@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.tutor;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -104,14 +103,16 @@ public class CommandFactoryTest {
 		prepareConfigForType(CommandType.IMAGE);
 
 		TutorCommand showImageCommand = mock(ShowImageCommand.class);
+		
+		ShowImageDTO showImageDTO = new ShowImageDTO(ASSET_PATH_JUMPING_ALEX, size);
 
-		when(commandsModuleFactory.createShowImageCommand(eq(moduleView), anyString(), eq(size), eq(handler))).thenReturn(showImageCommand);
+		when(commandsModuleFactory.createShowImageCommand(eq(moduleView), eq(showImageDTO), eq(handler))).thenReturn(showImageCommand);
 
 		// when
 		TutorCommand command = factory.createCommand(ActionType.DEFAULT, handler);
 
 		// then
-		verify(commandsModuleFactory).createShowImageCommand(moduleView, ASSET_PATH_JUMPING_ALEX, size, handler);
+		verify(commandsModuleFactory).createShowImageCommand(moduleView, showImageDTO, handler);
 		assertThat(command, is(showImageCommand));
 	}
 
