@@ -22,7 +22,6 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	@ModuleScoped
 	private BonusProvider bonusProvider;
 	@Inject
-	@ModuleScoped
 	private BonusPopupPresenter bonusPopupPresenter;
 	private boolean pageAllOkCompleted = false;
 
