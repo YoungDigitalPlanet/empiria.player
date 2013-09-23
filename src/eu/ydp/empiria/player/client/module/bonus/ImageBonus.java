@@ -4,12 +4,11 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
 public class ImageBonus implements BonusWithAsset {
 
-	@Inject @ModuleScoped
+	@Inject
 	private BonusPopupPresenter presenter;
 	@Inject
 	private EmpiriaPaths empiriaPaths;
