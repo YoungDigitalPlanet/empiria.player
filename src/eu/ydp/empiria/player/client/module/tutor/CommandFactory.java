@@ -37,7 +37,7 @@ public class CommandFactory {
 		this.paths = paths;
 	}
 
-	public TutorCommand createCommand(ActionType actionType, EndHandler handler) {
+	public TutorCommand createCommand(ActionType actionType, TutorEndHandler handler) {
 		Iterable<TutorCommandConfig> commandsConfig = tutorConfig.getCommandsForAction(actionType);
 		Iterator<TutorCommandConfig> commandsIterator = commandsConfig.iterator();
 		if (!commandsIterator.hasNext()) {
@@ -47,20 +47,20 @@ public class CommandFactory {
 		return createCommandFromConfig(commandConfig, handler);
 	}
 
-	private TutorCommand createCommandFromConfig(TutorCommandConfig commandConfig, EndHandler handler) {
+	private TutorCommand createCommandFromConfig(TutorCommandConfig commandConfig, TutorEndHandler handler) {
 		CommandType type = commandConfig.getType();
 		String asset = commandConfig.getAsset();
 		switch (type) {
 		case ANIMATION:
 			return createAnimationCommand(asset, handler);
 		case IMAGE:
-			return createImageCommand(asset);
+			return createImageCommand(asset, handler);
 		default:
 			throw new RuntimeException("Command type not supported");
 		}
 	}
 
-	private TutorCommand createAnimationCommand(String assetName, final EndHandler handler) {
+	private TutorCommand createAnimationCommand(String assetName, final TutorEndHandler handler) {
 		TutorPersonaProperties tutorPersonaProperties = getPersonaProperties();
 
 		int animationFps = tutorPersonaProperties.getAnimationFps();
@@ -75,13 +75,15 @@ public class CommandFactory {
 		return commandsModuleFactory.createAnimationCommand(animation, handler);
 	}
 
-	private TutorCommand createImageCommand(String assetName) {
+	private TutorCommand createImageCommand(String assetName, TutorEndHandler handler) {
 		TutorPersonaProperties tutorPersonaProperties = getPersonaProperties();
 		Size size = tutorPersonaProperties.getAnimationSize();
 
 		String assetPath = createAssetPath(assetName);
+		
+		ShowImageDTO showImageDTO = new ShowImageDTO(assetPath, size);
 
-		return commandsModuleFactory.createShowImageCommand(moduleView, assetPath, size);
+		return commandsModuleFactory.createShowImageCommand(moduleView, showImageDTO, handler);
 	}
 
 	private String createAssetPath(String assetName) {

@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.tutor.commands;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.module.tutor.EndHandler;
+import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
 import eu.ydp.empiria.player.client.module.tutor.TutorCommand;
 import eu.ydp.gwtutil.client.animation.Animation;
 import eu.ydp.gwtutil.client.animation.AnimationEndHandler;
@@ -11,19 +11,19 @@ import eu.ydp.gwtutil.client.animation.AnimationEndHandler;
 public class AnimationCommand implements TutorCommand {
 
 	private final Animation animation;
-	private final EndHandler endHandler;
+	private final TutorEndHandler endHandler;
 	private boolean finished = false;
 	protected final AnimationEndHandler animationHandler = new AnimationEndHandler() {
 
 		@Override
 		public void onEnd() {
 			finished = true;
-			endHandler.onEnd();
+			endHandler.onEnd(true);
 		}
 	};
 
 	@Inject
-	public AnimationCommand(@Assisted Animation animation, @Assisted EndHandler handler) {
+	public AnimationCommand(@Assisted Animation animation, @Assisted TutorEndHandler handler) {
 		this.animation = animation;
 		this.endHandler = handler;
 	}
