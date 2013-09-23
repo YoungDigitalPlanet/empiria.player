@@ -293,6 +293,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getColorfillInteractionModule(), ModuleTagName.COLORFILL_INTERACTION, true));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTutorModule(), ModuleTagName.TUTOR, false));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getButtonModule(), ModuleTagName.BUTTON, false));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getBonusModule(), ModuleTagName.BONUS, false));
 		loadExtension(singleModuleInstanceProvider.getInfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(singleModuleInstanceProvider.getLinkModuleConnectorExtension());

@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleSc
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.TutorConfigModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.WithCacheCssStylesModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
+import eu.ydp.empiria.player.client.module.bonus.BonusProvider;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
 import eu.ydp.empiria.player.client.module.choice.providers.MultiChoiceStyleProvider;
@@ -45,6 +46,7 @@ import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
+import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
@@ -86,6 +88,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindMathGap();
 		bindSelection();
 		bindDrawing();
+		bindBonus();
 	}
 
 	private void bindDrawing() {
@@ -167,6 +170,11 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(MathGapModel.class, new TypeLiteral<ModuleScopedProvider<MathGapModel>>(){});
 	}
 
+	private void bindBonus() {
+		bindModuleScoped(PowerFeedbackMediator.class, new TypeLiteral<ModuleScopedProvider<PowerFeedbackMediator>>(){});
+		bindModuleScoped(BonusProvider.class, new TypeLiteral<ModuleScopedProvider<BonusProvider>>(){});
+	}
+	
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)
