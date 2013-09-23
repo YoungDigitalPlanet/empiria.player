@@ -35,9 +35,11 @@ public class BonusConfigTest extends AbstractEmpiriaPlayerGWTTestCase {
 	private BonusConfigJs bonusConfigJs;
 	
 	public void testShouldParseBonusConfigFromJs() throws Exception {
-		//when
+		//given
 		assertTrue(overlayTypesParser.isValidJSON(JSON_CONFIG));
 		bonusConfigJs = overlayTypesParser.get(JSON_CONFIG);
+
+		//when
 		BonusConfig bonusConfig = BonusConfig.fromJs(bonusConfigJs);
 		
 		//then
@@ -62,6 +64,7 @@ public class BonusConfigTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEquals(2, bonuses.size());
 		
 		assertCorrectBonus(bonuses.get(0), "alex.png", BonusResourceType.IMAGE, 111, 222);
+		assertCorrectBonus(bonuses.get(1), "animation1", BonusResourceType.SWIFFY, 333, 444);
 	}
 
 	private void assertCorrectBonus(BonusResource bonusResource, String asset, BonusResourceType type, int width, int height) {
