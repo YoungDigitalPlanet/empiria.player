@@ -7,13 +7,12 @@ import eu.ydp.empiria.player.client.components.animation.swiffy.SwiffyService;
 import eu.ydp.empiria.player.client.module.EndHandler;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
 public class SwiffyBonus implements BonusWithAsset {
 
 	private static final String JS_FILE_SUFFIX = ".js";
-	@Inject @ModuleScoped
+	@Inject
 	private BonusPopupPresenter presenter;
 	@Inject
 	private EmpiriaPaths empiriaPaths;
