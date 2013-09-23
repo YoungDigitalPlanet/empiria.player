@@ -6,12 +6,14 @@ import com.google.inject.Key;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorIdProvider;
+import eu.ydp.empiria.player.client.gin.scopes.module.providers.BonusConfigModuleScopeProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.CssStylesModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.PersonaServiceModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
@@ -171,6 +173,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 
 	private void bindBonus() {
 		bindModuleScoped(BonusProvider.class, new TypeLiteral<ModuleScopedProvider<BonusProvider>>(){});
+		bind(BonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(BonusConfigModuleScopeProvider.class);
 	}
 	
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<ModuleScopedProvider<T>> typeLiteral){
