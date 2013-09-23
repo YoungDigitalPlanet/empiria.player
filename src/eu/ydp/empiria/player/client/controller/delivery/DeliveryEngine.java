@@ -33,6 +33,8 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsLis
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageSwitchModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
@@ -115,16 +117,18 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private AssessmentController assessmentController;
 	private SoundProcessorManagerExtension soundProcessorManager;
 	private final TutorService tutorService;
+	private final BonusService bonusService;
 
 	private JavaScriptObject playerJsObject;
 	private String stateAsync;
+
 
 
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
 			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
 			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
-			ModulesRegistry modulesRegistry, TutorService tutorService, FlowManager flowManager) {
+			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -135,6 +139,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.moduleHandlerManager = moduleHandlerManager;
 		this.modulesRegistry = modulesRegistry;
 		this.tutorService = tutorService;
+		this.bonusService = bonusService;
 		this.flowManager = flowManager;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
@@ -400,6 +405,10 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			if (extension instanceof TutorExtension) {
 				TutorExtension tutorExtension = (TutorExtension) extension;
 				tutorService.registerTutor(tutorExtension.getTutorId(), tutorExtension.getTutorConfig());
+			}
+			if (extension instanceof BonusExtension) {
+				BonusExtension bonusExtension = (BonusExtension)extension;
+				bonusService.registerBonus(bonusExtension.getBonusId(), bonusExtension.getBonusConfig());
 			}
 		}
 	}
