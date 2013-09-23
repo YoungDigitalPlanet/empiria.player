@@ -46,7 +46,6 @@ import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
-import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
@@ -171,7 +170,6 @@ public class ModuleScopedModule extends AbstractGinModule{
 	}
 
 	private void bindBonus() {
-		bindModuleScoped(PowerFeedbackMediator.class, new TypeLiteral<ModuleScopedProvider<PowerFeedbackMediator>>(){});
 		bindModuleScoped(BonusProvider.class, new TypeLiteral<ModuleScopedProvider<BonusProvider>>(){});
 	}
 	

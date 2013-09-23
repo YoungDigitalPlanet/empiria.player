@@ -5,6 +5,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackBonusClient;
@@ -16,7 +17,7 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	@Inject
 	private OutcomeAccessor outcomeAccessor;
 	@Inject
-	@ModuleScoped
+	@PageScoped
 	private PowerFeedbackMediator mediator;
 	@Inject
 	@ModuleScoped

@@ -1,13 +1,11 @@
 package eu.ydp.empiria.player.client.components.animation.swiffy;
 
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.FrameElement;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 
 public class SwiffyObject {
 
@@ -19,9 +17,8 @@ public class SwiffyObject {
 	};
 
 	private String animationJsUrl;
-	private JavaScriptObject swiffyObject;
-	private Frame iframe;
-	private final FlowPanel container = new FlowPanel();
+	private FlowPanel container = new FlowPanel();
+	@Inject @UniqueId private String iframeId;
 	@Inject private SwiffyRuntimeLoader runtimeLoader;
 
 	void setAnimationUrl(String animationUrl) {
@@ -33,59 +30,62 @@ public class SwiffyObject {
 	}
 
 	private void startAnimation() {
-		iframe = createIframeElement();
-		final FrameElement iframeElement = iframe.getElement().cast();
-		appendScriptElement(iframeElement, animationJsUrl);
+		appendScriptElement(iframeId, animationJsUrl);
 	}
 
 	public void destroy() {
 		runtimeLoader.removeRuntimeLoadHandler(runtimeLoadHandler);
-		swiffyDestroy(swiffyObject, iframe.getElement());
+		container.removeFromParent();
+		swiffyDestroy(iframeId);
+		container = null;
 	}
 
 	public IsWidget getWidget() {
 		return container;
 	}
 
-	private void onAnimationJsLoaded(final FrameElement iframeElement) {
-		swiffyObject = createSwiffyObject(iframeElement, container.getElement());
-		swiffyStart(swiffyObject);
+	private void onAnimationJsLoaded() {
+		createSwiffyObject(iframeId, container.getElement());
+		swiffyStart(iframeId);
 	}
 
-	private Frame createIframeElement() {
-		Frame iframe = new Frame();
-		final FrameElement iframeElement = iframe.getElement().cast();
-		RootPanel.get().getElement().appendChild(iframeElement);
-		return iframe;
-	}
-
-	private native void appendScriptElement(FrameElement iframe, String animationJsUrl)/*-{
+	private native void appendScriptElement(String iframeId, String animationJsUrl)/*-{
+		var iframe = $doc.createElement("IFRAME");
+		$doc.body.appendChild(iframe);
+		iframe.setAttribute("id", iframeId);
+		iframe.setAttribute("style","position: absolute; width: 0px; height: 0px; border: medium none; left: -1000px; top: -1000px;");
 		var ifrDoc = iframe.contentWindow.document;
-		iframe.style = "position: absolute; width: 0px; height: 0px; border: medium none; left: -1000px; top: -1000px;";
 		ifrDoc.open();
-		ifrDoc.write('<html><head><script src="'+ animationJsUrl+ '" type="text/javascript"></script><\/head><body><\/body><\/html>');
+		ifrDoc.write('<html><head> <script src="'+ animationJsUrl+ '" type="text/javascript"></script><\/head><body><\/body><\/html>');
 		ifrDoc.close();
 		var that = this;
-		ifrDoc.getElementsByTagName("head")[0].childNodes[0].onload = function() {
-			that.@eu.ydp.empiria.player.client.components.animation.swiffy.SwiffyObject::onAnimationJsLoaded(Lcom/google/gwt/dom/client/FrameElement;)(iframe);
+		var scriptElement = ifrDoc.getElementsByTagName("head")[0].childNodes[0];
+		scriptElement.onload = function() {
+			that.@eu.ydp.empiria.player.client.components.animation.swiffy.SwiffyObject::onAnimationJsLoaded()();
+			scriptElement.onload = null;
 		}
 	}-*/;
 
-	private native JavaScriptObject createSwiffyObject(JavaScriptObject iframe, Element container)/*-{
-		var swiffyObject = iframe.contentWindow.getSwiffyObject();
-		return new window.swiffy.Stage(container, swiffyObject);
+	private native void createSwiffyObject(String iframeId, Element container)/*-{
+		var iframe = $doc.getElementById(iframeId);
+		iframe.contentWindow.swiffyObject = iframe.contentWindow.getSwiffyObject();
+	    iframe.contentWindow.swiffyStage = new window.swiffy.Stage(container, iframe.contentWindow.swiffyObject);
 	}-*/;
 
-	private native void swiffyStart(JavaScriptObject swiffyObject)/*-{
-		swiffyObject.start();
+	private native void swiffyStart(String iframeId)/*-{
+		 var iframe = $doc.getElementById(iframeId)
+		 iframe.contentWindow.swiffyStage.start();
 	}-*/;
 
-	private native void swiffyDestroy(JavaScriptObject swiffyObject, JavaScriptObject iframe)/*-{
+	private native void swiffyDestroy(String iframeId)/*-{
 		try {
+			var iframe = $doc.getElementById(iframeId);
+			iframe.contentWindow.swiffyStage.destroy();
+			console.log("after destroy");
 			var ifrParent = iframe.parentNode;
 			ifrParent.removeChild(iframe);
-			swiffyObject.destroy();
 		} catch (e) {
+			console.log(e);
 		}
 	}-*/;
 
