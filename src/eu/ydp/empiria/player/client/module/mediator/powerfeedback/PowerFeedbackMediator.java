@@ -55,9 +55,14 @@ public class PowerFeedbackMediator {
 	};
 
 	@Inject
-	public PowerFeedbackMediator(EventsBus eventsBus, PageScopeFactory pageScopeFactory, PowerFeedbackTutorClient defaultTutorClient, PowerFeedbackBonusClient defaultBonusClient) {
+	public PowerFeedbackMediator(EventsBus eventsBus, PageScopeFactory pageScopeFactory, PowerFeedbackTutorClient defaultTutorClient,
+			PowerFeedbackBonusClient defaultBonusClient) {
 		this.tutor = defaultTutorClient;
 		this.bonus = defaultBonusClient;
+		addEventsBusHandlers(eventsBus, pageScopeFactory);
+	}
+
+	private void addEventsBusHandlers(EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
 		final CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), testPageLoadedHandler, currentPageScope);
 		eventsBus.addHandler(StateChangeEvent.getType(OUTCOME_STATE_CHANGED), stateChangedHandler, currentPageScope);
