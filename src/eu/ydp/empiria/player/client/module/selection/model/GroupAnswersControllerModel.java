@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
 import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnswersByTypeFinder;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class GroupAnswersControllerModel {
 

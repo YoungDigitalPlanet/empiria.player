@@ -5,7 +5,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class OutcomeDrivenActionTypeProvider {
 

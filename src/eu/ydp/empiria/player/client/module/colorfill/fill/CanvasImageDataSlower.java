@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.colorfill.fill;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.ImageData;
 
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public class CanvasImageDataSlower implements ICanvasImageData{
 

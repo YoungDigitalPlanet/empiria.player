@@ -12,13 +12,14 @@ import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import eu.ydp.empiria.player.client.style.ModuleStyle;
+import eu.ydp.empiria.player.client.style.ModuleStyleImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InfoModuleCssProgressMappingConfigurationParserTest {
 	private static final String REPORT_PROGRESS_PREFIX = "-empiria-info-item-result-";
 	private final String styleName = "xxx-x";
 
-	@Spy private final ModuleStyle moduleStyle = new ModuleStyle(new HashMap<String, String>());
+	@Spy private final ModuleStyle moduleStyle = new ModuleStyleImpl(new HashMap<String, String>());
 	@InjectMocks private InfoModuleCssProgressMappingConfigurationParser instance;
 
 	@Test

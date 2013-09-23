@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.empiria.player.client.module.colorfill.model.ColorModel;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.handlers.AreaClickListener;
 import eu.ydp.empiria.player.client.module.colorfill.presenter.handlers.ColorButtonClickListener;
@@ -15,6 +13,8 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteract
 import eu.ydp.empiria.player.client.module.colorfill.structure.EraserButton;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ColorfillViewBuilder {
 

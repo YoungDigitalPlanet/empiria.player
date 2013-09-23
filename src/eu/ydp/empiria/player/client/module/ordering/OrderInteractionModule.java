@@ -5,13 +5,13 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionStructure;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class OrderInteractionModule extends AbstractInteractionModule<OrderInteractionModule, OrderInteractionModuleModel, OrderInteractionBean> {
 

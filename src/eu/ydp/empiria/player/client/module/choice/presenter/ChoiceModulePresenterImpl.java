@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.SimpleChoicePresenterFactory;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -18,6 +17,7 @@ import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBean;
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 

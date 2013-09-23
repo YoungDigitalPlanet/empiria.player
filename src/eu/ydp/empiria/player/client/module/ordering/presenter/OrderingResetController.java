@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class OrderingResetController {
 

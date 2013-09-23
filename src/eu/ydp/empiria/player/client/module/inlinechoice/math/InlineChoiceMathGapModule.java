@@ -16,7 +16,6 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
@@ -34,6 +33,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxChangeListener;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class InlineChoiceMathGapModule extends GapBase implements MathGap, PlayerEventHandler {
 
