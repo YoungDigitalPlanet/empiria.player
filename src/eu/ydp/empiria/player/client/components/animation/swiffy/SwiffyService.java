@@ -1,13 +1,27 @@
 package eu.ydp.empiria.player.client.components.animation.swiffy;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 public class SwiffyService {
-	
-	public SwiffyObject getSwiffyObject(String swifyName, String url){
-		return null;
+	@Inject SwiffyRuntimeLoader runtimeLoader;
+	@Inject Provider<SwiffyObject> swiffyObjectProvider;
+	private final Map<String, SwiffyObject> swiffyObjects = Maps.newHashMap();
+
+	public SwiffyObject getSwiffyObject(String swifyName, String url) {
+		runtimeLoader.loadRuntime();
+		SwiffyObject swiffyObject = swiffyObjectProvider.get();
+		swiffyObject.setAnimationUrl(url);
+		swiffyObjects.put(swifyName, swiffyObject);
+		return swiffyObject;
 	}
-	
-	public void clear(String swiffyName){
-		
+
+	public void clear(String swiffyName) {
+		if (swiffyObjects.containsKey(swiffyName)) {
+			swiffyObjects.remove(swiffyName).destroy();
+		}
 	}
-	
 }
