@@ -56,7 +56,7 @@ public class SwiffyObject {
 		iframe.setAttribute("style","position: absolute; width: 0px; height: 0px; border: medium none; left: -1000px; top: -1000px;");
 		var ifrDoc = iframe.contentWindow.document;
 		ifrDoc.open();
-		ifrDoc.write('<html><head> <script src="'+ animationJsUrl+ '" type="text/javascript"></script><\/head><body><\/body><\/html>');
+		ifrDoc.write('<html><head><script src="'+ animationJsUrl+ '" type="text/javascript"></script><\/head><body><\/body><\/html>');
 		ifrDoc.close();
 		var that = this;
 		var scriptElement = ifrDoc.getElementsByTagName("head")[0].childNodes[0];
@@ -81,7 +81,6 @@ public class SwiffyObject {
 		try {
 			var iframe = $doc.getElementById(iframeId);
 			iframe.contentWindow.swiffyStage.destroy();
-			console.log("after destroy");
 			var ifrParent = iframe.parentNode;
 			ifrParent.removeChild(iframe);
 		} catch (e) {
