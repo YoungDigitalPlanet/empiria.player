@@ -25,8 +25,7 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	private SoundExecutorListener listener;
 	private BaseMediaConfiguration baseMediaConfiguration;
 
-	@Inject
-	HTML5MediaEventMapper mediaEventMapper;
+	@Inject HTML5MediaEventMapper mediaEventMapper;
 
 	private final Set<HandlerRegistration> allEventsRegistration = new HashSet<HandlerRegistration>();
 	private boolean hideOnPlayEvent;
@@ -57,7 +56,7 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	}
 
 	private void removeMediaEventHandlers() {
-		for(HandlerRegistration registration : allEventsRegistration){
+		for (HandlerRegistration registration : allEventsRegistration) {
 			registration.removeHandler();
 		}
 		allEventsRegistration.clear();
@@ -67,7 +66,7 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	public void setMediaWrapper(MediaWrapper<MediaBase> descriptor) {
 		this.mediaDescriptor = descriptor;
 		media = (H) descriptor.getMediaObject();
-		if(mediaDescriptor instanceof AbstractHTML5MediaWrapper){
+		if (mediaDescriptor instanceof AbstractHTML5MediaWrapper) {
 			((AbstractHTML5MediaWrapper) mediaDescriptor).setMediaExecutor(this);
 		}
 	}
@@ -97,13 +96,13 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	}
 
 	private void mapAndFireEvent(HTML5MediaEvent event) {
-		if(canPopagateThisEvent(event)) {
+		if (canPopagateThisEvent(event)) {
 			mediaEventMapper.mapAndFireEvent(event, listener, mediaDescriptor);
 		}
 	}
 
-	private boolean canPopagateThisEvent(HTML5MediaEvent event){
-		if(event.getType() == HTML5MediaEventsType.play && hideOnPlayEvent){
+	private boolean canPopagateThisEvent(HTML5MediaEvent event) {
+		if (event.getType() == HTML5MediaEventsType.play && hideOnPlayEvent) {
 			hideOnPlayEvent = false;
 			return false;
 		}
@@ -124,29 +123,32 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 		media.play();
 	}
 
-
 	/**
 	 * For iosAudoHack {@link IosAudioPlayHack}
 	 */
 	public void playWithoutOnPlayEventPropagation() {
 		hideOnPlayEvent = true;
-		media.play();
+		play();
 	}
 
 	@Override
 	public void stop() {
-		try {
-			media.pause();
-			media.setCurrentTime(0);
-		} catch (Exception e) {// NOPMD
-			// chrome podczas przeladowania strony lekcji
-			// generowal bledy
-		}
+		stopOnTime(0);
 	}
 
 	@Override
 	public void pause() {
-		media.pause();
+		stopOnTime(media.getCurrentTime());
+	}
+
+	private void stopOnTime(double time) {
+		try {
+			media.pause();
+			media.setCurrentTime(time);
+		} catch (Exception e) {// NOPMD
+			// chrome podczas przeladowania strony lekcji
+			// generowal bledy
+		}
 	}
 
 	@Override
@@ -162,7 +164,7 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 
 	@Override
 	public void setCurrentTime(double time) {
-		if ( !Double.isNaN(media.getDuration()) ) {
+		if (!Double.isNaN(media.getDuration())) {
 			media.setCurrentTime(time);
 		}
 	}

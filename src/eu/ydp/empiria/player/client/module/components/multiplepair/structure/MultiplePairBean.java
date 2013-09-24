@@ -17,4 +17,9 @@ public interface MultiplePairBean<B extends PairChoiceBean> extends HasShuffle {
 
 	public int getMaxAssociations();
 
+	public int getRightItemIndex(PairChoiceBean bean);
+
+	public int getLeftItemIndex(PairChoiceBean bean);
+
+	public boolean isLeftItem(PairChoiceBean bean);
 }
