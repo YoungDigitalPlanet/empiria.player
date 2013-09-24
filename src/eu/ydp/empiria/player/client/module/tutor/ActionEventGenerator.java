@@ -11,7 +11,7 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ActionEventGenerator {
 
-	private Optional<EndHandler> recentEndHandler;
+	private Optional<EndHandler> recentEndHandler = Optional.absent();
 	private final TutorEndHandler endHandler = new TutorEndHandler() {
 		@Override
 		public void onEnd(boolean shouldExecuteDefaultAction) {

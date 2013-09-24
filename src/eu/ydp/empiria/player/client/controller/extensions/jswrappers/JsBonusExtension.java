@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.js.Bonu
 public class JsBonusExtension extends AbstractJsExtension implements BonusExtension {
 
 	private JavaScriptObject playerJsObject;
-	
+
 	@Override
 	public ExtensionType getType() {
 		return ExtensionType.EXTENSION_BONUS;
@@ -22,21 +22,21 @@ public class JsBonusExtension extends AbstractJsExtension implements BonusExtens
 
 	@Override
 	public String getBonusId() {
-		return getBonusIdNative();
+		return getBonusIdNative(extensionJsObject);
 	}
 
-	private final native String getBonusIdNative()/*-{
-		return extensionJsObject.getBonusId(); 
+	private final native String getBonusIdNative(JavaScriptObject extensionJsObject)/*-{
+		return  extensionJsObject.getBonusId();
 	}-*/;
 
 	@Override
 	public BonusConfig getBonusConfig() {
-		BonusConfigJs bonusConfigJs = getBonusJsConfig();
+		BonusConfigJs bonusConfigJs = getBonusJsConfig(extensionJsObject);
 		BonusConfig bonusConfig = BonusConfig.fromJs(bonusConfigJs);
 		return bonusConfig;
 	}
 
-	private final native BonusConfigJs getBonusJsConfig()/*-{
+	private final native BonusConfigJs getBonusJsConfig(JavaScriptObject extensionJsObject)/*-{
 		return extensionJsObject.getBonusConfig();
 	}-*/;
 

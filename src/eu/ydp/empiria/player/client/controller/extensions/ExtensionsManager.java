@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaProcessor;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentHeaderViewExtension;
+import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsBonusExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsDataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsDeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsExtension;
@@ -38,7 +39,7 @@ public class ExtensionsManager implements IStateful {
 
 	@Inject private Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
 	@Inject private Provider<ExternalMediaProcessor> externalMediaProcessor;
-	
+
 	public ExtensionsManager() {
 		extensions = new ArrayList<Extension>();
 	}
@@ -101,6 +102,9 @@ public class ExtensionsManager implements IStateful {
 				break;
 			case EXTENSION_TUTOR:
 				currExt = new JsTutorExtension();
+				break;
+			case EXTENSION_BONUS:
+				currExt = new JsBonusExtension();
 				break;
 			default:
 				break;

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.util.geom.Size;
@@ -26,18 +27,14 @@ public class BonusPopupViewImpl implements BonusPopupView{
 	@UiTemplate("BonusPopupViewImpl.ui.xml")
 	interface BonusPopupViewUiBinder extends UiBinder<Widget, BonusPopupViewImpl> {}
 
-	@UiField
-	FlowPanel container;
-	
-	@UiField
-	FlowPanel closableWrapper;
-	
-	@UiField
-	FlowPanel content;
+	@UiField FlowPanel container;
+	@UiField FlowPanel closableWrapper;
+	@UiField FlowPanel content;
+	@UiField FlowPanel closeButton;
 
 	private BonusPopupPresenter presenter;
 	private final UserInteractionHandlerFactory userInteractionHandlerFactory;
-	
+
 	@Inject
 	public BonusPopupViewImpl(UserInteractionHandlerFactory userInteractionHandlerFactory) {
 		this.userInteractionHandlerFactory = userInteractionHandlerFactory;
@@ -48,14 +45,18 @@ public class BonusPopupViewImpl implements BonusPopupView{
 		uiBinder.createAndBindUi(this);
 		addClickHandlerToClosableWrapper();
 	}
-	
+
 	private void addClickHandlerToClosableWrapper() {
-		userInteractionHandlerFactory.applyUserClickHandler(new Command() {
+
+		Command closeCommand = new Command() {
 			@Override
 			public void execute(NativeEvent event) {
 				presenter.closeClicked();
 			}
-		}, closableWrapper);
+		};
+
+		userInteractionHandlerFactory.applyUserClickHandler(closeCommand, closableWrapper);
+		userInteractionHandlerFactory.applyUserClickHandler(closeCommand, closeButton);
 	}
 
 	@Override
@@ -63,17 +64,18 @@ public class BonusPopupViewImpl implements BonusPopupView{
 		content.clear();
 		WidgetSize widgetSize = new WidgetSize(size);
 		widgetSize.setOnWidget(content);
-		
+
 		FlowPanel panelWithBackground = new FlowPanel();
 		widgetSize.setOnWidget(panelWithBackground);
-		
+
 		setBackgroundImage(url, panelWithBackground);
+		content.add(panelWithBackground);
 	}
 
 	private void setBackgroundImage(String url, FlowPanel panelWithBackground) {
 		Element element = panelWithBackground.getElement();
 		Style style = element.getStyle();
-		style.setBackgroundImage(url);
+		style.setBackgroundImage("url("+url+")");
 	}
 
 	@Override
@@ -81,7 +83,7 @@ public class BonusPopupViewImpl implements BonusPopupView{
 		content.clear();
 		WidgetSize widgetSize = new WidgetSize(size);
 		widgetSize.setOnWidget(content);
-		
+
 		content.add(widget.asWidget());
 	}
 
@@ -100,5 +102,5 @@ public class BonusPopupViewImpl implements BonusPopupView{
 	public void setPresenterOnView(BonusPopupPresenter bonusPopupPresenter) {
 		presenter = bonusPopupPresenter;
 	}
-	
+
 }
