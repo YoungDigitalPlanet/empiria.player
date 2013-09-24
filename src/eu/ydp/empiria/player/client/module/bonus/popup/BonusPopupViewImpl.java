@@ -14,8 +14,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.util.geom.Size;
@@ -37,19 +35,16 @@ public class BonusPopupViewImpl implements BonusPopupView{
 	@UiField
 	FlowPanel content;
 
-	private final Provider<BonusPopupPresenter> presenterProvider;
 	private BonusPopupPresenter presenter;
 	private final UserInteractionHandlerFactory userInteractionHandlerFactory;
 	
 	@Inject
-	public BonusPopupViewImpl(Provider<BonusPopupPresenter> presenterProvider, UserInteractionHandlerFactory userInteractionHandlerFactory) {
-		this.presenterProvider = presenterProvider;
+	public BonusPopupViewImpl(UserInteractionHandlerFactory userInteractionHandlerFactory) {
 		this.userInteractionHandlerFactory = userInteractionHandlerFactory;
 	}
 
 	@PostConstruct
 	public void initialize() {
-		presenter = presenterProvider.get();
 		uiBinder.createAndBindUi(this);
 		addClickHandlerToClosableWrapper();
 	}
@@ -99,6 +94,11 @@ public class BonusPopupViewImpl implements BonusPopupView{
 	public void reset() {
 		content.clear();
 		RootPanel.get().remove(container);
+	}
+
+	@Override
+	public void setPresenterOnView(BonusPopupPresenter bonusPopupPresenter) {
+		presenter = bonusPopupPresenter;
 	}
 	
 }

@@ -9,4 +9,5 @@ public interface BonusPopupView {
 	void setAnimationWidget(IsWidget widget, Size size);
 	void attachToRoot();
 	void reset();
+	void setPresenterOnView(BonusPopupPresenter bonusPopupPresenter);
 }
