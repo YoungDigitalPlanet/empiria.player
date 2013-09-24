@@ -88,4 +88,16 @@ public class BonusPopupPresenterTest {
 		verify(view, times(2)).reset();
 		verify(endHandler).onEnd();
 	}
+	
+	@Test
+	public void shouldSetPresenterOnView() throws Exception {
+		//given
+		
+
+		//when
+		bonusPopupPresenter.initialize();
+		
+		//then
+		verify(view).setPresenterOnView(bonusPopupPresenter);
+	}
 }

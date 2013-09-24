@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.bonus.popup;
 
+import javax.annotation.PostConstruct;
+
 import com.google.common.base.Optional;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
@@ -13,6 +15,11 @@ public class BonusPopupPresenter {
 	@Inject
 	private BonusPopupView view;
 	private Optional<EndHandler> lastEndHandler = Optional.absent();
+	
+	@PostConstruct
+	public void initialize() {
+		view.setPresenterOnView(this);
+	}
 	
 	public void showImage(String url, Size size){
 		lastEndHandler = Optional.absent();
