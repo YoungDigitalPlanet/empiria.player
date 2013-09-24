@@ -4,6 +4,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.components.animation.swiffy.SwiffyRuntimeLoader;
+import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusService;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupView;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupViewImpl;
@@ -18,6 +19,7 @@ public class BonusGinModule extends AbstractGinModule {
 	protected void configure() {
 		bind(BonusPopupPresenter.class).in(Singleton.class);
 		bind(SwiffyRuntimeLoader.class).in(Singleton.class);
+		bind(BonusService.class).in(Singleton.class);
 		bind(BonusPopupView.class).in(Singleton.class);
 		bind(BonusPopupView.class).to(BonusPopupViewImpl.class);
 		bind(PowerFeedbackBonusClient.class).to(NullPowerFeedbackBonusClient.class);

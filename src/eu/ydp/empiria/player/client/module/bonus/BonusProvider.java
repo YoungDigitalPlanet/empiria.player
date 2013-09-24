@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusAc
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusActionType;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusResource;
-import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.util.RandomWrapper;
 
@@ -24,8 +23,6 @@ public class BonusProvider {
 	@Inject
 	private BonusFactory bonusFactory;
 	@Inject
-	private EmpiriaPaths empiriaPaths;
-	@Inject 
 	private RandomWrapper randomWrapper;
 
 	public Bonus next(){

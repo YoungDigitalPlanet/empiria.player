@@ -5,6 +5,7 @@
 	<g:FlowPanel ui:field="container" styleName="{res.QP_BONUS}">
 		<g:FlowPanel ui:field="closableWrapper" styleName="{res.QP_BONUS_CLOSABLE_WRAPPER}">
 			<g:FlowPanel ui:field="content" styleName="{res.QP_BONUS_CONTENT}" />
+			<g:FlowPanel ui:field="closeButton" styleName="{res.QP_BONUS_CLOSE_BUTTON}" />
 		</g:FlowPanel>
 	</g:FlowPanel>
-</ui:UiBinder> 
+</ui:UiBinder>
