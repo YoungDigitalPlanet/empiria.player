@@ -11,12 +11,12 @@ import org.junit.Test;
 public class ActionExecutorServiceImplTest {
 	ActionExecutorServiceImpl executor;
 	CommandFactory commandFactory;
-	EndHandler handler;
+	TutorEndHandler handler;
 
 	@Before
 	public void setUp() {
 		commandFactory = mock(CommandFactory.class);
-		handler = mock(EndHandler.class);
+		handler = mock(TutorEndHandler.class);
 
 		executor = new ActionExecutorServiceImpl(commandFactory);
 	}
