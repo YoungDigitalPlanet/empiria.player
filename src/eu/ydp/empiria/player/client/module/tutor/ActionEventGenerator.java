@@ -5,51 +5,63 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
+import eu.ydp.empiria.player.client.module.EndHandler;
 import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeGenerator;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ActionEventGenerator {
 
-	private final EndHandler endHandler = new EndHandler() {
+	private Optional<EndHandler> recentEndHandler = Optional.absent();
+	private final TutorEndHandler endHandler = new TutorEndHandler() {
 		@Override
-		public void onEnd() {
-			onActionEnd();
+		public void onEnd(boolean shouldExecuteDefaultAction) {
+			if (recentEndHandler.isPresent()) {
+				recentEndHandler.get().onEnd();
+			}
+			if (shouldExecuteDefaultAction) {
+				executeDefaultAction();
+			}
 		}
 	};
-	
-	@Inject @ModuleScoped
+
+	@Inject
+	@ModuleScoped
 	private ActionExecutorService executorService;
-	
-	@Inject @ModuleScoped
+
+	@Inject
+	@ModuleScoped
 	private OutcomeDrivenActionTypeGenerator actionTypeGenerator;
-	
-	@Inject @ModuleScoped
+
+	@Inject
+	@ModuleScoped
 	private PersonaService personaService;
-	
-	public void start(){
+
+	public void start() {
 		executeDefaultAction();
 	}
-	
-	public void stop(){
+
+	public void stop() {
 		executeDefaultAction();
 	}
-	
-	public void stateChanged(){
+
+	public void stateChanged(EndHandler endHandler) {
+		recentEndHandler = Optional.absent();
 		TutorPersonaProperties currentPersona = personaService.getPersonaProperties();
-		if(currentPersona.isInteractive()){
-			Optional<ActionType> actionType = actionTypeGenerator.findActionType();
-			if (actionType.isPresent()) {
-				executeAction(actionType.get());
-			}
+		if (currentPersona.isInteractive()) {
+			generateAndExecuteAction(endHandler);
+		}
+	}
+
+	private void generateAndExecuteAction(EndHandler endHandler) {
+		Optional<ActionType> actionType = actionTypeGenerator.findActionType();
+		if (actionType.isPresent()) {
+			recentEndHandler = Optional.of(endHandler);
+			executeAction(actionType.get());
 		}
 	}
 
 	public void tutorChanged(int personaIndex) {
 		personaService.setCurrentPersonaIndex(personaIndex);
-		executeDefaultAction();
-	}
-	
-	private void onActionEnd() {
 		executeDefaultAction();
 	}
 

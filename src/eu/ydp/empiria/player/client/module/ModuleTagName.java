@@ -17,7 +17,7 @@ public enum ModuleTagName {
 	MATH_GAP_TEXT_ENTRY_TYPE("gap_text-entry"), MATH_GAP_INLINE_CHOICE_TYPE("gap_inline-choice"),MATCH_INTERACTION("matchInteraction"),
 	SOURCE_LIST("sourceList"), TEXT_FEEDBACK("textFeedback"), IMAGE_FEEDBACK("imageFeedback"),
 	INLINE_CONTAINER_STYLE_STRONG("b"), LABELLING_INTERACTION("labellingInteraction"), ORDER_INTERACTION("orderInteraction"), COLORFILL_INTERACTION("colorfillInteraction"),
-	DRAG_GAP("dragInteraction"), TUTOR("tutor"), BUTTON("button"), DRAWING("drawing");
+	DRAG_GAP("dragInteraction"), TUTOR("tutor"), BUTTON("button"), DRAWING("drawing"), BONUS("bonus");
 	String name = null;
 	private ModuleTagName(String name){
 		this.name = name;

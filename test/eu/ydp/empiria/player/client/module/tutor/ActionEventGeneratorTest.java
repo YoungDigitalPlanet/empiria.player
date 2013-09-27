@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.tutor;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,12 +11,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import com.google.common.base.Optional;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
+import eu.ydp.empiria.player.client.module.EndHandler;
 import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeGenerator;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
@@ -31,89 +35,101 @@ public class ActionEventGeneratorTest {
 	private OutcomeDrivenActionTypeGenerator actionTypeGenerator;
 	@Mock
 	private PersonaService personaService;
+	@Mock
+	EndHandler moduleEndHandler;
 
 	@Test
-	public void start(){
+	public void start() {
 		// when
 		actionEventGenerator.start();
 
 		// then
-		verify(executorService).execute(eq(ActionType.DEFAULT), any(EndHandler.class));
+		verify(executorService).execute(eq(ActionType.DEFAULT), any(TutorEndHandler.class));
 	}
 
 	@Test
-	public void stop(){
+	public void stop() {
 		// when
 		actionEventGenerator.stop();
 
 		// then
-		verify(executorService).execute(eq(ActionType.DEFAULT), any(EndHandler.class));
+		verify(executorService).execute(eq(ActionType.DEFAULT), any(TutorEndHandler.class));
 	}
 
 	@Test
 	public void testTutorChanged() {
-		//given
+		// given
 		int personaIndex = 7;
 
-		//when
+		// when
 		actionEventGenerator.tutorChanged(personaIndex);
 
-		//then
+		// then
 		verify(personaService).setCurrentPersonaIndex(personaIndex);
 	}
 
 	@Test
-	public void stateChanged_interactivePersona(){
+	public void stateChanged_interactivePersona() {
 		// given
 		boolean interactive = true;
-		TutorPersonaProperties personaProperties = new TutorPersonaProperties(7, new Size(), 60, "name", interactive, "avatarFilename");
+		TutorPersonaProperties personaProperties = createPersonaProperties(interactive);
 
-		when(personaService.getPersonaProperties())
-			.thenReturn(personaProperties);
+		when(personaService.getPersonaProperties()).thenReturn(personaProperties);
 
-		when(actionTypeGenerator.findActionType())
-			.thenReturn(Optional.of(ActionType.ON_PAGE_ALL_OK));
+		when(actionTypeGenerator.findActionType()).thenReturn(Optional.of(ActionType.ON_PAGE_ALL_OK));
 
 		// when
-		actionEventGenerator.stateChanged();
+		actionEventGenerator.stateChanged(moduleEndHandler);
 
 		// then
-		verify(executorService).execute(eq(ActionType.ON_PAGE_ALL_OK), any(EndHandler.class));
+		verify(executorService).execute(eq(ActionType.ON_PAGE_ALL_OK), any(TutorEndHandler.class));
 	}
 
 	@Test
-	public void stateChanged_nonInteractivePersona(){
+	public void stateChanged_nonInteractivePersona() {
 		// given
-		int index = 7;
 		boolean interactive = false;
-		TutorPersonaProperties personaProperties = new TutorPersonaProperties(index, new Size(), 60, "name", interactive, "avatarFilename");
+		TutorPersonaProperties personaProperties = createPersonaProperties(interactive);
 
 		when(actionTypeGenerator.findActionType()).thenReturn(Optional.of(ActionType.ON_PAGE_ALL_OK));
 		when(personaService.getPersonaProperties()).thenReturn(personaProperties);
 
 		// when
-		actionEventGenerator.stateChanged();
+		actionEventGenerator.stateChanged(moduleEndHandler);
 
 		// then
-		verify(executorService, never()).execute(any(ActionType.class), any(EndHandler.class));
+		verify(executorService, never()).execute(any(ActionType.class), any(TutorEndHandler.class));
 	}
 
 	@Test
-	public void stateChanged_noActionType(){
+	public void stateChanged_noActionType() {
 		// given
 		boolean interactive = true;
-		TutorPersonaProperties personaProperties = new TutorPersonaProperties(7, new Size(), 60, "name", interactive, "avatarFilename");
+		TutorPersonaProperties personaProperties = createPersonaProperties(interactive);
 
-		when(personaService.getPersonaProperties())
-			.thenReturn(personaProperties);
+		when(personaService.getPersonaProperties()).thenReturn(personaProperties);
 
-		when(actionTypeGenerator.findActionType())
-			.thenReturn(Optional.<ActionType>absent());
+		when(actionTypeGenerator.findActionType()).thenReturn(Optional.<ActionType> absent());
 
 		// when
-		actionEventGenerator.stateChanged();
+		actionEventGenerator.stateChanged(moduleEndHandler);
 
 		// then
-		verify(executorService, never()).execute(any(ActionType.class), any(EndHandler.class));
+		verify(executorService, never()).execute(any(ActionType.class), any(TutorEndHandler.class));
+	}
+
+	private TutorPersonaProperties createPersonaProperties(boolean isInteractive) {
+		if (isInteractive) {
+			doAnswer(new Answer<Void>() {
+
+				@Override
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					TutorEndHandler handler = (TutorEndHandler) invocation.getArguments()[1];
+					handler.onEnd(false);
+					return null;
+				}
+			}).when(executorService).execute(any(ActionType.class), any(TutorEndHandler.class));
+		}
+		return new TutorPersonaProperties(7, new Size(), 60, "name", isInteractive, "avatarFilename");
 	}
 }

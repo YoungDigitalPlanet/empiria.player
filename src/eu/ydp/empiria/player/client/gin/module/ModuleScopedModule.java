@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.gin.module;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Key;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
@@ -87,6 +86,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindMathGap();
 		bindSelection();
 		bindDrawing();
+		bindBonus();
 	}
 
 	private void bindDrawing() {
@@ -168,6 +168,11 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(MathGapModel.class, new TypeLiteral<ModuleScopedProvider<MathGapModel>>(){});
 	}
 
+	private void bindBonus() {
+		bindModuleScoped(BonusProvider.class, new TypeLiteral<ModuleScopedProvider<BonusProvider>>(){});
+		bind(BonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(BonusConfigModuleScopeProvider.class);
+	}
+	
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<? extends Provider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)

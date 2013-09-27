@@ -65,6 +65,18 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-bookmark-selected")
 	public String QP_BOOKMARK_SELECTED();
 
+	@DefaultStringValue("qp-bonus")
+	public String QP_BONUS();
+
+	@DefaultStringValue("qp-bonus-closable-wrapper")
+	public String QP_BONUS_CLOSABLE_WRAPPER();
+
+	@DefaultStringValue("qp-bonus-close-button")
+	public String QP_BONUS_CLOSE_BUTTON();
+
+	@DefaultStringValue("qp-bonus-content")
+	public String QP_BONUS_CONTENT();
+
 	@DefaultStringValue("qp-button-module")
 	public String QP_BUTTON_MODULE();
 
@@ -238,7 +250,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-drawing-module")
 	public String  QP_DRAWING_MODULE();
-	
+
 	@DefaultStringValue("qp-drawing-canvas")
 	public String  QP_DRAWING_CANVAS();
 
@@ -247,7 +259,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-drawing-toolbox")
 	public String QP_DRAWING_TOOLBOX();
-	
+
 	@DefaultStringValue("qp-drawing-toolbox-button")
 	public String QP_DRAWING_TOOLBOX_BUTTON();
 
@@ -271,7 +283,7 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-drawing-toolbox-palette")
 	public String QP_DRAWING_TOOLBOX_PALETTE();
-	
+
 	@DefaultStringValue("qp-drawing-toolbox-buttons")
 	public String QP_DRAWING_TOOLBOX_PALETTE_BUTTONS();
 
