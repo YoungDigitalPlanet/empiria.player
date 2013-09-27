@@ -2,4 +2,5 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogres
 
 public interface ProgressBonusExtension {
 
+	public ProgressBonusConfig getProgressBonusConfig();
 }
