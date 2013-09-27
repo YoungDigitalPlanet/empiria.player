@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.gin.module.ModuleScopedModule;
 import eu.ydp.empiria.player.client.gin.module.OrderingGinModule;
 import eu.ydp.empiria.player.client.gin.module.PageScopedModule;
 import eu.ydp.empiria.player.client.gin.module.PlayerGinModule;
+import eu.ydp.empiria.player.client.gin.module.ProgressBonusGinModule;
 import eu.ydp.empiria.player.client.gin.module.SelectionGinModule;
 import eu.ydp.empiria.player.client.gin.module.SimulationGinModule;
 import eu.ydp.empiria.player.client.gin.module.SlideshowGinModule;
@@ -58,7 +59,7 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 		SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
 		OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class,
 		DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
-		AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class})
+		AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class})
 
 public interface PlayerGinjector extends Ginjector {
 
