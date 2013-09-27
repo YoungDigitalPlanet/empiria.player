@@ -52,9 +52,9 @@ public class CorrectAnswersCounterJUnitTest {
 	}
 	
 	@Test
-	public void shouldCountExactAmountOfCorrectAnswersInCorrectAnswersMode() throws Exception {
+	public void shouldCountAmountOfCorrectAnswersReducedByErrorsInCorrectAnswersMode() throws Exception {
 		Response response = new ResponseBuilder().withCorrectAnswers("correct1", "correct2", "correct3")
-				.withCurrentUserAnswers("correct1", "correct2", "wrong")
+				.withCurrentUserAnswers("correct1", "correct2", "correct3", "wrong")
 				.withCountMode(CountMode.CORRECT_ANSWERS)
 				.build();
 		
