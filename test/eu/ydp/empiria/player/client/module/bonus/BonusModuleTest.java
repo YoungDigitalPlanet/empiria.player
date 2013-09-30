@@ -141,10 +141,10 @@ public class BonusModuleTest {
 	}
 
 	private void mockAllOk() {
-		when(outcomeAccessor.isPageAllOk()).thenReturn(true);
+		when(outcomeAccessor.isPageAllOkWithoutPreviousMistakes()).thenReturn(true);
 	}
 
 	private void mockNotAllOk() {
-		when(outcomeAccessor.isPageAllOk()).thenReturn(false);
+		when(outcomeAccessor.isPageAllOkWithoutPreviousMistakes()).thenReturn(false);
 	}
 }

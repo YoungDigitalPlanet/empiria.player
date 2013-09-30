@@ -56,7 +56,7 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	}
 
 	private boolean isPageAllOkFirstTime() {
-		return !pageAllOkCompleted && outcomeAccessor.isPageAllOk();
+		return !pageAllOkCompleted && outcomeAccessor.isPageAllOkWithoutPreviousMistakes();
 	}
 
 	private void setPageAllOkCompleted() {

@@ -218,6 +218,34 @@ public class OutcomeAccessorTest {
 		assertThat(pageAllOk).isFalse();
 	}
 
+	@Test
+	public void shouldReturnPageAllOkWithoutPreviousMistakes_pageAllOkWithoutMistakes() {
+		// given
+		mockTodo(5);
+		mockDone(5);
+		mockMistakes(0);
+
+		// when
+		boolean pageAllOkWithoutPreviousMistakes = accessor.isPageAllOkWithoutPreviousMistakes();
+
+		// then
+		assertThat(pageAllOkWithoutPreviousMistakes).isTrue();
+	}
+
+	@Test
+	public void shouldReturnPageAllOkWithoutPreviousMistakes_pageAllOkWithMistakes() {
+		// given
+		mockTodo(5);
+		mockDone(5);
+		mockMistakes(1);
+
+		// when
+		boolean pageAllOkWithoutPreviousMistakes = accessor.isPageAllOkWithoutPreviousMistakes();
+
+		// then
+		assertThat(pageAllOkWithoutPreviousMistakes).isFalse();
+	}
+
 	private void mockTodo(Integer TODO) {
 		when(variableProviderSocket.getVariableValue(eq("TODO")).getValuesShort()).thenReturn(TODO.toString());
 	}

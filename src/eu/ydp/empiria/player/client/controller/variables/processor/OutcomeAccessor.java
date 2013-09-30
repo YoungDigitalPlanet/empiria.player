@@ -54,11 +54,16 @@ public class OutcomeAccessor {
 		}
 		return false;
 	}
-	
+
 	public boolean isPageAllOk() {
 		int todo = getCurrentPageTodo();
 		int done = getCurrentPageDone();
 		return todo > 0 && todo == done;
+	}
+
+	public boolean isPageAllOkWithoutPreviousMistakes() {
+		boolean withoutMistakes = getCurrentPageMistakes() == 0;
+		return withoutMistakes && isPageAllOk();
 	}
 
 	private int getVariableAsInt(VariableName variable) {
