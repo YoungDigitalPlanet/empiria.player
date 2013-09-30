@@ -7,12 +7,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 public class SwiffyService {
-	@Inject SwiffyRuntimeLoader runtimeLoader;
-	@Inject Provider<SwiffyObject> swiffyObjectProvider;
+
+	@Inject private Provider<SwiffyObject> swiffyObjectProvider;
+	
 	private final Map<String, SwiffyObject> swiffyObjects = Maps.newHashMap();
 
 	public SwiffyObject getSwiffyObject(String swifyName, String url) {
-		runtimeLoader.loadRuntime();
 		SwiffyObject swiffyObject = swiffyObjectProvider.get();
 		swiffyObject.setAnimationUrl(url);
 		swiffyObjects.put(swifyName, swiffyObject);
