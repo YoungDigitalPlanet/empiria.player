@@ -27,6 +27,7 @@ import eu.ydp.empiria.player.client.module.connection.presenter.translation.Surf
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
+import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveCancelHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEvent;
@@ -46,7 +47,7 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler,
-		ConnectionMoveStartHandler {
+		ConnectionMoveStartHandler, ConnectionMoveCancelHandler {
 
 	// protected for tests
 	protected boolean STACK_ANDROID_BROWSER = UserAgentChecker.isStackAndroidBrowser(); // NOPMD
@@ -200,6 +201,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		view.addConnectionMoveHandler(this);
 		view.addConnectionMoveEndHandler(this);
 		view.addConnectionMoveStartHandler(this);
+		view.addConnectionMoveCancelHandler(this);
 	}
 
 	@Override
@@ -256,7 +258,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		}
 		clearSurface(connectionStartItem);
 	}
-	
+
 	private void updatePointPosition(ConnectionMoveEvent event) {
 		lastPoint.setSource(event.getX());
 		lastPoint.setTarget(event.getY());
@@ -363,7 +365,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			targetItem.setConnected(true, type);
 			connectionSurfacesManager.putSurface(connectionPair, currentSurface);
 			connectionEventHandler.fireConnectEvent(PairConnectEventTypes.CONNECTED, getIdentifier(sourceItem), getIdentifier(targetItem), userAction);
-			
+
 			prepareAndAddStyleToSurface(sourceItem, targetItem, type);
 		}
 	}
@@ -428,4 +430,11 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		return asWidget().isAttached();
 	}
 
+	@Override
+	public void onConnectionMoveCancel() {
+		ConnectionItem connectionStartItem = connectionItemPair.getSource();
+		resetIfNotConnected(getIdentifier(connectionStartItem));
+		resetConnectionMadeByTouch();
+		clearSurface(connectionStartItem);
+	}
 }
