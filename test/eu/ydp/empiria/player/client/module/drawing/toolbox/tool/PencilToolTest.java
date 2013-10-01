@@ -1,12 +1,14 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox.tool;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.empiria.player.client.util.position.Point;
@@ -22,6 +24,11 @@ public class PencilToolTest {
 	@Mock
 	private DrawCanvas canvas;
 
+	@After
+	public void verifyNoMoreInteractions() {
+		Mockito.verifyNoMoreInteractions(canvas, colorModel);
+	}
+	
 	@Test
 	public void shouldDrawPoint() throws Exception {
 		//given
@@ -31,7 +38,9 @@ public class PencilToolTest {
 		pencilTool.start(point);
 		
 		//then
-		verify(canvas).drawPoint(point, colorModel);
+		InOrder inOrder = Mockito.inOrder(canvas);
+		inOrder.verify(canvas).setLineWidth(PencilTool.LINE_WIDTH);
+		inOrder.verify(canvas).drawPoint(point, colorModel);
 	}
 	
 	@Test
@@ -44,6 +53,8 @@ public class PencilToolTest {
 		pencilTool.move(startPoint, endPoint);
 		
 		//then
-		verify(canvas).drawLine(startPoint, endPoint, colorModel);
+		InOrder inOrder = Mockito.inOrder(canvas);
+		inOrder.verify(canvas).setLineWidth(PencilTool.LINE_WIDTH);
+		inOrder.verify(canvas).drawLine(startPoint, endPoint, colorModel);
 	}
 }
