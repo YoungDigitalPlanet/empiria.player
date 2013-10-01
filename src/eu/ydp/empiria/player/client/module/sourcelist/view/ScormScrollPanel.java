@@ -1,21 +1,24 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
+
 public class ScormScrollPanel {
-	public void lockScroll(){
+	public void lockScroll() {
 		nativeLockScroll();
 	}
-	
-	public void unlockScroll(){
+
+	public void unlockScroll() {
 		nativeUnlockScroll();
 	}
-	
+
 	private native void nativeLockScroll() /*-{
-		$wnd.lockScroll();
+		if (!!$wnd.empiriaLockScroll) {
+			$wnd.empiriaLockScroll();
+		}
 	}-*/;
 
-	
-	
 	private native void nativeUnlockScroll() /*-{
-		$wnd.unlockScroll();
+		if (!!$wnd.empiriaUnlockScroll) {
+			$wnd.empiriaUnlockScroll();
+		}
 	}-*/;
 }
