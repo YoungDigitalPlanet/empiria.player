@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.progressbonus;
 
+import com.google.common.base.Optional;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONValue;
@@ -39,8 +40,7 @@ public class ProgressBonusModule extends SimpleModuleBase implements IStateful, 
 	private ProgressAssetProvider assetProvider;
 	private ProgressCalculator progressCalculator;
 
-	private int assetId;
-	private boolean restoreFromState = false;
+	private Optional<Integer> assetId = Optional.absent();
 	private ProgressAsset asset;
 	private String identifier;
 
@@ -85,8 +85,8 @@ public class ProgressBonusModule extends SimpleModuleBase implements IStateful, 
 	public void setState(JSONArray newState) {
 		JSONValue jsonValue = newState.get(0);
 		if (jsonValue.isNumber() != null) {
-			assetId = (int) jsonValue.isNumber().doubleValue();
-			restoreFromState = true;
+			int idFromState = (int) jsonValue.isNumber().doubleValue();
+			assetId = Optional.of(idFromState);
 		}
 	}
 
@@ -98,8 +98,8 @@ public class ProgressBonusModule extends SimpleModuleBase implements IStateful, 
 
 	@Override
 	public void onSetUp() {
-		if (restoreFromState) {
-			asset = assetProvider.createFrom(assetId);
+		if (assetId.isPresent()) {
+			asset = assetProvider.createFrom(assetId.get());
 		} else {
 			asset = assetProvider.createRandom();
 		}
