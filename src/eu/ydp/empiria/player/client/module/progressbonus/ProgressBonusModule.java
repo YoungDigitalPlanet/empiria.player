@@ -8,6 +8,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
@@ -21,7 +22,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class ProgressBonusModule extends SimpleModuleBase implements IStateful, IUniqueModule {
+public class ProgressBonusModule extends SimpleModuleBase implements IStateful, IUniqueModule, ILifecycleModule {
 
 	private static final String PROGRESS_BONUS_ID_ATTR = "progressBonusId";
 
@@ -38,6 +39,8 @@ public class ProgressBonusModule extends SimpleModuleBase implements IStateful, 
 	private ProgressAssetProvider assetProvider;
 	private ProgressCalculator progressCalculator;
 
+	private int assetId;
+	private boolean restoreFromState = false;
 	private ProgressAsset asset;
 	private String identifier;
 
@@ -58,7 +61,6 @@ public class ProgressBonusModule extends SimpleModuleBase implements IStateful, 
 
 	@Override
 	protected void initModule(Element element) {
-		asset = assetProvider.createRandom();
 		identifier = element.getAttribute(PROGRESS_BONUS_ID_ATTR);
 	}
 
@@ -83,18 +85,39 @@ public class ProgressBonusModule extends SimpleModuleBase implements IStateful, 
 	public void setState(JSONArray newState) {
 		JSONValue jsonValue = newState.get(0);
 		if (jsonValue.isNumber() != null) {
-			int value = (int) jsonValue.isNumber().doubleValue();
-			createAssetFromID(value);
+			assetId = (int) jsonValue.isNumber().doubleValue();
+			restoreFromState = true;
 		}
-	}
-
-	private void createAssetFromID(int value) {
-		asset = assetProvider.createFrom(value);
 	}
 
 	private void onProgressChanged() {
 		int progress = progressCalculator.getProgress();
 		ShowImageDTO imageDTO = asset.getImageForProgress(progress);
 		presenter.showImage(imageDTO);
+	}
+
+	@Override
+	public void onSetUp() {
+		if (restoreFromState) {
+			asset = assetProvider.createFrom(assetId);
+		} else {
+			asset = assetProvider.createRandom();
+		}
+	}
+
+	@Override
+	public void onStart() {
+	}
+
+	@Override
+	public void onBodyLoad() {
+	}
+
+	@Override
+	public void onBodyUnload() {
+	}
+
+	@Override
+	public void onClose() {
 	}
 }
