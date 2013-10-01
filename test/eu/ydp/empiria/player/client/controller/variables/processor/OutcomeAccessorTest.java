@@ -179,45 +179,6 @@ public class OutcomeAccessorTest {
 		assertThat(lastActionSelection).isEqualTo(false);
 	}
 
-	@Test
-	public void shouldReturnPageAllOk_todoEqDone() {
-		// given
-		mockTodo(5);
-		mockDone(5);
-
-		// when
-		boolean pageAllOk = accessor.isPageAllOk();
-
-		// then
-		assertThat(pageAllOk).isTrue();
-	}
-
-	@Test
-	public void shouldReturnPageAllOk_todoNotEqDone() {
-		// given
-		mockTodo(5);
-		mockDone(6);
-
-		// when
-		boolean pageAllOk = accessor.isPageAllOk();
-
-		// then
-		assertThat(pageAllOk).isFalse();
-	}
-
-	@Test
-	public void shouldReturnPageAllOk_todoIsZero() {
-		// given
-		mockTodo(0);
-		mockDone(6);
-
-		// when
-		boolean pageAllOk = accessor.isPageAllOk();
-
-		// then
-		assertThat(pageAllOk).isFalse();
-	}
-
 	private void mockTodo(Integer TODO) {
 		when(variableProviderSocket.getVariableValue(eq("TODO")).getValuesShort()).thenReturn(TODO.toString());
 	}

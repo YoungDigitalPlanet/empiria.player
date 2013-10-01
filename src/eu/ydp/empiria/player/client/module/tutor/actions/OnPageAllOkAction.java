@@ -2,17 +2,17 @@ package eu.ydp.empiria.player.client.module.tutor.actions;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.FeedbackActionConditions;
 import eu.ydp.empiria.player.client.module.tutor.ActionType;
 
 public class OnPageAllOkAction implements OutcomeDrivenAction {
 
 	@Inject
-	private OutcomeAccessor outcomeAccessor;
+	private FeedbackActionConditions actionConditions;
 	
 	@Override
 	public boolean actionOccured() {
-		return outcomeAccessor.isPageAllOk();
+		return actionConditions.isPageAllOk();
 	}
 
 	@Override
