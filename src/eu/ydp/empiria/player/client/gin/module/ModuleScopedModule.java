@@ -52,6 +52,8 @@ import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
+import eu.ydp.empiria.player.client.module.progressbonus.presenter.ProgressBonusPresenter;
+import eu.ydp.empiria.player.client.module.progressbonus.view.ProgressBonusView;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
 import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
@@ -91,6 +93,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindSelection();
 		bindDrawing();
 		bindBonus();
+		bindProgressBonus();
 	}
 
 	private void bindDrawing() {
@@ -176,7 +179,12 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(BonusProvider.class, new TypeLiteral<ModuleScopedProvider<BonusProvider>>(){});
 		bind(BonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(BonusConfigModuleScopeProvider.class);
 	}
-	
+
+	private void bindProgressBonus() {
+		bindModuleScoped(ProgressBonusPresenter.class, new TypeLiteral<ModuleScopedProvider<ProgressBonusPresenter>>(){});
+		bindModuleScoped(ProgressBonusView.class, new TypeLiteral<ModuleScopedProvider<ProgressBonusView>>(){});
+	}
+
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<? extends Provider<T>> typeLiteral){
 		bind(typeLiteral).in(Singleton.class);
 		bind(clazz)

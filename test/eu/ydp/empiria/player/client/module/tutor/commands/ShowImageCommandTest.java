@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.module.tutor.ShowImageDTO;
+import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
 import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.gwtutil.client.util.geom.Size;

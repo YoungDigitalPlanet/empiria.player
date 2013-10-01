@@ -20,9 +20,9 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
 import eu.ydp.empiria.player.client.module.progressbonus.presenter.ProgressBonusPresenter;
 import eu.ydp.empiria.player.client.module.progressbonus.view.ProgressBonusView;
-import eu.ydp.empiria.player.client.module.tutor.ShowImageDTO;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
