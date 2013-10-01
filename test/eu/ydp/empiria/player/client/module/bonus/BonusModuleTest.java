@@ -16,7 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.FeedbackActionConditions;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;
 
@@ -27,7 +27,7 @@ public class BonusModuleTest {
 	private BonusModule module;
 
 	@Mock
-	private OutcomeAccessor outcomeAccessor;
+	private FeedbackActionConditions actionConditions;
 	@Mock
 	private PowerFeedbackMediator mediator;
 	@Mock
@@ -141,10 +141,10 @@ public class BonusModuleTest {
 	}
 
 	private void mockAllOk() {
-		when(outcomeAccessor.isPageAllOkWithoutPreviousMistakes()).thenReturn(true);
+		when(actionConditions.isPageAllOkWithoutPreviousMistakes()).thenReturn(true);
 	}
 
 	private void mockNotAllOk() {
-		when(outcomeAccessor.isPageAllOkWithoutPreviousMistakes()).thenReturn(false);
+		when(actionConditions.isPageAllOkWithoutPreviousMistakes()).thenReturn(false);
 	}
 }

@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.FeedbackActionConditions;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
@@ -15,7 +15,7 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusClient {
 
 	@Inject
-	private OutcomeAccessor outcomeAccessor;
+	private FeedbackActionConditions actionConditions;
 	@Inject
 	@PageScoped
 	private PowerFeedbackMediator mediator;
@@ -56,7 +56,7 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	}
 
 	private boolean isPageAllOkFirstTime() {
-		return !pageAllOkCompleted && outcomeAccessor.isPageAllOkWithoutPreviousMistakes();
+		return !pageAllOkCompleted && actionConditions.isPageAllOkWithoutPreviousMistakes();
 	}
 
 	private void setPageAllOkCompleted() {
