@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.controller;
 import com.google.gwt.core.client.JavaScriptObject;
 
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
-import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageData;
@@ -36,17 +35,15 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 	private final IFlowSocket flowSocket;
 	private final AssessmentViewSocket assessmentViewSocket; // NOPMD
 	private final Page page = PlayerGinjectorFactory.getPlayerGinjector().getPage();
-	private final ModuleHandlerManager moduleHandlerManager;
 	private final AssessmentControllerFactory controllerFactory = PlayerGinjectorFactory.getPlayerGinjector().getAssessmentControllerFactory();
 
 	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket, AssessmentSessionSocket ass,
-			ModulesRegistrySocket mrs, ModuleHandlerManager moduleHandlerManager) {
+			ModulesRegistrySocket mrs) {
 		assessmentViewSocket = avs;
 		assessmentSessionSocket = ass;
 		interactionEventsSocket = interactionsocket;
 		modulesRegistrySocket = mrs;
 		flowSocket = fsocket;
-		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
 	/**
@@ -62,8 +59,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 			if (isInCache) {
 				pageController = controllerCache.getOrCreateAndPut(pageNumber);
 			} else {
-				pageController = controllerFactory.getPageController(assessmentViewSocket.getPageViewSocket(), flowSocket, interactionEventsSocket,
-						assessmentSessionSocket.getPageSessionSocket(), modulesRegistrySocket, moduleHandlerManager, controllerFactory);
+				pageController = controllerFactory.getPageController(assessmentViewSocket.getPageViewSocket(), flowSocket, assessmentSessionSocket.getPageSessionSocket());
 				controllerCache.put(pageNumber, pageController);
 			}
 		}

@@ -10,6 +10,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
@@ -49,8 +51,13 @@ public class ItemBody implements WidgetWorkflowListener {
 	private JSONArray stateAsync;
 	private boolean attached = false;
 
-	public ItemBody(DisplayContentOptions options, ModuleSocket moduleSocket, final InteractionEventsListener interactionEventsListener,
-			ModulesRegistrySocket modulesRegistrySocket, ModuleHandlerManager moduleHandlerManager) {
+	@Inject
+	public ItemBody(
+			@Assisted DisplayContentOptions options, 
+			@Assisted ModuleSocket moduleSocket, 
+			ModuleHandlerManager moduleHandlerManager,
+			InteractionEventsListener interactionEventsListener,
+			ModulesRegistrySocket modulesRegistrySocket) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;

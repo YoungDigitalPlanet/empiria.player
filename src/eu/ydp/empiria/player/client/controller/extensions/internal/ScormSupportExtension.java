@@ -1,9 +1,12 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal;
 
+import com.google.common.base.Strings;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
@@ -14,24 +17,23 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSes
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableUtil;
+import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
 public class ScormSupportExtension extends InternalExtension implements PlayerJsObjectModifierExtension, SessionDataSocketUserExtension, DataSourceDataSocketUserExtension {
 
+	private static final Logger LOGGER = new Logger();
+
 	protected SessionDataSupplier sessionDataSupplier;
-	
 	protected JavaScriptObject playerJsObject;
-	
 	protected DataSourceDataSupplier dataSourceDataSupplier;
-	
 	protected int masteryScore = 100;
 	
 	@Inject
 	private AssessmentReportFactory factory;
-	
+	@Inject
+	private PlayerWorkModeService workModeService;
 	private ResultInfo result;
-	
 	private HintInfo hint;
-	
 	private VariableUtil variableUtil;
 	
 	@Override
@@ -92,6 +94,9 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		}
 		playerJsObject.getChecks = function(){
 			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getChecks()();
+		}
+		playerJsObject.setWorkMode = function(workMode){
+			instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::setWorkMode(Ljava/lang/String;)(workMode);
 		}
 	}-*/;
 	
@@ -156,4 +161,19 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		return status;
 	}
 
+	private void setWorkMode(String workMode) {
+		PlayerWorkMode playerWorkMode;
+		try {
+			playerWorkMode = PlayerWorkMode.valueOf(workMode);
+			workModeService.setCurrentWorkMode(playerWorkMode);
+		} catch (NullPointerException e) {
+			logIncorrectWorkModeMessage(workMode);
+		} catch (IllegalArgumentException e) {
+			logIncorrectWorkModeMessage(workMode);
+		}
+	}
+
+	private void logIncorrectWorkModeMessage(String workMode) {
+		LOGGER.warning("Cannot set workMode to: \""+Strings.nullToEmpty(workMode)+"\"");
+	}
 }

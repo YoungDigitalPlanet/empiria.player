@@ -5,9 +5,9 @@ import java.util.List;
 
 import eu.ydp.empiria.player.client.module.IModule;
 
-public class ModuleHandlerManager implements ModuleHandlerRegistrar {
+public class ModuleHandlerManager {
 
-	private List<ModuleHandler> handlers = new ArrayList<ModuleHandler>();
+	private final List<ModuleHandler> handlers = new ArrayList<ModuleHandler>();
 
 	public void addModuleHandler(ModuleHandler handler){
 		handlers.add(handler);

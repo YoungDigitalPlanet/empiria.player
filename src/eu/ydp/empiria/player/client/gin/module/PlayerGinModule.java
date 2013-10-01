@@ -16,6 +16,9 @@ import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
+import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsHub;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkPopup;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBookmarkPopupView;
@@ -34,6 +37,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.Stic
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
@@ -93,6 +97,8 @@ import eu.ydp.empiria.player.client.module.labelling.view.LabellingViewImpl;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
+import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
+import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.preloader.view.InfinityProgressWidget;
 import eu.ydp.empiria.player.client.preloader.view.ProgressView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -147,6 +153,12 @@ public class PlayerGinModule extends AbstractGinModule {
 		// this is unnecessary, but left for clarity - if GIN can't find a
 		// binding for a class, it falls back to calling GWT.create() on that
 		// class
+		bind(ModulesRegistrySocket.class).to(ModulesRegistry.class);
+		bind(ModulesRegistry.class).in(Singleton.class);
+		bind(InteractionEventsListener.class).to(DeliveryEventsHub.class);
+		bind(InteractionEventsSocket.class).to(DeliveryEventsHub.class);
+		bind(DeliveryEventsHub.class).in(Singleton.class);
+		
 		bind(DataSourceManager.class).in(Singleton.class);
 		bind(DataSourceDataSupplier.class).to(DataSourceManager.class);
 		bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class);
@@ -154,7 +166,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(MultiPageController.class).in(Singleton.class);
 		bind(MultiPageTouchHandler.class).in(Singleton.class);
 		bind(TouchController.class).in(Singleton.class);
-
+		bind(PlayerWorkModeService.class).in(Singleton.class);
 		bind(PageViewCache.class).in(Singleton.class);
 		bind(PageControllerCache.class).in(Singleton.class);
 		bind(StyleNameConstants.class).in(Singleton.class);
