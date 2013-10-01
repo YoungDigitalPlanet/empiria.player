@@ -11,13 +11,13 @@ public class ScormScrollPanel {
 	}
 
 	private native void nativeLockScroll() /*-{
-		if (!!$wnd.empiriaLockScroll) {
+		if (typeof($wnd.empiriaLockScroll) === 'function') {
 			$wnd.empiriaLockScroll();
 		}
 	}-*/;
 
 	private native void nativeUnlockScroll() /*-{
-		if (!!$wnd.empiriaUnlockScroll) {
+		if (typeof($wnd.empiriaUnlockScroll) === 'function') {
 			$wnd.empiriaUnlockScroll();
 		}
 	}-*/;
