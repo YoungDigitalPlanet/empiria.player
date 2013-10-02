@@ -55,6 +55,7 @@ import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
+import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
@@ -210,6 +211,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(ForceRedrawHack.class).to(ForceRedrawHackImpl.class).in(Singleton.class);
 		bind(ComputedStyle.class).to(ComputedStyleImpl.class).in(Singleton.class);
 		bind(FlowManager.class).in(Singleton.class);
+		bind(OutcomeAccessor.class).in(Singleton.class);
 		bind(FlowDataSupplier.class).annotatedWith(FlowManagerDataSupplier.class).toProvider(FlowDataSupplierProvider.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
