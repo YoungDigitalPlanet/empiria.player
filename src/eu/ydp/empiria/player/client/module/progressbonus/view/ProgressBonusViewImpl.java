@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.module.model.image.ShowImage;
+import eu.ydp.empiria.player.client.module.model.image.ImageShowDelegate;
 import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
 
 public class ProgressBonusViewImpl extends Composite implements ProgressBonusView {
@@ -28,7 +28,7 @@ public class ProgressBonusViewImpl extends Composite implements ProgressBonusVie
 
 	@Override
 	public void showImage(ShowImageDTO dto) {
-		ShowImage showImage = new ShowImage(dto);
+		ImageShowDelegate showImage = new ImageShowDelegate(dto);
 		showImage.showOnWidget(content);
 	}
 }

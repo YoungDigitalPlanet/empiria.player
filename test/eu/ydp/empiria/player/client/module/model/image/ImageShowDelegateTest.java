@@ -23,7 +23,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
 @PrepareForTest({ Style.class, Element.class, Widget.class })
-public class ShowImageTest {
+public class ImageShowDelegateTest {
 
 	private Widget widget;
 	private Style style;
@@ -54,7 +54,7 @@ public class ShowImageTest {
 		int height = 222;
 		Size size = new Size(width, height);
 		ShowImageDTO dto = new ShowImageDTO(path, size);
-		ShowImage showImage = new ShowImage(dto);
+		ImageShowDelegate showImage = new ImageShowDelegate(dto);
 
 		// when
 		showImage.showOnWidget(widget);

@@ -3,6 +3,6 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
 	<g:FlowPanel ui:field="container" styleName="{res.QP_PROGRESS_BONUS_CONTAINER}">
-	    <g:FlowPanel ui:field="content" />
+	    <g:FlowPanel ui:field="content" styleName="{res.QP_PROGRESS_BONUS_CONTENT}"/>
 	</g:FlowPanel>
 </ui:UiBinder> 

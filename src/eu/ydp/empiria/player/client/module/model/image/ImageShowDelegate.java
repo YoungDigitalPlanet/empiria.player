@@ -6,11 +6,11 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.gwtutil.client.util.geom.Size;
 import eu.ydp.gwtutil.client.util.geom.WidgetSize;
 
-public class ShowImage {
+public class ImageShowDelegate {
 
 	private ShowImageDTO dto;
 
-	public ShowImage(ShowImageDTO dto) {
+	public ImageShowDelegate(ShowImageDTO dto) {
 		this.dto = dto;
 	}
 
