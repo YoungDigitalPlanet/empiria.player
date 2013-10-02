@@ -36,19 +36,24 @@ public class OutcomeAccessorTest {
 	private SessionDataSupplier sessionDataSupplier;
 	@Mock
 	private FlowDataSupplier flowDataSupplier;
-	VariableProviderSocket variableProviderSocket;
+	@Mock(answer = Answers.CALLS_REAL_METHODS)
+	private OutcomesResultCalculator resultCalculator;
+	
+	VariableProviderSocket itemVariableProviderSocket;
+	VariableProviderSocket assessmentVariableProviderSocket;
 
 	@Before
 	public void setUp() {
 		when(flowDataSupplier.getCurrentPageIndex()).thenReturn(PAGE_INDEX);
-		variableProviderSocket = sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket();
+		itemVariableProviderSocket = sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket();
+		assessmentVariableProviderSocket = sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket();
 	}
 
 	@Test
 	public void getCurrentPageTodo() {
 		final Integer TODO = 5;
 		// given
-		mockTodo(TODO);
+		mockItemTodo(TODO);
 
 		// when
 		int todo = accessor.getCurrentPageTodo();
@@ -61,7 +66,7 @@ public class OutcomeAccessorTest {
 	public void getCurrentPageDone() {
 		final Integer DONE = 6;
 		// given
-		mockDone(DONE);
+		mockItemDone(DONE);
 
 		// when
 		int done = accessor.getCurrentPageDone();
@@ -74,7 +79,7 @@ public class OutcomeAccessorTest {
 	public void getCurrentPageErrors() {
 		final Integer ERRORS = 7;
 		// given
-		mockErrors(ERRORS);
+		mockItemErrors(ERRORS);
 
 		// when
 		int errors = accessor.getCurrentPageErrors();
@@ -87,7 +92,7 @@ public class OutcomeAccessorTest {
 	public void getCurrentPageMistakes() {
 		final Integer MISTAKES = 8;
 		// given
-		mockMistakes(MISTAKES);
+		mockItemMistakes(MISTAKES);
 
 		// when
 		int mistakes = accessor.getCurrentPageMistakes();
@@ -182,8 +187,8 @@ public class OutcomeAccessorTest {
 	@Test
 	public void shouldReturnPageAllOk_todoEqDone() {
 		// given
-		mockTodo(5);
-		mockDone(5);
+		mockItemTodo(5);
+		mockItemDone(5);
 
 		// when
 		boolean pageAllOk = accessor.isPageAllOk();
@@ -195,8 +200,8 @@ public class OutcomeAccessorTest {
 	@Test
 	public void shouldReturnPageAllOk_todoNotEqDone() {
 		// given
-		mockTodo(5);
-		mockDone(6);
+		mockItemTodo(5);
+		mockItemDone(6);
 
 		// when
 		boolean pageAllOk = accessor.isPageAllOk();
@@ -208,8 +213,8 @@ public class OutcomeAccessorTest {
 	@Test
 	public void shouldReturnPageAllOk_todoIsZero() {
 		// given
-		mockTodo(0);
-		mockDone(6);
+		mockItemTodo(0);
+		mockItemDone(6);
 
 		// when
 		boolean pageAllOk = accessor.isPageAllOk();
@@ -218,20 +223,127 @@ public class OutcomeAccessorTest {
 		assertThat(pageAllOk).isFalse();
 	}
 
-	private void mockTodo(Integer TODO) {
-		when(variableProviderSocket.getVariableValue(eq("TODO")).getValuesShort()).thenReturn(TODO.toString());
+	@Test
+	public void getAssessmentTodo() {
+		final Integer TODO = 5;
+		// given
+		mockAssessmentTodo(TODO);
+
+		// when
+		int todo = accessor.getAssessmentTodo();
+
+		// then
+		assertThat(todo).isEqualTo(TODO);
 	}
 
-	private void mockDone(Integer DONE) {
-		when(variableProviderSocket.getVariableValue(eq("DONE")).getValuesShort()).thenReturn(DONE.toString());
+	@Test
+	public void getAssessmentDone() {
+		final Integer DONE = 6;
+		// given
+		mockAssessmentDone(DONE);
+
+		// when
+		int done = accessor.getAssessmentDone();
+
+		// then
+		assertThat(done).isEqualTo(DONE);
 	}
 
-	private void mockErrors(Integer ERRORS) {
-		when(variableProviderSocket.getVariableValue(eq("ERRORS")).getValuesShort()).thenReturn(ERRORS.toString());
+	@Test
+	public void getAssessmentErrors() {
+		final Integer ERRORS = 7;
+		// given
+		mockAssessmentErrors(ERRORS);
+
+		// when
+		int errors = accessor.getAssessmentErrors();
+
+		// then
+		assertThat(errors).isEqualTo(ERRORS);
 	}
 
-	private void mockMistakes(Integer MISTAKES) {
-		when(variableProviderSocket.getVariableValue(eq("MISTAKES")).getValuesShort()).thenReturn(MISTAKES.toString());
+	@Test
+	public void getAssessmentMistakes() {
+		final Integer MISTAKES = 8;
+		// given
+		mockAssessmentMistakes(MISTAKES);
+
+		// when
+		int mistakes = accessor.getAssessmentMistakes();
+
+		// then
+		assertThat(mistakes).isEqualTo(MISTAKES);
+	}
+
+	@Test
+	public void getAssessmentResult() {
+		// given
+		mockAssessmentTodo(73);
+		mockAssessmentDone(32);
+
+		// when
+		int mistakes = accessor.getAssessmentResult();
+
+		// then
+		assertThat(mistakes).isEqualTo(43);
+	}
+
+	@Test
+	public void getAssessmentResult_zero() {
+		// given
+		mockAssessmentTodo(73);
+		mockAssessmentDone(0);
+
+		// when
+		int mistakes = accessor.getAssessmentResult();
+
+		// then
+		assertThat(mistakes).isEqualTo(0);
+	}
+
+	@Test
+	public void getAssessmentResult_completed() {
+		// given
+		mockAssessmentTodo(73);
+		mockAssessmentDone(73);
+
+		// when
+		int mistakes = accessor.getAssessmentResult();
+
+		// then
+		assertThat(mistakes).isEqualTo(100);
+	}
+
+	private void mockItemTodo(Integer TODO) {
+		when(itemVariableProviderSocket.getVariableValue(eq("TODO")).getValuesShort()).thenReturn(TODO.toString());
+	}
+
+	private void mockItemDone(Integer DONE) {
+		when(itemVariableProviderSocket.getVariableValue(eq("DONE")).getValuesShort()).thenReturn(DONE.toString());
+	}
+
+	private void mockItemErrors(Integer ERRORS) {
+		when(itemVariableProviderSocket.getVariableValue(eq("ERRORS")).getValuesShort()).thenReturn(ERRORS.toString());
+	}
+
+	private void mockItemMistakes(Integer MISTAKES) {
+		when(itemVariableProviderSocket.getVariableValue(eq("MISTAKES")).getValuesShort()).thenReturn(MISTAKES.toString());
+	}
+
+	private void mockAssessmentTodo(Integer TODO) {
+		when(assessmentVariableProviderSocket.getVariableValue(eq("TODO")).getValuesShort()).thenReturn(TODO.toString());
+	}
+
+	private void mockAssessmentDone(Integer DONE) {
+		when(assessmentVariableProviderSocket.getVariableValue(eq("DONE")).getValuesShort()).thenReturn(DONE.toString());
+	}
+
+	private void mockAssessmentErrors(Integer ERRORS) {
+		when(assessmentVariableProviderSocket.getVariableValue(eq("ERRORS")).getValuesShort()).thenReturn(ERRORS.toString());
+	}
+
+	private void mockAssessmentMistakes(Integer MISTAKES) {
+		when(assessmentVariableProviderSocket.getVariableValue(eq("MISTAKES")).getValuesShort()).thenReturn(MISTAKES.toString());
 	}
 
 }
