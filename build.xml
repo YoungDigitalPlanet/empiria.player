@@ -91,7 +91,7 @@
 				<path refid="project.class.path"/>
 			</classpath>
 			<!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
-			<jvmarg line="${XstartOnFirstThread} -Xmx1024M -Xss16M -XX:MaxPermSize=512M"/>
+			<jvmarg line="${XstartOnFirstThread} -Xmx512M -Xss16M"/>
 			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
 			<arg line="${compile.disableCastChecking}" />
 			<arg value="-XenableClosureCompiler"/>
@@ -105,7 +105,7 @@
 				<pathelement location="src"/>
 				<path refid="project.class.path"/>
 			</classpath>
-			<jvmarg line="${XstartOnFirstThread} -Xmx1024M -Xss16M -XX:MaxPermSize=512M"/>
+			<jvmarg line="${XstartOnFirstThread} -Xmx256M -Xss16M"/>
 			<arg value="-startupUrl"/>
 			<arg value="test.html"/>
 			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
@@ -202,7 +202,7 @@
 		<delete dir="${test.reports.dev.dir}" />
 		<mkdir dir="${test.reports.dev.dir}" />
 		<junit fork="yes" printsummary="yes" haltonfailure="yes">
-			<jvmarg line="-Xmx1024m -Xss16M -XX:MaxPermSize=512M"  />
+			<jvmarg line="-Xmx256m -Xss16M" />
 			<sysproperty key="gwt.args" value="-logLevel WARN" />
 			<sysproperty key="java.awt.headless" value="true" />
 			<sysproperty key="net.sourceforge.cobertura.datafile"
@@ -238,7 +238,7 @@
 		<delete dir="${test.reports.dev_fast.dir}" />
 		<mkdir dir="${test.reports.dev_fast.dir}" />
 		<junit fork="yes" printsummary="yes" haltonfailure="yes">
-			<jvmarg line="-Xmx1024m -Xss16M -XX:MaxPermSize=512M" />
+			<jvmarg line="-Xmx256m -Xss16M" />
 			<sysproperty key="gwt.args" value="-logLevel WARN" />
 			<sysproperty key="java.awt.headless" value="true" />
 			<classpath>
@@ -262,7 +262,7 @@
 	<target name="test.prod" depends="javac.tests" description="Run production mode tests">
 		<mkdir dir="reports/htmlunit.prod" />
 		<junit fork="yes" printsummary="yes" haltonfailure="yes">
-			<jvmarg line="-Xmx1024m -Xss16M -XX:MaxPermSize=512M" />
+			<jvmarg line="-Xmx256m -Xss16M" />
 			<sysproperty key="gwt.args" value="-prod -logLevel WARN -out www-test" />
 			<sysproperty key="java.awt.headless" value="true" />
 			<classpath>
