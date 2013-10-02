@@ -36,7 +36,7 @@ public class OutcomeAccessorTest {
 	private SessionDataSupplier sessionDataSupplier;
 	@Mock
 	private FlowDataSupplier flowDataSupplier;
-	@Mock(answer = Answers.CALLS_REAL_METHODS)
+	@Mock
 	private OutcomesResultCalculator resultCalculator;
 	
 	VariableProviderSocket itemVariableProviderSocket;
@@ -280,6 +280,7 @@ public class OutcomeAccessorTest {
 		// given
 		mockAssessmentTodo(73);
 		mockAssessmentDone(32);
+		when(resultCalculator.calculateResult(73, 32)).thenReturn(43);
 
 		// when
 		int mistakes = accessor.getAssessmentResult();
@@ -293,6 +294,7 @@ public class OutcomeAccessorTest {
 		// given
 		mockAssessmentTodo(73);
 		mockAssessmentDone(0);
+		when(resultCalculator.calculateResult(73, 0)).thenReturn(0);
 
 		// when
 		int mistakes = accessor.getAssessmentResult();
@@ -306,6 +308,7 @@ public class OutcomeAccessorTest {
 		// given
 		mockAssessmentTodo(73);
 		mockAssessmentDone(73);
+		when(resultCalculator.calculateResult(73, 73)).thenReturn(100);
 
 		// when
 		int mistakes = accessor.getAssessmentResult();

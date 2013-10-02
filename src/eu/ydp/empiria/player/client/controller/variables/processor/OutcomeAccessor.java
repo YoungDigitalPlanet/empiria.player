@@ -21,12 +21,9 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 
 public class OutcomeAccessor {
 
-	@Inject
-	private SessionDataSupplier sessionDataSupplier;
-	@Inject
-	private FlowDataSupplier flowDataSupplier;
-	@Inject
-	private OutcomesResultCalculator resultCalculator;
+	@Inject private SessionDataSupplier sessionDataSupplier;
+	@Inject private FlowDataSupplier flowDataSupplier;
+	@Inject private OutcomesResultCalculator resultCalculator;
 
 	public int getCurrentPageTodo() {
 		return getVariableAsInt(TODO);
