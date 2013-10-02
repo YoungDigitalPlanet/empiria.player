@@ -29,11 +29,12 @@ public class ItemModuleSocket implements ModuleSocket {
 
 	private final Item item;
 	private final YJsJsonConverter yJsJsonConverter;
+	private final ModulesRegistrySocket modulesRegistrySocket;
+	private final InteractionEventsListener interactionEventsListener;
+
 	private JSONArray state;
 	private ItemBody itemBody;
 	private InlineBodyGenerator inlineBodyGenerator;
-	private final ModulesRegistrySocket modulesRegistrySocket;
-	private final InteractionEventsListener interactionEventsListener;
 
 	@Inject
 	public ItemModuleSocket(

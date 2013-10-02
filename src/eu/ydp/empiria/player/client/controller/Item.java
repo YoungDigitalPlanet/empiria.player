@@ -16,6 +16,8 @@ import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptio
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.item.ItemExpressionParser;
 import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
@@ -52,6 +54,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private final String title;
 	private final FlowActivityVariablesProcessor flowActivityVariablesProcessor;
 	private final VariableProcessingAdapter variableProcessor;
+	private final PlayerWorkModeService playerWorkModeService;
 
 	private JSONArray state;
 
@@ -67,13 +70,15 @@ public class Item implements IStateful, ItemInterferenceSocket {
 			ExpressionListBuilder expressionListBuilder, 
 			@PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper,
 			ItemExpressionParser expressionParser, 
-			AssessmentControllerFactory assessmentControllerFactory) {
+			AssessmentControllerFactory assessmentControllerFactory,
+			PlayerWorkModeService playerWorkModeService) {
 
 		this.options = options;
 		this.responseManager = responseManager;
 		this.moduleFeedbackProcessor = moduleFeedbackProcessor;
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
+		this.playerWorkModeService = playerWorkModeService;
 
 		Element itemBodyNode = xmlMapper.getItemBody();
 		expressionParser.parseAndConnectExpressions();
@@ -301,6 +306,14 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	public void start() {
 		itemBody.start();
+		activateCorrectWorkMode();
+	}
+
+	private void activateCorrectWorkMode() {
+		PlayerWorkMode workMode = playerWorkModeService.getCurrentWorkMode();
+		if(workMode == PlayerWorkMode.PREVIEW) {
+			itemBody.enablePeviewMode();
+		}
 	}
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {
