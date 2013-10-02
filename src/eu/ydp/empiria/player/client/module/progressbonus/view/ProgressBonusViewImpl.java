@@ -2,11 +2,14 @@ package eu.ydp.empiria.player.client.module.progressbonus.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.module.tutor.ShowImageDTO;
+import eu.ydp.empiria.player.client.module.model.image.ImageShowDelegate;
+import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
 
 public class ProgressBonusViewImpl extends Composite implements ProgressBonusView {
 
@@ -20,9 +23,12 @@ public class ProgressBonusViewImpl extends Composite implements ProgressBonusVie
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
+	@UiField
+	public FlowPanel content;
+
 	@Override
 	public void showImage(ShowImageDTO dto) {
-		// TODO Auto-generated method stub
+		ImageShowDelegate showImage = new ImageShowDelegate(dto);
+		showImage.showOnWidget(content);
 	}
-
 }

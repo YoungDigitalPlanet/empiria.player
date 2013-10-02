@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorCo
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
 import eu.ydp.empiria.player.client.gin.factory.TutorCommandsModuleFactory;
+import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
 import eu.ydp.empiria.player.client.module.tutor.commands.AnimationCommand;
 import eu.ydp.empiria.player.client.module.tutor.commands.ShowImageCommand;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;

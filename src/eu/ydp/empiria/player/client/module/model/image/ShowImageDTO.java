@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.tutor;
+package eu.ydp.empiria.player.client.module.model.image;
 
 import com.google.common.base.Objects;
 

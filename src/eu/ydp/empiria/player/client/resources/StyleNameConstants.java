@@ -629,6 +629,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-prompt")
 	public String QP_PROMPT();
 
+	@DefaultStringValue("qp-progress-bonus-container")
+	public String QP_PROGRESS_BONUS_CONTAINER();
+
+	@DefaultStringValue("qp-progress-bonus-content")
+	public String QP_PROGRESS_BONUS_CONTENT();
+
 	@DefaultStringValue("qp-report")
 	public String QP_REPORT();
 

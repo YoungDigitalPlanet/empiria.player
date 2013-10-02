@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.progressbonus;
 
-import eu.ydp.empiria.player.client.module.tutor.ShowImageDTO;
+import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
 
 public class ProgressAsset {
 
