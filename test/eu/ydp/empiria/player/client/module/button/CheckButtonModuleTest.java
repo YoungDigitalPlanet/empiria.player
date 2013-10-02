@@ -1,11 +1,14 @@
 package eu.ydp.empiria.player.client.module.button;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -17,7 +20,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Binder;
@@ -40,6 +46,7 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 	CheckButtonModule instance;
 	EventsBus eventsBus;
 	FlowRequestInvoker requestInvoker;
+	protected ClickHandler handler;
 
 	private static class CustomGuiceModule implements Module {
 		@Override
@@ -54,6 +61,16 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 		instance = spy(injector.getInstance(CheckButtonModule.class));
 		eventsBus = injector.getInstance(EventsBus.class);
 		requestInvoker = mock(FlowRequestInvoker.class);
+		CustomPushButton button = injector.getInstance(CustomPushButton.class);
+		doAnswer(new Answer<ClickHandler>() {
+
+
+			@Override
+			public ClickHandler answer(InvocationOnMock invocation) throws Throwable {
+				handler = (ClickHandler) invocation.getArguments()[0];
+				return null;
+			}
+		}).when(button).addClickHandler(any(ClickHandler.class));
 	}
 
 	@After
@@ -143,6 +160,21 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 		instance.isSelected = true;
 		instance.onPlayerEvent(event);
 		verify(requestInvoker, times(1)).invokeRequest(Mockito.any(FlowRequest.Continue.class));
+	}
+	
+	@Test
+	public void shouldNotInvokeActionInPreviewMode() {
+		// given
+		instance.initModule(mock(Element.class));
+		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		instance.setFlowRequestsInvoker(requestInvoker);
+		instance.enablePreviewMode();
+
+		// when
+		handler.onClick(null);
+
+		// then
+		verifyZeroInteractions(requestInvoker);
 	}
 
 }

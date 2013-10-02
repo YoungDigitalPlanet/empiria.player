@@ -1,18 +1,25 @@
 package eu.ydp.empiria.player.client.module.button;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwt.xml.client.Element;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
@@ -28,6 +35,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 	ResetButtonModule instance;
 	FlowRequestInvoker requestInvoker;
+	protected ClickHandler handler;
 
 	private static class CustomGuiceModule implements Module {
 		@Override
@@ -52,6 +60,16 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 		instance = spy(injector.getInstance(ResetButtonModule.class));
 		requestInvoker = mock(FlowRequestInvoker.class);
 		instance.setFlowRequestsInvoker(requestInvoker);
+		CustomPushButton button = injector.getInstance(CustomPushButton.class);
+		doAnswer(new Answer<ClickHandler>() {
+
+
+			@Override
+			public ClickHandler answer(InvocationOnMock invocation) throws Throwable {
+				handler = (ClickHandler) invocation.getArguments()[0];
+				return null;
+			}
+		}).when(button).addClickHandler(any(ClickHandler.class));
 	}
 
 	@Test
@@ -72,4 +90,18 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 		assertEquals("qp-reset-button", instance.getStyleName());
 	}
 
+	@Test
+	public void shouldNotInvokeActionInPreviewMode() {
+		// given
+		instance.initModule(mock(Element.class));
+		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		instance.setFlowRequestsInvoker(requestInvoker);
+		instance.enablePreviewMode();
+
+		// when
+		handler.onClick(null);
+
+		// then
+		verifyZeroInteractions(requestInvoker);
+	}
 }
