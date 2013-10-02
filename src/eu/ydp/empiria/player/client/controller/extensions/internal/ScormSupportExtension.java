@@ -95,8 +95,8 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		playerJsObject.getChecks = function(){
 			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getChecks()();
 		}
-		playerJsObject.setWorkMode = function(workMode){
-			instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::setWorkMode(Ljava/lang/String;)(workMode);
+		playerJsObject.enablePreviewMode = function(){
+			instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::enablePreviewMode()();
 		}
 	}-*/;
 	
@@ -161,16 +161,8 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		return status;
 	}
 
-	private void setWorkMode(String workMode) {
-		PlayerWorkMode playerWorkMode;
-		try {
-			playerWorkMode = PlayerWorkMode.valueOf(workMode);
-			workModeService.setCurrentWorkMode(playerWorkMode);
-		} catch (NullPointerException e) {
-			logIncorrectWorkModeMessage(workMode);
-		} catch (IllegalArgumentException e) {
-			logIncorrectWorkModeMessage(workMode);
-		}
+	private void enablePreviewMode() {
+			workModeService.setCurrentWorkMode(PlayerWorkMode.PREVIEW);
 	}
 
 	private void logIncorrectWorkModeMessage(String workMode) {
