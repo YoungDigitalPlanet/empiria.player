@@ -16,14 +16,15 @@ import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.controller.CurrentPageProperties;
 import eu.ydp.empiria.player.client.module.button.FeedbackAudioMuteButtonModule;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.feedback.FeedbackEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 public class FeedbackAudioMuteButtonModuleTest {
 
-	private CustomPushButton customPushButton;
 	private EventsBus eventsBus;
 	private CurrentPageProperties currentPageProperties;
 
@@ -47,7 +48,6 @@ public class FeedbackAudioMuteButtonModuleTest {
 		testObj = injector.getInstance(FeedbackAudioMuteButtonModule.class);
 		eventsBus = injector.getInstance(EventsBus.class);
 		currentPageProperties = injector.getInstance(CurrentPageProperties.class);
-		customPushButton = injector.getInstance(CustomPushButton.class);
 	}
 
 	private static class CustomGuiceModule implements Module {
@@ -59,7 +59,17 @@ public class FeedbackAudioMuteButtonModuleTest {
 			binder.bind(EventsBus.class).toInstance(eventsBus);
 			CurrentPageProperties currentPageProperties = mock(CurrentPageProperties.class);
 			binder.bind(CurrentPageProperties.class).toInstance(currentPageProperties);
+			binder.bind(StyleNameConstants.class).toInstance(mock(StyleNameConstants.class));
 		}
+	}
+
+	@Test
+	public void shouldFireEventOnInvoke() {
+		// when
+		testObj.invokeRequest();
+
+		// then
+		verify(eventsBus).fireEvent(any(FeedbackEvent.class));
 	}
 
 	@Test

@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -145,4 +146,17 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 		verify(requestInvoker, times(1)).invokeRequest(Mockito.any(FlowRequest.Continue.class));
 	}
 
+	@Test
+	public void shouldNotInvokeActionInPreviewMode() {
+		// given
+		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		instance.setFlowRequestsInvoker(requestInvoker);
+		instance.enablePreviewMode();
+
+		// when
+		instance.invokeRequest();
+
+		// then
+		verifyZeroInteractions(requestInvoker);
+	}
 }
