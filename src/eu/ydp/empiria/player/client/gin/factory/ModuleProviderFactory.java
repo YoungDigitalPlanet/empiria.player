@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
+import eu.ydp.empiria.player.client.module.progressbonus.ProgressBonusModule;
 import eu.ydp.empiria.player.client.module.prompt.PromptModule;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
 import eu.ydp.empiria.player.client.module.shape.ShapeModule;
@@ -94,6 +95,7 @@ public class ModuleProviderFactory {
 	@Inject private Provider<TutorApiExtension> tutorApiExtension;
 	@Inject private Provider<DrawingModule> drawingModule;
 	@Inject private Provider<BonusModule> bonusModule;
+	@Inject private Provider<ProgressBonusModule> progressBonusModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -269,5 +271,9 @@ public class ModuleProviderFactory {
 
 	public Provider<BonusModule> getBonusModule() {
 		return bonusModule;
+	}
+
+	public Provider<ProgressBonusModule> getProgressBonusModule() {
+		return progressBonusModule;
 	}
 }
