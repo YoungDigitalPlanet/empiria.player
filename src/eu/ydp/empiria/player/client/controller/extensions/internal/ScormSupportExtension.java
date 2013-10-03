@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal;
 
-import com.google.common.base.Strings;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
 
@@ -171,9 +170,5 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 			status = "INCOMPLETE";
 		}
 		return status;
-	}
-
-	private void logIncorrectWorkModeMessage(String workMode) {
-		LOGGER.warning("Cannot set workMode to: \""+Strings.nullToEmpty(workMode)+"\"");
 	}
 }
