@@ -61,6 +61,14 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		variableUtil = new VariableUtil(assessmentVariableProvider);
 		
 		initPlayerJsObject(playerJsObject);
+
+		initWorkMode();
+	}
+
+	private void initWorkMode() {
+		if (isPreviewMode(playerJsObject)){
+			workModeService.setCurrentWorkMode(PlayerWorkMode.PREVIEW);
+		}
 	}
 	
 	private native void initPlayerJsObject(JavaScriptObject playerJsObject)/*-{
@@ -95,9 +103,13 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		playerJsObject.getChecks = function(){
 			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getChecks()();
 		}
-		playerJsObject.enablePreviewMode = function(){
-			instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::enablePreviewMode()();
+	}-*/;
+	
+	private native boolean isPreviewMode(JavaScriptObject playerJsObject)/*-{
+		if (!!playerJsObject.enablePreviewMode){
+			return playerJsObject.enablePreviewMode();
 		}
+		return false;
 	}-*/;
 	
 	protected void setMasteryScore(int ms){
@@ -159,10 +171,6 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 			status = "INCOMPLETE";
 		}
 		return status;
-	}
-
-	private void enablePreviewMode() {
-			workModeService.setCurrentWorkMode(PlayerWorkMode.PREVIEW);
 	}
 
 	private void logIncorrectWorkModeMessage(String workMode) {
