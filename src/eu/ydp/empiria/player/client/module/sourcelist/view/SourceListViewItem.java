@@ -39,6 +39,9 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	private SourceListViewImpl sourceListView;
 	private DraggableObject<SourceListViewItemWidget> draggable;
 	private SourceListViewItemWidget container;
+	@Inject
+	private ScormScrollPanel scormScrollPanel;
+	
 
 	private SourcelistItemValue itemContent;
 
@@ -85,6 +88,7 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 		draggable.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {
+				scormScrollPanel.lockScroll();
 				touchController.setTouchReservation(true);
 				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
 				event.getDataTransfer().setDragImage(getElement(), 0, 0);
@@ -97,6 +101,7 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 		draggable.addDragEndHandler(new DragEndHandler() {
 			@Override
 			public void onDragEnd(DragEndEvent event) {
+				scormScrollPanel.unlockScroll();
 				getElement().removeClassName(styleNames.QP_DRAGGED_DRAG());
 				sourceListView.onDragEvent(DragDropEventTypes.DRAG_END, SourceListViewItem.this, event);
 			}
