@@ -12,7 +12,7 @@ public class AssetOpenJSDelegator {
 
 	public native void empiriaExternalLinkOpen(String path)/*-{
 		if (!!$wnd.empiriaExternalLinkOpen) {
-			$wnd.empiriaExternalLinkOpen();
+			$wnd.empiriaExternalLinkOpen(path);
 		}
 	}-*/;
 }
