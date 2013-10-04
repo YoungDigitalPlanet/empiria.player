@@ -10,6 +10,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
@@ -27,6 +29,7 @@ import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.WorkModeClient;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
@@ -49,8 +52,13 @@ public class ItemBody implements WidgetWorkflowListener {
 	private JSONArray stateAsync;
 	private boolean attached = false;
 
-	public ItemBody(DisplayContentOptions options, ModuleSocket moduleSocket, final InteractionEventsListener interactionEventsListener,
-			ModulesRegistrySocket modulesRegistrySocket, ModuleHandlerManager moduleHandlerManager) {
+	@Inject
+	public ItemBody(
+			@Assisted DisplayContentOptions options, 
+			@Assisted ModuleSocket moduleSocket, 
+			ModuleHandlerManager moduleHandlerManager,
+			InteractionEventsListener interactionEventsListener,
+			ModulesRegistrySocket modulesRegistrySocket) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
@@ -124,6 +132,14 @@ public class ItemBody implements WidgetWorkflowListener {
 		}
 	}
 
+	public void enablePeviewMode() {
+		for (IModule currModule : modules) {
+			if (currModule instanceof WorkModeClient) {
+				((WorkModeClient) currModule).enablePreviewMode();
+			}
+		}
+	}
+	
 	public void close() {
 		for (IModule currModule : modules) {
 			if (currModule instanceof ILifecycleModule) {

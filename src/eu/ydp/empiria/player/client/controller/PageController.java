@@ -9,7 +9,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.PageData;
 import eu.ydp.empiria.player.client.controller.communication.PageDataError;
@@ -18,13 +17,11 @@ import eu.ydp.empiria.player.client.controller.communication.PageDataTest;
 import eu.ydp.empiria.player.client.controller.communication.PageDataToC;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterferenceSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
-import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 import eu.ydp.empiria.player.client.view.page.PageViewCarrier;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
@@ -33,25 +30,18 @@ public class PageController implements PageInterferenceSocket {
 	private final PageViewSocket pageViewSocket;
 	private final PageSessionSocket pageSessionSocket;
 	private final IFlowSocket flowSocket;
-	private final InteractionEventsSocket interactionSocket;
-	private final ModulesRegistrySocket modulesRegistrySocket;
 	private ParenthoodSocket parenthoodSocket;
 	List<ItemController> items;
-	private final ModuleHandlerManager moduleHandlerManager;
 
 	private final AssessmentControllerFactory controllerFactory;
 
 	@Inject
-	public PageController(@Assisted PageViewSocket pageViewSocket, @Assisted IFlowSocket flowSocket, @Assisted InteractionEventsSocket interactionSocket,
-			@Assisted PageSessionSocket pageSessionSocket, @Assisted ModulesRegistrySocket modulesRegistrySocket,
-			@Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
+	public PageController(@Assisted PageViewSocket pageViewSocket, @Assisted IFlowSocket flowSocket, 
+			@Assisted PageSessionSocket pageSessionSocket, AssessmentControllerFactory controllerFactory) {
 		this.pageViewSocket = pageViewSocket;
 		this.flowSocket = flowSocket;
-		this.interactionSocket = interactionSocket;
 		this.pageSessionSocket = pageSessionSocket;
-		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.controllerFactory = controllerFactory;
-		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
 	public void initPage(PageData pageData) {
@@ -66,8 +56,8 @@ public class PageController implements PageInterferenceSocket {
 			pageViewSocket.setPageViewCarrier(new PageViewCarrier());
 
 			for (int i = 0; i < pageDataTest.datas.length; i++) {
-				ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket, interactionSocket,
-						pageSessionSocket.getItemSessionSocket(), modulesRegistrySocket, moduleHandlerManager, controllerFactory);
+				ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket, 
+						pageSessionSocket.getItemSessionSocket());
 				controller.init(pageDataTest.displayOptions);
 				controller.setAssessmentParenthoodSocket(parenthoodSocket);
 				if (pageDataTest.flowOptions.activityMode == ActivityMode.CHECK) {
@@ -103,7 +93,9 @@ public class PageController implements PageInterferenceSocket {
 	private JavaScriptObject getItemJsSockets() {
 		JavaScriptObject itemSockets = JavaScriptObject.createArray();
 		for (int i = 0; i < items.size(); i++) {
-			JSArrayUtils.fillArray(itemSockets, i, items.get(i).getItemSocket().getJsSocket());
+			JSArrayUtils.fillArray(itemSockets, i, items.get(i)
+					.getItemSocket()
+					.getJsSocket());
 		}
 		return itemSockets;
 	}
