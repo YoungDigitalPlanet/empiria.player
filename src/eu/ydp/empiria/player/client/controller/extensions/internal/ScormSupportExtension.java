@@ -4,8 +4,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
@@ -29,8 +27,6 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 	
 	@Inject
 	private AssessmentReportFactory factory;
-	@Inject
-	private PlayerWorkModeService workModeService;
 	private ResultInfo result;
 	private HintInfo hint;
 	private VariableUtil variableUtil;
@@ -60,14 +56,6 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		variableUtil = new VariableUtil(assessmentVariableProvider);
 		
 		initPlayerJsObject(playerJsObject);
-
-		initWorkMode();
-	}
-
-	private void initWorkMode() {
-		if (isPreviewMode(playerJsObject)){
-			workModeService.setCurrentWorkMode(PlayerWorkMode.PREVIEW);
-		}
 	}
 	
 	private native void initPlayerJsObject(JavaScriptObject playerJsObject)/*-{
@@ -102,13 +90,6 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		playerJsObject.getChecks = function(){
 			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getChecks()();
 		}
-	}-*/;
-	
-	private native boolean isPreviewMode(JavaScriptObject playerJsObject)/*-{
-		if (!!playerJsObject.enablePreviewMode){
-			return playerJsObject.enablePreviewMode();
-		}
-		return false;
 	}-*/;
 	
 	protected void setMasteryScore(int ms){
