@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
-import eu.ydp.gwtutil.client.event.factory.TouchHandlerChecker;
+import eu.ydp.gwtutil.client.event.factory.TouchEventChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public abstract class AbstractConnectionView extends Composite implements ConnectionView, TouchHandler {
@@ -32,7 +32,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	private final Set<ConnectionMoveStartHandler> startMoveHandlers = new HashSet<ConnectionMoveStartHandler>();
 	private final Set<ConnectionMoveCancelHandler> moveCancelHandlers = new HashSet<ConnectionMoveCancelHandler>();
 	@Inject
-	private TouchHandlerChecker touchHandlerChecker;
+	private TouchEventChecker touchEventChecker;
 	@Inject
 	protected EventsBus eventsBus;
 	@Inject
@@ -138,15 +138,17 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 
 		switch (event.getType()) {
 		case TOUCH_START:
-			if (touchHandlerChecker.isOnlyOneFinger(nativeEvent.getTouches())) {
+			if (touchEventChecker.isOnlyOneFinger(nativeEvent.getTouches())) {
 				onTouchStart(nativeEvent);
+			} else {
+				onTouchCancel(nativeEvent);
 			}
 			break;
 		case TOUCH_END:
 			onTouchEnd(nativeEvent);
 			break;
 		case TOUCH_MOVE:
-			if (touchHandlerChecker.isOnlyOneFinger(nativeEvent.getTouches())) {
+			if (touchEventChecker.isOnlyOneFinger(nativeEvent.getTouches())) {
 				onTouchMove(nativeEvent);
 			}
 
