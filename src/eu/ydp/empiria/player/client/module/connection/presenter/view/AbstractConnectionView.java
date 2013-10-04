@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
+import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveCancelHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEvent;
@@ -29,6 +30,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	private final Set<ConnectionMoveHandler> handlers = new HashSet<ConnectionMoveHandler>();
 	private final Set<ConnectionMoveEndHandler> endMoveHandlers = new HashSet<ConnectionMoveEndHandler>();
 	private final Set<ConnectionMoveStartHandler> startMoveHandlers = new HashSet<ConnectionMoveStartHandler>();
+	private final Set<ConnectionMoveCancelHandler> moveCancelHandlers = new HashSet<ConnectionMoveCancelHandler>();
 	@Inject
 	private TouchHandlerChecker touchHandlerChecker;
 	@Inject
@@ -72,6 +74,11 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 		startMoveHandlers.add(handler);
 	}
 
+	@Override
+	public void addConnectionMoveCancelHandler(ConnectionMoveCancelHandler handler) {
+		moveCancelHandlers.add(handler);
+	}
+
 	protected void callOnMoveHandlers(ConnectionMoveEvent event) {
 		for (ConnectionMoveHandler handler : handlers) {
 			handler.onConnectionMove(event);
@@ -87,6 +94,12 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	protected void callOnMoveStartHandlers(ConnectionMoveStartEvent event) {
 		for (ConnectionMoveStartHandler handler : startMoveHandlers) {
 			handler.onConnectionStart(event);
+		}
+	}
+
+	protected void callOnMoveCancelHandlers() {
+		for (ConnectionMoveCancelHandler handler : moveCancelHandlers) {
+			handler.onConnectionMoveCancel();
 		}
 	}
 
@@ -128,7 +141,6 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 			if (touchHandlerChecker.isOnlyOneFinger(nativeEvent.getTouches())) {
 				onTouchStart(nativeEvent);
 			}
-
 			break;
 		case TOUCH_END:
 			onTouchEnd(nativeEvent);
@@ -166,4 +178,6 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	public abstract void onTouchStart(NativeEvent event);
 
 	public abstract void onTouchEnd(NativeEvent event);
+
+	public abstract void onTouchCancel(NativeEvent event);
 }
