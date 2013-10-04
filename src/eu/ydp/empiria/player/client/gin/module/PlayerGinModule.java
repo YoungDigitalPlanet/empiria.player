@@ -10,6 +10,7 @@ import com.google.inject.name.Names;
 
 import eu.ydp.empiria.player.client.controller.AssessmentControllerFactory;
 import eu.ydp.empiria.player.client.controller.Page;
+import eu.ydp.empiria.player.client.controller.assets.AssetOpenDelegatorService;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
@@ -211,6 +212,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(ComputedStyle.class).to(ComputedStyleImpl.class).in(Singleton.class);
 		bind(FlowManager.class).in(Singleton.class);
 		bind(FlowDataSupplier.class).annotatedWith(FlowManagerDataSupplier.class).toProvider(FlowDataSupplierProvider.class);
+		bind(AssetOpenDelegatorService.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
