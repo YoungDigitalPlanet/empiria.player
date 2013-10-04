@@ -13,7 +13,7 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public class ConnectionSurfacesManager {
 
-	private static final int APPROXIMATION = 10;
+	private static final int APPROXIMATION = 30;
 
 	@Inject
 	private ConnectionModuleFactory connectionFactory;

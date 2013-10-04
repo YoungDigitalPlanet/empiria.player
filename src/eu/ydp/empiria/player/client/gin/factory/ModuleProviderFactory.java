@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import eu.ydp.empiria.player.client.module.bonus.BonusModule;
 import eu.ydp.empiria.player.client.module.button.download.ButtonModule;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModule;
@@ -92,6 +93,7 @@ public class ModuleProviderFactory {
 	@Inject private Provider<ButtonModule> buttonModule;
 	@Inject private Provider<TutorApiExtension> tutorApiExtension;
 	@Inject private Provider<DrawingModule> drawingModule;
+	@Inject private Provider<BonusModule> bonusModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -263,5 +265,9 @@ public class ModuleProviderFactory {
 
 	public Provider<DrawingModule> getDrawingModule() {
 		return drawingModule;
+	}
+
+	public Provider<BonusModule> getBonusModule() {
+		return bonusModule;
 	}
 }

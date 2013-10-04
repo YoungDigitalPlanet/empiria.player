@@ -15,7 +15,7 @@ public class ActionExecutorServiceImpl implements ActionExecutorService {
 	}
 
 	@Override
-	public void execute(ActionType type, EndHandler handler) {
+	public void execute(ActionType type, TutorEndHandler handler) {
 		if (currentCommand != null && !currentCommand.isFinished()) {
 			currentCommand.terminate();
 		}

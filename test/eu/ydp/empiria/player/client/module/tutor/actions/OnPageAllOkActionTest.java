@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.FeedbackActionConditions;
 import eu.ydp.empiria.player.client.module.tutor.ActionType;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -19,13 +19,12 @@ public class OnPageAllOkActionTest {
 	private OnPageAllOkAction action;
 	
 	@Mock
-	private OutcomeAccessor accessor;
+	private FeedbackActionConditions actionConditions;
 	
 	@Test
 	public void actionOccured(){
 		// given
-		when(accessor.getCurrentPageTodo()).thenReturn(5);
-		when(accessor.getCurrentPageDone()).thenReturn(5);
+		when(actionConditions.isPageAllOk()).thenReturn(true);
 		
 		// when
 		boolean occured = action.actionOccured();
@@ -37,8 +36,7 @@ public class OnPageAllOkActionTest {
 	@Test
 	public void actionNotOccured(){
 		// given
-		when(accessor.getCurrentPageTodo()).thenReturn(5);
-		when(accessor.getCurrentPageDone()).thenReturn(3);
+		when(actionConditions.isPageAllOk()).thenReturn(false);
 		
 		// when
 		boolean occured = action.actionOccured();
@@ -50,8 +48,7 @@ public class OnPageAllOkActionTest {
 	@Test
 	public void actionNotOccured_noActivities(){
 		// given
-		when(accessor.getCurrentPageTodo()).thenReturn(0);
-		when(accessor.getCurrentPageDone()).thenReturn(0);
+		when(actionConditions.isPageAllOk()).thenReturn(false);
 		
 		// when
 		boolean occured = action.actionOccured();

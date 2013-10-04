@@ -20,6 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariablePossessorBase;
+import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 
@@ -30,108 +31,113 @@ public class OutcomeAccessorTest {
 
 	@InjectMocks
 	private OutcomeAccessor accessor;
-	
+
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private SessionDataSupplier sessionDataSupplier;
 	@Mock
 	private FlowDataSupplier flowDataSupplier;
-	
+	VariableProviderSocket variableProviderSocket;
+
 	@Before
 	public void setUp() {
 		when(flowDataSupplier.getCurrentPageIndex()).thenReturn(PAGE_INDEX);
+		variableProviderSocket = sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket();
 	}
-	
+
 	@Test
 	public void getCurrentPageTodo() {
 		final Integer TODO = 5;
 		// given
-		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("TODO").getValuesShort()).thenReturn(TODO.toString());
-		
+		mockTodo(TODO);
+
 		// when
 		int todo = accessor.getCurrentPageTodo();
-		
+
 		// then
 		assertThat(todo).isEqualTo(TODO);
 	}
-	
+
 	@Test
 	public void getCurrentPageDone() {
 		final Integer DONE = 6;
 		// given
-		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("DONE").getValuesShort()).thenReturn(DONE.toString());
-		
+		mockDone(DONE);
+
 		// when
 		int done = accessor.getCurrentPageDone();
-		
+
 		// then
 		assertThat(done).isEqualTo(DONE);
 	}
-	
+
 	@Test
 	public void getCurrentPageErrors() {
 		final Integer ERRORS = 7;
 		// given
-		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("ERRORS").getValuesShort()).thenReturn(ERRORS.toString());
-		
+		mockErrors(ERRORS);
+
 		// when
 		int errors = accessor.getCurrentPageErrors();
-		
+
 		// then
 		assertThat(errors).isEqualTo(ERRORS);
 	}
-	
+
 	@Test
 	public void getCurrentPageMistakes() {
 		final Integer MISTAKES = 8;
 		// given
-		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("MISTAKES").getValuesShort()).thenReturn(MISTAKES.toString());
-		
+		mockMistakes(MISTAKES);
+
 		// when
 		int mistakes = accessor.getCurrentPageMistakes();
-		
+
 		// then
 		assertThat(mistakes).isEqualTo(MISTAKES);
 	}
-	
+
 	@Test
 	public void getCurrentPageLastMistaken_correct() {
 		final LastMistaken LAST_MISTAKEN = CORRECT;
 		// given
-		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("CORRECT");
-		
+		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort())
+				.thenReturn("CORRECT");
+
 		// when
 		LastMistaken lastMistaken = accessor.getCurrentPageLastMistaken();
-		
+
 		// then
 		assertThat(lastMistaken).isEqualTo(LAST_MISTAKEN);
 	}
-	
+
 	@Test
 	public void getCurrentPageLastMistaken_none() {
 		final LastMistaken LAST_MISTAKEN = NONE;
 		// given
-		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("NONE");
-		
+		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort())
+				.thenReturn("NONE");
+
 		// when
 		LastMistaken lastMistaken = accessor.getCurrentPageLastMistaken();
-		
+
 		// then
 		assertThat(lastMistaken).isEqualTo(LAST_MISTAKEN);
 	}
-	
+
 	@Test
 	public void getCurrentPageLastMistaken_wrong() {
 		final LastMistaken LAST_MISTAKEN = WRONG;
 		// given
-		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort()).thenReturn("WRONG");
-		
+		when(sessionDataSupplier.getItemSessionDataSocket(eq(PAGE_INDEX)).getVariableProviderSocket().getVariableValue("LASTMISTAKEN").getValuesShort())
+				.thenReturn("WRONG");
+
 		// when
 		LastMistaken lastMistaken = accessor.getCurrentPageLastMistaken();
-		
+
 		// then
 		assertThat(lastMistaken).isEqualTo(LAST_MISTAKEN);
 	}
-	
+
 	@Test
 	@SuppressWarnings("unchecked")
 	public void isLastActionSelection_true() {
@@ -147,7 +153,7 @@ public class OutcomeAccessorTest {
 		assertThat(lastActionSelection).isEqualTo(true);
 		verify(variablePossessorBase).isLastAnswerSelectAction();
 	}
-	
+
 	@Test
 	@SuppressWarnings("unchecked")
 	public void isLastActionSelection_false() {
@@ -163,7 +169,7 @@ public class OutcomeAccessorTest {
 		assertThat(lastActionSelection).isEqualTo(false);
 		verify(variablePossessorBase).isLastAnswerSelectAction();
 	}
-	
+
 	@Test
 	public void isLastActionSelection_variableProviderSocketIsNotInstanceOfVariablePossessorBase() {
 		// when
@@ -172,5 +178,21 @@ public class OutcomeAccessorTest {
 		// then
 		assertThat(lastActionSelection).isEqualTo(false);
 	}
-	
+
+	private void mockTodo(Integer TODO) {
+		when(variableProviderSocket.getVariableValue(eq("TODO")).getValuesShort()).thenReturn(TODO.toString());
+	}
+
+	private void mockDone(Integer DONE) {
+		when(variableProviderSocket.getVariableValue(eq("DONE")).getValuesShort()).thenReturn(DONE.toString());
+	}
+
+	private void mockErrors(Integer ERRORS) {
+		when(variableProviderSocket.getVariableValue(eq("ERRORS")).getValuesShort()).thenReturn(ERRORS.toString());
+	}
+
+	private void mockMistakes(Integer MISTAKES) {
+		when(variableProviderSocket.getVariableValue(eq("MISTAKES")).getValuesShort()).thenReturn(MISTAKES.toString());
+	}
+
 }

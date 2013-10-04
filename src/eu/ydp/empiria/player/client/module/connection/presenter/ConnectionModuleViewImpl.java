@@ -1,8 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.*;
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NORMAL;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +21,7 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairM
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
+import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceStyleProvider;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsDelegate;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
@@ -77,7 +79,10 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private SurfacePositionFinder surfacePositionFinder;
 
 	@Inject
-	private ConnectionStyleChecker connectionStyleChacker;
+	private ConnectionStyleChecker connectionStyleChecker;
+
+	@Inject
+	private ConnectionSurfaceStyleProvider surfaceStyleProvider;
 
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
@@ -113,7 +118,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	protected void connect(ConnectionItem source, ConnectionItem target, MultiplePairModuleConnectType type, boolean userAction) {
 		startDrawLine(source, type);
-		
 		drawLine(source, target.getRelativeX(), target.getRelativeY());
 		connectItems(source, target, type, userAction);
 	}
@@ -170,7 +174,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void addCheckStyleHandler() {
-		view.asWidget().addAttachHandler(new ConnectionStyleCheckerHandler(view, connectionStyleChacker));
+		view.asWidget().addAttachHandler(new ConnectionStyleCheckerHandler(view, connectionStyleChecker));
 	}
 
 	private void initColumns() {
@@ -252,7 +256,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		}
 		clearSurface(connectionStartItem);
 	}
-
+	
 	private void updatePointPosition(ConnectionMoveEvent event) {
 		lastPoint.setSource(event.getX());
 		lastPoint.setTarget(event.getY());
@@ -333,10 +337,10 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private void addSurfaceWidget(ConnectionItem item) {
 		int offsetLeft = surfacePositionFinder.findOffsetLeft(connectionItems);
 		int offsetTop = surfacePositionFinder.findTopOffset(connectionItems);
-		
+
 		currentSurface.setOffsetLeft(offsetLeft);
 		currentSurface.setOffsetTop(offsetTop);
-		
+
 		view.addElementToMainView(currentSurface);
 	}
 
@@ -359,7 +363,36 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			targetItem.setConnected(true, type);
 			connectionSurfacesManager.putSurface(connectionPair, currentSurface);
 			connectionEventHandler.fireConnectEvent(PairConnectEventTypes.CONNECTED, getIdentifier(sourceItem), getIdentifier(targetItem), userAction);
+			
+			prepareAndAddStyleToSurface(sourceItem, targetItem, type);
 		}
+	}
+
+	private void prepareAndAddStyleToSurface(ConnectionItem enditem, ConnectionItem startItem, MultiplePairModuleConnectType type) {
+		boolean startIsLeft = modelInterface.isLeftItem(startItem.getBean());
+		int leftIndex;
+		int rightIndex;
+
+		if (startIsLeft) {
+			leftIndex = modelInterface.getLeftItemIndex(startItem.getBean());
+			rightIndex = modelInterface.getRightItemIndex(enditem.getBean());
+		} else {
+			leftIndex = modelInterface.getLeftItemIndex(enditem.getBean());
+			rightIndex = modelInterface.getRightItemIndex(startItem.getBean());
+		}
+
+		List<String> stylesToAdd = surfaceStyleProvider.getStylesForSurface(type, leftIndex, rightIndex);
+		addStylesToSurface(stylesToAdd);
+	}
+
+	protected void addStylesToSurface(List<String> styles) {
+		for (String style : styles) {
+			getCurrentSurface().asWidget().addStyleName(style);
+		}
+	}
+
+	public ConnectionSurface getCurrentSurface() {
+		return currentSurface;
 	}
 
 	@Override
