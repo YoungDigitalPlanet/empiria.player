@@ -4,8 +4,11 @@ import eu.ydp.gwtutil.client.util.geom.Size;
 
 public class ProgressAssetConfig {
 
+	private String path;
+	private Size size;
+
 	public String getPath() {
-		return null;
+		return path;
 	}
 
 	public int getCount() {
@@ -13,6 +16,14 @@ public class ProgressAssetConfig {
 	}
 
 	public Size getSize() {
-		return null;
+		return size;
+	}
+
+	public void setSize(Size size) {
+		this.size = size;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 }

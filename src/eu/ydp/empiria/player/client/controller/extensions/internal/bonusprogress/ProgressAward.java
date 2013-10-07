@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogres
 
 import java.util.List;
 
-public class ProgressBonusConfig {
+public class ProgressAward {
 
-	public List<ProgressAward> getAwards() {
+	public List<ProgressConfig> getProgresses() {
 		return null;
 	}
 }

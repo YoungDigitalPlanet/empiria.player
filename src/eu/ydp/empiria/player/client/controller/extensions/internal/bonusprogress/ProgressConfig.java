@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogres
 import java.util.List;
 
 public class ProgressConfig {
-	
+
 	public int getFrom() {
 		return 0;
 	}
