@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.util.position.Point;
 
 public class EraserTool implements Tool {
 
-	private static final int LINE_WIDTH = 10;
+	public static final int LINE_WIDTH = 10;
 	private final DrawCanvas canvas;
 
 	public EraserTool(DrawCanvas canvas) {
@@ -14,14 +14,17 @@ public class EraserTool implements Tool {
 
 	@Override
 	public void start(Point point) {
-		canvas.setLineWidth(LINE_WIDTH);
 		canvas.erasePoint(point);
 	}
 
 	@Override
 	public void move(Point start, Point end) {
-		canvas.setLineWidth(LINE_WIDTH);
 		canvas.eraseLine(start, end);
+	}
+
+	@Override
+	public void setUp() {
+		canvas.setLineWidth(LINE_WIDTH);
 	}
 
 }

@@ -17,14 +17,17 @@ public class PencilTool implements Tool {
 
 	@Override
 	public void start(Point point) {
-		canvas.setLineWidth(LINE_WIDTH);
 		canvas.drawPoint(point, color);
 	}
 
 	@Override
 	public void move(Point start, Point end) {
-		canvas.setLineWidth(LINE_WIDTH);
 		canvas.drawLine(start, end, color);
+	}
+
+	@Override
+	public void setUp() {
+		canvas.setLineWidth(LINE_WIDTH);
 	}
 
 }

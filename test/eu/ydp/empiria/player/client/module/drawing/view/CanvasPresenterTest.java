@@ -33,6 +33,7 @@ public class CanvasPresenterTest {
 	
 	@After
 	public void tearDown() {
+		verify(tool).setUp();
 		Mockito.verifyNoMoreInteractions(tool, canvasView);
 	}
 	

@@ -3,12 +3,12 @@ package eu.ydp.empiria.player.client.module.drawing.toolbox.tool;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Mockito.*;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.util.position.Point;
 
@@ -35,9 +35,7 @@ public class EraserToolTest {
 		eraserTool.start(point);
 
 		// then
-		InOrder inOrder = Mockito.inOrder(canvas);
-		inOrder.verify(canvas).setLineWidth(EraserTool.getLineWidth());
-		inOrder.verify(canvas).erasePoint(point);
+		verify(canvas).erasePoint(point);
 	}
 
 	@Test
@@ -50,8 +48,15 @@ public class EraserToolTest {
 		eraserTool.move(startPoint, endPoint);
 
 		// then
-		InOrder inOrder = Mockito.inOrder(canvas);
-		inOrder.verify(canvas).setLineWidth(EraserTool.getLineWidth());
-		inOrder.verify(canvas).eraseLine(startPoint, endPoint);
+		verify(canvas).eraseLine(startPoint, endPoint);
+	}
+	
+	@Test
+	public void shouldSetLineWidthOnSetUp() throws Exception {
+		//when
+		eraserTool.setUp();
+		
+		//then
+		verify(canvas).setLineWidth(EraserTool.LINE_WIDTH);
 	}
 }
