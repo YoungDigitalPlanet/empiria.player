@@ -8,6 +8,8 @@ import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngineSocket;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
@@ -17,11 +19,9 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 public class PlayerCoreApiExtension extends
 		InternalExtension implements DeliveryEngineSocketUserExtension, PlayerJsObjectModifierExtension, DeliveryEventsListenerExtension {
 
-	@Inject
-	private EventsBus eventsBus;
-
-	@Inject
-	private FlowDataSupplier flowDataSupplier;
+	@Inject private EventsBus eventsBus;
+	@Inject private FlowDataSupplier flowDataSupplier;
+	@Inject private PlayerWorkModeService workModeService;
 	
 	private JavaScriptObject playerJsObject;
 	private DeliveryEngineSocket deliveryEngineSocket;
@@ -29,6 +29,13 @@ public class PlayerCoreApiExtension extends
 	@Override
 	public void init() {
 		initApiJs(playerJsObject);
+		initWorkMode();
+	}
+
+	private void initWorkMode() {
+		if (isPreviewMode(playerJsObject)){
+			workModeService.setCurrentWorkMode(PlayerWorkMode.PREVIEW);
+		}
 	}
 
 	@Override
@@ -78,6 +85,13 @@ public class PlayerCoreApiExtension extends
 		if (typeof playerJsObject.importDisplayOptions == 'function')
 			return playerJsObject.importDisplayOptions();
 		return null;
+	}-*/;
+	
+	private native boolean isPreviewMode(JavaScriptObject playerJsObject)/*-{
+		if (!!playerJsObject.enablePreviewMode){
+			return playerJsObject.enablePreviewMode();
+		}
+		return false;
 	}-*/;
 	
 	private void importState(){
