@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusConfig;
+import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -17,6 +18,7 @@ import eu.ydp.empiria.player.client.gin.module.tutor.TutorIdProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.BonusConfigModuleScopeProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.CssStylesModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.PersonaServiceModuleScopedProvider;
+import eu.ydp.empiria.player.client.gin.scopes.module.providers.ProgressBonusConfigModuleScopeProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.TutorConfigModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.WithCacheCssStylesModuleScopedProvider;
@@ -183,6 +185,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 	private void bindProgressBonus() {
 		bindModuleScoped(ProgressBonusPresenter.class, new TypeLiteral<ModuleScopedProvider<ProgressBonusPresenter>>(){});
 		bindModuleScoped(ProgressBonusView.class, new TypeLiteral<ModuleScopedProvider<ProgressBonusView>>(){});
+		bind(ProgressBonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(ProgressBonusConfigModuleScopeProvider.class);
 	}
 
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<? extends Provider<T>> typeLiteral){
