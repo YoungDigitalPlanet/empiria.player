@@ -4,9 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.dom.client.Touch;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -25,6 +23,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
+import eu.ydp.gwtutil.client.event.factory.TouchEventChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public abstract class AbstractConnectionView extends Composite implements ConnectionView, TouchHandler {
@@ -32,7 +31,8 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	private final Set<ConnectionMoveEndHandler> endMoveHandlers = new HashSet<ConnectionMoveEndHandler>();
 	private final Set<ConnectionMoveStartHandler> startMoveHandlers = new HashSet<ConnectionMoveStartHandler>();
 	private final Set<ConnectionMoveCancelHandler> moveCancelHandlers = new HashSet<ConnectionMoveCancelHandler>();
-
+	@Inject
+	private TouchEventChecker touchEventChecker;
 	@Inject
 	protected EventsBus eventsBus;
 	@Inject
@@ -78,6 +78,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	public void addConnectionMoveCancelHandler(ConnectionMoveCancelHandler handler) {
 		moveCancelHandlers.add(handler);
 	}
+
 	protected void callOnMoveHandlers(ConnectionMoveEvent event) {
 		for (ConnectionMoveHandler handler : handlers) {
 			handler.onConnectionMove(event);
@@ -95,6 +96,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 			handler.onConnectionStart(event);
 		}
 	}
+
 	protected void callOnMoveCancelHandlers() {
 		for (ConnectionMoveCancelHandler handler : moveCancelHandlers) {
 			handler.onConnectionMoveCancel();
@@ -132,30 +134,29 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 
 	@Override
 	public void onTouchEvent(TouchEvent event) {
+		NativeEvent nativeEvent = event.getNativeEvent();
+
 		switch (event.getType()) {
 		case TOUCH_START:
-			if(isMoreThanOnTouch(event)){
-				onTouchCancel(event.getNativeEvent());
+			if (touchEventChecker.isOnlyOneFinger(nativeEvent.getTouches())) {
+				onTouchStart(nativeEvent);
 			} else {
-				onTouchStart(event.getNativeEvent());
+				onTouchCancel(nativeEvent);
 			}
 			break;
 		case TOUCH_END:
-			onTouchEnd(event.getNativeEvent());
+			onTouchEnd(nativeEvent);
 			break;
 		case TOUCH_MOVE:
-			onTouchMove(event.getNativeEvent());
+			if (touchEventChecker.isOnlyOneFinger(nativeEvent.getTouches())) {
+				onTouchMove(nativeEvent);
+			}
+
 			break;
 		default:
 			break;
 		}
 
-	}
-
-	private boolean isMoreThanOnTouch(TouchEvent event) {
-		JsArray<Touch> touches = event.getNativeEvent().getTouches();
-		boolean isMoreThanOnTouch = touches != null && touches.length() > 1;
-		return isMoreThanOnTouch;
 	}
 
 	@Override
@@ -179,5 +180,6 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	public abstract void onTouchStart(NativeEvent event);
 
 	public abstract void onTouchEnd(NativeEvent event);
+
 	public abstract void onTouchCancel(NativeEvent event);
 }
