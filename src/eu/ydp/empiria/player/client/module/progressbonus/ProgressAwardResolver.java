@@ -33,13 +33,17 @@ public class ProgressAwardResolver {
 	public ProgressAsset createProgressAsset(ProgressAward progressAward) {
 		List<ProgressConfig> progresses = progressAward.getProgresses();
 		for (ProgressConfig progress : progresses) {
-			List<ProgressAssetConfig> assetsConfigs = progress.getAssets();
-			List<ShowImageDTO> dtos = createImageDTOs(assetsConfigs);
-			int from = progress.getFrom();
-			assetBuilder.add(from, dtos);
+			parseProgressConfig(progress);
 		}
 
 		return assetBuilder.build();
+	}
+
+	private void parseProgressConfig(ProgressConfig progress) {
+		int from = progress.getFrom();
+		List<ProgressAssetConfig> assetsConfigs = progress.getAssets();
+		List<ShowImageDTO> dtos = createImageDTOs(assetsConfigs);
+		assetBuilder.add(from, dtos);
 	}
 
 	private List<ShowImageDTO> createImageDTOs(List<ProgressAssetConfig> assetsConfigs) {
@@ -62,13 +66,19 @@ public class ProgressAwardResolver {
 	private List<ProgressAssetConfig> resolveTemplatedAssetConfig(ProgressAssetConfig assetConfig) {
 		List<ProgressAssetConfig> resolvedConfigs = Lists.newArrayList();
 		for (int i = 1; i <= assetConfig.getCount(); i++) {
-			ProgressAssetConfig resolvedConfig = new ProgressAssetConfig();
-			resolvedConfig.setSize(assetConfig.getSize());
-			String oldPath = assetConfig.getPath();
-			String newPath = oldPath.replace(TEMPLATE_PLACEHOLDER, String.valueOf(i));
-			resolvedConfig.setPath(newPath);
-			resolvedConfigs.add(resolvedConfig);
+			final String assetIndex = String.valueOf(i);
+			ProgressAssetConfig configFromTemplate = createAssetConfigFromTemplate(assetConfig, assetIndex);
+			resolvedConfigs.add(configFromTemplate);
 		}
 		return resolvedConfigs;
+	}
+
+	private ProgressAssetConfig createAssetConfigFromTemplate(ProgressAssetConfig assetConfig, String assetIndex) {
+		ProgressAssetConfig resolvedConfig = new ProgressAssetConfig();
+		resolvedConfig.setSize(assetConfig.getSize());
+		String oldPath = assetConfig.getPath();
+		String newPath = oldPath.replace(TEMPLATE_PLACEHOLDER, assetIndex);
+		resolvedConfig.setPath(newPath);
+		return resolvedConfig;
 	}
 }
