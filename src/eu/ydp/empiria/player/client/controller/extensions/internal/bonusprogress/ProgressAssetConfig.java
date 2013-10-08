@@ -5,9 +5,9 @@ import eu.ydp.gwtutil.client.util.geom.Size;
 
 public class ProgressAssetConfig {
 
-	private Size size;
-	private String path;
-	private int count;
+	private final Size size;
+	private final String path;
+	private final int count;
 
 	public ProgressAssetConfig(String path, int count, Size size) {
 		this.path = path;

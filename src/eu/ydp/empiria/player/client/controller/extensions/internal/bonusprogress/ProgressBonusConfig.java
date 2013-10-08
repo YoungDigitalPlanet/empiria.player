@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress
 
 public class ProgressBonusConfig {
 
-	private final  List<ProgressConfig> progresses;
+	private final List<ProgressConfig> progresses;
 
 	public ProgressBonusConfig(List<ProgressConfig> progresses) {
 		this.progresses = progresses;
@@ -32,7 +32,7 @@ public class ProgressBonusConfig {
 		
 		for(int i=0; i<jsProgresses.length(); i++) {
 			ProgressConfigJs progressConfigJs = jsProgresses.get(i);
-			ProgressConfig progress = ProgressConfig.fromJs(progressConfigJs);
+		 	ProgressConfig progress = ProgressConfig.fromJs(progressConfigJs);
 			progresses.add(progress);
 		}
 		return progresses;

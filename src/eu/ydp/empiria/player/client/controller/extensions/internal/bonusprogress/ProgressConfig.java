@@ -10,8 +10,8 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress
 
 public class ProgressConfig {
 
-	private int from;
-	private List<ProgressAssetConfig> assets;
+	private final int from;
+	private final List<ProgressAssetConfig> assets;
 
 	public ProgressConfig(int from, List<ProgressAssetConfig> assets) {
 		this.from = from;

@@ -4,8 +4,6 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.progressbonu
 
 import java.util.List;
 
-import org.junit.Test;
-
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressAssetConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusConfig;
@@ -53,9 +51,7 @@ public class ProgressBonusConfigTest extends AbstractEmpiriaPlayerGWTTestCase {
 			"	]" +
 			"}";
 	
-	
-	@Test
-	public void test() {
+	public void testShouldParseProgressBonusConfigFromJs() {
 		//		given
 		assertTrue(overlayTypesParser.isValidJSON(JSON_CONFIG));
 		ProgressBonusConfigJs configJs = overlayTypesParser.get(JSON_CONFIG);
