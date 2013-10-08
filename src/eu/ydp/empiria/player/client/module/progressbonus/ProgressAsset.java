@@ -14,7 +14,7 @@ public class ProgressAsset {
 	@Inject
 	private RandomWrapper random;
 
-	private SimpleRangeMap<Integer, List<ShowImageDTO>> ranges = SimpleRangeMap.create();
+	private SimpleRangeMap<Integer, List<ShowImageDTO>> ranges = SimpleRangeMap.<Integer, List<ShowImageDTO>> create();
 
 	private int id;
 
