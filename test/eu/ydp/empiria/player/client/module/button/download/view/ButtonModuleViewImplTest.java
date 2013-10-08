@@ -1,9 +1,10 @@
 package eu.ydp.empiria.player.client.module.button.download.view;
 
 import static org.mockito.Matchers.eq;
+
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Anchor;
@@ -67,5 +69,17 @@ public class ButtonModuleViewImplTest {
 		String url = "url";
 		instance.setUrl(url);
 		verify(anchor).setHref(eq(url));
+	}
+	
+	@Test
+	public void addAnchorClickHandler() {
+//		given
+		ClickHandler clickHandler = mock(ClickHandler.class);
+		
+//		when
+		instance.addAnchorClickHandler(clickHandler);
+		
+//		then
+		verify(anchor).addClickHandler(clickHandler);
 	}
 }
