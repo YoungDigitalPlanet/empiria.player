@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ProgressBonusConfig {
 
-	public List<ProgressAward> getAwards() {
+	public List<ProgressConfig> getProgresses() {
 		return null;
 	}
 }

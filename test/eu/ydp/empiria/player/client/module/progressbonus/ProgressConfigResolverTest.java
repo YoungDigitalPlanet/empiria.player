@@ -1,21 +1,18 @@
 package eu.ydp.empiria.player.client.module.progressbonus;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
@@ -25,73 +22,73 @@ import org.mockito.stubbing.Answer;
 import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressAssetConfig;
-import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressAward;
+import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressConfig;
 import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProgressAwardResolverTest {
+public class ProgressConfigResolverTest {
 
 	@InjectMocks
-	private ProgressAwardResolver awardResolver;
-	@Mock
-	private ProgressAssetBuilder assetBuilder;
+	private ProgressConfigResolver awardResolver;
 	@Mock
 	private EmpiriaPaths empiriaPaths;
+	@Mock
+	private ProgressBonusConfig progressBonusConfig;
 
 	@Before
 	public void setUp() throws Exception {
+
 		mockEmpiriaPaths();
 	}
 
 	@Test
 	public void shouldBuildAssetForEmptyAwards() {
 		// given
-		ProgressAward progressAward = mock(ProgressAward.class);
-		when(progressAward.getProgresses()).thenReturn(Lists.<ProgressConfig> newArrayList());
+		when(progressBonusConfig.getProgresses()).thenReturn(Lists.<ProgressConfig> newArrayList());
 
 		// when
-		awardResolver.createProgressAsset(progressAward);
+		Map<Integer, List<ShowImageDTO>> resolvedConfig = awardResolver.resolveProgressConfig();
 
 		// then
-		verify(assetBuilder, never()).add(anyInt(), anyListOf(ShowImageDTO.class));
-		verify(assetBuilder).build();
+		assertThat(resolvedConfig).hasSize(0);
 	}
 
 	@Test
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldBuildSimpleAssets() {
 		// given
 		ProgressAssetConfig assetConfig = createProgressAssetConfig("PATH", 0);
 		ProgressConfig progressConfig = createProgessConfig(0, assetConfig);
 
 		ProgressAssetConfig assetConfig100 = createProgressAssetConfig("PATH100", 0);
-		ProgressConfig progressConfig100 = createProgessConfig(100, assetConfig100);
+		ProgressAssetConfig assetConfig100_1 = createProgressAssetConfig("PATH100_1", 0);
+		ProgressAssetConfig assetConfig100_2 = createProgressAssetConfig("PATH100_2", 0);
+		ProgressConfig progressConfig100 = createProgessConfig(100, assetConfig100, assetConfig100_1, assetConfig100_2);
 
-		ProgressAward progressAward = mockPorgressAward(progressConfig, progressConfig100);
-
-		ArgumentCaptor<List> argCaptor = ArgumentCaptor.forClass(List.class);
-		ArgumentCaptor<List> argCaptor100 = ArgumentCaptor.forClass(List.class);
+		when(progressBonusConfig.getProgresses()).thenReturn(Lists.newArrayList(progressConfig, progressConfig100));
 
 		// when
-		awardResolver.createProgressAsset(progressAward);
+		Map<Integer, List<ShowImageDTO>> resolvedConfig = awardResolver.resolveProgressConfig();
 
 		// then
-		verify(assetBuilder).add(eq(0), argCaptor.capture());
-		List<ShowImageDTO> dtos = argCaptor.getValue();
-		assertThat(dtos).hasSize(1);
-		assertThat(dtos.get(0).path).isEqualTo("RESOLVED_PATH");
-
-		verify(assetBuilder).add(eq(100), argCaptor100.capture());
-		List<ShowImageDTO> dtos100 = argCaptor100.getValue();
-		assertThat(dtos100).hasSize(1);
-		assertThat(dtos100.get(0).path).isEqualTo("RESOLVED_PATH100");
+		assertThat(resolvedConfig).hasSize(2);
+		
+		final List<ShowImageDTO> progress0 = resolvedConfig.get(0);
+		assertThat(progress0).hasSize(1);
+		assertThat(progress0.get(0).path).isEqualTo("RESOLVED_PATH");
+		
+		final List<ShowImageDTO> progress100 = resolvedConfig.get(100);
+		assertThat(progress100).hasSize(3);
+		assertThat(progress100.get(0).path).isEqualTo("RESOLVED_PATH100");
+		assertThat(progress100.get(1).path).isEqualTo("RESOLVED_PATH100_1");
+		assertThat(progress100.get(2).path).isEqualTo("RESOLVED_PATH100_2");
+		
+		verify(empiriaPaths, times(4)).getCommonsFilePath(anyString());
 	}
 
 	@Test
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldBuildTemplatedAssets() {
 		// given
 		ProgressAssetConfig assetConfig = createProgressAssetConfig("TEMPLATE_%.png", 3);
@@ -100,27 +97,27 @@ public class ProgressAwardResolverTest {
 		ProgressAssetConfig assetConfig100 = createProgressAssetConfig("TEMPLATE100_%.png", 2);
 		ProgressConfig progressConfig100 = createProgessConfig(100, assetConfig100);
 
-		ProgressAward progressAward = mockPorgressAward(progressConfig, progressConfig100);
+		when(progressBonusConfig.getProgresses()).thenReturn(Lists.newArrayList(progressConfig, progressConfig100));
 
-		ArgumentCaptor<List> argCaptor = ArgumentCaptor.forClass(List.class);
-		ArgumentCaptor<List> argCaptor100 = ArgumentCaptor.forClass(List.class);
 
 		// when
-		awardResolver.createProgressAsset(progressAward);
+		Map<Integer, List<ShowImageDTO>> resolvedConfig = awardResolver.resolveProgressConfig();
 
 		// then
-		verify(assetBuilder).add(eq(0), argCaptor.capture());
-		List<ShowImageDTO> dtos = argCaptor.getValue();
-		assertThat(dtos).hasSize(3);
-		assertThat(dtos.get(0).path).isEqualTo("RESOLVED_TEMPLATE_1.png");
-		assertThat(dtos.get(1).path).isEqualTo("RESOLVED_TEMPLATE_2.png");
-		assertThat(dtos.get(2).path).isEqualTo("RESOLVED_TEMPLATE_3.png");
+		assertThat(resolvedConfig).hasSize(2);
+		
+		final List<ShowImageDTO> progress0 = resolvedConfig.get(0);
+		assertThat(progress0).hasSize(3);
+		assertThat(progress0.get(0).path).isEqualTo("RESOLVED_TEMPLATE_1.png");
+		assertThat(progress0.get(1).path).isEqualTo("RESOLVED_TEMPLATE_2.png");
+		assertThat(progress0.get(2).path).isEqualTo("RESOLVED_TEMPLATE_3.png");
+		
+		final List<ShowImageDTO> progress100 = resolvedConfig.get(100);
+		assertThat(progress100).hasSize(2);
+		assertThat(progress100.get(0).path).isEqualTo("RESOLVED_TEMPLATE100_1.png");
+		assertThat(progress100.get(1).path).isEqualTo("RESOLVED_TEMPLATE100_2.png");
 
-		verify(assetBuilder).add(eq(100), argCaptor100.capture());
-		List<ShowImageDTO> dtos100 = argCaptor100.getValue();
-		assertThat(dtos100).hasSize(2);
-		assertThat(dtos100.get(0).path).isEqualTo("RESOLVED_TEMPLATE100_1.png");
-		assertThat(dtos100.get(1).path).isEqualTo("RESOLVED_TEMPLATE100_2.png");
+		verify(empiriaPaths, times(5)).getCommonsFilePath(anyString());
 	}
 
 	private void mockEmpiriaPaths() {
@@ -131,12 +128,6 @@ public class ProgressAwardResolverTest {
 				return "RESOLVED_" + invocation.getArguments()[0];
 			}
 		});
-	}
-
-	private ProgressAward mockPorgressAward(ProgressConfig... progressConfigs) {
-		ProgressAward progressAward = mock(ProgressAward.class);
-		when(progressAward.getProgresses()).thenReturn(Lists.newArrayList(progressConfigs));
-		return progressAward;
 	}
 
 	private ProgressAssetConfig createProgressAssetConfig(String path, int count) {
