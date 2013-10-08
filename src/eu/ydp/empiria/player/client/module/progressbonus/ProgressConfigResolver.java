@@ -79,11 +79,9 @@ public class ProgressConfigResolver {
 	}
 
 	private ProgressAssetConfig createAssetConfigFromTemplate(ProgressAssetConfig assetConfig, String assetIndex) {
-		ProgressAssetConfig resolvedConfig = new ProgressAssetConfig();
-		resolvedConfig.setSize(assetConfig.getSize());
 		String oldPath = assetConfig.getPath();
 		String newPath = oldPath.replace(TEMPLATE_PLACEHOLDER, assetIndex);
-		resolvedConfig.setPath(newPath);
+		ProgressAssetConfig resolvedConfig = new ProgressAssetConfig(newPath, 1, assetConfig.getSize());
 		return resolvedConfig;
 	}
 }
