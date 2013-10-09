@@ -28,7 +28,7 @@ public class ProgressBonusConfig {
 
 	private static List<ProgressConfig> getProgresses(ProgressBonusConfigJs configJs) {
 		List<ProgressConfig> progresses = Lists.newArrayList();
-		JsArray<ProgressConfigJs> jsProgresses = configJs.getProgressses();
+		JsArray<ProgressConfigJs> jsProgresses = configJs.getProgresses();
 		
 		for(int i=0; i<jsProgresses.length(); i++) {
 			ProgressConfigJs progressConfigJs = jsProgresses.get(i);

@@ -7,11 +7,11 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.js.ProgressBonusConfigJs;
 
-public class JSProgressBonusExtension extends AbstractJsExtension implements ProgressBonusExtension {
+public class JsProgressBonusExtension extends AbstractJsExtension implements ProgressBonusExtension {
 
 	@Override
 	public ExtensionType getType() {
-		return ExtensionType.EXTENSION_PROGRESSBONUS;
+		return ExtensionType.EXTENSION_PROGRESS_BONUS;
 	}
 
 	@Override
@@ -27,10 +27,10 @@ public class JSProgressBonusExtension extends AbstractJsExtension implements Pro
 
 	@Override
 	public String getProgressBonusId() {
-		return getProgressBonusNative();
+		return getProgressBonusNative(extensionJsObject);
 	}
 
-	private native String getProgressBonusNative()/*-{
+	private native String getProgressBonusNative(JavaScriptObject extensionJsObject)/*-{
 		return extensionJsObject.getProgressBonusId();
 	}-*/;
 
