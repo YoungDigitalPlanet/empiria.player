@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.js.ProgressBonusConfigJs;
 
-public class JSProgressBonusExtension extends AbstractJsExtension implements ProgressBonusExtension {
+public class JsProgressBonusExtension extends AbstractJsExtension implements ProgressBonusExtension {
 
 	@Override
 	public ExtensionType getType() {

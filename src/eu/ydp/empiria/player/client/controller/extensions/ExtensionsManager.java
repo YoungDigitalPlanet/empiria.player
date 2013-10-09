@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssess
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaProcessor;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JSProgressBonusExtension;
+import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsProgressBonusExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsBonusExtension;
@@ -108,7 +108,7 @@ public class ExtensionsManager implements IStateful {
 				currExt = new JsBonusExtension();
 				break;
 			case EXTENSION_PROGRESS_BONUS:
-				currExt = new JSProgressBonusExtension();
+				currExt = new JsProgressBonusExtension();
 				break;
 			default:
 				break;
