@@ -21,6 +21,9 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ProgressBonusModule extends SimpleModuleBase implements IStateful, IUniqueModule, ILifecycleModule {
@@ -31,6 +34,13 @@ public class ProgressBonusModule extends SimpleModuleBase implements IStateful, 
 
 		@Override
 		public void onPlayerEvent(PlayerEvent event) {
+			onProgressChanged();
+		}
+	};
+	private final StateChangeEventHandler stateChangedHandler = new StateChangeEventHandler() {
+
+		@Override
+		public void onStateChange(StateChangeEvent event) {
 			onProgressChanged();
 		}
 	};
@@ -57,6 +67,7 @@ public class ProgressBonusModule extends SimpleModuleBase implements IStateful, 
 	private void addHandlers(EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
 		final CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), testPageLoadedHandler, currentPageScope);
+		eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.OUTCOME_STATE_CHANGED), stateChangedHandler, currentPageScope);
 	}
 
 	@Override
