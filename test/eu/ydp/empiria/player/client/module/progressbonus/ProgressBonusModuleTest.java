@@ -27,6 +27,8 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.scope.EventScope;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
 import eu.ydp.gwtutil.client.event.EventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl;
 
@@ -43,6 +45,7 @@ public class ProgressBonusModuleTest {
 	private PageScopeFactory pageScopeFactory = mock(PageScopeFactory.class, Mockito.RETURNS_DEEP_STUBS);
 
 	private PlayerEventHandler playerEventHandler;
+	private StateChangeEventHandler stateChangeEventHandler;
 
 	@Before
 	public void before() {
@@ -88,7 +91,7 @@ public class ProgressBonusModuleTest {
 	}
 
 	@Test
-	public void shouldSetAssetOnPresenter() {
+	public void shouldSetAssetOnPresenter_whenPageIsLoaded() {
 		// given
 		ProgressAsset asset = mock(ProgressAsset.class);
 		when(assetProvider.createRandom()).thenReturn(asset);
@@ -99,6 +102,24 @@ public class ProgressBonusModuleTest {
 
 		// when
 		playerEventHandler.onPlayerEvent(mock(PlayerEvent.class));
+
+		// then
+		verify(progressCalculator).getProgress();
+		verify(presenter).showImage(imageDTO);
+	}
+	
+	@Test
+	public void shouldSetAssetOnPresenter_whenOutcomesChanged() {
+		// given
+		ProgressAsset asset = mock(ProgressAsset.class);
+		when(assetProvider.createRandom()).thenReturn(asset);
+		ShowImageDTO imageDTO = mock(ShowImageDTO.class);
+		when(progressCalculator.getProgress()).thenReturn(45);
+		when(asset.getImageForProgress(eq(45))).thenReturn(imageDTO);
+		progressBonusModule.onSetUp();
+
+		// when
+		stateChangeEventHandler.onStateChange(mock(StateChangeEvent.class));
 
 		// then
 		verify(progressCalculator).getProgress();
@@ -115,6 +136,8 @@ public class ProgressBonusModuleTest {
 
 				if (handler instanceof PlayerEventHandler) {
 					playerEventHandler = (PlayerEventHandler) handler;
+				} else if(handler instanceof StateChangeEventHandler){
+					stateChangeEventHandler = (StateChangeEventHandler) handler;
 				}
 
 				return null;
