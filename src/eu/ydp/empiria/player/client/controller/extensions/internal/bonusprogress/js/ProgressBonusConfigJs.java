@@ -7,7 +7,7 @@ public class ProgressBonusConfigJs extends JavaScriptObject {
 	
 	protected ProgressBonusConfigJs() {}
 	
-	public final native JsArray<ProgressConfigJs> getProgressses()/*-{
+	public final native JsArray<ProgressConfigJs> getProgresses()/*-{
 		return this.progresses;
 	}-*/;
 }
