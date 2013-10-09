@@ -27,10 +27,10 @@ public class JSProgressBonusExtension extends AbstractJsExtension implements Pro
 
 	@Override
 	public String getProgressBonusId() {
-		return getProgressBonusNative();
+		return getProgressBonusNative(extensionJsObject);
 	}
 
-	private native String getProgressBonusNative()/*-{
+	private native String getProgressBonusNative(JavaScriptObject extensionJsObject)/*-{
 		return extensionJsObject.getProgressBonusId();
 	}-*/;
 
