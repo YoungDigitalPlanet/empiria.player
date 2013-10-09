@@ -11,7 +11,7 @@ public class JSProgressBonusExtension extends AbstractJsExtension implements Pro
 
 	@Override
 	public ExtensionType getType() {
-		return ExtensionType.EXTENSION_PROGRESSBONUS;
+		return ExtensionType.EXTENSION_PROGRESS_BONUS;
 	}
 
 	@Override
