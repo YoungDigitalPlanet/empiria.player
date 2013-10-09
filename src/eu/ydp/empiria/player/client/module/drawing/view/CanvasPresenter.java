@@ -65,6 +65,7 @@ public class CanvasPresenter {
 
 	public void setTool(Tool tool) {
 		this.currentTool = tool;
+		tool.setUp();
 	}
 
 	public void setImage(String url, Size size) {

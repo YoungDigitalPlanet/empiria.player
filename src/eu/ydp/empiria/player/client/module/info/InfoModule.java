@@ -42,8 +42,8 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	private Panel mainPanel;
 	private Panel contentPanel;
 	private Element mainElement;
-	private List<Token> tokensFromContent = Lists.newArrayList();
 	private String initialStyleName;
+	private List<Token> tokensFromContent = Lists.newArrayList();
 
 	public void setModuleUnloadListener(InfoModuleUnloadListener imul) {
 		unloadListener = imul;

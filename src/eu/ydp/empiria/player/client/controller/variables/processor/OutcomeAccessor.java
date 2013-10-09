@@ -89,12 +89,6 @@ public class OutcomeAccessor {
 		}
 		return false;
 	}
-	
-	public boolean isPageAllOk() {
-		int todo = getCurrentPageTodo();
-		int done = getCurrentPageDone();
-		return todo > 0 && todo == done;
-	}
 
 	private int getVariableAsInt(VariableName variable) {
 		String todoString = getVariableAsString(variable);

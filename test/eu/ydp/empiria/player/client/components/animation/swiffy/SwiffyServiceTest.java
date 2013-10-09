@@ -16,11 +16,10 @@ import com.google.inject.Provider;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SwiffyServiceTest {
-	@Mock private SwiffyRuntimeLoader runtimeLoader;
+	
 	@Mock private SwiffyObject swiffyObject;
 	@Mock private Provider<SwiffyObject> swiffyObjectProvider;
 	@InjectMocks private SwiffyService instance;
-
 
 	@Before
 	public void before() {
@@ -33,7 +32,6 @@ public class SwiffyServiceTest {
 		SwiffyObject swiffyObject = instance.getSwiffyObject("name", animationUrl);
 		assertThat(swiffyObject).isNotNull();
 		assertThat(swiffyObject).isEqualTo(this.swiffyObject);
-		verify(runtimeLoader).loadRuntime();
 		verify(swiffyObject).setAnimationUrl(eq(animationUrl));
 	}
 

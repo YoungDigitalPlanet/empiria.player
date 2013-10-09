@@ -545,6 +545,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-media-volume-scrollbar-button")
 	public String QP_MEDIA_VOLUME_SCROLLBAR_BUTTON();
 
+	@DefaultStringValue("qp-module-mode-preview")
+	public String QP_MODULE_MODE_PREVIEW();
+
 	@DefaultStringValue("qp-ordered")
 	public String QP_ORDERED();
 

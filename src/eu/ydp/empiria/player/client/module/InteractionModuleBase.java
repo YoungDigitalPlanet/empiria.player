@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule {
+public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule, WorkModeClient {
 
 	private InteractionEventsListener interactionEventsListener;
 	private ModuleSocket moduleSocket;
@@ -67,5 +67,10 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 	@Override
 	public List<IModule> getChildren() {
 		return moduleSocket.getChildren(this);
+	}
+	
+	@Override
+	public void enablePreviewMode() {
+		lock(true);
 	}
 }

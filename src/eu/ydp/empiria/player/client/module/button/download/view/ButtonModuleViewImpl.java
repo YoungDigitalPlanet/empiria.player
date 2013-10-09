@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -27,7 +28,6 @@ public class ButtonModuleViewImpl extends Composite implements ButtonModuleView 
 	@Override
 	public void setUrl(String url){
 		anchor.setHref(url);
-
 	}
 
 	@Override
@@ -40,4 +40,8 @@ public class ButtonModuleViewImpl extends Composite implements ButtonModuleView 
 		getElement().setId(id);
 	}
 
+	@Override
+	public void addAnchorClickHandler(ClickHandler clickHandler) {
+		anchor.addClickHandler(clickHandler);
+	}
 }

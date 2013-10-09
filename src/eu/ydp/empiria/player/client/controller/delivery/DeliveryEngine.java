@@ -116,7 +116,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private StyleLinkManager styleManager;
 	private ExtensionsManager extensionsManager;
 	private final FlowManager flowManager;
-	private DeliveryEventsHub deliveryEventsHub;
+	private final DeliveryEventsHub deliveryEventsHub;
 	private AssessmentController assessmentController;
 	private SoundProcessorManagerExtension soundProcessorManager;
 	private final TutorService tutorService;
@@ -126,12 +126,11 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private JavaScriptObject playerJsObject;
 	private String stateAsync;
 
-
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
 			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
 			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
-			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager, ProgressBonusService progressBonusService) {
+			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager, ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -144,6 +143,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.tutorService = tutorService;
 		this.bonusService = bonusService;
 		this.flowManager = flowManager;
+		this.deliveryEventsHub = deliveryEventsHub;
 		this.progressBonusService = progressBonusService;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
@@ -159,14 +159,12 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 		extensionsManager = PlayerGinjectorFactory.getPlayerGinjector().getExtensionsManager();
 
-		deliveryEventsHub = new DeliveryEventsHub();
-
 		soundProcessorManager = new SoundProcessorManagerExtension();
 
 		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(flowManager.getFlowCommandsExecutor()));
 
 		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(),
-				deliveryEventsHub.getInteractionSocket(), sessionDataManager, modulesRegistry, moduleHandlerManager);
+				deliveryEventsHub.getInteractionSocket(), sessionDataManager, modulesRegistry);
 
 		playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
 

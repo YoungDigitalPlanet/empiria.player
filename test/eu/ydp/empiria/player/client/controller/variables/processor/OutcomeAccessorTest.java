@@ -38,7 +38,7 @@ public class OutcomeAccessorTest {
 	private FlowDataSupplier flowDataSupplier;
 	@Mock
 	private OutcomesResultCalculator resultCalculator;
-	
+
 	VariableProviderSocket itemVariableProviderSocket;
 	VariableProviderSocket assessmentVariableProviderSocket;
 
@@ -185,45 +185,6 @@ public class OutcomeAccessorTest {
 	}
 
 	@Test
-	public void shouldReturnPageAllOk_todoEqDone() {
-		// given
-		mockItemTodo(5);
-		mockItemDone(5);
-
-		// when
-		boolean pageAllOk = accessor.isPageAllOk();
-
-		// then
-		assertThat(pageAllOk).isTrue();
-	}
-
-	@Test
-	public void shouldReturnPageAllOk_todoNotEqDone() {
-		// given
-		mockItemTodo(5);
-		mockItemDone(6);
-
-		// when
-		boolean pageAllOk = accessor.isPageAllOk();
-
-		// then
-		assertThat(pageAllOk).isFalse();
-	}
-
-	@Test
-	public void shouldReturnPageAllOk_todoIsZero() {
-		// given
-		mockItemTodo(0);
-		mockItemDone(6);
-
-		// when
-		boolean pageAllOk = accessor.isPageAllOk();
-
-		// then
-		assertThat(pageAllOk).isFalse();
-	}
-
-	@Test
 	public void getAssessmentTodo() {
 		final Integer TODO = 5;
 		// given
@@ -348,5 +309,4 @@ public class OutcomeAccessorTest {
 	private void mockAssessmentMistakes(Integer MISTAKES) {
 		when(assessmentVariableProviderSocket.getVariableValue(eq("MISTAKES")).getValuesShort()).thenReturn(MISTAKES.toString());
 	}
-
 }
