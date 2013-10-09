@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.resources;
 
-import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
@@ -16,16 +15,24 @@ public class EmpiriaPaths {
 	public String getBasePath() {
 		AssessmentData assessmentData = dataSourceManager.getAssessmentData();
 		XmlData data = assessmentData.getData();
-		return data.getBaseURL();
+		return ensureEndingSlash(data.getBaseURL());
 	}
 
 	public String getCommonsPath() {
 		String baseURL = getBasePath();
-		return Joiner.on(SEPARATOR).join(baseURL, "common");
+		String commonsPath = baseURL + "common";
+		return ensureEndingSlash(commonsPath);
 	}
 
 	public String getCommonsFilePath(String filename) {
 		String commonsPath = getCommonsPath();
-		return Joiner.on(SEPARATOR).join(commonsPath, filename);
+		return commonsPath + filename;
+	}
+
+	private String ensureEndingSlash(String path) {
+		if (!path.endsWith(SEPARATOR)) {
+			path += SEPARATOR;
+		}
+		return path;
 	}
 }
