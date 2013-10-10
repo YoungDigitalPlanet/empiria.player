@@ -85,10 +85,6 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 				executor.setCurrentTime(event.getCurrentTime());
 				break;
 			case PLAY:				
-				if (isCreateAudioHackNeeded(executor)) {
-					ReCreateAudioHack recreateAudioHack = reCreateAudioHackProvider.get();
-					recreateAudioHack.apply((AbstractHTML5MediaWrapper) wrapper, (HTML5AudioMediaExecutor) executor);
-				}
 				if (isReAttachHackNeeded(wrapper)) {
 					HTML5VideoReattachHack html5VideoReattachHack = html5VideoReattachHackProvider.get();		
 					html5VideoReattachHack.reAttachVideo((HTML5VideoMediaWrapper) wrapper, (HTML5VideoMediaExecutor) executor);
@@ -108,10 +104,6 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 				break;
 			case ENDED:
 			case ON_END:
-				if (isCreateAudioHackNeeded(executor)) {
-					ReCreateAudioHack recreateAudioHack = new ReCreateAudioHack();
-					recreateAudioHack.apply((AbstractHTML5MediaWrapper) wrapper, (HTML5AudioMediaExecutor) executor);
-				}
 				executor.stop();
 				break;
 			case ON_ERROR:
@@ -120,12 +112,6 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 			default:
 				break;
 		}
-	}
-
-	private boolean isCreateAudioHackNeeded(MediaExecutor<?> executor) {
-		return isUserAgent(RuntimeMobileUserAgent.ANDROID404)
-				&& UserAgentChecker.isStackAndroidBrowser()
-				&& executor.getBaseMediaConfiguration().isFeedback();
 	}
 
 	private boolean isReAttachHackNeeded(MediaWrapper<?> wrapper) {
