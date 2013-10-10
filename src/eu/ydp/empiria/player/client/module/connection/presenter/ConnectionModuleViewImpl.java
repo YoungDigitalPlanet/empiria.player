@@ -85,8 +85,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	@Inject
 	private ConnectionSurfaceStyleProvider surfaceStyleProvider;
-	@Inject
-	private Logger logger;
 
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
@@ -255,7 +253,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
 		ConnectionItem connectionStartItem = connectionItemPair.getSource();
 
-		logger.info("onConnectionMoveEnd start connectionStartItem is null :" + (connectionStartItem == null));
 		if (connectionStartItem != null && !locked && !searchAndConnectItemsPair(event, connectionStartItem)) {
 			if (!tryConnectByClick(connectionStartItem)) {
 				connectionItemPair.setTarget(connectionStartItem);
@@ -440,7 +437,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 		ConnectionItem connectionStartItem = connectionItemPair.getSource();
 		if (connectionStartItem != null) {
-			logger.info("method onConnectionMoveCancel connectionStartItem==null");
 			resetIfNotConnected(getIdentifier(connectionStartItem));
 			resetConnectionMadeByTouch();
 			clearSurface(connectionStartItem);

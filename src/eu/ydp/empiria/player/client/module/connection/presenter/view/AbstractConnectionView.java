@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Touch;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -135,10 +137,14 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	@Override
 	public void onTouchEvent(TouchEvent event) {
 		NativeEvent nativeEvent = event.getNativeEvent();
-
+		
+		JsArray<Touch> touches = nativeEvent.getTouches();
+		boolean isMouseClick = (touches == null);
+		boolean isOneFingerTouch = touchEventChecker.isOnlyOneFinger(touches);
+		
 		switch (event.getType()) {
 		case TOUCH_START:
-			if (touchEventChecker.isOnlyOneFingerTouchOrMouseClick(nativeEvent.getTouches())) {
+			if (isMouseClick || isOneFingerTouch) {
 				onTouchStart(nativeEvent);
 			} else {
 				onTouchCancel(nativeEvent);
@@ -148,7 +154,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 			onTouchEnd(nativeEvent);
 			break;
 		case TOUCH_MOVE:
-			if (touchEventChecker.isOnlyOneFingerTouchOrMouseClick(nativeEvent.getTouches())) {
+			if (isMouseClick || isOneFingerTouch) {
 				onTouchMove(nativeEvent);
 			} else {
 				onTouchCancel(nativeEvent);
