@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -19,6 +20,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -34,7 +36,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.module.button.CheckButtonModule;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -43,9 +45,14 @@ import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 @SuppressWarnings("PMD")
 public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
+	private static final String ENABLED_STYLE_NAME = "qp-markall-button";
+	private static final String DISABLED_STYLE_NAME = "qp-markall-button-disabled";
+
 	CheckButtonModule instance;
 	EventsBus eventsBus;
 	FlowRequestInvoker requestInvoker;
+	private StyleNameConstants styleNameConstants;
+	private CustomPushButton button;
 	protected ClickHandler handler;
 
 	private static class CustomGuiceModule implements Module {
@@ -60,10 +67,10 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 		setUp(new Class<?>[] { CustomPushButton.class }, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule());
 		instance = spy(injector.getInstance(CheckButtonModule.class));
 		eventsBus = injector.getInstance(EventsBus.class);
+		styleNameConstants = injector.getInstance(StyleNameConstants.class);
 		requestInvoker = mock(FlowRequestInvoker.class);
-		CustomPushButton button = injector.getInstance(CustomPushButton.class);
+		button = injector.getInstance(CustomPushButton.class);
 		doAnswer(new Answer<ClickHandler>() {
-
 
 			@Override
 			public ClickHandler answer(InvocationOnMock invocation) throws Throwable {
@@ -143,7 +150,7 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 		instance.isSelected = true;
 		assertEquals("qp-continue-button", instance.getStyleName());
 		instance.isSelected = false;
-		assertEquals("qp-markall-button", instance.getStyleName());
+		assertEquals(ENABLED_STYLE_NAME, instance.getStyleName());
 	}
 
 	@Test
@@ -161,7 +168,7 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 		instance.onPlayerEvent(event);
 		verify(requestInvoker, times(1)).invokeRequest(Mockito.any(FlowRequest.Continue.class));
 	}
-	
+
 	@Test
 	public void shouldNotInvokeActionInPreviewMode() {
 		// given
@@ -177,4 +184,23 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 		verifyZeroInteractions(requestInvoker);
 	}
 
+	@Test
+	public void shouldNotOverwriteStyleInPreview() {
+		// given
+		final String inactiveStyleName = "STYLE_NAME";
+		instance.initModule(mock(Element.class));
+		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
+		instance.enablePreviewMode();
+		
+		// when
+		instance.updateStyleName();
+		
+		// then
+		InOrder inOrder = inOrder(button);
+		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button).addStyleName(inactiveStyleName);
+		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button).addStyleName(inactiveStyleName);
+	}
 }

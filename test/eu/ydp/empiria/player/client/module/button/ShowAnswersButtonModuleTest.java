@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -19,6 +20,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -35,6 +37,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.button.ShowAnswersButtonModule;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -43,10 +46,14 @@ import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 @SuppressWarnings("PMD")
 public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
+	private static final String DISABLED_STYLE_NAME = "qp-showanswers-button-disabled";
+
 	ShowAnswersButtonModule instance;
 	EventsBus eventsBus;
 	FlowRequestInvoker requestInvoker;
 	private ClickHandler handler;
+	private CustomPushButton button;
+	private StyleNameConstants styleNameConstants;
 
 	private static class CustomGuiceModule implements Module {
 		@Override
@@ -61,7 +68,8 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 		instance = spy(injector.getInstance(ShowAnswersButtonModule.class));
 		eventsBus = injector.getInstance(EventsBus.class);
 		requestInvoker = mock(FlowRequestInvoker.class);
-		CustomPushButton button = injector.getInstance(CustomPushButton.class);
+		button = injector.getInstance(CustomPushButton.class);
+		styleNameConstants = injector.getInstance(StyleNameConstants.class);
 		doAnswer(new Answer<ClickHandler>() {
 
 
@@ -175,5 +183,25 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 
 		// then
 		verifyZeroInteractions(requestInvoker);
+	}
+
+	@Test
+	public void shouldNotOverwriteStyleInPreview() {
+		// given
+		final String inactiveStyleName = "STYLE_NAME";
+		instance.initModule(mock(Element.class));
+		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
+		instance.enablePreviewMode();
+		
+		// when
+		instance.updateStyleName();
+		
+		// then
+		InOrder inOrder = inOrder(button);
+		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button).addStyleName(inactiveStyleName);
+		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button).addStyleName(inactiveStyleName);
 	}
 }
