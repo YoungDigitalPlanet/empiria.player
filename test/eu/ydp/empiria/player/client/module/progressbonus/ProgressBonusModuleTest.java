@@ -26,6 +26,7 @@ import eu.ydp.empiria.player.client.module.progressbonus.view.ProgressBonusView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.scope.EventScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
@@ -42,13 +43,16 @@ public class ProgressBonusModuleTest {
 	private ProgressAssetProvider assetProvider = mock(ProgressAssetProvider.class);;
 	private ProgressCalculator progressCalculator = mock(ProgressCalculator.class);
 	private EventsBus eventsBus = mock(EventsBus.class);
-	private PageScopeFactory pageScopeFactory = mock(PageScopeFactory.class, Mockito.RETURNS_DEEP_STUBS);
+	private PageScopeFactory pageScopeFactory = mock(PageScopeFactory.class);
 
 	private PlayerEventHandler playerEventHandler;
 	private StateChangeEventHandler stateChangeEventHandler;
+	private CurrentPageScope currentPageScope;
 
 	@Before
 	public void before() {
+		currentPageScope = mock(CurrentPageScope.class);
+		when(pageScopeFactory.getCurrentPageScope()).thenReturn(currentPageScope);
 		initEventHandlersInterception();
 		progressBonusModule = new ProgressBonusModule(view, presenter, assetProvider, progressCalculator, eventsBus, pageScopeFactory);
 	}
@@ -107,7 +111,7 @@ public class ProgressBonusModuleTest {
 		verify(progressCalculator).getProgress();
 		verify(presenter).showImage(imageDTO);
 	}
-	
+
 	@Test
 	public void shouldSetAssetOnPresenter_whenOutcomesChanged() {
 		// given
@@ -136,12 +140,23 @@ public class ProgressBonusModuleTest {
 
 				if (handler instanceof PlayerEventHandler) {
 					playerEventHandler = (PlayerEventHandler) handler;
-				} else if(handler instanceof StateChangeEventHandler){
+				}
+
+				return null;
+			}
+		}).when(eventsBus).addHandler(any(EventImpl.Type.class), any(EventHandler.class), eq(currentPageScope));
+		doAnswer(new Answer<Void>() {
+
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				Object handler = invocation.getArguments()[1];
+
+				if (handler instanceof StateChangeEventHandler) {
 					stateChangeEventHandler = (StateChangeEventHandler) handler;
 				}
 
 				return null;
 			}
-		}).when(eventsBus).addHandler(any(EventImpl.Type.class), any(EventHandler.class), any(EventScope.class));
+		}).when(eventsBus).addHandler(any(EventImpl.Type.class), any(EventHandler.class));
 	}
 }

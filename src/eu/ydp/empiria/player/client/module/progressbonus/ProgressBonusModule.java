@@ -67,7 +67,7 @@ public class ProgressBonusModule extends SimpleModuleBase implements IStateful, 
 	private void addHandlers(EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
 		final CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), testPageLoadedHandler, currentPageScope);
-		eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.OUTCOME_STATE_CHANGED), stateChangedHandler, currentPageScope);
+		eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.OUTCOME_STATE_CHANGED), stateChangedHandler);
 	}
 
 	@Override
