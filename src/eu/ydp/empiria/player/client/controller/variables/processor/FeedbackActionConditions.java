@@ -14,7 +14,7 @@ public class FeedbackActionConditions {
 	}
 
 	public boolean isPageAllOkWithoutPreviousErrors() {
-		boolean withoutMistakes = outcomeAccessor.getCurrentPageErrors() == 0;
-		return withoutMistakes && isPageAllOk();
+		boolean withoutErrors = outcomeAccessor.getCurrentPageErrors() == 0;
+		return withoutErrors && isPageAllOk();
 	}
 }
