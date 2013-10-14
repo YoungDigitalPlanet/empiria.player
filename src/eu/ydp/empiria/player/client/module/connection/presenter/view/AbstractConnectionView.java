@@ -137,11 +137,12 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	@Override
 	public void onTouchEvent(TouchEvent event) {
 		NativeEvent nativeEvent = event.getNativeEvent();
-		
+
 		JsArray<Touch> touches = nativeEvent.getTouches();
-		boolean isMouseClick = (touches == null);
+		boolean isMouseClick = (touches == null); // method is also called when
+													// MouseEvents occur
 		boolean isOneFingerTouch = touchEventChecker.isOnlyOneFinger(touches);
-		
+
 		switch (event.getType()) {
 		case TOUCH_START:
 			if (isMouseClick || isOneFingerTouch) {
