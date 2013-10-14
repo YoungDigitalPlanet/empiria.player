@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NORMAL;
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -251,7 +251,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	@Override
 	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
 		ConnectionItem connectionStartItem = connectionItemPair.getSource();
-		if (!locked && !searchAndConnectItemsPair(event, connectionStartItem)) {
+
+		if (connectionStartItem != null && !locked && !searchAndConnectItemsPair(event, connectionStartItem)) {
 			if (!tryConnectByClick(connectionStartItem)) {
 				connectionItemPair.setTarget(connectionStartItem);
 			}
@@ -432,9 +433,12 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	@Override
 	public void onConnectionMoveCancel() {
+
 		ConnectionItem connectionStartItem = connectionItemPair.getSource();
-		resetIfNotConnected(getIdentifier(connectionStartItem));
-		resetConnectionMadeByTouch();
-		clearSurface(connectionStartItem);
+		if (connectionStartItem != null) {
+			resetIfNotConnected(getIdentifier(connectionStartItem));
+			resetConnectionMadeByTouch();
+			clearSurface(connectionStartItem);
+		}
 	}
 }
