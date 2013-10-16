@@ -70,6 +70,8 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
+		
+		mockPageContainsNoErrors();
 		mockAllOk();
 
 		// when
@@ -84,6 +86,7 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
+		mockPageContainsErrors();
 		mockNotAllOk();
 
 		// when
@@ -98,6 +101,7 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
+		mockPageContainsNoErrors();
 		mockAllOk();
 
 		// when
@@ -140,6 +144,64 @@ public class BonusModuleTest {
 		verify(bonus).execute();
 	}
 
+	@Test
+	public void shouldShowOnceWhenHadNoPreviousErrors() {
+		// given
+		Bonus bonus = mock(Bonus.class);
+		when(bonusProvider.next()).thenReturn(bonus);
+		
+		// when
+		mockPageContainsNoErrors();
+		mockNotAllOk();
+		module.processUserInteraction();
+		
+		mockAllOk();
+		module.processUserInteraction();
+		
+		// then
+		verify(bonus, times(1)).execute();
+	}
+
+	@Test
+	public void shouldNotShowBonusWhenHadPreviousErrors() {
+		// given
+		Bonus bonus = mock(Bonus.class);
+		when(bonusProvider.next()).thenReturn(bonus);
+		
+		// when
+		mockPageContainsErrors();
+		mockNotAllOk();
+		module.processUserInteraction();
+		
+		mockAllOk();
+		module.processUserInteraction();
+		
+		// then
+		verify(bonus, never()).execute();
+	}
+	
+	@Test
+	public void shouldShowBonusAfterResetWithPreviousErrors() {
+		// given
+		Bonus bonus = mock(Bonus.class);
+		when(bonusProvider.next()).thenReturn(bonus);
+		
+		// when
+		mockPageContainsErrors();
+		mockNotAllOk();
+		module.processUserInteraction();
+		
+		module.resetPowerFeedback();
+		
+		mockPageContainsNoErrors();
+		mockAllOk();
+		module.processUserInteraction();
+		
+		// then
+		verify(bonus, times(1)).execute();
+		
+	}
+	
 	private void mockAllOk() {
 		when(actionConditions.isPageAllOkWithoutPreviousErrors()).thenReturn(true);
 	}
@@ -147,4 +209,13 @@ public class BonusModuleTest {
 	private void mockNotAllOk() {
 		when(actionConditions.isPageAllOkWithoutPreviousErrors()).thenReturn(false);
 	}
+	
+	private void mockPageContainsNoErrors() {
+		when(actionConditions.hasCurrentPageErrors()).thenReturn(false);
+	}
+
+	private void mockPageContainsErrors() {
+		when(actionConditions.hasCurrentPageErrors()).thenReturn(true);
+	}
+
 }
