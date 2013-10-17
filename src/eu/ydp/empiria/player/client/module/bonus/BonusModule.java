@@ -26,7 +26,7 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	private BonusPopupPresenter bonusPopupPresenter;
 
 	private boolean pageAllOkCompleted = false;
-	private boolean hadCurrentPageError = false;
+	private int mistakesCount = 0;
 
 	@Override
 	protected void initModule(Element element) {
@@ -41,7 +41,7 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	@Override
 	public void resetPowerFeedback() {
 		pageAllOkCompleted = false;
-		hadCurrentPageError = false;
+		mistakesCount = actionConditions.getPageMistakesCount();
 	}
 
 	@Override
@@ -51,7 +51,6 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 
 	@Override
 	public void processUserInteraction() {
-		hadCurrentPageError = hasCurrentPageErrorInHistory();
 		if (isPageAllOkFirstTime()) {
 			Bonus bonus = bonusProvider.next();
 			bonus.execute();
@@ -59,12 +58,12 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 		}
 	}
 
-	private boolean hasCurrentPageErrorInHistory() {
-		return hadCurrentPageError || actionConditions.hasCurrentPageErrors();
+	private boolean isPageAllOkFirstTime() {
+		return !pageAllOkCompleted && actionConditions.isPageAllOkWithoutPreviousErrors() && mistakesMade();
 	}
 
-	private boolean isPageAllOkFirstTime() {
-		return !pageAllOkCompleted && actionConditions.isPageAllOkWithoutPreviousErrors() && !hadCurrentPageError;
+	private boolean mistakesMade() {
+		return actionConditions.getPageMistakesCount() == mistakesCount;
 	}
 
 	private void setPageAllOkCompleted() {

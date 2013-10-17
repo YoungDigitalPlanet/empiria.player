@@ -67,30 +67,16 @@ public class FeedbackActionConditionsTest {
 	}
 
 	@Test
-	public void shouldIndicateThatCurrentPageHasNoErrors() {
-		// given
-		when(outcomeAccessor.getCurrentPageErrors()).thenReturn(1);
-		
-		// when
-		boolean hasCurrentPageErrors = feedbackActionConditions.hasCurrentPageErrors();
-		
-		// then
-		assertTrue(hasCurrentPageErrors);
-		verify(outcomeAccessor).getCurrentPageErrors();
-		
-	}
-
-	@Test
-	public void shouldIndicateThatCurrentPageHasErrors() {
+	public void shouldReturnNumberOfMistakes() {
 		// given
 		when(outcomeAccessor.getCurrentPageErrors()).thenReturn(0);
 		
 		// when
-		boolean hasCurrentPageErrors = feedbackActionConditions.hasCurrentPageErrors();
+		int pageMistakesCount = feedbackActionConditions.getPageMistakesCount();
 		
 		// then
-		assertFalse(hasCurrentPageErrors);
-		verify(outcomeAccessor).getCurrentPageErrors();
+		assertEquals(0, pageMistakesCount);
+		verify(outcomeAccessor).getCurrentPageMistakes();
 		
 	}
 

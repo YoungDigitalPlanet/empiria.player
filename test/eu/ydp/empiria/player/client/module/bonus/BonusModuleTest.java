@@ -71,7 +71,6 @@ public class BonusModuleTest {
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
 		
-		mockPageContainsNoErrors();
 		mockAllOk();
 
 		// when
@@ -86,7 +85,6 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
-		mockPageContainsErrors();
 		mockNotAllOk();
 
 		// when
@@ -101,7 +99,6 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
-		mockPageContainsNoErrors();
 		mockAllOk();
 
 		// when
@@ -151,7 +148,6 @@ public class BonusModuleTest {
 		when(bonusProvider.next()).thenReturn(bonus);
 		
 		// when
-		mockPageContainsNoErrors();
 		mockNotAllOk();
 		module.processUserInteraction();
 		
@@ -167,10 +163,10 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
-		
+
 		// when
-		mockPageContainsErrors();
 		mockNotAllOk();
+		when(actionConditions.getPageMistakesCount()).thenReturn(1);
 		module.processUserInteraction();
 		
 		mockAllOk();
@@ -187,13 +183,12 @@ public class BonusModuleTest {
 		when(bonusProvider.next()).thenReturn(bonus);
 		
 		// when
-		mockPageContainsErrors();
 		mockNotAllOk();
+		when(actionConditions.getPageMistakesCount()).thenReturn(1);
 		module.processUserInteraction();
-		
+
 		module.resetPowerFeedback();
 		
-		mockPageContainsNoErrors();
 		mockAllOk();
 		module.processUserInteraction();
 		
@@ -209,13 +204,4 @@ public class BonusModuleTest {
 	private void mockNotAllOk() {
 		when(actionConditions.isPageAllOkWithoutPreviousErrors()).thenReturn(false);
 	}
-	
-	private void mockPageContainsNoErrors() {
-		when(actionConditions.hasCurrentPageErrors()).thenReturn(false);
-	}
-
-	private void mockPageContainsErrors() {
-		when(actionConditions.hasCurrentPageErrors()).thenReturn(true);
-	}
-
 }
