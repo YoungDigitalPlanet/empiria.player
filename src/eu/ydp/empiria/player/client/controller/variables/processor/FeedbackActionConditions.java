@@ -18,7 +18,4 @@ public class FeedbackActionConditions {
 		return !hasCurrentPageErrors && isPageAllOk();
 	}
 	
-	public int getPageMistakesCount() {
-		return outcomeAccessor.getCurrentPageMistakes();
-	}
 }

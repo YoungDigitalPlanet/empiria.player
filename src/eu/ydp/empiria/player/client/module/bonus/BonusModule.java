@@ -5,6 +5,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.FeedbackActionConditions;
+import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
@@ -16,6 +17,9 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 
 	@Inject
 	private FeedbackActionConditions actionConditions;
+	@Inject
+	private OutcomeAccessor outcomeAccessor; 
+	
 	@Inject
 	@PageScoped
 	private PowerFeedbackMediator mediator;
@@ -41,7 +45,7 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	@Override
 	public void resetPowerFeedback() {
 		pageAllOkCompleted = false;
-		mistakesCount = actionConditions.getPageMistakesCount();
+		mistakesCount = outcomeAccessor.getCurrentPageMistakes();
 	}
 
 	@Override
@@ -63,7 +67,7 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	}
 
 	private boolean mistakesMade() {
-		return actionConditions.getPageMistakesCount() == mistakesCount;
+		return outcomeAccessor.getCurrentPageMistakes() == mistakesCount;
 	}
 
 	private void setPageAllOkCompleted() {

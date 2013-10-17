@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import static junitparams.JUnitParamsRunner.*;
 import static org.fest.assertions.api.Assertions.*;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -64,20 +63,6 @@ public class FeedbackActionConditionsTest {
 		assertThat(pageAllOkWithoutPreviousErrors).isEqualTo(expectedResult);
 
 		verify(outcomeAccessor).getCurrentPageErrors();
-	}
-
-	@Test
-	public void shouldReturnNumberOfMistakes() {
-		// given
-		when(outcomeAccessor.getCurrentPageErrors()).thenReturn(0);
-		
-		// when
-		int pageMistakesCount = feedbackActionConditions.getPageMistakesCount();
-		
-		// then
-		assertEquals(0, pageMistakesCount);
-		verify(outcomeAccessor).getCurrentPageMistakes();
-		
 	}
 
 	@SuppressWarnings({ "unused" })
