@@ -15,7 +15,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionItemsFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.ConnectionSurfacesManagerFactory;
+import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
@@ -57,8 +57,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	@Inject
 	private ConnectionItemsFactory connectionItemsFactory;
 	@Inject
-	private ConnectionSurfacesManagerFactory connectionSurfacesManagerFactory;
-	@Inject
 	private ConnectionViewResizeHandler resizeHandler;
 	@Inject
 	private SurfaceDimensionsDelegate surfaceDimensions;
@@ -77,6 +75,10 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	@Inject
 	private ConnectionsBetweenItemsFinder connectionsFinder;
 
+	@Inject
+	@PageScoped
+	private ConnectionSurfacesManager connectionSurfacesManager;
+
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
 	private final ConnectionPairEntry<ConnectionItem, ConnectionItem> connectionItemPair = new ConnectionPairEntry<ConnectionItem, ConnectionItem>();
 	private MultiplePairBean<SimpleAssociableChoiceBean> modelInterface;
@@ -85,7 +87,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private boolean locked;
 
 	protected final Map<ConnectionItem, Point> startPositions = new HashMap<ConnectionItem, Point>();
-	protected ConnectionSurfacesManager connectionSurfacesManager;
 	protected ConnectionItems connectionItems;
 
 	protected ConnectionSurface currentSurface = null;
@@ -174,7 +175,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void prepareObjects() {
-		connectionSurfacesManager = connectionSurfacesManagerFactory.getConnectionSurfacesManager(surfaceDimensions);
 		connectionItems = connectionItemsFactory.getConnectionItems(moduleSocket.getInlineBodyGeneratorSocket());
 		connectionColumnsBuilder = connectionFactory.getConnectionColumnsBuilder(modelInterface, connectionItems, view);
 	}
@@ -196,31 +196,30 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		return view.asWidget();
 	}
 
-	private void reserveTouchEvent() {
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
-	}
-
 	@Override
 	public void onConnectionStart(ConnectionMoveStartEvent event) {
 		if (!locked) {
-			ConnectionItem item = connectionsFinder.findConnectionItemForEventOnWidget(event.getNativeEvent(), this, connectionItems);
-			if (item == null) {
-				tryDisconnectConnection(event.getNativeEvent());
-			} else {
-				reserveTouchEvent();
-				event.getNativeEvent().preventDefault();
-				startDrawLine(item, NORMAL);
-				item.setConnected(true, NORMAL);
-				resetOtherLastStartElement(item);
-				connectionItemPair.setSource(item);
-			}
+			handleConnectionStart(event);
 		}
 	}
 
-	private void resetOtherLastStartElement(ConnectionItem item) {
-		ConnectionItem source = connectionItemPair.getSource();
-		if (source != null && !item.equals(source)) {
-			resetIfNotConnected(getIdentifier(source));
+	private void handleConnectionStart(ConnectionMoveStartEvent event) {
+		ConnectionItem item = connectionsFinder.findConnectionItemForEventOnWidget(event.getNativeEvent(), this, connectionItems);
+		if (item == null) {
+			tryDisconnectConnection(event.getNativeEvent());
+		} else {
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+			event.getNativeEvent().preventDefault();
+			startDrawLine(item, NORMAL);
+			item.setConnected(true, NORMAL);
+			
+			// resetOtherLastStartElement
+			ConnectionItem source = connectionItemPair.getSource();
+			if (source != null && !item.equals(source)) {
+				resetIfNotConnected(getIdentifier(source));
+			}
+			
+			connectionItemPair.setSource(item);
 		}
 	}
 
@@ -324,7 +323,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void obtainSurfaceWithStyles(ConnectionItem item, MultiplePairModuleConnectType type) {
-		currentSurface = connectionSurfacesManager.getOrCreateSurface(getIdentifier(item));
+		currentSurface = connectionSurfacesManager.getOrCreateSurface(getIdentifier(item), view);
 		currentSurface.applyStyles(connectionModuleViewStyles.getStyles(type));
 	}
 

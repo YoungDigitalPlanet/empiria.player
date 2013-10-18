@@ -1,16 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -70,7 +61,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 	private List<ConnectionSurface> getConnectionSurfaces() {
 		ArrayList<ConnectionSurface> surfaces = new ArrayList<ConnectionSurface>();
 		for (String id : idList) {
-			surfaces.add(instance.getOrCreateSurface(id));
+			surfaces.add(instance.getOrCreateSurface(id, hasDimension));
 		}
 		return surfaces;
 	}
@@ -87,9 +78,9 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 	public void testGetOrCreateSurface() {
 		Set<ConnectionSurface> previous = new HashSet<ConnectionSurface>();
 		for (String id : idList) {
-			ConnectionSurface orCreateSurface = instance.getOrCreateSurface(id);
+			ConnectionSurface orCreateSurface = instance.getOrCreateSurface(id, hasDimension);
 			assertNotNull(orCreateSurface);
-			assertEquals(orCreateSurface, instance.getOrCreateSurface(id));
+			assertEquals(orCreateSurface, instance.getOrCreateSurface(id, hasDimension));
 			assertFalse(previous.contains(orCreateSurface));
 			previous.add(orCreateSurface);
 		}
@@ -136,7 +127,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		ConnectionSurface surface = connectionSurfaces.get(0);
 		instance.putSurface(new ConnectionPairEntry<String, String>(idList.get(0), "test"), surface);
 
-		ConnectionSurface newSurface = instance.getOrCreateSurface(idList.get(0));
+		ConnectionSurface newSurface = instance.getOrCreateSurface(idList.get(0), hasDimension);
 
 		assertNotSame(surface, newSurface);
 	}

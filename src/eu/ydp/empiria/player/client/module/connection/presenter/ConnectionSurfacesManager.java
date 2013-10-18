@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
@@ -20,13 +19,6 @@ public class ConnectionSurfacesManager {
 
 	protected final Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces = new HashMap<ConnectionPairEntry<String, String>, ConnectionSurface>();
 	protected final Map<String, ConnectionSurface> surfaces = new HashMap<String, ConnectionSurface>();
-
-	private final HasDimensions dimensions;
-
-	@Inject
-	public ConnectionSurfacesManager(@Assisted HasDimensions dimensions) {
-		this.dimensions = dimensions;
-	}
 
 	public void resetAll() {
 		for (ConnectionSurface surfce : connectedSurfaces.values()) {
@@ -55,7 +47,7 @@ public class ConnectionSurfacesManager {
 		}
 	}
 
-	protected ConnectionSurface getOrCreateSurface(String identifier) {
+	public ConnectionSurface getOrCreateSurface(String identifier, HasDimensions dimensions) {
 		ConnectionSurface surface;
 		if (surfaces.containsKey(identifier)) {
 			surface = surfaces.get(identifier);
