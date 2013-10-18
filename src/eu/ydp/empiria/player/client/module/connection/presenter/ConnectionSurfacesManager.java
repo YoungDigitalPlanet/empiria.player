@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
@@ -17,25 +17,23 @@ public class ConnectionSurfacesManager {
 	@Inject
 	private ConnectionModuleFactory connectionFactory;
 
-	protected final Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces = new HashMap<ConnectionPairEntry<String, String>, ConnectionSurface>();
-	protected final Map<String, ConnectionSurface> surfaces = new HashMap<String, ConnectionSurface>();
+	private final Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces = Maps.newHashMap();
+	private final Map<String, ConnectionSurface> surfaces = Maps.newHashMap();
 
 	public void resetAll() {
-		for (ConnectionSurface surfce : connectedSurfaces.values()) {
-			surfce.removeFromParent();
+		for (ConnectionSurface surface : connectedSurfaces.values()) {
+			surface.removeFromParent();
 		}
 		connectedSurfaces.clear();
 	}
 
 	public boolean hasConnections(String identifier) {
-		boolean hasConnection = false;
 		for (ConnectionPairEntry<String, String> connection : connectedSurfaces.keySet()) {
 			if (identifier.equals(connection.getSource()) || identifier.equals(connection.getTarget())) {
-				hasConnection = true;
-				break;
+				return true;
 			}
 		}
-		return hasConnection;
+		return false;
 	}
 
 	public void clearConnectionSurface(ConnectionPairEntry<String, String> keyValue) {
@@ -58,7 +56,7 @@ public class ConnectionSurfacesManager {
 		return surface;
 	}
 
-	public void removeSurfaceForItem(String identifier){
+	public void removeSurfaceForItem(String identifier) {
 		surfaces.remove(identifier);
 	}
 
