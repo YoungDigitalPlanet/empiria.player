@@ -1,14 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.*;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,9 +14,11 @@ import java.util.Set;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -31,7 +28,6 @@ import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.query.client.css.WidthProperty;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -62,6 +58,7 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
+import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.util.style.CssHelper;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
@@ -69,9 +66,9 @@ import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
-//@SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
 @PrepareForTest(value = { CssHelper.class, NodeList.class, Node.class, Style.class, NativeEvent.class })
+@Ignore
 public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private class CustomGinModule implements Module {
@@ -88,6 +85,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 			binder.bind(ConnectionView.class).toInstance(createConnectionViewMock());
 
 			binder.bind(ConnectionSurfaceStyleProvider.class).toInstance(mock(ConnectionSurfaceStyleProvider.class));
+			binder.bind(PositionHelper.class).toInstance(mock(PositionHelper.class));
 		}
 
 		private ConnectionView createConnectionViewMock() {
@@ -149,7 +147,8 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		prepareConnectionStyleChecker();
 		prepareNativeEvent();
 		prepareTestInstance();
-
+		
+		MockitoAnnotations.initMocks(this);
 	}
 
 	private void prepareNativeEvent() {
@@ -264,35 +263,39 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 	@Test
 	public void findConnectionTest() {
-		ConnectionsBetweenItems connectionsBetweenItems = injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class),
-				connectionItems);
+		// when
+		ConnectionsBetweenItemsFinder connectionsBetweenItemsFinder = new ConnectionsBetweenItemsFinder();
+		IsWidget w = mock(Widget.class);
+		// ConnectionsBetweenItemsFinder connectionsBetweenItems =
+		// injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class),
+		// connectionItems);
 		ConnectionModuleViewImpl testObject = spy(instance);
-		Set<ConnectionItem> connectionItems = testObject.connectionItems.getConnectionItems(null);
-		ConnectionItem item = connectionItems.iterator().next();
-		doReturn(item).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
+		Set<ConnectionItem> connectionItemsSet = testObject.connectionItems.getConnectionItems(null);
+		ConnectionItem item = connectionItemsSet.iterator().next();
+		when(connectionsBetweenItemsFinder.findConnectionItemForEventOnWidget(any(NativeEvent.class), w, connectionItems)).thenReturn(item);
 
+		// when
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, item));
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
+
+		// then
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
-		Mockito.when(surface.isPointOnPath(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
-		Mockito.verify(connectionEventHandler).fireConnectEvent(Mockito.eq(PairConnectEventTypes.CONNECTED), Mockito.anyString(), Mockito.anyString(),
-				Mockito.anyBoolean());
+		when(surface.isPointOnPath(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
+		verify(connectionEventHandler).fireConnectEvent(eq(PairConnectEventTypes.CONNECTED), anyString(), anyString(), anyBoolean());
 
 	}
 
 	@Test
 	public void connectByClickTest() {
-		ConnectionsBetweenItems connectionsBetweenItems = injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class),
-				connectionItems);
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.connectionItems.getConnectionItems(null);
 		Iterator<ConnectionItem> iterator = connectionItems.iterator();
 		ConnectionItem item1 = iterator.next();
 		ConnectionItem item2 = iterator.next();
-		doReturn(item1).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
+		// doReturn(item1).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
-		doReturn(item2).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
+		// doReturn(item2).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
 		verify(testObject).resetConnectionMadeByTouch();
@@ -301,26 +304,23 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 	@Test
 	public void itemHasAnotherConnectionTest() {
-		ConnectionsBetweenItems connectionsBetweenItems = injector.getInstance(ConnectionModuleFactory.class).getConnectionsBetweenItems(mock(IsWidget.class),
-				connectionItems);
-
 		ConnectionModuleViewImpl testObject = spy(instance);
 		Set<ConnectionItem> connectionItems = testObject.connectionItems.getConnectionItems(null);
 		Iterator<ConnectionItem> iterator = connectionItems.iterator();
 		ConnectionItem item1 = iterator.next();
 		ConnectionItem item2 = iterator.next();
 		ConnectionItem item3 = testObject.connectionItems.getConnectionItems(item1).iterator().next();
-		doReturn(item1).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
+		// doReturn(item1).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
-		doReturn(item2).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
+		// doReturn(item2).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
-		doReturn(item1).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
+		// doReturn(item1).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
 		verify(item2, times(1)).reset();
-		doReturn(item3).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
+		// doReturn(item3).when(connectionsBetweenItems).findConnectionItem(Mockito.any(NativeEvent.class));
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, null));
 		testObject.onConnectionMoveEnd(new ConnectionMoveEndEvent(1, 1, event));
 		verify(testObject, times(2)).resetConnectionMadeByTouch();
@@ -441,7 +441,6 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 	public void postConstructAndroidTest() {
 		ConnectionView view = injector.getInstance(ConnectionView.class);
 		Mockito.reset(view);
-		instance.STACK_ANDROID_BROWSER = true;
 
 		instance.postConstruct();
 		verify(view).setDrawFollowTouch(Mockito.eq(false));

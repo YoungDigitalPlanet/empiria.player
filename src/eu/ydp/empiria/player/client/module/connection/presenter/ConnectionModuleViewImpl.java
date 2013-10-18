@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.gin.factory.ConnectionItemsFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionSurfacesManagerFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
@@ -34,8 +35,6 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveE
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
@@ -43,15 +42,12 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler,
 		ConnectionMoveStartHandler, ConnectionMoveCancelHandler {
 
-	// protected for tests
-	protected boolean STACK_ANDROID_BROWSER = UserAgentChecker.isStackAndroidBrowser(); // NOPMD
-
+	@Inject
+	private UserAgentCheckerWrapper userAgent;
 	@Inject
 	private ConnectionView view;
 	@Inject
@@ -59,15 +55,9 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	@Inject
 	private PositionHelper positionHelper;
 	@Inject
-	private StyleSocket styleSocket;
-	@Inject
-	private StyleNameConstants styleNames;
-	@Inject
-	private XMLParser xmlParser;
-	@Inject
 	private EventsBus eventsBus;
 	@Inject
-	protected ConnectionEventHandler connectionEventHandler;
+	private ConnectionEventHandler connectionEventHandler;
 	@Inject
 	private ConnectionItemsFactory connectionItemsFactory;
 	@Inject
@@ -84,26 +74,31 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	@Inject
 	private ConnectionSurfaceStyleProvider surfaceStyleProvider;
+	
+	@Inject
+	private ConnectionModuleViewStyles connectionModuleViewStyles;
+
+	@Inject
+	private ConnectionsBetweenItemsFinder connectionsFinder;
 
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
-	private ConnectionModuleViewStyles connectionModuleViewStyles;
 	private final ConnectionPairEntry<ConnectionItem, ConnectionItem> connectionItemPair = new ConnectionPairEntry<ConnectionItem, ConnectionItem>();
 	private MultiplePairBean<SimpleAssociableChoiceBean> modelInterface;
 	private final ConnectionPairEntry<Double, Double> lastPoint = new ConnectionPairEntry<Double, Double>(0d, 0d);
 	private ModuleSocket moduleSocket;
-	private final int approximation = STACK_ANDROID_BROWSER ? 15 : 5;
+//	private final int approximation = STACK_ANDROID_BROWSER ? 15 : 5;
 	private boolean locked;
 
 	protected final Map<ConnectionItem, Point> startPositions = new HashMap<ConnectionItem, Point>();
 	protected ConnectionSurfacesManager connectionSurfacesManager;
 	protected ConnectionItems connectionItems;
-	protected ConnectionsBetweenItems connectionsBetweenItems;
+	
 
 	protected ConnectionSurface currentSurface = null;
 
 	@PostConstruct
 	public void postConstruct() {
-		view.setDrawFollowTouch(!STACK_ANDROID_BROWSER);
+		view.setDrawFollowTouch(!userAgent.isStackAndroidBrowser());
 	}
 
 	@Override
@@ -186,9 +181,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	private void prepareObjects() {
 		connectionSurfacesManager = connectionSurfacesManagerFactory.getConnectionSurfacesManager(surfaceDimensions);
-		connectionModuleViewStyles = new ConnectionModuleViewStyles(styleSocket, styleNames, xmlParser);
 		connectionItems = connectionItemsFactory.getConnectionItems(moduleSocket.getInlineBodyGeneratorSocket());
-		connectionsBetweenItems = connectionFactory.getConnectionsBetweenItems(view, connectionItems);
 		connectionColumnsBuilder = connectionFactory.getConnectionColumnsBuilder(modelInterface, connectionItems, view);
 	}
 
@@ -216,7 +209,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	@Override
 	public void onConnectionStart(ConnectionMoveStartEvent event) {
 		if (!locked) {
-			ConnectionItem item = connectionsBetweenItems.findConnectionItem(event.getNativeEvent());
+			ConnectionItem item = connectionsFinder.findConnectionItemForEventOnWidget(event.getNativeEvent(), this, connectionItems);
 			if (item == null) {
 				tryDisconnectConnection(event.getNativeEvent());
 			} else {
@@ -266,7 +259,11 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private boolean wasMoved(ConnectionMoveEvent event) {
-		return Math.abs(lastPoint.getSource() - event.getX()) > approximation || Math.abs(lastPoint.getTarget() - event.getY()) > approximation;
+		return Math.abs(lastPoint.getSource() - event.getX()) > approximation() || Math.abs(lastPoint.getTarget() - event.getY()) > approximation();
+	}
+	
+	private int approximation() {
+		return userAgent.isStackAndroidBrowser() ? 15 : 5;
 	}
 
 	protected void resetConnectionMadeByTouch() {
