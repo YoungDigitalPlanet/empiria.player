@@ -26,11 +26,11 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 
-	protected ModulesRegistrySocket modulesRegistrySocket;
-	protected ModuleSocket moduleSocket;
-	protected DisplayContentOptions options;
-	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	private final InteractionEventsListener interactionEventsListener;
+	private ModulesRegistrySocket modulesRegistrySocket;
+	private ModuleSocket moduleSocket;
+	private DisplayContentOptions options;
+	private StyleNameConstants styleNames;
+	private InteractionEventsListener interactionEventsListener;
 	private ParenthoodManager parenthood;
 
 	public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket moduleSocket, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, ParenthoodManager parenthood) {
@@ -39,6 +39,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 		this.moduleSocket = moduleSocket;
 		this.interactionEventsListener = interactionEventsListener;
 		this.parenthood = parenthood;
+		this.styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	}
 
 	@Override

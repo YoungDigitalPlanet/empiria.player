@@ -28,13 +28,10 @@ import eu.ydp.empiria.player.client.module.connection.presenter.translation.Surf
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
-import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveCancelHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
-import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEvent;
-import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
-import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
+import eu.ydp.empiria.player.client.module.connection.view.event.HasConnectionMoveHandlers;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
@@ -43,8 +40,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
-public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler,
-		ConnectionMoveStartHandler, ConnectionMoveCancelHandler {
+public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean>, HasConnectionMoveHandlers {
 
 	@Inject
 	private UserAgentCheckerWrapper userAgent;
@@ -86,13 +82,11 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private MultiplePairBean<SimpleAssociableChoiceBean> modelInterface;
 	private final ConnectionPairEntry<Double, Double> lastPoint = new ConnectionPairEntry<Double, Double>(0d, 0d);
 	private ModuleSocket moduleSocket;
-//	private final int approximation = STACK_ANDROID_BROWSER ? 15 : 5;
 	private boolean locked;
 
 	protected final Map<ConnectionItem, Point> startPositions = new HashMap<ConnectionItem, Point>();
 	protected ConnectionSurfacesManager connectionSurfacesManager;
 	protected ConnectionItems connectionItems;
-	
 
 	protected ConnectionSurface currentSurface = null;
 
