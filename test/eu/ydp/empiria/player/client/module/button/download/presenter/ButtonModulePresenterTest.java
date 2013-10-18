@@ -15,11 +15,13 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
 import eu.ydp.empiria.player.client.controller.assets.AssetOpenDelegatorService;
 import eu.ydp.empiria.player.client.module.button.download.structure.ButtonBean;
 import eu.ydp.empiria.player.client.module.button.download.view.ButtonModuleView;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ButtonModulePresenterTest {
@@ -67,12 +69,15 @@ public class ButtonModulePresenterTest {
 
 		instance.setBean(bean);
 		instance.init();
-
+		
+		ClickEvent clickEvent = mock(ClickEvent.class);
+		
 		// when
-		clickHandler.onClick(null);
+		clickHandler.onClick(clickEvent);
 
 		// then
 		verify(assetOpenDelegatorService).open(URL);
+		verify(clickEvent).preventDefault();
 	}
 
 	@Test
