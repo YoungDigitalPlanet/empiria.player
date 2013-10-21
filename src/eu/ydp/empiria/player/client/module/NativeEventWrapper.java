@@ -6,4 +6,5 @@ public class NativeEventWrapper {
 	public void preventDefault(NativeEvent nativeEvent) {
 		nativeEvent.preventDefault();
 	}
+	
 }

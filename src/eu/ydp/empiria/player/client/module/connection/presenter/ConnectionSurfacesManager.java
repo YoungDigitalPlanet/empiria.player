@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
@@ -17,17 +16,14 @@ public class ConnectionSurfacesManager {
 	@Inject
 	private ConnectionModuleFactory connectionFactory;
 
-	private final Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces = Maps.newHashMap();
-	private final Map<String, ConnectionSurface> surfaces = Maps.newHashMap();
-
-	public void resetAll() {
+	public void resetAll(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces) {
 		for (ConnectionSurface surface : connectedSurfaces.values()) {
 			surface.removeFromParent();
 		}
 		connectedSurfaces.clear();
 	}
 
-	public boolean hasConnections(String identifier) {
+	public boolean hasConnections(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces, String identifier) {
 		for (ConnectionPairEntry<String, String> connection : connectedSurfaces.keySet()) {
 			if (identifier.equals(connection.getSource()) || identifier.equals(connection.getTarget())) {
 				return true;
@@ -36,7 +32,8 @@ public class ConnectionSurfacesManager {
 		return false;
 	}
 
-	public void clearConnectionSurface(ConnectionPairEntry<String, String> keyValue) {
+	public void clearConnectionSurface(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces,
+			ConnectionPairEntry<String, String> keyValue) {
 		ConnectionSurface connectionSurface = connectedSurfaces.get(keyValue);
 		if (connectionSurface != null) {
 			connectionSurface.clear();
@@ -45,7 +42,7 @@ public class ConnectionSurfacesManager {
 		}
 	}
 
-	public ConnectionSurface getOrCreateSurface(String identifier, HasDimensions dimensions) {
+	public ConnectionSurface getOrCreateSurface(Map<String, ConnectionSurface> surfaces, String identifier, HasDimensions dimensions) {
 		ConnectionSurface surface;
 		if (surfaces.containsKey(identifier)) {
 			surface = surfaces.get(identifier);
@@ -56,11 +53,11 @@ public class ConnectionSurfacesManager {
 		return surface;
 	}
 
-	public void removeSurfaceForItem(String identifier) {
+	public void removeSurfaceForItem(Map<String, ConnectionSurface> surfaces, String identifier) {
 		surfaces.remove(identifier);
 	}
 
-	public ConnectionPairEntry<String, String> findPointOnPath(Point point) {
+	public ConnectionPairEntry<String, String> findPointOnPath(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces, Point point) {
 		ConnectionPairEntry<String, String> foundPoint = null;
 		for (Map.Entry<ConnectionPairEntry<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
 			if (entry.getValue().isPointOnPath(point.getX(), point.getY(), APPROXIMATION)) {
@@ -71,17 +68,19 @@ public class ConnectionSurfacesManager {
 		return foundPoint;
 	}
 
-	public void putSurface(ConnectionPairEntry<String, String> keyValue, ConnectionSurface surface) {
+	public void putSurface(Map<String, ConnectionSurface> surfaces, Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces,
+			ConnectionPairEntry<String, String> keyValue, ConnectionSurface surface) {
 		connectedSurfaces.put(keyValue, surface);
 		surfaces.remove(keyValue.getSource());
 	}
 
-	public boolean containsSurface(ConnectionPairEntry<String, String> keyValue) {
+	public boolean containsSurface(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces, ConnectionPairEntry<String, String> keyValue) {
 		return connectedSurfaces.containsKey(keyValue);
 	}
 
-	public void removeSurfaceFromParent(ConnectionPairEntry<String, String> keyValue) {
-		if (containsSurface(keyValue)) {
+	public void removeSurfaceFromParent(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces,
+			ConnectionPairEntry<String, String> keyValue) {
+		if (containsSurface(connectedSurfaces, keyValue)) {
 			connectedSurfaces.get(keyValue).removeFromParent();
 		}
 	}

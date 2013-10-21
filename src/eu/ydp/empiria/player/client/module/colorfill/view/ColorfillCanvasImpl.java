@@ -130,7 +130,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 			public void execute(NativeEvent event) {
 				event.preventDefault();
 				CanvasElement canvasElement = canvasStubView.getCanvas().getCanvasElement();
-				Area area = new Area(positionHelper.getPositionX(event, canvasElement), positionHelper.getPositionY(event, canvasElement));
+				Area area = new Area(positionHelper.getXPositionRelativeToTarget(event, canvasElement), positionHelper.getYPositionRelativeToTarget(event, canvasElement));
 				if(area.getX() >=0 && area.getY() >= 0){
 					listener.onAreaClick(area);
 				}

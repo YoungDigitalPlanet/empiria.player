@@ -7,14 +7,8 @@ import com.google.gwt.dom.client.Touch;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public class PositionHelper {
-	/**
-	 * zwraca relatywna pozycje Y zdarzenia do elementu target
-	 *
-	 * @param event
-	 * @param target
-	 * @return
-	 */
-	public int getPositionY(NativeEvent event, Element target) {
+
+	public int getYPositionRelativeToTarget(NativeEvent event, Element target) {
 		Touch touch = getTouch(event);
 		float positionY = 0;//hack dont change to int
 		if (touch == null) {
@@ -36,7 +30,7 @@ public class PositionHelper {
 	 * @param target
 	 * @return
 	 */
-	public int getPositionX(NativeEvent event, Element target) {
+	public int getXPositionRelativeToTarget(NativeEvent event, Element target) {
 		Touch touch = getTouch(event);
 		float positionX = 0; //hack dont change to int
 		if (touch == null) {
@@ -61,12 +55,12 @@ public class PositionHelper {
 	}
 
 	public Point getPoint(NativeEvent event, Element target){
-		return new Point(getPositionX(event, target), getPositionY(event, target));
+		return new Point(getXPositionRelativeToTarget(event, target), getYPositionRelativeToTarget(event, target));
 	}
 
 	public Point getPoint(NativeEvent event, IsWidget widget){
 		com.google.gwt.user.client.Element target = widget.asWidget().getElement();
-		return new Point(getPositionX(event, target), getPositionY(event, target));
+		return new Point(getXPositionRelativeToTarget(event, target), getYPositionRelativeToTarget(event, target));
 	}
 
 }
