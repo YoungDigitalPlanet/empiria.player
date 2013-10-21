@@ -372,6 +372,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void prepareAndAddStyleToSurface(ConnectionItem enditem, ConnectionItem startItem, MultiplePairModuleConnectType type) {
+
 		boolean startIsLeft = modelInterface.isLeftItem(startItem.getBean());
 		int leftIndex;
 		int rightIndex;
@@ -384,8 +385,14 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			rightIndex = modelInterface.getRightItemIndex(startItem.getBean());
 		}
 
-		List<String> stylesToAdd = surfaceStyleProvider.getStylesForSurface(type, leftIndex, rightIndex);
-		addStylesToSurface(stylesToAdd);
+		if (isMarkedOnBothSides(leftIndex, rightIndex)) {
+			List<String> stylesToAdd = surfaceStyleProvider.getStylesForSurface(type, leftIndex, rightIndex);
+			addStylesToSurface(stylesToAdd);
+		}
+	}
+
+	private boolean isMarkedOnBothSides(int leftIndex, int rightIndex) {
+		return leftIndex >= 0 && rightIndex >= 0;
 	}
 
 	protected void addStylesToSurface(List<String> styles) {
