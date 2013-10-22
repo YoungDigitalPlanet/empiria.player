@@ -12,9 +12,8 @@ public interface InlineBodyGeneratorSocket {
 	 * @param node
 	 * @param parentElement
 	 */
-	public void generateInlineBody(Node node, Element parentElement);
-	
-	public void generateInlineBody(String node, Element parentElement);
+	void generateInlineBody(Node node, Element parentElement);
+	void generateInlineBody(String node, Element parentElement);
 
 	/**
 	 * generuje htmla dla dzieci wskazanego wezla
@@ -22,29 +21,13 @@ public interface InlineBodyGeneratorSocket {
 	 * @param mainNode
 	 * @return
 	 */
-	public Widget generateInlineBody(Node mainNode);
+	Widget generateInlineWidget(Node mainNode);
 
-	/**
-	 * Generuje htmla dla wskazanego wezla.
-	 *
-	 * @param mainNode
-	 * @return
-	 */
-	public Widget generateInlineBodyForNode(Node mainNode);
-	/**
-	 * generuje htmla dla dzieci wskazanego wezla w postaci hierarchi widgetow
-	 *
-	 * @param mainNode
-	 * @return
-	 */
-	Widget generateInlineBodyForNode(Node mainNode, boolean allAsWidget);
 	/**
 	 * Generuje htmla dla wskazanego wezla  w postaci hierarchi widgetow
 	 *
 	 * @param mainNode
 	 * @return
 	 */
-	Widget generateInlineBody(Node mainNode, boolean allAsWidget);
-	
-	Widget generateInlineBody(String mainNode, boolean allAsWidget);
+	Widget generateInlinePanelWidget(Node mainNode);
 }

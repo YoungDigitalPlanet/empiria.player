@@ -51,7 +51,7 @@ public class SlideWidget extends Composite {
 		Widget textWidget = null;
 		
 		if (textNode != null){
-			textWidget = bodyGenerator.generateInlineBody(textNode);
+			textWidget = bodyGenerator.generateInlineWidget(textNode);
 		}
 		
 		if (textWidget != null){

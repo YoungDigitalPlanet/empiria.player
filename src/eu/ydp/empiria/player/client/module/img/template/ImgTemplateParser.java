@@ -135,7 +135,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	private Widget generateInlineBody(String elementName) {
 		NodeList titleNodes = baseElement.getElementsByTagName(elementName);
-		return moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
+		return moduleSocket.getInlineBodyGeneratorSocket().generateInlineWidget(titleNodes.item(0));
 	}
 
 	private boolean isNodeHaveChildren(String elementName) {

@@ -147,7 +147,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 
 	private SelectableChoice createSelectableChoice(Element item, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
 		String identifier = XMLUtils.getAttributeAsString(item, "identifier");
-		Widget contentWidget = inlineBodyGeneratorSocket.generateInlineBody(item);
+		Widget contentWidget = inlineBodyGeneratorSocket.generateInlineWidget(item);
 		SelectableChoice selectableChoice = identificationModuleFactory.createSelectableChoice(identifier, contentWidget);
 		return selectableChoice;
 	}

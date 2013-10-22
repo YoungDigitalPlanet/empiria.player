@@ -17,7 +17,6 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionItemsFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
-import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
@@ -75,7 +74,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private ConnectionsBetweenItemsFinder connectionsFinder;
 
 	@Inject
-	@PageScoped
 	private ConnectionSurfacesManager connectionSurfacesManager;
 
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
@@ -136,7 +134,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		disconnect(sourceIdentifier, targetIdentifier, false);
 	}
 
-	public void disconnect(String sourceIdentifier, String targetIdentifier, boolean userAction) {
+	private void disconnect(String sourceIdentifier, String targetIdentifier, boolean userAction) {
 		if (connectionItems.isIdentifiersCorrect(sourceIdentifier, targetIdentifier)) {
 			ConnectionPairEntry<String, String> keyValue = new ConnectionPairEntry<String, String>(sourceIdentifier, targetIdentifier);
 			connectionSurfacesManager.clearConnectionSurface(connectedSurfaces, keyValue);

@@ -15,7 +15,7 @@ public class SpanModule extends SimpleModuleBase implements ISimpleModule, Facto
 	
 	@Override
 	public void initModule(Element element) {
-		contents = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(element);
+		contents = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineWidget(element);
 		contents.setStyleName(styleNames.QP_SPAN());
 	}
 
