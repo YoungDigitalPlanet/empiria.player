@@ -9,6 +9,8 @@ import eu.ydp.empiria.player.client.gin.factory.ConnectionSurfacesManagerFactory
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceImpl;
+import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceView;
+import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceViewImpl;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemImpl;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
@@ -22,12 +24,11 @@ public class ConnectionGinModule extends AbstractGinModule {
 
 	@Override
 	protected void configure() {
-		install(new GinFactoryModuleBuilder()
-					.implement(ConnectionItem.class, ConnectionItemImpl.class)
-					.implement(ConnectionSurface.class, ConnectionSurfaceImpl.class)
-					.implement(MultiplePairModuleView.class, ConnectionModuleViewImpl.class)
-					.implement(ConnectionView.class, ConnectionViewVertical.class)
-					.build(ConnectionModuleFactory.class));
+		install(new GinFactoryModuleBuilder().implement(ConnectionItem.class, ConnectionItemImpl.class)
+				.implement(ConnectionSurface.class, ConnectionSurfaceImpl.class).implement(MultiplePairModuleView.class, ConnectionModuleViewImpl.class)
+				.implement(ConnectionView.class, ConnectionViewVertical.class).implement(ConnectionSurfaceView.class, ConnectionSurfaceViewImpl.class)
+				.build(ConnectionModuleFactory.class));
+
 		install(new GinFactoryModuleBuilder().build(ConnectionSurfacesManagerFactory.class));
 		install(new GinFactoryModuleBuilder().build(ConnectionItemsFactory.class));
 		bind(ConnectionModulePresenter.class).to(ConnectionModulePresenterImpl.class);

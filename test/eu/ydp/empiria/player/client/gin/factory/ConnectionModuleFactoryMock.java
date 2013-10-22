@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -16,6 +15,7 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.structure.Mul
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
+import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceView;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem.Column;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemViewLeft;
@@ -28,6 +28,7 @@ import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionV
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 import eu.ydp.gwtutil.client.xml.XMLParser;
+import gwt.g2d.client.math.Vector2;
 
 public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	// singleton na potrzeby testow wszystkie operacje na jednym
@@ -72,7 +73,7 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	}
 
 	@Override
-	public ConnectionSurface getConnectionSurface(@Assisted("width") Integer width, @Assisted("height") Integer height) {
+	public ConnectionSurface getConnectionSurface(Vector2 vector) {
 		return surfaceProvider.get();
 	}
 
@@ -94,6 +95,11 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	public ConnectionColumnsBuilder getConnectionColumnsBuilder(MultiplePairBean<SimpleAssociableChoiceBean> modelInterface, ConnectionItems connectionItems,
 			ConnectionView view) {
 		return spy(new ConnectionColumnsBuilder(modelInterface, connectionItems, view));
+	}
+
+	@Override
+	public ConnectionSurfaceView getConnectionSurfaceView(Vector2 vector) {
+		return mock(ConnectionSurfaceView.class);
 	}
 
 }

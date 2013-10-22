@@ -1,36 +1,28 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.util.position.Point;
-import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
 import gwt.g2d.client.math.Vector2;
 
 import java.util.Map;
 
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-/**
- * Widok polaczen
- * 
- * @author plelakowski
- * 
- */
 public class ConnectionSurfaceImpl implements ConnectionSurface {
 	private final ConnectionSurfaceView view;
 	private int offsetTop;
 	private int offsetLeft;
 
 	@Inject
-	public ConnectionSurfaceImpl(@Assisted Vector2 vector, StyleToPropertyMappingHelper styleHelper) {
-		view = new ConnectionSurfaceView(vector, styleHelper);
-
+	public ConnectionSurfaceImpl(@Assisted Vector2 vector, ConnectionModuleFactory connectionModuleFactory) {
+		view = connectionModuleFactory.getConnectionSurfaceView(vector);
 	}
 
 	@Override
 	public Widget asWidget() {
-		return view;
+		return view.asWidget();
 	}
 
 	@Override
@@ -51,7 +43,8 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 
 	@Override
 	public boolean isPointOnPath(Point point) {
-		return view.isPointOnPath(point);
+
+		return view.isPointOnPath(getRelativePoint(point));
 	}
 
 	@Override
@@ -66,19 +59,19 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 
 	@Override
 	public int getOffsetLeft() {
-		return view.getElement().getOffsetLeft();
+		return view.getOffsetLeft();
 	}
 
 	@Override
 	public void setOffsetLeft(int offsetLeft) {
 		this.offsetLeft = offsetLeft;
-		view.getElement().getStyle().setLeft(offsetLeft, Unit.PX);
+		view.setOffsetLeft(offsetLeft);
 	}
 
 	@Override
 	public void setOffsetTop(int offsetTop) {
 		this.offsetTop = offsetTop;
-		view.getElement().getStyle().setTop(offsetTop, Unit.PX);
+		view.setOffsetTop(offsetTop);
 	}
 
 }
