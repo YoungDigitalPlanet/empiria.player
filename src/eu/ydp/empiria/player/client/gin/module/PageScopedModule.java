@@ -70,7 +70,6 @@ public class PageScopedModule extends AbstractGinModule {
 		bindPageScoped(SourcelistManagerModel.class, new TypeLiteral<PageScopedProvider<SourcelistManagerModel>>(){});
 		
 		bindPageScoped(PowerFeedbackMediator.class, new TypeLiteral<PageScopedProvider<PowerFeedbackMediator>>(){});
-		bindPageScoped(ConnectionSurfacesManager.class, new TypeLiteral<PageScopedProvider<ConnectionSurfacesManager>>(){});
 	}
 	
 	private <F, T extends F> void bindPageScoped(Class<F> clazz, TypeLiteral<PageScopedProvider<T>> typeLiteral){

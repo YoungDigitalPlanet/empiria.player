@@ -13,6 +13,7 @@ import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemImpl;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenterImpl;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModuleViewImpl;
+import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModuleViewImplHandlers;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionSurfacesManager;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionViewVertical;
@@ -32,6 +33,7 @@ public class ConnectionGinModule extends AbstractGinModule {
 		bind(ConnectionView.class).to(ConnectionViewVertical.class);
 		bind(ConnectionSurfacesManager.class);
 		bind(ConnectionModuleStructure.class);
+		bind(ConnectionModuleViewImplHandlers.class);
 		bind(MultiplePairModuleView.class).to(ConnectionModuleViewImpl.class);
 	}
 
