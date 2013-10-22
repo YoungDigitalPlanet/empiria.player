@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
+import gwt.g2d.client.math.Vector2;
 
 public class ConnectionSurfacesManager {
 
@@ -60,20 +61,21 @@ public class ConnectionSurfacesManager {
 		if (surfaces.containsKey(identifier)) {
 			surface = surfaces.get(identifier);
 		} else {
-			surface = connectionFactory.getConnectionSurface(dimensions.getWidth(), dimensions.getHeight());
+			Vector2 vector = new Vector2(dimensions.getWidth(), dimensions.getHeight());
+			surface = connectionFactory.getConnectionSurface(vector);
 			surfaces.put(identifier, surface);
 		}
 		return surface;
 	}
 
-	public void removeSurfaceForItem(String identifier){
+	public void removeSurfaceForItem(String identifier) {
 		surfaces.remove(identifier);
 	}
 
 	public ConnectionPairEntry<String, String> findPointOnPath(Point point) {
 		ConnectionPairEntry<String, String> foundPoint = null;
 		for (Map.Entry<ConnectionPairEntry<String, String>, ConnectionSurface> entry : connectedSurfaces.entrySet()) {
-			if (entry.getValue().isPointOnPath(point.getX(), point.getY(), APPROXIMATION)) {
+			if (entry.getValue().isPointOnPath(point)) {
 				foundPoint = new ConnectionPairEntry<String, String>(entry.getKey().getSource(), entry.getKey().getTarget());
 				break;
 			}

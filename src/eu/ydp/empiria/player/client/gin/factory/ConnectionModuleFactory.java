@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -20,6 +19,7 @@ import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionsBetwe
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
+import gwt.g2d.client.math.Vector2;
 
 public interface ConnectionModuleFactory {
 	public ConnectionModuleStructure getConnectionModuleStructure();
@@ -32,7 +32,7 @@ public interface ConnectionModuleFactory {
 
 	public ConnectionModuleModel getConnectionModuleModel(Response response, ResponseModelChangeListener modelChangeListener);
 
-	public ConnectionSurface getConnectionSurface(@Assisted("width") Integer width, @Assisted("height") Integer height);
+	public ConnectionSurface getConnectionSurface(Vector2 vector2);
 
 	public ConnectionsBetweenItems getConnectionsBetweenItems(IsWidget widget, ConnectionItems connectionItems);
 

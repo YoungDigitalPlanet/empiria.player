@@ -268,7 +268,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, item));
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
-		Mockito.when(surface.isPointOnPath(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
+		Mockito.when(surface.isPointOnPath(any(Point.class))).thenReturn(true);
 		Mockito.verify(connectionEventHandler).fireConnectEvent(Mockito.eq(PairConnectEventTypes.CONNECTED), Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyBoolean());
 

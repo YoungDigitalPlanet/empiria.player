@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import eu.ydp.empiria.player.client.util.position.Point;
+import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
+import gwt.g2d.client.math.Vector2;
+
 import java.util.Map;
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -7,14 +11,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.util.position.Point;
-import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
-
 /**
  * Widok polaczen
- *
+ * 
  * @author plelakowski
- *
+ * 
  */
 public class ConnectionSurfaceImpl implements ConnectionSurface {
 	private final ConnectionSurfaceView view;
@@ -22,8 +23,8 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 	private int offsetLeft;
 
 	@Inject
-	public ConnectionSurfaceImpl(StyleToPropertyMappingHelper styleHelper,@Assisted("width") Integer width, @Assisted("height") Integer height) {
-		view = new ConnectionSurfaceView(width, height, styleHelper);
+	public ConnectionSurfaceImpl(@Assisted Vector2 vector, StyleToPropertyMappingHelper styleHelper) {
+		view = new ConnectionSurfaceView(vector, styleHelper);
 
 	}
 
@@ -34,7 +35,13 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 
 	@Override
 	public void drawLine(Point from, Point to) {
-		view.drawLine(from.getX()-offsetLeft, from.getY()-offsetTop, to.getX()-offsetLeft, to.getY()-offsetTop);
+		Point relativeStart = getRelativePoint(from);
+		Point relativeEnd = getRelativePoint(to);
+		view.drawLine(relativeStart, relativeEnd);
+	}
+
+	private Point getRelativePoint(Point point) {
+		return new Point(point.getX() - offsetLeft, point.getY() - offsetTop);
 	}
 
 	@Override
@@ -43,12 +50,12 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 	}
 
 	@Override
-	public boolean isPointOnPath(int xPos, int yPos, int approximation) {
-		return view.isPointOnPath(xPos-offsetLeft, yPos-offsetTop, approximation);
+	public boolean isPointOnPath(Point point) {
+		return view.isPointOnPath(point);
 	}
 
 	@Override
-	public void applyStyles(Map<String, String> styles){
+	public void applyStyles(Map<String, String> styles) {
 		view.applyStyles(styles);
 	}
 

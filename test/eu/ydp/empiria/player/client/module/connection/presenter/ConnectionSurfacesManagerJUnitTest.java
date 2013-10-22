@@ -1,16 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -103,7 +94,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		for (ConnectionSurface surface : connectionSurfaces) {
 			verify(surface).removeFromParent();
 		}
-		assertTrue(instance.surfaces.size()==0);
+		assertTrue(instance.surfaces.size() == 0);
 		List<ConnectionSurface> connectionSurfaces2 = getConnectionSurfaces();
 		assertFalse(connectionSurfaces.containsAll(connectionSurfaces2));
 	}
@@ -131,7 +122,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 	}
 
 	@Test
-	public void testPutSurface_getOrCreateSurfaceShouldReturnNewSurface(){
+	public void testPutSurface_getOrCreateSurfaceShouldReturnNewSurface() {
 		List<ConnectionSurface> connectionSurfaces = getConnectionSurfaces();
 		ConnectionSurface surface = connectionSurfaces.get(0);
 		instance.putSurface(new ConnectionPairEntry<String, String>(idList.get(0), "test"), surface);
@@ -200,7 +191,7 @@ public class ConnectionSurfacesManagerJUnitTest extends AbstractTestBaseWithoutA
 		putConnections(connectionSurfaces);
 		ConnectionSurface connectionSurface = connectionSurfaces.get(2);
 		Point point = new Point(20, 20);
-		doReturn(true).when(connectionSurface).isPointOnPath(Mockito.eq(point.getX()), Mockito.eq(point.getY()), Mockito.anyInt());
+		doReturn(true).when(connectionSurface).isPointOnPath(Mockito.eq(point));
 
 		// test
 		ConnectionPairEntry<String, String> findPointOnPath = instance.findPointOnPath(point);

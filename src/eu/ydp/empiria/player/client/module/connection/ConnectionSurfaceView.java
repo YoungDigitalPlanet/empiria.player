@@ -1,10 +1,12 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import gwt.g2d.client.graphics.Surface;
 import gwt.g2d.client.graphics.canvas.Context;
+import gwt.g2d.client.math.Vector2;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,17 +19,21 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ConnectionSurfaceView extends Composite {
 
-	// protected Context view = null;
 	protected Context context2d;
 	protected Surface surface;
 	private final StyleToPropertyMappingHelper styleHelper;
-	private final int[] coordinates = new int[4];
+	private LineSegment lineSegment;
+
 	private final Map<String, String> propertiesToClear = new HashMap<String, String>();
 	private Map<String, String> lastSetStyles = new HashMap<String, String>();
-	private final boolean isAndroid_4_UserAgent = UserAgentChecker.isMobileUserAgent(MobileUserAgent.ANDROID4);
-	public ConnectionSurfaceView(int width, int height, StyleToPropertyMappingHelper styleHelper) {
+	private final boolean IS_ANDROID_4 = UserAgentChecker.isMobileUserAgent(MobileUserAgent.ANDROID4);
+	private final SurfaceCleaner surfaceCleaner = new SurfaceCleaner();
+
+	private final LineSegmentChecker lineSegmentChecker = new LineSegmentChecker(new DistanceCalculator(), new RectangleChecker());
+
+	public ConnectionSurfaceView(Vector2 vector, StyleToPropertyMappingHelper styleHelper) {
 		this.styleHelper = styleHelper;
-		surface = new Surface(width, height);
+		surface = new Surface(vector);
 		context2d = surface.getContext();
 		initWidget(surface);
 		// ma znajdowac sie pod caloscia
@@ -36,28 +42,17 @@ public class ConnectionSurfaceView extends Composite {
 		surface.getElement().getStyle().setTop(0, Unit.PX);
 	}
 
-	public void drawLine(int fromX, int fromY, int toX, int toY) {
+	public void drawLine(Point start, Point end) {
 		context2d.save();
+		lineSegment = new LineSegment(start, end);
 		clear();
-		coordinates[0] = fromX;
-		coordinates[1] = fromY;
-		coordinates[2] = toX;
-		coordinates[3] = toY;
+
 		context2d.beginPath();
-		context2d.moveTo(fromX, fromY);
-		context2d.lineTo(toX, toY);
+		context2d.moveTo(start.getX(), start.getY());
+		context2d.lineTo(end.getX(), end.getY());
 		context2d.stroke();
 		context2d.restore();
 
-	}
-
-	public double[] getReactToClear() {
-		double[] rect = new double[4];
-		rect[0] = coordinates[0] > coordinates[2] ? coordinates[2] - 25 : coordinates[0] - 25;
-		rect[1] = coordinates[1] > coordinates[3] ? coordinates[3] - 25 : coordinates[1] - 25;
-		rect[2] = Math.abs(coordinates[0] - coordinates[2]) + 50;
-		rect[3] = Math.abs(coordinates[1] - coordinates[3]) + 50;
-		return rect;
 	}
 
 	public void updateStyles(Map<String, String> styles) {
@@ -65,16 +60,17 @@ public class ConnectionSurfaceView extends Composite {
 	}
 
 	public void clear() {
-		double[] rect = getReactToClear();
-		context2d.clearRect(rect[0], rect[1], rect[2], rect[3]);
+		surfaceCleaner.clean(lineSegment, context2d);
 		applyHackForCanvasInAndroid4();
 	}
 
 	/**
-	 * @see <a href="http://code.google.com/p/android/issues/detail?id=35474#c25" >android bug trucker</a>
+	 * @see <a
+	 *      href="http://code.google.com/p/android/issues/detail?id=35474#c25"
+	 *      >android bug trucker</a>
 	 */
 	private void applyHackForCanvasInAndroid4() {
-		if(isAndroid_4_UserAgent){
+		if (IS_ANDROID_4) {
 			surface.setWidth(surface.getWidth());
 			applyStyles(lastSetStyles);
 		}
@@ -84,8 +80,8 @@ public class ConnectionSurfaceView extends Composite {
 		return surface;
 	}
 
-	public boolean isPointOnPath(int xPos, int yPos, int approximation) { // NOPMD
-		return ptLineDist(coordinates[0], coordinates[1], coordinates[2], coordinates[3], xPos, yPos) < approximation / 2;
+	public boolean isPointOnPath(Point point) {
+		return lineSegmentChecker.isLineSegmentNearPoint(lineSegment, point);
 	}
 
 	public void applyStyles(Map<String, String> styles) {
@@ -96,82 +92,5 @@ public class ConnectionSurfaceView extends Composite {
 		for (String property : styles.keySet()) {
 			propertiesToClear.put(property, "");
 		}
-	}
-
-	/**
-	 * Returns the square of the distance from a point to a line. The distance
-	 * measured is the distance between the specified point and the closest
-	 * point on the infinitely-extended line defined by the specified
-	 * coordinates. If the specified point intersects the line, this method
-	 * returns 0.0.
-	 *
-	 * @param x1
-	 *            the X coordinate of the start point of the specified line
-	 * @param y1
-	 *            the Y coordinate of the start point of the specified line
-	 * @param x2
-	 *            the X coordinate of the end point of the specified line
-	 * @param y2
-	 *            the Y coordinate of the end point of the specified line
-	 * @param px
-	 *            the X coordinate of the specified point being measured against
-	 *            the specified line
-	 * @param py
-	 *            the Y coordinate of the specified point being measured against
-	 *            the specified line
-	 * @return a double value that is the square of the distance from the
-	 *         specified point to the specified line.
-	 * @see #ptSegDistSq(double, double, double, double, double, double)
-	 * @since 1.2
-	 */
-	public double ptLineDistSq(double x1, double y1, double x2, double y2, double px, double py) {//NOPMD
-		// Adjust vectors relative to x1,y1
-		// x2,y2 becomes relative vector from x1,y1 to end of segment
-		x2 -= x1;
-		y2 -= y1;
-		// px,py becomes relative vector from x1,y1 to test point
-		px -= x1;
-		py -= y1;
-		double dotprod = px * x2 + py * y2;
-		// dotprod is the length of the px,py vector
-		// projected on the x1,y1=>x2,y2 vector times the
-		// length of the x1,y1=>x2,y2 vector
-		double projlenSq = dotprod * dotprod / (x2 * x2 + y2 * y2);
-		// Distance to line is now the length of the relative point
-		// vector minus the length of its projection onto the line
-		double lenSq = px * px + py * py - projlenSq;
-		if (lenSq < 0) {
-			lenSq = 0;
-		}
-		return lenSq;
-	}
-
-	/**
-	 * Returns the distance from a point to a line. The distance measured is the
-	 * distance between the specified point and the closest point on the
-	 * infinitely-extended line defined by the specified coordinates. If the
-	 * specified point intersects the line, this method returns 0.0.
-	 *
-	 * @param x1
-	 *            the X coordinate of the start point of the specified line
-	 * @param y1
-	 *            the Y coordinate of the start point of the specified line
-	 * @param x2
-	 *            the X coordinate of the end point of the specified line
-	 * @param y2
-	 *            the Y coordinate of the end point of the specified line
-	 * @param px
-	 *            the X coordinate of the specified point being measured against
-	 *            the specified line
-	 * @param py
-	 *            the Y coordinate of the specified point being measured against
-	 *            the specified line
-	 * @return a double value that is the distance from the specified point to
-	 *         the specified line.
-	 * @see #ptSegDist(double, double, double, double, double, double)
-	 * @since 1.2
-	 */
-	public double ptLineDist(double x1, double y1, double x2, double y2, double px, double py) {//NOPMD
-		return Math.sqrt(ptLineDistSq(x1, y1, x2, y2, px, py));
 	}
 }
