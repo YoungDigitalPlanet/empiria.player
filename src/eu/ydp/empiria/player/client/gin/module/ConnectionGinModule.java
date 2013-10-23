@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
+import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionItemsFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
@@ -11,6 +12,10 @@ import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceImpl;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceViewImpl;
+import eu.ydp.empiria.player.client.module.connection.DistanceCalculator;
+import eu.ydp.empiria.player.client.module.connection.LineSegmentChecker;
+import eu.ydp.empiria.player.client.module.connection.RectangleChecker;
+import eu.ydp.empiria.player.client.module.connection.SurfaceCleaner;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemImpl;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
@@ -35,6 +40,10 @@ public class ConnectionGinModule extends AbstractGinModule {
 		bind(ConnectionView.class).to(ConnectionViewVertical.class);
 		bind(MultiplePairModuleView.class).to(ConnectionModuleViewImpl.class);
 		bind(ConnectionModuleStructure.class);
+		bind(RectangleChecker.class).in(Singleton.class);
+		bind(LineSegmentChecker.class).in(Singleton.class);
+		bind(DistanceCalculator.class).in(Singleton.class);
+		bind(SurfaceCleaner.class).in(Singleton.class);
 
 	}
 

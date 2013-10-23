@@ -14,8 +14,6 @@ import gwt.g2d.client.math.Vector2;
 
 public class ConnectionSurfacesManager {
 
-	private static final int APPROXIMATION = 30;
-
 	@Inject
 	private ConnectionModuleFactory connectionFactory;
 
