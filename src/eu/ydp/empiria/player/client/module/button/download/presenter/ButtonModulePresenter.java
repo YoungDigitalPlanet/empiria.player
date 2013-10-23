@@ -31,6 +31,7 @@ public class ButtonModulePresenter implements IsWidget {
 			public void onClick(ClickEvent event) {
 				String path = buttonBean.getHref();
 				assetOpenDelegatorService.open(path);
+				event.preventDefault();
 			}
 		});
 	}

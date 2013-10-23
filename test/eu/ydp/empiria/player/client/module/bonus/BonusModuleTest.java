@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.FeedbackActionConditions;
+import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;
 
@@ -28,6 +29,8 @@ public class BonusModuleTest {
 
 	@Mock
 	private FeedbackActionConditions actionConditions;
+	@Mock
+	private OutcomeAccessor outcomeAccessor;
 	@Mock
 	private PowerFeedbackMediator mediator;
 	@Mock
@@ -71,7 +74,6 @@ public class BonusModuleTest {
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
 		
-		mockPageContainsNoErrors();
 		mockAllOk();
 
 		// when
@@ -86,7 +88,6 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
-		mockPageContainsErrors();
 		mockNotAllOk();
 
 		// when
@@ -101,7 +102,6 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
-		mockPageContainsNoErrors();
 		mockAllOk();
 
 		// when
@@ -151,7 +151,6 @@ public class BonusModuleTest {
 		when(bonusProvider.next()).thenReturn(bonus);
 		
 		// when
-		mockPageContainsNoErrors();
 		mockNotAllOk();
 		module.processUserInteraction();
 		
@@ -167,10 +166,10 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
-		
+
 		// when
-		mockPageContainsErrors();
 		mockNotAllOk();
+		when(outcomeAccessor.getCurrentPageMistakes()).thenReturn(1);
 		module.processUserInteraction();
 		
 		mockAllOk();
@@ -187,13 +186,12 @@ public class BonusModuleTest {
 		when(bonusProvider.next()).thenReturn(bonus);
 		
 		// when
-		mockPageContainsErrors();
 		mockNotAllOk();
+		when(outcomeAccessor.getCurrentPageMistakes()).thenReturn(1);
 		module.processUserInteraction();
-		
+
 		module.resetPowerFeedback();
 		
-		mockPageContainsNoErrors();
 		mockAllOk();
 		module.processUserInteraction();
 		
@@ -209,13 +207,4 @@ public class BonusModuleTest {
 	private void mockNotAllOk() {
 		when(actionConditions.isPageAllOkWithoutPreviousErrors()).thenReturn(false);
 	}
-	
-	private void mockPageContainsNoErrors() {
-		when(actionConditions.hasCurrentPageErrors()).thenReturn(false);
-	}
-
-	private void mockPageContainsErrors() {
-		when(actionConditions.hasCurrentPageErrors()).thenReturn(true);
-	}
-
 }

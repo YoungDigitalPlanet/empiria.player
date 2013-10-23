@@ -122,7 +122,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		disconnect(sourceIdentifier, targetIdentifier, false);
 	}
 
-	void disconnect(String sourceIdentifier, String targetIdentifier, boolean userAction) {
+	public void disconnect(String sourceIdentifier, String targetIdentifier, boolean userAction) {
 		if (connectionItems.isIdentifiersCorrect(sourceIdentifier, targetIdentifier)) {
 			ConnectionPairEntry<String, String> keyValue = new ConnectionPairEntry<String, String>(sourceIdentifier, targetIdentifier);
 			connectionSurfacesManager.clearConnectionSurface(connectedSurfaces, keyValue);
@@ -200,7 +200,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		}
 	}
 
-	String getIdentifier(ConnectionItem item) {
+	private String getIdentifier(ConnectionItem item) {
 		return item.getBean().getIdentifier();
 	}
 
@@ -225,6 +225,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void prepareAndAddStyleToSurface(ConnectionItem enditem, ConnectionItem startItem, MultiplePairModuleConnectType type) {
+
 		boolean startIsLeft = modelInterface.isLeftItem(startItem.getBean());
 		int leftIndex;
 		int rightIndex;
@@ -237,8 +238,14 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			rightIndex = modelInterface.getRightItemIndex(startItem.getBean());
 		}
 
-		List<String> stylesToAdd = surfaceStyleProvider.getStylesForSurface(type, leftIndex, rightIndex);
-		addStylesToSurface(stylesToAdd);
+		if (isMarkedOnBothSides(leftIndex, rightIndex)) {
+			List<String> stylesToAdd = surfaceStyleProvider.getStylesForSurface(type, leftIndex, rightIndex);
+			addStylesToSurface(stylesToAdd);
+		}
+	}
+
+	private boolean isMarkedOnBothSides(int leftIndex, int rightIndex) {
+		return leftIndex >= 0 && rightIndex >= 0;
 	}
 
 	private void addStylesToSurface(List<String> styles) {
@@ -278,16 +285,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		return view.getElement();
 	}
 
-	public void setCurrentSurface(ConnectionSurface currentSurface) {
-		this.currentSurface = currentSurface;
-	}
-
 	public Map<ConnectionPairEntry<String, String>, ConnectionSurface> getConnectedSurfaces() {
 		return connectedSurfaces;
-	}
-
-	public Map<String, ConnectionSurface> getSurfaces() {
-		return surfaces;
 	}
 
 	public Map<ConnectionItem, Point> getStartPositions() {
