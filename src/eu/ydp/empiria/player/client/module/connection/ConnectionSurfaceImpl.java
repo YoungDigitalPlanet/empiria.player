@@ -1,40 +1,39 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
+import eu.ydp.empiria.player.client.util.position.Point;
+import gwt.g2d.client.math.Vector2;
+
 import java.util.Map;
 
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.util.position.Point;
-import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
-
-/**
- * Widok polaczen
- *
- * @author plelakowski
- *
- */
 public class ConnectionSurfaceImpl implements ConnectionSurface {
 	private final ConnectionSurfaceView view;
 	private int offsetTop;
 	private int offsetLeft;
 
 	@Inject
-	public ConnectionSurfaceImpl(StyleToPropertyMappingHelper styleHelper,@Assisted("width") Integer width, @Assisted("height") Integer height) {
-		view = new ConnectionSurfaceView(width, height, styleHelper);
-
+	public ConnectionSurfaceImpl(@Assisted Vector2 vector, ConnectionModuleFactory connectionModuleFactory) {
+		view = connectionModuleFactory.getConnectionSurfaceView(vector);
 	}
 
 	@Override
 	public Widget asWidget() {
-		return view;
+		return view.asWidget();
 	}
 
 	@Override
 	public void drawLine(Point from, Point to) {
-		view.drawLine(from.getX()-offsetLeft, from.getY()-offsetTop, to.getX()-offsetLeft, to.getY()-offsetTop);
+		Point relativeStart = getRelativePoint(from);
+		Point relativeEnd = getRelativePoint(to);
+		view.drawLine(relativeStart, relativeEnd);
+	}
+
+	private Point getRelativePoint(Point point) {
+		return new Point(point.getX() - offsetLeft, point.getY() - offsetTop);
 	}
 
 	@Override
@@ -43,12 +42,13 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 	}
 
 	@Override
-	public boolean isPointOnPath(int xPos, int yPos, int approximation) {
-		return view.isPointOnPath(xPos-offsetLeft, yPos-offsetTop, approximation);
+	public boolean isPointOnPath(Point point) {
+
+		return view.isPointOnPath(getRelativePoint(point));
 	}
 
 	@Override
-	public void applyStyles(Map<String, String> styles){
+	public void applyStyles(Map<String, String> styles) {
 		view.applyStyles(styles);
 	}
 
@@ -59,19 +59,19 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 
 	@Override
 	public int getOffsetLeft() {
-		return view.getElement().getOffsetLeft();
+		return view.getOffsetLeft();
 	}
 
 	@Override
 	public void setOffsetLeft(int offsetLeft) {
 		this.offsetLeft = offsetLeft;
-		view.getElement().getStyle().setLeft(offsetLeft, Unit.PX);
+		view.setOffsetLeft(offsetLeft);
 	}
 
 	@Override
 	public void setOffsetTop(int offsetTop) {
 		this.offsetTop = offsetTop;
-		view.getElement().getStyle().setTop(offsetTop, Unit.PX);
+		view.setOffsetTop(offsetTop);
 	}
 
 }

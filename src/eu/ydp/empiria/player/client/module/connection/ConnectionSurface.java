@@ -12,14 +12,14 @@ public interface ConnectionSurface extends IsWidget {
 
 	void clear();
 
-	boolean isPointOnPath(int xPos, int yPos, int approximation);
+	boolean isPointOnPath(Point point);
 
 	void applyStyles(Map<String, String> styles);
 
 	void removeFromParent();
 
 	int getOffsetLeft();
-	
+
 	void setOffsetLeft(int left);
 
 	void setOffsetTop(int offsetTop);
