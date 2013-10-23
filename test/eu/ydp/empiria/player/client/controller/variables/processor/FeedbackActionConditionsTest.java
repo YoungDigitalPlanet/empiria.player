@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static junitparams.JUnitParamsRunner.$;
+import static junitparams.JUnitParamsRunner.*;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -38,28 +38,35 @@ public class FeedbackActionConditionsTest {
 
 		// then
 		assertThat(pageAllOk).isEqualTo(expectedResult);
+
+		verify(outcomeAccessor).getCurrentPageTodo();
+		verify(outcomeAccessor).getCurrentPageDone();
 	}
 
+	@SuppressWarnings({ "unused" })
 	private Object[] pageAllOkParameters() {
 		return $($(5, 5, true), $(5, 6, false), $(0, 6, false));
 	}
 
 	@Test
-	@Parameters(method = "pageAllOkWithoutPreviousMistakesParameters")
-	public void shouldReturnPageAllOkWithoutPreviousMistakes(int todo, int done, int mistakes, boolean expectedResult) {
+	@Parameters(method = "pageAllOkWithoutPreviousErrorsParameters")
+	public void shouldReturnPageAllOkWithoutPreviousErrors(int todo, int done, int errors, boolean expectedResult) {
 		// given
 		mockTodo(todo);
 		mockDone(done);
-		mockMistakes(mistakes);
+		mockErrors(errors);
 
 		// when
-		boolean pageAllOkWithoutPreviousMistakes = feedbackActionConditions.isPageAllOkWithoutPreviousMistakes();
+		boolean pageAllOkWithoutPreviousErrors = feedbackActionConditions.isPageAllOkWithoutPreviousErrors();
 
 		// then
-		assertThat(pageAllOkWithoutPreviousMistakes).isEqualTo(expectedResult);
+		assertThat(pageAllOkWithoutPreviousErrors).isEqualTo(expectedResult);
+
+		verify(outcomeAccessor).getCurrentPageErrors();
 	}
 
-	private Object[] pageAllOkWithoutPreviousMistakesParameters() {
+	@SuppressWarnings({ "unused" })
+	private Object[] pageAllOkWithoutPreviousErrorsParameters() {
 		return $($(5, 5, 0, true), $(5, 5, 1, false), $(5, 4, 1, false), $(5, 4, 0, false));
 	}
 
@@ -71,7 +78,7 @@ public class FeedbackActionConditionsTest {
 		when(outcomeAccessor.getCurrentPageDone()).thenReturn(DONE);
 	}
 
-	private void mockMistakes(Integer MISTAKES) {
-		when(outcomeAccessor.getCurrentPageMistakes()).thenReturn(MISTAKES);
+	private void mockErrors(Integer errorCount) {
+		when(outcomeAccessor.getCurrentPageErrors()).thenReturn(errorCount);
 	}
 }

@@ -13,8 +13,9 @@ public class FeedbackActionConditions {
 		return todo > 0 && todo == done;
 	}
 
-	public boolean isPageAllOkWithoutPreviousMistakes() {
-		boolean withoutMistakes = outcomeAccessor.getCurrentPageMistakes() == 0;
-		return withoutMistakes && isPageAllOk();
+	public boolean isPageAllOkWithoutPreviousErrors() {
+		boolean hasCurrentPageErrors = outcomeAccessor.getCurrentPageErrors() > 0;
+		return !hasCurrentPageErrors && isPageAllOk();
 	}
+	
 }

@@ -5,6 +5,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.FeedbackActionConditions;
+import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
@@ -17,6 +18,9 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	@Inject
 	private FeedbackActionConditions actionConditions;
 	@Inject
+	private OutcomeAccessor outcomeAccessor; 
+	
+	@Inject
 	@PageScoped
 	private PowerFeedbackMediator mediator;
 	@Inject
@@ -24,7 +28,9 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	private BonusProvider bonusProvider;
 	@Inject
 	private BonusPopupPresenter bonusPopupPresenter;
+
 	private boolean pageAllOkCompleted = false;
+	private int mistakesCount = 0;
 
 	@Override
 	protected void initModule(Element element) {
@@ -39,6 +45,7 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	@Override
 	public void resetPowerFeedback() {
 		pageAllOkCompleted = false;
+		mistakesCount = outcomeAccessor.getCurrentPageMistakes();
 	}
 
 	@Override
@@ -56,7 +63,11 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	}
 
 	private boolean isPageAllOkFirstTime() {
-		return !pageAllOkCompleted && actionConditions.isPageAllOkWithoutPreviousMistakes();
+		return !pageAllOkCompleted && actionConditions.isPageAllOkWithoutPreviousErrors() && mistakesMade();
+	}
+
+	private boolean mistakesMade() {
+		return outcomeAccessor.getCurrentPageMistakes() == mistakesCount;
 	}
 
 	private void setPageAllOkCompleted() {

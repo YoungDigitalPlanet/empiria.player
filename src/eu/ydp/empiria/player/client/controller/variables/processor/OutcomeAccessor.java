@@ -5,11 +5,13 @@ import static eu.ydp.empiria.player.client.controller.variables.processor.result
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.MISTAKES;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
+import static java.lang.Integer.parseInt;
 import static java.lang.Integer.valueOf;
 
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
+import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariablePossessorBase;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
@@ -19,10 +21,9 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 
 public class OutcomeAccessor {
 
-	@Inject
-	private SessionDataSupplier sessionDataSupplier;
-	@Inject
-	private FlowDataSupplier flowDataSupplier;
+	@Inject private SessionDataSupplier sessionDataSupplier;
+	@Inject private FlowDataSupplier flowDataSupplier;
+	@Inject private OutcomesResultCalculator resultCalculator;
 
 	public int getCurrentPageTodo() {
 		return getVariableAsInt(TODO);
@@ -43,6 +44,40 @@ public class OutcomeAccessor {
 	public LastMistaken getCurrentPageLastMistaken() {
 		String lastmistaken = getVariableAsString(LASTMISTAKEN);
 		return LastMistaken.valueOf(lastmistaken.toUpperCase());
+	}
+	
+	public int getAssessmentTodo(){
+		return getAssessmentValueInt(TODO);
+	}
+	
+	public int getAssessmentDone(){
+		return getAssessmentValueInt(DONE);
+	}
+	
+	public int getAssessmentErrors(){
+		return getAssessmentValueInt(ERRORS);
+	}
+	
+	public int getAssessmentMistakes(){
+		return getAssessmentValueInt(MISTAKES);
+	}
+	
+	public int getAssessmentResult(){
+		int todo = getAssessmentTodo();
+		int done = getAssessmentDone();
+		return resultCalculator.calculateResult(todo, done);
+	}
+
+	private int getAssessmentValueInt(VariableName identifier) {
+		String valueString = getAssessmentVariableValueString(identifier);
+		return parseInt(valueString);
+	}
+
+	private String getAssessmentVariableValueString(VariableName identifier) {
+		AssessmentSessionDataSocket assessmentSessionDataSocket = sessionDataSupplier.getAssessmentSessionDataSocket();
+		VariableProviderSocket variableProviderSocket = assessmentSessionDataSocket.getVariableProviderSocket();
+		Variable variable = variableProviderSocket.getVariableValue(identifier.toString());
+		return variable.getValuesShort();
 	}
 
 	@SuppressWarnings("unchecked")

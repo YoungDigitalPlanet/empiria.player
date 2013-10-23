@@ -10,13 +10,11 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
-import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
@@ -25,7 +23,6 @@ import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
-import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.page.PageEvent;
@@ -51,26 +48,19 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	@Inject
 	private IPlayerContainersAccessor accessor;
 
-	private final ModuleHandlerManager moduleHandlerManager;
 	private final AssessmentControllerFactory controllerFactory;
 	private final ItemViewSocket itemViewSocket;
 	private final ItemSessionSocket itemSessionSocket;
-	private final InteractionEventsSocket interactionSocket;
-	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
 	Item item;
 	private int itemIndex;
 
 
 	@Inject
 	@SuppressWarnings("PMD")
-	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs, @Assisted InteractionEventsSocket is, @Assisted ItemSessionSocket iss,
-			@Assisted ModulesRegistrySocket mrs, @Assisted ModuleHandlerManager moduleHandlerManager, @Assisted AssessmentControllerFactory controllerFactory) {
+	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs, @Assisted ItemSessionSocket iss, AssessmentControllerFactory controllerFactory) {
 		itemViewSocket = ivs;
 		itemSessionSocket = iss;
-		interactionSocket = is;
-		modulesRegistrySocket = mrs;
 		this.controllerFactory = controllerFactory;
-		this.moduleHandlerManager = moduleHandlerManager;
 	}
 
 
@@ -83,8 +73,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 				throw new Exception("Item data is null");// NOPMD
 			}
 			itemIndex = data.itemIndex;
-			item = controllerFactory.getItem(options, interactionSocket, modulesRegistrySocket, itemSessionSocket.getOutcomeVariablesMap(itemIndex),
-					moduleHandlerManager, itemSessionSocket.getState(itemIndex));
+			item = controllerFactory.getItem(options, itemSessionSocket.getOutcomeVariablesMap(itemIndex), itemSessionSocket.getState(itemIndex));
 			accessor.registerItemBodyContainer(itemIndex, item.getContentView());
 
 			itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
@@ -116,7 +105,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	@Override
 	public void onStateChange(StateChangeEvent event) {
 		if (event.getType() == StateChangeEventTypes.STATE_CHANGED && event.getValue() instanceof StateChangedInteractionEvent) {
-			StateChangedInteractionEvent scie = (StateChangedInteractionEvent) event.getValue();
+			StateChangedInteractionEvent scie = event.getValue();
 			item.process(scie.isUserInteract(), scie.isReset(), scie.getSender());
 			// STATE
 			itemSessionSocket.setState(itemIndex, item.getState());

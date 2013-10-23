@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox.tool;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
@@ -22,6 +24,11 @@ public class PencilToolTest {
 	@Mock
 	private DrawCanvas canvas;
 
+	@After
+	public void verifyNoMoreInteractions() {
+		Mockito.verifyNoMoreInteractions(canvas, colorModel);
+	}
+	
 	@Test
 	public void shouldDrawPoint() throws Exception {
 		//given
@@ -45,5 +52,14 @@ public class PencilToolTest {
 		
 		//then
 		verify(canvas).drawLine(startPoint, endPoint, colorModel);
+	}
+	
+	@Test
+	public void shouldSetLineWidthOnSetUp() throws Exception {
+		//when
+		pencilTool.setUp();
+		
+		//then
+		verify(canvas).setLineWidth(PencilTool.LINE_WIDTH);
 	}
 }

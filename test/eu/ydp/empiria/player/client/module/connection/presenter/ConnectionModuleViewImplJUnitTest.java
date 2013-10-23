@@ -1,14 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.*;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,7 +26,6 @@ import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.query.client.css.WidthProperty;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -68,6 +62,7 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import gwt.g2d.client.math.Vector2;
 
 //@SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
@@ -214,7 +209,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), "---", MultiplePairModuleConnectType.NORMAL);
 		Mockito.verify(connectionEventHandler).fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, bean.getSourceChoicesIdentifiersSet().get(0), "---",
 				false);
-		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
+		ConnectionSurface surface = moduleFactory.getConnectionSurface(new Vector2(0, 0));
 		Mockito.verify(surface, times(0)).drawLine(new Point(0, 0), new Point(0, 0));
 	}
 
@@ -257,7 +252,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		PairConnectEventHandler handler = mock(PairConnectEventHandler.class);
 		testObject.addPairConnectEventHandler(handler);
 		String sourceIdentifier = bean.getSourceChoicesIdentifiersSet().get(0);
-		String targetIdentifier = bean.getTargetChoicesIdentifiersSet().get(0);
+		String targetIdentifier = bean.getTargetChoicesIdentifiersSet().get(1);
 		testObject.connect(sourceIdentifier, targetIdentifier, MultiplePairModuleConnectType.NORMAL);
 		verify(handler).onConnectionEvent(Mockito.any(PairConnectEvent.class));
 	}
@@ -273,8 +268,8 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 		testObject.onConnectionStart(new ConnectionMoveStartEvent(0, 0, event, item));
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
-		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
-		Mockito.when(surface.isPointOnPath(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
+		ConnectionSurface surface = moduleFactory.getConnectionSurface(new Vector2(0, 0));
+		Mockito.when(surface.isPointOnPath(any(Point.class))).thenReturn(true);
 		Mockito.verify(connectionEventHandler).fireConnectEvent(Mockito.eq(PairConnectEventTypes.CONNECTED), Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyBoolean());
 
@@ -370,6 +365,44 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		// then
 		verify(styleHelper).getStylesForSurface(eq(type), eq(leftIndex), eq(rightIndex));
 		verify(widget).addStyleName("qp-connection-line-0-1");
+	}
+
+	@Test
+	public void prepareAndAddStyleToSurfaceTest_isMarkedOnBothSides() {
+		// given
+		ConnectionModuleViewImpl spyView = spy(instance);
+
+		ConnectionSurfaceStyleProvider styleHelper = injector.getInstance(ConnectionSurfaceStyleProvider.class);
+		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.NORMAL;
+
+		connectionItems.addItemToLeftColumn(mock(PairChoiceBean.class));
+		connectionItems.addItemToRightColumn(mock(PairChoiceBean.class));
+
+		ConnectionItem leftItem = getFirstLeftItem();
+		ConnectionItem rightItem = getFirstRightItem();
+
+		MultiplePairBean<SimpleAssociableChoiceBean> modelInterface = mock(MatchInteractionBean.class);
+
+		int leftIndex = 0;
+		int rightIndex = -1;
+
+		when(modelInterface.isLeftItem(leftItem.getBean())).thenReturn(true);
+		when(modelInterface.getLeftItemIndex(leftItem.getBean())).thenReturn(leftIndex);
+		when(modelInterface.getRightItemIndex(rightItem.getBean())).thenReturn(rightIndex);
+
+		spyView.setBean(modelInterface);
+
+		List<String> styles = Arrays.asList("qp-connection-line-0-1");
+		when(styleHelper.getStylesForSurface(type, leftIndex, rightIndex)).thenReturn(styles);
+
+		Widget widget = mockSurfaceWidget(spyView);
+
+		// when
+		spyView.connect(leftItem, rightItem, type, false);
+
+		// then
+		verifyNoMoreInteractions(styleHelper);
+		verifyNoMoreInteractions(widget);
 	}
 
 	@Test

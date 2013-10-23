@@ -1,13 +1,9 @@
 package eu.ydp.empiria.player.client.controller;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
@@ -16,14 +12,12 @@ import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.item.ItemExpressionParser;
 import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
@@ -38,70 +32,63 @@ import eu.ydp.empiria.player.client.controller.variables.processor.VariablesProc
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FeedbackAutoMarkInterpreter;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IGroup;
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.InlineContainerStylesExtractor;
-import eu.ydp.empiria.player.client.module.InlineFormattingContainerType;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.expression.ExpressionListBuilder;
-import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
-import eu.ydp.gwtutil.client.json.YJsonArray;
-import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
-import eu.ydp.gwtutil.client.json.js.YJsJsonFactory;
 
 public class Item implements IStateful, ItemInterferenceSocket {
 
 	protected ItemBody itemBody;
 	protected ItemBodyView itemBodyView;
 	protected Panel scorePanel;
+	protected DisplayContentOptions options;
 
 	private final ModuleFeedbackProcessor moduleFeedbackProcessor;
 	private final VariableManager<Response> responseManager;
 	private final BindableVariableManager<Outcome> outcomeManager;
-
-	protected ModulesRegistrySocket modulesRegistrySocket;
-	protected DisplayContentOptions options;
-
+	private final ItemModuleSocket moduleSocket;
 	private final String title;
-
-	private final InteractionEventsListener interactionEventsListener;
 	private final FlowActivityVariablesProcessor flowActivityVariablesProcessor;
-
 	private final VariableProcessingAdapter variableProcessor;
-	private final YJsJsonConverter yJsJsonConverter;
+	private final PlayerWorkModeService playerWorkModeService;
+
 	private JSONArray state;
 
 	@Inject
-	public Item(@Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket mrs,
-			@Assisted Map<String, Outcome> outcomeVariables, @Assisted ModuleHandlerManager moduleHandlerManager, @Assisted JSONArray stateArray,
-			ModuleFeedbackProcessor moduleFeedbackProcessor, FlowActivityVariablesProcessor flowActivityVariablesProcessor,
-			@PageScoped VariableProcessingAdapter variableProcessingAdapter, VariablesProcessingModulesInitializer variablesProcessingModulesInitializer,
-			YJsJsonConverter yJsJsonConverter, ExpressionListBuilder expressionListBuilder, @PageScoped ItemResponseManager responseManager,
-			ItemXMLWrapper xmlMapper, ItemExpressionParser expressionParser) {
+	public Item(
+			@Assisted DisplayContentOptions options,
+			@Assisted Map<String, Outcome> outcomeVariables, 
+			@Assisted JSONArray stateArray,
+			ModuleFeedbackProcessor moduleFeedbackProcessor, 
+			FlowActivityVariablesProcessor flowActivityVariablesProcessor,
+			@PageScoped VariableProcessingAdapter variableProcessingAdapter, 
+			VariablesProcessingModulesInitializer variablesProcessingModulesInitializer,
+			ExpressionListBuilder expressionListBuilder, 
+			@PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper,
+			ItemExpressionParser expressionParser, 
+			AssessmentControllerFactory assessmentControllerFactory,
+			PlayerWorkModeService playerWorkModeService) {
 
-		this.modulesRegistrySocket = mrs;
 		this.options = options;
-		this.yJsJsonConverter = yJsJsonConverter;
 		this.responseManager = responseManager;
 		this.moduleFeedbackProcessor = moduleFeedbackProcessor;
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
+		this.playerWorkModeService = playerWorkModeService;
 
 		Element itemBodyNode = xmlMapper.getItemBody();
 		expressionParser.parseAndConnectExpressions();
 
-		this.interactionEventsListener = interactionEventsListener;
 		outcomeManager = new BindableVariableManager<Outcome>(outcomeVariables);
 		new FeedbackAutoMarkInterpreter().interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
 
-		itemBody = new ItemBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket, moduleHandlerManager);
+		moduleSocket = assessmentControllerFactory.getItemModuleSocket(this);
+		itemBody = assessmentControllerFactory.getItemBody(options, moduleSocket);
+		moduleSocket.init(itemBody, state);
 		itemBodyView = new ItemBodyView(itemBody);
 
 		setState(stateArray);
@@ -109,82 +96,12 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 		variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
 
-		Node rootNode = xmlMapper.getAssessmentItems().item(0);
+		Node rootNode = xmlMapper.getAssessmentItems()
+				.item(0);
 		title = ((Element) rootNode).getAttribute("title");
 		scorePanel = new FlowPanel();
 		scorePanel.setStyleName("qp-feedback-hidden");
-
 	}
-
-	/**
-	 * Inner class for module socket implementation
-	 */
-	private final ModuleSocket moduleSocket = new ModuleSocket() {
-
-		private InlineBodyGenerator inlineBodyGenerator;
-
-		@Override
-		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
-			if (inlineBodyGenerator == null) {
-				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, itemBody.getParenthood());
-			}
-			return inlineBodyGenerator;
-		}
-
-		@Override
-		public HasChildren getParent(IModule module) {
-			return itemBody.getModuleParent(module);
-		}
-
-		@Override
-		public GroupIdentifier getParentGroupIdentifier(IModule module) {
-			IModule currParent = module;
-
-			while (true) {
-				currParent = getParent(currParent);
-				if (currParent == null || currParent instanceof IGroup) {
-					break;
-				}
-			}
-			if (currParent != null) {
-				return ((IGroup) currParent).getGroupIdentifier();
-			}
-			return new DefaultGroupIdentifier("");
-		}
-
-		@Override
-		public List<IModule> getChildren(IModule parent) {
-			return itemBody.getModuleChildren(parent);
-		}
-
-		@Override
-		public Stack<HasChildren> getParentsHierarchy(IModule module) {
-			Stack<HasChildren> hierarchy = new Stack<HasChildren>();
-			HasChildren currParent = getParent(module);
-			while (currParent != null) {
-				hierarchy.push(currParent);
-				currParent = getParent(currParent);
-			}
-			return hierarchy;
-		}
-
-		@Override
-		public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module) {
-			InlineContainerStylesExtractor inlineContainerHelper = new InlineContainerStylesExtractor();
-			return inlineContainerHelper.getInlineStyles(module);
-		}
-
-		@Override
-		public YJsonArray getStateById(String id) {
-			JSONValue object = state.get(0);
-			if (object != null) {
-				JSONValue stateValue = object.isObject().get(id);
-				JSONArray stateArray = stateValue.isArray();
-				return yJsJsonConverter.toYJson(stateArray);
-			}
-			return YJsJsonFactory.createArray();
-		}
-	};
 
 	public void close() {
 		itemBody.close();
@@ -326,6 +243,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	public void setState(JSONArray newState) {
 		state = newState;
 		itemBody.setState(newState);
+		moduleSocket.setState(newState);
 	}
 
 	@Override
@@ -388,6 +306,14 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	public void start() {
 		itemBody.start();
+		activateCorrectWorkMode();
+	}
+
+	private void activateCorrectWorkMode() {
+		PlayerWorkMode workMode = playerWorkModeService.getCurrentWorkMode();
+		if(workMode == PlayerWorkMode.PREVIEW) {
+			itemBody.enablePeviewMode();
+		}
 	}
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {

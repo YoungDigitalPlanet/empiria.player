@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.gwtutil.client.ui.InputToButtonReplacer;
 
 public class PaletteButtonImpl extends Composite implements PaletteButton {
 
@@ -29,11 +30,13 @@ public class PaletteButtonImpl extends Composite implements PaletteButton {
 	@UiField
 	FlowPanel description;
 	
-	@Inject
 	private StyleNameConstants styleNameConstants;
-
-	public PaletteButtonImpl() {
+	
+	@Inject
+	public PaletteButtonImpl(StyleNameConstants styleNameConstants, InputToButtonReplacer inputReplacer) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.styleNameConstants = styleNameConstants;
+		inputReplacer.changeInputTypeToButton(button);
 	}
 
 	@Override

@@ -13,14 +13,19 @@ import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
+import eu.ydp.empiria.player.client.module.WorkModeClient;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
-public abstract class AbstractActivityButtonModule extends ControlModule implements ISimpleModule {
+public abstract class AbstractActivityButtonModule extends ControlModule implements ISimpleModule, WorkModeClient {
 
 	@Inject
-	protected CustomPushButton button;
-	protected boolean isEnabled = true;
+	private CustomPushButton button;
+	@Inject
+	private StyleNameConstants styleNameConstants;
+	private boolean isEnabled = true;
+	private boolean isPreviewMode = false;
 
 	@Override
 	public void initModule(Element element) {// NOPMD
@@ -29,7 +34,9 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 
 			@Override
 			public void onClick(ClickEvent event) {
-				invokeRequest();
+				if (isEnabled) {
+					invokeRequest();
+				}
 			}
 		});
 	}
@@ -58,10 +65,15 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 	protected abstract void invokeRequest();
 
 	protected void updateStyleName() {
-		button.setStyleName(getCurrentStyleName(isEnabled));
+		final String currentStyleName = getCurrentStyleName();
+		button.setStyleName(currentStyleName);
+		if(isPreviewMode){
+			final String qp_MODULE_MODE_PREVIEW = styleNameConstants.QP_MODULE_MODE_PREVIEW();
+			button.addStyleName(qp_MODULE_MODE_PREVIEW);
+		}
 	}
 
-	protected String getCurrentStyleName(boolean isEnabled) {
+	private String getCurrentStyleName() {
 		String styleName = getStyleName();
 
 		if (!isEnabled) {
@@ -73,4 +85,10 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 
 	protected abstract String getStyleName();
 
+	@Override
+	public void enablePreviewMode() {
+		isEnabled = false;
+		isPreviewMode = true;
+		updateStyleName();
+	}
 }
