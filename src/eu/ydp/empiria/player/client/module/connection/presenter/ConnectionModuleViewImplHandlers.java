@@ -43,33 +43,34 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 
 	@Override
 	public void onConnectionStart(ConnectionMoveStartEvent event) {
-		if (!view.isLocked()) {
-			ConnectionItem item = connectionsFinder.findConnectionItemForEventOnWidget(event.getNativeEvent(), view, view.getConnectionItems());
+		if (view.isLocked())
+			return;
 
-			if (item == null) {
-				NativeEvent event1 = event.getNativeEvent();
-				Point clickPoint = getClicktPoint(event1);
-				ConnectionPairEntry<String, String> pointOnPath = surfacesManager.findPointOnPath(view.getConnectedSurfaces(), clickPoint);
+		ConnectionItem item = connectionsFinder.findConnectionItemForEventOnWidget(event.getNativeEvent(), view, view.getConnectionItems());
 
-				if (pointOnPath != null) {
-					surfacesManager.removeSurfaceFromParent(view.getConnectedSurfaces(), pointOnPath);
-					view.disconnect(pointOnPath.getSource(), pointOnPath.getTarget(), true);
-					event1.preventDefault();
-				}
-			} else {
-				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
-				event.getNativeEvent().preventDefault();
-				view.getSurfaceForLineDrawing(item, NORMAL);
-				view.startDrawLine(item);
-				item.setConnected(true, NORMAL);
+		if (item == null) {
+			NativeEvent event1 = event.getNativeEvent();
+			Point clickPoint = getClicktPoint(event1);
+			ConnectionPairEntry<String, String> pointOnPath = surfacesManager.findPointOnPath(view.getConnectedSurfaces(), clickPoint);
 
-				ConnectionItem source = view.getConnectionItemPair().getSource();
-				if (source != null && !item.equals(source)) {
-					view.resetIfNotConnected(source.getBean().getIdentifier());
-				}
-
-				view.getConnectionItemPair().setSource(item);
+			if (pointOnPath != null) {
+				surfacesManager.removeSurfaceFromParent(view.getConnectedSurfaces(), pointOnPath);
+				view.disconnect(pointOnPath.getSource(), pointOnPath.getTarget(), true);
+				event1.preventDefault();
 			}
+		} else {
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+			event.getNativeEvent().preventDefault();
+			view.getSurfaceForLineDrawing(item, NORMAL);
+			view.startDrawLine(item);
+			item.setConnected(true, NORMAL);
+
+			ConnectionItem source = view.getConnectionItemPair().getSource();
+			if (source != null && !item.equals(source)) {
+				view.resetIfNotConnected(source.getBean().getIdentifier());
+			}
+
+			view.getConnectionItemPair().setSource(item);
 		}
 	}
 
@@ -77,8 +78,27 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
 		ConnectionItem connectionStartItem = view.getConnectionItemPair().getSource();
 
-		if (connectionStartItem != null && !view.isLocked() && !searchAndConnectItemsPair(event, connectionStartItem)) {
-			if (!tryConnectByClick(connectionStartItem)) {
+		ConnectionItem connectionEndItem = null;
+		for (ConnectionItem item : view.getConnectionItems().getConnectionItems(connectionStartItem)) {
+			if (isTouchEndOnItem(event.getX(), event.getY(), item)) {
+				connectionEndItem = item;
+				break;
+			}
+		}
+
+		if (connectionEndItem != null) {
+			view.drawLineFromSource(connectionEndItem.getRelativeX(), connectionEndItem.getRelativeY());
+			view.connectItems(connectionStartItem, connectionEndItem, NORMAL, true);
+			view.resetTouchConnections();
+		}
+
+		if (connectionStartItem != null && !view.isLocked() && connectionEndItem == null) {
+			boolean mayConnect = view.getConnectionItemPair().getTarget() != null && !view.getConnectionItemPair().getTarget().equals(connectionStartItem);
+
+			if (mayConnect) {
+				view.connect(connectionStartItem, view.getConnectionItemPair().getTarget(), NORMAL, true);
+				view.resetTouchConnections();
+			} else {
 				view.getConnectionItemPair().setTarget(connectionStartItem);
 			}
 		}
@@ -125,30 +145,9 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 		return userAgent.isStackAndroidBrowser() ? 15 : 5;
 	}
 
-	private boolean tryConnectByClick(ConnectionItem connectionStartItem) {
-		boolean mayConnect = view.getConnectionItemPair().getTarget() != null && !view.getConnectionItemPair().getTarget().equals(connectionStartItem);
-		if (mayConnect) {
-			view.connect(connectionStartItem, view.getConnectionItemPair().getTarget(), NORMAL, true);
-			view.resetTouchConnections();
-		}
-		return mayConnect;
-	}
-
-	private boolean searchAndConnectItemsPair(ConnectionMoveEndEvent event, ConnectionItem connectionStartItem) {
-		for (ConnectionItem item : view.getConnectionItems().getConnectionItems(connectionStartItem)) {
-			if (isTouchEndOnItem(event, item)) {
-				view.drawLineFromSource(item.getRelativeX(), item.getRelativeY());
-				view.connectItems(connectionStartItem, item, NORMAL, true);
-				view.resetTouchConnections();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isTouchEndOnItem(ConnectionMoveEndEvent event, ConnectionItem item) {
-		return item.getOffsetLeft() <= event.getX() && event.getX() <= item.getOffsetLeft() + item.getWidth() && item.getOffsetTop() <= event.getY()
-				&& event.getY() <= item.getOffsetTop() + item.getHeight();
+	private boolean isTouchEndOnItem(double x, double y, ConnectionItem item) {
+		return item.getOffsetLeft() <= x && x <= item.getOffsetLeft() + item.getWidth() && item.getOffsetTop() <= y
+				&& y <= item.getOffsetTop() + item.getHeight();
 	}
 
 }
