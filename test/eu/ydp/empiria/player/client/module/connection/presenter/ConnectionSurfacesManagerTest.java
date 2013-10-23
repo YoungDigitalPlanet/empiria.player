@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
+import gwt.g2d.client.math.Vector2;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConnectionSurfacesManagerTest {
@@ -158,7 +159,7 @@ public class ConnectionSurfacesManagerTest {
 		surfaces.put("someId", mock(ConnectionSurface.class));
 		ConnectionSurface expected = mock(ConnectionSurface.class);
 
-		when(connectionModuleFactory.getConnectionSurface(anyInt(), anyInt())).thenReturn(expected);
+		when(connectionModuleFactory.getConnectionSurface(any(Vector2.class))).thenReturn(expected);
 
 		// when
 		ConnectionSurface actual = testObj.getOrCreateSurface(surfaces, "otherId", hasDimension);
@@ -168,7 +169,7 @@ public class ConnectionSurfacesManagerTest {
 		assertEquals(2, surfaces.size());
 		assertTrue(surfaces.containsKey("otherId"));
 
-		verify(connectionModuleFactory).getConnectionSurface(anyInt(), anyInt());
+		verify(connectionModuleFactory).getConnectionSurface(any(Vector2.class));
 
 		verifyNoMoreInteractions(connectionModuleFactory);
 	}
@@ -201,9 +202,9 @@ public class ConnectionSurfacesManagerTest {
 	@Test
 	public void testFindPointOnPath_existing() {
 		// given
-		when(cs1.isPointOnPath(anyInt(), anyInt(), anyInt())).thenReturn(Boolean.FALSE);
-		when(cs2.isPointOnPath(eq(0), eq(0), anyInt())).thenReturn(Boolean.TRUE);
-		when(cs3.isPointOnPath(anyInt(), anyInt(), anyInt())).thenReturn(Boolean.FALSE);
+		when(cs1.isPointOnPath(any(Point.class))).thenReturn(Boolean.FALSE);
+		when(cs2.isPointOnPath(any(Point.class))).thenReturn(Boolean.TRUE);
+		when(cs3.isPointOnPath(any(Point.class))).thenReturn(Boolean.FALSE);
 
 		// when
 		ConnectionPairEntry<String, String> actual = testObj.findPointOnPath(connectedSurfaces, new Point(0, 0));
@@ -212,7 +213,7 @@ public class ConnectionSurfacesManagerTest {
 		assertEquals(cpe2.getSource(), actual.getSource());
 		assertEquals(cpe2.getTarget(), actual.getTarget());
 
-		verify(cs2).isPointOnPath(anyInt(), anyInt(), anyInt());
+		verify(cs2).isPointOnPath(any(Point.class));
 		verifyNoMoreInteractions(cs2);
 	}
 

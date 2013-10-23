@@ -54,6 +54,7 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import gwt.g2d.client.math.Vector2;
 
 @RunWith(ExMockRunner.class)
 @PrepareForTest(value = { CssHelper.class, NodeList.class, Node.class, Style.class, NativeEvent.class })
@@ -182,7 +183,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), "---", MultiplePairModuleConnectType.NORMAL);
 		Mockito.verify(connectionEventHandler).fireConnectEvent(PairConnectEventTypes.WRONG_CONNECTION, bean.getSourceChoicesIdentifiersSet().get(0), "---",
 				false);
-		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
+		ConnectionSurface surface = moduleFactory.getConnectionSurface(new Vector2(0, 0));
 		Mockito.verify(surface, times(0)).drawLine(new Point(0, 0), new Point(0, 0));
 	}
 
@@ -233,8 +234,8 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		ConnectionModuleViewImpl testObject = spy(instance);
 
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
-		ConnectionSurface surface = moduleFactory.getConnectionSurface(0, 0);
-		Mockito.when(surface.isPointOnPath(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
+		ConnectionSurface surface = moduleFactory.getConnectionSurface(new Vector2(0, 0));
+		Mockito.when(surface.isPointOnPath(any(Point.class))).thenReturn(true);
 		Mockito.verify(connectionEventHandler).fireConnectEvent(Mockito.eq(PairConnectEventTypes.CONNECTED), Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyBoolean());
 
