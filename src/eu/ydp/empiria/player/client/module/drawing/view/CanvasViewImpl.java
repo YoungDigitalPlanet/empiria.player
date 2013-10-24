@@ -29,8 +29,9 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 	private final String destinationOutCompositeOperation = com.google.gwt.canvas.dom.client.Context2d.Composite.DESTINATION_OUT.getValue();
 
 	private final String eraserColor = "#000000ff";
-	private final int lineWidth = 4;
 	private final CanvasDragHandlers canvasDragHandlers;
+	private int currentLineWidth = 4;
+
 
 	@Inject
 	public CanvasViewImpl(CanvasDragHandlers canvasDragHandlers) {
@@ -47,7 +48,7 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 
 	private Context2d getContext(String globalCompositeOperation) {
 		Context2d context2d = canvas.getContext2d();
-		context2d.setLineWidth(lineWidth);
+		context2d.setLineWidth(currentLineWidth);
 		context2d.setGlobalCompositeOperation(globalCompositeOperation);
 		return context2d;
 	}
@@ -106,4 +107,8 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 		canvasDragHandlers.addHandlersToView(canvasPresenter, canvas);
 	}
 
+	@Override
+	public void setLineWidth(int lineWidth) {
+		this.currentLineWidth = lineWidth;
+	}
 }

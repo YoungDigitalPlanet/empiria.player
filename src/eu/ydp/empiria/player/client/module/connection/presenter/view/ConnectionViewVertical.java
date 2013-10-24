@@ -95,6 +95,11 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 	}
 
 	@Override
+	public void onTouchCancel(NativeEvent event) {
+		callOnMoveCancelHandlers();
+	}
+
+	@Override
 	protected FlowPanel getView() {
 		return view;
 	}

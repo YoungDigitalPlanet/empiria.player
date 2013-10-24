@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NORMAL;
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +27,7 @@ import eu.ydp.empiria.player.client.module.connection.presenter.translation.Surf
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
+import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveCancelHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEvent;
@@ -46,7 +47,7 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean>, ConnectionMoveHandler, ConnectionMoveEndHandler,
-		ConnectionMoveStartHandler {
+		ConnectionMoveStartHandler, ConnectionMoveCancelHandler {
 
 	// protected for tests
 	protected boolean STACK_ANDROID_BROWSER = UserAgentChecker.isStackAndroidBrowser(); // NOPMD
@@ -200,6 +201,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		view.addConnectionMoveHandler(this);
 		view.addConnectionMoveEndHandler(this);
 		view.addConnectionMoveStartHandler(this);
+		view.addConnectionMoveCancelHandler(this);
 	}
 
 	@Override
@@ -249,14 +251,15 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	@Override
 	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
 		ConnectionItem connectionStartItem = connectionItemPair.getSource();
-		if (!locked && !searchAndConnectItemsPair(event, connectionStartItem)) {
+
+		if (connectionStartItem != null && !locked && !searchAndConnectItemsPair(event, connectionStartItem)) {
 			if (!tryConnectByClick(connectionStartItem)) {
 				connectionItemPair.setTarget(connectionStartItem);
 			}
 		}
 		clearSurface(connectionStartItem);
 	}
-	
+
 	private void updatePointPosition(ConnectionMoveEvent event) {
 		lastPoint.setSource(event.getX());
 		lastPoint.setTarget(event.getY());
@@ -363,12 +366,13 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			targetItem.setConnected(true, type);
 			connectionSurfacesManager.putSurface(connectionPair, currentSurface);
 			connectionEventHandler.fireConnectEvent(PairConnectEventTypes.CONNECTED, getIdentifier(sourceItem), getIdentifier(targetItem), userAction);
-			
+
 			prepareAndAddStyleToSurface(sourceItem, targetItem, type);
 		}
 	}
 
 	private void prepareAndAddStyleToSurface(ConnectionItem enditem, ConnectionItem startItem, MultiplePairModuleConnectType type) {
+
 		boolean startIsLeft = modelInterface.isLeftItem(startItem.getBean());
 		int leftIndex;
 		int rightIndex;
@@ -381,8 +385,14 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			rightIndex = modelInterface.getRightItemIndex(startItem.getBean());
 		}
 
-		List<String> stylesToAdd = surfaceStyleProvider.getStylesForSurface(type, leftIndex, rightIndex);
-		addStylesToSurface(stylesToAdd);
+		if (isMarkedOnBothSides(leftIndex, rightIndex)) {
+			List<String> stylesToAdd = surfaceStyleProvider.getStylesForSurface(type, leftIndex, rightIndex);
+			addStylesToSurface(stylesToAdd);
+		}
+	}
+
+	private boolean isMarkedOnBothSides(int leftIndex, int rightIndex) {
+		return leftIndex >= 0 && rightIndex >= 0;
 	}
 
 	protected void addStylesToSurface(List<String> styles) {
@@ -428,4 +438,14 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		return asWidget().isAttached();
 	}
 
+	@Override
+	public void onConnectionMoveCancel() {
+
+		ConnectionItem connectionStartItem = connectionItemPair.getSource();
+		if (connectionStartItem != null) {
+			resetIfNotConnected(getIdentifier(connectionStartItem));
+			resetConnectionMadeByTouch();
+			clearSurface(connectionStartItem);
+		}
+	}
 }

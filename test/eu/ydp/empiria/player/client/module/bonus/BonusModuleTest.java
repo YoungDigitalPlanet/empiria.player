@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.FeedbackActionConditions;
+import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.module.bonus.popup.BonusPopupPresenter;
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;
 
@@ -28,6 +29,8 @@ public class BonusModuleTest {
 
 	@Mock
 	private FeedbackActionConditions actionConditions;
+	@Mock
+	private OutcomeAccessor outcomeAccessor;
 	@Mock
 	private PowerFeedbackMediator mediator;
 	@Mock
@@ -70,6 +73,7 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
+		
 		mockAllOk();
 
 		// when
@@ -140,11 +144,67 @@ public class BonusModuleTest {
 		verify(bonus).execute();
 	}
 
+	@Test
+	public void shouldShowOnceWhenHadNoPreviousErrors() {
+		// given
+		Bonus bonus = mock(Bonus.class);
+		when(bonusProvider.next()).thenReturn(bonus);
+		
+		// when
+		mockNotAllOk();
+		module.processUserInteraction();
+		
+		mockAllOk();
+		module.processUserInteraction();
+		
+		// then
+		verify(bonus, times(1)).execute();
+	}
+
+	@Test
+	public void shouldNotShowBonusWhenHadPreviousErrors() {
+		// given
+		Bonus bonus = mock(Bonus.class);
+		when(bonusProvider.next()).thenReturn(bonus);
+
+		// when
+		mockNotAllOk();
+		when(outcomeAccessor.getCurrentPageMistakes()).thenReturn(1);
+		module.processUserInteraction();
+		
+		mockAllOk();
+		module.processUserInteraction();
+		
+		// then
+		verify(bonus, never()).execute();
+	}
+	
+	@Test
+	public void shouldShowBonusAfterResetWithPreviousErrors() {
+		// given
+		Bonus bonus = mock(Bonus.class);
+		when(bonusProvider.next()).thenReturn(bonus);
+		
+		// when
+		mockNotAllOk();
+		when(outcomeAccessor.getCurrentPageMistakes()).thenReturn(1);
+		module.processUserInteraction();
+
+		module.resetPowerFeedback();
+		
+		mockAllOk();
+		module.processUserInteraction();
+		
+		// then
+		verify(bonus, times(1)).execute();
+		
+	}
+	
 	private void mockAllOk() {
-		when(actionConditions.isPageAllOkWithoutPreviousMistakes()).thenReturn(true);
+		when(actionConditions.isPageAllOkWithoutPreviousErrors()).thenReturn(true);
 	}
 
 	private void mockNotAllOk() {
-		when(actionConditions.isPageAllOkWithoutPreviousMistakes()).thenReturn(false);
+		when(actionConditions.isPageAllOkWithoutPreviousErrors()).thenReturn(false);
 	}
 }

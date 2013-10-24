@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresen
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenterImpl;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParser;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
+import eu.ydp.empiria.player.client.module.sourcelist.view.ScormScrollPanel;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListViewImpl;
 import eu.ydp.empiria.player.client.module.sourcelist.view.ScormScrollPanel;

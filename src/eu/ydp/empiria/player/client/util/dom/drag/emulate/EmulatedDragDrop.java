@@ -34,9 +34,10 @@ import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 /**
  * For mobile and old browsers gQuery used
- *
+ * 
  */
 public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> implements DraggableObject<W>, DroppableObject<W> {
+	private static final Integer DRAG_Z_INDEX = 100000;
 	private static final String DATA_JSON = "data-json";
 	private DragStartEndHandlerWrapper dragStartEndHandlerWrapper;
 	private DropEventsHandlerWrapper dropEventsHandlerWrapper;
@@ -46,12 +47,13 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 	private final W originalWidget;
 	private final boolean disableAutoBehavior;
 	private final DragDropType type;
-	@Inject private OverlayTypesParser overlayTypesParser;
-	@Inject private StyleNameConstants styleNames;
+	@Inject
+	private OverlayTypesParser overlayTypesParser;
+	@Inject
+	private StyleNameConstants styleNames;
 
 	@Inject
-	public EmulatedDragDrop(@Assisted("widget") W widget, @Assisted("type") DragDropType type,
-			@Assisted("disableAutoBehavior") boolean disableAutoBehavior) {
+	public EmulatedDragDrop(@Assisted("widget") W widget, @Assisted("type") DragDropType type, @Assisted("disableAutoBehavior") boolean disableAutoBehavior) {
 		this.originalWidget = widget;
 		this.disableAutoBehavior = disableAutoBehavior;
 		this.type = type;
@@ -71,9 +73,10 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 		options.setHelper(HelperType.CLONE);
 		options.setRevert(RevertOption.ON_INVALID_DROP);
 		options.setCursor(Cursor.MOVE);
-		if(widget instanceof DraggableWidget){
+		options.setZIndex(DRAG_Z_INDEX);
+		if (widget instanceof DraggableWidget) {
 			dragWidget = (DraggableWidget<W>) widget;
-		}else{
+		} else {
 			dragWidget = new DraggableWidget<W>(widget, options);
 		}
 		dragWidget.setDraggableOptions(options);
@@ -82,9 +85,9 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 	}
 
 	private void createDrop(W widget) {
-		if(widget instanceof DroppableWidget){
+		if (widget instanceof DroppableWidget) {
 			dropWidget = (DroppableWidget<W>) widget;
-		}else{
+		} else {
 			dropWidget = new DroppableWidget<W>(widget);
 		}
 		dropWidget.addDropHandler(new DropEventHandler() {
@@ -133,7 +136,7 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
 
 	public DropEventsHandlerWrapper getDropEventsHandlerWrapper() {
 		if (dropEventsHandlerWrapper == null) {
-			dropEventsHandlerWrapper = new DropEventsHandlerWrapper(dropWidget,overlayTypesParser);
+			dropEventsHandlerWrapper = new DropEventsHandlerWrapper(dropWidget, overlayTypesParser);
 		}
 		return dropEventsHandlerWrapper;
 	}

@@ -36,12 +36,10 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	private @Inject TouchController touchController;
 	private @Inject Provider<SourceListViewItemWidget> sourceListViewItemWidgetProvider;
 	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
+	private @Inject ScormScrollPanel scormScrollPanel; 
 	private SourceListViewImpl sourceListView;
 	private DraggableObject<SourceListViewItemWidget> draggable;
 	private SourceListViewItemWidget container;
-	@Inject
-	private ScormScrollPanel scormScrollPanel;
-	
 
 	private SourcelistItemValue itemContent;
 

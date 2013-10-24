@@ -9,4 +9,5 @@ public interface DrawCanvas {
 	 void erasePoint(Point point);
 	 void eraseLine(Point startPoint , Point endPoint );
 	 void clear();
+	 void setLineWidth(int lineWidth);
 }

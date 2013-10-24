@@ -1,11 +1,15 @@
 package eu.ydp.empiria.player.client.module.button;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -16,8 +20,12 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Binder;
@@ -29,6 +37,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.button.ShowAnswersButtonModule;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -37,9 +46,14 @@ import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 @SuppressWarnings("PMD")
 public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
+	private static final String DISABLED_STYLE_NAME = "qp-showanswers-button-disabled";
+
 	ShowAnswersButtonModule instance;
 	EventsBus eventsBus;
 	FlowRequestInvoker requestInvoker;
+	private ClickHandler handler;
+	private CustomPushButton button;
+	private StyleNameConstants styleNameConstants;
 
 	private static class CustomGuiceModule implements Module {
 		@Override
@@ -54,6 +68,17 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 		instance = spy(injector.getInstance(ShowAnswersButtonModule.class));
 		eventsBus = injector.getInstance(EventsBus.class);
 		requestInvoker = mock(FlowRequestInvoker.class);
+		button = injector.getInstance(CustomPushButton.class);
+		styleNameConstants = injector.getInstance(StyleNameConstants.class);
+		doAnswer(new Answer<ClickHandler>() {
+
+
+			@Override
+			public ClickHandler answer(InvocationOnMock invocation) throws Throwable {
+				handler = (ClickHandler) invocation.getArguments()[0];
+				return null;
+			}
+		}).when(button).addClickHandler(any(ClickHandler.class));
 	}
 
 	@After
@@ -145,4 +170,38 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 		verify(requestInvoker, times(1)).invokeRequest(Mockito.any(FlowRequest.Continue.class));
 	}
 
+	@Test
+	public void shouldNotInvokeActionInPreviewMode() {
+		// given
+		instance.initModule(mock(Element.class));
+		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		instance.setFlowRequestsInvoker(requestInvoker);
+		instance.enablePreviewMode();
+
+		// when
+		handler.onClick(null);
+
+		// then
+		verifyZeroInteractions(requestInvoker);
+	}
+
+	@Test
+	public void shouldNotOverwriteStyleInPreview() {
+		// given
+		final String inactiveStyleName = "STYLE_NAME";
+		instance.initModule(mock(Element.class));
+		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
+		instance.enablePreviewMode();
+		
+		// when
+		instance.updateStyleName();
+		
+		// then
+		InOrder inOrder = inOrder(button);
+		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button).addStyleName(inactiveStyleName);
+		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button).addStyleName(inactiveStyleName);
+	}
 }

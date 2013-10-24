@@ -14,24 +14,21 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSes
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableUtil;
+import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
 public class ScormSupportExtension extends InternalExtension implements PlayerJsObjectModifierExtension, SessionDataSocketUserExtension, DataSourceDataSocketUserExtension {
 
+	private static final Logger LOGGER = new Logger();
+
 	protected SessionDataSupplier sessionDataSupplier;
-	
 	protected JavaScriptObject playerJsObject;
-	
 	protected DataSourceDataSupplier dataSourceDataSupplier;
-	
 	protected int masteryScore = 100;
 	
 	@Inject
 	private AssessmentReportFactory factory;
-	
 	private ResultInfo result;
-	
 	private HintInfo hint;
-	
 	private VariableUtil variableUtil;
 	
 	@Override
@@ -155,5 +152,4 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 		}
 		return status;
 	}
-
 }

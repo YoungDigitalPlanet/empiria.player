@@ -9,12 +9,23 @@ public class DoneToCountModeAdjuster {
 	public int adjustValueToCountMode(int amountOfGivenCorrectAnswers, Response response, CountMode countMode){
 		int adjustedValue;
 		if(countMode == CountMode.CORRECT_ANSWERS){
-			adjustedValue = amountOfGivenCorrectAnswers;
+			adjustedValue = reducePointsByErrors(amountOfGivenCorrectAnswers, response);
 		}else{
 			adjustedValue = adjustDoneValueToSingleCountMode(amountOfGivenCorrectAnswers, response);
 		}
 
 		return adjustedValue;
+	}
+
+	private int reducePointsByErrors(int amountCorrectAnswers, Response response) {
+		int allAnswers = response.values.size();
+		int errorAnswers = allAnswers - amountCorrectAnswers;
+		int points = amountCorrectAnswers - errorAnswers;
+		
+		if(points < 0) {
+			points = 0;
+		}
+		return points;
 	}
 
 	private int adjustDoneValueToSingleCountMode(int amountOfGivenCorrectAnswers, Response response) {

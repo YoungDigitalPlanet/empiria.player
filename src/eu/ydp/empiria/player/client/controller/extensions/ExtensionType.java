@@ -20,7 +20,9 @@ public enum ExtensionType {
 	// MODULE (not defined yet)
 	EXTENSION_MODULE,
 	EXTENSION_TUTOR,
-	MULTITYPE, EXTENSION_BONUS;
+	EXTENSION_BONUS,
+	EXTENSION_PROGRESS_BONUS,
+	MULTITYPE;
 
 
 	public static ExtensionType fromString(String typeString){
