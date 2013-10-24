@@ -66,7 +66,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	@Inject private ForceRedrawHack forceRedrawHack;
 	@Inject private VisiblePagesManager visiblePagesManager;
 	@Inject @Named("multiPageControllerMainPanel") private FlowPanel mainPanel;
-	@Inject private PagePlaceHolderPanelCreator pagePlaceHolderPanelCreator;
 	@Inject private Instance<SwipeType> swipeType;
 
 	private static int activePageCount = 3;
@@ -160,14 +159,14 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	 * @return
 	 */
 	public FlowPanel getViewForPage(Integer pageNumber) {
-		if (!panelsCache.isPresent(pageNumber)) {
-			pagePlaceHolderPanelCreator.createPanelsUntilIndex(pageNumber);
+		boolean pageWasCreated = panelsCache.isPresent(pageNumber);
+		KeyValue<FlowPanel, FlowPanel> panel = panelsCache.getOrCreateAndPut(pageNumber);
+
+		if (!pageWasCreated) {
+			mainPanel.add(panel.getKey());
 			applyStylesToPanelOnIndex(pageNumber);
 			showProgressBarForPage(pageNumber);
 		}
-
-		KeyValue<FlowPanel, FlowPanel> panel = panelsCache.getOrCreateAndPut(pageNumber);
-
 		loadedPages.add(pageNumber);
 		return panel.getValue();
 	}
