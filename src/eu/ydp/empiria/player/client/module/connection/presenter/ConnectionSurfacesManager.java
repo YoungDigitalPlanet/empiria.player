@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import java.util.Map;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
@@ -11,6 +13,19 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import gwt.g2d.client.math.Vector2;
 
 public class ConnectionSurfacesManager {
+
+	private final class IdentifierMatchConnectionPairPredicate implements Predicate<ConnectionPairEntry<String, String>> {
+		private final String identifier;
+
+		private IdentifierMatchConnectionPairPredicate(String identifier) {
+			this.identifier = identifier;
+		}
+
+		@Override
+		public boolean apply(ConnectionPairEntry<String, String> connection) {
+			return identifier.equals(connection.getSource()) || identifier.equals(connection.getTarget());
+		}
+	}
 
 	@Inject
 	private ConnectionModuleFactory connectionFactory;
@@ -22,13 +37,8 @@ public class ConnectionSurfacesManager {
 		connectedSurfaces.clear();
 	}
 
-	public boolean hasConnections(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces, String identifier) {
-		for (ConnectionPairEntry<String, String> connection : connectedSurfaces.keySet()) {
-			if (identifier.equals(connection.getSource()) || identifier.equals(connection.getTarget())) {
-				return true;
-			}
-		}
-		return false;
+	public boolean hasConnections(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces, final String identifier) {
+		return Iterables.any(connectedSurfaces.keySet(), new IdentifierMatchConnectionPairPredicate(identifier));
 	}
 
 	public void clearConnectionSurface(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces,
