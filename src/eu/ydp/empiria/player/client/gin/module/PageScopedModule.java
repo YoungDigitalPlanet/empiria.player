@@ -26,7 +26,6 @@ import eu.ydp.empiria.player.client.gin.providers.VariableProcessingAdapterPageS
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScopedProvider;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
-import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionSurfacesManager;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManagerModel;
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;

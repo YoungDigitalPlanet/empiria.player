@@ -68,9 +68,9 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private MultiplePairBean<SimpleAssociableChoiceBean> modelInterface;
 	private final ConnectionPairEntry<Double, Double> lastPoint = new ConnectionPairEntry<Double, Double>(0d, 0d);
 	private ModuleSocket moduleSocket;
-	boolean locked;
+	private boolean locked;
 
-	private final Map<ConnectionItem, Point> startPositions = new HashMap<ConnectionItem, Point>();
+	private final Map<ConnectionItem, Point> startPositions = Maps.newHashMap();
 
 	private ConnectionItems connectionItems;
 
