@@ -2,8 +2,11 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.*;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
+import com.google.common.base.Optional;
 import com.google.gwt.dom.client.NativeEvent;
 
 import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
@@ -36,6 +39,9 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 
 	@Inject
 	private ConnectionSurfacesManager surfacesManager;
+
+	@Inject
+	private ConnectionItemPairFinder pairFinder;
 
 	public void setView(ConnectionModuleViewImpl view) {
 		this.view = view;
@@ -77,22 +83,20 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 	@Override
 	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
 		ConnectionItem connectionStartItem = view.getConnectionItemPair().getSource();
+		final int x = new Double(event.getX()).intValue();
+		final int y = new Double(event.getY()).intValue();
 
-		ConnectionItem connectionEndItem = null;
-		for (ConnectionItem item : view.getConnectionItems().getConnectionItems(connectionStartItem)) {
-			if (isTouchEndOnItem(event.getX(), event.getY(), item)) {
-				connectionEndItem = item;
-				break;
-			}
-		}
+		Set<ConnectionItem> connectionItems = view.getConnectionItems().getConnectionItems(connectionStartItem);
+		Optional<ConnectionItem> connectionEndItem = pairFinder.findConnectionItemForCoordinates(connectionItems, x, y);
 
-		if (connectionEndItem != null) {
-			view.drawLineFromSource(connectionEndItem.getRelativeX(), connectionEndItem.getRelativeY());
-			view.connectItems(connectionStartItem, connectionEndItem, NORMAL, true);
+		if (connectionEndItem.isPresent()) {
+			final ConnectionItem item = connectionEndItem.get();
+			view.drawLineFromSource(item.getRelativeX(), item.getRelativeY());
+			view.connectItems(connectionStartItem, item, NORMAL, true);
 			view.resetTouchConnections();
 		}
 
-		if (connectionStartItem != null && !view.isLocked() && connectionEndItem == null) {
+		if (connectionStartItem != null && !view.isLocked() && !connectionEndItem.isPresent()) {
 			boolean mayConnect = view.getConnectionItemPair().getTarget() != null && !view.getConnectionItemPair().getTarget().equals(connectionStartItem);
 
 			if (mayConnect) {
@@ -102,6 +106,7 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 				view.getConnectionItemPair().setTarget(connectionStartItem);
 			}
 		}
+
 		view.clearSurface(connectionStartItem);
 	}
 
@@ -143,11 +148,6 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 
 	private int approximation() {
 		return userAgent.isStackAndroidBrowser() ? 15 : 5;
-	}
-
-	private boolean isTouchEndOnItem(double x, double y, ConnectionItem item) {
-		return item.getOffsetLeft() <= x && x <= item.getOffsetLeft() + item.getWidth() && item.getOffsetTop() <= y
-				&& y <= item.getOffsetTop() + item.getHeight();
 	}
 
 }
