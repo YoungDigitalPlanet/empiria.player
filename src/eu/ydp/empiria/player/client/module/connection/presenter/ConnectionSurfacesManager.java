@@ -79,9 +79,9 @@ public class ConnectionSurfacesManager {
 	}
 
 	public void putSurface(Map<String, ConnectionSurface> surfaces, Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces,
-			ConnectionPairEntry<String, String> keyValue, ConnectionSurface surface) {
-		connectedSurfaces.put(keyValue, surface);
-		surfaces.remove(keyValue.getSource());
+			ConnectionPairEntry<String, String> connectionPairForSurface, ConnectionSurface surface) {
+		connectedSurfaces.put(connectionPairForSurface, surface);
+		surfaces.remove(connectionPairForSurface.getSource());
 	}
 
 	public boolean containsSurface(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces, ConnectionPairEntry<String, String> keyValue) {

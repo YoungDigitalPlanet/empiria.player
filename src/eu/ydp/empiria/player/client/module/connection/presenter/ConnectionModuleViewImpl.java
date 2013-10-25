@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
