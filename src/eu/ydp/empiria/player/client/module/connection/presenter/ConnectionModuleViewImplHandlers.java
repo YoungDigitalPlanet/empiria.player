@@ -52,9 +52,9 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 		if (view.isLocked())
 			return;
 
-		ConnectionItem item = connectionsFinder.findConnectionItemForEventOnWidget(event.getNativeEvent(), view, view.getConnectionItems());
+		Optional<ConnectionItem> itemOptional = connectionsFinder.findConnectionItemForEventOnWidget(event.getNativeEvent(), view, view.getConnectionItems());
 
-		if (item == null) {
+		if (!itemOptional.isPresent()) {
 			NativeEvent event1 = event.getNativeEvent();
 			Point clickPoint = getClicktPoint(event1);
 			ConnectionPairEntry<String, String> pointOnPath = surfacesManager.findPointOnPath(view.getConnectedSurfaces(), clickPoint);
@@ -65,6 +65,7 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 				event1.preventDefault();
 			}
 		} else {
+			ConnectionItem item = itemOptional.get();
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
 			event.getNativeEvent().preventDefault();
 			view.getSurfaceForLineDrawing(item, NORMAL);
@@ -96,7 +97,7 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 			view.resetTouchConnections();
 		}
 
-		if (connectionStartItem != null && !view.isLocked() && !connectionEndItem.isPresent()) {
+		if (!(connectionStartItem == null || view.isLocked() || connectionEndItem.isPresent())) {
 			boolean mayConnect = view.getConnectionItemPair().getTarget() != null && !view.getConnectionItemPair().getTarget().equals(connectionStartItem);
 
 			if (mayConnect) {

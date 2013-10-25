@@ -32,17 +32,16 @@ public class ConnectionsBetweenItemsFinder {
 	@Inject
 	private NativeEventWrapper nativeEvent;
 
-	public ConnectionItem findConnectionItemForEventOnWidget(NativeEvent event, IsWidget widget, ConnectionItems connectionItems) {
+	public Optional<ConnectionItem> findConnectionItemForEventOnWidget(NativeEvent event, IsWidget widget, ConnectionItems connectionItems) {
 		Point clickPoint = positionHelper.getPoint(event, widget);
 
 		Optional<ConnectionItem> item = findItemOnPosition(clickPoint, connectionItems);
 
 		if (item.isPresent()) {
 			nativeEvent.preventDefault(event);
-			return item.get();
-		} else {
-			return null;
 		}
+		return item;
+
 	}
 
 	private Optional<ConnectionItem> findItemOnPosition(final Point clickPoint, ConnectionItems connectionItems) {

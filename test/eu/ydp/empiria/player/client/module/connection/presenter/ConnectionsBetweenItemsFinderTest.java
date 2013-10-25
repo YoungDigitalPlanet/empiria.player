@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -62,10 +63,10 @@ public class ConnectionsBetweenItemsFinderTest {
 		when(positionHelper.getPoint(nativeEvent, widget)).thenReturn(point(0, 0));
 		
 		// when
-		ConnectionItem actual = testObj.findConnectionItemForEventOnWidget(nativeEvent, widget, connectionItems);
+		Optional<ConnectionItem> actual = testObj.findConnectionItemForEventOnWidget(nativeEvent, widget, connectionItems);
 		
 		// then
-		assertNull(actual);
+		assertFalse(actual.isPresent());
 		verify(positionHelper).getPoint(nativeEvent, widget);
 		verify(nativeEventWrapper, never()).preventDefault(nativeEvent);
 	}
@@ -76,10 +77,10 @@ public class ConnectionsBetweenItemsFinderTest {
 		when(positionHelper.getPoint(nativeEvent, widget)).thenReturn(point(120,60));
 
 		// when
-		ConnectionItem actual = testObj.findConnectionItemForEventOnWidget(nativeEvent, widget, connectionItems);
+		Optional<ConnectionItem> actual = testObj.findConnectionItemForEventOnWidget(nativeEvent, widget, connectionItems);
 		
 		// then
-		assertEquals(connectionItemsCollection.get(0), actual);
+		assertEquals(connectionItemsCollection.get(0), actual.get());
 		verify(positionHelper).getPoint(nativeEvent, widget);
 		verify(nativeEventWrapper).preventDefault(nativeEvent);
 
@@ -91,10 +92,10 @@ public class ConnectionsBetweenItemsFinderTest {
 		when(positionHelper.getPoint(nativeEvent, widget)).thenReturn(point(170,115));
 
 		// when
-		ConnectionItem actual = testObj.findConnectionItemForEventOnWidget(nativeEvent, widget, connectionItems);
+		Optional<ConnectionItem> actual = testObj.findConnectionItemForEventOnWidget(nativeEvent, widget, connectionItems);
 		
 		// then
-		assertNull(actual);
+		assertFalse(actual.isPresent());
 		verify(positionHelper).getPoint(nativeEvent, widget);
 		verify(nativeEventWrapper, never()).preventDefault(nativeEvent);
 
