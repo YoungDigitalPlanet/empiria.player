@@ -3,6 +3,8 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
+import java.util.HashMap;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,12 +13,16 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 
+import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.module.connection.ConnectionItemFluentMockBuilder;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
+import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEvent;
+import eu.ydp.empiria.player.client.util.position.Point;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConnectionModuleViewImplHandlersTest {
@@ -42,6 +48,12 @@ public class ConnectionModuleViewImplHandlersTest {
 	@Mock
 	private ConnectionItems connectionItems;
 
+	@Mock
+	private UserAgentCheckerWrapper userAgent;
+
+	@Mock
+	private ConnectionPairEntry<Double, Double> lastPoint;
+	
 	@Before
 	public void setUp() {
 		testObj.setView(view);
@@ -50,6 +62,7 @@ public class ConnectionModuleViewImplHandlersTest {
 		when(connectionPairEntry.getSource()).thenReturn(sourceConnectionItem);
 		when(view.getConnectionItemPair()).thenReturn(connectionPairEntry);
 		when(view.getConnectionItems()).thenReturn(connectionItems);
+		when(view.getLastPoint()).thenReturn(lastPoint);
 	}
 
 	@Test
@@ -133,5 +146,86 @@ public class ConnectionModuleViewImplHandlersTest {
 		verify(view, times(1)).drawLineFromSource(anyInt(), anyInt());
 		verify(view, times(0)).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
 		verify(view).clearSurface(sourceConnectionItem);
+	}
+	
+	@Test
+	public void testOnConnectionMoveEnd_lockedView() {
+		// given
+		final ConnectionMoveEvent connectionMoveEvent = mock(ConnectionMoveEvent.class);
+		when(view.isLocked()).thenReturn(true);
+		
+		
+		// when
+		testObj.onConnectionMove(connectionMoveEvent);
+		
+		// then
+		verify(connectionMoveEvent, times(0)).preventDefault();
+		verify(view, times(0)).drawLineFromSource(anyInt(), anyInt());
+	}
+	
+	@Test
+	public void testOnConnectionMoveEnd_unlockedView_largeX() {
+		// given
+		final ConnectionMoveEvent connectionMoveEvent = mock(ConnectionMoveEvent.class);
+		when(view.isLocked()).thenReturn(false);
+		final double LARGE = 1000d;
+		when(lastPoint.getSource()).thenReturn(LARGE);
+		when(lastPoint.getTarget()).thenReturn(LARGE);
+		
+		mockStartPositions();
+		
+		// when
+		testObj.onConnectionMove(connectionMoveEvent);
+		
+		// then
+		verify(connectionMoveEvent, times(1)).preventDefault();
+		verify(view, times(1)).drawLineFromSource(anyInt(), anyInt());
+	
+	}
+	
+	@Test
+	public void testOnConnectionMoveEnd_unlockedView_smallX() {
+		// given
+		final ConnectionMoveEvent connectionMoveEvent = mock(ConnectionMoveEvent.class);
+		when(view.isLocked()).thenReturn(false);
+		final double SMALL = 1d;
+		final double LARGE = 1000d;
+		when(lastPoint.getSource()).thenReturn(SMALL);
+		when(lastPoint.getTarget()).thenReturn(LARGE);
+		
+		mockStartPositions();
+		
+		// when
+		testObj.onConnectionMove(connectionMoveEvent);
+		
+		// then
+		verify(connectionMoveEvent, times(1)).preventDefault();
+		verify(view, times(1)).drawLineFromSource(anyInt(), anyInt());
+	}
+
+	@Test
+	public void testOnConnectionMoveEnd_unlockedView_bothSmall() {
+		// given
+		final ConnectionMoveEvent connectionMoveEvent = mock(ConnectionMoveEvent.class);
+		when(view.isLocked()).thenReturn(false);
+		final double SMALL = 1d;
+		when(lastPoint.getSource()).thenReturn(SMALL);
+		when(lastPoint.getTarget()).thenReturn(SMALL);
+		
+		mockStartPositions();
+		
+		// when
+		testObj.onConnectionMove(connectionMoveEvent);
+		
+		// then
+		verify(connectionMoveEvent, times(1)).preventDefault();
+		verify(view, times(0)).drawLineFromSource(anyInt(), anyInt());
+		
+	}
+	private void mockStartPositions() {
+		final HashMap<ConnectionItem, Point> startPositions = Maps.<ConnectionItem, Point>newHashMap();
+		final Point point = mock(Point.class);
+		startPositions.put(sourceConnectionItem, point);
+		when(view.getStartPositions()).thenReturn(startPositions);
 	}
 }
