@@ -52,22 +52,12 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 		if (view.isLocked())
 			return;
 
-		Optional<ConnectionItem> itemOptional = connectionsFinder.findConnectionItemForEventOnWidget(event.getNativeEvent(), view, view.getConnectionItems());
+		Optional<ConnectionItem> itemOptional = connectionsFinder.findConnectionItemForEventOnWidget(event, view, view.getConnectionItems());
 
-		if (!itemOptional.isPresent()) {
-			NativeEvent event1 = event.getNativeEvent();
-			Point clickPoint = getClicktPoint(event1);
-			ConnectionPairEntry<String, String> pointOnPath = surfacesManager.findPointOnPath(view.getConnectedSurfaces(), clickPoint);
-
-			if (pointOnPath != null) {
-				surfacesManager.removeSurfaceFromParent(view.getConnectedSurfaces(), pointOnPath);
-				view.disconnect(pointOnPath.getSource(), pointOnPath.getTarget(), true);
-				event1.preventDefault();
-			}
-		} else {
+		if (itemOptional.isPresent()) {
 			ConnectionItem item = itemOptional.get();
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
-			event.getNativeEvent().preventDefault();
+			event.preventDefault();
 			view.getSurfaceForLineDrawing(item, NORMAL);
 			view.startDrawLine(item);
 			item.setConnected(true, NORMAL);
@@ -78,6 +68,17 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 			}
 
 			view.getConnectionItemPair().setSource(item);
+
+		} else {
+			NativeEvent nativeEvent = event.getNativeEvent();
+			Point clickPoint = getClicktPoint(nativeEvent);
+			ConnectionPairEntry<String, String> pointOnPath = surfacesManager.findPointOnPath(view.getConnectedSurfaces(), clickPoint);
+
+			if (pointOnPath != null) {
+				surfacesManager.removeSurfaceFromParent(view.getConnectedSurfaces(), pointOnPath);
+				view.disconnect(pointOnPath.getSource(), pointOnPath.getTarget(), true);
+				event.preventDefault();
+			}
 		}
 	}
 

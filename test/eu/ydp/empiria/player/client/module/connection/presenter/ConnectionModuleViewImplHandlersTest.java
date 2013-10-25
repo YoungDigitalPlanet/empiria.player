@@ -22,7 +22,11 @@ import eu.ydp.empiria.player.client.module.connection.ConnectionItemFluentMockBu
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEvent;
+import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.position.Point;
+import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConnectionModuleViewImplHandlersTest {
@@ -36,6 +40,12 @@ public class ConnectionModuleViewImplHandlersTest {
 	@Mock
 	private ConnectionPairEntry<ConnectionItem, ConnectionItem> connectionPairEntry;
 
+	@Mock
+	private ConnectionPairEntry<Double, Double> lastPoint;
+
+	@Mock
+	private ConnectionPairEntry<String, String> stringConnectionPairEntry;
+	
 	@Mock
 	private ConnectionItem sourceConnectionItem;
 
@@ -51,8 +61,18 @@ public class ConnectionModuleViewImplHandlersTest {
 	@Mock
 	private UserAgentCheckerWrapper userAgent;
 
+
 	@Mock
-	private ConnectionPairEntry<Double, Double> lastPoint;
+	private ConnectionsBetweenItemsFinder connectionsFinder;
+
+	@Mock
+	private EventsBus eventsBus;
+	
+	@Mock
+	private PositionHelper positionHelper;
+	
+	@Mock
+	private ConnectionSurfacesManager surfacesManager;
 	
 	@Before
 	public void setUp() {
@@ -228,4 +248,65 @@ public class ConnectionModuleViewImplHandlersTest {
 		startPositions.put(sourceConnectionItem, point);
 		when(view.getStartPositions()).thenReturn(startPositions);
 	}
+	
+	@Test
+	public void testOnConnectionMoveStart_unlockedView() {
+		// given
+		when(view.isLocked()).thenReturn(true);
+		final ConnectionMoveStartEvent event = mock(ConnectionMoveStartEvent.class);
+		
+		// when
+		testObj.onConnectionStart(event);
+		
+		// then
+		verifyZeroInteractions(event);
+	}
+	
+	@Test
+	public void testOnConnectionMoveStart_connectionNotFound_pointNotFoundOnPath() {
+		// given
+		final ConnectionMoveStartEvent event = mock(ConnectionMoveStartEvent.class);
+
+		when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.<ConnectionItem>absent());
+		
+		
+		// when
+		testObj.onConnectionStart(event);
+		
+		// then
+		verify(eventsBus, times(0)).fireEvent(any(PlayerEvent.class));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testOnConnectionMoveStart_connectionNotFound_pointFoundOnPath() {
+		// given
+		final ConnectionMoveStartEvent event = mock(ConnectionMoveStartEvent.class);
+		when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.<ConnectionItem>absent());
+		
+		when(surfacesManager.findPointOnPath(anyMap(), any(Point.class))).thenReturn(stringConnectionPairEntry);
+		
+		// when
+		testObj.onConnectionStart(event);
+		
+		// then
+		verify(eventsBus, times(0)).fireEvent(any(PlayerEvent.class));
+		verify(view, times(1)).disconnect(anyString(), anyString(), eq(Boolean.TRUE));
+	}
+	
+	@Test
+	public void testOnConnectionMoveStart_connectionFound() {
+		// given
+		final ConnectionMoveStartEvent event = mock(ConnectionMoveStartEvent.class);
+
+		ConnectionItem ci = ConnectionItemFluentMockBuilder.newConnectionItem().build();
+		when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.of(ci));
+		
+		// when
+		testObj.onConnectionStart(event);
+		
+		// then
+
+	}
+
 }

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 import eu.ydp.empiria.player.client.module.NativeEventWrapper;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
+import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEvent;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
@@ -61,9 +62,11 @@ public class ConnectionsBetweenItemsFinderTest {
 	public void test_clickNotInAnyItem() {
 		// given
 		when(positionHelper.getPoint(nativeEvent, widget)).thenReturn(point(0, 0));
+		final ConnectionMoveEvent mockEvent = mock(ConnectionMoveEvent.class);
+		when(mockEvent.getNativeEvent()).thenReturn(nativeEvent);
 		
 		// when
-		Optional<ConnectionItem> actual = testObj.findConnectionItemForEventOnWidget(nativeEvent, widget, connectionItems);
+		Optional<ConnectionItem> actual = testObj.findConnectionItemForEventOnWidget(mockEvent, widget, connectionItems);
 		
 		// then
 		assertFalse(actual.isPresent());
@@ -75,9 +78,11 @@ public class ConnectionsBetweenItemsFinderTest {
 	public void test_clickInAnItemSimple() {
 		// given
 		when(positionHelper.getPoint(nativeEvent, widget)).thenReturn(point(120,60));
+		final ConnectionMoveEvent mockEvent = mock(ConnectionMoveEvent.class);
+		when(mockEvent.getNativeEvent()).thenReturn(nativeEvent);
 
 		// when
-		Optional<ConnectionItem> actual = testObj.findConnectionItemForEventOnWidget(nativeEvent, widget, connectionItems);
+		Optional<ConnectionItem> actual = testObj.findConnectionItemForEventOnWidget(mockEvent, widget, connectionItems);
 		
 		// then
 		assertEquals(connectionItemsCollection.get(0), actual.get());
@@ -90,9 +95,11 @@ public class ConnectionsBetweenItemsFinderTest {
 	public void test_clickBetweenItems() {
 		// given
 		when(positionHelper.getPoint(nativeEvent, widget)).thenReturn(point(170,115));
+		final ConnectionMoveEvent mockEvent = mock(ConnectionMoveEvent.class);
+		when(mockEvent.getNativeEvent()).thenReturn(nativeEvent);
 
 		// when
-		Optional<ConnectionItem> actual = testObj.findConnectionItemForEventOnWidget(nativeEvent, widget, connectionItems);
+		Optional<ConnectionItem> actual = testObj.findConnectionItemForEventOnWidget(mockEvent, widget, connectionItems);
 		
 		// then
 		assertFalse(actual.isPresent());

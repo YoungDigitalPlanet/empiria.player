@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.NativeEventWrapper;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
+import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEvent;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
@@ -30,15 +31,16 @@ public class ConnectionsBetweenItemsFinder {
 	private PositionHelper positionHelper;
 
 	@Inject
-	private NativeEventWrapper nativeEvent;
+	private NativeEventWrapper nativeEventWrapper;
 
-	public Optional<ConnectionItem> findConnectionItemForEventOnWidget(NativeEvent event, IsWidget widget, ConnectionItems connectionItems) {
-		Point clickPoint = positionHelper.getPoint(event, widget);
+	public Optional<ConnectionItem> findConnectionItemForEventOnWidget(ConnectionMoveEvent event, IsWidget widget, ConnectionItems connectionItems) {
+		NativeEvent nativeEvent = event.getNativeEvent();
+		Point clickPoint = positionHelper.getPoint(nativeEvent, widget);
 
 		Optional<ConnectionItem> item = findItemOnPosition(clickPoint, connectionItems);
 
 		if (item.isPresent()) {
-			nativeEvent.preventDefault(event);
+			nativeEventWrapper.preventDefault(nativeEvent);
 		}
 		return item;
 
