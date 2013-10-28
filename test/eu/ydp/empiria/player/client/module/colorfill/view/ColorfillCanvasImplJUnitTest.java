@@ -86,8 +86,8 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 		doReturn(context2d).when(canvas).getContext2d();
 		doReturn(canvas).when(canvasStubView).getCanvas();
 
-		doReturn(POSITION_X).when(positionHelper).getPositionX(any(NativeEvent.class), Mockito.any(Element.class));
-		doReturn(POSITION_Y).when(positionHelper).getPositionY(any(NativeEvent.class), Mockito.any(Element.class));
+		doReturn(POSITION_X).when(positionHelper).getXPositionRelativeToTarget(any(NativeEvent.class), Mockito.any(Element.class));
+		doReturn(POSITION_Y).when(positionHelper).getYPositionRelativeToTarget(any(NativeEvent.class), Mockito.any(Element.class));
 
 	}
 
@@ -141,8 +141,8 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 		ColorfillAreaClickListener colorfillAreaClickListener = mock(ColorfillAreaClickListener.class);
 		instance.setAreaClickListener(colorfillAreaClickListener);
 
-		doReturn(-10).when(positionHelper).getPositionX(any(NativeEvent.class), Mockito.any(Element.class));
-		doReturn(-15).when(positionHelper).getPositionY(any(NativeEvent.class), Mockito.any(Element.class));
+		doReturn(-10).when(positionHelper).getXPositionRelativeToTarget(any(NativeEvent.class), Mockito.any(Element.class));
+		doReturn(-15).when(positionHelper).getYPositionRelativeToTarget(any(NativeEvent.class), Mockito.any(Element.class));
 
 		ArgumentCaptor<LoadHandler> loadHandlerCaptor = ArgumentCaptor.forClass(LoadHandler.class);
 		verify(canvasStubView).setImageLoadHandler(loadHandlerCaptor.capture());

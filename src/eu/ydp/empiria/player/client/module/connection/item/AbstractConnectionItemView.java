@@ -32,7 +32,7 @@ public abstract class AbstractConnectionItemView extends Composite {
 	}
 
 	protected void buildView() {
-		item.add(bodyGenerator.generateInlineBody(bean.getXmlContent().getValue(), true));
+		item.add(bodyGenerator.generateInlinePanelWidget(bean.getXmlContent().getValue()));
 		item.getElement().getStyle().setZIndex(1);
 	}
 

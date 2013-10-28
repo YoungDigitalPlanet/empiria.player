@@ -27,14 +27,4 @@ public interface ConnectionItem extends IsWidget {
 	public int getWidth();
 
 	public int getHeight();
-
-	/**
-	 * Czy element znajduje sie na pozycji x y
-	 *
-	 * @param xPos
-	 * @param yPos
-	 * @return
-	 */
-	public boolean isOnPosition(int xPos, int yPos);
-
 }

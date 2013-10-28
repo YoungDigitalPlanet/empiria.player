@@ -196,7 +196,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 	private Panel parseText(Element text, Element anchor, Context2dAdapter context2d, ModuleSocket moduleSocket) {
 		Panel panel = new FlowPanel();
 		panel.setStyleName(styleNames.QP_IMG_LABELLED_TEXT_PANEL());
-		Widget widget = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(text);
+		Widget widget = moduleSocket.getInlineBodyGeneratorSocket().generateInlineWidget(text);
 		if (widget != null) {
 			panel.add(widget);
 		}

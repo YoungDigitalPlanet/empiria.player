@@ -27,7 +27,7 @@ public class OrderInteractionViewImpl implements OrderInteractionView {
 
 	@Override
 	public void createItem(OrderingItem orderingItem, XMLContent xmlContent, InlineBodyGeneratorSocket bodyGenerator) {
-		Widget widgetItem = bodyGenerator.generateInlineBody(xmlContent.getValue());
+		Widget widgetItem = bodyGenerator.generateInlineWidget(xmlContent.getValue());
 		addItem(orderingItem, widgetItem);
 	}
 

@@ -95,7 +95,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
 		moduleSocket = mock(ModuleSocket.class);
 		styleSocket = injector.getInstance(StyleSocket.class);
 		InlineBodyGeneratorSocket bodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
-		doReturn(widget).when(bodyGeneratorSocket).generateInlineBody(Mockito.any(Node.class));
+		doReturn(widget).when(bodyGeneratorSocket).generateInlineWidget(Mockito.any(Node.class));
 		doReturn(bodyGeneratorSocket).when(moduleSocket).getInlineBodyGeneratorSocket();
 
 	}
@@ -147,7 +147,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
 		Document document = createDocument(Templates.TEMPLATE_WITH_CONTENT_WITHOUT_FULLSCREEN);
 		createInstance(document);
 		InlineBodyGeneratorSocket bodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
-		doReturn(null).when(bodyGeneratorSocket).generateInlineBody(Mockito.any(Node.class));
+		doReturn(null).when(bodyGeneratorSocket).generateInlineWidget(Mockito.any(Node.class));
 		doReturn(bodyGeneratorSocket).when(moduleSocket).getInlineBodyGeneratorSocket();
 
 		MediaController<?> module = createMediaController(document, ModuleTagName.MEDIA_DESCRIPTION);

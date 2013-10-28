@@ -67,7 +67,7 @@ public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		setUp(moduleConfig, new CustomGinModule());
 		instance = injector.getInstance(OrderInteractionViewImpl.class);
 		widget = mock(Widget.class);
-		when(bodyGeneratorSocket.generateInlineBody(Mockito.any(Node.class))).thenReturn(widget);
+		when(bodyGeneratorSocket.generateInlineWidget(Mockito.any(Node.class))).thenReturn(widget);
 		when(viewItems.addItem(Mockito.anyString(),Mockito.any(Widget.class))).thenReturn(viewItem);
 		when(viewItems.getItem(Mockito.anyString())).thenReturn(viewItem);
 	}

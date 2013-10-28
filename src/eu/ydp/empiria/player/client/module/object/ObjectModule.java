@@ -167,14 +167,14 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			}
 			NodeList titleNodes = element.getElementsByTagName("title");
 			if (titleNodes.getLength() > 0) {
-				Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
+				Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineWidget(titleNodes.item(0));
 				if (titleWidget != null) {
 					moduleView.getTitlePanel().add(titleWidget);
 				}
 			}
 			NodeList descriptionNodes = element.getElementsByTagName("description");
 			if (descriptionNodes.getLength() > 0) {
-				Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(descriptionNodes.item(0));
+				Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineWidget(descriptionNodes.item(0));
 				if (descriptionWidget != null) {
 					moduleView.getDescriptionPanel().add(descriptionWidget);
 				}
