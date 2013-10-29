@@ -2,10 +2,14 @@ package eu.ydp.empiria.player.client.module.connection.view.event;
 
 import com.google.gwt.dom.client.NativeEvent;
 
-public class ConnectionMoveStartEvent  extends ConnectionMoveEvent {
+import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 
-	public ConnectionMoveStartEvent(double xPos, double yPos, NativeEvent event) {
+public class ConnectionMoveStartEvent  extends ConnectionMoveEvent {
+	private final ConnectionItem item;
+
+	public ConnectionMoveStartEvent(double xPos, double yPos, NativeEvent event, ConnectionItem item) {
 		super(xPos, yPos, event);
+		this.item = item;
 	}
 
 }

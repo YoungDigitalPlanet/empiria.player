@@ -12,7 +12,7 @@ public class SurfaceDimensionsDelegate implements HasDimensions {
 	private HasDimensions view;
 	private ConnectionItems items;
 
-	public void init(HasDimensions view, ConnectionItems items){
+	public void init(HasDimensions view,ConnectionItems items){
 		this.view = view;
 		this.items = items;
 	}

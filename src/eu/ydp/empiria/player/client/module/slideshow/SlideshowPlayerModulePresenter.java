@@ -77,7 +77,7 @@ public class SlideshowPlayerModulePresenter implements SlideshowPresenter{
 	@Override
 	public void setTitle(Element titleNode){
 		if (titleNode != null){
-			Widget titleWidget = bodyGenerator.generateInlineWidget(titleNode);
+			Widget titleWidget = bodyGenerator.generateInlineBody(titleNode);
 			titlePanel.clear();
 			titlePanel.add(titleWidget);
 		}

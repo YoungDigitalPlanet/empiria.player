@@ -127,11 +127,11 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	}
 
 	protected int getPositionX(NativeEvent event) {
-		return positionHelper.getXPositionRelativeToTarget(event, getView().getElement());
+		return positionHelper.getPositionX(event, getView().getElement());
 	}
 
 	protected int getPositionY(NativeEvent event) {
-		return positionHelper.getYPositionRelativeToTarget(event, getView().getElement());
+		return positionHelper.getPositionY(event, getView().getElement());
 	}
 
 	@Override

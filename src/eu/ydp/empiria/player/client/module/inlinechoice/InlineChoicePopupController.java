@@ -109,9 +109,9 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 		for (int i = 0; i < optionsNodes.getLength(); i++) {
 			InlineBodyGeneratorSocket inlineBodyGeneratorSocket = getModuleSocket().getInlineBodyGeneratorSocket();
-			Widget baseBody = inlineBodyGeneratorSocket.generateInlineWidget(optionsNodes.item(i));
+			Widget baseBody = inlineBodyGeneratorSocket.generateInlineBody(optionsNodes.item(i));
 			baseBodies.add(baseBody);
-			Widget popupBody = inlineBodyGeneratorSocket.generateInlineWidget(optionsNodes.item(i));
+			Widget popupBody = inlineBodyGeneratorSocket.generateInlineBody(optionsNodes.item(i));
 			popupBodies.add(popupBody);
 			identifiersTemp.add(((Element) optionsNodes.item(i)).getAttribute("identifier"));
 		}

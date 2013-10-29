@@ -46,6 +46,20 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 */
 	void connect(String sourceIdentifier, String targetIdentifier, MultiplePairModuleConnectType type);
 
+//	/**
+//	 * Laczy wskazane elementy Wykonanie polaczenia musi zostac zakomunikowane
+//	 * poprzez powiadomienie {@link ConnectionEventHandler} zarejestrowanych
+//	 * poprzez
+//	 * {@link ConnectionModulePresenter#addConnectionEventHandler(ConnectionEventHandler)}
+//	 * zdarzeniem {@link ConnectionEventTypes.CONNECTED}
+//	 *
+//	 * @param sourceIdentifier
+//	 * @param targetIdentifier
+//	 * @param connectType
+//	 *            typ stylu jaki ma byc wykorzystany podczas laczenia
+//	 */
+//	public void connect(String sourceIdentifier, String targetIdentifier, ConnectType connectType);
+
 	/**
 	 * Rozdziela wskazane elementy. polaczenie powinno zostac usuniete z widoku.
 	 * Wykonanie rozloczenia musi zostac zakomunikowane poprzez powiadomienie
@@ -57,6 +71,26 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 * @param targetIdentifier
 	 */
 	void disconnect(String sourceIdentifier, String targetIdentifier);
+//
+//	/**
+//	 * Powoduje oznaczenie polaczenia sourceIdentifier->targetIdentifier stylem
+//	 * {@link StyleNameConstants#QP_CONNECTION_WRONG()} Jezeli polaczenie nie
+//	 * istnieje brak reakcji po stronie widoku
+//	 *
+//	 * @param sourceIdentifier
+//	 * @param targetIdentifier
+//	 */
+//	public void markWrong(String sourceIdentifier, String targetIdentifier);
+//
+//	/**
+//	 * Powoduje oznaczenie polaczenia sourceIdentifier->targetIdentifier stylem
+//	 * {@link StyleNameConstants#QP_CONNECTION_CORRECT()} Jezeli polaczenie nie
+//	 * istnieje brak reakcji po stronie widoku
+//	 *
+//	 * @param sourceIdentifier
+//	 * @param targetIdentifier
+//	 */
+//	public void markCorrect(String sourceIdentifier, String targetIdentifier);
 
 	/**
 	 * Dodaje handlera nasuchujacego na zdarzenia z presentera
@@ -68,4 +102,5 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 
 	void setModuleSocket(ModuleSocket socket);
 	boolean isAttached();
+
 }

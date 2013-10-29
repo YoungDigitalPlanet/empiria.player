@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module;
 
-import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.*;
+import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.CORRECT_ANSWERS;
+import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.SINGLE;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
+import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.connection.structure.StateController;
 import eu.ydp.empiria.player.client.structure.ModuleBean;

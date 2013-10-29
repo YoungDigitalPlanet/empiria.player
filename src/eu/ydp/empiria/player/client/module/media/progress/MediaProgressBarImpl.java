@@ -177,7 +177,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	}
 
 	protected int getPositionX(NativeEvent event) {
-		return positionHelper.getXPositionRelativeToTarget(event, mainProgressDiv.getElement());
+		return positionHelper.getPositionX(event, mainProgressDiv.getElement());
 	}
 
 	@Override

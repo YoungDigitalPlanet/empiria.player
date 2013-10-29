@@ -121,7 +121,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 	protected void setPosition(NativeEvent event) {// NOPMD
 		if (isPressed() && ((Element) event.getEventTarget().cast()).getClassName().contains("qp-media-volume-scrollbar-center")) {
 			event.preventDefault();
-			int positionY = positionHelper.getYPositionRelativeToTarget(event, mainProgressDiv.getElement());
+			int positionY = positionHelper.getPositionY(event, mainProgressDiv.getElement());
 			positionY = positionY > 0 ? positionY : 0;
 			double volume = (1f / getScrollLength()) * (getScrollLength() - positionY);
 			setVolume(volume > 1 ? 1 : volume < 0 ? 0 : volume);

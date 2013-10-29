@@ -242,8 +242,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	@Singleton
 	public PositionHelper getPositionHelper() {
 		PositionHelper helper = mock(PositionHelper.class);
-		when(helper.getXPositionRelativeToTarget(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
-		when(helper.getYPositionRelativeToTarget(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
+		when(helper.getPositionX(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
+		when(helper.getPositionY(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
 		return helper;
 	}
 

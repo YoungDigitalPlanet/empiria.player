@@ -83,7 +83,7 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 
 	@Override
 	public void onTouchStart(NativeEvent event) {
-		ConnectionMoveStartEvent connectionEvent = new ConnectionMoveStartEvent(getPositionX(event), getPositionY(event), event);
+		ConnectionMoveStartEvent connectionEvent = new ConnectionMoveStartEvent(getPositionX(event), getPositionY(event), event, null);
 		callOnMoveStartHandlers(connectionEvent);
 
 	}
