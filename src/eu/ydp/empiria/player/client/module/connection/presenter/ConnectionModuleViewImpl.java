@@ -301,7 +301,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	public void resetIfNotConnected(String identifier) {
-		if (connectionSurfacesManager.hasConnections(connectedSurfaces, identifier)) {
+		if (!connectionSurfacesManager.hasConnections(connectedSurfaces, identifier)) {
 			connectionItems.getConnectionItem(identifier).reset();
 		}
 	}

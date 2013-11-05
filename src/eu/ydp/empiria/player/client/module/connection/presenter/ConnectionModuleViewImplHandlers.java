@@ -84,6 +84,9 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 
 	@Override
 	public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
+		if (view.isLocked())
+			return;
+
 		ConnectionItem connectionStartItem = view.getConnectionItemPair().getSource();
 		final int x = new Double(event.getX()).intValue();
 		final int y = new Double(event.getY()).intValue();
@@ -91,22 +94,19 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 		Set<ConnectionItem> connectionItems = view.getConnectionItems().getConnectionItems(connectionStartItem);
 		Optional<ConnectionItem> connectionEndItem = pairFinder.findConnectionItemForCoordinates(connectionItems, x, y);
 
+		final ConnectionItem targetConnectionItem = view.getConnectionItemPair().getTarget();
+		boolean mayConnect = targetConnectionItem != null && !targetConnectionItem.equals(connectionStartItem);
+
 		if (connectionEndItem.isPresent()) {
-			final ConnectionItem item = connectionEndItem.get();
-			view.drawLineFromSource(item.getRelativeX(), item.getRelativeY());
-			view.connectItems(connectionStartItem, item, NORMAL, true);
+			ConnectionItem ci = connectionEndItem.get();
+			view.drawLineFromSource(ci.getRelativeX(), ci.getRelativeY());
+			view.connectItems(connectionStartItem, ci, NORMAL, true);
 			view.resetTouchConnections();
-		}
-
-		if (!(connectionStartItem == null || view.isLocked() || connectionEndItem.isPresent())) {
-			boolean mayConnect = view.getConnectionItemPair().getTarget() != null && !view.getConnectionItemPair().getTarget().equals(connectionStartItem);
-
-			if (mayConnect) {
-				view.connect(connectionStartItem, view.getConnectionItemPair().getTarget(), NORMAL, true);
-				view.resetTouchConnections();
-			} else {
-				view.getConnectionItemPair().setTarget(connectionStartItem);
-			}
+		} else if (mayConnect) {
+			view.connect(connectionStartItem, targetConnectionItem, NORMAL, true);
+			view.resetTouchConnections();
+		} else {
+			view.getConnectionItemPair().setTarget(connectionStartItem);
 		}
 
 		view.clearSurface(connectionStartItem);
