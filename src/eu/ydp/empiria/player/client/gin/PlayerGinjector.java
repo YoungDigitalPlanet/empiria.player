@@ -43,6 +43,7 @@ import eu.ydp.empiria.player.client.gin.module.SourceListGinModule;
 import eu.ydp.empiria.player.client.gin.module.TextEntryGinModule;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorGinModule;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
+import eu.ydp.empiria.player.client.module.videojs.gin.VideoJsGinModule;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -53,14 +54,10 @@ import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.gin.module.AnimationGinModule;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
-@GinModules(value = {
-		PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class,
-		SourceListGinModule.class, TextEntryGinModule.class, SelectionGinModule.class,
-		SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
-		OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class,
-		DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
-		AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class})
-
+@GinModules(value = { PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class, TextEntryGinModule.class,
+		SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class, OrderingGinModule.class,
+		ModuleScopedModule.class, ColorfillGinModule.class, DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class, AnimationGinModule.class,
+		DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoJsGinModule.class })
 public interface PlayerGinjector extends Ginjector {
 
 	ViewEngine getViewEngine();

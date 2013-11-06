@@ -18,6 +18,8 @@
 	<inherits name='org.matheclipse.parser.Parser' />
 
 
+	
+
 	<!-- google gin -->
 	<inherits name="com.google.gwt.inject.Inject" />
 	<!-- 	<set-property name="compiler.emulatedStack" value="true" /> true | false -->
@@ -45,6 +47,7 @@
 	<script src="video/AC_RunActiveContent.js" />
 	<script src="video/FAVideo.js" />
 	<script src="jscss/cssparser.js" />
+	<script src="video-js/video.dev.js"/>
 
 	<!-- VIDEO -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
