@@ -6,16 +6,14 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
-import eu.ydp.empiria.player.client.module.video.model.VideoModel;
-import eu.ydp.empiria.player.client.module.video.model.VideoXmlParser;
 import eu.ydp.empiria.player.client.module.video.presenter.VideoPresenter;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class VideoModule extends SimpleModuleBase implements ISimpleModule {
 
 	@Inject
+	@ModuleScoped
 	private VideoPresenter presenter;
-	@Inject
-	private VideoXmlParser videoJsXmlParser;
 
 	@Override
 	public Widget getView() {
@@ -24,8 +22,7 @@ public class VideoModule extends SimpleModuleBase implements ISimpleModule {
 
 	@Override
 	protected void initModule(Element element) {
-		VideoModel videoJsModel = videoJsXmlParser.parse(element);
-		presenter.start(videoJsModel);
+		presenter.start();
 	}
 
 }

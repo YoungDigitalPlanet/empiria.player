@@ -4,6 +4,6 @@
 	xmlns:w="urn:import:eu.ydp.empiria.player.client.module.video.view">
 	
 	<g:HTMLPanel ui:field="placeHolder">
-		<w:VideoPlayer ui:field="videoJsPlayer"/>
+		<w:VideoPlayer ui:field="videoPlayer"/>
 	</g:HTMLPanel>
 </ui:UiBinder> 

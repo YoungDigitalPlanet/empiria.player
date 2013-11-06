@@ -7,13 +7,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.module.video.model.VideoModel;
+import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
 
 public class VideoViewImpl extends Composite implements VideoView {
 
 	private static VideoViewImplUiBinder uiBinder = GWT.create(VideoViewImplUiBinder.class);
+
 	@UiField(provided = true)
-	VideoPlayer videoJsPlayer;
+	VideoPlayer videoPlayer;
 	@Inject
 	private VideoPlayerFactory videoPlayerFactory;
 
@@ -21,10 +22,8 @@ public class VideoViewImpl extends Composite implements VideoView {
 	}
 
 	@Override
-	public void createView(VideoModel videoJsModel) {
-		videoJsPlayer = videoPlayerFactory.create(videoJsModel);
+	public void createView(VideoBean videoBean) {
+		videoPlayer = videoPlayerFactory.create(videoBean);
 		initWidget(uiBinder.createAndBindUi(this));
-
-		// videoPlayer.create();
 	}
 }

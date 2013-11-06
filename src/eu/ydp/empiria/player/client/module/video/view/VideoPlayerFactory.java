@@ -1,15 +1,16 @@
 package eu.ydp.empiria.player.client.module.video.view;
 
-import com.google.gwt.dom.client.VideoElement;
-
-import eu.ydp.empiria.player.client.module.video.model.VideoModel;
+import eu.ydp.empiria.player.client.module.video.structure.SourceBean;
+import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
 
 public class VideoPlayerFactory {
-	public VideoPlayer create(VideoModel videoJsModel) {
-		VideoPlayer videoJsPlayer = new VideoPlayer(videoJsModel.getWidth(), videoJsModel.getHeight());
-		videoJsPlayer.addSource(videoJsModel.getSrc(), VideoElement.TYPE_MP4);
-		videoJsPlayer.setPoster(videoJsModel.getPoster());
 
-		return videoJsPlayer;
+	public VideoPlayer create(VideoBean videoBean) {
+		VideoPlayer videoPlayer = new VideoPlayer(videoBean.getWidth(), videoBean.getHeight());
+		videoPlayer.setPoster(videoBean.getPoster());
+		for (SourceBean source : videoBean.getSources()) {
+			videoPlayer.addSource(source.getSrc(), source.getType());
+		}
+		return videoPlayer;
 	}
 }
