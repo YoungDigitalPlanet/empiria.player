@@ -126,7 +126,7 @@ public class ConnectionModuleViewImplHandlersTest {
 		testObj.onConnectionMoveEnd(event);
 
 		// then
-		verify(view, times(0)).drawLineFromSource(anyInt(), anyInt());
+		verify(view, times(0)).drawLineBetween(eq(sourceConnectionItem), anyInt(), anyInt());
 		verify(view, times(0)).connect(eq(sourceConnectionItem), any(ConnectionItem.class), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
 		verify(view).clearSurface(sourceConnectionItem);
 	}
@@ -145,7 +145,7 @@ public class ConnectionModuleViewImplHandlersTest {
 		testObj.onConnectionMoveEnd(event);
 
 		// then
-		verify(view, times(0)).drawLineFromSource(anyInt(), anyInt());
+		verify(view, times(0)).drawLineBetween(eq(sourceConnectionItem), anyInt(), anyInt());
 		verify(view, times(1)).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
 		verify(view).clearSurface(sourceConnectionItem);
 	}
@@ -163,7 +163,7 @@ public class ConnectionModuleViewImplHandlersTest {
 		testObj.onConnectionMoveEnd(event);
 		
 		// then
-		verify(view, times(1)).drawLineFromSource(anyInt(), anyInt());
+		verify(view, times(1)).drawLineBetween(sourceConnectionItem, targetConnectionItem);
 		verify(view, times(0)).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
 		verify(view).clearSurface(sourceConnectionItem);
 	}
@@ -180,7 +180,7 @@ public class ConnectionModuleViewImplHandlersTest {
 		
 		// then
 		verify(connectionMoveEvent, times(0)).preventDefault();
-		verify(view, times(0)).drawLineFromSource(anyInt(), anyInt());
+		verify(view, times(0)).drawLineBetween(any(ConnectionItem.class), any(ConnectionItem.class));
 	}
 	
 	@Test
@@ -199,7 +199,7 @@ public class ConnectionModuleViewImplHandlersTest {
 		
 		// then
 		verify(connectionMoveEvent, times(1)).preventDefault();
-		verify(view, times(1)).drawLineFromSource(anyInt(), anyInt());
+		verify(view, times(1)).drawLineBetween(any(ConnectionItem.class), anyInt(), anyInt());
 	
 	}
 	
@@ -220,7 +220,7 @@ public class ConnectionModuleViewImplHandlersTest {
 		
 		// then
 		verify(connectionMoveEvent, times(1)).preventDefault();
-		verify(view, times(1)).drawLineFromSource(anyInt(), anyInt());
+		verify(view, times(1)).drawLineBetween(eq(sourceConnectionItem), anyInt(), anyInt());
 	}
 
 	@Test
@@ -239,7 +239,7 @@ public class ConnectionModuleViewImplHandlersTest {
 		
 		// then
 		verify(connectionMoveEvent, times(1)).preventDefault();
-		verify(view, times(0)).drawLineFromSource(anyInt(), anyInt());
+		verify(view, times(0)).drawLineBetween(any(ConnectionItem.class), anyInt(), anyInt());
 		
 	}
 	private void mockStartPositions() {

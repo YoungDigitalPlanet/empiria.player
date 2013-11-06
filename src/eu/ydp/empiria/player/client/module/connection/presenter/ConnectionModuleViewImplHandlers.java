@@ -98,9 +98,9 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 		boolean mayConnect = targetConnectionItem != null && !targetConnectionItem.equals(connectionStartItem);
 
 		if (connectionEndItem.isPresent()) {
-			ConnectionItem ci = connectionEndItem.get();
-			view.drawLineFromSource(ci.getRelativeX(), ci.getRelativeY());
-			view.connectItems(connectionStartItem, ci, NORMAL, true);
+			ConnectionItem target = connectionEndItem.get();
+			view.drawLineBetween(connectionStartItem, target);
+			view.connectItems(connectionStartItem, target, NORMAL, true);
 			view.resetTouchConnections();
 		} else if (mayConnect) {
 			view.connect(connectionStartItem, targetConnectionItem, NORMAL, true);
@@ -129,7 +129,7 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 			event.preventDefault();
 			if (wasMoved(event)) {
 				updatePointPosition(event);
-				view.drawLineFromSource((int) event.getX(), (int) event.getY());
+				view.drawLineBetween(source, (int) event.getX(), (int) event.getY());
 			}
 		}
 	}

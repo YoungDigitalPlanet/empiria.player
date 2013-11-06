@@ -97,7 +97,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	public void connect(ConnectionItem source, ConnectionItem target, MultiplePairModuleConnectType type, boolean userAction) {
 		currentSurface = getSurfaceForLineDrawing(source, type);
 		startDrawLine(source);
-		drawLineFromSource(target.getRelativeX(), target.getRelativeY());
+		drawLineBetween(source, target);
 		connectItems(source, target, type, userAction);
 	}
 
@@ -329,15 +329,16 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		currentSurface.drawLine(startPoint, startPoint);
 	}
 
-	public void drawLineFromSource(int positionX, int positionY) {
-		ConnectionItem item = connectionItemPair.getSource();
-		if (startPositions.containsKey(item)) {
-			Point startPoint = startPositions.get(item);
-			Point endPoint = new Point(positionX, positionY);
+	public void drawLineBetween(ConnectionItem source, ConnectionItem target) {
+		drawLineBetween(source, target.getRelativeX(), target.getRelativeY());
+	}
+
+	public void drawLineBetween(ConnectionItem source, int x, int y) {
+		if (startPositions.containsKey(source)) {
+			Point startPoint = startPositions.get(source);
+			Point endPoint = new Point(x, y);
 			currentSurface.drawLine(startPoint, endPoint);
 		}
 	}
-
-
-
+	
 }
