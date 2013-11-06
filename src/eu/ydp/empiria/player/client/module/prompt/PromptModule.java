@@ -12,7 +12,7 @@ public class PromptModule extends SimpleModuleBase implements Factory<PromptModu
 
 	@Override
 	public void initModule(Element element) {
-		contents = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(element);
+		contents = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineWidget(element);
 		contents.setStyleName("qp-prompt");
 	}
 
