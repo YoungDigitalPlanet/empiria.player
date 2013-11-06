@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.videojs.view;
+package eu.ydp.empiria.player.client.module.video.view;
 
 import static com.google.gwt.core.client.GWT.*;
 
@@ -6,7 +6,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.DataResource;
 
-interface VideoJsPlayerResources extends ClientBundle {
+interface VideoPlayerResources extends ClientBundle {
 //	VideoJsPlayerResources RESOURCES = create(VideoJsPlayerResources.class);
 //
 //	@Source("video-js.css")

@@ -48,7 +48,7 @@ import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule;
 import eu.ydp.empiria.player.client.module.tutor.TutorModule;
-import eu.ydp.empiria.player.client.module.videojs.VideoJsModule;
+import eu.ydp.empiria.player.client.module.video.VideoModule;
 
 @SuppressWarnings({ "PMD" })
 public class ModuleProviderFactory {
@@ -143,7 +143,7 @@ public class ModuleProviderFactory {
 	@Inject
 	private Provider<ProgressBonusModule> progressBonusModule;
 	@Inject
-	private Provider<VideoJsModule> videoJsModule;
+	private Provider<VideoModule> videoModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -325,7 +325,7 @@ public class ModuleProviderFactory {
 		return progressBonusModule;
 	}
 
-	public Provider<VideoJsModule> getVideoJsModule() {
-		return videoJsModule;
+	public Provider<VideoModule> getVideoModule() {
+		return videoModule;
 	}
 }

@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.videojs.view;
+package eu.ydp.empiria.player.client.module.video.view;
 
 import static com.google.gwt.core.client.GWT.*;
 
@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
-public class VideoJsPlayer extends Widget {
+public class VideoPlayer extends Widget {
 
 	private static final String FALLBACK_SWF = getModuleBaseURL() + "/videojs/video-js.swf";
 	private static final String DEFAULT_PRELOAD = MediaElement.PRELOAD_NONE;
@@ -22,7 +22,7 @@ public class VideoJsPlayer extends Widget {
 	private final int width;
 	private final int height;
 
-	private String skinName = "lpc-skin";
+	private String skinName = "vjs-default-skin";
 	private boolean controls = true;
 	private String preload = DEFAULT_PRELOAD;
 	private String poster = null;
@@ -36,7 +36,7 @@ public class VideoJsPlayer extends Widget {
 	private JavaScriptObject playerObject;
 	Logger logger = new Logger();
 
-	public VideoJsPlayer(int width, int height) {
+	public VideoPlayer(int width, int height) {
 		// if (VideoJsPlayerResources.RESOURCES.css().ensureInjected()) {
 		// setFlashFallback();
 		// }
@@ -105,9 +105,9 @@ public class VideoJsPlayer extends Widget {
 															// progressive
 															// download for
 															// flash
-			addDurationChangeHandler(new VideoJsPlayerHandler() {
+			addDurationChangeHandler(new VideoPlayerHandler() {
 				@Override
-				public void handle(VideoJsPlayer player) {
+				public void handle(VideoPlayer player) {
 					player.pause();
 					player.setCurrentTime(startPosition);
 					player.play();
@@ -115,10 +115,10 @@ public class VideoJsPlayer extends Widget {
 			});
 		}
 
-		addLoadedmetadataHandler(new VideoJsPlayerHandler() {
+		addLoadedmetadataHandler(new VideoPlayerHandler() {
 
 			@Override
-			public void handle(VideoJsPlayer player) {
+			public void handle(VideoPlayer player) {
 				logger.info("addLoadedmetadataHandler");
 
 			}
@@ -141,7 +141,7 @@ public class VideoJsPlayer extends Widget {
 	 * Start the video playback.
 	 */
 	public native void play() /*-{
-		var player = this.@eu.ydp.empiria.player.client.module.videojs.view.VideoJsPlayer::playerObject;
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayer::playerObject;
 
 		if (player) {
 			player.play();
@@ -152,7 +152,7 @@ public class VideoJsPlayer extends Widget {
 	 * Pause the video playback.
 	 */
 	public native void pause() /*-{
-		var player = this.@eu.ydp.empiria.player.client.module.videojs.view.VideoJsPlayer::playerObject;
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayer::playerObject;
 
 		if (player) {
 			player.pause();
@@ -165,7 +165,7 @@ public class VideoJsPlayer extends Widget {
 	 * @return
 	 */
 	public native float getCurrentTime() /*-{
-		var player = this.@eu.ydp.empiria.player.client.module.videojs.view.VideoJsPlayer::playerObject;
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayer::playerObject;
 
 		if (player) {
 			return player.currentTime();
@@ -178,7 +178,7 @@ public class VideoJsPlayer extends Widget {
 	 * @param position
 	 */
 	public native void setCurrentTime(float position) /*-{
-		var player = this.@eu.ydp.empiria.player.client.module.videojs.view.VideoJsPlayer::playerObject;
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayer::playerObject;
 
 		if (player) {
 			player.currentTime(position);
@@ -193,7 +193,7 @@ public class VideoJsPlayer extends Widget {
 	public native boolean isFlashFallback() /*-{
 		var objects = $wnd.document
 				.getElementById(
-						this.@eu.ydp.empiria.player.client.module.videojs.view.VideoJsPlayer::playerId)
+						this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayer::playerId)
 				.getElementsByTagName('object');
 
 		return ((objects != null) && (objects.length != 0));
@@ -212,11 +212,11 @@ public class VideoJsPlayer extends Widget {
 	 * 
 	 * @param handler
 	 */
-	public void addPlayHandler(VideoJsPlayerHandler handler) {
+	public void addPlayHandler(VideoPlayerHandler handler) {
 		addEventHandler("play", handler);
 	};
 
-	public void addLoadedmetadataHandler(VideoJsPlayerHandler handler) {
+	public void addLoadedmetadataHandler(VideoPlayerHandler handler) {
 		addEventHandler("loadedmetadata", handler);
 	};
 
@@ -225,7 +225,7 @@ public class VideoJsPlayer extends Widget {
 	 * 
 	 * @param handler
 	 */
-	public void addPauseHandler(VideoJsPlayerHandler handler) {
+	public void addPauseHandler(VideoPlayerHandler handler) {
 		addEventHandler("pause", handler);
 	};
 
@@ -235,7 +235,7 @@ public class VideoJsPlayer extends Widget {
 	 * 
 	 * @param handler
 	 */
-	public void addEndedHandler(VideoJsPlayerHandler handler) {
+	public void addEndedHandler(VideoPlayerHandler handler) {
 		addEventHandler("ended", handler);
 	};
 
@@ -246,7 +246,7 @@ public class VideoJsPlayer extends Widget {
 	 * 
 	 * @param handler
 	 */
-	public void addTimeUpdateHandler(VideoJsPlayerHandler handler) {
+	public void addTimeUpdateHandler(VideoPlayerHandler handler) {
 		addEventHandler("timeupdate", handler);
 	}
 
@@ -255,7 +255,7 @@ public class VideoJsPlayer extends Widget {
 	 * 
 	 * @param handler
 	 */
-	public void addLoadStartHandler(VideoJsPlayerHandler handler) {
+	public void addLoadStartHandler(VideoPlayerHandler handler) {
 		addEventHandler("loadstart", handler);
 	};
 
@@ -264,7 +264,7 @@ public class VideoJsPlayer extends Widget {
 	 * 
 	 * @param handler
 	 */
-	public void addLoadedMetadataHandler(VideoJsPlayerHandler handler) {
+	public void addLoadedMetadataHandler(VideoPlayerHandler handler) {
 		addEventHandler("loadedmetadata", handler);
 	};
 
@@ -274,7 +274,7 @@ public class VideoJsPlayer extends Widget {
 	 * 
 	 * @param handler
 	 */
-	public void addLoadedDataHandler(VideoJsPlayerHandler handler) {
+	public void addLoadedDataHandler(VideoPlayerHandler handler) {
 		addEventHandler("loadeddata", handler);
 	}
 
@@ -283,7 +283,7 @@ public class VideoJsPlayer extends Widget {
 	 * 
 	 * @param handler
 	 */
-	public void addLoadedAllDataHandler(VideoJsPlayerHandler handler) {
+	public void addLoadedAllDataHandler(VideoPlayerHandler handler) {
 		addEventHandler("loadedalldata", handler);
 	}
 
@@ -293,7 +293,7 @@ public class VideoJsPlayer extends Widget {
 	 * 
 	 * @param handler
 	 */
-	public void addDurationChangeHandler(VideoJsPlayerHandler handler) {
+	public void addDurationChangeHandler(VideoPlayerHandler handler) {
 		addEventHandler("durationchange", handler);
 	}
 
@@ -347,13 +347,13 @@ public class VideoJsPlayer extends Widget {
 	}
 
 	private native void setFlashFallback() /*-{
-		$wnd.vjs.options.flash.swf = @eu.ydp.empiria.player.client.module.videojs.view.VideoJsPlayer::FALLBACK_SWF;
+		$wnd.vjs.options.flash.swf = @eu.ydp.empiria.player.client.module.video.view.VideoPlayer::FALLBACK_SWF;
 	}-*/;
 
 	private native JavaScriptObject initPlayer() /*-{
 		return $wnd
 				.vjs(
-						this.@eu.ydp.empiria.player.client.module.videojs.view.VideoJsPlayer::playerId,
+						this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayer::playerId,
 						{
 							"nativeControlsForTouch" : false,
 							"controls" : true
@@ -361,8 +361,8 @@ public class VideoJsPlayer extends Widget {
 						});
 	}-*/;
 
-	private native void addEventHandler(String event, VideoJsPlayerHandler handler) /*-{
-		var player = this.@eu.ydp.empiria.player.client.module.videojs.view.VideoJsPlayer::playerObject;
+	private native void addEventHandler(String event, VideoPlayerHandler handler) /*-{
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayer::playerObject;
 		var javaPlayer = this;
 
 		if (player) {
@@ -370,7 +370,7 @@ public class VideoJsPlayer extends Widget {
 					.on(
 							event,
 							function() {
-								handler.@eu.ydp.empiria.player.client.module.videojs.view.VideoJsPlayerHandler::handle(Leu/ydp/empiria/player/client/module/videojs/view/VideoJsPlayer;)(javaPlayer);
+								handler.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerHandler::handle(Leu/ydp/empiria/player/client/module/video/view/VideoPlayer;)(javaPlayer);
 							});
 		}
 	}-*/;

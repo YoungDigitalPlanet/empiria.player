@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.videojs.view;
+package eu.ydp.empiria.player.client.module.video.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -7,24 +7,24 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.module.videojs.model.VideoJsModel;
+import eu.ydp.empiria.player.client.module.video.model.VideoModel;
 
-public class VideoJsViewImpl extends Composite implements VideoJsView {
+public class VideoViewImpl extends Composite implements VideoView {
 
-	private static VideoJsViewImplUiBinder uiBinder = GWT.create(VideoJsViewImplUiBinder.class);
+	private static VideoViewImplUiBinder uiBinder = GWT.create(VideoViewImplUiBinder.class);
 	@UiField(provided = true)
-	VideoJsPlayer videoJsPlayer;
+	VideoPlayer videoJsPlayer;
 	@Inject
 	private VideoPlayerFactory videoPlayerFactory;
 
-	interface VideoJsViewImplUiBinder extends UiBinder<Widget, VideoJsViewImpl> {
+	interface VideoViewImplUiBinder extends UiBinder<Widget, VideoViewImpl> {
 	}
 
 	@Override
-	public void createView(VideoJsModel videoJsModel) {
+	public void createView(VideoModel videoJsModel) {
 		videoJsPlayer = videoPlayerFactory.create(videoJsModel);
 		initWidget(uiBinder.createAndBindUi(this));
 
-		// videoJsPlayer.create();
+		// videoPlayer.create();
 	}
 }

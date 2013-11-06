@@ -1,6 +1,6 @@
-package eu.ydp.empiria.player.client.module.videojs.model;
+package eu.ydp.empiria.player.client.module.video.model;
 
-public class VideoJsModel {
+public class VideoModel {
 	private String src;
 	private Integer height;
 	private Integer width;
