@@ -3,8 +3,11 @@ package eu.ydp.empiria.player.client.util.events.bus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
@@ -16,11 +19,11 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.EventScope;
 import eu.ydp.empiria.player.client.util.events.scope.PageScope;
-import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.event.Event;
 import eu.ydp.gwtutil.client.event.EventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.gwtutil.client.scheduler.Scheduler;
 
 public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	private final Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> syncMap = new HashMap<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
@@ -63,8 +66,10 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	public <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandlerToSource(Type<H, T>[] types, Object source, H handler) {
 		return doAddAll(types, source, handler, false, null);
 	}
+
 	@Override
-	public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(Type<H, T> type, Object source, H handler, EventScope<?> eventScope) {
+	public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(Type<H, T> type, Object source, H handler,
+			EventScope<?> eventScope) {
 		return doAdd(type, source, handler, false, eventScope);
 	}
 
@@ -84,7 +89,8 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	}
 
 	@Override
-	public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(Type<H, T> type, Object source, H handler, EventScope<?> eventScope) {
+	public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(Type<H, T> type, Object source, H handler,
+			EventScope<?> eventScope) {
 		return doAdd(type, source, handler, true, eventScope);
 	}
 
@@ -139,14 +145,15 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	}
 
 	@SuppressWarnings({ "unchecked", "PMD" })
-	private <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEventAsync(E event, Object source, Map<Object, Map<EventScope<?>, List<?>>> map,
-			EventScope<?> eventScope) {
+	private <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEventAsync(E event, Object source,
+			Map<Object, Map<EventScope<?>, List<?>>> map, EventScope<?> eventScope) {
 		if (map != null) {
 			Map<EventScope<?>, List<?>> handler = null;
 			if ((handler = map.get(source)) != null) {
-				for (Map.Entry<EventScope<?>, List<?>> entry : handler.entrySet()) {
+				Set<Entry<EventScope<?>, List<?>>> entrySet = new HashSet<Map.Entry<EventScope<?>, List<?>>>(handler.entrySet());
+				for (Map.Entry<EventScope<?>, List<?>> entry : entrySet) {
 					if (eventScope == null || entry.getKey() == null || eventScope.equals(entry.getKey())) {
-						//some problems with ConcurrentModificationException
+						// some problems with ConcurrentModificationException
 						List<?> handlers = GWT.isProdMode() ? entry.getValue() : new ArrayList<Object>(entry.getValue());
 						for (Object e : handlers) {
 							scheduler.scheduleDeferred(new FireCommand<H, Event<H, T>>((H) e, event));
@@ -156,9 +163,10 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 			}
 			// handlery bez okreslonego obiektu source
 			if (source != null && (handler = map.get(null)) != null) {
-				for (Map.Entry<EventScope<?>, List<?>> entry : handler.entrySet()) {
+				Set<Entry<EventScope<?>, List<?>>> entrySet = new HashSet<Map.Entry<EventScope<?>, List<?>>>(handler.entrySet());
+				for (Map.Entry<EventScope<?>, List<?>> entry : entrySet) {
 					if (eventScope == null || entry.getKey() == null || eventScope.equals(entry.getKey())) {
-						//some problems with ConcurrentModificationException
+						// some problems with ConcurrentModificationException
 						List<?> handlers = GWT.isProdMode() ? entry.getValue() : new ArrayList<Object>(entry.getValue());
 						for (Object e : handlers) {
 							scheduler.scheduleDeferred(new FireCommand<H, Event<H, T>>((H) e, event));
@@ -170,14 +178,16 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	}
 
 	@SuppressWarnings({ "unchecked", "PMD" })
-	private <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEvent(E event, Object source, Map<Object, Map<EventScope<?>, List<?>>> map,
-			EventScope<?> eventScope) {
+	private <H extends EventHandler, T extends Enum<T>, E extends Event<H, T>> void fireEvent(E event, Object source,
+			Map<Object, Map<EventScope<?>, List<?>>> map, EventScope<?> eventScope) {
 		if (map != null) {
 			Map<EventScope<?>, List<?>> handler = null;
+
 			if ((handler = map.get(source)) != null) {
-				for (Map.Entry<EventScope<?>, List<?>> entry : handler.entrySet()) {
+				Set<Entry<EventScope<?>, List<?>>> entrySet = new HashSet<Map.Entry<EventScope<?>, List<?>>>(handler.entrySet());
+				for (Map.Entry<EventScope<?>, List<?>> entry : entrySet) {
 					if (eventScope == null || entry.getKey() == null || eventScope.equals(entry.getKey())) {
-						//some problems with ConcurrentModificationException
+						// some problems with ConcurrentModificationException
 						List<?> handlers = GWT.isProdMode() ? entry.getValue() : new ArrayList<Object>(entry.getValue());
 						for (Object e : handlers) {
 							event.dispatch((H) e);
@@ -187,9 +197,10 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 			}
 			// handlery bez okreslonego obiektu source
 			if (source != null && (handler = map.get(null)) != null) {
-				for (Map.Entry<EventScope<?>, List<?>> entry : handler.entrySet()) {
+				Set<Entry<EventScope<?>, List<?>>> entrySet = new HashSet<Map.Entry<EventScope<?>, List<?>>>(handler.entrySet());
+				for (Map.Entry<EventScope<?>, List<?>> entry : entrySet) {
 					if (eventScope == null || entry.getKey() == null || eventScope.equals(entry.getKey())) {
-						//some problems with ConcurrentModificationException
+						// some problems with ConcurrentModificationException
 						List<?> handlers = GWT.isProdMode() ? entry.getValue() : new ArrayList<Object>(entry.getValue());
 						for (Object e : handlers) {
 							event.dispatch((H) e);
@@ -215,8 +226,8 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 		return map.get(type.getAssociatedType());
 	}
 
-	private <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] doAddAll(final Type<H, T> types[], final Object source, final H handler, final boolean async,
-			final EventScope<?> eventScope) {
+	private <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] doAddAll(final Type<H, T> types[], final Object source, final H handler,
+			final boolean async, final EventScope<?> eventScope) {
 		HandlerRegistration[] registrations = new HandlerRegistration[types.length];
 		for (int x = 0; x < types.length; ++x) {
 			registrations[x] = doAdd(types[x], source, handler, async, eventScope);
@@ -225,8 +236,8 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes", "PMD" })
-	private <H extends EventHandler, T extends Enum<T>> HandlerRegistration doAdd(final Type<H, T> type, final Object source, final H handler, final boolean async,
-			final EventScope<?> eventScope) {
+	private <H extends EventHandler, T extends Enum<T>> HandlerRegistration doAdd(final Type<H, T> type, final Object source, final H handler,
+			final boolean async, final EventScope<?> eventScope) {
 		if (type == null) {
 			throw new NullPointerException("Cannot add a handler with a null type");
 		}
