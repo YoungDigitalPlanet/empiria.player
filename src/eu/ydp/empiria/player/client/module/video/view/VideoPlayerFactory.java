@@ -1,16 +1,21 @@
 package eu.ydp.empiria.player.client.module.video.view;
 
-import eu.ydp.empiria.player.client.module.video.structure.SourceBean;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
 
 public class VideoPlayerFactory {
 
+	@Inject
+	Provider<VideoPlayer> videoPlayerProvider;
+
 	public VideoPlayer create(VideoBean videoBean) {
-		VideoPlayer videoPlayer = new VideoPlayer(videoBean.getWidth(), videoBean.getHeight());
+		VideoPlayer videoPlayer = videoPlayerProvider.get();
+		videoPlayer.setWidth(videoBean.getHeight());
+		videoPlayer.setHeight(videoBean.getHeight());
 		videoPlayer.setPoster(videoBean.getPoster());
-		for (SourceBean source : videoBean.getSources()) {
-			videoPlayer.addSource(source.getSrc(), source.getType());
-		}
+		videoPlayer.addSources(videoBean.getSources());
 		return videoPlayer;
 	}
 }

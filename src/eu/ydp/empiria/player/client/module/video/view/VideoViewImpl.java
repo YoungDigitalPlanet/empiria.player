@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class VideoViewImpl extends Composite implements VideoView {
 
@@ -17,12 +18,15 @@ public class VideoViewImpl extends Composite implements VideoView {
 	VideoPlayer videoPlayer;
 	@Inject
 	private VideoPlayerFactory videoPlayerFactory;
+	@Inject
+	@ModuleScoped
+	private VideoBean videoBean;
 
 	interface VideoViewImplUiBinder extends UiBinder<Widget, VideoViewImpl> {
 	}
 
 	@Override
-	public void createView(VideoBean videoBean) {
+	public void createView() {
 		videoPlayer = videoPlayerFactory.create(videoBean);
 		initWidget(uiBinder.createAndBindUi(this));
 	}
