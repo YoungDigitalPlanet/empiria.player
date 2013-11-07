@@ -9,12 +9,11 @@ import eu.ydp.empiria.player.client.util.SourceUtil;
 
 /**
  * Executor dla trybu offline
- *
+ * 
  * @author plelakowski
- *
+ * 
  */
 public class LocalSwfMediaExecutor extends AbstractNoControlExecutor {
-
 
 	@Override
 	public void init() {
@@ -24,7 +23,7 @@ public class LocalSwfMediaExecutor extends AbstractNoControlExecutor {
 			audop.setSrc(SourceUtil.getMpegSource(bmc.getSources()));
 			widget = audop;
 		} else {
-			FlashLocalVideoImpl video = new FlashLocalVideoImpl();
+			FlashLocalVideoImpl video = new FlashLocalVideoImpl(bmc);
 			video.setSrc(SourceUtil.getMpegSource(bmc.getSources()));
 			widget = video;
 		}
