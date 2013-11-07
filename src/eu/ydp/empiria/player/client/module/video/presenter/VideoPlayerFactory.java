@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 
 public class VideoPlayerFactory {
 
-	private Provider<VideoPlayer> videoPlayerProvider;
+	private final Provider<VideoPlayer> videoPlayerProvider;
 
 	@Inject
 	public VideoPlayerFactory(Provider<VideoPlayer> videoPlayerProvider) {

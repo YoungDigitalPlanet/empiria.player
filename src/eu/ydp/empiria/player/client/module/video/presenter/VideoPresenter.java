@@ -10,9 +10,9 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class VideoPresenter {
 
-	private VideoPlayerFactory videoPlayerFactory;
-	private VideoBean videoBean;
-	private VideoView view;
+	private final VideoPlayerFactory videoPlayerFactory;
+	private final VideoBean videoBean;
+	private final VideoView view;
 
 	@Inject
 	public VideoPresenter(VideoPlayerFactory videoPlayerFactory, @ModuleScoped VideoBean videoBean, @ModuleScoped VideoView view) {

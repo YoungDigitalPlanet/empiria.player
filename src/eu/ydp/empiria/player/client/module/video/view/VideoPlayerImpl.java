@@ -19,8 +19,8 @@ public class VideoPlayerImpl extends Widget implements VideoPlayer {
 
 	private static final String DEFAULT_PRELOAD = MediaElement.PRELOAD_NONE;
 
-	private VideoPlayerNative nativePlayer;
-	private Provider<SourceElement> sourceElementProvider;
+	private final VideoPlayerNative nativePlayer;
+	private final Provider<SourceElement> sourceElementProvider;
 
 	private boolean isLoaded = false;
 
