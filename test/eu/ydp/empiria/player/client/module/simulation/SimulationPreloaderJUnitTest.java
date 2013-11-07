@@ -1,9 +1,6 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,7 +18,6 @@ import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.preloader.Preloader;
 import eu.ydp.empiria.player.client.preloader.view.ProgressView;
 
-@SuppressWarnings("PMD")
 public class SimulationPreloaderJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	private class CustomGinModule implements Module {
 		@Override
@@ -49,7 +45,7 @@ public class SimulationPreloaderJUnitTest extends AbstractTestBaseWithoutAutoInj
 
 	private SimulationPreloader instance;
 	private Preloader preloader;
-	private final Widget widget =  mock(Widget.class);
+	private final Widget widget = mock(Widget.class);
 
 	@Before
 	public void before() {
