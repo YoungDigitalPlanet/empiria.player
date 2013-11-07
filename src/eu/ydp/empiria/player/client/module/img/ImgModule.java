@@ -69,14 +69,14 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 		view.setContent(content);
 		NodeList titleNodes = element.getElementsByTagName("title");
 		if (titleNodes.getLength() > 0) {
-			Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineWidget(titleNodes.item(0));
+			Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
 			if (titleWidget != null) {
 				view.setTitle(titleWidget);
 			}
 		}
 		NodeList descriptionNodes = element.getElementsByTagName("description");
 		if (descriptionNodes.getLength() > 0) {
-			Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineWidget(descriptionNodes.item(0));
+			Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(descriptionNodes.item(0));
 			if (descriptionWidget != null) {
 				view.setDescription(descriptionWidget);
 			}

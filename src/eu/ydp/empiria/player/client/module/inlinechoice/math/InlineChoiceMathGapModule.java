@@ -124,8 +124,8 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		for (int o = 0; o < optionNodes.getLength(); o++) {
 			String currId = ((Element) optionNodes.item(o)).getAttribute(EmpiriaTagConstants.ATTR_IDENTIFIER);
 			options.add(currId);
-			Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineWidget(optionNodes.item(o));
-			Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineWidget(optionNodes.item(o));
+			Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
+			Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
 			getListBox().addOption(baseBody, popupBody);
 		}
 

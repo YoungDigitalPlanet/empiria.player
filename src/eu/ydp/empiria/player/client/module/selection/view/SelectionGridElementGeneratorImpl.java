@@ -44,7 +44,7 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
 	
 	public SelectionItemGridElementImpl createItemDisplayElement(Element item) {
 		SelectionItemGridElementImpl itemLabelElement = new SelectionItemGridElementImpl();
-		Widget itemTextLabel = inlineBodyGeneratorSocket.generateInlinePanelWidget(item);
+		Widget itemTextLabel = inlineBodyGeneratorSocket.generateInlineBody(item, true);
 
 		itemTextLabel.setStyleName(styleNameConstants.QP_SELECTION_ITEM_LABEL());
 		itemTextLabel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
@@ -57,7 +57,7 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
 	
 	public SelectionChoiceGridElementImpl createChoiceDisplayElement(Element item) {
 		SelectionChoiceGridElementImpl choiceLabelElement = new SelectionChoiceGridElementImpl();
-		Widget choiceTextLabel = inlineBodyGeneratorSocket.generateInlineWidget(item);
+		Widget choiceTextLabel = inlineBodyGeneratorSocket.generateInlineBody(item);
 		choiceTextLabel.setStyleName(styleNameConstants.QP_SELECTION_CHOICE());
 
 		choiceLabelElement.add(choiceTextLabel);
