@@ -23,6 +23,7 @@ public class ConnectionItems {
 
 	private final Set<ConnectionItem> leftColumnItems = new HashSet<ConnectionItem>();
 	private final Set<ConnectionItem> rightColumnItems = new HashSet<ConnectionItem>();
+	
 	private final Map<String, ConnectionItem> items = new HashMap<String, ConnectionItem>();
 
 	private final InlineBodyGeneratorSocket bodyGenerator;
