@@ -3,20 +3,28 @@ package eu.ydp.empiria.player.client.module.video.presenter;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
+import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
+import eu.ydp.empiria.player.client.module.video.view.VideoPlayerFactory;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class VideoPresenter {
 
+	private VideoPlayerFactory videoPlayerFactory;
+	private VideoBean videoBean;
 	private VideoView view;
 
 	@Inject
-	public VideoPresenter(@ModuleScoped VideoView view) {
+	public VideoPresenter(VideoPlayerFactory videoPlayerFactory, @ModuleScoped VideoBean videoBean, @ModuleScoped VideoView view) {
+		this.videoPlayerFactory = videoPlayerFactory;
+		this.videoBean = videoBean;
 		this.view = view;
 	}
 
 	public void start() {
-		view.createView();
+		VideoPlayer videoPlayer = videoPlayerFactory.create(videoBean);
+		view.createView(videoPlayer);
 	}
 
 	public Widget getView() {

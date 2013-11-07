@@ -4,5 +4,5 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface VideoView extends IsWidget {
 
-	void createView();
+	void createView(VideoPlayer videoPlayer);
 }
