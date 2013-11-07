@@ -25,7 +25,7 @@ public class SourceBean {
 		this.src = src;
 	}
 
-	public String getType() {
+	public String getTypeString() {
 		return typeString;
 	}
 
