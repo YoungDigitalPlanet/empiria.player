@@ -11,9 +11,12 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class VideoModule extends SimpleModuleBase implements ISimpleModule {
 
-	@Inject
-	@ModuleScoped
 	private VideoPresenter presenter;
+
+	@Inject
+	public VideoModule(@ModuleScoped VideoPresenter presenter) {
+		this.presenter = presenter;
+	}
 
 	@Override
 	public Widget getView() {

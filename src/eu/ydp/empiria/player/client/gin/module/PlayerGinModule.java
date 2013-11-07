@@ -101,7 +101,7 @@ import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.module.video.view.VideoPlayerFactory;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerFactory;
 import eu.ydp.empiria.player.client.preloader.view.InfinityProgressWidget;
 import eu.ydp.empiria.player.client.preloader.view.ProgressView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
