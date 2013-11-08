@@ -8,8 +8,9 @@ public class XmlData {
 
 	private static final String SRC_TAG = "src";
 
-	@Deprecated // cala historia z fixowaniem linku jest od czapki
-	public XmlData(Document doc, String url){
+	@Deprecated
+	// cala historia z fixowaniem linku jest od czapki
+	public XmlData(Document doc, String url) {
 		document = doc;
 		baseURL = url;
 		fix(doc, url);
@@ -21,20 +22,20 @@ public class XmlData {
 	/** Base URL do document */
 	private final String baseURL;
 
-	public Document getDocument(){
+	public Document getDocument() {
 		return document;
 	}
 
-	public String getBaseURL(){
+	public String getBaseURL() {
 		return baseURL;
 	}
 
-	public boolean checkIntegrity(){
+	public boolean checkIntegrity() {
 		return true;
 	}
 
 	@Deprecated
-	private void fix(Document document, String baseUrl){
+	private void fix(Document document, String baseUrl) {
 
 		fixLinks(document, baseUrl, "img", SRC_TAG);
 		fixLinks(document, baseUrl, "img", "srcFullScreen");
@@ -54,26 +55,31 @@ public class XmlData {
 		fixLinks(document, baseUrl, "showUrl", "href");
 		fixLinks(document, baseUrl, "image", SRC_TAG);
 		fixLinks(document, baseUrl, "correctImage", SRC_TAG);
+		fixLinks(document, baseUrl, "video", "poster");
+		fixLinks(document, baseUrl, "source", SRC_TAG);
 	}
 
 	/**
 	 * Fix links relative to xml file
-	 * @param tagName tag name
-	 * @param attrName attribute name with link
+	 * 
+	 * @param tagName
+	 *            tag name
+	 * @param attrName
+	 *            attribute name with link
 	 */
-	private void fixLinks(Document document, String baseUrl, String tagName, String attrName){
+	private void fixLinks(Document document, String baseUrl, String tagName, String attrName) {
 
 		NodeList nodes = document.getElementsByTagName(tagName);
 
-		for(int i = 0; i < nodes.getLength(); i++){
-			Element element = (Element)nodes.item(i);
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Element element = (Element) nodes.item(i);
 			String link = element.getAttribute(attrName);
-			if(link != null && !link.startsWith("http")){
+			if (link != null && !link.startsWith("http")) {
 				element.setAttribute(attrName, baseUrl + link);
 			}
 			// Links open in new window
-			if(tagName.compareTo("a") == 0){
-				element.setAttribute( "target", "_blank");
+			if (tagName.compareTo("a") == 0) {
+				element.setAttribute("target", "_blank");
 			}
 		}
 	}
