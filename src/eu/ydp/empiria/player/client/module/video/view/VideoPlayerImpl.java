@@ -58,7 +58,7 @@ public class VideoPlayerImpl extends Widget implements VideoPlayer, VideoPlayerC
 		videoElement.setControls(controls);
 		videoElement.setPreload(preload);
 
-		if (Strings.isNullOrEmpty(poster)) {
+		if (!Strings.isNullOrEmpty(poster)) {
 			videoElement.setPoster(poster);
 		}
 
