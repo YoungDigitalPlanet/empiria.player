@@ -103,6 +103,7 @@ import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerFactory;
 import eu.ydp.empiria.player.client.preloader.view.InfinityProgressWidget;
 import eu.ydp.empiria.player.client.preloader.view.ProgressView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -231,6 +232,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(OutcomeAccessor.class).in(Singleton.class);
 		bind(FlowDataSupplier.class).annotatedWith(FlowManagerDataSupplier.class).toProvider(FlowDataSupplierProvider.class);
 		bind(AssetOpenDelegatorService.class).in(Singleton.class);
+		bind(VideoPlayerFactory.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
