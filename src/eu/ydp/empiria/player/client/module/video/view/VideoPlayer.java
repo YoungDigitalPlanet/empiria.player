@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 import eu.ydp.empiria.player.client.module.video.structure.SourceBean;
 
-public interface VideoPlayer extends VideoPlayerCommon, IsWidget {
+public interface VideoPlayer extends IsWidget {
 
 	void setSkinName(String skinName);
 

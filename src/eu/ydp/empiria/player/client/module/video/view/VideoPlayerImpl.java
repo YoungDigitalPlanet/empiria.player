@@ -15,7 +15,7 @@ import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.video.structure.SourceBean;
 
-public class VideoPlayerImpl extends Widget implements VideoPlayer {
+public class VideoPlayerImpl extends Widget implements VideoPlayer, VideoPlayerControl {
 
 	private static final String DEFAULT_PRELOAD = MediaElement.PRELOAD_NONE;
 
@@ -104,47 +104,47 @@ public class VideoPlayerImpl extends Widget implements VideoPlayer {
 	}
 
 	@Override
-	public void addPlayHandler(VideoPlayerHandler handler) {
+	public void addPlayHandler(VideoPlayerControlHandler handler) {
 		nativePlayer.addPlayHandler(handler);
 	};
 
 	@Override
-	public void addPauseHandler(VideoPlayerHandler handler) {
+	public void addPauseHandler(VideoPlayerControlHandler handler) {
 		nativePlayer.addPauseHandler(handler);
 	};
 
 	@Override
-	public void addEndedHandler(VideoPlayerHandler handler) {
+	public void addEndedHandler(VideoPlayerControlHandler handler) {
 		nativePlayer.addEndedHandler(handler);
 	};
 
 	@Override
-	public void addTimeUpdateHandler(VideoPlayerHandler handler) {
+	public void addTimeUpdateHandler(VideoPlayerControlHandler handler) {
 		nativePlayer.addTimeUpdateHandler(handler);
 	}
 
 	@Override
-	public void addLoadStartHandler(VideoPlayerHandler handler) {
+	public void addLoadStartHandler(VideoPlayerControlHandler handler) {
 		nativePlayer.addLoadStartHandler(handler);
 	};
 
 	@Override
-	public void addLoadedMetadataHandler(VideoPlayerHandler handler) {
+	public void addLoadedMetadataHandler(VideoPlayerControlHandler handler) {
 		nativePlayer.addLoadedMetadataHandler(handler);
 	};
 
 	@Override
-	public void addLoadedDataHandler(VideoPlayerHandler handler) {
+	public void addLoadedDataHandler(VideoPlayerControlHandler handler) {
 		nativePlayer.addLoadedDataHandler(handler);
 	}
 
 	@Override
-	public void addLoadedAllDataHandler(VideoPlayerHandler handler) {
+	public void addLoadedAllDataHandler(VideoPlayerControlHandler handler) {
 		nativePlayer.addLoadedAllDataHandler(handler);
 	}
 
 	@Override
-	public void addDurationChangeHandler(VideoPlayerHandler handler) {
+	public void addDurationChangeHandler(VideoPlayerControlHandler handler) {
 		nativePlayer.addDurationChangeHandler(handler);
 	}
 

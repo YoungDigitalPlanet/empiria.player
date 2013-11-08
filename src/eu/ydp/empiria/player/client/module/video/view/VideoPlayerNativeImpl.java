@@ -33,12 +33,12 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 															// progressive
 															// download for
 															// flash
-			addDurationChangeHandler(new VideoPlayerHandler() {
+			addDurationChangeHandler(new VideoPlayerControlHandler() {
 				@Override
-				public void handle(VideoPlayer player) {
-					player.pause();
-					player.setCurrentTime(startPosition);
-					player.play();
+				public void handle(VideoPlayerControl playerControl) {
+					playerControl.pause();
+					playerControl.setCurrentTime(startPosition);
+					playerControl.play();
 				}
 			});
 		}
@@ -106,43 +106,43 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 						});
 	}-*/;
 
-	public void addPlayHandler(VideoPlayerHandler handler) {
+	public void addPlayHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("play", handler);
 	};
 
-	public void addPauseHandler(VideoPlayerHandler handler) {
+	public void addPauseHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("pause", handler);
 	};
 
-	public void addEndedHandler(VideoPlayerHandler handler) {
+	public void addEndedHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("ended", handler);
 	};
 
-	public void addTimeUpdateHandler(VideoPlayerHandler handler) {
+	public void addTimeUpdateHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("timeupdate", handler);
 	}
 
-	public void addLoadStartHandler(VideoPlayerHandler handler) {
+	public void addLoadStartHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("loadstart", handler);
 	};
 
-	public void addLoadedMetadataHandler(VideoPlayerHandler handler) {
+	public void addLoadedMetadataHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("loadedmetadata", handler);
 	};
 
-	public void addLoadedDataHandler(VideoPlayerHandler handler) {
+	public void addLoadedDataHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("loadeddata", handler);
 	}
 
-	public void addLoadedAllDataHandler(VideoPlayerHandler handler) {
+	public void addLoadedAllDataHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("loadedalldata", handler);
 	}
 
-	public void addDurationChangeHandler(VideoPlayerHandler handler) {
+	public void addDurationChangeHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("durationchange", handler);
 	}
 
-	private native void addEventHandler(String event, VideoPlayerHandler handler) /*-{
+	private native void addEventHandler(String event, VideoPlayerControlHandler handler) /*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
 		var javaPlayer = this;
 
@@ -151,7 +151,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 					.on(
 							event,
 							function() {
-								handler.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerHandler::handle(Leu/ydp/empiria/player/client/module/video/view/VideoPlayer;)(javaPlayer);
+								handler.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerControlHandler::handle(Leu/ydp/empiria/player/client/module/video/view/VideoPlayerControl;)(javaPlayer);
 							});
 		}
 	}-*/;
