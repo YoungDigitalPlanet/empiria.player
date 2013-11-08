@@ -123,9 +123,6 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 		media.play();
 	}
 
-	/**
-	 * For iosAudoHack {@link IosAudioPlayHack}
-	 */
 	public void playWithoutOnPlayEventPropagation() {
 		hideOnPlayEvent = true;
 		play();
