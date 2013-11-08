@@ -1,8 +1,9 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_CHANGE;
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
@@ -34,13 +35,22 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 	}
 
 	protected CreateJsLoader loader;
-	@Inject private EventsBus eventBus;
-	@Inject private TouchController touchController;
-	@Inject	private Instance<SimulationModuleView> viewInstance;
-	@Inject	private SimulationPreloader preloader;
-	@Inject	private Instance<CreateJsLoader> createJsLoader;
-	@Inject	private PageScopeFactory pageScopeFactory;
-	@Inject	private SimulationController simulationController;
+	@Inject
+	private EventsBus eventBus;
+	@Inject
+	private TouchController touchController;
+	@Inject
+	private Instance<SimulationModuleView> viewInstance;
+	@Inject
+	private SimulationPreloader preloader;
+	@Inject
+	private Instance<CreateJsLoader> createJsLoader;
+	@Inject
+	private PageScopeFactory pageScopeFactory;
+	@Inject
+	private SimulationController simulationController;
+	@Inject
+	private SimulationCanvasProvider simulationCanvasProvider;
 	private int pageIndex = -1;
 
 	@Override
@@ -50,22 +60,18 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 
 	@Override
 	public void onBodyLoad() {
-		//
 	}
 
 	@Override
 	public void onBodyUnload() {
-		//
 	}
 
 	@Override
 	public void onSetUp() {
-		//
 	}
 
 	@Override
 	public void onStart() {
-		//
 	}
 
 	@Override
@@ -95,14 +101,13 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 
 			@Override
 			public void onComplete() {
-				initializeCanvas(getSimulationCanvas());
+				Optional<Canvas> simulationCanvas = simulationCanvasProvider.getSimulationCanvas(loader);
+				if (simulationCanvas.isPresent()) {
+					initializeCanvas(simulationCanvas.get());
+				}
 			}
 		});
 		loader.load(resourceSrc);
-	}
-
-	private Canvas getSimulationCanvas() {
-		return loader == null ? null : loader.getContent().getCanvas();
 	}
 
 	protected void initializeCanvas(Canvas canvas) {
@@ -146,20 +151,14 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		if (event.getType() == PAGE_CHANGE) {
+		Optional<com.google.gwt.user.client.Element> simulationCanvasElement = simulationCanvasProvider.getSimulationCanvasElement(loader);
+
+		if (event.getType() == PAGE_CHANGE && simulationCanvasElement.isPresent()) {
 			if (Objects.equal(pageIndex, event.getValue())) {
-				simulationController.resumeAnimation(getSimulationCanvasElement());
+				simulationController.resumeAnimation(simulationCanvasElement.get());
 			} else {
-				simulationController.pauseAnimation(getSimulationCanvasElement());
+				simulationController.pauseAnimation(simulationCanvasElement.get());
 			}
 		}
-	}
-
-	private com.google.gwt.user.client.Element getSimulationCanvasElement() {
-		Canvas simulationCanvas = getSimulationCanvas();
-		if (simulationCanvas != null) {
-			return simulationCanvas.getElement(); //NOPMD
-		}
-		return null;
 	}
 }
