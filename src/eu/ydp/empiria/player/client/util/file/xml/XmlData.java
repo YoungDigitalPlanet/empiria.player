@@ -56,7 +56,6 @@ public class XmlData {
 		fixLinks(document, baseUrl, "image", SRC_TAG);
 		fixLinks(document, baseUrl, "correctImage", SRC_TAG);
 		fixLinks(document, baseUrl, "video", "poster");
-		fixLinks(document, baseUrl, "source", SRC_TAG);
 	}
 
 	/**
