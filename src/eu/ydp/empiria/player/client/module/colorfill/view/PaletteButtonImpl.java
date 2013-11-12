@@ -12,32 +12,31 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.gwtutil.client.ui.InputInsideButtonHack;
+import eu.ydp.gwtutil.client.ui.InputToButtonReplacer;
 
 public class PaletteButtonImpl extends Composite implements PaletteButton {
 
 	private static PaletteButtonUiBinder uiBinder = GWT.create(PaletteButtonUiBinder.class);
 
 	@UiTemplate("PaletteButton.ui.xml")
-	interface PaletteButtonUiBinder extends UiBinder<Widget, PaletteButtonImpl> {
-	}
-
+	interface PaletteButtonUiBinder extends UiBinder<Widget, PaletteButtonImpl> {}
+	
 	@UiField
 	FlowPanel container;
 
 	@UiField
 	PushButton button;
-
+	
 	@UiField
 	FlowPanel description;
-
+	
 	private StyleNameConstants styleNameConstants;
-
+	
 	@Inject
-	public PaletteButtonImpl(StyleNameConstants styleNameConstants, InputInsideButtonHack inputInsideButtonHack) {
+	public PaletteButtonImpl(StyleNameConstants styleNameConstants, InputToButtonReplacer inputReplacer) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.styleNameConstants = styleNameConstants;
-		inputInsideButtonHack.activateIfNeededFor(button);
+		inputReplacer.changeInputTypeChildToButton(button);
 	}
 
 	@Override
