@@ -36,7 +36,7 @@ public class PaletteButtonImpl extends Composite implements PaletteButton {
 	public PaletteButtonImpl(StyleNameConstants styleNameConstants, InputToButtonReplacer inputReplacer) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.styleNameConstants = styleNameConstants;
-		inputReplacer.changeInputTypeToButton(button);
+		inputReplacer.changeInputTypeChildToButton(button);
 	}
 
 	@Override
