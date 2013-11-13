@@ -36,7 +36,9 @@ public class ActionEventGeneratorTest {
 	@Mock
 	private PersonaService personaService;
 	@Mock
-	EndHandler moduleEndHandler;
+	private TutorEndHandler tutorEndHandler;
+	@Mock
+	private EndHandler moduleEndHandler;
 
 	@Test
 	public void start() {
