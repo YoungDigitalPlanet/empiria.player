@@ -127,7 +127,7 @@ public class ActionEventGeneratorTest {
 				@Override
 				public Void answer(InvocationOnMock invocation) throws Throwable {
 					TutorEndHandler handler = (TutorEndHandler) invocation.getArguments()[1];
-					handler.onEnd(false);
+					handler.onEnd();
 					return null;
 				}
 			}).when(executorService).execute(any(ActionType.class), any(TutorEndHandler.class));

@@ -18,7 +18,7 @@ public class AnimationCommand implements TutorCommand {
 		@Override
 		public void onEnd() {
 			finished = true;
-			endHandler.onEnd(true);
+			endHandler.onEndWithDefaultAction();
 		}
 	};
 

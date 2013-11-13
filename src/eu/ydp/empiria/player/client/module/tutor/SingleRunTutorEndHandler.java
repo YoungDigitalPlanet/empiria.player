@@ -14,16 +14,22 @@ public class SingleRunTutorEndHandler implements TutorEndHandler {
 	@ModuleScoped
 	private ActionExecutorService executorService;
 
-	@Override
-	public void onEnd(boolean shouldExecuteDefaultAction) {
-		if (shouldExecuteDefaultAction) {
-			executorService.execute(ActionType.DEFAULT, this);
-		}
-
+	private void fireTheEndHandlerIfPresent() {
 		if (recentEndHandler.isPresent()) {
 			recentEndHandler.get().onEnd();
 			recentEndHandler = Optional.absent();
 		}
+	}
+	
+	@Override
+	public void onEnd() {
+		fireTheEndHandlerIfPresent();
+	}
+	
+	@Override
+	public void onEndWithDefaultAction() {
+		executorService.execute(ActionType.DEFAULT, this);
+		fireTheEndHandlerIfPresent();
 	}
 
 	@Override

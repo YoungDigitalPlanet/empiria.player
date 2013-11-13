@@ -4,7 +4,9 @@ import eu.ydp.empiria.player.client.module.EndHandler;
 
 public interface TutorEndHandler {
 
-	void onEnd(boolean shouldExecuteDefaultAction);
+	void onEnd();
+	
+	void onEndWithDefaultAction();
 	
 	void setEndHandler(EndHandler endHandler);
 }

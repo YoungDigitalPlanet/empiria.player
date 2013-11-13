@@ -25,8 +25,8 @@ public class SingleRunTutorEndHandlerTest {
 		EndHandler mockEndHandler = mock(EndHandler.class);
 		
 		// when
-		testObj.onEnd(true);
-		testObj.onEnd(true);
+		testObj.onEnd();
+		testObj.onEnd();
 		
 		// then
 		verify(mockEndHandler, times(0)).onEnd();
@@ -39,8 +39,8 @@ public class SingleRunTutorEndHandlerTest {
 		
 		// when
 		testObj.setEndHandler(mockEndHandler);
-		testObj.onEnd(true);
-		testObj.onEnd(true);
+		testObj.onEnd();
+		testObj.onEnd();
 		
 		// then
 		verify(mockEndHandler, times(1)).onEnd();
@@ -53,9 +53,9 @@ public class SingleRunTutorEndHandlerTest {
 		
 		// when
 		testObj.setEndHandler(mockEndHandler);
-		testObj.onEnd(true);
+		testObj.onEnd();
 		testObj.setEndHandler(mockEndHandler);
-		testObj.onEnd(true);
+		testObj.onEnd();
 		
 		// then
 		verify(mockEndHandler, times(2)).onEnd();
@@ -64,7 +64,7 @@ public class SingleRunTutorEndHandlerTest {
 	@Test
 	public void shouldCalltheDefaultAction() {
 		// when
-		testObj.onEnd(true);
+		testObj.onEndWithDefaultAction();
 		
 		// then
 		verify(executorService, times(1)).execute(ActionType.DEFAULT, testObj);
@@ -73,7 +73,7 @@ public class SingleRunTutorEndHandlerTest {
 	@Test
 	public void shouldNotCalltheDefaultAction() {
 		// when
-		testObj.onEnd(false);
+		testObj.onEnd();
 		
 		// then
 		verify(executorService, times(0)).execute(ActionType.DEFAULT, testObj);
