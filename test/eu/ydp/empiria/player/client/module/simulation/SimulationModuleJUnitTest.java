@@ -1,11 +1,7 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,7 +37,6 @@ import eu.ydp.gwtcreatejs.client.loader.Manifest;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
-@SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
 @PrepareForTest(CreateJsLoader.class)
 public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
@@ -175,7 +170,6 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 		verify(moduleView).add(Mockito.eq(preloader));
 		verify(preloader).show(Mockito.eq((int) width), Mockito.eq((int) height));
 
-
 	}
 
 	@Test
@@ -198,7 +192,7 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 		verify(canvas).addTouchStartHandler(touchReservationCaptor.capture());
 		TouchReservationHandler reservationHandler = touchReservationCaptor.getValue();
 		reservationHandler.onTouchStart(null);
-		
+
 		// then
 		verify(touchController).setTouchReservation(eq(true));
 	}

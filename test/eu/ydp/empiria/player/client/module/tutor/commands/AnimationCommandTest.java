@@ -1,11 +1,9 @@
 package eu.ydp.empiria.player.client.module.tutor.commands;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +38,7 @@ public class AnimationCommandTest {
 		command.animationHandler.onEnd();
 
 		// then
-		verify(handler).onEnd(true);
+		verify(handler).onEndWithDefaultAction();
 		assertThat(command.isFinished(), is(true));
 	}
 
@@ -52,7 +50,8 @@ public class AnimationCommandTest {
 		command.terminate();
 
 		// then
-		verify(handler, never()).onEnd(anyBoolean());
+		verify(handler, never()).onEnd();
+		verify(handler, never()).onEndWithDefaultAction();
 		assertThat(command.isFinished(), is(true));
 	}
 }

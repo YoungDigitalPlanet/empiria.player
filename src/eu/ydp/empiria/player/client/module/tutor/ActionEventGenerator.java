@@ -11,19 +11,6 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ActionEventGenerator {
 
-	private Optional<EndHandler> recentEndHandler = Optional.absent();
-	private final TutorEndHandler endHandler = new TutorEndHandler() {
-		@Override
-		public void onEnd(boolean shouldExecuteDefaultAction) {
-			if (recentEndHandler.isPresent()) {
-				recentEndHandler.get().onEnd();
-			}
-			if (shouldExecuteDefaultAction) {
-				executeDefaultAction();
-			}
-		}
-	};
-
 	@Inject
 	@ModuleScoped
 	private ActionExecutorService executorService;
@@ -36,6 +23,10 @@ public class ActionEventGenerator {
 	@ModuleScoped
 	private PersonaService personaService;
 
+	@Inject
+	@ModuleScoped
+	private TutorEndHandler tutorEndHandler;
+
 	public void start() {
 		executeDefaultAction();
 	}
@@ -45,7 +36,7 @@ public class ActionEventGenerator {
 	}
 
 	public void stateChanged(EndHandler endHandler) {
-		recentEndHandler = Optional.absent();
+		tutorEndHandler.setEndHandler(null);
 		TutorPersonaProperties currentPersona = personaService.getPersonaProperties();
 		if (currentPersona.isInteractive()) {
 			generateAndExecuteAction(endHandler);
@@ -55,7 +46,7 @@ public class ActionEventGenerator {
 	private void generateAndExecuteAction(EndHandler endHandler) {
 		Optional<ActionType> actionType = actionTypeGenerator.findActionType();
 		if (actionType.isPresent()) {
-			recentEndHandler = Optional.of(endHandler);
+			tutorEndHandler.setEndHandler(endHandler);
 			executeAction(actionType.get());
 		}
 	}
@@ -70,6 +61,6 @@ public class ActionEventGenerator {
 	}
 
 	private void executeAction(ActionType action) {
-		executorService.execute(action, endHandler);
+		executorService.execute(action, tutorEndHandler);
 	}
 }

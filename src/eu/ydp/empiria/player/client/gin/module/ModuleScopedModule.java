@@ -63,6 +63,7 @@ import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
+import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
 import eu.ydp.empiria.player.client.module.tutor.actions.OnOkAction;
 import eu.ydp.empiria.player.client.module.tutor.actions.OnPageAllOkAction;
 import eu.ydp.empiria.player.client.module.tutor.actions.OnWrongAction;
@@ -72,6 +73,10 @@ import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorViewImpl;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPresenter;
+import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
+import eu.ydp.empiria.player.client.module.video.structure.VideoBeanProvider;
+import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -96,6 +101,14 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindDrawing();
 		bindBonus();
 		bindProgressBonus();
+		bindVideoModule();
+	}
+
+	private void bindVideoModule() {
+		bindModuleScoped(VideoBean.class, new TypeLiteral<ModuleScopedProvider<VideoBean>>(){});
+		bind(VideoBean.class).toProvider(VideoBeanProvider.class);
+		bindModuleScoped(VideoPresenter.class, new TypeLiteral<ModuleScopedProvider<VideoPresenter>>(){});
+		bindModuleScoped(VideoView.class, new TypeLiteral<ModuleScopedProvider<VideoView>>(){});
 	}
 
 	private void bindDrawing() {
@@ -165,6 +178,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(OutcomeDrivenActionTypeProvider.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeProvider>>(){});
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 		bind(PersonaService.class).annotatedWith(ModuleScoped.class).toProvider(PersonaServiceModuleScopedProvider.class);
+		bindModuleScoped(TutorEndHandler.class, new TypeLiteral<ModuleScopedProvider<TutorEndHandler>>() {});
 	}
 
 	private void bindSelection() {

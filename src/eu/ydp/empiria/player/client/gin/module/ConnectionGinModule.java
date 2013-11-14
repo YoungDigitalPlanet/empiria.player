@@ -6,7 +6,6 @@ import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.gin.factory.ConnectionItemsFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.ConnectionSurfacesManagerFactory;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceImpl;
@@ -18,6 +17,7 @@ import eu.ydp.empiria.player.client.module.connection.RectangleChecker;
 import eu.ydp.empiria.player.client.module.connection.SurfaceCleaner;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemImpl;
+import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionItemPairFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenterImpl;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModuleViewImpl;
@@ -34,7 +34,6 @@ public class ConnectionGinModule extends AbstractGinModule {
 				.implement(ConnectionView.class, ConnectionViewVertical.class).implement(ConnectionSurfaceView.class, ConnectionSurfaceViewImpl.class)
 				.build(ConnectionModuleFactory.class));
 
-		install(new GinFactoryModuleBuilder().build(ConnectionSurfacesManagerFactory.class));
 		install(new GinFactoryModuleBuilder().build(ConnectionItemsFactory.class));
 		bind(ConnectionModulePresenter.class).to(ConnectionModulePresenterImpl.class);
 		bind(ConnectionView.class).to(ConnectionViewVertical.class);
@@ -44,7 +43,7 @@ public class ConnectionGinModule extends AbstractGinModule {
 		bind(LineSegmentChecker.class).in(Singleton.class);
 		bind(DistanceCalculator.class).in(Singleton.class);
 		bind(SurfaceCleaner.class).in(Singleton.class);
-
+		bind(ConnectionItemPairFinder.class).in(Singleton.class);
 	}
 
 }

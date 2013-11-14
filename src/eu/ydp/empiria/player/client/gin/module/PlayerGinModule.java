@@ -86,6 +86,8 @@ import eu.ydp.empiria.player.client.gin.providers.NewFlowPanelProvider;
 import eu.ydp.empiria.player.client.gin.providers.UniqIdStringProvider;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
+import eu.ydp.empiria.player.client.module.NativeEventWrapper;
+import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.expression.adapters.ExpressionCharacterMappingProvider;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedbackPresenter;
@@ -101,6 +103,7 @@ import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerFactory;
 import eu.ydp.empiria.player.client.preloader.view.InfinityProgressWidget;
 import eu.ydp.empiria.player.client.preloader.view.ProgressView;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -144,7 +147,6 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 @SuppressWarnings("PMD")
 public class PlayerGinModule extends AbstractGinModule {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void configure() {
 		bind(StyleDataSourceManager.class).in(Singleton.class);
@@ -160,6 +162,9 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(InteractionEventsListener.class).to(DeliveryEventsHub.class);
 		bind(InteractionEventsSocket.class).to(DeliveryEventsHub.class);
 		bind(DeliveryEventsHub.class).in(Singleton.class);
+		
+		bind(UserAgentCheckerWrapper.class).in(Singleton.class);
+		bind(NativeEventWrapper.class).in(Singleton.class);
 		
 		bind(DataSourceManager.class).in(Singleton.class);
 		bind(DataSourceDataSupplier.class).to(DataSourceManager.class);
@@ -227,6 +232,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(OutcomeAccessor.class).in(Singleton.class);
 		bind(FlowDataSupplier.class).annotatedWith(FlowManagerDataSupplier.class).toProvider(FlowDataSupplierProvider.class);
 		bind(AssetOpenDelegatorService.class).in(Singleton.class);
+		bind(VideoPlayerFactory.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
