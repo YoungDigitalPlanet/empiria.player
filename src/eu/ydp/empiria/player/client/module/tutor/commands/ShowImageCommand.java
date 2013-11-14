@@ -27,7 +27,7 @@ public class ShowImageCommand implements TutorCommand {
 	public void execute() {
 		view.setBackgroundImage(showImageDTO.path, showImageDTO.size);
 		finished = true;
-		handler.onEnd(false);
+		handler.onEnd();
 	}
 
 	@Override
