@@ -20,19 +20,6 @@ public class SingleRunTutorEndHandlerTest {
 	private ActionExecutorService executorService;
 	
 	@Test
-	public void shouldNotCallHandlerWhenItIsNotProvided() {
-		// given
-		EndHandler mockEndHandler = mock(EndHandler.class);
-		
-		// when
-		testObj.onEnd();
-		testObj.onEnd();
-		
-		// then
-		verify(mockEndHandler, times(0)).onEnd();
-	}
-
-	@Test
 	public void shouldCallTheEndOnlyOnce() {
 		// given
 		EndHandler mockEndHandler = mock(EndHandler.class);
@@ -43,7 +30,7 @@ public class SingleRunTutorEndHandlerTest {
 		testObj.onEnd();
 		
 		// then
-		verify(mockEndHandler, times(1)).onEnd();
+		verify(mockEndHandler).onEnd();
 	}
 
 	@Test
@@ -67,7 +54,7 @@ public class SingleRunTutorEndHandlerTest {
 		testObj.onEndWithDefaultAction();
 		
 		// then
-		verify(executorService, times(1)).execute(ActionType.DEFAULT, testObj);
+		verify(executorService).execute(ActionType.DEFAULT, testObj);
 	}
 
 	@Test
@@ -76,6 +63,6 @@ public class SingleRunTutorEndHandlerTest {
 		testObj.onEnd();
 		
 		// then
-		verify(executorService, times(0)).execute(ActionType.DEFAULT, testObj);
+		verify(executorService, never()).execute(ActionType.DEFAULT, testObj);
 	}
 }
