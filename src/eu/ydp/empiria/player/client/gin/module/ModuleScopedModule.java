@@ -63,7 +63,6 @@ import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
-import eu.ydp.empiria.player.client.module.tutor.SingleRunTutorEndHandler;
 import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
 import eu.ydp.empiria.player.client.module.tutor.actions.OnOkAction;
 import eu.ydp.empiria.player.client.module.tutor.actions.OnPageAllOkAction;
@@ -179,7 +178,7 @@ public class ModuleScopedModule extends AbstractGinModule{
 		bindModuleScoped(OutcomeDrivenActionTypeProvider.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeProvider>>(){});
 		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
 		bind(PersonaService.class).annotatedWith(ModuleScoped.class).toProvider(PersonaServiceModuleScopedProvider.class);
-		bind(TutorEndHandler.class).annotatedWith(ModuleScoped.class).to(SingleRunTutorEndHandler.class);
+		bindModuleScoped(TutorEndHandler.class, new TypeLiteral<ModuleScopedProvider<TutorEndHandler>>() {});
 	}
 
 	private void bindSelection() {
