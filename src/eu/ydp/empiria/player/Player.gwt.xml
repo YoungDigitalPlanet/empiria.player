@@ -38,6 +38,8 @@
 	]]></property-provider>
 
 	<stylesheet src="lightbox2/css/lightbox.css" />
+	<stylesheet src="video-js/video-js.min.css" />
+	<script src="video-js/video.dev.js" />
 	<script src="jquery/jquery-1.7.2.min.js" />
 	<script src="jquery/jquery-ui-1.8.18.custom.min.js" />
 	<script src="jquery/jquery.smooth-scroll.min.js" />

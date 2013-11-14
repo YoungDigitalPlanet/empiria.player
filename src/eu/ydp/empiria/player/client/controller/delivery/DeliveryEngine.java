@@ -35,7 +35,6 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusService;
-import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonModuleConnectorExtension;
@@ -94,9 +93,9 @@ import eu.ydp.gwtutil.client.collections.QueueSet;
  * Responsible for: - loading the content, - managing the content, - delivering
  * content to player, - managing state, results and reports about the
  * assessments.
- *
+ * 
  * @author Rafal Rybacki
- *
+ * 
  */
 public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
@@ -130,7 +129,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
 			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
 			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
-			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager, ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub) {
+			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
+			ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -302,6 +302,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getButtonModule(), ModuleTagName.BUTTON, false));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getBonusModule(), ModuleTagName.BONUS, false));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getProgressBonusModule(), ModuleTagName.PROGRESS_BONUS, false));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getVideoModule(), ModuleTagName.VIDEO, false));
 		loadExtension(singleModuleInstanceProvider.getInfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(singleModuleInstanceProvider.getLinkModuleConnectorExtension());
@@ -410,11 +411,11 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 				tutorService.registerTutor(tutorExtension.getTutorId(), tutorExtension.getTutorConfig());
 			}
 			if (extension instanceof BonusExtension) {
-				BonusExtension bonusExtension = (BonusExtension)extension;
+				BonusExtension bonusExtension = (BonusExtension) extension;
 				bonusService.registerBonus(bonusExtension.getBonusId(), bonusExtension.getBonusConfig());
 			}
 			if (extension instanceof ProgressBonusExtension) {
-				ProgressBonusExtension progressBonusExtension = (ProgressBonusExtension)extension;
+				ProgressBonusExtension progressBonusExtension = (ProgressBonusExtension) extension;
 				progressBonusService.register(progressBonusExtension.getProgressBonusId(), progressBonusExtension.getProgressBonusConfig());
 			}
 		}

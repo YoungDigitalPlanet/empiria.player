@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.tutor.commands;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -43,7 +42,7 @@ public class ShowImageCommandTest {
 		// then
 		verify(view).setBackgroundImage(ASSET_PATH, size);
 		assertThat(command.isFinished(), is(true));
-		verify(endHandler).onEnd(false);
+		verify(endHandler).onEnd();
 	}
 
 	@Test
@@ -53,6 +52,7 @@ public class ShowImageCommandTest {
 
 		// then
 		assertThat(command.isFinished(), is(true));
-		verify(endHandler, never()).onEnd(anyBoolean());
+		verify(endHandler, never()).onEnd();
+		verify(endHandler, never()).onEndWithDefaultAction();
 	}
 }

@@ -202,7 +202,7 @@
 		<delete dir="${test.reports.dev.dir}" />
 		<mkdir dir="${test.reports.dev.dir}" />
 		<junit fork="yes" printsummary="yes" haltonfailure="yes">
-			<jvmarg line="-Xmx256m -Xss16M" />
+			<jvmarg line="-Xmx512m -Xss16M -XX:MaxPermSize=256M" />
 			<sysproperty key="gwt.args" value="-logLevel WARN" />
 			<sysproperty key="java.awt.headless" value="true" />
 			<sysproperty key="net.sourceforge.cobertura.datafile"
