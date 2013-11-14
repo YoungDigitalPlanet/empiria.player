@@ -1,12 +1,15 @@
 package eu.ydp.empiria.player.client.module.tutor;
 
+
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import eu.ydp.empiria.player.client.module.EndHandler;
 
@@ -64,5 +67,25 @@ public class SingleRunTutorEndHandlerTest {
 		
 		// then
 		verify(executorService, never()).execute(ActionType.DEFAULT, testObj);
+	}
+	
+	@Test
+	public void shouldFireOnceWhenTheReferenceIsCircular() {
+		// given
+		EndHandler endHandler = mock(EndHandler.class);
+		doAnswer(new Answer<Object>() {
+			@Override
+			public Object answer(InvocationOnMock invocation) throws Throwable {
+				testObj.onEnd();
+				return null;
+			}
+		}).when(endHandler).onEnd();
+		
+		// when
+		testObj.setEndHandler(endHandler);
+		testObj.onEnd();
+		
+		// then
+		verify(endHandler).onEnd();
 	}
 }
