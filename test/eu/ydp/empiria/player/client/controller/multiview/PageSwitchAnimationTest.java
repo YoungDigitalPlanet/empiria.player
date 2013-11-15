@@ -9,7 +9,6 @@ import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.controller.multiview.animation.PageSwitchAnimation;
 
 @SuppressWarnings("PMD")
-@RunOutsideTestSuite
 public class PageSwitchAnimationTest extends GWTTestCase {
 
 	public void testAnimation() {
