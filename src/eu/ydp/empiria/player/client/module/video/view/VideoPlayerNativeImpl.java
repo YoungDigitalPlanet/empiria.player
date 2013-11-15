@@ -4,6 +4,9 @@ import static com.google.gwt.core.client.GWT.getModuleBaseURL;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
+import eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler;
+
 public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
 	private static final String FALLBACK_SWF = getModuleBaseURL() + "/videojs/video-js.swf";
@@ -138,7 +141,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 					.on(
 							event,
 							function() {
-								handler.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerControlHandler::handle(Leu/ydp/empiria/player/client/module/video/view/VideoPlayerControl;)(javaPlayer);
+								handler.@eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler::handle(Leu/ydp/empiria/player/client/module/video/VideoPlayerControl;)(javaPlayer);
 							});
 		}
 	}-*/;

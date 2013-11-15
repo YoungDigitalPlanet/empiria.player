@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.video.view;
+package eu.ydp.empiria.player.client.module.video.wrappers;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.VideoElement;

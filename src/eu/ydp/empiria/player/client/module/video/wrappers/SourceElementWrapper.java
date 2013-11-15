@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.video.view;
+package eu.ydp.empiria.player.client.module.video.wrappers;
 
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.SourceElement;
@@ -10,12 +10,15 @@ public class SourceElementWrapper {
 	public SourceElementWrapper(SourceElement sourceElement) {
 		this.sourceElement = sourceElement;
 	}
-	public void setSrc(String url){
+
+	public void setSrc(String url) {
 		sourceElement.setSrc(url);
 	}
-	public void setType(String type){
+
+	public void setType(String type) {
 		sourceElement.setType(type);
 	}
+
 	public Node asNode() {
 		return sourceElement;
 	}

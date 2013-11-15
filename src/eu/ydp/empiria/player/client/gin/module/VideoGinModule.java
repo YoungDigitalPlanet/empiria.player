@@ -4,14 +4,14 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 
 import eu.ydp.empiria.player.client.gin.factory.VideoModuleFactory;
-import eu.ydp.empiria.player.client.module.video.view.SourceElementWrapperProvider;
-import eu.ydp.empiria.player.client.module.video.view.SourceElementWrapper;
-import eu.ydp.empiria.player.client.module.video.view.VideoElementWrapperProvider;
-import eu.ydp.empiria.player.client.module.video.view.VideoElementWrapper;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayerNative;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.module.video.view.VideoViewImpl;
+import eu.ydp.empiria.player.client.module.video.wrappers.SourceElementWrapper;
+import eu.ydp.empiria.player.client.module.video.wrappers.SourceElementWrapperProvider;
+import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
+import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapperProvider;
 
 public class VideoGinModule extends AbstractGinModule {
 

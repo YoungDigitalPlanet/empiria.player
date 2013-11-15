@@ -22,8 +22,8 @@ import com.google.gwt.dom.client.SourceElement;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.video.structure.SourceBean;
-import eu.ydp.empiria.player.client.module.video.view.SourceElementWrapper;
-import eu.ydp.empiria.player.client.module.video.view.VideoElementWrapper;
+import eu.ydp.empiria.player.client.module.video.wrappers.SourceElementWrapper;
+import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VideoElementWrapperBuilderTest {

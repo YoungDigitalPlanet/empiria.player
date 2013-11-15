@@ -5,6 +5,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
+
 public class VideoPlayer extends Widget {
 
 	private final VideoPlayerNative nativePlayer;

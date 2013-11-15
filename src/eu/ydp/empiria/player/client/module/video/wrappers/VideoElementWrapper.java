@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.video.view;
+package eu.ydp.empiria.player.client.module.video.wrappers;
 
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.VideoElement;
@@ -38,12 +38,12 @@ public class VideoElementWrapper {
 	public <T extends Node> T appendChild(T newChild) {
 		return videoElement.appendChild(newChild);
 	}
-	
-	public String getId(){
+
+	public String getId() {
 		return videoElement.getId();
 	}
-	
-	public Node asNode(){
+
+	public Node asNode() {
 		return videoElement;
 	}
 }

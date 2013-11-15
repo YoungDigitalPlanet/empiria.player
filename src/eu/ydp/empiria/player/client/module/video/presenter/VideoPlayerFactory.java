@@ -6,8 +6,8 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.gin.factory.VideoModuleFactory;
 import eu.ydp.empiria.player.client.module.video.VideoElementWrapperBuilder;
 import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
-import eu.ydp.empiria.player.client.module.video.view.VideoElementWrapper;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
+import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
 public class VideoPlayerFactory {
 
