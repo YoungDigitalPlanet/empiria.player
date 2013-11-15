@@ -3,8 +3,6 @@ package eu.ydp.empiria.player.client.module.video.view;
 import static com.google.gwt.core.client.GWT.getModuleBaseURL;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.VideoElement;
 
 public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
@@ -13,19 +11,8 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	private String playerId;
 	private int startPosition = 0;
 
-	@Override
-	public VideoElement createVideoElement() {
-		playerId = Document.get().createUniqueId();
-
-		VideoElement videoElem = Document.get().createVideoElement();
-
-		videoElem.setId(playerId);
-		videoElem.addClassName("video-js");
-
-		return videoElem;
-	}
-
-	public void initPlayer() {
+	public void initPlayer(String playerId) {
+		this.playerId = playerId;
 		playerObject = initPlayerNative();
 
 		if ((startPosition != 0) && !isFlashFallback()) { // Because of lack

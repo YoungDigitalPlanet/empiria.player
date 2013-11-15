@@ -4,12 +4,11 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.SourceElement;
 import com.google.inject.Provider;
 
-public class SourceElementProvider implements Provider<SourceElement> {
+public class SourceElementWrapperProvider implements Provider<SourceElementWrapper> {
 
 	@Override
-	public SourceElement get() {
+	public SourceElementWrapper get() {
 		SourceElement sourceElement = Document.get().createSourceElement();
-		return sourceElement;
+		return new SourceElementWrapper(sourceElement);
 	}
-
 }
