@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.video.view;
+package eu.ydp.empiria.player.client.module.video;
 
 public interface VideoPlayerControl {
 
@@ -7,7 +7,7 @@ public interface VideoPlayerControl {
 	void pause();
 
 	void setCurrentTime(float position);
-	
+
 	float getCurrentTime();
 
 	void addPlayHandler(VideoPlayerControlHandler handler);
