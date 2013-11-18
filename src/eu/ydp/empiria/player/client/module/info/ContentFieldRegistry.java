@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 public class ContentFieldRegistry {
 
 	@Inject
-	private ContentFieldInfoListInitializer contentFieldInfoListInitializer;
+	private ContentFieldInfoListProvider contentFieldInfoListProvider;
 	@Inject
 	private ContentFieldInfoSearcher contentFieldInfoSearcher;
 	private final List<ContentFieldInfo> fieldInfos = Lists.newArrayList();
@@ -20,7 +20,7 @@ public class ContentFieldRegistry {
 	}
 
 	private void register() {
-		fieldInfos.addAll(contentFieldInfoListInitializer.initilize());
+		fieldInfos.addAll(contentFieldInfoListProvider.get());
 	}
 
 	private boolean isRegistered() {

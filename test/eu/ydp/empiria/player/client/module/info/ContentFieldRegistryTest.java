@@ -27,7 +27,7 @@ public class ContentFieldRegistryTest {
 	private ContentFieldRegistry testObj;
 
 	@Mock
-	private ContentFieldInfoListInitializer contentFieldInfoListInitializer;
+	private ContentFieldInfoListProvider contentFieldInfoListProvider;
 	@Mock
 	private ContentFieldInfoSearcher contentFieldInfoSearcher;
 	@Mock
@@ -52,7 +52,7 @@ public class ContentFieldRegistryTest {
 		String fieldName = "fieldName";
 		List<ContentFieldInfo> contentFieldInfosFromInitializer = Lists.<ContentFieldInfo> newArrayList(new ContentFieldInfo());
 
-		when(contentFieldInfoListInitializer.initilize()).thenReturn(contentFieldInfosFromInitializer);
+		when(contentFieldInfoListProvider.get()).thenReturn(contentFieldInfosFromInitializer);
 		when(contentFieldInfoSearcher.findByTagName(fieldName, fieldInfos)).thenReturn(expectedResult);
 		// when
 
@@ -60,7 +60,7 @@ public class ContentFieldRegistryTest {
 
 		// then
 		InOrder inOrder = inOrder(mocksCollector.getMocks());
-		inOrder.verify(contentFieldInfoListInitializer).initilize();
+		inOrder.verify(contentFieldInfoListProvider).get();
 		inOrder.verify(contentFieldInfoSearcher).findByTagName(fieldName, fieldInfos);
 
 		assertSame(expectedResult, result);

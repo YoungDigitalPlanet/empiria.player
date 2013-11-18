@@ -25,10 +25,10 @@ import eu.ydp.empiria.player.client.module.info.handler.ResultValueHandler;
 import eu.ydp.empiria.player.client.module.info.handler.TitleValueHandler;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ContentFieldInfoListInitializerTest {
+public class ContentFieldInfoListProviderTest {
 
 	@InjectMocks
-	private ContentFieldInfoListInitializer testObj;
+	private ContentFieldInfoListProvider testObj;
 	@Mock
 	private DataSourceDataSupplier dataSourceDataSupplier;
 	@Mock
@@ -79,11 +79,11 @@ public class ContentFieldInfoListInitializerTest {
 	private ContentFieldInfo testResultContentFieldInfo;
 
 	@Test
-	public void testInitilize() {
+	public void testGet() {
 		// given
 		prepareMocks();
 		// when
-		List<ContentFieldInfo> result = testObj.initilize();
+		List<ContentFieldInfo> result = testObj.get();
 		// then
 		assertEquals(19, result.size());
 		assertTrue(result.contains(itemTodoContentFieldInfo));
