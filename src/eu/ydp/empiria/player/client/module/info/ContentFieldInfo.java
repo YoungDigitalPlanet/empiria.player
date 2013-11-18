@@ -90,7 +90,6 @@ public class ContentFieldInfo {
 	}
 
 	private String format(String pattern, String value) {
-		// the solution for formatting string in GWT
 		Splitter splitter = Splitter.on("%1$s");
 		Joiner joiner = Joiner.on(value);
 		return joiner.join(splitter.split(pattern));
