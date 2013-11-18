@@ -91,6 +91,66 @@ test {
     jvmArgs( ['-XX:MaxPermSize=256M', '-Xss16M']  )
 }
 
+class GWTCompile extends DefaultTask {
+    private String buildDir;
+    private String module;
+
+    public void setBuildDir( String dir ) {
+        this.buildDir = dir;
+    }
+    public void setModule( String module ) {
+        this.module = module;
+    }
+
+
+    @TaskAction
+    public void exec() {
+        def jExec = project.tasks.create( name: 'mostStupid', type: JavaExec )
+
+        def javaConvention = project.getConvention().getPlugin(JavaPluginConvention);
+        def main = javaConvention.getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME);
+
+        jExec.inputs.source( main.java.srcDirs )
+        jExec.inputs.dir( main.output.resourcesDir )
+        jExec.outputs.dir( buildDir )
+        jExec.outputs.upToDateSpec = new org.gradle.api.specs.AndSpec()
+
+        new File(buildDir).mkdirs()
+
+        jExec.main = 'com.google.gwt.dev.Compiler'
+        jExec.classpath {
+            [
+                main.java.srcDirs,           // Java source
+                main.output.resourcesDir,    // Generated resources
+                main.output.classesDir,      // Generated classes
+                main.compileClasspath,       // Deps
+            ]   
+        }
+     
+        jExec.args =
+            [
+                module, // Your GWT module
+                '-war', buildDir,
+                '-logLevel', 'INFO',
+                '-localWorkers', '2',
+                '-XdisableCastChecking'
+            ]
+
+        jExec.systemProperty 'gwt.args', '-logLevel WARN'
+        jExec.systemProperty 'java.awt.headless', 'true'
+
+        jExec.maxHeapSize = '512M'
+        jExec.jvmArgs( '-XX:MaxPermSize=256M' )
+
+        jExec.exec()
+    }
+}
+
+task compileMain(dependsOn: [classes], type: GWTCompile) {
+    module = 'eu.ydp.empiria.player.Player'
+    buildDir = "${project.buildDir}/gwt"
+}
+
 task compileGwt (dependsOn: [classes, test], type: JavaExec) {
     def buildDir = "${project.buildDir}/gwt"
      
