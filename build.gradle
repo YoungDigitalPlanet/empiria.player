@@ -1,4 +1,5 @@
 import org.apache.ivy.core.settings.IvySettings
+import GWTCompile
 
 apply plugin: 'java'
 sourceCompatibility = '1.5'
@@ -91,46 +92,13 @@ test {
     jvmArgs( ['-XX:MaxPermSize=256M', '-Xss16M']  )
 }
 
-class GWTCompile extends DefaultTask {
-    def String buildDir;
-    def String module;
-
-    @TaskAction
-    public void exec() {
-        def javaConvention = project.getConvention().getPlugin(JavaPluginConvention);
-        def mainSourceSet = javaConvention.getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME);
-        project.file(buildDir).mkdirs()
-
-        project.javaexec {
-            main = 'com.google.gwt.dev.Compiler'
-            classpath {
-                [
-                    mainSourceSet.java.srcDirs,           // Java source
-                    mainSourceSet.output.resourcesDir,    // Generated resources
-                    mainSourceSet.output.classesDir,      // Generated classes
-                    mainSourceSet.compileClasspath,       // Deps
-                ]   
-            }
-         
-            args =
-                [
-                    this.module, // Your GWT module
-                    '-war', this.buildDir,
-                    '-logLevel', 'INFO',
-                    '-localWorkers', '2',
-                    '-XdisableCastChecking'
-                ]
-
-            systemProperty 'gwt.args', '-logLevel WARN'
-            systemProperty 'java.awt.headless', 'true'
-
-            maxHeapSize = '512M'
-            jvmArgs( '-XX:MaxPermSize=256M' )
-        }
-    }
-}
-
 task compileMain(dependsOn: [classes], type: GWTCompile) {
     module = 'eu.ydp.empiria.player.Player'
-    buildDir = "${project.buildDir}/gwt"
+    buildDir = file("war/empiria.player")
 }
+task compileWebkit(dependsOn: [classes], type: GWTCompile) {
+    module = 'eu.ydp.empiria.player.Player_webkit'
+    buildDir = file("war/empiria.player_webkit")
+}
+
+task compileAll( dependsOn: [compileMain, compileWebkit] )
