@@ -1,24 +1,23 @@
 package eu.ydp.empiria.player.client.controller.style;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import eu.ydp.gwtutil.client.collections.QueueSet;
-
 public class StyleLinkManager {
 	private final Map<String, JavaScriptObject> solidStyles = new HashMap<String, JavaScriptObject>();
 
-	public void registerAssessmentStyles(QueueSet<String> styleLinks) {
+	public void registerAssessmentStyles(List<String> styleLinks) {
 		doRegisterStyleLinks(styleLinks, false);
 	}
 
-	public void registerItemStyles(QueueSet<String> styleLinks) {
+	public void registerItemStyles(List<String> styleLinks) {
 		doRegisterStyleLinks(styleLinks, true);
 	}
 
-	private void doRegisterStyleLinks(QueueSet<String> styleLinks, boolean areRemovable) {
+	private void doRegisterStyleLinks(List<String> styleLinks, boolean areRemovable) {
 		for (String link : styleLinks) {
 			addStyleIfNotPresent(link);
 		}

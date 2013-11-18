@@ -87,7 +87,6 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
-import eu.ydp.gwtutil.client.collections.QueueSet;
 
 /**
  * Responsible for: - loading the content, - managing the content, - delivering
@@ -549,13 +548,13 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	public void updateAssessmentStyle() {
 		String userAgent = styleManager.getUserAgent();
-		QueueSet<String> links = dataManager.getAssessmentStyleLinksForUserAgent(userAgent);
+		List<String> links = dataManager.getAssessmentStyleLinksForUserAgent(userAgent);
 		styleManager.registerAssessmentStyles(links);
 	}
 
 	public void updatePageStyle() {
 		String userAgent = styleManager.getUserAgent();
-		QueueSet<String> links = dataManager.getPageStyleLinksForUserAgent(flowManager.getPageReference(), userAgent);
+		List<String> links = dataManager.getPageStyleLinksForUserAgent(flowManager.getPageReference(), userAgent);
 		styleManager.registerItemStyles(links);
 	}
 
