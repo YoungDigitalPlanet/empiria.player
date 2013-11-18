@@ -2,12 +2,20 @@ import org.apache.ivy.core.settings.IvySettings
 import GWTCompile
 
 apply plugin: 'java'
-sourceCompatibility = '1.5'
+sourceCompatibility = 1.5
 
 File userHome = new File( System.getProperty("user.home") );
 
 IvySettings ivySettings = new IvySettings();
 ivySettings.load(new File(userHome, ".ivy2/ivysettings.xml") );
+
+def empiriaWar = file( "war")
+def empiriaBuildDir = new File( empiriaWar, "empiria.player" )
+def empiriaWebkitWar = file( "build/gwt")
+def empiriaWebkitBuildDir = new File( empiriaWebkitWar, "empiria.player" )
+
+def tstamp=new Date().format( "yyyyMMddHHmmssSSS")
+def buildnumber="${tstamp}"
 
 repositories {
     ivy {
@@ -94,11 +102,47 @@ test {
 
 task compileMain(dependsOn: [classes], type: GWTCompile) {
     module = 'eu.ydp.empiria.player.Player'
-    buildDir = file("war/empiria.player")
+    buildDir = empiriaWar
 }
 task compileWebkit(dependsOn: [classes], type: GWTCompile) {
     module = 'eu.ydp.empiria.player.Player_webkit'
-    buildDir = file("war/empiria.player_webkit")
+    buildDir = empiriaWebkitWar
+}
+
+
+project.ext.metadataProperties = [version: version, tstamp: tstamp, buildnumber: buildnumber]
+
+def configCopyMetaInfoAndZip( playerDir, targetZip ) {
+    return {
+        inputs.properties( metadataProperties )
+        inputs.file file("metadata.template.xml")
+
+        doFirst {
+            copy {
+                from file("metadata.template.xml")
+                into playerDir
+                rename ".*", "metadata.xml"
+                expand( metadataProperties )
+            }
+        }
+
+        archiveName = targetZip
+        destinationDir = file( "dist" )
+        include( [ "**/*"] )
+        from playerDir
+    }
+}
+
+task zipMain( dependsOn: [compileMain], type: Zip ) {
+    configure configCopyMetaInfoAndZip( empiriaBuildDir, "empiriaplayer.zip")
+}
+task zipWebkit( dependsOn: [compileWebkit], type: Zip ) {
+    configure configCopyMetaInfoAndZip( empiriaWebkitBuildDir, "empiriaplayer_webkit.zip")
 }
 
 task compileAll( dependsOn: [compileMain, compileWebkit] )
+
+task distMain( dependsOn: [test, zipMain] )
+task distWebkit( dependsOn: [test, zipWebkit] )
+
+task dist( dependsOn: [distMain, distWebkit] )
