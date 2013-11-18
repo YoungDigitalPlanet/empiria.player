@@ -92,103 +92,45 @@ test {
 }
 
 class GWTCompile extends DefaultTask {
-    private String buildDir;
-    private String module;
-
-    public void setBuildDir( String dir ) {
-        this.buildDir = dir;
-    }
-    public void setModule( String module ) {
-        this.module = module;
-    }
-
+    def String buildDir;
+    def String module;
 
     @TaskAction
     public void exec() {
-        def jExec = project.tasks.create( name: 'mostStupid', type: JavaExec )
-
         def javaConvention = project.getConvention().getPlugin(JavaPluginConvention);
-        def main = javaConvention.getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME);
+        def mainSourceSet = javaConvention.getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME);
+        project.file(buildDir).mkdirs()
 
-        jExec.inputs.source( main.java.srcDirs )
-        jExec.inputs.dir( main.output.resourcesDir )
-        jExec.outputs.dir( buildDir )
-        jExec.outputs.upToDateSpec = new org.gradle.api.specs.AndSpec()
+        project.javaexec {
+            main = 'com.google.gwt.dev.Compiler'
+            classpath {
+                [
+                    mainSourceSet.java.srcDirs,           // Java source
+                    mainSourceSet.output.resourcesDir,    // Generated resources
+                    mainSourceSet.output.classesDir,      // Generated classes
+                    mainSourceSet.compileClasspath,       // Deps
+                ]   
+            }
+         
+            args =
+                [
+                    this.module, // Your GWT module
+                    '-war', this.buildDir,
+                    '-logLevel', 'INFO',
+                    '-localWorkers', '2',
+                    '-XdisableCastChecking'
+                ]
 
-        new File(buildDir).mkdirs()
+            systemProperty 'gwt.args', '-logLevel WARN'
+            systemProperty 'java.awt.headless', 'true'
 
-        jExec.main = 'com.google.gwt.dev.Compiler'
-        jExec.classpath {
-            [
-                main.java.srcDirs,           // Java source
-                main.output.resourcesDir,    // Generated resources
-                main.output.classesDir,      // Generated classes
-                main.compileClasspath,       // Deps
-            ]   
+            maxHeapSize = '512M'
+            jvmArgs( '-XX:MaxPermSize=256M' )
         }
-     
-        jExec.args =
-            [
-                module, // Your GWT module
-                '-war', buildDir,
-                '-logLevel', 'INFO',
-                '-localWorkers', '2',
-                '-XdisableCastChecking'
-            ]
-
-        jExec.systemProperty 'gwt.args', '-logLevel WARN'
-        jExec.systemProperty 'java.awt.headless', 'true'
-
-        jExec.maxHeapSize = '512M'
-        jExec.jvmArgs( '-XX:MaxPermSize=256M' )
-
-        jExec.exec()
     }
 }
 
 task compileMain(dependsOn: [classes], type: GWTCompile) {
     module = 'eu.ydp.empiria.player.Player'
     buildDir = "${project.buildDir}/gwt"
-}
-
-task compileGwt (dependsOn: [classes, test], type: JavaExec) {
-    def buildDir = "${project.buildDir}/gwt"
-     
-    inputs.source sourceSets.main.java.srcDirs
-    inputs.dir sourceSets.main.output.resourcesDir
-    outputs.dir buildDir
-     
-    // Workaround for incremental build (GRADLE-1483)
-    outputs.upToDateSpec = new org.gradle.api.specs.AndSpec()
-     
-    doFirst {
-        file(buildDir).mkdirs()
-    }
-     
-    main = 'com.google.gwt.dev.Compiler'
-     
-    classpath {
-        [
-            sourceSets.main.java.srcDirs,           // Java source
-            sourceSets.main.output.resourcesDir,    // Generated resources
-            sourceSets.main.output.classesDir,      // Generated classes
-            sourceSets.main.compileClasspath,       // Deps
-        ]   
-    }
-     
-    args =
-        [
-            'eu.ydp.empiria.player.Player', // Your GWT module
-            '-war', buildDir,
-            '-logLevel', 'INFO',
-            '-localWorkers', '2',
-            '-XdisableCastChecking'
-            // '-draftCompile' // Speeds up compile with 25%
-        ]
-         
-    systemProperty 'gwt.args', '-logLevel WARN'
-    systemProperty 'java.awt.headless', 'true'
-
-    maxHeapSize = '512M'
-    jvmArgs( '-XX:MaxPermSize=256M' )
 }
