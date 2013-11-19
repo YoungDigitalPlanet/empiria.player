@@ -17,7 +17,6 @@ import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
-import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
@@ -39,7 +38,6 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	private boolean isDefaultData;
 	private List<Element> items = null;
 
-
 	public void initializeAssessmentData(XmlData data) {
 		if (isItemDocument(data.getDocument())) {
 			isDefaultData = true;
@@ -49,8 +47,8 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 			initializeData(data);
 		}
 	}
-	
-	public void setAssessmentData(XmlData data){
+
+	public void setAssessmentData(XmlData data) {
 		this.data = data;
 		this.assessmentData = new AssessmentData(data, null);
 	}
@@ -147,7 +145,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 					}
 				}
 				itemUrls = tmpItemUrls;
-			} catch (Exception e) {//NOPMD
+			} catch (Exception e) {// NOPMD
 			}
 		}
 
@@ -156,7 +154,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
 	/**
 	 * Zwraca wezel assessmentItemRef o wskazanym id
-	 *
+	 * 
 	 * @param index
 	 *            index wezla
 	 * @return Element lub null gdy element o podanym indeksie nie istnieje
@@ -190,11 +188,11 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		return itemsCount;
 	}
 
-	public QueueSet<String> getStyleLinksForUserAgent(String userAgent) {
-		QueueSet<String> declarations = new QueueSet<String>();
+	public List<String> getStyleLinksForUserAgent(String userAgent) {
+		List<String> declarations = new ArrayList<String>();
 
 		if (styleDeclaration != null) {
-			declarations.appendAll(styleDeclaration.getStyleLinksForUserAgent(userAgent));
+			declarations.addAll(styleDeclaration.getStyleLinksForUserAgent(userAgent));
 		}
 
 		declarations.addAll(skinData.getStyleLinksForUserAgent(userAgent));
