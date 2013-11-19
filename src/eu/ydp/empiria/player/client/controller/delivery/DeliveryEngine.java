@@ -87,6 +87,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
+import eu.ydp.gwtutil.client.UserAgentUtil;
 
 /**
  * Responsible for: - loading the content, - managing the content, - delivering
@@ -111,7 +112,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private final SingleModuleInstanceProvider singleModuleInstanceProvider;
 	private final ModulesRegistry modulesRegistry;
 
-	private StyleLinkManager styleManager;
+	private final StyleLinkManager styleManager;
 	private ExtensionsManager extensionsManager;
 	private final FlowManager flowManager;
 	private final DeliveryEventsHub deliveryEventsHub;
@@ -120,6 +121,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private final TutorService tutorService;
 	private final BonusService bonusService;
 	private final ProgressBonusService progressBonusService;
+	private final UserAgentUtil userAgentUtil;
 
 	private JavaScriptObject playerJsObject;
 	private String stateAsync;
@@ -129,11 +131,12 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
 			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
 			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
-			ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub) {
+			ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
 		this.eventsBus = eventsBus;
+		this.styleManager = styleManager;
 		this.extensionFactory = extensionFactory;
 		this.moduleProviderFactory = moduleProviderFactory;
 		this.singleModuleInstanceProvider = singleModuleInstanceProvider;
@@ -144,8 +147,10 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.flowManager = flowManager;
 		this.deliveryEventsHub = deliveryEventsHub;
 		this.progressBonusService = progressBonusService;
+		this.userAgentUtil = userAgentUtil;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
+
 		eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this);
 		eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.values()), this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), sessionTimeUpdater);
@@ -153,8 +158,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	public void init(JavaScriptObject playerJsObject) {
 		this.playerJsObject = playerJsObject;
-
-		styleManager = new StyleLinkManager();
 
 		extensionsManager = PlayerGinjectorFactory.getPlayerGinjector().getExtensionsManager();
 
@@ -547,13 +550,13 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	}
 
 	public void updateAssessmentStyle() {
-		String userAgent = styleManager.getUserAgent();
+		String userAgent = userAgentUtil.getUserAgentString();
 		List<String> links = dataManager.getAssessmentStyleLinksForUserAgent(userAgent);
 		styleManager.registerAssessmentStyles(links);
 	}
 
 	public void updatePageStyle() {
-		String userAgent = styleManager.getUserAgent();
+		String userAgent = userAgentUtil.getUserAgentString();
 		List<String> links = dataManager.getPageStyleLinksForUserAgent(flowManager.getPageReference(), userAgent);
 		styleManager.registerItemStyles(links);
 	}
