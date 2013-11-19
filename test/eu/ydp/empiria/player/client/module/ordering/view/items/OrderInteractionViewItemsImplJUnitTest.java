@@ -107,7 +107,7 @@ public class OrderInteractionViewItemsImplJUnitTest extends AbstractTestBaseWith
 		instance.addItem("id", widget);
 		List<String> asList = Arrays.asList("a");
 		instance.getItemsInOrder(asList);
-		verify(itemsSorter).getItemsInOrder(Mockito.eq(asList), Mockito.anyMap());
+		verify(itemsSorter).getItemsInOrder(Mockito.eq(asList), Mockito.anyMapOf(String.class, IsWidget.class));
 	}
 
 	public static <T> Stubber executeComand() {
