@@ -100,7 +100,6 @@ public class OrderInteractionViewItemsImplJUnitTest extends AbstractTestBaseWith
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void getItemsInOrder() throws Exception {
 		IsWidget widget = mock(IsWidget.class);
