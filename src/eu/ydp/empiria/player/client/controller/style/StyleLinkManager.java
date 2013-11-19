@@ -1,13 +1,13 @@
 package eu.ydp.empiria.player.client.controller.style;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class StyleLinkManager {
-	private final Map<String, JavaScriptObject> solidStyles = new HashMap<String, JavaScriptObject>();
+
+	private final List<StyleModel> solidStyles = new ArrayList<StyleModel>();
 
 	public void registerAssessmentStyles(List<String> styleLinks) {
 		doRegisterStyleLinks(styleLinks, false);
@@ -24,10 +24,20 @@ public class StyleLinkManager {
 	}
 
 	private void addStyleIfNotPresent(String link) {
-		if (!solidStyles.containsKey(link)) {
+		if (!containsStyle(link)) {
 			JavaScriptObject newLink = appendStyleLink(link);
-			solidStyles.put(link, newLink);
+
+			solidStyles.add(new StyleModel(link, newLink));
 		}
+	}
+
+	private boolean containsStyle(String link) {
+		for (StyleModel styleModel : solidStyles) {
+			if (link.equals(styleModel.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public native String getUserAgent() /*-{
