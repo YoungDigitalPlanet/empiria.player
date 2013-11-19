@@ -2,6 +2,7 @@ import org.apache.ivy.core.settings.IvySettings
 import GWTCompile
 
 apply plugin: 'java'
+apply plugin: 'jacoco'
 sourceCompatibility = 1.5
 
 File userHome = new File( System.getProperty("user.home") );
@@ -99,6 +100,14 @@ test {
     maxHeapSize = '512M'
     jvmArgs( ['-XX:MaxPermSize=256M', '-Xss16M']  )
 }
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        //html.destination "${buildDir}/jacocoHtml"
+    }
+}
+test.finalizedBy jacocoTestReport
 
 task compileMain(dependsOn: [classes], type: GWTCompile) {
     module = 'eu.ydp.empiria.player.Player'
