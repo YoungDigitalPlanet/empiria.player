@@ -2,6 +2,7 @@ import org.apache.ivy.core.settings.IvySettings
 import GWTCompile
 
 apply plugin: 'java'
+apply plugin: 'jacoco'
 sourceCompatibility = 1.5
 
 File userHome = new File( System.getProperty("user.home") );
@@ -88,17 +89,42 @@ sourceSets {
     sourceSets.test.runtimeClasspath += files(sourceSets.test.java.srcDirs)
 }
 
-
-test {
+task testJUnit( type: Test ) {
+    jacoco {
+        enabled = true
+    }
     useJUnit()
     include "**/JUnitTestSuite.*"
+
+    forkEvery = 1
+    maxHeapSize = '512M'
+    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss16M']  )
+}
+task testGWTUnit( type: Test ) {
+    jacoco {
+        enabled = false
+    }
+    useJUnit()
     include "**/GWTTestCaseSuite.*"
     include "**/MainFlowProcessorTest.*"
 
     forkEvery = 1
     maxHeapSize = '512M'
     jvmArgs( ['-XX:MaxPermSize=256M', '-Xss16M']  )
+
 }
+
+task test( overwrite: true, dependsOn: [testJUnit, testGWTUnit] )
+
+jacocoTestReport {
+    executionData = files("${buildDir}/jacoco/testJUnit.exec")
+    reports {
+        xml.enabled true
+        csv.enabled false
+        //html.destination "${buildDir}/jacocoHtml"
+    }
+}
+testJUnit.finalizedBy jacocoTestReport
 
 task compileMain(dependsOn: [classes], type: GWTCompile) {
     module = 'eu.ydp.empiria.player.Player'
