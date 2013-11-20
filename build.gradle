@@ -4,6 +4,7 @@ import GWTCompile
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'eclipse'
+apply plugin: 'sonar-runner'
 sourceCompatibility = 1.5
 
 File userHome = new File( System.getProperty("user.home") );
@@ -16,8 +17,11 @@ def empiriaBuildDir = new File( empiriaWar, "empiria.player" )
 def empiriaWebkitWar = file( "build/gwt")
 def empiriaWebkitBuildDir = new File( empiriaWebkitWar, "empiria.player" )
 
-def tstamp=new Date().format( "yyyyMMddHHmmssSSS")
-def buildnumber="${tstamp}"
+ext {
+    tstamp=new Date().format( "yyyyMMddHHmmssSSS")
+    buildnumber="${tstamp}"
+    jacocoReport = "${buildDir}/jacoco/testJUnit.exec"
+}
 
 repositories {
     ivy {
@@ -76,6 +80,18 @@ eclipse {
         containers 'com.google.gwt.eclipse.core.GWT_CONTAINER'
     }
 }
+sonarRunner {
+    sonarProperties {
+        property "sonar.host.url", sonar_host_url
+        property "sonar.jdbc.url", sonar_jdbc_url
+        property "sonar.jdbc.driverClassName", sonar_jdbc_driverClassName
+        property "sonar.jdbc.username", sonar_jdbc_username
+        property "sonar.jdbc.password", sonar_jdbc_password
+        property "sonar.projectName",   "empiria.player-gradle"
+
+        property "sonar.core.codeCoveragePlugin", "jacoco"
+    }
+}
 
 sourceSets {
     main {
@@ -126,14 +142,19 @@ task testGWTUnit( type: Test ) {
 
 }
 
-task test( overwrite: true, dependsOn: [testJUnit, testGWTUnit] )
+task test( overwrite: true, dependsOn: [testJUnit,testGWTUnit] ) {
+    ext {
+        // this is needed for sonarRunner
+        reports = [junitXml: [destination: file("${buildDir}/test-results")]]
+        jacoco = [destinationFile: file(jacocoReport)]
+    }
+}
 
 jacocoTestReport {
-    executionData = files("${buildDir}/jacoco/testJUnit.exec")
+    executionData = files(jacocoReport)
     reports {
         xml.enabled true
         csv.enabled false
-        //html.destination "${buildDir}/jacocoHtml"
     }
 }
 testJUnit.finalizedBy jacocoTestReport
@@ -148,10 +169,10 @@ task compileWebkit(dependsOn: [classes], type: GWTCompile) {
 }
 
 
-project.ext.metadataProperties = [version: version, tstamp: tstamp, buildnumber: buildnumber]
-
 def configCopyMetaInfoAndZip( playerDir, targetZip ) {
     return {
+        def metadataProperties = [version: version, tstamp: tstamp, buildnumber: buildnumber]
+
         inputs.properties( metadataProperties )
         inputs.file file("metadata.template.xml")
 
@@ -176,6 +197,9 @@ task zipMain( dependsOn: [compileMain], type: Zip ) {
 }
 task zipWebkit( dependsOn: [compileWebkit], type: Zip ) {
     configure configCopyMetaInfoAndZip( empiriaWebkitBuildDir, "empiriaplayer_webkit.zip")
+}
+task cleanCache(dependsOn: clean) {
+    delete "gwt-unitCache/"
 }
 
 task compileAll( dependsOn: [compileMain, compileWebkit] )
