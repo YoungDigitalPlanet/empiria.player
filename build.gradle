@@ -3,6 +3,7 @@ import GWTCompile
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
+apply plugin: 'eclipse'
 sourceCompatibility = 1.5
 
 File userHome = new File( System.getProperty("user.home") );
@@ -63,6 +64,17 @@ dependencies {
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
     testCompile 'xmlunit:xmlunit:1.3'
     testCompile 'org.reflections:reflections:0.9.9-RC1'
+}
+
+eclipse {
+    project {
+        natures 'com.google.gwt.eclipse.core.gwtNature'
+        buildCommand 'com.google.gdt.eclipse.core.webAppProjectValidator'
+        buildCommand 'com.google.gwt.eclipse.core.gwtProjectValidator'
+    }
+    classpath {
+        containers 'com.google.gwt.eclipse.core.GWT_CONTAINER'
+    }
 }
 
 sourceSets {
