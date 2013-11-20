@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import static eu.ydp.gwtutil.client.util.MediaChecker.isHtml5Mp3Support;
+import static eu.ydp.gwtutil.client.util.MediaChecker.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,13 +38,16 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
 	protected boolean initialized;
 
-	@Inject private MediaWrappersPairFactory pairFactory;
-	@Inject private MediaExecutorsStopper mediaExecutorsStopper;
-
-	@Inject private Instance<HTML5MediaExecutorFactory> html5MediaExecutorFactoryProvider;
-	
-	@Inject	private ExternalFullscreenVideoAvailability externalFullscreenVideoAvailability;
-	@Inject private Provider<FullscreenVideoExecutor> fullscreenVideoExecutorProvider;
+	@Inject
+	private MediaWrappersPairFactory pairFactory;
+	@Inject
+	private MediaExecutorsStopper mediaExecutorsStopper;
+	@Inject
+	private Instance<HTML5MediaExecutorFactory> html5MediaExecutorFactoryProvider;
+	@Inject
+	private ExternalFullscreenVideoAvailability externalFullscreenVideoAvailability;
+	@Inject
+	private Provider<FullscreenVideoExecutor> fullscreenVideoExecutorProvider;
 
 	@Override
 	public void initMediaProcessor() {
@@ -68,15 +71,14 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	protected void pauseAll() {
 		forceStop(null);
 	}
-	
+
 	protected void forceStop(MediaWrapper<?> mw) {
 		mediaExecutorsStopper.forceStop(mw, getMediaExecutors().values());
 	}
-	
 
 	/**
 	 * tworzy obiekt wrappera oraz executora
-	 *
+	 * 
 	 * @param event
 	 */
 	@Override
@@ -88,7 +90,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 			Media fullScreenMedia = null;
 			boolean geckoSupport = isGeckoSupport(bmc);
 
-			if (bmc.getMediaType() == MediaType.VIDEO && externalFullscreenVideoAvailability.isAvailable()){
+			if (bmc.getMediaType() == MediaType.VIDEO && externalFullscreenVideoAvailability.isAvailable()) {
 				defaultMedia = new ExternalFullscreenVideoImpl();
 			} else if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported() && geckoSupport) {
 				defaultMedia = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
@@ -101,7 +103,8 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 
 			MediaExecutor<?> executor;
 			MediaExecutor<?> fullScreenExecutor = null;
-			if (bmc.getMediaType() == MediaType.VIDEO  &&  externalFullscreenVideoAvailability.isAvailable()){
+
+			if (bmc.getMediaType() == MediaType.VIDEO && externalFullscreenVideoAvailability.isAvailable()) {
 				executor = fullscreenVideoExecutorProvider.get();
 			} else if (!UserAgentChecker.isLocal() && defaultMedia == null) {
 				if (bmc.isTemplate() || bmc.isFeedback()) {
@@ -119,11 +122,15 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 					executor = exc;
 				}
 			} else if (defaultMedia == null && UserAgentChecker.isLocal()) {
-				executor = new LocalSwfMediaExecutor();
-				executor.setMediaWrapper((MediaWrapper) new LocalSwfMediaWrapper());
+				if (bmc.isFeedback()) {
+					executor = new SoundExecutorSwfSimple();
+				} else {
+					executor = new LocalSwfMediaExecutor();
+					executor.setMediaWrapper((MediaWrapper) new LocalSwfMediaWrapper());
+				}
 			} else {
-				executor = createHTML5MediaExecutor(defaultMedia, bmc.getMediaType() );
-				fullScreenExecutor = createHTML5MediaExecutor(fullScreenMedia,bmc.getMediaType() );
+				executor = createHTML5MediaExecutor(defaultMedia, bmc.getMediaType());
+				fullScreenExecutor = createHTML5MediaExecutor(fullScreenMedia, bmc.getMediaType());
 			}
 
 			initExecutor(executor, bmc);
@@ -149,7 +156,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 
 	private boolean isGeckoSupport(BaseMediaConfiguration bmc) {
 		boolean containsOgg = SourceUtil.containsOgg(bmc.getSources());
-		return containsOgg  ||  isHtml5Mp3Support();
+		return containsOgg || isHtml5Mp3Support();
 	}
 
 	private MediaExecutor<?> createSWFVideoMediaExecutor() {
