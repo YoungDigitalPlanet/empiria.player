@@ -5,6 +5,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.LocalSwfMediaWrapper;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -12,14 +13,15 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 
+	private static final int PANEL_OFFSET = -500;
 	private final FlowPanel panelMain;
 	private final MediaWrapper<Widget> mediaWrapper;
 	private BaseMediaConfiguration baseMediaConfiguration;
 
-	public SoundExecutorSwfSimple() {
+	@Inject
+	public SoundExecutorSwfSimple(LocalSwfMediaWrapper localSwfMediaWrapper) {
 		panelMain = new FlowPanel();
-		RootPanel.get().add(panelMain, -500, -500);
-		LocalSwfMediaWrapper localSwfMediaWrapper = new LocalSwfMediaWrapper();
+		RootPanel.get().add(panelMain, PANEL_OFFSET, PANEL_OFFSET);
 		localSwfMediaWrapper.setMediaWidget(panelMain);
 		mediaWrapper = localSwfMediaWrapper;
 	}
@@ -50,11 +52,11 @@ public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 	}-*/;
 
 	@Override
-	public void stop() {// NOPMD
+	public void stop() {
 	}
 
 	@Override
-	public void setSoundFinishedListener(SoundExecutorListener listener) {// NOPMD
+	public void setSoundFinishedListener(SoundExecutorListener listener) {
 	}
 
 	@Override
@@ -63,41 +65,43 @@ public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 	}
 
 	@Override
-	public void setMediaWrapper(MediaWrapper<Widget> descriptor) {// NOPMD
-
+	public void setMediaWrapper(MediaWrapper<Widget> descriptor) {
 	}
 
 	@Override
-	public void init() {// NOPMD
-
+	public void init() {
 	}
 
 	@Override
 	public void play() {
-		if (baseMediaConfiguration != null && !baseMediaConfiguration.getSources().isEmpty()) {
-			String next = baseMediaConfiguration.getSources().keySet().iterator().next();
+		if (sourceExists()) {
+			String next = getSource();
 			playFromSource(next);
 		}
 	}
 
-	@Override
-	public void pause() {// NOPMD
+	private boolean sourceExists() {
+		return baseMediaConfiguration != null && !baseMediaConfiguration.getSources().isEmpty();
+	}
 
+	private String getSource() {
+		return baseMediaConfiguration.getSources().keySet().iterator().next();
 	}
 
 	@Override
-	public void setMuted(boolean mute) {// NOPMD
-
+	public void pause() {
 	}
 
 	@Override
-	public void setVolume(double volume) {// NOPMD
-
+	public void setMuted(boolean mute) {
 	}
 
 	@Override
-	public void setCurrentTime(double time) {// NOPMD
+	public void setVolume(double volume) {
+	}
 
+	@Override
+	public void setCurrentTime(double time) {
 	}
 
 	@Override
@@ -109,5 +113,4 @@ public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 	public BaseMediaConfiguration getBaseMediaConfiguration() {
 		return baseMediaConfiguration;
 	}
-
 }

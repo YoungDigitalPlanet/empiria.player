@@ -8,6 +8,7 @@ import java.util.Set;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.Video;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -48,6 +49,12 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	private ExternalFullscreenVideoAvailability externalFullscreenVideoAvailability;
 	@Inject
 	private Provider<FullscreenVideoExecutor> fullscreenVideoExecutorProvider;
+	@Inject
+	private Provider<SoundExecutorSwfSimple> simpleSwfExecutorProvider;
+	@Inject
+	private Provider<LocalSwfMediaExecutor> localSwfExecutorProvider;
+	@Inject
+	private Provider<LocalSwfMediaWrapper> localSwfWrapperProvider;
 
 	@Override
 	public void initMediaProcessor() {
@@ -76,13 +83,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 		mediaExecutorsStopper.forceStop(mw, getMediaExecutors().values());
 	}
 
-	/**
-	 * tworzy obiekt wrappera oraz executora
-	 * 
-	 * @param event
-	 */
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void createMediaWrapper(PlayerEvent event) {
 		if (event.getValue() instanceof BaseMediaConfiguration) {
 			BaseMediaConfiguration bmc = (BaseMediaConfiguration) event.getValue();
@@ -101,8 +102,8 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 				defaultMedia = new HTML5AudioImpl();
 			}
 
-			MediaExecutor<?> executor;
-			MediaExecutor<?> fullScreenExecutor = null;
+			MediaExecutor<Widget> executor;
+			MediaExecutor<Widget> fullScreenExecutor = null;
 
 			if (bmc.getMediaType() == MediaType.VIDEO && externalFullscreenVideoAvailability.isAvailable()) {
 				executor = fullscreenVideoExecutorProvider.get();
@@ -123,10 +124,11 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 				}
 			} else if (defaultMedia == null && UserAgentChecker.isLocal()) {
 				if (bmc.isFeedback()) {
-					executor = new SoundExecutorSwfSimple();
+					executor = simpleSwfExecutorProvider.get();
 				} else {
-					executor = new LocalSwfMediaExecutor();
-					executor.setMediaWrapper((MediaWrapper) new LocalSwfMediaWrapper());
+					executor = localSwfExecutorProvider.get();
+					MediaWrapper<Widget> mediaWrapper = localSwfWrapperProvider.get();
+					executor.setMediaWrapper(mediaWrapper);
 				}
 			} else {
 				executor = createHTML5MediaExecutor(defaultMedia, bmc.getMediaType());
@@ -139,8 +141,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 		}
 	}
 
-	private MediaExecutor<?> createHTML5MediaExecutor(Media defaultMedia, MediaType mediaType) {
-		return html5MediaExecutorFactoryProvider.get().createMediaExecutor(defaultMedia, mediaType);
+	private MediaExecutor<Widget> createHTML5MediaExecutor(Media defaultMedia, MediaType mediaType) {
+		final HTML5MediaExecutorFactory mediaExecutorFactory = html5MediaExecutorFactoryProvider.get();
+		return mediaExecutorFactory.createMediaExecutor(defaultMedia, mediaType);
 	}
 
 	private void fireCallback(PlayerEvent event, MediaExecutor<?> defaultMediaExecutor, MediaExecutor<?> fullScreenMediaExecutor) {
@@ -159,13 +162,13 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 		return containsOgg || isHtml5Mp3Support();
 	}
 
-	private MediaExecutor<?> createSWFVideoMediaExecutor() {
+	private MediaExecutor<Widget> createSWFVideoMediaExecutor() {
 		VideoExecutorSwf executor = new VideoExecutorSwf();
 		executor.setMediaWrapper(new SwfMediaWrapper());
 		return executor;
 	}
 
-	private MediaExecutor<?> createSWFSoundMediaExecutor() {
+	private MediaExecutor<Widget> createSWFSoundMediaExecutor() {
 		SoundExecutorSwf executor = new SoundExecutorSwf();
 		executor.setMediaWrapper(new SwfMediaWrapper());
 		return executor;
