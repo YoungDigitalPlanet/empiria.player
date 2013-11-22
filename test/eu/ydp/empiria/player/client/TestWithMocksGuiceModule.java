@@ -25,9 +25,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.pres
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.module.ModuleScopedLazyProvider;
-import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsDelegate;
-import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceDimensionsFinder;
-import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
+import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceRectangleFinder;
 import eu.ydp.empiria.player.client.module.drawing.command.ClearAllDrawCommand;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
@@ -113,9 +111,7 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToClassOrMockProvider(ExternalFullscreenVideoImpl.class);
 		bindToClassOrMockProvider(Scheduler.class, SchedulerMockImpl.class);
 		bindToClassOrMockProvider(Timer.class, TimerAccessibleMock.class);
-		bindToClassOrMockProvider(SurfaceDimensionsFinder.class);
-		bindToClassOrMockProvider(SurfacePositionFinder.class);
-		bindToClassOrMockProvider(SurfaceDimensionsDelegate.class);		
+		bindToClassOrMockProvider(SurfaceRectangleFinder.class);
 		
 		install(new FactoryModuleBuilder()
 			.implement(IStickieView.class, StickieView.class)
