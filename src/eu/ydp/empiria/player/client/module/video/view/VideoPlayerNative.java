@@ -7,4 +7,6 @@ public interface VideoPlayerNative extends VideoPlayerControl {
 	void unload();
 
 	void initPlayer(String playerId);
+
+	void disposeCurrentPlayer();
 }
