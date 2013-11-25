@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionItems;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SurfacesOffsetsCalculatorJUnitTest {
+public class SurfacesOffsetsCalculatorTest {
 
 	@InjectMocks
 	private SurfacesOffsetsCalculator testObj;
