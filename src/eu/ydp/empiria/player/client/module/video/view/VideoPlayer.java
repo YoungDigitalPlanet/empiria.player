@@ -12,6 +12,9 @@ public class VideoPlayer extends Widget {
 	private final VideoPlayerNative nativePlayer;
 	private final VideoElementWrapper videoElementWrapper;
 
+	private boolean isLoaded = false;
+	private boolean reAttachHackIsActive = false;
+
 	@Inject
 	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer) {
 		this.nativePlayer = nativePlayer;
@@ -21,15 +24,30 @@ public class VideoPlayer extends Widget {
 
 	@Override
 	protected void onLoad() {
-		getElement().appendChild(videoElementWrapper.asNode());
+		if (shouldReattach()) {
+			getElement().appendChild(videoElementWrapper.asNode());
 
-		String playerId = videoElementWrapper.getId();
-		nativePlayer.initPlayer(playerId);
+			String playerId = videoElementWrapper.getId();
+			nativePlayer.initPlayer(playerId);
+
+			isLoaded = true;
+		}
+	}
+
+	private boolean shouldReattach() {
+		return !isLoaded || reAttachHackIsActive;
 	}
 
 	@Override
 	protected void onUnload() {
 		nativePlayer.unload();
-		nativePlayer.disposeCurrentPlayer();
+
+		if (reAttachHackIsActive) {
+			nativePlayer.disposeCurrentPlayer();
+		}
+	}
+
+	public void activateReAttachHack() {
+		reAttachHackIsActive = true;
 	}
 }
