@@ -325,7 +325,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	private Size surfaceSize(final ConnectionItems inputConnectionItems) {
 		final int width = surfacePositionFinder.findWidth(inputConnectionItems);
-		final int height = surfacePositionFinder.findHeight(connectionItems);
+		final int height = surfacePositionFinder.findHeight(inputConnectionItems);
 		return new Size(width, height);
 	}
 
