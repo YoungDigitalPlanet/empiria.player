@@ -21,18 +21,7 @@ public class VideoPlayerAttacher {
 	}
 
 	public void attachNew() {
-		attachNewVideoPlayer(false);
-	}
-
-	public void attachNewWithReattachHack() {
-		attachNewVideoPlayer(true);
-	}
-
-	private void attachNewVideoPlayer(boolean withHack) {
 		VideoPlayer videoPlayer = videoPlayerFactory.create(videoBean);
-		if (withHack) {
-			videoPlayer.activateReAttachHack();
-		}
 		view.attachVideoPlayer(videoPlayer);
 	}
 }

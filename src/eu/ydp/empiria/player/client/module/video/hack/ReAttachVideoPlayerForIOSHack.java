@@ -1,8 +1,7 @@
 package eu.ydp.empiria.player.client.module.video.hack;
 
-import static eu.ydp.gwtutil.client.util.UserAgentChecker.*;
-
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerAttacher;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -11,28 +10,20 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
 public class ReAttachVideoPlayerForIOSHack {
 
 	private boolean isLoaded = false;
 	private final EventsBus eventsBus;
 	private final VideoPlayerAttacher videoPlayerAttacher;
+	private final Provider<CurrentPageScope> pageScopeProvider;
 
 	@Inject
-	public ReAttachVideoPlayerForIOSHack(EventsBus eventsBus, @ModuleScoped VideoPlayerAttacher videoPlayerAttacher) {
+	public ReAttachVideoPlayerForIOSHack(EventsBus eventsBus, @ModuleScoped VideoPlayerAttacher videoPlayerAttacher,
+			Provider<CurrentPageScope> pageScopeProvider) {
 		this.eventsBus = eventsBus;
 		this.videoPlayerAttacher = videoPlayerAttacher;
-	}
-
-	public boolean isNeeded() {
-		return isUserAgent(MobileUserAgent.SAFARI);
-	}
-
-	public void applyIfNeeded() {
-		if (isNeeded()) {
-			apply();
-		}
+		this.pageScopeProvider = pageScopeProvider;
 	}
 
 	public void apply() {
@@ -43,12 +34,12 @@ public class ReAttachVideoPlayerForIOSHack {
 				reAttachHackIfVideoPlayerIsLoaded();
 			}
 
-		}, new CurrentPageScope());
+		}, pageScopeProvider.get());
 	}
 
 	private void reAttachHackIfVideoPlayerIsLoaded() {
 		if (isLoaded) {
-			videoPlayerAttacher.attachNewWithReattachHack();
+			videoPlayerAttacher.attachNew();
 		} else {
 			isLoaded = true;
 		}
