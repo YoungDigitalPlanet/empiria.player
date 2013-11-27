@@ -27,12 +27,11 @@ class GWTCompile extends DefaultTask {
                 [
                     this.module, // Your GWT module
                     '-war', this.buildDir.absolutePath,
-                    '-logLevel', 'INFO',
+                    '-logLevel', 'DEBUG',
                     '-localWorkers', '2',
                     '-XdisableCastChecking'
                 ]
 
-            systemProperty 'gwt.args', '-logLevel WARN'
             systemProperty 'java.awt.headless', 'true'
 
             maxHeapSize = '512M'
