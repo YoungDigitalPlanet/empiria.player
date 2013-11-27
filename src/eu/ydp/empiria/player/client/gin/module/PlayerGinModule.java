@@ -162,10 +162,10 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(InteractionEventsListener.class).to(DeliveryEventsHub.class);
 		bind(InteractionEventsSocket.class).to(DeliveryEventsHub.class);
 		bind(DeliveryEventsHub.class).in(Singleton.class);
-		
+
 		bind(UserAgentCheckerWrapper.class).in(Singleton.class);
 		bind(NativeEventWrapper.class).in(Singleton.class);
-		
+
 		bind(DataSourceManager.class).in(Singleton.class);
 		bind(DataSourceDataSupplier.class).to(DataSourceManager.class);
 		bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class);

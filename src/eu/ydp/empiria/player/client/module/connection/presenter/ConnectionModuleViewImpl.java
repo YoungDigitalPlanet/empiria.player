@@ -21,12 +21,13 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.structure.Mul
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceStyleProvider;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
-import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfacePositionFinder;
+import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceRectangleFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
+import eu.ydp.gwtutil.client.util.geom.Size;
 
 public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean> {
 
@@ -57,7 +58,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	private ConnectionModuleViewStyles connectionModuleViewStyles;
 
 	@Inject
-	private SurfacePositionFinder surfacePositionFinder;
+	private SurfaceRectangleFinder surfacePositionFinder;
 
 	@Inject
 	private ConnectionModuleViewImplHandlers handlers;
@@ -307,12 +308,12 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	public ConnectionSurface getSurfaceForLineDrawing(ConnectionItem item, MultiplePairModuleConnectType type) {
-		ConnectionSurface cs = connectionSurfacesManager.getOrCreateSurface(surfaces, item.getBean().getIdentifier(), view);
+		ConnectionSurface cs = connectionSurfacesManager.getOrCreateSurface(surfaces, item.getBean().getIdentifier(), surfaceSize(connectionItems));
 		this.currentSurface = cs;
 		cs.applyStyles(connectionModuleViewStyles.getStyles(type));
 
 		int offsetLeft = surfacePositionFinder.findOffsetLeft(connectionItems);
-		int offsetTop = surfacePositionFinder.findTopOffset(connectionItems);
+		int offsetTop = surfacePositionFinder.findOffsetTop(connectionItems);
 
 		cs.setOffsetLeft(offsetLeft);
 		cs.setOffsetTop(offsetTop);
@@ -320,6 +321,12 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		view.addElementToMainView(cs);
 
 		return cs;
+	}
+
+	private Size surfaceSize(final ConnectionItems inputConnectionItems) {
+		final int width = surfacePositionFinder.findWidth(inputConnectionItems);
+		final int height = surfacePositionFinder.findHeight(inputConnectionItems);
+		return new Size(width, height);
 	}
 
 	public void startDrawLine(ConnectionItem item) {

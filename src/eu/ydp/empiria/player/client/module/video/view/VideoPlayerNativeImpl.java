@@ -1,31 +1,22 @@
 package eu.ydp.empiria.player.client.module.video.view;
 
-import static com.google.gwt.core.client.GWT.getModuleBaseURL;
+import static com.google.gwt.core.client.GWT.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.VideoElement;
+
+import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
+import eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler;
 
 public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
 	private static final String FALLBACK_SWF = getModuleBaseURL() + "/videojs/video-js.swf";
 	private JavaScriptObject playerObject;
 	private String playerId;
-	private int startPosition = 0;
+	private final int startPosition = 0;
 
 	@Override
-	public VideoElement createVideoElement() {
-		playerId = Document.get().createUniqueId();
-
-		VideoElement videoElem = Document.get().createVideoElement();
-
-		videoElem.setId(playerId);
-		videoElem.addClassName("video-js");
-
-		return videoElem;
-	}
-
-	public void initPlayer() {
+	public void initPlayer(String playerId) {
+		this.playerId = playerId;
 		playerObject = initPlayerNative();
 
 		if ((startPosition != 0) && !isFlashFallback()) { // Because of lack
@@ -99,45 +90,67 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}-*/;
 
 	private native JavaScriptObject initPlayerNative() /*-{
-		return $wnd
-				.vjs(
-						this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId,
-						{}, function() {
-						});
+		var playerId = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId;
+
+		return $wnd.vjs(playerId, {}, function() {
+		});
 	}-*/;
 
+	@Override
+	public void disposeCurrentPlayer() {
+		disposeCurrentPlayerNative();
+	}
+
+	private native void disposeCurrentPlayerNative() /*-{
+		var playerId = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId;
+
+		if ($wnd.vjs.players[playerId]) {
+			$wnd.vjs.players[playerId].dispose();
+		}
+
+	}-*/;
+
+	@Override
 	public void addPlayHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("play", handler);
 	};
 
+	@Override
 	public void addPauseHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("pause", handler);
 	};
 
+	@Override
 	public void addEndedHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("ended", handler);
 	};
 
+	@Override
 	public void addTimeUpdateHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("timeupdate", handler);
 	}
 
+	@Override
 	public void addLoadStartHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("loadstart", handler);
 	};
 
+	@Override
 	public void addLoadedMetadataHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("loadedmetadata", handler);
 	};
 
+	@Override
 	public void addLoadedDataHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("loadeddata", handler);
 	}
 
+	@Override
 	public void addLoadedAllDataHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("loadedalldata", handler);
 	}
 
+	@Override
 	public void addDurationChangeHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("durationchange", handler);
 	}
@@ -151,7 +164,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 					.on(
 							event,
 							function() {
-								handler.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerControlHandler::handle(Leu/ydp/empiria/player/client/module/video/view/VideoPlayerControl;)(javaPlayer);
+								handler.@eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler::handle(Leu/ydp/empiria/player/client/module/video/VideoPlayerControl;)(javaPlayer);
 							});
 		}
 	}-*/;
