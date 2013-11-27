@@ -27,7 +27,7 @@ class GWTCompile extends DefaultTask {
                 [
                     this.module, // Your GWT module
                     '-war', this.buildDir.absolutePath,
-                    '-logLevel', 'DEBUG',
+                    '-logLevel', 'INFO',
                     '-localWorkers', '2',
                     '-XdisableCastChecking'
                 ]
