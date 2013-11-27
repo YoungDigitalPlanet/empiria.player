@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -38,7 +38,6 @@ import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
 import eu.ydp.gwtutil.client.PathUtil;
-import eu.ydp.gwtutil.client.collections.QueueSet;
 
 public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier,
 		LibraryLoaderListener {
@@ -88,7 +87,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	/**
 	 * Zwraca wezel assessmentItemRef o wskazanym id
-	 *
+	 * 
 	 * @param index
 	 *            index wezla
 	 * @return Element lub null gdy element o podanym indeksie nie istnieje
@@ -245,13 +244,13 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		return pd;
 	}
 
-	public QueueSet<String> getAssessmentStyleLinksForUserAgent(String userAgent) {
+	public List<String> getAssessmentStyleLinksForUserAgent(String userAgent) {
 		return assessmentDataManager.getStyleLinksForUserAgent(userAgent);
 	}
 
-	public QueueSet<String> getPageStyleLinksForUserAgent(PageReference ref, String userAgent) {
+	public List<String> getPageStyleLinksForUserAgent(PageReference ref, String userAgent) {
 		if (ref.pageIndices.length == 0) {
-			return new QueueSet<String>();
+			return new ArrayList<String>();
 		}
 
 		return itemDataCollectionManager.getStyleLinksForUserAgent(ref.pageIndices[0], userAgent);
@@ -283,7 +282,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		mode = DataSourceManagerMode.LOADING_STYLES;
 		String userAgent = Navigator.getUserAgent();
 		// load assesment styles
-		Set<String> aStyles = assessmentDataManager.getStyleLinksForUserAgent(userAgent);
+		List<String> aStyles = assessmentDataManager.getStyleLinksForUserAgent(userAgent);
 		for (String styleURL : aStyles) {
 			styleLoadCounter++;
 
@@ -307,7 +306,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 		// load item styles
 		int itemCount = itemDataCollectionManager.getItemsCount();
 		for (int i = itemCount - 1; i >= 0; i--) {
-			QueueSet<String> iStyles = itemDataCollectionManager.getStyleLinksForUserAgent(i, userAgent);
+			List<String> iStyles = itemDataCollectionManager.getStyleLinksForUserAgent(i, userAgent);
 			for (String styleURL : iStyles) {
 				final int ii = i;
 
