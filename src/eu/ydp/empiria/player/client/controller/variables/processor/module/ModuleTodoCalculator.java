@@ -8,20 +8,26 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 public class ModuleTodoCalculator {
 
 	private static final Logger LOGGER = Logger.getLogger(ModuleTodoCalculator.class.getName());
-	
-	public int calculateTodoForResponse(Response response){
+
+	public int calculateTodoForResponse(Response response) {
 		CountMode countMode = response.getAppropriateCountMode();
-		
-		int todoCount = 0;
-		if(countMode == CountMode.SINGLE){
+
+		int todoCount;
+		int correctAnswersCount = response.correctAnswers.getAnswersCount();
+
+		if (countMode == CountMode.SINGLE) {
+			boolean isSomethingToDo = correctAnswersCount > 0;
+			if (isSomethingToDo) {
+				todoCount = 1;
+			} else {
+				todoCount = 0;
+			}
+		} else if (countMode == CountMode.CORRECT_ANSWERS) {
+			todoCount = correctAnswersCount;
+		} else {
 			todoCount = 1;
-		}else if(countMode == CountMode.CORRECT_ANSWERS){
-			todoCount = response.correctAnswers.getAnswersCount();
-		}else{
-			todoCount = 1;
-			LOGGER.warning("Unsupported TODO countMode: "+countMode);
+			LOGGER.warning("Unsupported TODO countMode: " + countMode);
 		}
 		return todoCount;
 	}
-	
 }

@@ -1,10 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.MISTAKES;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 
 import java.util.Map;
 
@@ -24,78 +20,56 @@ import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase {
 
 	private ExpressionToResponseConnector expressionToResponseConnector;
-	
+
 	@Override
 	@Before
-	public void setUp(){
+	public void setUp() {
 		super.setUp();
 		expressionToResponseConnector = injector.getInstance(ExpressionToResponseConnector.class);
 	}
-	
+
 	@Test
 	public void shouldTestCorrectCalculationsForAdditionAndMultiplication() throws Exception {
 		// given
-		Response aResponse = builder().withIdentifier("a")
-				.withCurrentUserAnswers("2")
-				.build();
+		Response aResponse = builder().withIdentifier("a").withCorrectAnswers("").withCurrentUserAnswers("2").build();
 
-		Response bResponse = builder().withIdentifier("b")
-				.withCurrentUserAnswers("4")
-				.build();
+		Response bResponse = builder().withIdentifier("b").withCorrectAnswers("").withCurrentUserAnswers("4").build();
 
-		Response cResponse = builder().withIdentifier("c")
-				.withCurrentUserAnswers("3")
-				.build();
+		Response cResponse = builder().withIdentifier("c").withCorrectAnswers("").withCurrentUserAnswers("3").build();
 
-		Response dResponse = builder().withIdentifier("d")
-				.withCurrentUserAnswers("14")
-				.build();
-		
-		//filled expression 2+4*3=14
+		Response dResponse = builder().withIdentifier("d").withCorrectAnswers("").withCurrentUserAnswers("14").build();
+
+		// filled expression 2+4*3=14
 		String expressionTemplate = "'a'+'b'*'c'='d'";
 		testVariablesCorrectForExpressionEvaluatedCorrectly(expressionTemplate, aResponse, bResponse, cResponse, dResponse);
 	}
-	
+
 	@Test
 	public void shouldTestCorrectCalculationsForOperationsDefinedByUser() throws Exception {
 		// given
-		Response aResponse = builder().withIdentifier("a")
-				.withCurrentUserAnswers("+")
-				.build();
-		
-		Response bResponse = builder().withIdentifier("b")
-				.withCurrentUserAnswers("*")
-				.build();
-		
-		Response cResponse = builder().withIdentifier("c")
-				.withCurrentUserAnswers("=")
-				.build();
-		
-		//filled expression will be 2+3*4=14
+		Response aResponse = builder().withIdentifier("a").withCorrectAnswers("").withCurrentUserAnswers("+").build();
+
+		Response bResponse = builder().withIdentifier("b").withCorrectAnswers("").withCurrentUserAnswers("*").build();
+
+		Response cResponse = builder().withIdentifier("c").withCorrectAnswers("").withCurrentUserAnswers("=").build();
+
+		// filled expression will be 2+3*4=14
 		String expressionTemplate = "2'a'3'b'4'c'14";
 		testVariablesCorrectForExpressionEvaluatedCorrectly(expressionTemplate, aResponse, bResponse, cResponse);
 	}
-	
+
 	@Test
 	public void shouldTestCorrectCalculationsForSubstractionAndDivision() throws Exception {
 		// given
-		Response aResponse = builder().withIdentifier("a")
-				.withCurrentUserAnswers("4")
-				.build();
-		
-		Response bResponse = builder().withIdentifier("b")
-				.withCurrentUserAnswers("2")
-				.build();
-		
-		Response cResponse = builder().withIdentifier("c")
-				.withCurrentUserAnswers("1")
-				.build();
-		
-		Response dResponse = builder().withIdentifier("d")
-				.withCurrentUserAnswers("1")
-				.build();
-		
-		//filled expression will be 4:2-1=1
+		Response aResponse = builder().withIdentifier("a").withCorrectAnswers("").withCurrentUserAnswers("4").build();
+
+		Response bResponse = builder().withIdentifier("b").withCorrectAnswers("").withCurrentUserAnswers("2").build();
+
+		Response cResponse = builder().withIdentifier("c").withCorrectAnswers("").withCurrentUserAnswers("1").build();
+
+		Response dResponse = builder().withIdentifier("d").withCorrectAnswers("").withCurrentUserAnswers("1").build();
+
+		// filled expression will be 4:2-1=1
 		String expressionTemplate = "'a':'b'-'c'='d'";
 		testVariablesCorrectForExpressionEvaluatedCorrectly(expressionTemplate, aResponse, bResponse, cResponse, dResponse);
 	}
@@ -121,17 +95,11 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 	@Test
 	public void shouldRecognizeExpressionNotFilled() throws Exception {
 		// given
-		Response responseWithEmptyAnswer = builder().withIdentifier("responseWithEmptyAnswer")
-				.withCurrentUserAnswers("")
-				.build();
+		Response responseWithEmptyAnswer = builder().withIdentifier("responseWithEmptyAnswer").withCorrectAnswers("").withCurrentUserAnswers("").build();
 
-		Response bResponse = builder().withIdentifier("b")
-				.withCurrentUserAnswers("15")
-				.build();
+		Response bResponse = builder().withIdentifier("b").withCorrectAnswers("").withCurrentUserAnswers("15").build();
 
-		Response cResponse = builder().withIdentifier("c")
-				.withCurrentUserAnswers("27")
-				.build();
+		Response cResponse = builder().withIdentifier("c").withCorrectAnswers("").withCurrentUserAnswers("27").build();
 
 		String expressionTemplate = "'responseWithEmptyAnswer'+'b'='c'";
 
@@ -155,17 +123,11 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 	@Test
 	public void shouldRecognizeExpressionEvaluationWrong() throws Exception {
 		// given
-		Response aResponse = builder().withIdentifier("a")
-				.withCurrentUserAnswers("")
-				.build();
+		Response aResponse = builder().withIdentifier("a").withCorrectAnswers("").withCurrentUserAnswers("").build();
 
-		Response bResponse = builder().withIdentifier("b")
-				.withCurrentUserAnswers("15")
-				.build();
+		Response bResponse = builder().withIdentifier("b").withCorrectAnswers("").withCurrentUserAnswers("15").build();
 
-		Response cResponse = builder().withIdentifier("c")
-				.withCurrentUserAnswers("27")
-				.build();
+		Response cResponse = builder().withIdentifier("c").withCorrectAnswers("").withCurrentUserAnswers("27").build();
 
 		String expressionTemplate = "'a'+'b'='c'";
 
