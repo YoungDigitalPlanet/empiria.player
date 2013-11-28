@@ -14,7 +14,6 @@ import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceViewImpl;
 import eu.ydp.empiria.player.client.module.connection.DistanceCalculator;
 import eu.ydp.empiria.player.client.module.connection.LineSegmentChecker;
 import eu.ydp.empiria.player.client.module.connection.RectangleChecker;
-import eu.ydp.empiria.player.client.module.connection.SurfaceCleaner;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemImpl;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionItemPairFinder;
@@ -42,7 +41,6 @@ public class ConnectionGinModule extends AbstractGinModule {
 		bind(RectangleChecker.class).in(Singleton.class);
 		bind(LineSegmentChecker.class).in(Singleton.class);
 		bind(DistanceCalculator.class).in(Singleton.class);
-		bind(SurfaceCleaner.class).in(Singleton.class);
 		bind(ConnectionItemPairFinder.class).in(Singleton.class);
 	}
 

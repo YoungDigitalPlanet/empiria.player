@@ -1,26 +1,51 @@
 package eu.ydp.empiria.player.client.module.video.view;
 
-import java.util.Collection;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import eu.ydp.empiria.player.client.module.video.hack.ReAttachVideoPlayerForIOSChecker;
+import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
-import eu.ydp.empiria.player.client.module.video.structure.SourceBean;
+public class VideoPlayer extends Widget {
 
-public interface VideoPlayer extends IsWidget {
+	private final VideoPlayerNative nativePlayer;
+	private final VideoElementWrapper videoElementWrapper;
 
-	void setSkinName(String skinName);
+	private boolean isLoaded = false;
+	private final boolean alwaysReAttach;
 
-	void setControls(boolean controls);
+	@Inject
+	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, ReAttachVideoPlayerForIOSChecker hackChecker) {
+		this.nativePlayer = nativePlayer;
+		this.videoElementWrapper = videoElementWrapper;
+		this.alwaysReAttach = hackChecker.isNeeded();
+		setElement(Document.get().createDivElement());
+	}
 
-	void setPreload(String preload);
+	@Override
+	protected void onLoad() {
+		if (shouldReattach()) {
+			getElement().appendChild(videoElementWrapper.asNode());
 
-	void addSource(SourceBean source);
+			String playerId = videoElementWrapper.getId();
+			nativePlayer.initPlayer(playerId);
 
-	void addSources(Collection<SourceBean> sources);
+			isLoaded = true;
+		}
+	}
 
-	void setPoster(String poster);
+	private boolean shouldReattach() {
+		return !isLoaded || alwaysReAttach;
+	}
 
-	void setWidth(int width);
+	@Override
+	protected void onUnload() {
+		nativePlayer.unload();
 
-	void setHeight(int height);
+		if (alwaysReAttach) {
+			nativePlayer.disposeCurrentPlayer();
+		}
+	}
 }

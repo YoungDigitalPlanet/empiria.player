@@ -24,7 +24,6 @@ public class ConnectionSurfaceViewImpl extends Composite implements ConnectionSu
 	private final Context context;
 	private final Surface surface;
 	private final StyleToPropertyMappingHelper styleHelper;
-	private final SurfaceCleaner surfaceCleaner;
 	private final LineSegmentChecker lineSegmentChecker;
 	private final Map<String, String> propertiesToClear = new HashMap<String, String>();
 
@@ -34,11 +33,9 @@ public class ConnectionSurfaceViewImpl extends Composite implements ConnectionSu
 	private LineSegment lineSegment;
 
 	@Inject
-	public ConnectionSurfaceViewImpl(@Assisted Vector2 vector, StyleToPropertyMappingHelper styleHelper, LineSegmentChecker lineSegmentChecker,
-			SurfaceCleaner surfaceCleaner) {
+	public ConnectionSurfaceViewImpl(@Assisted Vector2 vector, StyleToPropertyMappingHelper styleHelper, LineSegmentChecker lineSegmentChecker) {
 		this.styleHelper = styleHelper;
 		this.lineSegmentChecker = lineSegmentChecker;
-		this.surfaceCleaner = surfaceCleaner;
 		this.surface = new Surface(vector);
 		this.context = surface.getContext();
 		initWidget(surface);
@@ -71,7 +68,7 @@ public class ConnectionSurfaceViewImpl extends Composite implements ConnectionSu
 
 	@Override
 	public void clear() {
-		surfaceCleaner.clean(lineSegment, context);
+		context.clear();
 		applyHackForCanvasInAndroid4();
 	}
 
