@@ -1,19 +1,17 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.DropEvent;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.TextBox;
@@ -21,14 +19,17 @@ import com.google.gwt.user.client.ui.TextBox;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
-@SuppressWarnings("PMD")
 public class TextBoxChangeHandlerJUnitTest {
 
-
+	@Mock
 	private DroppableObject<TextBox> object;
+	@Mock
 	private TextBox textBox;
+	@Mock
 	private PresenterHandler presenterHandler;
-	private final TextBoxChangeHandler instance = new TextBoxChangeHandler();
+
+	@InjectMocks
+	private TextBoxChangeHandler testObj;
 
 	@BeforeClass
 	public static void disarm() {
@@ -42,50 +43,52 @@ public class TextBoxChangeHandlerJUnitTest {
 
 	@Before
 	public void before() {
-		object = mock(DroppableObject.class);
-		textBox = mock(TextBox.class);
-		presenterHandler = mock(PresenterHandler.class);
-		doReturn(textBox).when(object).getOriginalWidget();
+		MockitoAnnotations.initMocks(this);
+		when(object.getOriginalWidget()).thenReturn(textBox);
 	}
 
 	@Test
-	public void bindNoPresenterHandlerTest(){
-		instance.bind(object, null);
+	public void bindNoPresenterHandlerTest() {
+		// when
+		testObj.bind(object, null);
+
+		// then
 		verifyZeroInteractions(object);
 	}
 
 	@Test
-	public void bindTest(){
-		instance.bind(object, presenterHandler);
-		verify(textBox).addChangeHandler(Mockito.eq(instance));
-		verify(textBox).addBlurHandler(Mockito.eq(instance));
-		verify(object).addDropHandler(Mockito.eq(instance));
+	public void bindTest() {
+		// when
+		testObj.bind(object, presenterHandler);
+
+		// then
+		verify(textBox).addBlurHandler(Mockito.eq(testObj));
+		verify(object).addDropHandler(Mockito.eq(testObj));
 	}
 
-
 	@Test
-	public void onDropTest(){
-		instance.bind(object, presenterHandler);
+	public void onDropTest() {
+		// given
 		DropEvent event = mock(DropEvent.class);
-		instance.onDrop(event);
-		verify(presenterHandler).onChange(Mockito.any(ChangeEvent.class));
+
+		// when
+		testObj.bind(object, presenterHandler);
+		testObj.onDrop(event);
+
+		// then
+		verify(presenterHandler).onBlur(Mockito.any(BlurEvent.class));
 	}
 
 	@Test
-	public void onChangeTest(){
-		instance.bind(object, presenterHandler);
-		ChangeEvent event = mock(ChangeEvent.class);
-		instance.onChange(event);
-		verify(presenterHandler).onChange(Mockito.eq(event));
-		verifyNoMoreInteractions(presenterHandler);
-
-	}
-
-	@Test
-	public void onBlurTest(){
-		instance.bind(object, presenterHandler);
+	public void onBlurTest() {
+		// given
 		BlurEvent blurEvent = mock(BlurEvent.class);
-		instance.onBlur(blurEvent);
+
+		// when
+		testObj.bind(object, presenterHandler);
+		testObj.onBlur(blurEvent);
+
+		// then
 		verify(presenterHandler).onBlur(Mockito.eq(blurEvent));
 		verifyNoMoreInteractions(presenterHandler);
 	}

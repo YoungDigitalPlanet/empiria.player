@@ -1,16 +1,8 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,19 +16,15 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.inject.Binder;
-import com.google.inject.Key;
 import com.google.inject.Module;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.expression.PipedReplacementsParser;
 import eu.ydp.empiria.player.client.module.gap.GapBinder;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
-import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.xml.XMLParser;
 
 @SuppressWarnings("PMD")
@@ -90,17 +78,11 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 
 	@BeforeClass
 	public static void prepareTestEnviroment() {
-		/**
-		 * disable GWT.create() behavior for pure JUnit testing
-		 */
 		GWTMockUtilities.disarm();
 	}
 
 	@AfterClass
 	public static void restoreEnviroment() {
-		/**
-		 * restore GWT.create() behavior
-		 */
 		GWTMockUtilities.restore();
 	}
 
