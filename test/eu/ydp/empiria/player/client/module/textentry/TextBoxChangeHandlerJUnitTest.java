@@ -6,10 +6,11 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.DropEvent;
@@ -19,10 +20,11 @@ import com.google.gwt.user.client.ui.TextBox;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TextBoxChangeHandlerJUnitTest {
 
 	@Mock
-	private DroppableObject<TextBox> object;
+	private DroppableObject<TextBox> droppableObject;
 	@Mock
 	private TextBox textBox;
 	@Mock
@@ -43,36 +45,35 @@ public class TextBoxChangeHandlerJUnitTest {
 
 	@Before
 	public void before() {
-		MockitoAnnotations.initMocks(this);
-		when(object.getOriginalWidget()).thenReturn(textBox);
+		when(droppableObject.getOriginalWidget()).thenReturn(textBox);
 	}
 
 	@Test
-	public void bindNoPresenterHandlerTest() {
+	public void shouldDoNothingWhenPresenterIsNotGiven() {
 		// when
-		testObj.bind(object, null);
+		testObj.bind(droppableObject, null);
 
 		// then
-		verifyZeroInteractions(object);
+		verifyZeroInteractions(droppableObject);
 	}
 
 	@Test
-	public void bindTest() {
+	public void shouldRegisterHandlersWhenPresenterIsGiven() {
 		// when
-		testObj.bind(object, presenterHandler);
+		testObj.bind(droppableObject, presenterHandler);
 
 		// then
 		verify(textBox).addBlurHandler(Mockito.eq(testObj));
-		verify(object).addDropHandler(Mockito.eq(testObj));
+		verify(droppableObject).addDropHandler(Mockito.eq(testObj));
 	}
 
 	@Test
-	public void onDropTest() {
+	public void shouldHandleDropAsOnBlur() {
 		// given
 		DropEvent event = mock(DropEvent.class);
 
 		// when
-		testObj.bind(object, presenterHandler);
+		testObj.bind(droppableObject, presenterHandler);
 		testObj.onDrop(event);
 
 		// then
@@ -80,12 +81,12 @@ public class TextBoxChangeHandlerJUnitTest {
 	}
 
 	@Test
-	public void onBlurTest() {
+	public void shouldHandleOnBlurWithPresenter() {
 		// given
 		BlurEvent blurEvent = mock(BlurEvent.class);
 
 		// when
-		testObj.bind(object, presenterHandler);
+		testObj.bind(droppableObject, presenterHandler);
 		testObj.onBlur(blurEvent);
 
 		// then

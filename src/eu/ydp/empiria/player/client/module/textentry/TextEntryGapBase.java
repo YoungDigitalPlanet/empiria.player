@@ -5,7 +5,6 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
