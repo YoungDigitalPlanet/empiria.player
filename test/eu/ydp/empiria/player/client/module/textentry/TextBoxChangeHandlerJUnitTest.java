@@ -27,7 +27,7 @@ public class TextBoxChangeHandlerJUnitTest {
 	private TextBox textBox;
 	@Mock
 	private PresenterHandler presenterHandler;
-	
+
 	@InjectMocks
 	private TextBoxChangeHandler testObj;
 
@@ -48,47 +48,46 @@ public class TextBoxChangeHandlerJUnitTest {
 	}
 
 	@Test
-	public void bindNoPresenterHandlerTest(){
+	public void bindNoPresenterHandlerTest() {
 		// when
 		testObj.bind(object, null);
-		
+
 		// then
 		verifyZeroInteractions(object);
 	}
 
 	@Test
-	public void bindTest(){
+	public void bindTest() {
 		// when
 		testObj.bind(object, presenterHandler);
-		
+
 		// then
 		verify(textBox).addBlurHandler(Mockito.eq(testObj));
 		verify(object).addDropHandler(Mockito.eq(testObj));
 	}
 
-
 	@Test
-	public void onDropTest(){
+	public void onDropTest() {
 		// given
 		DropEvent event = mock(DropEvent.class);
 
 		// when
 		testObj.bind(object, presenterHandler);
 		testObj.onDrop(event);
-		
+
 		// then
 		verify(presenterHandler).onBlur(Mockito.any(BlurEvent.class));
 	}
 
 	@Test
-	public void onBlurTest(){
+	public void onBlurTest() {
 		// given
 		BlurEvent blurEvent = mock(BlurEvent.class);
 
 		// when
 		testObj.bind(object, presenterHandler);
 		testObj.onBlur(blurEvent);
-		
+
 		// then
 		verify(presenterHandler).onBlur(Mockito.eq(blurEvent));
 		verifyNoMoreInteractions(presenterHandler);
