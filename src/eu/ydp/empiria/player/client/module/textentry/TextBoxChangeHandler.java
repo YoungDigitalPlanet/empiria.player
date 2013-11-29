@@ -13,10 +13,6 @@ public class TextBoxChangeHandler implements BlurHandler, DropHandler {
 
 	private PresenterHandler presenterHandler;
 
-	private class CustomBlurEvent extends BlurEvent { // NOPMD
-
-	}
-
 	public void bind(DroppableObject<TextBox> listBox, PresenterHandler presenterHandler) {
 		if (presenterHandler != null) {
 			this.presenterHandler = presenterHandler;
@@ -25,14 +21,18 @@ public class TextBoxChangeHandler implements BlurHandler, DropHandler {
 		}
 	}
 
-
 	@Override
 	public void onDrop(DropEvent event) {
-		onBlur(new CustomBlurEvent());
+		BlurEvent noopBlurEvent = new BlurEvent() { };
+		callBlurHandler(noopBlurEvent);
 	}
 
 	@Override
 	public void onBlur(BlurEvent event) {
+		callBlurHandler(event);
+	}
+
+	private void callBlurHandler(BlurEvent event) {
 		presenterHandler.onBlur(event);
 	}
 
