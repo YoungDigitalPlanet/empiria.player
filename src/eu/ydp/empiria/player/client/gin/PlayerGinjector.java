@@ -50,6 +50,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.view.ViewEngine;
 import eu.ydp.empiria.player.client.view.player.PageControllerCache;
+import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.gin.module.AnimationGinModule;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
@@ -119,4 +120,6 @@ public interface PlayerGinjector extends Ginjector {
 	TouchController getTouchController();
 
 	StyleSocket getStyleSocket();
+
+	Logger getLogger();
 }
