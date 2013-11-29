@@ -153,16 +153,24 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 	}
 
 	protected void initReplacements(Map<String, String> styles) {
-		boolean containsReplacementStyle = styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)
-				|| styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
-		if (containsReplacementStyle) {
-			String charactersSet = Objects.firstNonNull(styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS),
-					styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS));
+		String charactersSet = getSubstitutionCharactersSetFromStyles(styles);
+
+		if (charactersSet != null) {
 			gapExpressionReplacer.useCharacters(charactersSet);
 			getTextEntryPresenter().makeExpressionReplacements(gapExpressionReplacer.getReplacer());
 		}
 	}
 
+	private String getSubstitutionCharactersSetFromStyles(Map<String, String> styles) {
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)) {
+			return styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS);
+		} else if (styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS)) {
+			return styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
+		} else {
+			return null;
+		}
+	}
+	
 	protected void addPlayerEventHandlers() {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
 
