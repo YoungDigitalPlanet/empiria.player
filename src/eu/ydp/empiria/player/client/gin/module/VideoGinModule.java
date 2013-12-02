@@ -1,9 +1,12 @@
 package eu.ydp.empiria.player.client.gin.module;
 
+import javax.inject.Singleton;
+
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 
 import eu.ydp.empiria.player.client.gin.factory.VideoModuleFactory;
+import eu.ydp.empiria.player.client.module.video.hack.PageChangePauser;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayerNative;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
@@ -21,6 +24,7 @@ public class VideoGinModule extends AbstractGinModule {
 		bind(SourceElementWrapper.class).toProvider(SourceElementWrapperProvider.class);
 		bind(VideoElementWrapper.class).toProvider(VideoElementWrapperProvider.class);
 		bind(VideoPlayerNative.class).to(VideoPlayerNativeImpl.class);
+		bind(PageChangePauser.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoModuleFactory.class));
 	}
 }
