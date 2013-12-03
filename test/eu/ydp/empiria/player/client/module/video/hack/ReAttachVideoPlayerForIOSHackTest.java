@@ -13,7 +13,7 @@ import org.mockito.stubbing.Answer;
 
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerAttacher;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerBuilder;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -29,7 +29,7 @@ public class ReAttachVideoPlayerForIOSHackTest {
 	@Mock
 	private EventsBus eventsBus;
 	@Mock
-	private VideoPlayerAttacher videoPlayerAttacher;
+	private VideoPlayerBuilder videoPlayerBuilder;
 	@Mock
 	private Provider<CurrentPageScope> pageScopeProvider;
 	@Mock
@@ -55,7 +55,7 @@ public class ReAttachVideoPlayerForIOSHackTest {
 		playerEventHandler.onPlayerEvent(null);
 
 		// then
-		verify(videoPlayerAttacher, never()).attachNewToView(view);
+		verify(videoPlayerBuilder, never()).buildVideoPlayer();
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class ReAttachVideoPlayerForIOSHackTest {
 		playerEventHandler.onPlayerEvent(null);
 
 		// then
-		verify(videoPlayerAttacher).attachNewToView(view);
+		verify(videoPlayerBuilder).buildVideoPlayer();
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class ReAttachVideoPlayerForIOSHackTest {
 		playerEventHandler.onPlayerEvent(null);
 
 		// then
-		verify(videoPlayerAttacher, times(2)).attachNewToView(view);
+		verify(videoPlayerBuilder, times(2)).buildVideoPlayer();
 	}
 
 	private void preparePageScope() {

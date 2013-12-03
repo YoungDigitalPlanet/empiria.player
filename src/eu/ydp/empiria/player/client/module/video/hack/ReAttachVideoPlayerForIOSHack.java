@@ -3,7 +3,8 @@ package eu.ydp.empiria.player.client.module.video.hack;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerAttacher;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerBuilder;
+import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -16,14 +17,14 @@ public class ReAttachVideoPlayerForIOSHack {
 
 	private boolean isLoaded = false;
 	private final EventsBus eventsBus;
-	private final VideoPlayerAttacher videoPlayerAttacher;
+	private final VideoPlayerBuilder videoPlayerAttacher;
 	private final Provider<CurrentPageScope> pageScopeProvider;
 
 	@Inject
-	public ReAttachVideoPlayerForIOSHack(EventsBus eventsBus, @ModuleScoped VideoPlayerAttacher videoPlayerAttacher,
+	public ReAttachVideoPlayerForIOSHack(EventsBus eventsBus, @ModuleScoped VideoPlayerBuilder videoPlayerBuilder,
 			Provider<CurrentPageScope> pageScopeProvider) {
 		this.eventsBus = eventsBus;
-		this.videoPlayerAttacher = videoPlayerAttacher;
+		this.videoPlayerAttacher = videoPlayerBuilder;
 		this.pageScopeProvider = pageScopeProvider;
 	}
 
@@ -40,7 +41,8 @@ public class ReAttachVideoPlayerForIOSHack {
 
 	private void reAttachHackIfVideoPlayerIsLoaded(VideoView view) {
 		if (isLoaded) {
-			videoPlayerAttacher.attachNewToView(view);
+			VideoPlayer videoPlayer = videoPlayerAttacher.buildVideoPlayer();
+			view.attachVideoPlayer(videoPlayer);
 		} else {
 			isLoaded = true;
 		}

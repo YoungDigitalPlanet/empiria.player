@@ -22,7 +22,7 @@ public class VideoPresenterTest {
 	@Mock
 	private ReAttachVideoPlayerForIOSHack reAttachHack;
 	@Mock
-	private VideoPlayerAttacher videoPlayerAttacher;
+	private VideoPlayerBuilder videoPlayerBuilder;
 	@Mock
 	private VideoView view;
 
@@ -36,7 +36,7 @@ public class VideoPresenterTest {
 
 		// then
 		verify(view).createView();
-		verify(videoPlayerAttacher).attachNewToView(view);
+		verify(videoPlayerBuilder).buildVideoPlayer();
 		verify(reAttachHack, never()).apply(view);
 	}
 
@@ -50,7 +50,7 @@ public class VideoPresenterTest {
 
 		// then
 		verify(view).createView();
-		verify(videoPlayerAttacher).attachNewToView(view);
+		verify(videoPlayerBuilder).buildVideoPlayer();
 		verify(reAttachHack).apply(view);
 	}
 	
