@@ -7,7 +7,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -51,19 +50,19 @@ public class ItemBody implements WidgetWorkflowListener {
 
 	private JSONArray stateAsync;
 	private boolean attached = false;
+	private boolean stateIsLoaded = false;
+
+	private final ModulesStateLoader modulesStateLoader;
 
 	@Inject
-	public ItemBody(
-			@Assisted DisplayContentOptions options, 
-			@Assisted ModuleSocket moduleSocket, 
-			ModuleHandlerManager moduleHandlerManager,
-			InteractionEventsListener interactionEventsListener,
-			ModulesRegistrySocket modulesRegistrySocket) {
+	public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
+			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.moduleHandlerManager = moduleHandlerManager;
+		this.modulesStateLoader = modulesStateLoader;
 
 		parenthood = new ParenthoodManager();
 
@@ -139,7 +138,7 @@ public class ItemBody implements WidgetWorkflowListener {
 			}
 		}
 	}
-	
+
 	public void close() {
 		for (IModule currModule : modules) {
 			if (currModule instanceof ILifecycleModule) {
@@ -252,37 +251,15 @@ public class ItemBody implements WidgetWorkflowListener {
 		if (!attached) {
 			stateAsync = newState;
 		} else {
-			if (newState instanceof JSONArray) {
-
-				try {
-
-					if (newState.isArray() != null && newState.isArray().size() > 0) {
-						JSONObject stateObj = newState.isArray().get(0).isObject();
-
-						for (int i = 0; i < modules.size(); i++) {
-							if (modules.get(i) instanceof IStateful && modules.get(i) instanceof IUniqueModule) {
-								String curridentifier = ((IUniqueModule) modules.get(i)).getIdentifier();
-
-								if (curridentifier != null && curridentifier != "") {
-
-									if (stateObj.containsKey(curridentifier)) {
-										JSONValue currState = stateObj.get(curridentifier);
-										if (currState != null && currState.isArray() != null) {
-											((IStateful) modules.get(i)).setState(currState.isArray());
-										}
-									}
-								}
-							}
-						}
-					}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-			}
+			setStateOnModulesIfNotSetYet(newState, modules);
 		}
+	}
 
+	private void setStateOnModulesIfNotSetYet(JSONArray state, List<IModule> modules) {
+		if (!stateIsLoaded) {
+			modulesStateLoader.setState(state, modules);
+			stateIsLoaded = true;
+		}
 	}
 
 	public JavaScriptObject getJsSocket() {
