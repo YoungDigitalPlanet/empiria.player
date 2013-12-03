@@ -26,10 +26,10 @@ public class VideoPresenter {
 
 	public void start() {
 		view.createView();
-		videoPlayerAttacher.attachNew();
+		videoPlayerAttacher.attachNewToView(view);
 
 		if (iOSChecker.isNeeded()) {
-			reAttachHack.apply();
+			reAttachHack.apply(view);
 		}
 	}
 

@@ -45,7 +45,7 @@ public class VideoPlayer extends Widget {
 		return !isLoaded || alwaysReAttach;
 	}
 
-	public VideoPlayerControl getController() {
+	public VideoPlayerControl getControl() {
 		return nativePlayer;
 	}
 

@@ -36,7 +36,8 @@ public class VideoPresenterTest {
 
 		// then
 		verify(view).createView();
-		verify(videoPlayerAttacher).attachNew();
+		verify(videoPlayerAttacher).attachNewToView(view);
+		verify(reAttachHack, never()).apply(view);
 	}
 
 	@Test
@@ -49,8 +50,8 @@ public class VideoPresenterTest {
 
 		// then
 		verify(view).createView();
-		verify(videoPlayerAttacher).attachNew();
-		verify(reAttachHack).apply();
+		verify(videoPlayerAttacher).attachNewToView(view);
+		verify(reAttachHack).apply(view);
 	}
 	
 }

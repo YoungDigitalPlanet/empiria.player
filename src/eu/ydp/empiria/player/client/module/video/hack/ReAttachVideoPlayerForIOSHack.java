@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerAttacher;
+import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -26,20 +27,20 @@ public class ReAttachVideoPlayerForIOSHack {
 		this.pageScopeProvider = pageScopeProvider;
 	}
 
-	public void apply() {
+	public void apply(final VideoView view) {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), new PlayerEventHandler() {
 
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
-				reAttachHackIfVideoPlayerIsLoaded();
+				reAttachHackIfVideoPlayerIsLoaded(view);
 			}
 
 		}, pageScopeProvider.get());
 	}
 
-	private void reAttachHackIfVideoPlayerIsLoaded() {
+	private void reAttachHackIfVideoPlayerIsLoaded(VideoView view) {
 		if (isLoaded) {
-			videoPlayerAttacher.attachNew();
+			videoPlayerAttacher.attachNewToView(view);
 		} else {
 			isLoaded = true;
 		}

@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
@@ -14,10 +15,13 @@ import org.mockito.MockitoAnnotations;
 import com.google.gwt.junit.GWTMockUtilities;
 
 import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
-import eu.ydp.empiria.player.client.module.video.hack.PageChangePauseHandlerAdder;
+import eu.ydp.empiria.player.client.module.video.hack.VideoPlayerPauseOnPageChangeHandler;
 import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
@@ -31,10 +35,11 @@ public class VideoPlayerAttacherTest {
 	private VideoPlayerFactory factory;
 	@Mock
 	private VideoBean videoBean;
+	
 	@Mock
 	private VideoView view;
 	@Mock
-	private PageChangePauseHandlerAdder pageChangeHandlerAdder;
+	private EventsBus eventsBus;
 	
 	
 	@BeforeClass
@@ -52,15 +57,15 @@ public class VideoPlayerAttacherTest {
 		// given
 		VideoPlayerControl playerControl = mock(VideoPlayerControl.class);
 		VideoPlayer videoPlayer = mock(VideoPlayer.class);
-		when(videoPlayer.getController()).thenReturn(playerControl);
+		when(videoPlayer.getControl()).thenReturn(playerControl);
 		when(factory.create(videoBean)).thenReturn(videoPlayer);
 
 		// when
-		attacher.attachNew();
+		attacher.attachNewToView(view);
 
 		// then
 		verify(view).attachVideoPlayer(videoPlayer);
-		verify(pageChangeHandlerAdder).registerPauseOnPageChange(playerControl);
+		verify(eventsBus).addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), any(VideoPlayerPauseOnPageChangeHandler.class));
 	}
 
 	@AfterClass
