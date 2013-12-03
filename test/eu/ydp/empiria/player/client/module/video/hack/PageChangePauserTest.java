@@ -17,7 +17,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 public class PageChangePauserTest {
 
 	@InjectMocks
-	private PageChangePauser testObj;
+	private PageChangePauseHandlerAdder testObj;
 
 	@Mock
 	private EventsBus eventsBus;
@@ -31,6 +31,6 @@ public class PageChangePauserTest {
 		testObj.registerPauseOnPageChange(videoPlayerNative);
 
 		// then
-		verify(eventsBus).addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), any(VideoPlayerPageChangeHandler.class));
+		verify(eventsBus).addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), any(VideoPlayerPauseOnPageChangeHandler.class));
 	}
 }

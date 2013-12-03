@@ -13,22 +13,22 @@ public class VideoPresenter {
 	private final VideoView view;
 	private final ReAttachVideoPlayerForIOSHack reAttachHack;
 	private final VideoPlayerAttacher videoPlayerAttacher;
-	private final ReAttachVideoPlayerForIOSChecker hackChecker;
+	private final ReAttachVideoPlayerForIOSChecker iOSChecker;
 
 	@Inject
-	public VideoPresenter(@ModuleScoped VideoView view, @ModuleScoped VideoPlayerAttacher videoPlayerAttacher, ReAttachVideoPlayerForIOSChecker hackChecker,
-			@ModuleScoped ReAttachVideoPlayerForIOSHack reAttachHack) {
+	public VideoPresenter(@ModuleScoped VideoView view, @ModuleScoped VideoPlayerAttacher videoPlayerAttacher,
+			@ModuleScoped ReAttachVideoPlayerForIOSHack reAttachHack, ReAttachVideoPlayerForIOSChecker iOSChecker) {
 		this.view = view;
 		this.videoPlayerAttacher = videoPlayerAttacher;
-		this.hackChecker = hackChecker;
 		this.reAttachHack = reAttachHack;
+		this.iOSChecker = iOSChecker;
 	}
 
 	public void start() {
 		view.createView();
 		videoPlayerAttacher.attachNew();
 
-		if (hackChecker.isNeeded()) {
+		if (iOSChecker.isNeeded()) {
 			reAttachHack.apply();
 		}
 	}

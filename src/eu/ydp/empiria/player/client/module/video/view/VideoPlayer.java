@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.module.video.hack.PageChangePauser;
+import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
 import eu.ydp.empiria.player.client.module.video.hack.ReAttachVideoPlayerForIOSChecker;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
@@ -13,18 +13,15 @@ public class VideoPlayer extends Widget {
 
 	private final VideoPlayerNative nativePlayer;
 	private final VideoElementWrapper videoElementWrapper;
-	private final PageChangePauser pauser;
 
 	private final boolean alwaysReAttach;
 	private boolean isLoaded = false;
 
 	@Inject
-	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, ReAttachVideoPlayerForIOSChecker hackChecker,
-			PageChangePauser pauser) {
+	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, ReAttachVideoPlayerForIOSChecker hackChecker) {
 		this.nativePlayer = nativePlayer;
 		this.videoElementWrapper = videoElementWrapper;
 		this.alwaysReAttach = hackChecker.isNeeded();
-		this.pauser = pauser;
 		setElement(Document.get().createDivElement());
 	}
 
@@ -34,8 +31,6 @@ public class VideoPlayer extends Widget {
 			getElement().appendChild(videoElementWrapper.asNode());
 
 			initializeNativePlayer();
-
-			pauser.registerPauseOnPageChange(nativePlayer);
 
 			isLoaded = true;
 		}
@@ -48,6 +43,10 @@ public class VideoPlayer extends Widget {
 
 	private boolean shouldReattach() {
 		return !isLoaded || alwaysReAttach;
+	}
+
+	public VideoPlayerControl getController() {
+		return nativePlayer;
 	}
 
 	@Override

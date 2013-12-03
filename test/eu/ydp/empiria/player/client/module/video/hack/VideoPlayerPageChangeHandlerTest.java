@@ -14,14 +14,14 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 @RunWith(MockitoJUnitRunner.class)
 public class VideoPlayerPageChangeHandlerTest {
 
-	private VideoPlayerPageChangeHandler testObj;
+	private VideoPlayerPauseOnPageChangeHandler testObj;
 	
 	@Mock
 	private VideoPlayerNative nativePlayer;
 	
 	@Before
 	public void setUp() {
-		this.testObj = new VideoPlayerPageChangeHandler(nativePlayer);
+		this.testObj = new VideoPlayerPauseOnPageChangeHandler(nativePlayer);
 	}
 	
 	@Test

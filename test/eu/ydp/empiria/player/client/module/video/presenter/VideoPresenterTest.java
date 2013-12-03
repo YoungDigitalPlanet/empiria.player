@@ -52,4 +52,5 @@ public class VideoPresenterTest {
 		verify(videoPlayerAttacher).attachNew();
 		verify(reAttachHack).apply();
 	}
+	
 }

@@ -13,6 +13,8 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.gwt.junit.GWTMockUtilities;
 
+import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
+import eu.ydp.empiria.player.client.module.video.hack.PageChangePauseHandlerAdder;
 import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
@@ -31,7 +33,10 @@ public class VideoPlayerAttacherTest {
 	private VideoBean videoBean;
 	@Mock
 	private VideoView view;
-
+	@Mock
+	private PageChangePauseHandlerAdder pageChangeHandlerAdder;
+	
+	
 	@BeforeClass
 	public static void before() {
 		GWTMockUtilities.disarm();
@@ -45,7 +50,9 @@ public class VideoPlayerAttacherTest {
 	@Test
 	public void shouldCreateAndAttachVideoPlayer() {
 		// given
+		VideoPlayerControl playerControl = mock(VideoPlayerControl.class);
 		VideoPlayer videoPlayer = mock(VideoPlayer.class);
+		when(videoPlayer.getController()).thenReturn(playerControl);
 		when(factory.create(videoBean)).thenReturn(videoPlayer);
 
 		// when
@@ -53,6 +60,7 @@ public class VideoPlayerAttacherTest {
 
 		// then
 		verify(view).attachVideoPlayer(videoPlayer);
+		verify(pageChangeHandlerAdder).registerPauseOnPageChange(playerControl);
 	}
 
 	@AfterClass
