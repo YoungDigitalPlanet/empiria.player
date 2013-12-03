@@ -48,6 +48,12 @@
 	<script src="video/FAVideo.js" />
 	<script src="jscss/cssparser.js" />
 
+	<!-- LOGGER -->
+<!-- 	<replace-with class="eu.ydp.gwtutil.client.debug.log.DOMAppender"> -->
+	<replace-with class="eu.ydp.gwtutil.client.debug.log.ConsoleAppender">
+		<when-type-is class="eu.ydp.gwtutil.client.debug.log.LogAppender" />
+	</replace-with>
+
 	<!-- VIDEO -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">
 		<when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Video" />
