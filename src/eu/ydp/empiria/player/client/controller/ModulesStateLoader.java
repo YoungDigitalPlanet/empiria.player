@@ -23,7 +23,7 @@ public class ModulesStateLoader {
 
 	private void setStateOnModules(JSONArray state, List<IModule> modules) {
 		if (stateExists(state)) {
-			JSONObject stateObj = state.isArray().get(0).isObject();
+			JSONObject stateObj = getFirstObjectFromState(state);
 
 			for (int i = 0; i < modules.size(); i++) {
 
@@ -37,21 +37,27 @@ public class ModulesStateLoader {
 		return state.isArray() != null && state.isArray().size() > 0;
 	}
 
+	private JSONObject getFirstObjectFromState(JSONArray state) {
+		return state.isArray().get(0).isObject();
+	}
+
 	private void setStateOnModule(JSONObject stateObj, IModule module) {
 		if (moduleIsStatefulAndUnique(module)) {
 			String moduleIdentifier = ((IUniqueModule) module).getIdentifier();
 
-			if (!Strings.isNullOrEmpty(moduleIdentifier)) {
+			if (identifierExistsInState(moduleIdentifier, stateObj)) {
 
-				if (stateObj.containsKey(moduleIdentifier)) {
-					JSONValue moduleState = stateObj.get(moduleIdentifier);
+				JSONValue moduleState = stateObj.get(moduleIdentifier);
 
-					if (moduleStateExists(moduleState)) {
-						((IStateful) module).setState(moduleState.isArray());
-					}
+				if (moduleStateExists(moduleState)) {
+					((IStateful) module).setState(moduleState.isArray());
 				}
 			}
 		}
+	}
+
+	private boolean identifierExistsInState(String moduleIdentifier, JSONObject stateObj) {
+		return !Strings.isNullOrEmpty(moduleIdentifier) && stateObj.containsKey(moduleIdentifier);
 	}
 
 	private boolean moduleIsStatefulAndUnique(IModule module) {

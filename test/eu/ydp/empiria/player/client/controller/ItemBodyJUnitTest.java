@@ -8,22 +8,39 @@ import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
+import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ItemBodyJUnitTest {
 
-	private static ItemBody itemBody;
+	@InjectMocks
+	private ItemBody itemBody;
+	@Mock
+	private DisplayContentOptions options;
+	@Mock
+	private ModuleSocket moduleSocket;
+	@Mock
+	private ModuleHandlerManager moduleHandlerManager;
+	@Mock
+	private InteractionEventsListener interactionEventsListener;
+	@Mock
+	private ModulesRegistrySocket modulesRegistrySocket;
+	@Mock
+	private ModulesStateLoader modulesStateLoader;
 
 	@Before
 	public void prepare() {
-		itemBody = new ItemBody(null, null, null, null, null, null);
-
-		/**
-		 * Prepares base list of mock modules that contains only non-interaction
-		 * one
-		 */
 		itemBody.modules = new ArrayList<IModule>();
 
 		IModule testNonInteractionModule = mock(IModule.class);
