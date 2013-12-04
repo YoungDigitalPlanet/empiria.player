@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
 import eu.ydp.empiria.player.client.module.video.hack.ReAttachVideoPlayerForIOSChecker;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
@@ -13,8 +14,8 @@ public class VideoPlayer extends Widget {
 	private final VideoPlayerNative nativePlayer;
 	private final VideoElementWrapper videoElementWrapper;
 
-	private boolean isLoaded = false;
 	private final boolean alwaysReAttach;
+	private boolean isLoaded = false;
 
 	@Inject
 	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, ReAttachVideoPlayerForIOSChecker hackChecker) {
@@ -29,15 +30,23 @@ public class VideoPlayer extends Widget {
 		if (shouldReattach()) {
 			getElement().appendChild(videoElementWrapper.asNode());
 
-			String playerId = videoElementWrapper.getId();
-			nativePlayer.initPlayer(playerId);
+			initializeNativePlayer();
 
 			isLoaded = true;
 		}
 	}
 
+	private void initializeNativePlayer() {
+		String playerId = videoElementWrapper.getId();
+		nativePlayer.initPlayer(playerId);
+	}
+
 	private boolean shouldReattach() {
 		return !isLoaded || alwaysReAttach;
+	}
+
+	public VideoPlayerControl getControl() {
+		return nativePlayer;
 	}
 
 	@Override

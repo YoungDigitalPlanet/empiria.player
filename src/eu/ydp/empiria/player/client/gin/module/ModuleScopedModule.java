@@ -74,7 +74,7 @@ import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorViewImpl;
 import eu.ydp.empiria.player.client.module.video.hack.ReAttachVideoPlayerForIOSHack;
-import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerAttacher;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerBuilder;
 import eu.ydp.empiria.player.client.module.video.presenter.VideoPresenter;
 import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
 import eu.ydp.empiria.player.client.module.video.structure.VideoBeanProvider;
@@ -114,7 +114,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 		});
 		bindModuleScoped(VideoView.class, new TypeLiteral<ModuleScopedProvider<VideoView>>() {
 		});
-		bindModuleScoped(VideoPlayerAttacher.class, new TypeLiteral<ModuleScopedProvider<VideoPlayerAttacher>>() {
+		bindModuleScoped(VideoPlayerBuilder.class, new TypeLiteral<ModuleScopedProvider<VideoPlayerBuilder>>() {
 		});
 		bindModuleScoped(ReAttachVideoPlayerForIOSHack.class, new TypeLiteral<ModuleScopedProvider<ReAttachVideoPlayerForIOSHack>>() {
 		});

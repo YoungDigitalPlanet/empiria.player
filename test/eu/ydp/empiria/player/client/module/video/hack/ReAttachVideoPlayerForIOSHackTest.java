@@ -13,7 +13,8 @@ import org.mockito.stubbing.Answer;
 
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerAttacher;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerBuilder;
+import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -28,10 +29,12 @@ public class ReAttachVideoPlayerForIOSHackTest {
 	@Mock
 	private EventsBus eventsBus;
 	@Mock
-	private VideoPlayerAttacher videoPlayerAttacher;
+	private VideoPlayerBuilder videoPlayerBuilder;
 	@Mock
 	private Provider<CurrentPageScope> pageScopeProvider;
-
+	@Mock
+	private VideoView view;
+	
 	private PlayerEventHandler playerEventHandler;
 	private CurrentPageScope currentPageScope;
 
@@ -46,32 +49,32 @@ public class ReAttachVideoPlayerForIOSHackTest {
 	@Test
 	public void shouldNotAttachNewVideoPlayer() {
 		// given
-		hack.apply();
+		hack.apply(view);
 
 		// when
 		playerEventHandler.onPlayerEvent(null);
 
 		// then
-		verify(videoPlayerAttacher, never()).attachNew();
+		verify(videoPlayerBuilder, never()).buildVideoPlayer();
 	}
 
 	@Test
 	public void shouldAtachNewVideoPlayer() {
 		// given
-		hack.apply();
+		hack.apply(view);
 
 		// when
 		playerEventHandler.onPlayerEvent(null);
 		playerEventHandler.onPlayerEvent(null);
 
 		// then
-		verify(videoPlayerAttacher).attachNew();
+		verify(videoPlayerBuilder).buildVideoPlayer();
 	}
 
 	@Test
 	public void shouldAtachNewVideoPlayerTwoTimes() {
 		// given
-		hack.apply();
+		hack.apply(view);
 
 		// when
 		playerEventHandler.onPlayerEvent(null);
@@ -79,7 +82,7 @@ public class ReAttachVideoPlayerForIOSHackTest {
 		playerEventHandler.onPlayerEvent(null);
 
 		// then
-		verify(videoPlayerAttacher, times(2)).attachNew();
+		verify(videoPlayerBuilder, times(2)).buildVideoPlayer();
 	}
 
 	private void preparePageScope() {
