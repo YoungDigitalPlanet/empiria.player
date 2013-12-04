@@ -4,7 +4,6 @@ import static com.google.gwt.core.client.GWT.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
 import eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler;
 
 public class VideoPlayerNativeImpl implements VideoPlayerNative {
@@ -12,27 +11,11 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	private static final String FALLBACK_SWF = getModuleBaseURL() + "/videojs/video-js.swf";
 	private JavaScriptObject playerObject;
 	private String playerId;
-	private final int startPosition = 0;
 
 	@Override
 	public void initPlayer(String playerId) {
 		this.playerId = playerId;
 		playerObject = initPlayerNative();
-
-		if ((startPosition != 0) && !isFlashFallback()) { // Because of lack
-															// in
-															// progressive
-															// download for
-															// flash
-			addDurationChangeHandler(new VideoPlayerControlHandler() {
-				@Override
-				public void handle(VideoPlayerControl playerControl) {
-					playerControl.pause();
-					playerControl.setCurrentTime(startPosition);
-					playerControl.play();
-				}
-			});
-		}
 	}
 
 	@Override

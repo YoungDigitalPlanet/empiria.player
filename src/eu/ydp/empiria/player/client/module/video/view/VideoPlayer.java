@@ -51,8 +51,6 @@ public class VideoPlayer extends Widget {
 
 	@Override
 	protected void onUnload() {
-		nativePlayer.unload();
-
 		if (alwaysReAttach) {
 			nativePlayer.disposeCurrentPlayer();
 		}
