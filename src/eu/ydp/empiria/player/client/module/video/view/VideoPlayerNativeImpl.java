@@ -19,11 +19,6 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}
 
 	@Override
-	public void unload() {
-		this.playerObject = null;
-	}
-
-	@Override
 	public native void play() /*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
 
