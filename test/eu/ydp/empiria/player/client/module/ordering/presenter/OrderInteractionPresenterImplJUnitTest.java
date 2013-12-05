@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
+import static org.mockito.Mockito.*;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -21,49 +23,47 @@ import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
-import eu.ydp.empiria.player.client.module.ordering.model.ItemClickAction;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
-import eu.ydp.empiria.player.client.module.ordering.view.OrderItemClickListener;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderInteractionPresenterImplJUnitTest {
 
 	private OrderInteractionPresenterImpl presenter;
-	@Mock private OrderInteractionView interactionView;
-	@Mock private ItemsMarkingController itemsMarkingController;
-	@Mock private OrderingItemsDao orderingItemsDao;
-	@Mock private ItemClickController itemClickController;
-	@Mock private OrderInteractionModuleFactory orderInteractionModuleFactory;
-	@Mock private Response response;
-	@Mock private OrderInteractionModuleModel model;
-	@Mock private ModuleSocket socket;
-	@Mock private OrderingItem item1;
-	@Mock private OrderingItem item2;
-	@Mock private ItemsResponseOrderController itemsResponseOrderController;
-	@Mock private OrderingResetController orderingResetController;
-	@Mock private OrderingShowingAnswersController showingAnswersController;
-	@Mock private OrderingViewBuilder viewBuilder;
+	@Mock
+	private OrderInteractionView interactionView;
+	@Mock
+	private ItemsMarkingController itemsMarkingController;
+	@Mock
+	private OrderingItemsDao orderingItemsDao;
+	@Mock
+	private OrderInteractionModuleFactory orderInteractionModuleFactory;
+	@Mock
+	private Response response;
+	@Mock
+	private OrderInteractionModuleModel model;
+	@Mock
+	private ModuleSocket socket;
+	@Mock
+	private OrderingItem item1;
+	@Mock
+	private OrderingItem item2;
+	@Mock
+	private ItemsResponseOrderController itemsResponseOrderController;
+	@Mock
+	private OrderingResetController orderingResetController;
+	@Mock
+	private OrderingShowingAnswersController showingAnswersController;
+	@Mock
+	private OrderingViewBuilder viewBuilder;
 	private OrderInteractionBean bean;
 
-	
 	@Before
 	public void setUp() throws Exception {
-		presenter = new OrderInteractionPresenterImpl(
-				itemsMarkingController, 
-				itemClickController, 
-				itemsResponseOrderController, 
-				orderingResetController, 
-				showingAnswersController, 
-				viewBuilder, 
-				interactionView, 
-				orderingItemsDao, 
-				model);
+		presenter = new OrderInteractionPresenterImpl(itemsMarkingController, itemsResponseOrderController, orderingResetController, showingAnswersController,
+				viewBuilder, interactionView, orderingItemsDao);
 
 		bean = new OrderInteractionBean();
 
@@ -122,95 +122,29 @@ public class OrderInteractionPresenterImplJUnitTest {
 		presenter.bindView();
 
 		// then
-		InOrder inOrder = Mockito.inOrder(interactionView, itemClickController, itemsMarkingController, itemsResponseOrderController, orderInteractionModuleFactory,
-				viewBuilder, orderingResetController, showingAnswersController);
-		inOrder.verify(interactionView).setClickListener(Mockito.any(OrderItemClickListener.class));
+		InOrder inOrder = Mockito.inOrder(interactionView, itemsMarkingController, itemsResponseOrderController, orderInteractionModuleFactory, viewBuilder,
+				orderingResetController, showingAnswersController);
 		inOrder.verify(viewBuilder).buildView(bean, bodyGenerator);
 		inOrder.verify(itemsResponseOrderController).updateResponseWithNewOrder(itemsOrder);
 		inOrder.verify(orderingResetController).reset();
 		inOrder.verify(interactionView).setChildrenOrder(itemsOrder);
 	}
-	
-	@Test
-	public void shouldDoNothingWhenClickedLockedItem() throws Exception {
-		ItemClickAction clickAction = ItemClickAction.LOCK;
-		String itemId = "item1";
-		when(itemClickController.itemClicked(itemId))
-		.thenReturn(clickAction);
-		
-		presenter.itemClicked(itemId);
-		
-		verify(itemClickController).itemClicked(itemId);
-		verifyNoMoreInteractionsOnMocks();
-		Mockito.verifyNoMoreInteractions(item1, item2);
-	}
-	
-	@Test
-	public void shouldUpdateStyleOfClickedItemWhenWasSelect() throws Exception {
-		ItemClickAction clickAction = ItemClickAction.SELECT;
-		shouldUpdateStylesOfClickedItemOnAction(clickAction);
-	}
-	
-	@Test
-	public void shouldUpdateStyleOfClickedItemWhenWasUnselect() throws Exception {
-		ItemClickAction clickAction = ItemClickAction.UNSELECT;
-		shouldUpdateStylesOfClickedItemOnAction(clickAction);
-	}
 
-	private void shouldUpdateStylesOfClickedItemOnAction(ItemClickAction clickAction) {
-		String itemId = "item1";
-		when(itemClickController.itemClicked(itemId))
-		.thenReturn(clickAction);
-		
-		when(orderingItemsDao.getItem(itemId))
-		.thenReturn(item1);
-		
-		presenter.itemClicked(itemId);
-		
-		InOrder inOrder = Mockito.inOrder(itemClickController, interactionView);
-		inOrder.verify(itemClickController).itemClicked(itemId);
-		inOrder.verify(interactionView).setChildStyles(item1);
-		verifyNoMoreInteractionsOnMocks();
-	}
-	
-	@Test
-	public void shouldUpdateStylesAndOrderOfAllItemsWhenWasSwap() throws Exception {
-		String itemId = "item1";
-		when(itemClickController.itemClicked(itemId))
-		.thenReturn(ItemClickAction.SWITCH);
-		
-		List<String> newItemsOrder = Lists.newArrayList("item2", "item1");
-		when(orderingItemsDao.getItemsOrder())
-			.thenReturn(newItemsOrder);
-		
-		presenter.itemClicked(itemId);
-		
-		InOrder inOrder = Mockito.inOrder(itemClickController, interactionView, orderingItemsDao, model, itemsResponseOrderController);
-		inOrder.verify(itemClickController).itemClicked(itemId);
-		//verify update styles of all items
-		inOrder.verify(interactionView).setChildStyles(item1);
-		inOrder.verify(interactionView).setChildStyles(item2);
-		inOrder.verify(orderingItemsDao).getItemsOrder();
-		inOrder.verify(itemsResponseOrderController).updateResponseWithNewOrder(newItemsOrder);
-		inOrder.verify(model).onModelChange();
-	}
-	
 	@Test
 	public void shouldShowAnswers() throws Exception {
 		ShowAnswersType mode = ShowAnswersType.CORRECT;
 		List<String> newOrderToShow = Lists.newArrayList("item1", "item2");
-		when(showingAnswersController.findNewAnswersOrderToShow(mode))
-			.thenReturn(newOrderToShow);
-		
+		when(showingAnswersController.findNewAnswersOrderToShow(mode)).thenReturn(newOrderToShow);
+
 		presenter.showAnswers(mode);
-		
+
 		verify(showingAnswersController).findNewAnswersOrderToShow(mode);
 		verify(interactionView).setChildrenOrder(newOrderToShow);
 		verifyNoMoreInteractionsOnMocks();
 	}
 
 	private void verifyNoMoreInteractionsOnMocks() {
-		verifyNoMoreInteractions(interactionView, itemsMarkingController, itemClickController, orderInteractionModuleFactory, 
-				itemsResponseOrderController, orderingResetController, socket, item1, item2, showingAnswersController);
+		verifyNoMoreInteractions(interactionView, itemsMarkingController, orderInteractionModuleFactory, itemsResponseOrderController, orderingResetController,
+				socket, item1, item2, showingAnswersController);
 	}
 }

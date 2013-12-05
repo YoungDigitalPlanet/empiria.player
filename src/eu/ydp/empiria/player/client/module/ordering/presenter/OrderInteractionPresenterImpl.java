@@ -11,12 +11,10 @@ import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
-import eu.ydp.empiria.player.client.module.ordering.model.ItemClickAction;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
-import eu.ydp.empiria.player.client.module.ordering.view.OrderItemClickListener;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class OrderInteractionPresenterImpl implements OrderInteractionPresenter {
@@ -24,36 +22,25 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	private final OrderInteractionView interactionView;
 	private final ItemsMarkingController itemsMarkingController;
 	private final OrderingItemsDao orderingItemsDao;
-	private final ItemClickController itemClickController;
 	private final ItemsResponseOrderController itemsResponseOrderController;
 	private final OrderingResetController orderingResetController;
 	private final OrderingShowingAnswersController showingAnswersController;
-	private final OrderInteractionModuleModel model;
 	private final OrderingViewBuilder viewBuilder;
-	
+
 	private ModuleSocket socket;
 	private OrderInteractionBean bean;
 
 	@Inject
-	public OrderInteractionPresenterImpl(
-			ItemsMarkingController itemsMarkingController, 
-			ItemClickController itemClickController, 
-			ItemsResponseOrderController itemsResponseOrderController,
-			OrderingResetController orderingResetController,
-			OrderingShowingAnswersController showingAnswersController,
-			OrderingViewBuilder viewBuilder,
-			@ModuleScoped OrderInteractionView interactionView, 
-			@ModuleScoped OrderingItemsDao orderingItemsDao,
-			@ModuleScoped OrderInteractionModuleModel model) {
+	public OrderInteractionPresenterImpl(ItemsMarkingController itemsMarkingController, ItemsResponseOrderController itemsResponseOrderController,
+			OrderingResetController orderingResetController, OrderingShowingAnswersController showingAnswersController, OrderingViewBuilder viewBuilder,
+			@ModuleScoped OrderInteractionView interactionView, @ModuleScoped OrderingItemsDao orderingItemsDao) {
 		this.viewBuilder = viewBuilder;
 		this.interactionView = interactionView;
 		this.itemsMarkingController = itemsMarkingController;
 		this.orderingItemsDao = orderingItemsDao;
-		this.itemClickController = itemClickController;
 		this.itemsResponseOrderController = itemsResponseOrderController;
 		this.orderingResetController = orderingResetController;
 		this.showingAnswersController = showingAnswersController;
-		this.model = model;
 	}
 
 	@Override
@@ -63,9 +50,6 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 
 	@Override
 	public void bindView() {
-		OrderItemClickListener orderItemClickListener = new OrderItemClickListenerImpl(this);
-		interactionView.setClickListener(orderItemClickListener);
-
 		InlineBodyGeneratorSocket bodyGeneratorSocket = socket.getInlineBodyGeneratorSocket();
 		viewBuilder.buildView(bean, bodyGeneratorSocket);
 
@@ -81,7 +65,7 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 
 	@Override
 	public void setModel(OrderInteractionModuleModel model) {
-		//unused method - will be removed in the future
+		// unused method - will be removed in the future
 	}
 
 	@Override
@@ -96,14 +80,14 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 
 	@Override
 	public void setLocked(boolean locked) {
-		for(OrderingItem orderingItem : orderingItemsDao.getItems()){
+		for (OrderingItem orderingItem : orderingItemsDao.getItems()) {
 			orderingItem.setLocked(locked);
 		}
 		updateAllItemsStyles();
 	}
 
 	private void updateAllItemsStyles() {
-		for(OrderingItem orderingItem : orderingItemsDao.getItems()){
+		for (OrderingItem orderingItem : orderingItemsDao.getItems()) {
 			interactionView.setChildStyles(orderingItem);
 		}
 	}
@@ -118,26 +102,5 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	public void showAnswers(ShowAnswersType mode) {
 		List<String> answerOrder = showingAnswersController.findNewAnswersOrderToShow(mode);
 		interactionView.setChildrenOrder(answerOrder);
-	}
-
-	@Override
-	public void itemClicked(String itemId) {
-		ItemClickAction itemClickAction = itemClickController.itemClicked(itemId);
-		if(itemClickAction != ItemClickAction.LOCK) {
-			if(itemClickAction == ItemClickAction.SELECT || itemClickAction == ItemClickAction.UNSELECT){
-				OrderingItem orderingItem = orderingItemsDao.getItem(itemId);
-				interactionView.setChildStyles(orderingItem);
-			}else{
-				updateAllItemsStyles();
-				updateItemsOrderInView();
-				itemsResponseOrderController.updateResponseWithNewOrder(orderingItemsDao.getItemsOrder());
-				model.onModelChange();
-			}
-		}
-	}
-
-	private void updateItemsOrderInView() {
-		List<String> currentAnswersOrder = orderingItemsDao.getItemsOrder();
-		interactionView.setChildrenOrder(currentAnswersOrder);
 	}
 }
