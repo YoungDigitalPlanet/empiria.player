@@ -6,18 +6,23 @@ import com.google.common.base.Strings;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.gwtutil.client.debug.log.Logger;
 
 public class ModulesStateLoader {
+
+	@Inject
+	private Logger logger;
 
 	public void setState(JSONArray state, List<IModule> modules) {
 		try {
 			setStateOnModules(state, modules);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 
