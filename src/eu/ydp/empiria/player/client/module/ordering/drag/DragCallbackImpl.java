@@ -1,0 +1,29 @@
+package eu.ydp.empiria.player.client.module.ordering.drag;
+
+import java.util.List;
+
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.gin.module.ModuleScopedLazyProvider;
+import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
+import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+
+public class DragCallbackImpl implements DragCallback {
+
+	@Inject
+	private ModuleScopedLazyProvider<OrderInteractionPresenter> presenterProvider;
+	@Inject
+	@ModuleScoped
+	private OrderingItemsDao orderingItemsDao;
+
+	@Override
+	public void dragStoped(int from, int to) {
+		List<String> itemsInOrder = orderingItemsDao.getItemsOrder();
+
+		String movedElement = itemsInOrder.remove(from);
+		itemsInOrder.add(to, movedElement);
+
+		presenterProvider.get().updateItemsOrder(itemsInOrder);
+	}
+}

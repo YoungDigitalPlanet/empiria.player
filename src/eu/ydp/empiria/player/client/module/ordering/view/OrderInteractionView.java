@@ -17,4 +17,6 @@ public interface OrderInteractionView extends IsWidget {
 	void setChildrenOrder(List<String> childOrder);
 
 	void setOrientation(OrderInteractionOrientation orientation);
+
+	String getId();
 }

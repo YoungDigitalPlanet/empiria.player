@@ -61,4 +61,8 @@ public class OrderInteractionViewImpl implements OrderInteractionView {
 		return viewWidget.asWidget();
 	}
 
+	@Override
+	public String getId() {
+		return viewWidget.getId();
+	}
 }

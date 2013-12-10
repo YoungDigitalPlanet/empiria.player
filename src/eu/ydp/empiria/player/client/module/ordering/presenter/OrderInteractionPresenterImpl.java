@@ -11,9 +11,11 @@ import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
+import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
+import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
@@ -26,14 +28,17 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	private final OrderingResetController orderingResetController;
 	private final OrderingShowingAnswersController showingAnswersController;
 	private final OrderingViewBuilder viewBuilder;
+	private final OrderInteractionModuleModel model;
+	private final DragController dragController;
 
 	private ModuleSocket socket;
 	private OrderInteractionBean bean;
 
 	@Inject
-	public OrderInteractionPresenterImpl(ItemsMarkingController itemsMarkingController, ItemsResponseOrderController itemsResponseOrderController,
-			OrderingResetController orderingResetController, OrderingShowingAnswersController showingAnswersController, OrderingViewBuilder viewBuilder,
-			@ModuleScoped OrderInteractionView interactionView, @ModuleScoped OrderingItemsDao orderingItemsDao) {
+	public OrderInteractionPresenterImpl(ItemsMarkingController itemsMarkingController,
+			@ModuleScoped ItemsResponseOrderController itemsResponseOrderController, OrderingResetController orderingResetController,
+			OrderingShowingAnswersController showingAnswersController, OrderingViewBuilder viewBuilder, @ModuleScoped OrderInteractionView interactionView,
+			@ModuleScoped OrderingItemsDao orderingItemsDao, @ModuleScoped OrderInteractionModuleModel model, @ModuleScoped DragController dragController) {
 		this.viewBuilder = viewBuilder;
 		this.interactionView = interactionView;
 		this.itemsMarkingController = itemsMarkingController;
@@ -41,6 +46,8 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 		this.itemsResponseOrderController = itemsResponseOrderController;
 		this.orderingResetController = orderingResetController;
 		this.showingAnswersController = showingAnswersController;
+		this.dragController = dragController;
+		this.model = model;
 	}
 
 	@Override
@@ -80,6 +87,11 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 
 	@Override
 	public void setLocked(boolean locked) {
+		if (locked) {
+			dragController.disableDrag();
+		} else {
+			dragController.enableDrag();
+		}
 		for (OrderingItem orderingItem : orderingItemsDao.getItems()) {
 			orderingItem.setLocked(locked);
 		}
@@ -102,5 +114,19 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	public void showAnswers(ShowAnswersType mode) {
 		List<String> answerOrder = showingAnswersController.findNewAnswersOrderToShow(mode);
 		interactionView.setChildrenOrder(answerOrder);
+	}
+
+	@Override
+	public void updateItemsOrder(List<String> newItemsOrder) {
+		orderingItemsDao.setItemsOrder(newItemsOrder);
+		updateAllItemsStyles();
+		interactionView.setChildrenOrder(newItemsOrder);
+		itemsResponseOrderController.updateResponseWithNewOrder(newItemsOrder);
+		model.onModelChange();
+	}
+
+	@Override
+	public OrderInteractionOrientation getOrientation() {
+		return bean.getOrientation();
 	}
 }

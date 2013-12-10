@@ -11,32 +11,32 @@ import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class OrderInteractionModuleModel extends AbstractResponseModel<String>{
-	
+public class OrderInteractionModuleModel extends AbstractResponseModel<String> {
+
 	@Inject
 	public OrderInteractionModuleModel(@ModuleScoped Response response) {
 		super(response);
 	}
 
-	public void initialize(ResponseModelChangeListener modelChangeListener){
+	public void initialize(ResponseModelChangeListener modelChangeListener) {
 		responseModelChange = modelChangeListener;
 	}
-	
+
 	@Override
 	protected List<String> parseResponse(Collection<String> values) {
 		return Lists.newArrayList(values);
 	}
 
-	public Response getResponse(){
-		return this.response;
+	public Response getResponse() {
+		return response;
 	}
 
-	public void onModelChange(){
+	@Override
+	public void onModelChange() {
 		super.onModelChange();
 	}
-	
+
 	@Override
-	public void reset(){
-		
+	public void reset() {
 	}
 }

@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
+import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Collection;
@@ -13,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -23,13 +24,15 @@ import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
+import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
+import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OrderInteractionPresenterImplJUnitTest {
+public class OrderInteractionPresenterImplTest {
 
 	private OrderInteractionPresenterImpl presenter;
 	@Mock
@@ -58,12 +61,14 @@ public class OrderInteractionPresenterImplJUnitTest {
 	private OrderingShowingAnswersController showingAnswersController;
 	@Mock
 	private OrderingViewBuilder viewBuilder;
+	@Mock
+	private DragController dragController;
 	private OrderInteractionBean bean;
 
 	@Before
 	public void setUp() throws Exception {
 		presenter = new OrderInteractionPresenterImpl(itemsMarkingController, itemsResponseOrderController, orderingResetController, showingAnswersController,
-				viewBuilder, interactionView, orderingItemsDao);
+				viewBuilder, interactionView, orderingItemsDao, model, dragController);
 
 		bean = new OrderInteractionBean();
 
@@ -88,7 +93,6 @@ public class OrderInteractionPresenterImplJUnitTest {
 		inOrder.verify(item2).setLocked(true);
 		inOrder.verify(interactionView).setChildStyles(item1);
 		inOrder.verify(interactionView).setChildStyles(item2);
-		verifyNoMoreInteractionsOnMocks();
 	}
 
 	@Test
@@ -102,8 +106,6 @@ public class OrderInteractionPresenterImplJUnitTest {
 		inOrder.verify(itemsMarkingController).markOrUnmarkItemsByType(type, mode);
 		inOrder.verify(interactionView).setChildStyles(item1);
 		inOrder.verify(interactionView).setChildStyles(item2);
-
-		verifyNoMoreInteractionsOnMocks();
 	}
 
 	@Test
@@ -140,11 +142,53 @@ public class OrderInteractionPresenterImplJUnitTest {
 
 		verify(showingAnswersController).findNewAnswersOrderToShow(mode);
 		verify(interactionView).setChildrenOrder(newOrderToShow);
-		verifyNoMoreInteractionsOnMocks();
 	}
 
-	private void verifyNoMoreInteractionsOnMocks() {
-		verifyNoMoreInteractions(interactionView, itemsMarkingController, orderInteractionModuleFactory, itemsResponseOrderController, orderingResetController,
-				socket, item1, item2, showingAnswersController);
+	@Test
+	public void shouldDisableDragOnLock() {
+		// when
+		presenter.setLocked(true);
+
+		// then
+		verify(dragController).disableDrag();
+	}
+
+	@Test
+	public void shouldEnableDragOnunlock() {
+		// when
+		presenter.setLocked(false);
+
+		// then
+		verify(dragController).enableDrag();
+	}
+
+	@Test
+	public void shouldUpdateitemsorder() {
+		// given
+		List<String> itemsOrder = Lists.newArrayList("a", "b");
+
+		// when
+		presenter.updateItemsOrder(itemsOrder);
+
+		// then
+		InOrder inOrder = Mockito.inOrder(orderingItemsDao, interactionView, itemsResponseOrderController, model);
+		inOrder.verify(orderingItemsDao).setItemsOrder(itemsOrder);
+		inOrder.verify(interactionView).setChildStyles(item1);
+		inOrder.verify(interactionView).setChildStyles(item2);
+		inOrder.verify(interactionView).setChildrenOrder(itemsOrder);
+		inOrder.verify(itemsResponseOrderController).updateResponseWithNewOrder(itemsOrder);
+		inOrder.verify(model).onModelChange();
+	}
+
+	@Test
+	public void shouldReturnorientation() {
+		// given
+		bean.setOrientation(OrderInteractionOrientation.VERTICAL);
+
+		// when
+		OrderInteractionOrientation orientation = presenter.getOrientation();
+
+		// then
+		assertThat(orientation).isEqualTo(OrderInteractionOrientation.VERTICAL);
 	}
 }
