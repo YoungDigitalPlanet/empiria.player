@@ -27,6 +27,8 @@ public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
 
 	private ModuleMock secondModule;
 
+	private List<IModule> modules;
+
 	@Override
 	public String getModuleName() {
 		return "eu.ydp.empiria.player.Player";
@@ -38,13 +40,13 @@ public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
 
 		firstModule = new ModuleMock(FIRST_IDENTIFIER);
 		secondModule = new ModuleMock(SECOND_IDENTIFIER);
+
+		modules = Lists.newArrayList((IModule) firstModule, (IModule) secondModule);
 	}
 
 	public void testDoesntSetStateOnModulesBecauseIsNull() { // given //
 		// given
 		JSONArray state = null;
-
-		List<IModule> modules = Lists.newArrayList((IModule) firstModule, (IModule) secondModule);
 
 		// when
 		loader.setState(state, modules);
@@ -60,8 +62,6 @@ public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
 
 		JSONObject stateObject = getStateObjectByString(stateString);
 		JSONArray state = getJSONArrayWithObject(stateObject);
-
-		List<IModule> modules = Lists.newArrayList((IModule) firstModule, (IModule) secondModule);
 
 		// when
 		loader.setState(state, modules);
@@ -82,8 +82,6 @@ public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
 		JSONObject stateObject = getStateObjectByString(stateString);
 		JSONArray state = getJSONArrayWithObject(stateObject);
 
-		List<IModule> modules = Lists.newArrayList((IModule) firstModule, (IModule) secondModule);
-
 		// when
 		loader.setState(state, modules);
 
@@ -103,8 +101,6 @@ public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
 
 		JSONObject stateObject = getStateObjectByString(stateString);
 		JSONArray state = getJSONArrayWithObject(stateObject);
-
-		List<IModule> modules = Lists.newArrayList((IModule) firstModule, (IModule) secondModule);
 
 		// when
 		loader.setState(state, modules);
