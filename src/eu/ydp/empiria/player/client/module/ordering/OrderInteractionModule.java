@@ -7,15 +7,16 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
-import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
 import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionStructure;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.gwtutil.client.scheduler.Scheduler;
 
 public class OrderInteractionModule extends AbstractInteractionModule<OrderInteractionModule, OrderInteractionModuleModel, OrderInteractionBean> {
 
 	@Inject
+	@ModuleScoped
 	private OrderInteractionPresenter presenter;
 
 	@Inject
@@ -27,7 +28,10 @@ public class OrderInteractionModule extends AbstractInteractionModule<OrderInter
 
 	@Inject
 	@ModuleScoped
-	private DragController dragController;
+	private DragInitializingCommand dragInitializingCommand;
+
+	@Inject
+	private Scheduler scheduler;
 
 	@Override
 	public Widget getView() {
@@ -56,6 +60,6 @@ public class OrderInteractionModule extends AbstractInteractionModule<OrderInter
 
 	@Override
 	public void onStart() {
-		dragController.init(presenter.getOrientation());
+		scheduler.scheduleDeferred(dragInitializingCommand);
 	}
 }
