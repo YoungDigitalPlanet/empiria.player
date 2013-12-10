@@ -4,8 +4,6 @@ import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
 
 public interface VideoPlayerNative extends VideoPlayerControl {
 
-	void unload();
-
 	void initPlayer(String playerId);
 
 	void disposeCurrentPlayer();
