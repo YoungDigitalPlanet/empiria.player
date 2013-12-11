@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class DragCallbackImpl implements DragCallback {
+public class SortCallbackImpl implements SortCallback {
 
 	@Inject
 	private ModuleScopedLazyProvider<OrderInteractionPresenter> presenterProvider;
@@ -18,7 +18,7 @@ public class DragCallbackImpl implements DragCallback {
 	private OrderingItemsDao orderingItemsDao;
 
 	@Override
-	public void dragStoped(int from, int to) {
+	public void sortStoped(int from, int to) {
 		List<String> itemsInOrder = orderingItemsDao.getItemsOrder();
 
 		String movedElement = itemsInOrder.remove(from);

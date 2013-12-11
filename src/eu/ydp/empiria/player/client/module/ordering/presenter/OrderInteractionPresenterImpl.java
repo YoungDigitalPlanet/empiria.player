@@ -87,15 +87,19 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 
 	@Override
 	public void setLocked(boolean locked) {
+		enableOrDisableDrag(locked);
+		for (OrderingItem orderingItem : orderingItemsDao.getItems()) {
+			orderingItem.setLocked(locked);
+		}
+		updateAllItemsStyles();
+	}
+
+	private void enableOrDisableDrag(boolean locked) {
 		if (locked) {
 			dragController.disableDrag();
 		} else {
 			dragController.enableDrag();
 		}
-		for (OrderingItem orderingItem : orderingItemsDao.getItems()) {
-			orderingItem.setLocked(locked);
-		}
-		updateAllItemsStyles();
 	}
 
 	private void updateAllItemsStyles() {

@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.ordering.drag;
 
 public class SortableNative {
 
-	public native void init(String selector, String dragAxis, DragCallback callback) /*-{
+	public native void init(String selector, String dragAxis, SortCallback callback) /*-{
 		$wnd
 				.jQuery(selector)
 				.sortable(
@@ -14,7 +14,7 @@ public class SortableNative {
 							stop : function(event, ui) {
 								var to = ui.item.index();
 								if (to != this.from) {
-									callback.@eu.ydp.empiria.player.client.module.ordering.drag.DragCallback::dragStoped(II)(this.from, to);
+									callback.@eu.ydp.empiria.player.client.module.ordering.drag.SortCallback::sortStoped(II)(this.from, to);
 								}
 							}
 						});

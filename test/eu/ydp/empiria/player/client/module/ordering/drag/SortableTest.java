@@ -23,7 +23,7 @@ public class SortableTest {
 		// given
 		final String id = "ID";
 		OrderInteractionOrientation orderInteractionOrientation = OrderInteractionOrientation.HORIZONTAL;
-		DragCallback callback = mock(DragCallback.class);
+		SortCallback callback = mock(SortCallback.class);
 
 		// when
 		testObj.init(id, orderInteractionOrientation, callback);

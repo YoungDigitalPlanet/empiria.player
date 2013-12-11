@@ -29,7 +29,7 @@ public class DragControllerTest {
 	@Mock
 	private Sortable sortable;
 	@Mock
-	private DragCallback callback;
+	private SortCallback callback;
 
 	@Before
 	public void setup() {

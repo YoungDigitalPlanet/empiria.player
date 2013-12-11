@@ -5,8 +5,8 @@ import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.gin.factory.OrderInteractionModuleFactory;
-import eu.ydp.empiria.player.client.module.ordering.drag.DragCallback;
-import eu.ydp.empiria.player.client.module.ordering.drag.DragCallbackImpl;
+import eu.ydp.empiria.player.client.module.ordering.drag.SortCallback;
+import eu.ydp.empiria.player.client.module.ordering.drag.SortCallbackImpl;
 import eu.ydp.empiria.player.client.module.ordering.drag.Sortable;
 import eu.ydp.empiria.player.client.module.ordering.drag.SortableNative;
 import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
@@ -33,7 +33,7 @@ public class OrderingGinModule extends AbstractGinModule {
 		bind(OrderInteractionViewWidget.class).to(OrderInteractionViewWidgetImpl.class);
 		bind(OrderInteractionViewItems.class).to(OrderInteractionViewItemsImpl.class);
 		bind(OrderInteractionViewItemStyles.class).to(OrderInteractionViewItemStylesImpl.class);
-		bind(DragCallback.class).to(DragCallbackImpl.class);
+		bind(SortCallback.class).to(SortCallbackImpl.class);
 		install(new GinFactoryModuleBuilder().implement(OrderInteractionViewItem.class, OrderInteractionViewItemImpl.class).build(
 				OrderInteractionModuleFactory.class));
 	}

@@ -9,7 +9,7 @@ public class Sortable {
 	@Inject
 	private SortableNative sortableNative;
 
-	public void init(String id, OrderInteractionOrientation orderInteractionOrientation, DragCallback callback) {
+	public void init(String id, OrderInteractionOrientation orderInteractionOrientation, SortCallback callback) {
 		sortableNative.init(id, orderInteractionOrientation.getAxis(), callback);
 	}
 

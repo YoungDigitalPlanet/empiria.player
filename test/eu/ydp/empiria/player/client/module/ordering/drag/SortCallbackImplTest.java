@@ -18,10 +18,10 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DragCallbackImplTest {
+public class SortCallbackImplTest {
 
 	@InjectMocks
-	private DragCallbackImpl testobj;
+	private SortCallbackImpl testobj;
 	@Mock
 	private ModuleScopedLazyProvider<OrderInteractionPresenter> presenterProvider;
 	@Mock
@@ -39,7 +39,7 @@ public class DragCallbackImplTest {
 		final int TO = 2;
 
 		// when
-		testobj.dragStoped(FROM, TO);
+		testobj.sortStoped(FROM, TO);
 
 		// then
 		verify(presenter).updateItemsOrder(EXPECTED_ITEMS_ORDER);

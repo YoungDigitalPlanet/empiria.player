@@ -14,7 +14,7 @@ public class DragController {
 	@Inject
 	private Sortable sortable;
 	@Inject
-	private DragCallback callback;
+	private SortCallback callback;
 
 	public void init(final OrderInteractionOrientation orientation) {
 		String id = getIdSelector();
