@@ -14,23 +14,21 @@ public class OrderingResetController {
 	private final OrderingItemsDao orderingItemsDao;
 	private final ItemsResponseOrderController itemsResponseOrderController;
 	private final OrderInteractionModuleModel model;
-	
+
 	@Inject
-	public OrderingResetController(OrderingAnswersShuffler orderingAnswersShuffler, 
-			ItemsResponseOrderController itemsResponseOrderController, 
-			@ModuleScoped OrderingItemsDao orderingItemsDao, 
-			@ModuleScoped OrderInteractionModuleModel model) {
+	public OrderingResetController(OrderingAnswersShuffler orderingAnswersShuffler, @ModuleScoped ItemsResponseOrderController itemsResponseOrderController,
+			@ModuleScoped OrderingItemsDao orderingItemsDao, @ModuleScoped OrderInteractionModuleModel model) {
 		this.orderingAnswersShuffler = orderingAnswersShuffler;
 		this.orderingItemsDao = orderingItemsDao;
 		this.itemsResponseOrderController = itemsResponseOrderController;
 		this.model = model;
 	}
 
-	public void reset(){
+	public void reset() {
 		List<String> newAnswersOrder = orderingAnswersShuffler.shuffleAnswers(model.getCurrentAnswers(), model.getCorrectAnswers());
 		List<String> newItemsOrder = itemsResponseOrderController.getCorrectItemsOrderByAnswers(newAnswersOrder);
 		orderingItemsDao.setItemsOrder(newItemsOrder);
 		itemsResponseOrderController.updateResponseWithNewOrder(newItemsOrder);
 	}
-	
+
 }
