@@ -12,6 +12,8 @@ import eu.ydp.empiria.player.client.module.video.wrappers.SourceElementWrapper;
 import eu.ydp.empiria.player.client.module.video.wrappers.SourceElementWrapperProvider;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapperProvider;
+import eu.ydp.empiria.player.client.module.video.wrappers.poster.BundleDefaultPosterUriProvider;
+import eu.ydp.empiria.player.client.module.video.wrappers.poster.DefaultPosterUriProvider;
 
 public class VideoGinModule extends AbstractGinModule {
 
@@ -21,6 +23,7 @@ public class VideoGinModule extends AbstractGinModule {
 		bind(SourceElementWrapper.class).toProvider(SourceElementWrapperProvider.class);
 		bind(VideoElementWrapper.class).toProvider(VideoElementWrapperProvider.class);
 		bind(VideoPlayerNative.class).to(VideoPlayerNativeImpl.class);
+		bind(DefaultPosterUriProvider.class).to(BundleDefaultPosterUriProvider.class);
 		install(new GinFactoryModuleBuilder().build(VideoModuleFactory.class));
 	}
 }
