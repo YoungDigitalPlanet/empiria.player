@@ -13,9 +13,9 @@ public interface GapModulePresenter {
 
 	void setWidth(double value, Unit unit);
 
-	int getOffsetWidth();
-
 	void setHeight(double value, Unit unit);
+
+	int getOffsetWidth();
 
 	int getOffsetHeight();
 

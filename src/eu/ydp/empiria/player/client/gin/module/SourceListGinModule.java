@@ -14,8 +14,6 @@ import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModule
 import eu.ydp.empiria.player.client.module.sourcelist.view.ScormScrollPanel;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListViewImpl;
-import eu.ydp.empiria.player.client.module.sourcelist.view.ScormScrollPanel;
-
 public class SourceListGinModule extends AbstractGinModule {
 	public static class SourceListJAXBParserProvider implements Provider<SourceListJAXBParser>{
 		@Override

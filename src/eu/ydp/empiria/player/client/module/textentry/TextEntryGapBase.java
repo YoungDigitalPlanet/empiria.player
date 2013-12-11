@@ -1,15 +1,12 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
 
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
@@ -46,7 +43,6 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 	@Inject
 	@PageScoped
 	protected ResponseSocket responseSocket;
-
 
 	public void postConstruct() {
 		addHandlersInPresenter();
@@ -156,25 +152,35 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 	}
 
 	protected void initReplacements(Map<String, String> styles) {
-		boolean containsReplacementStyle = styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)  ||  styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
-		if (containsReplacementStyle){
-			String charactersSet = Objects.firstNonNull(styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS), styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS));
+		String charactersSet = getSubstitutionCharactersSetFromStyles(styles);
+
+		if (charactersSet != null) {
 			gapExpressionReplacer.useCharacters(charactersSet);
 			getTextEntryPresenter().makeExpressionReplacements(gapExpressionReplacer.getReplacer());
 		}
 	}
 
-	protected void addPlayerEventHandlers(){
+	private String getSubstitutionCharactersSetFromStyles(Map<String, String> styles) {
+		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)) {
+			return styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS);
+		} else if (styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS)) {
+			return styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
+		} else {
+			return null;
+		}
+	}
+	
+	protected void addPlayerEventHandlers() {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
 
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
-				if(event.getType() == PlayerEventTypes.BEFORE_FLOW){
+				if (event.getType() == PlayerEventTypes.BEFORE_FLOW) {
 					updateResponse(false, false);
 					getTextEntryPresenter().removeFocusFromTextField();
 				}
 			}
-		},new CurrentPageScope());
+		}, new CurrentPageScope());
 	}
 
 	protected void updateResponse(boolean userInteract) {
@@ -191,8 +197,6 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 		return (TextEntryGapModulePresenterBase) presenter;
 	}
 
-
-
 	private final class TextEntryDomHandler implements GapDropHandler {
 		@Override
 		public void onDrop(DragDataObject dragDataObject) {
@@ -205,18 +209,11 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 	}
 
 	private final class TextEntryPresenterHandler implements PresenterHandler {
-		@Override
-		public void onChange(ChangeEvent event) {
-			sourcelistManager.onUserValueChanged();
-			updateResponse(true);
-		}
 
 		@Override
 		public void onBlur(BlurEvent event) {
-			if (isMobileUserAgent()) {
-				sourcelistManager.onUserValueChanged();
-				updateResponse(true);
-			}
+			sourcelistManager.onUserValueChanged();
+			updateResponse(true);
 		}
 	}
 }

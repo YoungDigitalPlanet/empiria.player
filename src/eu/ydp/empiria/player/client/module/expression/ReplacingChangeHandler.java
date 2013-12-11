@@ -35,7 +35,7 @@ public class ReplacingChangeHandler {
 		String text = textBox.getValue();
 		if (expressionReplacer.isEligibleForReplacement(text)){
 			String replaced = expressionReplacer.replace(text);
-			textBox.setValue(replaced);
+			textBox.setValue(replaced, true);
 		}
 	}
 	

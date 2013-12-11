@@ -40,13 +40,19 @@
 	<stylesheet src="lightbox2/css/lightbox.css" />
 	<stylesheet src="video-js/video-js.min.css" />
 	<script src="video-js/video.dev.js" />
-	<script src="jquery/jquery-1.7.2.min.js" />
-	<script src="jquery/jquery-ui-1.8.18.custom.min.js" />
+	<script src="jquery/jquery-1.10.2.min.js" />
+	<script src="jquery/jquery-ui-1.10.3.custom.min.js" />
 	<script src="jquery/jquery.smooth-scroll.min.js" />
 	<script src="lightbox2/js/lightbox-min.js" />
 	<script src="video/AC_RunActiveContent.js" />
 	<script src="video/FAVideo.js" />
 	<script src="jscss/cssparser.js" />
+
+	<!-- LOGGER -->
+<!-- 	<replace-with class="eu.ydp.gwtutil.client.debug.log.DOMAppender"> -->
+	<replace-with class="eu.ydp.gwtutil.client.debug.log.ConsoleAppender">
+		<when-type-is class="eu.ydp.gwtutil.client.debug.log.LogAppender" />
+	</replace-with>
 
 	<!-- VIDEO -->
 	<replace-with class="eu.ydp.empiria.player.client.module.object.impl.HTML5VideoImpl">

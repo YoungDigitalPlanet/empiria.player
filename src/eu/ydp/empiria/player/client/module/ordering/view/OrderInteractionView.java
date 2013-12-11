@@ -11,8 +11,12 @@ import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOr
 
 public interface OrderInteractionView extends IsWidget {
 	void createItem(OrderingItem orderingItem, XMLContent xmlContent, InlineBodyGeneratorSocket bodyGenerator);
+
 	void setChildStyles(OrderingItem item);
+
 	void setChildrenOrder(List<String> childOrder);
-	void setClickListener(OrderItemClickListener clickListener);
+
 	void setOrientation(OrderInteractionOrientation orientation);
+
+	String getId();
 }
