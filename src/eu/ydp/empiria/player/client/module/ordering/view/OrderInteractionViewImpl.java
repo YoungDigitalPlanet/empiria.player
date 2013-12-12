@@ -47,12 +47,17 @@ public class OrderInteractionViewImpl implements OrderInteractionView {
 	}
 
 	@Override
+	public void setClickListener(OrderItemClickListener clickListener) {
+		viewItems.setItemClickListener(clickListener);
+	}
+
+	@Override
 	public void setChildStyles(OrderingItem item) {
 		interactionViewItemStyles.applyStylesOnWidget(item, viewItems.getItem(item.getId()));
 	}
 
 	@Override
-	public void setOrientation(OrderInteractionOrientation orientation) {
+	public void setOrientation(OrderInteractionOrientation orientation){
 		viewWidget.setOrientation(orientation);
 	}
 
@@ -61,8 +66,4 @@ public class OrderInteractionViewImpl implements OrderInteractionView {
 		return viewWidget.asWidget();
 	}
 
-	@Override
-	public String getId() {
-		return viewWidget.getId();
-	}
 }

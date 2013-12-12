@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.module.ordering.view;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +30,8 @@ import eu.ydp.empiria.player.client.module.ordering.view.items.OrderInteractionV
 import eu.ydp.empiria.player.client.module.ordering.view.items.OrderInteractionViewItems;
 
 @SuppressWarnings("PMD")
-public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
+public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit{
+
 
 	private class CustomGinModule implements Module {
 		@Override
@@ -47,6 +50,7 @@ public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAu
 	private OrderInteractionViewImpl instance;
 	private Widget widget;
 
+
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
@@ -64,14 +68,14 @@ public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		instance = injector.getInstance(OrderInteractionViewImpl.class);
 		widget = mock(Widget.class);
 		when(bodyGeneratorSocket.generateInlineBody(Mockito.any(Node.class))).thenReturn(widget);
-		when(viewItems.addItem(Mockito.anyString(), Mockito.any(Widget.class))).thenReturn(viewItem);
+		when(viewItems.addItem(Mockito.anyString(),Mockito.any(Widget.class))).thenReturn(viewItem);
 		when(viewItems.getItem(Mockito.anyString())).thenReturn(viewItem);
 	}
 
 	@Test
 	public void createItem() throws Exception {
 		XMLContent xmlContent = mock(XMLContent.class);
-		OrderingItem orderingItem = new OrderingItem("id", "ans");
+		OrderingItem orderingItem = new OrderingItem("id","ans");
 		instance.createItem(orderingItem, xmlContent, bodyGeneratorSocket);
 		verify(viewWidget).add(Mockito.eq(viewItem));
 		verify(viewItems).addItem(Mockito.eq("id"), Mockito.eq(widget));
@@ -88,18 +92,25 @@ public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAu
 
 	private List<String> fillInstance() {
 		final XMLContent xmlContent = mock(XMLContent.class);
-		final List<String> order = Arrays.asList("id", "id2", "id3");
-		for (final String orderItem : order) {
-			final OrderingItem orderingItem = new OrderingItem(orderItem, "ans");
+		final List<String> order = Arrays.asList("id","id2","id3");
+		for(final String orderItem: order){
+			final OrderingItem orderingItem = new OrderingItem(orderItem,"ans");
 			instance.createItem(orderingItem, xmlContent, bodyGeneratorSocket);
 		}
 		return order;
 	}
 
 	@Test
+	public void setClickListener() throws Exception {
+		OrderItemClickListener clickListener = mock(OrderItemClickListener.class);
+		instance.setClickListener(clickListener);
+		verify(viewItems).setItemClickListener(Mockito.eq(clickListener));
+	}
+
+	@Test
 	public void setChildStyles() throws Exception {
 		fillInstance();
-		OrderingItem item = new OrderingItem("id", "ans");
+		OrderingItem item = new OrderingItem("id","ans");
 		instance.setChildStyles(item);
 		verify(viewItems).getItem(Mockito.eq("id"));
 		Mockito.verify(itemStyles).applyStylesOnWidget(Mockito.eq(item), Mockito.eq(viewItem));

@@ -17,60 +17,64 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ItemsMarkingController {
 
-	private final OrderingItemsDao orderingItemsDao;
-	private final ItemsResponseOrderController responseOrderController;
-	private final OrderInteractionModuleModel model;
-	private final ResponseSocket responseSocket;
-
+	private OrderingItemsDao orderingItemsDao;
+	private ItemsResponseOrderController responseOrderController;
+	private OrderInteractionModuleModel model;
+	private ResponseSocket responseSocket;
+	
 	@Inject
-	public ItemsMarkingController(@ModuleScoped ItemsResponseOrderController responseOrderController, @PageScoped ResponseSocket responseSocket,
-			@ModuleScoped OrderInteractionModuleModel model, @ModuleScoped OrderingItemsDao orderingItemsDao) {
+	public ItemsMarkingController(
+			ItemsResponseOrderController responseOrderController, 
+			@PageScoped ResponseSocket responseSocket, 
+			@ModuleScoped OrderInteractionModuleModel model, 
+			@ModuleScoped OrderingItemsDao orderingItemsDao) {
 		this.responseOrderController = responseOrderController;
 		this.responseSocket = responseSocket;
 		this.model = model;
 		this.orderingItemsDao = orderingItemsDao;
 	}
-
+	
 	public void markOrUnmarkItemsByType(MarkAnswersType type, MarkAnswersMode mode) {
 		List<OrderingItem> orderingItems = getItemsByEvaluationType(type);
-		if (mode == MarkAnswersMode.MARK) {
+		if(mode == MarkAnswersMode.MARK){
 			markItems(orderingItems, type);
-		} else if (mode == MarkAnswersMode.UNMARK) {
+		}else if(mode == MarkAnswersMode.UNMARK){
 			unmarkItems(orderingItems);
 		}
 	}
-
-	private List<OrderingItem> getItemsByEvaluationType(MarkAnswersType type) {
+	
+	private List<OrderingItem> getItemsByEvaluationType(MarkAnswersType type){
 		List<Boolean> answerEvaluations = responseSocket.evaluateResponse(model.getResponse());
 		List<String> currentItemsOrder = responseOrderController.getCurrentItemsOrderByAnswers();
 		List<OrderingItem> fittingTypeItems = findItemsFittingType(type, answerEvaluations, currentItemsOrder);
-
+		
 		return fittingTypeItems;
 	}
-
+	
+	
 	private List<OrderingItem> findItemsFittingType(MarkAnswersType type, List<Boolean> answerEvaluations, List<String> currentItemsOrder) {
 		List<OrderingItem> fittingTypeItems = Lists.newArrayList();
-
-		for (int i = 0; i < answerEvaluations.size(); i++) {
+		
+		for(int i=0; i<answerEvaluations.size(); i++){
 			String itemId = currentItemsOrder.get(i);
 			boolean evaluationResult = answerEvaluations.get(i);
-
-			if (isItemFittingEvaluationType(evaluationResult, type)) {
+			
+			if(isItemFittingEvaluationType(evaluationResult, type)){
 				OrderingItem orderingItem = orderingItemsDao.getItem(itemId);
 				fittingTypeItems.add(orderingItem);
 			}
-
+			
 		}
 		return fittingTypeItems;
 	}
 
 	private boolean isItemFittingEvaluationType(boolean evaluationResult, MarkAnswersType type) {
-		if (evaluationResult && type == MarkAnswersType.CORRECT) {
+		if(evaluationResult && type == MarkAnswersType.CORRECT){
 			return true;
-		} else if (!evaluationResult && type == MarkAnswersType.WRONG) {
+		}else if( !evaluationResult && type == MarkAnswersType.WRONG){
 			return true;
 		}
-
+		
 		return false;
 	}
 

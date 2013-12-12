@@ -19,16 +19,18 @@ public class OrderingViewBuilder {
 	private final OrderingItemsDao orderingItemsDao;
 
 	@Inject
-	public OrderingViewBuilder(@ModuleScoped OrderInteractionView interactionView, @ModuleScoped OrderingItemsDao orderingItemsDao) {
+	public OrderingViewBuilder(
+			@ModuleScoped OrderInteractionView interactionView,
+			@ModuleScoped OrderingItemsDao orderingItemsDao) {
 		this.interactionView = interactionView;
 		this.orderingItemsDao = orderingItemsDao;
 	}
 
-	public void buildView(OrderInteractionBean bean, InlineBodyGeneratorSocket bodyGeneratorSocket) {
+	public void buildView(OrderInteractionBean bean, InlineBodyGeneratorSocket bodyGeneratorSocket){
 		interactionView.setOrientation(bean.getOrientation());
 		List<SimpleOrderChoiceBean> itemBeans = bean.getChoiceBeans();
 
-		for (int i = 0; i < itemBeans.size(); i++) {
+		for (int i=0; i<itemBeans.size(); i++) {
 			SimpleOrderChoiceBean simpleOrderChoiceBean = itemBeans.get(i);
 			XMLContent content = getXMLContent(simpleOrderChoiceBean);
 			OrderingItem orderingItem = createOrderingItem(String.valueOf(i), simpleOrderChoiceBean);
@@ -47,4 +49,5 @@ public class OrderingViewBuilder {
 	private XMLContent getXMLContent(SimpleOrderChoiceBean simpleOrderChoiceBean) {
 		return simpleOrderChoiceBean.getContent();
 	}
+
 }
