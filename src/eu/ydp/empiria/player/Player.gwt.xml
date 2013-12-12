@@ -37,6 +37,7 @@
 	  }
 	]]></property-provider>
 
+	<stylesheet src="empiria/default.css" />
 	<stylesheet src="lightbox2/css/lightbox.css" />
 	<stylesheet src="video-js/video-js.min.css" />
 	<script src="video-js/video.dev.js" />
