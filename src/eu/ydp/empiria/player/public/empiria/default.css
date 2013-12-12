@@ -1,3 +1,8 @@
 .qp-player .vjs-poster {
 	background-repeat: repeat;
 }
+
+.ui-sortable-placeholder {
+  display: inline-block;
+  height: 1px;
+}
