@@ -1,16 +1,10 @@
 package eu.ydp.empiria.player.client.module.textentry.math;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.Assert;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,7 +14,6 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.xml.client.Element;
 import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.Module;
@@ -30,14 +23,9 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Correc
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
-import eu.ydp.empiria.player.client.module.textentry.DragContentController;
-import eu.ydp.empiria.player.client.module.textentry.TextEntryModulePresenter;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.gwtutil.xml.XMLParser;
 
 public class TextEntryMathGapModuleJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
@@ -65,7 +53,7 @@ public class TextEntryMathGapModuleJUnitTest extends AbstractTestBaseWithoutAuto
 	@Test
 	public void testIfCorrectAnswerIsFound() {
 		TextEntryMathGapModule textGap = mockTextGap();
-		Assert.assertTrue(textGap.getCorrectAnswer().equals("13"));
+		assertTrue(textGap.getCorrectAnswer().equals("13"));
 	}
 
 	@Test

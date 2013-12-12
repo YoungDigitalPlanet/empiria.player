@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.xml.client.Element;
@@ -21,8 +20,6 @@ import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.BindingValue;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.client.StringUtils;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public abstract class GapBase extends OneViewInteractionModuleBase  implements Bindable {
@@ -49,7 +46,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 	
 	protected abstract void setPreviousAnswer();
 	
-	public interface PresenterHandler extends BlurHandler, ChangeHandler {}
+	public interface PresenterHandler extends BlurHandler {}
 	
 	protected abstract ResponseSocket getResponseSocket();
 	protected abstract void updateResponse(boolean userInteract, boolean isReset);
@@ -221,10 +218,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 
 	protected boolean isResponseEmpty(){
 		return StringUtils.EMPTY_STRING.equals(getCurrentResponseValue());
-	}
-
-	protected boolean isMobileUserAgent(){
-		return UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN;
 	}
 
 	public int getFontSize() {

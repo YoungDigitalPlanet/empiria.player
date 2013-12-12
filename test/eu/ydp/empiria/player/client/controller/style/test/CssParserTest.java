@@ -3,8 +3,6 @@ package eu.ydp.empiria.player.client.controller.style.test;
 import java.util.Map;
 import java.util.Set;
 
-import junit.framework.Assert;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
@@ -44,7 +42,7 @@ public class CssParserTest extends GWTTestCase {
 	public void testIfParserIsPresent() {
 		String parsed = parseCSS();
 		System.out.println(parsed);
-		Assert.assertEquals("sample css was parsed", 0, parsed.indexOf("customselector"));
+		assertEquals("sample css was parsed", 0, parsed.indexOf("customselector"));
 	}
 
 	public void testStyleDataSourceManager() {
@@ -53,8 +51,8 @@ public class CssParserTest extends GWTTestCase {
 		Document doc = XMLParser.parse("<orderInteraction responseIdentifier=\"RESPONSE\" shuffle=\"true\" />");
 		Element e = doc.getDocumentElement();
 
-		Assert.assertNotNull( sdsm );
-		Assert.assertEquals( "no styles were added yet", 0, sdsm.getStyleProperties(e,true).size() );
+		assertNotNull( sdsm );
+		assertEquals( "no styles were added yet", 0, sdsm.getStyleProperties(e,true).size() );
 
 
 		doc = XMLParser.parse("<customselector />");
@@ -66,18 +64,18 @@ public class CssParserTest extends GWTTestCase {
 		Map<String, String> styles = sdsm.getStyleProperties( e,true );
 		Set<String> keys = styles.keySet();
 
-		Assert.assertEquals("customProperty has properties only from assessement style",3,keys.size());
-		Assert.assertFalse("StyleDataSourceManager returns correct style values", styles.containsKey("nonExistingStyle") );
-		Assert.assertTrue("style names are converted to lower case", styles.containsKey("customproperty") );
-		Assert.assertFalse("style names are converted to lower case", styles.containsKey("customProperty") );
+		assertEquals("customProperty has properties only from assessement style",3,keys.size());
+		assertFalse("StyleDataSourceManager returns correct style values", styles.containsKey("nonExistingStyle") );
+		assertTrue("style names are converted to lower case", styles.containsKey("customproperty") );
+		assertFalse("style names are converted to lower case", styles.containsKey("customProperty") );
 
 		sdsm.setCurrentPages( new PageReference(PageType.TEST, new int[]{0}, null, null));
 		styles = sdsm.getStyleProperties( e ,true);
 		keys = styles.keySet();
-		Assert.assertEquals("when page is set customProperty has properties from assessement and pages style",3,keys.size());
-		Assert.assertEquals("assessment style is overriden by page style", "200px", styles.get("width"));
+		assertEquals("when page is set customProperty has properties from assessement and pages style",3,keys.size());
+		assertEquals("assessment style is overriden by page style", "200px", styles.get("width"));
 
-		Assert.assertEquals("styles added later override existing values", "xyz", styles.get("customproperty") );
+		assertEquals("styles added later override existing values", "xyz", styles.get("customproperty") );
 	}
 
 	public void testEmptyStyleManager() {
@@ -87,8 +85,8 @@ public class CssParserTest extends GWTTestCase {
 		Element e = doc.getDocumentElement();
 
 		Map<String, String> styles = sdsm.getStyleProperties(e,true);
-		Assert.assertNotNull( "if styles are not initialized getStyleProperties still returns JSOModel", styles );
-		Assert.assertEquals( "returned JSOModel is empty", 0, styles.size());
+		assertNotNull( "if styles are not initialized getStyleProperties still returns JSOModel", styles );
+		assertEquals( "returned JSOModel is empty", 0, styles.size());
 	}
 
 	public void testStylesForDifferentPages() {
@@ -101,18 +99,16 @@ public class CssParserTest extends GWTTestCase {
 		Document doc = XMLParser.parse("<h2 />");
 		Element e = doc.getDocumentElement();
 		Map<String, String> styles = sdsm.getStyleProperties(e,true);
-		Assert.assertTrue( styles.containsKey("font-size") );
-		Assert.assertFalse( styles.containsKey("font-weight") );
+		assertTrue( styles.containsKey("font-size") );
+		assertFalse( styles.containsKey("font-weight") );
 
 
 		sdsm.setCurrentPages( new PageReference(PageType.TEST, new int[]{1}, null, null ) );
 		doc = XMLParser.parse("<h1 />");
 		e = doc.getDocumentElement();
 		styles = sdsm.getStyleProperties(e,true);
-		Assert.assertFalse( styles.containsKey("font-size") );
-		Assert.assertTrue( styles.containsKey("font-weight") );
-
-
+		assertFalse( styles.containsKey("font-size") );
+		assertTrue( styles.containsKey("font-weight") );
 	}
 
 }

@@ -3,8 +3,8 @@ package eu.ydp.empiria.player.client.module.textentry.math;
 import javax.annotation.PostConstruct;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModulePresenterBase;
 
-public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenterBase implements ChangeHandler {
+public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenterBase implements BlurHandler {
 
 	@UiTemplate("TextEntryMathGap.ui.xml")
 	interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryMathGapModulePresenter> {
@@ -32,7 +32,7 @@ public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenter
 	protected FlowPanel markPanel;
 	@UiField(provided = true)
 	protected Widget textBoxWidget;
-	private ChangeHandler changeHandler;
+	private BlurHandler changeHandler;
 	
 	
 	@PostConstruct
@@ -44,7 +44,7 @@ public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenter
 
 		dropZoneGuardian = new DropZoneGuardian(droppable, mainPanel, styleNames);
 		
-		textBox.addChangeHandler(this);
+		textBox.addBlurHandler(this);
 	}
 	
 	@Override
@@ -75,9 +75,9 @@ public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenter
 	}
 	
 	@Override
-	public void onChange(ChangeEvent event) {
+	public void onBlur(BlurEvent event) {
 		if (changeHandler != null) {
-			changeHandler.onChange(event);
+			changeHandler.onBlur(event);
 		}
 	}
 }
