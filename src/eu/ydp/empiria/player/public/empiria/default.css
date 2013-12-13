@@ -2,7 +2,7 @@
 	background-repeat: repeat;
 }
 
-.ui-sortable-placeholder {
+.qp-player .ui-sortable-placeholder {
   display: inline-block;
   height: 1px;
 }
