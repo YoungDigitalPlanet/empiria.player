@@ -34,8 +34,8 @@ class GWTCompile extends DefaultTask {
 
             systemProperty 'java.awt.headless', 'true'
 
-            maxHeapSize = '512M'
-            jvmArgs( '-XX:MaxPermSize=256M' )
+            maxHeapSize = '1024M'
+            jvmArgs( '-XX:MaxPermSize=512M' )
         }
     }
 }
