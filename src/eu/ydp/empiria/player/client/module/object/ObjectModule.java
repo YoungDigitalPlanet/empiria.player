@@ -35,7 +35,7 @@ import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {// NOPMD
+public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {
 
 	private Widget widget;
 	private Widget moduleView = null;
@@ -82,7 +82,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		}
 		String poster = XMLUtils.getAttributeAsString(element, "poster");
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width,
-				defaultTemplate, fullScreenTemplate, getNarrationText(element));// NOPMD
+				defaultTemplate, fullScreenTemplate, getNarrationText(element));
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
 	}
 
@@ -98,11 +98,6 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		return builder.toString();
 	}
 
-	/**
-	 * tworzy element
-	 * 
-	 * @param element
-	 */
 	private void createMedia(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
 		widget = mediaWrapper.getMediaObject();
 		this.fullScreenMediaWrapper = fullScreenMediaWrapper;
@@ -117,7 +112,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	}
 
 	@Override
-	public void initModule(Element element) {// NOPMD
+	public void initModule(Element element) {
 		String type = XMLUtils.getAttributeAsString(element, "type");
 		Element defaultTemplate = null, fullScreenTemplate = null;
 		NodeList templateList = element.getElementsByTagName("template");
