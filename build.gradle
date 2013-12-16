@@ -16,11 +16,13 @@ def empiriaWar = file( "war")
 def empiriaBuildDir = new File( empiriaWar, "empiria.player" )
 def empiriaWebkitWar = file( "build/gwt")
 def empiriaWebkitBuildDir = new File( empiriaWebkitWar, "empiria.player" )
+def versionFile= new File("${projectDir}${File.separator}src${File.separator}eu${File.separator}ydp${File.separator}empiria${File.separator}player${File.separator}client${File.separator}version${File.separator}version.txt")
 
 ext {
     tstamp=new Date().format( "yyyyMMddHHmmssSSS")
     buildnumber="${tstamp}"
     jacocoReport = "${buildDir}/jacoco/testJUnit.exec"
+    
 }
 
 repositories {
@@ -192,6 +194,16 @@ def configCopyMetaInfoAndZip( playerDir, targetZip ) {
     }
 }
 
+task createVersion(){
+	versionFile.createNewFile()
+	versionFile.write("${version}-${buildnumber}")
+}
+
+task createMetadataFile(type:Copy) {
+ from '${projectDir}/metadata.template.xml'
+ into '${projectDir}/metadata.xml'
+ }
+
 task zipMain( dependsOn: [compileMain], type: Zip ) {
     configure configCopyMetaInfoAndZip( empiriaBuildDir, "empiriaplayer.zip")
 }
@@ -207,4 +219,6 @@ task compileAll( dependsOn: [compileMain, compileWebkit] )
 task distMain( dependsOn: [test, zipMain] )
 task distWebkit( dependsOn: [test, zipWebkit] )
 
-task dist( dependsOn: [distMain, distWebkit] )
+task dist( dependsOn: [createVersion,createMetadataFile, distMain, distWebkit] )
+
+
