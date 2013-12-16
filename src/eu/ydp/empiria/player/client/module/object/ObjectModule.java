@@ -21,12 +21,10 @@ import eu.ydp.empiria.player.client.module.audioplayer.FlashAudioPlayerModule;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -40,7 +38,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	private Widget widget;
 	private Widget moduleView = null;
 	private MediaWrapper<?> mediaWrapper = null;
-	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
+	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler(this);
 	@Inject
 	private EventsBus eventsBus;
 	@Inject
@@ -54,19 +52,6 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	private StyleSocket styleSocket;
 
 	private MediaWrapper<?> fullScreenMediaWrapper;
-
-	private class MediaWrapperHandler implements CallbackRecevier {
-		@Override
-		public void setCallbackReturnObject(Object object) {
-			if (object instanceof MediaWrapper<?>) {
-				createMedia((MediaWrapper<?>) object, null);
-			}
-
-			if (object instanceof MediaWrappersPair) {
-				createMedia(((MediaWrappersPair) object).getDefaultMediaWrapper(), ((MediaWrappersPair) object).getFullScreanMediaWrapper());
-			}
-		}
-	}
 
 	@Override
 	public Widget getView() {
@@ -98,7 +83,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		return builder.toString();
 	}
 
-	private void createMedia(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
+	void createMedia(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
 		widget = mediaWrapper.getMediaObject();
 		this.fullScreenMediaWrapper = fullScreenMediaWrapper;
 		this.mediaWrapper = mediaWrapper;
