@@ -38,7 +38,6 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {// NOPMD
 
 	private Widget widget;
-	private final boolean flashPlayer = false; // NOPMD
 	private Widget moduleView = null;
 	private MediaWrapper<?> mediaWrapper = null;
 	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
@@ -155,7 +154,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			}
 
 			if (widget != null) {
-				if (defaultTemplate == null || flashPlayer) {
+				if (defaultTemplate == null) {
 					moduleView.getContainerPanel().add(widget);
 				} else {
 					parseTemplate(defaultTemplate, fullScreenTemplate, moduleView.getContainerPanel());
