@@ -47,7 +47,9 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	private Provider<ObjectModule> moduleFactory;
 	@Inject
 	Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
-
+	
+	private ObjectElementReader elementReader = new ObjectElementReader();
+	
 	@Inject
 	private StyleSocket styleSocket;
 
@@ -74,12 +76,14 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	public String getNarrationText(Element element) {
 		StringBuilder builder = new StringBuilder();
 		NodeList nodeList = element.getElementsByTagName("narrationScript");
+		
 		for (int x = 0; x < nodeList.getLength(); ++x) {
 			if (nodeList.item(x).getNodeType() == Node.ELEMENT_NODE) {
 				builder.append(XMLUtils.getText((Element) nodeList.item(x)));
 				builder.append(' ');
 			}
 		}
+		
 		return builder.toString();
 	}
 
@@ -98,7 +102,8 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 
 	@Override
 	public void initModule(Element element) {
-		String type = XMLUtils.getAttributeAsString(element, "type");
+		String type = elementReader.getElementType(element);
+		
 		Element defaultTemplate = null, fullScreenTemplate = null;
 		NodeList templateList = element.getElementsByTagName("template");
 		for (int x = 0; x < templateList.getLength(); ++x) {
