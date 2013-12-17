@@ -20,7 +20,7 @@ public class ObjectElementReaderTest {
 	public void shouldReturnType() {
 		// given
 		final String expected = "elementType";
-		Element element = newNode().withName("any").withAttribute("type", expected).build();
+		Element element = newNode().withTag("any").withAttribute("type", expected).build();
 
 		// when
 		String actual = testObj.getElementType(element);
@@ -33,7 +33,7 @@ public class ObjectElementReaderTest {
 	public void shouldReturnAudioType() {
 		// given
 		final String expected = "audio";
-		Element element = newNode().withName("audioPlayer").withAttribute("type", "any").build();
+		Element element = newNode().withTag("audioPlayer").withAttribute("type", "any").build();
 
 		// when
 		String actual = testObj.getElementType(element);
