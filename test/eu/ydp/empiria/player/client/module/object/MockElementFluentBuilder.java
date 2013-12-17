@@ -12,12 +12,12 @@ import com.google.gwt.xml.client.NodeList;
 
 class MockElementFluentBuilder {
 	private static final NodeList EMPTY_LIST;
-	
+
 	static {
 		EMPTY_LIST = mock(NodeList.class);
 		when(EMPTY_LIST.getLength()).thenReturn(0);
 	}
-	
+
 	private Short nodeType;
 	private Optional<String> value = Optional.absent();
 	private Optional<NodeList> children = Optional.absent();
@@ -25,12 +25,13 @@ class MockElementFluentBuilder {
 	private final Map<String, String> attributes = Maps.newHashMap();
 	private final Map<String, NodeList> tagChildren = Maps.newHashMap();
 
-	private MockElementFluentBuilder() {}
+	private MockElementFluentBuilder() {
+	}
 
 	public static MockElementFluentBuilder newElement() {
 		return new MockElementFluentBuilder();
 	}
-	
+
 	public static MockElementFluentBuilder newNode() {
 		return newElement().ofType(Node.ELEMENT_NODE);
 	}
@@ -38,7 +39,7 @@ class MockElementFluentBuilder {
 	public static MockElementFluentBuilder newText(String text) {
 		return newElement().ofType(Node.TEXT_NODE).withValue(text);
 	}
-	
+
 	public static MockElementFluentBuilder newComment() {
 		return newElement().ofType(Node.COMMENT_NODE);
 	}
@@ -50,10 +51,10 @@ class MockElementFluentBuilder {
 
 	public MockElementFluentBuilder withTag(String nodeTag) {
 		this.nodeTag = Optional.of(nodeTag);
-		
+
 		return this;
 	}
-	
+
 	public MockElementFluentBuilder withAttribute(String attributeName, String attributeValue) {
 		this.attributes.put(attributeName, attributeValue);
 		return this;
@@ -67,7 +68,7 @@ class MockElementFluentBuilder {
 	public MockElementFluentBuilder withChildren(Element... children) {
 		NodeList nodeList = buildNodeListFromElements(children);
 		this.children = Optional.of(nodeList);
-		
+
 		return this;
 	}
 
@@ -93,7 +94,7 @@ class MockElementFluentBuilder {
 		Element result = mock(Element.class);
 
 		when(result.getNodeType()).thenReturn(nodeType);
-		
+
 		if (value.isPresent()) {
 			when(result.getNodeValue()).thenReturn(value.get());
 		}
@@ -101,12 +102,8 @@ class MockElementFluentBuilder {
 		if (nodeTag.isPresent()) {
 			when(result.getTagName()).thenReturn(nodeTag.get());
 		}
-		
-		if (children.isPresent()) {
-			when(result.getChildNodes()).thenReturn(children.get());
-		} else {
-			when(result.getChildNodes()).thenReturn(EMPTY_LIST);
-		}
+
+		when(result.getChildNodes()).thenReturn(children.or(EMPTY_LIST));
 
 		for (Map.Entry<String, String> attr : attributes.entrySet()) {
 			when(result.getAttribute(attr.getKey())).thenReturn(attr.getValue());
