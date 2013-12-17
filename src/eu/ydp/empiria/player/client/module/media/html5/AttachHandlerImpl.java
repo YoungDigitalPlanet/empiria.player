@@ -36,7 +36,7 @@ public class AttachHandlerImpl implements Handler {
 	}
 
 	private boolean requiresReattachment() {
-		return isUserAgent(MobileUserAgent.SAFARI) || isUserAgent(UserAgent.SAFARI);
+		return isUserAgent(MobileUserAgent.SAFARI) || isUserAgent(UserAgent.CHROME);
 	}
 
 	public void setMediaExecutor(HTML5VideoMediaExecutor mediaExecutor) {
