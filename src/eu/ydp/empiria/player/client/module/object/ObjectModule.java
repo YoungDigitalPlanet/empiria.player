@@ -8,7 +8,6 @@ import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -68,23 +67,11 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			height = 240;
 		}
 		String poster = XMLUtils.getAttributeAsString(element, "poster");
+		
+		final String narrationText = elementReader.getNarrationText(element);
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width,
-				defaultTemplate, fullScreenTemplate, getNarrationText(element));
+				defaultTemplate, fullScreenTemplate, narrationText);
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
-	}
-
-	public String getNarrationText(Element element) {
-		StringBuilder builder = new StringBuilder();
-		NodeList nodeList = element.getElementsByTagName("narrationScript");
-		
-		for (int x = 0; x < nodeList.getLength(); ++x) {
-			if (nodeList.item(x).getNodeType() == Node.ELEMENT_NODE) {
-				builder.append(XMLUtils.getText((Element) nodeList.item(x)));
-				builder.append(' ');
-			}
-		}
-		
-		return builder.toString();
 	}
 
 	void createMedia(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
@@ -101,9 +88,9 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	}
 
 	@Override
-	public void initModule(Element element) {
-		String type = elementReader.getElementType(element);
-		
+	public void initModule(final Element element) {
+		final String type = elementReader.getElementType(element);
+
 		Element defaultTemplate = null, fullScreenTemplate = null;
 		NodeList templateList = element.getElementsByTagName("template");
 		for (int x = 0; x < templateList.getLength(); ++x) {
@@ -115,9 +102,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 				fullScreenTemplate = node;
 			}
 		}
-		if (element.getNodeName().equals("audioPlayer")) {
-			type = "audio";
-		}
+		
 		Map<String, String> styles = styleSocket.getStyles(element);
 		String playerType = styles.get("-player-" + type + "-skin");
 		if ("audioPlayer".equals(element.getNodeName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
@@ -149,6 +134,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			if (mediaWrapper != null) {
 				eventsBus.fireEvent(new MediaEvent(MediaEventTypes.MEDIA_ATTACHED, mediaWrapper));
 			}
+			
 			NodeList titleNodes = element.getElementsByTagName("title");
 			if (titleNodes.getLength() > 0) {
 				Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
@@ -156,6 +142,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 					moduleView.getTitlePanel().add(titleWidget);
 				}
 			}
+			
 			NodeList descriptionNodes = element.getElementsByTagName("description");
 			if (descriptionNodes.getLength() > 0) {
 				Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(descriptionNodes.item(0));
