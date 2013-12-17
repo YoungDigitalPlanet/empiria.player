@@ -39,7 +39,6 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	private Widget moduleView = null;
 	private MediaWrapper<?> mediaWrapper = null;
 	private MediaWrapper<?> fullScreenMediaWrapper;
-	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler(this);
 
 	@Inject
 	private EventsBus eventsBus;
@@ -100,6 +99,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			
 			String poster = elementReader.getPoster(element);
 			
+			final MediaWrapperHandler callbackHandler = new MediaWrapperHandler(this);
 			final String narrationText = elementReader.getNarrationText(element);
 			BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width,
 					defaultTemplate != null && !"native".equals(playerSkin), fullScreenTemplate != null, narrationText);
