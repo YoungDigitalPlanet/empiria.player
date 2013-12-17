@@ -21,18 +21,26 @@ class MockElementFluentBuilder {
 	private Short nodeType;
 	private Optional<String> value = Optional.absent();
 	private Optional<NodeList> children = Optional.absent();
-	private Optional<String> nodeName = Optional.absent();
+	private Optional<String> nodeTag = Optional.absent();
 	private final Map<String, String> attributes = Maps.newHashMap();
 	private final Map<String, NodeList> tagChildren = Maps.newHashMap();
 
 	private MockElementFluentBuilder() {}
 
+	public static MockElementFluentBuilder newElement() {
+		return new MockElementFluentBuilder();
+	}
+	
 	public static MockElementFluentBuilder newNode() {
-		return new MockElementFluentBuilder().ofType(Node.ELEMENT_NODE);
+		return newElement().ofType(Node.ELEMENT_NODE);
 	}
 
 	public static MockElementFluentBuilder newText(String text) {
-		return new MockElementFluentBuilder().ofType(Node.TEXT_NODE).withValue(text);
+		return newElement().ofType(Node.TEXT_NODE).withValue(text);
+	}
+	
+	public static MockElementFluentBuilder newComment() {
+		return newElement().ofType(Node.COMMENT_NODE);
 	}
 
 	public MockElementFluentBuilder ofType(short nodeType) {
@@ -40,8 +48,8 @@ class MockElementFluentBuilder {
 		return this;
 	}
 
-	public MockElementFluentBuilder withName(String nodeName) {
-		this.nodeName = Optional.of(nodeName);
+	public MockElementFluentBuilder withTag(String nodeTag) {
+		this.nodeTag = Optional.of(nodeTag);
 		
 		return this;
 	}
@@ -90,8 +98,8 @@ class MockElementFluentBuilder {
 			when(result.getNodeValue()).thenReturn(value.get());
 		}
 
-		if (nodeName.isPresent()) {
-			when(result.getNodeName()).thenReturn(nodeName.get());
+		if (nodeTag.isPresent()) {
+			when(result.getTagName()).thenReturn(nodeTag.get());
 		}
 		
 		if (children.isPresent()) {
