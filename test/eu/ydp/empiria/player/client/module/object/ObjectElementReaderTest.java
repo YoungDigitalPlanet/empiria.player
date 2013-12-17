@@ -134,6 +134,18 @@ public class ObjectElementReaderTest {
 		assertEquals(expected, actual);
 	}
 
+	@Test
+	public void shouldReturnPosterFromAttribute() {
+		// given
+		Element e = newNode().withAttribute("poster", "somePoster").build();
+		
+		// when
+		String actual = testObj.getPoster(e);
+		
+		// then
+		assertEquals("somePoster", actual);
+	}
+
 	private Element narrationTextNode() {
 		Element text1 = newText("foo").build();
 		Element text2 = newText("bar").build();
@@ -148,4 +160,5 @@ public class ObjectElementReaderTest {
 		Element input = newNode().withChildrenTags("narrationScript", narrationText1, narrationText2, commentNode).build();
 		return input;
 	}
+	
 }

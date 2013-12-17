@@ -30,7 +30,6 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {
 	private static final int DEFAULT_HEIGHT = 240;
@@ -53,8 +52,6 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	@Inject
 	private StyleSocket styleSocket;
 	private ObjectElementReader elementReader = new ObjectElementReader();
-
-
 
 	@Override
 	public Widget getView() {
@@ -83,9 +80,9 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		final Element fullScreenTemplate = elementReader.getFullscreenTemplate(element);
 
 		Map<String, String> styles = styleSocket.getStyles(element);
-		String playerType = styles.get("-player-" + type + "-skin");
+		String playerSkin = styles.get("-player-" + type + "-skin");
 
-		if ("audioPlayer".equals(element.getTagName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
+		if ("audioPlayer".equals(element.getTagName()) && ((defaultTemplate == null && !"native".equals(playerSkin)) || ("old".equals(playerSkin)))) {
 			Map<String, String> sources = getSource(element, type);
 			AudioPlayerModule player;
 
@@ -101,11 +98,11 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			int width = elementReader.getWidthOrDefault(element, DEFAULT_WIDTH);
 			int height = elementReader.getHeightOrDefault(element, DEFAULT_HEIGHT);
 			
-			String poster = XMLUtils.getAttributeAsString(element, "poster");
+			String poster = elementReader.getPoster(element);
 			
 			final String narrationText = elementReader.getNarrationText(element);
 			BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width,
-					defaultTemplate != null && !"native".equals(playerType), fullScreenTemplate != null, narrationText);
+					defaultTemplate != null && !"native".equals(playerSkin), fullScreenTemplate != null, narrationText);
 			
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
 			
