@@ -45,6 +45,46 @@ public class ObjectElementReaderTest {
 	@Test
 	public void shouldReturnNarrationTexts() {
 		// given
+		Element input = narrationTextNode();
+
+		// when
+		String actual = testObj.getNarrationText(input);
+
+		// then
+		assertEquals("foo bar baz qux ", actual);
+	}
+
+	@Test
+	public void shouldReturnDefaultTemplate() {
+		// given
+		Element defaultTemplateElement = newNode().withTag("template").build();
+		Element fullscreenTemplateElement = newNode().withTag("template").withAttribute("type", "fullscreen").build();
+		
+		Element input = newNode().withChildrenTags("template", defaultTemplateElement, fullscreenTemplateElement).build();
+		
+		// when
+		Element actual = testObj.getDefaultTemplate(input);
+		
+		// then
+		assertEquals(defaultTemplateElement, actual);
+	}
+	
+	@Test
+	public void shouldReturnFullscreenTemplate() {
+		// given
+		Element defaultTemplateElement = newNode().withTag("template").build();
+		Element fullscreenTemplateElement = newNode().withTag("template").withAttribute("type", "fullscreen").build();
+		
+		Element input = newNode().withChildrenTags("template", defaultTemplateElement, fullscreenTemplateElement).build();
+		
+		// when
+		Element actual = testObj.getFullscreenTemplate(input);
+		
+		// then
+		assertEquals(fullscreenTemplateElement, actual);
+	}
+	
+	private Element narrationTextNode() {
 		Element text1 = newText("foo").build();
 		Element text2 = newText("bar").build();
 		Element narrationText1 = newNode().withChildren(text1, text2).build();
@@ -56,11 +96,6 @@ public class ObjectElementReaderTest {
 		Element commentNode = newComment().withValue("someComment").build();
 		
 		Element input = newNode().withChildrenTags("narrationScript", narrationText1, narrationText2, commentNode).build();
-
-		// when
-		String actual = testObj.getNarrationText(input);
-
-		// then
-		assertEquals("foo bar baz qux ", actual);
+		return input;
 	}
 }

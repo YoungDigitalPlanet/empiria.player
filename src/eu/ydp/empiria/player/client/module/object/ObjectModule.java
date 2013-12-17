@@ -38,14 +38,15 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	private Widget moduleView = null;
 	private MediaWrapper<?> mediaWrapper = null;
 	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler(this);
+	
 	@Inject
 	private EventsBus eventsBus;
 	@Inject
-	private ObjectTemplateParser<?> parser;
+	private ObjectTemplateParser parser;
 	@Inject
 	private Provider<ObjectModule> moduleFactory;
 	@Inject
-	Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
+	private Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
 	
 	private ObjectElementReader elementReader = new ObjectElementReader();
 	
@@ -59,7 +60,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		return moduleView;
 	}
 
-	public void getMediaWrapper(Element element, boolean defaultTemplate, boolean fullScreenTemplate, String type) {
+	private void getMediaWrapper(Element element, boolean defaultTemplate, boolean fullScreenTemplate, String type) {
 		int width = XMLUtils.getAttributeAsInt(element, "width");
 		int height = XMLUtils.getAttributeAsInt(element, "height");
 		if (width == 0 || height == 0) {
@@ -91,28 +92,22 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	public void initModule(final Element element) {
 		final String type = elementReader.getElementType(element);
 
-		Element defaultTemplate = null, fullScreenTemplate = null;
-		NodeList templateList = element.getElementsByTagName("template");
-		for (int x = 0; x < templateList.getLength(); ++x) {
-			Element node = (Element) templateList.item(x);
-			String templateType = XMLUtils.getAttributeAsString(node, "type", "default");
-			if ("default".equalsIgnoreCase(templateType)) {
-				defaultTemplate = node;
-			} else if ("fullscreen".equalsIgnoreCase(templateType)) {
-				fullScreenTemplate = node;
-			}
-		}
+		final Element defaultTemplate = elementReader.getDefaultTemplate(element);
+		final Element fullScreenTemplate = elementReader.getFullscreenTemplate(element);
 		
 		Map<String, String> styles = styleSocket.getStyles(element);
 		String playerType = styles.get("-player-" + type + "-skin");
-		if ("audioPlayer".equals(element.getNodeName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
+		
+		if ("audioPlayer".equals(element.getTagName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
 			Map<String, String> sources = getSource(element, type);
 			AudioPlayerModule player;
+			
 			if (((!MediaChecker.isHtml5Mp3Support() && !SourceUtil.containsOgg(sources)) || !Audio.isSupported()) && UserAgentChecker.isLocal()) {
 				player = new FlashAudioPlayerModule();
 			} else {
 				player = defaultAudioPlayerModuleProvider.get();
 			}
+			
 			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
 			this.moduleView = player.getView();
 		} else {
@@ -139,7 +134,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			if (titleNodes.getLength() > 0) {
 				Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
 				if (titleWidget != null) {
-					moduleView.getTitlePanel().add(titleWidget);
+					moduleView.setTitleWidget(titleWidget);
 				}
 			}
 			

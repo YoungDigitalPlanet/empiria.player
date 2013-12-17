@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.module.object.template;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import com.google.common.collect.Sets;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -19,23 +19,18 @@ import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.module.media.button.MediaControllerWrapper;
 import eu.ydp.empiria.player.client.module.media.button.VideoFullScreenMediaButton;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
-import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class ObjectTemplateParser<T extends Widget> extends AbstractTemplateParser {
+public class ObjectTemplateParser extends AbstractTemplateParser {
+	private Element fullScreenTemplate;
 	
-	private static final Logger LOGGER = new Logger();
-	protected static final Set<String> CONTROLLERS = new HashSet<String>();
-	protected MediaWrapper<?> mediaWrapper;
-	protected MediaWrapper<?> fullScreenMediaWrapper;
+	private static final Set<String> CONTROLLERS = Sets.newHashSet();
+	private MediaWrapper<?> mediaWrapper;
+	private MediaWrapper<?> fullScreenMediaWrapper;
 
 	@Inject
 	protected MediaControllerFactory factory;
 
-	private Element fullScreenTemplate;
-	/**
-	 * czy jest renderowany w trybie fullscreen
-	 */
 	private boolean fullScreen = false;
 
 	public ObjectTemplateParser() {
@@ -93,8 +88,6 @@ public class ObjectTemplateParser<T extends Widget> extends AbstractTemplatePars
 		if(parentWrapper instanceof HasWidgets) {
 			HasWidgets parentPanel = (HasWidgets) parentWrapper;
 			parentPanel.add(getMediaObject());
-		} else {
-			LOGGER.warning("Cannot attach mediaScreen to: "+parentWrapper.getClass().getName());
 		}
 	}
 

@@ -7,6 +7,7 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ObjectElementReader {
+	private static final String TEMPLATE_TAG_NAME = "template";
 	private static final String AUDIO_TYPE_NAME = "audio";
 	private static final String AUDIO_PLAYER_TAG_NAME = "audioPlayer";
 	private static final String NARRATION_SCRIPT_TAG_NAME = "narrationScript";
@@ -32,6 +33,34 @@ public class ObjectElementReader {
 		}
 
 		return builder.toString();
+	}
+	
+	public Element getDefaultTemplate(final Element element) {
+		final NodeList templateNodes = element.getElementsByTagName(TEMPLATE_TAG_NAME);
+		
+		for (int i = 0; i < templateNodes.getLength(); i++) {
+			final Element node = (Element) templateNodes.item(i);
+			final String templateType = XMLUtils.getAttributeAsString(node, TYPE_ATTRIBUTE_NAME, "default");
+			if ("default".equalsIgnoreCase(templateType)) {
+				return node;
+			}
+		}
+		
+		return null;
+	}
+
+	public Element getFullscreenTemplate(Element element) {
+		final NodeList templateNodes = element.getElementsByTagName(TEMPLATE_TAG_NAME);
+		
+		for (int i = 0; i < templateNodes.getLength(); i++) {
+			final Element node = (Element) templateNodes.item(i);
+			final String templateType = XMLUtils.getAttributeAsString(node, TYPE_ATTRIBUTE_NAME, "default");
+			if ("fullscreen".equalsIgnoreCase(templateType)) {
+				return node;
+			}
+		}
+		
+		return null;
 	}
 
 }
