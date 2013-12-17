@@ -84,6 +84,56 @@ public class ObjectElementReaderTest {
 		assertEquals(fullscreenTemplateElement, actual);
 	}
 	
+	@Test
+	public void shouldReturnWidthFromAttribute() {
+		// given
+		Element element = newNode().withAttribute("width", "100").build();
+		
+		// when
+		int actual = testObj.getWidthOrDefault(element, -100);
+		
+		// then
+		assertEquals(100, actual);
+	}
+	
+	@Test
+	public void shouldReturnDefaultWidthIfZero() {
+		// given
+		final int expected = 100;
+		Element element = newNode().build();
+		
+		// when
+		int actual = testObj.getWidthOrDefault(element, expected);
+		
+		// then
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void shouldReturnHeightFromAttribute() {
+		// given
+		Element element = newNode().withAttribute("height", "100").build();
+		
+		// when
+		int actual = testObj.getHeightOrDefault(element, -100);
+		
+		// then
+		assertEquals(100, actual);
+	}
+	
+	@Test
+	public void shouldReturnDefaultHeightIfZero() {
+		// given
+		final int expected = 100;
+		Element element = newNode().build();
+		
+		// when
+		int actual = testObj.getHeightOrDefault(element, expected);
+		
+		// then
+		assertEquals(expected, actual);
+	}
+
 	private Element narrationTextNode() {
 		Element text1 = newText("foo").build();
 		Element text2 = newText("bar").build();

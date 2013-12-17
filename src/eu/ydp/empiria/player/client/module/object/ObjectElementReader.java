@@ -63,4 +63,25 @@ public class ObjectElementReader {
 		return null;
 	}
 
+	public Integer getWidthOrDefault(final Element element, final int defaultValue) {
+		int result = XMLUtils.getAttributeAsInt(element, "width");
+
+		if (result == 0) {
+			return defaultValue;
+		} else {
+			return result;
+		}
+	}
+
+	public Integer getHeightOrDefault(Element element, int defaultValue) {
+		int result = XMLUtils.getAttributeAsInt(element, "height");
+
+		if (result == 0) {
+			return defaultValue;
+		} else {
+			return result;
+		}
+	}
+	
+
 }
