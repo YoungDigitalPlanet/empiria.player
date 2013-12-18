@@ -257,11 +257,13 @@ publishing {
             descriptor.status = 'integration'
 
             artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
+            	classifier "source"
 	            extension "zip"
 	         	builtBy dist	         	
        		}
        		
        		artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer_webkit.zip") {
+       			classifier "source"
 	            extension "zip"
 	         	builtBy dist	         	
        		}
