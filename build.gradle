@@ -243,10 +243,10 @@ task cleanCache(dependsOn: clean) {
 
 task compileAll( dependsOn: [compileMain, compileWebkit] )
 
-task distMain( dependsOn: [test, zipMain] )
-task distWebkit( dependsOn: [test, zipWebkit] )
+task distMain( dependsOn: [createVersion, createProjectFile, test, zipMain] )
+task distWebkit( dependsOn: [createVersion, createProjectFile, test, zipWebkit] )
 
-task dist( dependsOn: [createVersion, createProjectFile, createMetadataFile, distMain, distWebkit] )
+task dist( dependsOn: [distMain, distWebkit] )
 
 publishing {
     publications {
@@ -259,7 +259,7 @@ publishing {
             artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
             	classifier "source"
 	            extension "zip"
-	         	builtBy dist	         	
+	         	builtBy distMain	         	
        		}       		
         }
     }
@@ -267,8 +267,8 @@ publishing {
         ivy {
             url 'http://dev/ivyrep/public'
             layout 'pattern' , {
-                artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-                ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+                artifact '[organisation]/[module]/[revision]/[type]s/[artifact.toLowerCase()].[ext]'
+                ivy '[organisation]/[module]/[revision]/[type]s/[artifact.toLowerCase()].[ext]'
             }
         }
     }
