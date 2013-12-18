@@ -46,18 +46,18 @@ repositories {
     }
 }
 dependencies {
-    compile 'com.google.gwt:gwt-servlet:2.5.0'
-    compile 'com.google.gwt:gwt-user:2.5.0'
-    compile 'com.google.gwt:gwt-dev:2.5.0'
+    compile 'com.google.gwt:gwt-servlet:2.5.1'
+    compile 'com.google.gwt:gwt-user:2.5.1'
+    compile 'com.google.gwt:gwt-dev:2.5.1'
 
     compile 'com.google.gwt.inject:gin:2.0.0'
-    compile 'com.googlecode.gwtquery:gwtquery:1.3.2'
+    compile 'com.googlecode.gwtquery:gwtquery:1.3.3'
     compile 'com.googlecode.gwtquery.bundles:gquery-dnd-bundle:1.0.6'
 
     compile 'eu.ydp:mathPlayer:latest.integration'
     compile 'eu.ydp:canvasadapter:latest.integration'
     compile 'eu.ydp:jsfilerequest:latest.integration'
-    compile 'eu.ydp:ydpgwtutils:[1.11,1.12['
+    compile 'eu.ydp:ydpgwtutils:[1.11.0,1.11.1['
     compile 'eu.ydp:gwtFlashMedia:latest.integration'
     compile 'eu.ydp:gwtCreateJs:latest.integration'
     compile 'eu.ydp:jaxb4gwt:latest.integration'
@@ -89,7 +89,7 @@ sonarRunner {
         property "sonar.jdbc.driverClassName", sonar_jdbc_driverClassName
         property "sonar.jdbc.username", sonar_jdbc_username
         property "sonar.jdbc.password", sonar_jdbc_password
-        property "sonar.projectName",   "empiria.player-gradle"
+        property "sonar.projectName",  sonar_project_name
 
         property "sonar.core.codeCoveragePlugin", "jacoco"
     }
@@ -199,9 +199,32 @@ task createVersion(){
 	versionFile.write("${version}-${buildnumber}")
 }
 
-task createMetadataFile(type:Copy) {
- from '${projectDir}/metadata.template.xml'
- into '${projectDir}/metadata.xml'
+def copyAndExpandProperties(srcPath, destPath, properties) {
+    File srcFile  = new File(srcPath)
+	File destFile = new File(destPath)
+	
+	String fileContents = srcFile.text
+	def engine = new groovy.text.SimpleTemplateEngine()
+	def template = engine.createTemplate(fileContents).make(properties)
+	
+ 
+ 	destFile.createNewFile()
+	destFile.write("${template}")
+}
+
+task createMetadataFile() {
+	def binding = [
+     version : "${version}",
+     tstamp  : "${tstamp}",
+     buildnumber  : "${buildnumber}"     
+ 	]
+
+	copyAndExpandProperties("${projectDir}${File.separator}metadata.template.xml", "${projectDir}${File.separator}metadata.xml", binding)
+}
+ 
+task createProjectFile(type:Copy) {
+ from '${projectDir}/project.template.xml'
+ into '${projectDir}/project.xml'
  }
 
 task zipMain( dependsOn: [compileMain], type: Zip ) {
