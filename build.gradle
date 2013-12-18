@@ -21,7 +21,7 @@ def versionFile= new File("${projectDir}${File.separator}src${File.separator}eu$
 
 ext {
     tstamp=new Date().format( "yyyyMMddHHmmssSSS")
-    buildnumber="${tstamp}"
+    buildnumber="${System.env["BUILD_NUMBER"]?:"${tstamp}"}"
     jacocoReport = "${buildDir}/jacoco/testJUnit.exec"
     
 }
@@ -265,7 +265,7 @@ publishing {
     }
     repositories {
         ivy {
-            url 'http://dev/ivyrep/shared/ivysettings.xml'
+            url 'http://dev/ivyrep/public'
             layout 'pattern' , {
                 artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
                 ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
