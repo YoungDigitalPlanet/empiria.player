@@ -5,6 +5,7 @@ apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'eclipse'
 apply plugin: 'sonar-runner'
+apply plugin: 'ivy-publish'
 sourceCompatibility = 1.5
 
 File userHome = new File( System.getProperty("user.home") );
@@ -194,11 +195,6 @@ def configCopyMetaInfoAndZip( playerDir, targetZip ) {
     }
 }
 
-task createVersion(){
-	versionFile.createNewFile()
-	versionFile.write("${version}-${buildnumber}")
-}
-
 def copyAndExpandProperties(srcPath, destPath, properties) {
     File srcFile  = new File(srcPath)
 	File destFile = new File(destPath)
@@ -207,9 +203,13 @@ def copyAndExpandProperties(srcPath, destPath, properties) {
 	def engine = new groovy.text.SimpleTemplateEngine()
 	def template = engine.createTemplate(fileContents).make(properties)
 	
- 
  	destFile.createNewFile()
 	destFile.write("${template}")
+}
+
+task createVersion(){
+	versionFile.createNewFile()
+	versionFile.write("${version}-${buildnumber}")
 }
 
 task createMetadataFile() {
@@ -219,12 +219,16 @@ task createMetadataFile() {
      buildnumber  : "${buildnumber}"     
  	]
 
-	copyAndExpandProperties("${projectDir}${File.separator}metadata.template.xml", "${projectDir}${File.separator}metadata.xml", binding)
+	copyAndExpandProperties("${projectDir}${File.separator}metadata.template.xml", "${projectDir}${File.separator}smetadata.xml", binding)
 }
  
-task createProjectFile(type:Copy) {
- from '${projectDir}/project.template.xml'
- into '${projectDir}/project.xml'
+task createProjectFile() {
+	def binding = [
+     version : "${version}",
+     revision  : "${version}-${buildnumber}",
+ 	]
+
+	copyAndExpandProperties("${projectDir}${File.separator}project.template.xml", "${projectDir}${File.separator}project.xml", binding)
  }
 
 task zipMain( dependsOn: [compileMain], type: Zip ) {
@@ -242,6 +246,34 @@ task compileAll( dependsOn: [compileMain, compileWebkit] )
 task distMain( dependsOn: [test, zipMain] )
 task distWebkit( dependsOn: [test, zipWebkit] )
 
-task dist( dependsOn: [createVersion,createMetadataFile, distMain, distWebkit] )
+task dist( dependsOn: [createVersion, createProjectFile, createMetadataFile, distMain, distWebkit] )
 
+publishing {
+    publications {
+        ivy(IvyPublication) {
+            organisation 'eu.ydp'
+            module 'empiriaPlayerGradle'
+            revision "${version}-${buildnumber}"
+            descriptor.status = 'integration'
 
+            artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
+	            extension "zip"
+	         	builtBy dist	         	
+       		}
+       		
+       		artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer_webkit.zip") {
+	            extension "zip"
+	         	builtBy dist	         	
+       		}
+        }
+    }
+    repositories {
+        ivy {
+            url 'http://dev/ivyrep/shared/ivysettings.xml'
+            layout 'pattern' , {
+                artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+                ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+            }
+        }
+    }
+}
