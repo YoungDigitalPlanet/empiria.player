@@ -219,7 +219,7 @@ task createMetadataFile() {
      buildnumber  : "${buildnumber}"     
  	]
 
-	copyAndExpandProperties("${projectDir}${File.separator}metadata.template.xml", "${projectDir}${File.separator}smetadata.xml", binding)
+	copyAndExpandProperties("${projectDir}${File.separator}metadata.template.xml", "${projectDir}${File.separator}metadata.xml", binding)
 }
  
 task createProjectFile() {
