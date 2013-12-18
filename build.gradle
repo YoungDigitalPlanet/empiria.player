@@ -260,13 +260,7 @@ publishing {
             	classifier "source"
 	            extension "zip"
 	         	builtBy dist	         	
-       		}
-       		
-       		artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer_webkit.zip") {
-       			classifier "source"
-	            extension "zip"
-	         	builtBy dist	         	
-       		}
+       		}       		
         }
     }
     repositories {
