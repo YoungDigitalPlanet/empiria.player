@@ -255,20 +255,29 @@ publishing {
             module 'empiriaPlayerGradle'
             revision "${version}-${buildnumber}"
             descriptor.status = 'integration'
-
-            artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
-            	classifier "source"
-	            extension "zip"
-	         	builtBy distMain	         	
-       		}       		
+			artifacts {
+	            artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
+	            	name 'empiriaplayer'
+	            	classifier "source"
+		            extension "zip"
+		         	builtBy distMain	         	
+	       		}
+	       		
+	       		artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer_webkit.zip") {
+	            	name 'empiriaplayer_webkit'
+	            	classifier "source"
+		            extension "zip"
+		         	builtBy distWebkit	         	
+	       		}       	
+       		}	
         }
     }
     repositories {
         ivy {
             url 'http://dev/ivyrep/public'
             layout 'pattern' , {
-                artifact '[organisation]/[module]/[revision]/[type]s/[artifact.toLowerCase()].[ext]'
-                ivy '[organisation]/[module]/[revision]/[type]s/[artifact.toLowerCase()].[ext]'
+                artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+                ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
             }
         }
     }
