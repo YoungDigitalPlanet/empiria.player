@@ -75,6 +75,6 @@ public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 	@Override
 	public void setText(String text) {}
 	@Override
-	//czy inlinechoice moze miec ustawione maxlength w stylach? jeœli nie to mo¿na to wywaliæ -> GapBase.setMaxlengthBinding()
+	//czy inlinechoice moze miec ustawione maxlength w stylach? jeÅ›li nie to moÅ¼na to wywaliÄ‡ -> GapBase.setMaxlengthBinding()
 	public void setMaxLength(int length) {}
 }

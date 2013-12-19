@@ -8,14 +8,14 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.controller.multiview.animation.PageSwitchAnimation;
 
-@SuppressWarnings("PMD")
+@RunOutsideTestSuite
 public class PageSwitchAnimationTest extends GWTTestCase {
 
 	public void testAnimation() {
 		final FlowPanel panel = new FlowPanel();
 		panel.getElement().getStyle().setPosition(Position.ABSOLUTE);
 		panel.getElement().getStyle().setLeft(100, Unit.PCT);
-		PageSwitchAnimation animation = new PageSwitchAnimation(panel, 200){
+		PageSwitchAnimation animation = new PageSwitchAnimation(panel, 200) {
 			@Override
 			protected void onComplete() {
 				super.onComplete();

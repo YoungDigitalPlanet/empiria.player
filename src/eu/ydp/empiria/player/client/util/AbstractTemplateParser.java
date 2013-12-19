@@ -136,7 +136,7 @@ public abstract class AbstractTemplateParser {
 	 * Sprawdza czy dany modu jest obslugiwany
 	 *
 	 * @param moduleName
-	 * @return true jeøeli modu jest obsugiwany false w przeciwnym razie
+	 * @return true je≈ºeli modu jest obsugiwany false w przeciwnym razie
 	 */
 	protected abstract boolean isModuleSupported(String moduleName);
 }
