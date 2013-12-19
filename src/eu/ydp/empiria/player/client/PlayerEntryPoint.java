@@ -84,7 +84,8 @@ public class PlayerEntryPoint implements EntryPoint {
 				@eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
 			}
 
-			// ԡdowanie rozszerze񠨰lugin󷠩 addon󷩊			player.loadExtension = function(obj) {
+			// ładowanie rozszerzeń (pluginów i addonów)
+			player.loadExtension = function(obj) {
 				if (typeof obj == 'object')
 					@eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
 				else if (typeof obj == 'string')
