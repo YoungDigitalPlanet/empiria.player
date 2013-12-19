@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
-import eu.ydp.empiria.player.client.module.video.hack.ReAttachVideoPlayerForIOSChecker;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
 public class VideoPlayer extends Widget {
@@ -14,35 +13,24 @@ public class VideoPlayer extends Widget {
 	private final VideoPlayerNative nativePlayer;
 	private final VideoElementWrapper videoElementWrapper;
 
-	private final boolean alwaysReAttach;
-	private boolean isLoaded = false;
 
 	@Inject
-	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, ReAttachVideoPlayerForIOSChecker hackChecker) {
+	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer) {
 		this.nativePlayer = nativePlayer;
 		this.videoElementWrapper = videoElementWrapper;
-		this.alwaysReAttach = hackChecker.isNeeded();
 		setElement(Document.get().createDivElement());
 	}
 
 	@Override
 	protected void onLoad() {
-		if (shouldReattach()) {
-			getElement().appendChild(videoElementWrapper.asNode());
+		getElement().appendChild(videoElementWrapper.asNode());
 
-			initializeNativePlayer();
-
-			isLoaded = true;
-		}
+		initializeNativePlayer();
 	}
 
 	private void initializeNativePlayer() {
 		String playerId = videoElementWrapper.getId();
 		nativePlayer.initPlayer(playerId);
-	}
-
-	private boolean shouldReattach() {
-		return !isLoaded || alwaysReAttach;
 	}
 
 	public VideoPlayerControl getControl() {
@@ -51,8 +39,6 @@ public class VideoPlayer extends Widget {
 
 	@Override
 	protected void onUnload() {
-		if (alwaysReAttach) {
-			nativePlayer.disposeCurrentPlayer();
-		}
+		nativePlayer.disposeCurrentPlayer();
 	}
 }

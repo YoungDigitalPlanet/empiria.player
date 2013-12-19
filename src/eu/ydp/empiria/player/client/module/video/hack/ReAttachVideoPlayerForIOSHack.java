@@ -30,12 +30,10 @@ public class ReAttachVideoPlayerForIOSHack {
 
 	public void apply(final VideoView view) {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), new PlayerEventHandler() {
-
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
 				reAttachHackIfVideoPlayerIsLoaded(view);
 			}
-
 		}, pageScopeProvider.get());
 	}
 
