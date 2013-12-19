@@ -141,7 +141,7 @@ task testGWTUnit( type: Test ) {
     include "**/MainFlowProcessorTest.*"
 
     forkEvery = 1
-    maxHeapSize = '512M'
+    maxHeapSize = '1024M'
     jvmArgs( ['-XX:MaxPermSize=512M', '-Xss16M']  )
 
 }
