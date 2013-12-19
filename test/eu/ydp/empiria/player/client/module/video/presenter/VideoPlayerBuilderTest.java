@@ -48,7 +48,7 @@ public class VideoPlayerBuilderTest {
 		VideoPlayer videoPlayer = mock(VideoPlayer.class);
 		when(playerPactory.create(videoBean)).thenReturn(videoPlayer);
 		
-		final PauseOnPageChangeAttachHandler mockHandler = mock(PauseOnPageChangeAttachHandler.class);
+		final VideoPlayerAttachHandler mockHandler = mock(VideoPlayerAttachHandler.class);
 		when(moduleFactory.createAttachHandlerForRegisteringPauseEvent(videoPlayer)).thenReturn(mockHandler);
 
 		// when

@@ -23,7 +23,7 @@ public class VideoPlayerBuilder {
 	public VideoPlayer buildVideoPlayer() {
 		VideoPlayer videoPlayer = videoPlayerFactory.create(videoBean);
 		
-		final PauseOnPageChangeAttachHandler handler = videoModuleFactory.createAttachHandlerForRegisteringPauseEvent(videoPlayer);
+		final VideoPlayerAttachHandler handler = videoModuleFactory.createAttachHandlerForRegisteringPauseEvent(videoPlayer);
 		videoPlayer.addAttachHandler(handler);
 
 		return videoPlayer;

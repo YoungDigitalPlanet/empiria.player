@@ -15,7 +15,6 @@ import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.junit.GWTMockUtilities;
 
-import eu.ydp.empiria.player.client.module.video.hack.VideoPlayerPauseOnPageChangeHandler;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -32,7 +31,7 @@ public class PauseOnPageChangeAttachHandlerTest {
 	@Mock
 	private VideoPlayer videoPlayer;
 
-	private PauseOnPageChangeAttachHandler testObj;
+	private VideoPlayerAttachHandler testObj;
 
 	@BeforeClass
 	public static void before() {
@@ -42,7 +41,7 @@ public class PauseOnPageChangeAttachHandlerTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		testObj = new PauseOnPageChangeAttachHandler(videoPlayer, eventsBus);
+		testObj = new VideoPlayerAttachHandler(videoPlayer, eventsBus);
 	}
 
 	@Test
@@ -51,14 +50,14 @@ public class PauseOnPageChangeAttachHandlerTest {
 		AttachEvent attachEvent = mock(AttachEvent.class);
 		when(attachEvent.isAttached()).thenReturn(Boolean.TRUE);
 		HandlerRegistration handlerRegistration = mock(HandlerRegistration.class);
-		when(eventsBus.addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), any(VideoPlayerPauseOnPageChangeHandler.class))).thenReturn(
+		when(eventsBus.addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), any(AutoPauseOnPageChangeHandler.class))).thenReturn(
 				handlerRegistration);
 
 		// when
 		testObj.onAttachOrDetach(attachEvent);
 
 		// then
-		verify(eventsBus).addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), any(VideoPlayerPauseOnPageChangeHandler.class));
+		verify(eventsBus).addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), any(AutoPauseOnPageChangeHandler.class));
 	}
 
 	@Test
@@ -79,7 +78,7 @@ public class PauseOnPageChangeAttachHandlerTest {
 		AttachEvent attachEvent = mock(AttachEvent.class);
 		when(attachEvent.isAttached()).thenReturn(Boolean.TRUE);
 		HandlerRegistration handlerRegistration = mock(HandlerRegistration.class);
-		when(eventsBus.addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), any(VideoPlayerPauseOnPageChangeHandler.class))).thenReturn(
+		when(eventsBus.addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), any(AutoPauseOnPageChangeHandler.class))).thenReturn(
 				handlerRegistration);
 
 		testObj.onAttachOrDetach(attachEvent);
