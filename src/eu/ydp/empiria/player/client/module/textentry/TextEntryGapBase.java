@@ -55,7 +55,7 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
-		// implementacja wyøej
+		// implementacja wy≈ºej
 	}
 
 	@Override

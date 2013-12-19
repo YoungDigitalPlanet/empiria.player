@@ -5,6 +5,8 @@ import java.util.Set;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.AllTests;
 
 import org.reflections.Reflections;
 import org.reflections.Store;
@@ -18,6 +20,7 @@ import com.google.common.collect.Sets;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.junit.tools.GWTTestSuite;
 
+@RunWith(AllTests.class)
 @SuppressWarnings("PMD")
 public class GWTTestCaseSuite extends GWTTestSuite {
 
@@ -27,7 +30,7 @@ public class GWTTestCaseSuite extends GWTTestSuite {
 	 * create suite for junit
 	 * @return
 	 */
-	public static Test suite() {
+	public static TestSuite suite() {
 		TestSuite suite = new TestSuite("GWT tests");
 		for (Class<? extends GWTTestCase> test : getTestClasses()) {
 			suite.addTestSuite(test);

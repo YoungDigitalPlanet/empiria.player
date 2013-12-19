@@ -20,3 +20,6 @@ reports/
 dist/
 metadata.xml
 war
+.gradle/
+build/
+gradle/

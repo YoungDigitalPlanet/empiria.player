@@ -1,0 +1,255 @@
+import org.apache.ivy.core.settings.IvySettings
+import GWTCompile
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'eclipse'
+apply plugin: 'sonar-runner'
+apply plugin: 'ivy-publish'
+sourceCompatibility = 1.5
+compileJava.options.encoding = 'UTF-8'
+
+File userHome = new File( System.getProperty("user.home") );
+
+IvySettings ivySettings = new IvySettings();
+ivySettings.load(new File(userHome, ".ivy2/ivysettings.xml") );
+
+def empiriaWar = file( "war")
+def empiriaBuildDir = new File( empiriaWar, "empiria.player" )
+def empiriaWebkitWar = file( "build/gwt")
+def empiriaWebkitBuildDir = new File( empiriaWebkitWar, "empiria.player" )
+def versionFile= new File("${projectDir}${File.separator}src${File.separator}eu${File.separator}ydp${File.separator}empiria${File.separator}player${File.separator}client${File.separator}version${File.separator}version.txt")
+
+ext {
+    tstamp=new Date().format( "yyyyMMddHHmmssSSS")
+    buildnumber="${System.env["BUILD_NUMBER"]?:"${tstamp}"}"
+    jacocoReport = "${buildDir}/jacoco/testJUnit.exec"
+    
+}
+
+repositories {
+    ivy {
+        url "http://dev/ivyrep/public/"
+        layout 'pattern' , {
+            artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+            ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+        }
+    }
+    ivy {
+        url "http://dev/ivyrep/shared/"
+        layout 'pattern' , {
+            artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+            ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+        }
+    }
+    mavenCentral()
+    maven {
+        url 'http://gwtquery-plugins.googlecode.com/svn/mavenrepo/'
+    }
+}
+dependencies {
+    compile 'com.google.gwt:gwt-servlet:2.5.1'
+    compile 'com.google.gwt:gwt-user:2.5.1'
+    compile 'com.google.gwt:gwt-dev:2.5.1'
+
+    compile 'com.google.gwt.inject:gin:2.0.0'
+    compile 'com.googlecode.gwtquery:gwtquery:1.3.3'
+    compile 'com.googlecode.gwtquery.bundles:gquery-dnd-bundle:1.0.6'
+
+    compile 'eu.ydp:mathPlayer:latest.integration'
+    compile 'eu.ydp:canvasadapter:latest.integration'
+    compile 'eu.ydp:jsfilerequest:latest.integration'
+    compile 'eu.ydp:ydpgwtutils:[1.11.0,1.11.1['
+    compile 'eu.ydp:gwtFlashMedia:latest.integration'
+    compile 'eu.ydp:gwtCreateJs:latest.integration'
+    compile 'eu.ydp:jaxb4gwt:latest.integration'
+    compile 'eu.ydp:matheclipse-parser-gwt:0.0.10+'
+
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+    testCompile 'org.mockito:mockito-core:1.9.5'
+    testCompile 'junit:junit:4.11'
+    testCompile 'pl.pragmatists:JUnitParams:1.0.1'
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
+    testCompile 'xmlunit:xmlunit:1.3'
+    testCompile 'org.reflections:reflections:0.9.9-RC1'
+}
+
+eclipse {
+    project {
+        natures 'com.google.gwt.eclipse.core.gwtNature'
+        buildCommand 'com.google.gdt.eclipse.core.webAppProjectValidator'
+        buildCommand 'com.google.gwt.eclipse.core.gwtProjectValidator'
+    }
+    classpath {
+        containers 'com.google.gwt.eclipse.core.GWT_CONTAINER'
+    }
+}
+sonarRunner {
+    sonarProperties {
+        property "sonar.host.url", sonar_host_url
+        property "sonar.jdbc.url", sonar_jdbc_url
+        property "sonar.jdbc.driverClassName", sonar_jdbc_driverClassName
+        property "sonar.jdbc.username", sonar_jdbc_username
+        property "sonar.jdbc.password", sonar_jdbc_password
+        property "sonar.projectName",  sonar_project_name
+
+        property "sonar.core.codeCoveragePlugin", "jacoco"
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/'
+        }
+        resources {
+            srcDir 'src/'
+            exclude "**/*.java"
+        }
+    }
+    test {
+        java {
+            srcDir 'test/'
+        }
+        resources {
+            srcDir 'test/'
+            exclude "**/*.java"
+        }
+    }
+    
+    sourceSets.test.runtimeClasspath += files(sourceSets.main.java.srcDirs)
+    sourceSets.test.runtimeClasspath += files(sourceSets.test.java.srcDirs)
+}
+
+task testJUnit( type: Test ) {
+    jacoco {
+        enabled = true
+    }
+    useJUnit()
+    include "**/JUnitTestSuite.*"
+
+    forkEvery = 1
+    maxHeapSize = '512M'
+    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
+}
+task testGWTUnit( type: Test ) {
+    jacoco {
+        enabled = false
+    }
+    useJUnit()
+    include "**/GWTTestCaseSuite.*"
+    include "**/MainFlowProcessorTest.*"
+
+    forkEvery = 1
+    maxHeapSize = '512M'
+    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
+
+}
+
+task test( overwrite: true, dependsOn: [testJUnit,testGWTUnit] ) {
+    ext {
+        // this is needed for sonarRunner
+        reports = [junitXml: [destination: file("${buildDir}/test-results")]]
+        jacoco = [destinationFile: file(jacocoReport)]
+    }
+}
+
+jacocoTestReport {
+    executionData = files(jacocoReport)
+    reports {
+        xml.enabled true
+        csv.enabled false
+    }
+}
+testJUnit.finalizedBy jacocoTestReport
+
+task cleanCache(dependsOn: clean) {
+    delete "gwt-unitCache/"
+}
+
+task compileMain(dependsOn: [classes], type: GWTCompile) {
+    module = 'eu.ydp.empiria.player.Player'
+    buildDir = empiriaWar
+}
+task compileWebkit(dependsOn: [classes], type: GWTCompile) {
+    module = 'eu.ydp.empiria.player.Player_webkit'
+    buildDir = empiriaWebkitWar
+}
+
+
+def configCopyMetaInfoAndZip( playerDir, targetZip ) {
+    return {
+        def metadataProperties = [version: version, tstamp: tstamp, buildnumber: buildnumber]
+
+        inputs.properties( metadataProperties )
+        inputs.file file("metadata.template.xml")
+
+        doFirst {
+            copy {
+                from file("metadata.template.xml")
+                into playerDir
+                rename ".*", "metadata.xml"
+                expand( metadataProperties )
+            }
+        }
+
+        archiveName = targetZip
+        destinationDir = file( "dist" )
+        include( [ "**/*"] )
+        from playerDir
+    }
+}
+
+task createVersion(){
+	versionFile.createNewFile()
+	versionFile.write("${version}-${buildnumber}")
+}
+
+task zipMain( dependsOn: [compileMain], type: Zip ) {
+    configure configCopyMetaInfoAndZip( empiriaBuildDir, "empiriaplayer.zip")
+}
+task zipWebkit( dependsOn: [compileWebkit], type: Zip ) {
+    configure configCopyMetaInfoAndZip( empiriaWebkitBuildDir, "empiriaplayer_webkit.zip")
+}
+
+task compileAll( dependsOn: [compileMain, compileWebkit] )
+
+task distMain( dependsOn: [cleanCache, createVersion, test, zipMain] )
+task distWebkit( dependsOn: [cleanCache, createVersion, test, zipWebkit] )
+
+task dist( dependsOn: [distMain, distWebkit] )
+
+publishing {
+    publications {
+        ivy(IvyPublication) {
+            organisation 'eu.ydp'
+            module 'empiriaPlayerGradle'
+            revision "${version}-${buildnumber}"
+            descriptor.status = 'integration'
+			artifacts {
+	            artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
+	            	name 'empiriaplayer'
+	            	classifier "source"
+		            extension "zip"
+		         	builtBy distMain	         	
+	       		}
+	       		
+	       		artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer_webkit.zip") {
+	            	name 'empiriaplayer_webkit'
+	            	classifier "source"
+		            extension "zip"
+		         	builtBy distWebkit	         	
+	       		}       	
+       		}	
+        }
+    }
+    repositories {
+        ivy {
+            url 'http://dev/ivyrep/public'
+            layout 'pattern' , {
+                artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+                ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+            }
+        }
+    }
+}
