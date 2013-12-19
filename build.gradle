@@ -130,7 +130,7 @@ task testJUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss16M']  )
+    jvmArgs( ['-XX:MaxPermSize=5126M', '-Xss16M']  )
 }
 task testGWTUnit( type: Test ) {
     jacoco {
@@ -142,7 +142,7 @@ task testGWTUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss16M']  )
+    jvmArgs( ['-XX:MaxPermSize=512M', '-Xss16M']  )
 
 }
 
@@ -200,41 +200,10 @@ def configCopyMetaInfoAndZip( playerDir, targetZip ) {
     }
 }
 
-def copyAndExpandProperties(srcPath, destPath, properties) {
-    File srcFile  = new File(srcPath)
-	File destFile = new File(destPath)
-	
-	String fileContents = srcFile.text
-	def engine = new groovy.text.SimpleTemplateEngine()
-	def template = engine.createTemplate(fileContents).make(properties)
-	
- 	destFile.createNewFile()
-	destFile.write("${template}")
-}
-
 task createVersion(){
 	versionFile.createNewFile()
 	versionFile.write("${version}-${buildnumber}")
 }
-
-task createMetadataFile() {
-	def binding = [
-     version : "${version}",
-     tstamp  : "${tstamp}",
-     buildnumber  : "${buildnumber}"     
- 	]
-
-	copyAndExpandProperties("${projectDir}${File.separator}metadata.template.xml", "${projectDir}${File.separator}metadata.xml", binding)
-}
- 
-task createProjectFile() {
-	def binding = [
-     version : "${version}",
-     revision  : "${version}-${buildnumber}",
- 	]
-
-	copyAndExpandProperties("${projectDir}${File.separator}project.template.xml", "${projectDir}${File.separator}project.xml", binding)
- }
 
 task zipMain( dependsOn: [compileMain], type: Zip ) {
     configure configCopyMetaInfoAndZip( empiriaBuildDir, "empiriaplayer.zip")
@@ -245,8 +214,8 @@ task zipWebkit( dependsOn: [compileWebkit], type: Zip ) {
 
 task compileAll( dependsOn: [compileMain, compileWebkit] )
 
-task distMain( dependsOn: [cleanCache, createVersion, createProjectFile, test, zipMain] )
-task distWebkit( dependsOn: [cleanCache, createVersion, createProjectFile, test, zipWebkit] )
+task distMain( dependsOn: [cleanCache, createVersion, test, zipMain] )
+task distWebkit( dependsOn: [cleanCache, createVersion, test, zipWebkit] )
 
 task dist( dependsOn: [distMain, distWebkit] )
 
