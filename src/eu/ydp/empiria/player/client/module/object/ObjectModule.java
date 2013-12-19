@@ -8,7 +8,6 @@ import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -21,93 +20,48 @@ import eu.ydp.empiria.player.client.module.audioplayer.FlashAudioPlayerModule;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {// NOPMD
+public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {
+	private static final int DEFAULT_HEIGHT = 240;
+	private static final int DEFAULT_WIDTH = 320;
 
 	private Widget widget;
-	private final boolean flashPlayer = false; // NOPMD
 	private Widget moduleView = null;
 	private MediaWrapper<?> mediaWrapper = null;
-	private final MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
+	private MediaWrapper<?> fullScreenMediaWrapper;
+
 	@Inject
 	private EventsBus eventsBus;
 	@Inject
-	private ObjectTemplateParser<?> parser;
+	private ObjectTemplateParser parser;
 	@Inject
 	private Provider<ObjectModule> moduleFactory;
 	@Inject
-	Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
-
+	private Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
 	@Inject
 	private StyleSocket styleSocket;
-
-	private MediaWrapper<?> fullScreenMediaWrapper;
-
-	private class MediaWrapperHandler implements CallbackRecevier {
-		@Override
-		public void setCallbackReturnObject(Object object) {
-			if (object instanceof MediaWrapper<?>) {
-				createMedia((MediaWrapper<?>) object, null);
-			}
-
-			if (object instanceof MediaWrappersPair) {
-				createMedia(((MediaWrappersPair) object).getDefaultMediaWrapper(), ((MediaWrappersPair) object).getFullScreanMediaWrapper());
-			}
-		}
-	}
+	private ObjectElementReader elementReader = new ObjectElementReader();
 
 	@Override
 	public Widget getView() {
 		return moduleView;
 	}
 
-	public void getMediaWrapper(Element element, boolean defaultTemplate, boolean fullScreenTemplate, String type) {
-		int width = XMLUtils.getAttributeAsInt(element, "width");
-		int height = XMLUtils.getAttributeAsInt(element, "height");
-		if (width == 0 || height == 0) {
-			width = 320;
-			height = 240;
-		}
-		String poster = XMLUtils.getAttributeAsString(element, "poster");
-		BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width,
-				defaultTemplate, fullScreenTemplate, getNarrationText(element));// NOPMD
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
-	}
-
-	public String getNarrationText(Element element) {
-		StringBuilder builder = new StringBuilder();
-		NodeList nodeList = element.getElementsByTagName("narrationScript");
-		for (int x = 0; x < nodeList.getLength(); ++x) {
-			if (nodeList.item(x).getNodeType() == Node.ELEMENT_NODE) {
-				builder.append(XMLUtils.getText((Element) nodeList.item(x)));
-				builder.append(' ');
-			}
-		}
-		return builder.toString();
-	}
-
-	/**
-	 * tworzy element
-	 * 
-	 * @param element
-	 */
-	private void createMedia(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
-		widget = mediaWrapper.getMediaObject();
-		this.fullScreenMediaWrapper = fullScreenMediaWrapper;
+	void createMedia(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
 		this.mediaWrapper = mediaWrapper;
+		this.fullScreenMediaWrapper = fullScreenMediaWrapper;
+
+		this.widget = mediaWrapper.getMediaObject();
 	}
 
 	private void parseTemplate(Element template, Element fullScreenTemplate, FlowPanel parent) {
@@ -118,36 +72,40 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	}
 
 	@Override
-	public void initModule(Element element) {// NOPMD
-		String type = XMLUtils.getAttributeAsString(element, "type");
-		Element defaultTemplate = null, fullScreenTemplate = null;
-		NodeList templateList = element.getElementsByTagName("template");
-		for (int x = 0; x < templateList.getLength(); ++x) {
-			Element node = (Element) templateList.item(x);
-			String templateType = XMLUtils.getAttributeAsString(node, "type", "default");
-			if ("default".equalsIgnoreCase(templateType)) {
-				defaultTemplate = node;
-			} else if ("fullscreen".equalsIgnoreCase(templateType)) {
-				fullScreenTemplate = node;
-			}
-		}
-		if (element.getNodeName().equals("audioPlayer")) {
-			type = "audio";
-		}
+	public void initModule(final Element element) {
+		final String type = elementReader.getElementType(element);
+
+		final Element defaultTemplate = elementReader.getDefaultTemplate(element);
+		final Element fullScreenTemplate = elementReader.getFullscreenTemplate(element);
+
 		Map<String, String> styles = styleSocket.getStyles(element);
-		String playerType = styles.get("-player-" + type + "-skin");
-		if ("audioPlayer".equals(element.getNodeName()) && ((defaultTemplate == null && !"native".equals(playerType)) || ("old".equals(playerType)))) {
+		String playerSkin = styles.get("-player-" + type + "-skin");
+
+		if ("audioPlayer".equals(element.getTagName()) && ((defaultTemplate == null && !"native".equals(playerSkin)) || ("old".equals(playerSkin)))) {
 			Map<String, String> sources = getSource(element, type);
 			AudioPlayerModule player;
+
 			if (((!MediaChecker.isHtml5Mp3Support() && !SourceUtil.containsOgg(sources)) || !Audio.isSupported()) && UserAgentChecker.isLocal()) {
 				player = new FlashAudioPlayerModule();
 			} else {
 				player = defaultAudioPlayerModuleProvider.get();
 			}
+
 			player.initModule(element, getModuleSocket(), getInteractionEventsListener());
 			this.moduleView = player.getView();
 		} else {
-			getMediaWrapper(element, defaultTemplate != null && !"native".equals(playerType), fullScreenTemplate != null, type);
+			int width = elementReader.getWidthOrDefault(element, DEFAULT_WIDTH);
+			int height = elementReader.getHeightOrDefault(element, DEFAULT_HEIGHT);
+			
+			String poster = elementReader.getPoster(element);
+			
+			final MediaWrapperHandler callbackHandler = new MediaWrapperHandler(this);
+			final String narrationText = elementReader.getNarrationText(element);
+			BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width,
+					defaultTemplate != null && !"native".equals(playerSkin), fullScreenTemplate != null, narrationText);
+			
+			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
+			
 			ObjectModuleView moduleView = new ObjectModuleView();
 			String cls = element.getAttribute("class");
 			if (cls != null && !"".equals(cls)) {
@@ -155,7 +113,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			}
 
 			if (widget != null) {
-				if (defaultTemplate == null || flashPlayer) {
+				if (defaultTemplate == null) {
 					moduleView.getContainerPanel().add(widget);
 				} else {
 					parseTemplate(defaultTemplate, fullScreenTemplate, moduleView.getContainerPanel());
@@ -165,13 +123,15 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			if (mediaWrapper != null) {
 				eventsBus.fireEvent(new MediaEvent(MediaEventTypes.MEDIA_ATTACHED, mediaWrapper));
 			}
+
 			NodeList titleNodes = element.getElementsByTagName("title");
 			if (titleNodes.getLength() > 0) {
 				Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
 				if (titleWidget != null) {
-					moduleView.getTitlePanel().add(titleWidget);
+					moduleView.setTitleWidget(titleWidget);
 				}
 			}
+
 			NodeList descriptionNodes = element.getElementsByTagName("description");
 			if (descriptionNodes.getLength() > 0) {
 				Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(descriptionNodes.item(0));

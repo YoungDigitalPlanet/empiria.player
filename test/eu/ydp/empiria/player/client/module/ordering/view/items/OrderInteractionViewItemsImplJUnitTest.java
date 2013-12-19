@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.module.ordering.view.items;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,23 +17,18 @@ import com.google.inject.Module;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.gin.factory.OrderInteractionModuleFactory;
-import eu.ydp.empiria.player.client.module.ordering.view.OrderItemClickListener;
 
-
-@SuppressWarnings("PMD")
 public class OrderInteractionViewItemsImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private class CustomGinModule implements Module {
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(OrderInteractionModuleFactory.class).toInstance(moduleFactory);
-			binder.bind(OrderInteractionViewItemClickEventDelegator.class).toInstance(clickEventDelegator);
 			binder.bind(ViewItemsSorter.class).toInstance(itemsSorter);
 		}
 	}
 
 	private final OrderInteractionModuleFactory moduleFactory = mock(OrderInteractionModuleFactory.class);
-	private final OrderInteractionViewItemClickEventDelegator clickEventDelegator = mock(OrderInteractionViewItemClickEventDelegator.class);
 	private final ViewItemsSorter itemsSorter = mock(ViewItemsSorter.class);
 	private OrderInteractionViewItem viewItem;
 	private OrderInteractionViewItemsImpl instance;
@@ -50,10 +43,14 @@ public class OrderInteractionViewItemsImplJUnitTest extends AbstractTestBaseWith
 
 	@Test
 	public void addItem() throws Exception {
+		// given
 		IsWidget widget = mock(IsWidget.class);
+
+		// when
 		OrderInteractionViewItem item = instance.addItem("id", widget);
-		verify(moduleFactory).getOrderInteractionViewItem(Mockito.eq(widget),Mockito.eq("id"));
-		verify(clickEventDelegator).bind(Mockito.eq(viewItem), Mockito.isNull(OrderItemClickListener.class));
+
+		// then
+		verify(moduleFactory).getOrderInteractionViewItem(Mockito.eq(widget), Mockito.eq("id"));
 		assertThat(item).isEqualTo(viewItem);
 	}
 
@@ -74,7 +71,6 @@ public class OrderInteractionViewItemsImplJUnitTest extends AbstractTestBaseWith
 		instance.addItem("id", widget);
 		List<String> asList = Arrays.asList("a");
 		instance.getItemsInOrder(asList);
-		verify(itemsSorter).getItemsInOrder(Mockito.eq(asList), Mockito.anyMap());
+		verify(itemsSorter).getItemsInOrder(Mockito.eq(asList), Mockito.anyMapOf(String.class, IsWidget.class));
 	}
-
 }

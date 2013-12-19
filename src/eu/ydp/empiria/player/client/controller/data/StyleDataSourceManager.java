@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
 import com.google.common.collect.Lists;
@@ -12,23 +12,22 @@ import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.gwtutil.client.collections.QueueSet;
 
 /**
  * Requires that jscssp.js script is added to module xml file
- *
+ * 
  * @see http://glazman.org/JSCSSP/
  * @author Micha� Samuj�o msamujlo@ydp.com.pl
  */
 public class StyleDataSourceManager implements StyleSocket {
 
 	// style declarations for assessment
-	private final QueueSet<StyleDocument> assessmentStyle;
+	private final List<StyleDocument> assessmentStyle;
 
 	// style declarations for all items
 	// TODO consider using WeakHashMap to avoid problems with vector size at
 	// lines 50, 96
-	private final Vector<QueueSet<StyleDocument>> itemStyle;
+	private final Vector<List<StyleDocument>> itemStyle;
 
 	private final ElementStyleSelectorBuilder elementStyleSelectorBuilder = new ElementStyleSelectorBuilder();
 
@@ -36,30 +35,30 @@ public class StyleDataSourceManager implements StyleSocket {
 	 * Style declarations that should be searched for styles. When player
 	 * changes displayed page activeItemStyles should be rebuild.
 	 */
-	private final QueueSet<StyleDocument> currentStyles;
+	private final List<StyleDocument> currentStyles;
 
 	public StyleDataSourceManager() {
-		assessmentStyle = new QueueSet<StyleDocument>();
+		assessmentStyle = new ArrayList<StyleDocument>();
 
-		itemStyle = new Vector<QueueSet<StyleDocument>>();
-		currentStyles = new QueueSet<StyleDocument>();
+		itemStyle = new Vector<List<StyleDocument>>();
+		currentStyles = new ArrayList<StyleDocument>();
 	}
 
 	public void addAssessmentStyle(StyleDocument styleDocument) {
-		assessmentStyle.append(styleDocument);
-		currentStyles.append(styleDocument);
+		assessmentStyle.add(styleDocument);
+		currentStyles.add(styleDocument);
 	}
 
 	public void addItemStyle(int index, StyleDocument styleDocument) {
 		if (index >= itemStyle.size()) {
 			itemStyle.setSize(index + 1);
 		}
-		QueueSet<StyleDocument> styles = itemStyle.get(index);
+		List<StyleDocument> styles = itemStyle.get(index);
 		if (styles == null) {
-			styles = new QueueSet<StyleDocument>();
+			styles = new ArrayList<StyleDocument>();
 			itemStyle.set(index, styles);
 		}
-		styles.append(styleDocument);
+		styles.add(styleDocument);
 	}
 
 	@Override
@@ -98,10 +97,9 @@ public class StyleDataSourceManager implements StyleSocket {
 		return result;
 	}
 
-
 	@Override
 	public void setCurrentPages(PageReference pageReference) {
-		Vector<QueueSet<StyleDocument>> activeItemStyles = new Vector<QueueSet<StyleDocument>>(pageReference.pageIndices.length);
+		Vector<List<StyleDocument>> activeItemStyles = new Vector<List<StyleDocument>>(pageReference.pageIndices.length);
 		for (int pageIndex : pageReference.pageIndices) {
 			if (pageIndex < itemStyle.size()) {
 				activeItemStyles.add(itemStyle.get(pageIndex));
@@ -110,10 +108,10 @@ public class StyleDataSourceManager implements StyleSocket {
 		currentStyles.clear();
 
 		for (StyleDocument sheet : assessmentStyle) {
-			currentStyles.append(sheet);
+			currentStyles.add(sheet);
 		}
-		for (Set<StyleDocument> styles : activeItemStyles) {
-			currentStyles.appendAll(styles);
+		for (List<StyleDocument> styles : activeItemStyles) {
+			currentStyles.addAll(styles);
 		}
 	}
 

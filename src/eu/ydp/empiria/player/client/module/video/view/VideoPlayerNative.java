@@ -1,12 +1,10 @@
 package eu.ydp.empiria.player.client.module.video.view;
 
-import com.google.gwt.dom.client.VideoElement;
+import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
 
 public interface VideoPlayerNative extends VideoPlayerControl {
 
-	VideoElement createVideoElement();
+	void initPlayer(String playerId);
 
-	void unload();
-
-	void initPlayer();
+	void disposeCurrentPlayer();
 }

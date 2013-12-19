@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.ordering;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
@@ -12,20 +11,27 @@ import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPr
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionStructure;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.gwtutil.client.scheduler.Scheduler;
 
 public class OrderInteractionModule extends AbstractInteractionModule<OrderInteractionModule, OrderInteractionModuleModel, OrderInteractionBean> {
 
 	@Inject
-	private Provider<OrderInteractionModule> moduleProvider;
-
-	@Inject
+	@ModuleScoped
 	private OrderInteractionPresenter presenter;
 
 	@Inject
 	private OrderInteractionStructure orderInteractionStructure;
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private OrderInteractionModuleModel moduleModel;
+
+	@Inject
+	@ModuleScoped
+	private DragInitializingCommand dragInitializingCommand;
+
+	@Inject
+	private Scheduler scheduler;
 
 	@Override
 	public Widget getView() {
@@ -52,4 +58,8 @@ public class OrderInteractionModule extends AbstractInteractionModule<OrderInter
 		return orderInteractionStructure;
 	}
 
+	@Override
+	public void onStart() {
+		scheduler.scheduleDeferred(dragInitializingCommand);
+	}
 }

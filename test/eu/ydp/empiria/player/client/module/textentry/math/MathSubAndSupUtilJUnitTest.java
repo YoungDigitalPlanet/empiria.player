@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.textentry.math;
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +26,6 @@ public class MathSubAndSupUtilJUnitTest {
 				"<mmultiscripts>" + "<gap type=\"text-entry\" uid=\"uid_0000\" />" + "<none/>" + "<mprescripts/>" + "<none/>" + "<none/>" + "</mmultiscripts>")
 				.getDocumentElement();
 
-		Assert.assertTrue(util.isSubOrSup(node, parentNode));
+		assertTrue(util.isSubOrSup(node, parentNode));
 	}
 }

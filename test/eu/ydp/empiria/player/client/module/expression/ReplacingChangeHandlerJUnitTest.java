@@ -51,7 +51,7 @@ public class ReplacingChangeHandlerJUnitTest {
 		listenerCaptor.getValue().onInput();
 		
 		// then
-		verify(hasValue).setValue("b");
+		verify(hasValue).setValue("b", true);
 	}
 	
 	@Test

@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
-import static com.google.common.collect.Iterables.concat;
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Maps.filterEntries;
-import static com.google.common.collect.Maps.transformEntries;
+import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Maps.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -17,7 +15,6 @@ import eu.ydp.empiria.player.client.controller.variables.processor.global.filter
 import eu.ydp.empiria.player.client.controller.variables.processor.global.filter.ExpressionCheckModeFilter;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.transformation.DefaultResultVariablesTransformation;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.transformation.ExpressionBeanResultsToResultVariableTransformation;
-import eu.ydp.empiria.player.client.controller.variables.processor.global.transformation.ResponseToExpressionBeanTransformation;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ResultVariables;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
@@ -32,9 +29,6 @@ public class ResultVariablesConverter {
 	
 	@Inject
 	private DefaultCheckModeFilter defaultCheckModeFilter;
-	
-	@Inject
-	private ResponseToExpressionBeanTransformation responseToExpressionBeanTransformation;
 	
 	@Inject
 	private ExpressionBeanResultsToResultVariableTransformation expressionBeanToResultVariableTransformation;

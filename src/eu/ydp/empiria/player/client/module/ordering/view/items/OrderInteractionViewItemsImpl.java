@@ -8,7 +8,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.OrderInteractionModuleFactory;
-import eu.ydp.empiria.player.client.module.ordering.view.OrderItemClickListener;
 
 public class OrderInteractionViewItemsImpl implements OrderInteractionViewItems {
 
@@ -18,26 +17,16 @@ public class OrderInteractionViewItemsImpl implements OrderInteractionViewItems 
 	private ViewItemsSorter itemsSorter;
 
 	@Inject
-	private OrderInteractionViewItemClickEventDelegator clickEventDelegator;
-
-	@Inject
 	private OrderInteractionModuleFactory moduleFactory;
-
-	private OrderItemClickListener itemClickListener;
 
 	@Override
 	public OrderInteractionViewItem addItem(final String itemId, IsWidget widget) {
 		OrderInteractionViewItem viewItem = createAndPutViewItem(itemId, widget);
-		addClickListenerToItem(viewItem);
 		return viewItem;
 	}
 
-	private void addClickListenerToItem(OrderInteractionViewItem viewItem) {
-		clickEventDelegator.bind(viewItem, itemClickListener);
-	}
-
 	private OrderInteractionViewItem createAndPutViewItem(String itemId, IsWidget widget) {
-		OrderInteractionViewItem viewItem = moduleFactory.getOrderInteractionViewItem(widget,itemId);
+		OrderInteractionViewItem viewItem = moduleFactory.getOrderInteractionViewItem(widget, itemId);
 		widgets.put(itemId, viewItem);
 		return viewItem;
 	}
@@ -47,13 +36,8 @@ public class OrderInteractionViewItemsImpl implements OrderInteractionViewItems 
 		return widgets.get(itemId);
 	}
 
-		@Override
+	@Override
 	public List<IsWidget> getItemsInOrder(List<String> itemsOrder) {
 		return itemsSorter.getItemsInOrder(itemsOrder, widgets);
-	}
-
-	@Override
-	public void setItemClickListener(OrderItemClickListener itemClickListener) {
-		this.itemClickListener = itemClickListener;
 	}
 }
