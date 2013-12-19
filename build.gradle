@@ -162,6 +162,10 @@ jacocoTestReport {
 }
 testJUnit.finalizedBy jacocoTestReport
 
+task cleanCache(dependsOn: clean) {
+    delete "gwt-unitCache/"
+}
+
 task compileMain(dependsOn: [classes], type: GWTCompile) {
     module = 'eu.ydp.empiria.player.Player'
     buildDir = empiriaWar
@@ -237,14 +241,11 @@ task zipMain( dependsOn: [compileMain], type: Zip ) {
 task zipWebkit( dependsOn: [compileWebkit], type: Zip ) {
     configure configCopyMetaInfoAndZip( empiriaWebkitBuildDir, "empiriaplayer_webkit.zip")
 }
-task cleanCache(dependsOn: clean) {
-    delete "gwt-unitCache/"
-}
 
 task compileAll( dependsOn: [compileMain, compileWebkit] )
 
-task distMain( dependsOn: [createVersion, createProjectFile, test, zipMain] )
-task distWebkit( dependsOn: [createVersion, createProjectFile, test, zipWebkit] )
+task distMain( dependsOn: [cleanCache, createVersion, createProjectFile, test, zipMain] )
+task distWebkit( dependsOn: [cleanCache, createVersion, createProjectFile, test, zipWebkit] )
 
 task dist( dependsOn: [distMain, distWebkit] )
 
