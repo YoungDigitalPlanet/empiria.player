@@ -5,6 +5,7 @@ import com.google.gwt.dom.client.VideoElement;
 
 public class VideoElementWrapper {
 
+	private static final String VIDEOJS_SETUP_ATTRIBUTE = "data-setup";
 	private final VideoElement videoElement;
 
 	public VideoElementWrapper(VideoElement videoElement) {
@@ -31,8 +32,8 @@ public class VideoElementWrapper {
 		videoElement.setPreload(preload);
 	}
 
-	public void setPoster(String poster) {
-		videoElement.setPoster(poster);
+	public void setPoster(String posterUrl) {
+		videoElement.setAttribute(VIDEOJS_SETUP_ATTRIBUTE, posterSetupAttributeValue(posterUrl));
 	}
 
 	public <T extends Node> T appendChild(T newChild) {
@@ -45,5 +46,9 @@ public class VideoElementWrapper {
 
 	public Node asNode() {
 		return videoElement;
+	}
+	
+	private String posterSetupAttributeValue(String posterUrl) {
+		return "{\"poster\" : \"" + posterUrl + "\" }"; 
 	}
 }

@@ -70,8 +70,15 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	private native JavaScriptObject initPlayerNative() /*-{
 		var playerId = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId;
 
-		return $wnd.vjs(playerId, {}, function() {
-		});
+		var options = $wnd
+				.document
+				.getElementById(playerId)
+				.getAttribute('data-setup') || '{}';
+		options = $wnd.vjs.JSON.parse(options);
+		
+		$wnd.console.log(options);
+
+		return $wnd.vjs(playerId, options);
 	}-*/;
 
 	@Override
