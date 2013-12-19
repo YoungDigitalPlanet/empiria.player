@@ -130,7 +130,7 @@ task testJUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=512M', '-Xss16M']  )
+    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
 }
 task testGWTUnit( type: Test ) {
     jacoco {
@@ -141,8 +141,8 @@ task testGWTUnit( type: Test ) {
     include "**/MainFlowProcessorTest.*"
 
     forkEvery = 1
-    maxHeapSize = '1024M'
-    jvmArgs( ['-XX:MaxPermSize=512M', '-Xss16M']  )
+    maxHeapSize = '512M'
+    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
 
 }
 
