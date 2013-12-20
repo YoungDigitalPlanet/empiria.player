@@ -52,7 +52,7 @@ public class VideoPlayerBuilderTest {
 		when(moduleFactory.createAttachHandlerForRegisteringPauseEvent(videoPlayer)).thenReturn(mockHandler);
 
 		// when
-		testObj.buildVideoPlayer();
+		testObj.build();
 
 		// then
 		verify(moduleFactory).createAttachHandlerForRegisteringPauseEvent(videoPlayer);

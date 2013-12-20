@@ -20,7 +20,7 @@ public class VideoPlayerBuilder {
 		this.videoBean = videoBean;
 	}
 
-	public VideoPlayer buildVideoPlayer() {
+	public VideoPlayer build() {
 		VideoPlayer videoPlayer = videoPlayerFactory.create(videoBean);
 		
 		final VideoPlayerAttachHandler handler = videoModuleFactory.createAttachHandlerForRegisteringPauseEvent(videoPlayer);

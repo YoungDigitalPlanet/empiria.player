@@ -29,7 +29,7 @@ public class VideoPresenterTest {
 
 		// then
 		verify(view).createView();
-		verify(videoPlayerBuilder).buildVideoPlayer();
+		verify(videoPlayerBuilder).build();
 		verify(reAttachHack).apply(view);
 	}
 	

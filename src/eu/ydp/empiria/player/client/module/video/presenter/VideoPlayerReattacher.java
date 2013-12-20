@@ -30,7 +30,7 @@ public class VideoPlayerReattacher {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), new PlayerEventHandler() {
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
-				VideoPlayer videoPlayer = videoPlayerAttacher.buildVideoPlayer();
+				VideoPlayer videoPlayer = videoPlayerAttacher.build();
 				view.attachVideoPlayer(videoPlayer);
 			}
 		}, pageScopeProvider.get());

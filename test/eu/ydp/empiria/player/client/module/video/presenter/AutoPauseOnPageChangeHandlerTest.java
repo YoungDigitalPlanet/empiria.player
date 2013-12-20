@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.module.video.view.VideoPlayerNative;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 
 @RunWith(MockitoJUnitRunner.class)
-public class VideoPlayerPageChangeHandlerTest {
+public class AutoPauseOnPageChangeHandlerTest {
 
 	private AutoPauseOnPageChangeHandler testObj;
 	

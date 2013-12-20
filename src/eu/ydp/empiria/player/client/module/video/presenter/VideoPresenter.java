@@ -24,7 +24,7 @@ public class VideoPresenter {
 	public void start() {
 		view.createView();
 
-		VideoPlayer videoPlayer = videoPlayerBuilder.buildVideoPlayer();
+		VideoPlayer videoPlayer = videoPlayerBuilder.build();
 		view.attachVideoPlayer(videoPlayer);
 
 		reAttachHack.apply(view);

@@ -76,8 +76,6 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 				.getAttribute('data-setup') || '{}';
 		options = $wnd.vjs.JSON.parse(options);
 		
-		$wnd.console.log(options);
-
 		return $wnd.vjs(playerId, options);
 	}-*/;
 

@@ -56,7 +56,7 @@ public class VideoPlayerReattacherTest {
 		playerEventHandler.onPlayerEvent(null);
 
 		// then
-		verify(videoPlayerBuilder).buildVideoPlayer();
+		verify(videoPlayerBuilder).build();
 	}
 
 	private void preparePageScope() {
