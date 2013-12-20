@@ -1,19 +1,25 @@
-package eu.ydp.empiria.player.client.module.video.hack;
+package eu.ydp.empiria.player.client.module.video.presenter;
 
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import com.google.gwt.junit.GWTMockUtilities;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerBuilder;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerReattacher;
+import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -21,11 +27,15 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.gwtutil.junit.runners.ExMockRunner;
+import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
-public class ReAttachVideoPlayerForIOSHackTest {
+@RunWith(ExMockRunner.class)
+@PrepareForTest(VideoPlayer.class)
+public class VideoPlayerReattacherTest {
 
 	@InjectMocks
-	private ReAttachVideoPlayerForIOSHack hack;
+	private VideoPlayerReattacher testObj;
 	@Mock
 	private EventsBus eventsBus;
 	@Mock
@@ -34,9 +44,14 @@ public class ReAttachVideoPlayerForIOSHackTest {
 	private Provider<CurrentPageScope> pageScopeProvider;
 	@Mock
 	private VideoView view;
-	
+
 	private PlayerEventHandler playerEventHandler;
 	private CurrentPageScope currentPageScope;
+
+	@BeforeClass
+	public static void before() {
+		GWTMockUtilities.disarm();
+	}
 
 	@Before
 	public void setUp() {
@@ -47,42 +62,17 @@ public class ReAttachVideoPlayerForIOSHackTest {
 	}
 
 	@Test
-	public void shouldNotAttachNewVideoPlayer() {
-		// given
-		hack.apply(view);
-
-		// when
-		playerEventHandler.onPlayerEvent(null);
-
-		// then
-		verify(videoPlayerBuilder, never()).buildVideoPlayer();
-	}
-
-	@Test
 	public void shouldAtachNewVideoPlayer() {
 		// given
-		hack.apply(view);
+		testObj.registerReattachHandlerToView(view);
+		final VideoPlayer mockPlayer = mock(VideoPlayer.class);
+		when(videoPlayerBuilder.build()).thenReturn(mockPlayer);
 
 		// when
 		playerEventHandler.onPlayerEvent(null);
-		playerEventHandler.onPlayerEvent(null);
 
 		// then
-		verify(videoPlayerBuilder).buildVideoPlayer();
-	}
-
-	@Test
-	public void shouldAtachNewVideoPlayerTwoTimes() {
-		// given
-		hack.apply(view);
-
-		// when
-		playerEventHandler.onPlayerEvent(null);
-		playerEventHandler.onPlayerEvent(null);
-		playerEventHandler.onPlayerEvent(null);
-
-		// then
-		verify(videoPlayerBuilder, times(2)).buildVideoPlayer();
+		verify(view).attachVideoPlayer(mockPlayer);
 	}
 
 	private void preparePageScope() {
@@ -103,4 +93,10 @@ public class ReAttachVideoPlayerForIOSHackTest {
 		};
 		doAnswer(answer).when(eventsBus).addHandler(eq(eventType), any(PlayerEventHandler.class), eq(currentPageScope));
 	}
+
+	@AfterClass
+	public static void after() {
+		GWTMockUtilities.restore();
+	}
+
 }
