@@ -24,7 +24,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
 @PrepareForTest(VideoPlayer.class)
-public class PauseOnPageChangeAttachHandlerTest {
+public class VideoPlayerAttachHandlerTest {
 
 	@Mock
 	private EventsBus eventsBus;

@@ -13,7 +13,6 @@ public class VideoPlayer extends Widget {
 	private final VideoPlayerNative nativePlayer;
 	private final VideoElementWrapper videoElementWrapper;
 
-
 	@Inject
 	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer) {
 		this.nativePlayer = nativePlayer;
