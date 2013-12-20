@@ -16,7 +16,7 @@ public class VideoPresenterTest {
 	@InjectMocks
 	private VideoPresenter presenter;
 	@Mock
-	private VideoPlayerReattacher reAttachHack;
+	private VideoPlayerReattacher videoPlayerReattacher;
 	@Mock
 	private VideoPlayerBuilder videoPlayerBuilder;
 	@Mock
@@ -30,7 +30,7 @@ public class VideoPresenterTest {
 		// then
 		verify(view).createView();
 		verify(videoPlayerBuilder).build();
-		verify(reAttachHack).apply(view);
+		verify(videoPlayerReattacher).registerReattachHandlerToView(view);
 	}
 	
 }

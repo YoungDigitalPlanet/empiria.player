@@ -27,7 +27,7 @@ public class VideoPresenter {
 		VideoPlayer videoPlayer = videoPlayerBuilder.build();
 		view.attachVideoPlayer(videoPlayer);
 
-		reAttachHack.apply(view);
+		reAttachHack.registerReattachHandlerToView(view);
 	}
 
 	public Widget getView() {

@@ -26,7 +26,7 @@ public class VideoPlayerReattacher {
 		this.pageScopeProvider = pageScopeProvider;
 	}
 
-	public void apply(final VideoView view) {
+	public void registerReattachHandlerToView(final VideoView view) {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), new PlayerEventHandler() {
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {

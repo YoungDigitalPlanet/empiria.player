@@ -64,7 +64,7 @@ public class VideoPlayerReattacherTest {
 	@Test
 	public void shouldAtachNewVideoPlayer() {
 		// given
-		testObj.apply(view);
+		testObj.registerReattachHandlerToView(view);
 		final VideoPlayer mockPlayer = mock(VideoPlayer.class);
 		when(videoPlayerBuilder.build()).thenReturn(mockPlayer);
 
