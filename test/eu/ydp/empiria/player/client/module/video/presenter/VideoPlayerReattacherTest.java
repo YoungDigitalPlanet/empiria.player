@@ -72,7 +72,6 @@ public class VideoPlayerReattacherTest {
 		playerEventHandler.onPlayerEvent(null);
 
 		// then
-		verify(videoPlayerBuilder).build();
 		verify(view).attachVideoPlayer(mockPlayer);
 	}
 
