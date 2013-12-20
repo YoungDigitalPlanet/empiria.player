@@ -17,7 +17,7 @@ import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 public class DragControllerTest {
 
 	private static final String ID = "ID";
-	private static final String ID_SELECTOR = "#ID";
+	private static final String ID_SELECTOR = ".ID";
 
 	@InjectMocks
 	private DragController testobj;
@@ -33,7 +33,7 @@ public class DragControllerTest {
 
 	@Before
 	public void setup() {
-		when(interactionView.getId()).thenReturn(ID);
+		when(interactionView.getMainPanelUniqueCssClass()).thenReturn(ID);
 	}
 
 	@Test

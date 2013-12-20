@@ -32,6 +32,6 @@ public class DragController {
 	}
 
 	private String getIdSelector() {
-		return "#" + interactionView.getId();
+		return "." + interactionView.getMainPanelUniqueCssClass();
 	}
 }

@@ -13,6 +13,7 @@ import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPr
 import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenterImpl;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionViewImpl;
+import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionViewUniqueCssProvider;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionViewWidget;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionViewWidgetImpl;
 import eu.ydp.empiria.player.client.module.ordering.view.items.OrderInteractionViewItem;
@@ -34,6 +35,7 @@ public class OrderingGinModule extends AbstractGinModule {
 		bind(OrderInteractionViewItems.class).to(OrderInteractionViewItemsImpl.class);
 		bind(OrderInteractionViewItemStyles.class).to(OrderInteractionViewItemStylesImpl.class);
 		bind(SortCallback.class).to(SortCallbackImpl.class);
+		bind(OrderInteractionViewUniqueCssProvider.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().implement(OrderInteractionViewItem.class, OrderInteractionViewItemImpl.class).build(
 				OrderInteractionModuleFactory.class));
 	}

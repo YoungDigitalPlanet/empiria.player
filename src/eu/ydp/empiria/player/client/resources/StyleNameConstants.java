@@ -249,10 +249,10 @@ public interface StyleNameConstants extends Constants {
 	public String QP_DRAGGED_OVER_DROPZONE();
 
 	@DefaultStringValue("qp-drawing-module")
-	public String  QP_DRAWING_MODULE();
+	public String QP_DRAWING_MODULE();
 
 	@DefaultStringValue("qp-drawing-canvas")
-	public String  QP_DRAWING_CANVAS();
+	public String QP_DRAWING_CANVAS();
 
 	@DefaultStringValue("qp-drawing-canvas-container")
 	public String QP_DRAWING_CANVAS_CONTAINER();
@@ -550,6 +550,9 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-ordered")
 	public String QP_ORDERED();
+
+	@DefaultStringValue("qp-ordered-unique")
+	public String QP_ORDERED_UNIQUE();
 
 	@DefaultStringValue("qp-ordered-horizontal")
 	public String QP_ORDERED_HORIZONTAL();

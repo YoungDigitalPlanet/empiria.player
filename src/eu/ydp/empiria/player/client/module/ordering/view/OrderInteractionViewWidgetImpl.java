@@ -25,13 +25,20 @@ public class OrderInteractionViewWidgetImpl extends Composite implements OrderIn
 
 	@UiField
 	protected FlowPanel mainPanel;
-
+	private final String mainPanelUniqueCssClass;
 	@Inject
 	private StyleNameConstants styleNameConstants;
+
+	@Inject
+	public OrderInteractionViewWidgetImpl(OrderInteractionViewUniqueCssProvider interactionViewUniqueCssClassSuffixGenerator) {
+		mainPanelUniqueCssClass = interactionViewUniqueCssClassSuffixGenerator.getNext();
+	}
 
 	@PostConstruct
 	public void postConstruct() {
 		initWidget(uiBinder.createAndBindUi(this));
+		mainPanel.addStyleName(mainPanelUniqueCssClass);
+
 	}
 
 	@Override
@@ -60,7 +67,7 @@ public class OrderInteractionViewWidgetImpl extends Composite implements OrderIn
 	}
 
 	@Override
-	public String getId() {
-		return mainPanel.getElement().getId();
+	public String getMainPanelUniqueCssClass() {
+		return mainPanelUniqueCssClass;
 	}
 }

@@ -14,5 +14,5 @@ public interface OrderInteractionViewWidget extends IsWidget {
 
 	void setOrientation(OrderInteractionOrientation orientation);
 
-	String getId();
+	String getMainPanelUniqueCssClass();
 }

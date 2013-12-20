@@ -62,7 +62,7 @@ public class OrderInteractionViewImpl implements OrderInteractionView {
 	}
 
 	@Override
-	public String getId() {
-		return viewWidget.getId();
+	public String getMainPanelUniqueCssClass() {
+		return viewWidget.getMainPanelUniqueCssClass();
 	}
 }
