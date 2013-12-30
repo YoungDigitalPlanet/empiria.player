@@ -10,12 +10,14 @@ public class SortableNative {
 							axis : dragAxis,
 							start : function(event, ui) {
 								this.from = ui.item.index();
+								callback.@eu.ydp.empiria.player.client.module.ordering.drag.SortCallback::setSwypeLock(Z)(true);
 							},
 							stop : function(event, ui) {
 								var to = ui.item.index();
 								if (to != this.from) {
 									callback.@eu.ydp.empiria.player.client.module.ordering.drag.SortCallback::sortStoped(II)(this.from, to);
 								}
+								callback.@eu.ydp.empiria.player.client.module.ordering.drag.SortCallback::setSwypeLock(Z)(false);
 							}
 						});
 		$wnd.jQuery(selector).disableSelection();
