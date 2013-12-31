@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.gin.module.ModuleScopedLazyProvider;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
@@ -13,6 +14,8 @@ public class SortCallbackImpl implements SortCallback {
 
 	@Inject
 	private ModuleScopedLazyProvider<OrderInteractionPresenter> presenterProvider;
+	@Inject
+	private TouchController touchController;
 	@Inject
 	@ModuleScoped
 	private OrderingItemsDao orderingItemsDao;
@@ -25,5 +28,10 @@ public class SortCallbackImpl implements SortCallback {
 		itemsInOrder.add(to, movedElement);
 
 		presenterProvider.get().updateItemsOrder(itemsInOrder);
+	}
+
+	@Override
+	public void setSwypeLock(boolean lock) {
+		touchController.setSwypeLock(lock);
 	}
 }
