@@ -26,11 +26,15 @@ public class OrderInteractionModuleTest {
 
 	@Test
 	public void shouldInitDragOnStart() {
+		// given
+		when(orderInteractionPresenter.getOrientation()).thenReturn(OrderInteractionOrientation.VERTICAL);
+		
 		// when
 		testObj.onStart();
 
 		// then
-		verify(dragController).init(any(OrderInteractionOrientation.class));
+		verify(orderInteractionPresenter).getOrientation();
+		verify(dragController).init(OrderInteractionOrientation.VERTICAL);
 	}
 
 	@Test
