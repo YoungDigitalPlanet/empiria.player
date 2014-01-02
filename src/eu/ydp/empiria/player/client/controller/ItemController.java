@@ -56,7 +56,6 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 
 	@Inject
-	@SuppressWarnings("PMD")
 	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs, @Assisted ItemSessionSocket iss, AssessmentControllerFactory controllerFactory) {
 		itemViewSocket = ivs;
 		itemSessionSocket = iss;
@@ -167,7 +166,6 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			newEvent = new FlowActivityEvent(FlowActivityEventType.valueOf(event.getType().name()), null);
 		}
 		item.handleFlowActivityEvent(newEvent);
-
 	}
 
 	/**

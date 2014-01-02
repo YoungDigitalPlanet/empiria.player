@@ -312,7 +312,7 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private void activateCorrectWorkMode() {
 		PlayerWorkMode workMode = playerWorkModeService.getCurrentWorkMode();
 		if(workMode == PlayerWorkMode.PREVIEW) {
-			itemBody.enablePeviewMode();
+			itemBody.enablePreviewMode();
 		}
 	}
 

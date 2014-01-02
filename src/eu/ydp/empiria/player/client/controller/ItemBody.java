@@ -131,7 +131,7 @@ public class ItemBody implements WidgetWorkflowListener {
 		}
 	}
 
-	public void enablePeviewMode() {
+	public void enablePreviewMode() {
 		for (IModule currModule : modules) {
 			if (currModule instanceof WorkModeClient) {
 				((WorkModeClient) currModule).enablePreviewMode();
