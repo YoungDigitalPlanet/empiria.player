@@ -223,6 +223,11 @@ task wrapper(type: Wrapper) {
 	gradleVersion = '1.10'
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs = [ "-implicit:none" ]
+    options.compilerArgs += ["-sourcepath", ""]
+}
+
 publishing {
     publications {
         ivy(IvyPublication) {
