@@ -130,7 +130,7 @@ task testJUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
+    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss1M']  )
 }
 task testGWTUnit( type: Test ) {
     jacoco {
@@ -142,7 +142,7 @@ task testGWTUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
+    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss1M']  )
 
 }
 
@@ -221,6 +221,11 @@ task dist( dependsOn: [distMain, distWebkit] )
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '1.10'
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = [ "-implicit:none" ]
+    options.compilerArgs += ["-sourcepath", ""]
 }
 
 publishing {
