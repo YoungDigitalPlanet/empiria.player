@@ -219,6 +219,10 @@ task distWebkit( dependsOn: [cleanCache, createVersion, test, zipWebkit] )
 
 task dist( dependsOn: [distMain, distWebkit] )
 
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.10'
+}
+
 publishing {
     publications {
         ivy(IvyPublication) {
