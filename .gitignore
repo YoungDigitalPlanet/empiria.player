@@ -22,3 +22,7 @@ metadata.xml
 war
 .gradle/
 build/
+.settings/
+.project
+.classpath
+/bin
