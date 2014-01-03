@@ -130,7 +130,7 @@ task testJUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
+    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss8M']  )
 }
 task testGWTUnit( type: Test ) {
     jacoco {
@@ -142,7 +142,7 @@ task testGWTUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
+    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss1M']  )
 
 }
 
