@@ -8,8 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.module.video.hack.ReAttachVideoPlayerForIOSChecker;
-import eu.ydp.empiria.player.client.module.video.hack.ReAttachVideoPlayerForIOSHack;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -18,40 +16,21 @@ public class VideoPresenterTest {
 	@InjectMocks
 	private VideoPresenter presenter;
 	@Mock
-	private ReAttachVideoPlayerForIOSChecker hackChecker;
-	@Mock
-	private ReAttachVideoPlayerForIOSHack reAttachHack;
+	private VideoPlayerReattacher videoPlayerReattacher;
 	@Mock
 	private VideoPlayerBuilder videoPlayerBuilder;
 	@Mock
 	private VideoView view;
 
 	@Test
-	public void shouldCreateViewAndAttachPlayerWhenStart() {
-		// given
-		when(hackChecker.isNeeded()).thenReturn(false);
-
-		// when
-		presenter.start();
-
-		// then
-		verify(view).createView();
-		verify(videoPlayerBuilder).buildVideoPlayer();
-		verify(reAttachHack, never()).apply(view);
-	}
-
-	@Test
 	public void shouldCreateViewAndApplyHackWhenStart() {
-		// given
-		when(hackChecker.isNeeded()).thenReturn(true);
-
 		// when
 		presenter.start();
 
 		// then
 		verify(view).createView();
-		verify(videoPlayerBuilder).buildVideoPlayer();
-		verify(reAttachHack).apply(view);
+		verify(videoPlayerBuilder).build();
+		verify(videoPlayerReattacher).registerReattachHandlerToView(view);
 	}
 	
 }

@@ -29,7 +29,7 @@ import eu.ydp.empiria.player.client.module.media.button.MediaController;
 
 
 public class ObjectTemplateParserTest extends AbstractTestBase {
-	private ObjectTemplateParser<?> parser = null;
+	private ObjectTemplateParser parser = null;
 	private Set<String> controllers = null;
 
 	@BeforeClass

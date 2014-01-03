@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.inject.Inject;
@@ -13,11 +12,12 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.module.video.structure.SourceBean;
 import eu.ydp.empiria.player.client.module.video.wrappers.SourceElementWrapper;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
+import eu.ydp.empiria.player.client.module.video.wrappers.poster.DefaultPosterUriProvider;
 
 public class VideoElementWrapperBuilder {
 
 	private static final String DEFAULT_PRELOAD = MediaElement.PRELOAD_NONE;
-	private static final String DEFAUL_SKIN = "vjs-default-skin";
+	private static final String DEFAULT_SKIN = "vjs-default-skin";
 
 	private final List<SourceBean> sources = Lists.newArrayList();
 
@@ -25,13 +25,17 @@ public class VideoElementWrapperBuilder {
 	private Provider<SourceElementWrapper> sourceElementWrapperProvider;
 	@Inject
 	private Provider<VideoElementWrapper> videoElementWrapperProvider;
+	@Inject
+	private DefaultPosterUriProvider defaultPosterUriProvider;
 
 	private int width = 0;
 	private int height = 0;
+	
 	private boolean controls = true;
+	
 	private Optional<String> skinName = Optional.absent();
 	private Optional<String> preload = Optional.absent();
-	private String poster = "";
+	private Optional<String> poster = Optional.absent();
 
 	public VideoElementWrapperBuilder withWidth(int width) {
 		this.width = width;
@@ -59,7 +63,7 @@ public class VideoElementWrapperBuilder {
 	}
 
 	public VideoElementWrapperBuilder withPoster(String poster) {
-		this.poster = poster;
+		this.poster = Optional.fromNullable(poster);
 		return this;
 	}
 
@@ -79,14 +83,13 @@ public class VideoElementWrapperBuilder {
 		videoElement.setWidth(width);
 		videoElement.setHeight(height);
 		videoElement.setControls(controls);
-
-		videoElement.addClassName(skinName.or(DEFAUL_SKIN));
+		
+		videoElement.addClassName(skinName.or(DEFAULT_SKIN));
 		videoElement.setPreload(preload.or(DEFAULT_PRELOAD));
-
-		if (!Strings.isNullOrEmpty(poster)) {
-			videoElement.setPoster(poster);
-		}
-
+		
+		final String defaultPosterUri = defaultPosterUriProvider.getDefaultPosterUri();
+		videoElement.setPoster(poster.or(defaultPosterUri));
+		
 		if (sources.isEmpty()) {
 			throw new IllegalStateException("Video sources cannot be empty");
 		}

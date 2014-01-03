@@ -37,7 +37,7 @@ public abstract class ControlModuleConnectorExtension extends ModuleExtension im
 				listener.onDeliveryEvent(flowEvent);
 		}
 
-		//TODO: usuwanie tylko wtedy gdy jest usuwany modu≥
+		//TODO: usuwanie tylko wtedy gdy jest usuwany modu≈Ç
 		//if (flowEvent.getType() == DeliveryEventType.PAGE_UNLOADED)
 			//removeAllDeliveryListeners();
 	}

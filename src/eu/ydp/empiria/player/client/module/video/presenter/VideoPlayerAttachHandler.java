@@ -9,7 +9,6 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
-import eu.ydp.empiria.player.client.module.video.hack.VideoPlayerPauseOnPageChangeHandler;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -17,7 +16,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
-public class PauseOnPageChangeAttachHandler implements Handler {
+public class VideoPlayerAttachHandler implements Handler {
 	private static final Type<PlayerEventHandler, PlayerEventTypes> PAGE_CHANGE_EVENT_TYPE = PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE);
 	
 	private final EventsBus eventsBus;
@@ -26,7 +25,7 @@ public class PauseOnPageChangeAttachHandler implements Handler {
 	private Optional<HandlerRegistration> handlerRegistration = Optional.absent();
 
 	@Inject
-	public PauseOnPageChangeAttachHandler(@Assisted VideoPlayer videoPlayer, EventsBus eventsBus) {
+	public VideoPlayerAttachHandler(@Assisted VideoPlayer videoPlayer, EventsBus eventsBus) {
 		this.eventsBus = eventsBus;
 		this.videoPlayer = videoPlayer;
 	}
@@ -50,7 +49,7 @@ public class PauseOnPageChangeAttachHandler implements Handler {
 
 	private HandlerRegistration registerPauseHandlerOnPageChange() {
 		final VideoPlayerControl videoPlayerControl = videoPlayer.getControl();
-		final VideoPlayerPauseOnPageChangeHandler pauseHandler = new VideoPlayerPauseOnPageChangeHandler(videoPlayerControl);
+		final AutoPauseOnPageChangeHandler pauseHandler = new AutoPauseOnPageChangeHandler(videoPlayerControl);
 		
 		return eventsBus.addHandler(PAGE_CHANGE_EVENT_TYPE, pauseHandler);
 	}
