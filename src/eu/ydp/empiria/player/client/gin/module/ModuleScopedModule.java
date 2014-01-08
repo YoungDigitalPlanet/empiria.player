@@ -51,8 +51,12 @@ import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
+import eu.ydp.empiria.player.client.module.ordering.DragInitializingCommand;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
+import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
+import eu.ydp.empiria.player.client.module.ordering.presenter.ItemsResponseOrderController;
+import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 import eu.ydp.empiria.player.client.module.progressbonus.presenter.ProgressBonusPresenter;
 import eu.ydp.empiria.player.client.module.progressbonus.view.ProgressBonusView;
@@ -73,8 +77,8 @@ import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorViewImpl;
-import eu.ydp.empiria.player.client.module.video.hack.ReAttachVideoPlayerForIOSHack;
 import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerBuilder;
+import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerReattacher;
 import eu.ydp.empiria.player.client.module.video.presenter.VideoPresenter;
 import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
 import eu.ydp.empiria.player.client.module.video.structure.VideoBeanProvider;
@@ -116,7 +120,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 		});
 		bindModuleScoped(VideoPlayerBuilder.class, new TypeLiteral<ModuleScopedProvider<VideoPlayerBuilder>>() {
 		});
-		bindModuleScoped(ReAttachVideoPlayerForIOSHack.class, new TypeLiteral<ModuleScopedProvider<ReAttachVideoPlayerForIOSHack>>() {
+		bindModuleScoped(VideoPlayerReattacher.class, new TypeLiteral<ModuleScopedProvider<VideoPlayerReattacher>>() {
 		});
 	}
 
@@ -156,6 +160,14 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindModuleScoped(OrderInteractionModuleModel.class, new TypeLiteral<ModuleScopedProvider<OrderInteractionModuleModel>>() {
 		});
 		bindModuleScoped(OrderInteractionView.class, new TypeLiteral<ModuleScopedProvider<OrderInteractionView>>() {
+		});
+		bindModuleScoped(DragController.class, new TypeLiteral<ModuleScopedProvider<DragController>>() {
+		});
+		bindModuleScoped(ItemsResponseOrderController.class, new TypeLiteral<ModuleScopedProvider<ItemsResponseOrderController>>() {
+		});
+		bindModuleScoped(OrderInteractionPresenter.class, new TypeLiteral<ModuleScopedProvider<OrderInteractionPresenter>>() {
+		});
+		bindModuleScoped(DragInitializingCommand.class, new TypeLiteral<ModuleScopedProvider<DragInitializingCommand>>() {
 		});
 	}
 

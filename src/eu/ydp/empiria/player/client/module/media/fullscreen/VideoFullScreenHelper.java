@@ -42,7 +42,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 	protected EventsBus eventsBus;
 
 	@Inject
-	protected ObjectTemplateParser<?> parser;
+	protected ObjectTemplateParser parser;
 
 	@Inject
 	protected GWTPanelFactory panelFactory;

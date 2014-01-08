@@ -5,13 +5,9 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * Widok dla {@link ObjectModule}
- * @author plelakowski
- *
- */
 public class ObjectModuleView extends Composite {
 
 	private static ObjectModuleViewUiBinder uiBinder = GWT.create(ObjectModuleViewUiBinder.class);
@@ -43,12 +39,12 @@ public class ObjectModuleView extends Composite {
 		return contentPanel;
 	}
 
-	public FlowPanel getTitlePanel() {
-		return titlePanel;
-	}
-
 	public FlowPanel getDescriptionPanel() {
 		return descriptionPanel;
 	}
-
+	
+	public void setTitleWidget(IsWidget w) {
+		titlePanel.clear();
+		titlePanel.add(w);
+	}
 }

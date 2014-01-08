@@ -15,16 +15,17 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 /**
- * Safari for iOS has a known problem with the poster attribute on the video tags.
- * Potentially this solution can be used also for other browsers, on which the similar problem will be appearing.  
+ * Safari for iOS has a known problem with the poster attribute on the video
+ * tags. Potentially this solution can be used also for other browsers, on which
+ * the similar problem will be appearing.
  */
 public class HTML5VideoForcePosterHack implements MediaEventHandler {
-	
+
 	private Element posterImageElement;
 	private boolean isPosterCreated = false;
 	private final MediaBase mediaBase;
 	private final HTML5MediaExecutorDelegator mediaExecutorDelegator;
-		
+
 	public HTML5VideoForcePosterHack(MediaBase mediaBase, HTML5MediaExecutorDelegator mediaExecutor) {
 		this.mediaBase = mediaBase;
 		this.mediaExecutorDelegator = mediaExecutor;
@@ -44,13 +45,13 @@ public class HTML5VideoForcePosterHack implements MediaEventHandler {
 		if (isPosterCreated) {
 			return;
 		}
-		
+
 		Widget parent = mediaBase.getParent();
 		Element parentElement = parent.getElement();
-		
+
 		if (parentElement != null) {
 			AbstractHTML5MediaExecutor executor = mediaExecutorDelegator.getExecutor();
-			BaseMediaConfiguration baseMediaConfiguration = executor.getBaseMediaConfiguration();			
+			BaseMediaConfiguration baseMediaConfiguration = executor.getBaseMediaConfiguration();
 			createPosterImageLayer(parentElement, baseMediaConfiguration);
 			isPosterCreated = true;
 		}
@@ -59,7 +60,7 @@ public class HTML5VideoForcePosterHack implements MediaEventHandler {
 	private void hidePosterImage() {
 		posterImageElement.getStyle().setVisibility(Visibility.HIDDEN);
 	}
-	
+
 	private void createPosterImageLayer(Element mediaContainerElement, BaseMediaConfiguration baseMediaConfiguration) {
 		posterImageElement = DOM.createImg();
 		DOM.setImgSrc(posterImageElement, baseMediaConfiguration.getPoster());
@@ -67,12 +68,11 @@ public class HTML5VideoForcePosterHack implements MediaEventHandler {
 		posterImageElement.getStyle().setTop(0, Unit.PX);
 		posterImageElement.getStyle().setPosition(Position.ABSOLUTE);
 		posterImageElement.getStyle().setWidth(baseMediaConfiguration.getWidth(), Unit.PX);
-		posterImageElement.getStyle().setHeight(baseMediaConfiguration.getHeight(), Unit.PX);		
-		posterImageElement.getStyle().setZIndex(9999);
+		posterImageElement.getStyle().setHeight(baseMediaConfiguration.getHeight(), Unit.PX);
 		posterImageElement.getStyle().setPadding(0, Unit.PX);
 		posterImageElement.getStyle().setMargin(0, Unit.PX);
 		posterImageElement.getStyle().setVisibility(Visibility.VISIBLE);
-		
-		mediaContainerElement.appendChild(posterImageElement);		
-	}	
+
+		mediaContainerElement.appendChild(posterImageElement);
+	}
 }

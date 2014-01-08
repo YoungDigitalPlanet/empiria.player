@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.H
 import eu.ydp.empiria.player.client.module.media.html5.reattachhack.HTML5VideoReattachHack;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
+import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
 public class AttachHandlerImpl implements Handler {
 
@@ -28,10 +29,14 @@ public class AttachHandlerImpl implements Handler {
 	public void onAttachOrDetach(AttachEvent event) {
 		if (firstTimeInitialization) {
 			firstTimeInitialization = false;
-		}else if (event.isAttached() && isUserAgent(MobileUserAgent.SAFARI)) {
+		} else if (event.isAttached() && requiresReattachment()) {
 			HTML5VideoReattachHack html5VideoReattachHack = html5VideoReattachHackProvider.get();
 			html5VideoReattachHack.reAttachVideo(mediaWrapper, mediaExecutor, this);
 		}
+	}
+
+	private boolean requiresReattachment() {
+		return isUserAgent(MobileUserAgent.SAFARI) || isUserAgent(UserAgent.CHROME);
 	}
 
 	public void setMediaExecutor(HTML5VideoMediaExecutor mediaExecutor) {

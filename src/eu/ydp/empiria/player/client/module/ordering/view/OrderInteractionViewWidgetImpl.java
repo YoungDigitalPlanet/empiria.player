@@ -25,23 +25,30 @@ public class OrderInteractionViewWidgetImpl extends Composite implements OrderIn
 
 	@UiField
 	protected FlowPanel mainPanel;
-
+	private final String mainPanelUniqueCssClass;
 	@Inject
 	private StyleNameConstants styleNameConstants;
+
+	@Inject
+	public OrderInteractionViewWidgetImpl(OrderInteractionViewUniqueCssProvider interactionViewUniqueCssClassSuffixGenerator) {
+		mainPanelUniqueCssClass = interactionViewUniqueCssClassSuffixGenerator.getNext();
+	}
 
 	@PostConstruct
 	public void postConstruct() {
 		initWidget(uiBinder.createAndBindUi(this));
+		mainPanel.addStyleName(mainPanelUniqueCssClass);
+
 	}
 
 	@Override
-	public void setOrientation(OrderInteractionOrientation orientation){
+	public void setOrientation(OrderInteractionOrientation orientation) {
 		mainPanel.removeStyleName(styleNameConstants.QP_ORDERED_VARTICAL());
 		mainPanel.removeStyleName(styleNameConstants.QP_ORDERED_HORIZONTAL());
 
-		if(orientation == OrderInteractionOrientation.VERTICAL){
+		if (orientation == OrderInteractionOrientation.VERTICAL) {
 			mainPanel.addStyleName(styleNameConstants.QP_ORDERED_VARTICAL());
-		}else{
+		} else {
 			mainPanel.addStyleName(styleNameConstants.QP_ORDERED_HORIZONTAL());
 		}
 	}
@@ -54,9 +61,13 @@ public class OrderInteractionViewWidgetImpl extends Composite implements OrderIn
 		}
 	}
 
-		@Override
-	public void add(IsWidget widget){
+	@Override
+	public void add(IsWidget widget) {
 		mainPanel.add(widget);
 	}
 
+	@Override
+	public String getMainPanelUniqueCssClass() {
+		return mainPanelUniqueCssClass;
+	}
 }

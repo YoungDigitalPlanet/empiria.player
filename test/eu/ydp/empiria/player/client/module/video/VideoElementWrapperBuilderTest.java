@@ -1,12 +1,7 @@
 package eu.ydp.empiria.player.client.module.video;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -24,6 +19,7 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.module.video.structure.SourceBean;
 import eu.ydp.empiria.player.client.module.video.wrappers.SourceElementWrapper;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
+import eu.ydp.empiria.player.client.module.video.wrappers.poster.DefaultPosterUriProvider;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VideoElementWrapperBuilderTest {
@@ -34,12 +30,17 @@ public class VideoElementWrapperBuilderTest {
 	private Provider<SourceElementWrapper> sourceElementWrapperProvider;
 	@Mock
 	private Provider<VideoElementWrapper> videoElementProvider;
+	@Mock
+	private DefaultPosterUriProvider defaultPosterUriProvider;
+	
 	private VideoElementWrapper videoElement;
 
 	@Before
 	public void setup() {
 		videoElement = mock(VideoElementWrapper.class);
 		when(videoElementProvider.get()).thenReturn(videoElement);
+		
+		when(defaultPosterUriProvider.getDefaultPosterUri()).thenReturn("defaultPosterUri");
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -97,7 +98,7 @@ public class VideoElementWrapperBuilderTest {
 		verify(videoElement).setControls(controls);
 		verify(videoElement).setHeight(height);
 		verify(videoElement).setWidth(width);
-		verify(videoElement, never()).setPoster(anyString());
+		verify(videoElement).setPoster("defaultPosterUri");
 		verify(videoElement).setPreload(preload);
 		verify(videoElement).addClassName(skinName);
 		verify(videoElement).appendChild(any(SourceElement.class));

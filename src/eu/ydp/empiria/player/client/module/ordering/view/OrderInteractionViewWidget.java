@@ -9,7 +9,10 @@ import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOr
 public interface OrderInteractionViewWidget extends IsWidget {
 
 	<W extends IsWidget> void putItemsOnView(List<W> itemsInOrder);
+
 	void add(IsWidget widget);
+
 	void setOrientation(OrderInteractionOrientation orientation);
 
+	String getMainPanelUniqueCssClass();
 }
