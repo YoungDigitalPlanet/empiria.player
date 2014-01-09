@@ -9,6 +9,7 @@ import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
@@ -43,6 +44,9 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 	@Inject
 	@PageScoped
 	protected ResponseSocket responseSocket;
+
+	@Inject
+	private Provider<CurrentPageScope> pageScopeProvider;
 
 	public void postConstruct() {
 		addHandlersInPresenter();
@@ -179,7 +183,7 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 					getTextEntryPresenter().removeFocusFromTextField();
 				}
 			}
-		}, new CurrentPageScope());
+		}, pageScopeProvider.get());
 	}
 
 	protected void updateResponse(boolean userInteract) {
