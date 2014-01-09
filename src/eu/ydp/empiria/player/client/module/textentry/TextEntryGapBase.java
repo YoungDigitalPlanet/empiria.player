@@ -169,14 +169,13 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 			return null;
 		}
 	}
-	
+
 	protected void addPlayerEventHandlers() {
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
 
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
 				if (event.getType() == PlayerEventTypes.BEFORE_FLOW) {
-					updateResponse(false, false);
 					getTextEntryPresenter().removeFocusFromTextField();
 				}
 			}
