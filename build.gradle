@@ -250,7 +250,7 @@ publishing {
     publications {
         ivy(IvyPublication) {
             organisation 'eu.ydp'
-            module 'empiriaPlayerGradle'
+            module 'empiriaPlayer'
             revision "${version}-${buildnumber}"
             descriptor.status = 'integration'
 			artifacts {
