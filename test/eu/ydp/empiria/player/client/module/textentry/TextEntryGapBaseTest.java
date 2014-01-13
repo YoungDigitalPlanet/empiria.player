@@ -57,7 +57,6 @@ public class TextEntryGapBaseTest {
 	public void shouldNotFireStateChangedEventOnBeforeFlow() {
 		// given
 		testObj.setPresenter(mock(TextEntryGapModulePresenterBase.class));
-		testObj.setShowingAnswers(true);
 		testObj.addPlayerEventHandlers();
 
 		// when
@@ -65,6 +64,7 @@ public class TextEntryGapBaseTest {
 
 		// then
 		verify(testObj, never()).updateResponse(anyBoolean(), anyBoolean());
+
 	}
 
 	private void preparePageScope() {

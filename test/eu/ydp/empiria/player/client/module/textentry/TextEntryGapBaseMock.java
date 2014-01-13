@@ -8,12 +8,7 @@ public class TextEntryGapBaseMock extends TextEntryGapBase {
 		super.addPlayerEventHandlers();
 	}
 
-	public void setShowingAnswers(boolean isShowing) {
-		showingAnswer = isShowing;
-	}
-
 	public void setPresenter(GapModulePresenter presenter) {
 		this.presenter = presenter;
-
 	}
 }
