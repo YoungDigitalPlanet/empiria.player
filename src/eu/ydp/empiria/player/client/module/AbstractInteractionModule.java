@@ -138,7 +138,6 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 
 	@Override
 	public void setState(JSONArray stateAndStructure) {
-
 		YJsonValue convertedStateAndStructure = stateController.updateStateAndStructureVersion(stateAndStructure);
 
 		JSONArray response = stateController.getResponse(convertedStateAndStructure);
@@ -150,7 +149,8 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	}
 
 	protected void clearModel() {
-		getResponseModel().reset();
+		H responseModel = getResponseModel();
+		responseModel.reset();
 	}
 
 	@Override
