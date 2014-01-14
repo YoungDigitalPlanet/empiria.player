@@ -36,7 +36,7 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 
 	@PostConstruct
 	public void init() {
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CREATED_AND_STARTED), this, new CurrentPageScope());
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), this, new CurrentPageScope());
 	}
 
 	@Override
