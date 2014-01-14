@@ -51,7 +51,6 @@ import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
-import eu.ydp.empiria.player.client.module.ordering.DragInitializingCommand;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
@@ -166,8 +165,6 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindModuleScoped(ItemsResponseOrderController.class, new TypeLiteral<ModuleScopedProvider<ItemsResponseOrderController>>() {
 		});
 		bindModuleScoped(OrderInteractionPresenter.class, new TypeLiteral<ModuleScopedProvider<OrderInteractionPresenter>>() {
-		});
-		bindModuleScoped(DragInitializingCommand.class, new TypeLiteral<ModuleScopedProvider<DragInitializingCommand>>() {
 		});
 	}
 
