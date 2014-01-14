@@ -19,10 +19,6 @@ import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
@@ -168,19 +164,6 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 		} else {
 			return null;
 		}
-	}
-	
-	protected void addPlayerEventHandlers() {
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), new PlayerEventHandler() {
-
-			@Override
-			public void onPlayerEvent(PlayerEvent event) {
-				if (event.getType() == PlayerEventTypes.BEFORE_FLOW) {
-					updateResponse(false, false);
-					getTextEntryPresenter().removeFocusFromTextField();
-				}
-			}
-		}, new CurrentPageScope());
 	}
 
 	protected void updateResponse(boolean userInteract) {

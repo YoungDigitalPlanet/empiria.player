@@ -1,38 +1,18 @@
 package eu.ydp.empiria.player.client.module.containers;
 
-import java.util.List;
-
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IContainerModule;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IResetable;
 
 public abstract class AbstractActivityContainerModuleBase extends ContainerModuleBase implements IContainerModule, IActivity {
+
+	private final ModulesActivitiesController modulesActivitiesController;
 
 	private boolean markingAnswers = false;
 	private boolean showingAnswers = false;
 
-	@Override
-	public void lock(boolean state) {
-		List<? extends IModule> children = getModuleSocket().getChildren(this);
-		for (IModule child : children) {
-			if (child instanceof IActivity) {
-				((IActivity) child).lock(state);
-			}
-		}
-	}
-
-	@Override
-	public void reset() {
-		showCorrectAnswers(false);
-		markAnswers(false);
-		List<? extends IModule> children = getModuleSocket().getChildren(this);
-		for (IModule child : children) {
-			if (child instanceof IResetable) {
-				((IResetable) child).reset();
-			}
-		}
+	public AbstractActivityContainerModuleBase() {
+		modulesActivitiesController = new ModulesActivitiesController();
 	}
 
 	@Override
@@ -43,16 +23,6 @@ public abstract class AbstractActivityContainerModuleBase extends ContainerModul
 		}
 	}
 
-	void doMarkAnswers(boolean mark) {
-		List<? extends IModule> children = getModuleSocket().getChildren(this);
-		for (IModule child : children) {
-			if (child instanceof IActivity) {
-				((IActivity) child).markAnswers(mark);
-			}
-		}
-		markingAnswers = mark;
-	}
-
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		if (!show && showingAnswers || show && !showingAnswers) {
@@ -61,14 +31,26 @@ public abstract class AbstractActivityContainerModuleBase extends ContainerModul
 		}
 	}
 
-	void doShowCorrectAnswers(boolean show) {
-		List<? extends IModule> children = getModuleSocket().getChildren(this);
-		for (IModule child : children) {
-			if (child instanceof IActivity) {
-				((IActivity) child).showCorrectAnswers(show);
-			}
-		}
+	@Override
+	public void lock(boolean state) {
+		modulesActivitiesController.lock(getChildren(), state);
+	}
 
+	@Override
+	public void reset() {
+		showCorrectAnswers(false);
+		markAnswers(false);
+		modulesActivitiesController.reset(getChildren());
+	}
+
+	void doMarkAnswers(boolean mark) {
+		modulesActivitiesController.markAnswers(getChildren(), mark);
+		markingAnswers = mark;
+	}
+
+	void doShowCorrectAnswers(boolean show) {
+		modulesActivitiesController.showCorrectAnswers(getChildren(), show);
 		showingAnswers = show;
 	}
+
 }
