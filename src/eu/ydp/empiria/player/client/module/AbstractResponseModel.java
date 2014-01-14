@@ -47,12 +47,6 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 		return parseResponse(response.values);
 	}
 
-	/**
-	 * Konwertuje odpowiedz z postaci String do typu H.
-	 * @param values
-	 * @return
-	 */
-
 	@Override
 	public void setState(JSONArray newState) {
 		for (int i = 0; i < newState.size(); i++) {
