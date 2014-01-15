@@ -28,7 +28,6 @@ public class OrderingResetController {
 		List<String> newAnswersOrder = orderingAnswersShuffler.shuffleAnswers(model.getCurrentAnswers(), model.getCorrectAnswers());
 		List<String> newItemsOrder = itemsResponseOrderController.getCorrectItemsOrderByAnswers(newAnswersOrder);
 		orderingItemsDao.setItemsOrder(newItemsOrder);
-		itemsResponseOrderController.updateResponseWithNewOrder(newItemsOrder);
 	}
 
 }
