@@ -8,8 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
 import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
-import eu.ydp.gwtutil.client.scheduler.Scheduler;
+import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderInteractionModuleTest {
@@ -21,17 +22,19 @@ public class OrderInteractionModuleTest {
 	@Mock
 	private OrderInteractionPresenter orderInteractionPresenter;
 	@Mock
-	private DragInitializingCommand dragInitializingCommand;
-	@Mock
-	private Scheduler scheduler;
+	private DragController dragController;
 
 	@Test
 	public void shouldInitDragOnStart() {
+		// given
+		when(orderInteractionPresenter.getOrientation()).thenReturn(OrderInteractionOrientation.VERTICAL);
+		
 		// when
 		testObj.onStart();
 
 		// then
-		verify(scheduler).scheduleDeferred(dragInitializingCommand);
+		verify(orderInteractionPresenter).getOrientation();
+		verify(dragController).init(OrderInteractionOrientation.VERTICAL);
 	}
 
 	@Test

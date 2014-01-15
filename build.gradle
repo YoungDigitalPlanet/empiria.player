@@ -1,5 +1,21 @@
+buildscript {
+	repositories {
+		ivy {
+			url "http://dev/ivyrep/public/"
+			layout 'pattern' , {
+				artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+				ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+			}
+		}
+	}
+
+	dependencies {
+		classpath group: 'eu.ydp', name: 'gradleGwtCompilerPlugin', version: 'latest.integration'
+	}
+}
+
 import org.apache.ivy.core.settings.IvySettings
-import GWTCompile
+import eu.ydp.gradle.gwt.GWTCompileTask
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
@@ -24,7 +40,6 @@ ext {
     tstamp=new Date().format( "yyyyMMddHHmmssSSS")
     buildnumber="${System.env["BUILD_NUMBER"]?:"${tstamp}"}"
     jacocoReport = "${buildDir}/jacoco/testJUnit.exec"
-    
 }
 
 repositories {
@@ -47,6 +62,7 @@ repositories {
         url 'http://gwtquery-plugins.googlecode.com/svn/mavenrepo/'
     }
 }
+
 dependencies {
     compile 'com.google.gwt:gwt-servlet:2.5.1'
     compile 'com.google.gwt:gwt-user:2.5.1'
@@ -84,6 +100,7 @@ eclipse {
         containers 'com.google.gwt.eclipse.core.GWT_CONTAINER'
     }
 }
+
 sonarRunner {
     sonarProperties {
         property "sonar.host.url", sonar_host_url
@@ -130,7 +147,7 @@ task testJUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
+    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss1M']  )
 }
 task testGWTUnit( type: Test ) {
     jacoco {
@@ -142,7 +159,7 @@ task testGWTUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=1024M', '-Xss16M']  )
+    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss1M']  )
 
 }
 
@@ -167,11 +184,12 @@ task cleanCache(dependsOn: clean) {
     delete "gwt-unitCache/"
 }
 
-task compileMain(dependsOn: [classes], type: GWTCompile) {
+task compileMain(dependsOn: [classes], type: GWTCompileTask) {
     module = 'eu.ydp.empiria.player.Player'
     buildDir = empiriaWar
 }
-task compileWebkit(dependsOn: [classes], type: GWTCompile) {
+
+task compileWebkit(dependsOn: [classes], type: GWTCompileTask) {
     module = 'eu.ydp.empiria.player.Player_webkit'
     buildDir = empiriaWebkitWar
 }
@@ -219,11 +237,20 @@ task distWebkit( dependsOn: [cleanCache, createVersion, test, zipWebkit] )
 
 task dist( dependsOn: [distMain, distWebkit] )
 
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.10'
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = [ "-implicit:none" ]
+    options.compilerArgs += ["-sourcepath", ""]
+}
+
 publishing {
     publications {
         ivy(IvyPublication) {
             organisation 'eu.ydp'
-            module 'empiriaPlayerGradle'
+            module 'empiriaPlayer'
             revision "${version}-${buildnumber}"
             descriptor.status = 'integration'
 			artifacts {
