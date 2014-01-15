@@ -36,4 +36,7 @@ public class OrderInteractionModuleModel extends AbstractResponseModel<String> {
 		super.onModelChange();
 	}
 
+	@Override
+	public void reset() {
+	}
 }
