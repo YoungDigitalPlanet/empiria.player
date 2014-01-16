@@ -1,18 +1,18 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
+import static org.mockito.Mockito.*;
+
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
-
-import static org.mockito.Mockito.*;
 
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
@@ -20,17 +20,13 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 @RunWith(MockitoJUnitRunner.class)
 public class OrderingResetControllerJUnitTest {
 
+	@InjectMocks
 	private OrderingResetController controller;
 	@Mock private OrderingAnswersShuffler orderingAnswersShuffler;
 	@Mock private OrderingItemsDao orderingItemsDao;
 	@Mock private ItemsResponseOrderController itemsResponseOrderController;
 	@Mock private OrderInteractionModuleModel model;
 	
-	@Before
-	public void setUp() throws Exception {
-		controller = new OrderingResetController(orderingAnswersShuffler, itemsResponseOrderController, orderingItemsDao, model);
-	}
-
 	@Test
 	public void shouldResetAnswersToNewRandomOnes() throws Exception {
 		List<String> currentAnswers = Lists.newArrayList("currAnswers");
