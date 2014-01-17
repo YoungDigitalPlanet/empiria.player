@@ -49,9 +49,7 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 
 	@Override
 	public void setState(JSONArray newState) {
-		if (!response.values.isEmpty()) {
-			response.reset();
-		}
+		response.reset();
 		
 		for (int i = 0; i < newState.size(); i++) {
 			String responseValue = newState.get(i).isString().stringValue();
