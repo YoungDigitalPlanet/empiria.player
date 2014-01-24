@@ -30,13 +30,20 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	interface SourceListViewItemUiBinder extends UiBinder<Widget, SourceListViewItem> {
 	}
 
-	protected @UiField FlowPanel item;
-	private @Inject StyleNameConstants styleNames;
-	private @Inject DragDropHelper dragDropHelper;
-	private @Inject TouchController touchController;
-	private @Inject Provider<SourceListViewItemWidget> sourceListViewItemWidgetProvider;
-	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
-	private @Inject ScormScrollPanel scormScrollPanel; 
+	protected @UiField
+	FlowPanel item;
+	private @Inject
+	StyleNameConstants styleNames;
+	private @Inject
+	DragDropHelper dragDropHelper;
+	private @Inject
+	TouchController touchController;
+	private @Inject
+	Provider<SourceListViewItemWidget> sourceListViewItemWidgetProvider;
+	private @Inject
+	UserInteractionHandlerFactory interactionHandlerFactory;
+	private @Inject
+	ScormScrollPanel scormScrollPanel;
 	private SourceListViewImpl sourceListView;
 	private DraggableObject<SourceListViewItemWidget> draggable;
 	private SourceListViewItemWidget container;
@@ -44,6 +51,7 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	private SourcelistItemValue itemContent;
 
 	private final Command disableTextMark = new DisableDefaultBehaviorCommand();
+
 	public void setSourceListView(SourceListViewImpl sourceListView) {
 		this.sourceListView = sourceListView;
 	}
@@ -53,11 +61,11 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	}
 
 	public void show() {
-		container.setVisible(true);
+		container.setVisibility(true);
 	}
 
 	public void hide() {
-		container.setVisible(false);
+		container.setVisibility(false);
 	}
 
 	public void createAndBindUi(SourcelistItemValue itemValue) {
