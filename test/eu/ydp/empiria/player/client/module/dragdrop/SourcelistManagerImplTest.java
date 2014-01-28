@@ -22,19 +22,21 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 public class SourcelistManagerImplTest {
 
 	@InjectMocks
-	SourcelistManagerImpl manager;
+	private SourcelistManagerImpl manager;
 	@Mock
-	SourcelistManagerModel model;
+	private SourcelistManagerModel model;
 	@Mock
-	SourcelistClient client1;
+	private SourcelistClient client1;
 	@Mock
-	SourcelistClient client2;
+	private SourcelistClient client2;
 	@Mock
-	SourcelistClient client3;
+	private SourcelistClient client3;
 	@Mock
-	Sourcelist sourcelist1;
+	private Sourcelist sourcelist1;
 	@Mock
-	Sourcelist sourcelist2;
+	private Sourcelist sourcelist2;
+	@Mock
+	private SourcelistLockingController sourcelistLockingController;
 	private final String CLIENT_1_ID = "id1";
 	private final String CLIENT_2_ID = "id2";
 	private final String CLIENT_3_ID = "id3";
@@ -79,10 +81,8 @@ public class SourcelistManagerImplTest {
 		manager.dragStart(CLIENT_1_ID);
 
 		// then
-		verify(sourcelist1, never()).lockSourceList();
-		verify(sourcelist2).lockSourceList();
-		verify(client1, never()).lockDropZone();
-		verify(client2).lockDropZone();
+		verify(sourcelistLockingController).lockOthers(sourcelist1);
+		verify(sourcelistLockingController, never()).lockOthers(sourcelist2);
 	}
 
 	@Test
@@ -95,10 +95,7 @@ public class SourcelistManagerImplTest {
 		manager.dragFinished();
 
 		// then
-		verify(sourcelist1).unlockSourceList();
-		verify(sourcelist2).unlockSourceList();
-		verify(client1).unlockDropZone();
-		verify(client2).unlockDropZone();
+		verify(sourcelistLockingController).unlockAll();
 	}
 
 	@Test
@@ -227,9 +224,7 @@ public class SourcelistManagerImplTest {
 		verify(client1, never()).lockDropZone();
 		verify(sourcelist1, never()).lockSourceList();
 
-		verify(client2).lockDropZone();
-		verify(client3).lockDropZone();
-		verify(sourcelist2).lockSourceList();
+		verify(sourcelistLockingController).lockGroup(CLIENT_2_ID);
 	}
 
 	@Test
@@ -250,12 +245,7 @@ public class SourcelistManagerImplTest {
 		manager.unlockGroup(CLIENT_2_ID);
 
 		// then
-		verify(client1, never()).unlockDropZone();
-		verify(sourcelist1, never()).unlockSourceList();
-
-		verify(client2).unlockDropZone();
-		verify(client3).unlockDropZone();
-		verify(sourcelist2).unlockSourceList();
+		verify(sourcelistLockingController).unlockGroup(CLIENT_2_ID);
 	}
 
 	@Test
@@ -280,10 +270,7 @@ public class SourcelistManagerImplTest {
 		manager.dragFinished();
 
 		// then
-		verify(sourcelist1, never()).unlockSourceList();
-		verify(sourcelist2).unlockSourceList();
-		verify(client1, never()).unlockDropZone();
-		verify(client2).unlockDropZone();
+		verify(sourcelistLockingController).unlockAll();
 	}
 
 	private SourcelistClient mockClient(String string) {

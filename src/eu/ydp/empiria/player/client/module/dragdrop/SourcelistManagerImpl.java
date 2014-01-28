@@ -25,6 +25,9 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 	private SourcelistManagerModel model;
 	@Inject
 	private EventsBus eventsBus;
+	@Inject
+	@PageScoped
+	private SourcelistLockingController sourcelistLockingController;
 
 	private final Function<SourcelistClient, String> clientToItemid = new Function<SourcelistClient, String>() {
 
@@ -57,53 +60,7 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 		} else {
 			sourcelist = model.getSourcelistById(sourceModuleId);
 		}
-		lockOthers(sourcelist);
-	}
-
-	private void lockGroup(Sourcelist sourcelist) {
-		sourcelist.lockSourceList();
-		lockClients(sourcelist);
-	}
-
-	private void lockOthers(Sourcelist sourcelist) {
-		for (Sourcelist src : model.getSourceLists()) {
-			if (!sourcelist.equals(src)) {
-				src.lockSourceList();
-				lockClients(src);
-			}
-		}
-	}
-
-	private void lockClients(Sourcelist src) {
-		Collection<SourcelistClient> clients = model.getClients(src);
-		for (SourcelistClient client : clients) {
-			client.lockDropZone();
-		}
-	}
-
-	private void unlockGroup(Sourcelist sourcelist) {
-		sourcelist.unlockSourceList();
-		unlockClients(sourcelist);
-	}
-
-	private void unlockAll() {
-		for (Sourcelist sourcelist : model.getSourceLists()) {
-			unlockGroupIfNotBlocked(sourcelist);
-		}
-	}
-
-	private void unlockGroupIfNotBlocked(Sourcelist sourcelist) {
-		if (!model.isGroupLocked(sourcelist)) {
-			sourcelist.unlockSourceList();
-			unlockClients(sourcelist);
-		}
-	}
-
-	private void unlockClients(Sourcelist sourcelist) {
-		Collection<SourcelistClient> clients = model.getClients(sourcelist);
-		for (SourcelistClient client : clients) {
-			client.unlockDropZone();
-		}
+		sourcelistLockingController.lockOthers(sourcelist);
 	}
 
 	@Override
@@ -130,6 +87,10 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 		}
 
 		unlockAll();
+	}
+
+	private void unlockAll() {
+		sourcelistLockingController.unlockAll();
 	}
 
 	@Override
@@ -179,20 +140,12 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 
 	@Override
 	public void lockGroup(String clientId) {
-		if (model.containsClient(clientId)) {
-			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
-			lockGroup(sourcelist);
-			model.lockGroup(sourcelist);
-		}
+		sourcelistLockingController.lockGroup(clientId);
 	}
 
 	@Override
 	public void unlockGroup(String clientId) {
-		if (model.containsClient(clientId)) {
-			Sourcelist sourcelist = model.getSourcelistByClientId(clientId);
-			unlockGroup(sourcelist);
-			model.unlockGroup(sourcelist);
-		}
+		sourcelistLockingController.unlockGroup(clientId);
 	}
 
 	@Override
