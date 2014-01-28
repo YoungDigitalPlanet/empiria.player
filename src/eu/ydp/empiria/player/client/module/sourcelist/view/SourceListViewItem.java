@@ -61,11 +61,11 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
 	}
 
 	public void show() {
-		container.setVisibility(true);
+		container.show();
 	}
 
 	public void hide() {
-		container.setVisibility(false);
+		container.hide();
 	}
 
 	public void createAndBindUi(SourcelistItemValue itemValue) {

@@ -41,7 +41,11 @@ public class SourceListViewItemWidget extends FlowPanel {
 		return getElement().getOffsetHeight();
 	}
 
-	public void setVisibility(boolean visible) {
-		getElement().setAttribute(STYLE, visible ? VISIBILITY_VISIBLE : VISIBILITY_HIDDEN);
+	public void show() {
+		getElement().setAttribute(STYLE, VISIBILITY_VISIBLE);
+	}
+
+	public void hide() {
+		getElement().setAttribute(STYLE, VISIBILITY_HIDDEN);
 	}
 }
