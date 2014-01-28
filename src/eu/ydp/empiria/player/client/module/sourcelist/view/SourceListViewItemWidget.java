@@ -10,12 +10,17 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class SourceListViewItemWidget extends FlowPanel {
 
-	private @Inject SourceListViewItemContentFactory contentFactory;
-	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
+	private static final String STYLE = "style";
+	private static final String VISIBILITY_HIDDEN = "visibility:hidden";
+	private static final String VISIBILITY_VISIBLE = "visibility:visible";
+	private @Inject
+	SourceListViewItemContentFactory contentFactory;
+	private @Inject
+	UserInteractionHandlerFactory interactionHandlerFactory;
 
 	private final DisableDefaultBehaviorCommand disableDefaultBehavior = new DisableDefaultBehaviorCommand();
 
-	public void initView(SourcelistItemType sourcelistItemType, String itemContent, String styleName){
+	public void initView(SourcelistItemType sourcelistItemType, String itemContent, String styleName) {
 		setStyleName(styleName);
 		IsWidget content = contentFactory.getSourceListViewItemContent(sourcelistItemType, itemContent);
 		add(content);
@@ -36,4 +41,11 @@ public class SourceListViewItemWidget extends FlowPanel {
 		return getElement().getOffsetHeight();
 	}
 
+	public void show() {
+		getElement().setAttribute(STYLE, VISIBILITY_VISIBLE);
+	}
+
+	public void hide() {
+		getElement().setAttribute(STYLE, VISIBILITY_HIDDEN);
+	}
 }
