@@ -1,11 +1,6 @@
 package eu.ydp.empiria.player.client.module.dragdrop;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 
@@ -207,7 +202,20 @@ public class SourcelistManagerImplTest {
 		verify(client1).setSize(dim1);
 		verify(client2).setSize(dim2);
 		verify(client3).setSize(dim2);
-		verifyNoMoreInteractions(client1, client2, client3);
+	}
+
+	@Test
+	public void shouldRemoveItemsFromSourcelistOnStartup() {
+		// given
+		PlayerEvent event = mock(PlayerEvent.class);
+
+		// when
+		manager.onPlayerEvent(event);
+
+		// then
+		verify(sourcelist1).useItem(ITEM_1_ID);
+		verify(sourcelist2).useItem(ITEM_2_ID);
+		verify(sourcelist2).useItem(ITEM_3_ID);
 	}
 
 	@Test

@@ -198,6 +198,7 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
 		resizeSourcelists();
+		restoreSourcelistsState();
 	}
 
 	private void resizeSourcelists() {
@@ -213,6 +214,20 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 	private void resizeClients(Sourcelist sourcelist, HasDimensions size) {
 		for (SourcelistClient client : model.getClients(sourcelist)) {
 			client.setSize(size);
+		}
+	}
+
+	private void restoreSourcelistsState() {
+		for (Sourcelist sourcelist : model.getSourceLists()) {
+			restoreSourcelistStateFromClients(sourcelist);
+		}
+	}
+
+	private void restoreSourcelistStateFromClients(Sourcelist sourcelist) {
+		Collection<SourcelistClient> clients = model.getClients(sourcelist);
+		for (SourcelistClient client : clients) {
+			String itemId = client.getDragItemId();
+			sourcelist.useItem(itemId);
 		}
 	}
 }

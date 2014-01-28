@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.draggap;
 
+import java.util.List;
+
+import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 
@@ -25,11 +28,11 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 	@Inject
 	@ModuleScoped
 	private DragGapModuleModel dragGapModuleModel;
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private SourceListManagerAdapter sourceListManagerAdapter;
 	@Inject
 	private DragDropController dragDropController;
-
 
 	private final Wrapper<String> itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
 
@@ -113,4 +116,14 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 		return dragGapBean.getSourcelistId();
 	}
 
+	@Override
+	public void setState(JSONArray stateAndStructure) {
+		super.setState(stateAndStructure);
+		DragGapModuleModel responseModel = getResponseModel();
+		List<String> currentAnswers = responseModel.getCurrentAnswers();
+		if (currentAnswers.size() > 0) {
+			String answer = currentAnswers.get(0);
+			setDragItem(answer);
+		}
+	}
 }
