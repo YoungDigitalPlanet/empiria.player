@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -36,23 +35,16 @@ public class TextEntryGapBaseTest {
 	private SourcelistManager sourcelistManager;
 	@Mock
 	private DragContentController dragContentController;
-
 	@Mock
 	private TextEntryModulePresenter textEntryPresenter;
-
 	@Mock
 	private ResponseSocket responseSocket;
 	@Mock
-	EventsBus eventsBus;
+	private EventsBus eventsBus;
 	@Mock
 	private Element element;
 	@Mock
 	private Provider<CurrentPageScope> providerCurrentPageScope;
-
-	@Before
-	public void setUp() {
-
-	}
 
 	@Test
 	public void shouldUpdateStateAfterDragTest() {
