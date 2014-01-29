@@ -26,6 +26,7 @@ import eu.ydp.empiria.player.client.gin.providers.VariableProcessingAdapterPageS
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScopedProvider;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistLockingController;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManagerModel;
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;
@@ -43,10 +44,10 @@ public class PageScopedModule extends AbstractGinModule {
 
 		bind(ModulesProcessingResultsPageScopeProvider.class).in(Singleton.class);
 		bind(ModulesProcessingResults.class).annotatedWith(PageScoped.class).toProvider(ModulesProcessingResultsPageScopeProvider.class);
-		
+
 		bind(ResponseSocketPageScopeProvider.class).in(Singleton.class);
 		bind(ResponseSocket.class).annotatedWith(PageScoped.class).toProvider(ResponseSocketPageScopeProvider.class);
-		
+
 		bind(VariableProcessingAdapterPageScopedProvider.class).in(Singleton.class);
 		bind(VariableProcessingAdapter.class).annotatedWith(PageScoped.class).toProvider(VariableProcessingAdapterPageScopedProvider.class);
 
@@ -60,22 +61,25 @@ public class PageScopedModule extends AbstractGinModule {
 		bind(ItemResponseManager.class).annotatedWith(PageScoped.class).toProvider(PageScopedItemResponseManagerProvider.class);
 
 		bind(PageScopedItemXMLWrapperProvider.class).in(Singleton.class);
-		bind(ItemXMLWrapper.class).annotatedWith(PageScoped.class).toProvider(PageScopedItemXMLWrapperProvider.class);	
+		bind(ItemXMLWrapper.class).annotatedWith(PageScoped.class).toProvider(PageScopedItemXMLWrapperProvider.class);
 
 		bind(AnswerEvaluationSupplierProvider.class).in(Singleton.class);
 		bind(AnswerEvaluationSupplier.class).annotatedWith(PageScoped.class).toProvider(AnswerEvaluationSupplierProvider.class);
-		
-		bindPageScoped(SourcelistManager.class, new TypeLiteral<PageScopedProvider<SourcelistManager>>(){});
-		bindPageScoped(SourcelistManagerModel.class, new TypeLiteral<PageScopedProvider<SourcelistManagerModel>>(){});
-		
-		bindPageScoped(PowerFeedbackMediator.class, new TypeLiteral<PageScopedProvider<PowerFeedbackMediator>>(){});
+
+		bindPageScoped(SourcelistManager.class, new TypeLiteral<PageScopedProvider<SourcelistManager>>() {
+		});
+		bindPageScoped(SourcelistManagerModel.class, new TypeLiteral<PageScopedProvider<SourcelistManagerModel>>() {
+		});
+		bindPageScoped(SourcelistLockingController.class, new TypeLiteral<PageScopedProvider<SourcelistLockingController>>() {
+		});
+
+		bindPageScoped(PowerFeedbackMediator.class, new TypeLiteral<PageScopedProvider<PowerFeedbackMediator>>() {
+		});
 	}
-	
-	private <F, T extends F> void bindPageScoped(Class<F> clazz, TypeLiteral<PageScopedProvider<T>> typeLiteral){
+
+	private <F, T extends F> void bindPageScoped(Class<F> clazz, TypeLiteral<PageScopedProvider<T>> typeLiteral) {
 		bind(typeLiteral).in(Singleton.class);
-		bind(clazz)
-			.annotatedWith(PageScoped.class)
-			.toProvider(Key.get(typeLiteral));
+		bind(clazz).annotatedWith(PageScoped.class).toProvider(Key.get(typeLiteral));
 	}
 
 }
