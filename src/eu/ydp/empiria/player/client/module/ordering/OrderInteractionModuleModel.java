@@ -38,5 +38,6 @@ public class OrderInteractionModuleModel extends AbstractResponseModel<String> {
 
 	@Override
 	public void reset() {
+		
 	}
 }

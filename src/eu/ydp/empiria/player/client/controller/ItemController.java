@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller;
 
-import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.OUTCOME_STATE_CHANGED;
+import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.*;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -43,7 +43,8 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private StyleNameConstants styleNames;
 	@Inject
 	private EventsBus eventsBus;
-	@Inject @PageScoped
+	@Inject
+	@PageScoped
 	private ItemData data;
 	@Inject
 	private IPlayerContainersAccessor accessor;
@@ -54,14 +55,12 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	Item item;
 	private int itemIndex;
 
-
 	@Inject
 	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs, @Assisted ItemSessionSocket iss, AssessmentControllerFactory controllerFactory) {
 		itemViewSocket = ivs;
 		itemSessionSocket = iss;
 		this.controllerFactory = controllerFactory;
 	}
-
 
 	public void init(DisplayContentOptions options) {
 		try {
@@ -106,8 +105,6 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		if (event.getType() == StateChangeEventTypes.STATE_CHANGED && event.getValue() instanceof StateChangedInteractionEvent) {
 			StateChangedInteractionEvent scie = event.getValue();
 			item.process(scie.isUserInteract(), scie.isReset(), scie.getSender());
-			// STATE
-			itemSessionSocket.setState(itemIndex, item.getState());
 			eventsBus.fireEvent(new StateChangeEvent(OUTCOME_STATE_CHANGED, scie), new CurrentPageScope());
 		}
 	}
@@ -170,7 +167,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 
 	/**
 	 * Checks whether the item body contains at least one interactive module
-	 *
+	 * 
 	 * @return boolean
 	 */
 	public boolean hasInteractiveModules() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
@@ -25,10 +26,13 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
 	@Inject
 	private EventsBus eventsBus;
-	
-	@Inject @PageScoped
-	private ResponseSocket responseSocket;
 
+	@Inject
+	private Provider<CurrentPageScope> providerCurrentPageScope;
+
+	@Inject
+	@PageScoped
+	private ResponseSocket responseSocket;
 
 	@Override
 	public final void initModule(ModuleSocket moduleSocket, InteractionEventsListener interactionEventsListener) {
@@ -42,33 +46,33 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 		return responseIdentifier;
 	}
 
-	protected Response getResponse(){
+	protected Response getResponse() {
 		return response;
 	}
 
-	protected final void setResponseFromElement(Element element){
+	protected final void setResponseFromElement(Element element) {
 		responseIdentifier = XMLUtils.getAttributeAsString(element, "responseIdentifier");
 		response = findResponse();
 	}
 
-	protected Response findResponse(){
+	protected Response findResponse() {
 		return responseSocket.getResponse(responseIdentifier);
 	}
-
 
 	protected final InteractionEventsListener getInteractionEventsListener() {
 		return interactionEventsListener;
 	}
 
-	protected void fireStateChanged(boolean userInteract, boolean isReset){
-		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, isReset, this)), new CurrentPageScope());
+	protected void fireStateChanged(boolean userInteract, boolean isReset) {
+		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, isReset, this)),
+				providerCurrentPageScope.get());
 	}
 
 	@Override
 	public List<IModule> getChildren() {
 		return moduleSocket.getChildren(this);
 	}
-	
+
 	@Override
 	public void enablePreviewMode() {
 		lock(true);

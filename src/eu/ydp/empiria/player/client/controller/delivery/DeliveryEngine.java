@@ -508,6 +508,12 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	@Override
 	public String getStateString() {
+		assessmentController.closePage();
+		JSONArray jsonState = prepareJSONState();
+		return jsonState.toString();
+	}
+
+	private JSONArray prepareJSONState() {
 		JSONArray deState = new JSONArray();
 		if (flowManager.getCurrentPageType() == PageType.TEST) {
 			deState.set(0, new JSONNumber(flowManager.getCurrentPageIndex()));
@@ -518,7 +524,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		}
 		deState.set(1, sessionDataManager.getState());
 		deState.set(2, extensionsManager.getState());
-		return deState.toString();
+		return deState;
 	}
 
 	@Override

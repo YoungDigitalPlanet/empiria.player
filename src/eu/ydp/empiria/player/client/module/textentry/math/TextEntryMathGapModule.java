@@ -5,15 +5,11 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import com.google.common.collect.Lists;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.math.MathGap;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
@@ -22,19 +18,19 @@ import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap, SourcelistClient {
 
 	@Inject
 	@ModuleScoped
 	MathGapModel mathGapModel;
-	
+
 	@Inject
 	TextEntryMathGapModulePresenter textEntryPresenter;
-	
+
 	@Inject
-	MathSubAndSupUtil subAndSupUtil;	
+	MathSubAndSupUtil subAndSupUtil;
+
 	@PostConstruct
 	@Override
 	public void postConstruct() {
@@ -45,16 +41,13 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 	@Override
 	public void installViews(List<HasWidgets> placeholders) {
 		installViewInPlaceholder(placeholders.get(0));
-		addPlayerEventHandlers();
-		
+
 		String uid = getElementAttributeValue(EmpiriaTagConstants.ATTR_UID);
 		mathGapModel.setUid(uid);
-		
+
 		applyIdAndClassToView((Widget) presenter.getContainer());
 		initStyles();
 	}
-
-	
 
 	public void setUpGap() {
 		registerBindingContexts();
@@ -64,29 +57,35 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 		setBindingValues();
 	}
 
+	@Override
 	public Widget getContainer() {
 		return (Widget) presenter.getContainer();
 	}
+
+	@Override
 	public void setGapHeight(int gapHeight) {
 		presenter.setHeight(gapHeight, Unit.PX);
 	}
-	
+
 	public int getGapHeight() {
 		return presenter.getOffsetHeight();
 	}
-	
+
+	@Override
 	public void setGapWidth(int gapWidth) {
 		presenter.setWidth(gapWidth, Unit.PX);
 	}
-	
+
 	public int getGapWidth() {
 		return presenter.getOffsetWidth();
 	}
 
+	@Override
 	public void setGapFontSize(int gapFontSize) {
 		presenter.setFontSize(gapFontSize, Unit.PX);
 	}
 
+	@Override
 	public void setMathStyles(Map<String, String> mathStyles) {
 		mathGapModel.setMathStyles(mathStyles);
 	}
@@ -134,7 +133,7 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 			}
 		}
 	}
-	
+
 	private void initStyles() {
 		readStyles();
 		updateStyles();
