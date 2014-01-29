@@ -75,7 +75,7 @@ public class SourcelistLockingControllerTest {
 	}
 
 	@Test
-	public void shouldNotUnlockIfGroupNotLocked() {
+	public void shouldNotUnlockIfGroupIsLocked() {
 		// given
 		when(model.isGroupLocked(sourcelist1)).thenReturn(true);
 
