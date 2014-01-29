@@ -95,6 +95,7 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 		String newText = dragContentController.getTextFromItemAppropriateToType(item);
 
 		presenter.setText(newText);
+		updateResponse(true);
 	}
 
 	@Override
