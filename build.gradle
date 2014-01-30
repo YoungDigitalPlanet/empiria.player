@@ -22,7 +22,7 @@ apply plugin: 'jacoco'
 apply plugin: 'eclipse'
 apply plugin: 'sonar-runner'
 apply plugin: 'ivy-publish'
-sourceCompatibility = 1.5
+sourceCompatibility = 1.6
 compileJava.options.encoding = 'UTF-8'
 
 File userHome = new File( System.getProperty("user.home") );
@@ -92,12 +92,14 @@ dependencies {
 
 eclipse {
     project {
-        natures 'com.google.gwt.eclipse.core.gwtNature'
+        natures 'com.google.gwt.eclipse.core.gwtNature', 'org.springsource.ide.eclipse.gradle.core.nature', 'org.eclipse.jdt.groovy.core.groovyNature'
         buildCommand 'com.google.gdt.eclipse.core.webAppProjectValidator'
         buildCommand 'com.google.gwt.eclipse.core.gwtProjectValidator'
     }
     classpath {
         containers 'com.google.gwt.eclipse.core.GWT_CONTAINER'
+		
+		defaultOutputDir file('/war/WEB-INF/classes')
     }
 }
 
@@ -121,7 +123,6 @@ sourceSets {
         }
         resources {
             srcDir 'src/'
-            exclude "**/*.java"
         }
     }
     test {
@@ -130,7 +131,6 @@ sourceSets {
         }
         resources {
             srcDir 'test/'
-            exclude "**/*.java"
         }
     }
     
