@@ -10,9 +10,9 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
  * Przycisk mute
- *
+ * 
  * @author plelakowski
- *
+ * 
  */
 public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
 	protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
@@ -20,11 +20,12 @@ public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
 	public MuteMediaButton() {
 		super(styleNames.QP_MEDIA_MUTE());
 	}
+
 	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	@Override
 	protected void onClick() {
-		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.MUTE,getMediaWrapper()), getMediaWrapper());
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.MUTE, getMediaWrapper()), getMediaWrapper());
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
 			public void onMediaEvent(MediaEvent event) {
 				if (event.getMediaWrapper().isMuted()) {
 					setActive(true);
-				}else{
+				} else {
 					setActive(false);
 				}
 				changeStyleForClick();

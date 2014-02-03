@@ -10,15 +10,15 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
-public abstract class SimpleContainerModuleBase<T> extends AbstractActivityContainerModuleBase implements Factory<T>{
+public abstract class SimpleContainerModuleBase<T> extends AbstractActivityContainerModuleBase implements Factory<T> {
 
 	private Panel panel;
 
-	public SimpleContainerModuleBase(){
+	public SimpleContainerModuleBase() {
 		this.panel = new FlowPanel();
 	}
 
-	public SimpleContainerModuleBase(Panel panel){
+	public SimpleContainerModuleBase(Panel panel) {
 		this.panel = panel;
 	}
 

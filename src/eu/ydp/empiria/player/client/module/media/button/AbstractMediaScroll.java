@@ -21,12 +21,12 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
 	private boolean pressed = false;
 	private boolean mediaReady = false;
 	private boolean initialized;
-	protected HandlerRegistration durationchangeHandlerRegistration ; //NOPMD
+	protected HandlerRegistration durationchangeHandlerRegistration; // NOPMD
 	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	/**
 	 * metoda wywolywana gdy pojawi sie jedno z obslugiwanych zdarzen
-	 *
+	 * 
 	 * @param event
 	 */
 	protected abstract void setPosition(NativeEvent event);
@@ -36,7 +36,7 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
 		switch (event.getTypeInt()) {
 		case Event.ONMOUSEDOWN:
 		case Event.ONTOUCHSTART:
-			//rezerwujemy touch dla siebie nic innego nie powinno obslugiwac tego zdarzenia np TouchPageSwitch
+			// rezerwujemy touch dla siebie nic innego nie powinno obslugiwac tego zdarzenia np TouchPageSwitch
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
 			pressed = true;
 			setPosition(event);
@@ -60,15 +60,15 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
 		if (!initialized) {
 			initialized = true;
 			if (isSupported()) {
-				if(UserAgentChecker.isMobileUserAgent()){
+				if (UserAgentChecker.isMobileUserAgent()) {
 					sinkEvents(Event.TOUCHEVENTS);
-				}else{	
+				} else {
 					sinkEvents(Event.ONMOUSEMOVE | Event.ONMOUSEDOWN | Event.ONMOUSEUP);
 				}
 				RootPanel.get().addDomHandler(new MouseUpHandler() {
 					@Override
 					public void onMouseUp(MouseUpEvent event) {
-						if(isPressed()){ //NOPMD
+						if (isPressed()) { // NOPMD
 							pressed = false;
 							setPosition(event.getNativeEvent());
 							event.stopPropagation();
@@ -76,7 +76,7 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
 					}
 				}, MouseUpEvent.getType());
 			}
-			//PlayerEventsBus.
+			// PlayerEventsBus.
 			// czekamy na informacje na temat dlugosci utworu
 			AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
 				@Override
@@ -85,13 +85,15 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
 					durationchangeHandlerRegistration.removeHandler();
 				}
 			};
-			durationchangeHandlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler, new CurrentPageScope());
+			durationchangeHandlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(),
+					handler, new CurrentPageScope());
 		}
 
 	}
+
 	/**
 	 * Czy przycisk myszy jest wcisniety
-	 *
+	 * 
 	 * @return
 	 */
 	public boolean isPressed() {
@@ -100,7 +102,7 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
 
 	/**
 	 * Czy multimedia zostaly zaladowane
-	 *
+	 * 
 	 * @return
 	 */
 	public boolean isMediaReady() {

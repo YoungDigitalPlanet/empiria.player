@@ -13,34 +13,32 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 /**
- * This hack need to be used on some iOS versions. 
- * Fixes some known issues: 
- * - video can't play first time (when embedded in Flex/AiR WebStageView), 
- * - also for page changing when video is played again.
+ * This hack need to be used on some iOS versions. Fixes some known issues: - video can't play first time (when embedded in Flex/AiR WebStageView), - also for
+ * page changing when video is played again.
  */
 public class HTML5VideoReattachHack {
- 
+
 	@Inject
 	private EventsBus eventsBus;
 
 	@Inject
 	private AttachHandlerFactory attachHandlerFactory;
-	
-	@Inject
-	private	HTML5VideoRebuilder videoRebuilder;
 
-	private Video video; 
-	
+	@Inject
+	private HTML5VideoRebuilder videoRebuilder;
+
+	private Video video;
+
 	public void reAttachVideo(HTML5VideoMediaWrapper mediaWrapper, HTML5VideoMediaExecutor mediaExecutor) {
 		AttachHandlerImpl attachHandler = attachHandlerFactory.createAttachHandler(mediaExecutor, mediaWrapper);
 		reAttachVideo(mediaWrapper, mediaExecutor, attachHandler);
 	}
-	
+
 	public void reAttachVideo(HTML5VideoMediaWrapper mediaWrapper, HTML5VideoMediaExecutor mediaExecutor, AttachHandlerImpl attachHandler) {
 		videoRebuilder.recreateVideoWidget(mediaWrapper);
 		video = videoRebuilder.getVideo();
-		updateMediaExecutor(mediaExecutor, mediaWrapper);		
-		addAttachHandler(video, attachHandler);		
+		updateMediaExecutor(mediaExecutor, mediaWrapper);
+		addAttachHandler(video, attachHandler);
 		fireEvents(mediaWrapper);
 	}
 
@@ -56,6 +54,6 @@ public class HTML5VideoReattachHack {
 	private void fireEvents(AbstractHTML5MediaWrapper mediaWrapper) {
 		eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_TIME_UPDATE, mediaWrapper), mediaWrapper);
 		eventsBus.fireAsyncEventFromSource(new MediaEvent(MediaEventTypes.ON_PAUSE, mediaWrapper), mediaWrapper);
-	}	
+	}
 
 }

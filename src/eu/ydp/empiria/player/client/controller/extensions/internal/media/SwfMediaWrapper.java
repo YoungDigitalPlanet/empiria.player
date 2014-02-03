@@ -23,10 +23,10 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 /**
  * Wrapper dla mediow swf
- *
+ * 
  */
 public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayheadUpdateHandler, FlashMediaMuteChangeHandler, FlashMediaVolumeChangeHandler,
-		FlashMediaMetadataHandler, FlashMediaStopHandler,FlashMediaLoadedHandler {
+		FlashMediaMetadataHandler, FlashMediaStopHandler, FlashMediaLoadedHandler {
 
 	protected MediaAvailableOptions swfOptions = new SwfMediaAvailableOptions();
 	protected double duration = 0;
@@ -35,7 +35,7 @@ public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayhead
 	protected boolean muted = false;
 	protected Widget mediaWidget = new FlowPanel();
 	protected FlashMedia flashMedia;
-	protected boolean ready =false;
+	protected boolean ready = false;
 	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	@Override
@@ -96,10 +96,12 @@ public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayhead
 	public double getVolume() {
 		return volume;
 	}
+
 	@Override
 	public boolean canPlay() {
 		return ready;
 	}
+
 	public void setVolume(double volume) {
 		this.volume = volume;
 	}
@@ -128,7 +130,6 @@ public class SwfMediaWrapper implements MediaWrapper<Widget>, FlashMediaPlayhead
 	public void onFlashSoundStop(FlashMediaStopEvent event) {
 		currentTime = event.getPlayheadTime() * .001f;
 	}
-
 
 	@Override
 	public void onFlashSoundLoaded(FlashMediaLoadedEvent event) {

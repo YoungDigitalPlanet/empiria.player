@@ -13,32 +13,32 @@ import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapt
 import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name="showText")
+@XmlRootElement(name = "showText")
 public class ShowTextAction implements FeedbackTextAction {
 
 	@XmlValue
-	@XmlJavaTypeAdapter(value=XMLContentTypeAdapter.class)
+	@XmlJavaTypeAdapter(value = XMLContentTypeAdapter.class)
 	private XMLContent content;
-	
+
 	private String text = StringUtils.EMPTY_STRING;
 
 	public void setContent(XMLContent content) {
 		this.content = content;
-		
+
 		Node childNode = content.getValue().getChildNodes().item(0);
 		if (childNode != null) {
-			setText(childNode.getNodeValue());			
+			setText(childNode.getNodeValue());
 		}
 	}
-	
+
 	public XMLContent getContent() {
 		return content;
 	}
-	
+
 	public void setText(String text) {
 		this.text = text.trim();
 	}
-	
+
 	@Override
 	public String getText() {
 		return text;

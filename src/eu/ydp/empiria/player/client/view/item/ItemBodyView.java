@@ -9,10 +9,10 @@ import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowList
 public class ItemBodyView extends FlowPanel {
 
 	protected WidgetWorkflowListener widgetWorkflowListener;
-	
-	public ItemBodyView(WidgetWorkflowListener wwl){
+
+	public ItemBodyView(WidgetWorkflowListener wwl) {
 		widgetWorkflowListener = wwl;
-		
+
 		setStyleName("qp-text-module");
 		this.sinkEvents(Event.ONCHANGE);
 		this.sinkEvents(Event.ONMOUSEDOWN);
@@ -21,21 +21,20 @@ public class ItemBodyView extends FlowPanel {
 		this.sinkEvents(Event.ONMOUSEOUT);
 	}
 
-	public void init(Widget itemBodyWidget){
+	public void init(Widget itemBodyWidget) {
 		add(itemBodyWidget);
 	}
-	
-	
+
 	@Override
-	public void onLoad(){
+	public void onLoad() {
 		super.onLoad();
 		widgetWorkflowListener.onLoad();
 	}
-	
+
 	@Override
-	public void onUnload(){
+	public void onUnload() {
 		super.onUnload();
 		widgetWorkflowListener.onUnload();
 	}
-	
+
 }

@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection.structure;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -50,7 +52,7 @@ public class ConnectionModuleStructureMock extends ConnectionModuleStructure {
 	@Override
 	protected eu.ydp.gwtutil.client.xml.XMLParser getXMLParser() {
 		eu.ydp.gwtutil.client.xml.XMLParser xmlParser = mock(eu.ydp.gwtutil.client.xml.XMLParser.class);
-		when(xmlParser.parse(Mockito.anyString())).thenAnswer(new Answer<Document>() {
+		when(xmlParser.parse(Matchers.anyString())).thenAnswer(new Answer<Document>() {
 			@Override
 			public Document answer(InvocationOnMock invocation) throws Throwable {
 				return XMLParser.parse((String) invocation.getArguments()[0]);

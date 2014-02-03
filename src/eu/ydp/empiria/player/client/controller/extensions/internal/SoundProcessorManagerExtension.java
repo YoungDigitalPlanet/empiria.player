@@ -5,14 +5,14 @@ import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorEx
 public class SoundProcessorManagerExtension extends InternalExtension {
 
 	private MediaProcessorExtension processor;
-	
-	public void setSoundProcessorExtension(MediaProcessorExtension processor){
+
+	public void setSoundProcessorExtension(MediaProcessorExtension processor) {
 		this.processor = processor;
 	}
 
 	@Override
 	public void init() {
-		if (processor != null){
+		if (processor != null) {
 			processor.initMediaProcessor();
 		}
 	}

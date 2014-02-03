@@ -7,25 +7,21 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 public class FlashLocalAudioImpl extends FlashLocalMediaImpl implements Audio {
 
-
-	public FlashLocalAudioImpl(){
+	public FlashLocalAudioImpl() {
 		super("audio");
 	}
 
-
 	@Override
 	protected native void loadFlvPlayerThroughSwfobject(String id, String swfSrc, String installSrc, String mediaSrc, int width, int height) /*-{
-		var flashvars = {soundFile:mediaSrc, playerID:id, animation:"no", noinfo:"yes"};
-		$wnd.swfobject.embedSWF(swfSrc, id, width, height, "9", installSrc, flashvars);
+																																				var flashvars = {soundFile:mediaSrc, playerID:id, animation:"no", noinfo:"yes"};
+																																				$wnd.swfobject.embedSWF(swfSrc, id, width, height, "9", installSrc, flashvars);
 
-	}-*/;
-
+																																				}-*/;
 
 	@Override
 	protected String getSwfSrc() {
-		return  GWT.getModuleBaseURL() + "wpaudioplayer/wpaudioplayer.swf";
+		return GWT.getModuleBaseURL() + "wpaudioplayer/wpaudioplayer.swf";
 	}
-
 
 	@Override
 	public void addSrc(String src, String type) {
@@ -35,10 +31,12 @@ public class FlashLocalAudioImpl extends FlashLocalMediaImpl implements Audio {
 	}
 
 	@Override
-	public void setShowNativeControls(boolean show) {}
+	public void setShowNativeControls(boolean show) {
+	}
 
 	@Override
-	public void setEventBusSourceObject(MediaWrapper<?> object) {}
+	public void setEventBusSourceObject(MediaWrapper<?> object) {
+	}
 
 	@Override
 	public MediaBase getMedia() {

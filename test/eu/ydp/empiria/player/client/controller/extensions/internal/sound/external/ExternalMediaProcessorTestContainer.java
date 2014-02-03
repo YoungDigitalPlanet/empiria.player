@@ -22,7 +22,7 @@ public class ExternalMediaProcessorTestContainer {
 	private MediaConnectorListener mediaConnectorListener;
 	private TestConnectorForwarder connectorForwarder = new TestConnectorForwarder();
 	private TestMediaWrapperCreator mediaWrapperCreator = new TestMediaWrapperCreator();
-	
+
 	public void init(Injector injector) {
 		getDependencies(injector);
 		init();
@@ -39,7 +39,7 @@ public class ExternalMediaProcessorTestContainer {
 		processor.initMediaProcessor();
 		mediaWrapperCreator.init(eventsBus);
 	}
-	
+
 	public void forwardPlayFromConnectorToListener() {
 		connectorForwarder.forwardPlay(connector, mediaConnectorListener);
 	}
@@ -47,7 +47,7 @@ public class ExternalMediaProcessorTestContainer {
 	public void forwardPauseFromConnectorToListener() {
 		connectorForwarder.forwardPause(connector, mediaConnectorListener);
 	}
-	
+
 	public List<MediaWrapper<Widget>> createMediaWrappers(Iterable<? extends TestMedia> testMedias) {
 		return mediaWrapperCreator.createMediaWrappers(testMedias);
 	}
@@ -79,8 +79,8 @@ public class ExternalMediaProcessorTestContainer {
 	protected MediaConnectorListener getMediaConnectorListener() {
 		return mediaConnectorListener;
 	}
-	
-	protected EventsBus getEventsBus(){
+
+	protected EventsBus getEventsBus() {
 		return eventsBus;
 	}
 }

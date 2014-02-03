@@ -2,9 +2,7 @@ package eu.ydp.empiria.player.client.module.button.download.presenter;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +19,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import eu.ydp.empiria.player.client.controller.assets.AssetOpenDelegatorService;
 import eu.ydp.empiria.player.client.module.button.download.structure.ButtonBean;
 import eu.ydp.empiria.player.client.module.button.download.view.ButtonModuleView;
-import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ButtonModulePresenterTest {
@@ -69,9 +66,9 @@ public class ButtonModulePresenterTest {
 
 		instance.setBean(bean);
 		instance.init();
-		
+
 		ClickEvent clickEvent = mock(ClickEvent.class);
-		
+
 		// when
 		clickHandler.onClick(clickEvent);
 

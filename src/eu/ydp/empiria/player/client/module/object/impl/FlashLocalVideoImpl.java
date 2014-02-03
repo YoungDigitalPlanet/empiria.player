@@ -17,16 +17,16 @@ public class FlashLocalVideoImpl extends FlashLocalMediaImpl implements Video {
 
 	@Override
 	protected native void loadFlvPlayerThroughSwfobject(String id, String swfSrc, String installSrc, String videoSrc, int width, int height)/*-{
-		var flashvars = {
-			video : videoSrc,
-			sizeMode : "1"
-		};
-		var params = {
-			allowFullScreen : true
-		};
-		$wnd.swfobject.embedSWF(swfSrc, id, width, height, "9", installSrc,
-				flashvars, params);
-	}-*/;
+																																			var flashvars = {
+																																			video : videoSrc,
+																																			sizeMode : "1"
+																																			};
+																																			var params = {
+																																			allowFullScreen : true
+																																			};
+																																			$wnd.swfobject.embedSWF(swfSrc, id, width, height, "9", installSrc,
+																																			flashvars, params);
+																																			}-*/;
 
 	@Override
 	protected String getSwfSrc() {

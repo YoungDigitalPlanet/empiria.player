@@ -21,26 +21,26 @@ public class JsPageInterferenceSocketUserExtension extends AbstractJsExtension i
 		assessmentInterferenceSocketJs = createPageInterferenceSocketJs(pageInterferenceSocket.getJsSocket());
 		setInterferenceSocketJs(extensionJsObject, assessmentInterferenceSocketJs);
 	}
-	
+
 	@Override
 	public void setPageInterferenceSocket(PageInterferenceSocket pcs) {
 		pageInterferenceSocket = pcs;
 	}
-	
+
 	private native JavaScriptObject createPageInterferenceSocketJs(JavaScriptObject socketJs)/*-{
-		var instance = this;
-		var socket = [];
-		var ais = socketJs;
-		socket.getPageInterferenceSocket = function(){
-			return ais;
-		}
-		return socket;
-	}-*/;
-	
+																								var instance = this;
+																								var socket = [];
+																								var ais = socketJs;
+																								socket.getPageInterferenceSocket = function(){
+																								return ais;
+																								}
+																								return socket;
+																								}-*/;
+
 	private native void setInterferenceSocketJs(JavaScriptObject extension, JavaScriptObject socket)/*-{
-		if (typeof extension.setInterferenceSocket == 'function'){
-			extension.setInterferenceSocket(socket);
-		}
-	}-*/;
+																									if (typeof extension.setInterferenceSocket == 'function'){
+																									extension.setInterferenceSocket(socket);
+																									}
+																									}-*/;
 
 }

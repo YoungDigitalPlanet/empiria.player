@@ -30,9 +30,9 @@ public class VideoElementWrapperBuilder {
 
 	private int width = 0;
 	private int height = 0;
-	
+
 	private boolean controls = true;
-	
+
 	private Optional<String> skinName = Optional.absent();
 	private Optional<String> preload = Optional.absent();
 	private Optional<String> poster = Optional.absent();
@@ -83,13 +83,13 @@ public class VideoElementWrapperBuilder {
 		videoElement.setWidth(width);
 		videoElement.setHeight(height);
 		videoElement.setControls(controls);
-		
+
 		videoElement.addClassName(skinName.or(DEFAULT_SKIN));
 		videoElement.setPreload(preload.or(DEFAULT_PRELOAD));
-		
+
 		final String defaultPosterUri = defaultPosterUriProvider.getDefaultPosterUri();
 		videoElement.setPoster(poster.or(defaultPosterUri));
-		
+
 		if (sources.isEmpty()) {
 			throw new IllegalStateException("Video sources cannot be empty");
 		}

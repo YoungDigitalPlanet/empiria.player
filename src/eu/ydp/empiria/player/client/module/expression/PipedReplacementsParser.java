@@ -12,7 +12,7 @@ public class PipedReplacementsParser {
 
 	private static final Character SEPARATOR = '|';
 
-	public Map<String, String> parse(String charactersSet){
+	public Map<String, String> parse(String charactersSet) {
 		Preconditions.checkArgument(isValidCharactersSet(charactersSet), "Invalid characters set for expression replacement.");
 		Iterator<String> characters = getReplacementParts(charactersSet);
 		return createReplacementsMap(characters);
@@ -25,14 +25,14 @@ public class PipedReplacementsParser {
 
 	private Map<String, String> createReplacementsMap(Iterator<String> characters) {
 		Map<String, String> replacements = Maps.newHashMap();
-		while(characters.hasNext()){
+		while (characters.hasNext()) {
 			replacements.put(characters.next(), characters.next());
 		}
 		return replacements;
 	}
-	
+
 	private boolean isValidCharactersSet(String charactersSet) {
-		return (containsOddNumberOfSeparators(charactersSet)  &&  containsOnlyValidParts(charactersSet))  ||  charactersSet.isEmpty();
+		return (containsOddNumberOfSeparators(charactersSet) && containsOnlyValidParts(charactersSet)) || charactersSet.isEmpty();
 	}
 
 	private boolean containsOnlyValidParts(String charactersSet) {

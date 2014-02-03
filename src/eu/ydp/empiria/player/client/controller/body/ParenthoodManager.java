@@ -19,19 +19,19 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 	protected ParenthoodSocket upperLevelParenthoodSocket;
 	protected Map<IModule, HasChildren> childToParent = Maps.newHashMap();
 
-	public ParenthoodManager(){
+	public ParenthoodManager() {
 		parenthood = new StackMap<HasChildren, List<IModule>>();
 		parentsStack = new Stack<HasChildren>();
 	}
 
 	@Override
-	public void addChild(IModule child){
+	public void addChild(IModule child) {
 		addChildToMap(child);
 	}
 
-	protected void addChildToMap(IModule child){
+	protected void addChildToMap(IModule child) {
 		HasChildren parent = parentsStack.peek();
-		if (!parenthood.containsKey(parent)){
+		if (!parenthood.containsKey(parent)) {
 			parenthood.put(parent, new ArrayList<IModule>());
 		}
 		parenthood.get(parent).add(child);
@@ -63,29 +63,29 @@ public class ParenthoodManager implements ParenthoodGeneratorSocket {
 	}
 
 	private void addChildToParentRelation(IModule child, HasChildren hasChildren) {
-		if(hasChildren!=null){
+		if (hasChildren != null) {
 			childToParent.put(child, hasChildren);
 		}
 	}
 
 	private HasChildren findParentInUpperLevelParentHoodSocket(IModule child) {
-		if (upperLevelParenthoodSocket != null){
-			return  upperLevelParenthoodSocket.getParent(child);
+		if (upperLevelParenthoodSocket != null) {
+			return upperLevelParenthoodSocket.getParent(child);
 		}
 		return null;
 	}
 
 	private HasChildren findParentInParentHood(IModule child) {
-		for ( HasChildren parent : parenthood.keySet()){
-			if (parenthood.get(parent).contains(child)){
-				return  parent;
+		for (HasChildren parent : parenthood.keySet()) {
+			if (parenthood.get(parent).contains(child)) {
+				return parent;
 			}
 		}
 		return null;
 	}
 
 	public List<IModule> getChildren(IModule parent) {
-		if (parent instanceof HasChildren){
+		if (parent instanceof HasChildren) {
 			if (parenthood.containsKey(parent)) {
 				return parenthood.get(parent);
 			} else if (upperLevelParenthoodSocket != null) {

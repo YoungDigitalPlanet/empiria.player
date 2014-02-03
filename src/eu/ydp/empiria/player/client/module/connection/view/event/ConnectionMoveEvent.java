@@ -25,7 +25,7 @@ public class ConnectionMoveEvent {
 		return event;
 	}
 
-	public void preventDefault(){
+	public void preventDefault() {
 		event.preventDefault();
 	}
 }

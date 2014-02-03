@@ -63,7 +63,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 
 	/**
 	 * wielkosc przycisku wyswietlanego na pasku postepu
-	 *
+	 * 
 	 * @return
 	 */
 	protected int getButtonLength() {
@@ -72,7 +72,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 
 	/**
 	 * dlugosc paska postepu
-	 *
+	 * 
 	 * @return
 	 */
 	protected int getScrollLength() {
@@ -100,7 +100,8 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 					durationchangeHandlerRegistration.removeHandler();
 				}
 			};
-			durationchangeHandlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler);
+			durationchangeHandlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(),
+					handler);
 
 		} else {
 			progressBar.setStyleName(styleNames.QP_MEDIA_VOLUME_SCROLLBAR() + UNSUPPORTED_SUFFIX);
@@ -132,7 +133,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
 
 	/**
 	 * ustawia suwak na odpowiedniej pozycji
-	 *
+	 * 
 	 * @param positionY
 	 */
 	protected void moveScroll(int positionY) {// NOPMD

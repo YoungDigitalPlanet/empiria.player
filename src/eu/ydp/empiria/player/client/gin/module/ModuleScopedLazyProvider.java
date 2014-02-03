@@ -6,7 +6,7 @@ import com.google.inject.Provider;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleCreationContext;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 
-public class ModuleScopedLazyProvider<T> implements Provider<T>{
+public class ModuleScopedLazyProvider<T> implements Provider<T> {
 
 	private final Provider<T> instanceProvider;
 	private final ModuleScopeStack moduleScopeStack;

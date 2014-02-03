@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.choice.presenter;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -31,12 +31,18 @@ public class SimpleChoicePresenterImplTest {
 
 	SimpleChoicePresenterImpl presenter;
 
-	@Mock SimpleChoiceBean bean;
-	@Mock InlineBodyGenerator bodyGenerator;
-	@Mock SimpleChoiceViewFactory viewFactory;
-	@Mock SimpleChoiceView view;
-	@Mock ChoiceButtonBase button;
-	@Mock Widget feedbackPlaceHolderMock;
+	@Mock
+	SimpleChoiceBean bean;
+	@Mock
+	InlineBodyGenerator bodyGenerator;
+	@Mock
+	SimpleChoiceViewFactory viewFactory;
+	@Mock
+	SimpleChoiceView view;
+	@Mock
+	ChoiceButtonBase button;
+	@Mock
+	Widget feedbackPlaceHolderMock;
 
 	@Before
 	public void setUp() throws Exception {
@@ -170,7 +176,6 @@ public class SimpleChoicePresenterImplTest {
 	@Test
 	public void shouldIsMulti() {
 		// given
-		
 
 		// when
 		boolean multi = presenter.isMulti();

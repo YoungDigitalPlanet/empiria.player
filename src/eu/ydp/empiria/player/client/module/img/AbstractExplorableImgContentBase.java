@@ -42,6 +42,7 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 	protected PushButton zoomoutButton;
 	@UiField
 	protected FlowPanel toolbox;
+
 	public AbstractExplorableImgContentBase() {
 		initUiBinder();
 		toolbox.addDomHandler(new TouchStartHandler() {
@@ -66,19 +67,20 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 
 	protected void parseStyles(Map<String, String> styles) {
 		String toReplace = "\\D";
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL)){
-			scale = (double)(NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL).replaceAll(toReplace, ""), 100))/100.0d;
+		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL)) {
+			scale = (double) (NumberUtils
+					.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL).replaceAll(toReplace, ""), 100)) / 100.0d;
 		}
 		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_STEP)) {
-			scaleStep = (double)NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_STEP).replaceAll(toReplace, ""), 20)/100.0d+1d;
+			scaleStep = (double) NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_STEP).replaceAll(toReplace, ""), 20) / 100.0d + 1d;
 		}
 		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_MAX)) {
-			zoomMax = (double)NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_MAX).replaceAll(toReplace, ""), 800)/100.0d;
+			zoomMax = (double) NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_MAX).replaceAll(toReplace, ""), 800) / 100.0d;
 		}
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH)){
+		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH)) {
 			windowWidth = NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_WIDTH).replaceAll(toReplace, ""), 300);
 		}
-		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT)){
+		if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT)) {
 			windowHeight = NumberUtils.tryParseInt(styles.get(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_WINDOW_HEIGHT).replaceAll(toReplace, ""), 300);
 		}
 	}
@@ -115,7 +117,7 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 	}
 
 	@UiHandler(ZOOMIN_BUTTON)
-	public void zoomInButtonTouchStartHandler(TouchStartEvent event){
+	public void zoomInButtonTouchStartHandler(TouchStartEvent event) {
 		zoomIn();
 		touchingButtons = true;
 		startZoomTimer.schedule(500);
@@ -123,19 +125,19 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 	}
 
 	@UiHandler(ZOOMIN_BUTTON)
-	public void zoomInButtonMouseUpHandler(MouseUpEvent event){
+	public void zoomInButtonMouseUpHandler(MouseUpEvent event) {
 		cancelZoomTimers();
 		event.preventDefault();
 	}
 
 	@UiHandler(ZOOMIN_BUTTON)
-	public void zoomInButtonTouchEndHandler(TouchEndEvent event){
+	public void zoomInButtonTouchEndHandler(TouchEndEvent event) {
 		cancelZoomTimers();
 		event.preventDefault();
 	}
 
 	@UiHandler(ZOOMOUT_BUTTON)
-	public void zoomOutButtonMouseDownHandler(MouseDownEvent event){
+	public void zoomOutButtonMouseDownHandler(MouseDownEvent event) {
 		if (!touchingButtons) {
 			zoomOut();
 			event.preventDefault();
@@ -143,7 +145,7 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 	}
 
 	@UiHandler(ZOOMOUT_BUTTON)
-	public void zoomOutButtonTouchStartHandler(TouchStartEvent event){
+	public void zoomOutButtonTouchStartHandler(TouchStartEvent event) {
 		zoomOut();
 		touchingButtons = true;
 		startZoomTimer.schedule(500);
@@ -151,13 +153,13 @@ public abstract class AbstractExplorableImgContentBase extends Composite impleme
 	}
 
 	@UiHandler(ZOOMOUT_BUTTON)
-	public void zoomOutButtonMouseUpHandler(MouseUpEvent event){
+	public void zoomOutButtonMouseUpHandler(MouseUpEvent event) {
 		cancelZoomTimers();
 		event.preventDefault();
 	}
 
 	@UiHandler(ZOOMOUT_BUTTON)
-	public void zoomOutButtonTouchEndHandler(TouchEndEvent event){
+	public void zoomOutButtonTouchEndHandler(TouchEndEvent event) {
 		cancelZoomTimers();
 		event.preventDefault();
 	}

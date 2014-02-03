@@ -5,9 +5,10 @@ import java.lang.annotation.Annotation;
 @SuppressWarnings("PMD")
 public class BindDescriptor<T> {
 
-	public enum BindType{
-		SIMPLE,MOCK,SPY
+	public enum BindType {
+		SIMPLE, MOCK, SPY
 	}
+
 	private Class<? extends Annotation> in;
 	private Class<? extends T> to;
 	private Class<T> bind;

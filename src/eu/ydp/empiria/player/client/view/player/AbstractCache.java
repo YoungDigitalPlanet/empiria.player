@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractCache<K, V> {
-	private final Map<K,V> cache = new HashMap<K, V>();
+	private final Map<K, V> cache = new HashMap<K, V>();
 
 	/**
 	 * Sprawdza czy w cechu znajduje sie strona o danym indeksie
-	 *
+	 * 
 	 * @param index
 	 * @return
 	 */
@@ -17,13 +17,13 @@ public abstract class AbstractCache<K, V> {
 		return cache.get(index) != null;
 	}
 
-	public boolean isEmpty(){
+	public boolean isEmpty() {
 		return cache.isEmpty();
 	}
+
 	/**
-	 * Zwraca pageview dla konkretnego indeksu jezeli nie istnieje w cechu
-	 * zostanie utworzony
-	 *
+	 * Zwraca pageview dla konkretnego indeksu jezeli nie istnieje w cechu zostanie utworzony
+	 * 
 	 * @param index
 	 * @return
 	 */
@@ -36,7 +36,7 @@ public abstract class AbstractCache<K, V> {
 		return contentView;
 	}
 
-	public void put(K index,V object){
+	public void put(K index, V object) {
 		cache.put(index, object);
 	}
 

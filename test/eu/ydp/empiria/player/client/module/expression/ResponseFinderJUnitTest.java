@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.expression;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 

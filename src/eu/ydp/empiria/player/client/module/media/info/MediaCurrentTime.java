@@ -6,9 +6,8 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
- * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1
- * sekunda
- *
+ * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1 sekunda
+ * 
  */
 public class MediaCurrentTime extends AbstractMediaTime<MediaCurrentTime> {
 	public MediaCurrentTime() {

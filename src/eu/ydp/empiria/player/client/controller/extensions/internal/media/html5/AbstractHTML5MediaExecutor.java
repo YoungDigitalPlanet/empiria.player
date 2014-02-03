@@ -25,7 +25,8 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	private SoundExecutorListener listener;
 	private BaseMediaConfiguration baseMediaConfiguration;
 
-	@Inject HTML5MediaEventMapper mediaEventMapper;
+	@Inject
+	HTML5MediaEventMapper mediaEventMapper;
 
 	private final Set<HandlerRegistration> allEventsRegistration = new HashSet<HandlerRegistration>();
 	private boolean hideOnPlayEvent;

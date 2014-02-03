@@ -9,8 +9,11 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class DrawingModelProvider implements Provider<DrawingBean> {
 
-	@Inject private DrawingModuleJAXBParserFactory jaxbFactory;
-	@Inject @ModuleScoped Provider<Element> elementProvider;
+	@Inject
+	private DrawingModuleJAXBParserFactory jaxbFactory;
+	@Inject
+	@ModuleScoped
+	Provider<Element> elementProvider;
 
 	@Override
 	public DrawingBean get() {

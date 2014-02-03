@@ -26,11 +26,10 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
-public class DefaultAssessmentFooterViewExtension extends InternalExtension
-		implements AssessmentFooterViewExtension, FlowRequestSocketUserExtension,
+public class DefaultAssessmentFooterViewExtension extends InternalExtension implements AssessmentFooterViewExtension, FlowRequestSocketUserExtension,
 		DataSourceDataSocketUserExtension, FlowDataSocketUserExtension, DeliveryEventsListenerExtension, PageInterferenceSocketUserExtension {
 
-	protected DataSourceDataSupplier dataSourceDataSupplier; 
+	protected DataSourceDataSupplier dataSourceDataSupplier;
 	protected FlowDataSupplier flowDataSupplier;
 	protected FlowRequestInvoker flowRequestInvoker;
 	protected PageInterferenceSocket pageInterferenceSocket;
@@ -38,22 +37,22 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	private Panel menuPanel;
 	private TwoStateButton checkButton;
 	private TwoStateButton showAnswersButton;
-	private PushButton resetButton; 
-	private PushButton prevButton; 
+	private PushButton resetButton;
+	private PushButton prevButton;
 	private PushButton nextButton;
-	private PushButton finishButton; 
+	private PushButton finishButton;
 	private PushButton summaryButton;
 	private PushButton continueAssessmentButton;
 	private PushButton previewAssessmentButton;
-	
-	public DefaultAssessmentFooterViewExtension(){
+
+	public DefaultAssessmentFooterViewExtension() {
 	}
 
 	@Override
 	public void init() {
 		createView();
 	}
-	
+
 	@Override
 	public void setFlowDataSupplier(FlowDataSupplier supplier) {
 		flowDataSupplier = supplier;
@@ -77,151 +76,157 @@ public class DefaultAssessmentFooterViewExtension extends InternalExtension
 	@Override
 	public ViewSocket getAssessmentFooterViewSocket() {
 		return new ViewSocket() {
-			
+
 			@Override
 			public Widget getView() {
 				return menuPanel;
 			}
 		};
 	}
-	
-	protected void createView(){
+
+	protected void createView() {
 
 		// BUTTONS MENU
-		
+
 		menuPanel = new FlowPanel();
 		menuPanel.setStyleName("qp-defaultassessmentfooter-buttons");
 
-	    checkButton = new TwoStateButton("qp-defaultassessmentfooter-check-button", "qp-defaultassessmentfooter-continue-button");
-	    checkButton.addClickHandler(new ClickHandler() {
+		checkButton = new TwoStateButton("qp-defaultassessmentfooter-check-button", "qp-defaultassessmentfooter-continue-button");
+		checkButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
-				if (checkButton.isStateDown()){
+				if (checkButton.isStateDown()) {
 					flowRequestInvoker.invokeRequest(new FlowRequest.Check());
 				} else {
 					flowRequestInvoker.invokeRequest(new FlowRequest.Continue());
 				}
 			}
 		});
-	    menuPanel.add(checkButton);
-	    
-	    showAnswersButton = new TwoStateButton("qp-defaultassessmentfooter-showanswers-button", "qp-defaultassessmentfooter-hideanswers-button");
-	    showAnswersButton.addClickHandler(new ClickHandler() {
+		menuPanel.add(checkButton);
+
+		showAnswersButton = new TwoStateButton("qp-defaultassessmentfooter-showanswers-button", "qp-defaultassessmentfooter-hideanswers-button");
+		showAnswersButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
-				if (showAnswersButton.isStateDown()){
+				if (showAnswersButton.isStateDown()) {
 					flowRequestInvoker.invokeRequest(new FlowRequest.ShowAnswers());
 				} else {
 					flowRequestInvoker.invokeRequest(new FlowRequest.Continue());
 				}
 			}
 		});
-	    menuPanel.add(showAnswersButton);
+		menuPanel.add(showAnswersButton);
 
-	    resetButton = new PushButton();
-	    resetButton.setStylePrimaryName("qp-defaultassessmentfooter-reset-button");
-	    resetButton.addClickHandler(new ClickHandler() {
+		resetButton = new PushButton();
+		resetButton.setStylePrimaryName("qp-defaultassessmentfooter-reset-button");
+		resetButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.Reset());
 			}
 		});
-	    menuPanel.add(resetButton);
+		menuPanel.add(resetButton);
 
-	    prevButton = new PushButton();
-	    prevButton.setStylePrimaryName("qp-defaultassessmentfooter-prev-button");
-	    prevButton.addClickHandler(new ClickHandler() {
+		prevButton = new PushButton();
+		prevButton.setStylePrimaryName("qp-defaultassessmentfooter-prev-button");
+		prevButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigatePreviousItem());
 			}
 		});
-	    menuPanel.add(prevButton);
-	    
-	    nextButton = new PushButton();
-	    nextButton.setStylePrimaryName("qp-defaultassessmentfooter-next-button");
-	    nextButton.addClickHandler(new ClickHandler() {
+		menuPanel.add(prevButton);
+
+		nextButton = new PushButton();
+		nextButton.setStylePrimaryName("qp-defaultassessmentfooter-next-button");
+		nextButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigateNextItem());
 			}
 		});
-	    menuPanel.add(nextButton);
-	    
-	    finishButton = new PushButton();
-	    finishButton.setStylePrimaryName("qp-defaultassessmentfooter-finish-button");
-	    finishButton.addClickHandler(new ClickHandler() {
+		menuPanel.add(nextButton);
+
+		finishButton = new PushButton();
+		finishButton.setStylePrimaryName("qp-defaultassessmentfooter-finish-button");
+		finishButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigateSummary());
 			}
 		});
-	    menuPanel.add(finishButton);
-	    
-	    summaryButton = new PushButton();
-	    summaryButton.setStylePrimaryName("qp-defaultassessmentfooter-summary-button");
-	    summaryButton.addClickHandler(new ClickHandler() {
+		menuPanel.add(finishButton);
+
+		summaryButton = new PushButton();
+		summaryButton.setStylePrimaryName("qp-defaultassessmentfooter-summary-button");
+		summaryButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigateSummary());
 			}
 		});
-	    menuPanel.add(summaryButton);
-	    
-	    continueAssessmentButton = new PushButton();
-	    continueAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-summary-continue-button");
-	    continueAssessmentButton.addClickHandler(new ClickHandler() {
+		menuPanel.add(summaryButton);
+
+		continueAssessmentButton = new PushButton();
+		continueAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-summary-continue-button");
+		continueAssessmentButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigateFirstItem());
 			}
 		});
-	    menuPanel.add(continueAssessmentButton);
-	    
-	    previewAssessmentButton = new PushButton();
-	    previewAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-summary-preview-button");
-	    previewAssessmentButton.addClickHandler(new ClickHandler() {
+		menuPanel.add(continueAssessmentButton);
+
+		previewAssessmentButton = new PushButton();
+		previewAssessmentButton.setStylePrimaryName("qp-defaultassessmentfooter-summary-preview-button");
+		previewAssessmentButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				flowRequestInvoker.invokeRequest(new FlowRequest.NavigatePreviewItem(0));
 			}
 		});
-	    menuPanel.add(previewAssessmentButton);
+		menuPanel.add(previewAssessmentButton);
 
 	}
 
 	@Override
 	public void onDeliveryEvent(DeliveryEvent deliveryEvent) {
-		if (deliveryEvent.getType() == DeliveryEventType.SHOW_ANSWERS){
-			checkButton.setStateDown(false);			
-		} else if (deliveryEvent.getType() == DeliveryEventType.CHECK ){
-			showAnswersButton.setStateDown(false);				
-		} else if (deliveryEvent.getType() == DeliveryEventType.RESET  ||  deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING){
-			checkButton.setStateDown(false);		
-			showAnswersButton.setStateDown(false);			
+		if (deliveryEvent.getType() == DeliveryEventType.SHOW_ANSWERS) {
+			checkButton.setStateDown(false);
+		} else if (deliveryEvent.getType() == DeliveryEventType.CHECK) {
+			showAnswersButton.setStateDown(false);
+		} else if (deliveryEvent.getType() == DeliveryEventType.RESET || deliveryEvent.getType() == DeliveryEventType.PAGE_UNLOADING) {
+			checkButton.setStateDown(false);
+			showAnswersButton.setStateDown(false);
 		}
-		
-		if (deliveryEvent.getType() == DeliveryEventType.TEST_PAGE_LOADED  ||  
-			deliveryEvent.getType() == DeliveryEventType.TOC_PAGE_LOADED  ||
-			deliveryEvent.getType() == DeliveryEventType.SUMMARY_PAGE_LOADED  ||
-			deliveryEvent.getType() == DeliveryEventType.CHECK  ||
-			deliveryEvent.getType() == DeliveryEventType.CONTINUE ||
-			deliveryEvent.getType() == DeliveryEventType.SHOW_ANSWERS){
+
+		if (deliveryEvent.getType() == DeliveryEventType.TEST_PAGE_LOADED || deliveryEvent.getType() == DeliveryEventType.TOC_PAGE_LOADED
+				|| deliveryEvent.getType() == DeliveryEventType.SUMMARY_PAGE_LOADED || deliveryEvent.getType() == DeliveryEventType.CHECK
+				|| deliveryEvent.getType() == DeliveryEventType.CONTINUE || deliveryEvent.getType() == DeliveryEventType.SHOW_ANSWERS) {
 			updateButtons();
 		}
 	}
-	
-	public void updateButtons(){
-		
+
+	public void updateButtons() {
+
 		boolean isPreview = flowDataSupplier.getFlowOptions().activityMode == ActivityMode.CHECK;
-		
+
 		PageType currPageType = flowDataSupplier.getCurrentPageType();
 		PageItemsDisplayMode currItemsDisplayMode = flowDataSupplier.getFlowOptions().itemsDisplayMode;
-		
+
 		checkButton.setVisible(currPageType == PageType.TEST && !isPreview);
 		showAnswersButton.setVisible(currPageType == PageType.TEST && !isPreview);
 		resetButton.setVisible(currPageType == PageType.TEST && !isPreview);
-		prevButton.setVisible(currPageType == PageType.TEST  &&  currItemsDisplayMode == PageItemsDisplayMode.ONE);
-		prevButton.setEnabled(flowDataSupplier.getFlowOptions().showToC  ||  flowDataSupplier.getCurrentPageIndex() > 0);
-		nextButton.setVisible((currPageType == PageType.TEST  &&  currItemsDisplayMode == PageItemsDisplayMode.ONE)  ||  currPageType == PageType.TOC);
+		prevButton.setVisible(currPageType == PageType.TEST && currItemsDisplayMode == PageItemsDisplayMode.ONE);
+		prevButton.setEnabled(flowDataSupplier.getFlowOptions().showToC || flowDataSupplier.getCurrentPageIndex() > 0);
+		nextButton.setVisible((currPageType == PageType.TEST && currItemsDisplayMode == PageItemsDisplayMode.ONE) || currPageType == PageType.TOC);
 		nextButton.setEnabled(flowDataSupplier.getCurrentPageIndex() < dataSourceDataSupplier.getItemsCount() - 1);
-		finishButton.setVisible(currPageType == PageType.TEST  &&  flowDataSupplier.getFlowOptions().showSummary  &&  !isPreview);
+		finishButton.setVisible(currPageType == PageType.TEST && flowDataSupplier.getFlowOptions().showSummary && !isPreview);
 		finishButton.setEnabled(flowDataSupplier.getCurrentPageIndex() == dataSourceDataSupplier.getItemsCount() - 1);
-		summaryButton.setVisible(isPreview  &&  currPageType == PageType.TEST);
+		summaryButton.setVisible(isPreview && currPageType == PageType.TEST);
 		continueAssessmentButton.setVisible(currPageType == PageType.SUMMARY);
 		previewAssessmentButton.setVisible(currPageType == PageType.SUMMARY);
-		
+
 	}
 
 }

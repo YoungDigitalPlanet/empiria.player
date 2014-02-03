@@ -6,6 +6,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -58,7 +59,7 @@ public class SimulationPreloaderJUnitTest extends AbstractTestBaseWithoutAutoInj
 	@Test
 	public void testShow() {
 		instance.show(10, 20);
-		verify(preloader).setPreloaderSize(Mockito.eq(10), Mockito.eq(20));
+		verify(preloader).setPreloaderSize(Matchers.eq(10), Matchers.eq(20));
 		verify(preloader).show();
 	}
 

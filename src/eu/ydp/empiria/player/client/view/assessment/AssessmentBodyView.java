@@ -12,7 +12,8 @@ public class AssessmentBodyView extends FlowPanel {
 
 	protected WidgetWorkflowListener widgetWorkflowListener;
 	protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	public AssessmentBodyView(WidgetWorkflowListener wwl){
+
+	public AssessmentBodyView(WidgetWorkflowListener wwl) {
 		widgetWorkflowListener = wwl;
 
 		setStyleName(styleNames.QP_ASSESSMENT_VIEW());
@@ -23,19 +24,18 @@ public class AssessmentBodyView extends FlowPanel {
 		this.sinkEvents(Event.ONMOUSEOUT);
 	}
 
-	public void init(Widget assessmentBodyWidget){
+	public void init(Widget assessmentBodyWidget) {
 		add(assessmentBodyWidget);
 	}
 
-
 	@Override
-	public void onLoad(){
+	public void onLoad() {
 		super.onLoad();
 		widgetWorkflowListener.onLoad();
 	}
 
 	@Override
-	public void onUnload(){
+	public void onUnload() {
 		super.onUnload();
 		widgetWorkflowListener.onUnload();
 	}

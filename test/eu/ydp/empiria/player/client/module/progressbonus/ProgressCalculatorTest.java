@@ -28,7 +28,7 @@ public class ProgressCalculatorTest {
 	}
 
 	@Test
-	@Parameters({"0", "25", "100"})
+	@Parameters({ "0", "25", "100" })
 	public void getProgress(int RESULT) {
 		// given
 		when(accessor.getAssessmentResult()).thenReturn(RESULT);

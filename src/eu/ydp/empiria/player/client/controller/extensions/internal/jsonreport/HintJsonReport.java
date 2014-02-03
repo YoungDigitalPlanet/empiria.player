@@ -5,36 +5,35 @@ import com.google.gwt.json.client.JSONObject;
 
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 
+public class HintJsonReport extends JavaScriptObject {
 
-public class HintJsonReport extends JavaScriptObject{
-	
-	protected HintJsonReport(){
-		
+	protected HintJsonReport() {
+
 	}
-	
-	public static HintJsonReport create(){
+
+	public static HintJsonReport create() {
 		return new OverlayTypesParser().get();
 	}
-	
-	public static HintJsonReport create(String json){
+
+	public static HintJsonReport create(String json) {
 		return new OverlayTypesParser().get(json);
 	}
 
 	public final native void setChecks(int value)/*-{
-		this.checks = value;
-	}-*/;
+													this.checks = value;
+													}-*/;
 
 	public final native void setMistakes(int value)/*-{
-		this.mistakes = value;
-	}-*/;
+													this.mistakes = value;
+													}-*/;
 
 	public final native void setShowAnswers(int value)/*-{
-		this.showAnswers = value;		
-	}-*/;
+														this.showAnswers = value;		
+														}-*/;
 
 	public final native void setReset(int value)/*-{
-		this.reset = value;		
-	}-*/;
+												this.reset = value;		
+												}-*/;
 
 	public final String getJSONString() {
 		return new JSONObject(this).toString();

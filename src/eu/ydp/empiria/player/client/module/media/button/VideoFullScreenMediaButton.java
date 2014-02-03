@@ -18,7 +18,6 @@ public class VideoFullScreenMediaButton extends FullScreenMediaButton<VideoFullS
 	@Inject
 	private VideoFullScreenHelper fullScreenHelper;
 
-
 	private Element fullScreenTemplate;
 	private MediaWrapper<?> mediaWrapper;
 	private MediaWrapper<?> fullScreenMediaWrapper;
@@ -59,7 +58,7 @@ public class VideoFullScreenMediaButton extends FullScreenMediaButton<VideoFullS
 		eventsBus.addHandler(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_EXIT), this, scopeFactory.getCurrentPageScope());
 		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_OPEN), getMediaWrapper(), this, scopeFactory.getCurrentPageScope());
 	}
-	
+
 	@Override
 	protected void openFullScreen() {
 		fullScreenHelper.openFullScreen(fullScreenMediaWrapper, mediaWrapper, fullScreenTemplate);

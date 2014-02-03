@@ -20,7 +20,7 @@ public abstract class TestJAXBParser<T> implements JAXBParser<T> {
 	public T parse(String xml) {
 		ensureUnmarshaller();
 		try {
-			return (T)unmarshaller.unmarshal(new StringInputStream(xml));
+			return (T) unmarshaller.unmarshal(new StringInputStream(xml));
 		} catch (JAXBException e) {
 			Assert.fail(e.getMessage());
 			return null;
@@ -35,11 +35,11 @@ public abstract class TestJAXBParser<T> implements JAXBParser<T> {
 
 	@SuppressWarnings("unchecked")
 	private Class<T> getBeanClass() throws Exception {
-        ParameterizedType superclass = (ParameterizedType)getClass().getGenericSuperclass();
-        return (Class<T>) superclass.getActualTypeArguments()[0];
+		ParameterizedType superclass = (ParameterizedType) getClass().getGenericSuperclass();
+		return (Class<T>) superclass.getActualTypeArguments()[0];
 	}
 
-	private Unmarshaller getUnmarshaller(){
+	private Unmarshaller getUnmarshaller() {
 		Unmarshaller unmarshaller = null;
 
 		try {

@@ -11,29 +11,29 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 public class CanvasImageDataProvider {
 
 	private final UserAgentUtil userAgentUtil;
-	
+
 	@Inject
 	public CanvasImageDataProvider(UserAgentUtil userAgentUtil) {
 		this.userAgentUtil = userAgentUtil;
 	}
 
-	public ICanvasImageData getCanvasImageData(CanvasImageView canvasStubView){
+	public ICanvasImageData getCanvasImageData(CanvasImageView canvasStubView) {
 		Context2d context2d = canvasStubView.getCanvas().getContext2d();
-		int width = canvasStubView.getWidth(); 
+		int width = canvasStubView.getWidth();
 		int height = canvasStubView.getHeight();
-		
+
 		ICanvasImageData canvasImageData;
-		if(isInternetExplorer()){
+		if (isInternetExplorer()) {
 			canvasImageData = new CanvasImageDataSlower(context2d, width, height);
 		} else {
 			canvasImageData = new CanvasImageData(context2d, width, height);
 		}
-		
+
 		return canvasImageData;
 	}
 
 	private boolean isInternetExplorer() {
 		return userAgentUtil.isIE();
 	}
-	
+
 }

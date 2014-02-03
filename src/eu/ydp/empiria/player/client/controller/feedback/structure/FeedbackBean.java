@@ -12,21 +12,20 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackConditionBean;
 
-
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name="feedback")
+@XmlRootElement(name = "feedback")
 public class FeedbackBean implements Feedback {
-	
-	@XmlElement(name="action")
+
+	@XmlElement(name = "action")
 	FeedbackActionBean action;
-	
-	@XmlElement(name="condition")
+
+	@XmlElement(name = "condition")
 	FeedbackConditionBean condition;
-	
+
 	public FeedbackActionBean getAction() {
 		return action;
 	}
-	
+
 	public void setActions(FeedbackActionBean action) {
 		this.action = action;
 	}
@@ -42,8 +41,6 @@ public class FeedbackBean implements Feedback {
 
 	@Override
 	public FeedbackCondition getCondition() {
-		return (condition.getAllConditions().isEmpty())? 
-							null: 
-							condition.getAllConditions().get(0);
+		return (condition.getAllConditions().isEmpty()) ? null : condition.getAllConditions().get(0);
 	}
 }

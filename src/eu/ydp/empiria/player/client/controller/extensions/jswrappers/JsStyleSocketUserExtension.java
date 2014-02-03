@@ -34,19 +34,19 @@ public class JsStyleSocketUserExtension extends AbstractJsExtension implements S
 	}
 
 	private native JavaScriptObject createStyleSocketJs()/*-{
-		var instance = this;
-		var socket = [];
-		socket.getStyle = function(element) {
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension::getStyle(Lcom/google/gwt/dom/client/Element;)(element);
-		}
-		return socket;
-	}-*/;
+															var instance = this;
+															var socket = [];
+															socket.getStyle = function(element) {
+															return instance.@eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension::getStyle(Lcom/google/gwt/dom/client/Element;)(element);
+															}
+															return socket;
+															}-*/;
 
 	private native void setStyleSocketJs(JavaScriptObject extension, JavaScriptObject socket)/*-{
-		if (typeof extension.setStyleSocket == 'function') {
-			extension.setStyleSocket(socket);
-		}
-	}-*/;
+																								if (typeof extension.setStyleSocket == 'function') {
+																								extension.setStyleSocket(socket);
+																								}
+																								}-*/;
 
 	private JavaScriptObject getStyle(com.google.gwt.dom.client.Element element) {
 

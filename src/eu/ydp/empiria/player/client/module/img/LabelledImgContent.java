@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.img;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_COLOR;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_THICKNESS;
 import static eu.ydp.gwtutil.client.xml.XMLUtils.*;
 
 import java.util.Map;

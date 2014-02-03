@@ -17,53 +17,53 @@ public class OnPageAllOkActionTest {
 
 	@InjectMocks
 	private OnPageAllOkAction action;
-	
+
 	@Mock
 	private FeedbackActionConditions actionConditions;
-	
+
 	@Test
-	public void actionOccured(){
+	public void actionOccured() {
 		// given
 		when(actionConditions.isPageAllOk()).thenReturn(true);
-		
+
 		// when
 		boolean occured = action.actionOccured();
-		
+
 		// then
 		assertThat(occured).isTrue();
 	}
-	
+
 	@Test
-	public void actionNotOccured(){
+	public void actionNotOccured() {
 		// given
 		when(actionConditions.isPageAllOk()).thenReturn(false);
-		
+
 		// when
 		boolean occured = action.actionOccured();
-		
+
 		// then
 		assertThat(occured).isFalse();
 	}
-	
+
 	@Test
-	public void actionNotOccured_noActivities(){
+	public void actionNotOccured_noActivities() {
 		// given
 		when(actionConditions.isPageAllOk()).thenReturn(false);
-		
+
 		// when
 		boolean occured = action.actionOccured();
-		
+
 		// then
 		assertThat(occured).isFalse();
 	}
-	
+
 	@Test
-	public void type(){
+	public void type() {
 		// when
 		ActionType type = action.getActionType();
-		
+
 		// then
 		assertThat(type).isEqualTo(ActionType.ON_PAGE_ALL_OK);
 	}
-	
+
 }

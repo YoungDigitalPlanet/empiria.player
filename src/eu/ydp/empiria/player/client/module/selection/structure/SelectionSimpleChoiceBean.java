@@ -15,15 +15,16 @@ import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapt
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "simpleChoice")
-public class SelectionSimpleChoiceBean extends SimpleChoiceBaseBean implements PairChoiceBean{
+public class SelectionSimpleChoiceBean extends SimpleChoiceBaseBean implements PairChoiceBean {
 
 	@XmlAttribute
 	protected int matchMax;
-	
-	@XmlValue
-	@XmlJavaTypeAdapter(value=XMLContentTypeAdapter.class)
-	private XMLContent xmlContent ;
 
+	@XmlValue
+	@XmlJavaTypeAdapter(value = XMLContentTypeAdapter.class)
+	private XMLContent xmlContent;
+
+	@Override
 	public int getMatchMax() {
 		return matchMax;
 	}

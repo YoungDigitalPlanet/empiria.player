@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.module.sourcelist.structure;
 
 import static eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType.TEXT;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 
@@ -25,10 +23,10 @@ import eu.ydp.gwtutil.client.json.YJsonArray;
 public class SourceListModuleStructureTest extends AbstractTestBase {
 
 	private SourceListModuleStructure instance;
-	
+
 	@Override
 	@Before
-	public void setUp(){
+	public void setUp() {
 		super.setUp();
 		instance = spy(injector.getInstance(SourceListModuleStructure.class));
 	}
@@ -53,7 +51,7 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 
 		// when
 		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE, state);
-		
+
 		// then
 		SourceListBean bean = instance.getBean();
 		assertTrue(bean.isMoveElements());
@@ -65,7 +63,7 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 		List<SourcelistItemType> types = extractTypes(items);
 		List<String> contents = extractContents(items);
 		List<String> alts = extractAlts(items);
-		
+
 		assertThat(types).containsSequence(TEXT, TEXT, TEXT);
 		assertThat(contents).containsSequence("psa", "kota", "tygrysa");
 		assertThat(alts).containsSequence("psa", "kota", "tygrysa");
@@ -78,7 +76,7 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 
 		// when
 		instance.createFromXml(SourceListJAXBParserMock.XML_WITHOUT_SHUFFLE, state);
-		
+
 		// then
 		List<String> contents = extractContents(instance.getBean().getSimpleSourceListItemBeans());
 		assertThat(contents).containsSequence("psa", "kota", "tygrysa");
@@ -96,7 +94,7 @@ public class SourceListModuleStructureTest extends AbstractTestBase {
 		List<String> list = new ArrayList<String>(Arrays.asList("psa", "kota", "tygrysa", "psa1", "kota1", "tygrysa1", "psa2", "kota2", "tygrysa2"));
 		List<SimpleSourceListItemBean> items = bean.getSimpleSourceListItemBeans();
 		List<String> contents = extractContents(items);
-		
+
 		assertThat(contents).isNotEqualTo(list);
 	}
 

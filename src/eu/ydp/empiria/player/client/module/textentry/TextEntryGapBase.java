@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS;
 
 import java.util.List;
 import java.util.Map;

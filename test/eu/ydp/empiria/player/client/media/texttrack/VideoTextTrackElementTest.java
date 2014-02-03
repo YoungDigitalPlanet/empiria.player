@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -63,8 +64,10 @@ public class VideoTextTrackElementTest extends AbstractTestBase {
 		verify(presenter).addStyleName(styleNameConstants.QP_MEDIA_TEXT_TRACK() + "-" + TextTrackKind.CAPTIONS.name().toLowerCase());
 		verify(presenter).setStyleName(styleNameConstants.QP_MEDIA_TEXT_TRACK());
 		instance.init();
-		verify(eventsBus).addAsyncHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.TEXT_TRACK_UPDATE)), Mockito.any(MediaWrapper.class), eq(instance), Mockito.any(CurrentPageScope.class));
-		verify(eventsBus).addAsyncHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE)), Mockito.any(MediaWrapper.class), eq(instance), Mockito.any(CurrentPageScope.class));
+		verify(eventsBus).addAsyncHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.TEXT_TRACK_UPDATE)), Matchers.any(MediaWrapper.class), eq(instance),
+				Matchers.any(CurrentPageScope.class));
+		verify(eventsBus).addAsyncHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE)), Matchers.any(MediaWrapper.class), eq(instance),
+				Matchers.any(CurrentPageScope.class));
 	}
 
 	@Test
@@ -72,10 +75,13 @@ public class VideoTextTrackElementTest extends AbstractTestBase {
 		VideoTextTrackElement instance = trackElementFactory.getVideoTextTrackElement(TextTrackKind.CAPTIONS);
 		instance.setFullScreen(true);
 		instance.init();
-		verify(eventsBus).addAsyncHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.TEXT_TRACK_UPDATE)), Mockito.any(MediaWrapper.class), eq(instance), Mockito.any(CurrentPageScope.class));
-		verify(eventsBus).addAsyncHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE)), Mockito.any(MediaWrapper.class), eq(instance), Mockito.any(CurrentPageScope.class));
+		verify(eventsBus).addAsyncHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.TEXT_TRACK_UPDATE)), Matchers.any(MediaWrapper.class), eq(instance),
+				Matchers.any(CurrentPageScope.class));
+		verify(eventsBus).addAsyncHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE)), Matchers.any(MediaWrapper.class), eq(instance),
+				Matchers.any(CurrentPageScope.class));
 		Assert.assertTrue(instance.isInFullScreen());
-		verify(presenter).addStyleName(styleNameConstants.QP_MEDIA_TEXT_TRACK() + instance.getSuffixToAdd() + "-" + TextTrackKind.CAPTIONS.name().toLowerCase());
+		verify(presenter)
+				.addStyleName(styleNameConstants.QP_MEDIA_TEXT_TRACK() + instance.getSuffixToAdd() + "-" + TextTrackKind.CAPTIONS.name().toLowerCase());
 		verify(presenter).setStyleName(styleNameConstants.QP_MEDIA_TEXT_TRACK() + instance.getSuffixToAdd());
 	}
 
@@ -98,12 +104,12 @@ public class VideoTextTrackElementTest extends AbstractTestBase {
 
 	@Test
 	public void mediaEventTextTrackUpdateTestWithTextTrack() {
-		//prepare
+		// prepare
 		prepareTextEventMediaWrapper();
 		VideoTextTrackElement instance = Mockito.spy(trackElementFactory.getVideoTextTrackElement(TextTrackKind.CAPTIONS));
 		instance.setMediaDescriptor(mediaWrapper);
 		instance.init();
-		//test
+		// test
 		eventsBus.fireEventFromSource(event, mediaWrapper, pageScopeFactory.getCurrentPageScope());
 		verify(instance).onMediaEvent(eq(event));
 		verify(instance).showHideText(eq(textTrackCue));
@@ -111,16 +117,16 @@ public class VideoTextTrackElementTest extends AbstractTestBase {
 
 	@Test
 	public void mediaEventTextTrackUpdateTestWithoutTextTrack() {
-		//prepare
+		// prepare
 		mediaWrapper = Mockito.mock(MediaWrapper.class);
 		VideoTextTrackElement instance = Mockito.spy(trackElementFactory.getVideoTextTrackElement(TextTrackKind.CAPTIONS));
 		instance.setMediaDescriptor(mediaWrapper);
 		instance.init();
 		MediaEvent event = new MediaEvent(MediaEventTypes.TEXT_TRACK_UPDATE);
-		//test
+		// test
 		eventsBus.fireEventFromSource(event, mediaWrapper, pageScopeFactory.getCurrentPageScope());
 		verify(instance).onMediaEvent(eq(event));
-		verify(instance, Mockito.times(0)).showHideText(Mockito.any(TextTrackCue.class));
+		verify(instance, Mockito.times(0)).showHideText(Matchers.any(TextTrackCue.class));
 	}
 
 	@Test
@@ -171,7 +177,7 @@ public class VideoTextTrackElementTest extends AbstractTestBase {
 		eventsBus.fireEventFromSource(event, mediaWrapper, pageScopeFactory.getCurrentPageScope());
 		event = new MediaEvent(MediaEventTypes.ON_TIME_UPDATE);
 		eventsBus.fireEventFromSource(event, mediaWrapper, pageScopeFactory.getCurrentPageScope());
-		verify(instance, Mockito.times(0)).showHideText(Mockito.any(TextTrackCue.class));
+		verify(instance, Mockito.times(0)).showHideText(Matchers.any(TextTrackCue.class));
 	}
 
 }

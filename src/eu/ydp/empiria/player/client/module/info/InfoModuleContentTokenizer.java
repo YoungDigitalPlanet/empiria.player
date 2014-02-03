@@ -52,6 +52,7 @@ public class InfoModuleContentTokenizer {
 
 	/**
 	 * NO regex to speedup report generation
+	 * 
 	 * @return
 	 */
 	private List<Token> getTokensFromString(String token) {
@@ -75,7 +76,7 @@ public class InfoModuleContentTokenizer {
 				}
 			}
 		}
-		if(tokenStart < token.length()){
+		if (tokenStart < token.length()) {
 			resultTokens.add(new Token(token.substring(tokenStart), false));
 		}
 		return resultTokens;

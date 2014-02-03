@@ -18,14 +18,15 @@ import eu.ydp.gwtutil.client.util.RandomWrapper;
 
 public class BonusProvider {
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private BonusConfig bonusConfig;
 	@Inject
 	private BonusFactory bonusFactory;
 	@Inject
 	private RandomWrapper randomWrapper;
 
-	public Bonus next(){
+	public Bonus next() {
 		BonusAction action = findAction(ON_PAGE_ALL_OK_FIRST_TIME);
 		BonusResource bonusResource = pickBonusResource(action.getBonuses());
 		return bonusFactory.createBonus(bonusResource);

@@ -17,7 +17,7 @@ public class JsStatefulExtension extends AbstractJsExtension implements Stateful
 
 	@Override
 	public void init() {
-		
+
 	}
 
 	@Override
@@ -31,27 +31,27 @@ public class JsStatefulExtension extends AbstractJsExtension implements Stateful
 
 	@Override
 	public void setState(JSONArray newState) {
-		if (newState.isArray() instanceof JSONArray){
+		if (newState.isArray() instanceof JSONArray) {
 			JSONArray arr = newState.isArray();
 			JSONValue v = arr.get(0);
-			if (v.isString() instanceof JSONString){
+			if (v.isString() instanceof JSONString) {
 				String s = v.isString().stringValue();
 				setStateJs(extensionJsObject, s);
 			}
 		}
 	}
-	
+
 	private native String getStateJs(JavaScriptObject extension)/*-{
-		if (typeof extension.getStateString == 'function'){
-			return extension.getStateString();
-		}
-		return null;
-	}-*/;
-	
+																if (typeof extension.getStateString == 'function'){
+																return extension.getStateString();
+																}
+																return null;
+																}-*/;
+
 	private native void setStateJs(JavaScriptObject extension, String stateString)/*-{
-		if (typeof extension.setStateString == 'function'){
-			extension.setStateString(stateString);
-		}
-	}-*/;
+																					if (typeof extension.setStateString == 'function'){
+																					extension.setStateString(stateString);
+																					}
+																					}-*/;
 
 }

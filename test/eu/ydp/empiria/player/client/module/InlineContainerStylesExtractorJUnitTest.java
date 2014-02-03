@@ -17,25 +17,20 @@ public class InlineContainerStylesExtractorJUnitTest {
 
 	@Test
 	public void testGetInlineStyles() {
-		InlineContainerStylesExtractor helper = new InlineContainerStylesExtractor();		
+		InlineContainerStylesExtractor helper = new InlineContainerStylesExtractor();
 		IModule testModule = mock(IModule.class);
-		DivModule divModule = mock(DivModule.class);		
+		DivModule divModule = mock(DivModule.class);
 		InlineContainerModule inlineContainerModuleBold = mock(InlineContainerModule.class);
-		
-		when(inlineContainerModuleBold.getType()).
-			thenReturn(InlineFormattingContainerType.BOLD);
-		
+
+		when(inlineContainerModuleBold.getType()).thenReturn(InlineFormattingContainerType.BOLD);
+
 		InlineContainerModule inlineContainerModuleItalic = mock(InlineContainerModule.class);
-		when(inlineContainerModuleItalic.getType()).
-			thenReturn(InlineFormattingContainerType.ITALIC);		
-		when(inlineContainerModuleItalic.getParentModule()).
-			thenReturn(inlineContainerModuleBold);
-		
-		when(divModule.getParentModule()).
-			thenReturn(inlineContainerModuleItalic);
-		
-		when(testModule.getParentModule()).
-			thenReturn(divModule);
+		when(inlineContainerModuleItalic.getType()).thenReturn(InlineFormattingContainerType.ITALIC);
+		when(inlineContainerModuleItalic.getParentModule()).thenReturn(inlineContainerModuleBold);
+
+		when(divModule.getParentModule()).thenReturn(inlineContainerModuleItalic);
+
+		when(testModule.getParentModule()).thenReturn(divModule);
 
 		Set<InlineFormattingContainerType> result = helper.getInlineStyles(testModule);
 

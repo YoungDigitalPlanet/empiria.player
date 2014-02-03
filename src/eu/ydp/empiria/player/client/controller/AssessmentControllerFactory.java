@@ -22,6 +22,6 @@ public interface AssessmentControllerFactory {
 	Item getItem(DisplayContentOptions options, Map<String, Outcome> outcomeVariables, JSONArray stateArray);
 
 	ItemModuleSocket getItemModuleSocket(Item item);
-	
+
 	ItemBody getItemBody(DisplayContentOptions options, ModuleSocket moduleSocket);
 }

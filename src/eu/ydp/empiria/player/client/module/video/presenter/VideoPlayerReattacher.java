@@ -19,8 +19,7 @@ public class VideoPlayerReattacher {
 	private final Provider<CurrentPageScope> pageScopeProvider;
 
 	@Inject
-	public VideoPlayerReattacher(EventsBus eventsBus, @ModuleScoped VideoPlayerBuilder videoPlayerBuilder,
-			Provider<CurrentPageScope> pageScopeProvider) {
+	public VideoPlayerReattacher(EventsBus eventsBus, @ModuleScoped VideoPlayerBuilder videoPlayerBuilder, Provider<CurrentPageScope> pageScopeProvider) {
 		this.eventsBus = eventsBus;
 		this.videoPlayerAttacher = videoPlayerBuilder;
 		this.pageScopeProvider = pageScopeProvider;

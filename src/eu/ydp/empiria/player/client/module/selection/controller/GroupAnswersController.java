@@ -19,133 +19,130 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 public class GroupAnswersController {
 
 	private static final Logger LOGGER = Logger.getLogger(GroupAnswersController.class.getName());
-	
+
 	private List<SelectionAnswerDto> allSelectionAnswers = new ArrayList<SelectionAnswerDto>();
 	private Queue<SelectionAnswerDto> selectedAnswers;
 	private int maxSelected;
 	private AbstractResponseModel<?> responseModel;
 
 	@Inject
-	public GroupAnswersController(
-			@Assisted boolean isMulti, 
-			@Assisted int maxSelected,			
-			@ModuleScoped SelectionModuleModel responseModel,
-			NoAnswerPriorityComparator noPriorityComparator){
+	public GroupAnswersController(@Assisted boolean isMulti, @Assisted int maxSelected, @ModuleScoped SelectionModuleModel responseModel,
+			NoAnswerPriorityComparator noPriorityComparator) {
 		this.maxSelected = maxSelected;
 		this.responseModel = responseModel;
-		
-		if(isMulti){
+
+		if (isMulti) {
 			selectedAnswers = new PriorityQueue<SelectionAnswerDto>(maxSelected, noPriorityComparator);
-		}else{
+		} else {
 			selectedAnswers = new PriorityQueue<SelectionAnswerDto>(1, noPriorityComparator);
 		}
 	}
-	
-	public void addSelectionAnswer(SelectionAnswerDto button){
+
+	public void addSelectionAnswer(SelectionAnswerDto button) {
 		allSelectionAnswers.add(button);
 	}
-	
-	void selectAnswer(SelectionAnswerDto selectionAnswer){
-		if(!allSelectionAnswers.contains(selectionAnswer)){
-			LOGGER.log(Level.SEVERE, "SelectButton method called from GroupChoicesController with button as argument, " +
-					"that is not connected with this controller!");
+
+	void selectAnswer(SelectionAnswerDto selectionAnswer) {
+		if (!allSelectionAnswers.contains(selectionAnswer)) {
+			LOGGER.log(Level.SEVERE, "SelectButton method called from GroupChoicesController with button as argument, "
+					+ "that is not connected with this controller!");
 			return;
 		}
 
-		if(selectedAnswers.size() >= maxSelected){
+		if (selectedAnswers.size() >= maxSelected) {
 			unselectFirstlySelectedAnswer();
 		}
-		
+
 		selectedAnswers.add(selectionAnswer);
-		
+
 		selectionAnswer.setSelected(true);
 		responseModel.addAnswer(selectionAnswer.getId());
 	}
-	
+
 	private void unselectFirstlySelectedAnswer() {
 		SelectionAnswerDto selectionAnswer = selectedAnswers.poll();
 		selectionAnswer.setSelected(false);
 		responseModel.removeAnswer(selectionAnswer.getId());
 	}
 
-	void unselectAnswer(SelectionAnswerDto selectionAnswer){
+	void unselectAnswer(SelectionAnswerDto selectionAnswer) {
 		selectedAnswers.remove(selectionAnswer);
 		selectionAnswer.setSelected(false);
 		responseModel.removeAnswer(selectionAnswer.getId());
 	}
-	
+
 	public void selectToggleAnswer(String selectionAnswerId) {
 		SelectionAnswerDto selectionAnswer = findSelectionAnswerById(selectionAnswerId);
-		if(selectionAnswer == null){
+		if (selectionAnswer == null) {
 			return;
 		}
-		
-		if(selectionAnswer.isSelected())
+
+		if (selectionAnswer.isSelected())
 			unselectAnswer(selectionAnswer);
 		else
 			selectAnswer(selectionAnswer);
 	}
-	
-	private SelectionAnswerDto findSelectionAnswerById(String answerId){
+
+	private SelectionAnswerDto findSelectionAnswerById(String answerId) {
 		SelectionAnswerDto selectionAnswerById = null;
-		for(SelectionAnswerDto selectionAnswer : allSelectionAnswers){
-			if(answerId.equals(selectionAnswer.getId())){
+		for (SelectionAnswerDto selectionAnswer : allSelectionAnswers) {
+			if (answerId.equals(selectionAnswer.getId())) {
 				selectionAnswerById = selectionAnswer;
 				break;
 			}
 		}
 		return selectionAnswerById;
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		for (SelectionAnswerDto button : selectedAnswers) {
 			button.setSelected(false);
 		}
 		selectedAnswers.clear();
 	}
-	
-	public void selectOnlyAnswersMatchingIds(Collection<String> ids){
+
+	public void selectOnlyAnswersMatchingIds(Collection<String> ids) {
 		List<SelectionAnswerDto> buttonsToSelect = findAnswersWithIds(ids, allSelectionAnswers);
 		List<SelectionAnswerDto> alreadySelectedMatchingIdsButtons = findAnswersWithIds(ids, selectedAnswers);
-		
+
 		selectedAnswers.removeAll(alreadySelectedMatchingIdsButtons);
-		for(SelectionAnswerDto answerToUnselect : selectedAnswers){
+		for (SelectionAnswerDto answerToUnselect : selectedAnswers) {
 			answerToUnselect.setSelected(false);
 		}
 		selectedAnswers.clear();
-		
+
 		selectedAnswers.addAll(alreadySelectedMatchingIdsButtons);
-		
-		for(SelectionAnswerDto answerToSelect : buttonsToSelect){
-			if( !alreadySelectedMatchingIdsButtons.contains(answerToSelect)){
+
+		for (SelectionAnswerDto answerToSelect : buttonsToSelect) {
+			if (!alreadySelectedMatchingIdsButtons.contains(answerToSelect)) {
 				answerToSelect.setSelected(true);
 				selectedAnswers.add(answerToSelect);
 			}
 		}
 	}
-	
-	private List<SelectionAnswerDto> findAnswersWithIds(Collection<String> ids, Collection<SelectionAnswerDto> buttonsToSearch){
+
+	private List<SelectionAnswerDto> findAnswersWithIds(Collection<String> ids, Collection<SelectionAnswerDto> buttonsToSearch) {
 		List<SelectionAnswerDto> buttons = new ArrayList<SelectionAnswerDto>();
-		for(SelectionAnswerDto button : buttonsToSearch){
+		for (SelectionAnswerDto button : buttonsToSearch) {
 			String id = button.getId();
-			if(ids.contains(id)){
+			if (ids.contains(id)) {
 				buttons.add(button);
 			}
 		}
 		return buttons;
 	}
-	
-	public void setLockedAllAnswers(boolean locked){
-		for(SelectionAnswerDto answer : allSelectionAnswers){
+
+	public void setLockedAllAnswers(boolean locked) {
+		for (SelectionAnswerDto answer : allSelectionAnswers) {
 			answer.setLocked(locked);
 		}
 	}
-	
-	public List<SelectionAnswerDto> getSelectedAnswers(){
+
+	public List<SelectionAnswerDto> getSelectedAnswers() {
 		return new ArrayList<SelectionAnswerDto>(selectedAnswers);
 	}
-	
-	public List<SelectionAnswerDto> getNotSelectedAnswers(){
+
+	public List<SelectionAnswerDto> getNotSelectedAnswers() {
 		List<SelectionAnswerDto> notSelectedButtons = new ArrayList<SelectionAnswerDto>(allSelectionAnswers);
 		notSelectedButtons.removeAll(selectedAnswers);
 		return notSelectedButtons;
@@ -154,5 +151,5 @@ public class GroupAnswersController {
 	public List<SelectionAnswerDto> getAllAnswers() {
 		return new ArrayList<SelectionAnswerDto>(allSelectionAnswers);
 	}
-	
+
 }

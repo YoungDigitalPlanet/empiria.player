@@ -14,7 +14,7 @@ public abstract class FlashLocalMediaImpl extends Composite {
 	protected FlowPanel panelMain;
 	protected FlowPanel panelContent;
 
-	public FlashLocalMediaImpl(String name){
+	public FlashLocalMediaImpl(String name) {
 		elementId = Document.get().createUniqueId();
 		panelMain = new FlowPanel();
 		panelMain.setStyleName("qp-" + name + "-flash-local");
@@ -36,9 +36,10 @@ public abstract class FlashLocalMediaImpl extends Composite {
 	protected abstract void loadFlvPlayerThroughSwfobject(String id, String swfSrc, String installSrc, String videoSrc, int width, int height);
 
 	protected abstract String getSwfSrc();
-	protected abstract int getWidth();
-	protected abstract int getHeight();
 
+	protected abstract int getWidth();
+
+	protected abstract int getHeight();
 
 	public void setSrc(String src) {
 		this.src = src;

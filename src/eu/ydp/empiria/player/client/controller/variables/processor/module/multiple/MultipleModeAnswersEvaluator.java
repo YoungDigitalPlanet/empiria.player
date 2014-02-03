@@ -14,21 +14,21 @@ import eu.ydp.gwtutil.client.collections.CollectionsUtil;
 public class MultipleModeAnswersEvaluator {
 
 	private static final Logger LOGGER = Logger.getLogger(MultipleModeAnswersEvaluator.class.getName());
-	
+
 	public List<Boolean> evaluateAnswers(Response response) {
 		Evaluate evaluate = response.evaluate;
 		List<Boolean> answersEvaluation;
-		
-		if(evaluate == Evaluate.CORRECT){
+
+		if (evaluate == Evaluate.CORRECT) {
 			answersEvaluation = evaluateCorrectAnswers(response.values, response.correctAnswers);
-		}else if( (evaluate == Evaluate.USER) || (evaluate == Evaluate.DEFAULT) ){
+		} else if ((evaluate == Evaluate.USER) || (evaluate == Evaluate.DEFAULT)) {
 			answersEvaluation = evaluateUserAnswers(response.values, response.correctAnswers);
-		}else{
-			String message = "Unsupported answers evaluation mode: " + evaluate+", "+Evaluate.DEFAULT+" will be used!";
+		} else {
+			String message = "Unsupported answers evaluation mode: " + evaluate + ", " + Evaluate.DEFAULT + " will be used!";
 			LOGGER.warning(message);
 			answersEvaluation = evaluateUserAnswers(response.values, response.correctAnswers);
 		}
-		
+
 		return answersEvaluation;
 	}
 
@@ -40,7 +40,7 @@ public class MultipleModeAnswersEvaluator {
 		}
 		return userAnswersEvaluation;
 	}
-	
+
 	private List<Boolean> evaluateCorrectAnswers(List<String> userAnswers, CorrectAnswers correctAnswers) {
 		List<Boolean> correctAnswersEvaluation = Lists.newArrayList();
 		for (ResponseValue correctAnswerResponseValue : correctAnswers.getAllResponsValues()) {
@@ -55,5 +55,5 @@ public class MultipleModeAnswersEvaluator {
 		boolean isAnyUserAnswerFitting = CollectionsUtil.containsAnyOfElements(userAnswers, responseAnswers);
 		return isAnyUserAnswerFitting;
 	}
-	
+
 }

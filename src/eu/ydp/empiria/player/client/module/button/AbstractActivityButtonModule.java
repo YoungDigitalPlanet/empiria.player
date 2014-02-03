@@ -67,7 +67,7 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 	protected void updateStyleName() {
 		final String currentStyleName = getCurrentStyleName();
 		button.setStyleName(currentStyleName);
-		if(isPreviewMode){
+		if (isPreviewMode) {
 			final String qp_MODULE_MODE_PREVIEW = styleNameConstants.QP_MODULE_MODE_PREVIEW();
 			button.addStyleName(qp_MODULE_MODE_PREVIEW);
 		}

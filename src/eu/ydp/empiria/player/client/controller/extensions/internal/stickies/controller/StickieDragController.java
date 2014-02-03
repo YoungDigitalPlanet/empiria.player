@@ -8,13 +8,13 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.pres
 import eu.ydp.gwtutil.client.geom.Point;
 
 public class StickieDragController {
-	
+
 	private final IStickiePresenter stickiePresenter;
 	private final IStickieProperties stickieProperties;
 	private boolean dragging = false;
 	private Point<Integer> dragInitMousePosition;
 	private Point<Integer> dragInitViewPosition;
-	
+
 	@Inject
 	public StickieDragController(@Assisted IStickiePresenter stickiePresenter, @Assisted IStickieProperties stickieProperties) {
 		this.stickiePresenter = stickiePresenter;
@@ -31,9 +31,9 @@ public class StickieDragController {
 		if (dragging) {
 			int xMoveDistance = point.getX() - dragInitMousePosition.getX();
 			int yMoveDistance = point.getY() - dragInitMousePosition.getY();
-			
-			int newLeft = (int) (dragInitViewPosition.getX() + xMoveDistance);
-			int newTop = (int) (dragInitViewPosition.getY() + yMoveDistance);
+
+			int newLeft = dragInitViewPosition.getX() + xMoveDistance;
+			int newTop = dragInitViewPosition.getY() + yMoveDistance;
 
 			Point<Integer> newPosition = new Point<Integer>(newLeft, newTop);
 			stickiePresenter.moveStickieToPosition(newPosition);
@@ -43,5 +43,5 @@ public class StickieDragController {
 	public void dragEnd() {
 		dragging = false;
 	}
-	
+
 }

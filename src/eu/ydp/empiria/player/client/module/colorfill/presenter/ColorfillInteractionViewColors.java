@@ -13,12 +13,13 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ColorfillInteractionViewColors {
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private ColorfillInteractionView interactionView;
-	
-	public Map<Area, ColorModel> getColors(List<Area> areas){
+
+	public Map<Area, ColorModel> getColors(List<Area> areas) {
 		Map<Area, ColorModel> colors = Maps.newHashMap();
-		for (Area area : areas){
+		for (Area area : areas) {
 			ColorModel color = interactionView.getColor(area);
 			colors.put(area, color);
 		}

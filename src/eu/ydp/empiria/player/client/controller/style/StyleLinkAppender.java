@@ -7,12 +7,12 @@ public class StyleLinkAppender {
 	}
 
 	private native void appendStyleLinkNative(String link) /*-{
-		var headID = $wnd.document.getElementsByTagName("head")[0];
-		var cssNode = $wnd.document.createElement('link');
-		cssNode.type = 'text/css';
-		cssNode.rel = 'stylesheet';
-		cssNode.href = link;
-		cssNode.media = 'screen';
-		headID.appendChild(cssNode);
-	}-*/;
+															var headID = $wnd.document.getElementsByTagName("head")[0];
+															var cssNode = $wnd.document.createElement('link');
+															cssNode.type = 'text/css';
+															cssNode.rel = 'stylesheet';
+															cssNode.href = link;
+															cssNode.media = 'screen';
+															headID.appendChild(cssNode);
+															}-*/;
 }

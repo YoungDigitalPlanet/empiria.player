@@ -14,8 +14,7 @@ public class VideoPresenter {
 	private final VideoPlayerBuilder videoPlayerBuilder;
 
 	@Inject
-	public VideoPresenter(@ModuleScoped VideoView view, @ModuleScoped VideoPlayerBuilder videoPlayerAttacher,
-			@ModuleScoped VideoPlayerReattacher reAttachHack) {
+	public VideoPresenter(@ModuleScoped VideoView view, @ModuleScoped VideoPlayerBuilder videoPlayerAttacher, @ModuleScoped VideoPlayerReattacher reAttachHack) {
 		this.view = view;
 		this.videoPlayerBuilder = videoPlayerAttacher;
 		this.reAttachHack = reAttachHack;

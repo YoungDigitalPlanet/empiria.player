@@ -20,21 +20,21 @@ public class ModuleProcessingResultExtractingFunctions {
 			return processingResult.getUserInteractionVariables().getMistakes();
 		}
 	};
-	
+
 	private final Function<DtoModuleProcessingResult, Integer> extractErrorsFunction = new Function<DtoModuleProcessingResult, Integer>() {
 		@Override
 		public Integer apply(DtoModuleProcessingResult processingResult) {
 			return processingResult.getGeneralVariables().getErrors();
 		}
 	};
-	
+
 	private final Function<DtoModuleProcessingResult, Integer> extractDoneFunction = new Function<DtoModuleProcessingResult, Integer>() {
 		@Override
 		public Integer apply(DtoModuleProcessingResult processingResult) {
 			return processingResult.getGeneralVariables().getDone();
 		}
 	};
-	
+
 	private final Function<DtoModuleProcessingResult, LastMistaken> extractLastMistakenFunction = new Function<DtoModuleProcessingResult, LastMistaken>() {
 		@Override
 		public LastMistaken apply(DtoModuleProcessingResult processingResult) {
@@ -61,5 +61,5 @@ public class ModuleProcessingResultExtractingFunctions {
 	public Function<DtoModuleProcessingResult, LastMistaken> getExtractLastMistakenFunction() {
 		return extractLastMistakenFunction;
 	}
-	
+
 }

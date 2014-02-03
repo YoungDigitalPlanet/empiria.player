@@ -11,7 +11,7 @@ public class PostConstructInvoker implements InjectionListener {
 	public void afterInjection(Object injectee) {
 		try {
 			Method[] methods = injectee.getClass().getMethods();
-			for(Method method:methods){
+			for (Method method : methods) {
 				if (method.isAnnotationPresent(PostConstruct.class)) {
 					method.invoke(injectee);
 				}

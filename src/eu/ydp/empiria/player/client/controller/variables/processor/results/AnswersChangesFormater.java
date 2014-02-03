@@ -10,14 +10,14 @@ public class AnswersChangesFormater {
 
 	public static final String ADDED_ASWER_PREFIX = "+";
 	public static final String REMOVED_ASWER_PREFIX = "-";
-	
-	public List<String> formatLastAnswerChanges(LastAnswersChanges answersChanges){
+
+	public List<String> formatLastAnswerChanges(LastAnswersChanges answersChanges) {
 		List<String> addedAnswers = answersChanges.getAddedAnswers();
 		List<String> removedAnswers = answersChanges.getRemovedAnswers();
-		
+
 		List<String> formattedAddedAnswers = formatAnswersByAddingPrefix(addedAnswers, ADDED_ASWER_PREFIX);
 		List<String> formattedRemovedAnswers = formatAnswersByAddingPrefix(removedAnswers, REMOVED_ASWER_PREFIX);
-		
+
 		List<String> formattedAnswers = Lists.newArrayList();
 		formattedAnswers.addAll(formattedAddedAnswers);
 		formattedAnswers.addAll(formattedRemovedAnswers);
@@ -33,5 +33,5 @@ public class AnswersChangesFormater {
 		}
 		return formattedAnswers;
 	}
-	
+
 }

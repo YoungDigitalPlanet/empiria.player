@@ -11,6 +11,6 @@ public interface TutorPopupViewWidget extends IsWidget {
 	void addWidget(TutorPopupViewPersonaView personaView);
 
 	List<Widget> getAllWidgets();
-	
+
 	Widget getCloseButton();
 }

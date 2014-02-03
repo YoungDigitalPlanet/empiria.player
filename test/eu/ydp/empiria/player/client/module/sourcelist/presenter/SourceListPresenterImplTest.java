@@ -3,12 +3,7 @@ package eu.ydp.empiria.player.client.module.sourcelist.presenter;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +32,14 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 @RunWith(MockitoJUnitRunner.class)
 public class SourceListPresenterImplTest {
 
-	@Mock private SourceListView view;
-	@Mock private SourcelistManager sourcelistManager;
-	@Mock private OverlayTypesParser overlayTypesParser;
-	@Mock private DragDataObject dragDataObject;
+	@Mock
+	private SourceListView view;
+	@Mock
+	private SourcelistManager sourcelistManager;
+	@Mock
+	private OverlayTypesParser overlayTypesParser;
+	@Mock
+	private DragDataObject dragDataObject;
 	private final int imagesWidth = 400;
 	private final int imagesHeight = 300;
 
@@ -65,21 +64,20 @@ public class SourceListPresenterImplTest {
 
 	@Test
 	public void testCreateAndBindUi() throws Exception {
-		List<String> allItems = Lists.newArrayList("a","b","c","d","e","f");
+		List<String> allItems = Lists.newArrayList("a", "b", "c", "d", "e", "f");
 		SourceListBean bean = mock(SourceListBean.class);
 		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
 		sourceListPresenterImpl.setBean(bean);
 		sourceListPresenterImpl.createAndBindUi();
 
-		for(String id : allItems){
-			verify(view).createItem(eq(new SourcelistItemValue(SourcelistItemType.TEXT, id, id+id)));
+		for (String id : allItems) {
+			verify(view).createItem(eq(new SourcelistItemValue(SourcelistItemType.TEXT, id, id + id)));
 		}
 
 		verify(view).createAndBindUi();
 		verify(view).setSourceListPresenter(eq(sourceListPresenterImpl));
 		verifyNoMoreInteractions(view);
 	}
-
 
 	@Test
 	public void testGetItemValue() throws Exception {
@@ -98,7 +96,6 @@ public class SourceListPresenterImplTest {
 		sourceListPresenterImpl.useItem(itemId);
 		verify(view).hideItem(eq(itemId));
 	}
-
 
 	@Test
 	public void testUseItemNotMoveElements() throws Exception {
@@ -133,19 +130,19 @@ public class SourceListPresenterImplTest {
 		allEvents.remove(DragDropEventTypes.DRAG_START);
 		allEvents.remove(DragDropEventTypes.DRAG_END);
 
-		for(DragDropEventTypes event: allEvents){
+		for (DragDropEventTypes event : allEvents) {
 			sourceListPresenterImpl.onDragEvent(event, itemId);
 		}
 		verifyNoMoreInteractions(sourcelistManager);
 	}
 
-	private List<SimpleSourceListItemBean> getBeanItems(List<String> itemIds){
+	private List<SimpleSourceListItemBean> getBeanItems(List<String> itemIds) {
 		return Lists.transform(itemIds, new Function<String, SimpleSourceListItemBean>() {
 			@Override
 			public SimpleSourceListItemBean apply(String id) {
 				SimpleSourceListItemBean bean = mock(SimpleSourceListItemBean.class);
 				doReturn(id).when(bean).getAlt();
-				doReturn(new SourcelistItemValue(SourcelistItemType.TEXT, id, id+id)).when(bean).getItemValue();
+				doReturn(new SourcelistItemValue(SourcelistItemType.TEXT, id, id + id)).when(bean).getItemValue();
 				return bean;
 			}
 		});
@@ -153,19 +150,19 @@ public class SourceListPresenterImplTest {
 
 	@Test
 	public void testUseAndRestockItems() throws Exception {
-		List<String> allItems = Lists.newArrayList("a","b","c","d","e","f");
-		List<String> toUseItems = Lists.newArrayList("a","b","c","d");
+		List<String> allItems = Lists.newArrayList("a", "b", "c", "d", "e", "f");
+		List<String> toUseItems = Lists.newArrayList("a", "b", "c", "d");
 		SourceListBean bean = mock(SourceListBean.class);
 		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
 		doReturn(true).when(bean).isMoveElements();
 		sourceListPresenterImpl.setBean(bean);
 
 		sourceListPresenterImpl.useAndRestockItems(toUseItems);
-		for(String id : allItems){
+		for (String id : allItems) {
 			verify(view).showItem(eq(id));
 		}
 
-		for(String id : toUseItems){
+		for (String id : toUseItems) {
 			verify(view).hideItem(eq(id));
 		}
 		verifyNoMoreInteractions(view);
@@ -176,34 +173,34 @@ public class SourceListPresenterImplTest {
 	public void testOnDropEvent() throws Exception {
 		String itemId = "id";
 		String moduleId = "mId";
-		sourceListPresenterImpl.onDropEvent(itemId,moduleId);
+		sourceListPresenterImpl.onDropEvent(itemId, moduleId);
 		verify(sourcelistManager).dragEndSourcelist(eq(itemId), eq(moduleId));
 	}
 
 	@Test
 	public void testLockSourceList() throws Exception {
-		List<String> allItems = Lists.newArrayList("a","b","c","d","e","f");
+		List<String> allItems = Lists.newArrayList("a", "b", "c", "d", "e", "f");
 		SourceListBean bean = mock(SourceListBean.class);
 		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
 		sourceListPresenterImpl.setBean(bean);
 
-		//when
+		// when
 		sourceListPresenterImpl.lockSourceList();
 		verify(view).lockForDragDrop();
-		for(String id : allItems){
+		for (String id : allItems) {
 			verify(view).lockItemForDragDrop(eq(id));
 		}
 	}
 
 	@Test
 	public void testUnlockSourceList() throws Exception {
-		List<String> allItems = Lists.newArrayList("a","b","c","d","e","f");
+		List<String> allItems = Lists.newArrayList("a", "b", "c", "d", "e", "f");
 		SourceListBean bean = mock(SourceListBean.class);
 		doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
 		sourceListPresenterImpl.setBean(bean);
 
 		sourceListPresenterImpl.unlockSourceList();
-		for(String id : allItems){
+		for (String id : allItems) {
 			verify(view).unlockItemForDragDrop(eq(id));
 		}
 

@@ -13,11 +13,11 @@ import eu.ydp.empiria.player.client.util.events.fullscreen.FullScreenEventHandle
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 
-public class PicturePlayerFullScreenMediaButon extends FullScreenMediaButton<PicturePlayerFullScreenMediaButon> implements MediaEventHandler, FullScreenEventHandler {
+public class PicturePlayerFullScreenMediaButon extends FullScreenMediaButton<PicturePlayerFullScreenMediaButon> implements MediaEventHandler,
+		FullScreenEventHandler {
 
 	String imageUrl = null;
 	String title = null;
-
 
 	@Inject
 	private LightBox2 lightBox;
@@ -31,7 +31,7 @@ public class PicturePlayerFullScreenMediaButon extends FullScreenMediaButton<Pic
 	}
 
 	@PostConstruct
-	public void postConstruct(){
+	public void postConstruct() {
 		lightBox.addFullScreenEventHandler(this);
 	}
 
@@ -50,7 +50,7 @@ public class PicturePlayerFullScreenMediaButon extends FullScreenMediaButton<Pic
 		return true;
 	}
 
-	public static boolean isSupported(Element element){
+	public static boolean isSupported(Element element) {
 		return element.hasAttribute("srcFullScreen") && !element.getAttribute("srcFullScreen").trim().isEmpty();
 	}
 

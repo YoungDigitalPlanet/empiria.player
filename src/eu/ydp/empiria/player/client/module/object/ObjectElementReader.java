@@ -39,10 +39,10 @@ public class ObjectElementReader {
 
 		return builder.toString();
 	}
-	
+
 	public Element getDefaultTemplate(final Element element) {
 		final NodeList templateNodes = element.getElementsByTagName(TEMPLATE_TAG_NAME);
-		
+
 		for (int i = 0; i < templateNodes.getLength(); i++) {
 			final Element node = (Element) templateNodes.item(i);
 			final String templateType = XMLUtils.getAttributeAsString(node, TYPE_ATTRIBUTE_NAME, DEFAULT_TEMPLATE_VALUE);
@@ -50,13 +50,13 @@ public class ObjectElementReader {
 				return node;
 			}
 		}
-		
+
 		return null;
 	}
 
 	public Element getFullscreenTemplate(Element element) {
 		final NodeList templateNodes = element.getElementsByTagName(TEMPLATE_TAG_NAME);
-		
+
 		for (int i = 0; i < templateNodes.getLength(); i++) {
 			final Element node = (Element) templateNodes.item(i);
 			final String templateType = XMLUtils.getAttributeAsString(node, TYPE_ATTRIBUTE_NAME, DEFAULT_TEMPLATE_VALUE);
@@ -64,7 +64,7 @@ public class ObjectElementReader {
 				return node;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -87,10 +87,9 @@ public class ObjectElementReader {
 			return result;
 		}
 	}
-	
+
 	public String getPoster(Element element) {
 		return XMLUtils.getAttributeAsString(element, POSTER_ATTRIBUTE_NAME);
 	}
-	
 
 }

@@ -11,12 +11,12 @@ public class SimulationPreloader implements IsWidget {
 	@Inject
 	private Preloader preloader;
 
-	public void hidePreloaderAndRemoveFromParent(){
+	public void hidePreloaderAndRemoveFromParent() {
 		preloader.hide();
 		preloader.asWidget().removeFromParent();
 	}
 
-	public void show(int preloaderWidth, int preloaderHeight){
+	public void show(int preloaderWidth, int preloaderHeight) {
 		preloader.setPreloaderSize(preloaderWidth, preloaderHeight);
 		preloader.show();
 	}

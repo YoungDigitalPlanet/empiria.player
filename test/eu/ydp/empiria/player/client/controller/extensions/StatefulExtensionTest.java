@@ -13,15 +13,13 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
-
 public class StatefulExtensionTest extends ExtensionTestBase {
-
 
 	protected DeliveryEngine de;
 	protected boolean passed1 = false;
 	protected boolean passed2 = false;
 
-	public void testExtensionState(){
+	public void testExtensionState() {
 
 		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
@@ -43,7 +41,7 @@ public class StatefulExtensionTest extends ExtensionTestBase {
 		assertTrue(passed2);
 	}
 
-	protected void checkSetState(JSONArray newState){
+	protected void checkSetState(JSONArray newState) {
 		assertTrue(newState.isArray() != null);
 		assertEquals(1, newState.isArray().size());
 		assertTrue(newState.isArray().get(0).isString() != null);
@@ -51,12 +49,12 @@ public class StatefulExtensionTest extends ExtensionTestBase {
 		passed1 = true;
 	}
 
-	protected void checkGetState(String stateString){
-		assertTrue( stateString.contains("X78675764320934897982") );
+	protected void checkGetState(String stateString) {
+		assertTrue(stateString.contains("X78675764320934897982"));
 		passed2 = true;
 	}
 
-	protected class MockStatefulExtension extends InternalExtension implements StatefulExtension{
+	protected class MockStatefulExtension extends InternalExtension implements StatefulExtension {
 
 		@Override
 		public void init() {

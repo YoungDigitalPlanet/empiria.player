@@ -14,10 +14,10 @@ public class ProgressBonusConfigModuleScopeProvider implements Provider<Progress
 
 	@Inject
 	private ModuleScopeStack moduleScopeStack;
-	
+
 	@Inject
 	private ProgressBonusService service;
-	
+
 	@Override
 	public ProgressBonusConfig get() {
 		ModuleCreationContext context = moduleScopeStack.getCurrentTopContext();

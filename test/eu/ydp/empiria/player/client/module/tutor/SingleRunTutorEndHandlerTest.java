@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.tutor;
 
-
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
@@ -18,20 +17,20 @@ public class SingleRunTutorEndHandlerTest {
 
 	@InjectMocks
 	private SingleRunTutorEndHandler testObj;
-	
+
 	@Mock
 	private ActionExecutorService executorService;
-	
+
 	@Test
 	public void shouldCallTheEndOnlyOnce() {
 		// given
 		EndHandler mockEndHandler = mock(EndHandler.class);
-		
+
 		// when
 		testObj.setEndHandler(mockEndHandler);
 		testObj.onEnd();
 		testObj.onEnd();
-		
+
 		// then
 		verify(mockEndHandler).onEnd();
 	}
@@ -40,13 +39,13 @@ public class SingleRunTutorEndHandlerTest {
 	public void shouldCallTheEndAfterResettingHandler() {
 		// given
 		EndHandler mockEndHandler = mock(EndHandler.class);
-		
+
 		// when
 		testObj.setEndHandler(mockEndHandler);
 		testObj.onEnd();
 		testObj.setEndHandler(mockEndHandler);
 		testObj.onEnd();
-		
+
 		// then
 		verify(mockEndHandler, times(2)).onEnd();
 	}
@@ -55,7 +54,7 @@ public class SingleRunTutorEndHandlerTest {
 	public void shouldCalltheDefaultAction() {
 		// when
 		testObj.onEndWithDefaultAction();
-		
+
 		// then
 		verify(executorService).execute(ActionType.DEFAULT, testObj);
 	}
@@ -64,11 +63,11 @@ public class SingleRunTutorEndHandlerTest {
 	public void shouldNotCalltheDefaultAction() {
 		// when
 		testObj.onEnd();
-		
+
 		// then
 		verify(executorService, never()).execute(ActionType.DEFAULT, testObj);
 	}
-	
+
 	@Test
 	public void shouldFireOnceWhenTheReferenceIsCircular() {
 		// given
@@ -80,11 +79,11 @@ public class SingleRunTutorEndHandlerTest {
 				return null;
 			}
 		}).when(endHandler).onEnd();
-		
+
 		// when
 		testObj.setEndHandler(endHandler);
 		testObj.onEnd();
-		
+
 		// then
 		verify(endHandler).onEnd();
 	}

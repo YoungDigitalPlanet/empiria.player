@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.textentry.math;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,12 +12,12 @@ import eu.ydp.gwtutil.xml.XMLParser;
 public class MathSubAndSupUtilJUnitTest {
 
 	MathSubAndSupUtil util;
-	
+
 	@Before
 	public void before() {
 		util = new MathSubAndSupUtil();
 	}
-	
+
 	@Test
 	public void shouldDetectMultiscript() {
 

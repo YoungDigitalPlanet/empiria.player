@@ -7,7 +7,7 @@ public class FeedbackInteractionMuteEvent extends FeedbackInteractionEvent {
 
 	protected boolean mute;
 
-	public FeedbackInteractionMuteEvent(boolean mute){
+	public FeedbackInteractionMuteEvent(boolean mute) {
 		this.mute = mute;
 	}
 

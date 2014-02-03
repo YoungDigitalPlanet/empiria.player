@@ -11,10 +11,10 @@ public class PageCountValueHandler implements FieldValueHandler {
 	private DataSourceDataSupplier dataSourceDataSupplier;
 
 	@Inject
-	public PageCountValueHandler(@Assisted DataSourceDataSupplier dataSourceDataSupplier){
+	public PageCountValueHandler(@Assisted DataSourceDataSupplier dataSourceDataSupplier) {
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
 	}
-	
+
 	@Override
 	public String getValue(ContentFieldInfo info, int refItemIndex) {
 		return String.valueOf(dataSourceDataSupplier.getItemsCount());

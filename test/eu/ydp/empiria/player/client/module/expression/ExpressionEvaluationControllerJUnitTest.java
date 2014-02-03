@@ -194,39 +194,31 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase {
 	@Test
 	public void evaluateCommutated_correctFloatingPointDot() {
 		// given
-		List<Response> leftResponses = newArrayList(
-				responsesHelper.getResponse("a", "1.1", "2"), 
-				responsesHelper.getResponse("b", "2", "1.1"));
-		List<Response> rightResponses = newArrayList(
-				responsesHelper.getResponse("c", "6.1", "6.1"), 
-				responsesHelper.getResponse("d", "3", "3"));		
+		List<Response> leftResponses = newArrayList(responsesHelper.getResponse("a", "1.1", "2"), responsesHelper.getResponse("b", "2", "1.1"));
+		List<Response> rightResponses = newArrayList(responsesHelper.getResponse("c", "6.1", "6.1"), responsesHelper.getResponse("d", "3", "3"));
 		ExpressionBean expression = buildCommutatedExpressionBean(leftResponses, rightResponses, "'a'+'b'='c'-'d'");
-		
+
 		// when
 		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);
-		
+
 		// then
 		assertTrue(ExpressionEvaluationResult.CORRECT.equals(result));
-	}	
-	
+	}
+
 	@Test
 	public void evaluateCommutated_correctFloatingPointComma() {
 		// given
-		List<Response> leftResponses = newArrayList(
-				responsesHelper.getResponse("a", "1,1", "2"), 
-				responsesHelper.getResponse("b", "2", "1,1"));
-		List<Response> rightResponses = newArrayList(
-				responsesHelper.getResponse("c", "6,1", "6,1"), 
-				responsesHelper.getResponse("d", "3", "3"));		
+		List<Response> leftResponses = newArrayList(responsesHelper.getResponse("a", "1,1", "2"), responsesHelper.getResponse("b", "2", "1,1"));
+		List<Response> rightResponses = newArrayList(responsesHelper.getResponse("c", "6,1", "6,1"), responsesHelper.getResponse("d", "3", "3"));
 		ExpressionBean expression = buildCommutatedExpressionBean(leftResponses, rightResponses, "'a'+'b'='c'-'d'");
-		
+
 		// when
 		ExpressionEvaluationResult result = expressionEvaluationController.evaluateExpression(expression);
-		
+
 		// then
 		assertTrue(ExpressionEvaluationResult.CORRECT.equals(result));
-	}	
-	
+	}
+
 	@Test
 	public void evaluateCommutated_correctSidesSwitched() {
 		// given
@@ -375,7 +367,7 @@ public class ExpressionEvaluationControllerJUnitTest extends AbstractTestBase {
 
 		// then
 		assertTrue(ExpressionEvaluationResult.WRONG.equals(result));
-	}	
+	}
 
 	@Test
 	public void replacements() {

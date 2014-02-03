@@ -32,12 +32,18 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	interface SourceListViewImplUiBinder extends UiBinder<Widget, SourceListViewImpl> {
 	}
 
-	@Inject private TouchReservationFactory touchReservationFactory;
-	@Inject	private Provider<SourceListViewItem> sourceListViewItemProvider;
-	@Inject	private DragDropHelper dragDropHelper;
-	@Inject	private DragDataObjectFromEventExtractor objectFromEventExtractor;
-	@Inject private UserInteractionHandlerFactory interactionHandlerFactory;
-	@UiField FlowPanelWithDropZone items;
+	@Inject
+	private TouchReservationFactory touchReservationFactory;
+	@Inject
+	private Provider<SourceListViewItem> sourceListViewItemProvider;
+	@Inject
+	private DragDropHelper dragDropHelper;
+	@Inject
+	private DragDataObjectFromEventExtractor objectFromEventExtractor;
+	@Inject
+	private UserInteractionHandlerFactory interactionHandlerFactory;
+	@UiField
+	FlowPanelWithDropZone items;
 
 	private final BiMap<String, SourceListViewItem> itemIdToItemCollection = HashBiMap.create();
 	private SourceListPresenter sourceListPresenter;
@@ -62,7 +68,7 @@ public class SourceListViewImpl extends Composite implements SourceListView {
 	private void disableAutoBehaviorOnSelect() {
 		final EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(new DisableDefaultBehaviorCommand());
 		userOverHandler.apply(this);
-     }
+	}
 
 	private void addDropHandler() {
 		SourceListViewDropHandler dropHandler = new SourceListViewDropHandler(objectFromEventExtractor, sourceListPresenter);

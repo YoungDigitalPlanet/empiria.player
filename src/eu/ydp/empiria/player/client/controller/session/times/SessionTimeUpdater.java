@@ -7,32 +7,32 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class SessionTimeUpdater implements PlayerEventHandler{
+public class SessionTimeUpdater implements PlayerEventHandler {
 
 	private final SessionDataManager sessionDataManager;
 	private Integer currentPageNumber;
-	
+
 	@Inject
 	public SessionTimeUpdater(SessionDataManager sessionDataManager) {
 		this.sessionDataManager = sessionDataManager;
 	}
-	
+
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		if(event.getType() == PlayerEventTypes.PAGE_CHANGE){
+		if (event.getType() == PlayerEventTypes.PAGE_CHANGE) {
 			Integer newPageNumber = (Integer) event.getValue();
-			if(newPageNumber != null){
+			if (newPageNumber != null) {
 				updateSessionTimesWithPageChange(newPageNumber);
 			}
 		}
 	}
-	
+
 	private void updateSessionTimesWithPageChange(int newPageNumber) {
-		if(currentPageNumber != null){
+		if (currentPageNumber != null) {
 			sessionDataManager.endItemSession(currentPageNumber);
 		}
 		sessionDataManager.beginItemSession(newPageNumber);
-		
+
 		currentPageNumber = newPageNumber;
 	}
 }

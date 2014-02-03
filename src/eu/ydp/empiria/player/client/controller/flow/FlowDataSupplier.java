@@ -7,11 +7,18 @@ import eu.ydp.empiria.player.client.controller.communication.PageType;
 public interface FlowDataSupplier {
 
 	FlowOptions getFlowOptions();
+
 	PageType getCurrentPageType();
+
 	int getCurrentPageIndex();
+
 	int getPageCount();
+
 	ActivityMode getActivityMode();
+
 	boolean getFlowFlagCheck();
+
 	boolean getFlowFlagShowAnswers();
+
 	boolean getFlowFlagLock();
 }

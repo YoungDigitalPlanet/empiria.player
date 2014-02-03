@@ -1,12 +1,11 @@
 package eu.ydp.empiria.player.client.controller.item;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -28,17 +27,8 @@ import eu.ydp.gwtutil.xml.XMLParser;
 @RunWith(MockitoJUnitRunner.class)
 public class ItemExpressionParserJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
-	final String xml = "<expressions>" +
-			"<expression mode=\"commutation\">" +
-				"<![CDATA['a'+'b'=6]]>" +
-			"</expression>" +
-			"<expression mode=\"default\">" +
-				"<![CDATA[3'sign'5=15]]>" +
-			"</expression>" +
-			"<expression>" +
-				"<![CDATA[3'sign'5=15]]>" +
-			"</expression>" +
-		"</expressions>";
+	final String xml = "<expressions>" + "<expression mode=\"commutation\">" + "<![CDATA['a'+'b'=6]]>" + "</expression>" + "<expression mode=\"default\">"
+			+ "<![CDATA[3'sign'5=15]]>" + "</expression>" + "<expression>" + "<![CDATA[3'sign'5=15]]>" + "</expression>" + "</expressions>";
 
 	private class CustomGinModule implements Module {
 		@Override
@@ -73,8 +63,8 @@ public class ItemExpressionParserJUnitTest extends AbstractTestBaseWithoutAutoIn
 		instance.parseAndConnectExpressions();
 		verify(document).getElementsByTagName("expressions");
 		NodeListIterable iterator = new NodeListIterable(document.getElementsByTagName("expressions"));
-		for(Node node : iterator){
-			verify(expressionListBuilder).parseAndConnectExpressions(Mockito.eq(node.toString()), Mockito.anyMap());
+		for (Node node : iterator) {
+			verify(expressionListBuilder).parseAndConnectExpressions(Matchers.eq(node.toString()), Matchers.anyMap());
 		}
 
 	}

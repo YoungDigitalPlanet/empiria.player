@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller.variables.processor.item.functio
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
@@ -19,18 +18,13 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
 
-public class EvaluationVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase{
+public class EvaluationVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase {
 
-	
 	@Test
 	public void shouldCorrectlyEvaluateAnswersInEvaluateUserMode() throws Exception {
 		// given
-		Response response = new ResponseBuilder()
-				.withCardinality(Cardinality.MULTIPLE)
-				.withEvaluate(Evaluate.USER)
-				.withCorrectAnswers("correct1", "correct2", "correct3")
-				.withCurrentUserAnswers("correct2", "wrongAnswer", "correct1")
-				.build();
+		Response response = new ResponseBuilder().withCardinality(Cardinality.MULTIPLE).withEvaluate(Evaluate.USER)
+				.withCorrectAnswers("correct1", "correct2", "correct3").withCurrentUserAnswers("correct2", "wrongAnswer", "correct1").build();
 
 		List<Boolean> expectedAnswersEvaluation = Lists.newArrayList(true, false, true);
 
@@ -48,12 +42,8 @@ public class EvaluationVariableProcessorFunctionalJUnitTest extends VariableProc
 	@Test
 	public void shouldCorrectlyEvaluateAnswersInEvaluateCorrectMode() throws Exception {
 		// given
-		Response response = new ResponseBuilder()
-				.withCardinality(Cardinality.MULTIPLE)
-				.withEvaluate(Evaluate.CORRECT)
-				.withCorrectAnswers("correct1", "correct2", "correct3")
-				.withCurrentUserAnswers("wrongAnswer", "correct3", "correct3")
-				.build();
+		Response response = new ResponseBuilder().withCardinality(Cardinality.MULTIPLE).withEvaluate(Evaluate.CORRECT)
+				.withCorrectAnswers("correct1", "correct2", "correct3").withCurrentUserAnswers("wrongAnswer", "correct3", "correct3").build();
 
 		List<Boolean> expectedAnswersEvaluation = Lists.newArrayList(false, false, true);
 
@@ -68,23 +58,15 @@ public class EvaluationVariableProcessorFunctionalJUnitTest extends VariableProc
 		// then
 		assertEquals(expectedAnswersEvaluation, evaluatedAnswer);
 	}
-	
+
 	@Test
 	public void shouldCorrectlyEvaluateForGroupedAnswers() throws Exception {
 		// given
-		Response correctResponse = new ResponseBuilder()
-				.withCardinality(Cardinality.SINGLE)
-				.withCorrectAnswers("correct1")
-				.withCurrentUserAnswers("correct2", "wrongAnswer")
-				.withGroups("group1")
-				.build();
-		
-		Response groupedResponse = new ResponseBuilder()
-				.withIdentifier("groupedResponseId")
-				.withCardinality(Cardinality.SINGLE)
-				.withCorrectAnswers("correct2")
-				.withGroups("group1")
-				.build();
+		Response correctResponse = new ResponseBuilder().withCardinality(Cardinality.SINGLE).withCorrectAnswers("correct1")
+				.withCurrentUserAnswers("correct2", "wrongAnswer").withGroups("group1").build();
+
+		Response groupedResponse = new ResponseBuilder().withIdentifier("groupedResponseId").withCardinality(Cardinality.SINGLE).withCorrectAnswers("correct2")
+				.withGroups("group1").build();
 
 		Map<String, Response> responsesMap = convertToMap(groupedResponse, correctResponse);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -95,5 +77,5 @@ public class EvaluationVariableProcessorFunctionalJUnitTest extends VariableProc
 		// then
 		assertThat(evaluatedAnswer, contains(true, false));
 	}
-	
+
 }

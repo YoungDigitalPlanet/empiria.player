@@ -18,16 +18,16 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
-public class SelectionModuleViewImpl implements SelectionModuleView{
+public class SelectionModuleViewImpl implements SelectionModuleView {
 
-	public SelectionModuleViewImpl() {};
-	
+	public SelectionModuleViewImpl() {
+	};
+
 	@Inject
-	public SelectionModuleViewImpl(
-			SelectionElementGenerator gridElementGenerator) {
+	public SelectionModuleViewImpl(SelectionElementGenerator gridElementGenerator) {
 		this.gridElementGenerator = gridElementGenerator;
 	}
-	
+
 	private SelectionElementGenerator gridElementGenerator;
 
 	private final Map<SelectionGridElementPosition, SelectionButtonGridElement> buttonsGridMap = new HashMap<SelectionGridElementPosition, SelectionButtonGridElement>();
@@ -56,34 +56,34 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	public void setGridSize(int amountOfItems, int amountOfChoices) {
 		selectionGrid.resize(amountOfItems + 1, amountOfChoices + 1);
 	}
-	
+
 	@Override
-	public void setItemDisplayedName(XMLContent itemName, SelectionGridElementPosition position){
+	public void setItemDisplayedName(XMLContent itemName, SelectionGridElementPosition position) {
 		SelectionItemGridElement itemTextGridElement = gridElementGenerator.createItemDisplayElement(itemName.getValue());
 		addToGrid(itemTextGridElement, position);
 	}
 
 	@Override
-	public void setChoiceOptionDisplayedName(XMLContent choiceName, SelectionGridElementPosition position){
+	public void setChoiceOptionDisplayedName(XMLContent choiceName, SelectionGridElementPosition position) {
 		SelectionChoiceGridElement choiseTextGridElement = gridElementGenerator.createChoiceDisplayElement(choiceName.getValue());
 		addToGrid(choiseTextGridElement, position);
 	}
 
 	@Override
-	public void createButtonForItemChoicePair(SelectionGridElementPosition position, String moduleStyleName){
+	public void createButtonForItemChoicePair(SelectionGridElementPosition position, String moduleStyleName) {
 		SelectionButtonGridElement choiceButtonGridElement = gridElementGenerator.createChoiceButtonElement(moduleStyleName);
 		addToGrid(choiceButtonGridElement, position);
 		buttonsGridMap.put(position, choiceButtonGridElement);
 	}
-	
+
 	@Override
-	public void addClickHandlerToButton(SelectionGridElementPosition position, ClickHandler clickHandler){
+	public void addClickHandlerToButton(SelectionGridElementPosition position, ClickHandler clickHandler) {
 		final SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
 		gridElement.addClickHandler(clickHandler);
 	}
 
 	@Override
-	public void selectButton(SelectionGridElementPosition position){
+	public void selectButton(SelectionGridElementPosition position) {
 		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
 		gridElement.select();
 	}
@@ -95,13 +95,13 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	}
 
 	@Override
-	public void lockButton(SelectionGridElementPosition position, boolean lock){
+	public void lockButton(SelectionGridElementPosition position, boolean lock) {
 		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
 		gridElement.setButtonEnabled(!lock);
 	}
 
 	@Override
-	public void updateButtonStyle(SelectionGridElementPosition position, UserAnswerType styleState){
+	public void updateButtonStyle(SelectionGridElementPosition position, UserAnswerType styleState) {
 		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
 		gridElement.updateStyle(styleState);
 	}
@@ -110,7 +110,7 @@ public class SelectionModuleViewImpl implements SelectionModuleView{
 	public Widget asWidget() {
 		return mainPanel;
 	}
-	
+
 	private <V extends SelectionGridElement> void addToGrid(V gridElement, SelectionGridElementPosition position) {
 		selectionGrid.setWidget(position.getRowNumber(), position.getColumnNumber(), gridElement.asWidget());
 	}

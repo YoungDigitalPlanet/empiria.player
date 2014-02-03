@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.canvas.client.Canvas;
@@ -90,7 +91,7 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 
 	private Element createElementMock() {
 		Element element = mock(Element.class);
-		doReturn(URL).when(element).getAttribute(Mockito.anyString());
+		doReturn(URL).when(element).getAttribute(Matchers.anyString());
 		return element;
 	}
 
@@ -111,10 +112,10 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 	@Test
 	public void testInitModuleElement() {
 		instance.initModule(createElementMock());
-		verify(createJsLoader).addManifestLoadHandler(Mockito.any(ManifestLoadHandler.class));
-		verify(createJsLoader).setLibraryURL(Mockito.eq("http://dummyurl/../../../common/jslibs/"));
-		verify(createJsLoader).addCompleteHandler(Mockito.any(CompleteHandler.class));
-		verify(createJsLoader).load(Mockito.eq(URL));
+		verify(createJsLoader).addManifestLoadHandler(Matchers.any(ManifestLoadHandler.class));
+		verify(createJsLoader).setLibraryURL(Matchers.eq("http://dummyurl/../../../common/jslibs/"));
+		verify(createJsLoader).addCompleteHandler(Matchers.any(CompleteHandler.class));
+		verify(createJsLoader).load(Matchers.eq(URL));
 	}
 
 	@Test
@@ -167,8 +168,8 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 		doReturn(height).when(manifest).getHeight();
 
 		instance.onManifestLoad(manifest);
-		verify(moduleView).add(Mockito.eq(preloader));
-		verify(preloader).show(Mockito.eq((int) width), Mockito.eq((int) height));
+		verify(moduleView).add(Matchers.eq(preloader));
+		verify(preloader).show(Matchers.eq((int) width), Matchers.eq((int) height));
 
 	}
 
@@ -177,8 +178,8 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 		Canvas canvas = Mockito.mock(Canvas.class);
 		instance.initializeCanvas(canvas);
 
-		verify(canvas).addTouchStartHandler(Mockito.any(TouchStartHandler.class));
-		verify(instance).addChildView(Mockito.eq(canvas));
+		verify(canvas).addTouchStartHandler(Matchers.any(TouchStartHandler.class));
+		verify(instance).addChildView(Matchers.eq(canvas));
 		verify(preloader).hidePreloaderAndRemoveFromParent();
 
 	}
@@ -216,7 +217,7 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 		instance.initializeCanvas(canvas);
 		PlayerEvent event = new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, 0, null);
 		instance.onPlayerEvent(event);
-		Mockito.verify(simulationController).resumeAnimation(Mockito.any(JavaScriptObject.class));
+		Mockito.verify(simulationController).resumeAnimation(Matchers.any(JavaScriptObject.class));
 	}
 
 	@Test
@@ -226,6 +227,6 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 		instance.initializeCanvas(canvas);
 		PlayerEvent event = new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, 1, null);
 		instance.onPlayerEvent(event);
-		Mockito.verify(simulationController).pauseAnimation(Mockito.any(JavaScriptObject.class));
+		Mockito.verify(simulationController).pauseAnimation(Matchers.any(JavaScriptObject.class));
 	}
 }

@@ -12,16 +12,16 @@ public class ImageBonus implements BonusWithAsset {
 	private BonusPopupPresenter presenter;
 	@Inject
 	private EmpiriaPaths empiriaPaths;
-	
+
 	private String url;
 	private Size size;
-	
+
 	@Override
-	public void setAsset(String url, Size size){
+	public void setAsset(String url, Size size) {
 		this.url = empiriaPaths.getCommonsFilePath(url);
 		this.size = size;
 	}
-	
+
 	@Override
 	public void execute() {
 		presenter.showImage(url, size);

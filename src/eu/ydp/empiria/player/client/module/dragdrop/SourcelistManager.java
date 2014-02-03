@@ -17,8 +17,8 @@ public interface SourcelistManager {
 	SourcelistItemValue getValue(String itemId, String targetModuleId);
 
 	void onUserValueChanged();
-	
+
 	void lockGroup(String clientId);
-	
+
 	void unlockGroup(String clientId);
 }

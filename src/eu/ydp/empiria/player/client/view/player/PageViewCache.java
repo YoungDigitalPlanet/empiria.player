@@ -11,6 +11,7 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 public class PageViewCache extends AbstractElementCache<KeyValue<PageViewSocket, PageContentView>> {
 	@Inject
 	protected MultiPageController multiPageView;
+
 	@Override
 	protected KeyValue<PageViewSocket, PageContentView> getElement(Integer index) {
 		PageContentView view = new PageContentView(multiPageView.getViewForPage(index));

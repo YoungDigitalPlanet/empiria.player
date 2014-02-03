@@ -3,11 +3,10 @@ package eu.ydp.empiria.player;
 import java.util.Collection;
 import java.util.Set;
 
-import junit.framework.Test;
 import junit.framework.TestSuite;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.AllTests;
-
 import org.reflections.Reflections;
 import org.reflections.Store;
 import org.reflections.scanners.SubTypesScanner;
@@ -28,6 +27,7 @@ public class GWTTestCaseSuite extends GWTTestSuite {
 
 	/**
 	 * create suite for junit
+	 * 
 	 * @return
 	 */
 	public static TestSuite suite() {
@@ -37,7 +37,7 @@ public class GWTTestCaseSuite extends GWTTestSuite {
 		}
 		return suite;
 	}
-	
+
 	public static Set<Class<? extends GWTTestCase>> getTestClasses() {
 		return Sets.filter(getAllTestClasses(), unsupportedClazzFilter);
 	}
@@ -47,14 +47,14 @@ public class GWTTestCaseSuite extends GWTTestSuite {
 		Collection<String> classNames = getGwtTestCaseClassNames(reflections);
 		return convertClassNamesToClass(classNames);
 	}
-	
+
 	private static Reflections createReflectionsForGwtTestCase() {
 		ConfigurationBuilder inputFilterByName = new ConfigurationBuilder();
 		inputFilterByName.setUrls(ClasspathHelper.forPackage("eu.ydp.empiria"));
-		inputFilterByName.setScanners(new GwtTestCaseScanner(),	new SubTypesScanner());
+		inputFilterByName.setScanners(new GwtTestCaseScanner(), new SubTypesScanner());
 		return new Reflections(inputFilterByName);
 	}
-	
+
 	private static Collection<String> getGwtTestCaseClassNames(final Reflections reflections) {
 		Store store = reflections.getStore();
 		Multimap<String, String> multimap = store.get(GwtTestCaseScanner.class);

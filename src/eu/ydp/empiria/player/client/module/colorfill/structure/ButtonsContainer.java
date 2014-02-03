@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "buttons")
 public class ButtonsContainer {
-	
-	@XmlElement(name="button")
+
+	@XmlElement(name = "button")
 	private List<ColorButton> buttons;
-	
-	@XmlElement(name="eraserButton")
+
+	@XmlElement(name = "eraserButton")
 	private EraserButton eraserButton;
 
 	public List<ColorButton> getButtons() {
@@ -32,5 +32,5 @@ public class ButtonsContainer {
 	public void setEraserButton(EraserButton eraserButton) {
 		this.eraserButton = eraserButton;
 	}
-	
+
 }

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.object;
 
-import static eu.ydp.empiria.player.client.util.SourceUtil.*;
+import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
 
 import java.util.Map;
 
@@ -96,16 +96,16 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 		} else {
 			int width = elementReader.getWidthOrDefault(element, DEFAULT_WIDTH);
 			int height = elementReader.getHeightOrDefault(element, DEFAULT_HEIGHT);
-			
+
 			String poster = elementReader.getPoster(element);
-			
+
 			final MediaWrapperHandler callbackHandler = new MediaWrapperHandler(this);
 			final String narrationText = elementReader.getNarrationText(element);
 			BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width,
 					defaultTemplate != null && !"native".equals(playerSkin), fullScreenTemplate != null, narrationText);
-			
+
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
-			
+
 			ObjectModuleView moduleView = new ObjectModuleView();
 			String cls = element.getAttribute("class");
 			if (cls != null && !"".equals(cls)) {

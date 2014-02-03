@@ -16,11 +16,11 @@ public class JsPoint extends JavaScriptObject {
 	}
 
 	public final native int getX()/*-{
-		return this.x;
-	}-*/;
+									return this.x;
+									}-*/;
 
 	public final native int getY()/*-{
-		return this.y;
-	}-*/;
+									return this.y;
+									}-*/;
 
 }

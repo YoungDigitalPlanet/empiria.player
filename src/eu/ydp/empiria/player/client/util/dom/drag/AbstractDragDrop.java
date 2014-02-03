@@ -4,13 +4,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 public abstract class AbstractDragDrop<W extends Widget> {
 
-	protected void addStyleForWidget(String style,boolean disabled) {
+	protected void addStyleForWidget(String style, boolean disabled) {
 		if (!disabled) {
 			getOriginalWidget().addStyleName(style);
 		}
 	}
 
-	protected void removeStyleForWidget(String style,boolean disabled) {
+	protected void removeStyleForWidget(String style, boolean disabled) {
 		if (!disabled) {
 			getOriginalWidget().removeStyleName(style);
 		}

@@ -25,22 +25,20 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 	private FeedbackPropertiesCollector propertiesCollector;
 
 	private FeedbackPropertiesCollectorTestHelper helper;
-	
+
 	private ModuleInfo[] moduleInfos;
-	
+
 	@Before
-	public void initialize(){
+	public void initialize() {
 		helper = new FeedbackPropertiesCollectorTestHelper();
 	}
-	
+
 	@Test
 	public void shouldCollectPropertiesFromSingleModule() {
-		moduleInfos = new ModuleInfo[] { 
-								ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setTodo(2).setDone(1).setErrors(0),
-								ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(1).setDone(2).setErrors(0),
-								ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(1).setDone(2).setErrors(0) 
-							};
-		
+		moduleInfos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setTodo(2).setDone(1).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(1).setDone(2).setErrors(0),
+				ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(1).setDone(2).setErrors(0) };
+
 		initializeModules();
 		FeedbackProperties sourceProperties = propertiesCollector.collect(helper.getSender(), helper.getSender());
 
@@ -51,17 +49,15 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 		assertThat(sourceProperties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(false)));
 		assertThat(sourceProperties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(50.0)));
 	}
-	
+
 	@Test
-	public void shouldCollectContainerProperties(){
-		moduleInfos = new ModuleInfo[] { 
-								ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setTodo(2).setDone(1).setErrors(0),
-								ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(3).setDone(2).setErrors(1),
-								ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(4).setDone(2).setErrors(1) 
-							};
+	public void shouldCollectContainerProperties() {
+		moduleInfos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setTodo(2).setDone(1).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(3).setDone(2).setErrors(1),
+				ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(4).setDone(2).setErrors(1) };
 		initializeModules();
 		FeedbackProperties properties = propertiesCollector.collect(helper.getContainer(), helper.getSender());
-		
+
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.OK), is(equalTo(true)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.DONE), is(equalTo(5)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(9)));
@@ -69,17 +65,15 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(false)));
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(56.0)));
 	}
-	
+
 	@Test
-	public void shouldCollectContainerPropertiesWhen_isAllOk(){
-		moduleInfos = new ModuleInfo[] { 
-								ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(2).setDone(2).setErrors(0),
-								ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(3).setDone(3).setErrors(0),
-								ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(4).setDone(4).setErrors(0) 
-							};
+	public void shouldCollectContainerPropertiesWhen_isAllOk() {
+		moduleInfos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(2).setDone(2).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(3).setDone(3).setErrors(0),
+				ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(4).setDone(4).setErrors(0) };
 		initializeModules();
 		FeedbackProperties properties = propertiesCollector.collect(helper.getContainer(), helper.getSender());
-		
+
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.OK), is(equalTo(false)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.DONE), is(equalTo(9)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(9)));
@@ -87,17 +81,15 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(true)));
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(100.0)));
 	}
-	
+
 	@Test
-	public void shouldCollectContainerPropertiesWhen_allAreDoneWithErrors(){
-		moduleInfos = new ModuleInfo[] { 
-								ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(2).setDone(2).setErrors(0),
-								ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(3).setDone(3).setErrors(0),
-								ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(4).setDone(4).setErrors(1) 
-							};
+	public void shouldCollectContainerPropertiesWhen_allAreDoneWithErrors() {
+		moduleInfos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(2).setDone(2).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(3).setDone(3).setErrors(0),
+				ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(4).setDone(4).setErrors(1) };
 		initializeModules();
 		FeedbackProperties properties = propertiesCollector.collect(helper.getContainer(), helper.getSender());
-		
+
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.OK), is(equalTo(false)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.DONE), is(equalTo(9)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(9)));
@@ -105,38 +97,32 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(false)));
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(100.0)));
 	}
-	
+
 	@Test
-	public void shouldReturnCorrectResultWhen_calledMoreThanOnce(){
-		moduleInfos = new ModuleInfo[] { 
-				ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(2).setDone(1).setErrors(0)
-			};
-		
+	public void shouldReturnCorrectResultWhen_calledMoreThanOnce() {
+		moduleInfos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(2).setDone(1).setErrors(0) };
+
 		initializeModules();
 		FeedbackProperties properties = propertiesCollector.collect(helper.getSender(), helper.getSender());
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(50.0)));
-		
-		moduleInfos = new ModuleInfo[] { 
-				ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(3).setDone(1).setErrors(0)
-			};
-		
+
+		moduleInfos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(3).setDone(1).setErrors(0) };
+
 		helper.createHierarchy(moduleInfos);
 		propertiesCollector.setVariables(helper.getVariables());
 		properties = propertiesCollector.collect(helper.getSender(), helper.getSender());
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(33.0)));
 	}
-	
+
 	@Test
-	public void shouldReturnCorrectChildrenPropertiesWhen_parentIsMathModule(){
-		moduleInfos = new ModuleInfo[] { 
-				ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(2).setDone(2).setErrors(0),
+	public void shouldReturnCorrectChildrenPropertiesWhen_parentIsMathModule() {
+		moduleInfos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(WRONG).setTodo(2).setDone(2).setErrors(0),
 				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(3).setDone(3).setErrors(0),
-				ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(4).setDone(4).setErrors(1) 
-			};
-		
+				ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(4).setDone(4).setErrors(1) };
+
 		initializeModules(MathModule.class);
 		FeedbackProperties properties = propertiesCollector.collect(helper.getContainer(), helper.getSender());
-		
+
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.OK), is(equalTo(false)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.DONE), is(equalTo(9)));
 		assertThat(properties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(9)));
@@ -144,17 +130,17 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 		assertThat(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(false)));
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(100.0)));
 	}
-	
-	private void initializeModules(Class<? extends IContainerModule> ModuleClass){
+
+	private void initializeModules(Class<? extends IContainerModule> ModuleClass) {
 		helper.createHierarchy(moduleInfos, ModuleClass);
 		initializeproperties();
 	}
-	
-	private void initializeModules(){
+
+	private void initializeModules() {
 		helper.createHierarchy(moduleInfos);
 		initializeproperties();
 	}
-	
+
 	private void initializeproperties() {
 		propertiesCollector = injector.getInstance(FeedbackPropertiesCollector.class);
 		propertiesCollector.setVariables(helper.getVariables());

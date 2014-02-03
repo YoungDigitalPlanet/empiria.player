@@ -2,9 +2,7 @@ package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,15 +28,23 @@ import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TutorPopupViewImplTest {
-	@Mock private Provider<TutorPopupViewPersonaView> personasViewProvider;
-	@Mock private TutorPopupViewWidget popupViewWidget;
-	@Mock private RootPanelDelegate rootPanelDelegate;
-	@Mock private final StyleNameConstants styleNameConstants = GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
-	@Mock private RootPanel rootPanel;
-	@Mock private UserInteractionHandlerFactory userInteractionHandlerFactory;
-	@Captor private ArgumentCaptor<Command> commandCaptor;
+	@Mock
+	private Provider<TutorPopupViewPersonaView> personasViewProvider;
+	@Mock
+	private TutorPopupViewWidget popupViewWidget;
+	@Mock
+	private RootPanelDelegate rootPanelDelegate;
+	@Mock
+	private final StyleNameConstants styleNameConstants = GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
+	@Mock
+	private RootPanel rootPanel;
+	@Mock
+	private UserInteractionHandlerFactory userInteractionHandlerFactory;
+	@Captor
+	private ArgumentCaptor<Command> commandCaptor;
 
-	@InjectMocks private TutorPopupViewImpl instance;
+	@InjectMocks
+	private TutorPopupViewImpl instance;
 
 	@BeforeClass
 	public static void disarm() {
@@ -66,14 +72,13 @@ public class TutorPopupViewImplTest {
 		verify(popupViewWidget).addWidget(eq(personasViewProvider.get()));
 	}
 
-
-	@Test(expected=NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void setSelectedWithoutInitialization() throws Exception {
 		instance.setSelected(3);
 	}
 
 	@Test
-	public void setSelected(){
+	public void setSelected() {
 		String avatarUrl = "http://dummy.com";
 		PersonaViewDto personaViewDto = new PersonaViewDto(0, avatarUrl);
 		instance.addPersona(personaViewDto);
@@ -96,7 +101,6 @@ public class TutorPopupViewImplTest {
 		verify(rootPanel).remove(eq(popupViewWidget));
 	}
 
-
 	@Test
 	public void addClickHandlerToPersona() throws Exception {
 		String avatarUrl = "http://dummy.com";
@@ -106,7 +110,7 @@ public class TutorPopupViewImplTest {
 		Widget widget = mock(Widget.class);
 		doReturn(widget).when(popupViewWidget).getWidget(eq(0));
 
-		//test
+		// test
 		instance.addClickHandlerToPersona(clickCommand, 0);
 		verify(userInteractionHandlerFactory).applyUserClickHandler(eq(clickCommand), eq(widget));
 	}

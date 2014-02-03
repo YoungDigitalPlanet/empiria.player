@@ -23,26 +23,27 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	private static ColorfillViewWidgetUiBinder uiBinder = GWT.create(ColorfillViewWidgetUiBinder.class);
 
 	@UiTemplate("ColorfillView.ui.xml")
-	interface ColorfillViewWidgetUiBinder extends UiBinder<Widget, ColorfillViewImpl> {}
+	interface ColorfillViewWidgetUiBinder extends UiBinder<Widget, ColorfillViewImpl> {
+	}
 
 	@UiField
 	FlowPanel container;
-	
+
 	@UiField(provided = true)
 	ColorfillCanvas canvas;
-	
+
 	@UiField(provided = true)
 	ColorfillPalette palette;
-	
+
 	@UiField
 	AbsolutePanel imageContainer;
-	
+
 	@UiField(provided = true)
 	ColorfillCorrectImage correctImageCanvas;
-	
+
 	@UiField
 	AnswersMarkingPanel correctAnswersMarkingPanel;
-	
+
 	@UiField
 	AnswersMarkingPanel wrongAnswersMarkingPanel;
 
@@ -51,10 +52,10 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 		this.canvas = canvas;
 		this.palette = palette;
 		this.correctImageCanvas = correctImageCanvas;
-		
+
 		uiBinder.createAndBindUi(this);
 	}
-	
+
 	@Override
 	public Widget asWidget() {
 		return container;
@@ -66,7 +67,7 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 		String width = image.getWidth() + px;
 		String height = image.getHeight() + px;
 		imageContainer.setSize(width, height);
-		
+
 		canvas.setImage(image);
 	}
 
@@ -121,13 +122,13 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	}
 
 	@Override
-	public void showUserAnswers(){
+	public void showUserAnswers() {
 		canvas.asWidget().setVisible(true);
 		correctImageCanvas.hide();
 	}
-	
+
 	@Override
-	public void showCorrectAnswers(){
+	public void showCorrectAnswers() {
 		canvas.asWidget().setVisible(false);
 		correctImageCanvas.show();
 	}

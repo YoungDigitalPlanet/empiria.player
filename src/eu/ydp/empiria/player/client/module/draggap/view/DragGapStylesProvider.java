@@ -14,7 +14,7 @@ public class DragGapStylesProvider {
 	public DragGapStylesProvider(StyleNameConstants styleNameConstants) {
 		this.styleNameConstants = styleNameConstants;
 	}
-	
+
 	public String getCorrectGapStyleName(UserAnswerType type) {
 		switch (type) {
 		case CORRECT:

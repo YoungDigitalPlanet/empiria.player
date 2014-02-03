@@ -22,39 +22,41 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public abstract class GapBase extends OneViewInteractionModuleBase  implements Bindable {
+public abstract class GapBase extends OneViewInteractionModuleBase implements Bindable {
 
 	@Inject
 	protected EventsBus eventsBus;
-	
+
 	@Inject
 	protected GapExpressionReplacer gapExpressionReplacer;
-	
+
 	@Inject
 	protected GapBinder gapBinder;
-	
+
 	public static final String INLINE_HTML_NBSP = "&nbsp;";
-	
+
 	protected GapModulePresenter presenter;
-	
+
 	protected boolean markingAnswer = false;
 	protected boolean showingAnswer = false;
-	
+
 	protected String lastValue = null;
-	
+
 	protected boolean locked;
-	
+
 	protected abstract void setPreviousAnswer();
-	
-	public interface PresenterHandler extends BlurHandler {}
-	
+
+	public interface PresenterHandler extends BlurHandler {
+	}
+
 	protected abstract ResponseSocket getResponseSocket();
+
 	protected abstract void updateResponse(boolean userInteract, boolean isReset);
+
 	protected abstract void setCorrectAnswer();
-	
+
 	private boolean isGapBinderInitialized = false;
-	
-	
+
 	@Override
 	public void onBodyLoad() {
 	}
@@ -74,8 +76,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 	@Override
 	public void onClose() {
 	}
-	
-	
+
 	public int getLongestAnswerLength() {
 		return getInitializedGapBinder().getLongestAnswerLength();
 	}
@@ -83,17 +84,17 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 	@Override
 	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
 		return getInitializedGapBinder().getBindingGroupIdentifier(bindingType);
-		
+
 	}
 
 	@Override
 	public BindingValue getBindingValue(BindingType bindingType) {
 		return getInitializedGapBinder().getBindingValue(bindingType);
 	}
-		
+
 	@Override
 	public void markAnswers(boolean mark) {
-		if (mark  && !markingAnswer) {
+		if (mark && !markingAnswer) {
 			if (isResponseEmpty()) {
 				presenter.setMarkMode(GapModulePresenter.NONE);
 			} else if (isResponseCorrect()) {
@@ -110,9 +111,9 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
-		if (show  &&  !showingAnswer) {
+		if (show && !showingAnswer) {
 			setCorrectAnswer();
-		} else if (!show  &&  showingAnswer) {
+		} else if (!show && showingAnswer) {
 			setPreviousAnswer();
 		}
 
@@ -150,28 +151,28 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 	public JavaScriptObject getJsSocket() {
 		return ModuleJsSocketFactory.createSocketObject(this);
 	}
-	
+
 	protected void registerBindingContexts() {
 		getInitializedGapBinder().registerBindingContexts();
 	}
-	
+
 	protected void setBindingValues() {
 		getInitializedGapBinder().setBindingValues();
 	}
-	
+
 	protected void setMaxlengthBinding(Map<String, String> mathStyles, Element moduleElement) {
 		getInitializedGapBinder().setMaxlengthBinding(mathStyles, moduleElement);
 	}
-	
 
 	protected void setWidthBinding(Map<String, String> mathStyles, Element moduleElement) {
 		getInitializedGapBinder().setWidthBinding(mathStyles, moduleElement);
 	}
 
-	public Response getModuleResponse(){
+	public Response getModuleResponse() {
 		return getResponse();
 	}
-	
+
+	@Override
 	public Element getModuleElement() {
 		return super.getModuleElement();
 	}
@@ -179,53 +180,53 @@ public abstract class GapBase extends OneViewInteractionModuleBase  implements B
 	public String getCorrectAnswer() {
 		Response response = getResponse();
 		String answer;
-		if(response.correctAnswers.answersExists()){
+		if (response.correctAnswers.answersExists()) {
 			answer = response.correctAnswers.getSingleAnswer();
-		}else{
-			answer = ""; 
+		} else {
+			answer = "";
 		}
 		return answer;
 	}
 
-	protected String getElementAttributeValue(String attrName){
+	protected String getElementAttributeValue(String attrName) {
 		String attrValue = XMLUtils.getAttributeAsString(getModuleElement(), attrName, null);
 		return attrValue;
 	}
 
 	protected String getCurrentResponseValue() {
 		String answer = StringUtils.EMPTY_STRING;
-		
+
 		if (getResponse().values.size() > 0) {
 			answer = getResponse().values.get(0);
 		}
-		
+
 		return answer;
 	}
-	
+
 	protected boolean isResponseCorrect() {
 		boolean isCorrect = false;
 		List<Boolean> evaluateResponse = getEvaluatedResponse();
-		
+
 		if (evaluateResponse.size() > 0) {
-			isCorrect = evaluateResponse.get(0);				
+			isCorrect = evaluateResponse.get(0);
 		}
 		return isCorrect;
 	}
-	
+
 	protected List<Boolean> getEvaluatedResponse() {
 		return getResponseSocket().evaluateResponse(getResponse());
 	}
 
-	protected boolean isResponseEmpty(){
+	protected boolean isResponseEmpty() {
 		return StringUtils.EMPTY_STRING.equals(getCurrentResponseValue());
 	}
 
 	public int getFontSize() {
 		return presenter.getFontSize();
 	}
-	
+
 	protected GapBinder getInitializedGapBinder() {
-		if(!isGapBinderInitialized) {
+		if (!isGapBinderInitialized) {
 			gapBinder.setGapBase(this);
 		}
 		return gapBinder;

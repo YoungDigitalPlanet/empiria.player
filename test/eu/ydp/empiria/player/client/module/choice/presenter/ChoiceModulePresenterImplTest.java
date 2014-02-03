@@ -1,10 +1,7 @@
 package eu.ydp.empiria.player.client.module.choice.presenter;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import com.google.common.collect.Lists;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,14 +33,22 @@ public class ChoiceModulePresenterImplTest {
 	@InjectMocks
 	ChoiceModulePresenterImpl presenter;
 
-	@Mock ChoiceModuleModel model;
-	@Mock ChoiceModuleView view;
-	@Mock SimpleChoicePresenterFactory choiceModuleFactory;
-	@Mock InlineBodyGeneratorSocket bodyGenerator;
-	@Mock SimpleChoicePresenter simplePresenter1;
-	@Mock SimpleChoicePresenter simplePresenter2;
-	@Mock SimpleChoicePresenter simplePresenter3;
-	@Mock SimpleChoicePresenter simplePresenter4;
+	@Mock
+	ChoiceModuleModel model;
+	@Mock
+	ChoiceModuleView view;
+	@Mock
+	SimpleChoicePresenterFactory choiceModuleFactory;
+	@Mock
+	InlineBodyGeneratorSocket bodyGenerator;
+	@Mock
+	SimpleChoicePresenter simplePresenter1;
+	@Mock
+	SimpleChoicePresenter simplePresenter2;
+	@Mock
+	SimpleChoicePresenter simplePresenter3;
+	@Mock
+	SimpleChoicePresenter simplePresenter4;
 	ChoiceInteractionBean bean;
 
 	private static final String IDENTIFIER_1 = "1";
@@ -82,10 +88,9 @@ public class ChoiceModulePresenterImplTest {
 		SimpleChoiceBean bean = new SimpleChoiceBean();
 		bean.setIdentifier(id);
 		when(choiceModuleFactory.getSimpleChoicePresenter(bean, bodyGenerator)).thenReturn(simplePresenter);
-		
-		when(simplePresenter.getIdentifier())
-			.thenReturn(id);
-		
+
+		when(simplePresenter.getIdentifier()).thenReturn(id);
+
 		return bean;
 	}
 
@@ -141,7 +146,7 @@ public class ChoiceModulePresenterImplTest {
 		verify(simplePresenter3).setSelected(false);
 		verify(simplePresenter4).setSelected(true);
 	}
-	
+
 	@Test
 	public void shouldShowAnswers_CORRECT() {
 		// given
@@ -234,7 +239,7 @@ public class ChoiceModulePresenterImplTest {
 		verify(simplePresenter3, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
 		verify(simplePresenter4, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
 	}
-	
+
 	@Test
 	public void shouldMarkAnswers_WRONG_UNMARK() {
 		// given
@@ -255,7 +260,7 @@ public class ChoiceModulePresenterImplTest {
 
 		// then
 		verify(simplePresenter1, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
-		verify(simplePresenter2).markAnswer(MarkAnswersType.WRONG,MarkAnswersMode.UNMARK);
+		verify(simplePresenter2).markAnswer(MarkAnswersType.WRONG, MarkAnswersMode.UNMARK);
 		verify(simplePresenter3, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
 		verify(simplePresenter4, never()).markAnswer(any(MarkAnswersType.class), any(MarkAnswersMode.class));
 	}

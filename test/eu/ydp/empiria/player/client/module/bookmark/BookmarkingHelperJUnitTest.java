@@ -15,19 +15,16 @@ import eu.ydp.gwtutil.junit.runners.ParameterizedMethodsRunner.MethodParameters;
 @RunWith(ParameterizedMethodsRunner.class)
 public class BookmarkingHelperJUnitTest {
 
-	@MethodParameters(forMethod="getDefaultBookmarkTitle")
-	public static List<String[]> getParams(){
-		return Arrays.asList(new String[][]{
-				{"aaaaaaaa", "aaaaaaaa"},
-				{"1234 6789 1234 6789 1234 6789 ", "1234 6789 1234 6789 1234 6789 "},
-				{"1234 6789 1234 6789 1234 6789 ABCD", "1234 6789 1234 6789 1234..."},
-				{"123456789012345678901234567890", "123456789012345678901234567890"},
-				{"123456789012345678901234567890ABCD", "123456789012345678901234567..."}
-				});
+	@MethodParameters(forMethod = "getDefaultBookmarkTitle")
+	public static List<String[]> getParams() {
+		return Arrays.asList(new String[][] { { "aaaaaaaa", "aaaaaaaa" }, { "1234 6789 1234 6789 1234 6789 ", "1234 6789 1234 6789 1234 6789 " },
+				{ "1234 6789 1234 6789 1234 6789 ABCD", "1234 6789 1234 6789 1234..." },
+				{ "123456789012345678901234567890", "123456789012345678901234567890" },
+				{ "123456789012345678901234567890ABCD", "123456789012345678901234567..." } });
 	}
-	
+
 	@Test
-	public void getDefaultBookmarkTitle(String in, String out){
+	public void getDefaultBookmarkTitle(String in, String out) {
 		String result = BookmarkingHelper.getDefaultBookmarkTitle(in);
 		assertThat(result, is(out));
 	}

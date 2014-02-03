@@ -19,35 +19,35 @@ import eu.ydp.gwtutil.client.StringUtils;
 public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<TextActionProcessor> {
 
 	private ActionProcessorHelper helper;
-	
+
 	@Inject
 	private TextFeedback feedbackPresenter;
-	
+
 	@Inject
 	Provider<TextActionProcessor> provider;
-	
+
 	@Override
 	public List<FeedbackAction> processActions(List<FeedbackAction> actions) {
 		return getHelper().processActions(actions);
 	}
-	
+
 	private ActionProcessorHelper getHelper() {
 		if (helper == null) {
 			helper = new ActionProcessorHelper(this);
 		}
-		
+
 		return helper;
 	}
 
 	@Override
 	public boolean canProcessAction(FeedbackAction action) {
 		boolean canProcess = false;
-		
+
 		if (action instanceof ShowTextAction) {
 			ShowTextAction textAction = (ShowTextAction) action;
 			canProcess = !StringUtils.EMPTY_STRING.equals(textAction.getText());
 		}
-		
+
 		return canProcess;
 	}
 
@@ -59,7 +59,7 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 			feedbackPresenter.show();
 		}
 	}
-	
+
 	@Override
 	public void clearFeedback() {
 		feedbackPresenter.setText("");
@@ -70,7 +70,7 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 	public TextActionProcessor getNewInstance() {
 		return provider.get();
 	}
-	
+
 	@Override
 	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
 		feedbackPresenter.hide();

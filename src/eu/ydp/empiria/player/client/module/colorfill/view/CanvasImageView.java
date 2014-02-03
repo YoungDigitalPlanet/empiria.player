@@ -37,7 +37,7 @@ public class CanvasImageView implements IsWidget {
 			public void onLoad(final LoadEvent event) {
 				imageView.removeFromParent();
 				createCanvasAndAddToView(imageView);
-				if(loadHandler.isPresent()){
+				if (loadHandler.isPresent()) {
 					loadHandler.get().onLoad(event);
 				}
 			}
@@ -80,7 +80,7 @@ public class CanvasImageView implements IsWidget {
 		this.loadHandler = Optional.fromNullable(loadHandler);
 	}
 
-	public void setPanelStyle(String panelStyle){
+	public void setPanelStyle(String panelStyle) {
 		mainPanel.setStyleName(panelStyle);
 	}
 }

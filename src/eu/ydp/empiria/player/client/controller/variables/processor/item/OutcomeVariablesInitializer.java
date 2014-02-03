@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.CHECKS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.RESET;
-import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.SHOW_ANSWERS;
+import static eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor.*;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -17,7 +15,7 @@ public class OutcomeVariablesInitializer {
 
 	public void initializeOutcomeVariables(Map<String, Response> responses, Map<String, Outcome> outcomes) {
 
-		ensureVariable(outcomes, new Outcome(VariableName.DONE.toString(), Cardinality.SINGLE,"0"));
+		ensureVariable(outcomes, new Outcome(VariableName.DONE.toString(), Cardinality.SINGLE, "0"));
 		ensureVariable(outcomes, new Outcome(VariableName.TODO.toString(), Cardinality.SINGLE, "0"));
 		ensureVariable(outcomes, new Outcome(VariableName.ERRORS.toString(), Cardinality.SINGLE, "0"));
 		ensureVariable(outcomes, new Outcome(VariableName.LASTMISTAKEN.toString(), Cardinality.SINGLE, LastMistaken.NONE.toString()));

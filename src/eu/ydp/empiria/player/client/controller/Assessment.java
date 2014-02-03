@@ -75,8 +75,7 @@ public class Assessment {
 	private AssessmentBodyView bodyView;
 
 	/**
-	 * Properties instance prepared by assessmentController (based on item body
-	 * properties through the page controller)
+	 * Properties instance prepared by assessmentController (based on item body properties through the page controller)
 	 */
 	private InteractionEventsListener interactionEventsListener;
 

@@ -18,7 +18,8 @@ import com.google.gwt.xml.client.Element;
 @RunWith(MockitoJUnitRunner.class)
 public class ElementStyleSelectorBuilderTest {
 
-	@Mock private Element element;
+	@Mock
+	private Element element;
 	private final ElementStyleSelectorBuilder instance = new ElementStyleSelectorBuilder();
 
 	@Test
@@ -37,10 +38,7 @@ public class ElementStyleSelectorBuilderTest {
 		doReturn(elementName).when(element).getNodeName();
 		doReturn(className).when(element).getAttribute(eq("class"));
 		doReturn(true).when(element).hasAttribute(eq("class"));
-		List<String> requiredSelectors = Lists.newArrayList(
-				elementName.toLowerCase(),
-				"."+className,
-				elementName.toLowerCase() + "."+className);
+		List<String> requiredSelectors = Lists.newArrayList(elementName.toLowerCase(), "." + className, elementName.toLowerCase() + "." + className);
 
 		List<String> selectors = instance.getElementSelectors(element);
 		assertThat(selectors).hasSize(3);
@@ -51,14 +49,14 @@ public class ElementStyleSelectorBuilderTest {
 	@Test
 	public void getElementSelector_classAttributeWithMultipleCssClasses() throws Exception {
 		String elementName = "eName";
-		List<String> classNames = Lists.newArrayList("cName","cName2","cName3");
+		List<String> classNames = Lists.newArrayList("cName", "cName2", "cName3");
 		doReturn(elementName).when(element).getNodeName();
 		doReturn(Joiner.on(" ").join(classNames)).when(element).getAttribute(eq("class"));
 		doReturn(true).when(element).hasAttribute(eq("class"));
 		List<String> requiredSelectors = Lists.newArrayList(elementName.toLowerCase());
-		for(String className : classNames){
-			requiredSelectors.add("."+className);
-			requiredSelectors.add(elementName.toLowerCase() + "."+className);
+		for (String className : classNames) {
+			requiredSelectors.add("." + className);
+			requiredSelectors.add(elementName.toLowerCase() + "." + className);
 		}
 
 		List<String> selectors = instance.getElementSelectors(element);
@@ -67,6 +65,7 @@ public class ElementStyleSelectorBuilderTest {
 		assertThat(selectors).containsAll(requiredSelectors);
 
 	}
+
 	@Test
 	public void getElementSelector_IdAttributeSet() throws Exception {
 		String elementName = "eName";
@@ -74,10 +73,7 @@ public class ElementStyleSelectorBuilderTest {
 		doReturn(elementName).when(element).getNodeName();
 		doReturn(idValue).when(element).getAttribute(eq("id"));
 		doReturn(true).when(element).hasAttribute(eq("id"));
-		List<String> requiredSelectors = Lists.newArrayList(
-				elementName.toLowerCase(),
-				"#"+idValue,
-				elementName.toLowerCase() + "#"+idValue);
+		List<String> requiredSelectors = Lists.newArrayList(elementName.toLowerCase(), "#" + idValue, elementName.toLowerCase() + "#" + idValue);
 
 		List<String> selectors = instance.getElementSelectors(element);
 		assertThat(selectors).hasSize(3);
@@ -98,16 +94,10 @@ public class ElementStyleSelectorBuilderTest {
 
 		List<String> selectors = instance.getElementSelectors(element);
 		assertThat(selectors).hasSize(5);
-		List<String> requiredSelectors = Lists.newArrayList(
-				elementName.toLowerCase(),
-				"#"+idValue,
-				elementName.toLowerCase() + "#"+idValue,
-				"."+className,
-				elementName.toLowerCase() + "."+className);
+		List<String> requiredSelectors = Lists.newArrayList(elementName.toLowerCase(), "#" + idValue, elementName.toLowerCase() + "#" + idValue, "."
+				+ className, elementName.toLowerCase() + "." + className);
 		assertThat(selectors).containsAll(requiredSelectors);
 
 	}
-
-
 
 }

@@ -16,10 +16,13 @@ import com.google.inject.Provider;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SwiffyServiceTest {
-	
-	@Mock private SwiffyObject swiffyObject;
-	@Mock private Provider<SwiffyObject> swiffyObjectProvider;
-	@InjectMocks private SwiffyService instance;
+
+	@Mock
+	private SwiffyObject swiffyObject;
+	@Mock
+	private Provider<SwiffyObject> swiffyObjectProvider;
+	@InjectMocks
+	private SwiffyService instance;
 
 	@Before
 	public void before() {

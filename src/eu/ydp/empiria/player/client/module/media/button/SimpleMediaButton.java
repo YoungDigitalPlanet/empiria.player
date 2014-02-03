@@ -25,6 +25,7 @@ public class SimpleMediaButton extends AbstractMediaButton<SimpleMediaButton> {
 		setActive(!isActive());
 		changeStyleForClick();
 	}
+
 	@Override
 	public boolean isSupported() {
 		return true;

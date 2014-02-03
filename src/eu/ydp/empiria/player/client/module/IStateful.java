@@ -20,22 +20,25 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
-*/
+ */
 package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.json.client.JSONArray;
 
 public interface IStateful {
 
-  /**
-   * Get state
-   * @return state object
-   */
-  public JSONArray getState();
-  
-  /**
-   * set new state 
-   * @param newState state object created with getState() function
-   */
-  public void setState(JSONArray newState);
+	/**
+	 * Get state
+	 * 
+	 * @return state object
+	 */
+	public JSONArray getState();
+
+	/**
+	 * set new state
+	 * 
+	 * @param newState
+	 *            state object created with getState() function
+	 */
+	public void setState(JSONArray newState);
 }

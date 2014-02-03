@@ -1,17 +1,13 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -40,7 +36,6 @@ public class HTML5MediaExecutorFactoryJUnitTest extends AbstractTestBaseWithoutA
 		}
 	}
 
-
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
@@ -67,7 +62,7 @@ public class HTML5MediaExecutorFactoryJUnitTest extends AbstractTestBaseWithoutA
 		doReturn(mock(MediaBase.class)).when(media).getMedia();
 		AbstractHTML5MediaExecutor executor = instance.createMediaExecutor(media, MediaType.VIDEO);
 		assertNotNull(executor);
-		verify(media).setEventBusSourceObject(Mockito.any(MediaWrapper.class));
+		verify(media).setEventBusSourceObject(Matchers.any(MediaWrapper.class));
 		assertTrue(executor instanceof HTML5VideoMediaExecutor);
 	}
 
@@ -77,7 +72,7 @@ public class HTML5MediaExecutorFactoryJUnitTest extends AbstractTestBaseWithoutA
 		doReturn(mock(MediaBase.class)).when(media).getMedia();
 		AbstractHTML5MediaExecutor executor = instance.createMediaExecutor(media, MediaType.AUDIO);
 		assertNotNull(executor);
-		verify(media).setEventBusSourceObject(Mockito.any(MediaWrapper.class));
+		verify(media).setEventBusSourceObject(Matchers.any(MediaWrapper.class));
 		assertTrue(executor instanceof HTML5AudioMediaExecutor);
 	}
 

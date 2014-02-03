@@ -7,7 +7,10 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 public interface PaletteButton extends IsWidget {
 
 	void setColor(ColorModel color);
+
 	void select();
+
 	void deselect();
+
 	void setDescription(String description);
 }

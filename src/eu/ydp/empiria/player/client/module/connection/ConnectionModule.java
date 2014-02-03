@@ -41,8 +41,9 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
 	private EventsBus eventsBus;
 	@Inject
 	private StateController stateController;
-	
-	@Inject @PageScoped
+
+	@Inject
+	@PageScoped
 	private ResponseSocket responseSocket;
 
 	private ConnectionModuleModel connectionModel;

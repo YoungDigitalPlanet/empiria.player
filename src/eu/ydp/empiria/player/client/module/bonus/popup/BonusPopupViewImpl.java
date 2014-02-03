@@ -20,17 +20,22 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.util.geom.Size;
 import eu.ydp.gwtutil.client.util.geom.WidgetSize;
 
-public class BonusPopupViewImpl implements BonusPopupView{
+public class BonusPopupViewImpl implements BonusPopupView {
 
 	private static BonusPopupViewUiBinder uiBinder = GWT.create(BonusPopupViewUiBinder.class);
 
 	@UiTemplate("BonusPopupViewImpl.ui.xml")
-	interface BonusPopupViewUiBinder extends UiBinder<Widget, BonusPopupViewImpl> {}
+	interface BonusPopupViewUiBinder extends UiBinder<Widget, BonusPopupViewImpl> {
+	}
 
-	@UiField FlowPanel container;
-	@UiField FlowPanel closableWrapper;
-	@UiField FlowPanel content;
-	@UiField FlowPanel closeButton;
+	@UiField
+	FlowPanel container;
+	@UiField
+	FlowPanel closableWrapper;
+	@UiField
+	FlowPanel content;
+	@UiField
+	FlowPanel closeButton;
 
 	private BonusPopupPresenter presenter;
 	private final UserInteractionHandlerFactory userInteractionHandlerFactory;
@@ -75,7 +80,7 @@ public class BonusPopupViewImpl implements BonusPopupView{
 	private void setBackgroundImage(String url, FlowPanel panelWithBackground) {
 		Element element = panelWithBackground.getElement();
 		Style style = element.getStyle();
-		style.setBackgroundImage("url("+url+")");
+		style.setBackgroundImage("url(" + url + ")");
 	}
 
 	@Override

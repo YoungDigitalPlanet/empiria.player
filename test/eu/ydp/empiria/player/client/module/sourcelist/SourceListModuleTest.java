@@ -2,16 +2,8 @@ package eu.ydp.empiria.player.client.module.sourcelist;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -20,6 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.InOrder;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -110,7 +103,7 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 
 		inOrder.verify(sourceListModuleStructure).createFromXml(anyString(), any(YJsonArray.class));
 		inOrder.verify(sourceListModuleStructure).getBean();
-		inOrder.verify(presenter).setBean(Mockito.any(SourceListBean.class));
+		inOrder.verify(presenter).setBean(Matchers.any(SourceListBean.class));
 		inOrder.verify(presenter).createAndBindUi();
 
 		assertEquals(presenter.asWidget(), instance.getView());

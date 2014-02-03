@@ -13,5 +13,4 @@ public interface HasDragHandlers {
 
 	public HandlerRegistration addDropHandler(DropHandler handler);
 
-
 }

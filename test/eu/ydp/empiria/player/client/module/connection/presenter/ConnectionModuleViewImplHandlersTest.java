@@ -45,7 +45,7 @@ public class ConnectionModuleViewImplHandlersTest {
 
 	@Mock
 	private ConnectionPairEntry<String, String> stringConnectionPairEntry;
-	
+
 	@Mock
 	private ConnectionItem sourceConnectionItem;
 
@@ -61,19 +61,18 @@ public class ConnectionModuleViewImplHandlersTest {
 	@Mock
 	private UserAgentCheckerWrapper userAgent;
 
-
 	@Mock
 	private ConnectionsBetweenItemsFinder connectionsFinder;
 
 	@Mock
 	private EventsBus eventsBus;
-	
+
 	@Mock
 	private PositionHelper positionHelper;
-	
+
 	@Mock
 	private ConnectionSurfacesManager surfacesManager;
-	
+
 	@Before
 	public void setUp() {
 		testObj.setView(view);
@@ -149,7 +148,7 @@ public class ConnectionModuleViewImplHandlersTest {
 		verify(view, times(1)).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
 		verify(view).clearSurface(sourceConnectionItem);
 	}
-	
+
 	@Test
 	public void testOnConnectionMove_elementFound() {
 		// given
@@ -158,31 +157,30 @@ public class ConnectionModuleViewImplHandlersTest {
 		when(pairFinder.findConnectionItemForCoordinates(anyCollectionOf(ConnectionItem.class), anyInt(), anyInt())).thenReturn(
 				Optional.of(targetConnectionItem));
 		when(view.isLocked()).thenReturn(false);
-		
+
 		// when
 		testObj.onConnectionMoveEnd(event);
-		
+
 		// then
 		verify(view, times(1)).drawLineBetween(sourceConnectionItem, targetConnectionItem);
 		verify(view, times(0)).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
 		verify(view).clearSurface(sourceConnectionItem);
 	}
-	
+
 	@Test
 	public void testOnConnectionMoveEnd_lockedView() {
 		// given
 		final ConnectionMoveEvent connectionMoveEvent = mock(ConnectionMoveEvent.class);
 		when(view.isLocked()).thenReturn(true);
-		
-		
+
 		// when
 		testObj.onConnectionMove(connectionMoveEvent);
-		
+
 		// then
 		verify(connectionMoveEvent, times(0)).preventDefault();
 		verify(view, times(0)).drawLineBetween(any(ConnectionItem.class), any(ConnectionItem.class));
 	}
-	
+
 	@Test
 	public void testOnConnectionMoveEnd_unlockedView_largeX() {
 		// given
@@ -191,18 +189,18 @@ public class ConnectionModuleViewImplHandlersTest {
 		final double LARGE = 1000d;
 		when(lastPoint.getSource()).thenReturn(LARGE);
 		when(lastPoint.getTarget()).thenReturn(LARGE);
-		
+
 		mockStartPositions();
-		
+
 		// when
 		testObj.onConnectionMove(connectionMoveEvent);
-		
+
 		// then
 		verify(connectionMoveEvent, times(1)).preventDefault();
 		verify(view, times(1)).drawLineBetween(any(ConnectionItem.class), anyInt(), anyInt());
-	
+
 	}
-	
+
 	@Test
 	public void testOnConnectionMoveEnd_unlockedView_smallX() {
 		// given
@@ -212,12 +210,12 @@ public class ConnectionModuleViewImplHandlersTest {
 		final double LARGE = 1000d;
 		when(lastPoint.getSource()).thenReturn(SMALL);
 		when(lastPoint.getTarget()).thenReturn(LARGE);
-		
+
 		mockStartPositions();
-		
+
 		// when
 		testObj.onConnectionMove(connectionMoveEvent);
-		
+
 		// then
 		verify(connectionMoveEvent, times(1)).preventDefault();
 		verify(view, times(1)).drawLineBetween(eq(sourceConnectionItem), anyInt(), anyInt());
@@ -231,48 +229,48 @@ public class ConnectionModuleViewImplHandlersTest {
 		final double SMALL = 1d;
 		when(lastPoint.getSource()).thenReturn(SMALL);
 		when(lastPoint.getTarget()).thenReturn(SMALL);
-		
+
 		mockStartPositions();
-		
+
 		// when
 		testObj.onConnectionMove(connectionMoveEvent);
-		
+
 		// then
 		verify(connectionMoveEvent, times(1)).preventDefault();
 		verify(view, times(0)).drawLineBetween(any(ConnectionItem.class), anyInt(), anyInt());
-		
+
 	}
+
 	private void mockStartPositions() {
-		final HashMap<ConnectionItem, Point> startPositions = Maps.<ConnectionItem, Point>newHashMap();
+		final HashMap<ConnectionItem, Point> startPositions = Maps.<ConnectionItem, Point> newHashMap();
 		final Point point = mock(Point.class);
 		startPositions.put(sourceConnectionItem, point);
 		when(view.getStartPositions()).thenReturn(startPositions);
 	}
-	
+
 	@Test
 	public void testOnConnectionMoveStart_unlockedView() {
 		// given
 		when(view.isLocked()).thenReturn(true);
 		final ConnectionMoveStartEvent event = mock(ConnectionMoveStartEvent.class);
-		
+
 		// when
 		testObj.onConnectionStart(event);
-		
+
 		// then
 		verifyZeroInteractions(event);
 	}
-	
+
 	@Test
 	public void testOnConnectionMoveStart_connectionNotFound_pointNotFoundOnPath() {
 		// given
 		final ConnectionMoveStartEvent event = mock(ConnectionMoveStartEvent.class);
 
-		when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.<ConnectionItem>absent());
-		
-		
+		when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.<ConnectionItem> absent());
+
 		// when
 		testObj.onConnectionStart(event);
-		
+
 		// then
 		verify(eventsBus, times(0)).fireEvent(any(PlayerEvent.class));
 	}
@@ -282,18 +280,18 @@ public class ConnectionModuleViewImplHandlersTest {
 	public void testOnConnectionMoveStart_connectionNotFound_pointFoundOnPath() {
 		// given
 		final ConnectionMoveStartEvent event = mock(ConnectionMoveStartEvent.class);
-		when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.<ConnectionItem>absent());
-		
+		when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.<ConnectionItem> absent());
+
 		when(surfacesManager.findPointOnPath(anyMap(), any(Point.class))).thenReturn(stringConnectionPairEntry);
-		
+
 		// when
 		testObj.onConnectionStart(event);
-		
+
 		// then
 		verify(eventsBus, times(0)).fireEvent(any(PlayerEvent.class));
 		verify(view, times(1)).disconnect(anyString(), anyString(), eq(Boolean.TRUE));
 	}
-	
+
 	@Test
 	public void testOnConnectionMoveStart_connectionFound() {
 		// given
@@ -301,10 +299,10 @@ public class ConnectionModuleViewImplHandlersTest {
 
 		ConnectionItem ci = ConnectionItemFluentMockBuilder.newConnectionItem().build();
 		when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.of(ci));
-		
+
 		// when
 		testObj.onConnectionStart(event);
-		
+
 		// then
 
 	}

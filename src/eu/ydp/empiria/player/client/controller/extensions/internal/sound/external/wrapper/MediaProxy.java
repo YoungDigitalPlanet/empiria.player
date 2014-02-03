@@ -8,6 +8,7 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 public interface MediaProxy {
 
 	MediaWrapper<Widget> getMediaWrapper();
+
 	MediaExecutor<Widget> getMediaExecutor();
 
 }

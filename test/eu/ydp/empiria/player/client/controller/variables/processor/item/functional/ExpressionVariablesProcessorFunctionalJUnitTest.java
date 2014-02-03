@@ -136,9 +136,8 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
 
 		/*
-		 * first call to setup user answers for bResponse and cResponse
-		 * otherwise processor will threat all 3 responses as new answers, which
-		 * is impossible to fill 3 gaps at the same time
+		 * first call to setup user answers for bResponse and cResponse otherwise processor will threat all 3 responses as new answers, which is impossible to
+		 * fill 3 gaps at the same time
 		 */
 		defaultVariableProcessor.processResponseVariables(responsesMap, outcomes, processingMode);
 		setUpCurrentUserAnswers(aResponse, "12837");

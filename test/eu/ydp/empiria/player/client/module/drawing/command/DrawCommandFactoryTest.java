@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.module.drawing.command;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 
@@ -20,9 +18,12 @@ import eu.ydp.empiria.player.client.gin.module.ModuleScopedLazyProvider;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DrawCommandFactoryTest {
-	@Mock private ModuleScopedLazyProvider<ClearAllDrawCommand> clearAllComandProvider;
-	@Mock private ClearAllDrawCommand command;
-	@InjectMocks private DrawCommandFactory instance;
+	@Mock
+	private ModuleScopedLazyProvider<ClearAllDrawCommand> clearAllComandProvider;
+	@Mock
+	private ClearAllDrawCommand command;
+	@InjectMocks
+	private DrawCommandFactory instance;
 
 	@Before
 	public void before() {
@@ -43,7 +44,7 @@ public class DrawCommandFactoryTest {
 		ArrayList<DrawCommandType> allComandsType = Lists.newArrayList(DrawCommandType.values());
 		allComandsType.remove(DrawCommandType.CLEAR_ALL);
 
-		for(DrawCommandType type : allComandsType){
+		for (DrawCommandType type : allComandsType) {
 			instance.createCommand(type);
 			verifyZeroInteractions(clearAllComandProvider);
 		}

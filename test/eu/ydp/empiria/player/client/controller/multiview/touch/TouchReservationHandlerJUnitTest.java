@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.controller.multiview.touch;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -11,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.event.dom.client.DomEvent.Type;
@@ -49,7 +48,7 @@ public class TouchReservationHandlerJUnitTest {
 	public void before() {
 		isWidget = mock(IsWidget.class);
 		Widget widget = mock(Widget.class);
-		doReturn(handlerRegistration).when(widget).addDomHandler(Mockito.any(TouchStartHandler.class),Mockito.any(Type.class));
+		doReturn(handlerRegistration).when(widget).addDomHandler(Matchers.any(TouchStartHandler.class), Matchers.any(Type.class));
 		doReturn(widget).when(isWidget).asWidget();
 
 		eventsBus = mock(EventsBus.class);
@@ -59,7 +58,7 @@ public class TouchReservationHandlerJUnitTest {
 	@Test
 	public void TouchReservationHandler() throws Exception {
 		TouchReservationHandler instance = new TouchReservationHandler(isWidget, eventsBus);
-		verify(isWidget.asWidget()).addDomHandler(Mockito.any(TouchStartHandler.class), typeCaptor.capture());
+		verify(isWidget.asWidget()).addDomHandler(Matchers.any(TouchStartHandler.class), typeCaptor.capture());
 		assertTrue(typeCaptor.getValue().equals(TouchStartEvent.getType()));
 
 	}

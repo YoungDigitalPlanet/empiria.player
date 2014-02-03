@@ -4,17 +4,17 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class ItemData {
 
-	public ItemData(int index, XmlData d){
+	public ItemData(int index, XmlData d) {
 		itemIndex = index;
 		data = d;
 		errorMessage = "";
 	}
 
-	public ItemData(int index, String err){
+	public ItemData(int index, String err) {
 		itemIndex = index;
 		errorMessage = err;
 	}
-	
+
 	public int itemIndex;
 	public String errorMessage;
 	public XmlData data;

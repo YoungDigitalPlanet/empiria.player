@@ -9,14 +9,17 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class OutcomeDrivenActionTypeProvider {
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private OnPageAllOkAction pageAllOk;
-	@Inject	@ModuleScoped
+	@Inject
+	@ModuleScoped
 	private OnOkAction onOk;
-	@Inject	@ModuleScoped
+	@Inject
+	@ModuleScoped
 	private OnWrongAction onWrong;
-	
-	public Set<OutcomeDrivenAction> getActions(){
+
+	public Set<OutcomeDrivenAction> getActions() {
 		return ImmutableSet.of(pageAllOk, onOk, onWrong);
 	}
 }

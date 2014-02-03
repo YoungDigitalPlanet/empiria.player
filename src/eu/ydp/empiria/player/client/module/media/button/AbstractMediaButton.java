@@ -1,11 +1,6 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import static com.google.gwt.user.client.Event.ONMOUSEDOWN;
-import static com.google.gwt.user.client.Event.ONMOUSEOUT;
-import static com.google.gwt.user.client.Event.ONMOUSEOVER;
-import static com.google.gwt.user.client.Event.ONMOUSEUP;
-import static com.google.gwt.user.client.Event.ONTOUCHEND;
-import static com.google.gwt.user.client.Event.ONTOUCHSTART;
+import static com.google.gwt.user.client.Event.*;
 
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -16,7 +11,7 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 /**
  * bazowy przycisk dla kontrolerow multimediow
- *
+ * 
  * @param <T>
  *            typ przycisku dla {@link Factory}
  */
@@ -28,17 +23,16 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 	private boolean active = false;
 	private final FlowPanel divElement = new FlowPanel();
 	private boolean singleClick = true;
-	
-	@Inject private UserAgentUtil userAgentUtil; 
 
+	@Inject
+	private UserAgentUtil userAgentUtil;
 
 	/**
 	 * bazowy przycisk dla kontrolerow multimediow
-	 *
+	 * 
 	 * @param baseStyleName
 	 * @param singleClick
-	 *            czy element jest zwyklym przyciskiem i mousup jest ignorowany
-	 *            wartosc true<br/>
+	 *            czy element jest zwyklym przyciskiem i mousup jest ignorowany wartosc true<br/>
 	 *            false wywoluje ponownie akcje na mouseup
 	 */
 	public AbstractMediaButton(String baseStyleName, boolean singleClick) {
@@ -67,9 +61,9 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 	}
 
 	private void initEvents() {
-		if(userAgentUtil.isMobileUserAgent()){
+		if (userAgentUtil.isMobileUserAgent()) {
 			sinkEvents(ONTOUCHSTART | ONTOUCHEND);
-		}else{	
+		} else {
 			sinkEvents(ONMOUSEOVER | ONMOUSEOUT | ONMOUSEDOWN | ONMOUSEUP);
 		}
 	}
@@ -83,22 +77,22 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 		event.preventDefault();
 		int eventType = event.getTypeInt();
 		switch (eventType) {
-			case ONMOUSEDOWN:
-			case ONTOUCHSTART:
+		case ONMOUSEDOWN:
+		case ONTOUCHSTART:
+			onClick();
+			break;
+		case ONMOUSEUP:
+			if (!singleClick) {
 				onClick();
-				break;
-			case ONMOUSEUP:
-				if (!singleClick) {
-					onClick();
-				}
-				break;
-			case ONMOUSEOVER:
-				onMouseOver();
-				break;
-			case ONTOUCHEND:
-			case ONMOUSEOUT:
-				onMouseOut();
-				break;
+			}
+			break;
+		case ONMOUSEOVER:
+			onMouseOver();
+			break;
+		case ONTOUCHEND:
+		case ONMOUSEOUT:
+			onMouseOut();
+			break;
 		}
 	}
 
@@ -143,6 +137,5 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
 			divElement.getElement().removeClassName(hoverStyleName);
 		}
 	}
-
 
 }

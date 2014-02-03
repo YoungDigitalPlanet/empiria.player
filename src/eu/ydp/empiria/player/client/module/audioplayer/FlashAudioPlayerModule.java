@@ -11,11 +11,11 @@ import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.object.impl.FlashLocalAudioImpl;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
+
 /**
  * KLASA DO REFAKTORYZACJI - MODUL NIE POWINIEN BYC WIDGETEM
  */
-public class FlashAudioPlayerModule extends FlashLocalAudioImpl implements
-		AudioPlayerModule {
+public class FlashAudioPlayerModule extends FlashLocalAudioImpl implements AudioPlayerModule {
 
 	private ModuleSocket moduleSocket;
 
@@ -23,7 +23,7 @@ public class FlashAudioPlayerModule extends FlashLocalAudioImpl implements
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener iel) {
 		this.moduleSocket = moduleSocket;
 		String address = XMLUtils.getAttributeAsString(element, "src");
-		if (address == null  ||  "".equals(address)) {
+		if (address == null || "".equals(address)) {
 			address = XMLUtils.getAttributeAsString(element, "data");
 		}
 

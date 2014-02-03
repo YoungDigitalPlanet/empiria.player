@@ -28,21 +28,21 @@ public class PlayStopMediaButtonTest {
 	@Test
 	public void pauseExpected() {
 		when(button.isActive()).thenReturn(true);
-		
+
 		MediaEvent firedEvent = button.createMediaEvent();
-		
+
 		assertThat(firedEvent.getType(), equalTo(MediaEventTypes.STOP));
 	}
 
 	@Test
 	public void playExpected() {
 		when(button.isActive()).thenReturn(false);
-		
+
 		MediaEvent firedEvent = button.createMediaEvent();
-		
+
 		assertThat(firedEvent.getType(), equalTo(MediaEventTypes.PLAY));
 	}
-	
+
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
@@ -51,6 +51,6 @@ public class PlayStopMediaButtonTest {
 	@AfterClass
 	public static void restore() {
 		GWTMockUtilities.restore();
-	}	
+	}
 
 }

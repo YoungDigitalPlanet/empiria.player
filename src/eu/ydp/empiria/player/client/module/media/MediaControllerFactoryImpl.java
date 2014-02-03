@@ -49,7 +49,6 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 	@Inject
 	private Provider<MediaProgressBarAndroid> mediaProgressBarAndroidProvider;
 
-
 	@Inject
 	private Provider<PositionInMediaStream> positionInMediaStreamProvider;
 
@@ -64,7 +63,6 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 
 	@Inject
 	private UserAgentUtil userAgentUtil;
-
 
 	@Override
 	public AbstractMediaController<?> get(ModuleTagName moduleType) {
@@ -109,10 +107,7 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
 	}
 
 	private AbstractMediaController<?> getMediaProgressBar() {
-		if(userAgentUtil.isMobileUserAgent(MobileUserAgent.ANDROID23,
-										   MobileUserAgent.ANDROID3,
-										   MobileUserAgent.ANDROID321,
-										   MobileUserAgent.ANDROID4)){
+		if (userAgentUtil.isMobileUserAgent(MobileUserAgent.ANDROID23, MobileUserAgent.ANDROID3, MobileUserAgent.ANDROID321, MobileUserAgent.ANDROID4)) {
 			return mediaProgressBarAndroidProvider.get();
 		}
 		return mediaProgressBarProvider.get();

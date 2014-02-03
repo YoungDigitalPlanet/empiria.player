@@ -9,12 +9,12 @@ public class ModuleHandlerManager {
 
 	private final List<ModuleHandler> handlers = new ArrayList<ModuleHandler>();
 
-	public void addModuleHandler(ModuleHandler handler){
+	public void addModuleHandler(ModuleHandler handler) {
 		handlers.add(handler);
 	}
-	
-	public void registerModule(IModule module){
-		for (ModuleHandler handler : handlers){
+
+	public void registerModule(IModule module) {
+		for (ModuleHandler handler : handlers) {
 			handler.register(module);
 		}
 	}

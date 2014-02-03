@@ -42,7 +42,7 @@ public class ProcessingResultsToOutcomeMapConverter {
 		insertVariable(MISTAKES, globalVariables.getMistakes());
 		insertVariable(LASTMISTAKEN, globalVariables.getLastMistaken().toString());
 	}
-	
+
 	public void updateOutcomeMapByModulesProcessingResults(ModulesProcessingResults modulesProcessingResults) {
 		Set<String> idsOfProcessedResponses = modulesProcessingResults.getIdsOfProcessedResponses();
 		for (String responseId : idsOfProcessedResponses) {
@@ -65,63 +65,62 @@ public class ProcessingResultsToOutcomeMapConverter {
 	private void insertUserInteractionVariables(String responseId, UserInteractionVariables userInteractionVariables) {
 		int mistakesValue = userInteractionVariables.getMistakes();
 		insertModuleVariable(MISTAKES, responseId, mistakesValue);
-		
+
 		LastMistaken lastMistakenValue = userInteractionVariables.getLastmistaken();
 		insertModuleVariable(LASTMISTAKEN, responseId, lastMistakenValue.toString());
-		
+
 		LastAnswersChanges lastAnswerChanges = userInteractionVariables.getLastAnswerChanges();
 		List<String> lastchanges = answersChangesFormater.formatLastAnswerChanges(lastAnswerChanges);
 		String lastchangeIdentifier = buildModuleVariableIdentifier(LASTCHANGE, responseId);
 		insertVariable(lastchangeIdentifier, lastchanges);
 	}
 
-
 	private void insertGeneralVariables(String responseId, GeneralVariables generalVariables) {
 		int errorValue = generalVariables.getErrors();
 		insertModuleVariable(ERRORS, responseId, errorValue);
-		
+
 		int doneValue = generalVariables.getDone();
 		insertModuleVariable(DONE, responseId, doneValue);
 	}
-	
-	private void insertModuleVariable(String variableName, String moduleId, int value){
+
+	private void insertModuleVariable(String variableName, String moduleId, int value) {
 		insertModuleVariable(variableName, moduleId, String.valueOf(value));
 	}
 
-	private void insertModuleVariable(String variableName, String moduleId, boolean value){
+	private void insertModuleVariable(String variableName, String moduleId, boolean value) {
 		int valueConvertedToInt = convertBooleanToInt(value);
 		insertModuleVariable(variableName, moduleId, valueConvertedToInt);
 	}
 
 	private int convertBooleanToInt(boolean value) {
 		int valueConvertedToInt;
-		if(value){
+		if (value) {
 			valueConvertedToInt = 1;
-		}else{
+		} else {
 			valueConvertedToInt = 0;
 		}
 		return valueConvertedToInt;
 	}
 
-	private void insertModuleVariable(String variableName, String moduleId, String value){
+	private void insertModuleVariable(String variableName, String moduleId, String value) {
 		String variableIdentifier = buildModuleVariableIdentifier(variableName, moduleId);
 		insertVariable(variableIdentifier, value);
 	}
 
 	private String buildModuleVariableIdentifier(String variableName, String moduleId) {
-		String variableIdentifier = moduleId+"-"+variableName;
+		String variableIdentifier = moduleId + "-" + variableName;
 		return variableIdentifier;
 	}
 
 	private void insertVariable(String identifier, int value) {
 		insertVariable(identifier, String.valueOf(value));
 	}
-	
+
 	private void insertVariable(String identifier, String value) {
-		Outcome outcome = new Outcome(identifier, Cardinality.SINGLE, ""+value);
+		Outcome outcome = new Outcome(identifier, Cardinality.SINGLE, "" + value);
 		outcomes.put(identifier, outcome);
 	}
-	
+
 	private void insertVariable(String identifier, List<String> values) {
 		Outcome outcome = new Outcome(identifier, Cardinality.MULTIPLE);
 		outcome.values = values;

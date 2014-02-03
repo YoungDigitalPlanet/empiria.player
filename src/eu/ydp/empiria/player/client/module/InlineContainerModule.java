@@ -29,32 +29,32 @@ public class InlineContainerModule extends InlineModuleBase implements IInlineCo
 
 	private InlineFormattingContainerType parseNodeName(Element element) {
 		String nodeName = element.getNodeName().toUpperCase();
-		
+
 		InlineFormattingContainerType type = null;
-		
+
 		if ("B".equals(nodeName)) {
 			type = InlineFormattingContainerType.BOLD;
-		} else  if ("STRONG".equals(nodeName)) {
-			type = InlineFormattingContainerType.BOLD;			
-		} else  if ("I".equals(nodeName)) {
+		} else if ("STRONG".equals(nodeName)) {
+			type = InlineFormattingContainerType.BOLD;
+		} else if ("I".equals(nodeName)) {
 			type = InlineFormattingContainerType.ITALIC;
 		}
-		
+
 		return type;
 	}
-	
+
 	@Override
 	public InlineFormattingContainerType getType() {
 		return type;
 	}
 
 	@Override
-	public List<IModule> getChildrenModules() {		
+	public List<IModule> getChildrenModules() {
 		return getModuleSocket().getChildren(this);
 	}
-	
+
 	@Override
-	public InlineContainerModule getNewInstance() {		
+	public InlineContainerModule getNewInstance() {
 		return new InlineContainerModule();
 	}
 

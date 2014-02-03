@@ -12,10 +12,10 @@ import eu.ydp.empiria.player.client.module.labelling.structure.ChildrenBean;
 import eu.ydp.empiria.player.client.module.labelling.structure.LabellingInteractionBean;
 import eu.ydp.gwtutil.xml.XMLParser;
 
-public class LabellingInteractionBeanMockParser extends TestJAXBParser<LabellingInteractionBean>{
+public class LabellingInteractionBeanMockParser extends TestJAXBParser<LabellingInteractionBean> {
 
 	private List<ChildData> children;
-	
+
 	public LabellingInteractionBeanMockParser(List<ChildData> children) {
 		this.children = children;
 	}
@@ -23,9 +23,9 @@ public class LabellingInteractionBeanMockParser extends TestJAXBParser<Labelling
 	@Override
 	public LabellingInteractionBean parse(String xml) {
 		LabellingInteractionBean bean = super.parse(xml);
-		
+
 		ChildrenBean currChildren = bean.getChildren();
-		if (currChildren != null){
+		if (currChildren != null) {
 			updateXmlContent(currChildren);
 		}
 		return bean;
@@ -33,7 +33,7 @@ public class LabellingInteractionBeanMockParser extends TestJAXBParser<Labelling
 
 	private void updateXmlContent(ChildrenBean currChildren) {
 		List<ChildBean> childBeans = currChildren.getChildBeanList();
-		for (int i = 0 ; i < childBeans.size() ; i ++){
+		for (int i = 0; i < childBeans.size(); i++) {
 			XMLContent content = createXmlContent(i);
 			childBeans.get(i).setContent(content);
 		}

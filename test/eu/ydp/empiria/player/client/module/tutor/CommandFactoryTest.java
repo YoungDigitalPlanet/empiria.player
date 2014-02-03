@@ -4,9 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -104,7 +102,7 @@ public class CommandFactoryTest {
 		prepareConfigForType(CommandType.IMAGE);
 
 		TutorCommand showImageCommand = mock(ShowImageCommand.class);
-		
+
 		ShowImageDTO showImageDTO = new ShowImageDTO(ASSET_PATH_JUMPING_ALEX, size);
 
 		when(commandsModuleFactory.createShowImageCommand(eq(moduleView), eq(showImageDTO), eq(handler))).thenReturn(showImageCommand);

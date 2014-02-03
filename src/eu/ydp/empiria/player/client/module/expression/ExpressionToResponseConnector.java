@@ -13,7 +13,7 @@ public class ExpressionToResponseConnector {
 
 	private static final Logger LOGGER = new Logger();
 	private IdentifiersFromExpressionExtractor identifiersFromExpressionExtractor;
-	
+
 	@Inject
 	public ExpressionToResponseConnector(IdentifiersFromExpressionExtractor identifiersFromExpressionExtractor) {
 		this.identifiersFromExpressionExtractor = identifiersFromExpressionExtractor;
@@ -22,14 +22,14 @@ public class ExpressionToResponseConnector {
 	public void connectResponsesToExpression(ExpressionBean expressionBean, Map<String, Response> responses) {
 		String template = expressionBean.getTemplate();
 		List<String> identifiers = identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(template);
-		
+
 		for (String responseId : identifiers) {
 			Response response = responses.get(responseId);
-			
-			if(response == null){
-				String message = "Expression: "+template+" is using identifier: "+responseId+" that is not existing in responsesMap!";
+
+			if (response == null) {
+				String message = "Expression: " + template + " is using identifier: " + responseId + " that is not existing in responsesMap!";
 				LOGGER.info(message);
-			}else{
+			} else {
 				expressionBean.getResponses().add(response);
 				response.setExpression(expressionBean);
 			}

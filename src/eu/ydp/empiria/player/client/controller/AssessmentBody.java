@@ -31,8 +31,8 @@ public class AssessmentBody implements WidgetWorkflowListener {
 	protected ParenthoodManager parenthood;
 	protected List<IModule> modules;
 
-	public AssessmentBody(DisplayContentOptions options, ModuleSocket moduleSocket,
-			final InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket) {
+	public AssessmentBody(DisplayContentOptions options, ModuleSocket moduleSocket, final InteractionEventsListener interactionEventsListener,
+			ModulesRegistrySocket modulesRegistrySocket) {
 		this.options = options;
 		this.moduleSocket = moduleSocket;
 		this.modulesRegistrySocket = modulesRegistrySocket;
@@ -42,7 +42,7 @@ public class AssessmentBody implements WidgetWorkflowListener {
 
 	}
 
-	public Widget init(Element assessmentBodyElement){
+	public Widget init(Element assessmentBodyElement) {
 
 		ModulesInstalator instalator = new ModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
 		BodyGenerator generator = new BodyGenerator(instalator, options);
@@ -58,16 +58,16 @@ public class AssessmentBody implements WidgetWorkflowListener {
 		return bodyModule.getView();
 	}
 
-	public Panel getPageSlot(){
+	public Panel getPageSlot() {
 		return pageSlot;
 	}
 
-	private Panel findPageInPage(){
+	private Panel findPageInPage() {
 		Panel pagePanel = null;
 
-		for(IModule module: modules){
-			if(module instanceof PageInPageModule){
-				pagePanel = (Panel)((PageInPageModule) module).getView();
+		for (IModule module : modules) {
+			if (module instanceof PageInPageModule) {
+				pagePanel = (Panel) ((PageInPageModule) module).getView();
 				break;
 			}
 		}

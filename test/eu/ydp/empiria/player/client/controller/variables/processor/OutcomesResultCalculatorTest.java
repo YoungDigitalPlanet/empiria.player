@@ -19,16 +19,16 @@ public class OutcomesResultCalculatorTest {
 	private OutcomesResultCalculator calculator;
 	@Mock
 	private Logger logger;
-	
+
 	@Test
-	public void assessmentCompleted() {		
+	public void assessmentCompleted() {
 		// when
 		int progress = calculator.calculateResult(8, 8);
 
 		// then
 		assertThat(progress).isEqualTo(100);
 	}
-	
+
 	@Test
 	public void assessmentPartiallySolved() {
 		// when
@@ -37,7 +37,7 @@ public class OutcomesResultCalculatorTest {
 		// then
 		assertThat(progress).isEqualTo(25);
 	}
-	
+
 	@Test
 	public void assessmentPartiallySolved_shouldFloor() {
 		// when
@@ -46,7 +46,7 @@ public class OutcomesResultCalculatorTest {
 		// then
 		assertThat(progress).isEqualTo(70);
 	}
-	
+
 	@Test
 	public void assessmentNotFullySolved_shouldFloor() {
 		// when
@@ -55,7 +55,7 @@ public class OutcomesResultCalculatorTest {
 		// then
 		assertThat(progress).isEqualTo(99);
 	}
-	
+
 	@Test
 	public void assessmentNotTouched() {
 		// when
@@ -64,7 +64,7 @@ public class OutcomesResultCalculatorTest {
 		// then
 		assertThat(progress).isEqualTo(0);
 	}
-	
+
 	@Test
 	public void assessmentWithTodoIsZero() {
 		// when
@@ -73,7 +73,7 @@ public class OutcomesResultCalculatorTest {
 		// then
 		assertThat(progress).isEqualTo(0);
 	}
-	
+
 	@Test
 	public void invalidCase_doneHigherThanTodo() {
 		// when
@@ -82,7 +82,7 @@ public class OutcomesResultCalculatorTest {
 		// then
 		verify(logger).severe(anyString());
 	}
-	
+
 	@Test
 	public void invalidCase_negativeDone() {
 		// when
@@ -91,7 +91,7 @@ public class OutcomesResultCalculatorTest {
 		// then
 		verify(logger).severe(anyString());
 	}
-	
+
 	@Test
 	public void invalidCase_negativeTodo() {
 		// when
@@ -100,7 +100,7 @@ public class OutcomesResultCalculatorTest {
 		// then
 		verify(logger).severe(anyString());
 	}
-	
+
 	@Test
 	public void invalidCase_negativeDoneAndTodo() {
 		// when

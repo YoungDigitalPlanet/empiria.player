@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 import org.mockito.Mockito;
 

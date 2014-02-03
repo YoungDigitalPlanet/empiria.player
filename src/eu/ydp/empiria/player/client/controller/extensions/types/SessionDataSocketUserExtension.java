@@ -5,5 +5,5 @@ import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataS
 public interface SessionDataSocketUserExtension {
 
 	void setSessionDataSupplier(SessionDataSupplier sessionDataSupplier);
-	
+
 }

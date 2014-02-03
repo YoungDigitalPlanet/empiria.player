@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.choice.presenter;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 

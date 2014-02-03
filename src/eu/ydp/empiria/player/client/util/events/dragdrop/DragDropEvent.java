@@ -26,7 +26,7 @@ public class DragDropEvent extends AbstractEvent<DragDropEventHandler, DragDropE
 		handler.onDragEvent(this);
 	}
 
-	public void setIModule(IModule module){
+	public void setIModule(IModule module) {
 		this.module = module;
 	}
 

@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.util.events.scope.PageScope;
 
 /**
  * EventBus Tests
- *
+ * 
  */
 @SuppressWarnings("PMD")
 public class EventBusJUnitTest extends AbstractTestBase {

@@ -10,7 +10,8 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScopedProvider;
 public class PageScopedItemResponseManagerProvider extends PageScopedProvider<ItemResponseManager> {
 
 	@Inject
-	public PageScopedItemResponseManagerProvider(Provider<ItemXMLWrapper> xmlMapperProvider, ResponseNodeParser nodeParser, CurrentPageScopeProvider currentScopeProvider) {
+	public PageScopedItemResponseManagerProvider(Provider<ItemXMLWrapper> xmlMapperProvider, ResponseNodeParser nodeParser,
+			CurrentPageScopeProvider currentScopeProvider) {
 		super(new ItemResponseManagerProvider(xmlMapperProvider, nodeParser), currentScopeProvider);
 	}
 

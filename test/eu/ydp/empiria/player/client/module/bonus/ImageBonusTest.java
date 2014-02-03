@@ -22,7 +22,7 @@ public class ImageBonusTest {
 	private BonusPopupPresenter presenter;
 	@Mock
 	private EmpiriaPaths empiriaPaths;
-	
+
 	@Test
 	public void execute() {
 		// given
@@ -31,7 +31,7 @@ public class ImageBonusTest {
 		Size size = new Size(100, 100);
 		when(empiriaPaths.getCommonsFilePath(url)).thenReturn(fullUrl);
 		bonus.setAsset(url, size);
-		
+
 		// when
 		bonus.execute();
 

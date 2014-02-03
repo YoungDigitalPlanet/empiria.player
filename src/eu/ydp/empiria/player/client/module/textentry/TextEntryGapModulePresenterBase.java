@@ -29,39 +29,38 @@ public abstract class TextEntryGapModulePresenterBase extends GapModulePesenterB
 	protected StyleNameConstants styleNames;
 	@Inject
 	protected DragDropHelper dragDropHelper;
-	
-	
+
 	protected DroppableObject<TextBox> droppable;
 	protected TextBox textBox;
 	protected DropZoneGuardian dropZoneGuardian;
-	
+
 	public abstract void addPresenterHandler(PresenterHandler handler);
-	
+
 	public void addDomHandlerOnObjectDrop(final GapDropHandler dragGapDropHandler) {
 		droppable.addDropHandler(new DropHandler() {
 			@Override
 			public void onDrop(DropEvent event) {
 				Optional<DragDataObject> objectFromEvent = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
-				if(objectFromEvent.isPresent()){
+				if (objectFromEvent.isPresent()) {
 					dragGapDropHandler.onDrop(objectFromEvent.get());
 				}
 			}
 		});
 	}
-	
+
 	@Override
 	public void setMaxLength(int length) {
 		textBox.setMaxLength(length);
 	}
-	
+
 	public void removeFocusFromTextField() {
 		textBox.getElement().blur();
 	}
-	
+
 	public void makeExpressionReplacements(ExpressionReplacer replacer) {
 		expressionReplacer.makeReplacements(textBox, replacer);
 	}
-	
+
 	@Override
 	public void setText(String text) {
 		textBox.setValue(text, true);
@@ -70,7 +69,7 @@ public abstract class TextEntryGapModulePresenterBase extends GapModulePesenterB
 	public String getText() {
 		return textBox.getText();
 	}
-	
+
 	@Override
 	public void setViewEnabled(boolean enabled) {
 		textBox.setEnabled(enabled);
@@ -80,7 +79,7 @@ public abstract class TextEntryGapModulePresenterBase extends GapModulePesenterB
 	public UIObject getComponent() {
 		return textBox;
 	}
-	
+
 	public void lockDragZone() {
 		dropZoneGuardian.lockDropZone();
 	}

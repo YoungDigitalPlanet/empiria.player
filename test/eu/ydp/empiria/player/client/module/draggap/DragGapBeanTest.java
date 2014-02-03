@@ -13,23 +13,23 @@ public class DragGapBeanTest extends AbstractJAXBTestBase<DragGapBean> {
 
 	@Test
 	public void shouldReturnDragGap() {
-//		given
+		// given
 		String emptyXmlString = "<dragInteraction/>";
-		
-//		when
+
+		// when
 		DragGapBean dragGapBean = createBeanFromXMLString(emptyXmlString);
-		
-//		then
+
+		// then
 		assertThat(dragGapBean.getId(), equalTo(StringUtils.EMPTY_STRING));
 		assertThat(dragGapBean.getName(), equalTo(StringUtils.EMPTY_STRING));
 		assertThat(dragGapBean.getExpressionMode(), equalTo(StringUtils.EMPTY_STRING));
 		assertThat(dragGapBean.getWidthBindingGroup(), equalTo(StringUtils.EMPTY_STRING));
 		assertThat(dragGapBean.getResponseIdentifier(), equalTo(StringUtils.EMPTY_STRING));
 	}
-	
+
 	@Test
 	public void shouldReturnDragGapWithEmptyValues() {
-//		given
+		// given
 		StringBuilder fullXmlStringBuilder = new StringBuilder();
 		fullXmlStringBuilder.append("<dragInteraction ");
 		fullXmlStringBuilder.append("id=\"id1\" ");
@@ -39,11 +39,11 @@ public class DragGapBeanTest extends AbstractJAXBTestBase<DragGapBean> {
 		fullXmlStringBuilder.append("responseIdentifier=\"responseIdentifier1\" ");
 		fullXmlStringBuilder.append("sourcelistId=\"sourceListIdentifier1\">");
 		fullXmlStringBuilder.append("</dragInteraction>");
-		
-//		when
+
+		// when
 		DragGapBean dragGapBean = createBeanFromXMLString(fullXmlStringBuilder.toString());
-		
-//		then
+
+		// then
 		assertThat(dragGapBean.getId(), equalTo("id1"));
 		assertThat(dragGapBean.getName(), equalTo("name1"));
 		assertThat(dragGapBean.getExpressionMode(), equalTo("expressionMode1"));
@@ -51,6 +51,5 @@ public class DragGapBeanTest extends AbstractJAXBTestBase<DragGapBean> {
 		assertThat(dragGapBean.getResponseIdentifier(), equalTo("responseIdentifier1"));
 		assertThat(dragGapBean.getSourcelistId(), equalTo("sourceListIdentifier1"));
 	}
-	
 
 }

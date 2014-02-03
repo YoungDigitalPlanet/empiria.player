@@ -26,11 +26,11 @@ public class CanvasPresenter {
 	}
 
 	public void mouseMove(Point point) {
-		if(cameBackToScreen()) {
+		if (cameBackToScreen()) {
 			overridePreviousPosition(point);
 		}
-		
-		if(isActive()) {
+
+		if (isActive()) {
 			moveTool(point);
 		}
 	}
@@ -58,7 +58,7 @@ public class CanvasPresenter {
 	}
 
 	public void mouseOut() {
-		if(isActive()) { 
+		if (isActive()) {
 			this.mouseOutWhileActive = true;
 		}
 	}

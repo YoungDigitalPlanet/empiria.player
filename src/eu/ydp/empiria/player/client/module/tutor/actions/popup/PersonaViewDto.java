@@ -4,7 +4,7 @@ public class PersonaViewDto {
 
 	private final int personaIndex;
 	private final String avatarUrl;
-	
+
 	public PersonaViewDto(int personaIndex, String avatarUrl) {
 		this.personaIndex = personaIndex;
 		this.avatarUrl = avatarUrl;
@@ -17,5 +17,5 @@ public class PersonaViewDto {
 	public String getAvatarUrl() {
 		return avatarUrl;
 	}
-	
+
 }

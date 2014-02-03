@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.style;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.After;
 import org.junit.Test;

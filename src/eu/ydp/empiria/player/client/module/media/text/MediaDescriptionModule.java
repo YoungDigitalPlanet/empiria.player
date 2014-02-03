@@ -15,6 +15,7 @@ public class MediaDescriptionModule extends AbstractMediaController<MediaDescrip
 
 	interface ImgDescriptionModuleUiBinder extends UiBinder<Widget, MediaDescriptionModule> {
 	}
+
 	protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
 
 	@UiField
@@ -35,7 +36,7 @@ public class MediaDescriptionModule extends AbstractMediaController<MediaDescrip
 	}
 
 	@Override
-	public void init() { //NOPMD
+	public void init() { // NOPMD
 
 	}
 

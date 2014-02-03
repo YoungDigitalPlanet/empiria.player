@@ -21,8 +21,10 @@ public class TutorViewImpl implements TutorView {
 	private static final String DIMENSIONS_UNIT = "px";
 
 	private static TutorViewUiBinder uiBinder = GWT.create(TutorViewUiBinder.class);
+
 	@UiTemplate("TutorViewImpl.ui.xml")
-	interface TutorViewUiBinder extends UiBinder<Widget, TutorViewImpl> {}
+	interface TutorViewUiBinder extends UiBinder<Widget, TutorViewImpl> {
+	}
 
 	@UiField
 	FlowPanel container;
@@ -40,7 +42,7 @@ public class TutorViewImpl implements TutorView {
 	@Override
 	public void setAnimationLeft(int left) {
 		Style style = content.getElement().getStyle();
-		style.setProperty("backgroundPosition", left+DIMENSIONS_UNIT);
+		style.setProperty("backgroundPosition", left + DIMENSIONS_UNIT);
 	}
 
 	@Override
@@ -67,9 +69,9 @@ public class TutorViewImpl implements TutorView {
 	@Override
 	public void setBackgroundImage(String src, Size size) {
 		Style style = content.getElement().getStyle();
-		String srcWithUrlInside = "url("+src+")";
+		String srcWithUrlInside = "url(" + src + ")";
 		style.setBackgroundImage(srcWithUrlInside);
-		style.setProperty("backgroundPosition", 0+DIMENSIONS_UNIT);
+		style.setProperty("backgroundPosition", 0 + DIMENSIONS_UNIT);
 
 		setSizeOfContent(size);
 	}
@@ -91,8 +93,8 @@ public class TutorViewImpl implements TutorView {
 	}
 
 	private void setSizeOfContent(Size size) {
-		String width = size.getWidth()+DIMENSIONS_UNIT;
-		String height = size.getHeight()+DIMENSIONS_UNIT;
+		String width = size.getWidth() + DIMENSIONS_UNIT;
+		String height = size.getHeight() + DIMENSIONS_UNIT;
 		content.setWidth(width);
 		content.setHeight(height);
 	}

@@ -18,8 +18,8 @@ public class TestsWithoutSuiteFinder extends Task {
 		getProject().setProperty(assigne, Joiner.on(",").join(unsupportedTests()));
 	}
 
-	public Iterable<String> unsupportedTests(){
-		 Set<Class<?>> testClasses = Sets.newHashSet();
+	public Iterable<String> unsupportedTests() {
+		Set<Class<?>> testClasses = Sets.newHashSet();
 		testClasses.addAll(GWTTestCaseSuite.getAllTestClasses());
 		testClasses.addAll(JUnitTestSuite.getAllTestClasses());
 
@@ -28,14 +28,14 @@ public class TestsWithoutSuiteFinder extends Task {
 		return Iterables.transform(testClasses, new Function<Class<?>, String>() {
 			@Override
 			public String apply(final Class<?> clazz) {
-				return "**/*"+clazz.getSimpleName()+".java";
+				return "**/*" + clazz.getSimpleName() + ".java";
 			}
-		}) ;
+		});
 	}
 
-//	public static void main(final String[] args) {
-//		System.out.println(new TestsWithoutSuiteFinder().unsupportedTests());
-//	}
+	// public static void main(final String[] args) {
+	// System.out.println(new TestsWithoutSuiteFinder().unsupportedTests());
+	// }
 
 	public void setAssigne(final String assigne) {
 		this.assigne = assigne;

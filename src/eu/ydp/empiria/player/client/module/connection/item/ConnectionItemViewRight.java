@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-public class ConnectionItemViewRight extends AbstractConnectionItemView{
+public class ConnectionItemViewRight extends AbstractConnectionItemView {
 	private static ConnectionItemViewUiBinder uiBinder = GWT.create(ConnectionItemViewUiBinder.class);
 
 	interface ConnectionItemViewUiBinder extends UiBinder<Widget, ConnectionItemViewRight> {

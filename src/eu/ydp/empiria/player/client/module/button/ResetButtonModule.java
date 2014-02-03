@@ -26,5 +26,4 @@ public class ResetButtonModule extends AbstractActivityButtonModule {
 		return styleNames.QP_RESET_BUTTON();
 	}
 
-
 }

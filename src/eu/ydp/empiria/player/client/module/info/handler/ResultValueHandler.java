@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
 public class ResultValueHandler extends ProviderItemValueHandlerBase {
 
 	@Inject
-	public ResultValueHandler(@Assisted SessionDataSupplier sessionDataSupplier){
+	public ResultValueHandler(@Assisted SessionDataSupplier sessionDataSupplier) {
 		super(sessionDataSupplier);
 	}
 

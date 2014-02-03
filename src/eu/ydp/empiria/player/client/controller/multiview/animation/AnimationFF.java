@@ -15,9 +15,9 @@ import eu.ydp.gwtutil.client.util.events.animation.TransitionEndHandler;
      -moz-transform: translateX(-1920px);<br/>
      -moz-transition-duration: 2s;<br/>
  * </code>
- *
+ * 
  * @author plelakowski
- *
+ * 
  */
 public class AnimationFF extends AbstractAnimation implements TransitionEndHandler {
 	private final static String SUFFIX = "moz";
@@ -35,11 +35,10 @@ public class AnimationFF extends AbstractAnimation implements TransitionEndHandl
 		}
 		toAnimate.addDomHandler(this, TransitionEndEvent.getType());
 		float currentPosition = NumberUtils.tryParseFloat(toAnimate.getElement().getStyle().getLeft().replaceAll("[a-z%]+$", ""));
-		double animationLength = Math.abs(currentPosition)-Math.abs(xPosition);
+		double animationLength = Math.abs(currentPosition) - Math.abs(xPosition);
 		setProperty(toAnimate, SUFFIX + TRANSITION_DURATION, duration + "ms");
 		setProperty(toAnimate, SUFFIX + TRANSITION, "all 1s ease");
 		setProperty(toAnimate, SUFFIX + TRANSFORM, "translate(" + animationLength + "px,0)");
-
 
 	}
 

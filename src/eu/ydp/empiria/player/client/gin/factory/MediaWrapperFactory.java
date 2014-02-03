@@ -6,5 +6,6 @@ import eu.ydp.empiria.player.client.module.object.impl.Media;
 
 public interface MediaWrapperFactory {
 	public HTML5VideoMediaWrapper getHtml5VideoMediaWrapper(Media media);
+
 	public HTML5AudioMediaWrapper getHtml5AudioMediaWrapper(Media media);
 }

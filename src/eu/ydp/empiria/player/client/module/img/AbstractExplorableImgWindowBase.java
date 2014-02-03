@@ -14,7 +14,7 @@ public abstract class AbstractExplorableImgWindowBase extends Composite implemen
 
 	protected void findScaleMinAndOriginalAspectRatio() {
 		originalAspectRatio = originalImageWidth / originalImageHeight;
-		if (windowHeight/originalImageHeight  <  windowWidth/originalImageWidth) {
+		if (windowHeight / originalImageHeight < windowWidth / originalImageWidth) {
 			scaleMin = (originalAspectRatio * windowHeight) / windowWidth;
 		}
 	}
@@ -31,58 +31,48 @@ public abstract class AbstractExplorableImgWindowBase extends Composite implemen
 		return originalImageWidth;
 	}
 
-
 	protected void setOriginalImageWidth(double originalImageWidth) {
 		this.originalImageWidth = originalImageWidth;
 	}
-
 
 	protected double getOriginalImageHeight() {
 		return originalImageHeight;
 	}
 
-
 	protected void setOriginalImageHeight(double originalImageHeight) {
 		this.originalImageHeight = originalImageHeight;
 	}
-
 
 	protected int getWindowWidth() {
 		return windowWidth;
 	}
 
-
 	protected void setWindowWidth(int windowWidth) {
 		this.windowWidth = windowWidth;
 	}
-
 
 	protected int getWindowHeight() {
 		return windowHeight;
 	}
 
-
 	protected void setWindowHeight(int windowHeight) {
 		this.windowHeight = windowHeight;
 	}
-
 
 	protected double getScale() {
 		return scale;
 	}
 
-
 	protected void setScale(double scale) {
 		this.scale = scale;
 	}
 
-
 	protected double getZoom() {
-		return windowWidth/ originalImageWidth * (scale) ;
+		return windowWidth / originalImageWidth * (scale);
 	}
 
 	protected double getZoom(double newScale) {
-		return windowWidth/ originalImageWidth * (newScale) ;
+		return windowWidth / originalImageWidth * (newScale);
 	}
 
 	public double getScaleStep() {

@@ -8,14 +8,13 @@ public class JsonAttr extends JavaScriptObject {
 		//
 	}
 
-	public final native void setAttrValue(String attrName,String value)/*-{
-		this[attrName] = value;
-	}-*/;
-
+	public final native void setAttrValue(String attrName, String value)/*-{
+																		this[attrName] = value;
+																		}-*/;
 
 	public final native String getAttrValue(String attrName)/*-{
-		return this[attrName];
-	}-*/;
+															return this[attrName];
+															}-*/;
 
 	public final String toJSON() {
 		return new JSONObject(this).toString();

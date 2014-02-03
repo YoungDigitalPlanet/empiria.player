@@ -4,7 +4,6 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 
-
 public abstract class InlineModuleBase extends SingleViewModuleBase implements IInlineModule {
 
 	private InteractionEventsListener interactionEventsListener;
@@ -14,7 +13,8 @@ public abstract class InlineModuleBase extends SingleViewModuleBase implements I
 		interactionEventsListener = iel;
 		super.initModuleInternal(element, moduleSocket);
 	}
-	protected InteractionEventsListener getInteractionEventsListener(){
+
+	protected InteractionEventsListener getInteractionEventsListener() {
 		return interactionEventsListener;
 	}
 

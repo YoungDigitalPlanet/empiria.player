@@ -1,10 +1,12 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -25,13 +27,13 @@ public class SimulationControllerJUnitTest {
 	public void testPauseAnimation() {
 		Element element = mock(Element.class);
 		simulationController.pauseAnimation(element);
-		verify(methodInvocator).callMethod(Mockito.eq(element), Mockito.eq("pauseAnimation"));
+		verify(methodInvocator).callMethod(Matchers.eq(element), Matchers.eq("pauseAnimation"));
 	}
 
 	@Test
 	public void testResumeAnimation() {
 		Element element = mock(Element.class);
 		simulationController.resumeAnimation(element);
-		verify(methodInvocator).callMethod(Mockito.eq(element), Mockito.eq("resumeAnimation"));
+		verify(methodInvocator).callMethod(Matchers.eq(element), Matchers.eq("resumeAnimation"));
 	}
 }

@@ -9,9 +9,9 @@ import eu.ydp.empiria.player.client.controller.variables.VariableUtil;
 import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
 
 public class ProviderValueHandler extends ProviderItemValueHandlerBase {
-	
+
 	private static final String DEFAULT_VALUE = "0";
-	
+
 	@Inject
 	public ProviderValueHandler(@Assisted SessionDataSupplier sessionDataSupplier) {
 		super(sessionDataSupplier);
@@ -22,6 +22,5 @@ public class ProviderValueHandler extends ProviderItemValueHandlerBase {
 		VariableUtil util = new VariableUtil(provider);
 		return util.getVariableValue(info.getValueName(), DEFAULT_VALUE);
 	}
-	
-	
+
 }

@@ -5,19 +5,17 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
-
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name="propertyCondition")
+@XmlRootElement(name = "propertyCondition")
 public class PropertyConditionBean implements FeedbackCondition {
-	
-	@XmlAttribute(name="property")
+
+	@XmlAttribute(name = "property")
 	private String property;
-	
-	@XmlAttribute(name="operator")
+
+	@XmlAttribute(name = "operator")
 	private String operator = "==";
-	
-	@XmlAttribute(name="value")
+
+	@XmlAttribute(name = "value")
 	private String value = "true";
 
 	public String getProperty() {

@@ -7,20 +7,20 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 
-public class DataSourceDataSupplierMock implements DataSourceDataSupplier{
-	
+public class DataSourceDataSupplierMock implements DataSourceDataSupplier {
+
 	private List<String> itemTitles = Lists.newArrayList();
-	
+
 	private String assessmentTitle;
-	
+
 	public void setItemTitles(List<String> itemTitles) {
 		this.itemTitles = itemTitles;
 	}
-	
+
 	public void setAssessmentTitle(String assessmentTitle) {
 		this.assessmentTitle = assessmentTitle;
 	}
-	
+
 	@Override
 	public int getItemsCount() {
 		return itemTitles.size();

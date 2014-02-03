@@ -10,9 +10,11 @@ import eu.ydp.empiria.player.client.module.labelling.structure.LabellingModuleJA
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
 
 public class LabellingBuilder {
-	
-	@Inject private LabellingModuleJAXBParserFactory parserFactory;
-	@Inject private LabellingViewBuilder builder;
+
+	@Inject
+	private LabellingModuleJAXBParserFactory parserFactory;
+	@Inject
+	private LabellingViewBuilder builder;
 
 	public LabellingView build(Element element, BodyGeneratorSocket bgs) {
 		LabellingInteractionBean structure = findStructure(element);
@@ -20,9 +22,9 @@ public class LabellingBuilder {
 		return view;
 	}
 
-	private LabellingInteractionBean findStructure(Element element){
+	private LabellingInteractionBean findStructure(Element element) {
 		JAXBParser<LabellingInteractionBean> parser = parserFactory.create();
-		return parser.parse(element.toString());		
+		return parser.parse(element.toString());
 	}
 
 }

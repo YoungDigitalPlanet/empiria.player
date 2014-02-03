@@ -15,11 +15,9 @@ public class GroupAnswersControllerModel {
 
 	private IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder;
 	private SelectionModuleModel model;
-	
+
 	@Inject
-	public GroupAnswersControllerModel(
-			IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder, 
-			@ModuleScoped SelectionModuleModel model) {
+	public GroupAnswersControllerModel(IdentifiableAnswersByTypeFinder identifiableAnswersByTypeFinder, @ModuleScoped SelectionModuleModel model) {
 		this.identifiableAnswersByTypeFinder = identifiableAnswersByTypeFinder;
 		this.model = model;
 	}
@@ -29,7 +27,7 @@ public class GroupAnswersControllerModel {
 	public void setGroupChoicesControllers(List<GroupAnswersController> groupChoicesControllers) {
 		this.groupChoicesControllers = groupChoicesControllers;
 	}
-	
+
 	public List<GroupAnswersController> getGroupChoicesControllers() {
 		return groupChoicesControllers;
 	}
@@ -53,7 +51,7 @@ public class GroupAnswersControllerModel {
 		}
 		return notSelectedAnswers;
 	}
-	
+
 	public List<SelectionAnswerDto> getButtonsToMarkForType(MarkAnswersType type) {
 		return identifiableAnswersByTypeFinder.findAnswersObjectsOfGivenType(type, getSelectedAnswers(), model);
 	}

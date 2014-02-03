@@ -19,22 +19,22 @@ public class BonusConfig {
 	public List<BonusAction> getActions() {
 		return this.actions;
 	}
-	
+
 	public static BonusConfig fromJs(BonusConfigJs bonusConfigJs) {
 		List<BonusAction> actions = getActions(bonusConfigJs);
 		return new BonusConfig(actions);
 	}
-	
-	private static List<BonusAction> getActions(BonusConfigJs bonusConfigJs){
+
+	private static List<BonusAction> getActions(BonusConfigJs bonusConfigJs) {
 		List<BonusAction> actions = Lists.newArrayList();
 		JsArray<BonusActionJs> jsActions = bonusConfigJs.getActions();
-		
-		for(int i=0; i<jsActions.length(); i++) {
+
+		for (int i = 0; i < jsActions.length(); i++) {
 			BonusActionJs jsAction = jsActions.get(i);
 			BonusAction action = BonusAction.fromJs(jsAction);
 			actions.add(action);
 		}
-		
+
 		return actions;
 	}
 }

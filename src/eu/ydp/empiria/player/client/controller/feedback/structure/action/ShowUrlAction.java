@@ -13,18 +13,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.google.common.collect.Lists;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name="showUrl")
+@XmlRootElement(name = "showUrl")
 public class ShowUrlAction implements FeedbackUrlAction {
-	
-	@XmlElement(name="source")
+
+	@XmlElement(name = "source")
 	private List<ShowUrlActionSource> sources = Lists.newArrayList();
-	
-	@XmlAttribute(name="href")
+
+	@XmlAttribute(name = "href")
 	private String href;
-	
-	@XmlAttribute(name="type")
+
+	@XmlAttribute(name = "type")
 	private String type;
-	
+
 	public List<ShowUrlActionSource> getSources() {
 		return sources;
 	}
@@ -33,6 +33,7 @@ public class ShowUrlAction implements FeedbackUrlAction {
 		this.sources = sources;
 	}
 
+	@Override
 	public String getHref() {
 		return href;
 	}
@@ -41,6 +42,7 @@ public class ShowUrlAction implements FeedbackUrlAction {
 		this.href = href;
 	}
 
+	@Override
 	public String getType() {
 		return type;
 	}
@@ -48,14 +50,14 @@ public class ShowUrlAction implements FeedbackUrlAction {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public Map<String, String> getSourcesWithTypes() {
 		Map<String, String> sourcesWithTypes = new HashMap<String, String>();
-		
+
 		for (ShowUrlActionSource actionSource : getSources()) {
 			sourcesWithTypes.put(actionSource.getSrc(), actionSource.getType());
 		}
-		
+
 		return sourcesWithTypes;
 	}
 

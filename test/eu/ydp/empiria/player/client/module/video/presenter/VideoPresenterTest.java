@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,5 +32,5 @@ public class VideoPresenterTest {
 		verify(videoPlayerBuilder).build();
 		verify(videoPlayerReattacher).registerReattachHandlerToView(view);
 	}
-	
+
 }

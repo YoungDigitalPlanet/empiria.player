@@ -1,12 +1,13 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox.tool;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolType;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.model.ToolboxModelImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
@@ -19,30 +20,30 @@ public class ToolFactoryTest {
 
 	@Mock
 	private DrawCanvas drawCanvas;
-	
+
 	@Test
 	public void shouldCreatePencilTool() throws Exception {
-		//given
+		// given
 		ToolboxModelImpl toolModel = new ToolboxModelImpl();
 		toolModel.setToolType(ToolType.PENCIL);
-		
-		//when
+
+		// when
 		Tool tool = factory.createTool(toolModel);
-		
-		//then
+
+		// then
 		assertTrue(tool instanceof PencilTool);
 	}
-	
+
 	@Test
 	public void shouldCreateEraserTool() throws Exception {
-		//given
+		// given
 		ToolboxModelImpl toolModel = new ToolboxModelImpl();
 		toolModel.setToolType(ToolType.ERASER);
-		
-		//when
+
+		// when
 		Tool tool = factory.createTool(toolModel);
-		
-		//then
+
+		// then
 		assertTrue(tool instanceof EraserTool);
 	}
 }

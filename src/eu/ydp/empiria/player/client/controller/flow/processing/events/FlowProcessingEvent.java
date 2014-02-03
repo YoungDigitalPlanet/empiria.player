@@ -4,11 +4,11 @@ public class FlowProcessingEvent {
 
 	protected FlowProcessingEventType type;
 
-	public FlowProcessingEvent(FlowProcessingEventType type){
+	public FlowProcessingEvent(FlowProcessingEventType type) {
 		this.type = type;
 	}
 
-	public FlowProcessingEventType getType(){
+	public FlowProcessingEventType getType() {
 		return type;
 	}
 }

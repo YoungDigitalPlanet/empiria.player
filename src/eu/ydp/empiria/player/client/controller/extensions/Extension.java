@@ -5,5 +5,5 @@ public interface Extension {
 	public ExtensionType getType();
 
 	public void init();
-	
+
 }

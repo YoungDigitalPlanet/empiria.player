@@ -17,7 +17,7 @@ public class LabellingChildViewImpl extends Composite implements LabellingChildV
 
 	interface LabellingChildContainerUiBinder extends UiBinder<Widget, LabellingChildViewImpl> {
 	}
-	
+
 	@UiField
 	FlowPanel container;
 

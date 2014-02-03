@@ -11,13 +11,14 @@ import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocke
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 
-public class AssessmentJsonReportExtension extends InternalExtension implements PlayerJsObjectModifierExtension, SessionDataSocketUserExtension, DataSourceDataSocketUserExtension{
-	
+public class AssessmentJsonReportExtension extends InternalExtension implements PlayerJsObjectModifierExtension, SessionDataSocketUserExtension,
+		DataSourceDataSocketUserExtension {
+
 	@Inject
 	private AssessmentReportFactory factory;
 
 	private DataSourceDataSupplier dataSupplier;
-	
+
 	private SessionDataSupplier sessionSupplier;
 
 	private JavaScriptObject playerJsObject;
@@ -34,23 +35,23 @@ public class AssessmentJsonReportExtension extends InternalExtension implements 
 
 	@Override
 	public void setSessionDataSupplier(SessionDataSupplier sessionDataSupplier) {
-		this.sessionSupplier = sessionDataSupplier;		
+		this.sessionSupplier = sessionDataSupplier;
 	}
 
 	@Override
 	public void init() {
-		initPlayerJsObject(playerJsObject);		
+		initPlayerJsObject(playerJsObject);
 	}
 
 	private final native void initPlayerJsObject(JavaScriptObject player)/*-{
-		var instance = this;
-		
-		player.getLessonJSONReport = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.AssessmentJsonReportExtension::getJSONReport()();
-		}		
-	}-*/;
-	
-	private String getJSONReport(){
+																			var instance = this;
+																			
+																			player.getLessonJSONReport = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.AssessmentJsonReportExtension::getJSONReport()();
+																			}		
+																			}-*/;
+
+	private String getJSONReport() {
 		AssessmentJsonReportGenerator generator = factory.getAssessmentJsonReportGenerator(dataSupplier, sessionSupplier);
 		AssessmentJsonReport jsonReport = generator.generate();
 		return jsonReport.getJSONString();

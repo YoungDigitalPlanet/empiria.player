@@ -2,9 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMap;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.Map;
 
@@ -44,7 +42,8 @@ public class VariableProcessingAdapterJUnitTest {
 
 	@Before
 	public void setUp() throws Exception {
-		variableProcessingAdapter = new VariableProcessingAdapter(modulesVariablesProcessor, answerEvaluationProvider, globalVariablesProcessor, resultsToOutcomeMapConverterFacade);
+		variableProcessingAdapter = new VariableProcessingAdapter(modulesVariablesProcessor, answerEvaluationProvider, globalVariablesProcessor,
+				resultsToOutcomeMapConverterFacade);
 	}
 
 	@Test
@@ -55,15 +54,13 @@ public class VariableProcessingAdapterJUnitTest {
 		ProcessingMode processingMode = ProcessingMode.USER_INTERACT;
 		final String ID = "ID";
 
-		when(modulesVariablesProcessor.processVariablesForResponses(responses, processingMode))
-			.thenReturn(modulesProcessingResults);
+		when(modulesVariablesProcessor.processVariablesForResponses(responses, processingMode)).thenReturn(modulesProcessingResults);
 
 		Map<String, DtoModuleProcessingResult> processingResults = ImmutableMap.of(ID, DtoModuleProcessingResult.fromDefaultVariables());
 		when(modulesProcessingResults.getMapOfProcessingResults()).thenReturn(processingResults);
 
 		GlobalVariables globalVariables = new GlobalVariables();
-		when(globalVariablesProcessor.calculateGlobalVariables(processingResults, responses))
-			.thenReturn(globalVariables);
+		when(globalVariablesProcessor.calculateGlobalVariables(processingResults, responses)).thenReturn(globalVariables);
 
 		// when
 		variableProcessingAdapter.processResponseVariables(responses, outcomes, processingMode);
@@ -83,7 +80,7 @@ public class VariableProcessingAdapterJUnitTest {
 
 		// when
 		variableProcessingAdapter.processResponseVariables(mock(Map.class), mock(Map.class), ProcessingMode.USER_INTERACT);
-		
+
 		// then
 		verify(answerEvaluationProvider).updateModulesProcessingResults(modulesProcessingResults);
 	}

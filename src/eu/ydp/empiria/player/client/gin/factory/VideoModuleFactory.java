@@ -6,5 +6,6 @@ import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
 public interface VideoModuleFactory {
 	VideoPlayer createVideoPlayer(VideoElementWrapper videoElement);
+
 	VideoPlayerAttachHandler createAttachHandlerForRegisteringPauseEvent(VideoPlayer videoPlayer);
 }

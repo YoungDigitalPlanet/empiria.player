@@ -15,8 +15,8 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.condition.NotC
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.OrConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
 
-@JAXBBindings(value=FeedbackBean.class, objects={FeedbackConditionBean.class, FeedbackActionBean.class, ShowTextAction.class, ShowUrlAction.class,
-	ShowUrlActionSource.class, PropertyConditionBean.class, CountConditionBean.class, AndConditionBean.class, OrConditionBean.class, NotConditionBean.class})
+@JAXBBindings(value = FeedbackBean.class, objects = { FeedbackConditionBean.class, FeedbackActionBean.class, ShowTextAction.class, ShowUrlAction.class,
+		ShowUrlActionSource.class, PropertyConditionBean.class, CountConditionBean.class, AndConditionBean.class, OrConditionBean.class, NotConditionBean.class })
 public interface FeedbackParserFactory extends JAXBParserFactory<FeedbackBean> {
 
 }

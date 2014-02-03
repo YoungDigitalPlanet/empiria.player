@@ -1,7 +1,8 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
-import static org.mockito.Matchers.*;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
@@ -75,7 +76,6 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		verify(textEntryModule.getPresenter(), times(1)).setWidth(Double.parseDouble("60"), Unit.PX);
 	}
 
-
 	@BeforeClass
 	public static void prepareTestEnviroment() {
 		GWTMockUtilities.disarm();
@@ -117,7 +117,7 @@ public class TextEntryModuleJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 		public void invokeSetFontSize() {
 			setFontSize(styles);
 		}
-		
+
 		public void invokeSetDimensions() {
 			setDimensions(styles);
 		}

@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
@@ -18,7 +19,7 @@ public class ConnectionViewResizeHandlerJUnitTest {
 	public void testOnResize_eventHandlerWasSet() {
 		instance.setConnectionModuleViewImpl(eventHandler);
 		instance.onResize(null);
-		verify(eventHandler).fireConnectEvent(Mockito.eq(PairConnectEventTypes.REPAINT_VIEW), Mockito.anyString(), Mockito.anyString(), Mockito.eq(true));
+		verify(eventHandler).fireConnectEvent(Matchers.eq(PairConnectEventTypes.REPAINT_VIEW), Matchers.anyString(), Matchers.anyString(), Matchers.eq(true));
 	}
 
 	@Test

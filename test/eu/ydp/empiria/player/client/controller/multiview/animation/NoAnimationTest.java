@@ -2,9 +2,7 @@ package eu.ydp.empiria.player.client.controller.multiview.animation;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,10 +26,14 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 public class NoAnimationTest {
 
 	private final NoAnimation instance = new NoAnimation();
-	@Mock private FlowPanel flowPanel;
-	@Mock private Element element;
-	@Mock private Style style;
-	@Mock private AnimationEndCallback animationEndCallback;
+	@Mock
+	private FlowPanel flowPanel;
+	@Mock
+	private Element element;
+	@Mock
+	private Style style;
+	@Mock
+	private AnimationEndCallback animationEndCallback;
 
 	@BeforeClass
 	public static void disarm() {

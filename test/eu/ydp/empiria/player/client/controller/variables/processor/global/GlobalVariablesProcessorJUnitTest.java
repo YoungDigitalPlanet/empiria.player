@@ -1,10 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.createExpressionResponse;
-import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.createResponse;
-import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.prepareProcessingResults;
+import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.Map;
@@ -132,7 +129,6 @@ public class GlobalVariablesProcessorJUnitTest {
 		// then
 		assertThat(globalVariables.getLastMistaken(), equalTo(LastMistaken.CORRECT));
 	}
-
 
 	private Map<String, Response> createResponses() {
 		ExpressionBean expressionBean = new ExpressionBean();

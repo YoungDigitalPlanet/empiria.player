@@ -16,7 +16,8 @@ public class MatcherRegistry {
 
 	Map<Class<? extends FeedbackCondition>, FeedbackMatcher> map;
 
-	@Inject private MatcherRegistryFactory factory;
+	@Inject
+	private MatcherRegistryFactory factory;
 
 	public void init() {
 		map = Maps.newHashMap();
@@ -28,7 +29,7 @@ public class MatcherRegistry {
 	}
 
 	public FeedbackMatcher getMatcher(FeedbackCondition condition) {
-		if (map == null){
+		if (map == null) {
 			init();
 		}
 		return map.get(condition.getClass());

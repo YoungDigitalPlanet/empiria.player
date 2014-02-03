@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-public class VideoControlHideTimer implements TouchEndHandler, ClickHandler, MouseMoveHandler{
+public class VideoControlHideTimer implements TouchEndHandler, ClickHandler, MouseMoveHandler {
 	private final Timer controlsHideTimer;
 	private static final int CONTROLS_SHOW_TIME = 3000;
 	private final VideoFullScreenView view;

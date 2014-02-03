@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name="source")
+@XmlRootElement(name = "source")
 public class ShowUrlActionSource {
-	
-	@XmlAttribute(name="src")
+
+	@XmlAttribute(name = "src")
 	private String src;
-	
-	@XmlAttribute(name="type")
+
+	@XmlAttribute(name = "type")
 	private String type;
 
 	public String getSrc() {

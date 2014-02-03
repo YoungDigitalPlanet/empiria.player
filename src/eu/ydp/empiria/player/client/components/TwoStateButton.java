@@ -9,16 +9,16 @@ public class TwoStateButton extends PushButton {
 	protected boolean stateDown = false;
 	protected String upStyleName;
 	protected String downStyleName;
-	
-	public TwoStateButton(String upStyleName, String downStyleName){
+
+	public TwoStateButton(String upStyleName, String downStyleName) {
 		super();
-		
+
 		this.upStyleName = upStyleName;
 		this.downStyleName = downStyleName;
 		updateStyleName();
-		
+
 		addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent arg0) {
 				stateDown = !stateDown;
@@ -26,20 +26,20 @@ public class TwoStateButton extends PushButton {
 			}
 		});
 	}
-	
-	protected void updateStyleName(){
-		if (stateDown){
+
+	protected void updateStyleName() {
+		if (stateDown) {
 			setStylePrimaryName(downStyleName);
 		} else {
 			setStylePrimaryName(upStyleName);
 		}
 	}
-	
-	public boolean isStateDown(){
+
+	public boolean isStateDown() {
 		return stateDown;
 	}
-	
-	public void setStateDown(boolean d){
+
+	public void setStateDown(boolean d) {
 		stateDown = d;
 		updateStyleName();
 	}

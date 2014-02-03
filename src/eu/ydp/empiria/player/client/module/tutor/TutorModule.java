@@ -19,13 +19,25 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class TutorModule extends SimpleModuleBase implements PowerFeedbackTutorClient {
 
-	@Inject private EventsBus eventsBus;
-	@Inject private PageScopeFactory eventScopeFactory;
-	@Inject @ModuleScoped private TutorPresenter presenter;
-	@Inject @ModuleScoped private TutorView view;
-	@Inject @ModuleScoped private ActionEventGenerator eventGenerator;
-	@Inject @ModuleScoped private TutorConfig config;
-	@Inject @PageScoped private PowerFeedbackMediator mediator;
+	@Inject
+	private EventsBus eventsBus;
+	@Inject
+	private PageScopeFactory eventScopeFactory;
+	@Inject
+	@ModuleScoped
+	private TutorPresenter presenter;
+	@Inject
+	@ModuleScoped
+	private TutorView view;
+	@Inject
+	@ModuleScoped
+	private ActionEventGenerator eventGenerator;
+	@Inject
+	@ModuleScoped
+	private TutorConfig config;
+	@Inject
+	@PageScoped
+	private PowerFeedbackMediator mediator;
 
 	private final TutorEventHandler tutorEventHandler = new TutorEventHandler() {
 

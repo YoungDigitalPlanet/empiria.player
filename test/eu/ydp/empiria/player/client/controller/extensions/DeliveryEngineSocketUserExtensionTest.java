@@ -12,40 +12,38 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
-
-
 public class DeliveryEngineSocketUserExtensionTest extends ExtensionTestBase {
 
 	protected DeliveryEngine de;
 	protected DeliveryEngineSocket des;
 
-	public void testStateInitialPageToc(){
+	public void testStateInitialPageToc() {
 		testStateInitialPage("\"TOC\"");
 	}
 
-	public void testStateInitialPageItem(){
+	public void testStateInitialPageItem() {
 		testStateInitialPage("0");
 	}
 
-	public void testStateInitialPageSummary(){
+	public void testStateInitialPageSummary() {
 		testStateInitialPage("\"SUMMARY\"");
 	}
 
-	protected void testStateInitialPage(String expectedPage){
+	protected void testStateInitialPage(String expectedPage) {
 		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
 		Extension ext = new MockDeliveryEngineSocketUserExtension();
 		de.setFlowOptions(new FlowOptions(true, true, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
 		de.loadExtension(ext);
-		des.setStateString("["+expectedPage+",[[[[],[],0]]],[]]");
+		des.setStateString("[" + expectedPage + ",[[[[],[],0]]],[]]");
 		de.load(getAssessmentXMLData(), getItemXMLDatas());
 		String stateRetrieved = des.getStateString();
-		String currPage = des.getStateString().substring(1,stateRetrieved.indexOf(","));
+		String currPage = des.getStateString().substring(1, stateRetrieved.indexOf(","));
 		assertEquals(expectedPage, currPage);
 	}
 
-	protected class MockDeliveryEngineSocketUserExtension extends InternalExtension implements DeliveryEngineSocketUserExtension{
+	protected class MockDeliveryEngineSocketUserExtension extends InternalExtension implements DeliveryEngineSocketUserExtension {
 
 		@Override
 		public void init() {

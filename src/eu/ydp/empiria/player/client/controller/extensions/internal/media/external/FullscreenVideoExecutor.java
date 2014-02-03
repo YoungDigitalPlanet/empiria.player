@@ -14,10 +14,13 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public class FullscreenVideoExecutor implements MediaExecutor<Widget>, FullscreenVideoConnectorListener {
 
-	@Inject private ExternalFullscreenVideoConnector connector;
-	@Inject private EventsBus eventsBus;
-	@Inject private FullscreenVideoMediaWrapper mediaWrapper;
-	
+	@Inject
+	private ExternalFullscreenVideoConnector connector;
+	@Inject
+	private EventsBus eventsBus;
+	@Inject
+	private FullscreenVideoMediaWrapper mediaWrapper;
+
 	private BaseMediaConfiguration baseMediaConfiguration;
 
 	@Override
@@ -25,7 +28,7 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 		connector.addConnectorListener(mediaWrapper.getMediaUniqId(), this);
 		mediaWrapper.setPoster(baseMediaConfiguration.getPoster());
 	}
-	
+
 	@Override
 	public MediaWrapper<Widget> getMediaWrapper() {
 		return mediaWrapper;
@@ -33,12 +36,12 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 
 	@Override
 	public void setMediaWrapper(MediaWrapper<Widget> descriptor) {
-		this.mediaWrapper = (FullscreenVideoMediaWrapper)descriptor;
+		this.mediaWrapper = (FullscreenVideoMediaWrapper) descriptor;
 	}
 
 	@Override
 	public void onFullscreenClosed(String id, double currentTimeMillipercent) {
-		if (mediaWrapper.getMediaUniqId().equals(id)){
+		if (mediaWrapper.getMediaUniqId().equals(id)) {
 			setCurrentTime(currentTimeMillipercent);
 		}
 	}
@@ -91,6 +94,5 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 	public void setSoundFinishedListener(SoundExecutorListener listener) {
 		// do nothing - not applicable
 	}
-
 
 }

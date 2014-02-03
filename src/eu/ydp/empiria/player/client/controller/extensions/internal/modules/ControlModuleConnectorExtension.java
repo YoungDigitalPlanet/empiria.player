@@ -17,17 +17,15 @@ import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
 
-public abstract class ControlModuleConnectorExtension extends ModuleExtension implements
-		ModuleConnectorExtension, FlowRequestSocketUserExtension,
-		DataSourceDataSocketUserExtension, FlowDataSocketUserExtension,
-		DeliveryEventsListenerExtension {
-	
+public abstract class ControlModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, FlowRequestSocketUserExtension,
+		DataSourceDataSocketUserExtension, FlowDataSocketUserExtension, DeliveryEventsListenerExtension {
+
 	protected FlowRequestInvoker flowRequestInvoker;
 
 	protected List<DeliveryEventsListener> deliveryListeners;
-	
+
 	protected DataSourceDataSupplier dataSourceSupplier;
-	
+
 	protected FlowDataSupplier flowDataSupplier;
 
 	@Override
@@ -37,9 +35,9 @@ public abstract class ControlModuleConnectorExtension extends ModuleExtension im
 				listener.onDeliveryEvent(flowEvent);
 		}
 
-		//TODO: usuwanie tylko wtedy gdy jest usuwany moduł
-		//if (flowEvent.getType() == DeliveryEventType.PAGE_UNLOADED)
-			//removeAllDeliveryListeners();
+		// TODO: usuwanie tylko wtedy gdy jest usuwany moduł
+		// if (flowEvent.getType() == DeliveryEventType.PAGE_UNLOADED)
+		// removeAllDeliveryListeners();
 	}
 
 	@Override
@@ -62,27 +60,27 @@ public abstract class ControlModuleConnectorExtension extends ModuleExtension im
 
 	@Override
 	public abstract String getModuleNodeName();
-	
-	protected void initializeModule(IModule module){
-		if(module instanceof ControlModule){
-			ControlModule ctrlModule = (ControlModule)module;
-			
+
+	protected void initializeModule(IModule module) {
+		if (module instanceof ControlModule) {
+			ControlModule ctrlModule = (ControlModule) module;
+
 			ctrlModule.setDataSourceDataSupplier(dataSourceSupplier);
 			ctrlModule.setFlowDataSupplier(flowDataSupplier);
 			ctrlModule.setFlowRequestsInvoker(flowRequestInvoker);
-			
+
 			addDeliveryListener(ctrlModule);
-		}else if(module instanceof DeliveryEventsListener){
+		} else if (module instanceof DeliveryEventsListener) {
 			addDeliveryListener((DeliveryEventsListener) module);
 		}
-		
+
 	}
-	
+
 	protected void removeAllDeliveryListeners() {
 		if (deliveryListeners != null)
 			deliveryListeners.clear();
 	}
-	
+
 	private void addDeliveryListener(DeliveryEventsListener listener) {
 		if (deliveryListeners == null)
 			deliveryListeners = new ArrayList<DeliveryEventsListener>();

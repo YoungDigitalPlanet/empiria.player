@@ -6,7 +6,6 @@ import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListLocking;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
-
 public interface Sourcelist extends IUniqueModule, SourceListLocking {
 
 	SourcelistItemValue getItemValue(String itemId);

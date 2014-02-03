@@ -32,8 +32,7 @@ public class StyleDataSourceManager implements StyleSocket {
 	private final ElementStyleSelectorBuilder elementStyleSelectorBuilder = new ElementStyleSelectorBuilder();
 
 	/**
-	 * Style declarations that should be searched for styles. When player
-	 * changes displayed page activeItemStyles should be rebuild.
+	 * Style declarations that should be searched for styles. When player changes displayed page activeItemStyles should be rebuild.
 	 */
 	private final List<StyleDocument> currentStyles;
 

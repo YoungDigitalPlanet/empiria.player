@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module;
 
-
 public abstract class AnswersMarkingTemplate {
 
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {

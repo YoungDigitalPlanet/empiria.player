@@ -11,12 +11,11 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 public class SelectionButtonGridElementImpl extends FlowPanel implements SelectionButtonGridElement {
 
 	private StyleNameConstants styleNameConstants;
-	
-	public SelectionButtonGridElementImpl(
-			StyleNameConstants styleNameConstants) {
+
+	public SelectionButtonGridElementImpl(StyleNameConstants styleNameConstants) {
 		this.styleNameConstants = styleNameConstants;
 	}
-	
+
 	@Override
 	public void addClickHandler(ClickHandler clickHandler) {
 		getButton().addClickHandler(clickHandler);
@@ -36,7 +35,7 @@ public class SelectionButtonGridElementImpl extends FlowPanel implements Selecti
 	public void setButtonEnabled(boolean b) {
 		getButton().setButtonEnabled(b);
 	}
-	
+
 	@Override
 	public void updateStyle() {
 		getButton().updateStyle();
@@ -47,22 +46,22 @@ public class SelectionButtonGridElementImpl extends FlowPanel implements Selecti
 		this.setStyleName(getButtonStyleNameForState(styleState));
 		updateStyle();
 	}
-	
+
 	@Override
 	public Widget asWidget() {
 		return this;
 	}
-	
+
 	private SelectionChoiceButton getButton() {
 		WidgetCollection children = getChildren();
 		// each grid element panel should contain only one child ex. button
-		if(children.size() != 1) {
+		if (children.size() != 1) {
 			throw new RuntimeException("SelectionGridElement panel contains " + children.size() + " elements when 1 was expected!");
 		}
-		SelectionChoiceButton button = (SelectionChoiceButton)children.get(0);
+		SelectionChoiceButton button = (SelectionChoiceButton) children.get(0);
 		return button;
 	}
-	
+
 	private String getButtonStyleNameForState(UserAnswerType styleState) {
 		switch (styleState) {
 		case CORRECT:

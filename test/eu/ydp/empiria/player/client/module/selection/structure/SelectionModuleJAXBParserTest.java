@@ -9,14 +9,13 @@ import com.google.gwt.xml.client.Node;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
-public class SelectionModuleJAXBParserTest extends GWTTestCase{
+public class SelectionModuleJAXBParserTest extends GWTTestCase {
 
-	private final String testXml = "<selectionInteraction id=\"dummy1\" matchMax=\"1\" responseIdentifier=\"SELECTION_RESPONSE_1\" multi=\"false\" shuffle=\"true\">"+
-			"		<item identifier=\"SELECTION_RESPONSE_1_0\" matchMax=\"1\" fixed=\"true\"><math>a1</math></item>"+
-			"		<item identifier=\"SELECTION_RESPONSE_1_3\" matchMax=\"2\" fixed=\"false\">b1</item>"+
-			"		<simpleChoice identifier=\"SELECTION_RESPONSE_1_1\" matchMax=\"1\"><math>a2</math></simpleChoice>"+
-			"		<simpleChoice identifier=\"SELECTION_RESPONSE_1_4\" matchMax=\"2\">b2</simpleChoice>"+
-			"</selectionInteraction>";
+	private final String testXml = "<selectionInteraction id=\"dummy1\" matchMax=\"1\" responseIdentifier=\"SELECTION_RESPONSE_1\" multi=\"false\" shuffle=\"true\">"
+			+ "		<item identifier=\"SELECTION_RESPONSE_1_0\" matchMax=\"1\" fixed=\"true\"><math>a1</math></item>"
+			+ "		<item identifier=\"SELECTION_RESPONSE_1_3\" matchMax=\"2\" fixed=\"false\">b1</item>"
+			+ "		<simpleChoice identifier=\"SELECTION_RESPONSE_1_1\" matchMax=\"1\"><math>a2</math></simpleChoice>"
+			+ "		<simpleChoice identifier=\"SELECTION_RESPONSE_1_4\" matchMax=\"2\">b2</simpleChoice>" + "</selectionInteraction>";
 
 	public void testCreate() {
 		SelectionModuleJAXBParser jaxbParserFactory = GWT.create(SelectionModuleJAXBParser.class);
@@ -31,14 +30,14 @@ public class SelectionModuleJAXBParserTest extends GWTTestCase{
 		assertEquals(false, interactionBean.isMulti());
 		assertEquals(true, interactionBean.isShuffle());
 
-		//validate items
+		// validate items
 		List<SelectionItemBean> items = interactionBean.getItems();
 		assertEquals(2, items.size());
 
 		validateItem(items.get(0), "SELECTION_RESPONSE_1_0", 1, true, "<math>a1</math>");
 		validateItem(items.get(1), "SELECTION_RESPONSE_1_3", 2, false, "b1");
 
-		//validate choices
+		// validate choices
 		List<SelectionSimpleChoiceBean> simpleChoices = interactionBean.getSimpleChoices();
 		assertEquals(2, simpleChoices.size());
 

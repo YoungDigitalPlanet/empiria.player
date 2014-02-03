@@ -15,14 +15,14 @@ public class BookmarkProperties {
 	int bookmarkIndex;
 	String bookmarkTitle;
 	long timestamp;
-	
+
 	public BookmarkProperties(int bookmarkIndex, String bookmarkTitle) {
 		super();
 		this.bookmarkIndex = bookmarkIndex;
 		this.bookmarkTitle = bookmarkTitle;
 		this.timestamp = new Date().getTime();
 	}
-	
+
 	public BookmarkProperties(int bookmarkIndex, String bookmarkTitle, long timestamp) {
 		super();
 		this.bookmarkIndex = bookmarkIndex;
@@ -45,8 +45,8 @@ public class BookmarkProperties {
 	public void setBookmarkTitle(String bookmarkTitle) {
 		this.bookmarkTitle = bookmarkTitle;
 	}
-	
-	public void touch(){
+
+	public void touch() {
 		timestamp = new Date().getTime();
 	}
 
@@ -57,13 +57,12 @@ public class BookmarkProperties {
 		arr.set(2, new JSONNumber(timestamp));
 		return arr;
 	}
-	
-	public static BookmarkProperties fromJSON(JSONValue json){
+
+	public static BookmarkProperties fromJSON(JSONValue json) {
 		int index = (int) json.isArray().get(0).isNumber().doubleValue();
 		String title = json.isArray().get(1).isString().stringValue();
-		long timeStamp = (long)json.isArray().get(2).isNumber().doubleValue();
+		long timeStamp = (long) json.isArray().get(2).isNumber().doubleValue();
 		return new BookmarkProperties(index, title, timeStamp);
 	}
-	
-	
+
 }

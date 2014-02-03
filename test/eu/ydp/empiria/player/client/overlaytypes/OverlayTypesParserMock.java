@@ -15,6 +15,6 @@ public class OverlayTypesParserMock extends OverlayTypesParser {
 
 	@Override
 	public <T extends JavaScriptObject> T get(String json) {
-	return null;
+		return null;
 	}
 }

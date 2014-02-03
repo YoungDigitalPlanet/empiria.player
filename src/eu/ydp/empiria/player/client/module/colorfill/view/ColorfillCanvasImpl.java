@@ -38,7 +38,6 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 	private CanvasImageDataProvider canvasImageDataProvider;
 	@Inject
 	private StyleNameConstants styleNameConstants;
-	
 
 	private boolean canvasStubViewLoded = false;
 
@@ -130,8 +129,9 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 			public void execute(NativeEvent event) {
 				event.preventDefault();
 				CanvasElement canvasElement = canvasStubView.getCanvas().getCanvasElement();
-				Area area = new Area(positionHelper.getXPositionRelativeToTarget(event, canvasElement), positionHelper.getYPositionRelativeToTarget(event, canvasElement));
-				if(area.getX() >=0 && area.getY() >= 0){
+				Area area = new Area(positionHelper.getXPositionRelativeToTarget(event, canvasElement), positionHelper.getYPositionRelativeToTarget(event,
+						canvasElement));
+				if (area.getX() >= 0 && area.getY() >= 0) {
 					listener.onAreaClick(area);
 				}
 			}
@@ -144,7 +144,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 		reloadImageData();
 	}
 
-	public void flushImageToCanvas(){
+	public void flushImageToCanvas() {
 		imageData.flush();
 	}
 

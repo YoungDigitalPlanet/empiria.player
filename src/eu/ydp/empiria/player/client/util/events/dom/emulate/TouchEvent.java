@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.util.events.EventTypes;
 
 /**
  * emulacja zdarzen touch
- *
+ * 
  */
 public class TouchEvent extends AbstractEvent<TouchHandler, TouchTypes> {
 	public static EventTypes<TouchHandler, TouchTypes> types = new EventTypes<TouchHandler, TouchTypes>();

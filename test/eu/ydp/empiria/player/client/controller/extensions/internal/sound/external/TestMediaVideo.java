@@ -8,26 +8,25 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaTyp
 import eu.ydp.gwtutil.client.collections.MapCreator;
 
 public enum TestMediaVideo implements TestMedia {
-	SINGLE_MP4(MapCreator.create("video0.mp4", "video/mp4").build()),
-	SINGLE_OGG(MapCreator.create("video0.ogg", "video/ogg").build()),
-	MULTI_MP4_OGG(MapCreator.create("video0.mp4", "video/mp4").put("video0.ogg", "video/ogg").build());
+	SINGLE_MP4(MapCreator.create("video0.mp4", "video/mp4").build()), SINGLE_OGG(MapCreator.create("video0.ogg", "video/ogg").build()), MULTI_MP4_OGG(
+			MapCreator.create("video0.mp4", "video/mp4").put("video0.ogg", "video/ogg").build());
 
 	private BaseMediaConfiguration bmc;
 
 	/**
 	 * Media configuration for video.
 	 */
-	private TestMediaVideo(final Map<String, String> sources){
+	private TestMediaVideo(final Map<String, String> sources) {
 		bmc = new BaseMediaConfiguration(sources, MediaType.VIDEO, "", 640, 480, false, false, "");
 	}
-	
+
 	@Override
-	public BaseMediaConfiguration getMediaConfiguration(){
+	public BaseMediaConfiguration getMediaConfiguration() {
 		return bmc;
 	}
-	
+
 	@Override
-	public Collection<String> getSources(){
+	public Collection<String> getSources() {
 		return bmc.getSources().values();
 	}
 }

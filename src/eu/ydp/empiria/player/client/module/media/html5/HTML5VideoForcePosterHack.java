@@ -15,9 +15,8 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 /**
- * Safari for iOS has a known problem with the poster attribute on the video
- * tags. Potentially this solution can be used also for other browsers, on which
- * the similar problem will be appearing.
+ * Safari for iOS has a known problem with the poster attribute on the video tags. Potentially this solution can be used also for other browsers, on which the
+ * similar problem will be appearing.
  */
 public class HTML5VideoForcePosterHack implements MediaEventHandler {
 

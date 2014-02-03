@@ -16,7 +16,6 @@ public class ChoiceButtonMouseInteractionCommandJUnitTest {
 	private final SelectionChoiceButton button = mock(SelectionChoiceButton.class);
 	private ChoiceButtonMouseInteractionCommand instance;
 
-
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();

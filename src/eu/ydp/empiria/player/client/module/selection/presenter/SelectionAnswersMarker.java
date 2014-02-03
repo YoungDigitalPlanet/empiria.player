@@ -15,15 +15,14 @@ import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SelectionAnswersMarker extends AnswersMarkingTemplate {
-	
+
 	private final GroupAnswersControllerModel answersControllerModel;
-	
+
 	@Inject
-	public SelectionAnswersMarker(
-			@ModuleScoped GroupAnswersControllerModel answersControllerModel) {
-				this.answersControllerModel = answersControllerModel;
+	public SelectionAnswersMarker(@ModuleScoped GroupAnswersControllerModel answersControllerModel) {
+		this.answersControllerModel = answersControllerModel;
 	}
-	
+
 	@Override
 	public void unmarkWrong() {
 		unMark(MarkAnswersType.WRONG);
@@ -50,14 +49,14 @@ public class SelectionAnswersMarker extends AnswersMarkingTemplate {
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
 		super.markAnswers(type, mode);
 	}
-	
+
 	private void unMark(MarkAnswersType type) {
 		List<SelectionAnswerDto> buttonsToMarkDefaultState = new ArrayList<SelectionAnswerDto>(answersControllerModel.getButtonsToMarkForType(type));
 		buttonsToMarkDefaultState.addAll(answersControllerModel.getNotSelectedAnswers());
 		applyAnswerTypeToCollection(UserAnswerType.DEFAULT, buttonsToMarkDefaultState);
 	}
 
-	private void applyAnswerTypeToCollection(UserAnswerType userAnswerType, Collection<SelectionAnswerDto> answers){
+	private void applyAnswerTypeToCollection(UserAnswerType userAnswerType, Collection<SelectionAnswerDto> answers) {
 		for (SelectionAnswerDto selectionAnswerDto : answers) {
 			selectionAnswerDto.setSelectionAnswerType(userAnswerType);
 		}

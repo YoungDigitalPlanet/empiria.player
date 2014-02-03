@@ -18,6 +18,7 @@ public abstract class AbstractMediaTime<H> extends AbstractMediaButton<H> {
 
 	/**
 	 * zwraca tekst w formacie time1:time2 format liczb ##00
+	 * 
 	 * @param time1
 	 * @param time2
 	 * @return

@@ -13,10 +13,12 @@ public class CountConditionMatcher extends ConditionMatcherBase implements Feedb
 	private CountConditionBean condition;
 
 	private MatchOperator operator;
+
 	@Inject
 	public CountConditionMatcher(@Assisted MatcherRegistry registry) {
 		super(registry);
 	}
+
 	@Override
 	public boolean match(FeedbackCondition condition, FeedbackProperties properties) {
 		boolean matches = false;

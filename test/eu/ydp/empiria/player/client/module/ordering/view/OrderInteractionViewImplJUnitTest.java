@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -63,9 +64,9 @@ public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		setUp(moduleConfig, new CustomGinModule());
 		instance = injector.getInstance(OrderInteractionViewImpl.class);
 		widget = mock(Widget.class);
-		when(bodyGeneratorSocket.generateInlineBody(Mockito.any(Node.class))).thenReturn(widget);
-		when(viewItems.addItem(Mockito.anyString(), Mockito.any(Widget.class))).thenReturn(viewItem);
-		when(viewItems.getItem(Mockito.anyString())).thenReturn(viewItem);
+		when(bodyGeneratorSocket.generateInlineBody(Matchers.any(Node.class))).thenReturn(widget);
+		when(viewItems.addItem(Matchers.anyString(), Matchers.any(Widget.class))).thenReturn(viewItem);
+		when(viewItems.getItem(Matchers.anyString())).thenReturn(viewItem);
 	}
 
 	@Test
@@ -73,8 +74,8 @@ public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		XMLContent xmlContent = mock(XMLContent.class);
 		OrderingItem orderingItem = new OrderingItem("id", "ans");
 		instance.createItem(orderingItem, xmlContent, bodyGeneratorSocket);
-		verify(viewWidget).add(Mockito.eq(viewItem));
-		verify(viewItems).addItem(Mockito.eq("id"), Mockito.eq(widget));
+		verify(viewWidget).add(Matchers.eq(viewItem));
+		verify(viewItems).addItem(Matchers.eq("id"), Matchers.eq(widget));
 	}
 
 	@Test
@@ -82,8 +83,8 @@ public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		final List<String> order = fillInstance();
 
 		instance.setChildrenOrder(order);
-		verify(viewItems).getItemsInOrder(Mockito.eq(order));
-		verify(viewWidget).putItemsOnView(Mockito.anyListOf(IsWidget.class));
+		verify(viewItems).getItemsInOrder(Matchers.eq(order));
+		verify(viewWidget).putItemsOnView(Matchers.anyListOf(IsWidget.class));
 	}
 
 	private List<String> fillInstance() {
@@ -101,8 +102,8 @@ public class OrderInteractionViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		fillInstance();
 		OrderingItem item = new OrderingItem("id", "ans");
 		instance.setChildStyles(item);
-		verify(viewItems).getItem(Mockito.eq("id"));
-		Mockito.verify(itemStyles).applyStylesOnWidget(Mockito.eq(item), Mockito.eq(viewItem));
+		verify(viewItems).getItem(Matchers.eq("id"));
+		Mockito.verify(itemStyles).applyStylesOnWidget(Matchers.eq(item), Matchers.eq(viewItem));
 	}
 
 }

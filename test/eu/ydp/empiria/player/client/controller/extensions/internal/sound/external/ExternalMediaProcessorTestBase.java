@@ -23,11 +23,11 @@ public abstract class ExternalMediaProcessorTestBase extends AbstractTestWithMoc
 	protected MediaConnector connector;
 	protected MediaConnectorListener listener;
 	protected EventsBus eventsBus;
-	
-	private Class<?>[] ignoredClasses = {ExternalMediaProcessor.class, EventsBus.class, ExternalMediaWrapper.class, ExternalMediaExecutor.class, 
-			ExternalMediaEngine.class, UniqueIdGenerator.class, MediaConnectorListener.class, ExternalMediaProxy.class,
-			SingleMediaPlayback.class, ExternalMediaUpdateTimerEmulator.class, ExternalMediaUpdateTimerEmulatorState.class};
-	
+
+	private Class<?>[] ignoredClasses = { ExternalMediaProcessor.class, EventsBus.class, ExternalMediaWrapper.class, ExternalMediaExecutor.class,
+			ExternalMediaEngine.class, UniqueIdGenerator.class, MediaConnectorListener.class, ExternalMediaProxy.class, SingleMediaPlayback.class,
+			ExternalMediaUpdateTimerEmulator.class, ExternalMediaUpdateTimerEmulatorState.class };
+
 	@Override
 	public void setUp() {
 		doSetUp(ignoredClasses);
@@ -35,23 +35,22 @@ public abstract class ExternalMediaProcessorTestBase extends AbstractTestWithMoc
 
 	protected void setUpWithAccessibleTimer() {
 		doSetUp(ObjectArrays.concat(Timer.class, ignoredClasses));
-				
+
 		TimerAccessibleMock.reset();
 	}
-	
+
 	private void doSetUp(Class<?>... classes) {
 		super.setUp(classes);
-		
-		BrowserNativeInterface nativeInterfaceMock = UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
+
+		BrowserNativeInterface nativeInterfaceMock = UserAgentCheckerNativeInterfaceMock
+				.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
 		UserAgentChecker.setNativeInterface(nativeInterfaceMock);
-		
+
 		container.init(injector);
-		
+
 		connector = container.getConnector();
 		listener = container.getMediaConnectorListener();
 		eventsBus = container.getEventsBus();
 	}
-	
-	
-	
+
 }

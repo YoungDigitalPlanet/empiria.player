@@ -1,11 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
 import static junitparams.JUnitParamsRunner.$;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.stub;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,31 +20,27 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 public class MediaExecutorsStopperTest extends AbstractTestWithMocksBase {
 
 	private MediaExecutorsStopper stopper;
-	
+
 	@Override
 	@Before
 	public void setUp() {
 		super.setUp(MediaExecutorsStopper.class);
 		stopper = injector.getInstance(MediaExecutorsStopper.class);
 	}
-	
+
 	@SuppressWarnings("unused")
-	private Object[] parametersForForceStop(){
+	private Object[] parametersForForceStop() {
 		MediaWrapper<?> currentMediaWrapper = createWrapper(false);
 		MediaWrapper<?> currentMediaWrapperPauseSupport = createWrapper(false);
-		return $(
-				$(null, 							createExecutor(null), 								ExpectedAction.NOOP),
-				$(createWrapper(false), 			createExecutor(null), 								ExpectedAction.STOP),
-				$(createWrapper(true), 			createExecutor(null), 								ExpectedAction.STOP),
-				$(null, 							createExecutor(createWrapper(false)), 				ExpectedAction.STOP),
-				$(null, 							createExecutor(createWrapper(true)), 				ExpectedAction.PAUSE),
-				$(createWrapper(false), 			createExecutor(createWrapper(false)),				ExpectedAction.STOP),
-				$(createWrapper(false), 			createExecutor(createWrapper(true)), 				ExpectedAction.PAUSE),
-				$(createWrapper(true), 			createExecutor(createWrapper(false)),				ExpectedAction.STOP),
-				$(createWrapper(true), 			createExecutor(createWrapper(true)), 				ExpectedAction.PAUSE),
-				$(currentMediaWrapper, 				createExecutor(currentMediaWrapper), 				ExpectedAction.NOOP),
-				$(currentMediaWrapperPauseSupport, 	createExecutor(currentMediaWrapperPauseSupport), 	ExpectedAction.NOOP) 
-				);
+		return $($(null, createExecutor(null), ExpectedAction.NOOP), $(createWrapper(false), createExecutor(null), ExpectedAction.STOP),
+				$(createWrapper(true), createExecutor(null), ExpectedAction.STOP), $(null, createExecutor(createWrapper(false)), ExpectedAction.STOP),
+				$(null, createExecutor(createWrapper(true)), ExpectedAction.PAUSE),
+				$(createWrapper(false), createExecutor(createWrapper(false)), ExpectedAction.STOP),
+				$(createWrapper(false), createExecutor(createWrapper(true)), ExpectedAction.PAUSE),
+				$(createWrapper(true), createExecutor(createWrapper(false)), ExpectedAction.STOP),
+				$(createWrapper(true), createExecutor(createWrapper(true)), ExpectedAction.PAUSE),
+				$(currentMediaWrapper, createExecutor(currentMediaWrapper), ExpectedAction.NOOP),
+				$(currentMediaWrapperPauseSupport, createExecutor(currentMediaWrapperPauseSupport), ExpectedAction.NOOP));
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -64,34 +56,35 @@ public class MediaExecutorsStopperTest extends AbstractTestWithMocksBase {
 		return mediaWrapper;
 	}
 
-	
-	private static enum ExpectedAction {NOOP, STOP, PAUSE}
-	
+	private static enum ExpectedAction {
+		NOOP, STOP, PAUSE
+	}
+
 	@Test
 	@Parameters
-	public void forceStop(MediaWrapper<?> currentMediaWrapper, MediaExecutor<?> executor, ExpectedAction result){
+	public void forceStop(MediaWrapper<?> currentMediaWrapper, MediaExecutor<?> executor, ExpectedAction result) {
 		// given
-		List<MediaExecutor<?>> executors = Arrays.asList(new MediaExecutor<?>[]{executor});
-		
+		List<MediaExecutor<?>> executors = Arrays.asList(new MediaExecutor<?>[] { executor });
+
 		// when
 		stopper.forceStop(currentMediaWrapper, executors);
-		
+
 		// then
 		assertResult(executor, result);
 	}
-	
+
 	private void assertResult(MediaExecutor<?> executor, ExpectedAction result) {
 		switch (result) {
 		case NOOP:
 			verify(executor, never()).stop();
 			verify(executor, never()).pause();
 			break;
-			
+
 		case STOP:
 			verify(executor).stop();
 			verify(executor, never()).pause();
 			break;
-			
+
 		case PAUSE:
 			verify(executor, never()).stop();
 			verify(executor).pause();

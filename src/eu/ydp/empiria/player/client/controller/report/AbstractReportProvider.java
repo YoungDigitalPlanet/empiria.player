@@ -12,16 +12,14 @@ public abstract class AbstractReportProvider {
 
 	protected SessionDataSupplier sessionSupplier;
 
-	public AbstractReportProvider(DataSourceDataSupplier dataSupplier,
-									SessionDataSupplier sessionSupplier,
-									AssessmentReportFactory factory) {
+	public AbstractReportProvider(DataSourceDataSupplier dataSupplier, SessionDataSupplier sessionSupplier, AssessmentReportFactory factory) {
 		this.dataSupplier = dataSupplier;
 		this.sessionSupplier = sessionSupplier;
 		this.factory = factory;
 	}
-	
+
 	abstract public String getTitle();
-	
+
 	public ResultInfo getResult() {
 		return factory.getResultInfo(getVariableProvider());
 	}
@@ -29,7 +27,7 @@ public abstract class AbstractReportProvider {
 	public HintInfo getHints() {
 		return factory.getHintInfo(getVariableProvider());
 	}
-	
+
 	abstract protected VariableProviderSocket getVariableProvider();
 
 }

@@ -15,47 +15,47 @@ import com.mathplayer.player.geom.Size;
 import com.mathplayer.player.interaction.InteractionSocket;
 
 public class TokenTest extends TestCase {
-    @Test
+	@Test
 	public void testCanvasForTextWidthMeasureAddedAndRemoved() {
-    	GWTMockUtilities.disarm(); 
-		
+		GWTMockUtilities.disarm();
+
 		Token token = new Token() {
 			@Override
 			public String toString() {
 				return null;
 			}
-			
+
 			@Override
 			public String toMathML() {
 				return null;
 			}
-			
+
 			@Override
 			public Size measure(InteractionSocket socket) {
 				return null;
 			}
-			
+
 			@Override
 			public Surface getCanvas() {
 				return mock(Surface.class);
 			}
-			
+
 			@Override
 			public Boolean isStackAndroidBrowser() {
 				return false;
 			}
 		};
-		
+
 		AbsolutePanel mockPanel = mock(AbsolutePanel.class);
-		
+
 		String content = "";
 		Font font = new Font(10, "Arial", false, false);
 		double margin = 0;
-		
+
 		token.getTextWidth(content, font, margin, mockPanel);
 		verify(mockPanel).add(any(Surface.class));
 		verify(mockPanel).remove(any(Surface.class));
-		
+
 		GWTMockUtilities.restore();
 	}
 }

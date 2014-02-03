@@ -20,12 +20,15 @@ import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
-
 public class SourceListPresenterImpl implements SourceListPresenter {
 
-	@Inject private SourceListView view;
-	@Inject @PageScoped private SourcelistManager sourcelistManager;
-	@Inject private OverlayTypesParser overlayTypesParser;
+	@Inject
+	private SourceListView view;
+	@Inject
+	@PageScoped
+	private SourcelistManager sourcelistManager;
+	@Inject
+	private OverlayTypesParser overlayTypesParser;
 
 	private SourceListBean bean;
 	private String moduleId;
@@ -57,7 +60,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Override
 	public DragDataObject getDragDataObject(String itemId) {
-		DragDataObject dataObject = overlayTypesParser.<NativeDragDataObject>get();
+		DragDataObject dataObject = overlayTypesParser.<NativeDragDataObject> get();
 		dataObject.setItemId(itemId);
 		dataObject.setSourceId(moduleId);
 		return dataObject;
@@ -70,7 +73,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 
 	@Override
 	public void useItem(String itemId) {
-		if(bean.isMoveElements()) {
+		if (bean.isMoveElements()) {
 			view.hideItem(itemId);
 		}
 	}
@@ -93,7 +96,7 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 		}
 	}
 
-	private List<String> getAllItemsId(){
+	private List<String> getAllItemsId() {
 		return Lists.transform(bean.getSimpleSourceListItemBeans(), new Function<SimpleSourceListItemBean, String>() {
 			@Override
 			public String apply(SimpleSourceListItemBean bean) {
@@ -109,27 +112,27 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	}
 
 	private void useItems(List<String> itemsIds) {
-		for(String itemId: itemsIds){
+		for (String itemId : itemsIds) {
 			useItem(itemId);
 		}
 	}
 
 	private void restockAllItems() {
 		List<String> allItemsId = getAllItemsId();
-		for(String itemId:allItemsId){
+		for (String itemId : allItemsId) {
 			restockItem(itemId);
 		}
 	}
 
 	@Override
-	public void onDropEvent(String itemId,String sourceModuleId) {
+	public void onDropEvent(String itemId, String sourceModuleId) {
 		sourcelistManager.dragEndSourcelist(itemId, sourceModuleId);
 	}
 
 	@Override
 	public void lockSourceList() {
 		view.lockForDragDrop();
-		for(String itemId: getAllItemsId()){
+		for (String itemId : getAllItemsId()) {
 			view.lockItemForDragDrop(itemId);
 		}
 
@@ -138,17 +141,17 @@ public class SourceListPresenterImpl implements SourceListPresenter {
 	@Override
 	public void unlockSourceList() {
 		view.unlockForDragDrop();
-		for(String itemId: getAllItemsId()){
+		for (String itemId : getAllItemsId()) {
 			view.unlockItemForDragDrop(itemId);
 		}
 	}
 
 	@Override
 	public HasDimensions getMaxItemSize() {
-		 HasDimensions maxItemSize = view.getMaxItemSize();
-		 int width = Math.max(maxItemSize.getWidth(), bean.getImagesWidth());
-		 int height = Math.max(maxItemSize.getHeight(), bean.getImagesHeight());
-		 return new Size(width, height);
+		HasDimensions maxItemSize = view.getMaxItemSize();
+		int width = Math.max(maxItemSize.getWidth(), bean.getImagesWidth());
+		int height = Math.max(maxItemSize.getHeight(), bean.getImagesHeight());
+		return new Size(width, height);
 	}
 
 }

@@ -30,7 +30,7 @@ public class ResponseBean {
 
 	@XmlAttribute
 	private CountMode countMode;
-	
+
 	@XmlElement(name = "correctResponse")
 	private CorrectResponseBean correctResponse;
 

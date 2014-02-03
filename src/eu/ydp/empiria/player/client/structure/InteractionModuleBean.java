@@ -6,12 +6,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlTransient
-public class InteractionModuleBean extends ModuleBean{
+public class InteractionModuleBean extends ModuleBean {
 
 	@XmlAttribute
 	protected String responseIdentifier = StringUtils.EMPTY_STRING;
 
-	
 	public String getResponseIdentifier() {
 		return responseIdentifier;
 	}

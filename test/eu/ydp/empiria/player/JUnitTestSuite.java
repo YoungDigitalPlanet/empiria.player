@@ -43,7 +43,7 @@ public class JUnitTestSuite {
 
 	/**
 	 * TEST suite
-	 *
+	 * 
 	 * @return
 	 */
 	public static TestSuite suite() {

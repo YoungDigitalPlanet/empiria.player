@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.expression;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -26,8 +26,7 @@ public class ExpressionCreatorJUnitTest {
 	@Test
 	public void getExpressionTest() {
 		ExpressionBean expressionBean = new ExpressionBean();
-		List<Response> responses = Lists.newArrayList(
-				responsesHelper.getResponse("a", "0"), responsesHelper.getResponse("b", "1"), 
+		List<Response> responses = Lists.newArrayList(responsesHelper.getResponse("a", "0"), responsesHelper.getResponse("b", "1"),
 				responsesHelper.getResponse("c", "2"), responsesHelper.getResponse("d", "3"));
 		expressionBean.getResponses().addAll(responses);
 		expressionBean.setTemplate("'a'+5*'b'+3>='c'");

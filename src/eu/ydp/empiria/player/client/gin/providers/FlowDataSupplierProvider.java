@@ -9,7 +9,8 @@ import eu.ydp.empiria.player.client.inject.Instance;
 
 public class FlowDataSupplierProvider implements Provider<FlowDataSupplier> {
 
-	@Inject Instance<FlowManager> flowManager;
+	@Inject
+	Instance<FlowManager> flowManager;
 
 	@Override
 	public FlowDataSupplier get() {

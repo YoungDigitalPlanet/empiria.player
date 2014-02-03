@@ -14,14 +14,24 @@ import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule
 
 public interface ModuleFactory {
 	ConnectionModule getConnectionModule();
+
 	ChoiceModule getChoiceModule();
+
 	ObjectModule getObjectModule();
+
 	SourceListModule getSourceListModule();
+
 	StickiesProcessorExtension getStickiesProcessorExtension();
+
 	TextEntryMathGapModule getEntryGapModule();
+
 	TextEntryGapModule getTextEntryModule();
+
 	InlineChoiceMathGapModule getInlineChoiceGapModule();
+
 	AssessmentJsonReportExtension getAssessmentJsonReportExtension();
+
 	ScormSupportExtension getScormSupportExtension();
+
 	PlayerCoreApiExtension getPlayerCoreApiExtension();
 }

@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.ordering.structure;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -15,7 +16,7 @@ import eu.ydp.empiria.player.client.module.abstractmodule.structure.ShuffleHelpe
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.gwtutil.xml.XMLParser;
 
-public class OrderInteractionStructureMock extends OrderInteractionStructure{
+public class OrderInteractionStructureMock extends OrderInteractionStructure {
 
 	public OrderInteractionStructureMock() {
 		try {
@@ -25,18 +26,10 @@ public class OrderInteractionStructureMock extends OrderInteractionStructure{
 		}
 	}
 
-	public static final String XML = "<orderInteraction id=\"dummy1\" responseIdentifier=\"ORDERING_RESPONSE_1\" shuffle=\"true\">"+
-			"<simpleChoice identifier=\"ORDERING_RESPONSE_1_0\">"+
-				"Words in this sentence	"
-			+ "</simpleChoice>"+
-			"<simpleChoice identifier=\"ORDERING_RESPONSE_1_1\" fixed=\"true\">"+
-				"should be put in"
-			+ "</simpleChoice>"+
-			"<simpleChoice identifier=\"ORDERING_RESPONSE_1_2\" fixed=\"false\">"+
-				"the correct order."
-			+ "</simpleChoice>"+
-		"</orderInteraction>";
-
+	public static final String XML = "<orderInteraction id=\"dummy1\" responseIdentifier=\"ORDERING_RESPONSE_1\" shuffle=\"true\">"
+			+ "<simpleChoice identifier=\"ORDERING_RESPONSE_1_0\">" + "Words in this sentence	" + "</simpleChoice>"
+			+ "<simpleChoice identifier=\"ORDERING_RESPONSE_1_1\" fixed=\"true\">" + "should be put in" + "</simpleChoice>"
+			+ "<simpleChoice identifier=\"ORDERING_RESPONSE_1_2\" fixed=\"false\">" + "the correct order." + "</simpleChoice>" + "</orderInteraction>";
 
 	@Override
 	public OrderInteractionModuleJAXBParserFactory getParserFactory() {
@@ -52,12 +45,10 @@ public class OrderInteractionStructureMock extends OrderInteractionStructure{
 		};
 	}
 
-
-
 	@Override
 	protected eu.ydp.gwtutil.client.xml.XMLParser getXMLParser() {
 		eu.ydp.gwtutil.client.xml.XMLParser xmlParser = mock(eu.ydp.gwtutil.client.xml.XMLParser.class);
-		when(xmlParser.parse(Mockito.anyString())).thenAnswer(new Answer<Document>() {
+		when(xmlParser.parse(Matchers.anyString())).thenAnswer(new Answer<Document>() {
 			@Override
 			public Document answer(InvocationOnMock invocation) throws Throwable {
 				return XMLParser.parse((String) invocation.getArguments()[0]);

@@ -9,11 +9,11 @@ import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.button.FeedbackAudioMuteButtonModule;
 
-public class AudioMuteButtonModuleConnectorExtension extends
-		ControlModuleConnectorExtension {
+public class AudioMuteButtonModuleConnectorExtension extends ControlModuleConnectorExtension {
 
 	@Inject
 	private Provider<FeedbackAudioMuteButtonModule> provider;
+
 	@Override
 	public ModuleCreator getModuleCreator() {
 		return new AbstractModuleCreator() {

@@ -1,14 +1,8 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -25,55 +19,49 @@ import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 
 public class ImageActionProcessingJUnitTest extends ProcessingFeedbackActionTestBase {
-	
+
 	private ImageActionProcessor imageProcessor;
 
 	@Test
-	public void shouldProcessSingleImageAction(){		//given
-		List<FeedbackAction> actions = ActionListBuilder.create().
-											addUrlAction(ActionType.NARRATION, "good.mp3").
-											addUrlAction(ActionType.IMAGE, "good.jpg").
-											getList();
-		
+	public void shouldProcessSingleImageAction() { // given
+		List<FeedbackAction> actions = ActionListBuilder.create().addUrlAction(ActionType.NARRATION, "good.mp3").addUrlAction(ActionType.IMAGE, "good.jpg")
+				.getList();
+
 		initializeWithActions(actions);
 		initializeModuleHierarchyWithImageProcessor();
-		
-		//when
+
+		// when
 		processor.processActions(source);
-		
-		//then
-		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);		
+
+		// then
+		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 		verify(imageProcessor).processSingleAction(argument.capture());
 		FeedbackAction processedAction = argument.getValue();
-		
+
 		assertThat(argument.getAllValues().size(), is(equalTo(1)));
 		assertThat(processedAction, is(instanceOf(ShowUrlAction.class)));
 		assertThat(((ShowUrlAction) processedAction).getHref(), is(equalTo("good.jpg")));
 		assertThat(collector.getActions().size(), is(equalTo(0)));
 	}
-	
+
 	@Test
-	public void shouldProcessManyImageActions(){
-		//given
-		List<FeedbackAction> actions = ActionListBuilder.create().
-											addUrlAction(ActionType.NARRATION, "good.mp3").
-											addUrlAction(ActionType.IMAGE, "good.jpg").
-											addUrlAction(ActionType.NARRATION, "allok.mp3").
-											addUrlAction(ActionType.IMAGE, "bad.jpg").
-											getList();
-		
+	public void shouldProcessManyImageActions() {
+		// given
+		List<FeedbackAction> actions = ActionListBuilder.create().addUrlAction(ActionType.NARRATION, "good.mp3").addUrlAction(ActionType.IMAGE, "good.jpg")
+				.addUrlAction(ActionType.NARRATION, "allok.mp3").addUrlAction(ActionType.IMAGE, "bad.jpg").getList();
+
 		initializeWithActions(actions);
 		initializeModuleHierarchyWithImageProcessor();
-		
-		//when
+
+		// when
 		processor.processActions(source);
-		
-		//then
+
+		// then
 		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 		verify(imageProcessor, times(2)).processSingleAction(argument.capture());
 		assertThat(collector.getActions().size(), is(equalTo(0)));
 		List<FeedbackAction> processedActions = argument.getAllValues();
-		
+
 		FeedbackAction processedAction1 = processedActions.get(0);
 		assertThat(processedAction1, is(instanceOf(ShowUrlAction.class)));
 		assertThat(((ShowUrlAction) processedAction1).getHref(), is(equalTo("good.jpg")));
@@ -82,17 +70,13 @@ public class ImageActionProcessingJUnitTest extends ProcessingFeedbackActionTest
 		assertThat(processedAction2, is(instanceOf(ShowUrlAction.class)));
 		assertThat(((ShowUrlAction) processedAction2).getHref(), is(equalTo("bad.jpg")));
 	}
-	
-	private void initializeModuleHierarchyWithImageProcessor(){
+
+	private void initializeModuleHierarchyWithImageProcessor() {
 		HasChildren parentModule = mock(HasChildren.class);
 		imageProcessor = spy(injector.getInstance(ImageActionProcessor.class));
-		
+
 		when(source.getParentModule()).thenReturn(parentModule);
-		when(parentModule.getChildren()).thenReturn(Lists.newArrayList(
-														mock(IModule.class),
-														mock(IModule.class),
-														source, 
-														imageProcessor));		
+		when(parentModule.getChildren()).thenReturn(Lists.newArrayList(mock(IModule.class), mock(IModule.class), source, imageProcessor));
 	}
-	
+
 }

@@ -90,9 +90,7 @@ import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.UserAgentUtil;
 
 /**
- * Responsible for: - loading the content, - managing the content, - delivering
- * content to player, - managing state, results and reports about the
- * assessments.
+ * Responsible for: - loading the content, - managing the content, - delivering content to player, - managing state, results and reports about the assessments.
  * 
  * @author Rafal Rybacki
  * 

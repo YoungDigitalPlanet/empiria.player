@@ -2,9 +2,7 @@ package eu.ydp.empiria.player.client.controller.body;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -24,12 +22,17 @@ import eu.ydp.gwtutil.client.collections.StackMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ParenthoodManagerTest {
-	@Spy private final StackMap<HasChildren, List<IModule>> parenthood = new StackMap<HasChildren, List<IModule>>();
+	@Spy
+	private final StackMap<HasChildren, List<IModule>> parenthood = new StackMap<HasChildren, List<IModule>>();
 
-	@Mock private ParenthoodSocket upperLevelParenthoodSocket;
-	@InjectMocks private ParenthoodManager instance;
-	@Mock private IModule module;
-	@Mock private HasChildren hasChildren;
+	@Mock
+	private ParenthoodSocket upperLevelParenthoodSocket;
+	@InjectMocks
+	private ParenthoodManager instance;
+	@Mock
+	private IModule module;
+	@Mock
+	private HasChildren hasChildren;
 
 	@Test
 	public void getParentNullResult() throws Exception {
@@ -44,6 +47,7 @@ public class ParenthoodManagerTest {
 		assertThat(parent).isEqualTo(hasChildren);
 		verifyZeroInteractions(upperLevelParenthoodSocket);
 	}
+
 	@Test
 	public void getParentFromUpperLevelParenthoodSocket() throws Exception {
 		doReturn(hasChildren).when(upperLevelParenthoodSocket).getParent(eq(module));
@@ -51,11 +55,12 @@ public class ParenthoodManagerTest {
 		assertThat(parent).isEqualTo(hasChildren);
 		verify(upperLevelParenthoodSocket).getParent(eq(module));
 	}
+
 	@Test
 	public void getParentFromCache() throws Exception {
 		doReturn(hasChildren).when(upperLevelParenthoodSocket).getParent(eq(module));
 		HasChildren parent = instance.getParent(module);
-		//second from cache
+		// second from cache
 		parent = instance.getParent(module);
 		assertThat(parent).isEqualTo(hasChildren);
 		verify(upperLevelParenthoodSocket).getParent(eq(module));

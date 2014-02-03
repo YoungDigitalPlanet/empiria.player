@@ -6,8 +6,8 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
 
 public interface Feedback {
-	
+
 	List<FeedbackAction> getActions();
-	
+
 	FeedbackCondition getCondition();
 }

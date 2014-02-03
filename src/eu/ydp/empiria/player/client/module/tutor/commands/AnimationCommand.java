@@ -3,8 +3,8 @@ package eu.ydp.empiria.player.client.module.tutor.commands;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
 import eu.ydp.empiria.player.client.module.tutor.TutorCommand;
+import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
 import eu.ydp.gwtutil.client.animation.Animation;
 import eu.ydp.gwtutil.client.animation.AnimationEndHandler;
 

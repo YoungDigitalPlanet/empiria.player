@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module.grouped;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +16,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponsesMapBuilder;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
 
 public class GroupedResponseAnswersMapBuilderJUnitTest {
 
@@ -30,23 +30,11 @@ public class GroupedResponseAnswersMapBuilderJUnitTest {
 
 	@Test
 	public void shouldGroupResponsesWithSameGroup() throws Exception {
-		Response firstResponseWithGroup1 = new ResponseBuilder().withIdentifier("id1")
-				.withCorrectAnswers("correct1")
-				.withGroups("group1")
-				.build();
-		Response secondResponseWithGroup1 = new ResponseBuilder().withIdentifier("id2")
-				.withCorrectAnswers("correct2")
-				.withGroups("group1")
-				.build();
+		Response firstResponseWithGroup1 = new ResponseBuilder().withIdentifier("id1").withCorrectAnswers("correct1").withGroups("group1").build();
+		Response secondResponseWithGroup1 = new ResponseBuilder().withIdentifier("id2").withCorrectAnswers("correct2").withGroups("group1").build();
 
-		Response firstResponseWithGroup2 = new ResponseBuilder().withIdentifier("id3")
-				.withCorrectAnswers("correct1")
-				.withGroups("group2")
-				.build();
-		Response secondResponseWithGroup2 = new ResponseBuilder().withIdentifier("id4")
-				.withCorrectAnswers("correct2")
-				.withGroups("group2")
-				.build();
+		Response firstResponseWithGroup2 = new ResponseBuilder().withIdentifier("id3").withCorrectAnswers("correct1").withGroups("group2").build();
+		Response secondResponseWithGroup2 = new ResponseBuilder().withIdentifier("id4").withCorrectAnswers("correct2").withGroups("group2").build();
 
 		Map<String, Response> responses = responsesMapBuilder.buildResponsesMap(firstResponseWithGroup1, secondResponseWithGroup1, firstResponseWithGroup2,
 				secondResponseWithGroup2);

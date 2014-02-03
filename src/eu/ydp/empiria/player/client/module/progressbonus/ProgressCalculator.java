@@ -8,7 +8,7 @@ public class ProgressCalculator {
 
 	@Inject
 	private OutcomeAccessor outcomeAccessor;
-	
+
 	public int getProgress() {
 		return outcomeAccessor.getAssessmentResult();
 	}

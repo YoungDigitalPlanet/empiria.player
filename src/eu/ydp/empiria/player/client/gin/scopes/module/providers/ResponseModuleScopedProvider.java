@@ -13,15 +13,15 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleCreationContext;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-public class ResponseModuleScopedProvider implements Provider<Response>{
+public class ResponseModuleScopedProvider implements Provider<Response> {
 
 	@Inject
 	private ModuleScopeStack moduleScopeStack;
-	
-	@PageScoped 
+
+	@PageScoped
 	@Inject
 	private ItemResponseManager responseManager;
-	
+
 	@Override
 	public Response get() {
 		String responseId = findResponseIdentifier();

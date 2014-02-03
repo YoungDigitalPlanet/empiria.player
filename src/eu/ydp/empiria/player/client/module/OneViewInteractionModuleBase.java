@@ -17,7 +17,7 @@ public abstract class OneViewInteractionModuleBase extends InteractionModuleBase
 		return moduleElement;
 	}
 
-	protected final void setResponse(){
+	protected final void setResponse() {
 		super.setResponseFromElement(moduleElement);
 	}
 

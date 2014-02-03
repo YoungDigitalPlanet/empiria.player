@@ -36,7 +36,7 @@ public class ChoiceButtonClickHandlerJUnitTest {
 	public void testOnClick() {
 		ClickEvent event = mock(ClickEvent.class);
 
-		//then
+		// then
 		handler.onClick(event);
 
 		verify(groupAnswerController).selectToggleAnswer(buttonId);

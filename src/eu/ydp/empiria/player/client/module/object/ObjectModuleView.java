@@ -42,7 +42,7 @@ public class ObjectModuleView extends Composite {
 	public FlowPanel getDescriptionPanel() {
 		return descriptionPanel;
 	}
-	
+
 	public void setTitleWidget(IsWidget w) {
 		titlePanel.clear();
 		titlePanel.add(w);

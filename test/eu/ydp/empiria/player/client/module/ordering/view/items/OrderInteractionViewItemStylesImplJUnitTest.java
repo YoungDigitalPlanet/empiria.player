@@ -1,11 +1,7 @@
 package eu.ydp.empiria.player.client.module.ordering.view.items;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.Map;
 
@@ -29,7 +25,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest({Widget.class})
+@PrepareForTest({ Widget.class })
 public class OrderInteractionViewItemStylesImplJUnitTest extends AbstractTestBase {
 
 	private OrderInteractionViewItemStyles instance;
@@ -37,13 +33,9 @@ public class OrderInteractionViewItemStylesImplJUnitTest extends AbstractTestBas
 	private final OrderInteractionViewItem viewItem = mock(OrderInteractionViewItem.class);
 	private final Widget widget = mock(Widget.class);
 
-	Map<UserAnswerType, String> stylesMap = new ImmutableMap.Builder<UserAnswerType, String>().
-											put(UserAnswerType.CORRECT,"qp-ordered-item-correct").
-											put(UserAnswerType.WRONG, "qp-ordered-item-wrong").
-											put(UserAnswerType.NONE, "qp-ordered-item-none").
-											put(UserAnswerType.DEFAULT, "qp-ordered-item-default").
-											build();
-
+	Map<UserAnswerType, String> stylesMap = new ImmutableMap.Builder<UserAnswerType, String>().put(UserAnswerType.CORRECT, "qp-ordered-item-correct")
+			.put(UserAnswerType.WRONG, "qp-ordered-item-wrong").put(UserAnswerType.NONE, "qp-ordered-item-none")
+			.put(UserAnswerType.DEFAULT, "qp-ordered-item-default").build();
 
 	@BeforeClass
 	public static void disarm() {
@@ -73,20 +65,20 @@ public class OrderInteractionViewItemStylesImplJUnitTest extends AbstractTestBas
 
 	@Test
 	public void applyStylesOnWidgetUserAnswerType() throws Exception {
-		OrderingItem item = new OrderingItem("id","ans");
-		for(UserAnswerType type : UserAnswerType.values()){
+		OrderingItem item = new OrderingItem("id", "ans");
+		for (UserAnswerType type : UserAnswerType.values()) {
 			item.setAnswerType(type);
 			instance.applyStylesOnWidget(item, viewItem);
 			ArgumentCaptor<String> styleNameCaptor = ArgumentCaptor.forClass(String.class);
 			verify(widget).setStyleName(styleNameCaptor.capture());
-			assertThat(styleNameCaptor.getValue().split(" ")).containsExactly(styleNames.QP_ORDERED_ITEM(),stylesMap.get(type));
+			assertThat(styleNameCaptor.getValue().split(" ")).containsExactly(styleNames.QP_ORDERED_ITEM(), stylesMap.get(type));
 			reset(widget);
 		}
 	}
 
 	@Test
 	public void applyStylesOnWidgetUserAnswerTypeAndIsLocked() throws Exception {
-		OrderingItem item = new OrderingItem("id","ans");
+		OrderingItem item = new OrderingItem("id", "ans");
 		item.setLocked(true);
 		String nameOfrequiredStyle = "qp-ordered-item-locked";
 		assertStyleNames(item, nameOfrequiredStyle);
@@ -94,22 +86,20 @@ public class OrderInteractionViewItemStylesImplJUnitTest extends AbstractTestBas
 
 	@Test
 	public void applyStylesOnWidgetUserAnswerTypeAndIsSelected() throws Exception {
-		OrderingItem item = new OrderingItem("id","ans");
+		OrderingItem item = new OrderingItem("id", "ans");
 		item.setSelected(true);
 		String nameOfrequiredStyle = "qp-ordered-item-selected";
 		assertStyleNames(item, nameOfrequiredStyle);
 	}
 
 	private void assertStyleNames(OrderingItem item, String nameOfrequiredStyle) {
-		for(UserAnswerType type : UserAnswerType.values()){
+		for (UserAnswerType type : UserAnswerType.values()) {
 			item.setAnswerType(type);
 			instance.applyStylesOnWidget(item, viewItem);
 			ArgumentCaptor<String> styleName = ArgumentCaptor.forClass(String.class);
 			verify(widget).setStyleName(styleName.capture());
 
-			assertThat(styleName.getValue()).
-					contains(stylesMap.get(type)).
-					containsOnlyOnce(nameOfrequiredStyle);
+			assertThat(styleName.getValue()).contains(stylesMap.get(type)).containsOnlyOnce(nameOfrequiredStyle);
 			reset(widget);
 		}
 	}

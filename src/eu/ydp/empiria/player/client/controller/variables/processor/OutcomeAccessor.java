@@ -6,7 +6,6 @@ import static eu.ydp.empiria.player.client.controller.variables.processor.result
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.MISTAKES;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
 import static java.lang.Integer.parseInt;
-import static java.lang.Integer.valueOf;
 
 import com.google.inject.Inject;
 
@@ -21,9 +20,12 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 
 public class OutcomeAccessor {
 
-	@Inject private SessionDataSupplier sessionDataSupplier;
-	@Inject private FlowDataSupplier flowDataSupplier;
-	@Inject private OutcomesResultCalculator resultCalculator;
+	@Inject
+	private SessionDataSupplier sessionDataSupplier;
+	@Inject
+	private FlowDataSupplier flowDataSupplier;
+	@Inject
+	private OutcomesResultCalculator resultCalculator;
 
 	public int getCurrentPageTodo() {
 		return getVariableAsInt(TODO);
@@ -45,24 +47,24 @@ public class OutcomeAccessor {
 		String lastmistaken = getVariableAsString(LASTMISTAKEN);
 		return LastMistaken.valueOf(lastmistaken.toUpperCase());
 	}
-	
-	public int getAssessmentTodo(){
+
+	public int getAssessmentTodo() {
 		return getAssessmentValueInt(TODO);
 	}
-	
-	public int getAssessmentDone(){
+
+	public int getAssessmentDone() {
 		return getAssessmentValueInt(DONE);
 	}
-	
-	public int getAssessmentErrors(){
+
+	public int getAssessmentErrors() {
 		return getAssessmentValueInt(ERRORS);
 	}
-	
-	public int getAssessmentMistakes(){
+
+	public int getAssessmentMistakes() {
 		return getAssessmentValueInt(MISTAKES);
 	}
-	
-	public int getAssessmentResult(){
+
+	public int getAssessmentResult() {
 		int todo = getAssessmentTodo();
 		int done = getAssessmentDone();
 		return resultCalculator.calculateResult(todo, done);
@@ -92,7 +94,7 @@ public class OutcomeAccessor {
 
 	private int getVariableAsInt(VariableName variable) {
 		String todoString = getVariableAsString(variable);
-		return valueOf(todoString);
+		return Integer.valueOf(todoString);
 	}
 
 	private String getVariableAsString(VariableName variable) {

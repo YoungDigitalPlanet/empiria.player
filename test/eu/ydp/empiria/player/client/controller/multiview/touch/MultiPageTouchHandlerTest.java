@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.multiview.touch;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 import org.junit.After;

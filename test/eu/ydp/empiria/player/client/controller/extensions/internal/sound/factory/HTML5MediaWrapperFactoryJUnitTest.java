@@ -1,13 +1,11 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound.factory;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.inject.Binder;
@@ -22,9 +20,7 @@ import eu.ydp.empiria.player.client.module.media.html5.HTML5AudioMediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoMediaWrapper;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
 
-
 public class HTML5MediaWrapperFactoryJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
-
 
 	private MediaWrapperFactory mediaWrapperFactory;
 	private HTML5MediaWrapperFactory instance;
@@ -40,25 +36,25 @@ public class HTML5MediaWrapperFactoryJUnitTest extends AbstractTestBaseWithoutAu
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
 		mediaWrapperFactory = injector.getInstance(MediaWrapperFactory.class);
-		when(mediaWrapperFactory.getHtml5VideoMediaWrapper(Mockito.any(Media.class))).thenReturn(mock(HTML5VideoMediaWrapper.class));
-		when(mediaWrapperFactory.getHtml5AudioMediaWrapper(Mockito.any(Media.class))).thenReturn(mock(HTML5AudioMediaWrapper.class));
+		when(mediaWrapperFactory.getHtml5VideoMediaWrapper(Matchers.any(Media.class))).thenReturn(mock(HTML5VideoMediaWrapper.class));
+		when(mediaWrapperFactory.getHtml5AudioMediaWrapper(Matchers.any(Media.class))).thenReturn(mock(HTML5AudioMediaWrapper.class));
 		instance = injector.getInstance(HTML5MediaWrapperFactory.class);
 	}
 
 	@Test
-	public void createMediaWrapperVideoTest(){
+	public void createMediaWrapperVideoTest() {
 		AbstractHTML5MediaWrapper mediaWrapper = instance.createMediaWrapper(mock(Media.class), MediaType.VIDEO);
 		assertNotNull(mediaWrapper);
-		verify(mediaWrapperFactory).getHtml5VideoMediaWrapper(Mockito.any(Media.class));
+		verify(mediaWrapperFactory).getHtml5VideoMediaWrapper(Matchers.any(Media.class));
 		verifyNoMoreInteractions(mediaWrapperFactory);
 
 	}
 
 	@Test
-	public void createMediaWrapperAudioTest(){
+	public void createMediaWrapperAudioTest() {
 		AbstractHTML5MediaWrapper mediaWrapper = instance.createMediaWrapper(mock(Media.class), MediaType.AUDIO);
 		assertNotNull(mediaWrapper);
-		verify(mediaWrapperFactory).getHtml5AudioMediaWrapper(Mockito.any(Media.class));
+		verify(mediaWrapperFactory).getHtml5AudioMediaWrapper(Matchers.any(Media.class));
 		verifyNoMoreInteractions(mediaWrapperFactory);
 	}
 }

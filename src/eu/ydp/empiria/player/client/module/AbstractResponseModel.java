@@ -10,31 +10,33 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 
 /**
  * Klasa abstrakcyjna, model odpowiedzi
+ * 
  * @author MKaldonek
- * @param <T> typ odpowiedzi dostarczanych przez model
+ * @param <T>
+ *            typ odpowiedzi dostarczanych przez model
  */
-public abstract class AbstractResponseModel<T> implements IStateful{
+public abstract class AbstractResponseModel<T> implements IStateful {
 
 	protected Response response;
 	protected ResponseModelChangeListener responseModelChange;
 
-	public AbstractResponseModel(Response response, ResponseModelChangeListener responseModelChange){
+	public AbstractResponseModel(Response response, ResponseModelChangeListener responseModelChange) {
 		this.response = response;
 		this.responseModelChange = responseModelChange;
 	}
-	
-	public AbstractResponseModel(Response response){
+
+	public AbstractResponseModel(Response response) {
 		this.response = response;
 	}
-	
+
 	protected abstract List<T> parseResponse(Collection<String> values);
 
-	public boolean isCorrectAnswer(String answer){
+	public boolean isCorrectAnswer(String answer) {
 		List<String> correctAnswers = response.correctAnswers.getAllAnswers();
 		return correctAnswers.contains(answer);
 	}
 
-	public boolean isUserAnswer(String answer){
+	public boolean isUserAnswer(String answer) {
 		List<String> userAnswers = response.values;
 		return userAnswers.contains(answer);
 	}
@@ -50,7 +52,7 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 	@Override
 	public void setState(JSONArray newState) {
 		response.reset();
-		
+
 		for (int i = 0; i < newState.size(); i++) {
 			String responseValue = newState.get(i).isString().stringValue();
 			response.add(responseValue);
@@ -68,7 +70,7 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 		return state;
 	}
 
-	public void reset(){
+	public void reset() {
 		response.reset();
 	}
 
@@ -76,7 +78,7 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 		reset();
 		onModelChange();
 	}
-	
+
 	public void addAnswer(String answerIdentifier) {
 		response.add(answerIdentifier);
 		onModelChange();
@@ -87,7 +89,7 @@ public abstract class AbstractResponseModel<T> implements IStateful{
 		onModelChange();
 	}
 
-	protected void onModelChange(){
+	protected void onModelChange() {
 		responseModelChange.onResponseModelChange();
 	}
 

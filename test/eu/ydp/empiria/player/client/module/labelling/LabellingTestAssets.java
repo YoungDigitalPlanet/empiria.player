@@ -22,39 +22,17 @@ public class LabellingTestAssets {
 	public static final int IMAGE_HEIGHT = 300;
 	public static final ImgBean IMAGE_BEAN = createImgBean();
 
-	public static final String XML_FULL =
-			"<labellingInteraction id=\"" + ID + "\">" +
-			"<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"+IMAGE_HEIGHT+"'/>" +
-			"<children>"+
-			CHILD_0.xml() +
-			CHILD_1.xml() +
-			CHILD_2.xml() +
-			CHILD_3.xml() +
-			"</children>" +
-			"</labellingInteraction>";
+	public static final String XML_FULL = "<labellingInteraction id=\"" + ID + "\">" + "<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"
+			+ IMAGE_HEIGHT + "'/>" + "<children>" + CHILD_0.xml() + CHILD_1.xml() + CHILD_2.xml() + CHILD_3.xml() + "</children>" + "</labellingInteraction>";
 
-	public static final String XML_WITHOUT_ID =
-			"<labellingInteraction>" +
-			"<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"+IMAGE_HEIGHT+"'/>" +
-			"<children>"+
-			CHILD_0.xml() +
-			CHILD_1.xml() +
-			CHILD_2.xml() +
-			CHILD_3.xml() +
-			"</children>" +
-			"</labellingInteraction>";
+	public static final String XML_WITHOUT_ID = "<labellingInteraction>" + "<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='" + IMAGE_HEIGHT
+			+ "'/>" + "<children>" + CHILD_0.xml() + CHILD_1.xml() + CHILD_2.xml() + CHILD_3.xml() + "</children>" + "</labellingInteraction>";
 
-	public static final String XML_NO_CHILDREN =
-			"<labellingInteraction>" +
-			"<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"+IMAGE_HEIGHT+"'/>" +
-			"<children>" +
-			"</children>" +
-			"</labellingInteraction>";
+	public static final String XML_NO_CHILDREN = "<labellingInteraction>" + "<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='" + IMAGE_HEIGHT
+			+ "'/>" + "<children>" + "</children>" + "</labellingInteraction>";
 
-	public static final String XML_NO_CHILDREN_NODE =
-			"<labellingInteraction>" +
-			"<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"+IMAGE_HEIGHT+"'/>" +
-			"</labellingInteraction>";
+	public static final String XML_NO_CHILDREN_NODE = "<labellingInteraction>" + "<img src='" + IMAGE_SRC + "' width='" + IMAGE_WIDTH + "' height='"
+			+ IMAGE_HEIGHT + "'/>" + "</labellingInteraction>";
 
 	private static ImgBean createImgBean() {
 		ImgBean bean = new ImgBean();

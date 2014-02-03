@@ -1,21 +1,18 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 @SuppressWarnings("PMD")
 public class ConnectionPairEntryJUnitTest {
 
-
 	@Test
-	public void equalsTest(){
+	public void equalsTest() {
 		String target = "target";
 		String source = "source";
-		ConnectionPairEntry<String,String> entry = new ConnectionPairEntry<String,String>(source, target);
-		ConnectionPairEntry<String,String> entry2 = new ConnectionPairEntry<String,String>(target,source);
+		ConnectionPairEntry<String, String> entry = new ConnectionPairEntry<String, String>(source, target);
+		ConnectionPairEntry<String, String> entry2 = new ConnectionPairEntry<String, String>(target, source);
 		assertTrue(entry.equals(entry2));
 		assertTrue(entry.equals(entry));
 		assertTrue(entry2.equals(entry));
@@ -23,31 +20,31 @@ public class ConnectionPairEntryJUnitTest {
 	}
 
 	@Test
-	public void notEqualsTest(){
+	public void notEqualsTest() {
 		String target = "target";
 		String source = "source";
-		ConnectionPairEntry<String,String> entry = new ConnectionPairEntry<String,String>(source, target);
-		ConnectionPairEntry<String,String> entry2 = new ConnectionPairEntry<String,String>("xxx",source);
+		ConnectionPairEntry<String, String> entry = new ConnectionPairEntry<String, String>(source, target);
+		ConnectionPairEntry<String, String> entry2 = new ConnectionPairEntry<String, String>("xxx", source);
 		assertFalse(entry.equals(entry2));
 		assertFalse(entry.equals(null));
 	}
 
 	@Test
-	public void hashcodeCorrectTest(){
+	public void hashcodeCorrectTest() {
 		String target = "target";
 		String source = "source";
-		ConnectionPairEntry<String,String> entry = new ConnectionPairEntry<String,String>(source, target);
-		ConnectionPairEntry<String,String> entry2 = new ConnectionPairEntry<String,String>(target,source);
+		ConnectionPairEntry<String, String> entry = new ConnectionPairEntry<String, String>(source, target);
+		ConnectionPairEntry<String, String> entry2 = new ConnectionPairEntry<String, String>(target, source);
 
 		assertEquals(entry.hashCode(), entry2.hashCode());
 	}
 
 	@Test
-	public void hashcodeNotCorrectTest(){
+	public void hashcodeNotCorrectTest() {
 		String target = "target";
 		String source = "source";
-		ConnectionPairEntry<String,String> entry = new ConnectionPairEntry<String,String>(source, target);
-		ConnectionPairEntry<String,String> entry2 = new ConnectionPairEntry<String,String>("xxx",source);
+		ConnectionPairEntry<String, String> entry = new ConnectionPairEntry<String, String>(source, target);
+		ConnectionPairEntry<String, String> entry2 = new ConnectionPairEntry<String, String>("xxx", source);
 
 		assertFalse(entry.hashCode() == entry2.hashCode());
 	}

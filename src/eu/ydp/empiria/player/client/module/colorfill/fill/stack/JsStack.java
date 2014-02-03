@@ -13,23 +13,23 @@ public class JsStack extends JavaScriptObject {
 	}
 
 	private final native void init()/*-{
-		this.stack = [];
-	}-*/;
+									this.stack = [];
+									}-*/;
 
 	protected JsStack() {
 		//
 	}
 
 	public final native void push(JsPoint point)/*-{
-			this.stack.push(point);
-	}-*/;
+												this.stack.push(point);
+												}-*/;
 
 	public final native JsPoint pop()/*-{
-		return this.stack.pop();
-	}-*/;
+										return this.stack.pop();
+										}-*/;
 
 	public final native boolean isEmpty()/*-{
-		return this.stack.length == 0;
-	}-*/;
+											return this.stack.length == 0;
+											}-*/;
 
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.google.gwt.event.dom.client.DomEvent;
 
-public class HTML5MediaEvent extends DomEvent<HTML5MediaEventHandler> {//NOPMD
+public class HTML5MediaEvent extends DomEvent<HTML5MediaEventHandler> {// NOPMD
 	public static Map<HTML5MediaEventsType, Type<HTML5MediaEventHandler>> types = new HashMap<HTML5MediaEventsType, DomEvent.Type<HTML5MediaEventHandler>>();
 
 	HTML5MediaEventsType type = null;
@@ -18,11 +18,12 @@ public class HTML5MediaEvent extends DomEvent<HTML5MediaEventHandler> {//NOPMD
 		return type;
 	}
 
-	private static void checkIsPresent(HTML5MediaEventsType type){
-		if(!types.containsKey(type)){
+	private static void checkIsPresent(HTML5MediaEventsType type) {
+		if (!types.containsKey(type)) {
 			types.put(type, new Type<HTML5MediaEventHandler>(type.name(), new HTML5MediaEvent(type)));
 		}
 	}
+
 	@Override
 	public com.google.gwt.event.dom.client.DomEvent.Type<HTML5MediaEventHandler> getAssociatedType() {
 		checkIsPresent(type);

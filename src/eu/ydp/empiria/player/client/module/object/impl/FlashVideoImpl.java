@@ -29,12 +29,12 @@ public class FlashVideoImpl extends Composite implements Video {
 	}
 
 	private native void initFAV(String elementId, String src)/*-{
-		if (typeof $wnd.FAVideo == 'function')
-			var vp = new $wnd.FAVideo(elementId, src, 0, 0, {
-				autoLoad : true,
-				autoPlay : false
-			});
-	}-*/;
+																if (typeof $wnd.FAVideo == 'function')
+																var vp = new $wnd.FAVideo(elementId, src, 0, 0, {
+																autoLoad : true,
+																autoPlay : false
+																});
+																}-*/;
 
 	@Override
 	public void addSrc(String src, String type) {

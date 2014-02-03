@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_CHANGE;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;

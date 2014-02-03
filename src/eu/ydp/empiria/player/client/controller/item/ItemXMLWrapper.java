@@ -12,7 +12,8 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class ItemXMLWrapper {
 
-	@Inject @PageScoped
+	@Inject
+	@PageScoped
 	private XmlData xmlData;
 
 	private Document document;
@@ -22,27 +23,27 @@ public class ItemXMLWrapper {
 		document = xmlData.getDocument();
 	}
 
-
-	public NodeList getStyleDeclaration(){
+	public NodeList getStyleDeclaration() {
 		return getElementsByTagName("styleDeclaration");
 	}
 
-	public NodeList getAssessmentItems(){
+	public NodeList getAssessmentItems() {
 		return getElementsByTagName("assessmentItem");
 	}
 
-	public Element getItemBody(){
+	public Element getItemBody() {
 		return (Element) getElementsByTagName("itemBody").item(0);
 	}
 
-	public NodeList getResponseDeclarations(){
+	public NodeList getResponseDeclarations() {
 		return getElementsByTagName("responseDeclaration");
 	}
 
-	public NodeList getExpressions(){
+	public NodeList getExpressions() {
 		return getElementsByTagName("expressions");
 	}
-	public String getBaseURL(){
+
+	public String getBaseURL() {
 		return xmlData.getBaseURL();
 	}
 

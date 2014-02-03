@@ -23,16 +23,16 @@ public class UserToResponseAreaMapper {
 
 	private final ColorfillModelProxy modelProxy;
 	private final AreasMapsComparator comparator;
-	
+
 	private Map<Area, Area> responseToUserAreas = Maps.newHashMap();
 	private Map<Area, ColorModel> previousAnswers = Maps.newHashMap();
-	
+
 	@Inject
-	public UserToResponseAreaMapper(@ModuleScoped ColorfillModelProxy modelProxy, AreasMapsComparator comparator){
+	public UserToResponseAreaMapper(@ModuleScoped ColorfillModelProxy modelProxy, AreasMapsComparator comparator) {
 		this.modelProxy = modelProxy;
 		this.comparator = comparator;
 	}
-	
+
 	private Function<Area, Area> transformResponseToUserAreas = new Function<Area, Area>() {
 
 		@Override
@@ -45,7 +45,7 @@ public class UserToResponseAreaMapper {
 	public void updateMappings(Area userArea) {
 		Map<Area, ColorModel> currentAnswers = Collections.unmodifiableMap(modelProxy.getUserAnswers());
 		AreasMapComparationResult result = comparator.findDifference(previousAnswers, currentAnswers);
-		if (result.isDifference()){
+		if (result.isDifference()) {
 			updateResponseToUserMap(userArea, result);
 		}
 		setPreviousAnswers(currentAnswers);
@@ -58,19 +58,19 @@ public class UserToResponseAreaMapper {
 
 	private void updateResponseToUserMap(Area userArea, AreasMapComparationResult result) {
 		Area responseArea = result.getArea();
-		if (result.isAddedOrChanged()){
+		if (result.isAddedOrChanged()) {
 			responseToUserAreas.put(responseArea, userArea);
 		} else {
 			responseToUserAreas.remove(responseArea);
 		}
 	}
-	
-	public Iterable<Area> mapResponseToUser(Iterable<Area> areas){
+
+	public Iterable<Area> mapResponseToUser(Iterable<Area> areas) {
 		Preconditions.checkArgument(responseToUserAreas.keySet().containsAll(Sets.newHashSet(areas)));
 		return Iterables.transform(areas, transformResponseToUserAreas);
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		responseToUserAreas.clear();
 		previousAnswers.clear();
 	}

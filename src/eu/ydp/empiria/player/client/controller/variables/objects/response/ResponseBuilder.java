@@ -96,7 +96,7 @@ public class ResponseBuilder {
 		this.checkMode = checkMode;
 		return this;
 	}
-	
+
 	public ResponseBuilder withCompilerCountMode(CountMode compilerCountMode) {
 		this.compilerCountMode = compilerCountMode;
 		return this;

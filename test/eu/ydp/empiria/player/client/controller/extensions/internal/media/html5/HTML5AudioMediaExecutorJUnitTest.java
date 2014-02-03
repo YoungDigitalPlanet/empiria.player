@@ -24,7 +24,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest({ MediaBase.class, HTML5MediaEvent.class, RootPanel.class, TouchStartEvent.class})
+@PrepareForTest({ MediaBase.class, HTML5MediaEvent.class, RootPanel.class, TouchStartEvent.class })
 public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutorJUnitBase {
 
 	@Override
@@ -49,7 +49,7 @@ public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 	public BaseMediaConfiguration getBaseMediaConfiguration() {
 		Map<String, String> sources = Maps.newHashMap();
 		sources.put("http://dummy", "audio/mp4");
-		return  new BaseMediaConfiguration(sources, MediaType.AUDIO, "poster", 20, 30, true, true, "text");
+		return new BaseMediaConfiguration(sources, MediaType.AUDIO, "poster", 20, 30, true, true, "text");
 	}
 
 	@Test

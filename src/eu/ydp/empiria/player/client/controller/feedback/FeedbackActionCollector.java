@@ -12,23 +12,23 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.module.IModule;
 
 public class FeedbackActionCollector {
-	
+
 	private IModule source;
-	
+
 	private final Map<IModule, FeedbackProperties> source2properties = Maps.newHashMap();
-	
-	private final ListMultimap<IModule, FeedbackAction> source2actions = ArrayListMultimap.create();	
-	
-	public void setSource(IModule source){
+
+	private final ListMultimap<IModule, FeedbackAction> source2actions = ArrayListMultimap.create();
+
+	public void setSource(IModule source) {
 		this.source = source;
 	}
 
 	public void appendPropertiesToSource(FeedbackProperties properties, IModule source) {
 		FeedbackProperties moduleProperties = source2properties.get(source);
-		
-		if(moduleProperties == null){
+
+		if (moduleProperties == null) {
 			source2properties.put(source, properties);
-		}else{
+		} else {
 			moduleProperties.appendProperties(properties);
 		}
 	}
@@ -38,14 +38,14 @@ public class FeedbackActionCollector {
 	}
 
 	public void appendActionsToSource(List<FeedbackAction> actions, IModule source) {
-		if(source2actions.containsKey(source)){
+		if (source2actions.containsKey(source)) {
 			source2actions.get(source).addAll(actions);
-		}else{
+		} else {
 			source2actions.putAll(source, actions);
 		}
 	}
-	
-	public void removeActions(List<FeedbackAction> actionsToRemove){
+
+	public void removeActions(List<FeedbackAction> actionsToRemove) {
 		source2actions.values().removeAll(actionsToRemove);
 	}
 

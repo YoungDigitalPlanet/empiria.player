@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.when;
+
 import java.util.Map;
 
 import org.junit.Before;
@@ -14,22 +18,16 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.processor.results.InitialProcessingResultFactory;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import static org.hamcrest.Matchers.equalTo;
-
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ModulesConstantVariablesInitializerJUnitTest {
 
 	private ModulesConstantVariablesInitializer constantVariablesInitializer;
 	private ModulesProcessingResults modulesProcessingResults;
-	
+
 	@Mock
 	private ModuleTodoCalculator moduleTodoCalculator;
 
-	
 	@Before
 	public void setUp() throws Exception {
 		modulesProcessingResults = new ModulesProcessingResults(new InitialProcessingResultFactory());
@@ -38,16 +36,15 @@ public class ModulesConstantVariablesInitializerJUnitTest {
 
 	@Test
 	public void shouldInitializeTodoRelatedToResponse() throws Exception {
-		
+
 		Response response = new ResponseBuilder().withIdentifier("responseId").build();
 		Map<String, Response> responses = new ResponsesMapBuilder().buildResponsesMap(response);
-		
+
 		int todo = 123;
-		when(moduleTodoCalculator.calculateTodoForResponse(response))
-			.thenReturn(todo);
-		
+		when(moduleTodoCalculator.calculateTodoForResponse(response)).thenReturn(todo);
+
 		constantVariablesInitializer.initializeTodoVariables(responses, modulesProcessingResults);
-		
+
 		assertThatTodoForResponseIsInitialized(todo, response);
 	}
 
@@ -56,5 +53,5 @@ public class ModulesConstantVariablesInitializerJUnitTest {
 		int currentTodo = processingResult.getConstantVariables().getTodo();
 		assertThat(currentTodo, equalTo(todo));
 	}
-	
+
 }

@@ -2,10 +2,7 @@ package eu.ydp.empiria.player.client.module.progressbonus;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Map;
@@ -74,17 +71,17 @@ public class ProgressConfigResolverTest {
 
 		// then
 		assertThat(resolvedConfig).hasSize(2);
-		
+
 		final List<ShowImageDTO> progress0 = resolvedConfig.get(0);
 		assertThat(progress0).hasSize(1);
 		assertThat(progress0.get(0).path).isEqualTo("RESOLVED_PATH");
-		
+
 		final List<ShowImageDTO> progress100 = resolvedConfig.get(100);
 		assertThat(progress100).hasSize(3);
 		assertThat(progress100.get(0).path).isEqualTo("RESOLVED_PATH100");
 		assertThat(progress100.get(1).path).isEqualTo("RESOLVED_PATH100_1");
 		assertThat(progress100.get(2).path).isEqualTo("RESOLVED_PATH100_2");
-		
+
 		verify(empiriaPaths, times(4)).getCommonsFilePath(anyString());
 	}
 
@@ -99,19 +96,18 @@ public class ProgressConfigResolverTest {
 
 		when(progressBonusConfig.getProgresses()).thenReturn(Lists.newArrayList(progressConfig, progressConfig100));
 
-
 		// when
 		Map<Integer, List<ShowImageDTO>> resolvedConfig = awardResolver.resolveProgressConfig();
 
 		// then
 		assertThat(resolvedConfig).hasSize(2);
-		
+
 		final List<ShowImageDTO> progress0 = resolvedConfig.get(0);
 		assertThat(progress0).hasSize(3);
 		assertThat(progress0.get(0).path).isEqualTo("RESOLVED_TEMPLATE_1.png");
 		assertThat(progress0.get(1).path).isEqualTo("RESOLVED_TEMPLATE_2.png");
 		assertThat(progress0.get(2).path).isEqualTo("RESOLVED_TEMPLATE_3.png");
-		
+
 		final List<ShowImageDTO> progress100 = resolvedConfig.get(100);
 		assertThat(progress100).hasSize(2);
 		assertThat(progress100.get(0).path).isEqualTo("RESOLVED_TEMPLATE100_1.png");

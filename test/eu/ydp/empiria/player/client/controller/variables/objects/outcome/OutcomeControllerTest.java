@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.objects.outcome;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.HashMap;

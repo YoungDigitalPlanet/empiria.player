@@ -19,19 +19,20 @@ public class PaletteButtonImpl extends Composite implements PaletteButton {
 	private static PaletteButtonUiBinder uiBinder = GWT.create(PaletteButtonUiBinder.class);
 
 	@UiTemplate("PaletteButton.ui.xml")
-	interface PaletteButtonUiBinder extends UiBinder<Widget, PaletteButtonImpl> {}
-	
+	interface PaletteButtonUiBinder extends UiBinder<Widget, PaletteButtonImpl> {
+	}
+
 	@UiField
 	FlowPanel container;
 
 	@UiField
 	PushButton button;
-	
+
 	@UiField
 	FlowPanel description;
-	
+
 	private StyleNameConstants styleNameConstants;
-	
+
 	@Inject
 	public PaletteButtonImpl(StyleNameConstants styleNameConstants, InputToButtonReplacer inputReplacer) {
 		initWidget(uiBinder.createAndBindUi(this));

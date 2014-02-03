@@ -15,14 +15,15 @@ public class TutorPopupViewPersonaViewImpl extends Composite implements TutorPop
 	interface TutorPopupViewPersonaViewUiBinder extends UiBinder<Widget, TutorPopupViewPersonaViewImpl> {
 	}
 
-	@UiField FlowPanel container;
+	@UiField
+	FlowPanel container;
 
 	public TutorPopupViewPersonaViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override
-	public void setAvatarUrl(String avatarUrl){
+	public void setAvatarUrl(String avatarUrl) {
 		Image image = new Image(avatarUrl);
 		container.add(image);
 	}

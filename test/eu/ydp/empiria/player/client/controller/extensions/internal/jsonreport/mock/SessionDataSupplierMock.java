@@ -9,15 +9,15 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDa
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 
 public class SessionDataSupplierMock implements SessionDataSupplier {
-	
+
 	private AssessmentSessionDataSocket assessmentSessionDataSocket;
-	
+
 	private List<ItemSessionDataSocket> itemSessionDataSocketList = Lists.newArrayList();
-	
+
 	public void setAssessmentSessionDataSocket(AssessmentSessionDataSocket assessmentSessionDataSocket) {
 		this.assessmentSessionDataSocket = assessmentSessionDataSocket;
 	}
-	
+
 	public void setItemSessionDataSocketList(List<ItemSessionDataSocket> itemSessionDataSocketList) {
 		this.itemSessionDataSocketList = itemSessionDataSocketList;
 	}

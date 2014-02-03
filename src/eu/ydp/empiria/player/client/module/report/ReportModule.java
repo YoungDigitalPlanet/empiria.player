@@ -150,7 +150,7 @@ public class ReportModule extends ContainerModuleBase {
 		if (this.styles == null) {
 			PlayerGinjector playerGinjector = PlayerGinjectorFactory.getPlayerGinjector();
 			StyleSocket styleSocket = playerGinjector.getStyleSocket();
-			
+
 			styles = styleSocket.getStyles(element);
 		}
 		return styles;

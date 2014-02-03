@@ -10,8 +10,8 @@ import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooter
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
 public class JsAssessmentFooterViewExtension extends AbstractJsExtension implements AssessmentFooterViewExtension {
-	
-	public JsAssessmentFooterViewExtension(){
+
+	public JsAssessmentFooterViewExtension() {
 	}
 
 	@Override
@@ -29,9 +29,9 @@ public class JsAssessmentFooterViewExtension extends AbstractJsExtension impleme
 		Widget w = null;
 		if (e != null)
 			w = new ElementWrapperWidget(e);
-		
+
 		final Widget w2 = w;
-		
+
 		return new ViewSocket() {
 			@Override
 			public Widget getView() {
@@ -39,11 +39,11 @@ public class JsAssessmentFooterViewExtension extends AbstractJsExtension impleme
 			}
 		};
 	}
-	
+
 	private native Element getViewJs(JavaScriptObject extension)/*-{
-		if (typeof extension.getAssessmentFooterView == 'function')
-			return extension.getAssessmentFooterView();
-		return null;
-	}-*/;
+																if (typeof extension.getAssessmentFooterView == 'function')
+																return extension.getAssessmentFooterView();
+																return null;
+																}-*/;
 
 }

@@ -47,8 +47,7 @@ public class SelectableChoice extends Composite {
 		this.identifier = identifier;
 		this.contentWidget = contentWidget;
 		this.styleNameConstants = styleNameConstants;
-		coverId = Document.get()
-				.createUniqueId();
+		coverId = Document.get().createUniqueId();
 
 		uiBinder.createAndBindUi(this);
 		initWidget(panel);
@@ -56,8 +55,7 @@ public class SelectableChoice extends Composite {
 
 	@PostConstruct
 	public void setUpCoverId() {
-		cover.getElement()
-				.setId(coverId);
+		cover.getElement().setId(coverId);
 		setSelected(false);
 	}
 

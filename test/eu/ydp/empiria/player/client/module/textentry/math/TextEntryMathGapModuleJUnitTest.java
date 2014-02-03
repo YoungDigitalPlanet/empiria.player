@@ -1,7 +1,8 @@
 package eu.ydp.empiria.player.client.module.textentry.math;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Map;
@@ -31,11 +32,11 @@ public class TextEntryMathGapModuleJUnitTest extends AbstractTestBaseWithoutAuto
 
 	private static class CustomGuiceModule implements Module {
 		private MathGapModel mathGapModel;
-		
-		public CustomGuiceModule( MathGapModel mathGapModel) {
+
+		public CustomGuiceModule(MathGapModel mathGapModel) {
 			this.mathGapModel = mathGapModel;
 		}
-		
+
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(TextEntryMathGapModulePresenter.class).toInstance(mock(TextEntryMathGapModulePresenter.class));
@@ -58,7 +59,7 @@ public class TextEntryMathGapModuleJUnitTest extends AbstractTestBaseWithoutAuto
 
 	@Test
 	public void testIfMarkAnswersWorksCorrectly() {
-		
+
 		TextEntryGapModuleMock gap1 = mockTextGap();
 		TextEntryGapModuleMock gap2 = mockTextGap();
 		TextEntryGapModuleMock gap3 = mockTextGap();

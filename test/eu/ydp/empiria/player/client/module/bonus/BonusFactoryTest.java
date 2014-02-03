@@ -4,9 +4,7 @@ import static eu.ydp.empiria.player.client.controller.extensions.internal.bonus.
 import static eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusResourceType.SWIFFY;
 import static eu.ydp.empiria.player.client.module.bonus.BonusConfigMockCreator.createBonus;
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,20 +27,20 @@ public class BonusFactoryTest {
 	private Provider<ImageBonus> imageProvider;
 	@Mock
 	private Provider<SwiffyBonus> swiffyProvider;
-	
+
 	@Before
 	public void setUp() {
 		when(imageProvider.get()).thenReturn(mock(ImageBonus.class));
 		when(swiffyProvider.get()).thenReturn(mock(SwiffyBonus.class));
 	}
-	
+
 	@Test
 	public void createImage() {
 		// given
 		String asset = "bonus.png";
 		Size size = new Size(1, 2);
 		BonusResource bonusResource = createBonus(asset, size, IMAGE);
-		
+
 		// when
 		BonusWithAsset bonus = bonusFactory.createBonus(bonusResource);
 
@@ -50,14 +48,14 @@ public class BonusFactoryTest {
 		assertThat(bonus).isInstanceOf(ImageBonus.class);
 		verify(bonus).setAsset(asset, size);
 	}
-	
+
 	@Test
 	public void createSwiffy() {
 		// given
 		String asset = "bonus.png";
 		Size size = new Size(1, 2);
 		BonusResource bonusResource = createBonus(asset, size, SWIFFY);
-		
+
 		// when
 		BonusWithAsset bonus = bonusFactory.createBonus(bonusResource);
 

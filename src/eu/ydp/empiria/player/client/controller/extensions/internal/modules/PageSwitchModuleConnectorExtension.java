@@ -6,8 +6,7 @@ import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.pageswitch.PageSwitchModule;
 
-
-public class PageSwitchModuleConnectorExtension extends ControlModuleConnectorExtension{
+public class PageSwitchModuleConnectorExtension extends ControlModuleConnectorExtension {
 
 	@Override
 	public ModuleCreator getModuleCreator() {

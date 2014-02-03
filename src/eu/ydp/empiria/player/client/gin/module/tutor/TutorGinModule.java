@@ -37,9 +37,7 @@ public class TutorGinModule extends AbstractGinModule {
 		bind(TutorPopupViewWidget.class).to(TutorPopupViewWidgetImpl.class);
 		bind(TutorPopupViewPersonaView.class).to(TutorPopupViewPersonaViewImpl.class);
 		bind(TutorEndHandler.class).to(SingleRunTutorEndHandler.class);
-		install(new GinFactoryModuleBuilder()
-				.implement(TutorCommand.class, Names.named("image"), ShowImageCommand.class)
-				.implement(TutorCommand.class, Names.named("animation"), AnimationCommand.class)
-				.build(TutorCommandsModuleFactory.class));
+		install(new GinFactoryModuleBuilder().implement(TutorCommand.class, Names.named("image"), ShowImageCommand.class)
+				.implement(TutorCommand.class, Names.named("animation"), AnimationCommand.class).build(TutorCommandsModuleFactory.class));
 	}
 }

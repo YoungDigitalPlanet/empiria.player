@@ -15,7 +15,7 @@ public class HTML5MediaWrapperFactory {
 		AbstractHTML5MediaWrapper mediaWrapper;
 		if (mediaType == MediaType.VIDEO) {
 			mediaWrapper = wrapperFactory.getHtml5VideoMediaWrapper(media);
-		} else  {
+		} else {
 			mediaWrapper = wrapperFactory.getHtml5AudioMediaWrapper(media);
 		}
 		return mediaWrapper;

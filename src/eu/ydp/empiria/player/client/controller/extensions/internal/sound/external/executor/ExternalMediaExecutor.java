@@ -11,8 +11,9 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 public class ExternalMediaExecutor implements MediaExecutor<Widget> {
 
-	@Inject private ExternalMediaEngine mediaEngine;
-	
+	@Inject
+	private ExternalMediaEngine mediaEngine;
+
 	private MediaWrapper<Widget> wrapper;
 	private BaseMediaConfiguration baseMediaConfiguration;
 
@@ -43,15 +44,14 @@ public class ExternalMediaExecutor implements MediaExecutor<Widget> {
 
 	@Override
 	@Deprecated
-	public void play(String src) {		
+	public void play(String src) {
 		throw new UnsupportedOperationException("Operation is not supported. ExternalMediaExecutor.play(String src).");
 	}
 
 	@Override
-	public void play() {		
+	public void play() {
 		mediaEngine.play(wrapper);
 	}
-	
 
 	@Override
 	public void stop() {
@@ -68,7 +68,7 @@ public class ExternalMediaExecutor implements MediaExecutor<Widget> {
 	}
 
 	@Override
-	public void setVolume(double volume) {		
+	public void setVolume(double volume) {
 	}
 
 	@Override

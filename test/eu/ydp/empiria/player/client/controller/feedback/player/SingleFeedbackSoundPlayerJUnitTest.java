@@ -1,14 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback.player;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,12 +60,12 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 
 		ArgumentCaptor<Type[]> arguments = ArgumentCaptor.forClass(Type[].class);
 		// test
-		verify(eventsBus).addHandlerToSource(arguments.capture(), Mockito.eq(mediaWrapper), Mockito.any(SingleFeedbackSoundPlayer.class));
+		verify(eventsBus).addHandlerToSource(arguments.capture(), org.mockito.Matchers.eq(mediaWrapper), org.mockito.Matchers.any(SingleFeedbackSoundPlayer.class));
 
 		// verify
 		List<Type> event = Arrays.asList(arguments.getValue());
 		List<MediaEventTypes> registerEventsTypes = Lists.transform(event, typeToMediaType);
-	//	org.fest.assertions.Assertions.assertThat(registerEventsTypes).containsOnly(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY);
+		// org.fest.assertions.Assertions.assertThat(registerEventsTypes).containsOnly(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY);
 		MatcherAssert.assertThat(registerEventsTypes, Matchers.containsInAnyOrder(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY, MediaEventTypes.ON_PAUSE));
 	}
 
@@ -81,7 +74,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 		instance.firePlayEvent(mediaWrapper);
 
 		ArgumentCaptor<MediaEvent> arguments = ArgumentCaptor.forClass(MediaEvent.class);
-		verify(eventsBus).fireEventFromSource(arguments.capture(), Mockito.eq(mediaWrapper));
+		verify(eventsBus).fireEventFromSource(arguments.capture(), org.mockito.Matchers.eq(mediaWrapper));
 		MediaEvent event = arguments.getValue();
 		assertEquals(MediaEventTypes.PLAY, event.getType());
 		assertEquals(mediaWrapper, event.getMediaWrapper());
@@ -93,7 +86,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 		instance.fireStopEvent(mediaWrapper);
 
 		ArgumentCaptor<MediaEvent> arguments = ArgumentCaptor.forClass(MediaEvent.class);
-		verify(eventsBus).fireEventFromSource(arguments.capture(), Mockito.eq(mediaWrapper));
+		verify(eventsBus).fireEventFromSource(arguments.capture(), org.mockito.Matchers.eq(mediaWrapper));
 		MediaEvent event = arguments.getValue();
 		assertEquals(MediaEventTypes.STOP, event.getType());
 		assertEquals(mediaWrapper, event.getMediaWrapper());
@@ -102,12 +95,12 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 	@Test
 	public void playTest() {
 		doReturn(true).when(instance).isPlayed();
-		doNothing().when(instance).fireStopEvent(Mockito.eq(mediaWrapper));
+		doNothing().when(instance).fireStopEvent(org.mockito.Matchers.eq(mediaWrapper));
 		// test stop next play
 		instance.play();
 
 		// verify
-		verify(instance).fireStopEvent(Mockito.eq(mediaWrapper));
+		verify(instance).fireStopEvent(org.mockito.Matchers.eq(mediaWrapper));
 		assertTrue(instance.playAfterStop);
 
 		// prepare
@@ -117,13 +110,13 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 		instance.play();
 
 		// verify
-		verify(instance).firePlayEvent(Mockito.eq(mediaWrapper));
+		verify(instance).firePlayEvent(org.mockito.Matchers.eq(mediaWrapper));
 
 	}
 
 	@Test
 	public void playIfRequiredTest() {
-		doNothing().when(instance).firePlayEvent(Mockito.eq(mediaWrapper));
+		doNothing().when(instance).firePlayEvent(org.mockito.Matchers.eq(mediaWrapper));
 		// test no interaction
 		instance.playIfRequired();
 
@@ -137,7 +130,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 
 		// verify
 		assertFalse(instance.playAfterStop);
-		verify(instance).firePlayEvent(Mockito.eq(mediaWrapper));
+		verify(instance).firePlayEvent(org.mockito.Matchers.eq(mediaWrapper));
 
 	}
 
@@ -156,7 +149,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 		instance.setPlayed(true);
 		assertTrue(instance.isPlayed());
 		verify(instance).isPlayed();
-		verify(instance).setPlayed(Mockito.anyBoolean());
+		verify(instance).setPlayed(org.mockito.Matchers.anyBoolean());
 		Mockito.verifyNoMoreInteractions(instance);
 	}
 
@@ -164,7 +157,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 	public void onMediaEventPlayTest() {
 		// prepare
 		doNothing().when(instance).playIfRequired();
-		doNothing().when(instance).setPlayed(Mockito.anyBoolean());
+		doNothing().when(instance).setPlayed(org.mockito.Matchers.anyBoolean());
 
 		MediaEvent event = mock(MediaEvent.class);
 		doReturn(MediaEventTypes.ON_PLAY).when(event).getType();
@@ -173,8 +166,8 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 		instance.onMediaEvent(event);
 
 		// verify
-		verify(instance).setPlayed(Mockito.eq(true));
-		verify(instance).onMediaEvent(Mockito.eq(event));
+		verify(instance).setPlayed(org.mockito.Matchers.eq(true));
+		verify(instance).onMediaEvent(org.mockito.Matchers.eq(event));
 		Mockito.verifyNoMoreInteractions(instance);
 
 	}
@@ -183,7 +176,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 	public void onMediaEventStopTest() {
 		// prepare
 		doNothing().when(instance).playIfRequired();
-		doNothing().when(instance).setPlayed(Mockito.anyBoolean());
+		doNothing().when(instance).setPlayed(org.mockito.Matchers.anyBoolean());
 
 		MediaEvent event = mock(MediaEvent.class);
 		doReturn(MediaEventTypes.ON_STOP).when(event).getType();
@@ -192,12 +185,13 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 		instance.onMediaEvent(event);
 
 		// verify
-		verify(instance).setPlayed(Mockito.eq(false));
-		verify(instance).onMediaEvent(Mockito.eq(event));
+		verify(instance).setPlayed(org.mockito.Matchers.eq(false));
+		verify(instance).onMediaEvent(org.mockito.Matchers.eq(event));
 		verify(instance).playIfRequired();
 		Mockito.verifyNoMoreInteractions(instance);
 
 	}
+
 	@Test
 	public void onMediaEventOtherEventsTest() {
 		// prepare
@@ -209,14 +203,14 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 		types.remove(MediaEventTypes.ON_PAUSE);
 		types.remove(MediaEventTypes.ON_PLAY);
 
-		//test
-		for(MediaEventTypes type : types){
+		// test
+		for (MediaEventTypes type : types) {
 			doReturn(type).when(event).getType();
 			instance.onMediaEvent(event);
 		}
 
-		//verify
-		verify(instance,times(types.size())).onMediaEvent(Mockito.eq(event));
+		// verify
+		verify(instance, times(types.size())).onMediaEvent(org.mockito.Matchers.eq(event));
 		Mockito.verifyNoMoreInteractions(instance);
 	}
 

@@ -12,7 +12,7 @@ public class CommutationEvaluator implements Evaluator {
 
 	private final ResponseValuesFetcherFunctions fetcherFunctions;
 	private final ResponseFinder responseFinder;
-	
+
 	@Inject
 	private DefaultExpressionCharactersAdapter expressionAdapter;
 
@@ -24,22 +24,22 @@ public class CommutationEvaluator implements Evaluator {
 
 	@Override
 	public boolean evaluate(ExpressionBean bean) {
-			
+
 		Multiset<Multiset<String>> correctAnswers = bean.getCorectResponses();
 		Multiset<Multiset<String>> userAnswers = responseFinder.getResponseMultiSet(bean, fetcherFunctions.getUserAnswerFetcher());
-				
+
 		Multiset<Multiset<String>> adaptedUserAnswers = convertSpecialCharacters(userAnswers);
 		Multiset<Multiset<String>> adaptedCorrectAnswers = convertSpecialCharacters(correctAnswers);
-		
+
 		return adaptedUserAnswers.equals(adaptedCorrectAnswers);
 	}
 
 	private Multiset<Multiset<String>> convertSpecialCharacters(Multiset<Multiset<String>> answers) {
 		Multiset<Multiset<String>> modifiedAnswers = HashMultiset.create();
-		
+
 		for (Multiset<String> multiset : answers) {
 			Multiset<String> modifiedSubSet = HashMultiset.create();
-			for (String string : multiset) {				
+			for (String string : multiset) {
 				String modifiedString = expressionAdapter.process(string);
 				modifiedSubSet.add(modifiedString);
 			}

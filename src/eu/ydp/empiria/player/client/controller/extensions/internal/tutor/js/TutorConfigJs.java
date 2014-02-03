@@ -9,10 +9,10 @@ public class TutorConfigJs extends JavaScriptObject {
 	}
 
 	public final native JsArray<TutorActionJs> getActions()/*-{
-		return this.actions;
-	}-*/;
+															return this.actions;
+															}-*/;
 
 	public final native JsArray<TutorJs> getTutors()/*-{
-		return this.tutors;
-	}-*/;
+													return this.tutors;
+													}-*/;
 }

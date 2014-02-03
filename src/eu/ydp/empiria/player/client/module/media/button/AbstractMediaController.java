@@ -16,10 +16,8 @@ public abstract class AbstractMediaController<T> extends Composite implements Me
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController#
-	 * setMediaDescriptor
-	 * (eu.ydp.empiria.player.client.module.media.MediaWrapper)
+	 * 
+	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController# setMediaDescriptor (eu.ydp.empiria.player.client.module.media.MediaWrapper)
 	 */
 	@Override
 	public void setMediaDescriptor(MediaWrapper<?> mediaDescriptor) {
@@ -35,9 +33,8 @@ public abstract class AbstractMediaController<T> extends Composite implements Me
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController#
-	 * getMediaAvailableOptions()
+	 * 
+	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController# getMediaAvailableOptions()
 	 */
 	@Override
 	public MediaAvailableOptions getMediaAvailableOptions() {
@@ -46,9 +43,8 @@ public abstract class AbstractMediaController<T> extends Composite implements Me
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController#
-	 * getMediaWrapper()
+	 * 
+	 * @see eu.ydp.empiria.player.client.module.media.button.MediaController# getMediaWrapper()
 	 */
 	@Override
 	public MediaWrapper<?> getMediaWrapper() {
@@ -63,6 +59,7 @@ public abstract class AbstractMediaController<T> extends Composite implements Me
 
 	/**
 	 * Czy modu renderowny jest w trybie fullscreen
+	 * 
 	 * @return
 	 */
 	public boolean isInFullScreen() {
@@ -71,6 +68,7 @@ public abstract class AbstractMediaController<T> extends Composite implements Me
 
 	/**
 	 * Zwraca suffix dla danego trybu dzialania np fullscreen
+	 * 
 	 * @return
 	 */
 	public String getSuffixToAdd() {

@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,7 +20,6 @@ public class PersonaToViewDtoConverterTest {
 	private PersonaToViewDtoConverter converter;
 	private EmpiriaPaths empiriaPaths;
 
-
 	@Before
 	public void setUp() {
 		empiriaPaths = mock(EmpiriaPaths.class);
@@ -30,7 +28,7 @@ public class PersonaToViewDtoConverterTest {
 
 	@Test
 	public void testConvert() throws Exception {
-		//given
+		// given
 		int firstIndex = 3;
 		String firstAvatarSuffix = "firstAcatarFileName";
 		String name1 = "name1";
@@ -44,18 +42,15 @@ public class PersonaToViewDtoConverterTest {
 		List<TutorPersonaProperties> personasProperties = Lists.newArrayList(firstPersonaProperties, secondPersonaProperties);
 
 		String firstAvatarFileFullPath = "firstAvatarFileFullPath";
-		when(empiriaPaths.getCommonsFilePath(name1 + firstAvatarSuffix))
-			.thenReturn(firstAvatarFileFullPath);
+		when(empiriaPaths.getCommonsFilePath(name1 + firstAvatarSuffix)).thenReturn(firstAvatarFileFullPath);
 
 		String secondAvatarFileFullPath = "secondAvatarFileFullPath";
-		when(empiriaPaths.getCommonsFilePath(name2 + secondAvatarFileName))
-		.thenReturn(secondAvatarFileFullPath);
+		when(empiriaPaths.getCommonsFilePath(name2 + secondAvatarFileName)).thenReturn(secondAvatarFileFullPath);
 
-		//when
+		// when
 		List<PersonaViewDto> createPersonasDtos = converter.convert(personasProperties);
 
-
-		//then
+		// then
 		assertEquals(createPersonasDtos.get(0).getPersonaIndex(), firstIndex);
 		assertEquals(createPersonasDtos.get(0).getAvatarUrl(), firstAvatarFileFullPath);
 		assertEquals(createPersonasDtos.get(1).getPersonaIndex(), secondIndex);

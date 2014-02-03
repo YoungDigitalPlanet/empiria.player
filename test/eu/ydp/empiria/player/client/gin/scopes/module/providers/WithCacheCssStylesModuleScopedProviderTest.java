@@ -21,16 +21,21 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.data.ElementStyleSelectorBuilder;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class WithCacheCssStylesModuleScopedProviderTest {
-	@Mock private ElementStyleSelectorBuilder elementStyleSelectorBuilder;
-	@Mock private Provider<Element> xmlProvider;
-	@Mock private Provider<ModuleStyle> moduleStyleProvider;
-	@Mock private ModuleStyle moduleStyle;
-	@Mock Element element;
+	@Mock
+	private ElementStyleSelectorBuilder elementStyleSelectorBuilder;
+	@Mock
+	private Provider<Element> xmlProvider;
+	@Mock
+	private Provider<ModuleStyle> moduleStyleProvider;
+	@Mock
+	private ModuleStyle moduleStyle;
+	@Mock
+	Element element;
 
-	@InjectMocks private WithCacheCssStylesModuleScopedProvider instance;
+	@InjectMocks
+	private WithCacheCssStylesModuleScopedProvider instance;
 
 	private final List<String> selectors = Lists.newArrayList("3 3");
 
@@ -55,7 +60,7 @@ public class WithCacheCssStylesModuleScopedProviderTest {
 		ModuleStyle moduleStyle = instance.get();
 
 		assertThat(moduleStyle).isNotNull();
-		//only once
+		// only once
 		verify(moduleStyleProvider).get();
 	}
 

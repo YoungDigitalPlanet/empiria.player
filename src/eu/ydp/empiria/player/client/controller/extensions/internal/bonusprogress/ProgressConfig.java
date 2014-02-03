@@ -17,7 +17,7 @@ public class ProgressConfig {
 		this.from = from;
 		this.assets = assets;
 	}
-	
+
 	public int getFrom() {
 		return this.from;
 	}
@@ -26,8 +26,6 @@ public class ProgressConfig {
 		return this.assets;
 	}
 
-	
-	
 	public static ProgressConfig fromJs(ProgressConfigJs jsAction) {
 		int from = jsAction.getFrom();
 		List<ProgressAssetConfig> assets = getAssets(jsAction.getAssets());
@@ -36,7 +34,7 @@ public class ProgressConfig {
 
 	private static List<ProgressAssetConfig> getAssets(JsArray<ProgressAssetConfigJs> progresses) {
 		List<ProgressAssetConfig> assets = Lists.newArrayList();
-		
+
 		for (int i = 0; i < progresses.length(); i++) {
 			ProgressAssetConfigJs configJs = progresses.get(i);
 			ProgressAssetConfig asset = ProgressAssetConfig.fromJs(configJs);
@@ -45,10 +43,4 @@ public class ProgressConfig {
 		return assets;
 	}
 
-	
-	
-	
-	
-	
-	
 }

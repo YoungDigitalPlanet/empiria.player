@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -35,7 +36,7 @@ public class ConnectionStyleXMLElementCacheTest {
 		styles.put(MultiplePairModuleConnectType.CORRECT, styleNames.QP_CONNECTION_CORRECT());
 		styles.put(MultiplePairModuleConnectType.NONE, styleNames.QP_CONNECTION_DISABLED());
 		styles.put(MultiplePairModuleConnectType.NORMAL, styleNames.QP_CONNECTION_NORMAL());
-		when(parser.parse(Mockito.anyString())).then(new Answer<Document>() {
+		when(parser.parse(Matchers.anyString())).then(new Answer<Document>() {
 			@Override
 			public Document answer(InvocationOnMock invocation) throws Throwable {
 				return eu.ydp.gwtutil.xml.XMLParser.parse((String) invocation.getArguments()[0]);

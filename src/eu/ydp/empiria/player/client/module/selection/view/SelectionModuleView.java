@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
-public interface SelectionModuleView extends IsWidget{
+public interface SelectionModuleView extends IsWidget {
 
 	void initialize(InlineBodyGeneratorSocket inlineBodyGeneratorSocket);
 

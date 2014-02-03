@@ -10,28 +10,28 @@ public class ExternalMediaProxy implements MediaProxy {
 	private ExternalMediaExecutor externalMediaExecutor;
 
 	@Inject
-	public ExternalMediaProxy(ExternalMediaWrapper externalMediaWrapper, ExternalMediaExecutor externalMediaExecutor){
+	public ExternalMediaProxy(ExternalMediaWrapper externalMediaWrapper, ExternalMediaExecutor externalMediaExecutor) {
 		this.externalMediaWrapper = externalMediaWrapper;
 		this.externalMediaExecutor = externalMediaExecutor;
 		this.externalMediaExecutor.setMediaWrapper(this.externalMediaWrapper);
 	}
-	
+
 	@Override
-	public ExternalMediaWrapper getMediaWrapper(){
+	public ExternalMediaWrapper getMediaWrapper() {
 		return externalMediaWrapper;
 	}
-	
+
 	@Override
-	public ExternalMediaExecutor getMediaExecutor(){
+	public ExternalMediaExecutor getMediaExecutor() {
 		return externalMediaExecutor;
 	}
 
-	public void setDuration(double durationSeconds){
+	public void setDuration(double durationSeconds) {
 		externalMediaWrapper.setDuration(durationSeconds);
 	}
-	
-	public void setCurrentTime(double currentTimeSeconds){
+
+	public void setCurrentTime(double currentTimeSeconds) {
 		externalMediaWrapper.setCurrentTime(currentTimeSeconds);
 	}
-	
+
 }

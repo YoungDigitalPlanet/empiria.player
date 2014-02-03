@@ -12,30 +12,22 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 public class ItemsOrderByAnswersFinderJUnitTest {
 
 	private ItemsOrderByAnswersFinder itemsOrderByAnswersFinder = new ItemsOrderByAnswersFinder();
-	
+
 	@Test
 	public void shouldFindCorrectItemsOrderByUserAnswers() throws Exception {
 		List<String> currentAnswers = Lists.newArrayList("answer1", "answer3", "answer2");
-		List<OrderingItem> items = Lists.newArrayList(
-				createItem("id2", "answer2"),
-				createItem("id1", "answer1"),
-				createItem("id3", "answer3")
-				);
+		List<OrderingItem> items = Lists.newArrayList(createItem("id2", "answer2"), createItem("id1", "answer1"), createItem("id3", "answer3"));
 		List<String> itemsOrder = itemsOrderByAnswersFinder.findCorrectItemsOrderByAnswers(currentAnswers, items);
-		
+
 		List<String> expectedItemsOrder = Lists.newArrayList("id1", "id3", "id2");
 		Assertions.assertThat(itemsOrder).isEqualTo(expectedItemsOrder);
 	}
-	
-	@Test (expected = CannotMatchOrderingItemsToUserAnswersException.class)
+
+	@Test(expected = CannotMatchOrderingItemsToUserAnswersException.class)
 	public void shouldThrowExceptionWhenCannotMatchOrderingItemsToUserAnswer() throws Exception {
 		List<String> currentAnswers = Lists.newArrayList("not match any OrderingItem", "answer3", "answer2");
-		List<OrderingItem> items = Lists.newArrayList(
-				createItem("id2", "answer2"),
-				createItem("id1", "answer1"),
-				createItem("id3", "answer3")
-				);
-		
+		List<OrderingItem> items = Lists.newArrayList(createItem("id2", "answer2"), createItem("id1", "answer1"), createItem("id3", "answer3"));
+
 		itemsOrderByAnswersFinder.findCorrectItemsOrderByAnswers(currentAnswers, items);
 	}
 

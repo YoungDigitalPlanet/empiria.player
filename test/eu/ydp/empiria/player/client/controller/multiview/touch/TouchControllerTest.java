@@ -90,9 +90,7 @@ public class TouchControllerTest {
 	@Test
 	public void getSwypePercentLengthTest() {
 		/**
-		 * int swypeWidth = Math.abs(touchModel.getLastEndX() -
-		 * touchModel.getEndX()); return ((float) swypeWidth /
-		 * rootPanelDelegate.getOffsetWidth()) * 100;
+		 * int swypeWidth = Math.abs(touchModel.getLastEndX() - touchModel.getEndX()); return ((float) swypeWidth / rootPanelDelegate.getOffsetWidth()) * 100;
 		 */
 		touchModel.setLastEndX(50);
 		touchModel.setEndX(100);

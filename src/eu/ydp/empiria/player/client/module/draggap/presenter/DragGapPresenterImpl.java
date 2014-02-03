@@ -31,14 +31,12 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	private final DragGapModuleModel model;
 	private final DragGapView view;
 	private final SourceListManagerAdapter sourceListManagerAdapter;
-	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
+	private @Inject
+	UserInteractionHandlerFactory interactionHandlerFactory;
 
 	@Inject
-	public DragGapPresenterImpl(
-			@ModuleScoped DragGapView view,
-			@ModuleScoped DragGapModuleModel model,
-			@PageScoped AnswerEvaluationSupplier answerEvaluationSupplier,
-			@ModuleScoped SourceListManagerAdapter sourceListManagerAdapter) {
+	public DragGapPresenterImpl(@ModuleScoped DragGapView view, @ModuleScoped DragGapModuleModel model,
+			@PageScoped AnswerEvaluationSupplier answerEvaluationSupplier, @ModuleScoped SourceListManagerAdapter sourceListManagerAdapter) {
 		this.view = view;
 		this.model = model;
 		this.answerEvaluationSupplier = answerEvaluationSupplier;

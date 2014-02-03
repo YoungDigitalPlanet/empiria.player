@@ -7,8 +7,10 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.LinkM
 import eu.ydp.empiria.player.client.inject.Instance;
 
 public class SingleModuleInstanceProvider {
-	@Inject private Instance<LinkModuleConnectorExtension> linkModuleConnectorExtension;
-	@Inject private Instance<InfoModuleConnectorExtension> infoModuleConnectorExtension;
+	@Inject
+	private Instance<LinkModuleConnectorExtension> linkModuleConnectorExtension;
+	@Inject
+	private Instance<InfoModuleConnectorExtension> infoModuleConnectorExtension;
 
 	public LinkModuleConnectorExtension getLinkModuleConnectorExtension() {
 		return linkModuleConnectorExtension.get();

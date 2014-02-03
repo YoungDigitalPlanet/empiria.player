@@ -13,8 +13,10 @@ import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClearAllDrawCommandTest {
-	@Mock private DrawCanvas view;
-	@InjectMocks private ClearAllDrawCommand instance;
+	@Mock
+	private DrawCanvas view;
+	@InjectMocks
+	private ClearAllDrawCommand instance;
 
 	@Test
 	public void execute() throws Exception {

@@ -7,24 +7,24 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 /**
- *
+ * 
  * przycisk playPause
- *
+ * 
  * @author plelakowski
- *
+ * 
  */
 public class PlayPauseMediaButton extends AbstractPlayMediaButton<PlayPauseMediaButton> {
-	
+
 	@Inject
 	public PlayPauseMediaButton(StyleNameConstants styleNames) {
 		super(styleNames.QP_MEDIA_PLAY_PAUSE());
-	}	
+	}
 
 	@Override
-	protected boolean initButtonStyleChangeHandlersCondition() {	
+	protected boolean initButtonStyleChangeHandlersCondition() {
 		return getMediaAvailableOptions().isPauseSupported();
-	}	
-	
+	}
+
 	@Override
 	protected MediaEvent createMediaEvent() {
 		MediaEvent mediaEvent;

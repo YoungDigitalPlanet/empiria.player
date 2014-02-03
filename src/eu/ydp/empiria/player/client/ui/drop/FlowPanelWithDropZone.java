@@ -11,11 +11,11 @@ public class FlowPanelWithDropZone extends DroppableWidget<FlowPanel> {
 		initWidget(new FlowPanel());
 	}
 
-	public void add(IsWidget child){
+	public void add(IsWidget child) {
 		this.getOriginalWidget().add(child);
 	}
 
-	public void clear(){
+	public void clear() {
 		this.getOriginalWidget().clear();
 	}
 }

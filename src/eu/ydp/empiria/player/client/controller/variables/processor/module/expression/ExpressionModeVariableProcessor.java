@@ -16,20 +16,19 @@ import eu.ydp.empiria.player.client.module.expression.model.ExpressionEvaluation
 public class ExpressionModeVariableProcessor implements VariableProcessor {
 
 	private final ExpressionEvaluationController expressionEvaluationController;
-	
+
 	@Inject
-	public ExpressionModeVariableProcessor(
-			ExpressionEvaluationController expressionEvaluationController) {
+	public ExpressionModeVariableProcessor(ExpressionEvaluationController expressionEvaluationController) {
 		this.expressionEvaluationController = expressionEvaluationController;
 	}
 
 	@Override
 	public int calculateErrors(Response response) {
 		ExpressionEvaluationResult evaluationResult = calculateExpressionOfResponse(response);
-		
-		if(evaluationResult == ExpressionEvaluationResult.WRONG){
+
+		if (evaluationResult == ExpressionEvaluationResult.WRONG) {
 			return 1;
-		}else{
+		} else {
 			return 0;
 		}
 	}
@@ -37,10 +36,10 @@ public class ExpressionModeVariableProcessor implements VariableProcessor {
 	@Override
 	public int calculateDone(Response response) {
 		ExpressionEvaluationResult evaluationResult = calculateExpressionOfResponse(response);
-		
-		if(evaluationResult == ExpressionEvaluationResult.CORRECT){
+
+		if (evaluationResult == ExpressionEvaluationResult.CORRECT) {
 			return 1;
-		}else{
+		} else {
 			return 0;
 		}
 	}
@@ -48,15 +47,15 @@ public class ExpressionModeVariableProcessor implements VariableProcessor {
 	@Override
 	public LastMistaken checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
 		LastMistaken lastMistaken = LastMistaken.NONE;
-		if(answersChanges.containChanges()){
+		if (answersChanges.containChanges()) {
 			ExpressionEvaluationResult evaluationResult = calculateExpressionOfResponse(response);
-			if(evaluationResult == ExpressionEvaluationResult.WRONG){
+			if (evaluationResult == ExpressionEvaluationResult.WRONG) {
 				lastMistaken = LastMistaken.WRONG;
-			} else if(evaluationResult == ExpressionEvaluationResult.CORRECT) {
+			} else if (evaluationResult == ExpressionEvaluationResult.CORRECT) {
 				lastMistaken = LastMistaken.CORRECT;
 			}
 		}
-		
+
 		return lastMistaken;
 	}
 
@@ -72,16 +71,16 @@ public class ExpressionModeVariableProcessor implements VariableProcessor {
 	@Override
 	public List<Boolean> evaluateAnswers(Response response) {
 		ExpressionEvaluationResult evaluationResult = calculateExpressionOfResponse(response);
-		
+
 		List<Boolean> evaluation = Lists.newArrayList();
-		if(evaluationResult == ExpressionEvaluationResult.CORRECT){
+		if (evaluationResult == ExpressionEvaluationResult.CORRECT) {
 			evaluation.add(true);
-		}else{
+		} else {
 			evaluation.add(false);
 		}
 		return evaluation;
 	}
-	
+
 	private ExpressionEvaluationResult calculateExpressionOfResponse(Response response) {
 		ExpressionBean expression = response.getExpression();
 		ExpressionEvaluationResult evaluationResult = expressionEvaluationController.evaluateExpression(expression);

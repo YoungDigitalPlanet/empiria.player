@@ -10,11 +10,12 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
  * domyslna implementacja dla androida
- *
+ * 
  */
 public class HTML5VideoAndroidImpl extends HTML5VideoImpl {
 	public class MP4ErrorHandler implements MediaEventHandler {
 		private final Video video;
+
 		public MP4ErrorHandler(Video video) {
 			this.video = video;
 		}
@@ -31,6 +32,6 @@ public class HTML5VideoAndroidImpl extends HTML5VideoImpl {
 	@Override
 	public void setEventBusSourceObject(MediaWrapper<?> object) {
 		super.setEventBusSourceObject(object);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END),getEventBusSourceObject(),new MP4ErrorHandler(video),new CurrentPageScope());
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getEventBusSourceObject(), new MP4ErrorHandler(video), new CurrentPageScope());
 	}
 }
