@@ -27,13 +27,10 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	@Inject
 	private CanvasImageView canvasStubView;
-
 	@Inject
 	private UserInteractionHandlerFactory interactionHandlerFactory;
-
 	@Inject
 	private PositionHelper positionHelper;
-
 	@Inject
 	private CanvasImageDataProvider canvasImageDataProvider;
 	@Inject
@@ -41,7 +38,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	private boolean canvasStubViewLoded = false;
 
-	private final Map<Area, ColorModel> colors = Maps.newHashMap();
+	private final Map<Area, ColorModel> colorsCache = Maps.newHashMap();
 
 	private ColorfillAreaClickListener listener;
 
@@ -60,19 +57,19 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 		});
 	}
 
-	void bindView() {
+	private void bindView() {
 		reloadImageData();
-		for (Map.Entry<Area, ColorModel> areaColor : colors.entrySet()) {
+		for (Map.Entry<Area, ColorModel> areaColor : colorsCache.entrySet()) {
 			setColorOnCanvas(areaColor.getKey(), areaColor.getValue());
 		}
-		colors.clear();
+		colorsCache.clear();
 		if (listener != null) {
 			addAreaClickListener(listener);
 		}
 		flushImageToCanvas();
 	}
 
-	void reloadImageData() {
+	private void reloadImageData() {
 		imageData = canvasImageDataProvider.getCanvasImageData(canvasStubView);
 	}
 
@@ -87,7 +84,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 			setColorOnCanvas(area, color);
 			flushImageToCanvas();
 		} else {
-			colors.put(area, color);
+			colorsCache.put(area, color);
 		}
 	}
 
@@ -109,7 +106,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 			}
 			flushImageToCanvas();
 		} else {
-			colors.putAll(colors);
+			this.colorsCache.putAll(colors);
 		}
 	}
 
