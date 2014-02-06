@@ -4,10 +4,10 @@ import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteract
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillButtonClickListener;
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
-public class ColorButtonClickListener implements ColorfillButtonClickListener{
+public class ColorButtonClickListener implements ColorfillButtonClickListener {
 
 	private final ColorfillInteractionPresenter interactionPresenter;
-	
+
 	public ColorButtonClickListener(ColorfillInteractionPresenter interactionPresenter) {
 		this.interactionPresenter = interactionPresenter;
 	}

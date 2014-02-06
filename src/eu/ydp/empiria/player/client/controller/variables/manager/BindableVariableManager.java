@@ -7,8 +7,8 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 
 public class BindableVariableManager<V extends Variable> extends VariablePossessorBase<V> {
 
-	public BindableVariableManager(Map<String, V> outcomeVariablesMapToBind){
+	public BindableVariableManager(Map<String, V> outcomeVariablesMapToBind) {
 		variables = outcomeVariablesMapToBind;
 	}
-	
+
 }

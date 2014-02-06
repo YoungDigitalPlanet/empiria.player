@@ -11,12 +11,12 @@ public class GapMaxlengthBindingContext implements BindingContext {
 
 	List<Bindable> bindables;
 	private BindingType type;
-	
-	public GapMaxlengthBindingContext(BindingType type){
+
+	public GapMaxlengthBindingContext(BindingType type) {
 		this.type = type;
 		bindables = new ArrayList<Bindable>();
 	}
-	
+
 	@Override
 	public boolean add(Bindable bindable) {
 		bindables.add(bindable);
@@ -25,7 +25,7 @@ public class GapMaxlengthBindingContext implements BindingContext {
 
 	public GapMaxlengthBindingValue getGapMaxlengthBindingOutcomeValue() {
 		GapMaxlengthBindingValue value = new GapMaxlengthBindingValue(0);
-		for (Bindable b : bindables){
+		for (Bindable b : bindables) {
 			value.merge((GapMaxlengthBindingValue) b.getBindingValue(type));
 		}
 		return value;

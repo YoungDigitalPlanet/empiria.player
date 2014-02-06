@@ -22,7 +22,7 @@ public class ModulesConstantVariablesInitializer {
 		for (String responseId : responses.keySet()) {
 			Response response = responses.get(responseId);
 			DtoModuleProcessingResult moduleProcessingResult = modulesProcessingResults.getProcessingResultsForResponseId(responseId);
-			
+
 			initializeTodoCount(response, moduleProcessingResult);
 		}
 	}

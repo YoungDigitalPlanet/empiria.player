@@ -26,7 +26,6 @@ public class ContainerDimensions {
 		return absoluteLeft;
 	}
 
-	
 	public static class Builder {
 		private int width = 0;
 		private int height = 0;
@@ -66,9 +65,7 @@ public class ContainerDimensions {
 		}
 
 		public static Builder fromContainerDimensions(ContainerDimensions dimensions) {
-			return new Builder().width(dimensions.getWidth())
-					.height(dimensions.height)
-					.absoluteLeft(dimensions.getAbsoluteLeft())
+			return new Builder().width(dimensions.getWidth()).height(dimensions.height).absoluteLeft(dimensions.getAbsoluteLeft())
 					.absoluteTop(dimensions.getAbsoluteTop());
 		}
 	}

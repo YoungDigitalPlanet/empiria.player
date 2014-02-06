@@ -6,6 +6,6 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 
 public interface IInlineModule extends ISingleViewModule {
 
-	public void initModule(Element element, ModuleSocket ms,InteractionEventsListener iel);
+	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel);
 
 }

@@ -8,20 +8,21 @@ import eu.ydp.empiria.player.client.controller.flow.processing.IFlowRequestProce
 public class MainFlowRequestInvoker implements FlowRequestInvoker {
 
 	protected List<IFlowRequestProcessor> processors;
-	
-	public MainFlowRequestInvoker(){
+
+	public MainFlowRequestInvoker() {
 		processors = new ArrayList<IFlowRequestProcessor>();
 	}
-	
-	public void addRequestProcessor(IFlowRequestProcessor processor){
-		processors.add(0,processor);
+
+	public void addRequestProcessor(IFlowRequestProcessor processor) {
+		processors.add(0, processor);
 	}
-	
-	public void invokeRequest(IFlowRequest request){
+
+	@Override
+	public void invokeRequest(IFlowRequest request) {
 		if (request == null)
 			return;
-		for (IFlowRequestProcessor currProcessor : processors){
-			if (currProcessor.isRequestSupported(request)){
+		for (IFlowRequestProcessor currProcessor : processors) {
+			if (currProcessor.isRequestSupported(request)) {
 				currProcessor.processRequest(request);
 				return;
 			}

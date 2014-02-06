@@ -141,7 +141,7 @@ public abstract class ExecutorSwf implements MediaExecutor<Widget> {
 		this.baseMediaConfiguration = baseMediaConfiguration;
 		source = SourceUtil.getMpegSource(baseMediaConfiguration.getSources());
 	}
-	
+
 	@Override
 	public BaseMediaConfiguration getBaseMediaConfiguration() {
 		return baseMediaConfiguration;

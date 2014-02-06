@@ -12,16 +12,15 @@ import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.module.drawing.model.ColorBean;
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
-
 public class ColorBeanConverterTest {
 
 	private final ColorBeanConverter converter = new ColorBeanConverter();
-	
+
 	@Test
 	public void convert() {
 		// given
 		List<ColorBean> colorBeans = Lists.newArrayList(createColorBean("00FF00"), createColorBean("00FFFF"), createColorBean("000DAF"));
-		
+
 		// when
 		List<ColorModel> models = converter.convert(colorBeans);
 
@@ -34,5 +33,5 @@ public class ColorBeanConverterTest {
 		color2.setRgb(rgb);
 		return color2;
 	}
-	
+
 }

@@ -25,7 +25,6 @@ public class ChoiceModuleListenerImplTest {
 	ChoiceModulePresenter presenter;
 	@InjectMocks
 	ChoiceModuleListenerImpl listener;
-	
 
 	@Test
 	public void shouldRemoveAnswerWhenChoiceIsSelected() {

@@ -8,59 +8,58 @@ import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonB
 public class SelectionChoiceButton extends ChoiceButtonBase {
 
 	@Inject
-	public SelectionChoiceButton(
-			@Assisted("moduleStyleNamePart") String moduleStyleNamePart) {
+	public SelectionChoiceButton(@Assisted("moduleStyleNamePart") String moduleStyleNamePart) {
 		super(moduleStyleNamePart);
 		selected = false;
-		updateStyle(); //NOPMD
+		updateStyle(); // NOPMD
 	}
-	
+
 	@Override
-	public void setSelected(boolean value){
+	public void setSelected(boolean value) {
 		selected = value;
 	}
-	
+
 	@Override
-	public void setButtonEnabled(boolean value){
+	public void setButtonEnabled(boolean value) {
 		setEnabled(value);
 	}
-	
+
 	@Override
-	public void updateStyle(){
+	public void updateStyle() {
 		String styleName = findSelectedStyleName();
 		setStyleName(styleName);
-		
+
 		String secondaryStyleName = findSecondaryStyleName();
 		addStyleName(secondaryStyleName);
 	}
 
 	private String findSecondaryStyleName() {
 		String styleName = "qp-" + moduleStyleNamePart + "-button";
-		if (selected){
+		if (selected) {
 			styleName += "-selected";
 		} else {
-			styleName += "-notselected";			
+			styleName += "-notselected";
 		}
-		if (!isEnabled()){
+		if (!isEnabled()) {
 			styleName += "-up-disabled";
 		}
-		if (over){
+		if (over) {
 			styleName += "-over";
 		}
 		return styleName;
 	}
 
-	protected String findSelectedStyleName(){
+	protected String findSelectedStyleName() {
 		String styleName = "qp-" + moduleStyleNamePart + "-button";
-		if (selected){
+		if (selected) {
 			styleName += "-selected";
 		} else {
-			styleName += "-notselected";			
+			styleName += "-notselected";
 		}
-		if (over){
+		if (over) {
 			styleName += "-over";
 		}
 		return styleName;
 	}
-	
+
 }

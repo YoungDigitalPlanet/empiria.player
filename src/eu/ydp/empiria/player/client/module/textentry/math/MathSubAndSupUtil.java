@@ -18,9 +18,7 @@ public class MathSubAndSupUtil {
 
 		if (node.hasAttribute(EmpiriaTagConstants.ATTR_UID)) {
 			while (parentNode != null && !isMathInteractionNode(parentNode)) {
-				if (isSubOrSupElement(parentNode)
-						&& !XMLUtils.getFirstChildElement((Element) parentNode)
-						.equals(prevNode)) {
+				if (isSubOrSupElement(parentNode) && !XMLUtils.getFirstChildElement((Element) parentNode).equals(prevNode)) {
 					subsupParentFound = true;
 					break;
 				}
@@ -33,10 +31,9 @@ public class MathSubAndSupUtil {
 	}
 
 	private boolean isMathInteractionNode(Node node) {
-		return node.getNodeName().equals(
-				ModuleTagName.MATH_INTERACTION.tagName());
+		return node.getNodeName().equals(ModuleTagName.MATH_INTERACTION.tagName());
 	}
-	
+
 	private boolean isSubOrSupElement(Node node) {
 		List<String> nodesNames = Lists.newArrayList("msub", "msup", "msubsup", "mmultiscripts");
 		boolean isSubOrSup = nodesNames.contains(node.getNodeName());

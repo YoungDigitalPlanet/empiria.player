@@ -6,9 +6,9 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDa
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 
 public class ItemSessionDataSocketMock implements ItemSessionDataSocket {
-	
+
 	private VariableProviderSocket variableProvider;
-	
+
 	public void setVariableProvider(VariableProviderSocket variableProvider) {
 		this.variableProvider = variableProvider;
 	}

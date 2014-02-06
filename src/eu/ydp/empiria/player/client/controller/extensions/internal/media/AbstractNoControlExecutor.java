@@ -24,7 +24,7 @@ public abstract class AbstractNoControlExecutor implements MediaExecutor<Widget>
 	}
 
 	@Override
-	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {//NOPMD
+	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {// NOPMD
 		this.bmc = baseMediaConfiguration;
 	}
 
@@ -35,38 +35,38 @@ public abstract class AbstractNoControlExecutor implements MediaExecutor<Widget>
 
 	@Override
 	@Deprecated
-	public void play(String src) {//NOPMD
+	public void play(String src) {// NOPMD
 	}
 
 	@Override
-	public void play() {//NOPMD
+	public void play() {// NOPMD
 	}
 
 	@Override
-	public void stop() {//NOPMD
+	public void stop() {// NOPMD
 	}
 
 	@Override
-	public void pause() {//NOPMD
+	public void pause() {// NOPMD
 	}
 
 	@Override
-	public void setMuted(boolean mute) {//NOPMD
-
-	}
-
-	@Override
-	public void setVolume(double volume) {//NOPMD
+	public void setMuted(boolean mute) {// NOPMD
 
 	}
 
 	@Override
-	public void setCurrentTime(double time) {//NOPMD
+	public void setVolume(double volume) {// NOPMD
 
 	}
 
 	@Override
-	public void setSoundFinishedListener(SoundExecutorListener listener) {//NOPMD
+	public void setCurrentTime(double time) {// NOPMD
+
+	}
+
+	@Override
+	public void setSoundFinishedListener(SoundExecutorListener listener) {// NOPMD
 
 	}
 

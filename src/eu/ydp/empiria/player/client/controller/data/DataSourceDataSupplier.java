@@ -11,7 +11,7 @@ public interface DataSourceDataSupplier {
 
 	/**
 	 * Zwraca wezel assessmentItemRef o wskazanym id
-	 *
+	 * 
 	 * @param index
 	 *            index wezla
 	 * @return Element lub null gdy element o podanym indeksie nie istnieje

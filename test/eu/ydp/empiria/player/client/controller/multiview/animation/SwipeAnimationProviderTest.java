@@ -15,11 +15,15 @@ import eu.ydp.empiria.player.client.inject.Instance;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SwipeAnimationProviderTest {
-	@Mock private Instance<SwipeType> swipeType;
-	@Mock private Instance<AnimationBase> animationBase;
-	@Mock private Instance<NoAnimation> noAnimation;
+	@Mock
+	private Instance<SwipeType> swipeType;
+	@Mock
+	private Instance<AnimationBase> animationBase;
+	@Mock
+	private Instance<NoAnimation> noAnimation;
 
-	@InjectMocks SwipeAnimationProvider instance;
+	@InjectMocks
+	SwipeAnimationProvider instance;
 
 	@Test
 	public void getWhenSwipeIsDisabled() throws Exception {
@@ -36,6 +40,5 @@ public class SwipeAnimationProviderTest {
 		doReturn(animation).when(animationBase).get();
 		assertThat(instance.get()).isEqualTo(animation);
 	}
-
 
 }

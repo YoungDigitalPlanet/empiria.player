@@ -33,7 +33,7 @@ public class FullscreenVideoExecutorTest extends AbstractTestWithMocksBase {
 	private FullscreenVideoExecutor executor;
 	private ExternalFullscreenVideoConnector connector;
 	private EventsBus eventsBus;
-	
+
 	@Override
 	public void setUp() {
 		super.setUp(FullscreenVideoExecutor.class);
@@ -41,8 +41,7 @@ public class FullscreenVideoExecutorTest extends AbstractTestWithMocksBase {
 		connector = injector.getInstance(ExternalFullscreenVideoConnector.class);
 		eventsBus = injector.getInstance(EventsBus.class);
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void play_timeChanged() {
@@ -53,16 +52,16 @@ public class FullscreenVideoExecutorTest extends AbstractTestWithMocksBase {
 		executor.setMediaWrapper(mw);
 		BaseMediaConfiguration bmc = createBaseMediaConfiguration();
 		executor.setBaseMediaConfiguration(bmc);
-		
+
 		// when
 		executor.play();
-		
+
 		// then
 		verify(connector).openFullscreen(eq(ID), anyCollection(), eq(TIME));
 	}
-	
+
 	@Test
-	@Parameters({"0", "25", "50", "75", "100"})
+	@Parameters({ "0", "25", "50", "75", "100" })
 	public void setCurrentTime(double timeNew) {
 		// given
 		final String ID = "ID";
@@ -71,10 +70,10 @@ public class FullscreenVideoExecutorTest extends AbstractTestWithMocksBase {
 		executor.setMediaWrapper(mw);
 		BaseMediaConfiguration bmc = createBaseMediaConfiguration();
 		executor.setBaseMediaConfiguration(bmc);
-		
+
 		// when
 		executor.setCurrentTime(timeNew);
-		
+
 		// then
 		verify(mw).setCurrentTime(eq(timeNew));
 		ArgumentCaptor<MediaEvent> ac = ArgumentCaptor.forClass(MediaEvent.class);
@@ -82,9 +81,9 @@ public class FullscreenVideoExecutorTest extends AbstractTestWithMocksBase {
 		assertThat(ac.getValue().getCurrentTime(), equalTo(timeNew));
 
 	}
-	
+
 	@Test
-	@Parameters({"0", "25", "50", "75", "100"})
+	@Parameters({ "0", "25", "50", "75", "100" })
 	public void onFullscreenClosed_validId(double timeNew) {
 		// given
 		final String ID = "ID";
@@ -93,17 +92,17 @@ public class FullscreenVideoExecutorTest extends AbstractTestWithMocksBase {
 		executor.setMediaWrapper(mw);
 		BaseMediaConfiguration bmc = createBaseMediaConfiguration();
 		executor.setBaseMediaConfiguration(bmc);
-		
+
 		// when
 		executor.onFullscreenClosed(ID, timeNew);
-		
+
 		// then
 		verify(mw).setCurrentTime(eq(timeNew));
 		ArgumentCaptor<MediaEvent> ac = ArgumentCaptor.forClass(MediaEvent.class);
 		verify(eventsBus).fireEventFromSource(ac.capture(), eq(mw));
 		assertThat(ac.getValue().getCurrentTime(), equalTo(timeNew));
 	}
-	
+
 	@Test
 	public void onFullscreenClosed_invalidId() {
 		// given
@@ -115,10 +114,10 @@ public class FullscreenVideoExecutorTest extends AbstractTestWithMocksBase {
 		executor.setMediaWrapper(mw);
 		BaseMediaConfiguration bmc = createBaseMediaConfiguration();
 		executor.setBaseMediaConfiguration(bmc);
-		
+
 		// when
 		executor.onFullscreenClosed(OTHER_ID, TIME_NEW);
-		
+
 		// then
 		verify(mw, never()).setCurrentTime(anyDouble());
 		verify(eventsBus, never()).fireEventFromSource(any(MediaEvent.class), anyObject());
@@ -132,7 +131,7 @@ public class FullscreenVideoExecutorTest extends AbstractTestWithMocksBase {
 	}
 
 	private BaseMediaConfiguration createBaseMediaConfiguration() {
-		return new BaseMediaConfiguration(Maps.<String, String>newHashMap(), MediaType.VIDEO, "poster.jpg", 480, 640, true, false, "");
+		return new BaseMediaConfiguration(Maps.<String, String> newHashMap(), MediaType.VIDEO, "poster.jpg", 480, 640, true, false, "");
 	}
-	
+
 }

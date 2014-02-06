@@ -3,11 +3,7 @@ package eu.ydp.empiria.player.client.module.sourcelist.view;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Map;
@@ -46,14 +42,17 @@ public class SourceListViewImplTest {
 	@Mock
 	private SourceListPresenter sourceListPresenter;
 
-	@Mock private TouchReservationFactory touchReservationFactory;
-	@Mock private Provider<SourceListViewItem> sourceListViewItemProvider;
-	@Mock private SourceListViewItem viewItem;
+	@Mock
+	private TouchReservationFactory touchReservationFactory;
+	@Mock
+	private Provider<SourceListViewItem> sourceListViewItemProvider;
+	@Mock
+	private SourceListViewItem viewItem;
 
 	@InjectMocks
 	private SourceListViewImpl instance;
 
-	private final List<String> allIds = Lists.newArrayList("a","b","c","d","e","f");
+	private final List<String> allIds = Lists.newArrayList("a", "b", "c", "d", "e", "f");
 
 	private FlowPanelWithDropZone items;
 	private final int sourceListViewItemHeight = 11;
@@ -68,7 +67,6 @@ public class SourceListViewImplTest {
 	public static void rearm() {
 		GWTMockUtilities.restore();
 	}
-
 
 	@Before
 	public void before() {
@@ -85,8 +83,8 @@ public class SourceListViewImplTest {
 		instance.items = items;
 	}
 
-	private void addItems(){
-		for(String id : allIds){
+	private void addItems() {
+		for (String id : allIds) {
 			instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, id, id));
 		}
 	}
@@ -94,7 +92,8 @@ public class SourceListViewImplTest {
 	@Test
 	public void testDisableItems() throws Exception {
 		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
 		addItems();
 		instance.disableItems(true);
 		for (SourceListViewItem item : itemIdToItemCollection.values()) {
@@ -119,7 +118,7 @@ public class SourceListViewImplTest {
 		when(sourceListPresenter.getDragDataObject(anyString())).thenReturn(dataObject);
 		DragDropEventBase event = mock(DragDropEventBase.class);
 
-		instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT,itemContent,itemId));
+		instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, itemContent, itemId));
 		instance.setSourceListPresenter(sourceListPresenter);
 		instance.onDragEvent(DragDropEventTypes.DRAG_START, viewItem, event);
 
@@ -152,10 +151,11 @@ public class SourceListViewImplTest {
 	@Test
 	public void testGetItemValue() throws Exception {
 		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
 		addItems();
 
-		for(String id: allIds){
+		for (String id : allIds) {
 			instance.getItemValue(id);
 		}
 
@@ -182,55 +182,59 @@ public class SourceListViewImplTest {
 	@Test
 	public void testHideItem() throws Exception {
 		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
 		addItems();
 		instance.hideItem("a");
 		SourceListViewItem viewItem = itemIdToItemCollection.get("a");
 		verify(viewItem).hide();
 		allIds.remove("a");
-		for(String id:  allIds){
+		for (String id : allIds) {
 			viewItem = itemIdToItemCollection.get(id);
-			verify(viewItem,times(0)).hide();
+			verify(viewItem, times(0)).hide();
 		}
 	}
 
 	@Test
 	public void testHideItemIdNotPresent() throws Exception {
 		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
 		addItems();
 		instance.hideItem("aa");
 
-		for(String id:  allIds){
+		for (String id : allIds) {
 			viewItem = itemIdToItemCollection.get(id);
-			verify(viewItem,times(0)).hide();
+			verify(viewItem, times(0)).hide();
 		}
 	}
 
 	@Test
 	public void testShowItem() throws Exception {
 		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
 		addItems();
 		instance.showItem("a");
 		SourceListViewItem viewItem = itemIdToItemCollection.get("a");
 		verify(viewItem).show();
 		allIds.remove("a");
-		for(String id:  allIds){
+		for (String id : allIds) {
 			viewItem = itemIdToItemCollection.get(id);
-			verify(viewItem,times(0)).show();
+			verify(viewItem, times(0)).show();
 		}
 	}
 
 	@Test
 	public void testShowItemIdNotPresent() throws Exception {
 		ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-		BiMap<String,SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject("itemIdToItemCollection", instance);
+		BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
+				"itemIdToItemCollection", instance);
 		addItems();
 		instance.showItem("aa");
-		for(String id:  allIds){
+		for (String id : allIds) {
 			viewItem = itemIdToItemCollection.get(id);
-			verify(viewItem,times(0)).show();
+			verify(viewItem, times(0)).show();
 		}
 	}
 
@@ -296,9 +300,9 @@ public class SourceListViewImplTest {
 		addItems();
 		HasDimensions maxItemSize = instance.getMaxItemSize();
 		for (String id : allIds) {
-				viewItem = itemIdToItemCollection.get(id);
-				verify(viewItem, times(1)).getWidth();
-				verify(viewItem, times(1)).getHeight();
+			viewItem = itemIdToItemCollection.get(id);
+			verify(viewItem, times(1)).getWidth();
+			verify(viewItem, times(1)).getHeight();
 		}
 		assertThat(maxItemSize.getHeight()).isEqualTo(sourceListViewItemHeight);
 		assertThat(maxItemSize.getWidth()).isEqualTo(sourceListViewItemWidth);

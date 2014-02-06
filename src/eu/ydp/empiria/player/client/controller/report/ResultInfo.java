@@ -9,13 +9,13 @@ import eu.ydp.empiria.player.client.controller.variables.VariableUtil;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 
 public class ResultInfo {
-	
+
 	private static final int DEFAULT_INT_VALUE = 0;
-	
+
 	private VariableUtil util;
 
 	@Inject
-	public ResultInfo(@Assisted VariableProviderSocket variableProvider){
+	public ResultInfo(@Assisted VariableProviderSocket variableProvider) {
 		util = new VariableUtil(variableProvider);
 	}
 
@@ -30,10 +30,10 @@ public class ResultInfo {
 	public int getErrors() {
 		return util.getVariableIntValue(VariableName.ERRORS.toString(), DEFAULT_INT_VALUE);
 	}
-	
-	public int getResult(){
+
+	public int getResult() {
 		VariableResult variableResult = new VariableResult(getDone(), getTodo());
 		return variableResult.getResult();
 	}
-	
+
 }

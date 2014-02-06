@@ -23,36 +23,33 @@ import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 public class SelectionAnswersMarkerTest {
 	@Mock
 	private GroupAnswersControllerModel answersControllerModel;
-	
+
 	private SelectionAnswersMarker answersMarker;
-	
+
 	private List<SelectionAnswerDto> selectedAnswers;
-	
+
 	private List<SelectionAnswerDto> notSelectedAnswers;
-	
+
 	@Before
 	public void setup() {
 		answersMarker = new SelectionAnswersMarker(answersControllerModel);
 
 		selectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(answersControllerModel.getSelectedAnswers())
-			.thenReturn(selectedAnswers );
-		
+		when(answersControllerModel.getSelectedAnswers()).thenReturn(selectedAnswers);
+
 		notSelectedAnswers = Lists.newArrayList(new SelectionAnswerDto());
-		when(answersControllerModel.getNotSelectedAnswers())
-			.thenReturn(notSelectedAnswers);
+		when(answersControllerModel.getNotSelectedAnswers()).thenReturn(notSelectedAnswers);
 	}
-	
+
 	@Test
 	public void testUnmarkWrong() throws Exception {
 		List<SelectionAnswerDto> buttonsToMark = Lists.newArrayList(new SelectionAnswerDto());
-		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.WRONG))
-			.thenReturn(buttonsToMark);
-		
-		//then
-		
+		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.WRONG)).thenReturn(buttonsToMark);
+
+		// then
+
 		answersMarker.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.UNMARK);
-		
+
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
 			assertEquals(UserAnswerType.DEFAULT, selectionAnswerDto.getSelectionAnswerType());
 		}
@@ -65,11 +62,10 @@ public class SelectionAnswersMarkerTest {
 	@Test
 	public void testMarkWrong() throws Exception {
 		List<SelectionAnswerDto> buttonsToMark = Lists.newArrayList(new SelectionAnswerDto());
-		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.WRONG))
-		.thenReturn(buttonsToMark);
-		
-		//then 
-		
+		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.WRONG)).thenReturn(buttonsToMark);
+
+		// then
+
 		answersMarker.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.MARK);
 
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
@@ -84,11 +80,10 @@ public class SelectionAnswersMarkerTest {
 	@Test
 	public void testUnmarkCorrect() throws Exception {
 		List<SelectionAnswerDto> buttonsToMark = Lists.newArrayList(new SelectionAnswerDto());
-		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.CORRECT))
-			.thenReturn(buttonsToMark);
-		
-		//then 
-		
+		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.CORRECT)).thenReturn(buttonsToMark);
+
+		// then
+
 		answersMarker.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK);
 
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {
@@ -103,11 +98,10 @@ public class SelectionAnswersMarkerTest {
 	@Test
 	public void testMarkCorrect() throws Exception {
 		List<SelectionAnswerDto> buttonsToMark = Lists.newArrayList(new SelectionAnswerDto());
-		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.CORRECT))
-			.thenReturn(buttonsToMark);
-		
-		//then 
-		
+		when(answersControllerModel.getButtonsToMarkForType(MarkAnswersType.CORRECT)).thenReturn(buttonsToMark);
+
+		// then
+
 		answersMarker.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.MARK);
 
 		for (SelectionAnswerDto selectionAnswerDto : notSelectedAnswers) {

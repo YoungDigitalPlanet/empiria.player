@@ -12,30 +12,26 @@ import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SelectionModuleFactory {
-	
+
 	private SelectionModuleModel responseModel;
 	private NoAnswerPriorityComparator noPriorityComparator;
-	
+
 	@Inject
-	public SelectionModuleFactory(
-			@ModuleScoped SelectionModuleModel responseModel,
-			@ModuleScoped SelectionModuleView selectionModuleView,
+	public SelectionModuleFactory(@ModuleScoped SelectionModuleModel responseModel, @ModuleScoped SelectionModuleView selectionModuleView,
 			NoAnswerPriorityComparator noPriorityComparator) {
 		this.responseModel = responseModel;
 		this.noPriorityComparator = noPriorityComparator;
 	}
-	
+
 	public SelectionAnswerDto createSelectionAnswerDto(String id) {
 		return new SelectionAnswerDto(id);
 	}
-	
+
 	public GroupAnswersController createGroupAnswerController(boolean isMulti, int maxSelected) {
 		return new GroupAnswersController(isMulti, maxSelected, responseModel, noPriorityComparator);
 	}
 
-	public ChoiceButtonClickHandler createChoiceButtonClickHandler(
-			GroupAnswersController groupAnswerController,
-			String buttonId,
+	public ChoiceButtonClickHandler createChoiceButtonClickHandler(GroupAnswersController groupAnswerController, String buttonId,
 			SelectionModulePresenter selectionModulePresenter) {
 		return new ChoiceButtonClickHandler(groupAnswerController, buttonId, selectionModulePresenter);
 	}

@@ -18,8 +18,10 @@ import com.google.common.collect.Maps;
 @RunWith(MockitoJUnitRunner.class)
 public class InfoModuleProgressMappingTest {
 
-	@Mock private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
-	@InjectMocks private InfoModuleProgressMapping instance;
+	@Mock
+	private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
+	@InjectMocks
+	private InfoModuleProgressMapping instance;
 	String styleName = "xxx";
 
 	@Test
@@ -66,14 +68,14 @@ public class InfoModuleProgressMappingTest {
 
 		instance.postConstruct();
 
-		for(int x=0;x<10;++x){
+		for (int x = 0; x < 10; ++x) {
 			String styleNameFromCss = instance.getStyleNameForProgress(x);
 			assertThat(styleNameFromCss).isNotNull();
 			assertThat(styleNameFromCss).isEmpty();
 
 		}
 
-		for(int x=10;x<100;++x){
+		for (int x = 10; x < 100; ++x) {
 			String styleNameFromCss = instance.getStyleNameForProgress(x);
 			assertThat(styleNameFromCss).isNotNull();
 			assertThat(styleNameFromCss).isEqualTo(defaultStyleName);
@@ -127,6 +129,7 @@ public class InfoModuleProgressMappingTest {
 			assertThat(styleNameFromCss).isEmpty();
 		}
 	}
+
 	@Test
 	public void getStyleNameForProgress_NullProgress() throws Exception {
 		Map<Integer, String> progressToStyleMapping = Maps.newHashMap();
@@ -134,8 +137,8 @@ public class InfoModuleProgressMappingTest {
 		progressToStyleMapping.put(0, styleName);
 		instance.postConstruct();
 
-			String styleNameFromCss = instance.getStyleNameForProgress(null);
-			assertThat(styleNameFromCss).isNotNull();
-			assertThat(styleNameFromCss).isEmpty();
+		String styleNameFromCss = instance.getStyleNameForProgress(null);
+		assertThat(styleNameFromCss).isNotNull();
+		assertThat(styleNameFromCss).isEmpty();
 	}
 }

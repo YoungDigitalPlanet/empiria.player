@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
 
 public abstract class ProviderItemValueHandlerBase extends ProviderValueHandlerBase {
-	
+
 	@Inject
 	public ProviderItemValueHandlerBase(@Assisted SessionDataSupplier sessionDataSupplier) {
 		super(sessionDataSupplier);

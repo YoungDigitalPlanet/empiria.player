@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name="countCondition")
+@XmlRootElement(name = "countCondition")
 public class CountConditionBean extends FeedbackConditionBase implements FeedbackCondition {
-	
-	@XmlAttribute(name="count")
+
+	@XmlAttribute(name = "count")
 	private Integer count;
-	
-	@XmlAttribute(name="operator")
+
+	@XmlAttribute(name = "operator")
 	private String operator;
 
 	public Integer getCount() {
@@ -30,7 +30,7 @@ public class CountConditionBean extends FeedbackConditionBase implements Feedbac
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
-	
+
 	public FeedbackCondition getCondition() {
 		return getAllConditions().get(0);
 	}

@@ -12,9 +12,13 @@ import com.google.common.base.Objects;
 @XmlRootElement(name = "labellingInteraction")
 public class LabellingInteractionBean {
 
-	@XmlElement private ImgBean img;
-	@XmlElement private ChildrenBean children;
-	@XmlAttribute private String id;
+	@XmlElement
+	private ImgBean img;
+	@XmlElement
+	private ChildrenBean children;
+	@XmlAttribute
+	private String id;
+
 	public ImgBean getImg() {
 		return img;
 	}

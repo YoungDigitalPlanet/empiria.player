@@ -13,7 +13,7 @@ public class BonusFactory {
 	private Provider<ImageBonus> imageProvider;
 	@Inject
 	private Provider<SwiffyBonus> swiffyProvider;
-	
+
 	public BonusWithAsset createBonus(BonusResource bonusResource) {
 		BonusWithAsset bonus = factorizeBonus(bonusResource.getType());
 		updateBonusAsset(bonusResource, bonus);
@@ -23,17 +23,17 @@ public class BonusFactory {
 	private void updateBonusAsset(BonusResource bonusResource, BonusWithAsset bonus) {
 		String asset = bonusResource.getAsset();
 		Size size = bonusResource.getSize();
-		bonus.setAsset(asset , size);
+		bonus.setAsset(asset, size);
 	}
 
 	private BonusWithAsset factorizeBonus(BonusResourceType type) {
 		switch (type) {
-			case IMAGE:
-				return imageProvider.get();
-			case SWIFFY:
-				return swiffyProvider.get();
-			default:
-				throw new IllegalArgumentException("Unsupported BonusResource type.");
+		case IMAGE:
+			return imageProvider.get();
+		case SWIFFY:
+			return swiffyProvider.get();
+		default:
+			throw new IllegalArgumentException("Unsupported BonusResource type.");
 		}
 	}
 }

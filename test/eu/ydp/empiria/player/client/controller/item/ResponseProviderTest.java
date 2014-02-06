@@ -19,18 +19,18 @@ public class ResponseProviderTest {
 	private AnswerEvaluationSupplier answerEvaluationProvider;
 	@Mock
 	private ItemResponseManager itemResponseManager;
-	
+
 	@InjectMocks
 	private ResponseProvider responseProvider;
-	
+
 	@Test
 	public void getResponse_shouldDelegate() {
 		// given
 		final String ID = "ID";
-		
+
 		// when
 		responseProvider.getResponse(ID);
-		
+
 		// then
 		verify(itemResponseManager).getVariable(ID);
 	}
@@ -39,10 +39,10 @@ public class ResponseProviderTest {
 	public void evaluateResponse_shouldDelegate() {
 		// given
 		Response response = mock(Response.class);
-		
+
 		// when
 		responseProvider.evaluateResponse(response);
-		
+
 		// then
 		verify(answerEvaluationProvider).evaluateAnswer(response);
 	}

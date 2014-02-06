@@ -11,8 +11,8 @@ public class ProcessingResultsToOutcomeMapConverterFacade {
 
 	@Inject
 	private ProcessingResultsToOutcomeMapConverterFactory processingResultsToOutcomeMapConverterFactory;
-	
-	public void convert(Map<String, Outcome> outcomes, ModulesProcessingResults modulesProcessingResults, GlobalVariables globalVariables){
+
+	public void convert(Map<String, Outcome> outcomes, ModulesProcessingResults modulesProcessingResults, GlobalVariables globalVariables) {
 		ProcessingResultsToOutcomeMapConverter resultsToOutcomeMapConverter = processingResultsToOutcomeMapConverterFactory.createConverter(outcomes);
 		resultsToOutcomeMapConverter.updateOutcomeMapByModulesProcessingResults(modulesProcessingResults);
 		resultsToOutcomeMapConverter.updateOutcomeMapWithGlobalVariables(globalVariables);

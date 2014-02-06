@@ -15,7 +15,6 @@ public class XMLDataProvider implements Provider<XmlData> {
 	@Inject
 	private DataSourceManager dataSourceManager;
 
-
 	@Override
 	public XmlData get() {
 		int pageIndex = pageScopeFactory.getCurrentPageScope().getPageIndex();

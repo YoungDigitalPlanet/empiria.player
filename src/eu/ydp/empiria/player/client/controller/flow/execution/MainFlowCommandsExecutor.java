@@ -6,8 +6,8 @@ import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCom
 public class MainFlowCommandsExecutor implements FlowCommandsExecutor {
 
 	protected FlowCommandsListener flowCommandsListener;
-	
-	public MainFlowCommandsExecutor(FlowCommandsListener fcl){
+
+	public MainFlowCommandsExecutor(FlowCommandsListener fcl) {
 		flowCommandsListener = fcl;
 	}
 

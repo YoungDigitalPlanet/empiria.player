@@ -20,13 +20,13 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 	@Override
 	public void initModule(Element element) {
 		createMainPanel();
-		MathPlayerManager mpm = new MathPlayerManager();	
+		MathPlayerManager mpm = new MathPlayerManager();
 		initFont(element, mpm);
-		
+
 		boolean temporaryAttached = temporaryAttach();
 		mpm.createMath(element.getChildNodes().toString(), mainPanel);
 		temporaryDetach(temporaryAttached);
-		
+
 		updateVerticalAlign(mpm);
 	}
 
@@ -36,18 +36,18 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 	}
 
 	private void initFont(Element element, MathPlayerManager mpm) {
-		MathTextFontInitializer fontHelper = new MathTextFontInitializer();	
+		MathTextFontInitializer fontHelper = new MathTextFontInitializer();
 		Font font = fontHelper.initialize(this, getModuleSocket(), element);
 		mpm.setFont(font);
 	}
 
 	private void updateVerticalAlign(MathPlayerManager mpm) {
 		int verticalAlignPx = BASELINE_TO_VERTICAL_ALIGN_FACTOR * mpm.getBaseline();
-		mainPanel.getElement().getStyle().setVerticalAlign( verticalAlignPx, Unit.PX);
+		mainPanel.getElement().getStyle().setVerticalAlign(verticalAlignPx, Unit.PX);
 	}
 
 	private boolean temporaryAttach() {
-		if (!mainPanel.isAttached()){
+		if (!mainPanel.isAttached()) {
 			RootPanel.get().add(mainPanel);
 			return true;
 		}
@@ -55,7 +55,7 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 	}
 
 	private void temporaryDetach(boolean temporaryAttached) {
-		if (temporaryAttached){
+		if (temporaryAttached) {
 			mainPanel.removeFromParent();
 		}
 	}

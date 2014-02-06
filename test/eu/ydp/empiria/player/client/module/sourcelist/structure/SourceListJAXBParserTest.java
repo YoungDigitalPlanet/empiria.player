@@ -58,8 +58,6 @@ public class SourceListJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	}
 
-
-
 	private List<String> extractContents(List<SimpleSourceListItemBean> items) {
 		List<String> values = Lists.newArrayList();
 		for (SimpleSourceListItemBean beanItem : items) {
@@ -75,7 +73,6 @@ public class SourceListJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		}
 		return types;
 	}
-
 
 	private SourceListBean parse(String xml) {
 		SourceListJAXBParser jaxbParserFactory = GWT.create(SourceListJAXBParser.class);

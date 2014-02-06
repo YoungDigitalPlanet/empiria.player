@@ -7,7 +7,7 @@ import com.google.inject.Provider;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleCreationContext;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 
-public class XmlElementModuleScopedProvider implements Provider<Element>{
+public class XmlElementModuleScopedProvider implements Provider<Element> {
 
 	@Inject
 	private ModuleScopeStack moduleScopeStack;

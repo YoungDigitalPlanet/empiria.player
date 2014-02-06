@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox.tool;
 
+import static org.mockito.Mockito.verify;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.util.position.Point;
 
@@ -25,7 +26,7 @@ public class EraserToolTest {
 	public void verifyNoMoreInteractions() {
 		Mockito.verifyNoMoreInteractions(canvas);
 	}
-	
+
 	@Test
 	public void shouldErasePoint() throws Exception {
 		// given
@@ -50,13 +51,13 @@ public class EraserToolTest {
 		// then
 		verify(canvas).eraseLine(startPoint, endPoint);
 	}
-	
+
 	@Test
 	public void shouldSetLineWidthOnSetUp() throws Exception {
-		//when
+		// when
 		eraserTool.setUp();
-		
-		//then
+
+		// then
 		verify(canvas).setLineWidth(EraserTool.LINE_WIDTH);
 	}
 }

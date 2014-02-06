@@ -19,8 +19,7 @@ public class ProgressBonusConfig {
 	public List<ProgressConfig> getProgresses() {
 		return this.progresses;
 	}
-	
-	
+
 	public static ProgressBonusConfig fromJs(ProgressBonusConfigJs configJs) {
 		List<ProgressConfig> progresses = getProgresses(configJs);
 		return new ProgressBonusConfig(progresses);
@@ -29,10 +28,10 @@ public class ProgressBonusConfig {
 	private static List<ProgressConfig> getProgresses(ProgressBonusConfigJs configJs) {
 		List<ProgressConfig> progresses = Lists.newArrayList();
 		JsArray<ProgressConfigJs> jsProgresses = configJs.getProgresses();
-		
-		for(int i=0; i<jsProgresses.length(); i++) {
+
+		for (int i = 0; i < jsProgresses.length(); i++) {
 			ProgressConfigJs progressConfigJs = jsProgresses.get(i);
-		 	ProgressConfig progress = ProgressConfig.fromJs(progressConfigJs);
+			ProgressConfig progress = ProgressConfig.fromJs(progressConfigJs);
 			progresses.add(progress);
 		}
 		return progresses;

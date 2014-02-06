@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;

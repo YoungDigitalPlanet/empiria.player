@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.Tuto
 import eu.ydp.empiria.player.client.module.tutor.CommandType;
 
 public class TutorCommandConfig {
-	
+
 	public static TutorCommandConfig fromJs(TutorCommandJs commandJs) {
 		CommandType type = valueOf(commandJs.getType().toString());
 		String asset = commandJs.getAsset();
@@ -20,11 +20,11 @@ public class TutorCommandConfig {
 		this.type = type;
 	}
 
-	public CommandType getType(){
+	public CommandType getType() {
 		return type;
 	}
-	
-	public String getAsset(){
+
+	public String getAsset() {
 		return asset;
 	}
 

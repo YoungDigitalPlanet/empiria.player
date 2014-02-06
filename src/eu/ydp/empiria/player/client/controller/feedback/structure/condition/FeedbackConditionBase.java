@@ -9,25 +9,24 @@ import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.collect.Lists;
 
-
 @XmlAccessorType(XmlAccessType.NONE)
-public class FeedbackConditionBase implements FeedbackCondition{
-	
-	@XmlElement(name="propertyCondition")
+public class FeedbackConditionBase implements FeedbackCondition {
+
+	@XmlElement(name = "propertyCondition")
 	private List<PropertyConditionBean> propertyConditions = Lists.newArrayList();
-	
-	@XmlElement(name="countCondition")
+
+	@XmlElement(name = "countCondition")
 	private List<CountConditionBean> countConditions = Lists.newArrayList();
-	
-	@XmlElement(name="and")
+
+	@XmlElement(name = "and")
 	private List<AndConditionBean> andConditions = Lists.newArrayList();
-	
-	@XmlElement(name="or")
+
+	@XmlElement(name = "or")
 	private List<OrConditionBean> orConditions = Lists.newArrayList();
-	
-	@XmlElement(name="not")
+
+	@XmlElement(name = "not")
 	private List<NotConditionBean> notConditions = Lists.newArrayList();
-	
+
 	public List<PropertyConditionBean> getPropertyConditions() {
 		return propertyConditions;
 	}
@@ -51,7 +50,7 @@ public class FeedbackConditionBase implements FeedbackCondition{
 	public void setAndConditions(List<AndConditionBean> andConditions) {
 		this.andConditions = andConditions;
 	}
-	
+
 	public List<OrConditionBean> getOrConditions() {
 		return orConditions;
 	}
@@ -59,7 +58,7 @@ public class FeedbackConditionBase implements FeedbackCondition{
 	public void setOrConditions(List<OrConditionBean> orConditions) {
 		this.orConditions = orConditions;
 	}
-	
+
 	public List<NotConditionBean> getNotConditions() {
 		return notConditions;
 	}
@@ -67,7 +66,7 @@ public class FeedbackConditionBase implements FeedbackCondition{
 	public void setNotConditions(List<NotConditionBean> notConditions) {
 		this.notConditions = notConditions;
 	}
-	
+
 	public List<FeedbackCondition> getAllConditions() {
 		List<FeedbackCondition> allConditions = new ArrayList<FeedbackCondition>();
 		allConditions.addAll(propertyConditions);
@@ -75,7 +74,7 @@ public class FeedbackConditionBase implements FeedbackCondition{
 		allConditions.addAll(andConditions);
 		allConditions.addAll(orConditions);
 		allConditions.addAll(notConditions);
-		
+
 		return allConditions;
 	}
 }

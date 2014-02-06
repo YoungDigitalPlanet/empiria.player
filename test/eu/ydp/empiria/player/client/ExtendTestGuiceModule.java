@@ -47,7 +47,7 @@ public abstract class ExtendTestGuiceModule extends AbstractTestModule {
 
 	/**
 	 * binduje klasy do mockow
-	 *
+	 * 
 	 * @param bindDescriptor
 	 */
 	protected void bindToMock(BindDescriptor bindDescriptor) {
@@ -68,7 +68,7 @@ public abstract class ExtendTestGuiceModule extends AbstractTestModule {
 
 	/**
 	 * binduje klasy do spy
-	 *
+	 * 
 	 * @param bindDescriptor
 	 */
 	protected void bindToSpy(BindDescriptor bindDescriptor) {

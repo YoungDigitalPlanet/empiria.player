@@ -17,23 +17,12 @@ import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 
 public class FlowRequestProcessorExtensionTest extends ExtensionTestBase {
 
-	protected IFlowCommand[] cmdsNavigation = {new FlowCommand.NavigateFirstItem(),
-									 new FlowCommand.NavigateNextItem(),
-									 new FlowCommand.NavigateSummary(),
-									 new FlowCommand.NavigateToc()};
+	protected IFlowCommand[] cmdsNavigation = { new FlowCommand.NavigateFirstItem(), new FlowCommand.NavigateNextItem(), new FlowCommand.NavigateSummary(),
+			new FlowCommand.NavigateToc() };
 
-	protected IFlowCommand[] cmdsActivity = {new FlowCommand.NavigateFirstItem(),
-			 new FlowCommand.Check(),
-			 new FlowCommand.Continue(),
-			 new FlowCommand.ShowAnswers(),
-			 new FlowCommand.Continue(),
-			 new FlowCommand.Check(),
-			 new FlowCommand.ShowAnswers(),
-			 new FlowCommand.Check(),
-			 new FlowCommand.ShowAnswers(),
-			 new FlowCommand.Reset(),
-			 new FlowCommand.Check(),
-			 new FlowCommand.Reset()};
+	protected IFlowCommand[] cmdsActivity = { new FlowCommand.NavigateFirstItem(), new FlowCommand.Check(), new FlowCommand.Continue(),
+			new FlowCommand.ShowAnswers(), new FlowCommand.Continue(), new FlowCommand.Check(), new FlowCommand.ShowAnswers(), new FlowCommand.Check(),
+			new FlowCommand.ShowAnswers(), new FlowCommand.Reset(), new FlowCommand.Check(), new FlowCommand.Reset() };
 
 	protected IFlowCommand[] cmds;
 
@@ -44,7 +33,7 @@ public class FlowRequestProcessorExtensionTest extends ExtensionTestBase {
 	protected FlowCommandsExecutor fce;
 	protected FlowDataSupplier fds;
 
-	public void testNavigation(){
+	public void testNavigation() {
 		cmds = cmdsNavigation;
 		de = initDeliveryEngine(new MockFlowRequestProcessorExtension());
 
@@ -68,7 +57,7 @@ public class FlowRequestProcessorExtensionTest extends ExtensionTestBase {
 
 	}
 
-	public void testActivity(){
+	public void testActivity() {
 		cmds = cmdsActivity;
 		de = initDeliveryEngine(new MockFlowRequestProcessorExtension());
 
@@ -120,22 +109,22 @@ public class FlowRequestProcessorExtensionTest extends ExtensionTestBase {
 		assertEquals(cmdsActivity.length, counter);
 	}
 
-	protected void processRequestCheck(IFlowRequest request){
-		if (counter < cmds.length){
+	protected void processRequestCheck(IFlowRequest request) {
+		if (counter < cmds.length) {
 			assertEquals(cmds[counter].getName(), request.getName());
 			fce.executeCommand(cmds[counter]);
 			counter++;
 		}
 	}
 
-
 	protected class MockFlowRequestProcessorExtension extends InternalExtension implements FlowRequestProcessorExtension, FlowRequestSocketUserExtension,
-		FlowCommandsSocketUserExtension, FlowDataSocketUserExtension{
+			FlowCommandsSocketUserExtension, FlowDataSocketUserExtension {
 
 		@Override
 		public void init() {
 
 		}
+
 		@Override
 		public boolean isRequestSupported(IFlowRequest request) {
 			return true;
@@ -145,14 +134,17 @@ public class FlowRequestProcessorExtensionTest extends ExtensionTestBase {
 		public void processRequest(IFlowRequest request) {
 			processRequestCheck(request);
 		}
+
 		@Override
 		public void setFlowRequestsInvoker(FlowRequestInvoker invoker) {
 			fri = invoker;
 		}
+
 		@Override
 		public void setFlowCommandsExecutor(FlowCommandsExecutor executor) {
 			fce = executor;
 		}
+
 		@Override
 		public void setFlowDataSupplier(FlowDataSupplier supplier) {
 			fds = supplier;

@@ -17,7 +17,8 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ToolboxPalette extends Composite {
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private ToolboxButtonCreator buttonCreator;
 	@Inject
 	private StyleNameConstants styleNames;

@@ -10,8 +10,10 @@ import eu.ydp.empiria.player.client.structure.ModuleBean;
 @XmlRootElement(name = "drawing")
 @XmlAccessorType(XmlAccessType.NONE)
 public class DrawingBean extends ModuleBean {
-	@XmlElement(name = "palette") private PaletteBean palette;
-	@XmlElement(name = "image") private ImageBean image;
+	@XmlElement(name = "palette")
+	private PaletteBean palette;
+	@XmlElement(name = "image")
+	private ImageBean image;
 
 	public PaletteBean getPalette() {
 		return palette;

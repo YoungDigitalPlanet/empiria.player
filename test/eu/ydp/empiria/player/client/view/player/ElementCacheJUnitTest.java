@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -25,7 +26,7 @@ public class ElementCacheJUnitTest {
 	@Before
 	public void setUp() {
 		cache = spy(new SimpleCache());
-		when(cache.getElement(Mockito.anyInt())).then(new Answer<String>() {
+		when(cache.getElement(Matchers.anyInt())).then(new Answer<String>() {
 			@Override
 			public String answer(InvocationOnMock invocation) throws Throwable {
 				return String.valueOf(invocation.getArguments()[0]);
@@ -46,7 +47,7 @@ public class ElementCacheJUnitTest {
 		assertTrue("wrong return value from cache", cache.getOrCreateAndPut(0).equals("0"));
 		assertTrue("wrong return value from cache", cache.getOrCreateAndPut(1).equals("1"));
 		assertTrue("wrong return value from cache", cache.getOrCreateAndPut(0).equals("0"));
-		Mockito.verify(cache, Mockito.times(2)).getElement(Mockito.anyInt());
+		Mockito.verify(cache, Mockito.times(2)).getElement(Matchers.anyInt());
 	}
 
 	@Test

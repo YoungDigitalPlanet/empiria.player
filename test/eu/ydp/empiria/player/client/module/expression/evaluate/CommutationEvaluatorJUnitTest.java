@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.expression.evaluate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
@@ -77,7 +76,7 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 
 		// then
 		assertThat(result, equalTo(true));
-	}	
+	}
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -108,14 +107,13 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 		// given
 		ExpressionBean bean = new ExpressionBean();
 
-		List<Response> responses = Lists.newArrayList(response("=", "=", "id_equal"), response("/", ":", "id_oper"), response("15.1", "15,1", "id1"), response("5,1", "5.1", "id2"),
-				response("2", "2", "id3"), response("12,5", "12,5", "id5"));
+		List<Response> responses = Lists.newArrayList(response("=", "=", "id_equal"), response("/", ":", "id_oper"), response("15.1", "15,1", "id1"),
+				response("5,1", "5.1", "id2"), response("2", "2", "id3"), response("12,5", "12,5", "id5"));
 		bean.setTemplate("'id1'-'id2''id_oper''id3''id_equal''id5'");
 		bean.getResponses().addAll(responses);
 
 		Multiset<Multiset<String>> correctAnswerMultiSet = HashMultiset.create(Lists.<Multiset<String>> newArrayList(
-				HashMultiset.create(Lists.newArrayList("12.5")), 
-				HashMultiset.create(Lists.newArrayList("15.1", "5,1", "/", "2")),
+				HashMultiset.create(Lists.newArrayList("12.5")), HashMultiset.create(Lists.newArrayList("15.1", "5,1", "/", "2")),
 				HashMultiset.create(Lists.newArrayList("15.1", "5,1", "/", "2", "=", "12.5"))));
 
 		bean.setCorectResponses(correctAnswerMultiSet);
@@ -124,8 +122,8 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 
 		// then
 		assertThat(result, equalTo(true));
-	}	
-	
+	}
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void evaluateWrong_someWrongs() {
@@ -174,12 +172,8 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 		CorrectAnswers correctAnswers = new CorrectAnswers();
 		correctAnswers.add(new ResponseValue("answer_" + correct));
 		List<String> values = Lists.newArrayList("answer_" + user);
-		
-		return getBuilder()
-			.withCorrectAnswers(correctAnswers)
-			.withValues(values)
-			.withIdentifier(String.valueOf(correct))
-		.build();
+
+		return getBuilder().withCorrectAnswers(correctAnswers).withValues(values).withIdentifier(String.valueOf(correct)).build();
 	}
 
 	private Response response(String correct, String user, String id) {
@@ -187,17 +181,13 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
 		correctAnswers.add(new ResponseValue(correct));
 		List<String> values = Lists.newArrayList(user);
 
-		return getBuilder()
-					.withCorrectAnswers(correctAnswers)
-					.withValues(values)
-					.withIdentifier(id)
-				.build();
+		return getBuilder().withCorrectAnswers(correctAnswers).withValues(values).withIdentifier(id).build();
 	}
 
 	private ResponseBuilder getBuilder() {
 		return new ResponseBuilder().withEvaluate(Evaluate.DEFAULT).withExpression(new ExpressionBean()).withCheckMode(CheckMode.EXPRESSION);
 	}
-	
+
 	private Response correctResponse() {
 		Response response = response(COUNTER, COUNTER);
 		COUNTER++;

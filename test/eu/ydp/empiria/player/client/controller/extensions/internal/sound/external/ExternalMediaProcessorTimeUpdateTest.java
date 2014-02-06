@@ -4,10 +4,7 @@ import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -31,7 +28,7 @@ import eu.ydp.gwtutil.client.timer.TimerAccessibleMock;
 public class ExternalMediaProcessorTimeUpdateTest extends ExternalMediaProcessorTestBase {
 
 	private static long timeMillisCounter;
-	
+
 	@Override
 	public void setUp() {
 		super.setUpWithAccessibleTimer();
@@ -44,173 +41,173 @@ public class ExternalMediaProcessorTimeUpdateTest extends ExternalMediaProcessor
 			}
 		}).when(ds).getTimeMillis();
 	}
-	
+
 	@SuppressWarnings("unused")
-	private Object[] media_params(){
-		return $((Object[])TestMediaAudio.values());
+	private Object[] media_params() {
+		return $((Object[]) TestMediaAudio.values());
 	}
-	
+
 	@Test
 	@Parameters(method = "media_params")
 	public void timeUpdate_onPlay(TestMediaAudio testMedias) throws InterruptedException {
-		// given		
+		// given
 		int REPEAT_TIMES = 3;
-		
-		MediaWrapper<Widget> wrapper = container.createMediaWrapper( testMedias);	
+
+		MediaWrapper<Widget> wrapper = container.createMediaWrapper(testMedias);
 		MediaEventHandler handler = mock(MediaEventHandler.class);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler );
-		
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler);
+
 		// when
 		listener.onPlay(wrapper.getMediaUniqId());
-		
-		for (int i = 0 ; i < REPEAT_TIMES ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		verifyTimeUpdateAscending(REPEAT_TIMES, handler);
 		assertThat(TimerAccessibleMock.hasBeenCancelled(), equalTo(false));
 	}
-	
+
 	@Test
 	@Parameters(method = "media_params")
 	public void timeUpdate_onPause(TestMediaAudio testMedias) {
-		// given		
+		// given
 		int REPEAT_TIMES_EXPECTED = 2;
-		MediaWrapper<Widget> wrapper = container.createMediaWrapper( testMedias);	
+		MediaWrapper<Widget> wrapper = container.createMediaWrapper(testMedias);
 		MediaEventHandler handler = mock(MediaEventHandler.class);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler );
-		
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler);
+
 		// when
 		listener.onPlay(wrapper.getMediaUniqId());
-		
-		for (int i = 0 ; i < REPEAT_TIMES_EXPECTED ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_EXPECTED; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		listener.onPause(wrapper.getMediaUniqId());
-		
+
 		// then
 		verifyTimeUpdateAscending(REPEAT_TIMES_EXPECTED, handler);
 		assertThat(TimerAccessibleMock.hasBeenCancelled(), equalTo(true));
 	}
-	
+
 	@Test
 	@Parameters(method = "media_params")
 	public void timeUpdate_onEnd(TestMediaAudio testMedias) {
-		// given		
+		// given
 		int REPEAT_TIMES_EXPECTED = 2;
-		MediaWrapper<Widget> wrapper = container.createMediaWrapper( testMedias);	
+		MediaWrapper<Widget> wrapper = container.createMediaWrapper(testMedias);
 		String mediaUniqId = wrapper.getMediaUniqId();
 		MediaEventHandler handler = mock(MediaEventHandler.class);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler );
-		
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler);
+
 		// when
 		listener.onPlay(mediaUniqId);
-		
-		for (int i = 0 ; i < REPEAT_TIMES_EXPECTED ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_EXPECTED; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		listener.onEnd(mediaUniqId);
-		
+
 		// then
 		verifyTimeUpdateAscending(REPEAT_TIMES_EXPECTED, handler);
 		assertThat(TimerAccessibleMock.hasBeenCancelled(), equalTo(true));
 	}
-	
+
 	@Test
 	@Parameters(method = "media_params")
 	public void timeUpdate_onPlay_onSeek(TestMediaAudio testMedias) {
-		// given		
+		// given
 		final int REPEAT_TIMES_BEFORE_SEEK = 2;
 		final int REPEAT_TIMES_AFTER_SEEK = 2;
-		final int REPEAT_TIMES_EXPECTED = REPEAT_TIMES_BEFORE_SEEK + REPEAT_TIMES_AFTER_SEEK + 1; // + 1 for external time update 
+		final int REPEAT_TIMES_EXPECTED = REPEAT_TIMES_BEFORE_SEEK + REPEAT_TIMES_AFTER_SEEK + 1; // + 1 for external time update
 		final double SEEK_TIME_SECONDS = 50;
 		final int SEEK_TIME_MILLIS = (int) (SEEK_TIME_SECONDS * ConnectorTimeResolutionToSecondsConverter.MILLIS_DIVISOR);
-		MediaWrapper<Widget> wrapper = container.createMediaWrapper( testMedias);	
+		MediaWrapper<Widget> wrapper = container.createMediaWrapper(testMedias);
 		MediaEventHandler handler = mock(MediaEventHandler.class);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler );
-		
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler);
+
 		MediaStatus seekMediaStatus = new MediaStatus() {
-			
+
 			@Override
 			public int getCurrentTimeMillis() {
 				return SEEK_TIME_MILLIS;
 			}
 		};
-		
+
 		// when
 		listener.onPlay(wrapper.getMediaUniqId());
-		
-		for (int i = 0 ; i < REPEAT_TIMES_BEFORE_SEEK ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_BEFORE_SEEK; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		listener.onTimeUpdate(wrapper.getMediaUniqId(), seekMediaStatus);
-		
-		for (int i = 0 ; i < REPEAT_TIMES_AFTER_SEEK ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_AFTER_SEEK; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		// then
 		int indexAfterLeap = REPEAT_TIMES_BEFORE_SEEK;
 		verifyTimeUpdateAscending(REPEAT_TIMES_EXPECTED, handler);
 		verifyTimeUpdateWithTimeLeap(REPEAT_TIMES_EXPECTED, handler, indexAfterLeap, SEEK_TIME_SECONDS);
 		assertThat(TimerAccessibleMock.hasBeenCancelled(), equalTo(false));
 	}
-	
+
 	@Test
 	@Parameters(method = "media_params")
 	public void timeUpdate_onPlay_onSeek_onSeekBack(TestMediaAudio testMedias) {
-		// given		
+		// given
 		final int REPEAT_TIMES_BEFORE_SEEK = 2;
 		final int REPEAT_TIMES_MID_SEEK = 2;
 		final int REPEAT_TIMES_AFTER_SEEK = 2;
-		final int REPEAT_TIMES_EXPECTED = REPEAT_TIMES_BEFORE_SEEK + REPEAT_TIMES_MID_SEEK + REPEAT_TIMES_AFTER_SEEK + 2; // + 2 for two external time updates 
+		final int REPEAT_TIMES_EXPECTED = REPEAT_TIMES_BEFORE_SEEK + REPEAT_TIMES_MID_SEEK + REPEAT_TIMES_AFTER_SEEK + 2; // + 2 for two external time updates
 		final double SEEK_TIME_SECONDS_0 = 50;
 		final int SEEK_TIME_MILLIS_0 = (int) (SEEK_TIME_SECONDS_0 * ConnectorTimeResolutionToSecondsConverter.MILLIS_DIVISOR);
 		final double SEEK_TIME_SECONDS_1 = 20;
 		final int SEEK_TIME_MILLIS_1 = (int) (SEEK_TIME_SECONDS_1 * ConnectorTimeResolutionToSecondsConverter.MILLIS_DIVISOR);
-		MediaWrapper<Widget> wrapper = container.createMediaWrapper( testMedias);	
+		MediaWrapper<Widget> wrapper = container.createMediaWrapper(testMedias);
 		String mediaUniqId = wrapper.getMediaUniqId();
 		MediaEventHandler handler = mock(MediaEventHandler.class);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler );
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler);
 
 		MediaStatus firstSeekMediaStatus = new MediaStatus() {
-			
+
 			@Override
 			public int getCurrentTimeMillis() {
 				return SEEK_TIME_MILLIS_0;
 			}
 		};
-		
+
 		MediaStatus secondSeekMediaStatus = new MediaStatus() {
-			
+
 			@Override
 			public int getCurrentTimeMillis() {
 				return SEEK_TIME_MILLIS_1;
 			}
 		};
-		
+
 		// when
 		listener.onPlay(mediaUniqId);
-		
-		for (int i = 0 ; i < REPEAT_TIMES_BEFORE_SEEK ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_BEFORE_SEEK; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		listener.onTimeUpdate(mediaUniqId, firstSeekMediaStatus);
-		
-		for (int i = 0 ; i < REPEAT_TIMES_MID_SEEK ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_MID_SEEK; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		listener.onTimeUpdate(mediaUniqId, secondSeekMediaStatus);
-		
-		for (int i = 0 ; i < REPEAT_TIMES_AFTER_SEEK ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_AFTER_SEEK; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		// then
 		int indexAfterFirstSeek = REPEAT_TIMES_BEFORE_SEEK;
 		verifyTimeUpdateWithTimeLeap(REPEAT_TIMES_EXPECTED, handler, indexAfterFirstSeek, SEEK_TIME_SECONDS_0);
@@ -218,88 +215,88 @@ public class ExternalMediaProcessorTimeUpdateTest extends ExternalMediaProcessor
 		verifyTimeUpdateWithTimeLeap(REPEAT_TIMES_EXPECTED, handler, indexAfterSecondSeek, SEEK_TIME_SECONDS_1);
 		assertThat(TimerAccessibleMock.hasBeenCancelled(), equalTo(false));
 	}
-	
+
 	@Test
 	@Parameters(method = "media_params")
 	public void timeUpdate_onPlay_onSeek_onPause(TestMediaAudio testMedias) {
-		// given		
+		// given
 		final int REPEAT_TIMES_BEFORE_SEEK = 2;
 		final int REPEAT_TIMES_AFTER_SEEK = 2;
 		final int REPEAT_TIMES_EXPECTED = REPEAT_TIMES_BEFORE_SEEK + REPEAT_TIMES_AFTER_SEEK + 1; // + 1 for external time update
 		final double SEEK_TIME_SECONDS = 50;
 		final int SEEK_TIME_MILLIS = (int) (SEEK_TIME_SECONDS * ConnectorTimeResolutionToSecondsConverter.MILLIS_DIVISOR);
-		MediaWrapper<Widget> wrapper = container.createMediaWrapper( testMedias);	
+		MediaWrapper<Widget> wrapper = container.createMediaWrapper(testMedias);
 		String mediaUniqId = wrapper.getMediaUniqId();
 		MediaEventHandler handler = mock(MediaEventHandler.class);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler );
-		
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler);
+
 		MediaStatus seekMediaStatus = new MediaStatus() {
-			
+
 			@Override
 			public int getCurrentTimeMillis() {
 				return SEEK_TIME_MILLIS;
 			}
 		};
-		
+
 		// when
 		listener.onPlay(mediaUniqId);
-		
-		for (int i = 0 ; i < REPEAT_TIMES_BEFORE_SEEK ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_BEFORE_SEEK; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		listener.onTimeUpdate(mediaUniqId, seekMediaStatus);
-		
-		for (int i = 0 ; i < REPEAT_TIMES_AFTER_SEEK ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_AFTER_SEEK; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
-		listener.onPause(mediaUniqId);	
-		
+
+		listener.onPause(mediaUniqId);
+
 		// then
 		int indexAfterFirstSeek = REPEAT_TIMES_BEFORE_SEEK;
 		verifyTimeUpdateAscending(REPEAT_TIMES_EXPECTED, handler);
 		verifyTimeUpdateWithTimeLeap(REPEAT_TIMES_EXPECTED, handler, indexAfterFirstSeek, SEEK_TIME_SECONDS);
 		assertThat(TimerAccessibleMock.hasBeenCancelled(), equalTo(true));
 	}
-	
+
 	@Test
 	@Parameters(method = "media_params")
 	public void timeUpdate_onPlay_onSeek_onEnd(TestMediaAudio testMedias) {
-		// given		
+		// given
 		final int REPEAT_TIMES_BEFORE_SEEK = 2;
 		final int REPEAT_TIMES_AFTER_SEEK = 2;
 		final int REPEAT_TIMES_EXPECTED = REPEAT_TIMES_BEFORE_SEEK + REPEAT_TIMES_AFTER_SEEK + 1; // + 1 for external time update
 		final double SEEK_TIME_SECONDS = 50;
 		final int SEEK_TIME_MILLIS = (int) (SEEK_TIME_SECONDS * ConnectorTimeResolutionToSecondsConverter.MILLIS_DIVISOR);
-		MediaWrapper<Widget> wrapper = container.createMediaWrapper( testMedias);	
+		MediaWrapper<Widget> wrapper = container.createMediaWrapper(testMedias);
 		String mediaUniqId = wrapper.getMediaUniqId();
 		MediaEventHandler handler = mock(MediaEventHandler.class);
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler );
-		
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), wrapper, handler);
+
 		MediaStatus seekMediaStatus = new MediaStatus() {
-			
+
 			@Override
 			public int getCurrentTimeMillis() {
 				return SEEK_TIME_MILLIS;
 			}
 		};
-		
+
 		// when
 		listener.onPlay(mediaUniqId);
-		
-		for (int i = 0 ; i < REPEAT_TIMES_BEFORE_SEEK ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_BEFORE_SEEK; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
+
 		listener.onTimeUpdate(mediaUniqId, seekMediaStatus);
-		
-		for (int i = 0 ; i < REPEAT_TIMES_AFTER_SEEK ; i ++){
+
+		for (int i = 0; i < REPEAT_TIMES_AFTER_SEEK; i++) {
 			TimerAccessibleMock.getInstance().dispatch();
 		}
-		
-		listener.onEnd(mediaUniqId);	
-		
+
+		listener.onEnd(mediaUniqId);
+
 		// then
 		int indexAfterFirstSeek = REPEAT_TIMES_BEFORE_SEEK;
 		verifyTimeUpdateAscending(REPEAT_TIMES_EXPECTED, handler);
@@ -327,15 +324,15 @@ public class ExternalMediaProcessorTimeUpdateTest extends ExternalMediaProcessor
 
 	private void verifyTimeUpdateCount(int repeatTimes, ArgumentCaptor<MediaEvent> ac) {
 		assertThat(ac.getAllValues().size(), equalTo(repeatTimes));
-		for (int i = 0 ; i < repeatTimes ; i ++){
+		for (int i = 0; i < repeatTimes; i++) {
 			assertThat(ac.getAllValues().get(i).getType(), equalTo(MediaEventTypes.ON_TIME_UPDATE));
 		}
 	}
 
 	private void verifyTimeUpdateAscendingTimeValues(int repeatTimes, ArgumentCaptor<MediaEvent> ac) {
-		for (int i = 0 ; i < repeatTimes-1 ; i ++){
+		for (int i = 0; i < repeatTimes - 1; i++) {
 			double time0 = ac.getAllValues().get(i).getCurrentTime();
-			double time1 = ac.getAllValues().get(i+1).getCurrentTime();
+			double time1 = ac.getAllValues().get(i + 1).getCurrentTime();
 			assertThat(time1, greaterThanOrEqualTo(time0));
 		}
 	}

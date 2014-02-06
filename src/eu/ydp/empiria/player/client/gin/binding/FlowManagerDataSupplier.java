@@ -9,7 +9,7 @@ import com.google.inject.BindingAnnotation;
 
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ ElementType.FIELD, ElementType.PARAMETER })
 public @interface FlowManagerDataSupplier {
 
 }

@@ -12,7 +12,7 @@ public abstract class ModuleExtension extends InternalExtension {
 
 	@Override
 	public void init() {
-		
+
 	}
 
 }

@@ -11,21 +11,21 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.gwtutil.client.NumberUtils;
 
-public class AssessmentVariableStorageImpl extends VariableProviderBase  implements JsSocketHolder {
+public class AssessmentVariableStorageImpl extends VariableProviderBase implements JsSocketHolder {
 
 	private final Set<String> identifiers;
 	private ItemsCollectionSessionDataSocket itemsCollectionSessionDataSocket;
 
-	public AssessmentVariableStorageImpl(){
+	public AssessmentVariableStorageImpl() {
 		identifiers = new HashSet<String>();
 	}
 
-	public void init(ItemsCollectionSessionDataSocket icsds){
+	public void init(ItemsCollectionSessionDataSocket icsds) {
 		itemsCollectionSessionDataSocket = icsds;
 		ensureVariables();
 	}
 
-	protected void ensureVariables(){
+	protected void ensureVariables() {
 		ensureVariable("DONE");
 		ensureVariable("TODO");
 		ensureVariable("ERRORS");
@@ -36,22 +36,22 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 		ensureVariable("VISITED");
 	}
 
-	private void ensureVariable(String identifier){
-		if (!identifiers.contains(identifier)){
+	private void ensureVariable(String identifier) {
+		if (!identifiers.contains(identifier)) {
 			identifiers.add(identifier);
 		}
 	}
 
 	@Override
-	public Set<String> getVariableIdentifiers(){
+	public Set<String> getVariableIdentifiers() {
 		return identifiers;
 	}
 
 	@Override
-	public Variable getVariableValue(String identifier){
-		if (identifiers.contains(identifier)){
+	public Variable getVariableValue(String identifier) {
+		if (identifiers.contains(identifier)) {
 			int value = getOutcomeVariableAssessmentTotal(identifier);
-			return new Outcome(identifier, Cardinality.SINGLE, String.valueOf(value) );
+			return new Outcome(identifier, Cardinality.SINGLE, String.valueOf(value));
 		}
 		return null;
 	}
@@ -61,18 +61,18 @@ public class AssessmentVariableStorageImpl extends VariableProviderBase  impleme
 		Variable currVar;
 		String currValue;
 		int currValueInt;
-		for (int i = 0 ; i < itemsCollectionSessionDataSocket.getItemSessionDataSocketsCount() ; i ++){
-			if (itemsCollectionSessionDataSocket.getItemSessionDataSocket(i) != null){
+		for (int i = 0; i < itemsCollectionSessionDataSocket.getItemSessionDataSocketsCount(); i++) {
+			if (itemsCollectionSessionDataSocket.getItemSessionDataSocket(i) != null) {
 				currVar = itemsCollectionSessionDataSocket.getItemSessionDataSocket(i).getVariableProviderSocket().getVariableValue(identifier);
-				if (currVar == null){
+				if (currVar == null) {
 					continue;
 				}
 				currValue = currVar.getValuesShort();
-				if (currValue != null  &&  currValue.length() > 0){
-					if (currValue.matches("^[0-9]+$")){
-						currValueInt = NumberUtils.tryParseInt( currValue );
+				if (currValue != null && currValue.length() > 0) {
+					if (currValue.matches("^[0-9]+$")) {
+						currValueInt = NumberUtils.tryParseInt(currValue);
 						total += currValueInt;
-					} else if ("TRUE".equals(currValue.toUpperCase())){
+					} else if ("TRUE".equals(currValue.toUpperCase())) {
 						total += 1;
 					}
 				}

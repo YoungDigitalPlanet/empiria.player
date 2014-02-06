@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
  * Widget wyswietlajacy pozycje w strumieniu oraz dlugosc calego strumienia
- *
+ * 
  */
 public class PositionInMediaStream extends AbstractMediaTime<PositionInMediaStream> {
 	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();

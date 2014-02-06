@@ -23,7 +23,8 @@ public class TextBoxChangeHandler implements BlurHandler, DropHandler {
 
 	@Override
 	public void onDrop(DropEvent event) {
-		BlurEvent noopBlurEvent = new BlurEvent() { };
+		BlurEvent noopBlurEvent = new BlurEvent() {
+		};
 		callBlurHandler(noopBlurEvent);
 	}
 

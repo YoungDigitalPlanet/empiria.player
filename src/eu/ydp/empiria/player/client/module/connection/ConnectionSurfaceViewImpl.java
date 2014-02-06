@@ -73,9 +73,7 @@ public class ConnectionSurfaceViewImpl extends Composite implements ConnectionSu
 	}
 
 	/**
-	 * @see <a
-	 *      href="http://code.google.com/p/android/issues/detail?id=35474#c25"
-	 *      >android bug trucker</a>
+	 * @see <a href="http://code.google.com/p/android/issues/detail?id=35474#c25" >android bug trucker</a>
 	 */
 	private void applyHackForCanvasInAndroid4() {
 		if (IS_ANDROID_4) {

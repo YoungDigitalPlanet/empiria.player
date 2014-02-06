@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.empiria.player.client.module.connection.ConnectionItemFluentMockBuilder.*;
+import static eu.ydp.empiria.player.client.module.connection.ConnectionItemFluentMockBuilder.newConnectionItem;
 import static org.junit.Assert.*;
 
 import java.util.Set;
@@ -61,17 +61,17 @@ public class ConnectionItemPairFinderTest {
 		assertTrue(item.isPresent());
 		assertEquals(item1, item.get());
 	}
-	
+
 	@Test
 	public void testFindEndConnection_secondMatching() {
 		// when
 		Optional<ConnectionItem> item = testObj.findConnectionItemForCoordinates(connectionItems, 200, 50);
-		
+
 		// then
 		assertTrue(item.isPresent());
 		assertEquals(item1, item.get());
 	}
-	
+
 	@Test
 	public void testFindEndConnection_lastMatching() {
 		// when
@@ -81,12 +81,12 @@ public class ConnectionItemPairFinderTest {
 		assertTrue(item.isPresent());
 		assertEquals(item4, item.get());
 	}
-	
+
 	@Test
 	public void testFindEndConnection_inTheMiddleNoMatching() {
 		// when
 		Optional<ConnectionItem> item = testObj.findConnectionItemForCoordinates(connectionItems, 250, 150);
-		
+
 		// then
 		assertFalse(item.isPresent());
 	}

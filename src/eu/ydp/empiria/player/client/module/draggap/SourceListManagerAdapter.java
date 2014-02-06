@@ -16,7 +16,7 @@ public class SourceListManagerAdapter {
 	public SourceListManagerAdapter(@PageScoped SourcelistManager sourcelistManager) {
 		this.sourcelistManager = sourcelistManager;
 	}
-	
+
 	public void initialize(String moduleId) {
 		this.moduleId = moduleId;
 	}
@@ -24,7 +24,7 @@ public class SourceListManagerAdapter {
 	public SourcelistItemValue getItemById(String itemId) {
 		return sourcelistManager.getValue(itemId, moduleId);
 	}
-	
+
 	public void dragEnd(String itemID, String sourceModuleId) {
 		sourcelistManager.dragEnd(itemID, sourceModuleId, moduleId);
 	}

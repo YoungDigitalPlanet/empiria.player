@@ -18,57 +18,53 @@ import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 class FeedbackPropertiesCollectorTestHelper {
-	
+
 	private IModule sender;
-	
+
 	private IContainerModule container;
-	
+
 	private Map<String, Variable> variables;
-	
-	public FeedbackPropertiesCollectorTestHelper(){
+
+	public FeedbackPropertiesCollectorTestHelper() {
 		variables = Maps.newHashMap();
 	}
-	
-	public void createHierarchy(ModuleInfo[] infos){
+
+	public void createHierarchy(ModuleInfo[] infos) {
 		createHierarchy(infos, IContainerModule.class);
 	}
-	
-	public void createHierarchy(ModuleInfo[] infos, Class<? extends IContainerModule> ModuleClass){
+
+	public void createHierarchy(ModuleInfo[] infos, Class<? extends IContainerModule> ModuleClass) {
 		container = mock(ModuleClass);
-		
+
 		variables = Maps.newHashMap();
 		List<IModule> children = Lists.newArrayList();
-		
-		for (ModuleInfo info: infos) {
+
+		for (ModuleInfo info : infos) {
 			children.add(createUniqueModuleMock(container, info.getId(), createOutcomeVariables(info)));
 		}
-		
+
 		sender = children.get(0);
 		when(container.getChildren()).thenReturn(children);
 	}
-	
-	public Map<String, Outcome> createOutcomeVariables(ModuleInfo info){
+
+	public Map<String, Outcome> createOutcomeVariables(ModuleInfo info) {
 		OutcomeCreator creator = new OutcomeCreator(info.getId());
-		
-		return OutcomeListBuilder.init().
-						put(creator.createDoneOutcome(info.getDone())).
-						put(creator.createTodoOutcome(info.getTodo())).
-						put(creator.createErrorsOutcome(info.getErrors())).
-						put(creator.createLastChangeOutcome(info.getId())).
-						put(creator.createLastMistakenOutcome(info.getLastMistaken())).
-						getMap();
+
+		return OutcomeListBuilder.init().put(creator.createDoneOutcome(info.getDone())).put(creator.createTodoOutcome(info.getTodo()))
+				.put(creator.createErrorsOutcome(info.getErrors())).put(creator.createLastChangeOutcome(info.getId()))
+				.put(creator.createLastMistakenOutcome(info.getLastMistaken())).getMap();
 	}
-	
-	public IUniqueModule createUniqueModuleMock(HasChildren parent, String id, Map<String, ? extends Variable> variables){
+
+	public IUniqueModule createUniqueModuleMock(HasChildren parent, String id, Map<String, ? extends Variable> variables) {
 		IUniqueModule module = mock(IUniqueModule.class);
 		when(module.getIdentifier()).thenReturn(id);
 		when(module.getParentModule()).thenReturn(parent);
-		
+
 		this.variables.putAll(variables);
-		
+
 		return module;
 	}
-	
+
 	public Map<String, Variable> getVariables() {
 		return variables;
 	}
@@ -76,70 +72,70 @@ class FeedbackPropertiesCollectorTestHelper {
 	public IModule getSender() {
 		return sender;
 	}
-	
+
 	public IModule getContainer() {
 		return container;
 	}
-	
-	protected static class ModuleInfo{
-		
+
+	protected static class ModuleInfo {
+
 		private final String id;
-		
+
 		private LastMistaken lastMistaken;
-		
+
 		private int todo;
-		
+
 		private int done;
-		
+
 		private int errors;
-		
-		public ModuleInfo(String id){
+
+		public ModuleInfo(String id) {
 			this.id = id;
 		}
-		
-		public static ModuleInfo create(String id){
+
+		public static ModuleInfo create(String id) {
 			return new ModuleInfo(id);
 		}
-		
+
 		public String getId() {
 			return id;
 		}
-		
+
 		public ModuleInfo setLastOk(LastMistaken isLastOk) {
 			this.lastMistaken = isLastOk;
 			return this;
 		}
-		
+
 		public LastMistaken getLastMistaken() {
 			return lastMistaken;
 		}
-		
+
 		public ModuleInfo setTodo(int todo) {
 			this.todo = todo;
 			return this;
 		}
-		
+
 		public int getTodo() {
 			return todo;
 		}
-		
+
 		public ModuleInfo setDone(int done) {
 			this.done = done;
 			return this;
 		}
-		
+
 		public int getDone() {
 			return done;
 		}
-		
+
 		public ModuleInfo setErrors(int errors) {
 			this.errors = errors;
 			return this;
 		}
-		
+
 		public int getErrors() {
 			return errors;
 		}
-		
+
 	}
 }

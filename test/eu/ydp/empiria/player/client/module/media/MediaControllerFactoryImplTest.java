@@ -10,6 +10,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -32,7 +33,6 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 public class MediaControllerFactoryImplTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	MediaControllerFactoryImpl instance;
-
 
 	private class CustomGinModule implements Module {
 		@Override
@@ -59,16 +59,14 @@ public class MediaControllerFactoryImplTest extends AbstractTestBaseWithoutAutoI
 	};
 
 	UserAgentUtil userAgentUtil = mock(UserAgentUtil.class);
-	Set<MobileUserAgent> androidUserAgentsForProgressBar = Sets.newHashSet(MobileUserAgent.ANDROID23,
-										   					 MobileUserAgent.ANDROID3,
-										   				 	 MobileUserAgent.ANDROID321,
-										   				 	 MobileUserAgent.ANDROID4);
+	Set<MobileUserAgent> androidUserAgentsForProgressBar = Sets.newHashSet(MobileUserAgent.ANDROID23, MobileUserAgent.ANDROID3, MobileUserAgent.ANDROID321,
+			MobileUserAgent.ANDROID4);
+
 	@Before
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
 		instance = injector.getInstance(MediaControllerFactoryImpl.class);
 	}
-
 
 	@BeforeClass
 	public static void disarm() {
@@ -81,8 +79,8 @@ public class MediaControllerFactoryImplTest extends AbstractTestBaseWithoutAutoI
 	}
 
 	@Test
-	public void testProgressBarGetAndroid(){
-		when(userAgentUtil.isMobileUserAgent((MobileUserAgent[])Mockito.anyVararg())).thenAnswer(new Answer<Boolean>() {
+	public void testProgressBarGetAndroid() {
+		when(userAgentUtil.isMobileUserAgent((MobileUserAgent[]) Matchers.anyVararg())).thenAnswer(new Answer<Boolean>() {
 			@Override
 			public Boolean answer(InvocationOnMock invocation) throws Throwable {
 				Object[] arguments = invocation.getArguments();
@@ -95,11 +93,11 @@ public class MediaControllerFactoryImplTest extends AbstractTestBaseWithoutAutoI
 		assertThat(abstractMediaController).isNotNull();
 		assertThat(abstractMediaController).isInstanceOf(MediaProgressBarAndroid.class);
 
-
 	}
+
 	@Test
-	public void testProgressBarGetDesktop(){
-		when(userAgentUtil.isMobileUserAgent((MobileUserAgent[])Mockito.anyVararg())).thenReturn(false);
+	public void testProgressBarGetDesktop() {
+		when(userAgentUtil.isMobileUserAgent((MobileUserAgent[]) Matchers.anyVararg())).thenReturn(false);
 		AbstractMediaController<?> abstractMediaController = instance.get(ModuleTagName.MEDIA_PROGRESS_BAR);
 		assertThat(abstractMediaController).isNotNull();
 		assertThat(abstractMediaController).isInstanceOf(MediaProgressBarImpl.class);

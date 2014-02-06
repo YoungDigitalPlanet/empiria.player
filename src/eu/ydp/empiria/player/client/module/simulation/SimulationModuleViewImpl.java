@@ -22,7 +22,6 @@ public class SimulationModuleViewImpl extends Composite implements SimulationMod
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-
 	@Override
 	public void add(IsWidget child) {
 		mainPanel.add(child);

@@ -19,7 +19,7 @@ public class SimpleTextModule extends SimpleModuleBase implements Factory<Simple
 	private final StyleNameConstants styleNames = eu.ydp.empiria.player.client.PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	private final BookmarkingHelper bookmarkingHelper;
 
-	public SimpleTextModule(){
+	public SimpleTextModule() {
 		contents = new ElementWrapperWidget(Document.get().createPElement());
 		contents.setStyleName(styleNames.QP_SIMPLETEXT());
 		bookmarkingHelper = new BookmarkingHelper(contents);
@@ -67,6 +67,6 @@ public class SimpleTextModule extends SimpleModuleBase implements Factory<Simple
 
 	@Override
 	public String getDefaultBookmarkTitle() {
-		return bookmarkingHelper.getDefaultBookmarkTitle(getView().getElement().getInnerText());
+		return BookmarkingHelper.getDefaultBookmarkTitle(getView().getElement().getInnerText());
 	}
 }

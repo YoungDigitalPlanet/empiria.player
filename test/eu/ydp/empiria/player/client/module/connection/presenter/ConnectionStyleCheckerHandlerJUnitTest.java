@@ -1,17 +1,13 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -28,11 +24,10 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 @SuppressWarnings("PMD")
 public class ConnectionStyleCheckerHandlerJUnitTest {
 
-	private  IsWidget view;
-	private  ConnectionStyleChecker connectionStyleChecker;
+	private IsWidget view;
+	private ConnectionStyleChecker connectionStyleChecker;
 	private ConnectionStyleCheckerHandler instance;
 	private Element element;
-
 
 	@BeforeClass
 	public static void disarm() {
@@ -63,7 +58,7 @@ public class ConnectionStyleCheckerHandlerJUnitTest {
 
 	@Test
 	public void testOnAttachOrDetachCorrectStyles() {
-		doNothing().when(connectionStyleChecker).areStylesCorrectThrowsExceptionWhenNot(Mockito.any(IsWidget.class));
+		doNothing().when(connectionStyleChecker).areStylesCorrectThrowsExceptionWhenNot(Matchers.any(IsWidget.class));
 		instance.onAttachOrDetach(null);
 		verifyZeroInteractions(view);
 
@@ -72,9 +67,9 @@ public class ConnectionStyleCheckerHandlerJUnitTest {
 	@Test
 	public void testOnAttachOrDetachNotCorrectStyles() {
 		String message = "error";
-		doThrow(new CssStyleException(message)).when(connectionStyleChecker).areStylesCorrectThrowsExceptionWhenNot(Mockito.any(IsWidget.class));
+		doThrow(new CssStyleException(message)).when(connectionStyleChecker).areStylesCorrectThrowsExceptionWhenNot(Matchers.any(IsWidget.class));
 		instance.onAttachOrDetach(null);
-		verify(element).setInnerText(Mockito.eq(message));
+		verify(element).setInnerText(Matchers.eq(message));
 	}
 
 }

@@ -7,12 +7,12 @@ public class DragContentController {
 
 	public String getTextFromItemAppropriateToType(SourcelistItemValue item) {
 		SourcelistItemType itemType = item.getType();
-		
-		if(itemType == SourcelistItemType.IMAGE) {
+
+		if (itemType == SourcelistItemType.IMAGE) {
 			return item.getItemId();
 		} else {
 			return item.getContent();
 		}
 	}
-	
+
 }

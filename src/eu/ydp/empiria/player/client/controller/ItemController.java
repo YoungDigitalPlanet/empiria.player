@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller;
 
-import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.*;
+import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.OUTCOME_STATE_CHANGED;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;

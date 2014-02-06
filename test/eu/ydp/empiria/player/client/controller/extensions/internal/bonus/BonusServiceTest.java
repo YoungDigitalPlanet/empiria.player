@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.bonus;
 
-import static org.fest.assertions.api.Assertions.*;
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import org.junit.Before;

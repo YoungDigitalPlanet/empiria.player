@@ -31,10 +31,10 @@ public class JsProgressBonusExtension extends AbstractJsExtension implements Pro
 	}
 
 	private native String getProgressBonusNative(JavaScriptObject extensionJsObject)/*-{
-		return extensionJsObject.getProgressBonusId();
-	}-*/;
+																					return extensionJsObject.getProgressBonusId();
+																					}-*/;
 
 	private native JavaScriptObject getConfigNative(JavaScriptObject extensionJsObject)/*-{
-		return extensionJsObject.getProgressBonusConfig();
-	}-*/;
+																						return extensionJsObject.getProgressBonusConfig();
+																						}-*/;
 }

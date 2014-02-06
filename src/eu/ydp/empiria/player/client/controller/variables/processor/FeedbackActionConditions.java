@@ -17,5 +17,5 @@ public class FeedbackActionConditions {
 		boolean hasCurrentPageErrors = outcomeAccessor.getCurrentPageErrors() > 0;
 		return !hasCurrentPageErrors && isPageAllOk();
 	}
-	
+
 }

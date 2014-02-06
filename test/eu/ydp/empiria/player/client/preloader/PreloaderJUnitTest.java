@@ -1,14 +1,12 @@
 package eu.ydp.empiria.player.client.preloader;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -57,14 +55,14 @@ public class PreloaderJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit 
 	public void testShow() {
 		instance.show();
 
-		verify(progressView.asWidget()).setVisible(Mockito.eq(true));
+		verify(progressView.asWidget()).setVisible(Matchers.eq(true));
 	}
 
 	@Test
 	public void testHide() {
 		instance.hide();
 
-		verify(progressView.asWidget(),times(2)).setVisible(Mockito.eq(false));
+		verify(progressView.asWidget(), times(2)).setVisible(Matchers.eq(false));
 	}
 
 	@Test
@@ -72,10 +70,10 @@ public class PreloaderJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit 
 
 		for (int x = 100; x > 0; x -= 10) {
 			int width = x;
-			int height = x+9;
+			int height = x + 9;
 			instance.setPreloaderSize(width, height);
-			verify(progressView.asWidget()).setWidth(width+"px");
-			verify(progressView.asWidget()).setHeight(height+"px");
+			verify(progressView.asWidget()).setWidth(width + "px");
+			verify(progressView.asWidget()).setHeight(height + "px");
 		}
 
 	}

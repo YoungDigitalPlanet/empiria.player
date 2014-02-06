@@ -15,6 +15,7 @@ public class ProgressBarEndEventHandler extends AbstractMediaEventHandler {
 		this.eventsBus = eventsBus;
 
 	}
+
 	@Override
 	public void onMediaEvent(MediaEvent event) {
 		double steep = progressBar.getScrollWidth() / progressBar.getMediaWrapper().getDuration();

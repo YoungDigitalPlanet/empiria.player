@@ -6,7 +6,7 @@ public class SourcelistItemValue {
 	private final String value;
 	private final String itemId;
 
-	public SourcelistItemValue(SourcelistItemType type, String value,String itemId) {
+	public SourcelistItemValue(SourcelistItemType type, String value, String itemId) {
 		super();
 		this.type = type;
 		this.value = value;

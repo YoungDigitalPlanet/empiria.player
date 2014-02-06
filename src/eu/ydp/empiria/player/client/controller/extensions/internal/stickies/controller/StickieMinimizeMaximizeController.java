@@ -20,9 +20,7 @@ public class StickieMinimizeMaximizeController {
 	private Point<Integer> previousMinimizedPosition;
 
 	@Inject
-	public StickieMinimizeMaximizeController(
-			@Assisted IStickieProperties stickieProperties, 
-			MaximizedStickieSizeStorage maximizedStickieSizeStorage,
+	public StickieMinimizeMaximizeController(@Assisted IStickieProperties stickieProperties, MaximizedStickieSizeStorage maximizedStickieSizeStorage,
 			StickieViewPositionFinder positionFinder) {
 		this.stickieProperties = stickieProperties;
 		this.maximizedStickieSizeStorage = maximizedStickieSizeStorage;
@@ -43,7 +41,7 @@ public class StickieMinimizeMaximizeController {
 		if (previousMinimizedPosition == null) {
 			previousMinimizedPosition = stickieProperties.getPosition();
 		}
-		
+
 		return findCorrectMaximizedPosition(stickieDimensions, parentDimensions);
 	}
 
@@ -63,7 +61,6 @@ public class StickieMinimizeMaximizeController {
 		maximizedStickieSizeStorage.updateIfBiggerThanExisting(stickieProperties.getColorIndex(), stickieSize);
 	}
 
-
 	private Point<Integer> findCorrectMaximizedPosition(ContainerDimensions stickieDimensions, ContainerDimensions parentDimensions) {
 		Point<Integer> newPosition;
 		Optional<StickieSize> optionalStickieSize = maximizedStickieSizeStorage.getSizeOfMaximizedStickie(stickieProperties.getColorIndex());
@@ -80,9 +77,7 @@ public class StickieMinimizeMaximizeController {
 
 	private ContainerDimensions getMaximizedStickieDimensions(ContainerDimensions stickieDimensions, StickieSize maximizedStickieSize) {
 		ContainerDimensions maximizedStickieDimensions = ContainerDimensions.Builder.fromContainerDimensions(stickieDimensions)
-				.width(maximizedStickieSize.getWidth())
-				.height(maximizedStickieSize.getHeight())
-				.build();
+				.width(maximizedStickieSize.getWidth()).height(maximizedStickieSize.getHeight()).build();
 		return maximizedStickieDimensions;
 	}
 }

@@ -9,7 +9,7 @@ public class StickiePropertiesTestable implements IStickieProperties {
 	private String stickieContent = "";
 	private Point<Integer> position = new Point<Integer>(0, 0);
 	private boolean minimized = false;
-	
+
 	@Override
 	public int getColorIndex() {
 		return colorIndex;

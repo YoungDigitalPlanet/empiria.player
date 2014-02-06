@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,7 +28,7 @@ public class ReCreateAudioHackTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 	@Before
 	public void setUpTest() throws Exception {
-		setUpGin();	
+		setUpGin();
 		setUpInjectors();
 		mockObjects();
 	}
@@ -39,14 +37,14 @@ public class ReCreateAudioHackTest extends AbstractTestBaseWithoutAutoInjectorIn
 	public void testApply() {
 		// when
 		hack.apply(wrapper, executor);
-		
+
 		// then
 		verify(wrapper).setMediaObject(newAudio);
 		verify(executor).setMedia(newAudio);
-		verify(executor).init();		
+		verify(executor).init();
 	}
-	
-	private void setUpInjectors() {		
+
+	private void setUpInjectors() {
 		hack = injector.getInstance(ReCreateAudioHack.class);
 		reattachUtil = injector.getInstance(ReAttachAudioUtil.class);
 	}
@@ -56,7 +54,7 @@ public class ReCreateAudioHackTest extends AbstractTestBaseWithoutAutoInjectorIn
 		newAudio = mock(Audio.class);
 		wrapper = mock(HTML5AudioMediaWrapper.class);
 		executor = mock(HTML5AudioMediaExecutor.class);
-		when(wrapper.getMediaObject()).thenReturn(oldAudio);		
+		when(wrapper.getMediaObject()).thenReturn(oldAudio);
 		when(reattachUtil.reAttachAudio(oldAudio)).thenReturn(newAudio);
 	}
 
@@ -66,25 +64,25 @@ public class ReCreateAudioHackTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 	private class CustomGinModule implements Module {
 		@Override
-		public void configure(Binder binder) {			
+		public void configure(Binder binder) {
 			binder.bind(ReAttachAudioUtil.class).toInstance(mock(ReAttachAudioUtil.class));
 		}
-	}		
-	
-    @BeforeClass
-    public static void prepareTestEnviroment() {
-    	/**
-    	 * disable GWT.create() behavior for pure JUnit testing
-    	 */
-    	GWTMockUtilities.disarm();    	
-    }
-    
-    @AfterClass
-    public static void restoreEnviroment() {
-    	/**
-    	 * restore GWT.create() behavior
-    	 */
-    	GWTMockUtilities.restore();
-    }	
+	}
+
+	@BeforeClass
+	public static void prepareTestEnviroment() {
+		/**
+		 * disable GWT.create() behavior for pure JUnit testing
+		 */
+		GWTMockUtilities.disarm();
+	}
+
+	@AfterClass
+	public static void restoreEnviroment() {
+		/**
+		 * restore GWT.create() behavior
+		 */
+		GWTMockUtilities.restore();
+	}
 
 }

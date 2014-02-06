@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
@@ -17,8 +18,6 @@ import org.mockito.stubbing.Answer;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerBuilder;
-import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerReattacher;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;

@@ -10,7 +10,7 @@ public class PositionHelper {
 
 	public int getYPositionRelativeToTarget(NativeEvent event, Element target) {
 		Touch touch = getTouch(event);
-		float positionY = 0;//hack dont change to int
+		float positionY = 0;// hack dont change to int
 		if (touch == null) {
 			positionY = getRelativeY(event, target);
 		} else {
@@ -25,14 +25,14 @@ public class PositionHelper {
 
 	/**
 	 * zwraca relatywna pozycje X zdarzenia do elementu target
-	 *
+	 * 
 	 * @param event
 	 * @param target
 	 * @return
 	 */
 	public int getXPositionRelativeToTarget(NativeEvent event, Element target) {
 		Touch touch = getTouch(event);
-		float positionX = 0; //hack dont change to int
+		float positionX = 0; // hack dont change to int
 		if (touch == null) {
 			positionX = getRelativeX(event, target);
 		} else {
@@ -54,11 +54,11 @@ public class PositionHelper {
 		return touch;
 	}
 
-	public Point getPoint(NativeEvent event, Element target){
+	public Point getPoint(NativeEvent event, Element target) {
 		return new Point(getXPositionRelativeToTarget(event, target), getYPositionRelativeToTarget(event, target));
 	}
 
-	public Point getPoint(NativeEvent event, IsWidget widget){
+	public Point getPoint(NativeEvent event, IsWidget widget) {
 		com.google.gwt.user.client.Element target = widget.asWidget().getElement();
 		return new Point(getXPositionRelativeToTarget(event, target), getYPositionRelativeToTarget(event, target));
 	}

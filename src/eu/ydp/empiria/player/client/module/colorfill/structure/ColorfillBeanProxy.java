@@ -9,14 +9,15 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ColorfillBeanProxy {
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private ColorfillInteractionStructure structure;
-	
-	public ColorfillInteractionBean getColofillBean(){
+
+	public ColorfillInteractionBean getColofillBean() {
 		return getBean();
 	}
-	
-	public List<Area> getAreas(){
+
+	public List<Area> getAreas() {
 		return getBean().getAreas().getAreas();
 	}
 

@@ -14,14 +14,13 @@ import eu.ydp.gwtutil.client.geom.Point;
 public class StickiePresenter implements IStickiePresenter {
 
 	private static final Logger LOGGER = new Logger();
-	
+
 	private final IStickieProperties stickieProperties;
 	private final StickieViewPositionFinder positionFinder;
 	private final StickieMinimizeMaximizeController minimizeMaximizeController;
 	private StickieRegistration stickieRegistration;
 
 	private IStickieView view;
-
 
 	@Inject
 	public StickiePresenter(@Assisted IStickieProperties stickieProperties, @Assisted StickieMinimizeMaximizeController minimizeMaximizeController,
@@ -36,7 +35,7 @@ public class StickiePresenter implements IStickiePresenter {
 	public void negateStickieMinimize() {
 		boolean minimized = stickieProperties.isMinimized();
 		view.setMinimized(!minimized);
-		
+
 		ContainerDimensions stickieDimensions = view.getStickieDimensions();
 
 		Point<Integer> newStickiePosition;
@@ -54,8 +53,8 @@ public class StickiePresenter implements IStickiePresenter {
 
 	@Override
 	public void deleteStickie() {
-		if(stickieRegistration == null){
-			LOGGER.severe("StickiePresenter@"+this.hashCode()+": Trying to remove already removed stickie!");
+		if (stickieRegistration == null) {
+			LOGGER.severe("StickiePresenter@" + this.hashCode() + ": Trying to remove already removed stickie!");
 			return;
 		}
 		stickieRegistration.removeStickie();
@@ -80,11 +79,11 @@ public class StickiePresenter implements IStickiePresenter {
 	}
 
 	@Override
-	public void correctStickiePosition(){
+	public void correctStickiePosition() {
 		Point<Integer> currentPosition = stickieProperties.getPosition();
 		correctAndUpdatePosition(currentPosition);
 	}
-	
+
 	private void correctAndUpdatePosition(Point<Integer> point) {
 		ContainerDimensions stickieDimensions = view.getStickieDimensions();
 		correctAndUpdatePosition(point, stickieDimensions);
@@ -102,9 +101,9 @@ public class StickiePresenter implements IStickiePresenter {
 	public void setView(IStickieView stickieView) {
 		this.view = stickieView;
 	}
-	
+
 	@Override
-	public void changeContentText(String contentText){
+	public void changeContentText(String contentText) {
 		stickieProperties.setStickieContent(contentText);
 		updateStickieView();
 	}

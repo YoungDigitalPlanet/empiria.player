@@ -120,9 +120,9 @@ public class Player {
 	}
 
 	private native void log(String message)/*-{
-		if (typeof console == 'object')
-			console.log(message);
-	}-*/;
+											if (typeof console == 'object')
+											console.log(message);
+											}-*/;
 
 	private IPlayerContainersAccessor getAccessor() {
 		if (accessor == null) {

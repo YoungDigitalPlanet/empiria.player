@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter.translation;
 
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.util.Collection;
 
@@ -46,7 +46,7 @@ public class SurfacesOffsetsCalculatorTest {
 	public void shouldFindMaxLeftOffset() throws Exception {
 		// when
 		int result = testObj.findMaxOffsetLeft(connectionItems);
-		
+
 		// then
 		assertThat(result).isEqualTo(40);
 	}
@@ -55,7 +55,7 @@ public class SurfacesOffsetsCalculatorTest {
 	public void shouldFindMinLeftOffset() throws Exception {
 		// when
 		int result = testObj.findMinOffsetLeft(connectionItems);
-		
+
 		// then
 		assertThat(result).isEqualTo(10);
 	}
@@ -64,7 +64,7 @@ public class SurfacesOffsetsCalculatorTest {
 	public void shouldFindMaxTopOffset() throws Exception {
 		// when
 		int result = testObj.findMaxOffsetTop(connectionItems);
-		
+
 		// then
 		assertThat(result).isEqualTo(40);
 	}
@@ -73,25 +73,25 @@ public class SurfacesOffsetsCalculatorTest {
 	public void shouldFindMinTopOffset() throws Exception {
 		// when
 		int result = testObj.findMinOffsetTop(connectionItems);
-		
+
 		// then
 		assertThat(result).isEqualTo(10);
 	}
-	
+
 	@Test
 	public void shouldFindMaxOffsetRight() throws Exception {
 		// when
 		int result = testObj.findMaxOffsetRight(connectionItems);
-		
+
 		// then
 		assertThat(result).isEqualTo(50);
 	}
-	
+
 	@Test
 	public void shouldFindMaxOffsetBottom() throws Exception {
 		// when
 		int result = testObj.findMaxOffsetBottom(connectionItems);
-		
+
 		// then
 		assertThat(result).isEqualTo(50);
 	}

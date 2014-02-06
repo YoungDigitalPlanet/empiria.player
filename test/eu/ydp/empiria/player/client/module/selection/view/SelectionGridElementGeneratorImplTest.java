@@ -22,9 +22,9 @@ import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
-@PrepareForTest({Widget.class})
+@PrepareForTest({ Widget.class })
 public class SelectionGridElementGeneratorImplTest {
-	
+
 	@Mock
 	private InlineBodyGeneratorSocket inlineBodyGenerator;
 
@@ -37,35 +37,32 @@ public class SelectionGridElementGeneratorImplTest {
 	private SelectionGridElementGeneratorImpl selectionGridElementGeneratorImpl;
 
 	private SelectionGridElementGeneratorImpl gridElementGenerator;
-	
+
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
 	}
-	
+
 	@AfterClass
 	public static void rearm() {
 		GWTMockUtilities.restore();
 	}
-	
-	@Before 
+
+	@Before
 	public void setup() {
 		userInteractionHandlerFactory = mock(UserInteractionHandlerFactory.class);
 		styleNameConstants = mock(StyleNameConstants.class);
 		inlineBodyGenerator = mock(InlineBodyGeneratorSocket.class);
-		
-		gridElementGenerator = new SelectionGridElementGeneratorImpl(
-				styleNameConstants, 
-				userInteractionHandlerFactory);
+
+		gridElementGenerator = new SelectionGridElementGeneratorImpl(styleNameConstants, userInteractionHandlerFactory);
 		gridElementGenerator.setInlineBodyGenerator(inlineBodyGenerator);
 	}
-	
+
 	@Test
 	public void testGetButtonElementPositionFor() throws Exception {
 		SelectionGridElementPosition buttonPosition = gridElementGenerator.getButtonElementPositionFor(0, 0);
 
-		
-		//then
+		// then
 		Assert.assertEquals(buttonPosition.getColumnNumber(), 1);
 		Assert.assertEquals(buttonPosition.getRowNumber(), 1);
 	}
@@ -73,9 +70,8 @@ public class SelectionGridElementGeneratorImplTest {
 	@Test
 	public void testGetChoiceLabelElementPosition() throws Exception {
 		SelectionGridElementPosition choicePosition = gridElementGenerator.getChoiceLabelElementPosition(0);
-		
-		
-		//then
+
+		// then
 		Assert.assertEquals(choicePosition.getColumnNumber(), 1);
 		Assert.assertEquals(choicePosition.getRowNumber(), 0);
 	}
@@ -83,9 +79,8 @@ public class SelectionGridElementGeneratorImplTest {
 	@Test
 	public void testGetItemLabelElementPosition() throws Exception {
 		SelectionGridElementPosition itemPosition = gridElementGenerator.getItemLabelElementPosition(0);
-		
 
-		//then
+		// then
 		Assert.assertEquals(itemPosition.getColumnNumber(), 0);
 		Assert.assertEquals(itemPosition.getRowNumber(), 1);
 	}

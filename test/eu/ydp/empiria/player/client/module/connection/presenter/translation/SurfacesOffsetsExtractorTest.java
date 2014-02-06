@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.module.connection.presenter.translation;
 
-import static eu.ydp.empiria.player.client.module.connection.ConnectionItemFluentMockBuilder.*;
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static eu.ydp.empiria.player.client.module.connection.ConnectionItemFluentMockBuilder.newConnectionItem;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.util.Collection;
 import java.util.List;
@@ -56,24 +56,24 @@ public class SurfacesOffsetsExtractorTest {
 		// then
 		assertThat(result).containsOnly(20, 30, 40, 50);
 	}
-	
+
 	@Test
 	public void shouldGetRightOffsetsOnly() {
 		// when
 		Collection<Integer> result = testObj.extractRightOffsets(connectionItems);
-		
+
 		// then
 		assertThat(result).containsOnly(60, 70, 80, 90);
 	}
-	
+
 	@Test
 	public void shouldGetBottomOffsetsOnly() {
 		// when
 		Collection<Integer> result = testObj.extractBottomOffsets(connectionItems);
-		
+
 		// then
 		assertThat(result).containsOnly(120, 130, 140, 150);
-		
+
 	}
 
 }

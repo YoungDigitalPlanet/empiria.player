@@ -64,7 +64,7 @@ public class ProgressAssetProviderTest {
 		map.put(0, Lists.newArrayList(dto0_1));
 		map.put(100, Lists.newArrayList(dto100_1, dto100_2, dto100_3));
 		when(configResolver.resolveProgressConfig()).thenReturn(map);
-		
+
 		when(random.nextInt(3)).thenReturn(ID);
 
 		// when

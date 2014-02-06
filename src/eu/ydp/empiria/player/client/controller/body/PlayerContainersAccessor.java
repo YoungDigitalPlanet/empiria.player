@@ -9,20 +9,24 @@ public class PlayerContainersAccessor implements IPlayerContainersAccessor {
 
 	private Map<Integer, HasWidgets> itemContainers = new HashMap<Integer, HasWidgets>();
 	private HasWidgets playerContainer;
-	
-	public void registerItemBodyContainer(int itemIndex, HasWidgets container){
+
+	@Override
+	public void registerItemBodyContainer(int itemIndex, HasWidgets container) {
 		this.itemContainers.put(itemIndex, container);
 	}
-	
-	public HasWidgets getItemBodyContainer(int itemIndex){
+
+	@Override
+	public HasWidgets getItemBodyContainer(int itemIndex) {
 		return itemContainers.get(itemIndex);
 	}
-	
-	public void setPlayerContainer(HasWidgets playerContainer){
+
+	@Override
+	public void setPlayerContainer(HasWidgets playerContainer) {
 		this.playerContainer = playerContainer;
 	}
-		
-	public HasWidgets getPlayerContainer(){
+
+	@Override
+	public HasWidgets getPlayerContainer() {
 		return playerContainer;
 	}
 

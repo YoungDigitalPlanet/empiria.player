@@ -35,8 +35,8 @@ public class PageEvent extends AbstractEvent<PageEventHandler, PageEventTypes> {
 		return types.getType(type);
 	}
 
-	public static Type<PageEventHandler, PageEventTypes>[] getTypes(PageEventTypes... typeList){
-		return typeList.length >0  ? types.getTypes(typeList) :  new Type[0];
+	public static Type<PageEventHandler, PageEventTypes>[] getTypes(PageEventTypes... typeList) {
+		return typeList.length > 0 ? types.getTypes(typeList) : new Type[0];
 	}
 
 }

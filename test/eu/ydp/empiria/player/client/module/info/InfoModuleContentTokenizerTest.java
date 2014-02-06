@@ -17,50 +17,51 @@ import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token
 
 @RunWith(MockitoJUnitRunner.class)
 public class InfoModuleContentTokenizerTest {
-	@InjectMocks private InfoModuleContentTokenizer instance;
+	@InjectMocks
+	private InfoModuleContentTokenizer instance;
 
 	@Test
-	public void getAllTokens_NoInfoTokens(){
+	public void getAllTokens_NoInfoTokens() {
 		List<Token> allTokens = instance.getAllTokens("string string");
 		assertThat(allTokens).isNotEmpty();
 	}
 
 	@Test
-	public void getAllTokens_InfoTokenOnFirstPosition(){
+	public void getAllTokens_InfoTokenOnFirstPosition() {
 		String firstToken = "$[string]";
 		String lastToken = " string";
-		assertThatTokensExistsInCorrectOrder(Lists.newArrayList(firstToken,lastToken));
+		assertThatTokensExistsInCorrectOrder(Lists.newArrayList(firstToken, lastToken));
 	}
 
 	@Test
-	public void getAllTokens_DollarSignInContent(){
-		ArrayList<String> tokens = Lists.newArrayList(" ","$[a]","$","$[q]"," ");
+	public void getAllTokens_DollarSignInContent() {
+		ArrayList<String> tokens = Lists.newArrayList(" ", "$[a]", "$", "$[q]", " ");
 		assertThatTokensExistsInCorrectOrder(tokens);
 	}
 
 	@Test
-	public void getAllTokens_InfoTokenOnLastPosition(){
+	public void getAllTokens_InfoTokenOnLastPosition() {
 		String firstToken = "string ";
 		String lastToken = "$[string]";
-		assertThatTokensExistsInCorrectOrder(Lists.newArrayList(firstToken,lastToken));
+		assertThatTokensExistsInCorrectOrder(Lists.newArrayList(firstToken, lastToken));
 	}
 
 	@Test
 	public void getAllTokens() throws Exception {
-		final List<String> requiredTokens = Lists.newArrayList(" ","$[item.title]","\\", "$[token2]",". . ", "$[token2]"," -- ");
+		final List<String> requiredTokens = Lists.newArrayList(" ", "$[item.title]", "\\", "$[token2]", ". . ", "$[token2]", " -- ");
 		assertThatTokensExistsInCorrectOrder(requiredTokens);
 	}
 
 	@Test
 	public void fieldInfoTokensTest() {
-		List<String> infoTokens = Lists.newArrayList("$[item.title]","$[token2]","$[token2]");
-		List<String> requiredTokens = Lists.newArrayList(" ","$[item.title]","\\", "$[token2]",". . ", "$[token2]"," -- ");
+		List<String> infoTokens = Lists.newArrayList("$[item.title]", "$[token2]", "$[token2]");
+		List<String> requiredTokens = Lists.newArrayList(" ", "$[item.title]", "\\", "$[token2]", ". . ", "$[token2]", " -- ");
 		String contentWithTokens = Joiner.on("").join(requiredTokens);
 		Iterable<Token> tokens = instance.getAllTokens(contentWithTokens);
-		for(Token token : tokens){
-			if(infoTokens.contains(token.getName())){
+		for (Token token : tokens) {
+			if (infoTokens.contains(token.getName())) {
 				assertThat(token.isFieldInfo()).isTrue();
-			}else{
+			} else {
 				assertThat(token.isFieldInfo()).isFalse();
 			}
 		}
@@ -73,17 +74,17 @@ public class InfoModuleContentTokenizerTest {
 		assertThat(allTokens).hasSize(requiredTokens.size());
 		assertThat(allTokens).doesNotContainNull();
 		assertThatAllTokenExists(allTokens, requiredTokens);
-		assertTokensOrder(allTokens,requiredTokens);
+		assertTokensOrder(allTokens, requiredTokens);
 	}
 
-	private void assertTokensOrder(List<Token> tokens,List<String> requiredTokens) {
-		for(int x=0; x<tokens.size();++x){
+	private void assertTokensOrder(List<Token> tokens, List<String> requiredTokens) {
+		for (int x = 0; x < tokens.size(); ++x) {
 			assertThat(tokens.get(x).getName()).isEqualTo(requiredTokens.get(x));
 		}
 	}
 
-	private void assertThatAllTokenExists(List<Token> tokens,List<String> requiredTokens) {
-		for(Token token : tokens){
+	private void assertThatAllTokenExists(List<Token> tokens, List<String> requiredTokens) {
+		for (Token token : tokens) {
 			assertThat(token.getName()).isNotNull();
 			assertThat(requiredTokens).contains(token.getName());
 		}

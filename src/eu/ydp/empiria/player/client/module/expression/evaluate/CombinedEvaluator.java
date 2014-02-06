@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
-
 public class CombinedEvaluator implements Evaluator {
 
 	private ExpressionEvaluator expressionEvaluator;
@@ -17,8 +16,8 @@ public class CombinedEvaluator implements Evaluator {
 	}
 
 	@Override
-	public boolean evaluate(ExpressionBean bean) {		
-		return expressionEvaluator.evaluate(bean) &&  commutationEvaluator.evaluate(bean);
+	public boolean evaluate(ExpressionBean bean) {
+		return expressionEvaluator.evaluate(bean) && commutationEvaluator.evaluate(bean);
 	}
-	
+
 }

@@ -48,8 +48,8 @@ public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 		}
 	}
 
-	protected void playIfRequired(){
-		if(playAfterStop){
+	protected void playIfRequired() {
+		if (playAfterStop) {
 			firePlayEvent(mediaWrapper);
 			playAfterStop = false;
 		}
@@ -58,6 +58,7 @@ public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 	protected boolean isPlayed() {
 		return plaing;
 	}
+
 	public void setPlayed(boolean isPlayed) {
 		this.plaing = isPlayed;
 	}

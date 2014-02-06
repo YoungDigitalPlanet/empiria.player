@@ -41,10 +41,10 @@ public class MediaWrappersPair implements MediaEventHandler {
 	@PostConstruct
 	public void postConstruct() {
 		if (isSynchronizationNeeded()) { // powoduje problemy na
-														// mobilnych
+											// mobilnych
 			// synchronizacja pomiedzy dwoma obiektami video
 			HandlerRegistration addHandlerToSource = eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_OPEN),
-					fullScreanMediaWrapper, this,pageScopeFactory.getCurrentPageScope());
+					fullScreanMediaWrapper, this, pageScopeFactory.getCurrentPageScope());
 			handlersRegistration.add(addHandlerToSource);
 			addHandlerToSource = eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_EXIT), fullScreanMediaWrapper, this,
 					pageScopeFactory.getCurrentPageScope());
@@ -54,13 +54,13 @@ public class MediaWrappersPair implements MediaEventHandler {
 
 	private boolean isSynchronizationNeeded() {
 		boolean isSynchronizationNeeded = true;
-		
-		if(isMobileButNotFirefox()){
+
+		if (isMobileButNotFirefox()) {
 			isSynchronizationNeeded = false;
-		}else if(UserAgentChecker.isUserAgent(UserAgent.SAFARI)){
+		} else if (UserAgentChecker.isUserAgent(UserAgent.SAFARI)) {
 			isSynchronizationNeeded = false;
 		}
-		
+
 		return isSynchronizationNeeded;
 	}
 

@@ -5,5 +5,4 @@ import eu.ydp.empiria.player.client.module.IStateful;
 
 public interface ModuleInterferenceSocket extends JsSocketHolder, IActivity, IStateful {
 
-
 }

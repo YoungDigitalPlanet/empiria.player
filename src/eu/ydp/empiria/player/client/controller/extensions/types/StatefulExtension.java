@@ -4,5 +4,4 @@ import eu.ydp.empiria.player.client.module.IStateful;
 
 public interface StatefulExtension extends IStateful {
 
-	
 }

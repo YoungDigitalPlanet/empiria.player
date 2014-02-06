@@ -22,10 +22,10 @@ public class PageInPageModule extends SimpleModuleBase implements Factory<PageIn
 	@Inject
 	protected ModuleProviderFactory providerFactory;
 
-
 	protected MultiPageController controller = PlayerGinjectorFactory.getPlayerGinjector().getMultiPage();
+
 	@Override
-	public void initModule(Element element) { //NOPMD
+	public void initModule(Element element) { // NOPMD
 	}
 
 	@Override

@@ -93,7 +93,7 @@ public class StickieView extends Composite implements IStickieView {
 
 	private void addTransitionEndHandler() {
 		rootStickiePanel.addDomHandler(new TransitionEndHandler() {
-			
+
 			@Override
 			public void onTransitionEnd(TransitionEndEvent event) {
 				presenter.correctStickiePosition();
@@ -179,8 +179,7 @@ public class StickieView extends Composite implements IStickieView {
 			public void onPreviewNativeEvent(NativePreviewEvent event) {
 				Event nativeEvent = Event.as(event.getNativeEvent());
 				EventTarget target = nativeEvent.getEventTarget();
-				if (Element.is(target) && nativeEvent.getType()
-						.equals("mousedown") && (!getElement().isOrHasChild(Element.as(target)))) {
+				if (Element.is(target) && nativeEvent.getType().equals("mousedown") && (!getElement().isOrHasChild(Element.as(target)))) {
 					contentTextBlurHandler(null);
 					minimizeHandler(null);
 				}
@@ -193,8 +192,8 @@ public class StickieView extends Composite implements IStickieView {
 	public void contentTextKeyDownHandler(KeyDownEvent event) {
 		takeOverKeyInput = (isFirstKeyInputAfterClickOnAndroid() && contentText.getCursorPos() == 0);
 	}
-	
-	private boolean isFirstKeyInputAfterClickOnAndroid(){
+
+	private boolean isFirstKeyInputAfterClickOnAndroid() {
 		return android && firstKeyInputAfterClick;
 	}
 
@@ -227,14 +226,12 @@ public class StickieView extends Composite implements IStickieView {
 				contentText.setVisible(true);
 				contentText.setFocus(true);
 				if (!android) {
-					contentText.setSelectionRange(contentText.getText()
-							.length(), 0);
+					contentText.setSelectionRange(contentText.getText().length(), 0);
 				}
 				firstKeyInputAfterClick = true;
 				windowToStickieScroller.scrollToStickie(getAbsoluteTop());
 			} else {
-				contentText.getElement()
-						.blur();
+				contentText.getElement().blur();
 				contentText.removeFromParent();
 			}
 			labelPanel.setVisible(!edit);
@@ -287,7 +284,7 @@ public class StickieView extends Composite implements IStickieView {
 
 	@Override
 	public ContainerDimensions getParentDimensions() {
-		return widgetSizeHelper.getContainerDimensions((Widget)parent);
+		return widgetSizeHelper.getContainerDimensions((Widget) parent);
 	}
 
 	private void removePreventHandlerRegistration() {

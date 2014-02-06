@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.module.info;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.MISTAKES;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -33,8 +31,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActi
 import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
 
 @RunWith(MockitoJUnitRunner.class)
-public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit{
-
+public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private class CustomGinModule implements Module {
 		@Override
@@ -46,9 +43,12 @@ public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInj
 
 	private VariableInterpreter interpreter;
 
-	@Mock private DataSourceDataSupplier sourceSupplier;
-	@Mock private SessionDataSupplier sessionSupplier;
+	@Mock
+	private DataSourceDataSupplier sourceSupplier;
+	@Mock
+	private SessionDataSupplier sessionSupplier;
 	private final InfoModuleContentTokenizer contentTokenizer = new InfoModuleContentTokenizer();
+
 	@Before
 	public void initialize() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
@@ -56,7 +56,7 @@ public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInj
 	}
 
 	@Test
-	public void shouldReturnCorrectContentString(){
+	public void shouldReturnCorrectContentString() {
 		ItemSessionDataSocket itemSessionDataSocketPage0 = createItemSessionDataSocketForFirstPage();
 		ItemSessionDataSocket itemSessionDataSocketPage1 = createItemSessionDataSocketForSecondPage();
 		AssessmentSessionDataSocket assessmentSessionDataSocket = mock(AssessmentSessionDataSocket.class);
@@ -76,51 +76,30 @@ public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInj
 
 		when(assessmentVariableSocket.getVariableValue(DONE.toString())).thenReturn(outcomeCreator.createDoneOutcome(2));
 
-		List<ContentInfo> infos = Lists.newArrayList(
-					ContentInfo.create("$[item.title]", "Page 1", 0),
-					ContentInfo.create("$[item.title]", "Page 2", 1),
-					ContentInfo.create("$[test.title]", "Lesson 1", 0),
-					ContentInfo.create("$[item.index]", "1", 0),
-					ContentInfo.create("$[item.index]", "2", 1),
-					ContentInfo.create("$[item.page_num]", "1", 0),
-					ContentInfo.create("$[item.page_count]", "1", 0),
-					ContentInfo.create("$[item.todo]", "3", 0),
-					ContentInfo.create("$[item.todo]", "5", 1),
-					ContentInfo.create("$[item.done]", "0", 0),
-					ContentInfo.create("$[item.done]", "4", 1),
-					ContentInfo.create("$[item.checks]", "0", 0),
-					ContentInfo.create("$[item.checks]", "6", 1),
-					ContentInfo.create("$[item.mistakes]", "0", 0),
-					ContentInfo.create("$[item.mistakes]", "3", 1),
-					ContentInfo.create("$[item.show_answers]", "0", 0),
-					ContentInfo.create("$[item.show_answers]", "2", 1),
-					ContentInfo.create("$[item.reset]", "0", 0),
-					ContentInfo.create("$[item.reset]", "10", 1),
-					ContentInfo.create("$[item.result]", "0", 0),
-					ContentInfo.create("$[item.result]", "80", 1),
-					ContentInfo.create("$[test.todo]", "0", 0),
-					ContentInfo.create("$[test.done]", "2", 0),
-					ContentInfo.create("$[test.checks]", "0", 0),
-					ContentInfo.create("$[test.mistakes]", "0", 0),
-					ContentInfo.create("$[test.show_answers]", "0", 0),
-					ContentInfo.create("$[test.reset]", "0", 0),
-					ContentInfo.create("$[test.result]", "0", 0),
-					ContentInfo.create("$[item.title], $[test.title] result is $[test.result]%", "Page 1, Lesson 1 result is 0%", 0)
-				);
+		List<ContentInfo> infos = Lists.newArrayList(ContentInfo.create("$[item.title]", "Page 1", 0), ContentInfo.create("$[item.title]", "Page 2", 1),
+				ContentInfo.create("$[test.title]", "Lesson 1", 0), ContentInfo.create("$[item.index]", "1", 0), ContentInfo.create("$[item.index]", "2", 1),
+				ContentInfo.create("$[item.page_num]", "1", 0), ContentInfo.create("$[item.page_count]", "1", 0), ContentInfo.create("$[item.todo]", "3", 0),
+				ContentInfo.create("$[item.todo]", "5", 1), ContentInfo.create("$[item.done]", "0", 0), ContentInfo.create("$[item.done]", "4", 1),
+				ContentInfo.create("$[item.checks]", "0", 0), ContentInfo.create("$[item.checks]", "6", 1), ContentInfo.create("$[item.mistakes]", "0", 0),
+				ContentInfo.create("$[item.mistakes]", "3", 1), ContentInfo.create("$[item.show_answers]", "0", 0),
+				ContentInfo.create("$[item.show_answers]", "2", 1), ContentInfo.create("$[item.reset]", "0", 0), ContentInfo.create("$[item.reset]", "10", 1),
+				ContentInfo.create("$[item.result]", "0", 0), ContentInfo.create("$[item.result]", "80", 1), ContentInfo.create("$[test.todo]", "0", 0),
+				ContentInfo.create("$[test.done]", "2", 0), ContentInfo.create("$[test.checks]", "0", 0), ContentInfo.create("$[test.mistakes]", "0", 0),
+				ContentInfo.create("$[test.show_answers]", "0", 0), ContentInfo.create("$[test.reset]", "0", 0), ContentInfo.create("$[test.result]", "0", 0),
+				ContentInfo.create("$[item.title], $[test.title] result is $[test.result]%", "Page 1, Lesson 1 result is 0%", 0));
 
-		for(ContentInfo info: infos){
+		for (ContentInfo info : infos) {
 			assertInfo(info);
 		}
 	}
 
-	private ItemSessionDataSocket createItemSessionDataSocketForFirstPage(){
+	private ItemSessionDataSocket createItemSessionDataSocketForFirstPage() {
 		OutcomeCreator outcomeCreator = new OutcomeCreator();
 		ItemSessionDataSocket itemSessionDataSocket = mock(ItemSessionDataSocket.class);
 		VariableProviderSocket itemVariableSocketPage = mock(VariableProviderSocket.class);
 
 		when(itemVariableSocketPage.getVariableValue(TODO.toString())).thenReturn(outcomeCreator.createTodoOutcome(3));
 		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocketPage);
-
 
 		return itemSessionDataSocket;
 	}
@@ -146,7 +125,8 @@ public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInj
 		String content = String.format(template, info.getContentTag());
 		String expectedValue = String.format(template, info.getExpectedValue());
 		List<Token> allTokens = contentTokenizer.getAllTokens(content);
-		assertThat(info.getContentTag() + " page: " + info.getRefItemIndex(), interpreter.replaceAllTags(allTokens, info.getRefItemIndex()), is(equalTo(expectedValue)));
+		assertThat(info.getContentTag() + " page: " + info.getRefItemIndex(), interpreter.replaceAllTags(allTokens, info.getRefItemIndex()),
+				is(equalTo(expectedValue)));
 	}
 
 	private static class ContentInfo {

@@ -37,7 +37,7 @@ public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
 
 	@PostConstruct
 	public void registerEvents() {
-		attachHandlerImpl = attachHandlerFactory.createAttachHandler((HTML5VideoMediaExecutor)getMediaExecutor(), this);
+		attachHandlerImpl = attachHandlerFactory.createAttachHandler((HTML5VideoMediaExecutor) getMediaExecutor(), this);
 		if (isHTML5VideoForcePosterNeeded()) {
 			HTML5VideoForcePosterHack html5VideoForcePosterHack = new HTML5VideoForcePosterHack(getMediaBase(), html5MediaExecutorDelegator);
 			addHandlerRegistration(MediaEventTypes.SUSPEND,
@@ -55,7 +55,7 @@ public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
 	public void setMediaExecutor(AbstractHTML5MediaExecutor mediaExecutor) {
 		super.setMediaExecutor(mediaExecutor);
 		if (attachHandlerImpl != null) {
-			attachHandlerImpl.setMediaExecutor((HTML5VideoMediaExecutor)mediaExecutor);
+			attachHandlerImpl.setMediaExecutor((HTML5VideoMediaExecutor) mediaExecutor);
 		}
 		html5MediaExecutorDelegator.setExecutor(mediaExecutor);
 	}

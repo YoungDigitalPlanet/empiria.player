@@ -1,14 +1,12 @@
 package eu.ydp.empiria.player.client.module.media.fullscreen;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.dom.client.Style;
@@ -32,11 +30,13 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest({ NativeHTML5FullScreenHelper.class,Style.class, com.google.gwt.user.client.Element.class,com.google.gwt.dom.client.Element.class, FlowPanel.class})
+@PrepareForTest({ NativeHTML5FullScreenHelper.class, Style.class, com.google.gwt.user.client.Element.class, com.google.gwt.dom.client.Element.class,
+		FlowPanel.class })
 public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	private VideoFullScreenHelper instance = null;
 	private EventsBus eventsBus = null;
 	private NativeHTML5FullScreenHelper fullScreenHelper;
+
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
@@ -45,6 +45,7 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
 
 		}
 	}
+
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
@@ -55,63 +56,62 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
 		GWTMockUtilities.restore();
 	}
 
-
 	public void before(String userAgent) {
 		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(userAgent));
 		setUp(new Class[0], new Class[0], new Class[] { EventsBus.class }, new CustomGuiceModule());
-		fullScreenHelper  = injector.getInstance(NativeHTML5FullScreenHelper.class);
+		fullScreenHelper = injector.getInstance(NativeHTML5FullScreenHelper.class);
 		instance = injector.getInstance(VideoFullScreenHelper.class);
-		instance.postConstruct(); //nie dziala z automatu na mokach
+		instance.postConstruct(); // nie dziala z automatu na mokach
 		eventsBus = injector.getInstance(EventsBus.class);
 
 	}
 
 	@Test
-	public void initTest(){
+	public void initTest() {
 		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
-		verify(fullScreenHelper).addFullScreenEventHandler(Mockito.any(VideoFullScreenEventHandler.class));
+		verify(fullScreenHelper).addFullScreenEventHandler(Matchers.any(VideoFullScreenEventHandler.class));
 	}
 
 	@Test
-	public void openFullScreenDesktopTest(){
+	public void openFullScreenDesktopTest() {
 		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
-		doNothing().when(instance).openFullScreenDesktop(Mockito.any(MediaWrapper.class), Mockito.any(Element.class));
+		doNothing().when(instance).openFullScreenDesktop(Matchers.any(MediaWrapper.class), Matchers.any(Element.class));
 		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
-		verify(instance).openFullScreenDesktop(Mockito.any(MediaWrapper.class), Mockito.any(Element.class));
+		verify(instance).openFullScreenDesktop(Matchers.any(MediaWrapper.class), Matchers.any(Element.class));
 	}
 
 	@Test
-	public void openFullScreenMobileTest(){
+	public void openFullScreenMobileTest() {
 		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_ANDROID);
-		doNothing().when(instance).openFullScreenMobile(Mockito.any(MediaWrapper.class), Mockito.any(MediaWrapper.class));
+		doNothing().when(instance).openFullScreenMobile(Matchers.any(MediaWrapper.class), Matchers.any(MediaWrapper.class));
 		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
-		verify(instance).openFullScreenMobile(Mockito.any(MediaWrapper.class), Mockito.any(MediaWrapper.class));
+		verify(instance).openFullScreenMobile(Matchers.any(MediaWrapper.class), Matchers.any(MediaWrapper.class));
 	}
 
 	@Test
-	public void openFullScreenSafariTest(){
+	public void openFullScreenSafariTest() {
 		before(UserAgentCheckerNativeInterfaceMock.SAFARI);
-		doNothing().when(instance).openFullScreenMobile(Mockito.any(MediaWrapper.class), Mockito.any(MediaWrapper.class));
+		doNothing().when(instance).openFullScreenMobile(Matchers.any(MediaWrapper.class), Matchers.any(MediaWrapper.class));
 		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
-		verify(instance).openFullScreenMobile(Mockito.any(MediaWrapper.class), Mockito.any(MediaWrapper.class));
+		verify(instance).openFullScreenMobile(Matchers.any(MediaWrapper.class), Matchers.any(MediaWrapper.class));
 	}
 
 	@Test
-	public void openFullScreenIETest(){
+	public void openFullScreenIETest() {
 		before(UserAgentCheckerNativeInterfaceMock.IE_9);
-		doNothing().when(instance).openFullscreenIE(Mockito.any(MediaWrapper.class), Mockito.any(Element.class));
+		doNothing().when(instance).openFullscreenIE(Matchers.any(MediaWrapper.class), Matchers.any(Element.class));
 		instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
-		verify(instance).openFullscreenIE(Mockito.any(MediaWrapper.class), Mockito.any(Element.class));
+		verify(instance).openFullscreenIE(Matchers.any(MediaWrapper.class), Matchers.any(Element.class));
 	}
 
 	@Test
-	public void closeFullScreenTest(){
+	public void closeFullScreenTest() {
 		before(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
 		doNothing().when(instance).clearFullScreenView();
 		instance.closeFullScreen();
 		verify(fullScreenHelper).exitFullScreen();
 		verify(instance).closeFullScreen();
-		verify(eventsBus).fireEventFromSource(Mockito.any(MediaEvent.class), Mockito.any(MediaWrapper.class),Mockito.any(PageScope.class));
+		verify(eventsBus).fireEventFromSource(Matchers.any(MediaEvent.class), Matchers.any(MediaWrapper.class), Matchers.any(PageScope.class));
 	}
 
 }

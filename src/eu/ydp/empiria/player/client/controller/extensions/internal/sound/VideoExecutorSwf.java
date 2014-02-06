@@ -21,25 +21,25 @@ public class VideoExecutorSwf extends ExecutorSwf {
 		FlowPanel flowPanel = new FlowPanel();
 		FlashVideo video = FlashVideoFactory.createVideo(source, flowPanel, baseMediaConfiguration.getWidth(), baseMediaConfiguration.getHeight());
 		flashMedia = video;
-		if(this.mediaWrapper instanceof SwfMediaWrapper){
+		if (this.mediaWrapper instanceof SwfMediaWrapper) {
 			((SwfMediaWrapper) this.mediaWrapper).setMediaWidget(flowPanel);
 		}
-			if (baseMediaConfiguration.getNarrationText().trim().length() > 0 ) {
-				final TextTrack textTrack = textTrackFactory.getTextTrack(TextTrackKind.SUBTITLES, mediaWrapper);
-				//FIXME do poprawy gdy narrationScript bedzie zawieral informacje o czasie wyswietlania
-				//zamiast Double.MAX_VALUE tu powinna sie znalezc wartosc czasowa okreslajaca
-				//kiedy napis znika poniewaz w tej chwili narrationScript nie posiada takiej informacji
-				//przypisuje najwieksza dostepna wartosc
-				textTrack.addCue(new TextTrackCue(Document.get().createUniqueId(), 0, Double.MAX_VALUE, baseMediaConfiguration.getNarrationText()));
-				eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), mediaWrapper, new MediaEventHandler() {
+		if (baseMediaConfiguration.getNarrationText().trim().length() > 0) {
+			final TextTrack textTrack = textTrackFactory.getTextTrack(TextTrackKind.SUBTITLES, mediaWrapper);
+			// FIXME do poprawy gdy narrationScript bedzie zawieral informacje o czasie wyswietlania
+			// zamiast Double.MAX_VALUE tu powinna sie znalezc wartosc czasowa okreslajaca
+			// kiedy napis znika poniewaz w tej chwili narrationScript nie posiada takiej informacji
+			// przypisuje najwieksza dostepna wartosc
+			textTrack.addCue(new TextTrackCue(Document.get().createUniqueId(), 0, Double.MAX_VALUE, baseMediaConfiguration.getNarrationText()));
+			eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), mediaWrapper, new MediaEventHandler() {
 
-					@Override
-					public void onMediaEvent(MediaEvent event) {
-						textTrack.setCurrentTime(mediaWrapper.getCurrentTime());
-					}
-				}, new CurrentPageScope());
+				@Override
+				public void onMediaEvent(MediaEvent event) {
+					textTrack.setCurrentTime(mediaWrapper.getCurrentTime());
+				}
+			}, new CurrentPageScope());
 
-			}
+		}
 		super.init();
 	}
 

@@ -1,8 +1,7 @@
 package eu.ydp.empiria.player.client.resources;
 
 /**
- * CSS rules may be used to control modules options specific to Empiria.
- * All Empiria style attributes' names start with "-empiria".
+ * CSS rules may be used to control modules options specific to Empiria. All Empiria style attributes' names start with "-empiria".
  */
 @SuppressWarnings("PMD")
 public final class EmpiriaStyleNameConstants {

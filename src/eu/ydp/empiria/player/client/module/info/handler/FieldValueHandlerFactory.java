@@ -5,11 +5,11 @@ import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataS
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 
 public interface FieldValueHandlerFactory {
-	
+
 	ProviderValueHandler getProviderValueHandler(SessionDataSupplier sessionDataSupplier);
-	
+
 	TitleValueHandler getTitleValueHandler(DataSourceDataSupplier dataSupplier);
-	
+
 	ItemIndexValueHandler getItemIndexValueHandler();
 
 	PageCountValueHandler getPageCountValueHandler(DataSourceDataSupplier dataSourceDataSupplier);

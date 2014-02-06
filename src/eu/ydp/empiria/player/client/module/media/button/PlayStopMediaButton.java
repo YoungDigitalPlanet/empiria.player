@@ -11,13 +11,13 @@ public class PlayStopMediaButton extends AbstractPlayMediaButton<PlayStopMediaBu
 	@Inject
 	public PlayStopMediaButton(StyleNameConstants styleNames) {
 		super(styleNames.QP_MEDIA_PLAY_STOP());
-	}	
+	}
 
 	@Override
-	protected boolean initButtonStyleChangeHandlersCondition() {	
+	protected boolean initButtonStyleChangeHandlersCondition() {
 		return getMediaAvailableOptions().isStopSupported();
-	}	
-	
+	}
+
 	@Override
 	protected MediaEvent createMediaEvent() {
 		MediaEvent mediaEvent;

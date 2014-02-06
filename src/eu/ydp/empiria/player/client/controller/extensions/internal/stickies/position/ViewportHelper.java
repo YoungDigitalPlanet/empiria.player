@@ -6,7 +6,7 @@ import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public class ViewportHelper {
 
-	Rectangle getViewport(){
+	Rectangle getViewport() {
 		return new Rectangle(Window.getScrollLeft(), Window.getScrollTop(), Window.getClientWidth(), Window.getClientHeight());
 	}
 }

@@ -15,35 +15,22 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.condition.Coun
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
 
 public class FeedbackBeanJUnitTest extends GWTTestCase {
-	
+
 	private FeedbackBean feedback;
-	
-	private final String xmlString = "<feedback>" +
-									"<condition>" +
-										"<and>" +
-											"<countCondition count=\"3\" operator=\"==\">" +
-												"<propertyCondition operator=\"&gt;=\" property=\"wrong\" value=\"1\"/>" +
-												"<propertyCondition property=\"ok\"/>" +
-											"</countCondition>" +
-										"</and>" +
-									"</condition>" +
-									"<action>" +
-										"<showText>testowy tekst</showText>" +
-										"<showUrl href=\"sound.mp3\" type=\"narration\">" +
-											"<source src=\"sound.mp3\" type=\"audio/mp4\"/>" +
-											"<source src=\"sound.ogg\" type=\"audio/ogg\"/>" +
-										"</showUrl>" +
-										"<showUrl href=\"video.swf\" type=\"video\" />" +
-									"</action>" +
-								"</feedback>";
-	
+
+	private final String xmlString = "<feedback>" + "<condition>" + "<and>" + "<countCondition count=\"3\" operator=\"==\">"
+			+ "<propertyCondition operator=\"&gt;=\" property=\"wrong\" value=\"1\"/>" + "<propertyCondition property=\"ok\"/>" + "</countCondition>"
+			+ "</and>" + "</condition>" + "<action>" + "<showText>testowy tekst</showText>" + "<showUrl href=\"sound.mp3\" type=\"narration\">"
+			+ "<source src=\"sound.mp3\" type=\"audio/mp4\"/>" + "<source src=\"sound.ogg\" type=\"audio/ogg\"/>" + "</showUrl>"
+			+ "<showUrl href=\"video.swf\" type=\"video\" />" + "</action>" + "</feedback>";
+
 	@Override
 	protected void gwtSetUp() throws Exception {
 		FeedbackParserFactory feedbackParserFactory = GWT.create(FeedbackParserFactory.class);
 		feedback = feedbackParserFactory.create().parse(xmlString);
 		super.gwtSetUp();
 	}
-	
+
 	public void testShouldHaveActionAndCondition() {
 		assertNotNull(feedback.getCondition());
 		assertNotNull(feedback.getCondition());
@@ -52,25 +39,25 @@ public class FeedbackBeanJUnitTest extends GWTTestCase {
 	public void testShouldHaveFirstLevelConditions() {
 		assertTrue(feedback.getCondition() instanceof AndConditionBean);
 	}
-	
+
 	public void testShouldHaveCountCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		assertTrue(andConditionBean.getAllConditions().get(0) instanceof CountConditionBean);
 	}
-	
+
 	public void testShouldHaveCorrectAttributesInCountCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		assertTrue(countConditionBean.getCount() == 3);
 		assertTrue(countConditionBean.getOperator().equals("=="));
 	}
-	
+
 	public void testShouldHavePropertyCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
 		assertTrue(countConditionBean.getAllConditions().get(0) instanceof PropertyConditionBean);
 	}
-	
+
 	public void testShouldHaveCorrectAttributesInPropertyCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
@@ -79,7 +66,7 @@ public class FeedbackBeanJUnitTest extends GWTTestCase {
 		assertTrue(propertyConditionBean.getValue().equals("1"));
 		assertTrue(propertyConditionBean.getOperator().equals(">="));
 	}
-	
+
 	public void testShouldHaveCorrectDefaultAttributesInPropertyCondition() {
 		AndConditionBean andConditionBean = (AndConditionBean) feedback.getCondition();
 		CountConditionBean countConditionBean = (CountConditionBean) andConditionBean.getAllConditions().get(0);
@@ -88,24 +75,24 @@ public class FeedbackBeanJUnitTest extends GWTTestCase {
 		assertTrue(propertyConditionBean.getValue().equals("true"));
 		assertTrue(propertyConditionBean.getOperator().equals("=="));
 	}
-	
+
 	public void testShouldHaveShowTextAction() {
 		List<FeedbackAction> allActions = feedback.getActions();
 		assertTrue(allActions.get(0) instanceof ShowTextAction);
 	}
-	
+
 	public void testShouldHaveCorrectValueInShowTextAction() {
 		List<FeedbackAction> allActions = feedback.getActions();
 		ShowTextAction showTextAction = (ShowTextAction) allActions.get(0);
 		assertTrue(showTextAction.getText().equals("testowy tekst"));
 	}
-	
+
 	public void testShouldHaveShowUrlActions() {
 		List<FeedbackAction> allActions = feedback.getActions();
 		assertTrue(allActions.get(1) instanceof ShowUrlAction);
 		assertTrue(allActions.get(2) instanceof ShowUrlAction);
 	}
-	
+
 	public void testShouldHaveCorrectAttributesInShowUrlActions() {
 		List<FeedbackAction> allActions = feedback.getActions();
 		ShowUrlAction firstShowUrlAction = (ShowUrlAction) allActions.get(1);
@@ -115,7 +102,7 @@ public class FeedbackBeanJUnitTest extends GWTTestCase {
 		assertTrue(secondShowUrlAction.getHref().equals("video.swf"));
 		assertTrue(secondShowUrlAction.getType().equals("video"));
 	}
-	
+
 	public void testShouldHaveCorrectSourcesInShowUrlActionOfNarrationType() {
 		List<FeedbackAction> allActions = feedback.getActions();
 		ShowUrlAction firstShowUrlAction = (ShowUrlAction) allActions.get(1);
@@ -130,6 +117,6 @@ public class FeedbackBeanJUnitTest extends GWTTestCase {
 
 	@Override
 	public String getModuleName() {
-	    return "eu.ydp.empiria.player.Player";
+		return "eu.ydp.empiria.player.Player";
 	}
 }

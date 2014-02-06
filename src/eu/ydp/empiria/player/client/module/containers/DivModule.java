@@ -1,9 +1,8 @@
 package eu.ydp.empiria.player.client.module.containers;
 
-
 public class DivModule extends SimpleContainerModuleBase<DivModule> {
 
-	public DivModule(){
+	public DivModule() {
 		setContainerStyleName("qp-div");
 	}
 

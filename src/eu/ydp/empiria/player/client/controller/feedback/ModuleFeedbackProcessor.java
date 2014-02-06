@@ -81,12 +81,12 @@ public class ModuleFeedbackProcessor {
 		}
 	}
 
-	private void appendMatchedFeedbackActions(Feedback feedback, IModule source){
+	private void appendMatchedFeedbackActions(Feedback feedback, IModule source) {
 		FeedbackProperties properties = feedbackActionCollector.getSourceProperties(source);
-		
-		if(!isUnselectFeedback(properties)){
+
+		if (!isUnselectFeedback(properties)) {
 			boolean match = matcher.match(feedback.getCondition(), properties);
-			if(match){
+			if (match) {
 				feedbackActionCollector.appendActionsToSource(feedback.getActions(), source);
 			}
 		}

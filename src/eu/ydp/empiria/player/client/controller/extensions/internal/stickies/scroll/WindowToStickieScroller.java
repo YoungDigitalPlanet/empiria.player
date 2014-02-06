@@ -12,16 +12,15 @@ public class WindowToStickieScroller {
 
 	public void scrollToStickie(final int absoluteTop) {
 		if (UserAgentChecker.isMobileUserAgent()) {
-			Scheduler.get()
-					.scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+			Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
 
-						@Override
-						public boolean execute() {
-							Window.scrollTo(Window.getScrollLeft(), (int) (absoluteTop - TOP_MARGIN));
-							return false;
-						}
-					}, DELAY_MS);
+				@Override
+				public boolean execute() {
+					Window.scrollTo(Window.getScrollLeft(), absoluteTop - TOP_MARGIN);
+					return false;
+				}
+			}, DELAY_MS);
 		}
 	}
-	
+
 }

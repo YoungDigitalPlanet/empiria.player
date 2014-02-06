@@ -35,10 +35,12 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 	protected int itemIndex = -1;
 	protected String url;
 
-	@Inject private StyleNameConstants styleNames;
-	@Inject private UserInteractionHandlerFactory userInteractionHandlerFactory;
-	@Inject private EventsBus eventsBus;
-
+	@Inject
+	private StyleNameConstants styleNames;
+	@Inject
+	private UserInteractionHandlerFactory userInteractionHandlerFactory;
+	@Inject
+	private EventsBus eventsBus;
 
 	@Inject
 	public LinkModule(@Assisted FlowRequestInvoker flowRequestInvoker) {
@@ -61,7 +63,7 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 
 			@Override
 			public void onPlayerEvent(PlayerEvent event) {
-				if(modulePage.equals(new CurrentPageScope())){
+				if (modulePage.equals(new CurrentPageScope())) {
 					setPrimaryStyleName();
 				}
 			}
@@ -133,7 +135,7 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 
 	}
 
-	private void setPrimaryStyleName(){
+	private void setPrimaryStyleName() {
 		mainPanel.setStyleName(styleNames.QP_LINK());
 	}
 

@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.util.events.EventTypes;
 public class TutorEvent extends AbstractEvent<TutorEventHandler, TutorEventTypes> {
 
 	private static final EventTypes<TutorEventHandler, TutorEventTypes> types = new EventTypes<TutorEventHandler, TutorEventTypes>();
-	
+
 	private boolean isMuted;
 	private int personaIndex;
 
@@ -14,16 +14,16 @@ public class TutorEvent extends AbstractEvent<TutorEventHandler, TutorEventTypes
 		super(type, source);
 		this.personaIndex = personaIndex;
 	}
-	
-	public TutorEvent(TutorEventTypes type, boolean isMuted, Object source){
+
+	public TutorEvent(TutorEventTypes type, boolean isMuted, Object source) {
 		super(type, source);
 		this.isMuted = isMuted;
 	}
-	
+
 	public int getPersonaIndex() {
 		return personaIndex;
 	}
-	
+
 	@Override
 	protected EventTypes<TutorEventHandler, TutorEventTypes> getTypes() {
 		return types;
@@ -37,7 +37,7 @@ public class TutorEvent extends AbstractEvent<TutorEventHandler, TutorEventTypes
 	public static Type<TutorEventHandler, TutorEventTypes> getType(TutorEventTypes type) {
 		return types.getType(type);
 	}
-	
+
 	public boolean isMuted() {
 		return isMuted;
 	}

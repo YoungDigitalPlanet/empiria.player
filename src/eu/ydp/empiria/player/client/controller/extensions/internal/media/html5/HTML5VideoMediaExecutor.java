@@ -30,10 +30,10 @@ public class HTML5VideoMediaExecutor extends AbstractHTML5MediaExecutor<Video> {
 	private void setNarrationTextIfPresent(BaseMediaConfiguration baseMediaConfiguration, Video media) {
 		if (baseMediaConfiguration.getNarrationText().trim().length() > 0) {
 			TextTrack textTrack = media.addTrack(TextTrackKind.SUBTITLES);
-			//FIXME do poprawy gdy narrationScript bedzie zawieral informacje o czasie wyswietlania
-			//zamiast Double.MAX_VALUE tu powinna sie znalezc wartosc czasowa okreslajaca
-			//kiedy napis znika poniewaz w tej chwili narrationScript nie posiada takiej informacji
-			//przypisuje najwieksza dostepna wartosc
+			// FIXME do poprawy gdy narrationScript bedzie zawieral informacje o czasie wyswietlania
+			// zamiast Double.MAX_VALUE tu powinna sie znalezc wartosc czasowa okreslajaca
+			// kiedy napis znika poniewaz w tej chwili narrationScript nie posiada takiej informacji
+			// przypisuje najwieksza dostepna wartosc
 			textTrack.addCue(new TextTrackCue(uniqueIdGenerator.createUniqueId(), 0, Double.MAX_VALUE, baseMediaConfiguration.getNarrationText()));
 		}
 	}

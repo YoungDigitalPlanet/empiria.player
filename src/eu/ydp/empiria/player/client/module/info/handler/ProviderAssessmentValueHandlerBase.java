@@ -7,11 +7,11 @@ import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
 
 public abstract class ProviderAssessmentValueHandlerBase implements FieldValueHandler {
-	
+
 	private VariableProviderSocket assessmentVariableProvider;
 
 	@Inject
-	public ProviderAssessmentValueHandlerBase(@Assisted VariableProviderSocket assessmentVariableProvider){
+	public ProviderAssessmentValueHandlerBase(@Assisted VariableProviderSocket assessmentVariableProvider) {
 		this.assessmentVariableProvider = assessmentVariableProvider;
 	}
 
@@ -20,6 +20,6 @@ public abstract class ProviderAssessmentValueHandlerBase implements FieldValueHa
 		return countValue(info, assessmentVariableProvider);
 	}
 
-	protected abstract String countValue(ContentFieldInfo info,	VariableProviderSocket provider) ;
+	protected abstract String countValue(ContentFieldInfo info, VariableProviderSocket provider);
 
 }

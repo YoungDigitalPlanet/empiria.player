@@ -6,18 +6,16 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 /**
- * Provides possibility to add widget to RootPanel and hide it.
- * i.e.: hidden native media controls or buttons impossible to
- * be styled (when dummy button calls hidden button)
+ * Provides possibility to add widget to RootPanel and hide it. i.e.: hidden native media controls or buttons impossible to be styled (when dummy button calls
+ * hidden button)
  */
 public class HiddenWidgetCreator {
 
-
 	/**
-	 * IOS nie lubi jak kilka elelemntow audio znajduje sie obok siebie
-	 * dlatego dla kazdego nowo dodawanego elementu tworzymy nowy kontener.
+	 * IOS nie lubi jak kilka elelemntow audio znajduje sie obok siebie dlatego dla kazdego nowo dodawanego elementu tworzymy nowy kontener.
 	 */
-	@Inject Provider<HiddenContainerWidget> containerWidget;
+	@Inject
+	Provider<HiddenContainerWidget> containerWidget;
 
 	public void addWidgetToHiddenContainerOnRootPanel(final Widget widget) {
 

@@ -52,21 +52,37 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 public class MultiPageController extends InternalExtension implements PlayerEventHandler, FlowRequestSocketUserExtension, FlowDataSocketUserExtension,
 		Extension, IMultiPageController {
 
-	@Inject private EventsBus eventsBus;
-	@Inject private StyleNameConstants styleNames;
-	@Inject private Scheduler scheduler;
-	@Inject private PanelCache panelsCache;
-	@Inject private Page page;
-	@Inject private MultiPageView view;
-	@Inject private StyleSocket styleSocket;
-	@Inject private Instance<Animation> animation;
-	@Inject private TouchRecognitionFactory touchRecognitionFactory;
-	@Inject private PageScopeFactory pageScopeFactory;
-	@Inject private MultiPageTouchHandler multiPageTouchHandler;
-	@Inject private ForceRedrawHack forceRedrawHack;
-	@Inject private VisiblePagesManager visiblePagesManager;
-	@Inject @Named("multiPageControllerMainPanel") private FlowPanel mainPanel;
-	@Inject private Instance<SwipeType> swipeType;
+	@Inject
+	private EventsBus eventsBus;
+	@Inject
+	private StyleNameConstants styleNames;
+	@Inject
+	private Scheduler scheduler;
+	@Inject
+	private PanelCache panelsCache;
+	@Inject
+	private Page page;
+	@Inject
+	private MultiPageView view;
+	@Inject
+	private StyleSocket styleSocket;
+	@Inject
+	private Instance<Animation> animation;
+	@Inject
+	private TouchRecognitionFactory touchRecognitionFactory;
+	@Inject
+	private PageScopeFactory pageScopeFactory;
+	@Inject
+	private MultiPageTouchHandler multiPageTouchHandler;
+	@Inject
+	private ForceRedrawHack forceRedrawHack;
+	@Inject
+	private VisiblePagesManager visiblePagesManager;
+	@Inject
+	@Named("multiPageControllerMainPanel")
+	private FlowPanel mainPanel;
+	@Inject
+	private Instance<SwipeType> swipeType;
 
 	private static int activePageCount = 3;
 	private int currentVisiblePage = -1;
@@ -154,7 +170,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	/**
 	 * zwraca Panel bdacy kontenerem dla widgetow ze strony pageNumber
-	 *
+	 * 
 	 * @param pageNumber
 	 * @return
 	 */
@@ -252,7 +268,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	/**
 	 * animacja
-	 *
+	 * 
 	 * @param from
 	 *            absolutna pozycja elementu
 	 * @param to
@@ -303,8 +319,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	}
 
 	/**
-	 * Na androidzie podczas swipe gapy zle sie rysowaly nachodzac na siebie.
-	 * Pozbycie sie z nich focusa na czas swipe rozwiazalo problem
+	 * Na androidzie podczas swipe gapy zle sie rysowaly nachodzac na siebie. Pozbycie sie z nich focusa na czas swipe rozwiazalo problem
 	 */
 	private void dropFocus() {
 		focusDroped = true;
@@ -366,8 +381,8 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	}
 
 	public native int getInnerWidth()/*-{
-		return $wnd.innerWidth;
-	}-*/;
+										return $wnd.innerWidth;
+										}-*/;
 
 	@Override
 	public boolean isZoomed() {
@@ -413,7 +428,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	}
 
 	private void configure() {
-			configureSwipe();
+		configureSwipe();
 	}
 
 	@Override

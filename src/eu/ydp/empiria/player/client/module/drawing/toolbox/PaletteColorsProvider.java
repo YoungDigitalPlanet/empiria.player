@@ -11,12 +11,15 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class PaletteColorsProvider {
 
-	@Inject @ModuleScoped private DrawingBean bean;
-	@Inject private ColorBeanConverter converter;
-	
-	public List<ColorModel> getColors(){
+	@Inject
+	@ModuleScoped
+	private DrawingBean bean;
+	@Inject
+	private ColorBeanConverter converter;
+
+	public List<ColorModel> getColors() {
 		List<ColorBean> colorBeans = bean.getPalette().getColors();
 		return converter.convert(colorBeans);
 	}
-	
+
 }

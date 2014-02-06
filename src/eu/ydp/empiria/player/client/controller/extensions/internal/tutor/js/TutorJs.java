@@ -8,26 +8,26 @@ public abstract class TutorJs extends JavaScriptObject {
 	}
 
 	public final native String getName()/*-{
-		return this.name;
-	}-*/;
+										return this.name;
+										}-*/;
 
 	public final native int getFps()/*-{
-		return this.fps;
-	}-*/;
+									return this.fps;
+									}-*/;
 
 	public final native int getWidth()/*-{
-		return this.width;
-	}-*/;
+										return this.width;
+										}-*/;
 
 	public final native int getHeight()/*-{
-		return this.height;
-	}-*/;
+										return this.height;
+										}-*/;
 
 	public final native boolean isInteractive()/*-{
-		return !!this.interactive;
-	}-*/;
+												return !!this.interactive;
+												}-*/;
 
 	public final native String getAvatar()/*-{
-		return this.avatar;
-	}-*/;
+											return this.avatar;
+											}-*/;
 }

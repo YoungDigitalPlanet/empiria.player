@@ -16,7 +16,7 @@ public class ForceRedrawHackImpl implements ForceRedrawHack {
 	}
 
 	@Override
-	public void redraw(){
+	public void redraw() {
 		widgetToAdd.setVisible(!widgetToAdd.isVisible());
 	}
 }

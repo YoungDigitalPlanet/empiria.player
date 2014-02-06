@@ -8,8 +8,8 @@ import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public class ViewItemsSorter {
-	public List<IsWidget> getItemsInOrder(List<String> itemsOrder, final Map<String, ? extends IsWidget> items){
-		return Lists.transform(itemsOrder, new Function<String,IsWidget>() {
+	public List<IsWidget> getItemsInOrder(List<String> itemsOrder, final Map<String, ? extends IsWidget> items) {
+		return Lists.transform(itemsOrder, new Function<String, IsWidget>() {
 			@Override
 			public IsWidget apply(String itemId) {
 				return items.get(itemId);

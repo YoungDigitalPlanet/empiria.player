@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,10 +10,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.inject.Provider;
-
-import static org.junit.Assert.*;
-
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TutorPopupProviderTest {
@@ -31,8 +30,7 @@ public class TutorPopupProviderTest {
 		// given
 		String tutorId = "tutor1";
 
-		when(provider.get())
-			.thenReturn(popupPresenter);
+		when(provider.get()).thenReturn(popupPresenter);
 
 		// when
 		TutorPopupPresenter resultPresenter = tutorPopupProvider.get(tutorId);
@@ -47,8 +45,7 @@ public class TutorPopupProviderTest {
 		// given
 		String tutorId = "tutor1";
 
-		when(provider.get())
-			.thenReturn(popupPresenter);
+		when(provider.get()).thenReturn(popupPresenter);
 
 		// when
 		TutorPopupPresenter firstlyReturned = tutorPopupProvider.get(tutorId);

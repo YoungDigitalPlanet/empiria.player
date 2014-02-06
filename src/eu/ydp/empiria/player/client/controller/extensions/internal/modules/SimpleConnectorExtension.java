@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.module.SimpleModuleCreator;
 
 /**
  * Klasa bedaca podstawowowa implementacja ModuleConnectorExtension.<br/>
- *
+ * 
  */
 public class SimpleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension {
 
@@ -23,23 +23,23 @@ public class SimpleConnectorExtension extends ModuleExtension implements ModuleC
 
 	/**
 	 * domyslnie isMultiViewModule=false,isInlineModule=false
-	 *
+	 * 
 	 * @param clazz
 	 *            klasa modulu
 	 * @param tagName
 	 *            nazwa taga kt�ry ma by obslugiwany
 	 */
-	public SimpleConnectorExtension(Factory< ? extends IModule> clazz, ModuleTagName tagName) {
+	public SimpleConnectorExtension(Factory<? extends IModule> clazz, ModuleTagName tagName) {
 		this(clazz, tagName, false);
 	}
 
-	public SimpleConnectorExtension(Provider<? extends IModule> clazz,ModuleTagName tagName) {
+	public SimpleConnectorExtension(Provider<? extends IModule> clazz, ModuleTagName tagName) {
 		this(clazz, tagName, false);
 	}
 
 	/**
 	 * domyslnie isInlineModule=false
-	 *
+	 * 
 	 * @param clazz
 	 *            klasa modulu
 	 * @param tagName
@@ -47,7 +47,7 @@ public class SimpleConnectorExtension extends ModuleExtension implements ModuleC
 	 * @param isMultiViewModule
 	 *            czy modul jest multiView
 	 */
-	public SimpleConnectorExtension(Factory< ? extends IModule> clazz, ModuleTagName tagName, boolean isMultiViewModule) {
+	public SimpleConnectorExtension(Factory<? extends IModule> clazz, ModuleTagName tagName, boolean isMultiViewModule) {
 		this(clazz, tagName, isMultiViewModule, false);
 	}
 
@@ -64,13 +64,16 @@ public class SimpleConnectorExtension extends ModuleExtension implements ModuleC
 	 *            czy modul jest multiView
 	 * @param isInlineModule
 	 */
-	public SimpleConnectorExtension(Factory< ? extends IModule> clazz, ModuleTagName tagName, boolean isMultiViewModule, boolean isInlineModule) {
-		this(clazz,null, tagName, isMultiViewModule, isInlineModule);
+	public SimpleConnectorExtension(Factory<? extends IModule> clazz, ModuleTagName tagName, boolean isMultiViewModule, boolean isInlineModule) {
+		this(clazz, null, tagName, isMultiViewModule, isInlineModule);
 	}
-	public SimpleConnectorExtension(Provider< ? extends IModule> clazz, ModuleTagName tagName, boolean isMultiViewModule, boolean isInlineModule) {
-		this(null,clazz, tagName, isMultiViewModule, isInlineModule);
+
+	public SimpleConnectorExtension(Provider<? extends IModule> clazz, ModuleTagName tagName, boolean isMultiViewModule, boolean isInlineModule) {
+		this(null, clazz, tagName, isMultiViewModule, isInlineModule);
 	}
-	private SimpleConnectorExtension(Factory< ? extends IModule> clazz,Provider<? extends IModule> clazzProvider, ModuleTagName tagName, boolean isMultiViewModule, boolean isInlineModule) {
+
+	private SimpleConnectorExtension(Factory<? extends IModule> clazz, Provider<? extends IModule> clazzProvider, ModuleTagName tagName,
+			boolean isMultiViewModule, boolean isInlineModule) {
 		this.clazz = clazz;
 		this.tagName = tagName.tagName();
 		this.isMultiViewModule = isMultiViewModule;
@@ -78,13 +81,12 @@ public class SimpleConnectorExtension extends ModuleExtension implements ModuleC
 		this.clazzProvider = clazzProvider;
 	}
 
-
 	@Override
 	public ModuleCreator getModuleCreator() {
 		ModuleCreator creator;
-		if(clazz==null){
-			creator = new SimpleModuleCreator<IModule>(clazzProvider,isMultiViewModule,isInlineModule);
-		}else{
+		if (clazz == null) {
+			creator = new SimpleModuleCreator<IModule>(clazzProvider, isMultiViewModule, isInlineModule);
+		} else {
 			creator = new SimpleModuleCreator<IModule>(clazz, isMultiViewModule, isInlineModule);
 		}
 		return creator;

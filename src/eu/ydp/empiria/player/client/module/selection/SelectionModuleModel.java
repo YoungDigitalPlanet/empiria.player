@@ -17,11 +17,11 @@ public class SelectionModuleModel extends AbstractResponseModel<String> {
 	public SelectionModuleModel(@ModuleScoped Response response) {
 		super(response);
 	}
-	
+
 	public void initialize(ResponseModelChangeListener modelChangeListener) {
 		super.responseModelChange = modelChangeListener;
 	}
-	
+
 	@Override
 	protected List<String> parseResponse(Collection<String> values) {
 		return new ArrayList<String>(values);

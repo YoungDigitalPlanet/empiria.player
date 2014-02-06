@@ -48,7 +48,8 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Inject
 	private EventsBus eventsBus;
 	protected Element moduleElement;
-	@Inject @PageScoped
+	@Inject
+	@PageScoped
 	private ResponseSocket responseSocket;
 
 	protected Panel container;
@@ -244,7 +245,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 	/**
 	 * init widget view
-	 *
+	 * 
 	 * @param element
 	 */
 	private void init(Element inlineChoiceElement) {
@@ -265,7 +266,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
 	/**
 	 * init widget view. Randomize options
-	 *
+	 * 
 	 * @param element
 	 */
 	private void initRandom(Element inlineChoiceElement) {
@@ -300,7 +301,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	public IUniqueModule getParentInlineModule() {
 		return parentModule;
 	}
-	
+
 	private void updateResponse(boolean userInteract) {
 		updateResponse(userInteract, false);
 	}

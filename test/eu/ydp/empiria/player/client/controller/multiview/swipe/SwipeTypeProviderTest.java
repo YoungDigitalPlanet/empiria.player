@@ -25,12 +25,17 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 @RunWith(MockitoJUnitRunner.class)
 public class SwipeTypeProviderTest {
 
-	@Mock private StyleSocket styleSocket;
-	@Mock private XMLParser parser;
-	@Mock private Document documentElement;
-	@Mock private Element firstChild;
+	@Mock
+	private StyleSocket styleSocket;
+	@Mock
+	private XMLParser parser;
+	@Mock
+	private Document documentElement;
+	@Mock
+	private Element firstChild;
 
-	@InjectMocks private SwipeTypeProvider instance;
+	@InjectMocks
+	private SwipeTypeProvider instance;
 	private Map<String, String> styleMap;
 
 	@Before

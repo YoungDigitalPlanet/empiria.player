@@ -14,40 +14,40 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionT
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackTextAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
 
-public class SoundActionProcessorJUnitTest extends AbstractTestBase{
-	
+public class SoundActionProcessorJUnitTest extends AbstractTestBase {
+
 	private SoundActionProcessor processor;
-	
+
 	@Before
-	public void initialize(){
+	public void initialize() {
 		processor = injector.getInstance(SoundActionProcessor.class);
 	}
-	
+
 	@Test
-	public void shouldAcceptAction(){
+	public void shouldAcceptAction() {
 		FeedbackUrlAction action = mock(FeedbackUrlAction.class);
 		when(action.getType()).thenReturn(ActionType.NARRATION.getName());
-		
+
 		boolean accepts = processor.canProcessAction(action);
 		assertThat(accepts, is(equalTo(true)));
 	}
-	
+
 	@Test
-	public void shouldNotAcceptActionWhen_isNotUrlAction(){
+	public void shouldNotAcceptActionWhen_isNotUrlAction() {
 		FeedbackTextAction action = mock(FeedbackTextAction.class);
-		
+
 		boolean accepts = processor.canProcessAction(action);
 		assertThat(accepts, is(equalTo(false)));
 	}
-	
+
 	@Test
-	public void shouldNotAcceptActionWhen_itReturnsAnotherType(){
+	public void shouldNotAcceptActionWhen_itReturnsAnotherType() {
 		FeedbackUrlAction action = mock(FeedbackUrlAction.class);
 		when(action.getType()).thenReturn("unknown");
-		
+
 		boolean accepts = processor.canProcessAction(action);
 		assertThat(accepts, is(equalTo(false)));
-		
+
 	}
 
 }

@@ -24,12 +24,12 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 
 	private MockButton button;
 	private EventsBus eventsBus;
-		
+
 	@SuppressWarnings("rawtypes")
 	private MediaWrapper mediaWrapper;
 
 	@Before
-	public void setUpTest() {		
+	public void setUpTest() {
 		mockButton();
 	}
 
@@ -40,26 +40,26 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 		button.eventsBus = eventsBus;
 		MediaEvent madiaEvent = mock(MediaEvent.class);
 		when(button.createMediaEvent()).thenReturn(madiaEvent);
-		
+
 		// when
 		button.onClick();
-		
+
 		// then
 		Mockito.verify(eventsBus).fireEventFromSource(madiaEvent, mediaWrapper);
 	}
-	
+
 	@Test
 	public void isButtonActivatedWhenOnPlayEventHandled() {
 		// given
 		button.setActive(false);
 		button.initButtonStyleChangeHandlers();
 		MediaEvent mediaEvent = new MediaEvent(MediaEventTypes.ON_PLAY, mediaWrapper);
-		
+
 		// when
 		eventsBus.fireEventFromSource(mediaEvent, mediaWrapper);
-		
+
 		// then
-		assertThat(button.isActive(), equalTo(true));		
+		assertThat(button.isActive(), equalTo(true));
 	}
 
 	@Test
@@ -68,25 +68,25 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 		button.setActive(true);
 		button.initButtonStyleChangeHandlers();
 		MediaEvent mediaEvent = new MediaEvent(MediaEventTypes.ON_STOP, mediaWrapper);
-		
+
 		// when
 		eventsBus.fireEventFromSource(mediaEvent, mediaWrapper);
-		
+
 		// then
-		assertThat(button.isActive(), equalTo(false));		
-	}	
+		assertThat(button.isActive(), equalTo(false));
+	}
 
 	@SuppressWarnings("unchecked")
 	private void mockButton() {
 		button = mock(MockButton.class, Mockito.CALLS_REAL_METHODS);
 		eventsBus = injector.getInstance(EventsBus.class);
 		button.eventsBus = eventsBus;
-		
+
 		mediaWrapper = mock(MediaWrapper.class);
 		when(button.getMediaWrapper()).thenReturn(mediaWrapper);
 		Mockito.doNothing().when(button).changeStyleForClick();
 	}
-	
+
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
@@ -95,12 +95,12 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 	@AfterClass
 	public static void restore() {
 		GWTMockUtilities.restore();
-	}		
+	}
 
 	private static class MockButton extends AbstractPlayMediaButton<MockButton> {
 
-		public MockButton(String baseStyleName) {			
-			super(baseStyleName);			
+		public MockButton(String baseStyleName) {
+			super(baseStyleName);
 		}
 
 		@Override
@@ -112,11 +112,11 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 		protected boolean initButtonStyleChangeHandlersCondition() {
 			return true;
 		}
-		
+
 		@Override
-		protected CurrentPageScope createCurrentPageScope() {		
+		protected CurrentPageScope createCurrentPageScope() {
 			return null;
 		}
-		
+
 	}
 }

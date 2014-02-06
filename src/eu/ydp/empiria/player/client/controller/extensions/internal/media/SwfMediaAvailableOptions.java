@@ -4,7 +4,7 @@ import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 
 /**
  * dostepne opcje dla odtwarzacza swf
- *
+ * 
  */
 public class SwfMediaAvailableOptions implements MediaAvailableOptions {
 

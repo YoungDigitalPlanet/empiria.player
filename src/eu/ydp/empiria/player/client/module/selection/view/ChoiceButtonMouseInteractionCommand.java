@@ -8,10 +8,12 @@ public class ChoiceButtonMouseInteractionCommand implements Command {
 
 	private final boolean over;
 	private final SelectionChoiceButton button;
+
 	public ChoiceButtonMouseInteractionCommand(SelectionChoiceButton button, boolean over) {
 		this.button = button;
 		this.over = over;
 	}
+
 	@Override
 	public void execute(NativeEvent event) {
 		button.setMouseOver(over);

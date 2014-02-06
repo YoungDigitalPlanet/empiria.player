@@ -20,7 +20,7 @@ public class ColorBeanConverter {
 		}
 	};
 
-	public List<ColorModel> convert(List<ColorBean> colorBeans){
+	public List<ColorModel> convert(List<ColorBean> colorBeans) {
 		return newArrayList(Iterables.transform(colorBeans, colorBeanTransformation));
 	}
 

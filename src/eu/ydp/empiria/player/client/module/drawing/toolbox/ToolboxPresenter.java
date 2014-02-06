@@ -18,17 +18,27 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ToolboxPresenter {
-	@Inject @ModuleScoped private ToolboxView view;
-	@Inject @ModuleScoped private ToolboxButtonCreator buttonCreator;
-	@Inject private ToolboxModelImpl model;
-	@Inject private ToolFactory toolFactory;
-	@Inject @ModuleScoped private CanvasPresenter canvasPresenter;
-	@Inject private DrawCommandFactory drawCommandFactory;
-	@Inject private PaletteColorsProvider paletteColorsProvider;
-	
+	@Inject
+	@ModuleScoped
+	private ToolboxView view;
+	@Inject
+	@ModuleScoped
+	private ToolboxButtonCreator buttonCreator;
+	@Inject
+	private ToolboxModelImpl model;
+	@Inject
+	private ToolFactory toolFactory;
+	@Inject
+	@ModuleScoped
+	private CanvasPresenter canvasPresenter;
+	@Inject
+	private DrawCommandFactory drawCommandFactory;
+	@Inject
+	private PaletteColorsProvider paletteColorsProvider;
+
 	private boolean paletteVisible;
 
-	public void init(){
+	public void init() {
 		initView();
 		initTool();
 		initPalette();
@@ -48,8 +58,8 @@ public class ToolboxPresenter {
 	private void initTool() {
 		pencilClicked();
 	}
-	 
-	public void colorClicked(ColorModel colorModel){
+
+	public void colorClicked(ColorModel colorModel) {
 		paletteClicked();
 		selectColor(colorModel);
 	}
@@ -60,32 +70,32 @@ public class ToolboxPresenter {
 		update();
 	}
 
-	public void paletteClicked(){
-		if (paletteVisible){
+	public void paletteClicked() {
+		if (paletteVisible) {
 			view.hidePalette();
 		} else {
 			view.showPalette();
 		}
 		paletteVisible = !paletteVisible;
 	}
-	
-	public void pencilClicked(){
+
+	public void pencilClicked() {
 		view.selectPencil();
 		model.setToolType(PENCIL);
 		update();
 	}
-	
-	public void eraserClicked(){
+
+	public void eraserClicked() {
 		view.selectEraser();
 		model.setToolType(ERASER);
 		update();
 	}
-	
-	public void clearAllClicked(){
+
+	public void clearAllClicked() {
 		DrawCommand command = drawCommandFactory.createCommand(DrawCommandType.CLEAR_ALL);
 		command.execute();
 	}
-	
+
 	private void update() {
 		Tool tool = toolFactory.createTool(model);
 		canvasPresenter.setTool(tool);

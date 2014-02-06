@@ -11,25 +11,25 @@ public class GroupedAnswersManager {
 
 	private Map<String, ResponseAnswerGrouper> groupNameToResponseAnswerGrouperMap;
 	private GroupedResponseAnswersMapBuilder responseAnswersMapBuilder;
-	
+
 	@Inject
 	public GroupedAnswersManager(GroupedResponseAnswersMapBuilder responseAnswersMapBuilder) {
 		this.responseAnswersMapBuilder = responseAnswersMapBuilder;
 	}
 
-	public void initialize(Map<String, Response> responses){
+	public void initialize(Map<String, Response> responses) {
 		responseAnswersMapBuilder.initialize(responses);
 		this.groupNameToResponseAnswerGrouperMap = responseAnswersMapBuilder.createResponseAnswerGroupersMap();
 	}
-	
-	public boolean isAnswerCorrectInAnyOfGroups(String answer, Response response, Collection<String> groups){
+
+	public boolean isAnswerCorrectInAnyOfGroups(String answer, Response response, Collection<String> groups) {
 		for (String groupName : groups) {
 			boolean isAnswerCorrect = isAnswerCorrectInGroup(answer, response, groupName);
-			if(isAnswerCorrect){
+			if (isAnswerCorrect) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 

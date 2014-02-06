@@ -11,28 +11,28 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 public class InitialItemData {
 
 	protected Map<String, Outcome> outcomes;
-	
-	public InitialItemData(XmlData itemData){
+
+	public InitialItemData(XmlData itemData) {
 
 		NodeList outcomeDeclarationNodes = null;
-		
+
 		outcomes = new HashMap<String, Outcome>();
-		
-		if (itemData != null){
+
+		if (itemData != null) {
 			outcomeDeclarationNodes = itemData.getDocument().getElementsByTagName("outcomeDeclaration");
-		
+
 			Outcome currOutcome;
-			for (int i = 0 ; i < outcomeDeclarationNodes.getLength() ; i ++){
+			for (int i = 0; i < outcomeDeclarationNodes.getLength(); i++) {
 				currOutcome = new Outcome(outcomeDeclarationNodes.item(i));
-				if (currOutcome != null){
+				if (currOutcome != null) {
 					outcomes.put(currOutcome.identifier, currOutcome);
 				}
 			}
 		}
 	}
-	
-	public Map<String, Outcome> getOutcomes(){		
+
+	public Map<String, Outcome> getOutcomes() {
 		return outcomes;
 	}
-	
+
 }

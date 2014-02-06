@@ -9,11 +9,11 @@ import eu.ydp.gwtutil.client.StringUtils;
 public class ModuleBean {
 
 	@XmlAttribute
-	protected String id = StringUtils.EMPTY_STRING; 
+	protected String id = StringUtils.EMPTY_STRING;
 
 	@XmlAttribute(name = "class")
 	protected String type = StringUtils.EMPTY_STRING;
-	
+
 	public String getId() {
 		return id;
 	}

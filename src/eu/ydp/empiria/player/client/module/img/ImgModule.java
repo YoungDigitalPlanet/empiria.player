@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.img;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_MODE;
 
 import java.util.Map;
 

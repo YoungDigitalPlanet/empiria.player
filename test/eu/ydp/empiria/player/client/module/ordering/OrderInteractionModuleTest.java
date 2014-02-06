@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.ordering;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ public class OrderInteractionModuleTest {
 	public void shouldInitDragOnStart() {
 		// given
 		when(orderInteractionPresenter.getOrientation()).thenReturn(OrderInteractionOrientation.VERTICAL);
-		
+
 		// when
 		testObj.onStart();
 

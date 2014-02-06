@@ -23,67 +23,67 @@ public class CombinedEvaluatorJUnitTest {
 	private CombinedEvaluator evaluator;
 	private ExpressionEvaluator expressionEvaluator;
 	private CommutationEvaluator commutationEvaluator;
-	
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		expressionEvaluator = mock(ExpressionEvaluator.class);
 		commutationEvaluator = mock(CommutationEvaluator.class);
 		evaluator = new CombinedEvaluator(expressionEvaluator, commutationEvaluator);
 	}
-	
+
 	@Test
 	public void checkCommutation_expressionIsWrong() {
 		// given
 		ExpressionBean bean = mock(ExpressionBean.class);
 		stub(expressionEvaluator.evaluate(any(ExpressionBean.class))).toReturn(false);
-		
+
 		// when
 		evaluator.evaluate(bean);
-		
+
 		// then
 		verify(expressionEvaluator).evaluate(eq(bean));
 		verify(commutationEvaluator, never()).evaluate(eq(bean));
 	}
-	
+
 	@Test
 	public void checkCommutation_expressionIsCorrect() {
 		// given
 		ExpressionBean bean = mock(ExpressionBean.class);
 		stub(expressionEvaluator.evaluate(any(ExpressionBean.class))).toReturn(true);
-		
+
 		// when
 		evaluator.evaluate(bean);
-		
+
 		// then
 		verify(expressionEvaluator).evaluate(eq(bean));
 		verify(commutationEvaluator).evaluate(eq(bean));
 	}
-	
+
 	@Test
 	public void result_correct() {
 		// given
 		ExpressionBean bean = mock(ExpressionBean.class);
 		stub(expressionEvaluator.evaluate(any(ExpressionBean.class))).toReturn(true);
 		stub(commutationEvaluator.evaluate(any(ExpressionBean.class))).toReturn(true);
-		
+
 		// when
 		boolean result = evaluator.evaluate(bean);
-		
+
 		// then
 		assertThat(result, equalTo(true));
 	}
-	
+
 	@Test
-	@Parameters({"false, true", "true, false", "false, false"})
+	@Parameters({ "false, true", "true, false", "false, false" })
 	public void result_wrong(boolean expressionResult, boolean commutationResult) {
 		// given
 		ExpressionBean bean = mock(ExpressionBean.class);
 		stub(expressionEvaluator.evaluate(any(ExpressionBean.class))).toReturn(expressionResult);
 		stub(commutationEvaluator.evaluate(any(ExpressionBean.class))).toReturn(commutationResult);
-		
+
 		// when
 		boolean result = evaluator.evaluate(bean);
-		
+
 		// then
 		assertThat(result, equalTo(false));
 	}

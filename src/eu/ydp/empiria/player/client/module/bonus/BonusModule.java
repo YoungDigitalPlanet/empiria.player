@@ -18,8 +18,8 @@ public class BonusModule extends SimpleModuleBase implements PowerFeedbackBonusC
 	@Inject
 	private FeedbackActionConditions actionConditions;
 	@Inject
-	private OutcomeAccessor outcomeAccessor; 
-	
+	private OutcomeAccessor outcomeAccessor;
+
 	@Inject
 	@PageScoped
 	private PowerFeedbackMediator mediator;

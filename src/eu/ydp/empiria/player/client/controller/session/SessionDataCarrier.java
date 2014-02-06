@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.controller.session;
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class SessionDataCarrier {
-	
-	public SessionDataCarrier(){
-		
+
+	public SessionDataCarrier() {
+
 	}
 
 	public int[] dones;
@@ -18,29 +18,29 @@ public class SessionDataCarrier {
 	public int todoTotal;
 	public int timeTotal;
 	public int visitedCount;
-	
-	public JavaScriptObject toJsObject(){
+
+	public JavaScriptObject toJsObject() {
 		return createJsObject();
 	}
-	
+
 	private native JavaScriptObject createJsObject()/*-{
-		var obj = [];
-		var instance = this;
-		obj.getTimeTotal = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::timeTotal;
-		}
-		obj.getVariableTotalValue = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::timeTotal;
-		}
-		obj.getDoneTotal = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::doneTotal;
-		}
-		obj.getTodoTotal = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::todoTotal;
-		}
-		obj.getVisitedCount = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::visitedCount;
-		}
-		return obj;
-	}-*/;
+													var obj = [];
+													var instance = this;
+													obj.getTimeTotal = function(){
+													return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::timeTotal;
+													}
+													obj.getVariableTotalValue = function(){
+													return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::timeTotal;
+													}
+													obj.getDoneTotal = function(){
+													return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::doneTotal;
+													}
+													obj.getTodoTotal = function(){
+													return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::todoTotal;
+													}
+													obj.getVisitedCount = function(){
+													return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataCarrier::visitedCount;
+													}
+													return obj;
+													}-*/;
 }

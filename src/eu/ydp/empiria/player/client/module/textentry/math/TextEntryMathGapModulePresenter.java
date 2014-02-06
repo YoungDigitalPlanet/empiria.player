@@ -33,8 +33,7 @@ public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenter
 	@UiField(provided = true)
 	protected Widget textBoxWidget;
 	private BlurHandler changeHandler;
-	
-	
+
 	@PostConstruct
 	public void postConstruct() {
 		droppable = dragDropHelper.enableDropForWidget(new TextBox());
@@ -43,37 +42,37 @@ public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenter
 		uiBinder.createAndBindUi(this);
 
 		dropZoneGuardian = new DropZoneGuardian(droppable, mainPanel, styleNames);
-		
+
 		textBox.addBlurHandler(this);
 	}
-	
+
 	@Override
 	public void installViewInContainer(HasWidgets container) {
 		container.add(mainPanel);
 	}
-	
+
 	@Override
 	public HasWidgets getContainer() {
 		return mainPanel;
 	}
-	
+
 	@Override
 	public void setMarkMode(String mode) {
 		markPanel.addStyleDependentName(mode);
 	}
-	
+
 	@Override
 	public void removeMarking() {
 		markPanel.removeStyleDependentName(GapModulePresenter.NONE);
 		markPanel.removeStyleDependentName(GapModulePresenter.CORRECT);
 		markPanel.removeStyleDependentName(GapModulePresenter.WRONG);
 	}
-	
+
 	@Override
 	public void addPresenterHandler(PresenterHandler handler) {
 		changeHandler = handler;
 	}
-	
+
 	@Override
 	public void onBlur(BlurEvent event) {
 		if (changeHandler != null) {

@@ -12,7 +12,8 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public class ProgressBarUpdateEventHandler extends AbstractMediaEventHandler {
-	Set<MediaEventTypes> fastUpdateEvents = new HashSet<MediaEventTypes>(Arrays.asList(new MediaEventTypes[]{ON_FULL_SCREEN_SHOW_CONTROLS, ON_STOP, MediaEventTypes.ON_DURATION_CHANGE}));
+	Set<MediaEventTypes> fastUpdateEvents = new HashSet<MediaEventTypes>(Arrays.asList(new MediaEventTypes[] { ON_FULL_SCREEN_SHOW_CONTROLS, ON_STOP,
+			MediaEventTypes.ON_DURATION_CHANGE }));
 	// -1 aby przy pierwszym zdarzeniu pokazal sie timer
 	private int lastTime = -1;
 	private final MediaProgressBarImpl progressBar;
@@ -25,7 +26,7 @@ public class ProgressBarUpdateEventHandler extends AbstractMediaEventHandler {
 	public void onMediaEvent(MediaEvent event) {
 		if (progressBar.isMediaReady() && !progressBar.isPressed()) {
 			double currentTime = progressBar.getMediaWrapper().getCurrentTime();
-			if (currentTime > lastTime + 1 ||currentTime < lastTime - 1 || fastUpdateEvents.contains(event.getType())) {// NOPMD
+			if (currentTime > lastTime + 1 || currentTime < lastTime - 1 || fastUpdateEvents.contains(event.getType())) {// NOPMD
 				// przeskakujemy co sekunde
 				lastTime = (int) progressBar.getMediaWrapper().getCurrentTime();
 				double steep = progressBar.getScrollWidth() / progressBar.getMediaWrapper().getDuration();
@@ -34,9 +35,8 @@ public class ProgressBarUpdateEventHandler extends AbstractMediaEventHandler {
 		}
 	}
 
-	public void resetCurrentTime(){
+	public void resetCurrentTime() {
 		lastTime = -1;
 	}
-
 
 }

@@ -36,8 +36,8 @@ public class PageController implements PageInterferenceSocket {
 	private final AssessmentControllerFactory controllerFactory;
 
 	@Inject
-	public PageController(@Assisted PageViewSocket pageViewSocket, @Assisted IFlowSocket flowSocket, 
-			@Assisted PageSessionSocket pageSessionSocket, AssessmentControllerFactory controllerFactory) {
+	public PageController(@Assisted PageViewSocket pageViewSocket, @Assisted IFlowSocket flowSocket, @Assisted PageSessionSocket pageSessionSocket,
+			AssessmentControllerFactory controllerFactory) {
 		this.pageViewSocket = pageViewSocket;
 		this.flowSocket = flowSocket;
 		this.pageSessionSocket = pageSessionSocket;
@@ -56,7 +56,7 @@ public class PageController implements PageInterferenceSocket {
 			pageViewSocket.setPageViewCarrier(new PageViewCarrier());
 
 			for (int i = 0; i < pageDataTest.datas.length; i++) {
-				ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket, 
+				ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket,
 						pageSessionSocket.getItemSessionSocket());
 				controller.init(pageDataTest.displayOptions);
 				controller.setAssessmentParenthoodSocket(parenthoodSocket);
@@ -93,21 +93,19 @@ public class PageController implements PageInterferenceSocket {
 	private JavaScriptObject getItemJsSockets() {
 		JavaScriptObject itemSockets = JavaScriptObject.createArray();
 		for (int i = 0; i < items.size(); i++) {
-			JSArrayUtils.fillArray(itemSockets, i, items.get(i)
-					.getItemSocket()
-					.getJsSocket());
+			JSArrayUtils.fillArray(itemSockets, i, items.get(i).getItemSocket().getJsSocket());
 		}
 		return itemSockets;
 	}
 
 	private native JavaScriptObject createPageSocket()/*-{
-		var socket = {};
-		var instance = this;
-		socket.getItemSockets = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.PageController::getItemJsSockets()();
-		}
-		return socket;
-	}-*/;
+														var socket = {};
+														var instance = this;
+														socket.getItemSockets = function() {
+														return instance.@eu.ydp.empiria.player.client.controller.PageController::getItemJsSockets()();
+														}
+														return socket;
+														}-*/;
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket assessmentParenthoodSocket) {
 		parenthoodSocket = assessmentParenthoodSocket;

@@ -8,58 +8,57 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 
-
 public class PipedReplacementsParserJUnitTest {
-	
+
 	private PipedReplacementsParser parser = new PipedReplacementsParser();
 
 	@Test
-	public void parse(){
+	public void parse() {
 		// given
 		String characters = "a|b|>=|≥|x|×|*|×";
-		
+
 		// when
 		Map<String, String> map = parser.parse(characters);
-		
+
 		// then
 		assertThat(map).isEqualTo(ImmutableMap.of("a", "b", ">=", "≥", "x", "×", "*", "×"));
 	}
-	
+
 	@Test
-	public void parse_shouldTrimWhitespaces(){
+	public void parse_shouldTrimWhitespaces() {
 		// given
 		String characters = " \n\ta|b|>=|≥|x|×|*|× ";
-		
+
 		// when
 		Map<String, String> map = parser.parse(characters);
-		
+
 		// then
 		assertThat(map).isEqualTo(ImmutableMap.of("a", "b", ">=", "≥", "x", "×", "*", "×"));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void parse_InvalidSet_oddNumberOfParts(){
+	public void parse_InvalidSet_oddNumberOfParts() {
 		// given
 		String characters = "a|b|>=|≥|x|×|*";
-		
+
 		// when
 		parser.parse(characters);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void parse_InvalidSet_emptyPart(){
+	public void parse_InvalidSet_emptyPart() {
 		// given
 		String characters = "a|b|>=|≥|x||*";
-		
+
 		// when
 		parser.parse(characters);
 	}
 
 	@Test
-	public void parse_EmptySet(){
+	public void parse_EmptySet() {
 		// given
 		String characters = "";
-		
+
 		// when
 		parser.parse(characters);
 	}

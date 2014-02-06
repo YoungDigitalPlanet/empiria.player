@@ -4,10 +4,10 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionP
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 
 public class ActionProcessorHelper extends AbstractFeedbackActionProcessor {
-	
+
 	private final ActionProcessorTarget target;
-	
-	public ActionProcessorHelper(ActionProcessorTarget target){
+
+	public ActionProcessorHelper(ActionProcessorTarget target) {
 		this.target = target;
 	}
 
@@ -20,7 +20,7 @@ public class ActionProcessorHelper extends AbstractFeedbackActionProcessor {
 	protected void processSingleAction(FeedbackAction action) {
 		target.processSingleAction(action);
 	}
-	
+
 	@Override
 	protected void clearFeedback() {
 		target.clearFeedback();

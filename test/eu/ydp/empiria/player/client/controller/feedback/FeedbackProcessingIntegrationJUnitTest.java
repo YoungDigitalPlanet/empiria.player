@@ -2,15 +2,9 @@ package eu.ydp.empiria.player.client.controller.feedback;
 
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Map;
@@ -36,8 +30,7 @@ import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
-	
-	
+
 	private static final String MODULE_1 = "+MODULE_1";
 
 	private static final String WRONG_MP3 = "wrong.mp3";
@@ -47,137 +40,135 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	private static final String GOOD_MP3 = "good.mp3";
 
 	private IModule sender;
-	
+
 	private Map<String, Outcome> variables;
-	
+
 	@Before
 	@Override
 	public void setUp() {
-		setUp(new Class<?>[]{FeedbackRegistry.class, FeedbackActionCollector.class, 
-								SoundActionProcessor.class, FeedbackConditionMatcher.class, 
-								FeedbackPropertiesCollector.class}, new ProcessingModule());
+		setUp(new Class<?>[] { FeedbackRegistry.class, FeedbackActionCollector.class, SoundActionProcessor.class, FeedbackConditionMatcher.class,
+				FeedbackPropertiesCollector.class }, new ProcessingModule());
 	}
-	
+
 	@Test
-	public void shouldProcessOkFeedback(){		
-		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0);		
+	public void shouldProcessOkFeedback() {
+		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0);
 		List<FeedbackAction> actions = processUserAction(info);
-		
+
 		assertThat(actions.size(), is(equalTo(1)));
 		FeedbackAction action = actions.get(0);
 		assertUrlAction(action, ActionType.NARRATION, GOOD_MP3);
 	}
-	
+
 	@Test
-	public void shouldIgnoreFeedbackBecauseIsOnUnselect(){		
-		ModuleInfo info = ModuleInfo.create("-"+MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0);		
+	public void shouldIgnoreFeedbackBecauseIsOnUnselect() {
+		ModuleInfo info = ModuleInfo.create("-" + MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0);
 		List<FeedbackAction> actions = processUserAction(info);
-		
+
 		assertThat(actions.size(), is(equalTo(0)));
 	}
-	
+
 	@Test
-	public void shouldProcessWrongFeedback(){		
+	public void shouldProcessWrongFeedback() {
 		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0);
 		List<FeedbackAction> actions = processUserAction(info);
-		
+
 		assertThat(actions.size(), is(equalTo(1)));
 		FeedbackAction action = actions.get(0);
 		assertUrlAction(action, ActionType.NARRATION, WRONG_MP3);
 	}
-	
+
 	@Test
-	public void shouldProcessAllOkFeedback(){		
+	public void shouldProcessAllOkFeedback() {
 		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0);
 		List<FeedbackAction> actions = processUserAction(info);
-		
+
 		assertThat(actions.size(), is(equalTo(2)));
-		String[] expectedUrls = new String[]{GOOD_MP3, ALLOK_MP3};
+		String[] expectedUrls = new String[] { GOOD_MP3, ALLOK_MP3 };
 		int index = 0;
-		
-		for(String expectedUrl: expectedUrls){
+
+		for (String expectedUrl : expectedUrls) {
 			assertUrlAction(actions.get(index++), ActionType.NARRATION, expectedUrl);
 		}
 	}
-	
+
 	@Test
-	public void shouldProcessOkFeedbackWhen_allAreDoneWithOneError(){		
+	public void shouldProcessOkFeedbackWhen_allAreDoneWithOneError() {
 		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(1);
 		List<FeedbackAction> actions = processUserAction(info);
-		
+
 		assertThat(actions.size(), is(equalTo(1)));
 		assertUrlAction(actions.get(0), ActionType.NARRATION, GOOD_MP3);
 	}
-	
+
 	@Test
-	public void shouldProcessWrongFeedbackWhen_allAreDoneWithOneError(){		
+	public void shouldProcessWrongFeedbackWhen_allAreDoneWithOneError() {
 		ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(3).setTodo(3).setErrors(1);
 		List<FeedbackAction> actions = processUserAction(info);
-		
+
 		assertThat(actions.size(), is(equalTo(1)));
 		assertUrlAction(actions.get(0), ActionType.NARRATION, WRONG_MP3);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private List<FeedbackAction> processUserAction(ModuleInfo info){
+	private List<FeedbackAction> processUserAction(ModuleInfo info) {
 		sender = createSender(info);
-		
+
 		ModuleFeedbackProcessor processor = injector.getInstance(ModuleFeedbackProcessor.class);
 		FeedbackRegistry feedbackRegistry = injector.getInstance(FeedbackRegistry.class);
-		
-		when(feedbackRegistry.hasFeedbacks())
-			.thenReturn(true);
-		
+
+		when(feedbackRegistry.hasFeedbacks()).thenReturn(true);
+
 		processor.processFeedbacks(variables, (IUniqueModule) sender);
-		
+
 		ArgumentCaptor<List> argument = ArgumentCaptor.forClass(List.class);
 		verify(processor.soundProcessor, times(1)).processActions(argument.capture());
-		
+
 		return argument.getValue();
 	}
-	
-	private void assertUrlAction(FeedbackAction actualAction, ActionType expectedType, String expectedUrl){
+
+	private void assertUrlAction(FeedbackAction actualAction, ActionType expectedType, String expectedUrl) {
 		assertThat(actualAction, is(instanceOf(ShowUrlAction.class)));
 		ShowUrlAction showUrlAction = (ShowUrlAction) actualAction;
 		assertThat(showUrlAction.getType(), is(equalTo(expectedType.getName())));
 		assertThat(showUrlAction.getHref(), is(equalTo(expectedUrl)));
 	}
-	
-	private IModule createSender(ModuleInfo info){
+
+	private IModule createSender(ModuleInfo info) {
 		FeedbackPropertiesCollectorTestHelper helper = new FeedbackPropertiesCollectorTestHelper();
 		variables = helper.createOutcomeVariables(info);
 		return helper.createUniqueModuleMock(null, info.getId(), variables);
 	}
-	
-	private class ProcessingModule implements Module{
+
+	private class ProcessingModule implements Module {
 
 		private FeedbackRegistry feedbackRegistry = null;
-		
+
 		@Override
 		public void configure(Binder binder) {
 		}
-		
+
 		@Provides
-		public FeedbackRegistry getFeedbackRegistry(){
-			if(feedbackRegistry == null){
+		public FeedbackRegistry getFeedbackRegistry() {
+			if (feedbackRegistry == null) {
 				FeedbackRegistry registry = mock(FeedbackRegistry.class);
-				List<Feedback> feedbackList =  new FeedbackCreator(GOOD_MP3, WRONG_MP3, ALLOK_MP3).createFeedbackList();
-				
+				List<Feedback> feedbackList = new FeedbackCreator(GOOD_MP3, WRONG_MP3, ALLOK_MP3).createFeedbackList();
+
 				when(registry.isModuleRegistered(sender)).thenReturn(true);
 				when(registry.getModuleFeedbacks(sender)).thenReturn(feedbackList);
 				this.feedbackRegistry = registry;
 			}
-			
+
 			return this.feedbackRegistry;
 		}
-		
+
 		@Provides
-		public SoundActionProcessor getSoundActionProcessor(EventsBus eventsBus){
+		public SoundActionProcessor getSoundActionProcessor(EventsBus eventsBus) {
 			SoundActionProcessor processor = new SoundActionProcessor(eventsBus);
 			injector.injectMembers(processor);
 			return spy(processor);
-		}	
-		
+		}
+
 	}
-	
+
 }

@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.util.events.multiplepair;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -19,7 +17,7 @@ public class PairConnectEventTest {
 	@Test
 	public void sourceTargetTest() {
 		String source = "source", target = "target";
-		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.CONNECTED, source, target,true);
+		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.CONNECTED, source, target, true);
 		assertEquals(PairConnectEventTypes.CONNECTED, event.getType());
 		assertEquals(event.getSourceItem(), source);
 		assertEquals(event.getTargetItem(), target);

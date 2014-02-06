@@ -13,7 +13,7 @@ import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
-public class OrderInteractionStructure extends AbstractModuleStructure<OrderInteractionBean, OrderInteractionModuleJAXBParserFactory>  {
+public class OrderInteractionStructure extends AbstractModuleStructure<OrderInteractionBean, OrderInteractionModuleJAXBParserFactory> {
 
 	@Inject
 	private OrderInteractionModuleJAXBParserFactory parserFactory;

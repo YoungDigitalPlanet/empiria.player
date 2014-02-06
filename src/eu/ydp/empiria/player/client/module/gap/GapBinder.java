@@ -1,9 +1,6 @@
 package eu.ydp.empiria.player.client.module.gap;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_MAXLENGTH;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH_ALIGN;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_MAXLENGTH;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH_ALIGN;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
 
 import java.util.Map;
 
@@ -28,23 +25,23 @@ import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class GapBinder implements Bindable {
-	
+
 	protected DefaultBindingGroupIdentifier widthBindingIdentifier;
 	protected DefaultBindingGroupIdentifier maxlengthBindingIdentifier;
 	protected BindingContext widthBindingContext;
 	protected BindingContext maxlengthBindingContext;
 	protected GapBase gapBase;
-	
+
 	public void setGapBase(GapBase gapBase) {
 		this.gapBase = gapBase;
 	}
-	
+
 	public int getLongestAnswerLength() {
 		int longestLength = 0;
 
 		CorrectAnswers correctAnswers = gapBase.getModuleResponse().correctAnswers;
 		for (int i = 0; i < correctAnswers.getAnswersCount(); i++) {
-			for (String a : correctAnswers.getResponseValue(i).getAnswers()){
+			for (String a : correctAnswers.getResponseValue(i).getAnswers()) {
 				if (a.length() > longestLength) {
 					longestLength = a.length();
 				}
@@ -54,10 +51,11 @@ public class GapBinder implements Bindable {
 		return longestLength;
 	}
 
+	@Override
 	public BindingGroupIdentifier getBindingGroupIdentifier(BindingType bindingType) {
 		BindingGroupIdentifier groupIndentifier = null;
 
-		if (bindingType == BindingType.GAP_WIDTHS){
+		if (bindingType == BindingType.GAP_WIDTHS) {
 			groupIndentifier = widthBindingIdentifier;
 		}
 
@@ -68,6 +66,7 @@ public class GapBinder implements Bindable {
 		return groupIndentifier;
 	}
 
+	@Override
 	public BindingValue getBindingValue(BindingType bindingType) {
 		BindingValue bindingValue = null;
 
@@ -81,13 +80,13 @@ public class GapBinder implements Bindable {
 
 		return bindingValue;
 	}
-	
+
 	protected void setWidthBinding(Map<String, String> styles, Element moduleElement) {
 		GapWidthMode widthMode = getGapWidthMode(styles);
 
-		if (widthMode == GapWidthMode.GROUP){
+		if (widthMode == GapWidthMode.GROUP) {
 			widthBindingIdentifier = getBindindIdentifier(moduleElement);
-		} else if (widthMode == GapWidthMode.GAP){
+		} else if (widthMode == GapWidthMode.GAP) {
 			setWithBindingForGap();
 		}
 	}
@@ -101,7 +100,7 @@ public class GapBinder implements Bindable {
 		}
 	}
 
-	protected GapWidthMode getGapWidthMode(Map<String, String> styles){
+	protected GapWidthMode getGapWidthMode(Map<String, String> styles) {
 		GapWidthMode widthMode = null;
 		String gapWidthAlign = StringUtils.EMPTY_STRING;
 
@@ -111,7 +110,7 @@ public class GapBinder implements Bindable {
 			gapWidthAlign = styles.get(EMPIRIA_MATH_GAP_WIDTH_ALIGN).trim().toUpperCase();
 		}
 
-		if ( !gapWidthAlign.equals(StringUtils.EMPTY_STRING) ) {
+		if (!gapWidthAlign.equals(StringUtils.EMPTY_STRING)) {
 			widthMode = GapWidthMode.valueOf(gapWidthAlign);
 		}
 
@@ -121,7 +120,7 @@ public class GapBinder implements Bindable {
 	protected DefaultBindingGroupIdentifier getBindindIdentifier(Element moduleElement) {
 		DefaultBindingGroupIdentifier bindingIdentifier;
 
-		if (moduleElement.hasAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP)){
+		if (moduleElement.hasAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP)) {
 			bindingIdentifier = new DefaultBindingGroupIdentifier(moduleElement.getAttribute(EmpiriaTagConstants.ATTR_WIDTH_BINDING_GROUP));
 		} else {
 			bindingIdentifier = new DefaultBindingGroupIdentifier(StringUtils.EMPTY_STRING);
@@ -133,10 +132,9 @@ public class GapBinder implements Bindable {
 	protected void setMaxlengthBinding(Map<String, String> styles, Element moduleElement) {
 		String maxlength = getMaxLengthFromStyles(styles);
 
-		if ( !maxlength.equals(StringUtils.EMPTY_STRING) ) {
+		if (!maxlength.equals(StringUtils.EMPTY_STRING)) {
 			setMaxLengthBindingFromStyleString(maxlength, moduleElement);
-		}
-		else if (gapBase.getModuleElement().hasAttribute("expectedLength")) {
+		} else if (gapBase.getModuleElement().hasAttribute("expectedLength")) {
 			gapBase.presenter.setMaxLength(XMLUtils.getAttributeAsInt(gapBase.getModuleElement(), "expectedLength"));
 		}
 	}
@@ -147,17 +145,17 @@ public class GapBinder implements Bindable {
 		} else {
 			gapBase.presenter.setMaxLength(Integer.parseInt(maxLength));
 		}
-		
+
 	}
 
 	private String getMaxLengthFromStyles(Map<String, String> styles) {
 		String gapMaxlength;
-		
+
 		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH)) {
 			gapMaxlength = styles.get(EMPIRIA_TEXTENTRY_GAP_MAXLENGTH).trim().toUpperCase();
 		} else if (styles.containsKey(EMPIRIA_MATH_GAP_MAXLENGTH)) {
 			gapMaxlength = styles.get(EMPIRIA_MATH_GAP_MAXLENGTH).trim().toUpperCase();
-		}else{
+		} else {
 			gapMaxlength = StringUtils.EMPTY_STRING;
 		}
 		return gapMaxlength;
@@ -185,7 +183,7 @@ public class GapBinder implements Bindable {
 			gapBase.presenter.setMaxLength(longestAnswerLength);
 		}
 	}
-	
+
 	protected int calculateTextBoxWidth(int longestAnswerLength) {
 		return longestAnswerLength * gapBase.getFontSize();
 	}

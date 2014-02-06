@@ -11,5 +11,5 @@ public interface ColorfillInteractionPresenter extends ActivityPresenter<Colorfi
 	void imageColorChanged(Area area);
 
 	void buttonClicked(ColorModel color);
-	
+
 }

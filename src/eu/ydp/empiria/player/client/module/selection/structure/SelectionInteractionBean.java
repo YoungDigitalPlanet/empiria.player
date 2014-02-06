@@ -11,25 +11,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasShuffle;
 import eu.ydp.empiria.player.client.structure.InteractionModuleBean;
 
-@XmlRootElement(name="selectionInteraction")
+@XmlRootElement(name = "selectionInteraction")
 @XmlAccessorType(XmlAccessType.NONE)
-public class SelectionInteractionBean extends InteractionModuleBean implements HasShuffle{
-	
+public class SelectionInteractionBean extends InteractionModuleBean implements HasShuffle {
+
 	@XmlAttribute
 	private int matchMax;
-	
+
 	@XmlAttribute
 	private int maxAssociations;
-	
+
 	@XmlAttribute
 	private boolean multi;
-	
+
 	@XmlAttribute
 	private boolean shuffle;
-	
+
 	@XmlElement(name = "simpleChoice")
 	private List<SelectionSimpleChoiceBean> simpleChoices;
-	
+
 	@XmlElement(name = "item")
 	private List<SelectionItemBean> items;
 
@@ -40,11 +40,11 @@ public class SelectionInteractionBean extends InteractionModuleBean implements H
 	public void setMatchMax(int matchMax) {
 		this.matchMax = matchMax;
 	}
-	
+
 	public List<SelectionSimpleChoiceBean> getSimpleChoices() {
 		return simpleChoices;
 	}
-	
+
 	public void setSimpleChoices(List<SelectionSimpleChoiceBean> simpleChoices) {
 		this.simpleChoices = simpleChoices;
 	}
@@ -73,6 +73,7 @@ public class SelectionInteractionBean extends InteractionModuleBean implements H
 		this.items = items;
 	}
 
+	@Override
 	public boolean isShuffle() {
 		return shuffle;
 	}

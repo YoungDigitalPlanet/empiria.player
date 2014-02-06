@@ -1,26 +1,18 @@
 package eu.ydp.empiria.player.client.module.media;
 
 import static eu.ydp.empiria.player.client.util.events.media.MediaEvent.getType;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_FULL_SCREEN_EXIT;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_FULL_SCREEN_OPEN;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_PLAY;
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_ANDROID;
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.SAFARI;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -61,8 +53,10 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 		UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(userAgent));
 		setUp(new Class[0], new Class[0], new Class[] { EventsBus.class }, new CustomGuiceModule());
 		eventsBus = injector.getInstance(EventsBus.class);
-		doReturn(handlerRegistration).when(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_OPEN)), eq(fullScreenWrapper), any(MediaEventHandler.class),any(PageScope.class));
-		doReturn(handlerRegistration2).when(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_EXIT)), eq(fullScreenWrapper), any(MediaEventHandler.class),any(PageScope.class));
+		doReturn(handlerRegistration).when(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_OPEN)), eq(fullScreenWrapper), any(MediaEventHandler.class),
+				any(PageScope.class));
+		doReturn(handlerRegistration2).when(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_EXIT)), eq(fullScreenWrapper),
+				any(MediaEventHandler.class), any(PageScope.class));
 
 		MediaWrappersPair instance = new MediaWrappersPair(defaultWrapper, fullScreenWrapper);
 		injector.injectMembers(instance);
@@ -73,7 +67,7 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 	}
 
 	@Test
-	public void mediaWrappersGetersTest(){
+	public void mediaWrappersGetersTest() {
 		before(FIREFOX_WINDOWS);
 		assertEquals(defaultWrapper, instance.getDefaultMediaWrapper());
 		assertEquals(fullScreenWrapper, instance.getFullScreanMediaWrapper());
@@ -111,11 +105,11 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 		verify(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_OPEN)), eq(fullScreenWrapper), any(MediaEventHandler.class), any(EventScope.class));
 		verify(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_EXIT)), eq(fullScreenWrapper), any(MediaEventHandler.class), any(EventScope.class));
 		instance.disableFullScreenSynchronization();
-		verify(handlerRegistration,times(1)).removeHandler();
-		verify(handlerRegistration2,times(1)).removeHandler();
+		verify(handlerRegistration, times(1)).removeHandler();
+		verify(handlerRegistration2, times(1)).removeHandler();
 		instance.disableFullScreenSynchronization();
-		verify(handlerRegistration,times(1)).removeHandler();
-		verify(handlerRegistration2,times(1)).removeHandler();
+		verify(handlerRegistration, times(1)).removeHandler();
+		verify(handlerRegistration2, times(1)).removeHandler();
 	}
 
 	@Test
@@ -142,7 +136,7 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 		verify(instance).setCurrentTimeForMedia(eq(fullScreenWrapper), eq(defaultWrapper));
 		verify(eventsBus).fireEventFromSource(any(MediaEvent.class), eq(defaultWrapper));
 		verify(eventsBus).fireEventFromSource(any(MediaEvent.class), eq(fullScreenWrapper));
-		verify(eventsBus).addHandlerToSource(eq(getType(ON_PLAY)), eq(fullScreenWrapper), any(MediaEventHandler.class),Mockito.any(PageScope.class));
+		verify(eventsBus).addHandlerToSource(eq(getType(ON_PLAY)), eq(fullScreenWrapper), any(MediaEventHandler.class), Matchers.any(PageScope.class));
 		verify(instance).firePlay(fullScreenWrapper);
 	}
 
@@ -154,19 +148,18 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
 		verify(instance).setCurrentTimeForMedia(eq(defaultWrapper), eq(fullScreenWrapper));
 		verify(eventsBus).fireEventFromSource(any(MediaEvent.class), eq(defaultWrapper));
 		verify(eventsBus).fireEventFromSource(any(MediaEvent.class), eq(fullScreenWrapper));
-		verify(eventsBus).addHandlerToSource(eq(getType(ON_PLAY)), eq(defaultWrapper), any(MediaEventHandler.class),Mockito.any(PageScope.class));
+		verify(eventsBus).addHandlerToSource(eq(getType(ON_PLAY)), eq(defaultWrapper), any(MediaEventHandler.class), Matchers.any(PageScope.class));
 		verify(instance).firePlay(defaultWrapper);
 	}
 
 	@Test
-	public void synchronizeTimeTest(){
-		desktopFullScreenOpenRequestTest(); //preparehandler
+	public void synchronizeTimeTest() {
+		desktopFullScreenOpenRequestTest(); // preparehandler
 		Mockito.reset(eventsBus);
 		eventsBus.fireEventFromSource(new MediaEvent(ON_PLAY), fullScreenWrapper);
 		verify(instance).setCurrentTimeForMedia(eq(fullScreenWrapper), eq(defaultWrapper));
-		verify(eventsBus).fireAsyncEventFromSource(any(MediaEvent.class),eq(fullScreenWrapper));
+		verify(eventsBus).fireAsyncEventFromSource(any(MediaEvent.class), eq(fullScreenWrapper));
 	}
-
 
 	@BeforeClass
 	public static void disarm() {

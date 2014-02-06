@@ -2,12 +2,11 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import com.google.common.base.Objects;
 
-
-public class ConnectionPairEntry<S,T> {
+public class ConnectionPairEntry<S, T> {
 	S source;
 	T target;
 
-	public ConnectionPairEntry(S source,T target) {
+	public ConnectionPairEntry(S source, T target) {
 		super();
 		this.source = source;
 		this.target = target;
@@ -36,11 +35,11 @@ public class ConnectionPairEntry<S,T> {
 	public boolean equals(Object obj) {
 		boolean equals = false;
 		if (obj instanceof ConnectionPairEntry) {
-			equals = Objects.equal(target, ((ConnectionPairEntry<?,?>) obj).getTarget())
-					|| Objects.equal(source, ((ConnectionPairEntry<?,?>) obj).getTarget());
+			equals = Objects.equal(target, ((ConnectionPairEntry<?, ?>) obj).getTarget())
+					|| Objects.equal(source, ((ConnectionPairEntry<?, ?>) obj).getTarget());
 			if (equals) {
-				equals = Objects.equal(target, ((ConnectionPairEntry<?,?>) obj).getSource())
-						 || Objects.equal(source, ((ConnectionPairEntry<?,?>) obj).getSource());
+				equals = Objects.equal(target, ((ConnectionPairEntry<?, ?>) obj).getSource())
+						|| Objects.equal(source, ((ConnectionPairEntry<?, ?>) obj).getSource());
 			}
 		}
 		return equals;

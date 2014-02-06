@@ -3,10 +3,7 @@ package eu.ydp.empiria.player.client.module.media.html5.reattachhack;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -47,7 +44,7 @@ public class HTML5VideoReattachHackJUnitTest extends AbstractTestBaseWithoutAuto
 
 	@Before
 	public void setUpBefore() throws Exception {
-		setUpGin();	
+		setUpGin();
 		setUpInjectors();
 		mockMedia();
 	}
@@ -56,28 +53,27 @@ public class HTML5VideoReattachHackJUnitTest extends AbstractTestBaseWithoutAuto
 	public void checkAttachHandlerAttachedToNewVideoInstance() {
 		// when
 		hack.reAttachVideo(mediaWrapper, mediaExecutor);
-			
+
 		// than
-		verify(video).addAttachHandler((AttachHandlerImpl)anyObject());
+		verify(video).addAttachHandler((AttachHandlerImpl) anyObject());
 	}
-	
+
 	@Test
 	public void checkIsNewVideoCreatedUsingProperCreator() {
 		// when
 		hack.reAttachVideo(mediaWrapper, mediaExecutor);
-			
+
 		// than
 		verify(videoRebuilder).getVideo();
 	}
-	
-	
+
 	@Test
 	public void checkIsNewVideoMediaWrapperSetAndWrapperInitialized() {
 		// when
 		hack.reAttachVideo(mediaWrapper, mediaExecutor);
 
-		// than			
-		verify(mediaExecutor).setMediaWrapper((HTML5VideoMediaWrapper)anyObject());
+		// than
+		verify(mediaExecutor).setMediaWrapper((HTML5VideoMediaWrapper) anyObject());
 		verify(mediaExecutor).init();
 	}
 
@@ -85,13 +81,13 @@ public class HTML5VideoReattachHackJUnitTest extends AbstractTestBaseWithoutAuto
 	public void testMediaEventsFired() {
 		// when
 		hack.reAttachVideo(mediaWrapper, mediaExecutor);
-		
+
 		// than
 		ArgumentCaptor<MediaEvent> arguments = ArgumentCaptor.forClass(MediaEvent.class);
-		
-		verify(eventBus, times(2)).fireAsyncEventFromSource(arguments.capture(), (AbstractHTML5MediaWrapper)anyObject());
-		
-		List<MediaEvent> mediaEvents = arguments.getAllValues();		
+
+		verify(eventBus, times(2)).fireAsyncEventFromSource(arguments.capture(), (AbstractHTML5MediaWrapper) anyObject());
+
+		List<MediaEvent> mediaEvents = arguments.getAllValues();
 		assertThat(Iterables.transform(mediaEvents, toTypesListConverter()), containsInAnyOrder(MediaEventTypes.ON_TIME_UPDATE, MediaEventTypes.ON_PAUSE));
 	}
 
@@ -104,10 +100,10 @@ public class HTML5VideoReattachHackJUnitTest extends AbstractTestBaseWithoutAuto
 				return mediaEvent.getType();
 			}
 		};
-	}	
-	
+	}
+
 	private void setUpInjectors() {
-		eventBus = injector.getInstance(EventsBus.class);		
+		eventBus = injector.getInstance(EventsBus.class);
 		hack = injector.getInstance(HTML5VideoReattachHack.class);
 		videoRebuilder = injector.getInstance(HTML5VideoRebuilder.class);
 	}
@@ -115,10 +111,10 @@ public class HTML5VideoReattachHackJUnitTest extends AbstractTestBaseWithoutAuto
 	private void mockMedia() {
 		video = mock(Video.class);
 		when(videoRebuilder.getVideo()).thenReturn(video);
-		
-		mediaWrapper = mock(HTML5VideoMediaWrapper.class);		
+
+		mediaWrapper = mock(HTML5VideoMediaWrapper.class);
 		when(mediaWrapper.getMediaObject()).thenReturn(video);
-		mediaExecutor = mock(HTML5VideoMediaExecutor.class);		
+		mediaExecutor = mock(HTML5VideoMediaExecutor.class);
 	}
 
 	private void setUpGin() {
@@ -134,21 +130,21 @@ public class HTML5VideoReattachHackJUnitTest extends AbstractTestBaseWithoutAuto
 			binder.bind(HTML5VideoRebuilder.class).toInstance(mock(HTML5VideoRebuilder.class));
 		}
 	}
-	
-    @BeforeClass
-    public static void prepareTestEnviroment() {
-    	/**
-    	 * disable GWT.create() behavior for pure JUnit testing
-    	 */
-    	GWTMockUtilities.disarm();    	
-    }
-    
-    @AfterClass
-    public static void restoreEnviroment() {
-    	/**
-    	 * restore GWT.create() behavior
-    	 */
-    	GWTMockUtilities.restore();
-    }
-    
+
+	@BeforeClass
+	public static void prepareTestEnviroment() {
+		/**
+		 * disable GWT.create() behavior for pure JUnit testing
+		 */
+		GWTMockUtilities.disarm();
+	}
+
+	@AfterClass
+	public static void restoreEnviroment() {
+		/**
+		 * restore GWT.create() behavior
+		 */
+		GWTMockUtilities.restore();
+	}
+
 }

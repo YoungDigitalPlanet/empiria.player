@@ -6,8 +6,12 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 public interface MediaConnectorListener {
 
 	void onReady(String id, MediaParams params);
+
 	void onPlay(String id);
+
 	void onPause(String id);
+
 	void onEnd(String id);
+
 	void onTimeUpdate(String id, MediaStatus status);
 }

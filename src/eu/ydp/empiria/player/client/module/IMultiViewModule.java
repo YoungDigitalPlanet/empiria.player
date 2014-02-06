@@ -10,9 +10,9 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 public interface IMultiViewModule extends IModule {
 
 	public void initModule(ModuleSocket moduleSocket, InteractionEventsListener interactionEventsListener);
-	
+
 	public void addElement(Element element);
-	
+
 	public void installViews(List<HasWidgets> placeholders);
-	
+
 }

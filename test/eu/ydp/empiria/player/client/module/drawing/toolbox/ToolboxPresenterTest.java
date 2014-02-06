@@ -5,11 +5,7 @@ import static eu.ydp.empiria.player.client.module.model.color.ColorModel.createF
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -61,12 +57,12 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
 		// given
 		Tool tool = mock(Tool.class);
 		when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
-		
+
 		// when
 		presenter.init();
 
 		// then
-		ArgumentCaptor<List<ColorModel>> ac = (ArgumentCaptor)ArgumentCaptor.forClass(List.class);
+		ArgumentCaptor<List<ColorModel>> ac = (ArgumentCaptor) ArgumentCaptor.forClass(List.class);
 		verify(view).setPalette(ac.capture());
 		assertThat(ac.getValue()).containsExactly(createFromRgbString("00FF00"), createFromRgbString("00FFFF"), createFromRgbString("000DAF"));
 		verify(view).setPresenterAndBind(presenter);

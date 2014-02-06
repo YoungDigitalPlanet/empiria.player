@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleCh
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class SelectionModulePresenterImpl implements SelectionModulePresenter{
+public class SelectionModulePresenterImpl implements SelectionModulePresenter {
 
 	private SelectionModuleModel model;
 	private SelectionInteractionBean bean;
@@ -32,15 +32,11 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 	private SelectionViewUpdater viewUpdater;
 	private SelectionViewBuilder viewBuilder;
 	private SelectionAnswersMarker answersMarker;
-	
+
 	@Inject
-	public SelectionModulePresenterImpl(
-			SelectionViewUpdater selectionViewUpdater,
-			SelectionAnswersMarker answersMarker,
-			@ModuleScoped SelectionModuleView selectionModuleView,
-			@ModuleScoped SelectionModuleModel selectionModuleModel,
-			@ModuleScoped SelectionViewBuilder selectionViewBuilder,
-			@ModuleScoped GroupAnswersControllerModel groupChoicesControllers) {
+	public SelectionModulePresenterImpl(SelectionViewUpdater selectionViewUpdater, SelectionAnswersMarker answersMarker,
+			@ModuleScoped SelectionModuleView selectionModuleView, @ModuleScoped SelectionModuleModel selectionModuleModel,
+			@ModuleScoped SelectionViewBuilder selectionViewBuilder, @ModuleScoped GroupAnswersControllerModel groupChoicesControllers) {
 		this.answersMarker = answersMarker;
 		this.selectionModuleView = selectionModuleView;
 		this.viewUpdater = selectionViewUpdater;
@@ -52,20 +48,20 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 	@Override
 	public void bindView() {
 		InlineBodyGeneratorSocket inlineBodyGeneratorSocket = moduleSocket.getInlineBodyGeneratorSocket();
-		
+
 		selectionModuleView.initialize(inlineBodyGeneratorSocket);
 
 		viewBuilder.bindView(this, bean);
-		
+
 		fillSelectionGrid();
 	}
 
 	private void fillSelectionGrid() {
 		List<SelectionItemBean> items = bean.getItems();
 		List<SelectionSimpleChoiceBean> simpleChoices = bean.getSimpleChoices();
-		
+
 		viewBuilder.setGridSize(items.size(), simpleChoices.size());
-		
+
 		groupChoicesControllersModel.setGroupChoicesControllers(viewBuilder.fillGrid(items, simpleChoices));
 	}
 
@@ -78,7 +74,7 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 
 	@Override
 	public void setModel(SelectionModuleModel model) {
-		// SelectionModuleModel is now being injected in moduleScope 
+		// SelectionModuleModel is now being injected in moduleScope
 	}
 
 	@Override
@@ -105,11 +101,11 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 		int itemNumber = groupChoicesControllersModel.indexOf(groupChoicesController);
 		viewUpdater.updateView(selectionModuleView, groupChoicesController, itemNumber);
 	}
-	
+
 	@Override
 	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
 		answersMarker.markAnswers(type, mode);
-		for(GroupAnswersController groupChoicesController : groupChoicesControllersModel.getGroupChoicesControllers()){
+		for (GroupAnswersController groupChoicesController : groupChoicesControllersModel.getGroupChoicesControllers()) {
 			updateGroupAnswerView(groupChoicesController);
 		}
 	}
@@ -117,14 +113,14 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter{
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		List<String> answersToSelect;
-		if(ShowAnswersType.CORRECT.equals(mode))
+		if (ShowAnswersType.CORRECT.equals(mode))
 			answersToSelect = model.getCorrectAnswers();
 		else
 			answersToSelect = model.getCurrentAnswers();
-		
+
 		for (GroupAnswersController groupChoicesController : groupChoicesControllersModel.getGroupChoicesControllers()) {
 			groupChoicesController.selectOnlyAnswersMatchingIds(answersToSelect);
-			
+
 			updateGroupAnswerView(groupChoicesController);
 		}
 	}

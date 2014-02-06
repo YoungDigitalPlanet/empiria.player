@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.ordering.view.items;
 
-import static org.fest.assertions.api.Assertions.*;
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.user.client.ui.IsWidget;
@@ -37,7 +38,7 @@ public class OrderInteractionViewItemsImplJUnitTest extends AbstractTestBaseWith
 	public void before() {
 		setUp(new GuiceModuleConfiguration(), new CustomGinModule());
 		viewItem = mock(OrderInteractionViewItem.class);
-		when(moduleFactory.getOrderInteractionViewItem(Mockito.any(IsWidget.class), Mockito.anyString())).thenReturn(viewItem);
+		when(moduleFactory.getOrderInteractionViewItem(Matchers.any(IsWidget.class), Matchers.anyString())).thenReturn(viewItem);
 		instance = injector.getInstance(OrderInteractionViewItemsImpl.class);
 	}
 
@@ -50,7 +51,7 @@ public class OrderInteractionViewItemsImplJUnitTest extends AbstractTestBaseWith
 		OrderInteractionViewItem item = instance.addItem("id", widget);
 
 		// then
-		verify(moduleFactory).getOrderInteractionViewItem(Mockito.eq(widget), Mockito.eq("id"));
+		verify(moduleFactory).getOrderInteractionViewItem(Matchers.eq(widget), Matchers.eq("id"));
 		assertThat(item).isEqualTo(viewItem);
 	}
 
@@ -71,6 +72,6 @@ public class OrderInteractionViewItemsImplJUnitTest extends AbstractTestBaseWith
 		instance.addItem("id", widget);
 		List<String> asList = Arrays.asList("a");
 		instance.getItemsInOrder(asList);
-		verify(itemsSorter).getItemsInOrder(Mockito.eq(asList), Mockito.anyMapOf(String.class, IsWidget.class));
+		verify(itemsSorter).getItemsInOrder(Matchers.eq(asList), Matchers.anyMapOf(String.class, IsWidget.class));
 	}
 }

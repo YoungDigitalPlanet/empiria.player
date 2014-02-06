@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.results;
 
 import static org.mockito.Matchers.anyMap;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 
@@ -26,23 +24,23 @@ public class ProcessingResultsToOutcomeMapConverterFacadeJUnitTest {
 	private ProcessingResultsToOutcomeMapConverterFactory converterFactory;
 	@InjectMocks
 	private ProcessingResultsToOutcomeMapConverterFacade converterFacade;
-	
+
 	@Before
 	public void setUp() {
 	}
-	
+
 	@Test
 	public void convert() {
 		// given
-		HashMap<String, Outcome> outcomesMap = Maps.<String, Outcome>newHashMap();
+		HashMap<String, Outcome> outcomesMap = Maps.<String, Outcome> newHashMap();
 		ModulesProcessingResults results = mock(ModulesProcessingResults.class);
 		GlobalVariables globalVariables = mock(GlobalVariables.class);
 		ProcessingResultsToOutcomeMapConverter converter = mock(ProcessingResultsToOutcomeMapConverter.class);
 		when(converterFactory.createConverter(anyMap())).thenReturn(converter);
-		
+
 		// when
 		converterFacade.convert(outcomesMap, results, globalVariables);
-		
+
 		// then
 		verify(converterFactory).createConverter(outcomesMap);
 		verify(converter).updateOutcomeMapByModulesProcessingResults(results);

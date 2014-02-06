@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
-import static com.google.common.collect.Iterables.*;
-import static com.google.common.collect.Maps.*;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Maps.filterEntries;
+import static com.google.common.collect.Maps.transformEntries;
 
 import java.util.Collection;
 import java.util.Map;
@@ -20,25 +22,25 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 
 public class ResultVariablesConverter {
-	
+
 	@Inject
 	private DefaultResultVariablesTransformation defaultResultVaribalesTransformation;
-	
+
 	@Inject
 	private ExpressionCheckModeFilter expressionCheckModeFilter;
-	
+
 	@Inject
 	private DefaultCheckModeFilter defaultCheckModeFilter;
-	
+
 	@Inject
 	private ExpressionBeanResultsToResultVariableTransformation expressionBeanToResultVariableTransformation;
 
-	public Iterable<ResultVariables> convertToResultVariables(Map<String, DtoModuleProcessingResult> modulesProcessingResults, Map<String, Response> responses){
+	public Iterable<ResultVariables> convertToResultVariables(Map<String, DtoModuleProcessingResult> modulesProcessingResults, Map<String, Response> responses) {
 		Map<Response, DtoModuleProcessingResult> combined = combineToResponseResultMap(modulesProcessingResults, responses);
-		
+
 		Iterable<ResultVariables> defaultCheckModeResults = findResultVariablesForDefaultCheckModeResponses(combined);
 		Iterable<ResultVariables> expressionCheckModeResults = findResultVariablesForExpressionCheckModeResponses(combined);
-		
+
 		return concat(defaultCheckModeResults, expressionCheckModeResults);
 	}
 
@@ -54,20 +56,21 @@ public class ResultVariablesConverter {
 		return transform(defaultCheckModeResponses.entrySet(), defaultResultVaribalesTransformation);
 	}
 
-	private Map<Response, DtoModuleProcessingResult> combineToResponseResultMap(Map<String, DtoModuleProcessingResult> modulesProcessingResults, Map<String, Response> responses){
+	private Map<Response, DtoModuleProcessingResult> combineToResponseResultMap(Map<String, DtoModuleProcessingResult> modulesProcessingResults,
+			Map<String, Response> responses) {
 		Map<Response, DtoModuleProcessingResult> combined = Maps.newHashMap();
-		for (String id : responses.keySet()){
+		for (String id : responses.keySet()) {
 			combined.put(responses.get(id), modulesProcessingResults.get(id));
 		}
 		return combined;
 	}
 
-	private Map<ExpressionBean, Collection<DtoModuleProcessingResult>> transformToExpressionResultsMap(Map<Response, DtoModuleProcessingResult> combined){
+	private Map<ExpressionBean, Collection<DtoModuleProcessingResult>> transformToExpressionResultsMap(Map<Response, DtoModuleProcessingResult> combined) {
 		Map<ExpressionBean, Collection<DtoModuleProcessingResult>> transformed = Maps.newHashMap();
-		for (Response response : combined.keySet()){
+		for (Response response : combined.keySet()) {
 			ExpressionBean expression = response.getExpression();
 			if (!transformed.containsKey(expression)) {
-				transformed.put(expression, Lists.<DtoModuleProcessingResult>newArrayList());
+				transformed.put(expression, Lists.<DtoModuleProcessingResult> newArrayList());
 			}
 			transformed.get(expression).add(combined.get(response));
 		}

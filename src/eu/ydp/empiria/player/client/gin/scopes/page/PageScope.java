@@ -5,11 +5,11 @@ import eu.ydp.gwtutil.client.gin.scopes.AbstractCustomScope;
 public class PageScope extends AbstractCustomScope {
 
 	private Integer pageNumber;
-	
+
 	public PageScope(Integer pageNumber) {
 		this.pageNumber = pageNumber;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

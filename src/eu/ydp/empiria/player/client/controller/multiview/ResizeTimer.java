@@ -9,7 +9,7 @@ public class ResizeTimer extends Timer {
 	public ResizeTimer(ResizeContinousUpdater resizeContinousUpdater) {
 		this.resizeContinousUpdater = resizeContinousUpdater;
 	}
-	
+
 	public void cancelAndReset() {
 		super.cancel();
 		resizeContinousUpdater.reset();
@@ -18,8 +18,8 @@ public class ResizeTimer extends Timer {
 	@Override
 	public void run() {
 		int rescheduleTime = resizeContinousUpdater.runContinousResizeUpdateAndReturnRescheduleTime();
-		
-		if(rescheduleTime > 0){
+
+		if (rescheduleTime > 0) {
 			schedule(rescheduleTime);
 		}
 	}

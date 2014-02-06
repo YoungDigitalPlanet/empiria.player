@@ -23,24 +23,26 @@ public class DrawingModule extends SimpleModuleBase implements IResetable {
 	private DrawingBean bean;
 	@Inject
 	private DrawingView drawingView;
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private ToolboxPresenter toolboxPresenter;
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private CanvasPresenter canvasPresenter;
 	@Inject
 	private DrawCommandFactory factory;
-	
+
 	@Override
 	public void reset() {
 		DrawCommand clearCommand = factory.createCommand(DrawCommandType.CLEAR_ALL);
 		clearCommand.execute();
 	}
-	
+
 	@Override
 	public Widget getView() {
 		return drawingView.asWidget();
 	}
-	
+
 	@Override
 	protected void initModule(Element element) {
 		initializeCanvas();

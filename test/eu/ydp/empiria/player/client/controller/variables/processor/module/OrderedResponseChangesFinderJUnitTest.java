@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 

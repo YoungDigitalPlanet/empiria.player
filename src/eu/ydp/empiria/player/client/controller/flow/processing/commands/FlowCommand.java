@@ -9,23 +9,24 @@ public abstract class FlowCommand implements IFlowCommand {
 
 	protected String name;
 
-	private FlowCommand(String name){
+	private FlowCommand(String name) {
 		this.name = name;
 	}
-	
-	public String getName(){
+
+	@Override
+	public String getName() {
 		return name;
 	}
-	
-	public static IFlowCommand fromJsObject(JavaScriptObject commandJsObject){
+
+	public static IFlowCommand fromJsObject(JavaScriptObject commandJsObject) {
 		String objName = getJsObjectName(commandJsObject);
-		if (objName == null  ||  objName.equals("")){
+		if (objName == null || objName.equals("")) {
 			return null;
 		}
 		int objIndex = getJsObjectIndex(commandJsObject);
 		String groupIdentifierString = getJsObjectGroupIdentifier(commandJsObject);
 		GroupIdentifier groupIdentifier = new DefaultGroupIdentifier(groupIdentifierString);
-		
+
 		IFlowCommand command = null;
 
 		if (NavigateNextItem.NAME.equals(objName)) {
@@ -56,245 +57,294 @@ public abstract class FlowCommand implements IFlowCommand {
 			command = new ShowAnswers(groupIdentifier);
 		} else if (Lock.NAME.equals(objName)) {
 			command = new Lock(groupIdentifier);
-		}else if (Unlock.NAME.equals(objName)) {
+		} else if (Unlock.NAME.equals(objName)) {
 			command = new Unlock(groupIdentifier);
 		}
-		
+
 		return command;
 	}
 
 	private static native String getJsObjectName(JavaScriptObject obj)/*-{
-		if (typeof obj.name == 'string'){
-			return obj.name;
-		}
-		return "";
-	}-*/;
-	private static native int getJsObjectIndex(JavaScriptObject obj)/*-{
-		if (typeof obj.index == 'number'){
-			return obj.index;
-		}
-		return -1;
-	}-*/;
-	private static native String getJsObjectGroupIdentifier(JavaScriptObject obj)/*-{
-		if (typeof obj.groupIdentifier == 'string'){
-			return obj.groupIdentifier;
-		}
-		return "";
-	}-*/;
+																		if (typeof obj.name == 'string'){
+																		return obj.name;
+																		}
+																		return "";
+																		}-*/;
 
-	public final static class NavigateNextItem extends FlowCommand{
-		public NavigateNextItem(){
+	private static native int getJsObjectIndex(JavaScriptObject obj)/*-{
+																	if (typeof obj.index == 'number'){
+																	return obj.index;
+																	}
+																	return -1;
+																	}-*/;
+
+	private static native String getJsObjectGroupIdentifier(JavaScriptObject obj)/*-{
+																					if (typeof obj.groupIdentifier == 'string'){
+																					return obj.groupIdentifier;
+																					}
+																					return "";
+																					}-*/;
+
+	public final static class NavigateNextItem extends FlowCommand {
+		public NavigateNextItem() {
 			super(NAME);
-		}		
-		public static final String NAME = "NAVIGATE_NEXT_ITEM"; 
+		}
+
+		public static final String NAME = "NAVIGATE_NEXT_ITEM";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
 			listener.nextPage();
 		}
 	}
-	public static final class NavigatePreviousItem extends FlowCommand{
-		public NavigatePreviousItem(){
+
+	public static final class NavigatePreviousItem extends FlowCommand {
+		public NavigatePreviousItem() {
 			super(NAME);
-		}		
-		public static final String NAME = "NAVIGATE_PREVIOUS_ITEM"; 
+		}
+
+		public static final String NAME = "NAVIGATE_PREVIOUS_ITEM";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
 			listener.previousPage();
 		}
 	}
-	public static final class NavigateFirstItem extends FlowCommand{
-		public NavigateFirstItem(){
+
+	public static final class NavigateFirstItem extends FlowCommand {
+		public NavigateFirstItem() {
 			super(NAME);
-		}		
-		public static final String NAME = "NAVIGATE_FIRST_ITEM"; 
+		}
+
+		public static final String NAME = "NAVIGATE_FIRST_ITEM";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
 			listener.gotoFirstPage();
 		}
 	}
-	public static final  class NavigateLastItem extends FlowCommand{
-		public NavigateLastItem(){
+
+	public static final class NavigateLastItem extends FlowCommand {
+		public NavigateLastItem() {
 			super(NAME);
-		}		
-		public static final String NAME = "NAVIGATE_LAST_ITEM"; 
+		}
+
+		public static final String NAME = "NAVIGATE_LAST_ITEM";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
 			listener.gotoLastPage();
 		}
 	}
-	public static final class NavigateToc extends FlowCommand{
-		public NavigateToc(){
+
+	public static final class NavigateToc extends FlowCommand {
+		public NavigateToc() {
 			super(NAME);
 		}
-		public static final String NAME = "NAVIGATE_TOC"; 
+
+		public static final String NAME = "NAVIGATE_TOC";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
 			listener.gotoToc();
 		}
 	}
-	public static final class NavigateTest extends FlowCommand{
-		public NavigateTest(){
+
+	public static final class NavigateTest extends FlowCommand {
+		public NavigateTest() {
 			super(NAME);
-		}		
-		public static final String NAME = "NAVIGATE_TEST"; 
+		}
+
+		public static final String NAME = "NAVIGATE_TEST";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
 			listener.gotoTest();
 		}
 	}
-	public static final class NavigateSummary extends FlowCommand{
-		public NavigateSummary(){
+
+	public static final class NavigateSummary extends FlowCommand {
+		public NavigateSummary() {
 			super(NAME);
-		}		
-		public static final String NAME = "NAVIGATE_SUMMARY"; 
+		}
+
+		public static final String NAME = "NAVIGATE_SUMMARY";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
 			listener.gotoSummary();
 		}
 	}
-	public abstract static class FlowCommandWithIndex extends FlowCommand{
-		public FlowCommandWithIndex(String name, int index){
+
+	public abstract static class FlowCommandWithIndex extends FlowCommand {
+		public FlowCommandWithIndex(String name, int index) {
 			super(name);
 			this.index = index;
 		}
+
 		protected int index;
 	}
-	public static final class NavigateGotoItem extends FlowCommandWithIndex{
-		public NavigateGotoItem(int index){
+
+	public static final class NavigateGotoItem extends FlowCommandWithIndex {
+		public NavigateGotoItem(int index) {
 			super(NAME, index);
-		}	
-		public static final String NAME = "NAVIGATE_GOTO_ITEM"; 
+		}
+
+		public static final String NAME = "NAVIGATE_GOTO_ITEM";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
 			listener.gotoPage(index);
 		}
 	}
-	public static final class NavigatePreviewItem extends FlowCommandWithIndex{
-		public NavigatePreviewItem(int index){
+
+	public static final class NavigatePreviewItem extends FlowCommandWithIndex {
+		public NavigatePreviewItem(int index) {
 			super(NAME, index);
-		}	
-		public static final String NAME = "NAVIGATE_PREVIEW_ITEM"; 
+		}
+
+		public static final String NAME = "NAVIGATE_PREVIEW_ITEM";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
 			listener.previewPage(index);
 		}
 	}
-	public abstract static class FlowCommandForGroup extends FlowCommand{
-		public FlowCommandForGroup(String name, GroupIdentifier groupIdentifier){
+
+	public abstract static class FlowCommandForGroup extends FlowCommand {
+		public FlowCommandForGroup(String name, GroupIdentifier groupIdentifier) {
 			super(name);
 			this.groupIdentifier = groupIdentifier;
 		}
+
 		protected GroupIdentifier groupIdentifier;
 	}
-	public static class Check extends FlowCommandForGroup{
-		public Check(GroupIdentifier groupIdentifier){
+
+	public static class Check extends FlowCommandForGroup {
+		public Check(GroupIdentifier groupIdentifier) {
 			super(NAME, groupIdentifier);
 		}
-		public Check(){
+
+		public Check() {
 			super(NAME, null);
 		}
-		public static final String NAME = "CHECK"; 
+
+		public static final String NAME = "CHECK";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
+			if (groupIdentifier == null || "".equals(groupIdentifier.getIdentifier())) {
 				listener.checkPage();
-			}
-			else{
+			} else {
 				listener.checkGroup(groupIdentifier);
 			}
 		}
 	}
-	public static class Continue extends FlowCommandForGroup{
-		public Continue(GroupIdentifier groupIdentifier){
+
+	public static class Continue extends FlowCommandForGroup {
+		public Continue(GroupIdentifier groupIdentifier) {
 			super(NAME, groupIdentifier);
 		}
-		public Continue(){
+
+		public Continue() {
 			super(NAME, null);
 		}
-		public static final String NAME = "CONTINUE"; 
+
+		public static final String NAME = "CONTINUE";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
+			if (groupIdentifier == null || "".equals(groupIdentifier.getIdentifier())) {
 				listener.continuePage();
-			}
-			else{
+			} else {
 				listener.continueGroup(groupIdentifier);
 			}
-			
+
 		}
 	}
-	public static class Reset extends FlowCommandForGroup{
-		public Reset(GroupIdentifier groupIdentifier){
+
+	public static class Reset extends FlowCommandForGroup {
+		public Reset(GroupIdentifier groupIdentifier) {
 			super(NAME, groupIdentifier);
 		}
-		public Reset(){
+
+		public Reset() {
 			super(NAME, null);
 		}
-		public static final String NAME = "RESET"; 
+
+		public static final String NAME = "RESET";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
+			if (groupIdentifier == null || "".equals(groupIdentifier.getIdentifier())) {
 				listener.resetPage();
-			}
-			else{
+			} else {
 				listener.resetGroup(groupIdentifier);
 			}
 		}
 	}
-	public static class ShowAnswers extends FlowCommandForGroup{
-		public ShowAnswers(GroupIdentifier groupIdentifier){
+
+	public static class ShowAnswers extends FlowCommandForGroup {
+		public ShowAnswers(GroupIdentifier groupIdentifier) {
 			super(NAME, groupIdentifier);
 		}
-		public ShowAnswers(){
+
+		public ShowAnswers() {
 			super(NAME, null);
 		}
-		public static final String NAME = "SHOW_ANSWERS"; 
+
+		public static final String NAME = "SHOW_ANSWERS";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
+			if (groupIdentifier == null || "".equals(groupIdentifier.getIdentifier())) {
 				listener.showAnswersPage();
-			}
-			else{
+			} else {
 				listener.showAnswersGroup(groupIdentifier);
 			}
 		}
 	}
-	public static class Lock extends FlowCommandForGroup{
-		public Lock(GroupIdentifier groupIdentifier){
+
+	public static class Lock extends FlowCommandForGroup {
+		public Lock(GroupIdentifier groupIdentifier) {
 			super(NAME, groupIdentifier);
 		}
-		public Lock(){
+
+		public Lock() {
 			super(NAME, null);
 		}
-		public static final String NAME = "LOCK"; 
+
+		public static final String NAME = "LOCK";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
+			if (groupIdentifier == null || "".equals(groupIdentifier.getIdentifier())) {
 				listener.lockPage();
-			}
-			else{
+			} else {
 				listener.lockGroup(groupIdentifier);
 			}
 		}
 	}
-	public static class Unlock extends FlowCommandForGroup{
-		public Unlock(GroupIdentifier groupIdentifier){
+
+	public static class Unlock extends FlowCommandForGroup {
+		public Unlock(GroupIdentifier groupIdentifier) {
 			super(NAME, groupIdentifier);
 		}
-		public Unlock(){
+
+		public Unlock() {
 			super(NAME, null);
 		}
-		public static final String NAME = "UNLOCK"; 
+
+		public static final String NAME = "UNLOCK";
+
 		@Override
 		public void execute(FlowCommandsListener listener) {
-			if (groupIdentifier == null  ||  "".equals(groupIdentifier.getIdentifier()) ){
+			if (groupIdentifier == null || "".equals(groupIdentifier.getIdentifier())) {
 				listener.unlockPage();
-			}
-			else{
+			} else {
 				listener.unlockGroup(groupIdentifier);
 			}
 		}
 	}
-	
-	
+
 }

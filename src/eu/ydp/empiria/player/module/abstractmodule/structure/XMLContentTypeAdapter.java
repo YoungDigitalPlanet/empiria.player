@@ -7,12 +7,12 @@ import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
 import eu.ydp.gwtutil.xml.XMLParser;
 
-public class XMLContentTypeAdapter extends XmlAdapter<String,  XMLContent> {
+public class XMLContentTypeAdapter extends XmlAdapter<String, XMLContent> {
 
 	@Override
 	public XMLContent unmarshal(final String value) throws Exception {
 		return new XMLContent() {
-			
+
 			@Override
 			public Element getValue() {
 				return XMLParser.parse("<root_from_XMLContentTypeAdapter>" + value + "</root_from_XMLContentTypeAdapter>").getDocumentElement();

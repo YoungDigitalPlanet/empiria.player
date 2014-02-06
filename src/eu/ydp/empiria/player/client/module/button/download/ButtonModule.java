@@ -13,10 +13,12 @@ import eu.ydp.gwtutil.client.service.json.IJSONService;
 
 public class ButtonModule extends SimpleModuleBase implements ISimpleModule {
 
-	@Inject private ButtonModuleStructure buttonModuleStructure;
-	@Inject private IJSONService ijsonService;
-	@Inject private ButtonModulePresenter buttonModulePresenter;
-
+	@Inject
+	private ButtonModuleStructure buttonModuleStructure;
+	@Inject
+	private IJSONService ijsonService;
+	@Inject
+	private ButtonModulePresenter buttonModulePresenter;
 
 	@Override
 	public Widget getView() {

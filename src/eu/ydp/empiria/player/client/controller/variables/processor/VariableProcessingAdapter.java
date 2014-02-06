@@ -15,17 +15,15 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
 public class VariableProcessingAdapter {
-	
+
 	private final ModulesVariablesProcessor modulesVariablesProcessor;
 	private final GlobalVariablesProcessor globalVariablesProcessor;
 	private final AnswerEvaluationSupplier answerEvaluationProvider;
-	private final ProcessingResultsToOutcomeMapConverterFacade mapConverterFacade; 
-	
+	private final ProcessingResultsToOutcomeMapConverterFacade mapConverterFacade;
+
 	@Inject
-	public VariableProcessingAdapter(
-			@PageScoped ModulesVariablesProcessor modulesVariablesProcessor, 
-			@PageScoped AnswerEvaluationSupplier answerEvaluationProvider,
-			GlobalVariablesProcessor globalVariablesProcessor,
+	public VariableProcessingAdapter(@PageScoped ModulesVariablesProcessor modulesVariablesProcessor,
+			@PageScoped AnswerEvaluationSupplier answerEvaluationProvider, GlobalVariablesProcessor globalVariablesProcessor,
 			ProcessingResultsToOutcomeMapConverterFacade mapConverterFacade) {
 		this.modulesVariablesProcessor = modulesVariablesProcessor;
 		this.globalVariablesProcessor = globalVariablesProcessor;
@@ -33,15 +31,15 @@ public class VariableProcessingAdapter {
 		this.answerEvaluationProvider = answerEvaluationProvider;
 	}
 
-	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, ProcessingMode processingMode){
+	public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, ProcessingMode processingMode) {
 		ModulesProcessingResults modulesProcessingResults = modulesVariablesProcessor.processVariablesForResponses(responses, processingMode);
-		
+
 		Map<String, DtoModuleProcessingResult> mapOfProcessingResults = modulesProcessingResults.getMapOfProcessingResults();
-		
+
 		GlobalVariables globalVariables = globalVariablesProcessor.calculateGlobalVariables(mapOfProcessingResults, responses);
-		
+
 		mapConverterFacade.convert(outcomes, modulesProcessingResults, globalVariables);
-		
+
 		answerEvaluationProvider.updateModulesProcessingResults(modulesProcessingResults);
 	}
 }

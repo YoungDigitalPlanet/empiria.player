@@ -102,7 +102,8 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 					itemSessionDatas[i] = null;
 				}
 			}
-			eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(false, false, null)), new CurrentPageScope());
+			eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(false, false, null)),
+					new CurrentPageScope());
 		} catch (Exception e) {
 		}
 	}
@@ -161,16 +162,16 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 	}
 
 	private native JavaScriptObject createAssessmentSessionDataJsSocket()/*-{
-		var socket = [];
-		var instance = this;
-		socket.getVariableManagerSocket = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getVariableProviderJsSocket()();
-		}
-		socket.getTime = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getTimeAssessmentTotal()();
-		}
-		return socket
-	}-*/;
+																			var socket = [];
+																			var instance = this;
+																			socket.getVariableManagerSocket = function() {
+																			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getVariableProviderJsSocket()();
+																			}
+																			socket.getTime = function() {
+																			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getTimeAssessmentTotal()();
+																			}
+																			return socket
+																			}-*/;
 
 	private JavaScriptObject getVariableProviderJsSocket() {
 		return variableProvider.getJsSocket();

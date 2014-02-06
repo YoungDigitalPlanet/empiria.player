@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.structure.ModuleBean;
 @XmlRootElement(name = "colorfillInteraction")
 @XmlAccessorType(XmlAccessType.NONE)
 public class ColorfillInteractionBean extends ModuleBean {
-	
+
 	@XmlElement(name = "buttons")
 	private ButtonsContainer buttons;
 
@@ -22,10 +22,10 @@ public class ColorfillInteractionBean extends ModuleBean {
 
 	@XmlElement(name = "correctImage")
 	private Image correctImage;
-	
+
 	@XmlElement(name = "fakeAreas")
 	private FakeAreas fakeAreas;
-	
+
 	public AreaContainer getAreas() {
 		return areas;
 	}
@@ -59,7 +59,7 @@ public class ColorfillInteractionBean extends ModuleBean {
 	}
 
 	public FakeAreas getFakeAreas() {
-		if(fakeAreas == null) {
+		if (fakeAreas == null) {
 			fakeAreas = new FakeAreas();
 		}
 		return fakeAreas;
@@ -67,5 +67,5 @@ public class ColorfillInteractionBean extends ModuleBean {
 
 	public void setFakeAreas(FakeAreas fakeAreas) {
 		this.fakeAreas = fakeAreas;
-	}	
+	}
 }

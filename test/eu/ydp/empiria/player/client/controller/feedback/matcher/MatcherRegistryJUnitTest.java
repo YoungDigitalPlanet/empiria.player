@@ -14,15 +14,15 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.condition.OrCo
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
 
 public class MatcherRegistryJUnitTest extends AbstractTestBase {
-	
+
 	private MatcherRegistry registry;
-	
+
 	@Override
 	public void setUp() {
 		super.setUp();
 		registry = injector.getInstance(MatcherRegistry.class);
 	}
-	
+
 	@Test
 	public void shouldReturnCorrectMatcherForFeedbackCondition() {
 		assertThat(registry.getMatcher(new PropertyConditionBean()), is(instanceOf(PropertyConditionMatcher.class)));
@@ -31,24 +31,24 @@ public class MatcherRegistryJUnitTest extends AbstractTestBase {
 		assertThat(registry.getMatcher(new OrConditionBean()), is(instanceOf(OrConditionMatcher.class)));
 		assertThat(registry.getMatcher(new NotConditionBean()), is(instanceOf(NotConditionMatcher.class)));
 	}
-	
+
 	@Test
 	public void shouldReturnSameMatcherForSameFeedbackCondition() {
 		FeedbackMatcher propertyMatcher1 = registry.getMatcher(new PropertyConditionBean());
 		FeedbackMatcher propertyMatcher2 = registry.getMatcher(new PropertyConditionBean());
-		
+
 		FeedbackMatcher countMatcher1 = registry.getMatcher(new CountConditionBean());
 		FeedbackMatcher countMatcher2 = registry.getMatcher(new CountConditionBean());
-		
+
 		FeedbackMatcher andMatcher1 = registry.getMatcher(new AndConditionBean());
 		FeedbackMatcher andMatcher2 = registry.getMatcher(new AndConditionBean());
-		
+
 		FeedbackMatcher orMatcher1 = registry.getMatcher(new OrConditionBean());
 		FeedbackMatcher orMatcher2 = registry.getMatcher(new OrConditionBean());
-		
+
 		FeedbackMatcher notMatcher1 = registry.getMatcher(new NotConditionBean());
 		FeedbackMatcher notMatcher2 = registry.getMatcher(new NotConditionBean());
-		
+
 		assertThat(propertyMatcher1.equals(propertyMatcher2), is(true));
 		assertThat(countMatcher1.equals(countMatcher2), is(true));
 		assertThat(andMatcher1.equals(andMatcher2), is(true));

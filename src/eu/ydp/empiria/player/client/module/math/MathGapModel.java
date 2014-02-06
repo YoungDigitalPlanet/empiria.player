@@ -5,13 +5,13 @@ import java.util.Map;
 import eu.ydp.gwtutil.client.StringUtils;
 
 public class MathGapModel {
-	
+
 	protected String uid;
 	protected int index;
-	
+
 	protected MathModule parentMathModule;
 	protected Map<String, String> mathStyles;
-	
+
 	public String getUid() {
 		return (uid == null) ? StringUtils.EMPTY_STRING : uid;
 	}
@@ -19,7 +19,7 @@ public class MathGapModel {
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
-	
+
 	public void setIndex(int index) {
 		this.index = index;
 	}
@@ -27,19 +27,19 @@ public class MathGapModel {
 	public int getIndex() {
 		return index;
 	}
-	
+
 	public Map<String, String> getMathStyles() {
 		return mathStyles;
 	}
-	
+
 	public void setMathStyles(Map<String, String> mathStyles) {
 		this.mathStyles = mathStyles;
 	}
-	
+
 	public boolean containsStyle(String key) {
 		return mathStyles.containsKey(key);
 	}
-	
+
 	public String getStyle(String key) {
 		return mathStyles.get(key);
 	}

@@ -21,11 +21,11 @@ public class JsDeliveryEventsListenerExtension extends AbstractJsExtension imple
 	public void onDeliveryEvent(DeliveryEvent event) {
 		onDeliveryEventJs(extensionJsObject, event.toJsObject());
 	}
-	
+
 	private native void onDeliveryEventJs(JavaScriptObject extenstionObject, JavaScriptObject eventJsObject)/*-{
-		if (typeof extenstionObject.onDeliveryEvent == 'function'){
-			extenstionObject.onDeliveryEvent(eventJsObject);
-		}
-	}-*/;
+																											if (typeof extenstionObject.onDeliveryEvent == 'function'){
+																											extenstionObject.onDeliveryEvent(eventJsObject);
+																											}
+																											}-*/;
 
 }

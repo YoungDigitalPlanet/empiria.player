@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
@@ -28,7 +29,7 @@ public class SlideshowMediaHandlerJUnitTest extends AbstractTestBaseWithoutAutoI
 	private final SlideshowPlayerModule slideshowPlayerModule = mock(SlideshowPlayerModule.class);
 	private final SlideshowPresenter slideshowPresenter = mock(SlideshowPresenter.class);
 	private EventsBus eventsBus;
-	
+
 	@Before
 	public void before() {
 		GuiceModuleConfiguration config = new GuiceModuleConfiguration();
@@ -60,15 +61,15 @@ public class SlideshowMediaHandlerJUnitTest extends AbstractTestBaseWithoutAutoI
 	}
 
 	@Test
-	@Parameters(method="getTypes")
+	@Parameters(method = "getTypes")
 	public void testAddEventHandler(SlideshowPlayerEventType type) {
-			ArgumentCaptor<Type> typeCaptor = ArgumentCaptor.forClass(Type.class);
-			instance.addEventHandler(type);
-			verify(eventsBus).addHandlerToSource(typeCaptor.capture(), Mockito.eq(slideshowPresenter), eq(instance));
-			assertTrue(typeCaptor.getValue().getType() == type);
+		ArgumentCaptor<Type> typeCaptor = ArgumentCaptor.forClass(Type.class);
+		instance.addEventHandler(type);
+		verify(eventsBus).addHandlerToSource(typeCaptor.capture(), Matchers.eq(slideshowPresenter), eq(instance));
+		assertTrue(typeCaptor.getValue().getType() == type);
 	}
 
-	public Object[] getTypes(){
+	public Object[] getTypes() {
 		return JUnitParamsRunner.$(SlideshowPlayerEventType.values());
 	}
 }

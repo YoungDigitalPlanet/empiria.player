@@ -1,13 +1,9 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.NONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -14,12 +14,12 @@ public class SourceListViewItemContentFactoryTest extends AbstractEmpiriaPlayerG
 		String imageUrl = "http://j/j.jpg";
 		IsWidget widget = instance.getSourceListViewItemContent(SourcelistItemType.IMAGE, imageUrl);
 		assertTrue(widget instanceof Image);
-		assertEquals(imageUrl, ((Image)widget).getUrl());
+		assertEquals(imageUrl, ((Image) widget).getUrl());
 
 		String text = "text";
 		widget = instance.getSourceListViewItemContent(SourcelistItemType.TEXT, text);
 		assertTrue(widget instanceof Label);
-		assertEquals(text, ((Label)widget).getText());
+		assertEquals(text, ((Label) widget).getText());
 
 	}
 

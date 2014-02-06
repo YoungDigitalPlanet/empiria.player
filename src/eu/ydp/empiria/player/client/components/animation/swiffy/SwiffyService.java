@@ -8,8 +8,9 @@ import com.google.inject.Provider;
 
 public class SwiffyService {
 
-	@Inject private Provider<SwiffyObject> swiffyObjectProvider;
-	
+	@Inject
+	private Provider<SwiffyObject> swiffyObjectProvider;
+
 	private final Map<String, SwiffyObject> swiffyObjects = Maps.newHashMap();
 
 	public SwiffyObject getSwiffyObject(String swifyName, String url) {

@@ -19,8 +19,10 @@ public class InfoModuleCssProgressMappingConfigurationParserTest {
 	private static final String REPORT_PROGRESS_PREFIX = "-empiria-info-item-result-";
 	private final String styleName = "xxx-x";
 
-	@Spy private final ModuleStyle moduleStyle = new ModuleStyleImpl(new HashMap<String, String>());
-	@InjectMocks private InfoModuleCssProgressMappingConfigurationParser instance;
+	@Spy
+	private final ModuleStyle moduleStyle = new ModuleStyleImpl(new HashMap<String, String>());
+	@InjectMocks
+	private InfoModuleCssProgressMappingConfigurationParser instance;
 
 	@Test
 	public void getCssProgressToStyleMappingNoConfiguration() throws Exception {

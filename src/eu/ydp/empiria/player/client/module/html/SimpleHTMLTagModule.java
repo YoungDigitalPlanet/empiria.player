@@ -7,14 +7,14 @@ import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 
-public class SimpleHTMLTagModule extends SimpleModuleBase implements Factory<SimpleHTMLTagModule>{
-	
+public class SimpleHTMLTagModule extends SimpleModuleBase implements Factory<SimpleHTMLTagModule> {
+
 	HTMLPanel htmlElement;
-	
+
 	@Override
 	public void initModule(Element element) {
 		String value = "";
-		if(element.getFirstChild()!= null && element.getFirstChild().getNodeValue()!=null){
+		if (element.getFirstChild() != null && element.getFirstChild().getNodeValue() != null) {
 			value = element.getFirstChild().getNodeValue();
 		}
 		htmlElement = new HTMLPanel(element.getTagName(), value);

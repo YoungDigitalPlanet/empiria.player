@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.draggap.dragging;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -9,8 +12,6 @@ import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.Widget;
-
-import static org.mockito.Mockito.*;
 
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleFactory;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
@@ -22,7 +23,7 @@ import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
-@PrepareForTest({Widget.class})
+@PrepareForTest({ Widget.class })
 public class DragDropControllerTest {
 
 	private DragDropController dragDropController;
@@ -33,7 +34,7 @@ public class DragDropControllerTest {
 	private DropZoneGuardian dropZoneGuardian;
 	private SourceListConnectedDragHandler dragHandler;
 	private SourceListConnectedDropHandler dropHandler;
-	
+
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
@@ -43,7 +44,7 @@ public class DragDropControllerTest {
 	public static void rearm() {
 		GWTMockUtilities.restore();
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
 		dragGapView = Mockito.mock(DragGapView.class);
@@ -56,7 +57,7 @@ public class DragDropControllerTest {
 	@Test
 	public void shouldSetUpDragHandlers() throws Exception {
 		dragDropController.initializeDrag(moduleIdentifier, itemIdWrapper);
-		
+
 		verify(dragGapView).setDragStartHandler(dragHandler);
 		verify(dragGapView).setDragEndHandler(dragHandler);
 		verify(dragHandler).initialize(moduleIdentifier, itemIdWrapper);
@@ -66,38 +67,35 @@ public class DragDropControllerTest {
 	public void shouldLockDropZone() throws Exception {
 		mockDropEnabling();
 		dragDropController.initializeDrop(moduleIdentifier);
-		
-		//when
+
+		// when
 		dragDropController.lockDropZone();
-		
-		//then
+
+		// then
 		verify(dropZoneGuardian).lockDropZone();
 	}
-	
+
 	@Test
 	public void shouldUnlockDropZone() throws Exception {
 		mockDropEnabling();
 		dragDropController.initializeDrop(moduleIdentifier);
-		
-		//when
+
+		// when
 		dragDropController.unlockDropZone();
-		
-		//then
+
+		// then
 		verify(dropZoneGuardian).unlockDropZone();
 	}
-	
+
 	private void mockDropEnabling() {
 		@SuppressWarnings("unchecked")
 		DroppableObject<FlowPanelWithDropZone> droppable = Mockito.mock(DroppableObject.class);
-		when(dragGapView.enableDropCapabilities())
-			.thenReturn(droppable);
-		
+		when(dragGapView.enableDropCapabilities()).thenReturn(droppable);
+
 		Widget droppableWidget = Mockito.mock(Widget.class);
-		when(droppable.getDroppableWidget())
-			.thenReturn(droppableWidget);
-		
+		when(droppable.getDroppableWidget()).thenReturn(droppableWidget);
+
 		dropZoneGuardian = Mockito.mock(DropZoneGuardian.class);
-		when(dragGapModuleFactory.createDropZoneGuardian(droppable, droppableWidget))
-			.thenReturn(dropZoneGuardian);
+		when(dragGapModuleFactory.createDropZoneGuardian(droppable, droppableWidget)).thenReturn(dropZoneGuardian);
 	}
 }

@@ -14,25 +14,25 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
  */
 public class MetaDescriptionManager {
 
-	public void processDocument(com.google.gwt.xml.client.Document document){
-		if (document != null){
+	public void processDocument(com.google.gwt.xml.client.Document document) {
+		if (document != null) {
 			Element metaDescriptionNode = XMLUtils.getFirstElementWithTagName(document.getDocumentElement(), "metaDescription");
-			if (metaDescriptionNode != null){
+			if (metaDescriptionNode != null) {
 				NodeList metaNodes = metaDescriptionNode.getElementsByTagName("meta");
 				com.google.gwt.dom.client.Element htmlHeadNode = Document.get().getElementsByTagName("head").getItem(0);
-				for (int n = 0 ; n < metaNodes.getLength() ; n ++){
-					com.google.gwt.dom.client.Element currElement = convertToDomElement((Element)metaNodes.item(n));
+				for (int n = 0; n < metaNodes.getLength(); n++) {
+					com.google.gwt.dom.client.Element currElement = convertToDomElement((Element) metaNodes.item(n));
 					htmlHeadNode.appendChild(currElement);
 				}
 			}
 		}
 	}
-	
-	private com.google.gwt.dom.client.Element convertToDomElement(Element xmlElement){
+
+	private com.google.gwt.dom.client.Element convertToDomElement(Element xmlElement) {
 		com.google.gwt.dom.client.Element domElement = Document.get().createElement(xmlElement.getNodeName());
-		for (int a = 0 ; a < xmlElement.getAttributes().getLength() ; a ++){
+		for (int a = 0; a < xmlElement.getAttributes().getLength(); a++) {
 			Node currAttr = xmlElement.getAttributes().item(a);
-			domElement.setAttribute(currAttr.getNodeName(), currAttr.getNodeValue());			
+			domElement.setAttribute(currAttr.getNodeName(), currAttr.getNodeValue());
 		}
 		return domElement;
 	}

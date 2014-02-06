@@ -28,7 +28,8 @@ public class InfoModuleProgressMapping {
 		}
 	}
 
-	@Inject private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
+	@Inject
+	private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
 	private final SimpleRangeMap<Integer, String> progressToStyleName = SimpleRangeMap.<Integer, String> create();
 
 	@PostConstruct

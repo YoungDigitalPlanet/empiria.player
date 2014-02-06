@@ -9,38 +9,37 @@ import com.google.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 
-
 public class ResponseAnswerGrouper {
 
 	private List<GroupedAnswer> groupedAnswers;
-	
+
 	public ResponseAnswerGrouper(List<GroupedAnswer> groupedAnswers) {
 		this.groupedAnswers = groupedAnswers;
 	}
 
-	public boolean isAnswerCorrect(String answer, Response response){
+	public boolean isAnswerCorrect(String answer, Response response) {
 		Collection<GroupedAnswer> fittingAnswers = findAllGroupedAnswersByValue(answer);
 		boolean isAnswerCorrect;
-		if(fittingAnswers.isEmpty()){
+		if (fittingAnswers.isEmpty()) {
 			isAnswerCorrect = false;
-		}else{
+		} else {
 			isAnswerCorrect = checkIfIsAnswerCorrectForGivenResponse(fittingAnswers, response);
 		}
-		
+
 		return isAnswerCorrect;
 	}
-	
+
 	private boolean checkIfIsAnswerCorrectForGivenResponse(Collection<GroupedAnswer> fittingAnswers, Response response) {
 		boolean isAnswerCorrect;
 		boolean anyAnswerAlreadyUsedByThisResponse = isAnyAnswerAlreadyUsedByThisResponse(fittingAnswers, response);
-		if(anyAnswerAlreadyUsedByThisResponse){
+		if (anyAnswerAlreadyUsedByThisResponse) {
 			isAnswerCorrect = true;
-		}else {
+		} else {
 			List<GroupedAnswer> answersToUse = findAnswersThatCanBeUsed(fittingAnswers);
-			if(answersToUse.size() > 0){
+			if (answersToUse.size() > 0) {
 				useAnyOfAnswers(answersToUse, response);
 				isAnswerCorrect = true;
-			}else{
+			} else {
 				isAnswerCorrect = false;
 			}
 		}
@@ -49,10 +48,10 @@ public class ResponseAnswerGrouper {
 
 	private List<GroupedAnswer> findAnswersThatCanBeUsed(Collection<GroupedAnswer> answers) {
 		List<GroupedAnswer> answersToUse = Lists.newArrayList();
-		
+
 		for (GroupedAnswer answer : answers) {
-			
-			if(isUnusedAnswer(answer) || canBeReused(answer)){
+
+			if (isUnusedAnswer(answer) || canBeReused(answer)) {
 				answersToUse.add(answer);
 			}
 		}
@@ -79,11 +78,11 @@ public class ResponseAnswerGrouper {
 		for (GroupedAnswer fittingAnswer : fittingAnswers) {
 			String currentResponseId = response.getID();
 			Response usedByResponse = fittingAnswer.getUsedByResponse();
-			
-			if(usedByResponse != null){
+
+			if (usedByResponse != null) {
 				String usingResponseId = usedByResponse.getID();
-				
-				if(usingResponseId.equals(currentResponseId)){
+
+				if (usingResponseId.equals(currentResponseId)) {
 					return true;
 				}
 			}
@@ -92,15 +91,15 @@ public class ResponseAnswerGrouper {
 	}
 
 	private Collection<GroupedAnswer> findAllGroupedAnswersByValue(final String value) {
-		
+
 		Collection<GroupedAnswer> answersWithValue = Collections2.filter(groupedAnswers, new Predicate<GroupedAnswer>() {
 			@Override
 			public boolean apply(GroupedAnswer groupedAnswer) {
 				return value.equals(groupedAnswer.getValue());
 			}
 		});
-		
+
 		return answersWithValue;
 	}
-	
+
 }

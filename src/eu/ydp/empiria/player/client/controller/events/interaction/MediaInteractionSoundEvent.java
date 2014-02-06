@@ -5,19 +5,18 @@ import java.util.Map;
 
 public class MediaInteractionSoundEvent extends InteractionEvent {
 
-
 	protected String url;
 	protected MediaInteractionSoundEventCallback callback;
-	
-	public MediaInteractionSoundEvent(String path, MediaInteractionSoundEventCallback callback){
+
+	public MediaInteractionSoundEvent(String path, MediaInteractionSoundEventCallback callback) {
 		this.url = path;
 		this.callback = callback;
 	}
-	
+
 	public String getPath() {
 		return url;
 	}
-	
+
 	public MediaInteractionSoundEventCallback getCallback() {
 		return callback;
 	}

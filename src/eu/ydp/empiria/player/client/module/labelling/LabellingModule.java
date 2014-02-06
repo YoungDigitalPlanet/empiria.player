@@ -13,10 +13,11 @@ import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
 
 public class LabellingModule extends AbstractActivityContainerModuleBase {
 
-	@Inject LabellingBuilder builder;
-	
+	@Inject
+	LabellingBuilder builder;
+
 	private Widget view;
-	
+
 	@Override
 	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
 		super.initModule(element, ms, mil, bgs);
@@ -34,6 +35,5 @@ public class LabellingModule extends AbstractActivityContainerModuleBase {
 	public Widget getView() {
 		return view;
 	}
-
 
 }

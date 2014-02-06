@@ -2,9 +2,7 @@ package eu.ydp.empiria.player.client.module.colorfill;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyList;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -48,7 +47,7 @@ public class ColorfillModelProxyJUnitTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void updateUserAnswers(){
+	public void updateUserAnswers() {
 		// given
 		List<String> list = Lists.newArrayList("a");
 		when(responseAnswerByViewBuilder.buildNewResponseAnswersByCurrentImage(anyList())).thenReturn(list);
@@ -62,7 +61,7 @@ public class ColorfillModelProxyJUnitTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getUserAnswers(){
+	public void getUserAnswers() {
 		// given
 		Map<Area, ColorModel> map = ImmutableMap.of(new Area(1, 2), ColorModel.createFromRgba(0, 1, 2, 3));
 		when(responseUserAnswersConverter.convertResponseAnswersToAreaColorMap(anyList())).thenReturn(map);
@@ -77,7 +76,7 @@ public class ColorfillModelProxyJUnitTest {
 	@Test
 	public void getUserWrongAnswers() {
 		List<Boolean> evaluationResult = Lists.newArrayList(true, false, true, false);
-		doReturn(evaluationResult).when(answerEvaluationSupplier).evaluateAnswer(Mockito.any(Response.class));
+		doReturn(evaluationResult).when(answerEvaluationSupplier).evaluateAnswer(Matchers.any(Response.class));
 		List<String> currentAnswers = Lists.newArrayList("true", "false", "true", "false");
 		doReturn(currentAnswers).when(colorfillInteractionModuleModel).getCurrentAnswers();
 
@@ -92,7 +91,7 @@ public class ColorfillModelProxyJUnitTest {
 	@Test
 	public void getUserCorrectAnswers() {
 		List<Boolean> evaluationResult = Lists.newArrayList(true, false, true, false);
-		doReturn(evaluationResult).when(answerEvaluationSupplier).evaluateAnswer(Mockito.any(Response.class));
+		doReturn(evaluationResult).when(answerEvaluationSupplier).evaluateAnswer(Matchers.any(Response.class));
 		List<String> currentAnswers = Lists.newArrayList("true", "false", "true", "false");
 		doReturn(currentAnswers).when(colorfillInteractionModuleModel).getCurrentAnswers();
 

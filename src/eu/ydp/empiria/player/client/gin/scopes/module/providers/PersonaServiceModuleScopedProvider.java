@@ -11,13 +11,13 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 public class PersonaServiceModuleScopedProvider implements Provider<PersonaService> {
 
 	private static final String TUTOR_ID_ATTR = "tutorId";
-	
+
 	@Inject
 	private ModuleScopeStack moduleScopeStack;
-	
+
 	@Inject
 	private TutorService tutorService;
-	
+
 	@Override
 	public PersonaService get() {
 		ModuleCreationContext context = moduleScopeStack.getCurrentTopContext();

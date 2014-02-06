@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillAreaClickList
 public class AreaClickListener implements ColorfillAreaClickListener {
 
 	private final ColorfillInteractionPresenter interactionPresenter;
-	
+
 	public AreaClickListener(ColorfillInteractionPresenter interactionPresenter) {
 		this.interactionPresenter = interactionPresenter;
 	}

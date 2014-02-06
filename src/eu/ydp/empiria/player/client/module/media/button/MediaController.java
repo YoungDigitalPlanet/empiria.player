@@ -7,23 +7,25 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
-public interface MediaController<T> extends Factory<T>, SupportedAction<T>,IsWidget{
+public interface MediaController<T> extends Factory<T>, SupportedAction<T>, IsWidget {
 
 	/**
 	 * przekazuje obiekt multimediow na jakim ma pracowac kontrolka
-	 *
+	 * 
 	 * @param mediaDescriptor
 	 */
 	public abstract void setMediaDescriptor(MediaWrapper<?> mediaDescriptor);
 
 	/**
 	 * obiekt opisujacy funkcje dostepne dla podlaczonego zasobu
+	 * 
 	 * @return
 	 */
 	public abstract MediaAvailableOptions getMediaAvailableOptions();
 
 	/**
 	 * Zwraca
+	 * 
 	 * @return
 	 */
 	public abstract MediaWrapper<?> getMediaWrapper();

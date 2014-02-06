@@ -29,23 +29,22 @@ public class TutorApiExtension extends InternalExtension implements PlayerJsObje
 		importTutorPersonasId(playerJsObject);
 	}
 
-
 	private native void initTutorApi(JavaScriptObject playerJsObject) /*-{
-		var self = this;
-		playerJsObject.exportTutorPersonasId = function(){
-			return self.@eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension::exportTutorPersonasId()();
-		}		
-	}-*/;
+																		var self = this;
+																		playerJsObject.exportTutorPersonasId = function(){
+																		return self.@eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension::exportTutorPersonasId()();
+																		}		
+																		}-*/;
 
 	JsMapStringToInt exportTutorPersonasId() {
 		Map<String, Integer> tutorIdToCurrentPersonaIndexMap = tutorService.buildTutorIdToCurrentPersonaIndexMap();
 		JsMapStringToInt jsTutorToPersonaIndex = JavaScriptObject.createObject().cast();
-		for(Entry<String, Integer> tutorIdToCurrentPersonaIndex : tutorIdToCurrentPersonaIndexMap.entrySet()) {
+		for (Entry<String, Integer> tutorIdToCurrentPersonaIndex : tutorIdToCurrentPersonaIndexMap.entrySet()) {
 			String key = tutorIdToCurrentPersonaIndex.getKey();
 			Integer value = tutorIdToCurrentPersonaIndex.getValue();
 			jsTutorToPersonaIndex.put(key, value);
 		}
-		
+
 		return jsTutorToPersonaIndex;
 	}
 
@@ -55,14 +54,14 @@ public class TutorApiExtension extends InternalExtension implements PlayerJsObje
 	}
 
 	private native JavaScriptObject importTutorPersonasIdNative(JavaScriptObject playerJsObject) /*-{
-		if (!!playerJsObject.importTutorPersonasId){
-			return playerJsObject.importTutorPersonasId();
-		}
-		return {};
-	}-*/;
-	
+																									if (!!playerJsObject.importTutorPersonasId){
+																									return playerJsObject.importTutorPersonasId();
+																									}
+																									return {};
+																									}-*/;
+
 	void importTutorPersonasId(JsMapStringToInt jsTutorToPersonaIndex) {
 		tutorService.importCurrentPersonasForTutors(jsTutorToPersonaIndex);
-	} 
+	}
 
 }

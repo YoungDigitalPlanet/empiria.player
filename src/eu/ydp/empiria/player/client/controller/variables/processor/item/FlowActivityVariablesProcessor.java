@@ -8,10 +8,10 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 
 public class FlowActivityVariablesProcessor {
 
-	public static final String RESET = "RESET";  //Sum of reset clicked 
-	public static final String SHOW_ANSWERS = "SHOW_ANSWERS";  //Sum of ShowAnswers clicked
-	public static final String CHECKS = "CHECKS";    //Sum of CheckAnswers clicked
-	
+	public static final String RESET = "RESET"; // Sum of reset clicked
+	public static final String SHOW_ANSWERS = "SHOW_ANSWERS"; // Sum of ShowAnswers clicked
+	public static final String CHECKS = "CHECKS"; // Sum of CheckAnswers clicked
+
 	public void processFlowActivityVariables(Map<String, Outcome> outcomes, FlowActivityEvent event) {
 		if (event != null) {
 			switch (event.getType()) {
@@ -43,5 +43,5 @@ public class FlowActivityVariablesProcessor {
 			values.add(String.valueOf(value));
 		}
 	}
-	
+
 }

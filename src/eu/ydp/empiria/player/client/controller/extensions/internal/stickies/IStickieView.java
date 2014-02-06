@@ -8,15 +8,15 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.pres
 public interface IStickieView extends HasText, IsWidget {
 
 	void setMinimized(boolean minimized);
-	
+
 	void setColorIndex(int colorIndex);
-	
+
 	void remove();
-	
+
 	void setPosition(int x, int y);
-	
+
 	ContainerDimensions getStickieDimensions();
-	
+
 	ContainerDimensions getParentDimensions();
 
 }

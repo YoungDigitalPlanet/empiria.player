@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
@@ -12,21 +13,19 @@ import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
 import eu.ydp.gwtutil.client.Wrapper;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class SourceListConnectedDragHandler implements DragStartHandler, DragEndHandler{
+public class SourceListConnectedDragHandler implements DragStartHandler, DragEndHandler {
 
 	private final SourceListManagerAdapter sourceListManagerAdapter;
 	private final OverlayTypesParser overlayTypesParser;
 	private String moduleIdentifier;
 	private Wrapper<String> itemIdWrapper;
-	
+
 	@Inject
-	public SourceListConnectedDragHandler(
-			@ModuleScoped SourceListManagerAdapter sourceListManagerAdapter, 
-			OverlayTypesParser overlayTypesParser) {
+	public SourceListConnectedDragHandler(@ModuleScoped SourceListManagerAdapter sourceListManagerAdapter, OverlayTypesParser overlayTypesParser) {
 		this.sourceListManagerAdapter = sourceListManagerAdapter;
 		this.overlayTypesParser = overlayTypesParser;
 	}
-	
+
 	public void initialize(String moduleIdentifier, Wrapper<String> itemIdWrapper) {
 		this.moduleIdentifier = moduleIdentifier;
 		this.itemIdWrapper = itemIdWrapper;

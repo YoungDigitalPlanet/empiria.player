@@ -8,6 +8,7 @@ public abstract class AbstractJsExtension implements Extension, JsExtension {
 
 	protected JavaScriptObject extensionJsObject;
 
+	@Override
 	public void initJs(JavaScriptObject extensionJsObject) {
 		this.extensionJsObject = extensionJsObject;
 	}

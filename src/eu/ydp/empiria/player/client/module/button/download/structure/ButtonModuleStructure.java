@@ -11,9 +11,12 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class ButtonModuleStructure extends AbstractModuleStructure<ButtonBean, ButtonModuleJAXBParser> {
 
-	@Inject private XMLParser xmlParser;
-	@Inject private IJSONService ijsonService;
-	@Inject private ButtonModuleJAXBParser moduleJAXBParser;
+	@Inject
+	private XMLParser xmlParser;
+	@Inject
+	private IJSONService ijsonService;
+	@Inject
+	private ButtonModuleJAXBParser moduleJAXBParser;
 
 	@Override
 	public YJsonArray getSavedStructure() {
@@ -39,7 +42,5 @@ public class ButtonModuleStructure extends AbstractModuleStructure<ButtonBean, B
 	protected NodeList getParentNodesForFeedbacks(Document xmlDocument) {
 		return null;
 	}
-
-
 
 }

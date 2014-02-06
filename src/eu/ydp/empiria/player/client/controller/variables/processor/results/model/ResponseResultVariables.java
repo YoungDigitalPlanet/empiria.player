@@ -2,11 +2,10 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results.mode
 
 import com.google.common.collect.ComparisonChain;
 
-
 public class ResponseResultVariables implements ResultVariables {
 
 	private final DtoModuleProcessingResult processingResult;
-	
+
 	public ResponseResultVariables(DtoModuleProcessingResult processingResult) {
 		this.processingResult = processingResult;
 	}
@@ -63,15 +62,8 @@ public class ResponseResultVariables implements ResultVariables {
 		if (processingResult == null) {
 			return false;
 		}
-		return ComparisonChain.start()
-				.compare(getTodo(), other.getTodo())
-				.compare(getDone(), other.getDone())
-				.compare(getErrors(), other.getErrors())
-				.compare(getMistakes(), other.getMistakes())
-				.compare(getLastMistaken(), other.getLastMistaken())
-				.result() == 0;
+		return ComparisonChain.start().compare(getTodo(), other.getTodo()).compare(getDone(), other.getDone()).compare(getErrors(), other.getErrors())
+				.compare(getMistakes(), other.getMistakes()).compare(getLastMistaken(), other.getLastMistaken()).result() == 0;
 	}
-
-	
 
 }

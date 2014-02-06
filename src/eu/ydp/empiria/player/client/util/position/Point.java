@@ -4,16 +4,16 @@ public class Point {
 	private final int xPos;
 	private final int yPos;
 
-	public Point(int xPos,int yPos) {
+	public Point(int xPos, int yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
 
-	public int getX(){
+	public int getX() {
 		return xPos;
 	}
 
-	public int getY(){
+	public int getY() {
 		return yPos;
 	}
 
@@ -53,8 +53,5 @@ public class Point {
 		}
 		return true;
 	}
-
-
-
 
 }

@@ -2,11 +2,11 @@ package eu.ydp.empiria.player.client.module.expression.adapters;
 
 import com.google.inject.Inject;
 
-
 public class SymjaExpressionCharactersAdapter {
 
-	@Inject private DefaultExpressionCharactersAdapter defaultAdapter;
-	
+	@Inject
+	private DefaultExpressionCharactersAdapter defaultAdapter;
+
 	public String process(String expression) {
 		expression = fixOperators(expression);
 		expression = defaultAdapter.process(expression);
@@ -18,10 +18,10 @@ public class SymjaExpressionCharactersAdapter {
 			expression = expression.replaceFirst("=", "==");
 		}
 		return expression;
-	}	
+	}
 
 	private boolean containsGreaterLessThanOrEquals(String expression) {
 		return expression.matches("^.*?(>=|=>|<=|=<).*$");
 	}
-	
+
 }

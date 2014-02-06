@@ -4,7 +4,7 @@ import com.google.inject.Provider;
 
 /**
  * Prosta implementacja ModuleCreator<br/>
- *
+ * 
  */
 public class SimpleModuleCreator<T extends IModule> implements ModuleCreator {
 
@@ -27,12 +27,13 @@ public class SimpleModuleCreator<T extends IModule> implements ModuleCreator {
 		this.provider = null;
 	}
 
-	protected SimpleModuleCreator( boolean isMultiViewModule, boolean isInlineModule) {
+	protected SimpleModuleCreator(boolean isMultiViewModule, boolean isInlineModule) {
 		this.inlineModule = isInlineModule;
 		this.multiViewModule = isMultiViewModule;
 		this.factory = null;
 		this.provider = null;
 	}
+
 	public SimpleModuleCreator(Provider<? extends IModule> provider, boolean isMultiViewModule, boolean isInlineModule) {
 		this.inlineModule = isInlineModule;
 		this.multiViewModule = isMultiViewModule;

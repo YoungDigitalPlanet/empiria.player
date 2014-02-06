@@ -16,7 +16,7 @@ public class DropZoneGuardian {
 	@Inject
 	public DropZoneGuardian(@Assisted DroppableObject<?> droppable, @Assisted Widget moduleWidget, StyleNameConstants styleNameConstants) {
 		this.droppable = droppable;
-		this.moduleWidget  = moduleWidget;
+		this.moduleWidget = moduleWidget;
 		this.styleNames = styleNameConstants;
 	}
 

@@ -21,8 +21,8 @@ public class DtoModuleProcessingResultBuilder {
 	private final LastAnswersChanges lastAnswerChanges = new LastAnswersChanges();
 	private LastMistaken lastmistaken = LastMistaken.NONE;
 	private int mistakes = 0;
-	
-	public DtoModuleProcessingResultBuilder withTodo(int todo){
+
+	public DtoModuleProcessingResultBuilder withTodo(int todo) {
 		this.todo = todo;
 		return this;
 	}
@@ -31,28 +31,28 @@ public class DtoModuleProcessingResultBuilder {
 		this.errors = errors;
 		return this;
 	}
-	
+
 	public DtoModuleProcessingResultBuilder withDone(int done) {
 		this.done = done;
 		return this;
 	}
-	
+
 	public DtoModuleProcessingResultBuilder withMistakes(int mistakes) {
 		this.mistakes = mistakes;
 		return this;
 	}
-	
+
 	public DtoModuleProcessingResultBuilder withLastmistaken(LastMistaken lastmistaken) {
 		this.lastmistaken = lastmistaken;
 		return this;
 	}
-	
+
 	public DtoModuleProcessingResultBuilder withAnswerEvaluations(List<Boolean> answerEvaluations) {
 		this.answersEvaluation = answerEvaluations;
 		return this;
 	}
-	
-	public DtoModuleProcessingResult build(){
+
+	public DtoModuleProcessingResult build() {
 		GeneralVariables generalVariables = new GeneralVariables(answers, answersEvaluation, errors, done);
 		ConstantVariables constantVariables = new ConstantVariables(todo);
 		UserInteractionVariables userInteractionVariables = new UserInteractionVariables(lastAnswerChanges, lastmistaken, mistakes);

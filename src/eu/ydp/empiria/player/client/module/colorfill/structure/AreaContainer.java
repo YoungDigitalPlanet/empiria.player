@@ -10,8 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "areas")
 public class AreaContainer {
-	
-	@XmlElement(name="area")
+
+	@XmlElement(name = "area")
 	private List<Area> areas;
 
 	public List<Area> getAreas() {

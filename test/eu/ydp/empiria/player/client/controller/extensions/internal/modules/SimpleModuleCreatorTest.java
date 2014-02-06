@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,8 +21,9 @@ public class SimpleModuleCreatorTest {
 	IModule module;
 
 	SimpleModuleCreator<IModule> instance;
+
 	@Before
-	public void before(){
+	public void before() {
 		provider = mock(Provider.class);
 		module = mock(IModule.class);
 		when(provider.get()).thenReturn(module);
@@ -33,7 +32,7 @@ public class SimpleModuleCreatorTest {
 	}
 
 	@Test
-	public void constructorTests(){
+	public void constructorTests() {
 		instance = new SimpleModuleCreator<IModule>(factory, true, true);
 		assertTrue(instance.isInlineModule());
 		assertTrue(instance.isMultiViewModule());

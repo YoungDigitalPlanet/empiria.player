@@ -11,12 +11,14 @@ import eu.ydp.empiria.player.client.module.ResponseSocket;
 
 public class ResponseProvider implements ResponseSocket {
 
-	@Inject @PageScoped
+	@Inject
+	@PageScoped
 	private AnswerEvaluationSupplier answerEvaluationProvider;
-	
-	@Inject @PageScoped
+
+	@Inject
+	@PageScoped
 	private ItemResponseManager itemResponseManager;
-	
+
 	@Override
 	public Response getResponse(String id) {
 		return itemResponseManager.getVariable(id);

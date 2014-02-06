@@ -37,7 +37,7 @@ public class ResponseUserAnswersConverter {
 		return Lists.transform(currentAnswers, new Function<String, Area>() {
 			@Override
 			public Area apply(String currentAnswer) {
-				return  getAreaFromAnswer(currentAnswer);
+				return getAreaFromAnswer(currentAnswer);
 			}
 		});
 	}

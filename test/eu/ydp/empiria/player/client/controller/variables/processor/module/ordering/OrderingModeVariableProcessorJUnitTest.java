@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module.ordering;
 
-import static org.junit.Assert.*;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,6 @@ import org.junit.Test;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
-import static org.fest.assertions.api.Assertions.*;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastAnswersChanges;
@@ -37,36 +37,30 @@ public class OrderingModeVariableProcessorJUnitTest {
 
 	@Test
 	public void checkLastmistakenTest_correctSolution() {
-		Response response = new ResponseBuilder()
-											.withCurrentUserAnswers(new String[] { "a", "b", "b", "c", "a" })
-											.withCorrectAnswers(new String[] { "a", "b", "b", "c", "a" })
-											.build();
+		Response response = new ResponseBuilder().withCurrentUserAnswers(new String[] { "a", "b", "b", "c", "a" })
+				.withCorrectAnswers(new String[] { "a", "b", "b", "c", "a" }).build();
 		LastAnswersChanges lastAnswerChanges = new LastAnswersChanges(Lists.newArrayList("newAnswer"), Lists.newArrayList("a"));
-		
+
 		LastMistaken result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
 		assertThat(result).isEqualTo(LastMistaken.CORRECT);
 	}
-	
+
 	@Test
 	public void checkLastmistakenTest_wrongAnswers() {
-		Response response = new ResponseBuilder()
-		.withCurrentUserAnswers(new String[] { "c", "b", "b", "a", "a" })
-		.withCorrectAnswers(new String[] { "a", "b", "b", "c", "a" })
-		.build();
+		Response response = new ResponseBuilder().withCurrentUserAnswers(new String[] { "c", "b", "b", "a", "a" })
+				.withCorrectAnswers(new String[] { "a", "b", "b", "c", "a" }).build();
 		LastAnswersChanges lastAnswerChanges = new LastAnswersChanges(Lists.newArrayList("newAnswer"), Lists.newArrayList("a"));
-		
+
 		LastMistaken result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
 		assertThat(result).isEqualTo(LastMistaken.NONE);
 	}
-	
+
 	@Test
 	public void checkLastmistakenTest_wrongCurrentAnswersButWasNoChange() {
-		Response response = new ResponseBuilder()
-		.withCurrentUserAnswers(new String[] { "c", "b", "b", "a", "a" })
-		.withCorrectAnswers(new String[] { "a", "b", "b", "c", "a" })
-		.build();
+		Response response = new ResponseBuilder().withCurrentUserAnswers(new String[] { "c", "b", "b", "a", "a" })
+				.withCorrectAnswers(new String[] { "a", "b", "b", "c", "a" }).build();
 		LastAnswersChanges lastAnswerChanges = new LastAnswersChanges(new ArrayList<String>(), new ArrayList<String>());
-		
+
 		LastMistaken result = orderingModeVariableProcessor.checkLastmistaken(response, lastAnswerChanges);
 		assertThat(result).isEqualTo(LastMistaken.NONE);
 	}

@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.util.Map;
 

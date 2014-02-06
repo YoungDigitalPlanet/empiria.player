@@ -15,7 +15,7 @@ public abstract class ContainerModuleBase extends ModuleBase implements IContain
 		readAttributes(element);
 		applyIdAndClassToView(getView());
 	}
-	
+
 	@Override
 	public List<IModule> getChildrenModules() {
 		return getModuleSocket().getChildren(this);

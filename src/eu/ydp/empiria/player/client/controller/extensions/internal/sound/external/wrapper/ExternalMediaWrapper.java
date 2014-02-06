@@ -10,9 +10,10 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 
 public class ExternalMediaWrapper implements MediaWrapper<Widget> {
-	
-	@Inject private UniqueIdGenerator idGenerator;
-	
+
+	@Inject
+	private UniqueIdGenerator idGenerator;
+
 	private String uniqId;
 	private double durationSeconds;
 	private double currentTimeSeconds;
@@ -59,12 +60,12 @@ public class ExternalMediaWrapper implements MediaWrapper<Widget> {
 	public boolean canPlay() {
 		return true;
 	}
-	
-	public void setDuration(double durationSeconds){
+
+	public void setDuration(double durationSeconds) {
 		this.durationSeconds = durationSeconds;
 	}
-	
-	public void setCurrentTime(double currentTimeSeconds){
+
+	public void setCurrentTime(double currentTimeSeconds) {
 		this.currentTimeSeconds = currentTimeSeconds;
 	}
 

@@ -18,28 +18,33 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ColorfillModelProxy {
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private ColorfillInteractionModuleModel model;
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private ResponseAnswerByViewBuilder responseAnswerByViewBuilder;
 
 	@Inject
 	private ResponseUserAnswersConverter responseUserAnswersConverter;
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private ColorfillBeanProxy beanProxy;
 
-	@Inject @PageScoped
+	@Inject
+	@PageScoped
 	AnswerEvaluationSupplier answerEvaluationSupplier;
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	Response response;
 
 	public void updateUserAnswers() {
 		List<Area> areas = beanProxy.getAreas();
 		areas.addAll(beanProxy.getFakeAreas());
-		
+
 		List<String> userAnswers = responseAnswerByViewBuilder.buildNewResponseAnswersByCurrentImage(areas);
 		model.setNewUserAnswers(userAnswers);
 

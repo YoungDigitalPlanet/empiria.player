@@ -15,10 +15,13 @@ public class ButtonModuleViewImpl extends Composite implements ButtonModuleView 
 
 	private static ButtonModuleViewUiBinder uiBinder = GWT.create(ButtonModuleViewUiBinder.class);
 
-	interface ButtonModuleViewUiBinder extends UiBinder<Widget, ButtonModuleViewImpl> {}
+	interface ButtonModuleViewUiBinder extends UiBinder<Widget, ButtonModuleViewImpl> {
+	}
 
-	@UiField DivElement description;
-	@UiField Anchor anchor;
+	@UiField
+	DivElement description;
+	@UiField
+	Anchor anchor;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -26,7 +29,7 @@ public class ButtonModuleViewImpl extends Composite implements ButtonModuleView 
 	}
 
 	@Override
-	public void setUrl(String url){
+	public void setUrl(String url) {
 		anchor.setHref(url);
 	}
 

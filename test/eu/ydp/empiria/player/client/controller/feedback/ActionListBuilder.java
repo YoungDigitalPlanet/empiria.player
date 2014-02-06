@@ -11,38 +11,38 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTex
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 
 public final class ActionListBuilder {
-	
+
 	private final List<FeedbackAction> actions;
-	
-	private ActionListBuilder(){
+
+	private ActionListBuilder() {
 		actions = Lists.newArrayList();
 	}
-	
-	public static ActionListBuilder create(){
+
+	public static ActionListBuilder create() {
 		return new ActionListBuilder();
 	}
-	
-	public ActionListBuilder addUrlAction(ActionType type, String href){
+
+	public ActionListBuilder addUrlAction(ActionType type, String href) {
 		ShowUrlAction action = new ShowUrlAction();
-		
+
 		action.setType(type.getName());
 		action.setHref(href);
 		actions.add(action);
-		
+
 		return this;
 	}
-	
-	public ActionListBuilder addTextAction(String text){
+
+	public ActionListBuilder addTextAction(String text) {
 		ShowTextAction action = new ShowTextAction();
-		
+
 		action.setText(text);
 		actions.add(action);
-		
+
 		return this;
 	}
-	
-	public List<FeedbackAction> getList(){
+
+	public List<FeedbackAction> getList() {
 		return ImmutableList.copyOf(actions);
 	}
-	
+
 }

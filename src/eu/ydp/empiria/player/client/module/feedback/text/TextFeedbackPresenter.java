@@ -20,7 +20,7 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
 	public TextFeedbackPresenter() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
+
 	@UiField
 	FlowPanel feedbackTextModule;
 
@@ -46,5 +46,5 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
 	public void hide() {
 		this.setVisible(false);
 	}
-	
+
 }

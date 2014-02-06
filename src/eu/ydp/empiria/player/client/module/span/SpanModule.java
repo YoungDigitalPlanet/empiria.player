@@ -12,7 +12,7 @@ public class SpanModule extends SimpleModuleBase implements ISimpleModule, Facto
 
 	protected Widget contents;
 	private final StyleNameConstants styleNames = eu.ydp.empiria.player.client.PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	
+
 	@Override
 	public void initModule(Element element) {
 		contents = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(element);

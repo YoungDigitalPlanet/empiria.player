@@ -71,8 +71,9 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	@Inject
 	private PageScopeFactory scopeFactory;
-	
-	@Inject @PageScoped
+
+	@Inject
+	@PageScoped
 	private ResponseSocket responseSocket;
 
 	protected ExListBox.PopupPosition popupPosition = ExListBox.PopupPosition.ABOVE;

@@ -19,14 +19,14 @@ public class ExtractingFunctionsProvider {
 			return processingResult.getUserInteractionVariables().getMistakes();
 		}
 	};
-	
+
 	private final Function<DtoModuleProcessingResult, Integer> extractErrorsFunction = new Function<DtoModuleProcessingResult, Integer>() {
 		@Override
 		public Integer apply(DtoModuleProcessingResult processingResult) {
 			return processingResult.getGeneralVariables().getErrors();
 		}
 	};
-	
+
 	private final Function<DtoModuleProcessingResult, Integer> extractDoneFunction = new Function<DtoModuleProcessingResult, Integer>() {
 		@Override
 		public Integer apply(DtoModuleProcessingResult processingResult) {
@@ -49,5 +49,5 @@ public class ExtractingFunctionsProvider {
 	public Function<DtoModuleProcessingResult, Integer> getExtractDoneFunction() {
 		return extractDoneFunction;
 	}
-	
+
 }

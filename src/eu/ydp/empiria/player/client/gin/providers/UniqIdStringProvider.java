@@ -7,7 +7,8 @@ import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 
 public class UniqIdStringProvider implements Provider<String> {
 
-	@Inject private UniqueIdGenerator idGenerator;
+	@Inject
+	private UniqueIdGenerator idGenerator;
 
 	@Override
 	public String get() {

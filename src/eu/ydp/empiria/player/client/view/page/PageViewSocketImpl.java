@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.view.item.ItemContentView;
 import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 
 public class PageViewSocketImpl implements PageViewSocket {
-	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); //NOPMD
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
 	private final PageContentView view;
 	private Panel contentPanel;
 	private ItemContentView[] items;
@@ -19,6 +19,7 @@ public class PageViewSocketImpl implements PageViewSocket {
 	public PageViewSocketImpl(PageContentView view) {
 		this.view = view;
 	}
+
 	@Override
 	public ItemViewSocket getItemViewSocket(int index) {
 		return items[index];

@@ -23,18 +23,16 @@ public class VideoFullScreenViewImpl extends Composite implements VideoFullScree
 	interface VideoFullScreenViewUiBinder extends UiBinder<Widget, VideoFullScreenViewImpl> {
 	}
 
-
 	@UiField
 	protected FlowPanel container;
 
 	@UiField
 	protected FlowPanel controls;
 
-
 	public VideoFullScreenViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 		container.addDomHandler(new TouchStartHandler() {
-			
+
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
@@ -42,7 +40,9 @@ public class VideoFullScreenViewImpl extends Composite implements VideoFullScree
 		}, TouchStartEvent.getType());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenView#getContainer()
 	 */
 	@Override
@@ -50,13 +50,14 @@ public class VideoFullScreenViewImpl extends Composite implements VideoFullScree
 		return container;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenView#getControls()
 	 */
 	@Override
 	public FlowPanel getControls() {
 		return controls;
 	}
-
 
 }

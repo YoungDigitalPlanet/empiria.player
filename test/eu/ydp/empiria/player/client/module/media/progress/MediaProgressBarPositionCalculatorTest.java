@@ -17,10 +17,14 @@ import eu.ydp.empiria.player.client.style.ComputedStyle;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MediaProgressBarPositionCalculatorTest {
-	@Mock private MediaProgressBar mediaProgressBar;
-	@Mock private ComputedStyle computedStyle;
-	@Mock private MediaWrapper<?> mediaWrapper;
-	@InjectMocks private MediaProgressBarPositionCalculator instance;
+	@Mock
+	private MediaProgressBar mediaProgressBar;
+	@Mock
+	private ComputedStyle computedStyle;
+	@Mock
+	private MediaWrapper<?> mediaWrapper;
+	@InjectMocks
+	private MediaProgressBarPositionCalculator instance;
 
 	@Before
 	public void before() {
@@ -119,7 +123,7 @@ public class MediaProgressBarPositionCalculatorTest {
 		// test
 		for (int position : Lists.newArrayList(14, 28, 96, 200)) {
 			int calculated = instance.calculateCurrentPosistionForScroll(position);
-			assertThat(calculated).isEqualTo( position);
+			assertThat(calculated).isEqualTo(position);
 		}
 
 		int calculated = instance.calculateCurrentPosistionForScroll(-2);

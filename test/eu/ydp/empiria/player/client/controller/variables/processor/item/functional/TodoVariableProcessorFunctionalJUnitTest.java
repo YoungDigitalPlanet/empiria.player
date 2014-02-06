@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
+
 import java.util.Map;
 
 import org.junit.Test;
@@ -12,18 +14,14 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.CountM
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 
-public class TodoVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase{
+public class TodoVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase {
 
 	@Test
 	public void shouldCorrectlyCountTodoInCorrectAnswerCountMode() throws Exception {
 		// given
-		Response responseWithCorrectAnswersCountMode = new ResponseBuilder()
-				.withCardinality(Cardinality.MULTIPLE)
-				.withCorrectAnswers("firstAnswer", "secondAnswer", "thirdAnswer")
-				.withCountMode(CountMode.CORRECT_ANSWERS)
-				.build();
+		Response responseWithCorrectAnswersCountMode = new ResponseBuilder().withCardinality(Cardinality.MULTIPLE)
+				.withCorrectAnswers("firstAnswer", "secondAnswer", "thirdAnswer").withCountMode(CountMode.CORRECT_ANSWERS).build();
 
 		Map<String, Response> responsesMap = convertToMap(responseWithCorrectAnswersCountMode);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -35,17 +33,15 @@ public class TodoVariableProcessorFunctionalJUnitTest extends VariableProcessorF
 		Integer expectedTODOCount = responseWithCorrectAnswersCountMode.correctAnswers.getAnswersCount();
 		String expectedTODOVariableValue = expectedTODOCount.toString();
 		assertGlobalOutcomesHaveValue(Lists.newArrayList(expectedTODOVariableValue), Lists.newArrayList(TODO), outcomes);
-		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswersCountMode, Lists.newArrayList(expectedTODOVariableValue), Lists.newArrayList(TODO), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswersCountMode, Lists.newArrayList(expectedTODOVariableValue), Lists.newArrayList(TODO),
+				outcomes);
 	}
 
 	@Test
 	public void shouldCorrectlyCountTodoInSingleCountMode() throws Exception {
 		// given
-		Response responseWithSingleCountMode = new ResponseBuilder()
-				.withCardinality(Cardinality.SINGLE)
-				.withCorrectAnswers("firstAnswer", "secondAnswer", "thirdAnswer")
-				.withCountMode(CountMode.SINGLE)
-				.build();
+		Response responseWithSingleCountMode = new ResponseBuilder().withCardinality(Cardinality.SINGLE)
+				.withCorrectAnswers("firstAnswer", "secondAnswer", "thirdAnswer").withCountMode(CountMode.SINGLE).build();
 
 		Map<String, Response> responsesMap = convertToMap(responseWithSingleCountMode);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -59,5 +55,5 @@ public class TodoVariableProcessorFunctionalJUnitTest extends VariableProcessorF
 		assertGlobalOutcomesHaveValue(Lists.newArrayList(expectedTODOVariableValue), Lists.newArrayList(TODO), outcomes);
 		assertResponseRelatedOutcomesHaveValue(responseWithSingleCountMode, Lists.newArrayList(expectedTODOVariableValue), Lists.newArrayList(TODO), outcomes);
 	}
-	
+
 }

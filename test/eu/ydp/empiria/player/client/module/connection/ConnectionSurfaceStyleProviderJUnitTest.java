@@ -24,11 +24,7 @@ public class ConnectionSurfaceStyleProviderJUnitTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	@Parameters({
-		"-1, 0", 
-		"-1, -1", 
-		"0, -1" 
-	})
+	@Parameters({ "-1, 0", "-1, -1", "0, -1" })
 	public void shouldThrowException(int leftIndex, int rightIndex) {
 		// given
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.NORMAL;
@@ -38,10 +34,7 @@ public class ConnectionSurfaceStyleProviderJUnitTest {
 	}
 
 	@Test
-	@Parameters({
-		"0, 0, qp-connection-line-0-0", 
-		"1, 2, qp-connection-line-1-2"
-	})
+	@Parameters({ "0, 0, qp-connection-line-0-0", "1, 2, qp-connection-line-1-2" })
 	public void shouldGetStyleForNormal(int leftIndex, int rightIndex, String expectedNormalStyle) {
 		// given
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.NORMAL;
@@ -55,12 +48,8 @@ public class ConnectionSurfaceStyleProviderJUnitTest {
 	}
 
 	@Test
-	@Parameters({
-		"0, 0, qp-connection-line-0-0, qp-connection-line-correct-0-0", 
-		"1, 2, qp-connection-line-1-2, qp-connection-line-correct-1-2"
-	})
-	public void shouldGetStylesForCorrect(int leftIndex, int rightIndex, String expectedNormalStyle, 
-			String expectedCorrectStyle) {
+	@Parameters({ "0, 0, qp-connection-line-0-0, qp-connection-line-correct-0-0", "1, 2, qp-connection-line-1-2, qp-connection-line-correct-1-2" })
+	public void shouldGetStylesForCorrect(int leftIndex, int rightIndex, String expectedNormalStyle, String expectedCorrectStyle) {
 		// given
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.CORRECT;
 
@@ -74,12 +63,8 @@ public class ConnectionSurfaceStyleProviderJUnitTest {
 	}
 
 	@Test
-	@Parameters({
-		"0, 0, qp-connection-line-0-0, qp-connection-line-wrong-0-0", 
-		"1, 2, qp-connection-line-1-2, qp-connection-line-wrong-1-2"
-	})
-	public void shouldGetStylesForWrong(int leftIndex, int rightIndex, String expectedNormalStyle, 
-			String expectedWrongStyle) {
+	@Parameters({ "0, 0, qp-connection-line-0-0, qp-connection-line-wrong-0-0", "1, 2, qp-connection-line-1-2, qp-connection-line-wrong-1-2" })
+	public void shouldGetStylesForWrong(int leftIndex, int rightIndex, String expectedNormalStyle, String expectedWrongStyle) {
 		// given
 		MultiplePairModuleConnectType type = MultiplePairModuleConnectType.WRONG;
 

@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveH
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
-public interface ConnectionView extends IsWidget, HasDimensions{
+public interface ConnectionView extends IsWidget, HasDimensions {
 
 	void addFirstColumnItem(ConnectionItem item);
 

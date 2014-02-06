@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox.tool;
 
+import static org.mockito.Mockito.verify;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.empiria.player.client.util.position.Point;
@@ -18,7 +19,7 @@ public class PencilToolTest {
 
 	@InjectMocks
 	private PencilTool pencilTool;
-	
+
 	@Mock
 	private ColorModel colorModel;
 	@Mock
@@ -28,38 +29,38 @@ public class PencilToolTest {
 	public void verifyNoMoreInteractions() {
 		Mockito.verifyNoMoreInteractions(canvas, colorModel);
 	}
-	
+
 	@Test
 	public void shouldDrawPoint() throws Exception {
-		//given
+		// given
 		Point point = new Point(1, 2);
-		
-		//when
+
+		// when
 		pencilTool.start(point);
-		
-		//then
+
+		// then
 		verify(canvas).drawPoint(point, colorModel);
 	}
-	
+
 	@Test
 	public void shouldDrawLine() throws Exception {
-		//given
+		// given
 		Point startPoint = new Point(1, 1);
 		Point endPoint = new Point(2, 2);
-		
-		//when
+
+		// when
 		pencilTool.move(startPoint, endPoint);
-		
-		//then
+
+		// then
 		verify(canvas).drawLine(startPoint, endPoint, colorModel);
 	}
-	
+
 	@Test
 	public void shouldSetLineWidthOnSetUp() throws Exception {
-		//when
+		// when
 		pencilTool.setUp();
-		
-		//then
+
+		// then
 		verify(canvas).setLineWidth(PencilTool.LINE_WIDTH);
 	}
 }

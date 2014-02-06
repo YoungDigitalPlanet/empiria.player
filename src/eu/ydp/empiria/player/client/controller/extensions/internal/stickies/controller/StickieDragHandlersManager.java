@@ -35,10 +35,9 @@ public class StickieDragHandlersManager {
 	private final IPlayerContainersAccessor accessor;
 	private final EventsBus eventsBus;
 	private StickieDragController stickieDragController;
-	
+
 	private List<HandlerRegistration> upMoveHandlersRegistrations = new ArrayList<HandlerRegistration>();
 
-	
 	@Inject
 	public StickieDragHandlersManager(@Assisted StickieDragController stickieDragController, IPlayerContainersAccessor accessor, EventsBus eventsBus) {
 		this.stickieDragController = stickieDragController;
@@ -46,15 +45,15 @@ public class StickieDragHandlersManager {
 		this.eventsBus = eventsBus;
 	}
 
-	public void mouseDown(MouseDownEvent event){
+	public void mouseDown(MouseDownEvent event) {
 		event.preventDefault();
 		Point<Integer> point = new Point<Integer>(event.getScreenX(), event.getScreenY());
 		onDragStart(point);
 		registerMouseMoveHandler();
 		registerMouseUpHandler();
 	}
-	
-	public void touchStart(TouchStartEvent event){
+
+	public void touchStart(TouchStartEvent event) {
 		Point<Integer> touchPoint = getTouchPoint(event.getTouches());
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
 
@@ -62,7 +61,7 @@ public class StickieDragHandlersManager {
 		addTouchMoveHandler();
 		addTouchEndHandler();
 	}
-	
+
 	private void registerMouseUpHandler() {
 		Type<MouseUpHandler> type = MouseUpEvent.getType();
 		registerMouseHandler(new MouseUpHandler() {
@@ -96,30 +95,30 @@ public class StickieDragHandlersManager {
 	private void addTouchEndHandler() {
 		registerTouchHandler(new TouchEndHandler() {
 
-					@Override
-					public void onTouchEnd(TouchEndEvent event) {
-						onDragEnd();
-					}
+			@Override
+			public void onTouchEnd(TouchEndEvent event) {
+				onDragEnd();
+			}
 
-				}, TouchEndEvent.getType());
+		}, TouchEndEvent.getType());
 	}
 
 	private void addTouchMoveHandler() {
 		registerTouchHandler(new TouchMoveHandler() {
 
-					@Override
-					public void onTouchMove(TouchMoveEvent event) {
-						Point<Integer> touchMovePoint = getTouchPoint(event.getTouches());
-						onDragMove(event, touchMovePoint);
-					}
-				}, TouchMoveEvent.getType());
+			@Override
+			public void onTouchMove(TouchMoveEvent event) {
+				Point<Integer> touchMovePoint = getTouchPoint(event.getTouches());
+				onDragMove(event, touchMovePoint);
+			}
+		}, TouchMoveEvent.getType());
 	}
 
 	private void onDragStart(Point<Integer> point) {
 		stickieDragController.dragStart(point);
 		removeMoveAndUpHandlersIfExists();
 	}
-	
+
 	private void onDragMove(DomEvent<?> event, Point<Integer> movePosition) {
 		stickieDragController.dragMove(movePosition);
 		event.preventDefault();
@@ -135,18 +134,17 @@ public class StickieDragHandlersManager {
 		Point<Integer> point = new Point<Integer>(touch.getScreenX(), touch.getScreenY());
 		return point;
 	}
-	
+
 	private <H extends EventHandler> HandlerRegistration registerMouseHandler(H handler, Type<H> type) {
 		HandlerRegistration registration = ((Widget) accessor.getPlayerContainer()).addDomHandler(handler, type);
-		
+
 		upMoveHandlersRegistrations.add(registration);
 		return registration;
 	}
 
 	private <H extends EventHandler> HandlerRegistration registerTouchHandler(H handler, Type<H> type) {
-		HandlerRegistration registration = RootPanel.get()
-				.addDomHandler(handler, type);
-		
+		HandlerRegistration registration = RootPanel.get().addDomHandler(handler, type);
+
 		upMoveHandlersRegistrations.add(registration);
 		return registration;
 	}

@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -63,8 +64,8 @@ public class TextBoxChangeHandlerJUnitTest {
 		testObj.bind(droppableObject, presenterHandler);
 
 		// then
-		verify(textBox).addBlurHandler(Mockito.eq(testObj));
-		verify(droppableObject).addDropHandler(Mockito.eq(testObj));
+		verify(textBox).addBlurHandler(Matchers.eq(testObj));
+		verify(droppableObject).addDropHandler(Matchers.eq(testObj));
 	}
 
 	@Test
@@ -77,7 +78,7 @@ public class TextBoxChangeHandlerJUnitTest {
 		testObj.onDrop(event);
 
 		// then
-		verify(presenterHandler).onBlur(Mockito.any(BlurEvent.class));
+		verify(presenterHandler).onBlur(Matchers.any(BlurEvent.class));
 	}
 
 	@Test
@@ -90,7 +91,7 @@ public class TextBoxChangeHandlerJUnitTest {
 		testObj.onBlur(blurEvent);
 
 		// then
-		verify(presenterHandler).onBlur(Mockito.eq(blurEvent));
+		verify(presenterHandler).onBlur(Matchers.eq(blurEvent));
 		verifyNoMoreInteractions(presenterHandler);
 	}
 

@@ -1,5 +1,10 @@
 package eu.ydp.empiria.player.client.module.drawing;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -8,8 +13,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommand;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandType;
@@ -24,7 +27,7 @@ public class DrawingModuleTest {
 
 	@InjectMocks
 	private DrawingModule drawingModule;
-	
+
 	@Mock
 	private DrawingBean bean;
 	@Mock
@@ -35,40 +38,37 @@ public class DrawingModuleTest {
 	private CanvasPresenter canvasPresenter;
 	@Mock
 	private DrawCommandFactory factory;
-	
-	
+
 	@Test
 	public void shouldResetViewOnCanvas() throws Exception {
-		//given
+		// given
 		DrawCommand clearAllCommand = Mockito.mock(DrawCommand.class);
-		when(factory.createCommand(DrawCommandType.CLEAR_ALL))
-			.thenReturn(clearAllCommand);
-		
-		//when
+		when(factory.createCommand(DrawCommandType.CLEAR_ALL)).thenReturn(clearAllCommand);
+
+		// when
 		drawingModule.reset();
-		
-		//then
+
+		// then
 		verify(clearAllCommand).execute();
 	}
-	
+
 	@Test
 	public void shouldInitializeModule() throws Exception {
-		//given
+		// given
 		ImageBean image = getSampleImageBean();
-		when(bean.getImage())
-			.thenReturn(image);
-		
-		//when
+		when(bean.getImage()).thenReturn(image);
+
+		// when
 		drawingModule.initModule(null);
-		
-		//then
+
+		// then
 		ArgumentCaptor<Size> sizeCaptor = ArgumentCaptor.forClass(Size.class);
 		verify(canvasPresenter).setImage(eq(image.getSrc()), sizeCaptor.capture());
-		
+
 		Size imageSize = sizeCaptor.getValue();
 		assertEquals(image.getWidth(), imageSize.getWidth());
 		assertEquals(image.getHeight(), imageSize.getHeight());
-		
+
 		verify(toolboxPresenter).init();
 	}
 

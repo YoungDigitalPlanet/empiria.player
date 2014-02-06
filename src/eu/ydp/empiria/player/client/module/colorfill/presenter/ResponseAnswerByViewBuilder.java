@@ -16,23 +16,22 @@ public class ResponseAnswerByViewBuilder {
 	private final ColorfillInteractionViewColors interactionViewColors;
 
 	@Inject
-	public ResponseAnswerByViewBuilder(
-			@ModuleScoped ColorfillInteractionViewColors interactionViewColors,
+	public ResponseAnswerByViewBuilder(@ModuleScoped ColorfillInteractionViewColors interactionViewColors,
 			ResponseUserAnswersConverter responseUserAnswersConverter) {
-			this.interactionViewColors = interactionViewColors;
-			this.responseUserAnswersConverter = responseUserAnswersConverter;
+		this.interactionViewColors = interactionViewColors;
+		this.responseUserAnswersConverter = responseUserAnswersConverter;
 	}
 
 	public List<String> buildNewResponseAnswersByCurrentImage(List<Area> areas) {
 		List<String> userAnswers = Lists.newArrayList();
 		Map<Area, ColorModel> colors = interactionViewColors.getColors(areas);
-		for(Map.Entry<Area, ColorModel> entry : colors.entrySet()){
-			if(!entry.getValue().isTransparent()){
+		for (Map.Entry<Area, ColorModel> entry : colors.entrySet()) {
+			if (!entry.getValue().isTransparent()) {
 				String userAnswer = responseUserAnswersConverter.buildResponseAnswerFromAreaAndColor(entry.getKey(), entry.getValue());
 				userAnswers.add(userAnswer);
 			}
 		}
 		return userAnswers;
 	}
-	
+
 }

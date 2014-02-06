@@ -9,8 +9,7 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
-public class JsAssessmentHeaderViewExtension extends AbstractJsExtension implements
-		AssessmentHeaderViewExtension {
+public class JsAssessmentHeaderViewExtension extends AbstractJsExtension implements AssessmentHeaderViewExtension {
 
 	@Override
 	public ExtensionType getType() {
@@ -18,7 +17,7 @@ public class JsAssessmentHeaderViewExtension extends AbstractJsExtension impleme
 	}
 
 	@Override
-	public void init() {//NOPMD
+	public void init() {// NOPMD
 
 	}
 
@@ -41,9 +40,9 @@ public class JsAssessmentHeaderViewExtension extends AbstractJsExtension impleme
 	}
 
 	private native Element getViewJs(JavaScriptObject extension)/*-{
-		if (typeof extension.getAssessmentHeaderView == 'function')
-			return extension.getAssessmentHeaderView();
-		return null;
-	}-*/;
+																if (typeof extension.getAssessmentHeaderView == 'function')
+																return extension.getAssessmentHeaderView();
+																return null;
+																}-*/;
 
 }

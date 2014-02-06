@@ -1,10 +1,7 @@
 package eu.ydp.empiria.player.client.module.colorfill.presenter;
 
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Map;
@@ -35,14 +32,22 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 @RunWith(MockitoJUnitRunner.class)
 public class ColorfillInteractionPresenterImplTest {
 
-	@InjectMocks private ColorfillInteractionPresenterImpl presenter;
-	@Mock private ResponseUserAnswersConverter responseUserAnswersConverter;
-	@Mock private ResponseAnswerByViewBuilder responseAnswerByViewBuilder;
-	@Mock private ColorfillViewBuilder colorfillViewBuilder;
-	@Mock private ColorfillInteractionView interactionView;
-	@Mock private ColorfillModelProxy model;
-	@Mock private ColorButtonsController colorButtonController;
-	@Mock private UserToResponseAreaMapper areaMapper;
+	@InjectMocks
+	private ColorfillInteractionPresenterImpl presenter;
+	@Mock
+	private ResponseUserAnswersConverter responseUserAnswersConverter;
+	@Mock
+	private ResponseAnswerByViewBuilder responseAnswerByViewBuilder;
+	@Mock
+	private ColorfillViewBuilder colorfillViewBuilder;
+	@Mock
+	private ColorfillInteractionView interactionView;
+	@Mock
+	private ColorfillModelProxy model;
+	@Mock
+	private ColorButtonsController colorButtonController;
+	@Mock
+	private UserToResponseAreaMapper areaMapper;
 
 	private ColorfillInteractionBean bean;
 
@@ -52,10 +57,10 @@ public class ColorfillInteractionPresenterImplTest {
 		presenter.setBean(bean);
 	}
 
-	private void prepareBean(){
+	private void prepareBean() {
 		bean = new ColorfillInteractionBean();
 		AreaContainer areasContainer = new AreaContainer();
-		List<Area> areas = Lists.newArrayList(new Area(1,1), new Area(2,2));
+		List<Area> areas = Lists.newArrayList(new Area(1, 1), new Area(2, 2));
 		areasContainer.setAreas(areas);
 		bean.setAreas(areasContainer);
 	}
@@ -63,55 +68,52 @@ public class ColorfillInteractionPresenterImplTest {
 	@Test
 	public void shouldBuildView() throws Exception {
 		presenter.bindView();
-		verify(colorfillViewBuilder).buildView(bean,presenter);
+		verify(colorfillViewBuilder).buildView(bean, presenter);
 	}
 
 	@Test
 	public void shouldRedrawAreaWithCurrentColorAndRebuildResponses() throws Exception {
-		//given
+		// given
 		Area clickedArea = new Area(123, 253);
 
 		ColorModel currentColor = ColorModel.createFromRgbString("00ff00");
-		when(colorButtonController.getCurrentSelectedButtonColor())
-			.thenReturn(currentColor);
+		when(colorButtonController.getCurrentSelectedButtonColor()).thenReturn(currentColor);
 
 		List<String> rebuildedAnswers = Lists.newArrayList("a", "b");
-		when(responseAnswerByViewBuilder.buildNewResponseAnswersByCurrentImage(bean.getAreas().getAreas()))
-			.thenReturn(rebuildedAnswers);
+		when(responseAnswerByViewBuilder.buildNewResponseAnswersByCurrentImage(bean.getAreas().getAreas())).thenReturn(rebuildedAnswers);
 
-		//when
+		// when
 		presenter.imageColorChanged(clickedArea);
 
-		//them
+		// them
 		verify(interactionView).setColor(clickedArea, currentColor);
 		verify(model).updateUserAnswers();
 	}
 
 	@Test
 	public void shouldIgnoreAreaClickWhenNoColorIsCurrentlySelected() throws Exception {
-		//given
+		// given
 		Area clickedArea = new Area(123, 253);
-		when(colorButtonController.getCurrentSelectedButtonColor())
-			.thenReturn(null);
+		when(colorButtonController.getCurrentSelectedButtonColor()).thenReturn(null);
 
-		//when
+		// when
 		presenter.imageColorChanged(clickedArea);
 
-		//then
+		// then
 		verify(colorButtonController).getCurrentSelectedButtonColor();
 		verifyNoMoreInteractionsOnAllMocks();
 	}
 
 	@Test
 	public void shouldIgnoreAreaClickWhenLock() throws Exception {
-		//given
+		// given
 		Area clickedArea = new Area(123, 253);
 		presenter.setLocked(true);
 
-		//when
+		// when
 		presenter.imageColorChanged(clickedArea);
 
-		//then
+		// then
 		verifyNoMoreInteractionsOnAllMocks();
 	}
 
@@ -131,8 +133,7 @@ public class ColorfillInteractionPresenterImplTest {
 		Map<Area, ColorModel> areaToColorMap = Maps.newHashMap();
 		when(model.getUserAnswers()).thenReturn(areaToColorMap);
 
-		when(responseUserAnswersConverter.convertResponseAnswersToAreaColorMap(currentAnswers))
-			.thenReturn(areaToColorMap);
+		when(responseUserAnswersConverter.convertResponseAnswersToAreaColorMap(currentAnswers)).thenReturn(areaToColorMap);
 
 		presenter.showAnswers(ShowAnswersType.USER);
 
@@ -151,7 +152,7 @@ public class ColorfillInteractionPresenterImplTest {
 	}
 
 	@Test
-	public void markCorrectAnswers(){
+	public void markCorrectAnswers() {
 		List<Area> areaList = Lists.newArrayList();
 		List<Area> areaMapperList = Lists.newArrayList();
 		doReturn(areaMapperList).when(areaMapper).mapResponseToUser(eq(areaList));
@@ -162,7 +163,7 @@ public class ColorfillInteractionPresenterImplTest {
 	}
 
 	@Test
-	public void markWrongAnswers(){
+	public void markWrongAnswers() {
 		List<Area> areaList = Lists.newArrayList();
 		List<Area> areaMapperList = Lists.newArrayList();
 		doReturn(areaMapperList).when(areaMapper).mapResponseToUser(eq(areaList));
@@ -173,7 +174,7 @@ public class ColorfillInteractionPresenterImplTest {
 	}
 
 	@Test
-	public void unmarkCorrectAnswers(){
+	public void unmarkCorrectAnswers() {
 		List<Area> areaList = Lists.newArrayList();
 		doReturn(areaList).when(model).getUserCorrectAnswers();
 		presenter.markAnswers(MarkAnswersType.CORRECT, MarkAnswersMode.UNMARK);
@@ -182,7 +183,7 @@ public class ColorfillInteractionPresenterImplTest {
 	}
 
 	@Test
-	public void unmarkWrongAnswers(){
+	public void unmarkWrongAnswers() {
 		List<Area> areaList = Lists.newArrayList();
 		doReturn(areaList).when(model).getUserCorrectAnswers();
 		presenter.markAnswers(MarkAnswersType.WRONG, MarkAnswersMode.UNMARK);
@@ -199,11 +200,7 @@ public class ColorfillInteractionPresenterImplTest {
 	}
 
 	private void verifyNoMoreInteractionsOnAllMocks() {
-		Mockito.verifyNoMoreInteractions(responseUserAnswersConverter,
-				responseAnswerByViewBuilder,
-				colorfillViewBuilder,
-				colorButtonController,
-				interactionView,
-				model);
+		Mockito.verifyNoMoreInteractions(responseUserAnswersConverter, responseAnswerByViewBuilder, colorfillViewBuilder, colorButtonController,
+				interactionView, model);
 	}
 }

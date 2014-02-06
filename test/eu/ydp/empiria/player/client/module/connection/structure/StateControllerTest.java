@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.structure;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;

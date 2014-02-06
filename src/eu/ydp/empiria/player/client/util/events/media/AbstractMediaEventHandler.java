@@ -4,7 +4,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.scope.EventScope;
 
 public abstract class AbstractMediaEventHandler implements MediaEventHandler {
-	//@Override
+	// @Override
 	public EventScope<CurrentPageScope> getScope() {
 		return new CurrentPageScope();
 	}

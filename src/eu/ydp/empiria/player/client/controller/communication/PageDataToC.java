@@ -6,7 +6,7 @@ public class PageDataToC extends PageData {
 		super(PageType.TOC);
 		titles = ts;
 	}
-	
+
 	public String[] titles;
 
 }

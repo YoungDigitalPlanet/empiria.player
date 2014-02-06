@@ -41,7 +41,7 @@ public final class SourceUtil {
 
 	/**
 	 * Zwraca kolekcje zrodel powiazanych z tym elementem key=url,value=type
-	 *
+	 * 
 	 * @param element
 	 * @return
 	 */

@@ -18,13 +18,12 @@ public class SourceListViewDropHandler implements DropHandler {
 		this.sourceListPresenter = sourceListPresenter;
 	}
 
-
 	@Override
 	public void onDrop(DropEvent event) {
 		Optional<DragDataObject> objectFromEvent = objectFromEventExtractor.extractDroppedObjectFromEvent(event);
-		if(objectFromEvent.isPresent()){
+		if (objectFromEvent.isPresent()) {
 			DragDataObject dataObject = objectFromEvent.get();
-			sourceListPresenter.onDropEvent(dataObject.getItemId(),dataObject.getSourceId());
+			sourceListPresenter.onDropEvent(dataObject.getItemId(), dataObject.getSourceId());
 		}
 	}
 

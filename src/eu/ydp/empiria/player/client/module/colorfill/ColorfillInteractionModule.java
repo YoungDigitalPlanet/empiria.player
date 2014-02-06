@@ -11,14 +11,17 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteract
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionStructure;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class ColorfillInteractionModule extends AbstractInteractionModule<ColorfillInteractionModule, ColorfillInteractionModuleModel, ColorfillInteractionBean> {
+public class ColorfillInteractionModule extends
+		AbstractInteractionModule<ColorfillInteractionModule, ColorfillInteractionModuleModel, ColorfillInteractionBean> {
 
 	@Inject
 	private ColorfillInteractionPresenter presenter;
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private ColorfillInteractionModuleModel moduleModel;
 
-	@Inject @ModuleScoped
+	@Inject
+	@ModuleScoped
 	private ColorfillInteractionStructure colorfillInteractionStructure;
 
 	@Override
@@ -27,7 +30,7 @@ public class ColorfillInteractionModule extends AbstractInteractionModule<Colorf
 	}
 
 	@Override
-	protected void initalizeModule() { 
+	protected void initalizeModule() {
 		moduleModel.initialize(this);
 	}
 

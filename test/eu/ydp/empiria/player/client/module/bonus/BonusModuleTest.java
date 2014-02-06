@@ -1,11 +1,7 @@
 package eu.ydp.empiria.player.client.module.bonus;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,7 +69,7 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
-		
+
 		mockAllOk();
 
 		// when
@@ -149,14 +145,14 @@ public class BonusModuleTest {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
-		
+
 		// when
 		mockNotAllOk();
 		module.processUserInteraction();
-		
+
 		mockAllOk();
 		module.processUserInteraction();
-		
+
 		// then
 		verify(bonus, times(1)).execute();
 	}
@@ -171,35 +167,35 @@ public class BonusModuleTest {
 		mockNotAllOk();
 		when(outcomeAccessor.getCurrentPageMistakes()).thenReturn(1);
 		module.processUserInteraction();
-		
+
 		mockAllOk();
 		module.processUserInteraction();
-		
+
 		// then
 		verify(bonus, never()).execute();
 	}
-	
+
 	@Test
 	public void shouldShowBonusAfterResetWithPreviousErrors() {
 		// given
 		Bonus bonus = mock(Bonus.class);
 		when(bonusProvider.next()).thenReturn(bonus);
-		
+
 		// when
 		mockNotAllOk();
 		when(outcomeAccessor.getCurrentPageMistakes()).thenReturn(1);
 		module.processUserInteraction();
 
 		module.resetPowerFeedback();
-		
+
 		mockAllOk();
 		module.processUserInteraction();
-		
+
 		// then
 		verify(bonus, times(1)).execute();
-		
+
 	}
-	
+
 	private void mockAllOk() {
 		when(actionConditions.isPageAllOkWithoutPreviousErrors()).thenReturn(true);
 	}

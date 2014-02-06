@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.table;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TABLE_CELLPADDING;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TABLE_CELLSPACING;
 
 import java.util.Map;
 

@@ -17,32 +17,33 @@ public class ModulesRegistry implements ModulesRegistrySocket {
 
 	protected final Map<String, ModuleCreator> moduleCreators;
 	private final ModuleScopeStack moduleScopeStack;
-	
+
 	@Inject
-	public ModulesRegistry(ModuleScopeStack moduleScopeStack){
+	public ModulesRegistry(ModuleScopeStack moduleScopeStack) {
 		this.moduleScopeStack = moduleScopeStack;
 		moduleCreators = new HashMap<String, ModuleCreator>();
 	}
-	
-	public void registerModuleCreator(String nodeName, ModuleCreator creator){
+
+	public void registerModuleCreator(String nodeName, ModuleCreator creator) {
 		moduleCreators.put(nodeName, creator);
 	}
-	
-	public boolean isModuleSupported(String nodeName){
-		if(EmpiriaTagConstants.NAME_GAP.equals(nodeName)){
+
+	@Override
+	public boolean isModuleSupported(String nodeName) {
+		if (EmpiriaTagConstants.NAME_GAP.equals(nodeName)) {
 			return true;
-		}else{
+		} else {
 			return moduleCreators.keySet().contains(nodeName);
 		}
 	}
 
 	@Override
-	public boolean isMultiViewModule(String nodeName){
-		if(EmpiriaTagConstants.NAME_GAP.equals(nodeName)){
+	public boolean isMultiViewModule(String nodeName) {
+		if (EmpiriaTagConstants.NAME_GAP.equals(nodeName)) {
 			return true;
 		}
 		ModuleCreator currCreator = moduleCreators.get(nodeName);
-		if (currCreator != null){
+		if (currCreator != null) {
 			return currCreator.isMultiViewModule();
 		}
 		return false;
@@ -51,26 +52,27 @@ public class ModulesRegistry implements ModulesRegistrySocket {
 	@Override
 	public boolean isInlineModule(String nodeName) {
 		ModuleCreator currCreator = moduleCreators.get(nodeName);
-		if (currCreator != null){
+		if (currCreator != null) {
 			return currCreator.isInlineModule();
 		}
 		return false;
 	}
-	
+
+	@Override
 	public IModule createModule(Element node) {
 		String nodeName = node.getNodeName();
 		ModuleCreator currCreator = moduleCreators.get(nodeName);
-		
-		if ( (currCreator == null) && (node.hasAttribute(EmpiriaTagConstants.ATTR_TYPE)) ) {
+
+		if ((currCreator == null) && (node.hasAttribute(EmpiriaTagConstants.ATTR_TYPE))) {
 			nodeName = ModuleTagName.getTagNameWithType(nodeName, node.getAttribute(EmpiriaTagConstants.ATTR_TYPE));
 			currCreator = moduleCreators.get(nodeName);
 		}
-		
+
 		ModuleCreationContext context = new ModuleCreationContext(node);
 		moduleScopeStack.pushContext(context);
 		IModule module = currCreator.createModule();
 		moduleScopeStack.pop();
-		
+
 		return module;
 	}
 }

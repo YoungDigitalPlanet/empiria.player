@@ -23,21 +23,18 @@ public class HTML5MediaEventMapper {
 	Map<HTML5MediaEventsType, MediaEventTypes> pairMapAsyncEvents = creatAsyncEventsPairMap();
 
 	private Map<HTML5MediaEventsType, MediaEventTypes> creatEventsPairMap() {
-		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes>builder().
-		put(HTML5MediaEventsType.canplay,MediaEventTypes.CAN_PLAY).
-		put(HTML5MediaEventsType.suspend,MediaEventTypes.SUSPEND).
-		put(HTML5MediaEventsType.ended,MediaEventTypes.ON_END).
-		put(HTML5MediaEventsType.error,MediaEventTypes.ON_ERROR).
-		put(HTML5MediaEventsType.pause,MediaEventTypes.ON_PAUSE).
-		put(HTML5MediaEventsType.volumechange,MediaEventTypes.ON_VOLUME_CHANGE).
-		put(HTML5MediaEventsType.play,MediaEventTypes.ON_PLAY).build();
+		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes> builder()
+				.put(HTML5MediaEventsType.canplay, MediaEventTypes.CAN_PLAY).put(HTML5MediaEventsType.suspend, MediaEventTypes.SUSPEND)
+				.put(HTML5MediaEventsType.ended, MediaEventTypes.ON_END).put(HTML5MediaEventsType.error, MediaEventTypes.ON_ERROR)
+				.put(HTML5MediaEventsType.pause, MediaEventTypes.ON_PAUSE).put(HTML5MediaEventsType.volumechange, MediaEventTypes.ON_VOLUME_CHANGE)
+				.put(HTML5MediaEventsType.play, MediaEventTypes.ON_PLAY).build();
 		return pairMap;
 	}
 
 	private Map<HTML5MediaEventsType, MediaEventTypes> creatAsyncEventsPairMap() {
-		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes>builder().
-		put(HTML5MediaEventsType.durationchange,MediaEventTypes.ON_DURATION_CHANGE).
-		put(HTML5MediaEventsType.timeupdate,MediaEventTypes.ON_TIME_UPDATE).build();
+		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes> builder()
+				.put(HTML5MediaEventsType.durationchange, MediaEventTypes.ON_DURATION_CHANGE)
+				.put(HTML5MediaEventsType.timeupdate, MediaEventTypes.ON_TIME_UPDATE).build();
 		return pairMap;
 	}
 
@@ -72,11 +69,11 @@ public class HTML5MediaEventMapper {
 		}
 	}
 
-	private void fireSyncEvent(MediaEventTypes type,MediaWrapper<?> mediaWrapper) {
+	private void fireSyncEvent(MediaEventTypes type, MediaWrapper<?> mediaWrapper) {
 		eventsBus.fireEventFromSource(new MediaEvent(type, mediaWrapper), mediaWrapper);
 	}
 
-	private void fireAsyncEvent(MediaEventTypes type,MediaWrapper<?> mediaWrapper) {
+	private void fireAsyncEvent(MediaEventTypes type, MediaWrapper<?> mediaWrapper) {
 		eventsBus.fireAsyncEventFromSource(new MediaEvent(type, mediaWrapper), mediaWrapper);
 	}
 }

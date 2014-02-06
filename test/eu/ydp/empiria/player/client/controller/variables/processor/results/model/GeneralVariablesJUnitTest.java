@@ -61,7 +61,7 @@ public class GeneralVariablesJUnitTest {
 		GeneralVariables gv = new GeneralVariables();
 		List<Boolean> answersEvaluation = Lists.newArrayList(true);
 		gv.setAnswersEvaluation(answersEvaluation);
-		
+
 		// when
 		answersEvaluation.set(0, false);
 

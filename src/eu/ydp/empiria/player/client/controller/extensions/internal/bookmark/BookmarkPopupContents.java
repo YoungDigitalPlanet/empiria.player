@@ -23,22 +23,23 @@ public class BookmarkPopupContents extends Composite implements IBookmarkPopupCo
 
 	private static BookmarkPopupPanelUiBinder uiBinder = GWT.create(BookmarkPopupPanelUiBinder.class);
 
-	interface BookmarkPopupPanelUiBinder extends UiBinder<Widget, BookmarkPopupContents> { }
+	interface BookmarkPopupPanelUiBinder extends UiBinder<Widget, BookmarkPopupContents> {
+	}
 
 	IBookmarkPopupContentsPresenter presenter;
 	private HandlerRegistration previewHandlerRegistration;
 
 	@UiField
 	TextBox titleTextBox;
-	
+
 	@UiField
 	FlowPanel innerInnerPanel;
 
 	public BookmarkPopupContents() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
-	public void setFocus(){
+
+	public void setFocus() {
 		titleTextBox.setFocus(true);
 		titleTextBox.setSelectionRange(0, titleTextBox.getText().length());
 	}
@@ -47,43 +48,43 @@ public class BookmarkPopupContents extends Composite implements IBookmarkPopupCo
 	public void setPresenter(IBookmarkPopupContentsPresenter presenter) {
 		this.presenter = presenter;
 	}
-	
+
 	@UiHandler("okButton")
-	public void okClickHandler(ClickEvent event){
+	public void okClickHandler(ClickEvent event) {
 		presenter.applyBookmark();
 	}
-	
+
 	@UiHandler("deleteButton")
-	public void deleteClickHandler(ClickEvent event){
+	public void deleteClickHandler(ClickEvent event) {
 		presenter.deleteBookmark();
 	}
-	
+
 	@UiHandler("closeButton")
-	public void closeClickHandler(ClickEvent event){
+	public void closeClickHandler(ClickEvent event) {
 		presenter.discardChanges();
 	}
-	
+
 	@UiHandler("titleTextBox")
-	public void titleKeyDownHandler(KeyDownEvent event){
-		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+	public void titleKeyDownHandler(KeyDownEvent event) {
+		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 			presenter.applyBookmark();
-		} else if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE){
+		} else if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE) {
 			presenter.discardChanges();
 		}
 	}
-	
-	@UiHandler("titleTextBox")	
-	public void focusHandler(FocusEvent event){		
-		previewHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {			
+
+	@UiHandler("titleTextBox")
+	public void focusHandler(FocusEvent event) {
+		previewHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
 			@Override
 			public void onPreviewNativeEvent(NativePreviewEvent preview) {
 				NativeEvent event = preview.getNativeEvent();
-			    Element elt = event.getEventTarget().cast();			   
-			    String eventType = event.getType();
-			    boolean touched = eventType.equals("mousedown") || eventType.equals("touchstart");
-			    if(touched && !innerInnerPanel.getElement().isOrHasChild(elt)){			    	
-			    	presenter.applyBookmark();
-			    }				
+				Element elt = event.getEventTarget().cast();
+				String eventType = event.getType();
+				boolean touched = eventType.equals("mousedown") || eventType.equals("touchstart");
+				if (touched && !innerInnerPanel.getElement().isOrHasChild(elt)) {
+					presenter.applyBookmark();
+				}
 			}
 		});
 
@@ -97,15 +98,14 @@ public class BookmarkPopupContents extends Composite implements IBookmarkPopupCo
 	@Override
 	public String getBookmarkTitle() {
 		return titleTextBox.getText();
-	}	
-	
-	@Override
-	protected void onUnload() {		
-		super.onUnload();
-		if(previewHandlerRegistration != null){
-			previewHandlerRegistration.removeHandler();		
-		}		
 	}
-	
-	
+
+	@Override
+	protected void onUnload() {
+		super.onUnload();
+		if (previewHandlerRegistration != null) {
+			previewHandlerRegistration.removeHandler();
+		}
+	}
+
 }

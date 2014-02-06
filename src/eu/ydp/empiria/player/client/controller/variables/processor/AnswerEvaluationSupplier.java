@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
 /**
  * inject in {@link PageScoped}
- *
+ * 
  */
 public class AnswerEvaluationSupplier {
 
@@ -21,12 +21,12 @@ public class AnswerEvaluationSupplier {
 
 	private ModulesProcessingResults modulesProcessingResults;
 
-	public void updateModulesProcessingResults(ModulesProcessingResults modulesProcessingResults){
+	public void updateModulesProcessingResults(ModulesProcessingResults modulesProcessingResults) {
 		this.modulesProcessingResults = modulesProcessingResults;
 	}
 
 	public List<Boolean> evaluateAnswer(Response response) {
-		if(modulesProcessingResults == null){
+		if (modulesProcessingResults == null) {
 			return handleInvalidEvaluationRequest();
 		}
 		return doEvaluation(response);

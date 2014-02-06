@@ -28,7 +28,7 @@ public class PageControllerJunitTestBase {
 
 	/**
 	 * Creates and fills mock of ItemController instance
-	 *
+	 * 
 	 * @param modules
 	 */
 	protected void prepareItemControllerMock(List<IModule> modules) {
@@ -49,10 +49,11 @@ public class PageControllerJunitTestBase {
 	}
 
 	/**
-	 * @param varargs list of module types, ie. MathModule.class, IInteractionModule.class
+	 * @param varargs
+	 *            list of module types, ie. MathModule.class, IInteractionModule.class
 	 * @return list of mocked modules
 	 */
-	protected List<IModule> prepareMockModulesList(Class<? extends IModule> ... types) {
+	protected List<IModule> prepareMockModulesList(Class<? extends IModule>... types) {
 		List<IModule> modules = new ArrayList<IModule>();
 		for (Class<? extends IModule> type : types) {
 			modules.add(mock(type));

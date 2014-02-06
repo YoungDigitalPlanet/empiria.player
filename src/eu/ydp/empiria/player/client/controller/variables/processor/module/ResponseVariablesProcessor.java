@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 public class ResponseVariablesProcessor {
 
 	private final VariableProcessorFactory variableProcessorFactory;
-	
+
 	@Inject
 	public ResponseVariablesProcessor(VariableProcessorFactory variableProcessorFactory) {
 		this.variableProcessorFactory = variableProcessorFactory;
@@ -30,14 +30,14 @@ public class ResponseVariablesProcessor {
 	public void processChangedResponse(DtoProcessedResponse processedResponse, ProcessingMode processingMode) {
 		Response response = processedResponse.getCurrentResponse();
 		DtoModuleProcessingResult processingResult = processedResponse.getPreviousProcessingResult();
-		
+
 		boolean hasGroups = response.groups.size() > 0;
 		boolean isInExpression = response.isInExpression();
 		VariableProcessor variableProcessor = variableProcessorFactory.findAppropriateProcessor(response.cardinality, hasGroups, isInExpression);
-		
+
 		UserInteractionVariables userInteractionVariables = processUserInteractionVariablesInCorrectMode(processedResponse, processingMode, variableProcessor);
 		processingResult.setUserInteractionVariables(userInteractionVariables);
-		
+
 		GeneralVariables generalVariables = processGeneralVariables(response, variableProcessor);
 		processingResult.setGeneralVariables(generalVariables);
 	}
@@ -45,32 +45,32 @@ public class ResponseVariablesProcessor {
 	private UserInteractionVariables processUserInteractionVariablesInCorrectMode(DtoProcessedResponse dtoChangedResponse, ProcessingMode processingMode,
 			VariableProcessor variableProcessor) {
 		UserInteractionVariables userInteractionVariables = dtoChangedResponse.getPreviousProcessingResult().getUserInteractionVariables();
-		if(processingMode == ProcessingMode.USER_INTERACT){
+		if (processingMode == ProcessingMode.USER_INTERACT) {
 			userInteractionVariables = processUserInteractionVariables(variableProcessor, dtoChangedResponse);
-		}else{
+		} else {
 			resetLastUserInteractionVariables(userInteractionVariables);
 		}
 		return userInteractionVariables;
 	}
-	
+
 	private UserInteractionVariables processUserInteractionVariables(VariableProcessor variableProcessor, DtoProcessedResponse dtoChangedResponse) {
 		Response currentResponse = dtoChangedResponse.getCurrentResponse();
 		LastAnswersChanges answersChanges = dtoChangedResponse.getLastAnswersChanges();
 		UserInteractionVariables previousUserInteractionVariables = dtoChangedResponse.getPreviousProcessingResult().getUserInteractionVariables();
-		
+
 		LastMistaken lastmistaken = variableProcessor.checkLastmistaken(currentResponse, answersChanges);
 		int mistakes = variableProcessor.calculateMistakes(lastmistaken, previousUserInteractionVariables.getMistakes());
-		
+
 		return new UserInteractionVariables(answersChanges, lastmistaken, mistakes);
 	}
-	
+
 	private GeneralVariables processGeneralVariables(Response response, VariableProcessor variableProcessor) {
 		int errors = variableProcessor.calculateErrors(response);
 		int done = variableProcessor.calculateDone(response);
 		List<Boolean> answersEvaluation = variableProcessor.evaluateAnswers(response);
-		
+
 		GeneralVariables generalVariables = new GeneralVariables(response.values, answersEvaluation, errors, done);
 		return generalVariables;
 	}
-	
+
 }

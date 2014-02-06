@@ -8,9 +8,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "image")
 public class ImageBean {
-	@XmlAttribute private int width;
-	@XmlAttribute private int height;
-	@XmlAttribute private String src;
+	@XmlAttribute
+	private int width;
+	@XmlAttribute
+	private int height;
+	@XmlAttribute
+	private String src;
 
 	public int getWidth() {
 		return width;

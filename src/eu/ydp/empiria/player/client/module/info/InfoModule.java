@@ -31,13 +31,22 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 public class InfoModule extends SimpleModuleBase implements ILifecycleModule, PlayerEventHandler {
 
-	@Inject @FlowManagerDataSupplier private FlowDataSupplier flowDataSupplier;
-	@Inject @CachedModuleScoped private ModuleStyle moduleStyle;
-	@Inject private StyleNameConstants styleNames;
-	@Inject private EventsBus eventsBus;
-	@Inject private VariableInterpreter variableInterpreter;
-	@Inject private InfoModuleProgressStyleName infoModuleProgressStyleName;
-	@Inject private InfoModuleContentTokenizer contentTokenizer;
+	@Inject
+	@FlowManagerDataSupplier
+	private FlowDataSupplier flowDataSupplier;
+	@Inject
+	@CachedModuleScoped
+	private ModuleStyle moduleStyle;
+	@Inject
+	private StyleNameConstants styleNames;
+	@Inject
+	private EventsBus eventsBus;
+	@Inject
+	private VariableInterpreter variableInterpreter;
+	@Inject
+	private InfoModuleProgressStyleName infoModuleProgressStyleName;
+	@Inject
+	private InfoModuleContentTokenizer contentTokenizer;
 	private InfoModuleUnloadListener unloadListener;
 	private Panel mainPanel;
 	private Panel contentPanel;
@@ -103,11 +112,10 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	public void onClose() {// NOPMD
 	}
 
-
 	@Override
 	public void onStart() {
 		if (moduleStyle.containsKey(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT)) {
-			String contentString  = moduleStyle.get(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT);
+			String contentString = moduleStyle.get(EmpiriaStyleNameConstants.EMPIRIA_INFO_CONTENT);
 			tokensFromContent = contentTokenizer.getAllTokens(contentString);
 		}
 		update();
@@ -156,7 +164,7 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 	private void updateProgressStyleName(int refItemIndex) {
 		resetMainPanelStyleToInitialState();
 		String styleName = infoModuleProgressStyleName.getCurrentStyleName(refItemIndex);
-		if(!Strings.isNullOrEmpty(styleName)){
+		if (!Strings.isNullOrEmpty(styleName)) {
 			mainPanel.addStyleName(styleName);
 		}
 	}

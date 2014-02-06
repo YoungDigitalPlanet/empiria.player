@@ -19,11 +19,11 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 /**
  * Translates FlowExecutionEvents into
- *
+ * 
  * @author Rafal Rybacki
- *
+ * 
  */
-public class DeliveryEventsHub implements  DeliveryEventsListener, InteractionEventsSocket {
+public class DeliveryEventsHub implements DeliveryEventsListener, InteractionEventsSocket {
 
 	protected List<FlowActivityEventsHandler> flowActivityEventsListeners;
 	protected List<DeliveryEventsListener> deliveryEventsListeners;
@@ -31,7 +31,7 @@ public class DeliveryEventsHub implements  DeliveryEventsListener, InteractionEv
 	protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 	protected Map<DeliveryEventType, FlowActivityEventType> map;
 
-	public DeliveryEventsHub(){
+	public DeliveryEventsHub() {
 		flowActivityEventsListeners = new ArrayList<FlowActivityEventsHandler>();
 		deliveryEventsListeners = new ArrayList<DeliveryEventsListener>();
 		stateChangedInteractionEventsListeners = new ArrayList<StateChangedInteractionEventListener>();
@@ -41,11 +41,11 @@ public class DeliveryEventsHub implements  DeliveryEventsListener, InteractionEv
 
 	}
 
-	public void addDeliveryEventsListener(DeliveryEventsListener del){
+	public void addDeliveryEventsListener(DeliveryEventsListener del) {
 		deliveryEventsListeners.add(del);
 	}
 
-	public void addFlowActivityEventsListener(FlowActivityEventsHandler fael){
+	public void addFlowActivityEventsListener(FlowActivityEventsHandler fael) {
 		flowActivityEventsListeners.add(fael);
 	}
 
@@ -53,24 +53,25 @@ public class DeliveryEventsHub implements  DeliveryEventsListener, InteractionEv
 	public void addStateChangedInteractionEventsListener(StateChangedInteractionEventListener listener) {
 		stateChangedInteractionEventsListeners.add(listener);
 	}
+
 	@Override
 	public void removeStateChangedInteractionEventsListener(StateChangedInteractionEventListener listener) {
 		stateChangedInteractionEventsListeners.remove(listener);
 	}
 
-	public InteractionEventsSocket getInteractionSocket(){
+	public InteractionEventsSocket getInteractionSocket() {
 		return this;
 	}
 
 	@Override
 	public void onDeliveryEvent(DeliveryEvent event) {
-		for (DeliveryEventsListener currDel : deliveryEventsListeners){
+		for (DeliveryEventsListener currDel : deliveryEventsListeners) {
 			currDel.onDeliveryEvent(event);
 		}
 	}
 
 	public void onFlowProcessingEvent(FlowProcessingEvent event) {
-		for (DeliveryEventsListener currDel : deliveryEventsListeners){
+		for (DeliveryEventsListener currDel : deliveryEventsListeners) {
 			DeliveryEvent currDe = DeliveryEvent.fromFlowProcessingEvent(event);
 			if (currDe != null) {
 				currDel.onDeliveryEvent(currDe);
@@ -93,17 +94,17 @@ public class DeliveryEventsHub implements  DeliveryEventsListener, InteractionEv
 		onInteractionEvent(event);
 	}
 
-	protected void onInteractionEvent(InteractionEvent event){
+	protected void onInteractionEvent(InteractionEvent event) {
 
-		if (event instanceof StateChangedInteractionEvent){
-			for (StateChangedInteractionEventListener listener : stateChangedInteractionEventsListeners){
-				listener.onStateChanged( (StateChangedInteractionEvent)event );
+		if (event instanceof StateChangedInteractionEvent) {
+			for (StateChangedInteractionEventListener listener : stateChangedInteractionEventsListeners) {
+				listener.onStateChanged((StateChangedInteractionEvent) event);
 			}
 		}
 
-		for (DeliveryEventType currDet : DeliveryEventType.values()){
-			if (currDet.toString().equals(event.getType().toString())){
-				for (DeliveryEventsListener currDel : deliveryEventsListeners){
+		for (DeliveryEventType currDet : DeliveryEventType.values()) {
+			if (currDet.toString().equals(event.getType().toString())) {
+				for (DeliveryEventsListener currDel : deliveryEventsListeners) {
 					DeliveryEvent currDE = new DeliveryEvent(currDet, event.getParams());
 					currDel.onDeliveryEvent(currDE);
 				}

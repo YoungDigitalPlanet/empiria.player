@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module.counting.predicates;
 
-
 import com.google.common.base.Predicate;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
@@ -8,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Correc
 public class WrongAnswerPredicate implements Predicate<String> {
 
 	private CorrectAnswers correctAnswers;
-	
+
 	public WrongAnswerPredicate(CorrectAnswers correctAnswers) {
 		this.correctAnswers = correctAnswers;
 	}

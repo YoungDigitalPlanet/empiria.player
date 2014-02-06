@@ -14,10 +14,10 @@ public class TutorConfigModuleScopedProvider implements Provider<TutorConfig> {
 
 	@Inject
 	private ModuleScopeStack moduleScopeStack;
-	
+
 	@Inject
 	private TutorService tutorService;
-	
+
 	@Override
 	public TutorConfig get() {
 		ModuleCreationContext context = moduleScopeStack.getCurrentTopContext();

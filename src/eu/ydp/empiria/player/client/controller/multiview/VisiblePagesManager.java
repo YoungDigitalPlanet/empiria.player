@@ -19,7 +19,8 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 
 public class VisiblePagesManager {
 
-	@Inject private PanelCache panelCache;
+	@Inject
+	private PanelCache panelCache;
 	private int visiblePageCount = 1;
 
 	public void setVisiblePageCount(int visiblePageCount) {
@@ -27,7 +28,7 @@ public class VisiblePagesManager {
 	}
 
 	private Set<Integer> getPageIndexScanRange(int currentVisiblePage) {
-		if(visiblePageCount == 0){
+		if (visiblePageCount == 0) {
 			return ImmutableSet.of();
 		}
 		int halfToShowPages = (int) Math.ceil(visiblePageCount / 2d);

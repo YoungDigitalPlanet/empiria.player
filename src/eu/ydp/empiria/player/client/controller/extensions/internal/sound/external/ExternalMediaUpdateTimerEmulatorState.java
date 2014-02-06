@@ -5,9 +5,10 @@ import com.google.inject.Inject;
 import eu.ydp.gwtutil.client.date.DateService;
 
 public class ExternalMediaUpdateTimerEmulatorState {
-	
-	@Inject DateService dateService;
-	
+
+	@Inject
+	DateService dateService;
+
 	private int initialMediaTimeMillis;
 	private long initialReferenceTimeMillis;
 

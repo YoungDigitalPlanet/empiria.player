@@ -37,10 +37,7 @@ public class ItemModuleSocket implements ModuleSocket {
 	private InlineBodyGenerator inlineBodyGenerator;
 
 	@Inject
-	public ItemModuleSocket(
-			@Assisted Item item, 
-			YJsJsonConverter yJsJsonConverter, 
-			ModulesRegistrySocket modulesRegistrySocket, 
+	public ItemModuleSocket(@Assisted Item item, YJsJsonConverter yJsJsonConverter, ModulesRegistrySocket modulesRegistrySocket,
 			@SuppressWarnings("deprecation") InteractionEventsListener interactionEventsListener) {
 		this.item = item;
 		this.yJsJsonConverter = yJsJsonConverter;
@@ -52,7 +49,7 @@ public class ItemModuleSocket implements ModuleSocket {
 		this.itemBody = itemBody;
 		this.state = state;
 	}
-	
+
 	@Override
 	public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 		if (inlineBodyGenerator == null) {
@@ -108,8 +105,7 @@ public class ItemModuleSocket implements ModuleSocket {
 	public YJsonArray getStateById(String id) {
 		JSONValue object = state.get(0);
 		if (object != null) {
-			JSONValue stateValue = object.isObject()
-					.get(id);
+			JSONValue stateValue = object.isObject().get(id);
 			JSONArray stateArray = stateValue.isArray();
 			return yJsJsonConverter.toYJson(stateArray);
 		}

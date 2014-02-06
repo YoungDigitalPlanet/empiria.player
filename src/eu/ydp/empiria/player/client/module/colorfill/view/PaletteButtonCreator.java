@@ -12,11 +12,11 @@ public class PaletteButtonCreator {
 
 	@Inject
 	private Provider<PaletteButton> buttonProvider;
-	
+
 	@Inject
 	private UserInteractionHandlerFactory userInteractionHandlerFactory;
-	
-	public PaletteButton createButton(ColorModel color, Command command, String description){
+
+	public PaletteButton createButton(ColorModel color, Command command, String description) {
 		PaletteButton button = produceButton(color, description);
 		applyEventHandler(command, button);
 		return button;

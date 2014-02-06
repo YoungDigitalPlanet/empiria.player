@@ -11,9 +11,9 @@ public class EvaluatorFactory {
 	private Provider<ExpressionEvaluator> expressionEvaluatorProvider;
 	@Inject
 	private Provider<CombinedEvaluator> combinedEvaluatorProvider;
-	
-	public Evaluator createEvaluator(ExpressionMode expressionMode){
-		if (expressionMode == ExpressionMode.COMMUTATION){
+
+	public Evaluator createEvaluator(ExpressionMode expressionMode) {
+		if (expressionMode == ExpressionMode.COMMUTATION) {
 			return combinedEvaluatorProvider.get();
 		}
 		return expressionEvaluatorProvider.get();

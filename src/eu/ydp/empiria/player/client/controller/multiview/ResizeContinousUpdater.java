@@ -10,7 +10,9 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
 public class ResizeContinousUpdater {
 
-	enum ResizeTimerState {WAITING_FOR_CONTENT, PAGE_IS_GROWING, PAGE_STOPED_GROWING};
+	enum ResizeTimerState {
+		WAITING_FOR_CONTENT, PAGE_IS_GROWING, PAGE_STOPED_GROWING
+	};
 
 	private static final Logger LOGGER = Logger.getLogger(ResizeContinousUpdater.class.getName());
 	static final int DELAY_MILLIS = 200;
@@ -18,7 +20,6 @@ public class ResizeContinousUpdater {
 	static final int REPEAT_COUNT = 20;
 	static final int WAIT_STOP_GROWING_ITERATIONS = 1;
 	final PlayerEvent PAGE_CONTENT_RESIZED_EVENT = new PlayerEvent(PlayerEventTypes.PAGE_CONTENT_RESIZED);
-
 
 	private final PageScopeFactory pageScopeFactory;
 	private final EventsBus eventsBus;
@@ -31,7 +32,6 @@ public class ResizeContinousUpdater {
 	private final MultiPageController pageView;
 	private final ForceRedrawHack redrawHack;
 
-
 	public ResizeContinousUpdater(PageScopeFactory pageScopeFactory, EventsBus eventsBus, MultiPageController pageView, ForceRedrawHack redrowHack) {
 		this.pageScopeFactory = pageScopeFactory;
 		this.eventsBus = eventsBus;
@@ -39,7 +39,7 @@ public class ResizeContinousUpdater {
 		this.redrawHack = redrowHack;
 	}
 
-	public void reset(){
+	public void reset() {
 		resizeCounter = 0;
 		previousPageHeight = 0;
 		pageStopedGrowingCounter = 0;
@@ -54,16 +54,16 @@ public class ResizeContinousUpdater {
 
 		switch (timerState) {
 		case WAITING_FOR_CONTENT:
-				rescheduleTime = waitForContent(height, currentVisiblePage);
+			rescheduleTime = waitForContent(height, currentVisiblePage);
 			break;
 		case PAGE_IS_GROWING:
-				rescheduleTime = monitorPageGrowing(height, currentVisiblePage);
+			rescheduleTime = monitorPageGrowing(height, currentVisiblePage);
 			break;
 		case PAGE_STOPED_GROWING:
-				rescheduleTime = monitorPageNotStartedGrowing(height);
+			rescheduleTime = monitorPageNotStartedGrowing(height);
 			break;
 		default:
-			LOGGER.info("Unknown timerState: "+timerState);
+			LOGGER.info("Unknown timerState: " + timerState);
 		}
 
 		previousPageHeight = height;
@@ -72,7 +72,7 @@ public class ResizeContinousUpdater {
 	}
 
 	private int waitForContent(int height, int currentVisiblePage) {
-		if(height > 0){
+		if (height > 0) {
 			timerState = ResizeTimerState.PAGE_IS_GROWING;
 			resizePageContainer(height, currentVisiblePage);
 		}
@@ -80,11 +80,11 @@ public class ResizeContinousUpdater {
 	}
 
 	private int monitorPageGrowing(int height, int currentVisiblePage) {
-		if(isPageGrowing(height)){
+		if (isPageGrowing(height)) {
 			pageStopedGrowingCounter = 0;
 			resizePageContainer(height, currentVisiblePage);
-		}else{
-			if(pageStopedGrowingCounter >= WAIT_STOP_GROWING_ITERATIONS){
+		} else {
+			if (pageStopedGrowingCounter >= WAIT_STOP_GROWING_ITERATIONS) {
 				resizePageContainer(height, currentVisiblePage);
 				eventsBus.fireAsyncEvent(PAGE_CONTENT_RESIZED_EVENT, pageScopeFactory.getCurrentPageScope());
 				timerState = ResizeTimerState.PAGE_STOPED_GROWING;
@@ -99,18 +99,18 @@ public class ResizeContinousUpdater {
 	private int monitorPageNotStartedGrowing(int height) {
 
 		int rescheduleTime = 0;
-		if(isPageGrowing(height)){
+		if (isPageGrowing(height)) {
 			timerState = ResizeTimerState.PAGE_IS_GROWING;
 			pageStopedGrowingCounter = 0;
 			resizeCounter = 0;
 			rescheduleTime = DELAY_MILLIS;
-		}else{
-			if(resizeCounter < REPEAT_COUNT){
+		} else {
+			if (resizeCounter < REPEAT_COUNT) {
 				rescheduleTime = DELAY_MILLIS;
-			}else{
+			} else {
 				rescheduleTime = IDLE_DELAY_MILLIS;
 			}
-			resizeCounter ++;
+			resizeCounter++;
 		}
 
 		return rescheduleTime;

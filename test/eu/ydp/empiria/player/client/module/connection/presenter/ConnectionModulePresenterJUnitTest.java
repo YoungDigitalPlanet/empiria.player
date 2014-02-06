@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.dev.util.collect.HashMap;
@@ -62,25 +63,23 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		String target = CONNECTION_RESPONSE_1_3;
 		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.REPAINT_VIEW, source, target, true);
 
-		when(moduleView.isAttached())
-			.thenReturn(true);
-		
+		when(moduleView.isAttached()).thenReturn(true);
+
 		connectionModulePresenter.onConnectionEvent(event);
 		verify(connectionModulePresenter).reset();
-		verify(connectionModulePresenter).showAnswers(Mockito.eq(ShowAnswersType.USER));
+		verify(connectionModulePresenter).showAnswers(Matchers.eq(ShowAnswersType.USER));
 	}
-	
+
 	@Test
 	public void shouldDoNothingIsDeAttachedOnRepaintEvent() {
 		String source = CONNECTION_RESPONSE_1_0;
 		String target = CONNECTION_RESPONSE_1_3;
 		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.REPAINT_VIEW, source, target, true);
-		
-		when(moduleView.isAttached())
-		.thenReturn(false);
-		
+
+		when(moduleView.isAttached()).thenReturn(false);
+
 		connectionModulePresenter.onConnectionEvent(event);
-		
+
 		verify(connectionModulePresenter, times(0)).reset();
 		verify(connectionModulePresenter, times(0)).showAnswers(ShowAnswersType.USER);
 	}
@@ -235,36 +234,26 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		connectionModulePresenter.setModuleView(moduleView);
 	}
 
-/*
-	Method below private Response createResponseObject()
-	is creating response object with adequate as created from given xml:
-	
-	<responseDeclaration cardinality="multiple" evaluate="user" identifier="CONNECTION_RESPONSE_1">
-				<correctResponse>"
-					<value>CONNECTION_RESPONSE_1_0 + " " + CONNECTION_RESPONSE_1_1"</value>
-					<value>CONNECTION_RESPONSE_1_3 + " " + CONNECTION_RESPONSE_1_4</value>
-				</correctResponse>
-	</responseDeclaration>
-*/
+	/*
+	 * Method below private Response createResponseObject() is creating response object with adequate as created from given xml:
+	 * 
+	 * <responseDeclaration cardinality="multiple" evaluate="user" identifier="CONNECTION_RESPONSE_1"> <correctResponse>" <value>CONNECTION_RESPONSE_1_0 + " " +
+	 * CONNECTION_RESPONSE_1_1"</value> <value>CONNECTION_RESPONSE_1_3 + " " + CONNECTION_RESPONSE_1_4</value> </correctResponse> </responseDeclaration>
+	 */
 	private Response createResponseObject() {
 		CorrectAnswers correctAnswers = new CorrectAnswers();
 		ResponseValue firstCorrectAnswer = new ResponseValue(CONNECTION_RESPONSE_1_0 + " " + CONNECTION_RESPONSE_1_1);
 		ResponseValue secondCorrectAnswer = new ResponseValue(CONNECTION_RESPONSE_1_3 + " " + CONNECTION_RESPONSE_1_4);
 		correctAnswers.add(firstCorrectAnswer);
 		correctAnswers.add(secondCorrectAnswer);
-		
+
 		List<String> values = Lists.newArrayList();
 		List<String> groups = Lists.newArrayList();
 		String identifier = "CONNECTION_RESPONSE_1";
 		Evaluate evaluate = Evaluate.USER;
 		Cardinality cardinality = Cardinality.MULTIPLE;
-		Response response = new ResponseBuilder()
-										.withCorrectAnswers(correctAnswers)
-										.withValues(values).withGroups(groups)
-										.withIdentifier(identifier)
-										.withEvaluate(evaluate)
-										.withCardinality(cardinality)
-										.build();
+		Response response = new ResponseBuilder().withCorrectAnswers(correctAnswers).withValues(values).withGroups(groups).withIdentifier(identifier)
+				.withEvaluate(evaluate).withCardinality(cardinality).build();
 		return response;
 	}
 

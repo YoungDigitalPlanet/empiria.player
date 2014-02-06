@@ -9,8 +9,10 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "color")
 public class ColorBean {
-	@XmlAttribute private String rgb;
-	@XmlValue private String description;
+	@XmlAttribute
+	private String rgb;
+	@XmlValue
+	private String description;
 
 	public String getDescription() {
 		return description;

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.*;
+import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -88,8 +89,8 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		private CssHelper createCssHelperMock() {
 			CssHelper cssHelper = spy(new CssHelper());
 			Style style = mock(Style.class);
-			doReturn("none").when(style).getProperty(Mockito.anyString());
-			doReturn(style).when(cssHelper).getComputedStyle(Mockito.any(JavaScriptObject.class));
+			doReturn("none").when(style).getProperty(Matchers.anyString());
+			doReturn(style).when(cssHelper).getComputedStyle(Matchers.any(JavaScriptObject.class));
 			return cssHelper;
 		}
 
@@ -156,7 +157,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		ConnectionItems connectionItems = new ConnectionItems(mock(InlineBodyGeneratorSocket.class));
 		injector.getMembersInjector(ConnectionItems.class).injectMembers(connectionItems);
 		this.connectionItems = spy(connectionItems);
-		doReturn(this.connectionItems).when(factory).getConnectionItems(Mockito.any(InlineBodyGeneratorSocket.class));
+		doReturn(this.connectionItems).when(factory).getConnectionItems(Matchers.any(InlineBodyGeneratorSocket.class));
 
 	}
 
@@ -226,7 +227,7 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		String sourceIdentifier = bean.getSourceChoicesIdentifiersSet().get(0);
 		String targetIdentifier = bean.getTargetChoicesIdentifiersSet().get(1);
 		testObject.connect(sourceIdentifier, targetIdentifier, MultiplePairModuleConnectType.NORMAL);
-		verify(handler).onConnectionEvent(Mockito.any(PairConnectEvent.class));
+		verify(handler).onConnectionEvent(Matchers.any(PairConnectEvent.class));
 	}
 
 	@Test
@@ -236,8 +237,8 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 		testObject.connect(bean.getSourceChoicesIdentifiersSet().get(0), bean.getTargetChoicesIdentifiersSet().get(0), MultiplePairModuleConnectType.NORMAL);
 		ConnectionSurface surface = moduleFactory.getConnectionSurface(new Vector2(0, 0));
 		Mockito.when(surface.isPointOnPath(any(Point.class))).thenReturn(true);
-		Mockito.verify(connectionEventHandler).fireConnectEvent(Mockito.eq(PairConnectEventTypes.CONNECTED), Mockito.anyString(), Mockito.anyString(),
-				Mockito.anyBoolean());
+		Mockito.verify(connectionEventHandler).fireConnectEvent(Matchers.eq(PairConnectEventTypes.CONNECTED), Matchers.anyString(), Matchers.anyString(),
+				Matchers.anyBoolean());
 
 	}
 
@@ -379,18 +380,18 @@ public class ConnectionModuleViewImplJUnitTest extends AbstractTestBaseWithoutAu
 	@Test
 	public void postConstructTest() {
 		ConnectionView view = injector.getInstance(ConnectionView.class);
-		verify(view).setDrawFollowTouch(Mockito.eq(true));
+		verify(view).setDrawFollowTouch(Matchers.eq(true));
 	}
 
 	@Test
 	public void postConstructAndroidTest() {
 		UserAgentCheckerWrapper userAgentCheckerWrapper = injector.getInstance(UserAgentCheckerWrapper.class);
 		when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(true);
-		
+
 		ConnectionView view = injector.getInstance(ConnectionView.class);
 		Mockito.reset(view);
 
 		instance.postConstruct();
-		verify(view).setDrawFollowTouch(Mockito.eq(false));
+		verify(view).setDrawFollowTouch(Matchers.eq(false));
 	}
 }

@@ -12,7 +12,7 @@ import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapter;
 
-@XmlRootElement(name="simpleAssociableChoice")
+@XmlRootElement(name = "simpleAssociableChoice")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SimpleAssociableChoiceBean implements PairChoiceBean {
 
@@ -23,8 +23,8 @@ public class SimpleAssociableChoiceBean implements PairChoiceBean {
 	private int matchMax;
 
 	@XmlValue
-	@XmlJavaTypeAdapter(value=XMLContentTypeAdapter.class)
-	private XMLContent xmlContent ;
+	@XmlJavaTypeAdapter(value = XMLContentTypeAdapter.class)
+	private XMLContent xmlContent;
 
 	@XmlAttribute
 	private boolean fixed;

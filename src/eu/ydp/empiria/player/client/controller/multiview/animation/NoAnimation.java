@@ -18,7 +18,7 @@ public class NoAnimation implements Animation {
 	}
 
 	private void callEndCallbacks() {
-		for(AnimationEndCallback endCallback : callbacks){
+		for (AnimationEndCallback endCallback : callbacks) {
 			endCallback.onComplate(xPosition);
 		}
 	}
@@ -29,7 +29,7 @@ public class NoAnimation implements Animation {
 
 	}
 
-	private void setPosition(FlowPanel toAnimate ,double position) {
+	private void setPosition(FlowPanel toAnimate, double position) {
 		toAnimate.getElement().getStyle().setLeft(position, Unit.PCT);
 	}
 

@@ -15,9 +15,14 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class WithCacheCssStylesModuleScopedProvider implements Provider<ModuleStyle> {
 
-	@Inject private ElementStyleSelectorBuilder elementStyleSelectorBuilder;
-	@Inject @ModuleScoped private Provider<Element> xmlProvider;
-	@Inject @ModuleScoped private Provider<ModuleStyle> moduleStyleProvider;
+	@Inject
+	private ElementStyleSelectorBuilder elementStyleSelectorBuilder;
+	@Inject
+	@ModuleScoped
+	private Provider<Element> xmlProvider;
+	@Inject
+	@ModuleScoped
+	private Provider<ModuleStyle> moduleStyleProvider;
 
 	private final Map<String, ModuleStyle> cache = Maps.newHashMap();
 

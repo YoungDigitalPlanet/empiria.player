@@ -12,7 +12,7 @@ public class ResponseBeanConverter {
 		builder.withEvaluate(responseBean.getEvaluate());
 		builder.withIdentifier(responseBean.getIdentifier());
 		builder.withCompilerCountMode(responseBean.getCountMode());
-		
+
 		CorrectAnswers correctAnswers = getCorrectAnswers(responseBean);
 		List<String> groups = getGroups(responseBean);
 

@@ -1,11 +1,6 @@
 package eu.ydp.empiria.player.client.module.media.progress;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_DURATION_CHANGE;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_END;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_FULL_SCREEN_SHOW_CONTROLS;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_STOP;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_TIME_UPDATE;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.SET_CURRENT_TIME;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
 
 import javax.annotation.PostConstruct;
 
@@ -30,20 +25,31 @@ import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
 public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarImpl> implements MediaProgressBar {
 
-	interface MediaProgressBarUiBinder extends UiBinder<Widget, MediaProgressBarImpl> {}
+	interface MediaProgressBarUiBinder extends UiBinder<Widget, MediaProgressBarImpl> {
+	}
 
 	private static MediaProgressBarUiBinder uiBinder = GWT.create(MediaProgressBarUiBinder.class);
-	@UiField(provided = true) protected SimpleMediaButton button;
-	@UiField protected FlowPanel progressBar;
-	@UiField protected FlowPanel mainProgressDiv;
-	@UiField protected FlowPanel beforeButton;
-	@UiField protected FlowPanel afterButton;
+	@UiField(provided = true)
+	protected SimpleMediaButton button;
+	@UiField
+	protected FlowPanel progressBar;
+	@UiField
+	protected FlowPanel mainProgressDiv;
+	@UiField
+	protected FlowPanel beforeButton;
+	@UiField
+	protected FlowPanel afterButton;
 
-	@Inject private StyleNameConstants styleNames;
-	@Inject protected EventsBus eventsBus;
-	@Inject private ElementSizeCalculator elementSizeCalculator;
-	@Inject private PositionHelper positionHelper;
-	@Inject private ComputedStyle computedStyle;
+	@Inject
+	private StyleNameConstants styleNames;
+	@Inject
+	protected EventsBus eventsBus;
+	@Inject
+	private ElementSizeCalculator elementSizeCalculator;
+	@Inject
+	private PositionHelper positionHelper;
+	@Inject
+	private ComputedStyle computedStyle;
 	private ProgressBarUpdateEventHandler progressBarEventHandler;
 	private MediaProgressBarPositionCalculator positionCalculator;
 	private int lastScrollElementWidth;
@@ -57,7 +63,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * wielkosc przycisku wyswietlanego na pasku postepu
-	 *
+	 * 
 	 * @return
 	 */
 	@Override
@@ -81,13 +87,13 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * dlugosc paska postepu
-	 *
+	 * 
 	 * @return
 	 */
 	@Override
 	public int getScrollWidth() {
 		int scrollElementWidth = elementSizeCalculator.getWidth(mainProgressDiv) - getButtonWidth();
-		if(scrollElementWidth > 0) {
+		if (scrollElementWidth > 0) {
 			this.lastScrollElementWidth = scrollElementWidth;
 		}
 		return this.lastScrollElementWidth;
@@ -118,7 +124,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * ustawia suwak na odpowiedniej pozycji
-	 *
+	 * 
 	 * @param positionX
 	 */
 	@Override
@@ -128,7 +134,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * ustawia suwak na odpowiedniej pozycji
-	 *
+	 * 
 	 * @param positionX
 	 */
 	protected void moveScroll(final int positionX, boolean force) {// NOPMD

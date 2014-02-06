@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.module.IModule;
 
 public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAutoInjectorInit {
-	
+
 	protected FeedbackActionCollector collector;
 
 	protected ModuleFeedbackProcessor processor;
@@ -26,58 +26,59 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 	protected SoundActionProcessorMock soundProcessor;
 
 	protected IModule source;
-	
+
 	@Before
 	@Override
 	public void setUp() {
-		setUp(new Class<?>[]{FeedbackActionCollector.class, SoundActionProcessor.class, FeedbackSoundPlayer.class}, new FeedbackActionCollectorModule());
+		setUp(new Class<?>[] { FeedbackActionCollector.class, SoundActionProcessor.class, FeedbackSoundPlayer.class }, new FeedbackActionCollectorModule());
 		soundProcessor = spy(injector.getInstance(SoundActionProcessorMock.class));
 	}
-	
-	protected void initializeWithActions(List<FeedbackAction> actions){
+
+	protected void initializeWithActions(List<FeedbackAction> actions) {
 		new Initializer().initWithActions(actions);
 	}
-	
-	protected class FeedbackActionCollectorModule implements Module{
+
+	protected class FeedbackActionCollectorModule implements Module {
 
 		@Override
 		public void configure(Binder binder) {
 			//
 		}
-		
-		@Provides SoundActionProcessor getSoundActionProcessor(){
+
+		@Provides
+		SoundActionProcessor getSoundActionProcessor() {
 			return soundProcessor;
 		}
-		
+
 		@Provides
-		public FeedbackActionCollector getCollector(){			
+		public FeedbackActionCollector getCollector() {
 			return collector;
 		}
-		
+
 		@Provides
-		public FeedbackSoundPlayer getSoundPlayer(){
+		public FeedbackSoundPlayer getSoundPlayer() {
 			return mock(FeedbackSoundPlayer.class);
 		}
-		
+
 	}
-	
-	protected class Initializer{
-		
-		public void initWithActions(List<FeedbackAction> actions){
+
+	protected class Initializer {
+
+		public void initWithActions(List<FeedbackAction> actions) {
 			createCollector(actions);
 			createProcessor();
 		}
-		
-		private void createCollector(List<FeedbackAction> actions){
+
+		private void createCollector(List<FeedbackAction> actions) {
 			source = mock(IModule.class);
 			collector = new FeedbackActionCollector();
 			collector.setSource(source);
 			collector.appendActionsToSource(actions, source);
 		}
-		
-		private void createProcessor(){
+
+		private void createProcessor() {
 			processor = injector.getInstance(ModuleFeedbackProcessor.class);
 		}
-		
+
 	}
 }

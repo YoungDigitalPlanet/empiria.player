@@ -8,10 +8,10 @@ import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 public class JsMediaWrapper implements MediaWrapper<Widget> {
-	
+
 	JsMediaAvaliableOptions options;
-	
-	public JsMediaWrapper(JavaScriptObject mediaAvailableOptions){
+
+	public JsMediaWrapper(JavaScriptObject mediaAvailableOptions) {
 		this.options = mediaAvailableOptions.cast();
 	}
 

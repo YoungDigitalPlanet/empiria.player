@@ -19,17 +19,14 @@ public class DragDropController {
 	private final SourceListConnectedDropHandler dropHandler;
 
 	@Inject
-	public DragDropController(
-			@ModuleScoped DragGapView dragGapView, 
-			DragGapModuleFactory dragGapModuleFactory, 
-			SourceListConnectedDragHandler dragHandler, 
+	public DragDropController(@ModuleScoped DragGapView dragGapView, DragGapModuleFactory dragGapModuleFactory, SourceListConnectedDragHandler dragHandler,
 			SourceListConnectedDropHandler dropHandler) {
 		this.dragGapView = dragGapView;
 		this.dragGapModuleFactory = dragGapModuleFactory;
 		this.dragHandler = dragHandler;
 		this.dropHandler = dropHandler;
 	}
-	
+
 	public void initializeDrop(String moduleIdentifier) {
 		DroppableObject<FlowPanelWithDropZone> droppable = dragGapView.enableDropCapabilities();
 		droppable.addDropHandler(dropHandler);

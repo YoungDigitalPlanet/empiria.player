@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
+
 import java.util.Map;
 
 import org.junit.Test;
@@ -11,16 +13,13 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
-public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase{
+
+public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase {
 
 	@Test
 	public void shouldRecognizeMistake() throws Exception {
 		// given
-		Response response = builder()
-				.withCorrectAnswers("CorrectAnswer1", "CorrectAnswer2")
-				.withCurrentUserAnswers("current not correct answer")
-				.build();
+		Response response = builder().withCorrectAnswers("CorrectAnswer1", "CorrectAnswer2").withCurrentUserAnswers("current not correct answer").build();
 
 		Map<String, Response> responsesMap = convertToMap(response);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -40,10 +39,7 @@ public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends Varia
 	@Test
 	public void shouldRecognizeCorrectAnswer() throws Exception {
 		// given
-		Response response = builder()
-				.withCorrectAnswers("CorrectAnswer1", "CorrectAnswer2")
-				.withCurrentUserAnswers("CorrectAnswer2")
-				.build();
+		Response response = builder().withCorrectAnswers("CorrectAnswer1", "CorrectAnswer2").withCurrentUserAnswers("CorrectAnswer2").build();
 
 		Map<String, Response> responsesMap = convertToMap(response);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -59,14 +55,11 @@ public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends Varia
 		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
 		assertResponseRelatedOutcomesHaveValue(response, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
 	}
-	
+
 	@Test
 	public void shouldTreatEmptyAnswerAsNoAnswerAtAll() throws Exception {
 		// given
-		Response responseWithEmptyAnswer = builder()
-				.withCorrectAnswers("CorrectAnswer")
-				.withCurrentUserAnswers("")
-				.build();
+		Response responseWithEmptyAnswer = builder().withCorrectAnswers("CorrectAnswer").withCurrentUserAnswers("").build();
 
 		Map<String, Response> responsesMap = convertToMap(responseWithEmptyAnswer);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -81,10 +74,11 @@ public class SingleCardinalityVariableProcessorFunctionalJUnitTest extends Varia
 
 		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList("1"), Lists.newArrayList(TODO), outcomes);
 		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList("0"), Lists.newArrayList(DONE, MISTAKES, ERRORS), outcomes);
-		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList(LastMistaken.NONE.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithEmptyAnswer, Lists.newArrayList(LastMistaken.NONE.toString()), Lists.newArrayList(LASTMISTAKEN),
+				outcomes);
 	}
-	
-	private ResponseBuilder builder(){
+
+	private ResponseBuilder builder() {
 		return new ResponseBuilder().withCardinality(Cardinality.SINGLE);
 	}
 }

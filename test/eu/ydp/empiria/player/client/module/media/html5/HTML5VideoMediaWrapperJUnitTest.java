@@ -35,7 +35,6 @@ public class HTML5VideoMediaWrapperJUnitTest extends AbstractTestBaseWithoutAuto
 		}
 	}
 
-
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
@@ -49,7 +48,6 @@ public class HTML5VideoMediaWrapperJUnitTest extends AbstractTestBaseWithoutAuto
 	private HTML5VideoMediaWrapper instance;
 	private Media video;
 	private EventsBus eventsBus;
-
 
 	@Before
 	public void before() {
@@ -66,26 +64,26 @@ public class HTML5VideoMediaWrapperJUnitTest extends AbstractTestBaseWithoutAuto
 	}
 
 	@Test
-	public void canPlayTest_DurationChangeAccurred(){
+	public void canPlayTest_DurationChangeAccurred() {
 		assertFalse(instance.canPlay());
 		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_DURATION_CHANGE, instance), instance);
 		assertTrue(instance.canPlay());
 	}
 
 	@Test
-	public void canPlayTest_MediaReadyStateHaveNothing(){
+	public void canPlayTest_MediaReadyStateHaveNothing() {
 		when(video.getMedia().getReadyState()).thenReturn(MediaElement.HAVE_NOTHING);
 		assertFalse(instance.canPlay());
 	}
 
 	@Test
-	public void canPlayTest_MediaReadyStateHaveData(){
+	public void canPlayTest_MediaReadyStateHaveData() {
 		when(video.getMedia().getReadyState()).thenReturn(MediaElement.HAVE_ENOUGH_DATA);
 		assertTrue(instance.canPlay());
 	}
 
 	@Test
-	public void canPlayTest_MediaObjectWasChange(){
+	public void canPlayTest_MediaObjectWasChange() {
 		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_DURATION_CHANGE, instance), instance);
 		assertTrue(instance.canPlay());
 

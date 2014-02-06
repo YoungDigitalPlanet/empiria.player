@@ -15,13 +15,14 @@ public class HiddenContainerWidget extends Composite {
 	interface HiddenContainerWidgetUiBinder extends UiBinder<Widget, HiddenContainerWidget> {
 	}
 
-	@UiField FlowPanel container;
+	@UiField
+	FlowPanel container;
 
 	public HiddenContainerWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public void addWidgetToContainer(IsWidget widget){
+	public void addWidgetToContainer(IsWidget widget) {
 		container.add(widget);
 	}
 

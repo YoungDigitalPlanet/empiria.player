@@ -1,12 +1,12 @@
 package eu.ydp.empiria.player.client.module.expression;
 
 public enum ExpressionMode {
-    DEFAULT, COMMUTATION;
+	DEFAULT, COMMUTATION;
 
-    @Override
-    public String toString(){
-          String value = super.toString();
-          return value.toLowerCase();
-    }
+	@Override
+	public String toString() {
+		String value = super.toString();
+		return value.toLowerCase();
+	}
 
 }

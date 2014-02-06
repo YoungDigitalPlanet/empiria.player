@@ -18,7 +18,7 @@ import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 public class VideoPlayerAttachHandler implements Handler {
 	private static final Type<PlayerEventHandler, PlayerEventTypes> PAGE_CHANGE_EVENT_TYPE = PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE);
-	
+
 	private final EventsBus eventsBus;
 	private final VideoPlayer videoPlayer;
 
@@ -50,7 +50,7 @@ public class VideoPlayerAttachHandler implements Handler {
 	private HandlerRegistration registerPauseHandlerOnPageChange() {
 		final VideoPlayerControl videoPlayerControl = videoPlayer.getControl();
 		final AutoPauseOnPageChangeHandler pauseHandler = new AutoPauseOnPageChangeHandler(videoPlayerControl);
-		
+
 		return eventsBus.addHandler(PAGE_CHANGE_EVENT_TYPE, pauseHandler);
 	}
 }

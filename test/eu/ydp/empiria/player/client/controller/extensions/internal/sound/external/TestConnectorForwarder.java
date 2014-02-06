@@ -16,7 +16,7 @@ public class TestConnectorForwarder {
 
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
-				mediaConnectorListener.onPlay((String)invocation.getArguments()[0]);
+				mediaConnectorListener.onPlay((String) invocation.getArguments()[0]);
 				return null;
 			}
 		}).when(connector).play(anyString());
@@ -27,7 +27,7 @@ public class TestConnectorForwarder {
 
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
-				mediaConnectorListener.onPause((String)invocation.getArguments()[0]);
+				mediaConnectorListener.onPause((String) invocation.getArguments()[0]);
 				return null;
 			}
 		}).when(connector).pause(anyString());
