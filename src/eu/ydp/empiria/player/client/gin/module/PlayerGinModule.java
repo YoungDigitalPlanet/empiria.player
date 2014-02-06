@@ -138,10 +138,6 @@ import eu.ydp.gwtutil.client.timer.TimerImpl;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactoryImpl;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
-import eu.ydp.gwtutil.client.util.BrowserNativeInterface;
-import eu.ydp.gwtutil.client.util.BrowserNativeInterfaceImpl;
-import eu.ydp.gwtutil.client.util.UserAgentUtil;
-import eu.ydp.gwtutil.client.util.UserAgentUtilImpl;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 @SuppressWarnings("PMD")
@@ -201,8 +197,6 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(TextFeedback.class).to(TextFeedbackPresenter.class);
 		bind(ImageFeedback.class).to(ImageFeedbackPresenter.class);
 		bind(ProgressView.class).to(InfinityProgressWidget.class);
-		bind(BrowserNativeInterface.class).to(BrowserNativeInterfaceImpl.class);
-		bind(UserAgentUtil.class).to(UserAgentUtilImpl.class);
 		bind(MediaConnector.class).to(JsMediaConnector.class);
 		bind(ExternalMediaEngine.class).in(Singleton.class);
 		bind(MediaConnectorListener.class).to(ExternalMediaEngine.class);
