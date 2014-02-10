@@ -5,7 +5,7 @@ import com.google.gwt.canvas.dom.client.ImageData;
 
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
-public class CanvasImageDataSlower implements ICanvasImageData{
+public class CanvasImageDataSlower implements ICanvasImageData {
 
 	private final Context2d context;
 	private final int height;
@@ -31,10 +31,8 @@ public class CanvasImageDataSlower implements ICanvasImageData{
 
 	@Override
 	public ColorModel getRgbColor(final int x, final int y) {
-		ColorModel rgba = ColorModel.createFromRgba(imageData.getRedAt(x, y),
-							imageData.getGreenAt(x, y),
-							imageData.getBlueAt(x, y),
-							imageData.getAlphaAt(x, y));
+		ColorModel rgba = ColorModel
+				.createFromRgba(imageData.getRedAt(x, y), imageData.getGreenAt(x, y), imageData.getBlueAt(x, y), imageData.getAlphaAt(x, y));
 
 		return rgba;
 	}

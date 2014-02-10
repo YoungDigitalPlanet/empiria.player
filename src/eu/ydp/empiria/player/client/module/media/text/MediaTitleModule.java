@@ -12,9 +12,9 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 /**
  * Modul wyswietlajacy tytul
- *
+ * 
  * @author plelakowski
- *
+ * 
  */
 public class MediaTitleModule extends AbstractMediaController<MediaTitleModule> {
 	private static ImgTitleModuleUiBinder uiBinder = GWT.create(ImgTitleModuleUiBinder.class);

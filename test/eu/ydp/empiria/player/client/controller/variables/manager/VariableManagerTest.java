@@ -14,15 +14,15 @@ public class VariableManagerTest extends GWTTestCase {
 
 	@Override
 	public String getModuleName() {
-	    return "eu.ydp.empiria.player.Player";
+		return "eu.ydp.empiria.player.Player";
 	}
-	
-	private class CustomVariable extends Variable{
 
-		public CustomVariable(){
+	private class CustomVariable extends Variable {
+
+		public CustomVariable() {
 			super();
 		}
-		
+
 		@Override
 		public JSONValue toJSON() {
 			return null;
@@ -31,31 +31,32 @@ public class VariableManagerTest extends GWTTestCase {
 		@Override
 		public void fromJSON(JSONValue value) {
 		}
-		
-	}
-	
-	public void testXmlProcessing(){
-		
-		Document doc = XMLParser.parse("<nodes><responseDeclaration identifier='RESPONSE' cardinality='multiple' baseType='identifier'><correctResponse><value>ChoiceA</value></correctResponse></responseDeclaration></nodes>");
-		
-		VariableManager<CustomVariable> vm = new VariableManager<CustomVariable>(doc.getDocumentElement().getChildNodes(), 
-				
-				new IVariableCreator<CustomVariable>() {
 
-					@Override
-					public CustomVariable createVariable(Node node) {
-						assertTrue(node.getNodeType() == Node.ELEMENT_NODE);
-						Element el = (Element)node;
-						String identifier = el.getAttribute("identifier");
-						assertEquals("RESPONSE", identifier);
-						return new CustomVariable();
-					}
-				}
-		
-			);
-		
+	}
+
+	public void testXmlProcessing() {
+
+		Document doc = XMLParser
+				.parse("<nodes><responseDeclaration identifier='RESPONSE' cardinality='multiple' baseType='identifier'><correctResponse><value>ChoiceA</value></correctResponse></responseDeclaration></nodes>");
+
+		VariableManager<CustomVariable> vm = new VariableManager<CustomVariable>(doc.getDocumentElement().getChildNodes(),
+
+		new IVariableCreator<CustomVariable>() {
+
+			@Override
+			public CustomVariable createVariable(Node node) {
+				assertTrue(node.getNodeType() == Node.ELEMENT_NODE);
+				Element el = (Element) node;
+				String identifier = el.getAttribute("identifier");
+				assertEquals("RESPONSE", identifier);
+				return new CustomVariable();
+			}
+		}
+
+		);
+
 		assertTrue(vm.getVariablesMap().size() == 1);
-		assertTrue( vm.getVariable("RESPONSE") instanceof CustomVariable);
+		assertTrue(vm.getVariable("RESPONSE") instanceof CustomVariable);
 	}
 
 }

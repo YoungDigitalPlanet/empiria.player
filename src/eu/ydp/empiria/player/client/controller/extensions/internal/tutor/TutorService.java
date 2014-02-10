@@ -16,39 +16,39 @@ public class TutorService {
 
 	private final Map<String, TutorConfig> tutors = newHashMap();
 	private final Map<String, PersonaService> personaServices = newHashMap();
-	private final Provider<PersonaService> personaServiceProvider; 
+	private final Provider<PersonaService> personaServiceProvider;
 	private Optional<MapStringToInt> importedTutorIdToPersonaIndex = Optional.absent();
-	
+
 	@Inject
 	public TutorService(Provider<PersonaService> personaServiceProvider) {
 		this.personaServiceProvider = personaServiceProvider;
 	}
 
-	public TutorConfig getTutorConfig(String tutorId){
+	public TutorConfig getTutorConfig(String tutorId) {
 		return tutors.get(tutorId);
 	}
-	
-	public void registerTutor(String tutorId, TutorConfig tutorConfig){
+
+	public void registerTutor(String tutorId, TutorConfig tutorConfig) {
 		tutors.put(tutorId, tutorConfig);
 	}
-	
-	public PersonaService getTutorPersonaService(String tutorId){
+
+	public PersonaService getTutorPersonaService(String tutorId) {
 		PersonaService personaService = personaServices.get(tutorId);
-		
-		if(personaService == null) {
+
+		if (personaService == null) {
 			TutorConfig tutorConfig = getTutorConfig(tutorId);
 			int initialPersonaIndex = findInitialPersonaIndex(tutorId);
 			personaService = personaServiceProvider.get();
-			personaService.init(tutorConfig, initialPersonaIndex); 
+			personaService.init(tutorConfig, initialPersonaIndex);
 			personaServices.put(tutorId, personaService);
 		}
-		
+
 		return personaService;
 	}
-	
+
 	private int findInitialPersonaIndex(String tutorId) {
-		boolean containsImportedPersonaIndex = importedTutorIdToPersonaIndex.isPresent()  &&  importedTutorIdToPersonaIndex.get().containsKey(tutorId);
-		if (containsImportedPersonaIndex){
+		boolean containsImportedPersonaIndex = importedTutorIdToPersonaIndex.isPresent() && importedTutorIdToPersonaIndex.get().containsKey(tutorId);
+		if (containsImportedPersonaIndex) {
 			return importedTutorIdToPersonaIndex.get().get(tutorId);
 		} else {
 			return 0;
@@ -58,7 +58,7 @@ public class TutorService {
 	public Map<String, Integer> buildTutorIdToCurrentPersonaIndexMap() {
 		Set<String> tutorsIds = tutors.keySet();
 		Map<String, Integer> tutorIdToCurrentPersonaMap = new HashMap<String, Integer>();
-		
+
 		for (String tutorId : tutorsIds) {
 			PersonaService personaService = getTutorPersonaService(tutorId);
 			int personaIndex = personaService.getCurrentPersonaIndex();
@@ -66,7 +66,7 @@ public class TutorService {
 		}
 		return tutorIdToCurrentPersonaMap;
 	}
-	
+
 	public void importCurrentPersonasForTutors(MapStringToInt importedTutorIdToPersonaIndex) {
 		this.importedTutorIdToPersonaIndex = Optional.of(importedTutorIdToPersonaIndex);
 	}

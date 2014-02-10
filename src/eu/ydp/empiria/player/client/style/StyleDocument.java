@@ -40,8 +40,8 @@ public class StyleDocument {
 		}
 		return result;
 	}
-	
-	public String getBasePath(){
+
+	public String getBasePath() {
 		return basePath;
 	}
 

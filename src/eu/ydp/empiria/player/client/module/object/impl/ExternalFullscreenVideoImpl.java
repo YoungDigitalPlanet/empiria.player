@@ -9,10 +9,10 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 public class ExternalFullscreenVideoImpl implements Video {
 
 	private Image poster = new Image();
-	
+
 	public ExternalFullscreenVideoImpl() {
 	}
-	
+
 	@Override
 	public void addSrc(String src, String type) {
 	}

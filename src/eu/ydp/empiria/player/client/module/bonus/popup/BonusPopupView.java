@@ -6,8 +6,12 @@ import eu.ydp.gwtutil.client.util.geom.Size;
 
 public interface BonusPopupView {
 	void showImage(String url, Size size);
+
 	void setAnimationWidget(IsWidget widget, Size size);
+
 	void attachToRoot();
+
 	void reset();
+
 	void setPresenterOnView(BonusPopupPresenter bonusPopupPresenter);
 }

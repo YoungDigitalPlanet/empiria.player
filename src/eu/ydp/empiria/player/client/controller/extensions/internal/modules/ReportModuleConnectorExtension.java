@@ -13,7 +13,8 @@ import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.report.ReportModule;
 
-public class ReportModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, DataSourceDataSocketUserExtension, FlowRequestSocketUserExtension, SessionDataSocketUserExtension {
+public class ReportModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, DataSourceDataSocketUserExtension,
+		FlowRequestSocketUserExtension, SessionDataSocketUserExtension {
 
 	protected FlowRequestInvoker flowRequestInvoker;
 	protected DataSourceDataSupplier dataSourceDataSupplier;
@@ -21,7 +22,7 @@ public class ReportModuleConnectorExtension extends ModuleExtension implements M
 
 	@Override
 	public ModuleCreator getModuleCreator() {
-		return new AbstractModuleCreator(){
+		return new AbstractModuleCreator() {
 			@Override
 			public IModule createModule() {
 				return new ReportModule(flowRequestInvoker, dataSourceDataSupplier, sessionDataSupplier);

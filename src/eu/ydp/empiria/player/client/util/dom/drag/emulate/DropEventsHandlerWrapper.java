@@ -92,8 +92,6 @@ public class DropEventsHandlerWrapper extends AbstractHTML5DragDropWrapper {
 		this.overlayTypesParser = overlayTypesParser;
 	}
 
-
-
 	public HandlerRegistration wrap(final DragEnterHandler dragEnterHandler) {
 		return droppableWidget.addOverDroppableHandler(new OverDroppableEventHandler() {
 			@Override
@@ -128,10 +126,11 @@ public class DropEventsHandlerWrapper extends AbstractHTML5DragDropWrapper {
 
 			@Override
 			public void onDrop(DropEvent event) {
-				dropHandler.onDrop(new DropEventWrapper(DropEventsHandlerWrapper.this,overlayTypesParser.<NativeEvent>get()));
+				dropHandler.onDrop(new DropEventWrapper(DropEventsHandlerWrapper.this, overlayTypesParser.<NativeEvent> get()));
 			}
 		});
 	}
+
 	@Override
 	protected Element getElement() {
 		return null;

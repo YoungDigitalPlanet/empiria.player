@@ -1,9 +1,6 @@
 package eu.ydp.empiria.player.client.module.draggap.presenter;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -80,8 +77,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		String itemId = "content";
 		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", itemId);
 
-		when(sourceListManagerAdapter.getItemById(itemId))
-			.thenReturn(item);
+		when(sourceListManagerAdapter.getItemById(itemId)).thenReturn(item);
 
 		// when
 		presenter.setContent(itemId);
@@ -214,9 +210,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		when(model.getCorrectAnswers()).thenReturn(answers);
 
 		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", answerToSet);
-		when(sourceListManagerAdapter.getItemById(answerToSet))
-			.thenReturn(item);
-
+		when(sourceListManagerAdapter.getItemById(answerToSet)).thenReturn(item);
 
 		// when
 		presenter.showAnswers(ShowAnswersType.CORRECT);
@@ -245,10 +239,8 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 		List<String> answers = Lists.newArrayList(answerToSet);
 		when(model.getCurrentAnswers()).thenReturn(answers);
 
-
 		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", answerToSet);
-		when(sourceListManagerAdapter.getItemById(answerToSet))
-			.thenReturn(item);
+		when(sourceListManagerAdapter.getItemById(answerToSet)).thenReturn(item);
 
 		// when
 		presenter.showAnswers(ShowAnswersType.USER);

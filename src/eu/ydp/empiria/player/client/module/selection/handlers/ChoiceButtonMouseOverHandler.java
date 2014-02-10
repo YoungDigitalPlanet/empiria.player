@@ -9,10 +9,10 @@ public class ChoiceButtonMouseOverHandler implements MouseOverHandler {
 
 	private final ChoiceButtonBase button;
 
-	public ChoiceButtonMouseOverHandler(ChoiceButtonBase button){
+	public ChoiceButtonMouseOverHandler(ChoiceButtonBase button) {
 		this.button = button;
 	}
-	
+
 	@Override
 	public void onMouseOver(MouseOverEvent event) {
 		button.setMouseOver(true);

@@ -36,6 +36,7 @@ public class PostConstructTests extends AbstractEmpiriaPlayerGWTTestCase {
 		InterfaceFactory inject = injector.getInterfaceFactory();
 		assertTrue(inject.getSimpleInject().isPostConstructFire());
 	}
+
 	public void testFactoryByInterfaceWithAssistedInject() {
 		TestGinjector injector = GWT.create(TestGinjector.class);
 		InterfaceFactory inject = injector.getInterfaceFactory();

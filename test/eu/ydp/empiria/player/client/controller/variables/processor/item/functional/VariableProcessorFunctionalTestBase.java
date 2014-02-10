@@ -61,7 +61,7 @@ public class VariableProcessorFunctionalTestBase {
 		});
 
 		defaultVariableProcessor = injector.getInstance(VariablesProcessingInitializingWrapper.class);
-		
+
 		answerEvaluationProvider = injector.getInstance(Key.get(AnswerEvaluationSupplier.class, PageScoped.class));
 
 		processingMode = ProcessingMode.USER_INTERACT;

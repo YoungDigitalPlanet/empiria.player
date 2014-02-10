@@ -5,5 +5,5 @@ import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.slideshow.SlideshowPresenter;
 
 public interface SlideshowPlayerModuleFactory {
-	 SlideshowMediaHandler getSlideshowMediaHandler(SlideshowPlayerModule slideshowPlayerModule, SlideshowPresenter slideshowPresenter);
+	SlideshowMediaHandler getSlideshowMediaHandler(SlideshowPlayerModule slideshowPlayerModule, SlideshowPresenter slideshowPresenter);
 }

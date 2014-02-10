@@ -12,7 +12,8 @@ import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token
 
 public class VariableInterpreter {
 
-	@Inject private ContentFieldRegistry fieldRegistry;
+	@Inject
+	private ContentFieldRegistry fieldRegistry;
 
 	public String replaceAllTags(List<Token> tokensFromContent, int refItemIndex) {
 		return replaceItemTags(tokensFromContent, refItemIndex);
@@ -26,7 +27,7 @@ public class VariableInterpreter {
 		return Iterables.transform(tokensFromContent, new Function<Token, String>() {
 			@Override
 			public String apply(Token token) {
-				if(token.isFieldInfo()){
+				if (token.isFieldInfo()) {
 					return getFieldInfoValue(refItemIndex, token);
 				}
 				return token.getName();

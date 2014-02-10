@@ -6,9 +6,7 @@ import static eu.ydp.empiria.player.client.module.bonus.BonusConfigMockCreator.c
 import static eu.ydp.empiria.player.client.module.bonus.BonusConfigMockCreator.createMockAction;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -29,7 +27,7 @@ import eu.ydp.gwtutil.client.util.geom.Size;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BonusProviderTest {
-	
+
 	@InjectMocks
 	private BonusProvider bonusProvider;
 	@Mock
@@ -38,7 +36,7 @@ public class BonusProviderTest {
 	private BonusFactory bonusFactory;
 	@Mock
 	private RandomWrapper randomWrapper;
-	
+
 	@Test
 	public void next_imageBonus() {
 		// given
@@ -47,10 +45,10 @@ public class BonusProviderTest {
 		BonusResource bonusResource = createBonus(asset, size, IMAGE);
 		BonusAction action = createMockAction(Lists.newArrayList(bonusResource));
 		when(bonusConfig.getActions()).thenReturn(Lists.newArrayList(action));
-		
+
 		BonusWithAsset expected = mock(BonusWithAsset.class);
 		when(bonusFactory.createBonus(eq(bonusResource))).thenReturn(expected);
-		
+
 		// when
 		Bonus result = bonusProvider.next();
 
@@ -58,7 +56,7 @@ public class BonusProviderTest {
 		verify(bonusFactory).createBonus(bonusResource);
 		assertThat(result).isEqualTo(expected);
 	}
-	
+
 	@Test
 	public void next_imageBonus_random() {
 		// given
@@ -73,7 +71,7 @@ public class BonusProviderTest {
 
 		BonusWithAsset expected = mock(BonusWithAsset.class);
 		when(bonusFactory.createBonus(eq(bonusResource))).thenReturn(expected);
-		
+
 		// when
 		Bonus result = bonusProvider.next();
 
@@ -81,7 +79,7 @@ public class BonusProviderTest {
 		verify(bonusFactory).createBonus(bonusResource);
 		assertThat(result).isEqualTo(expected);
 	}
-	
+
 	@Test
 	public void next_swiffyBonus() {
 		// given
@@ -93,7 +91,7 @@ public class BonusProviderTest {
 
 		BonusWithAsset expected = mock(BonusWithAsset.class);
 		when(bonusFactory.createBonus(eq(bonusResource))).thenReturn(expected);
-		
+
 		// when
 		Bonus result = bonusProvider.next();
 
@@ -101,22 +99,22 @@ public class BonusProviderTest {
 		verify(bonusFactory).createBonus(bonusResource);
 		assertThat(result).isEqualTo(expected);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void next_noBonuses() {
 		// given
-		BonusAction action = createMockAction(Lists.<BonusResource>newArrayList());
+		BonusAction action = createMockAction(Lists.<BonusResource> newArrayList());
 		when(bonusConfig.getActions()).thenReturn(Lists.newArrayList(action));
-		
+
 		// when
 		bonusProvider.next();
 	}
-	
+
 	@Test(expected = NoSuchElementException.class)
 	public void next_noActions() {
 		// given
-		when(bonusConfig.getActions()).thenReturn(Lists.<BonusAction>newArrayList());
-		
+		when(bonusConfig.getActions()).thenReturn(Lists.<BonusAction> newArrayList());
+
 		// when
 		bonusProvider.next();
 	}

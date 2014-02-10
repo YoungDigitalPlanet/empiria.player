@@ -23,7 +23,7 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ObjectTemplateParser extends AbstractTemplateParser {
 	private Element fullScreenTemplate;
-	
+
 	private static final Set<String> CONTROLLERS = Sets.newHashSet();
 	private MediaWrapper<?> mediaWrapper;
 	private MediaWrapper<?> fullScreenMediaWrapper;
@@ -54,7 +54,7 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
 		Widget mediaObjectWidget;
 		if (fullScreen) {
 			mediaObjectWidget = fullScreenMediaWrapper.getMediaObject();
-		} else { 
+		} else {
 			FlowPanel videoContainer = new FlowPanel();
 			videoContainer.add(mediaWrapper.getMediaObject());
 			videoContainer.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -66,26 +66,26 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
 	@Override
 	public void beforeParse(Node mainNode, Widget parent) {
 		// kompatybilnosc wsteczna z szablonami bez media_screen
-		if(isNotMediaScreenDefinedInTemplate()) {
+		if (isNotMediaScreenDefinedInTemplate()) {
 			attachMediaScreenToRootOfTemplate(parent);
 		}
 	}
-	
+
 	private boolean isNotMediaScreenDefinedInTemplate() {
 		return !isModuleInTemplate(ModuleTagName.MEDIA_SCREEN.tagName());
 	}
 
 	private void attachMediaScreenToRootOfTemplate(Widget parent) {
-		if(fullScreen) {
+		if (fullScreen) {
 			attachMediaScreenToFullscreenTemplate(parent);
 		} else {
 			attachMediaScreenToNotFullscreenTemplate(parent);
 		}
 	}
-	
+
 	private void attachMediaScreenToFullscreenTemplate(Widget parent) {
 		Widget parentWrapper = parent.getParent();
-		if(parentWrapper instanceof HasWidgets) {
+		if (parentWrapper instanceof HasWidgets) {
 			HasWidgets parentPanel = (HasWidgets) parentWrapper;
 			parentPanel.add(getMediaObject());
 		}

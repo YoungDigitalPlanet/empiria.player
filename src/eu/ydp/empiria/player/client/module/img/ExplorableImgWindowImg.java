@@ -22,7 +22,8 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 
 	private static ExplorableImgWindowImgUiBinder uiBinder = GWT.create(ExplorableImgWindowImgUiBinder.class);
 
-	interface ExplorableImgWindowImgUiBinder extends UiBinder<Widget, ExplorableImgWindowImg> {}
+	interface ExplorableImgWindowImgUiBinder extends UiBinder<Widget, ExplorableImgWindowImg> {
+	}
 
 	@UiField
 	protected FlowPanel windowPanel;
@@ -55,7 +56,7 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 			@Override
 			public void onLoad(LoadEvent event) {
 				setOriginalImageWidth(image.getWidth());
-				setOriginalImageHeight( image.getHeight());
+				setOriginalImageHeight(image.getHeight());
 
 				findScaleMinAndOriginalAspectRatio();
 
@@ -67,7 +68,7 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 		image.addErrorHandler(new ErrorHandler() {
 
 			@Override
-			public void onError(ErrorEvent event) {//NPOMD
+			public void onError(ErrorEvent event) {// NPOMD
 			}
 		});
 
@@ -87,7 +88,7 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 			public void onMouseMove(MouseMoveEvent event) {
 				event.preventDefault();
 
-				if (prevX != -1  &&  prevY != -1){
+				if (prevX != -1 && prevY != -1) {
 					int scrollLeft = windowPanel.getElement().getScrollLeft();
 					windowPanel.getElement().setScrollLeft(scrollLeft - (event.getClientX() - prevX));
 					prevX = event.getClientX();
@@ -117,21 +118,21 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 
 	@Override
 	public void zoomOut() {
-		scaleBy(1.0d/getScaleStep());
+		scaleBy(1.0d / getScaleStep());
 	}
 
-	private void centerImage(){
+	private void centerImage() {
 
-		windowPanel.getElement().setScrollLeft((image.getWidth() - windowPanel.getOffsetWidth() ) / 2);
-		windowPanel.getElement().setScrollTop((image.getHeight() - windowPanel.getOffsetHeight() ) / 2);
+		windowPanel.getElement().setScrollLeft((image.getWidth() - windowPanel.getOffsetWidth()) / 2);
+		windowPanel.getElement().setScrollTop((image.getHeight() - windowPanel.getOffsetHeight()) / 2);
 	}
 
-	private void scaleBy(double dScale){
+	private void scaleBy(double dScale) {
 		double newScale;
-		if (getZoom()*dScale > getZoomMax()) {
+		if (getZoom() * dScale > getZoomMax()) {
 			newScale = getOriginalImageWidth() / getWindowWidth() * (getZoomMax());
 		} else if (getScale() * dScale > getScaleMin()) {
-			newScale = getScale()*dScale;
+			newScale = getScale() * dScale;
 		} else {
 			newScale = getScaleMin();
 		}
@@ -139,29 +140,27 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 		scaleTo(newScale);
 	}
 
-	private void scaleTo(double newScale){
+	private void scaleTo(double newScale) {
 
-		int lastCenterLeft = windowPanel.getElement().getScrollLeft() + getWindowWidth()/2;
-		int lastCenterTop = windowPanel.getElement().getScrollTop() + getWindowHeight()/2;
+		int lastCenterLeft = windowPanel.getElement().getScrollLeft() + getWindowWidth() / 2;
+		int lastCenterTop = windowPanel.getElement().getScrollTop() + getWindowHeight() / 2;
 
-		int newCenterLeft = (int)( lastCenterLeft * (newScale/getScale()) );
-		int newCenterTop = (int)( lastCenterTop * (newScale/getScale()) );
+		int newCenterLeft = (int) (lastCenterLeft * (newScale / getScale()));
+		int newCenterTop = (int) (lastCenterTop * (newScale / getScale()));
 
-		int nextScrollLeft = newCenterLeft - getWindowWidth()/2;
-		int nextScrollTop = newCenterTop - getWindowHeight()/2;
+		int nextScrollLeft = newCenterLeft - getWindowWidth() / 2;
+		int nextScrollTop = newCenterTop - getWindowHeight() / 2;
 
 		setScale(newScale);
 
 		double newImageWidth = getWindowWidth() * getScale();
 		double newImageheight = newImageWidth / getOriginalAspectRatio();
 
-		image.setSize(((int)newImageWidth) + "px", ((int)newImageheight) + "px");
+		image.setSize(((int) newImageWidth) + "px", ((int) newImageheight) + "px");
 
 		windowPanel.getElement().setScrollLeft(nextScrollLeft);
 		windowPanel.getElement().setScrollTop(nextScrollTop);
 
 	}
-
-
 
 }

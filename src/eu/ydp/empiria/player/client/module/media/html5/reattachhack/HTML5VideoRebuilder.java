@@ -12,14 +12,14 @@ import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoMediaWrapper;
 class HTML5VideoRebuilder {
 
 	private Video video;
-	
+
 	@Inject
 	private VideoCreator videoCreator;
 
 	public void recreateVideoWidget(HTML5VideoMediaWrapper mediaWrapper) {
 		setVideo(getVideo(mediaWrapper));
 		FlowPanel parent = getParentAndRemoveVideo(video);
-		setVideo(recreateVideoAndUpdateEventBusSourceObject(video));		
+		setVideo(recreateVideoAndUpdateEventBusSourceObject(video));
 		insertVideoAndUpdateMediaWrapper(mediaWrapper, video, parent);
 	}
 
@@ -34,17 +34,17 @@ class HTML5VideoRebuilder {
 	}
 
 	private void insertVideoAndUpdateMediaWrapper(AbstractHTML5MediaWrapper mediaWrapper, Video video, FlowPanel parent) {
-		parent.insert(video, 0);		
+		parent.insert(video, 0);
 		mediaWrapper.setMediaObject(video);
-	}	
-		
-	private Video recreateVideoAndUpdateEventBusSourceObject(Video video) {		
+	}
+
+	private Video recreateVideoAndUpdateEventBusSourceObject(Video video) {
 		MediaWrapper<?> eventBusSourceObject = getEventBusSourceObject(video);
 		Video newVideo = videoCreator.createVideo();
 		newVideo.setEventBusSourceObject(eventBusSourceObject);
 		return newVideo;
 	}
-	
+
 	private Video getVideo(HTML5VideoMediaWrapper mediaWrapper) {
 		return (Video) mediaWrapper.getMediaObject();
 	}
@@ -56,5 +56,5 @@ class HTML5VideoRebuilder {
 	public void setVideo(Video video) {
 		this.video = video;
 	}
-	
+
 }

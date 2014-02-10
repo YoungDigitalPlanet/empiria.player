@@ -20,7 +20,7 @@ public class AssessmentViewCarrier {
 	private final ViewSocket footerViewSocket;
 
 	public Widget getHeaderView() {
-		return (headerViewSocket == null) ? null : headerViewSocket.getView(); //NOPMD
+		return (headerViewSocket == null) ? null : headerViewSocket.getView(); // NOPMD
 	}
 
 	public Panel getPageSlot() {
@@ -32,7 +32,7 @@ public class AssessmentViewCarrier {
 	}
 
 	public Widget getFooterView() {
-		return (footerViewSocket == null) ? null : footerViewSocket.getView(); //NOPMD
+		return (footerViewSocket == null) ? null : footerViewSocket.getView(); // NOPMD
 	}
 
 }

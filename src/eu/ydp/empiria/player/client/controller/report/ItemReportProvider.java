@@ -7,15 +7,13 @@ import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 
-public class ItemReportProvider extends AbstractReportProvider{
-	
+public class ItemReportProvider extends AbstractReportProvider {
+
 	private int index;
 
 	@Inject
-	public ItemReportProvider(@Assisted DataSourceDataSupplier dataSupplier,
-								@Assisted SessionDataSupplier sessionSupplier,
-								@Assisted int index, 
-								AssessmentReportFactory factory) {
+	public ItemReportProvider(@Assisted DataSourceDataSupplier dataSupplier, @Assisted SessionDataSupplier sessionSupplier, @Assisted int index,
+			AssessmentReportFactory factory) {
 		super(dataSupplier, sessionSupplier, factory);
 		this.index = index;
 	}
@@ -33,5 +31,5 @@ public class ItemReportProvider extends AbstractReportProvider{
 	protected VariableProviderSocket getVariableProvider() {
 		return sessionSupplier.getItemSessionDataSocket(index).getVariableProviderSocket();
 	}
-	
+
 }

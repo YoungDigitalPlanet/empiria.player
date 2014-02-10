@@ -9,28 +9,28 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public class AreasMapsComparator {
-	
-	public AreasMapComparationResult findDifference(Map<Area, ColorModel> previous, Map<Area, ColorModel> current){
+
+	public AreasMapComparationResult findDifference(Map<Area, ColorModel> previous, Map<Area, ColorModel> current) {
 		MapDifference<Area, ColorModel> differences = Maps.difference(previous, current);
-		
+
 		checkDifferencesCount(differences);
-		
-		if (isAdded(differences)){
+
+		if (isAdded(differences)) {
 			return getAdded(differences);
 		}
-		if (isRemoved(differences)){
+		if (isRemoved(differences)) {
 			return getRemoved(differences);
-		} 
-		if (isChanged(differences)){
+		}
+		if (isChanged(differences)) {
 			return getChanged(differences);
 		}
-		
+
 		return AreasMapComparationResult.ofSame();
 	}
-	
+
 	private void checkDifferencesCount(MapDifference<Area, ColorModel> differences) {
 		int differencesCount = differences.entriesDiffering().size() + differences.entriesOnlyOnLeft().size() + differences.entriesOnlyOnRight().size();
-		if (differencesCount > 1){
+		if (differencesCount > 1) {
 			throw new IllegalArgumentException("There must be at most one difference between previous and currrent map.");
 		}
 	}
@@ -43,7 +43,7 @@ public class AreasMapsComparator {
 		Area area = differences.entriesDiffering().keySet().iterator().next();
 		return AreasMapComparationResult.ofAddedOrChanged(area);
 	}
-	
+
 	private boolean isRemoved(MapDifference<Area, ColorModel> differences) {
 		return !differences.entriesOnlyOnLeft().isEmpty();
 	}
@@ -52,7 +52,7 @@ public class AreasMapsComparator {
 		Area area = differences.entriesOnlyOnLeft().keySet().iterator().next();
 		return AreasMapComparationResult.ofRemoved(area);
 	}
-	
+
 	private boolean isAdded(MapDifference<Area, ColorModel> differences) {
 		return !differences.entriesOnlyOnRight().isEmpty();
 	}

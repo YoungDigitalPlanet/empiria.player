@@ -6,7 +6,7 @@ public abstract class ParentedModuleBase implements IModule {
 
 	private ModuleSocket moduleSocket;
 
-	protected void initModule(ModuleSocket moduleSocket){
+	protected void initModule(ModuleSocket moduleSocket) {
 		this.moduleSocket = moduleSocket;
 	}
 

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import static eu.ydp.gwtutil.client.util.MediaChecker.*;
+import static eu.ydp.gwtutil.client.util.MediaChecker.isHtml5Mp3Support;
 
 import java.util.HashSet;
 import java.util.Set;

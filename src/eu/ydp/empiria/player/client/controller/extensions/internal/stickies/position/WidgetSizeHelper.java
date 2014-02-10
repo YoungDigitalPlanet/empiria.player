@@ -10,34 +10,31 @@ import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public class WidgetSizeHelper {
 
-	@Inject 
+	@Inject
 	private IPlayerContainersAccessor accessor;
-	
-	public Rectangle getPlayerContainerRectangle(){
+
+	public Rectangle getPlayerContainerRectangle() {
 		Widget playerContainer = (Widget) accessor.getPlayerContainer();
 		return toRectangle(playerContainer);
 	}
-	
-	public ContainerDimensions getContainerDimensions(IsWidget isWidget){
+
+	public ContainerDimensions getContainerDimensions(IsWidget isWidget) {
 		Widget widget = isWidget.asWidget();
 		return extractDimensions(widget);
 	}
-	
-	public ContainerDimensions getPlayerContainerDimensions(){
+
+	public ContainerDimensions getPlayerContainerDimensions() {
 		Widget playerContainer = (Widget) accessor.getPlayerContainer();
 		return extractDimensions(playerContainer);
 	}
-	
+
 	private Rectangle toRectangle(Widget widget) {
 		return new Rectangle(widget.getAbsoluteLeft(), widget.getAbsoluteTop(), widget.getOffsetWidth(), widget.getOffsetHeight());
 	}
-	
+
 	private ContainerDimensions extractDimensions(Widget widget) {
-		ContainerDimensions containerDimensions = new ContainerDimensions.Builder().width(widget.getOffsetWidth())
-				.height(widget.getOffsetHeight())
-				.absoluteLeft(widget.getAbsoluteLeft())
-				.absoluteTop(widget.getAbsoluteTop())
-				.build();
+		ContainerDimensions containerDimensions = new ContainerDimensions.Builder().width(widget.getOffsetWidth()).height(widget.getOffsetHeight())
+				.absoluteLeft(widget.getAbsoluteLeft()).absoluteTop(widget.getAbsoluteTop()).build();
 		return containerDimensions;
 	}
 }

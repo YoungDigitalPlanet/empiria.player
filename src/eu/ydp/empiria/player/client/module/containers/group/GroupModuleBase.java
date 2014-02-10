@@ -14,19 +14,19 @@ public abstract class GroupModuleBase<T> extends BindingContainerModule<T> imple
 	protected GroupIdentifier groupIdentifier;
 	private String moduleId;
 
-	public GroupModuleBase(){
+	public GroupModuleBase() {
 	}
 
 	@Override
-	protected String getModuleId(){
-		if (super.getModuleId() == null  ||  "".equals(super.getModuleId().trim()) ){
+	protected String getModuleId() {
+		if (super.getModuleId() == null || "".equals(super.getModuleId().trim())) {
 			if (moduleId == null)
 				moduleId = Document.get().createUniqueId();
 			return moduleId;
 		}
 		return super.getModuleId();
 	}
-	
+
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
 		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);

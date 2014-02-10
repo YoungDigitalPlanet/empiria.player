@@ -10,7 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "palette")
 public class PaletteBean {
-	@XmlElement(name = "color") private List<ColorBean> colors;
+	@XmlElement(name = "color")
+	private List<ColorBean> colors;
 
 	public List<ColorBean> getColors() {
 		return colors;

@@ -8,8 +8,9 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class PersonaService {
 
-	@Inject private EventsBus eventsBus;
-	
+	@Inject
+	private EventsBus eventsBus;
+
 	private int currentPersonaIndex;
 	private TutorConfig tutorConfig;
 

@@ -10,7 +10,7 @@ import eu.ydp.gwtutil.client.util.events.animation.TransitionEndHandler;
  * <code>
      -webkit-transition: -webkit-transform 2s linear;</br>
      -webkit-transform: translateX(-1920px);</code>
- *
+ * 
  */
 public class AnimationWebkit extends AbstractAnimation implements TransitionEndHandler {
 	private final static String SUFFIX = "webkit";
@@ -29,7 +29,7 @@ public class AnimationWebkit extends AbstractAnimation implements TransitionEndH
 			setProperty(toAnimate, SUFFIX + TRANSITION, "all " + duration + "ms ease-out");
 			setProperty(toAnimate, SUFFIX + TRANSFORM, "translate(" + xPosition + "px,0)");
 			transitionEndRegistration = toAnimate.addDomHandler(this, TransitionEndEvent.getType());
-		}else{
+		} else {
 			onComplate(xPosition);
 		}
 	}

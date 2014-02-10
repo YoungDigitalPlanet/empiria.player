@@ -11,7 +11,7 @@ public class StateChangedInteractionEvent extends InteractionEvent {
 	private boolean isReset;
 	protected IUniqueModule sender;
 
-	public StateChangedInteractionEvent(boolean userInteract, boolean isReset, IUniqueModule sender){
+	public StateChangedInteractionEvent(boolean userInteract, boolean isReset, IUniqueModule sender) {
 		this.userInteract = userInteract;
 		this.sender = sender;
 		this.isReset = isReset;
@@ -20,7 +20,7 @@ public class StateChangedInteractionEvent extends InteractionEvent {
 	public boolean isUserInteract() {
 		return userInteract;
 	}
-	
+
 	public boolean isReset() {
 		return isReset;
 	}

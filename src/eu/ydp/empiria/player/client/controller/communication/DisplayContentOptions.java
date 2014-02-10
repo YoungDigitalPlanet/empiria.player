@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayContentOptions {
-	
-	public DisplayContentOptions(){
+
+	public DisplayContentOptions() {
 		ignoredTags = new ArrayList<String>();
 		ignoredInlineTags = new ArrayList<String>();
 		ignoredInlineTags.add("feedbackInline");
@@ -15,20 +15,20 @@ public class DisplayContentOptions {
 	protected List<String> ignoredTags;
 	protected List<String> ignoredInlineTags;
 	protected boolean useSkin;
-	
-	public List<String> getIgnoredTags(){
+
+	public List<String> getIgnoredTags() {
 		return ignoredTags;
 	}
 
-	public List<String> getIgnoredInlineTags(){
+	public List<String> getIgnoredInlineTags() {
 		return ignoredInlineTags;
 	}
-	
-	public void useSkin(boolean value){
+
+	public void useSkin(boolean value) {
 		useSkin = value;
 	}
-	
-	public boolean useSkin(){
+
+	public boolean useSkin() {
 		return useSkin;
 	}
 

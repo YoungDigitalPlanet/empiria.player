@@ -126,10 +126,9 @@ public class LabellingBuilderTest extends AbstractTestWithMocksBase {
 		verify(bgs, times(childrenCount)).generateBody(nodeCaptor.capture(), any(HasWidgets.class));
 
 		Iterator<Node> iterator = nodeCaptor.getAllValues().iterator();
-		for (ChildData child : children){
+		for (ChildData child : children) {
 			assertXMLEqual(child.xml(), iterator.next().toString());
 		}
 	}
-
 
 }

@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.object;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Map;
 

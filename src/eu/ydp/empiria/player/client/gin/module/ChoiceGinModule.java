@@ -27,16 +27,12 @@ public class ChoiceGinModule extends AbstractGinModule {
 
 	@Override
 	protected void configure() {
-		install(new GinFactoryModuleBuilder()
-			.implement(SimpleChoicePresenter.class, SimpleChoicePresenterImpl.class)
-			.build(SimpleChoicePresenterFactory.class));
-		install(new GinFactoryModuleBuilder()
-			.implement(SimpleChoiceView.class, SimpleChoiceViewImpl.class)
-			.implement(ChoiceButtonBase.class, Names.named("single"), SingleChoiceButton.class)
-			.implement(ChoiceButtonBase.class, Names.named("multi"), MultiChoiceButton.class)
-			.implement(SimpleChoiceStyleProvider.class, Names.named("single"), SingleChoiceStyleProvider.class)
-			.implement(SimpleChoiceStyleProvider.class, Names.named("multi"), MultiChoiceStyleProvider.class)
-			.build(SimpleChoiceViewFactory.class));
+		install(new GinFactoryModuleBuilder().implement(SimpleChoicePresenter.class, SimpleChoicePresenterImpl.class).build(SimpleChoicePresenterFactory.class));
+		install(new GinFactoryModuleBuilder().implement(SimpleChoiceView.class, SimpleChoiceViewImpl.class)
+				.implement(ChoiceButtonBase.class, Names.named("single"), SingleChoiceButton.class)
+				.implement(ChoiceButtonBase.class, Names.named("multi"), MultiChoiceButton.class)
+				.implement(SimpleChoiceStyleProvider.class, Names.named("single"), SingleChoiceStyleProvider.class)
+				.implement(SimpleChoiceStyleProvider.class, Names.named("multi"), MultiChoiceStyleProvider.class).build(SimpleChoiceViewFactory.class));
 
 		bind(ChoiceModulePresenter.class).to(ChoiceModulePresenterImpl.class);
 		bind(ChoiceModuleView.class).to(ChoiceModuleViewImpl.class);

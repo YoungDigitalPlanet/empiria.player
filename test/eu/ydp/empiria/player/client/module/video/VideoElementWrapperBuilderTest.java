@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.video;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -32,14 +32,14 @@ public class VideoElementWrapperBuilderTest {
 	private Provider<VideoElementWrapper> videoElementProvider;
 	@Mock
 	private DefaultPosterUriProvider defaultPosterUriProvider;
-	
+
 	private VideoElementWrapper videoElement;
 
 	@Before
 	public void setup() {
 		videoElement = mock(VideoElementWrapper.class);
 		when(videoElementProvider.get()).thenReturn(videoElement);
-		
+
 		when(defaultPosterUriProvider.getDefaultPosterUri()).thenReturn("defaultPosterUri");
 	}
 
@@ -79,7 +79,7 @@ public class VideoElementWrapperBuilderTest {
 		verify(videoElement).addClassName(skinName);
 		verify(videoElement, times(3)).appendChild(any(SourceElement.class));
 	}
-	
+
 	@Test
 	public void shouldBuildVideoElement_withDefaultValues() {
 		// given

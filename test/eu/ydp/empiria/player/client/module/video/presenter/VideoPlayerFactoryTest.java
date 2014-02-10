@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 
@@ -71,6 +69,7 @@ public class VideoPlayerFactoryTest {
 
 	class SelfReturningAnswer implements Answer<Object> {
 
+		@Override
 		public Object answer(InvocationOnMock invocation) throws Throwable {
 			Object mock = invocation.getMock();
 			if (invocation.getMethod().getReturnType().isInstance(mock)) {

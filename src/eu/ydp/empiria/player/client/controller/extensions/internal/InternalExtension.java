@@ -5,7 +5,8 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 
 public abstract class InternalExtension implements Extension {
 
-	public ExtensionType getType(){
+	@Override
+	public ExtensionType getType() {
 		return ExtensionType.MULTITYPE;
 	}
 }

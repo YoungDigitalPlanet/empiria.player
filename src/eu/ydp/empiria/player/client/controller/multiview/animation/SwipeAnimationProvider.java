@@ -7,9 +7,12 @@ import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
 import eu.ydp.empiria.player.client.inject.Instance;
 
 public class SwipeAnimationProvider implements Provider<Animation> {
-	@Inject private Instance<SwipeType> swipeType;
-	@Inject private Instance<AnimationBase> animationBase;
-	@Inject private Instance<NoAnimation> noAnimation;
+	@Inject
+	private Instance<SwipeType> swipeType;
+	@Inject
+	private Instance<AnimationBase> animationBase;
+	@Inject
+	private Instance<NoAnimation> noAnimation;
 
 	@Override
 	public Animation get() {

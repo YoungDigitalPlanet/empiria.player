@@ -4,7 +4,7 @@ public class MockitoConfiguration extends DefaultMockitoConfiguration {
 
 	private static boolean enabledClassCache = true;
 
-	public static void setenableClassCache(final boolean enabled){
+	public static void setenableClassCache(final boolean enabled) {
 		enabledClassCache = enabled;
 	}
 

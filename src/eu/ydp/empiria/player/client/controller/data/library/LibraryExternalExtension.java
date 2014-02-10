@@ -5,19 +5,19 @@ import com.google.gwt.core.client.JavaScriptObject;
 public class LibraryExternalExtension implements LibraryExtension {
 
 	protected JavaScriptObject extCreator;
-	
-	public LibraryExternalExtension(JavaScriptObject extCreator){
+
+	public LibraryExternalExtension(JavaScriptObject extCreator) {
 		this.extCreator = extCreator;
 	}
-	
-	public JavaScriptObject getExtensionInstance(){
+
+	public JavaScriptObject getExtensionInstance() {
 		return getInstanceJs(extCreator);
 	}
-	
+
 	private native JavaScriptObject getInstanceJs(JavaScriptObject extCreator)/*-{
-		if (typeof extCreator.create == 'function'){
-			return extCreator.create();
-		}
-		return null;
-	}-*/;
+																				if (typeof extCreator.create == 'function'){
+																				return extCreator.create();
+																				}
+																				return null;
+																				}-*/;
 }

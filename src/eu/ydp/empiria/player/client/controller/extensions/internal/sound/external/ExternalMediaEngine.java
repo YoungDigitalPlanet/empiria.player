@@ -21,16 +21,21 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 public class ExternalMediaEngine implements MediaConnectorListener, EmulatedTimeUpdateListener {
 
 	public static final int PLAY_INITIAL_TIME = 0;
-	
-	@Inject private MediaConnector connector;
-	@Inject private EventsBus eventsBus;
-	@Inject private SingleMediaPlayback singleMediaPlayback;
-	@Inject private ConnectorTimeResolutionToSecondsConverter timeConverter;
-	@Inject private ExternalMediaUpdateTimerEmulator timerEmulator;
+
+	@Inject
+	private MediaConnector connector;
+	@Inject
+	private EventsBus eventsBus;
+	@Inject
+	private SingleMediaPlayback singleMediaPlayback;
+	@Inject
+	private ConnectorTimeResolutionToSecondsConverter timeConverter;
+	@Inject
+	private ExternalMediaUpdateTimerEmulator timerEmulator;
 
 	private Map<String, ExternalMediaProxy> proxiesByMediaId = Maps.newHashMap();
-	
-	public void addMediaProxy(ExternalMediaProxy proxy){
+
+	public void addMediaProxy(ExternalMediaProxy proxy) {
 		proxiesByMediaId.put(proxy.getMediaWrapper().getMediaUniqId(), proxy);
 	}
 
@@ -55,11 +60,11 @@ public class ExternalMediaEngine implements MediaConnectorListener, EmulatedTime
 
 	public void setCurrentTime(MediaWrapper<Widget> wrapper, double timeSeconds) {
 		int timeMillis = timeConverter.fromSeconds(timeSeconds);
-		connector.seek(wrapper.getMediaUniqId(), timeMillis );
+		connector.seek(wrapper.getMediaUniqId(), timeMillis);
 	}
 
 	public void pauseCurrent() {
-		if (singleMediaPlayback.isPlaybackPresent()){
+		if (singleMediaPlayback.isPlaybackPresent()) {
 			String id = singleMediaPlayback.getCurrentMediaId();
 			connector.pause(id);
 		}
@@ -72,7 +77,7 @@ public class ExternalMediaEngine implements MediaConnectorListener, EmulatedTime
 
 	@Override
 	public void onPlay(String id) {
-		if (singleMediaPlayback.isPlaybackPresent()){
+		if (singleMediaPlayback.isPlaybackPresent()) {
 			String currMediaId = singleMediaPlayback.getCurrentMediaId();
 			onPause(currMediaId);
 		}
@@ -106,20 +111,20 @@ public class ExternalMediaEngine implements MediaConnectorListener, EmulatedTime
 	public void onTimeUpdate(String id, MediaStatus status) {
 		timerEmulator.stop();
 		fireMediaTimeUpdateEvent(id, status.getCurrentTimeMillis());
-		if (singleMediaPlayback.isCurrentPlayback(id)){
+		if (singleMediaPlayback.isCurrentPlayback(id)) {
 			timerEmulator.run(status.getCurrentTimeMillis());
-		}		
+		}
 	}
 
 	@Override
 	public void emulatedTimeUpdate(MediaStatus status) {
-		if (singleMediaPlayback.isPlaybackPresent()){
+		if (singleMediaPlayback.isPlaybackPresent()) {
 			fireMediaTimeUpdateEvent(singleMediaPlayback.getCurrentMediaId(), status.getCurrentTimeMillis());
 		}
 	}
-	
-	private void fireMediaEvent(String id, MediaEventTypes type){
-		if (isValidMediaId(id)){
+
+	private void fireMediaEvent(String id, MediaEventTypes type) {
+		if (isValidMediaId(id)) {
 			MediaWrapper<Widget> wrapper = findMediaWrapper(id);
 			eventsBus.fireEventFromSource(new MediaEvent(type, wrapper), wrapper);
 		}
@@ -136,7 +141,7 @@ public class ExternalMediaEngine implements MediaConnectorListener, EmulatedTime
 	}
 
 	private void fireMediaReadyEvent(String id, MediaParams params) {
-		if (isValidMediaId(id)){
+		if (isValidMediaId(id)) {
 			ExternalMediaProxy proxy = proxiesByMediaId.get(id);
 			double durationSeconds = timeConverter.toSeconds(params.getDurationMillis());
 			proxy.setDuration(durationSeconds);
@@ -146,7 +151,7 @@ public class ExternalMediaEngine implements MediaConnectorListener, EmulatedTime
 	}
 
 	private void fireMediaTimeUpdateEvent(String id, int timeMillis) {
-		if (isValidMediaId(id)){
+		if (isValidMediaId(id)) {
 			ExternalMediaProxy proxy = proxiesByMediaId.get(id);
 			double timeSeconds = timeConverter.toSeconds(timeMillis);
 			proxy.setCurrentTime(timeSeconds);

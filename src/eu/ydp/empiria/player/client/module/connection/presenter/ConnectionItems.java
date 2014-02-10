@@ -23,7 +23,7 @@ public class ConnectionItems {
 
 	private final Set<ConnectionItem> leftColumnItems = new HashSet<ConnectionItem>();
 	private final Set<ConnectionItem> rightColumnItems = new HashSet<ConnectionItem>();
-	
+
 	private final Map<String, ConnectionItem> items = new HashMap<String, ConnectionItem>();
 
 	private final InlineBodyGeneratorSocket bodyGenerator;
@@ -77,12 +77,12 @@ public class ConnectionItems {
 	public Collection<ConnectionItem> getAllItems() {
 		return Collections.unmodifiableCollection(items.values());
 	}
-	
-	public Collection<ConnectionItem> getLeftItems(){
+
+	public Collection<ConnectionItem> getLeftItems() {
 		return Collections.unmodifiableCollection(leftColumnItems);
 	}
-	
-	public Collection<ConnectionItem> getRightItems(){
+
+	public Collection<ConnectionItem> getRightItems() {
 		return Collections.unmodifiableCollection(rightColumnItems);
 	}
 

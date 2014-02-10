@@ -7,15 +7,15 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class SoundActionProcessorMock extends SoundActionProcessor {
-	
+
 	@Inject
-	public SoundActionProcessorMock(EventsBus eventsBus){
+	public SoundActionProcessorMock(EventsBus eventsBus) {
 		super(eventsBus);
 	}
-	
+
 	@Override
 	protected void processSingleAction(FeedbackAction action) {
 		super.processSingleAction(action);
 	}
-	
+
 }

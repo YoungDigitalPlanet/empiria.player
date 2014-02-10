@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 
 import org.junit.Before;
@@ -10,9 +14,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
@@ -21,10 +22,13 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 public class OrderingShowingAnswersControllerJUnitTest {
 
 	private OrderingShowingAnswersController controller;
-	@Mock private OrderingItemsDao orderingItemsDao;
-	@Mock private ItemsResponseOrderController itemsResponseOrderController;
-	@Mock private OrderInteractionModuleModel model;
-	
+	@Mock
+	private OrderingItemsDao orderingItemsDao;
+	@Mock
+	private ItemsResponseOrderController itemsResponseOrderController;
+	@Mock
+	private OrderInteractionModuleModel model;
+
 	@Before
 	public void setUp() throws Exception {
 		controller = new OrderingShowingAnswersController(itemsResponseOrderController, orderingItemsDao, model);
@@ -32,41 +36,37 @@ public class OrderingShowingAnswersControllerJUnitTest {
 
 	@Test
 	public void shouldShowCorrectAnswers() throws Exception {
-		//given
+		// given
 		ShowAnswersType mode = ShowAnswersType.CORRECT;
-		
+
 		List<String> correctAnswers = Lists.newArrayList("correctAnswers");
-		when(model.getCorrectAnswers())
-			.thenReturn(correctAnswers);
-		
+		when(model.getCorrectAnswers()).thenReturn(correctAnswers);
+
 		List<String> newAnswersOrder = Lists.newArrayList("newAnswersOrder");
-		when(itemsResponseOrderController.getCorrectItemsOrderByAnswers(correctAnswers))
-			.thenReturn(newAnswersOrder );
-		
-		//when
+		when(itemsResponseOrderController.getCorrectItemsOrderByAnswers(correctAnswers)).thenReturn(newAnswersOrder);
+
+		// when
 		List<String> result = controller.findNewAnswersOrderToShow(mode);
-		
-		//then
+
+		// then
 		assertEquals(newAnswersOrder, result);
 	}
-	
+
 	@Test
 	public void shouldShowAnswersSpecyfiedByCurrentAnswers() throws Exception {
-		//given
+		// given
 		ShowAnswersType mode = ShowAnswersType.USER;
-		
-		List<String> currentAnswers = Lists.newArrayList("correctAnswers");
-		when(model.getCurrentAnswers())
-			.thenReturn(currentAnswers);
-		
-		List<String> newAnswersOrder = Lists.newArrayList("newAnswersOrder");
-		when(itemsResponseOrderController.getCorrectItemsOrderByAnswers(currentAnswers))
-			.thenReturn(newAnswersOrder );
 
-		//when
+		List<String> currentAnswers = Lists.newArrayList("correctAnswers");
+		when(model.getCurrentAnswers()).thenReturn(currentAnswers);
+
+		List<String> newAnswersOrder = Lists.newArrayList("newAnswersOrder");
+		when(itemsResponseOrderController.getCorrectItemsOrderByAnswers(currentAnswers)).thenReturn(newAnswersOrder);
+
+		// when
 		List<String> result = controller.findNewAnswersOrderToShow(mode);
-		
-		//then
+
+		// then
 		assertEquals(newAnswersOrder, result);
 		verify(orderingItemsDao).setItemsOrder(newAnswersOrder);
 	}

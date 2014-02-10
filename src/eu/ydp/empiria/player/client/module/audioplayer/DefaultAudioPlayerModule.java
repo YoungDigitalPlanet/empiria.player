@@ -1,12 +1,6 @@
 package eu.ydp.empiria.player.client.module.audioplayer;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_END;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_PAUSE;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_PLAY;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_STOP;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.PAUSE;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.PLAY;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.STOP;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
 
 import java.util.List;
 import java.util.Map;
@@ -39,17 +33,22 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 public class DefaultAudioPlayerModule implements AudioPlayerModule {
-	@Inject private EventsBus eventsBus;
-	@Inject private HideNativeMediaControlsManager nativeMediaControlsManager;
-	@Inject @UniqueId private String moduleId;
-	@Inject private StyleNameConstants styleNameConstants;
-	@Inject private CustomPushButton button;
+	@Inject
+	private EventsBus eventsBus;
+	@Inject
+	private HideNativeMediaControlsManager nativeMediaControlsManager;
+	@Inject
+	@UniqueId
+	private String moduleId;
+	@Inject
+	private StyleNameConstants styleNameConstants;
+	@Inject
+	private CustomPushButton button;
 	private boolean playing;
 	private boolean enabled = true;
 	private ModuleSocket moduleSocket;
 	private MediaWrapper<?> mediaWrapper;
 	private Map<String, String> sources;
-
 
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener iel) {
@@ -64,9 +63,9 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 		button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				if(mediaWrapper == null){
+				if (mediaWrapper == null) {
 					createMediaWrapperAndPlayAudio(sources);
-				}else{
+				} else {
 					playAudio();
 				}
 			}
@@ -75,7 +74,7 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 
 	private void createMediaWrapperAndPlayAudio(Map<String, String> sources) {
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sources, false, true);
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc , new CallbackRecevier<MediaWrapper<?>>() {
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, new CallbackRecevier<MediaWrapper<?>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<?> mw) {
@@ -126,7 +125,7 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 		return button;
 	}
 
-	private void play(){
+	private void play() {
 		enabled = false;
 		fireEventFromSource(STOP);
 		fireEventFromSource(PLAY);
@@ -136,27 +135,25 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 		eventsBus.fireEventFromSource(new MediaEvent(eventType, mediaWrapper), mediaWrapper);
 	}
 
-	protected void stop(){
+	protected void stop() {
 		enabled = false;
 		fireEventFromSource(PAUSE);
 	}
 
-	protected void setPlaying(){
+	protected void setPlaying() {
 		enabled = true;
 		playing = true;
 		button.setStyleName(styleNameConstants.QP_AUDIOPLAYER_BUTTON_PLAYING());
 	}
 
-
-	protected void setStopped(){
+	protected void setStopped() {
 		enabled = true;
 		playing = false;
 		button.setStyleName(styleNameConstants.QP_AUDIOPLAYER_BUTTON());
 	}
 
-
 	protected void playAudio() {
-		if (enabled){
+		if (enabled) {
 			if (playing) {
 				stop();
 			} else {

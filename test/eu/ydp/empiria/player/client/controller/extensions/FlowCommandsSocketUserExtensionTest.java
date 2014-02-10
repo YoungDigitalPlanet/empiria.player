@@ -15,7 +15,7 @@ public class FlowCommandsSocketUserExtensionTest extends ExtensionTestBase {
 	protected FlowCommandsExecutor fce;
 	protected FlowDataSupplier fds;
 
-	public void testNavigation(){
+	public void testNavigation() {
 		de = initDeliveryEngine(new MockFlowCommandsSocketUserExtension());
 
 		assertEquals(PageType.TOC, fds.getCurrentPageType());
@@ -36,7 +36,7 @@ public class FlowCommandsSocketUserExtensionTest extends ExtensionTestBase {
 
 	}
 
-	public void testActivity(){
+	public void testActivity() {
 		de = initDeliveryEngine(new MockFlowCommandsSocketUserExtension());
 
 		assertEquals(PageType.TOC, fds.getCurrentPageType());
@@ -86,7 +86,7 @@ public class FlowCommandsSocketUserExtensionTest extends ExtensionTestBase {
 
 	}
 
-	public void testActivityAndNavigation(){
+	public void testActivityAndNavigation() {
 		de = initDeliveryEngine(new MockFlowCommandsSocketUserExtension());
 
 		assertEquals(PageType.TOC, fds.getCurrentPageType());
@@ -109,7 +109,7 @@ public class FlowCommandsSocketUserExtensionTest extends ExtensionTestBase {
 
 	}
 
-	protected class MockFlowCommandsSocketUserExtension extends InternalExtension implements FlowCommandsSocketUserExtension, FlowDataSocketUserExtension{
+	protected class MockFlowCommandsSocketUserExtension extends InternalExtension implements FlowCommandsSocketUserExtension, FlowDataSocketUserExtension {
 
 		@Override
 		public void init() {

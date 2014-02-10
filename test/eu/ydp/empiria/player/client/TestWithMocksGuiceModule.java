@@ -56,18 +56,18 @@ import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
 
 public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 
-	public TestWithMocksGuiceModule(){
+	public TestWithMocksGuiceModule() {
 		super();
 	}
-	
+
 	public TestWithMocksGuiceModule(Class<?>... ignoreClassList) {
 		super(ignoreClassList);
 	}
-	
-	public TestWithMocksGuiceModule(Class<?>[] classToOmit, Class<?>[] classToSpy){
+
+	public TestWithMocksGuiceModule(Class<?>[] classToOmit, Class<?>[] classToSpy) {
 		super(classToOmit, classToSpy);
 	}
-	
+
 	@Override
 	public void configure() {
 		bindToSingletonOrMockInstance(StyleNameConstants.class);
@@ -112,10 +112,9 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 		bindToClassOrMockProvider(Scheduler.class, SchedulerMockImpl.class);
 		bindToClassOrMockProvider(Timer.class, TimerAccessibleMock.class);
 		bindToClassOrMockProvider(SurfaceRectangleFinder.class);
-		
-		install(new FactoryModuleBuilder()
-			.implement(IStickieView.class, StickieView.class)
-			.implement(IStickiePresenter.class, StickiePresenter.class)
-			.build(StickieFactory.class));	}
+
+		install(new FactoryModuleBuilder().implement(IStickieView.class, StickieView.class).implement(IStickiePresenter.class, StickiePresenter.class)
+				.build(StickieFactory.class));
+	}
 
 }

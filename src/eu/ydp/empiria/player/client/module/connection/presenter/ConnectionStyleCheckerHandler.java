@@ -20,7 +20,7 @@ public class ConnectionStyleCheckerHandler implements Handler {
 
 	@Override
 	public void onAttachOrDetach(AttachEvent event) {
-		if(!wasChecked) {
+		if (!wasChecked) {
 			checkStylesAndShowError();
 			wasChecked = true;
 		}

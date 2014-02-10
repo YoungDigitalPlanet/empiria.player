@@ -5,6 +5,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 public interface IFlowRequest {
 
 	public String getName();
-	
+
 	public JavaScriptObject toJsObject();
 }

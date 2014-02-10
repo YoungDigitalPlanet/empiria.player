@@ -22,8 +22,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 /**
- * Wrapper dla elemntow audio i elementow wspolnych audio i video html5 TODO:
- * wydzielic HTML5AudioMediaWrapper a ten zostawic jako HTML5MediaWrapperBase
+ * Wrapper dla elemntow audio i elementow wspolnych audio i video html5 TODO: wydzielic HTML5AudioMediaWrapper a ten zostawic jako HTML5MediaWrapperBase
  */
 public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBase>, MediaEventHandler {
 	private MediaBase mediaBase;

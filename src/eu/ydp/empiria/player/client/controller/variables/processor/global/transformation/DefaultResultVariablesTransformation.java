@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ResultVariables;
 
 public class DefaultResultVariablesTransformation implements Function<Entry<Response, DtoModuleProcessingResult>, ResultVariables> {
-	
+
 	@Override
 	@Nullable
 	public ResultVariables apply(@Nullable Entry<Response, DtoModuleProcessingResult> input) {

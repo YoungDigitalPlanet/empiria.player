@@ -27,22 +27,18 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 
 	@Inject
 	private CanvasImageView canvasStubView;
-
 	@Inject
 	private UserInteractionHandlerFactory interactionHandlerFactory;
-
 	@Inject
 	private PositionHelper positionHelper;
-
 	@Inject
 	private CanvasImageDataProvider canvasImageDataProvider;
 	@Inject
 	private StyleNameConstants styleNameConstants;
-	
 
 	private boolean canvasStubViewLoded = false;
 
-	private final Map<Area, ColorModel> colors = Maps.newHashMap();
+	private final Map<Area, ColorModel> colorsCache = Maps.newHashMap();
 
 	private ColorfillAreaClickListener listener;
 
@@ -61,19 +57,19 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 		});
 	}
 
-	void bindView() {
+	private void bindView() {
 		reloadImageData();
-		for (Map.Entry<Area, ColorModel> areaColor : colors.entrySet()) {
+		for (Map.Entry<Area, ColorModel> areaColor : colorsCache.entrySet()) {
 			setColorOnCanvas(areaColor.getKey(), areaColor.getValue());
 		}
-		colors.clear();
+		colorsCache.clear();
 		if (listener != null) {
 			addAreaClickListener(listener);
 		}
 		flushImageToCanvas();
 	}
 
-	void reloadImageData() {
+	private void reloadImageData() {
 		imageData = canvasImageDataProvider.getCanvasImageData(canvasStubView);
 	}
 
@@ -88,7 +84,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 			setColorOnCanvas(area, color);
 			flushImageToCanvas();
 		} else {
-			colors.put(area, color);
+			colorsCache.put(area, color);
 		}
 	}
 
@@ -110,7 +106,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 			}
 			flushImageToCanvas();
 		} else {
-			colors.putAll(colors);
+			this.colorsCache.putAll(colors);
 		}
 	}
 
@@ -130,8 +126,9 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 			public void execute(NativeEvent event) {
 				event.preventDefault();
 				CanvasElement canvasElement = canvasStubView.getCanvas().getCanvasElement();
-				Area area = new Area(positionHelper.getXPositionRelativeToTarget(event, canvasElement), positionHelper.getYPositionRelativeToTarget(event, canvasElement));
-				if(area.getX() >=0 && area.getY() >= 0){
+				Area area = new Area(positionHelper.getXPositionRelativeToTarget(event, canvasElement), positionHelper.getYPositionRelativeToTarget(event,
+						canvasElement));
+				if (area.getX() >= 0 && area.getY() >= 0) {
 					listener.onAreaClick(area);
 				}
 			}
@@ -144,7 +141,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
 		reloadImageData();
 	}
 
-	public void flushImageToCanvas(){
+	public void flushImageToCanvas() {
 		imageData.flush();
 	}
 

@@ -1,12 +1,11 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import org.junit.Test;
+import static org.fest.assertions.api.Assertions.assertThat;
 
-import static org.fest.assertions.api.Assertions.*;
+import org.junit.Test;
 
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
-
 
 public class DragContentControllerTest {
 
@@ -14,30 +13,30 @@ public class DragContentControllerTest {
 
 	@Test
 	public void shouldReturnIdWhenIsImage() throws Exception {
-		//given
+		// given
 		String itemId = "itemId";
 		String content = "content";
 		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.IMAGE, content, itemId);
-		
-		//when
+
+		// when
 		String result = dragContentController.getTextFromItemAppropriateToType(item);
-		
-		//then
+
+		// then
 		assertThat(result).isEqualTo(itemId);
 	}
-	
+
 	@Test
 	public void shouldReturnContentWhenIsText() throws Exception {
-		//given
+		// given
 		String itemId = "itemId";
 		String content = "content";
 		SourcelistItemValue item = new SourcelistItemValue(SourcelistItemType.TEXT, content, itemId);
-		
-		//when
+
+		// when
 		String result = dragContentController.getTextFromItemAppropriateToType(item);
-		
-		//then
+
+		// then
 		assertThat(result).isEqualTo(content);
 	}
-	
+
 }

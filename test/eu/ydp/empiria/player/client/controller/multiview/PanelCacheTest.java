@@ -12,12 +12,12 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 @SuppressWarnings("PMD")
 public class PanelCacheTest extends GWTTestCase {
 	@Override
-	public String getModuleName(){
-		 return "eu.ydp.empiria.player.Player";
+	public String getModuleName() {
+		return "eu.ydp.empiria.player.Player";
 	}
 
 	public void testPageViewWithSwipeAndWithout() {
-		PanelCache cache =  PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase().getPanelCache();
+		PanelCache cache = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase().getPanelCache();
 		assertTrue(cache.isEmpty());
 		KeyValue<FlowPanel, FlowPanel> value = cache.getOrCreateAndPut(0);
 		Style style = value.getKey().getElement().getStyle();

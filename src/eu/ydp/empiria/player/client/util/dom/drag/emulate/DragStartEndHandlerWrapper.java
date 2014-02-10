@@ -13,11 +13,10 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Element;
 
 /**
- * Wrapper dla com.google.gwt.event.dom.client.DragStartEvent oraz
- * com.google.gwt.event.dom.client.DragEndEvent
- *
+ * Wrapper dla com.google.gwt.event.dom.client.DragStartEvent oraz com.google.gwt.event.dom.client.DragEndEvent
+ * 
  * @author plelakowski
- *
+ * 
  */
 public class DragStartEndHandlerWrapper extends AbstractHTML5DragDropWrapper {
 	protected static class DragStartEventWrapper extends com.google.gwt.event.dom.client.DragStartEvent {
@@ -53,7 +52,6 @@ public class DragStartEndHandlerWrapper extends AbstractHTML5DragDropWrapper {
 		return draggableWidget.getElement();
 	}
 
-
 	public DragStartEndHandlerWrapper(DraggableWidget<?> draggableWidget) {
 		this.draggableWidget = draggableWidget;
 	}
@@ -78,6 +76,5 @@ public class DragStartEndHandlerWrapper extends AbstractHTML5DragDropWrapper {
 		});
 		return addDragStartHandler;
 	}
-
 
 }

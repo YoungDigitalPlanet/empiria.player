@@ -36,7 +36,7 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 /**
  * inject in {@link ModuleScoped}
- *
+ * 
  */
 public class Response extends Variable {
 
@@ -45,23 +45,23 @@ public class Response extends Variable {
 	public List<String> groups;
 	public Evaluate evaluate;
 	/**
-	 * Determines whether the module corresponding to the response variable
-	 * exists in the document
+	 * Determines whether the module corresponding to the response variable exists in the document
 	 */
 	private boolean initialized = false;
-	
+
 	/*
-	 * Two CountModes are stored for backward compatibility with xml content. CompilerCountMode is defined in newer content and cannot be overridden by countMode defined in content CSS.
-	 * When compilerCountMode is not defined in xml then countMode from CSS should be used, if defined. Otherwise default value is CountMode.SINGLE.
+	 * Two CountModes are stored for backward compatibility with xml content. CompilerCountMode is defined in newer content and cannot be overridden by
+	 * countMode defined in content CSS. When compilerCountMode is not defined in xml then countMode from CSS should be used, if defined. Otherwise default
+	 * value is CountMode.SINGLE.
 	 */
 	private CountMode countMode = CountMode.SINGLE;
 	private final CountMode compilerCountMode;
-	
+
 	private ExpressionBean expression;
 	private CheckMode checkMode = CheckMode.DEFAULT;
 
-	Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate,
-			Cardinality cardinality, CountMode countMode, ExpressionBean expression, CheckMode checkMode, CountMode compilerCountMode) {
+	Response(CorrectAnswers correctAnswers, List<String> values, List<String> groups, String identifier, Evaluate evaluate, Cardinality cardinality,
+			CountMode countMode, ExpressionBean expression, CheckMode checkMode, CountMode compilerCountMode) {
 		this.correctAnswers = correctAnswers;
 		this.values = values;
 		this.groups = groups;
@@ -123,12 +123,12 @@ public class Response extends Variable {
 
 	public CountMode getAppropriateCountMode() {
 		CountMode countMode;
-		if(compilerCountMode != null) {
+		if (compilerCountMode != null) {
 			countMode = compilerCountMode;
 		} else {
 			countMode = this.countMode;
 		}
-		
+
 		return cardinality == Cardinality.SINGLE ? CountMode.SINGLE : countMode;
 	}
 
@@ -169,15 +169,15 @@ public class Response extends Variable {
 	public void fromJSON(JSONValue value) {
 	}
 
-	public boolean isInGroup(){
+	public boolean isInGroup() {
 		boolean isInGroup = false;
-		if(groups != null){
+		if (groups != null) {
 			isInGroup = groups.size() > 0;
 		}
 		return isInGroup;
 	}
 
-	public boolean isInExpression(){
+	public boolean isInExpression() {
 		return checkMode == CheckMode.EXPRESSION;
 	}
 

@@ -22,7 +22,8 @@ public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrac
 	private final PageScopeFactory pageScopeFactory;
 
 	@Inject
-	public VideoTextTrackElement(EventsBus eventsBus, StyleNameConstants styleNames, VideoTextTrackElementPresenter presenter, PageScopeFactory pageScopeFactory, @Assisted TextTrackKind kind) {
+	public VideoTextTrackElement(EventsBus eventsBus, StyleNameConstants styleNames, VideoTextTrackElementPresenter presenter,
+			PageScopeFactory pageScopeFactory, @Assisted TextTrackKind kind) {
 		this.kind = kind;
 		this.eventsBus = eventsBus;
 		this.styleNames = styleNames;
@@ -50,7 +51,8 @@ public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrac
 
 	@Override
 	public void init() {
-		eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.TEXT_TRACK_UPDATE), getMediaWrapper(), this, pageScopeFactory.getCurrentPageScope());
+		eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.TEXT_TRACK_UPDATE), getMediaWrapper(), this,
+				pageScopeFactory.getCurrentPageScope());
 		eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), this, pageScopeFactory.getCurrentPageScope());
 	}
 

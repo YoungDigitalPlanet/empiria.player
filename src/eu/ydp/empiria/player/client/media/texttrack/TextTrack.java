@@ -15,8 +15,9 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
  * Objekt reprezentujacy sciezke tekstowa powiazana z {@link Video} lub {@link Audio}
+ * 
  * @author plelakowski
- *
+ * 
  */
 public class TextTrack {
 	private final TextTrackKind kind;
@@ -24,12 +25,14 @@ public class TextTrack {
 	private TextTrackCue activeCue = null;
 	protected EventsBus eventsBus;
 	private final Object eventBusSource;
+
 	/**
-	 * @param kind typ sciezki
+	 * @param kind
+	 *            typ sciezki
 	 * @param eventBusSource
 	 */
 	@Inject
-	public TextTrack(EventsBus eventsBus,@Assisted TextTrackKind kind, @Assisted  Object eventBusSource) {
+	public TextTrack(EventsBus eventsBus, @Assisted TextTrackKind kind, @Assisted Object eventBusSource) {
 		this.kind = kind;
 		this.eventBusSource = eventBusSource;
 		this.eventsBus = eventsBus;
@@ -39,16 +42,16 @@ public class TextTrack {
 		return kind;
 	}
 
-	public void addCue(TextTrackCue textTrackCue){
+	public void addCue(TextTrackCue textTrackCue) {
 		cues.add(textTrackCue);
 		textTrackCue.setTextTrack(this);
 	}
 
 	@SuppressWarnings("PMD")
-	public void setCurrentTime(double time){
-		for(TextTrackCue cue : cues){
-			if(!cue.equals(activeCue)){
-				if(cue.getStartTime() <= time && cue.getEndTime() > time){
+	public void setCurrentTime(double time) {
+		for (TextTrackCue cue : cues) {
+			if (!cue.equals(activeCue)) {
+				if (cue.getStartTime() <= time && cue.getEndTime() > time) {
 					MediaEvent event = new MediaEvent(MediaEventTypes.TEXT_TRACK_UPDATE, eventBusSource);
 					event.setTextTrackCue(cue);
 					eventsBus.fireAsyncEventFromSource(event, eventBusSource, new CurrentPageScope());

@@ -18,19 +18,19 @@ public class SwiffyBonus implements BonusWithAsset {
 	private EmpiriaPaths empiriaPaths;
 	@Inject
 	private SwiffyService swiffyService;
-	
+
 	private String name;
 	private String url;
 	private Size size;
 
 	private final EndHandler endHandler = new EndHandler() {
-		
+
 		@Override
 		public void onEnd() {
 			swiffyService.clear(name);
 		}
 	};
-	
+
 	@Override
 	public void execute() {
 		SwiffyObject swiffyObject = swiffyService.getSwiffyObject(name, url);

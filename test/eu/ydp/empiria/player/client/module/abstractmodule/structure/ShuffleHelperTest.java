@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.module.abstractmodule.structure;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ public class ShuffleHelperTest {
 		public boolean isFixed() {
 			return shuffle;
 		}
-
 
 		@Override
 		public String toString() {

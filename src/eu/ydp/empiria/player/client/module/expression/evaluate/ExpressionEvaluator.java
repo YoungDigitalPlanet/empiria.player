@@ -23,6 +23,7 @@ public class ExpressionEvaluator implements Evaluator {
 
 	ILogger log = new Logger();
 
+	@Override
 	public boolean evaluate(ExpressionBean expressionBean) {
 		String expression = prepareExpression(expressionBean);
 		String fixedExpression = symjaExpressionAdapter.process(expression);

@@ -5,13 +5,14 @@ import com.google.gwt.core.client.JsArray;
 
 public class ProgressConfigJs extends JavaScriptObject {
 
-	protected ProgressConfigJs() {}
-	
+	protected ProgressConfigJs() {
+	}
+
 	public final native int getFrom()/*-{
-		return this.from;
-	}-*/;
+										return this.from;
+										}-*/;
 
 	public final native JsArray<ProgressAssetConfigJs> getAssets()/*-{
-		return this.assets;
-	}-*/;
+																	return this.assets;
+																	}-*/;
 }

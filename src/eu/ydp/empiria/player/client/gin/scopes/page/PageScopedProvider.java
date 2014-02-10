@@ -5,7 +5,7 @@ import com.google.inject.Provider;
 
 import eu.ydp.gwtutil.client.gin.scopes.CustomScopedProvider;
 
-public class PageScopedProvider<T> extends CustomScopedProvider<T>{
+public class PageScopedProvider<T> extends CustomScopedProvider<T> {
 
 	@Inject
 	public PageScopedProvider(Provider<T> provider, CurrentPageScopeProvider currentScopeProvider) {

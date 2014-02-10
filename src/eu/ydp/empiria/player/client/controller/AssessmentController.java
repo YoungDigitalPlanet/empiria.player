@@ -59,7 +59,8 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 			if (isInCache) {
 				pageController = controllerCache.getOrCreateAndPut(pageNumber);
 			} else {
-				pageController = controllerFactory.getPageController(assessmentViewSocket.getPageViewSocket(), flowSocket, assessmentSessionSocket.getPageSessionSocket());
+				pageController = controllerFactory.getPageController(assessmentViewSocket.getPageViewSocket(), flowSocket,
+						assessmentSessionSocket.getPageSessionSocket());
 				controllerCache.put(pageNumber, pageController);
 			}
 		}
@@ -114,13 +115,13 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
 	@SuppressWarnings("PMD")
 	private native JavaScriptObject createJsSocket(JavaScriptObject pageControllerSocket)/*-{
-		var socket = {};
-		var pcs = pageControllerSocket;
-		socket.getPageControllerSocket = function() {
-			return pcs;
-		}
-		return socket;
-	}-*/;
+																							var socket = {};
+																							var pcs = pageControllerSocket;
+																							socket.getPageControllerSocket = function() {
+																							return pcs;
+																							}
+																							return socket;
+																							}-*/;
 
 	@Override
 	public PageInterferenceSocket getPageControllerSocket() {

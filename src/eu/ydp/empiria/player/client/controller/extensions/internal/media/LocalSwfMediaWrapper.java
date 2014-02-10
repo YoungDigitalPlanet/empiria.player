@@ -15,7 +15,6 @@ public class LocalSwfMediaWrapper implements MediaWrapper<Widget> {
 		return availableOptions;
 	}
 
-
 	@Override
 	public Widget getMediaObject() {
 		return mediaWidget;
@@ -24,6 +23,7 @@ public class LocalSwfMediaWrapper implements MediaWrapper<Widget> {
 	public void setMediaWidget(Widget mediaWidget) {
 		this.mediaWidget = mediaWidget;
 	}
+
 	@Override
 	public String getMediaUniqId() {
 		return null;

@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.common.base.Function;
@@ -80,7 +81,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
 
 	private MediaController<?> createMediaController(Document document, ModuleTagName moduleName) {
 		doReturn(mock(MediaController.class)).when(instance).createEmptyModuleWrapper();
-		doReturn(mock(MediaController.class)).when(instance).createModuleWrapperForWidget(Mockito.any(Widget.class));
+		doReturn(mock(MediaController.class)).when(instance).createModuleWrapperForWidget(Matchers.any(Widget.class));
 		Node mediaScreenNode = document.getElementsByTagName(moduleName.tagName()).item(0);
 		MediaController<?> module = instance.getMediaControllerNewInstance(moduleName.tagName(), mediaScreenNode);
 		return module;
@@ -95,7 +96,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
 		moduleSocket = mock(ModuleSocket.class);
 		styleSocket = injector.getInstance(StyleSocket.class);
 		InlineBodyGeneratorSocket bodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
-		doReturn(widget).when(bodyGeneratorSocket).generateInlineBody(Mockito.any(Node.class));
+		doReturn(widget).when(bodyGeneratorSocket).generateInlineBody(Matchers.any(Node.class));
 		doReturn(bodyGeneratorSocket).when(moduleSocket).getInlineBodyGeneratorSocket();
 
 	}
@@ -105,7 +106,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
 		Document parse = XMLParser.parse(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN);
 		instance = spy(factory.getImgTemplateParser(parse.getDocumentElement(), moduleSocket));
 		instance.beforeParse(mock(Node.class), null);
-		verify(instance).beforeParse(Mockito.any(Node.class), Mockito.any(Widget.class));
+		verify(instance).beforeParse(Matchers.any(Node.class), Matchers.any(Widget.class));
 		Mockito.verifyNoMoreInteractions(instance);
 	}
 
@@ -147,7 +148,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
 		Document document = createDocument(Templates.TEMPLATE_WITH_CONTENT_WITHOUT_FULLSCREEN);
 		createInstance(document);
 		InlineBodyGeneratorSocket bodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
-		doReturn(null).when(bodyGeneratorSocket).generateInlineBody(Mockito.any(Node.class));
+		doReturn(null).when(bodyGeneratorSocket).generateInlineBody(Matchers.any(Node.class));
 		doReturn(bodyGeneratorSocket).when(moduleSocket).getInlineBodyGeneratorSocket();
 
 		MediaController<?> module = createMediaController(document, ModuleTagName.MEDIA_DESCRIPTION);
@@ -230,7 +231,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
 		doReturn(imgContentMock).when(instance).createExplorableImgContent();
 		Map<String, String> configMap = new HashMap<String, String>();
 		configMap.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_MODE, "explorable");
-		doReturn(configMap).when(styleSocket).getStyles(Mockito.any(Element.class));
+		doReturn(configMap).when(styleSocket).getStyles(Matchers.any(Element.class));
 
 		MediaController<?> module = createMediaController(createDocument(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN), ModuleTagName.MEDIA_SCREEN);
 		assertNotNull(module);

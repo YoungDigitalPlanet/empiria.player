@@ -15,15 +15,15 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "item")
-public class SelectionItemBean implements HasFixed{
+public class SelectionItemBean implements HasFixed {
 
 	@XmlAttribute
 	private int matchMax;
 	@XmlAttribute
-	private String identifier=StringUtils.EMPTY_STRING;
+	private String identifier = StringUtils.EMPTY_STRING;
 	@XmlValue
-	@XmlJavaTypeAdapter(value=XMLContentTypeAdapter.class)
-	private XMLContent xmlContent ;
+	@XmlJavaTypeAdapter(value = XMLContentTypeAdapter.class)
+	private XMLContent xmlContent;
 	@XmlAttribute
 	private boolean fixed;
 
@@ -59,5 +59,5 @@ public class SelectionItemBean implements HasFixed{
 	public void setXmlContent(XMLContent xmlContent) {
 		this.xmlContent = xmlContent;
 	}
-	
+
 }

@@ -15,11 +15,11 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 
 public class Outcome extends Variable {
 
-	public Outcome(){
+	public Outcome() {
 		super();
 	}
 
-	public Outcome(String identifier, Cardinality cardinality){
+	public Outcome(String identifier, Cardinality cardinality) {
 		super();
 		this.identifier = identifier;
 		this.cardinality = cardinality;
@@ -27,7 +27,7 @@ public class Outcome extends Variable {
 		normalMaximum = 0.0d;
 	}
 
-	public Outcome(String identifier, Cardinality cardinality,  String value0){
+	public Outcome(String identifier, Cardinality cardinality, String value0) {
 		super();
 		this.identifier = identifier;
 		this.cardinality = cardinality;
@@ -36,33 +36,33 @@ public class Outcome extends Variable {
 		normalMaximum = 0.0d;
 	}
 
-	public Outcome(Node responseDeclarationNode){
+	public Outcome(Node responseDeclarationNode) {
 
 		values = new Vector<String>();
 
-		identifier = ((Element)responseDeclarationNode).getAttribute("identifier");
+		identifier = ((Element) responseDeclarationNode).getAttribute("identifier");
 
-		cardinality = Cardinality.fromString( ((Element)responseDeclarationNode).getAttribute("cardinality") );
+		cardinality = Cardinality.fromString(((Element) responseDeclarationNode).getAttribute("cardinality"));
 
 		interpretation = "";
 
 		normalMaximum = 0.0d;
 
-		NodeList defaultValueNodes = ((Element)responseDeclarationNode).getElementsByTagName("defaultValue");
-		if (defaultValueNodes.getLength() > 0){
+		NodeList defaultValueNodes = ((Element) responseDeclarationNode).getElementsByTagName("defaultValue");
+		if (defaultValueNodes.getLength() > 0) {
 			NodeList valueNodes = defaultValueNodes.item(0).getChildNodes();
 			String value;
-			for (int i = 0 ; i < valueNodes.getLength() ; i ++){
-				if (valueNodes.item(i) instanceof Element  &&  "value".equals( ((Element)valueNodes.item(i)).getNodeName() )   &&  valueNodes.item(i).hasChildNodes()){
+			for (int i = 0; i < valueNodes.getLength(); i++) {
+				if (valueNodes.item(i) instanceof Element && "value".equals(((Element) valueNodes.item(i)).getNodeName()) && valueNodes.item(i).hasChildNodes()) {
 					value = valueNodes.item(i).getFirstChild().getNodeValue();
-					if (value != null){
+					if (value != null) {
 						values.add(value);
 					}
 				}
 
 			}
 		}
-		if (values.size() == 0  &&  cardinality == Cardinality.SINGLE){
+		if (values.size() == 0 && cardinality == Cardinality.SINGLE) {
 			values.add("0");
 		}
 
@@ -71,7 +71,6 @@ public class Outcome extends Variable {
 	public String interpretation;
 
 	public Double normalMaximum;
-
 
 	@Override
 	public JSONValue toJSON() {
@@ -82,7 +81,7 @@ public class Outcome extends Variable {
 		jsonArr.set(3, new JSONString(""));
 
 		JSONArray valuesArr = new JSONArray();
-		for (int v = 0 ; v < values.size() ; v ++){
+		for (int v = 0; v < values.size(); v++) {
 			valuesArr.set(v, new JSONString(values.get(v)));
 		}
 		jsonArr.set(4, valuesArr);
@@ -92,26 +91,24 @@ public class Outcome extends Variable {
 		return jsonArr;
 	}
 
-
-
 	@Override
 	public void fromJSON(JSONValue value) {
 		JSONArray jsonArr = value.isArray();
 
-		if (jsonArr != null){
+		if (jsonArr != null) {
 			identifier = jsonArr.get(1).isString().stringValue();
-			cardinality = Cardinality.valueOf( jsonArr.get(2).isString().stringValue() );
+			cardinality = Cardinality.valueOf(jsonArr.get(2).isString().stringValue());
 
 			JSONArray jsonValues = jsonArr.get(4).isArray();
 			values.clear();
-			if (jsonValues != null){
-				for (int i = 0 ; i < jsonValues.size() ; i ++){
+			if (jsonValues != null) {
+				for (int i = 0; i < jsonValues.size(); i++) {
 					values.add(jsonValues.get(i).isString().stringValue());
 				}
 			}
 
 			interpretation = jsonArr.get(5).isString().stringValue();
-			normalMaximum = Double.valueOf( jsonArr.get(6).isNumber().doubleValue() );
+			normalMaximum = Double.valueOf(jsonArr.get(6).isNumber().doubleValue());
 		}
 	}
 

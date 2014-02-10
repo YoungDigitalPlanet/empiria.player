@@ -11,8 +11,10 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class SwipeTypeProvider implements Provider<SwipeType> {
-	@Inject private StyleSocket styleSocket;
-	@Inject XMLParser xmlParser;
+	@Inject
+	private StyleSocket styleSocket;
+	@Inject
+	XMLParser xmlParser;
 	private SwipeType swipeType = null;
 
 	@Override

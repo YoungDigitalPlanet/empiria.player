@@ -11,27 +11,27 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 public class GroupedResponseAnswersMapBuilder {
 
 	private Map<String, List<GroupedAnswer>> groupNameToGroupedAnswersMap;
-	
-	public Map<String, ResponseAnswerGrouper> createResponseAnswerGroupersMap(){
+
+	public Map<String, ResponseAnswerGrouper> createResponseAnswerGroupersMap() {
 		Map<String, ResponseAnswerGrouper> responseAnswerGrouperMap = new HashMap<String, ResponseAnswerGrouper>();
-		for(String groupName : groupNameToGroupedAnswersMap.keySet()){
+		for (String groupName : groupNameToGroupedAnswersMap.keySet()) {
 			List<GroupedAnswer> groupedAnswers = groupNameToGroupedAnswersMap.get(groupName);
 			responseAnswerGrouperMap.put(groupName, new ResponseAnswerGrouper(groupedAnswers));
 		}
-		
+
 		return responseAnswerGrouperMap;
 	}
-	
-	public void initialize(Map<String, Response> responses){
+
+	public void initialize(Map<String, Response> responses) {
 		groupNameToGroupedAnswersMap = new HashMap<String, List<GroupedAnswer>>();
 		assignAnswersFromResponsesToCorrectGroup(responses);
 	}
 
 	private void assignAnswersFromResponsesToCorrectGroup(Map<String, Response> responses) {
-		for(Response response : responses.values()){
+		for (Response response : responses.values()) {
 			List<String> allCorrectAnswers = response.correctAnswers.getAllAnswers();
 			List<String> groups = response.groups;
-			
+
 			addAnswersToGroups(allCorrectAnswers, groups);
 		}
 	}
@@ -40,14 +40,14 @@ public class GroupedResponseAnswersMapBuilder {
 		for (String groupName : groups) {
 			List<GroupedAnswer> existingGroupedAnswers = getExistingGroupedAnswers(groupName);
 			List<GroupedAnswer> currentGroupedAnswers = createGroupedAnswersFromStrings(correctAnswers);
-			
+
 			existingGroupedAnswers.addAll(currentGroupedAnswers);
 		}
 	}
 
 	private List<GroupedAnswer> getExistingGroupedAnswers(String groupName) {
 		List<GroupedAnswer> existingGroupedAnswers = groupNameToGroupedAnswersMap.get(groupName);
-		if(existingGroupedAnswers == null){
+		if (existingGroupedAnswers == null) {
 			existingGroupedAnswers = Lists.newArrayList();
 			groupNameToGroupedAnswersMap.put(groupName, existingGroupedAnswers);
 		}
@@ -56,11 +56,11 @@ public class GroupedResponseAnswersMapBuilder {
 
 	private List<GroupedAnswer> createGroupedAnswersFromStrings(List<String> correctAnswers) {
 		List<GroupedAnswer> currentGroupedAnswers = Lists.newArrayList();
-		for(String correctAnswer : correctAnswers){
+		for (String correctAnswer : correctAnswers) {
 			GroupedAnswer groupedAnswer = new GroupedAnswer(correctAnswer);
 			currentGroupedAnswers.add(groupedAnswer);
 		}
-		
+
 		return currentGroupedAnswers;
 	}
 }

@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.object.impl;
 
-
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;

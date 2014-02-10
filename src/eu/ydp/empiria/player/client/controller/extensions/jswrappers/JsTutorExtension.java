@@ -8,21 +8,21 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.Tuto
 import eu.ydp.empiria.player.client.controller.extensions.types.TutorExtension;
 
 public class JsTutorExtension extends AbstractJsExtension implements TutorExtension {
-	
+
 	private JavaScriptObject playerJsObject;
 
 	@Override
-	public void init() {	
+	public void init() {
 	}
-	
+
 	@Override
 	public String getTutorId() {
 		return getTutorIdNative(extensionJsObject);
 	}
 
 	private final native String getTutorIdNative(JavaScriptObject extensionJsObject)/*-{
-		return extensionJsObject.getTutorId(); 
-	}-*/;
+																					return extensionJsObject.getTutorId(); 
+																					}-*/;
 
 	@Override
 	public TutorConfig getTutorConfig() {
@@ -32,12 +32,12 @@ public class JsTutorExtension extends AbstractJsExtension implements TutorExtens
 	}
 
 	private final native JavaScriptObject getTutorConfigNative(JavaScriptObject extensionJsObject)/*-{
-		return extensionJsObject.getTutorConfig(); 
-	}-*/;
+																									return extensionJsObject.getTutorConfig(); 
+																									}-*/;
 
 	@Override
 	public ExtensionType getType() {
 		return ExtensionType.EXTENSION_TUTOR;
 	}
-	
+
 }

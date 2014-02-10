@@ -8,15 +8,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "area")
 public class Area {
-	
+
 	@XmlAttribute
 	private Integer x;
-	
+
 	@XmlAttribute
 	private Integer y;
 
-	public Area(){}
-	
+	public Area() {
+	}
+
 	public Area(int x, int y) {
 		this.x = x;
 		this.y = y;

@@ -24,14 +24,14 @@ public class SurfaceRectangleFinder {
 	public int findWidth(ConnectionItems items) {
 		final int minLeft = surfacesOffsetsUtils.findMinOffsetLeft(items);
 		final int maxRight = surfacesOffsetsUtils.findMaxOffsetRight(items);
-	
+
 		return maxRight - minLeft;
 	}
 
 	public int findHeight(ConnectionItems items) {
 		final int minTop = surfacesOffsetsUtils.findMinOffsetTop(items);
 		final int maxBottom = surfacesOffsetsUtils.findMaxOffsetBottom(items);
-		
+
 		return maxBottom - minTop;
 	}
 }

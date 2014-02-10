@@ -12,7 +12,7 @@ public class JsFlowCommandSocketUserExtension extends AbstractJsExtension implem
 
 	protected FlowCommandsExecutor flowCommandsExecutor;
 	protected JavaScriptObject flowCommandsSocketJs;
-	
+
 	@Override
 	public ExtensionType getType() {
 		return ExtensionType.EXTENSION_SOCKET_USER_FLOW_COMMAND;
@@ -23,29 +23,30 @@ public class JsFlowCommandSocketUserExtension extends AbstractJsExtension implem
 		flowCommandsSocketJs = createFlowCommandsSocketJs();
 		setFlowCommandsSocketJs(extensionJsObject, flowCommandsSocketJs);
 	}
-	
-	public void setFlowCommandsExecutor(FlowCommandsExecutor fce){
+
+	@Override
+	public void setFlowCommandsExecutor(FlowCommandsExecutor fce) {
 		flowCommandsExecutor = fce;
 	}
-	
-	private void executeFlowCommand(JavaScriptObject commandJsObject){
+
+	private void executeFlowCommand(JavaScriptObject commandJsObject) {
 		IFlowCommand command = FlowCommand.fromJsObject(commandJsObject);
 		flowCommandsExecutor.executeCommand(command);
 	}
-	
+
 	private native JavaScriptObject createFlowCommandsSocketJs()/*-{
-		var instance = this;
-		var socket = [];
-		socket.executeFlowCommand = function(command){
-			instance.@eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsFlowCommandSocketUserExtension::executeFlowCommand(Lcom/google/gwt/core/client/JavaScriptObject;)(command);
-		}
-		return socket;
-	}-*/;
-	
+																var instance = this;
+																var socket = [];
+																socket.executeFlowCommand = function(command){
+																instance.@eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsFlowCommandSocketUserExtension::executeFlowCommand(Lcom/google/gwt/core/client/JavaScriptObject;)(command);
+																}
+																return socket;
+																}-*/;
+
 	private native void setFlowCommandsSocketJs(JavaScriptObject extension, JavaScriptObject socket)/*-{
-		if (typeof extension.setFlowCommandsSocket == 'function'){
-			extension.setFlowCommandsSocket(socket);
-		}
-	}-*/;
+																									if (typeof extension.setFlowCommandsSocket == 'function'){
+																									extension.setFlowCommandsSocket(socket);
+																									}
+																									}-*/;
 
 }

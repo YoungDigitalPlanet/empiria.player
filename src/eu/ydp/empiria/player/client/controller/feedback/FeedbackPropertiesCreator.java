@@ -2,11 +2,7 @@ package eu.ydp.empiria.player.client.controller.feedback;
 
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.DONE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.ERRORS;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTCHANGE;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.LASTMISTAKEN;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.TODO;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 
 import java.util.List;
 import java.util.Map;
@@ -38,19 +34,19 @@ public class FeedbackPropertiesCreator {
 	public FeedbackProperties getPropertiesFromVariables(String variableIdentifier, Map<String, ? extends Variable> variables) {
 		this.variableIdentifier = variableIdentifier;
 		this.variables = variables;
-		
-		if(variables == null){
+
+		if (variables == null) {
 			this.variables = Maps.newHashMap();
 		}
-		
+
 		return createProperties();
 	}
 
 	private FeedbackProperties createProperties() {
 		FeedbackProperties properties = new FeedbackProperties();
 
-		properties.addBooleanProperty(FeedbackPropertyName.OK, CORRECT.equals(getLastmistaken()) );
-		properties.addBooleanProperty(FeedbackPropertyName.WRONG, WRONG.equals(getLastmistaken()) );
+		properties.addBooleanProperty(FeedbackPropertyName.OK, CORRECT.equals(getLastmistaken()));
+		properties.addBooleanProperty(FeedbackPropertyName.WRONG, WRONG.equals(getLastmistaken()));
 		properties.addBooleanProperty(FeedbackPropertyName.ALL_OK, isAllOk());
 		properties.addIntegerProperty(FeedbackPropertyName.DONE, getIntegerVariable(DONE));
 		properties.addIntegerProperty(FeedbackPropertyName.TODO, getIntegerVariable(TODO));
@@ -70,7 +66,7 @@ public class FeedbackPropertiesCreator {
 	}
 
 	private LastMistaken lastmistakenStringToEnum(String lastmistaken) {
-		if (lastmistaken == null){
+		if (lastmistaken == null) {
 			return LastMistaken.NONE;
 		} else {
 			return LastMistaken.valueOf(lastmistaken);
@@ -123,10 +119,10 @@ public class FeedbackPropertiesCreator {
 		return value;
 	}
 
-	private String getVariableValue(VariableName variableName){
+	private String getVariableValue(VariableName variableName) {
 		return getVariableValue(variableName.toString());
 	}
-	
+
 	private String getVariableValue(String variableName) {
 		String namedVariableIdentifier = variableIdentifier + "-" + variableName;
 		Variable variable = variables.get(namedVariableIdentifier);

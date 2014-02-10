@@ -6,27 +6,27 @@ import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 class Slide {
-	
+
 	private int startTime;
-	
+
 	private String src;
-	
+
 	private final Element narration;
 
 	private final Element title;
-	
-	public Slide(Element slideNode){
+
+	public Slide(Element slideNode) {
 		String startTimeString = slideNode.getAttribute("startTime");
 		Element sourceNode = XMLUtils.getFirstElementWithTagName(slideNode, "source");
-		
+
 		title = XMLUtils.getFirstElementWithTagName(slideNode, "slideTitle");
 		narration = XMLUtils.getFirstElementWithTagName(slideNode, "narration");
-		
-		if (sourceNode != null){
+
+		if (sourceNode != null) {
 			src = sourceNode.getAttribute("src");
 		}
-		
-		if (startTimeString != null){
+
+		if (startTimeString != null) {
 			startTime = NumberUtils.tryParseInt(startTimeString);
 		}
 	}
@@ -34,17 +34,17 @@ class Slide {
 	public int getStartTime() {
 		return startTime;
 	}
-	
-	public String getSrc(){
+
+	public String getSrc() {
 		return src;
 	}
-	
-	public Element getTitle(){
+
+	public Element getTitle() {
 		return title;
 	}
 
 	public Element getNarration() {
 		return narration;
 	}
-	
+
 }

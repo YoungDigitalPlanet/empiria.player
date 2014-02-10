@@ -35,9 +35,9 @@ public class OrderingModeVariableProcessor implements VariableProcessor {
 
 	@Override
 	public LastMistaken checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
-		if(answersChanges.containChanges()){
+		if (answersChanges.containChanges()) {
 			int done = calculateDone(response);
-			if(done == 1){
+			if (done == 1) {
 				return LastMistaken.CORRECT;
 			}
 		}

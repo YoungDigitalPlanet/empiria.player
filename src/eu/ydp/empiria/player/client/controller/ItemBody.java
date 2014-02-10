@@ -267,13 +267,13 @@ public class ItemBody implements WidgetWorkflowListener {
 	}
 
 	private native JavaScriptObject createJsSocket()/*-{
-		var socket = {};
-		var instance = this;
-		socket.getModuleSockets = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
-		}
-		return socket;
-	}-*/;
+													var socket = {};
+													var instance = this;
+													socket.getModuleSockets = function() {
+													return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
+													}
+													return socket;
+													}-*/;
 
 	private JavaScriptObject getModuleJsSockets() {
 		eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[] moduleSockets = getModuleSockets();

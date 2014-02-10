@@ -28,7 +28,7 @@ public class VideoPlayerBuilderTest {
 	@Mock
 	private VideoPlayerFactory playerPactory;
 	@Mock
-	private VideoModuleFactory moduleFactory; 
+	private VideoModuleFactory moduleFactory;
 	@Mock
 	private VideoBean videoBean;
 
@@ -47,7 +47,7 @@ public class VideoPlayerBuilderTest {
 		// given
 		VideoPlayer videoPlayer = mock(VideoPlayer.class);
 		when(playerPactory.create(videoBean)).thenReturn(videoPlayer);
-		
+
 		final VideoPlayerAttachHandler mockHandler = mock(VideoPlayerAttachHandler.class);
 		when(moduleFactory.createAttachHandlerForRegisteringPauseEvent(videoPlayer)).thenReturn(mockHandler);
 

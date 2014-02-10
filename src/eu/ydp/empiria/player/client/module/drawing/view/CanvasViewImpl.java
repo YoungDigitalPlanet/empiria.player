@@ -22,8 +22,10 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 
 	private static CanvasViewImplUiBinder uiBinder = GWT.create(CanvasViewImplUiBinder.class);
 
-	@UiField(provided = true) protected Canvas canvas;
-	@UiField protected FlowPanel container;
+	@UiField(provided = true)
+	protected Canvas canvas;
+	@UiField
+	protected FlowPanel container;
 
 	private final String defaultGlobalCompositeOperation;
 	private final String destinationOutCompositeOperation = com.google.gwt.canvas.dom.client.Context2d.Composite.DESTINATION_OUT.getValue();
@@ -31,7 +33,6 @@ public class CanvasViewImpl extends Composite implements CanvasView {
 	private final String eraserColor = "#000000ff";
 	private final CanvasDragHandlers canvasDragHandlers;
 	private int currentLineWidth = 4;
-
 
 	@Inject
 	public CanvasViewImpl(CanvasDragHandlers canvasDragHandlers) {

@@ -3,10 +3,9 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorJs;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
-
 public class TutorPersonaProperties {
 
-	public static TutorPersonaProperties fromJs(TutorJs tutorJs, int index){
+	public static TutorPersonaProperties fromJs(TutorJs tutorJs, int index) {
 		Size size = new Size(tutorJs.getWidth(), tutorJs.getHeight());
 		int fps = tutorJs.getFps();
 		String name = tutorJs.getName();

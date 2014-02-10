@@ -19,10 +19,15 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public class SourceListModule extends SimpleModuleBase implements Sourcelist {
 
-	@Inject	private SourceListModuleStructure moduleStructure;
-	@Inject private SourceListPresenter presenter;
-	@Inject private IJSONService ijsonService;
-	@Inject @PageScoped private SourcelistManager sourcelistManager;
+	@Inject
+	private SourceListModuleStructure moduleStructure;
+	@Inject
+	private SourceListPresenter presenter;
+	@Inject
+	private IJSONService ijsonService;
+	@Inject
+	@PageScoped
+	private SourcelistManager sourcelistManager;
 	private String sourcelistId;
 
 	@Override

@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.module.model.image;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,8 +11,8 @@ import org.mockito.Mockito;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.gwtutil.client.util.geom.Size;
 import eu.ydp.gwtutil.client.util.geom.WidgetSize;

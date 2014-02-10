@@ -33,7 +33,7 @@ public class JAXBParserImpl<T> implements JAXBParser<T> {
 			final JAXBContext context = JAXBContext.newInstance(binds.toArray(new Class<?>[0])); // NOPMD
 			return (T) context.createUnmarshaller().unmarshal(new StringReader(xml));
 		} catch (JAXBException e) {
-			 Assert.fail(e.getMessage());
+			Assert.fail(e.getMessage());
 			return null;
 		}
 	}

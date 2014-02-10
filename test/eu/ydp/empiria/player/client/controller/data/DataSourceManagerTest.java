@@ -16,7 +16,7 @@ public class DataSourceManagerTest extends GWTTestCase {
 		return "eu.ydp.empiria.player.Player";
 	}
 
-	public void testDataLoadItemsCount(){
+	public void testDataLoadItemsCount() {
 		final DataSourceManager dsm = new DataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
@@ -36,11 +36,12 @@ public class DataSourceManagerTest extends GWTTestCase {
 			}
 		});
 
-		processLoad(dsm, "<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
+		processLoad(dsm,
+				"<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 
 	}
 
-	public void testDataLoadAssessmentTitle(){
+	public void testDataLoadAssessmentTitle() {
 		final DataSourceManager dsm = new DataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
@@ -60,10 +61,11 @@ public class DataSourceManagerTest extends GWTTestCase {
 			}
 		});
 
-		processLoad(dsm, "<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
+		processLoad(dsm,
+				"<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 	}
 
-	public void testDataLoadItemTitle(){
+	public void testDataLoadItemTitle() {
 		final DataSourceManager dsm = new DataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
@@ -83,10 +85,11 @@ public class DataSourceManagerTest extends GWTTestCase {
 			}
 		});
 
-		processLoad(dsm, "<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
+		processLoad(dsm,
+				"<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 	}
 
-	public void testDataLoadInitialData(){
+	public void testDataLoadInitialData() {
 		final DataSourceManager dsm = new DataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
@@ -110,11 +113,13 @@ public class DataSourceManagerTest extends GWTTestCase {
 			}
 		});
 
-		processLoad(dsm, "<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><outcomeDeclaration identifier=\"TODO\" cardinality=\"single\" baseType=\"integer\"><defaultValue><value>2</value></defaultValue></outcomeDeclaration><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
+		processLoad(
+				dsm,
+				"<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><outcomeDeclaration identifier=\"TODO\" cardinality=\"single\" baseType=\"integer\"><defaultValue><value>2</value></defaultValue></outcomeDeclaration><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 
 	}
 
-	public void testDataLoadMode(){
+	public void testDataLoadMode() {
 		final DataSourceManager dsm = new DataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
@@ -134,11 +139,13 @@ public class DataSourceManagerTest extends GWTTestCase {
 			}
 		});
 
-		processLoad(dsm, "<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><outcomeDeclaration identifier=\"TODO\" cardinality=\"single\" baseType=\"integer\"><defaultValue><value>2</value></defaultValue></outcomeDeclaration><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
+		processLoad(
+				dsm,
+				"<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><outcomeDeclaration identifier=\"TODO\" cardinality=\"single\" baseType=\"integer\"><defaultValue><value>2</value></defaultValue></outcomeDeclaration><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 
 	}
 
-	protected void processLoad(DataSourceManager dsm, String itemXml){
+	protected void processLoad(DataSourceManager dsm, String itemXml) {
 
 		String assessmentXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><assessmentTest xmlns=\"http://www.ydp.eu/empiria\" identifier=\"RTEST-13\" title=\"Show player supported functionality\"><testPart><assessmentSection identifier=\"sectionA\" title=\"Section A\" visible=\"true\"><assessmentItemRef identifier=\"inline_choice\" href=\"demo/inline_choice.xml\"/></assessmentSection></testPart></assessmentTest>";
 		Document assessmentDoc = XMLParser.parse(assessmentXml);

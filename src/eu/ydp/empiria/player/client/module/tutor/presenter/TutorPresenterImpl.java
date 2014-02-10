@@ -15,12 +15,9 @@ public class TutorPresenterImpl implements TutorPresenter {
 	private final TutorView tutorView;
 	private final String tutorId;
 	private final TutorPopupProvider tutorPopupProvider;
-	
+
 	@Inject
-	public TutorPresenterImpl(
-			@ModuleScoped TutorView tutorView,
-			@TutorId String tutorId,
-			TutorPopupProvider tutorPopupProvider) {
+	public TutorPresenterImpl(@ModuleScoped TutorView tutorView, @TutorId String tutorId, TutorPopupProvider tutorPopupProvider) {
 		this.tutorView = tutorView;
 		this.tutorId = tutorId;
 		this.tutorPopupProvider = tutorPopupProvider;
@@ -42,6 +39,5 @@ public class TutorPresenterImpl implements TutorPresenter {
 		TutorPopupPresenter tutorPopupPresenter = tutorPopupProvider.get(tutorId);
 		tutorPopupPresenter.show();
 	}
-
 
 }

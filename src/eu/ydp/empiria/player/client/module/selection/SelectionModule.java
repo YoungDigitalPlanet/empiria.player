@@ -18,10 +18,7 @@ public class SelectionModule extends AbstractInteractionModule<SelectionModule, 
 	private final SelectionModuleModel model;
 
 	@Inject
-	public SelectionModule(
-			SelectionModulePresenter selectionModulePresenter,
-			SelectionModuleStructure structure, 
-			@ModuleScoped SelectionModuleModel model) {
+	public SelectionModule(SelectionModulePresenter selectionModulePresenter, SelectionModuleStructure structure, @ModuleScoped SelectionModuleModel model) {
 		this.selectionModulePresenter = selectionModulePresenter;
 		this.structure = structure;
 		this.model = model;

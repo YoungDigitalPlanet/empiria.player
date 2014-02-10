@@ -5,8 +5,8 @@ import com.google.gwt.user.client.ui.UIObject;
 
 public abstract class GapModulePesenterBase implements GapModulePresenter {
 
-	public abstract UIObject getComponent(); 
-	
+	public abstract UIObject getComponent();
+
 	@Override
 	public void setWidth(double value, Unit unit) {
 		getComponent().setWidth(value + unit.getType());
@@ -26,14 +26,14 @@ public abstract class GapModulePesenterBase implements GapModulePresenter {
 	public int getOffsetHeight() {
 		return getComponent().getOffsetHeight();
 	}
-	
+
 	@Override
 	public void setFontSize(double value, Unit unit) {
 		getComponent().getElement().getStyle().setFontSize(value, unit);
 	}
-		
+
 	@Override
 	public int getFontSize() {
-		return 	Integer.parseInt(getComponent().getElement().getStyle().getFontSize().replace("px", ""));
+		return Integer.parseInt(getComponent().getElement().getStyle().getFontSize().replace("px", ""));
 	}
 }

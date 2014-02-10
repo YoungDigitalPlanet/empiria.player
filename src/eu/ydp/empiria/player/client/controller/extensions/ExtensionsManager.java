@@ -12,7 +12,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssess
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaProcessor;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsProgressBonusExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsBonusExtension;
@@ -27,6 +26,7 @@ import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsInteracti
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsPageInterferenceSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsPlayerJsObjectUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsProgressBonusExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsSessionDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStatefulExtension;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
@@ -38,8 +38,10 @@ public class ExtensionsManager implements IStateful {
 
 	public List<Extension> extensions;
 
-	@Inject private Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
-	@Inject private Provider<ExternalMediaProcessor> externalMediaProcessor;
+	@Inject
+	private Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
+	@Inject
+	private Provider<ExternalMediaProcessor> externalMediaProcessor;
 
 	public ExtensionsManager() {
 		extensions = new ArrayList<Extension>();
@@ -143,10 +145,10 @@ public class ExtensionsManager implements IStateful {
 	}
 
 	private native String getFieldType(JavaScriptObject jsObject)/*-{
-		if (typeof jsObject.getType == 'function')
-			return jsObject.getType();
-		return null;
-	}-*/;
+																	if (typeof jsObject.getType == 'function')
+																	return jsObject.getType();
+																	return null;
+																	}-*/;
 
 	public List<Extension> getExtensions() {
 		return extensions;
@@ -184,7 +186,7 @@ public class ExtensionsManager implements IStateful {
 	public void setState(JSONArray newState) {
 		int counter = 0;
 		for (Extension ext : extensions) {
-			if (ext instanceof StatefulExtension  &&  counter < newState.size()) {
+			if (ext instanceof StatefulExtension && counter < newState.size()) {
 				((StatefulExtension) ext).setState(newState.get(counter).isArray());
 				counter++;
 			}

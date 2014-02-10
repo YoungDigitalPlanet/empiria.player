@@ -11,9 +11,9 @@ import eu.ydp.empiria.player.client.module.button.CheckButtonModule;
 
 public class CheckButtonModuleConnectorExtension extends ControlModuleConnectorExtension {
 
-
 	@Inject
 	private Provider<CheckButtonModule> provider;
+
 	@Override
 	public ModuleCreator getModuleCreator() {
 		return new AbstractModuleCreator() {

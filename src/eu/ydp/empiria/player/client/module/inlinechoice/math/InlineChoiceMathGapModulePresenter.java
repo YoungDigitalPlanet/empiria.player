@@ -61,20 +61,22 @@ public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 		mainPanel.removeStyleDependentName(GapModulePresenter.CORRECT);
 		mainPanel.removeStyleDependentName(GapModulePresenter.WRONG);
 	}
-	
+
 	public IsExListBox getListBox() {
 		return listBox;
 	}
-	
+
 	@Override
 	public UIObject getComponent() {
 		return listBox;
 	}
-	
-	
+
 	@Override
-	public void setText(String text) {}
+	public void setText(String text) {
+	}
+
 	@Override
-	//czy inlinechoice moze miec ustawione maxlength w stylach? jeśli nie to można to wywalić -> GapBase.setMaxlengthBinding()
-	public void setMaxLength(int length) {}
+	// czy inlinechoice moze miec ustawione maxlength w stylach? jeśli nie to można to wywalić -> GapBase.setMaxlengthBinding()
+	public void setMaxLength(int length) {
+	}
 }

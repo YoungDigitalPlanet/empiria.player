@@ -1,14 +1,11 @@
 package eu.ydp.empiria.player.client.controller.item;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.inject.Binder;
@@ -23,8 +20,7 @@ import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 @SuppressWarnings("PMD")
-public class ItemDataProviderJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit{
-
+public class ItemDataProviderJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	private class CustomGinModule implements Module {
 		@Override
@@ -44,7 +40,7 @@ public class ItemDataProviderJUnitTest extends AbstractTestBaseWithoutAutoInject
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
 		instance = injector.getInstance(ItemDataProvider.class);
-		doReturn(itemData).when(dataSourceManager).getItemData(Mockito.anyInt());
+		doReturn(itemData).when(dataSourceManager).getItemData(Matchers.anyInt());
 		when(pageScopeFactory.getCurrentPageScope()).thenReturn(pageScope);
 		doReturn(1).when(pageScope).getPageIndex();
 	}

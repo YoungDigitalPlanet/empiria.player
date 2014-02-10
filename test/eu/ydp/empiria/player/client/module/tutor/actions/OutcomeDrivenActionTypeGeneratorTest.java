@@ -1,8 +1,7 @@
 package eu.ydp.empiria.player.client.module.tutor.actions;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,11 +22,16 @@ public class OutcomeDrivenActionTypeGeneratorTest {
 	@InjectMocks
 	private OutcomeDrivenActionTypeGenerator actionTypeGenerator;
 
-	@Mock private OutcomeDrivenAction okAction;
-	@Mock private OutcomeDrivenAction wrongAction;
-	@Mock private OutcomeDrivenAction pageAllOkAction;
-	@Mock private TutorConfig tutorConfig;
-	@Mock private OutcomeDrivenActionTypeProvider actionTypeProvider;
+	@Mock
+	private OutcomeDrivenAction okAction;
+	@Mock
+	private OutcomeDrivenAction wrongAction;
+	@Mock
+	private OutcomeDrivenAction pageAllOkAction;
+	@Mock
+	private TutorConfig tutorConfig;
+	@Mock
+	private OutcomeDrivenActionTypeProvider actionTypeProvider;
 
 	@Before
 	public void setUp() {

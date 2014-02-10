@@ -30,13 +30,13 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	protected ParenthoodGeneratorSocket parenthood;
 	protected List<IModule> singleViewModules;
 
-	protected StackMap<String, StackMap<Element, HasWidgets>> uniqueModulesMap = new StackMap<String, StackMap<Element,HasWidgets>>();
-	protected StackMap<Element, StackMap<IModule, HasWidgets>> nonuniqueModulesMap = new StackMap<Element, StackMap<IModule,HasWidgets>>();
+	protected StackMap<String, StackMap<Element, HasWidgets>> uniqueModulesMap = new StackMap<String, StackMap<Element, HasWidgets>>();
+	protected StackMap<Element, StackMap<IModule, HasWidgets>> nonuniqueModulesMap = new StackMap<Element, StackMap<IModule, HasWidgets>>();
 	protected StackMap<String, IModule> multiViewModulesMap = new StackMap<String, IModule>();
-	
+
 	protected FeedbackRegistry feedbackRegistry = PlayerGinjectorFactory.getPlayerGinjector().getFeedbackRegistry();
 
-	public ModulesInstalator(ParenthoodGeneratorSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, InteractionEventsListener mil){
+	public ModulesInstalator(ParenthoodGeneratorSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, InteractionEventsListener mil) {
 		this.registry = reg;
 		this.moduleSocket = ms;
 		this.interactionListener = mil;
@@ -45,7 +45,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	}
 
 	@Override
-	public boolean isModuleSupported(String nodeName){
+	public boolean isModuleSupported(String nodeName) {
 		return registry.isModuleSupported(nodeName);
 	}
 
@@ -55,24 +55,24 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	}
 
 	@Override
-	public void registerModuleView(Element element, HasWidgets parent){
+	public void registerModuleView(Element element, HasWidgets parent) {
 		String responseIdentifier = element.getAttribute("responseIdentifier");
 
 		ModulePlaceholder placeholder = new ModulePlaceholder();
 		parent.add(placeholder);
 
-		if (responseIdentifier != null){
-			if (!uniqueModulesMap.containsKey(responseIdentifier)){
+		if (responseIdentifier != null) {
+			if (!uniqueModulesMap.containsKey(responseIdentifier)) {
 				uniqueModulesMap.put(responseIdentifier, new StackMap<Element, HasWidgets>());
 			}
-			if (!multiViewModulesMap.containsKey(responseIdentifier)){
+			if (!multiViewModulesMap.containsKey(responseIdentifier)) {
 				IModule currModule = registry.createModule(element);
 				multiViewModulesMap.put(responseIdentifier, currModule);
 				parenthood.addChild(currModule);
 			}
 			uniqueModulesMap.get(responseIdentifier).put(element, placeholder);
 		} else {
-			if(!nonuniqueModulesMap.containsKey(element)){
+			if (!nonuniqueModulesMap.containsKey(element)) {
 				nonuniqueModulesMap.put(element, new StackMap<IModule, HasWidgets>());
 			}
 
@@ -83,38 +83,38 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 	}
 
 	@Override
-	public void createSingleViewModule(Element element, HasWidgets parent,BodyGeneratorSocket bodyGeneratorSocket) {
+	public void createSingleViewModule(Element element, HasWidgets parent, BodyGeneratorSocket bodyGeneratorSocket) {
 		IModule module = registry.createModule(element);
 
 		parenthood.addChild(module);
 		registerModuleFeedbacks(module, element);
 
-		if (module instanceof ISingleViewWithBodyModule){
+		if (module instanceof ISingleViewWithBodyModule) {
 			parenthood.pushParent((ISingleViewWithBodyModule) module);
 			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, interactionListener, bodyGeneratorSocket);
 			parenthood.popParent();
-		} else if (module instanceof ISingleViewSimpleModule){
-			((ISingleViewSimpleModule)module).initModule(element, moduleSocket, interactionListener);
-		}else if(module instanceof IInlineModule){
-			((IInlineModule) module).initModule(element, moduleSocket,interactionListener);
+		} else if (module instanceof ISingleViewSimpleModule) {
+			((ISingleViewSimpleModule) module).initModule(element, moduleSocket, interactionListener);
+		} else if (module instanceof IInlineModule) {
+			((IInlineModule) module).initModule(element, moduleSocket, interactionListener);
 		}
-		if (((ISingleViewModule)module).getView() instanceof Widget ){
-			parent.add( ((ISingleViewModule)module).getView() );
+		if (((ISingleViewModule) module).getView() instanceof Widget) {
+			parent.add(((ISingleViewModule) module).getView());
 		}
 
 		singleViewModules.add(module);
 	}
-	
-	private void registerModuleFeedbacks(IModule module, Element moduleElement){
+
+	private void registerModuleFeedbacks(IModule module, Element moduleElement) {
 		feedbackRegistry.registerFeedbacks(module, moduleElement);
 	}
 
-	public void installMultiViewNonuniuqeModules(){
-		for (Element currElement : nonuniqueModulesMap.getKeys()){
+	public void installMultiViewNonuniuqeModules() {
+		for (Element currElement : nonuniqueModulesMap.getKeys()) {
 			StackMap<IModule, HasWidgets> moduleMap = nonuniqueModulesMap.get(currElement);
 			IModule module = moduleMap.getKeys().get(0);
 
-			if(module instanceof IMultiViewModule){
+			if (module instanceof IMultiViewModule) {
 				IMultiViewModule multiViewModule = (IMultiViewModule) module;
 				List<HasWidgets> placeholders = moduleMap.getValues();
 
@@ -126,34 +126,34 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		}
 	}
 
-	public List<IModule> installMultiViewUniqueModules(){
+	public List<IModule> installMultiViewUniqueModules() {
 
 		List<IModule> modules = new ArrayList<IModule>();
 
-		for (String responseIdentifier : uniqueModulesMap.getKeys()){
+		for (String responseIdentifier : uniqueModulesMap.getKeys()) {
 			StackMap<Element, HasWidgets> currModuleMap = uniqueModulesMap.get(responseIdentifier);
 
 			IModule currModule = null;
 
-			for (Element currElement : currModuleMap.getKeys()){
-				if (currModule == null){
+			for (Element currElement : currModuleMap.getKeys()) {
+				if (currModule == null) {
 					currModule = multiViewModulesMap.get(responseIdentifier);
-					if (currModule instanceof IMultiViewModule){
-						((IMultiViewModule)currModule).initModule(moduleSocket, interactionListener);
+					if (currModule instanceof IMultiViewModule) {
+						((IMultiViewModule) currModule).initModule(moduleSocket, interactionListener);
 					}
-					
+
 					registerModuleFeedbacks(currModule, currElement);
 				}
-				if (currModule instanceof IMultiViewModule){
-					((IMultiViewModule)currModule).addElement(currElement);
+				if (currModule instanceof IMultiViewModule) {
+					((IMultiViewModule) currModule).addElement(currElement);
 				}
 			}
 
-			if (currModule instanceof IMultiViewModule){
-				((IMultiViewModule)currModule).installViews(currModuleMap.getValues());
+			if (currModule instanceof IMultiViewModule) {
+				((IMultiViewModule) currModule).installViews(currModuleMap.getValues());
 			}
 
-			if (currModule != null){
+			if (currModule != null) {
 				modules.add(currModule);
 			}
 
@@ -161,11 +161,11 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 		return modules;
 	}
 
-	public List<IModule> getInstalledSingleViewModules(){
+	public List<IModule> getInstalledSingleViewModules() {
 		return singleViewModules;
 	}
 
-	public void setInitialParent(HasChildren parent){
+	public void setInitialParent(HasChildren parent) {
 		parenthood.pushParent(parent);
 	}
 

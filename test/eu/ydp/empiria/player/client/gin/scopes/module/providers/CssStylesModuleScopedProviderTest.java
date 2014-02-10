@@ -29,14 +29,18 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CssStylesModuleScopedProviderTest {
-	@Mock private UserAgentUtil agentUtil;
-	@Mock private StyleSocket styleSocket;
-	@Mock private Provider<Element> xmlProvider;
-	@Mock Element element;
-	@InjectMocks private CssStylesModuleScopedProvider instance;
+	@Mock
+	private UserAgentUtil agentUtil;
+	@Mock
+	private StyleSocket styleSocket;
+	@Mock
+	private Provider<Element> xmlProvider;
+	@Mock
+	Element element;
+	@InjectMocks
+	private CssStylesModuleScopedProvider instance;
 
 	private final Map<String, String> styleMap = Maps.newHashMap();
-
 
 	@Before
 	public void before() {
@@ -56,6 +60,7 @@ public class CssStylesModuleScopedProviderTest {
 		verify(styleSocket).getStyles(eq(element));
 
 	}
+
 	@Test
 	public void get() throws Exception {
 		ModuleStyle moduleStyle = instance.get();

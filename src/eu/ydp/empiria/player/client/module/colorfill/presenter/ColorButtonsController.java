@@ -20,11 +20,11 @@ public class ColorButtonsController {
 		return currentSelectedButtonColor;
 	}
 
-	public void colorButtonClicked(ColorModel color){
-		if(currentSelectedButtonColor == null){
+	public void colorButtonClicked(ColorModel color) {
+		if (currentSelectedButtonColor == null) {
 			currentSelectedButtonColor = color;
 			interactionView.selectButton(color);
-		} else if(currentSelectedButtonColor.equals(color)){
+		} else if (currentSelectedButtonColor.equals(color)) {
 			currentSelectedButtonColor = null;
 			interactionView.deselectButton(color);
 		} else {

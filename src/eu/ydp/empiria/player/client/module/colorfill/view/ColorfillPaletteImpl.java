@@ -20,16 +20,17 @@ public class ColorfillPaletteImpl implements ColorfillPalette {
 	private static ColorfillPaletteUiBinder uiBinder = GWT.create(ColorfillPaletteUiBinder.class);
 
 	@UiTemplate("ColorfillPalette.ui.xml")
-	interface ColorfillPaletteUiBinder extends UiBinder<Widget, ColorfillPaletteImpl> {}
-	
+	interface ColorfillPaletteUiBinder extends UiBinder<Widget, ColorfillPaletteImpl> {
+	}
+
 	@UiField
 	FlowPanel container;
-	
+
 	@Inject
 	private PaletteButtonCreator buttonCreator;
 
 	private ColorfillButtonClickListener listener;
-	
+
 	private final Map<ColorModel, PaletteButton> buttons = Maps.newHashMap();
 
 	public ColorfillPaletteImpl() {
@@ -55,10 +56,10 @@ public class ColorfillPaletteImpl implements ColorfillPalette {
 
 	private Command createButtonClickCommand(final ColorModel color) {
 		return new Command() {
-			
+
 			@Override
 			public void execute(NativeEvent event) {
-				if (listener != null){
+				if (listener != null) {
 					listener.onButtonClick(color);
 				}
 			}
@@ -67,14 +68,14 @@ public class ColorfillPaletteImpl implements ColorfillPalette {
 
 	@Override
 	public void selectButton(ColorModel color) {
-		if (buttons.containsKey(color)){
+		if (buttons.containsKey(color)) {
 			buttons.get(color).select();
 		}
 	}
 
 	@Override
 	public void deselectButton(ColorModel color) {
-		if (buttons.containsKey(color)){
+		if (buttons.containsKey(color)) {
 			buttons.get(color).deselect();
 		}
 	}

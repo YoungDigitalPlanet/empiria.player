@@ -20,7 +20,8 @@ public class BaseMediaConfiguration {
 	private final boolean fullScreenTemplate;
 	private boolean isFeedback;
 
-	public BaseMediaConfiguration(Map<String, String> sources, MediaType mediaType, String poster, int height, int width, boolean hasTemplate, boolean fullScreenTemplate, String narrationText) {
+	public BaseMediaConfiguration(Map<String, String> sources, MediaType mediaType, String poster, int height, int width, boolean hasTemplate,
+			boolean fullScreenTemplate, String narrationText) {
 		this.sources = sources;
 		this.mediaType = mediaType;
 		this.poster = poster;

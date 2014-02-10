@@ -15,11 +15,13 @@ public class ConnectionColumnsBuilder {
 	private final ConnectionView view;
 
 	@Inject
-	public ConnectionColumnsBuilder(@Assisted MultiplePairBean<SimpleAssociableChoiceBean> modelInterface, @Assisted ConnectionItems connectionItems, @Assisted ConnectionView view){
+	public ConnectionColumnsBuilder(@Assisted MultiplePairBean<SimpleAssociableChoiceBean> modelInterface, @Assisted ConnectionItems connectionItems,
+			@Assisted ConnectionView view) {
 		this.modelInterface = modelInterface;
 		this.connectionItems = connectionItems;
 		this.view = view;
 	}
+
 	public void initRightColumn() {
 		for (PairChoiceBean choice : modelInterface.getTargetChoicesSet()) {
 			ConnectionItem item = connectionItems.addItemToRightColumn(choice);

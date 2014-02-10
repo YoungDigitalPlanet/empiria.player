@@ -26,8 +26,8 @@ public class JsBonusExtension extends AbstractJsExtension implements BonusExtens
 	}
 
 	private final native String getBonusIdNative(JavaScriptObject extensionJsObject)/*-{
-		return  extensionJsObject.getBonusId();
-	}-*/;
+																					return  extensionJsObject.getBonusId();
+																					}-*/;
 
 	@Override
 	public BonusConfig getBonusConfig() {
@@ -37,7 +37,7 @@ public class JsBonusExtension extends AbstractJsExtension implements BonusExtens
 	}
 
 	private final native BonusConfigJs getBonusJsConfig(JavaScriptObject extensionJsObject)/*-{
-		return extensionJsObject.getBonusConfig();
-	}-*/;
+																							return extensionJsObject.getBonusConfig();
+																							}-*/;
 
 }

@@ -6,9 +6,7 @@ import static eu.ydp.empiria.player.client.module.tutor.CommandType.ANIMATION;
 import static eu.ydp.empiria.player.client.module.tutor.CommandType.SOUND;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -31,10 +29,10 @@ import eu.ydp.gwtutil.junit.runners.ExMockRunner;
 import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @RunWith(ExMockRunner.class)
-@PrepareForTest({JsArray.class, JavaScriptObject.class, TutorCommandJs.class, TutorConfigJs.class, TutorActionJs.class, TutorJs.class})
+@PrepareForTest({ JsArray.class, JavaScriptObject.class, TutorCommandJs.class, TutorConfigJs.class, TutorActionJs.class, TutorJs.class })
 public class TutorConfigTest {
 
-	private final TutorConfig tutorConfig = new TutorConfig( createTutorConfigJs() );
+	private final TutorConfig tutorConfig = new TutorConfig(createTutorConfigJs());
 
 	@BeforeClass
 	public static void disarm() {
@@ -119,11 +117,10 @@ public class TutorConfigTest {
 
 	@Test
 	public void testGetPersonas() throws Exception {
-		//when
+		// when
 		List<TutorPersonaProperties> personas = tutorConfig.getPersonas();
 
-
-		//then
+		// then
 		assertEquals(0, personas.get(0).getIndex());
 		assertEquals("avatar0", personas.get(0).getAvatarFilename());
 		assertEquals(1, personas.get(1).getIndex());

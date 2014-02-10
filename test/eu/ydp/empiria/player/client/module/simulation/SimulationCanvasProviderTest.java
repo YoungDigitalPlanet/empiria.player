@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

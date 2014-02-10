@@ -13,8 +13,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
@@ -29,8 +29,10 @@ public class DragGapViewImpl implements DragGapView {
 	interface DragGapViewUiBinder extends UiBinder<Widget, DragGapViewImpl> {
 	}
 
-	@UiField FlowPanelWithDropZone container;
-	private @Inject TouchController touchController;
+	@UiField
+	FlowPanelWithDropZone container;
+	private @Inject
+	TouchController touchController;
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
 	private final DragGapStylesProvider dragGapStylesProvider;
@@ -42,10 +44,9 @@ public class DragGapViewImpl implements DragGapView {
 	private Optional<DragStartHandler> dragStartHandlerOptional = Optional.absent();
 	private DragEndHandler dragEndHandler;
 
-	
-
 	@Inject
-	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider, ContentWidgetFactory contentWidgetFactory) {
+	public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider,
+			ContentWidgetFactory contentWidgetFactory) {
 		this.dragDropHelper = dragDropHelper;
 		this.styleNameConstants = styleNameConstants;
 		this.dragGapStylesProvider = dragGapStylesProvider;
@@ -67,7 +68,7 @@ public class DragGapViewImpl implements DragGapView {
 		DraggableObject<FlowPanel> draggableObject = createDragableObjectOnItemWrapper();
 		addDragHandlersToItem(draggableObject);
 	}
-	
+
 	private void fullFillItemWrapperWithContent(SourcelistItemValue item) {
 		contentWidget = contentWidgetFactory.createContentWidgetById(item);
 		itemWrapper = new FlowPanel();
@@ -154,7 +155,7 @@ public class DragGapViewImpl implements DragGapView {
 	public void setDragStartHandler(DragStartHandler dragStartHandler) {
 		dragStartHandlerOptional = Optional.fromNullable(dragStartHandler);
 	}
-	
+
 	@Override
 	public DroppableObject<FlowPanelWithDropZone> enableDropCapabilities() {
 		DroppableObject<FlowPanelWithDropZone> droppable = dragDropHelper.enableDropForWidget(container);
@@ -170,7 +171,7 @@ public class DragGapViewImpl implements DragGapView {
 	public void setWidth(int width) {
 		container.setWidth(toPxUnit(width));
 	}
-	
+
 	private String toPxUnit(int value) {
 		String px = Unit.PX.toString().toLowerCase();
 		String valueInPxUnit = value + px;

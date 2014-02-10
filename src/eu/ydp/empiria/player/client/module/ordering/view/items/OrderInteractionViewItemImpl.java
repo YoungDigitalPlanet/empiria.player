@@ -23,7 +23,7 @@ public class OrderInteractionViewItemImpl extends Composite implements OrderInte
 	private final String itemId;
 
 	@Inject
-	public OrderInteractionViewItemImpl(@Assisted IsWidget body,@Assisted String itemId) {
+	public OrderInteractionViewItemImpl(@Assisted IsWidget body, @Assisted String itemId) {
 		this.itemId = itemId;
 		initWidget(uiBinder.createAndBindUi(this));
 		mainPanel.add(body);

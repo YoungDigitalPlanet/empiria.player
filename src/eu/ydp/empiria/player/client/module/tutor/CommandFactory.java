@@ -81,7 +81,7 @@ public class CommandFactory {
 		Size size = tutorPersonaProperties.getAnimationSize();
 
 		String assetPath = createAssetPath(assetName);
-		
+
 		ShowImageDTO showImageDTO = new ShowImageDTO(assetPath, size);
 
 		return commandsModuleFactory.createShowImageCommand(moduleView, showImageDTO, handler);

@@ -14,14 +14,14 @@ import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModule
 import eu.ydp.empiria.player.client.module.sourcelist.view.ScormScrollPanel;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListViewImpl;
+
 public class SourceListGinModule extends AbstractGinModule {
-	public static class SourceListJAXBParserProvider implements Provider<SourceListJAXBParser>{
+	public static class SourceListJAXBParserProvider implements Provider<SourceListJAXBParser> {
 		@Override
 		public SourceListJAXBParser get() {
 			return GWT.create(SourceListJAXBParser.class);
 		};
 	}
-
 
 	@Override
 	protected void configure() {

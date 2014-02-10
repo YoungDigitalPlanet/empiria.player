@@ -16,16 +16,20 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 public class CssStylesModuleScopedProvider implements Provider<ModuleStyle> {
 
-	@Inject StyleSocket styleSocket;
-	@Inject @ModuleScoped Provider<Element> xmlProvider;
-	@Inject UserAgentUtil agentUtil;
+	@Inject
+	StyleSocket styleSocket;
+	@Inject
+	@ModuleScoped
+	Provider<Element> xmlProvider;
+	@Inject
+	UserAgentUtil agentUtil;
 
 	@Override
 	public ModuleStyle get() {
 		Map<String, String> styles = styleSocket.getStyles(xmlProvider.get());
-		if(agentUtil.isMobileUserAgent(MobileUserAgent.SAFARI)){
+		if (agentUtil.isMobileUserAgent(MobileUserAgent.SAFARI)) {
 			return new IOSModuleStyle(styles);
-		}else{
+		} else {
 			return new ModuleStyleImpl(styles);
 		}
 	}

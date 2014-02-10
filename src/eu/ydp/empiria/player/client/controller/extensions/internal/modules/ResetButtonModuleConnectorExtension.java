@@ -13,9 +13,10 @@ public class ResetButtonModuleConnectorExtension extends ControlModuleConnectorE
 
 	@Inject
 	private Provider<ResetButtonModule> provider;
+
 	@Override
 	public ModuleCreator getModuleCreator() {
-		 	return new AbstractModuleCreator() {
+		return new AbstractModuleCreator() {
 			@Override
 			public IModule createModule() {
 				ResetButtonModule button = provider.get();

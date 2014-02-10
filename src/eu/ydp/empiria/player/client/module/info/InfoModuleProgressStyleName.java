@@ -8,8 +8,10 @@ import eu.ydp.gwtutil.client.NumberUtils;
 public class InfoModuleProgressStyleName {
 	private static final String ITEM_RESULT_KEY = "$[item.result]";
 
-	@Inject private InfoModuleProgressMapping infoModuleProgressMapping;
-	@Inject private ContentFieldRegistry fieldRegistry;
+	@Inject
+	private InfoModuleProgressMapping infoModuleProgressMapping;
+	@Inject
+	private ContentFieldRegistry fieldRegistry;
 
 	public String getCurrentStyleName(int refItemIndex) {
 		Optional<ContentFieldInfo> fieldInfo = fieldRegistry.getFieldInfo(ITEM_RESULT_KEY);

@@ -56,12 +56,12 @@ public class ModulesVariablesProcessor {
 	private boolean shouldProcessResponse(DtoProcessedResponse processedResponse) {
 		boolean shouldProcessResponse = false;
 		Response response = processedResponse.getCurrentResponse();
-		
-		if(processedResponse.containChanges()){
+
+		if (processedResponse.containChanges()) {
 			shouldProcessResponse = true;
-		}else if(response.isInGroup()){
+		} else if (response.isInGroup()) {
 			shouldProcessResponse = true;
-		}else if(response.isInExpression()){
+		} else if (response.isInExpression()) {
 			shouldProcessResponse = true;
 		}
 		return shouldProcessResponse;

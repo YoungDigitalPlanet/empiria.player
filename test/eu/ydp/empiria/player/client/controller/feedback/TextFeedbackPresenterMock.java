@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.feedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 
 public class TextFeedbackPresenterMock implements TextFeedback {
-	
+
 	public TextFeedbackPresenterMock() {
 	}
 
@@ -18,7 +18,7 @@ public class TextFeedbackPresenterMock implements TextFeedback {
 
 	@Override
 	public void show() {
-		
+
 	}
 
 	@Override

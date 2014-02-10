@@ -17,10 +17,12 @@ public class BookmarkPopup implements IBookmarkPopupView, IBookmarkPopupContents
 
 	BookmarkPopupContents contents = new BookmarkPopupContents();
 	PopupPanel popup = new PopupPanel(true, true);
-	
-	@Inject StyleNameConstants styleNameConstants;
-	@Inject EventsBus eventBus;
-	
+
+	@Inject
+	StyleNameConstants styleNameConstants;
+	@Inject
+	EventsBus eventBus;
+
 	private IBookmarkPopupPresenter presenter;
 
 	@Override
@@ -30,16 +32,16 @@ public class BookmarkPopup implements IBookmarkPopupView, IBookmarkPopupContents
 		popup.setGlassStyleName(styleNameConstants.QP_BOOKMARK_POPUP_GLASS());
 		popup.add(contents);
 		popup.addCloseHandler(new CloseHandler<PopupPanel>() {
-			
+
 			@Override
 			public void onClose(CloseEvent<PopupPanel> event) {
-				if (event.isAutoClosed()){
+				if (event.isAutoClosed()) {
 					presenter.applyBookmark();
 				}
 			}
 		});
 		popup.addDomHandler(new TouchStartHandler() {
-			
+
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
 				eventBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));

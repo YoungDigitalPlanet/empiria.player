@@ -2,15 +2,7 @@ package eu.ydp.empiria.player.client.module.button;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.InOrder;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -98,7 +91,7 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 	@Test
 	public void testInitModuleElement() {
 		instance.initModule(mock(Element.class));
-		verify(eventsBus).addHandler(Mockito.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGING)), Mockito.eq(instance));
+		verify(eventsBus).addHandler(Matchers.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGING)), Matchers.eq(instance));
 	}
 
 	@Test
@@ -137,12 +130,12 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 		instance.isSelected = true;
 		instance.invokeRequest();
-		verify(requestInvoker).invokeRequest(Mockito.any(FlowRequest.Continue.class));
+		verify(requestInvoker).invokeRequest(Matchers.any(FlowRequest.Continue.class));
 
 		Mockito.reset(requestInvoker);
 		instance.isSelected = false;
 		instance.invokeRequest();
-		verify(requestInvoker).invokeRequest(Mockito.any(FlowRequest.ShowAnswers.class));
+		verify(requestInvoker).invokeRequest(Matchers.any(FlowRequest.ShowAnswers.class));
 	}
 
 	@Test
@@ -162,11 +155,11 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 		instance.isSelected = false;
 		instance.onPlayerEvent(event);
-		verify(requestInvoker, times(0)).invokeRequest(Mockito.any(FlowRequest.Continue.class));
+		verify(requestInvoker, times(0)).invokeRequest(Matchers.any(FlowRequest.Continue.class));
 
 		instance.isSelected = true;
 		instance.onPlayerEvent(event);
-		verify(requestInvoker, times(1)).invokeRequest(Mockito.any(FlowRequest.Continue.class));
+		verify(requestInvoker, times(1)).invokeRequest(Matchers.any(FlowRequest.Continue.class));
 	}
 
 	@Test
@@ -192,10 +185,10 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 		doReturn(null).when(instance).getCurrentGroupIdentifier();
 		when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
 		instance.enablePreviewMode();
-		
+
 		// when
 		instance.updateStyleName();
-		
+
 		// then
 		InOrder inOrder = inOrder(button);
 		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);

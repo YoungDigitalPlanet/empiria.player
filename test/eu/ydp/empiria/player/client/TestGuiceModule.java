@@ -1,13 +1,12 @@
 package eu.ydp.empiria.player.client;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -214,7 +213,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	@Singleton
 	public XMLParser getXmlParser() {
 		XMLParser parser = mock(XMLParser.class);
-		when(parser.parse(Mockito.anyString())).then(new Answer<Document>() {
+		when(parser.parse(Matchers.anyString())).then(new Answer<Document>() {
 			@Override
 			public Document answer(InvocationOnMock invocation) throws Throwable {
 				return eu.ydp.gwtutil.xml.XMLParser.parse((String) invocation.getArguments()[0]);
@@ -234,7 +233,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	@Singleton
 	public TouchRecognitionFactory getTouchRecognitionFactory() {
 		TouchRecognitionFactory factory = mock(TouchRecognitionFactory.class);
-		when(factory.getTouchRecognition(Mockito.any(Widget.class), Mockito.anyBoolean())).thenReturn(spy(new HasTouchHandlersMock()));
+		when(factory.getTouchRecognition(Matchers.any(Widget.class), Matchers.anyBoolean())).thenReturn(spy(new HasTouchHandlersMock()));
 		return factory;
 	}
 
@@ -242,8 +241,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	@Singleton
 	public PositionHelper getPositionHelper() {
 		PositionHelper helper = mock(PositionHelper.class);
-		when(helper.getXPositionRelativeToTarget(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
-		when(helper.getYPositionRelativeToTarget(Mockito.any(NativeEvent.class), Mockito.any(Element.class))).thenReturn(20);
+		when(helper.getXPositionRelativeToTarget(Matchers.any(NativeEvent.class), Matchers.any(Element.class))).thenReturn(20);
+		when(helper.getYPositionRelativeToTarget(Matchers.any(NativeEvent.class), Matchers.any(Element.class))).thenReturn(20);
 		return helper;
 	}
 

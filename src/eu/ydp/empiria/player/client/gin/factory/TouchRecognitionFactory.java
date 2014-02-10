@@ -8,11 +8,15 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 public interface TouchRecognitionFactory {
 	/**
 	 * @param listenOn
-	 * @param emulateClickAsTouch czy emulowac operacje myszka jako touche
+	 * @param emulateClickAsTouch
+	 *            czy emulowac operacje myszka jako touche
 	 * @return
 	 */
 	public HasTouchHandlers getTouchRecognition(@Assisted("listenOn") Widget listenOn);
-	public HasTouchHandlers getTouchRecognition(@Assisted("listenOn") Widget listenOn,@Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch);
-	public HasTouchHandlers getTouchRecognition(@Assisted("listenOn") Widget listenOn,@Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch, @Assisted("globalTouchEnd") Boolean global);
+
+	public HasTouchHandlers getTouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch);
+
+	public HasTouchHandlers getTouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch,
+			@Assisted("globalTouchEnd") Boolean global);
 
 }

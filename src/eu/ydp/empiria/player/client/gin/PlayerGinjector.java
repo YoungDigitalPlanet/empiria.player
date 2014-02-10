@@ -53,12 +53,13 @@ import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.gin.module.AnimationGinModule;
+import eu.ydp.gwtutil.client.gin.module.UtilGinModule;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
-@GinModules(value = { PlayerGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class, TextEntryGinModule.class,
-		SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class, OrderingGinModule.class,
-		ModuleScopedModule.class, ColorfillGinModule.class, DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class, AnimationGinModule.class,
-		DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class })
+@GinModules(value = { PlayerGinModule.class, UtilGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class,
+		TextEntryGinModule.class, SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
+		OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class, DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
+		AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class })
 public interface PlayerGinjector extends Ginjector {
 
 	ViewEngine getViewEngine();

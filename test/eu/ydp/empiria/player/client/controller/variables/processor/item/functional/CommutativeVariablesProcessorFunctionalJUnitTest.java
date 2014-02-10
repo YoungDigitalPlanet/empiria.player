@@ -19,16 +19,11 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 	@Test
 	public void shouldRecognizeMistakeInSecondResponse() throws Exception {
 		// given
-		Response responseWithCorrectAnswerInGroup = builder()
-				.withCorrectAnswers("CorrectAnswer assigned to first response")
-				.withCurrentUserAnswers("CorrectAnswer assigned to second response")
-				.build();
+		Response responseWithCorrectAnswerInGroup = builder().withCorrectAnswers("CorrectAnswer assigned to first response")
+				.withCurrentUserAnswers("CorrectAnswer assigned to second response").build();
 
-		Response responseWithWrongAnswer = builder()
-				.withCorrectAnswers("CorrectAnswer assigned to second response")
-				.withCurrentUserAnswers("completly wrong answer")
-				.withIdentifier("responseWithWrongAnswerId")
-				.build();
+		Response responseWithWrongAnswer = builder().withCorrectAnswers("CorrectAnswer assigned to second response")
+				.withCurrentUserAnswers("completly wrong answer").withIdentifier("responseWithWrongAnswerId").build();
 
 		Map<String, Response> responsesMap = convertToMap(responseWithCorrectAnswerInGroup, responseWithWrongAnswer);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -43,11 +38,13 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("2"), Lists.newArrayList(TODO), outcomes);
 
 		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswerInGroup, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
-		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswerInGroup, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswerInGroup, Lists.newArrayList(LastMistaken.CORRECT.toString()),
+				Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswerInGroup, Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
 
 		assertResponseRelatedOutcomesHaveValue(responseWithWrongAnswer, Lists.newArrayList("1"), Lists.newArrayList(ERRORS, TODO, MISTAKES), outcomes);
-		assertResponseRelatedOutcomesHaveValue(responseWithWrongAnswer, Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithWrongAnswer, Lists.newArrayList(LastMistaken.WRONG.toString()), Lists.newArrayList(LASTMISTAKEN),
+				outcomes);
 		assertResponseRelatedOutcomesHaveValue(responseWithWrongAnswer, Lists.newArrayList("0"), Lists.newArrayList(DONE), outcomes);
 	}
 
@@ -56,11 +53,8 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 		// given
 		Response correctResponse = builder().withCorrectAnswers("CorrectAnswer1").withCurrentUserAnswers("CorrectAnswer2").build();
 
-		Response wrongResponse = builder()
-				.withIdentifier("wrongResponseId")
-				.withCorrectAnswers("CorrectAnswer2")
-				.withCurrentUserAnswers("completly wrong answer")
-				.build();
+		Response wrongResponse = builder().withIdentifier("wrongResponseId").withCorrectAnswers("CorrectAnswer2")
+				.withCurrentUserAnswers("completly wrong answer").build();
 
 		Map<String, Response> responsesMap = convertToMap(correctResponse, wrongResponse);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -118,11 +112,8 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 		// given
 		Response responseWithCorrectAnswer = builder().withCorrectAnswers("CorrectAnswerFIRST").withCurrentUserAnswers("CorrectAnswerSECOND").build();
 
-		Response anotherResponseWithCorrectAnswer = builder()
-				.withIdentifier("otherResponseIdentifier")
-				.withCorrectAnswers("CorrectAnswerSECOND")
-				.withCurrentUserAnswers("CorrectAnswerFIRST")
-				.build();
+		Response anotherResponseWithCorrectAnswer = builder().withIdentifier("otherResponseIdentifier").withCorrectAnswers("CorrectAnswerSECOND")
+				.withCurrentUserAnswers("CorrectAnswerFIRST").build();
 
 		Map<String, Response> responsesMap = convertToMap(responseWithCorrectAnswer, anotherResponseWithCorrectAnswer);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);
@@ -136,28 +127,26 @@ public class CommutativeVariablesProcessorFunctionalJUnitTest extends VariablePr
 		assertGlobalOutcomesHaveValue(Lists.newArrayList("2"), Lists.newArrayList(DONE, TODO), outcomes);
 
 		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswer, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
-		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswer, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswer, Lists.newArrayList(LastMistaken.CORRECT.toString()),
+				Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(responseWithCorrectAnswer, Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
 
 		assertResponseRelatedOutcomesHaveValue(anotherResponseWithCorrectAnswer, Lists.newArrayList("0"), Lists.newArrayList(ERRORS, MISTAKES), outcomes);
-		assertResponseRelatedOutcomesHaveValue(anotherResponseWithCorrectAnswer, Lists.newArrayList(LastMistaken.CORRECT.toString()), Lists.newArrayList(LASTMISTAKEN), outcomes);
+		assertResponseRelatedOutcomesHaveValue(anotherResponseWithCorrectAnswer, Lists.newArrayList(LastMistaken.CORRECT.toString()),
+				Lists.newArrayList(LASTMISTAKEN), outcomes);
 		assertResponseRelatedOutcomesHaveValue(anotherResponseWithCorrectAnswer, Lists.newArrayList("1"), Lists.newArrayList(DONE, TODO), outcomes);
 	}
 
 	/*
-	 * We have two responses in one group, both of them have the same answer, so
-	 * we can set only one as correct, and second as wrong
+	 * We have two responses in one group, both of them have the same answer, so we can set only one as correct, and second as wrong
 	 */
 	@Test
 	public void shouldRecognizeAnswerAlreadyUsedInGroup() throws Exception {
 		// given
 		Response responseWithCorrectAnswerInGroup = builder().withCorrectAnswers("CorrectAnswerFIRST").withCurrentUserAnswers("CorrectAnswerSECOND").build();
 
-		Response responseWithAlreadyUsedAnswer = builder()
-				.withIdentifier("otherResponseIdentifier")
-				.withCorrectAnswers("CorrectAnswerSECOND")
-				.withCurrentUserAnswers("CorrectAnswerSECOND")
-				.build();
+		Response responseWithAlreadyUsedAnswer = builder().withIdentifier("otherResponseIdentifier").withCorrectAnswers("CorrectAnswerSECOND")
+				.withCurrentUserAnswers("CorrectAnswerSECOND").build();
 
 		Map<String, Response> responsesMap = convertToMap(responseWithCorrectAnswerInGroup, responseWithAlreadyUsedAnswer);
 		Map<String, Outcome> outcomes = prepareInitialOutcomes(responsesMap);

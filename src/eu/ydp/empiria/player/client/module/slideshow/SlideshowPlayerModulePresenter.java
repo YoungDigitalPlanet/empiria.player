@@ -26,13 +26,13 @@ import eu.ydp.empiria.player.client.util.events.slideshow.SlideshowPlayerEvent;
 import eu.ydp.empiria.player.client.util.events.slideshow.SlideshowPlayerEventType;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
-public class SlideshowPlayerModulePresenter implements SlideshowPresenter{
+public class SlideshowPlayerModulePresenter implements SlideshowPresenter {
 
 	@UiTemplate("SlideshowPlayerModule.ui.xml")
-	interface SimulationModuleUiBinder extends UiBinder<Widget, SlideshowPlayerModulePresenter>{};
+	interface SimulationModuleUiBinder extends UiBinder<Widget, SlideshowPlayerModulePresenter> {
+	};
 
 	private final SimulationModuleUiBinder uiBinder = GWT.create(SimulationModuleUiBinder.class);
-
 
 	@UiField
 	protected Panel titlePanel;
@@ -68,15 +68,14 @@ public class SlideshowPlayerModulePresenter implements SlideshowPresenter{
 
 	private InlineBodyGeneratorSocket bodyGenerator;
 
-
 	@PostConstruct
 	public void postConstruct() {
 		uiBinder.createAndBindUi(this);
 	}
 
 	@Override
-	public void setTitle(Element titleNode){
-		if (titleNode != null){
+	public void setTitle(Element titleNode) {
+		if (titleNode != null) {
 			Widget titleWidget = bodyGenerator.generateInlineBody(titleNode);
 			titlePanel.clear();
 			titlePanel.add(titleWidget);
@@ -84,7 +83,7 @@ public class SlideshowPlayerModulePresenter implements SlideshowPresenter{
 	}
 
 	@Override
-	public void setBodyGeneratorSocket(InlineBodyGeneratorSocket socket){
+	public void setBodyGeneratorSocket(InlineBodyGeneratorSocket socket) {
 		bodyGenerator = socket;
 	}
 
@@ -94,41 +93,41 @@ public class SlideshowPlayerModulePresenter implements SlideshowPresenter{
 	}
 
 	@Override
-	public void setEnabledNextButton(boolean enabled){
+	public void setEnabledNextButton(boolean enabled) {
 		nextButton.setEnabled(enabled);
 	}
 
 	@Override
-	public void setEnabledPreviousButton(boolean enabled){
+	public void setEnabledPreviousButton(boolean enabled) {
 		previousButton.setEnabled(enabled);
 	}
 
 	@Override
-	public void setPlayButtonDown(boolean down){
+	public void setPlayButtonDown(boolean down) {
 		playButton.setStateDown(down);
 	}
 
 	@Override
-	public boolean isPlayButtonDown(){
+	public boolean isPlayButtonDown() {
 		return playButton.isStateDown();
 	}
 
 	@Override
 	public void setViewClass(String className) {
-		if (!Strings.isNullOrEmpty(className)  &&  mainPanel != null){
+		if (!Strings.isNullOrEmpty(className) && mainPanel != null) {
 			mainPanel.addStyleName(className);
 		}
 	}
 
 	@Override
 	public void setSlides(List<Slide> slidesList) {
-		if(slideWidgetsList == null){
+		if (slideWidgetsList == null) {
 			slideWidgetsList = new ArrayList<SlideWidget>();
 		}
 
 		slideWidgetsList.clear();
 
-		for(Slide slide: slidesList){
+		for (Slide slide : slidesList) {
 			SlideWidget slideWidget = createSlideWidget(slide, bodyGenerator);
 			slideWidgetsList.add(slideWidget);
 		}
@@ -143,39 +142,39 @@ public class SlideshowPlayerModulePresenter implements SlideshowPresenter{
 	}
 
 	@UiFactory
-	protected TwoStateButton createPlayPauseButton(){
+	protected TwoStateButton createPlayPauseButton() {
 		return new TwoStateButton(styleNames.QP_SLIDESHOW_BUTTON_PLAY(), styleNames.QP_SLIDESHOW_BUTTON_PAUSE());
 	}
 
 	@UiHandler("nextButton")
-	protected void onNextButtonClick(ClickEvent event){
+	protected void onNextButtonClick(ClickEvent event) {
 		dispatchEvent(SlideshowPlayerEventType.ON_NEXT);
 	}
 
 	@UiHandler("previousButton")
-	protected void onPreviousButtonClick(ClickEvent event){
+	protected void onPreviousButtonClick(ClickEvent event) {
 		dispatchEvent(SlideshowPlayerEventType.ON_PREVIOUS);
 	}
 
 	@UiHandler("playButton")
-	protected void onPlayButtonClick(ClickEvent event){
+	protected void onPlayButtonClick(ClickEvent event) {
 		dispatchEvent(SlideshowPlayerEventType.ON_PLAY);
 	}
 
 	@UiHandler("stopButton")
-	protected void onStopButtonClick(ClickEvent event){
+	protected void onStopButtonClick(ClickEvent event) {
 		dispatchEvent(SlideshowPlayerEventType.ON_STOP);
 	}
 
-	private SlideWidget createSlideWidget(Slide slide, InlineBodyGeneratorSocket bodyGenerator){
+	private SlideWidget createSlideWidget(Slide slide, InlineBodyGeneratorSocket bodyGenerator) {
 		return new SlideWidget(slide, bodyGenerator);
 	}
 
-	private SlideWidget getSlideWidget(int slideIndex){
+	private SlideWidget getSlideWidget(int slideIndex) {
 		return slideWidgetsList.get(slideIndex);
 	}
 
-	private void dispatchEvent(SlideshowPlayerEventType type){
+	private void dispatchEvent(SlideshowPlayerEventType type) {
 		eventBus.fireEventFromSource(new SlideshowPlayerEvent(type), this);
 	}
 

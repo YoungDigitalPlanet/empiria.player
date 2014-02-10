@@ -17,37 +17,37 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 
 public class ImageActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<ImageActionProcessor> {
-	
+
 	private ActionProcessorHelper helper;
-	
+
 	@Inject
 	private ImageFeedback feedbackPresenter;
-	
+
 	@Inject
 	Provider<ImageActionProcessor> provider;
-	
+
 	@Override
 	public List<FeedbackAction> processActions(List<FeedbackAction> actions) {
 		return getHelper().processActions(actions);
 	}
-	
-	private ActionProcessorHelper getHelper(){
+
+	private ActionProcessorHelper getHelper() {
 		if (helper == null) {
 			helper = new ActionProcessorHelper(this);
 		}
-		
+
 		return helper;
 	}
-	
+
 	@Override
 	public boolean canProcessAction(FeedbackAction action) {
 		boolean canProcess = false;
-		
+
 		if (action instanceof FeedbackUrlAction) {
 			FeedbackUrlAction urlAction = (FeedbackUrlAction) action;
 			canProcess = ActionType.IMAGE.equalsToString(urlAction.getType());
 		}
-		
+
 		return canProcess;
 	}
 
@@ -59,23 +59,23 @@ public class ImageActionProcessor implements FeedbackActionProcessor, ActionProc
 			feedbackPresenter.show();
 		}
 	}
-	
+
 	@Override
 	public void clearFeedback() {
 		feedbackPresenter.setUrl("");
 		feedbackPresenter.hide();
 	}
-	
+
 	@Override
 	public ImageActionProcessor getNewInstance() {
 		return provider.get();
 	}
-	
+
 	@Override
 	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
 		feedbackPresenter.hide();
 	}
-	
+
 	@Override
 	public Widget getView() {
 		return (Widget) feedbackPresenter;
@@ -95,5 +95,5 @@ public class ImageActionProcessor implements FeedbackActionProcessor, ActionProc
 	public void reset() {
 		clearFeedback();
 	}
-	
+
 }

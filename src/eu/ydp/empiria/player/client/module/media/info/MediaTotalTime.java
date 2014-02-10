@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
  * Widget prezentujacy dlugosc pliku audio lub video
- *
+ * 
  */
 public class MediaTotalTime extends AbstractMediaTime<MediaTotalTime> {
 	public MediaTotalTime() {

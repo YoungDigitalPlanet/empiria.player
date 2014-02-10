@@ -31,8 +31,8 @@ public class DeliveryEngineTest extends GWTTestCase {
 	public String getModuleName() {
 		return "eu.ydp.empiria.player.Player";
 	}
-	
-	public void testEngineMode(){
+
+	public void testEngineMode() {
 		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		DeliveryEngine de = injector.getDeliveryEngine();
 		de.init(JavaScriptObject.createObject());
@@ -47,40 +47,19 @@ public class DeliveryEngineTest extends GWTTestCase {
 	protected DeliveryEngine de;
 	protected FlowRequestInvoker flowInvoker;
 
-	DeliveryEventType[] typesWithToc = {
-			DeliveryEventType.ASSESSMENT_LOADING,
-			DeliveryEventType.ASSESSMENT_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTING,
-			DeliveryEventType.PAGE_UNLOADING,
-			DeliveryEventType.PAGE_UNLOADED,
-			DeliveryEventType.PAGE_LOADING,
-			DeliveryEventType.TOC_PAGE_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTED,
-			DeliveryEventType.ASSESSMENT_LOADED};
-	DeliveryEventType[] typesNoToc = {
-			DeliveryEventType.ASSESSMENT_LOADING,
-			DeliveryEventType.ASSESSMENT_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTING,
-			DeliveryEventType.PAGE_UNLOADING,
-			DeliveryEventType.PAGE_UNLOADED,
-			DeliveryEventType.PAGE_LOADING,
-			DeliveryEventType.TEST_PAGE_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTED,
-			DeliveryEventType.ASSESSMENT_LOADED};
-	DeliveryEventType[] typesPageSwitch = {
-			DeliveryEventType.ASSESSMENT_LOADING,
-			DeliveryEventType.ASSESSMENT_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTING,
-			DeliveryEventType.PAGE_UNLOADING,
-			DeliveryEventType.PAGE_UNLOADED,
-			DeliveryEventType.PAGE_LOADING,
-			DeliveryEventType.TOC_PAGE_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTED,
-			DeliveryEventType.ASSESSMENT_LOADED};
+	DeliveryEventType[] typesWithToc = { DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
+			DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TOC_PAGE_LOADED,
+			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED };
+	DeliveryEventType[] typesNoToc = { DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
+			DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TEST_PAGE_LOADED,
+			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED };
+	DeliveryEventType[] typesPageSwitch = { DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
+			DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TOC_PAGE_LOADED,
+			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED };
 	DeliveryEventType[] types;
 	private int counter = 0;
 
-	public void testDeliveryEventsWithToc(){
+	public void testDeliveryEventsWithToc() {
 		types = typesWithToc;
 		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
@@ -92,7 +71,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	}
 
-	public void testDeliveryEventsNoToc(){
+	public void testDeliveryEventsNoToc() {
 		types = typesNoToc;
 		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
@@ -104,8 +83,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	}
 
-
-	public void testDeliveryEventsPageSwitch(){
+	public void testDeliveryEventsPageSwitch() {
 		types = typesPageSwitch;
 		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
@@ -116,10 +94,10 @@ public class DeliveryEngineTest extends GWTTestCase {
 		de.load(getAssessmentXMLData(), getItemXMLDatas());
 	}
 
-	protected void checkEvents(DeliveryEvent flowEvent){
-		if (counter < types.length){
+	protected void checkEvents(DeliveryEvent flowEvent) {
+		if (counter < types.length) {
 			assertEquals(types[counter].toString(), flowEvent.getType().toString());
-			if (flowEvent.getType() == DeliveryEventType.ASSESSMENT_STARTED){
+			if (flowEvent.getType() == DeliveryEventType.ASSESSMENT_STARTED) {
 				Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 
 					@Override
@@ -132,16 +110,17 @@ public class DeliveryEngineTest extends GWTTestCase {
 		}
 	}
 
-	protected XmlData getAssessmentXMLData(){
+	protected XmlData getAssessmentXMLData() {
 
 		String assessmentXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><assessmentTest xmlns=\"http://www.ydp.eu/empiria\" identifier=\"RTEST-13\" title=\"Show player supported functionality\"><testPart><assessmentSection identifier=\"sectionA\" title=\"Section A\" visible=\"true\"><assessmentItemRef identifier=\"inline_choice\" href=\"demo/inline_choice.xml\"/></assessmentSection></testPart></assessmentTest>";
 		Document assessmentDoc = XMLParser.parse(assessmentXml);
 		return new XmlData(assessmentDoc, "");
 	}
 
-	protected XmlData[] getItemXMLDatas(){
+	protected XmlData[] getItemXMLDatas() {
 
-		Document itemDoc = XMLParser.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
+		Document itemDoc = XMLParser
+				.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 		XmlData itemData = new XmlData(itemDoc, "");
 		XmlData[] itemDatas = new XmlData[1];
 		itemDatas[0] = itemData;
@@ -149,8 +128,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 		return itemDatas;
 	}
 
-	protected class MockDeliveryEventsListenerExtension extends InternalExtension implements DeliveryEventsListenerExtension, FlowRequestSocketUserExtension{
-
+	protected class MockDeliveryEventsListenerExtension extends InternalExtension implements DeliveryEventsListenerExtension, FlowRequestSocketUserExtension {
 
 		@Override
 		public void init() {
@@ -168,7 +146,7 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	}
 
-	public void testParseFlowRequestNoState(){
+	public void testParseFlowRequestNoState() {
 
 		int itemIndex = 1;
 
@@ -178,30 +156,29 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 		IFlowRequest flowRequest = de.parseFlowRequest(null);
 
-		NavigateGotoItem navigableItem = (NavigateGotoItem)flowRequest;
+		NavigateGotoItem navigableItem = (NavigateGotoItem) flowRequest;
 		assertEquals(itemIndex, navigableItem.getIndex());
 	}
 
-	public void testParseFlowRequestWithState(){
+	public void testParseFlowRequestWithState() {
 
 		int initialItemIndex = 2;
 		int stateItemIndex = 5;
 
 		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
-		de.initialItemIndex =  initialItemIndex;
+		de.initialItemIndex = initialItemIndex;
 
 		JSONArray arr = createJSonStateArr(stateItemIndex);
 
 		IFlowRequest flowRequest = de.parseFlowRequest(arr);
 
-		NavigateGotoItem navigableItem = (NavigateGotoItem)flowRequest;
+		NavigateGotoItem navigableItem = (NavigateGotoItem) flowRequest;
 		assertEquals(initialItemIndex, navigableItem.getIndex());
 
 	}
 
-	public void testParseFlowRequestWithStateNoInitial(){
-
+	public void testParseFlowRequestWithStateNoInitial() {
 
 		int stateItemIndex = 5;
 
@@ -212,12 +189,12 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 		IFlowRequest flowRequest = de.parseFlowRequest(arr);
 
-		NavigateGotoItem navigableItem = (NavigateGotoItem)flowRequest;
+		NavigateGotoItem navigableItem = (NavigateGotoItem) flowRequest;
 		assertEquals(stateItemIndex, navigableItem.getIndex());
 
 	}
 
-	public void testParseFlowRequestNoStateNoInitial(){
+	public void testParseFlowRequestNoStateNoInitial() {
 
 		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
 		de = injector.getDeliveryEngine();
@@ -228,12 +205,11 @@ public class DeliveryEngineTest extends GWTTestCase {
 
 	}
 
-	private JSONArray createJSonStateArr(int itemIndex){
+	private JSONArray createJSonStateArr(int itemIndex) {
 		JSONArray arr = new JSONArray();
 		arr.isArray().set(0, new JSONNumber(itemIndex));
 
 		return arr;
 	}
-
 
 }

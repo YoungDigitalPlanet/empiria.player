@@ -60,19 +60,19 @@ public class GlobalVariablesProcessor {
 	}
 
 	private LastMistaken findLastmistakenForModules(Iterable<ResultVariables> results) {
-		if(containsAnyResultWithGivenLastMistakenType(results, LastMistaken.WRONG)) {
+		if (containsAnyResultWithGivenLastMistakenType(results, LastMistaken.WRONG)) {
 			return LastMistaken.WRONG;
-		} else if(containsAnyResultWithGivenLastMistakenType(results, LastMistaken.CORRECT)) {
+		} else if (containsAnyResultWithGivenLastMistakenType(results, LastMistaken.CORRECT)) {
 			return LastMistaken.CORRECT;
 		} else {
 			return LastMistaken.NONE;
 		}
 	}
-	
+
 	private boolean containsAnyResultWithGivenLastMistakenType(Iterable<ResultVariables> results, LastMistaken searchedLastMistaken) {
 		for (ResultVariables resultVariables : results) {
 			LastMistaken currentLastMistaken = resultVariables.getLastMistaken();
-			if(searchedLastMistaken == currentLastMistaken) {
+			if (searchedLastMistaken == currentLastMistaken) {
 				return true;
 			}
 		}

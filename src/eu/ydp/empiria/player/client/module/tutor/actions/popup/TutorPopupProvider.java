@@ -16,13 +16,13 @@ public class TutorPopupProvider {
 		this.provider = provider;
 	}
 
-	public TutorPopupPresenter get(String tutorId){
+	public TutorPopupPresenter get(String tutorId) {
 		TutorPopupPresenter tutorPopupPresenter = idToPresenter.get(tutorId);
 
-		if(tutorPopupPresenter == null) {
+		if (tutorPopupPresenter == null) {
 			tutorPopupPresenter = createNewTutorPopupPresenter(tutorId);
 		}
-		
+
 		return tutorPopupPresenter;
 	}
 

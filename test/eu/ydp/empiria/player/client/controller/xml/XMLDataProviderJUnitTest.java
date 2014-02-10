@@ -1,14 +1,11 @@
 package eu.ydp.empiria.player.client.controller.xml;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.inject.Binder;
@@ -45,7 +42,7 @@ public class XMLDataProviderJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
 		instance = injector.getInstance(XMLDataProvider.class);
-		doReturn(itemData).when(dataSourceManager).getItemData(Mockito.anyInt());
+		doReturn(itemData).when(dataSourceManager).getItemData(Matchers.anyInt());
 		itemData.data = xmlData;
 		when(pageScopeFactory.getCurrentPageScope()).thenReturn(pageScope);
 		doReturn(1).when(pageScope).getPageIndex();

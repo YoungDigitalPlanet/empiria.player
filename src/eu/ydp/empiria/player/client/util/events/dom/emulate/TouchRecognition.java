@@ -31,28 +31,31 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 	private boolean touchEndHandlers = false;
 	private boolean emulateClickAsTouch = true;
 	private boolean globalTouchEnd;
+
 	@AssistedInject
 	public TouchRecognition(@Assisted("listenOn") Widget listenOn) {
 		this.listenOn = listenOn;
 	}
 
 	@AssistedInject
-	public TouchRecognition(@Assisted("listenOn") Widget listenOn,@Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch) {
+	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch) {
 		this.listenOn = listenOn;
 		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
 	}
 
 	@AssistedInject
-	public TouchRecognition(@Assisted("listenOn") Widget listenOn,@Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch,@Assisted("globalTouchEnd") Boolean globalTouchEnd) {
+	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch,
+			@Assisted("globalTouchEnd") Boolean globalTouchEnd) {
 		this.listenOn = listenOn;
 		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
 		this.globalTouchEnd = globalTouchEnd.booleanValue();
 	}
+
 	private void addTouchMoveHandlers() {
 		if (!touchMoveHandlers) {
 			listenOn.addDomHandler(this, TouchMoveEvent.getType());
 			if (emulateClickAsTouch) {
-				 listenOn.addDomHandler(this, MouseMoveEvent.getType());
+				listenOn.addDomHandler(this, MouseMoveEvent.getType());
 			}
 			touchMoveHandlers = true;
 		}

@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results.mode
 public class ConstantVariables {
 
 	private int todo = 0;
-	
+
 	public ConstantVariables() {
 	}
 

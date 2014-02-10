@@ -23,21 +23,21 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 	}
 
 	@Override
-	protected List<KeyValue<String, String>> parseResponse(Collection<String> values) {		
-		ArrayList<KeyValue<String, String>> parsedList = new ArrayList<KeyValue<String,String>>();
+	protected List<KeyValue<String, String>> parseResponse(Collection<String> values) {
+		ArrayList<KeyValue<String, String>> parsedList = new ArrayList<KeyValue<String, String>>();
 		for (String value : values) {
-			String[] responses = value.split(" ");			
+			String[] responses = value.split(" ");
 			if (responses.length == 2) {
 				parsedList.add(new KeyValue<String, String>(responses[0], responses[1]));
 			}
 		}
-		return parsedList;		
+		return parsedList;
 	}
 
-	public Response getResponse() {		
+	public Response getResponse() {
 		return response;
-	}	
-	
+	}
+
 	public int getCurrentChoicePairingsNumber(String identifier) {
 		int count = 0;
 		for (KeyValue<String, String> answer : getCurrentAnswers()) {
@@ -46,22 +46,22 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 			}
 		}
 		return count;
-	}	
-	
+	}
+
 	public boolean checkUserResonseContainsAnswer(String answer) {
 		return response.values.contains(answer);
 	}
-	
+
 	public int getCurrentOverallPairingsNumber() {
 		return getCurrentAnswers().size();
 	}
 
 	public void setResponseSocket(ResponseSocket responseSocket) {
 		this.responseSocket = responseSocket;
-	}		
-	
-	public List<Boolean> evaluateResponse() {		
+	}
+
+	public List<Boolean> evaluateResponse() {
 		return responseSocket.evaluateResponse(getResponse());
 	}
-	
+
 }

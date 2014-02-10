@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManag
 
 public class ItemBodyModule extends GroupModuleBase<ItemBodyModule> {
 
-	public ItemBodyModule(){
+	public ItemBodyModule() {
 		setContainerStyleName("qp-item-body");
 	}
 
@@ -15,10 +15,10 @@ public class ItemBodyModule extends GroupModuleBase<ItemBodyModule> {
 	}
 
 	@Override
-	protected GapWidthBindingManager createGapWidthBindingManager(){
+	protected GapWidthBindingManager createGapWidthBindingManager() {
 		return new GapWidthBindingManager(false);
 	}
-	
+
 	@Override
 	protected GapMaxlengthBindingManager createGapMaxlengthBindingManager() {
 		return new GapMaxlengthBindingManager(false);

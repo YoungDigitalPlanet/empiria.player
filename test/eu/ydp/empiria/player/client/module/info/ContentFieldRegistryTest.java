@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.info;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.*;
 
 import java.util.List;

@@ -17,89 +17,88 @@ import eu.ydp.empiria.player.client.controller.flow.request.MainFlowRequestInvok
 public final class FlowManager {
 
 	private final MainFlowProcessor flowProcessor;
-	private final MainFlowRequestInvoker flowRequestInvoker; //NOPMD
-	private final MainFlowCommandsExecutor flowCommandsExecutor; //NOPMD
+	private final MainFlowRequestInvoker flowRequestInvoker; // NOPMD
+	private final MainFlowCommandsExecutor flowCommandsExecutor; // NOPMD
 
-	public FlowManager(){
+	public FlowManager() {
 		flowRequestInvoker = new MainFlowRequestInvoker();
 		flowProcessor = PlayerGinjectorFactory.getPlayerGinjector().getMainFlowProcessor();
 		flowCommandsExecutor = new MainFlowCommandsExecutor(flowProcessor);
 	}
 
-	public void init(int itemsCount){
+	public void init(int itemsCount) {
 		flowProcessor.init(itemsCount);
 	}
 
-	public void initFlow(){
+	public void initFlow() {
 		flowProcessor.initFlow();
 	}
 
-	public void deinitFlow(){
+	public void deinitFlow() {
 		flowProcessor.deinitFlow();
 	}
 
-	public void setFlowOptions(FlowOptions oprions){
+	public void setFlowOptions(FlowOptions oprions) {
 		flowProcessor.setFlowOptions(oprions);
 	}
 
-	public FlowOptions getFlowOptions(){
+	public FlowOptions getFlowOptions() {
 		return flowProcessor.getFlowOptions();
 	}
 
-	public void addCommandProcessor(IFlowRequestProcessor processor){
+	public void addCommandProcessor(IFlowRequestProcessor processor) {
 		flowRequestInvoker.addRequestProcessor(processor);
 	}
 
-	public PageType getCurrentPageType(){
+	public PageType getCurrentPageType() {
 		return flowProcessor.getCurrentPageType();
 	}
 
-	public int getCurrentPageIndex(){
+	public int getCurrentPageIndex() {
 		return flowProcessor.getCurrentPageIndex();
 	}
 
-	public ActivityMode getActivityMode(){
+	public ActivityMode getActivityMode() {
 		return flowProcessor.getActivityMode();
 	}
 
-	public PageReference getPageReference(){
+	public PageReference getPageReference() {
 		return flowProcessor.getPageReference();
 	}
 
-
-	public FlowCommandsExecutor getFlowCommandsExecutor(){
+	public FlowCommandsExecutor getFlowCommandsExecutor() {
 		return flowCommandsExecutor;
 	}
 
-	public FlowDataSupplier getFlowDataSupplier(){
+	public FlowDataSupplier getFlowDataSupplier() {
 		return flowProcessor;
 	}
 
-	public FlowRequestInvoker getFlowRequestInvoker(){
+	public FlowRequestInvoker getFlowRequestInvoker() {
 		return flowRequestInvoker;
 	}
 
-	public void invokeFlowRequest(IFlowRequest request){
+	public void invokeFlowRequest(IFlowRequest request) {
 		flowRequestInvoker.invokeRequest(request);
 	}
 
-	public void invokeFlowCommand(IFlowCommand command){ //NOPMD
+	public void invokeFlowCommand(IFlowCommand command) { // NOPMD
 
 	}
 
-	public void setDisplayOptions(DisplayOptions options){
+	public void setDisplayOptions(DisplayOptions options) {
 		flowProcessor.setDisplayOptions(options);
 	}
 
-	public DisplayOptions getDisplayOptions(){
+	public DisplayOptions getDisplayOptions() {
 		return flowProcessor.getDisplayOptions();
 	}
-	
-	public void gotoPage(int index){
+
+	public void gotoPage(int index) {
 		flowProcessor.gotoPage(index);
 	}
 
-	public IFlowSocket getFlowSocket(){
+	public IFlowSocket getFlowSocket() {
 		return new IFlowSocket() {
 
 			@Override

@@ -9,12 +9,12 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseNodeParser;
 
 public class ItemResponseManager extends VariableManager<Response> {
-	
+
 	public ItemResponseManager(NodeList responseDeclarationNodes, final ResponseNodeParser responseNodeParser) {
 		super(responseDeclarationNodes, new IVariableCreator<Response>() {
 			@Override
 			public Response createVariable(Node node) {
-				return  responseNodeParser.parseResponseFromNode(node.toString());
+				return responseNodeParser.parseResponseFromNode(node.toString());
 			}
 		});
 	}

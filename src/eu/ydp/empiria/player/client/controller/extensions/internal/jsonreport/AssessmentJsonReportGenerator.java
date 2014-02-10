@@ -17,86 +17,86 @@ import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataS
 public class AssessmentJsonReportGenerator {
 
 	AssessmentReportFactory factory;
-	
+
 	DataSourceDataSupplier dataSupplier;
-	
+
 	SessionDataSupplier sessionSupplier;
-	
+
 	@Inject
-	public AssessmentJsonReportGenerator(@Assisted DataSourceDataSupplier dataSupplier, 
-											@Assisted SessionDataSupplier sessionSupplier, AssessmentReportFactory factory){
+	public AssessmentJsonReportGenerator(@Assisted DataSourceDataSupplier dataSupplier, @Assisted SessionDataSupplier sessionSupplier,
+			AssessmentReportFactory factory) {
 		this.dataSupplier = dataSupplier;
 		this.sessionSupplier = sessionSupplier;
 		this.factory = factory;
 	}
-	
-	public AssessmentJsonReport generate(){
+
+	public AssessmentJsonReport generate() {
 		AssessmentJsonReport jsonReport = AssessmentJsonReport.create();
 		AssessmentReportProvider reportProvider = factory.getAssessmentReportProvider(dataSupplier, sessionSupplier);
-		
+
 		appendAssessmentAttributes(jsonReport, reportProvider);
 		appendItemsReports(jsonReport, reportProvider);
-		
+
 		return jsonReport;
 	}
 
-	private void appendAssessmentAttributes(AssessmentJsonReport jsonReport, AssessmentReportProvider reportProvider){
+	private void appendAssessmentAttributes(AssessmentJsonReport jsonReport, AssessmentReportProvider reportProvider) {
 		ResultInfo assessmentResultInfo = reportProvider.getResult();
 		ResultJsonReport assessmentResult = getResultReport(assessmentResultInfo);
 		HintInfo assessmentHintInfo = reportProvider.getHints();
 		HintJsonReport assessmentHint = getHintsReport(assessmentHintInfo);
-		
+
 		jsonReport.setTitle(reportProvider.getTitle());
 		jsonReport.setResult(assessmentResult);
 		jsonReport.setHints(assessmentHint);
 	}
-	
+
 	private void appendItemsReports(AssessmentJsonReport jsonReport, AssessmentReportProvider reportProvider) {
 		List<ItemJsonReport> itemReportList = Lists.newArrayList();
-		
-		for(ItemReportProvider itemProvider: reportProvider.getItems()){
+
+		for (ItemReportProvider itemProvider : reportProvider.getItems()) {
 			ItemJsonReport itemReport = createItemReport(itemProvider);
 			itemReportList.add(itemReport);
 		}
-		
+
 		jsonReport.setItems(itemReportList);
 	}
-	
+
 	private ItemJsonReport createItemReport(ItemReportProvider reportProvider) {
 		ItemJsonReport itemReport = ItemJsonReport.create();
 		HintInfo itemHintInfo = reportProvider.getHints();
 		HintJsonReport itemHint = getHintsReport(itemHintInfo);
 		ResultInfo itemResultInfo = reportProvider.getResult();
 		ResultJsonReport itemResult = getResultReport(itemResultInfo);
-		
+
 		itemReport.setTitle(reportProvider.getTitle());
 		itemReport.setIndex(reportProvider.getIndex());
 		itemReport.setHints(itemHint);
 		itemReport.setResult(itemResult);
-		
+
 		return itemReport;
 	}
 
-	private HintJsonReport getHintsReport(HintInfo hintInfo){
+	private HintJsonReport getHintsReport(HintInfo hintInfo) {
 		HintJsonReport hintReport = HintJsonReport.create();
-		
+
 		hintReport.setChecks(hintInfo.getChecks());
 		hintReport.setMistakes(hintInfo.getMistakes());
 		hintReport.setReset(hintInfo.getReset());
 		hintReport.setShowAnswers(hintInfo.getShowAnswers());
-		
+
 		return hintReport;
 	}
-	
-	private ResultJsonReport getResultReport(ResultInfo resultInfo){
+
+	private ResultJsonReport getResultReport(ResultInfo resultInfo) {
 		ResultJsonReport resultReport = ResultJsonReport.create();
-		
+
 		resultReport.setDone(resultInfo.getDone());
 		resultReport.setTodo(resultInfo.getTodo());
 		resultReport.setErrors(resultInfo.getErrors());
 		resultReport.setResult(resultInfo.getResult());
-		
+
 		return resultReport;
 	}
-	
+
 }

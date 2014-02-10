@@ -18,12 +18,8 @@ public class VideoPlayerFactory {
 
 	public VideoPlayer create(VideoBean videoBean) {
 		VideoElementWrapperBuilder videoElementBuilder = elementWrapperBuilderProvider.get();
-		VideoElementWrapper videoElement = videoElementBuilder.
-				withWidth(videoBean.getWidth()).
-				withHeight(videoBean.getHeight()).
-				withPoster(videoBean.getPoster()).
-				withSources(videoBean.getSources()).
-				build();
+		VideoElementWrapper videoElement = videoElementBuilder.withWidth(videoBean.getWidth()).withHeight(videoBean.getHeight())
+				.withPoster(videoBean.getPoster()).withSources(videoBean.getSources()).build();
 
 		return videoModuleFactory.createVideoPlayer(videoElement);
 	}

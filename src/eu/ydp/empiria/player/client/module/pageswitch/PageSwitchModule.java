@@ -25,8 +25,8 @@ public class PageSwitchModule extends ControlModule implements ISimpleModule, Ch
 			switchWidget = new PageSwitchListBox();
 			switchWidget.addChangeHandler(this);
 			switchWidget.setItemsCount(dataSourceSupplier.getItemsCount());
-			
-			((Widget)switchWidget).setStyleName(getStyleName());
+
+			((Widget) switchWidget).setStyleName(getStyleName());
 		}
 
 		return (Widget) switchWidget;
@@ -34,23 +34,17 @@ public class PageSwitchModule extends ControlModule implements ISimpleModule, Ch
 
 	@Override
 	public void onChange(ChangeEvent event) {
-		flowRequestInvoker.invokeRequest(
-				new FlowRequest.NavigateGotoItem(
-							switchWidget.getCurrentIndex()
-						)
-				);
+		flowRequestInvoker.invokeRequest(new FlowRequest.NavigateGotoItem(switchWidget.getCurrentIndex()));
 	}
 
 	@Override
 	public void onDeliveryEvent(DeliveryEvent flowEvent) {
 		if (flowEvent.getType() == DeliveryEventType.TEST_PAGE_LOADED) {
-			switchWidget.setCurrentIndex(
-					flowDataSupplier.getCurrentPageIndex()
-				);
+			switchWidget.setCurrentIndex(flowDataSupplier.getCurrentPageIndex());
 		}
 	}
-	
-	protected String getStyleName(){
+
+	protected String getStyleName() {
 		return "qp-page-counter-list";
 	}
 }

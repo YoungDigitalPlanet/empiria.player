@@ -18,16 +18,16 @@ public class DragGapModuleModel extends AbstractResponseModel<String> {
 		super(response);
 	}
 
-	public void initialize(ResponseModelChangeListener modelChangeListener){
+	public void initialize(ResponseModelChangeListener modelChangeListener) {
 		this.responseModelChange = modelChangeListener;
 	}
-	
+
 	@Override
 	protected List<String> parseResponse(Collection<String> values) {
 		return new ArrayList<String>(values);
 	}
-	
-	public Response getResponse(){
+
+	public Response getResponse() {
 		return this.response;
 	}
 }

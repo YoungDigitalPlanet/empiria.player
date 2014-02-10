@@ -11,10 +11,14 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 public interface ColorfillCanvas extends IsWidget {
 
 	void setImage(Image image);
-	
+
 	void setColor(Area area, ColorModel color);
+
 	ColorModel getColor(Area area);
+
 	void setColors(Map<Area, ColorModel> colors);
+
 	void setAreaClickListener(ColorfillAreaClickListener listener);
+
 	void reset();
 }

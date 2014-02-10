@@ -9,7 +9,7 @@ public class OnPageAllOkAction implements OutcomeDrivenAction {
 
 	@Inject
 	private FeedbackActionConditions actionConditions;
-	
+
 	@Override
 	public boolean actionOccured() {
 		return actionConditions.isPageAllOk();

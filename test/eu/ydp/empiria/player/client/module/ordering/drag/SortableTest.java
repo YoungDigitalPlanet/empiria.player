@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.ordering.drag;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

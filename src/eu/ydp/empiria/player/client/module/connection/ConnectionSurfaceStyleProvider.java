@@ -19,7 +19,7 @@ public class ConnectionSurfaceStyleProvider {
 		Preconditions.checkArgument(leftIndex >= 0 && rightIndex >= 0, "Index of item could not be negative");
 
 		String normalStyle = getStyleForNormalSurface(leftIndex, rightIndex);
-		List<String> styles = Lists.newArrayList( normalStyle );
+		List<String> styles = Lists.newArrayList(normalStyle);
 
 		Optional<String> additionalStyle = getAdditionalStyle(type, leftIndex, rightIndex);
 		if (additionalStyle.isPresent()) {

@@ -1,12 +1,7 @@
 package eu.ydp.empiria.player.client.module.button.download;
 
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,13 +21,18 @@ import eu.ydp.gwtutil.client.service.json.IJSONService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ButtonModuleTest {
-	@Mock private ButtonModuleStructure buttonModuleStructure;
-	@Mock private IJSONService ijsonService;
-	@Mock private ButtonModulePresenter buttonModulePresenter;
-	@Mock private YJsonArray jsonArray;
-	@Mock private ButtonBean buttonBean;
-	@InjectMocks private ButtonModule instance;
-
+	@Mock
+	private ButtonModuleStructure buttonModuleStructure;
+	@Mock
+	private IJSONService ijsonService;
+	@Mock
+	private ButtonModulePresenter buttonModulePresenter;
+	@Mock
+	private YJsonArray jsonArray;
+	@Mock
+	private ButtonBean buttonBean;
+	@InjectMocks
+	private ButtonModule instance;
 
 	@Before
 	public void before() {
@@ -41,7 +41,7 @@ public class ButtonModuleTest {
 	}
 
 	@Test
-	public void getView(){
+	public void getView() {
 		instance.getView();
 		verify(buttonModulePresenter).asWidget();
 		verifyNoMoreInteractions(buttonModulePresenter);
@@ -56,7 +56,7 @@ public class ButtonModuleTest {
 		doReturn(xmlContent).when(xmlElement).toString();
 
 		instance.initModule(xmlElement);
-		InOrder inOrder = inOrder(buttonModuleStructure,buttonModulePresenter);
+		InOrder inOrder = inOrder(buttonModuleStructure, buttonModulePresenter);
 		inOrder.verify(buttonModuleStructure).createFromXml(eq(xmlContent), eq(jsonArray));
 		inOrder.verify(buttonModulePresenter).setBean(eq(buttonBean));
 		inOrder.verify(buttonModulePresenter).init();

@@ -8,11 +8,11 @@ public class PageDataSummary extends PageData {
 		super(PageType.SUMMARY);
 		titles = ts;
 	}
-	
+
 	public String[] titles;
 	public SessionDataSocket sessionData;
 
-	public void setAssessmentSessionData(SessionDataSocket sdc){
+	public void setAssessmentSessionData(SessionDataSocket sdc) {
 		sessionData = sdc;
 	}
 }

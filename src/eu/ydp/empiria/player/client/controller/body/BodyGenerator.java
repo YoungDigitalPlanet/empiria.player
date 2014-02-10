@@ -20,6 +20,7 @@ public class BodyGenerator implements BodyGeneratorSocket {
 		this.ignoredTagNames = options.getIgnoredTags();
 	}
 
+	@Override
 	public void generateBody(Node upNode, HasWidgets parent) {
 		NodeList nodes = upNode.getChildNodes();
 		for (int n = 0; n < nodes.getLength(); n++) {
@@ -28,8 +29,10 @@ public class BodyGenerator implements BodyGeneratorSocket {
 		}
 	}
 
+	@Override
 	public void processNode(Node node, HasWidgets parent) {
-		if (ignoredTagNames != null && SECTION.equals(node.getNodeName()) && ignoredTagNames.contains(((com.google.gwt.xml.client.Element) node).getAttribute("name"))) {
+		if (ignoredTagNames != null && SECTION.equals(node.getNodeName())
+				&& ignoredTagNames.contains(((com.google.gwt.xml.client.Element) node).getAttribute("name"))) {
 
 		} else if (ignoredTagNames != null && SECTION.equals(node.getNodeName()) && ignoredTagNames.contains("untagged") && !detectTagNode(node)) {
 

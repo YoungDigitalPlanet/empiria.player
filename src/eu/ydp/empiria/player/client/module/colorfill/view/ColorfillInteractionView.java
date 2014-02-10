@@ -14,11 +14,11 @@ public interface ColorfillInteractionView extends ColorfillCanvas, ColorfillPale
 	void showCorrectAnswers();
 
 	void markCorrectAnswers(List<Area> pointsToMark);
-	
+
 	void unmarkCorrectAnswers();
 
 	void markWrongAnswers(List<Area> pointsToMark);
-	
+
 	void unmarkWrongAnswers();
-	
+
 }

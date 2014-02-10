@@ -1,14 +1,6 @@
 package eu.ydp.empiria.player.client.module.labelling.structure;
 
-import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.CHILD_0;
-import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.CHILD_1;
-import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.CHILD_2;
-import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.CHILD_3;
-import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.ID;
-import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.IMAGE_BEAN;
-import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.XML_FULL;
-import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.XML_NO_CHILDREN;
-import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.XML_NO_CHILDREN_NODE;
+import static eu.ydp.empiria.player.client.module.labelling.LabellingTestAssets.*;
 
 import java.util.List;
 
@@ -36,7 +28,7 @@ public class LabellingModuleJAXBParserTest extends AbstractEmpiriaPlayerGWTTestC
 
 		// then
 		assertEquals(IMAGE_BEAN, labellingBean.getImg());
-		assertEquals("",labellingBean.getId());
+		assertEquals("", labellingBean.getId());
 		assertChildren(labellingBean.getChildren().getChildBeanList());
 	}
 
@@ -58,7 +50,7 @@ public class LabellingModuleJAXBParserTest extends AbstractEmpiriaPlayerGWTTestC
 
 	private void assertChildren(List<ChildBean> children, ChildData... childDatas) {
 		assertEquals(childDatas.length, children.size());
-		for (int i = 0 ; i < children.size() ; i ++){
+		for (int i = 0; i < children.size(); i++) {
 			assertChild(children.get(i), childDatas[i]);
 		}
 	}
@@ -79,7 +71,7 @@ public class LabellingModuleJAXBParserTest extends AbstractEmpiriaPlayerGWTTestC
 		assertEquals(expectedXmlPrep, actualXmlPrep);
 	}
 
-	private String prepareXmlString(String in){
+	private String prepareXmlString(String in) {
 		return in.replaceAll("\\W", "");
 	}
 }

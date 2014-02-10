@@ -6,11 +6,11 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 /**
- *
+ * 
  * przycisk stop
- *
+ * 
  * @author plelakowski
- *
+ * 
  */
 public class StopMediaButton extends AbstractMediaButton<StopMediaButton> {
 	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
@@ -22,7 +22,7 @@ public class StopMediaButton extends AbstractMediaButton<StopMediaButton> {
 	@Override
 	protected void onClick() {
 		changeStyleForClick();
-		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP,getMediaWrapper()),getMediaWrapper());
+		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP, getMediaWrapper()), getMediaWrapper());
 	}
 
 	@Override

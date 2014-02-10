@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+
 import java.util.List;
 
 import org.junit.Before;
@@ -13,9 +17,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
@@ -27,13 +28,16 @@ import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 public class OrderingViewBuilderJUnitTest {
 
 	private OrderingViewBuilder orderingViewBuilder;
-	
+
 	private OrderInteractionBean bean;
 
-	@Mock private InlineBodyGeneratorSocket bodyGeneratorSocket;
-	@Mock private OrderInteractionView interactionView;
-	@Mock private OrderingItemsDao orderingItemsDao;
-	
+	@Mock
+	private InlineBodyGeneratorSocket bodyGeneratorSocket;
+	@Mock
+	private OrderInteractionView interactionView;
+	@Mock
+	private OrderingItemsDao orderingItemsDao;
+
 	@Before
 	public void setUp() throws Exception {
 		bean = new OrderInteractionBean();
@@ -42,17 +46,16 @@ public class OrderingViewBuilderJUnitTest {
 
 	@Test
 	public void shouldBuildView() throws Exception {
-		//given
+		// given
 		SimpleOrderChoiceBean choiceBean = getChoiceBean("a");
 		SimpleOrderChoiceBean secondChoiceBean = getChoiceBean("b");
 		List<SimpleOrderChoiceBean> choiceBeans = Lists.newArrayList(choiceBean, secondChoiceBean);
 		bean.setChoiceBeans(choiceBeans);
-		
-		
-		//when
+
+		// when
 		orderingViewBuilder.buildView(bean, bodyGeneratorSocket);
-		
-		//then
+
+		// then
 		verifyThatItemWasAddedToDaoWithCorrectValues(choiceBean, "0");
 		verifyThatItemWasAddedToDaoWithCorrectValues(secondChoiceBean, "1");
 		verify(orderingItemsDao).createInitialItemsOrder();

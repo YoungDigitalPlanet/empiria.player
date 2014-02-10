@@ -37,7 +37,6 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class InlineChoiceMathGapModule extends GapBase implements MathGap, PlayerEventHandler {
 
-
 	protected List<String> options;
 
 	protected boolean hasEmptyOption = false;
@@ -56,19 +55,18 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	@Inject
 	@PageScoped
 	private ResponseSocket responseSocket;
-	
+
 	@Inject
 	@ModuleScoped
 	MathGapModel mathGapModel;
-	
+
 	@Inject
 	private InlineChoiceMathGapModulePresenter inlineChoicePresenter;
 
-	
 	@PostConstruct
 	public void postConstruct() {
 		this.presenter = inlineChoicePresenter;
-		
+
 		getListBox().setChangeListener(new ExListBoxChangeListener() {
 			@Override
 			public void onChange() {
@@ -77,13 +75,12 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		});
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED), this, pageScopeFactory.getCurrentPageScope());
 	}
-	
+
 	@Override
 	protected ResponseSocket getResponseSocket() {
 		return responseSocket;
 	}
 
-	
 	protected IsExListBox getListBox() {
 		return inlineChoicePresenter.getListBox();
 	}
@@ -162,7 +159,6 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		getListBox().setSelectedIndex((hasEmptyOption) ? 0 : -1);
 		updateResponse(true);
 	}
-	
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
@@ -170,31 +166,36 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 			getListBox().hidePopup();
 		}
 	}
-	
+
+	@Override
 	public Widget getContainer() {
 		return (Widget) presenter.getContainer();
 	}
-	
+
+	@Override
 	public void setGapHeight(int gapHeight) {
 		presenter.setHeight(gapHeight, Unit.PX);
 	}
-	
+
 	public int getGapHeight() {
 		return presenter.getOffsetHeight();
 	}
-	
+
+	@Override
 	public void setGapWidth(int gapWidth) {
 		presenter.setWidth(gapWidth, Unit.PX);
 	}
-	
+
 	public int getGapWidth() {
 		return presenter.getOffsetWidth();
 	}
 
+	@Override
 	public void setGapFontSize(int gapFontSize) {
 		presenter.setFontSize(gapFontSize, Unit.PX);
 	}
 
+	@Override
 	public void setMathStyles(Map<String, String> mathStyles) {
 		mathGapModel.setMathStyles(mathStyles);
 	}
@@ -208,12 +209,12 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	public void setIndex(int index) {
 		mathGapModel.getUid();
 	}
-	
+
 	@Override
 	public void setState(JSONArray newState) {
 		super.setState(newState);
 	}
-	
+
 	@Override
 	protected void setCorrectAnswer() {
 		setValue(getCorrectAnswer());
@@ -224,6 +225,7 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 		setValue(getCurrentResponseValue());
 	}
 
+	@Override
 	protected void updateResponse(boolean userInteract, boolean isReset) {
 		if (showingAnswer) {
 			return;

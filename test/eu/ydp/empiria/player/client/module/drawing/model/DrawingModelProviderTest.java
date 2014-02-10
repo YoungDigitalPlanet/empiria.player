@@ -8,7 +8,6 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 
-
 public class DrawingModelProviderTest extends AbstractEmpiriaPlayerGWTTestCase {
 	private static final String ID = "dummy1";
 	private static final int WIDTH = 601;
@@ -16,15 +15,9 @@ public class DrawingModelProviderTest extends AbstractEmpiriaPlayerGWTTestCase {
 	private static final String SRC = "media/drawing.png";
 	private final List<String> colors = Arrays.asList("ff281e", "0e86d8", "0e86a8");
 	private final List<String> colorNames = Arrays.asList("czerwony", "niebieski", "");
-	String xml = "<drawing id=\"" + ID + "\">"+
-					"<palette>"+
-						"<color rgb=\"ff281e\"><![CDATA[czerwony]]></color>"+
-						"<color rgb=\"0e86d8\"><![CDATA[niebieski]]></color>"+
-						"<color rgb=\"0e86a8\"/>"+
-					 "</palette>"+
-					 "<image height=\"" + HEIGHT + "\" src=\"" + SRC + "\" width=\"" + WIDTH + "\"/>"+
-					 "</drawing>";
-
+	String xml = "<drawing id=\"" + ID + "\">" + "<palette>" + "<color rgb=\"ff281e\"><![CDATA[czerwony]]></color>"
+			+ "<color rgb=\"0e86d8\"><![CDATA[niebieski]]></color>" + "<color rgb=\"0e86a8\"/>" + "</palette>" + "<image height=\"" + HEIGHT + "\" src=\""
+			+ SRC + "\" width=\"" + WIDTH + "\"/>" + "</drawing>";
 
 	public void testJAXB() {
 		DrawingModuleJAXBParserFactory jaxbFactory = GWT.create(DrawingModuleJAXBParserFactory.class);

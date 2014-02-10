@@ -14,13 +14,18 @@ import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 
-public class TutorPopupViewImpl implements TutorPopupView  {
+public class TutorPopupViewImpl implements TutorPopupView {
 
-	@Inject private TutorPopupViewWidget popupViewWidget;
-	@Inject private StyleNameConstants styleNameConstants;
-	@Inject private Provider<TutorPopupViewPersonaView> personasViewProvider;
-	@Inject private RootPanelDelegate rootPanelDelegate;
-	@Inject private UserInteractionHandlerFactory userInteractionHandlerFactory;
+	@Inject
+	private TutorPopupViewWidget popupViewWidget;
+	@Inject
+	private StyleNameConstants styleNameConstants;
+	@Inject
+	private Provider<TutorPopupViewPersonaView> personasViewProvider;
+	@Inject
+	private RootPanelDelegate rootPanelDelegate;
+	@Inject
+	private UserInteractionHandlerFactory userInteractionHandlerFactory;
 
 	private final Command hideCommand = new Command() {
 
@@ -29,7 +34,6 @@ public class TutorPopupViewImpl implements TutorPopupView  {
 			hide();
 		}
 	};
-
 
 	@PostConstruct
 	public void postConstruct() {

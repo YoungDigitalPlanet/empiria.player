@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
 import static com.google.inject.Guice.createInjector;
-import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.createExpressionResponse;
-import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.createResponse;
-import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.prepareProcessingResults;
+import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.*;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult.fromDefaultVariables;
 import static org.fest.assertions.api.Assertions.assertThat;
 

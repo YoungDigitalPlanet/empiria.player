@@ -31,7 +31,8 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
  * @deprecated Use {@link ExternalMediaProcessor} instead.
  */
 @Deprecated
-public class JsMediaProcessorExtension extends AbstractJsExtension implements MediaProcessorExtension, PlayerEventHandler, MediaEventHandler, DeliveryEventsListenerExtension {
+public class JsMediaProcessorExtension extends AbstractJsExtension implements MediaProcessorExtension, PlayerEventHandler, MediaEventHandler,
+		DeliveryEventsListenerExtension {
 
 	protected boolean playing;
 	protected JavaScriptObject socketJs;
@@ -49,7 +50,8 @@ public class JsMediaProcessorExtension extends AbstractJsExtension implements Me
 			if (deliveryEvent.getParams().containsKey("url") && deliveryEvent.getParams().get("url") instanceof String) {
 
 				MediaInteractionSoundEventCallback callback = null;
-				if (deliveryEvent.getParams().containsKey("callback") && deliveryEvent.getParams().get("callback") instanceof MediaInteractionSoundEventCallback) {
+				if (deliveryEvent.getParams().containsKey("callback")
+						&& deliveryEvent.getParams().get("callback") instanceof MediaInteractionSoundEventCallback) {
 					callback = ((MediaInteractionSoundEventCallback) deliveryEvent.getParams().get("callback"));
 				}
 
@@ -95,7 +97,7 @@ public class JsMediaProcessorExtension extends AbstractJsExtension implements Me
 	public void init() {
 		// do nothing
 	}
-	
+
 	@Override
 	public void initMediaProcessor() {
 		socketJs = createMediaProcessorSocketJs();
@@ -111,12 +113,10 @@ public class JsMediaProcessorExtension extends AbstractJsExtension implements Me
 	public void onMediaEvent(MediaEvent event) {
 		// emulujemy play poprzez deliveryevent
 
-		/*if (event.getAssociatedType().getType() == MediaEventTypes.PLAY) {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("url", sources.get(event.getSource()));
-			DeliveryEvent dEvent = new DeliveryEvent(DeliveryEventType.MEDIA_SOUND_PLAY, params);
-			onDeliveryEvent(dEvent);
-		}*/
+		/*
+		 * if (event.getAssociatedType().getType() == MediaEventTypes.PLAY) { Map<String, Object> params = new HashMap<String, Object>(); params.put("url",
+		 * sources.get(event.getSource())); DeliveryEvent dEvent = new DeliveryEvent(DeliveryEventType.MEDIA_SOUND_PLAY, params); onDeliveryEvent(dEvent); }
+		 */
 	}
 
 	@Override
@@ -138,38 +138,37 @@ public class JsMediaProcessorExtension extends AbstractJsExtension implements Me
 	}
 
 	private native void soundPlayJs(JavaScriptObject extenstionObject, JavaScriptObject eventJsObject)/*-{
-		if (typeof extenstionObject.soundPlay == 'function') {
-			extenstionObject.soundPlay(eventJsObject);
-		}
-	}-*/;
+																										if (typeof extenstionObject.soundPlay == 'function') {
+																										extenstionObject.soundPlay(eventJsObject);
+																										}
+																										}-*/;
 
 	private native void soundStopJs(JavaScriptObject extenstionObject)/*-{
-		if (typeof extenstionObject.soundStop == 'function') {
-			extenstionObject.soundStop();
-		}
-	}-*/;
+																		if (typeof extenstionObject.soundStop == 'function') {
+																		extenstionObject.soundStop();
+																		}
+																		}-*/;
 
 	private native JavaScriptObject getMediaAvailableOptionsJs(JavaScriptObject extenstionObject)/*-{
-		if (typeof extenstionObject.getMediaAvailableOptions == 'function') {
-			return extenstionObject.getMediaAvailableOptions();
-		}
-		return null;
-	}-*/;
+																									if (typeof extenstionObject.getMediaAvailableOptions == 'function') {
+																									return extenstionObject.getMediaAvailableOptions();
+																									}
+																									return null;
+																									}-*/;
 
 	private native JavaScriptObject createMediaProcessorSocketJs()/*-{
-		var instance = this;
-		var socket = [];
-		socket.onSoundFinished = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsMediaProcessorExtension::onSoundFinished()();
-		}
-		return socket;
-	}-*/;
+																	var instance = this;
+																	var socket = [];
+																	socket.onSoundFinished = function() {
+																	return instance.@eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsMediaProcessorExtension::onSoundFinished()();
+																	}
+																	return socket;
+																	}-*/;
 
 	private native void setMediaProcessorSocketJs(JavaScriptObject extension, JavaScriptObject socket)/*-{
-		if (typeof extension.setSoundProcessorSocket == 'function') {
-			extension.setSoundProcessorSocket(socket);
-		}
-	}-*/;
-
+																										if (typeof extension.setSoundProcessorSocket == 'function') {
+																										extension.setSoundProcessorSocket(socket);
+																										}
+																										}-*/;
 
 }

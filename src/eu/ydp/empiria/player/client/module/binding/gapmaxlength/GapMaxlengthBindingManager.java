@@ -15,5 +15,4 @@ public class GapMaxlengthBindingManager extends BindingManagerBase {
 		return new GapMaxlengthBindingContext(BindingType.GAP_MAXLENGHTS);
 	}
 
-	
 }

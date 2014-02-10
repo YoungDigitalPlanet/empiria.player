@@ -10,8 +10,10 @@ import eu.ydp.empiria.player.client.structure.ModuleBean;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "button")
 public class ButtonBean extends ModuleBean {
-	@XmlAttribute private String alt = "";
-	@XmlAttribute private String href = "";
+	@XmlAttribute
+	private String alt = "";
+	@XmlAttribute
+	private String href = "";
 
 	public String getAlt() {
 		return alt;
@@ -28,6 +30,5 @@ public class ButtonBean extends ModuleBean {
 	public void setHref(String href) {
 		this.href = href;
 	}
-
 
 }

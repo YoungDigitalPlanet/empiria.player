@@ -23,7 +23,7 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 
 public class VisiblePagesManagerTest {
 
-	private class CustomPanelCache extends PanelCache{
+	private class CustomPanelCache extends PanelCache {
 
 		private Predicate<Integer> isAttachedPredicate = new Predicate<Integer>() {
 
@@ -53,8 +53,10 @@ public class VisiblePagesManagerTest {
 		}
 	}
 
-	@Spy CustomPanelCache panelCache = new CustomPanelCache();
-	@InjectMocks VisiblePagesManager instance;
+	@Spy
+	CustomPanelCache panelCache = new CustomPanelCache();
+	@InjectMocks
+	VisiblePagesManager instance;
 
 	@Before
 	public void before() {
@@ -72,71 +74,71 @@ public class VisiblePagesManagerTest {
 	}
 
 	@Test
-		public void getPagesToDetachNoDataInCache() {
-			Set<Integer> pagesToDeatach = instance.getPagesToDetach(2);
-			assertThat(pagesToDeatach).isEmpty();
-		}
+	public void getPagesToDetachNoDataInCache() {
+		Set<Integer> pagesToDeatach = instance.getPagesToDetach(2);
+		assertThat(pagesToDeatach).isEmpty();
+	}
 
 	@Test
-		public void getPagesToDetachZeroVisiblePages() {
-			for(int x =0;x<10;++x){
-				panelCache.getOrCreateAndPut(x);
-			}
-			instance.setVisiblePageCount(0);
-			int currentPage = 2;
-			Set<Integer> pagesToDeatach = instance.getPagesToDetach(currentPage);
-			assertThat(pagesToDeatach).isNotEmpty();
-			assertThat(pagesToDeatach).hasSize(5);
-
+	public void getPagesToDetachZeroVisiblePages() {
+		for (int x = 0; x < 10; ++x) {
+			panelCache.getOrCreateAndPut(x);
 		}
+		instance.setVisiblePageCount(0);
+		int currentPage = 2;
+		Set<Integer> pagesToDeatach = instance.getPagesToDetach(currentPage);
+		assertThat(pagesToDeatach).isNotEmpty();
+		assertThat(pagesToDeatach).hasSize(5);
+
+	}
 
 	@Test
-		public void getPagesToDetachSingleVisiblePage() {
-			instance.setVisiblePageCount(1);
-			for(int x =0;x<10;++x){
-				panelCache.getOrCreateAndPut(x);
-			}
-			int actualPage = 2;
-			Set<Integer> pagesToDeatach = instance.getPagesToDetach(actualPage);
-			assertThat(pagesToDeatach).isNotEmpty();
-			assertThat(pagesToDeatach).doesNotContain(actualPage);
-			assertThat(pagesToDeatach).hasSize(4);
-			for(Integer pageIndex : pagesToDeatach){
-				assertThat(panelCache.getIsAttachedPredicate().apply(pageIndex)).isTrue();
-			}
+	public void getPagesToDetachSingleVisiblePage() {
+		instance.setVisiblePageCount(1);
+		for (int x = 0; x < 10; ++x) {
+			panelCache.getOrCreateAndPut(x);
 		}
+		int actualPage = 2;
+		Set<Integer> pagesToDeatach = instance.getPagesToDetach(actualPage);
+		assertThat(pagesToDeatach).isNotEmpty();
+		assertThat(pagesToDeatach).doesNotContain(actualPage);
+		assertThat(pagesToDeatach).hasSize(4);
+		for (Integer pageIndex : pagesToDeatach) {
+			assertThat(panelCache.getIsAttachedPredicate().apply(pageIndex)).isTrue();
+		}
+	}
 
 	@Test
-		public void getPagesToDetachMultipleVisiblePages() {
-			instance.setVisiblePageCount(3);
-			panelCache.setIsAttachedPredicate(new Predicate<Integer>() {
-				@Override
-				public boolean apply(Integer arg0) {
-					return true;
-				}
-			});
+	public void getPagesToDetachMultipleVisiblePages() {
+		instance.setVisiblePageCount(3);
+		panelCache.setIsAttachedPredicate(new Predicate<Integer>() {
+			@Override
+			public boolean apply(Integer arg0) {
+				return true;
+			}
+		});
 
-			for(int x =0;x<10;++x){
-				panelCache.getOrCreateAndPut(x);
-			}
-			int actualPage = 2;
-			Set<Integer> pagesToDeatach = instance.getPagesToDetach(actualPage);
-			assertThat(pagesToDeatach).isNotEmpty();
-			assertThat(pagesToDeatach).doesNotContain(actualPage-1, actualPage, actualPage+1);
-			assertThat(pagesToDeatach).hasSize(7);
-			for(Integer pageIndex : pagesToDeatach){
-				assertThat(panelCache.getIsAttachedPredicate().apply(pageIndex)).isTrue();
-			}
+		for (int x = 0; x < 10; ++x) {
+			panelCache.getOrCreateAndPut(x);
 		}
+		int actualPage = 2;
+		Set<Integer> pagesToDeatach = instance.getPagesToDetach(actualPage);
+		assertThat(pagesToDeatach).isNotEmpty();
+		assertThat(pagesToDeatach).doesNotContain(actualPage - 1, actualPage, actualPage + 1);
+		assertThat(pagesToDeatach).hasSize(7);
+		for (Integer pageIndex : pagesToDeatach) {
+			assertThat(panelCache.getIsAttachedPredicate().apply(pageIndex)).isTrue();
+		}
+	}
 
 	@Test
-	public void getPagesToAttacheEmptyCache(){
+	public void getPagesToAttacheEmptyCache() {
 		List<Integer> toAttache = instance.getPagesToAttache(2);
 		assertThat(toAttache).isEmpty();
 	}
 
 	@Test
-	public void getPagesToAttacheSingleVisiblePage(){
+	public void getPagesToAttacheSingleVisiblePage() {
 		instance.setVisiblePageCount(1);
 		panelCache.setIsAttachedPredicate(new Predicate<Integer>() {
 
@@ -145,7 +147,7 @@ public class VisiblePagesManagerTest {
 				return false;
 			}
 		});
-		for(int x =0;x<10;++x){
+		for (int x = 0; x < 10; ++x) {
 			panelCache.getOrCreateAndPut(x);
 		}
 		int actualPage = 2;
@@ -156,7 +158,7 @@ public class VisiblePagesManagerTest {
 	}
 
 	@Test
-	public void getPagesToAttacheMultipleVisiblePage(){
+	public void getPagesToAttacheMultipleVisiblePage() {
 		instance.setVisiblePageCount(3);
 		panelCache.setIsAttachedPredicate(new Predicate<Integer>() {
 
@@ -166,7 +168,7 @@ public class VisiblePagesManagerTest {
 			}
 		});
 
-		for(int x =0;x<10;++x){
+		for (int x = 0; x < 10; ++x) {
 			panelCache.getOrCreateAndPut(x);
 		}
 		int actualPage = 2;
@@ -177,9 +179,9 @@ public class VisiblePagesManagerTest {
 	}
 
 	@Test
-	public void getPagesToAttacheThreeVisiblePage_SecondPageIsAttached(){
+	public void getPagesToAttacheThreeVisiblePage_SecondPageIsAttached() {
 		instance.setVisiblePageCount(3);
-		for(int x =0;x<10;++x){
+		for (int x = 0; x < 10; ++x) {
 			panelCache.getOrCreateAndPut(x);
 		}
 		int actualPage = 2;
@@ -190,9 +192,9 @@ public class VisiblePagesManagerTest {
 	}
 
 	@Test
-	public void getPagesToAttacheFiveVisiblePage_SecondAndFourthPageAreAttached(){
+	public void getPagesToAttacheFiveVisiblePage_SecondAndFourthPageAreAttached() {
 		instance.setVisiblePageCount(3);
-		for(int x =0;x<10;++x){
+		for (int x = 0; x < 10; ++x) {
 			panelCache.getOrCreateAndPut(x);
 		}
 		int actualPage = 2;

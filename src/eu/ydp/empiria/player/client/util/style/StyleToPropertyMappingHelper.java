@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 
 /**
  * Klasa mapujaca atrybuty z plikow css na property JavaScriptObject
- *
+ * 
  */
 public class StyleToPropertyMappingHelper {
 	/**
@@ -23,6 +23,7 @@ public class StyleToPropertyMappingHelper {
 
 	/**
 	 * dodaje funkcje do listy funkcji jakie mozna wykonywac
+	 * 
 	 * @param functionName
 	 */
 	public void addFunctionToWhiteList(String functionName) {
@@ -45,7 +46,7 @@ public class StyleToPropertyMappingHelper {
 				if (isFunctionSupported(property)) {
 					nativeStyleHelper.callFunction(element, property, style.getValue());
 				} else {
-					//Debug.log("function " + property + " not supported");
+					// Debug.log("function " + property + " not supported");
 				}
 			} else {
 				nativeStyleHelper.applyProperty(element, property, style.getValue());

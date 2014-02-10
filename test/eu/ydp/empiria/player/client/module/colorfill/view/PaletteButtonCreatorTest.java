@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.module.colorfill.view;
 
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,17 +16,17 @@ import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PaletteButtonCreatorTest  {
+public class PaletteButtonCreatorTest {
 
 	@InjectMocks
 	private PaletteButtonCreator creator;
-	
+
 	@Mock
 	private UserInteractionHandlerFactory userInteractionHandlerFactory;
 
 	@Mock
 	private Provider<PaletteButton> buttonProvider;
-	
+
 	@Test
 	public void createButton() {
 		// given
@@ -36,10 +34,10 @@ public class PaletteButtonCreatorTest  {
 		ColorModel color = ColorModel.createEraser();
 		Command command = mock(Command.class);
 		when(buttonProvider.get()).thenReturn(mock(PaletteButton.class));
-		
+
 		// when
 		PaletteButton button = creator.createButton(color, command, description);
-		
+
 		// then
 		verify(button).setColor(eq(color));
 		verify(button).setDescription(description);

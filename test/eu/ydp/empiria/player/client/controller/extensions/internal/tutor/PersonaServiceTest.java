@@ -22,73 +22,70 @@ public class PersonaServiceTest {
 	private EventsBus eventsBus;
 	@Mock
 	private TutorConfig tutorConfig;
-	
+
 	@InjectMocks
 	private PersonaService personaService;
-
 
 	@Test
 	public void shouldInitialyReturnZeroIndexAsPersonaIndex() throws Exception {
 		int currentPersonaIndex = personaService.getCurrentPersonaIndex();
-		
+
 		assertThat(currentPersonaIndex).isEqualTo(0);
 	}
-	
+
 	@Test
 	public void shouldReturnPreviouslySetPersonaIndex() throws Exception {
 		int expectedPersonaIndex = 1313;
-		
+
 		personaService.setCurrentPersonaIndex(expectedPersonaIndex);
 		int currentPersonaIndex = personaService.getCurrentPersonaIndex();
-		
+
 		assertThat(currentPersonaIndex).isEqualTo(expectedPersonaIndex);
 	}
-	
+
 	@Test
 	public void shouldThrowEventWhenChangingCurrentPersona() throws Exception {
-		//given
+		// given
 		int newPersonaIndex = 123;
-		
-		//when
+
+		// when
 		personaService.setCurrentPersonaIndex(newPersonaIndex);
-		
-		//then
+
+		// then
 		ArgumentCaptor<TutorEvent> eventCaptor = ArgumentCaptor.forClass(TutorEvent.class);
 		verify(eventsBus).fireAsyncEvent(eventCaptor.capture());
-		
+
 		TutorEvent tutorEvent = eventCaptor.getValue();
 		TutorEventTypes type = tutorEvent.getType();
 		assertThat(type).isEqualTo(TutorEventTypes.TUTOR_CHANGED);
 	}
-	
+
 	@Test
 	public void shouldntThrowEventWhenIndexOfCurrentPersonaNotChanged() throws Exception {
-		//given
+		// given
 		int samePersonaIndex = 0;
-		
-		//when
+
+		// when
 		personaService.setCurrentPersonaIndex(samePersonaIndex);
-		
-		//then
+
+		// then
 		Mockito.verifyZeroInteractions(eventsBus);
 	}
-	
+
 	@Test
 	public void shouldReturnPropertiesForCurrentPersona() throws Exception {
-		//given
+		// given
 		int tutorPersonaIndex = 123;
-		
+
 		TutorPersonaProperties personaProperties = Mockito.mock(TutorPersonaProperties.class);
-		when(tutorConfig.getTutorPersonaProperties(tutorPersonaIndex))
-			.thenReturn(personaProperties );
-		
+		when(tutorConfig.getTutorPersonaProperties(tutorPersonaIndex)).thenReturn(personaProperties);
+
 		personaService.setCurrentPersonaIndex(tutorPersonaIndex);
-		
-		
-		//when
+
+		// when
 		TutorPersonaProperties result = personaService.getPersonaProperties();
-		
-		//then
+
+		// then
 		assertThat(result).isEqualTo(personaProperties);
 	}
 }

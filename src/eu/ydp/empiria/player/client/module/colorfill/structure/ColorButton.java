@@ -15,7 +15,7 @@ public class ColorButton {
 
 	@XmlValue
 	private String description;
-	
+
 	public String getRgb() {
 		return rgb;
 	}

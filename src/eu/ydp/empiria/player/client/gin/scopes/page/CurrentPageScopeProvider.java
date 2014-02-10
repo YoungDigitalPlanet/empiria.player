@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.gin.scopes.AbstractCustomScope;
 import eu.ydp.gwtutil.client.gin.scopes.CurrentScopeProvider;
 
-public class CurrentPageScopeProvider implements CurrentScopeProvider{
+public class CurrentPageScopeProvider implements CurrentScopeProvider {
 
 	private PageScopeFactory pageScopeFactory;
 

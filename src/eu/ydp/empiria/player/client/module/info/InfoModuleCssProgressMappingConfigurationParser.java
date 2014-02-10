@@ -13,7 +13,9 @@ import eu.ydp.gwtutil.client.NumberUtils;
 public class InfoModuleCssProgressMappingConfigurationParser {
 	private static final String REPORT_PROGRESS_PREFIX = "-empiria-info-item-result-";
 
-	@Inject @CachedModuleScoped private ModuleStyle moduleStyle;
+	@Inject
+	@CachedModuleScoped
+	private ModuleStyle moduleStyle;
 
 	public Map<Integer, String> getCssProgressToStyleMapping() {
 		final Map<Integer, String> progressToStyleNameMapping = Maps.newHashMap();

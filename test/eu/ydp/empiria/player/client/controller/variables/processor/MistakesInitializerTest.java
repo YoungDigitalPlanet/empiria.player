@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.util.Map;

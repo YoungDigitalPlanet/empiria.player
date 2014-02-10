@@ -237,7 +237,8 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 				continuePage();
 			}
 			isShowAnswers = true;
-			eventsBus.fireEvent(new PageEvent(PageEventTypes.SHOW_ANSWERS, new FlowProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS), this), new CurrentPageScope());
+			eventsBus.fireEvent(new PageEvent(PageEventTypes.SHOW_ANSWERS, new FlowProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS), this),
+					new CurrentPageScope());
 		}
 
 	}
@@ -247,7 +248,8 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 		if (isCheck || isShowAnswers) {
 			isCheck = false;
 			isShowAnswers = false;
-			eventsBus.fireEvent(new PageEvent(PageEventTypes.CONTINUE, new FlowProcessingEvent(FlowProcessingEventType.CONTINUE), this), new CurrentPageScope());
+			eventsBus
+					.fireEvent(new PageEvent(PageEventTypes.CONTINUE, new FlowProcessingEvent(FlowProcessingEventType.CONTINUE), this), new CurrentPageScope());
 		}
 
 	}
@@ -277,32 +279,38 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 
 	@Override
 	public void checkGroup(GroupIdentifier groupId) {
-		eventsBus.fireEvent(new PageEvent(PageEventTypes.CHECK, new ActivityProcessingEvent(FlowProcessingEventType.CHECK, groupId), this), new CurrentPageScope());
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.CHECK, new ActivityProcessingEvent(FlowProcessingEventType.CHECK, groupId), this),
+				new CurrentPageScope());
 	}
 
 	@Override
 	public void showAnswersGroup(GroupIdentifier groupId) {
-		eventsBus.fireEvent(new PageEvent(PageEventTypes.SHOW_ANSWERS, new ActivityProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS, groupId), this), new CurrentPageScope());
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.SHOW_ANSWERS, new ActivityProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS, groupId), this),
+				new CurrentPageScope());
 	}
 
 	@Override
 	public void continueGroup(GroupIdentifier groupId) {
-		eventsBus.fireEvent(new PageEvent(PageEventTypes.CONTINUE, new ActivityProcessingEvent(FlowProcessingEventType.CONTINUE, groupId), this), new CurrentPageScope());
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.CONTINUE, new ActivityProcessingEvent(FlowProcessingEventType.CONTINUE, groupId), this),
+				new CurrentPageScope());
 	}
 
 	@Override
 	public void resetGroup(GroupIdentifier groupId) {
-		eventsBus.fireEvent(new PageEvent(PageEventTypes.RESET, new ActivityProcessingEvent(FlowProcessingEventType.RESET, groupId), this), new CurrentPageScope());
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.RESET, new ActivityProcessingEvent(FlowProcessingEventType.RESET, groupId), this),
+				new CurrentPageScope());
 	}
 
 	@Override
 	public void lockGroup(GroupIdentifier groupId) {
-		eventsBus.fireEvent(new PageEvent(PageEventTypes.LOCK, new ActivityProcessingEvent(FlowProcessingEventType.LOCK, groupId), this), new CurrentPageScope());
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.LOCK, new ActivityProcessingEvent(FlowProcessingEventType.LOCK, groupId), this),
+				new CurrentPageScope());
 	}
 
 	@Override
 	public void unlockGroup(GroupIdentifier groupId) {
-		eventsBus.fireEvent(new PageEvent(PageEventTypes.UNLOCK, new ActivityProcessingEvent(FlowProcessingEventType.UNLOCK, groupId), this), new CurrentPageScope());
+		eventsBus.fireEvent(new PageEvent(PageEventTypes.UNLOCK, new ActivityProcessingEvent(FlowProcessingEventType.UNLOCK, groupId), this),
+				new CurrentPageScope());
 	}
 
 	@Override

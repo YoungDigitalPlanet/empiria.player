@@ -55,9 +55,8 @@ public abstract class AbstractTemplateParser {
 	}
 
 	/**
-	 * Zwraca true jezeli modul wystepuje w szablonie i parser go obsluguje
-	 * false w przeciwnym razie
-	 *
+	 * Zwraca true jezeli modul wystepuje w szablonie i parser go obsluguje false w przeciwnym razie
+	 * 
 	 * @param moduleName
 	 * @return
 	 */
@@ -115,10 +114,9 @@ public abstract class AbstractTemplateParser {
 	}
 
 	/**
-	 * Metoda jest wywolywana zanim rozpocznie sie parsowanie Elementu przyczym
-	 * wstepna analiza szablonu zostala juz wykonana i dane na temat modulow w
+	 * Metoda jest wywolywana zanim rozpocznie sie parsowanie Elementu przyczym wstepna analiza szablonu zostala juz wykonana i dane na temat modulow w
 	 * szablonie sa juz dostepne.
-	 *
+	 * 
 	 * @param mainNode
 	 * @param parent
 	 */
@@ -126,7 +124,7 @@ public abstract class AbstractTemplateParser {
 
 	/**
 	 * Metoda zwraca nowy controler
-	 *
+	 * 
 	 * @param moduleName
 	 * @return
 	 */
@@ -134,7 +132,7 @@ public abstract class AbstractTemplateParser {
 
 	/**
 	 * Sprawdza czy dany modu jest obslugiwany
-	 *
+	 * 
 	 * @param moduleName
 	 * @return true jeżeli modu jest obsugiwany false w przeciwnym razie
 	 */

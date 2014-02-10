@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.results.model;
 
-
-
 public class DtoModuleProcessingResult {
 
 	private GeneralVariables generalVariables;
@@ -14,13 +12,13 @@ public class DtoModuleProcessingResult {
 		this.userInteractionVariables = userInteractionVariables;
 	}
 
-	public static DtoModuleProcessingResult fromDefaultVariables(){
+	public static DtoModuleProcessingResult fromDefaultVariables() {
 		GeneralVariables generalVariables = new GeneralVariables();
 		ConstantVariables constantVariables = new ConstantVariables();
 		UserInteractionVariables userInteractionVariables = new UserInteractionVariables();
 		return new DtoModuleProcessingResult(generalVariables, constantVariables, userInteractionVariables);
 	}
-	
+
 	public GeneralVariables getGeneralVariables() {
 		return generalVariables;
 	}

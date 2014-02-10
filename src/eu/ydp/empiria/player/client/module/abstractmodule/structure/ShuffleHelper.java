@@ -15,7 +15,7 @@ public class ShuffleHelper {
 		List<I> resultList;
 		if (bean.isShuffle()) {
 			resultList = randomize(associableChoices);
-		}else{
+		} else {
 			resultList = associableChoices;
 		}
 		return resultList;
@@ -35,18 +35,18 @@ public class ShuffleHelper {
 		return resultList;
 	}
 
-	private <I extends HasFixed> void devideByFixedProperty( List<I> source, Map<Integer, I> fixedItemsMap, List<I> randomItems) {
+	private <I extends HasFixed> void devideByFixedProperty(List<I> source, Map<Integer, I> fixedItemsMap, List<I> randomItems) {
 		for (int x = 0; x < source.size(); ++x) {
 			I item = source.get(x);
 			if (item.isFixed()) {
 				fixedItemsMap.put(x, item);
-			}else{
+			} else {
 				randomItems.add(item);
 			}
 		}
 	}
 
-	private  <I extends HasFixed> void addRandomItems( List<I> target, List<I> source) {
+	private <I extends HasFixed> void addRandomItems(List<I> target, List<I> source) {
 		if (!source.isEmpty()) {
 			RandomizedSet<I> randomSet = new RandomizedSet<I>(source);
 			while (randomSet.hasMore()) {
@@ -55,7 +55,7 @@ public class ShuffleHelper {
 		}
 	}
 
-	private  <I extends HasFixed> void addFixedItems(List<I> target,  Map<Integer, I> source) {
+	private <I extends HasFixed> void addFixedItems(List<I> target, Map<Integer, I> source) {
 		for (Map.Entry<Integer, I> fixedEntry : source.entrySet()) {
 			target.add(fixedEntry.getKey(), fixedEntry.getValue());
 		}

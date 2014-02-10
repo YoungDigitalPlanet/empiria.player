@@ -2,9 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.logging.Handler;
@@ -24,21 +22,21 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 public class AnswerEvaluationSupplierTest {
 
 	private Logger LOGGER = Logger.getLogger(VariableProcessingAdapter.class.getName());
-	
+
 	private AnswerEvaluationSupplier supplier = new AnswerEvaluationSupplier();
-	
+
 	@Test
 	public void evaluateAnswer() {
 		// given
 		final String ID = "";
 		Response response = createResponse(ID);
-		List<Boolean> answerEvaluations = Lists.newArrayList(true, false, true);		
+		List<Boolean> answerEvaluations = Lists.newArrayList(true, false, true);
 		ModulesProcessingResults modulesProcessingResults = prepareModulesProcessingResults(ID, answerEvaluations);
-		supplier.updateModulesProcessingResults(modulesProcessingResults );
-		
+		supplier.updateModulesProcessingResults(modulesProcessingResults);
+
 		// when
 		List<Boolean> evaluation = supplier.evaluateAnswer(response);
-		
+
 		// then
 		assertThat(evaluation).isEqualTo(answerEvaluations);
 	}
@@ -52,24 +50,24 @@ public class AnswerEvaluationSupplierTest {
 	private ModulesProcessingResults prepareModulesProcessingResults(final String ID, List<Boolean> answerEvaluations) {
 		ModulesProcessingResults modulesProcessingResults = new ModulesProcessingResults(new InitialProcessingResultFactory());
 		DtoModuleProcessingResult results = modulesProcessingResults.getProcessingResultsForResponseId(ID);
-		results.setGeneralVariables(new GeneralVariables(Lists.<String>newArrayList(), answerEvaluations, 0, 0));
+		results.setGeneralVariables(new GeneralVariables(Lists.<String> newArrayList(), answerEvaluations, 0, 0));
 		return modulesProcessingResults;
 	}
-	
+
 	@Test
 	public void evaluateAnswer_evaluationBeforeAnswerProcessing() {
 		// given
 		Response response = mock(Response.class);
 		Handler handler = mock(Handler.class);
 		LOGGER.addHandler(handler);
-		
+
 		// when
 		List<Boolean> evaluation = supplier.evaluateAnswer(response);
-		
+
 		// then
 		assertThat(evaluation.isEmpty()).isTrue();
 		verify(handler).publish(any(LogRecord.class));
-		
+
 	}
 
 }

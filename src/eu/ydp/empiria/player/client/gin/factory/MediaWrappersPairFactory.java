@@ -6,5 +6,6 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
 
 public interface MediaWrappersPairFactory {
-	public MediaWrappersPair getMediaWrappersPair(@Assisted("default") MediaWrapper<?> defaultMediaWrapper,@Assisted("fullscreen") MediaWrapper<?> fullScreanMediaWrapper);
+	public MediaWrappersPair getMediaWrappersPair(@Assisted("default") MediaWrapper<?> defaultMediaWrapper,
+			@Assisted("fullscreen") MediaWrapper<?> fullScreanMediaWrapper);
 }

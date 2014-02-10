@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.*;
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.NORMAL;
 
 import java.util.Set;
 

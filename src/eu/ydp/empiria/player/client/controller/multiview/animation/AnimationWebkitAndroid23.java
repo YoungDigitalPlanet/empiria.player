@@ -19,7 +19,7 @@ import eu.ydp.gwtutil.client.util.events.animation.TransitionEndHandler;
  * <code>
      -webkit-transition: -webkit-transform 2s linear;</br>
      -webkit-transform: translateX(-1920px);</code>
- *
+ * 
  */
 public class AnimationWebkitAndroid23 extends AbstractAnimation implements TransitionEndHandler {
 	private final static String SUFFIX = "webkit";

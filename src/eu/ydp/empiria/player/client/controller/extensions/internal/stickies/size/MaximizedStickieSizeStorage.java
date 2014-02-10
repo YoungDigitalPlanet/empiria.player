@@ -8,22 +8,22 @@ import com.google.common.base.Optional;
 public class MaximizedStickieSizeStorage {
 
 	private final Map<Integer, StickieSize> colorToStickieSizeMap = new HashMap<Integer, StickieSize>();
-	
-	public Optional<StickieSize> getSizeOfMaximizedStickie(int colorIndex){
+
+	public Optional<StickieSize> getSizeOfMaximizedStickie(int colorIndex) {
 		StickieSize stickieSize = colorToStickieSizeMap.get(colorIndex);
 		return Optional.fromNullable(stickieSize);
 	}
-	
-	public void updateIfBiggerThanExisting(int colorIndex, StickieSize size){
+
+	public void updateIfBiggerThanExisting(int colorIndex, StickieSize size) {
 		StickieSize existingStickieSize = colorToStickieSizeMap.get(colorIndex);
-		
+
 		StickieSize mergedSize;
-		if(existingStickieSize == null){
+		if (existingStickieSize == null) {
 			mergedSize = size;
-		}else{
+		} else {
 			mergedSize = mergeSizes(size, existingStickieSize);
 		}
-		
+
 		colorToStickieSizeMap.put(colorIndex, mergedSize);
 	}
 

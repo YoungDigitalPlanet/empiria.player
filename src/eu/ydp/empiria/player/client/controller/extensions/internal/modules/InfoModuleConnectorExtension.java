@@ -19,12 +19,13 @@ import eu.ydp.empiria.player.client.module.info.InfoModuleUnloadListener;
 
 public class InfoModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, DeliveryEventsListenerExtension {
 
-	@Inject private Provider<InfoModule> infoModuleProvider;
+	@Inject
+	private Provider<InfoModule> infoModuleProvider;
 	protected List<InfoModule> modules = Lists.newArrayList();
 
 	@Override
 	public ModuleCreator getModuleCreator() {
-		return new AbstractModuleCreator(false,true) {
+		return new AbstractModuleCreator(false, true) {
 			@Override
 			public IModule createModule() {
 				final InfoModule infoModule = infoModuleProvider.get();
@@ -46,11 +47,10 @@ public class InfoModuleConnectorExtension extends ModuleExtension implements Mod
 		return ModuleTagName.INFO.tagName();
 	}
 
-
 	@Override
 	public void onDeliveryEvent(DeliveryEvent event) {
-		if (event.getType() == DeliveryEventType.TEST_PAGE_LOADED){
-			for (InfoModule im : modules){
+		if (event.getType() == DeliveryEventType.TEST_PAGE_LOADED) {
+			for (InfoModule im : modules) {
 				im.update();
 			}
 		}

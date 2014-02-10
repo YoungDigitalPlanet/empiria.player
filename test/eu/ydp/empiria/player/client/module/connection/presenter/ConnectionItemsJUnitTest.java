@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.common.collect.ImmutableList;
@@ -67,16 +68,16 @@ public class ConnectionItemsJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 			instance.addItemToRightColumn(bean);
 		}
 
-		verify(connectionModuleFactory, times(idList.size())).getConnectionItem(Mockito.any(PairChoiceBean.class), Mockito.eq(bodyGeneratorSocket),
-				Mockito.eq(Column.RIGHT));
+		verify(connectionModuleFactory, times(idList.size())).getConnectionItem(Matchers.any(PairChoiceBean.class), Matchers.eq(bodyGeneratorSocket),
+				Matchers.eq(Column.RIGHT));
 	}
 
 	@Test
 	public void testAddItemToLeftColumn() {
 		prepareItems();
 
-		verify(connectionModuleFactory, times(idList.size())).getConnectionItem(Mockito.any(PairChoiceBean.class), Mockito.eq(bodyGeneratorSocket),
-				Mockito.eq(Column.LEFT));
+		verify(connectionModuleFactory, times(idList.size())).getConnectionItem(Matchers.any(PairChoiceBean.class), Matchers.eq(bodyGeneratorSocket),
+				Matchers.eq(Column.LEFT));
 	}
 
 	@Test
@@ -97,10 +98,10 @@ public class ConnectionItemsJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 			rightItems.add(instance.addItemToRightColumn(bean));
 		}
 
-		for(ConnectionItem leftItem : leftItems){
+		for (ConnectionItem leftItem : leftItems) {
 			assertFalse(instance.getConnectionItems(leftItem).contains(leftItem));
 		}
-		for(ConnectionItem rightItem : rightItems){
+		for (ConnectionItem rightItem : rightItems) {
 			assertFalse(instance.getConnectionItems(rightItem).contains(rightItem));
 		}
 
@@ -108,7 +109,7 @@ public class ConnectionItemsJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 
 	@Test
 	public void testResetAllItems() {
-		List<ConnectionItem>  items = new ArrayList<ConnectionItem>();
+		List<ConnectionItem> items = new ArrayList<ConnectionItem>();
 		for (String id : idList) {
 			PairChoiceBean bean = mock(PairChoiceBean.class);
 			doReturn(id).when(bean).getIdentifier();
@@ -117,7 +118,7 @@ public class ConnectionItemsJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 
 		instance.resetAllItems();
 
-		for(ConnectionItem item : items){
+		for (ConnectionItem item : items) {
 			verify(item).reset();
 		}
 	}
@@ -134,7 +135,7 @@ public class ConnectionItemsJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 	public void testIsIdentifiersNotCorrect() {
 		prepareItems();
 		for (String id : idList) {
-			assertFalse(instance.isIdentifiersCorrect(id+id));
+			assertFalse(instance.isIdentifiersCorrect(id + id));
 		}
 
 	}
@@ -156,7 +157,7 @@ public class ConnectionItemsJUnitTest extends AbstractTestBaseWithoutAutoInjecto
 
 	@Test
 	public void testGetAllItems() {
-		List<ConnectionItem>  items = new ArrayList<ConnectionItem>();
+		List<ConnectionItem> items = new ArrayList<ConnectionItem>();
 		for (String id : idList) {
 			PairChoiceBean bean = mock(PairChoiceBean.class);
 			doReturn(id).when(bean).getIdentifier();

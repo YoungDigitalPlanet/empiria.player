@@ -2,13 +2,12 @@ package eu.ydp.empiria.player.client.util.events;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.util.Set;
 
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
@@ -25,7 +24,7 @@ import eu.ydp.gwtutil.client.event.HandlerRegistration;
 
 @SuppressWarnings("PMD")
 public class AbstractEventHandlersTest {
-	abstract class AbstractEventHandlerImpl<H extends EventHandler, E extends Enum<E>, EV extends Event<H, E>> extends AbstractEventHandler<H, E, EV>{
+	abstract class AbstractEventHandlerImpl<H extends EventHandler, E extends Enum<E>, EV extends Event<H, E>> extends AbstractEventHandler<H, E, EV> {
 		@Override
 		public HandlerRegistration addHandler(H handler, Type<H, E> event) {
 			return super.addHandler(handler, event);
@@ -60,7 +59,6 @@ public class AbstractEventHandlersTest {
 			handler.onMediaEvent(event);
 		}
 	}
-
 
 	private AbstractMediaEventHandlerImpl getMediaEventHandler() {
 		return new AbstractMediaEventHandlerImpl();
@@ -133,7 +131,7 @@ public class AbstractEventHandlersTest {
 		mediaEvent = new MediaEvent(MediaEventTypes.ON_FULL_SCREEN_OPEN);
 		abstractEventHandlers.fireEvent(mediaEvent);
 		verify(handler2).onMediaEvent(mediaEvent);
-		verify(handler2).onMediaEvent(Mockito.any(MediaEvent.class));
+		verify(handler2).onMediaEvent(Matchers.any(MediaEvent.class));
 	}
 
 	@Test
@@ -155,8 +153,8 @@ public class AbstractEventHandlersTest {
 		event = new PlayerEvent(PlayerEventTypes.AFTER_FLOW);
 		abstractEventHandlers.fireEvent(event);
 		verify(handler).onPlayerEvent(event);
-		verify(handler).onPlayerEvent(Mockito.any(PlayerEvent.class));
-		verify(handler2,times(0)).onPlayerEvent(event);
+		verify(handler).onPlayerEvent(Matchers.any(PlayerEvent.class));
+		verify(handler2, times(0)).onPlayerEvent(event);
 	}
 
 }

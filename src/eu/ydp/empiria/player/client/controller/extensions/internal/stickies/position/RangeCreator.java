@@ -7,22 +7,22 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.posi
 import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public class RangeCreator {
-	
-	public Range<Integer> getRangeForAxis(Rectangle rectangle, Axis axis){
+
+	public Range<Integer> getRangeForAxis(Rectangle rectangle, Axis axis) {
 		Range<Integer> range;
-		if(axis == Axis.HORIZONTAL){
+		if (axis == Axis.HORIZONTAL) {
 			range = horizontal(rectangle);
-		}else{
+		} else {
 			range = vertical(rectangle);
 		}
 		return range;
 	}
-	
-	private Range<Integer> horizontal(Rectangle rectangle){
+
+	private Range<Integer> horizontal(Rectangle rectangle) {
 		return Ranges.closed(rectangle.getLeft(), rectangle.getRight());
 	}
-	
-	private Range<Integer> vertical(Rectangle rectangle){
+
+	private Range<Integer> vertical(Rectangle rectangle) {
 		return Ranges.closed(rectangle.getTop(), rectangle.getBottom());
 	}
 }

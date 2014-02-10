@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.Map;
@@ -310,7 +310,7 @@ public class ConnectionSurfacesManagerTest {
 
 	@SuppressWarnings("unchecked")
 	private ConnectionPairEntry<String, String> connectionPairEntry(String source, String target) {
-		ConnectionPairEntry<String, String> cpe = (ConnectionPairEntry<String, String>) mock(ConnectionPairEntry.class);
+		ConnectionPairEntry<String, String> cpe = mock(ConnectionPairEntry.class);
 
 		when(cpe.getSource()).thenReturn(source);
 		when(cpe.getTarget()).thenReturn(target);

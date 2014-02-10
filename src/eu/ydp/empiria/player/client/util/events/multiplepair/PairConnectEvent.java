@@ -52,9 +52,7 @@ public class PairConnectEvent extends AbstractEvent<PairConnectEventHandler, Pai
 
 	@Override
 	public String toString() {
-		return "PairConnectEvent "+getType()+" [sourceItem=" + sourceItem + ", targetItem=" + targetItem + ", userAction=" + userAction + "]";
+		return "PairConnectEvent " + getType() + " [sourceItem=" + sourceItem + ", targetItem=" + targetItem + ", userAction=" + userAction + "]";
 	}
-
-
 
 }

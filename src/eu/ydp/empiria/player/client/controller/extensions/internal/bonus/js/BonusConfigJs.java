@@ -5,10 +5,11 @@ import com.google.gwt.core.client.JsArray;
 
 public class BonusConfigJs extends JavaScriptObject {
 
-	protected BonusConfigJs() {}
-	
+	protected BonusConfigJs() {
+	}
+
 	public final native JsArray<BonusActionJs> getActions()/*-{
-		return this.actions;
-	}-*/;
-	
+															return this.actions;
+															}-*/;
+
 }

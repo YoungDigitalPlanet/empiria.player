@@ -23,16 +23,16 @@ public class TestMediaWrapperCreator {
 
 	public List<MediaWrapper<Widget>> createMediaWrappers(Iterable<? extends TestMedia> testMedias) {
 		List<MediaWrapper<Widget>> wrappers = Lists.newArrayList();
-		for (TestMedia media : testMedias){
+		for (TestMedia media : testMedias) {
 			wrappers.add(createMediaWrapper(media));
 		}
 		return wrappers;
 	}
-	
-	public MediaWrapper<Widget> createMediaWrapper(){
-		final Wrapper<MediaWrapper<Widget>> mwWrapper = Wrapper.ofStrict(ClassUtil.<MediaWrapper<Widget>>castClassUnsafe(MediaWrapper.class));
+
+	public MediaWrapper<Widget> createMediaWrapper() {
+		final Wrapper<MediaWrapper<Widget>> mwWrapper = Wrapper.ofStrict(ClassUtil.<MediaWrapper<Widget>> castClassUnsafe(MediaWrapper.class));
 		CallbackRecevier<MediaWrapper<Widget>> callbackRecevier = new CallbackRecevier<MediaWrapper<Widget>>() {
-			
+
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> o) {
 				mwWrapper.setInstance(o);
@@ -41,11 +41,11 @@ public class TestMediaWrapperCreator {
 		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, TestMediaAudio.MULTI_MP3_OGG.getMediaConfiguration(), callbackRecevier));
 		return mwWrapper.getInstance();
 	}
-	
-	public MediaWrapper<Widget> createMediaWrapper(TestMedia testMedias){
-		final Wrapper<MediaWrapper<Widget>> mwWrapper = Wrapper.ofStrict(ClassUtil.<MediaWrapper<Widget>>castClassUnsafe(MediaWrapper.class));
+
+	public MediaWrapper<Widget> createMediaWrapper(TestMedia testMedias) {
+		final Wrapper<MediaWrapper<Widget>> mwWrapper = Wrapper.ofStrict(ClassUtil.<MediaWrapper<Widget>> castClassUnsafe(MediaWrapper.class));
 		CallbackRecevier<MediaWrapper<Widget>> callbackRecevier = new CallbackRecevier<MediaWrapper<Widget>>() {
-			
+
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> o) {
 				mwWrapper.setInstance(o);

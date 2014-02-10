@@ -9,7 +9,7 @@ public class StateChangeEvent extends AbstractEvent<StateChangeEventHandler, Sta
 	private final StateChangedInteractionEvent value;
 
 	public StateChangeEvent(StateChangeEventTypes type, StateChangedInteractionEvent value) {
-		super(type,null);
+		super(type, null);
 		this.value = value;
 	}
 

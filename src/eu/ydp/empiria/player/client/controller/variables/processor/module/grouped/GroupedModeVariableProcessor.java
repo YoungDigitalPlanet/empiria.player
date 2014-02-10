@@ -22,9 +22,7 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	private final DoneToCountModeAdjuster doneToCountModeAdjuster;
 
 	@Inject
-	public GroupedModeVariableProcessor(
-			@PageScoped GroupedAnswersManager groupedAnswersManager, 
-			ErrorsToCountModeAdjuster errorsToCountModeAdjuster,
+	public GroupedModeVariableProcessor(@PageScoped GroupedAnswersManager groupedAnswersManager, ErrorsToCountModeAdjuster errorsToCountModeAdjuster,
 			DoneToCountModeAdjuster doneToCountModeAdjuster) {
 		this.groupedAnswersManager = groupedAnswersManager;
 		this.errorsToCountModeAdjuster = errorsToCountModeAdjuster;
@@ -72,21 +70,21 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	@Override
 	public LastMistaken checkLastmistaken(Response response, LastAnswersChanges answersChanges) {
 		LastMistaken lastmistaken = LastMistaken.NONE;
-		if(answersChanges.containChanges()){
+		if (answersChanges.containChanges()) {
 			lastmistaken = checkLastAnswerChangesIfWasMistaken(response, answersChanges);
 		}
-		
+
 		return lastmistaken;
 	}
 
 	private LastMistaken checkLastAnswerChangesIfWasMistaken(Response response, LastAnswersChanges answersChanges) {
 		List<String> addedAnswers = answersChanges.getAddedAnswers();
 		boolean addedCorrectAnswer = hasAddedAnyCorrectAnswer(addedAnswers, response);
-		LastMistaken lastmistaken; 
-		
-		if(addedCorrectAnswer){
+		LastMistaken lastmistaken;
+
+		if (addedCorrectAnswer) {
 			lastmistaken = LastMistaken.CORRECT;
-		}else{
+		} else {
 			lastmistaken = LastMistaken.WRONG;
 		}
 		return lastmistaken;
@@ -110,11 +108,11 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 	@Override
 	public List<Boolean> evaluateAnswers(Response response) {
 		Evaluate evaluate = response.evaluate;
-		if ( !isCorrectEvaluateTypeForGroupedAnswers(evaluate)) {
+		if (!isCorrectEvaluateTypeForGroupedAnswers(evaluate)) {
 			throw new UnsupportedOperationException("Cannot evaluate answers in mode: " + evaluate
 					+ " for grouped answers. Only allowed evaluation type for grouped answers is: " + Evaluate.USER);
 		}
-		
+
 		return evaluateUserAnswers(response);
 	}
 
@@ -124,7 +122,7 @@ public class GroupedModeVariableProcessor implements VariableProcessor {
 
 	private List<Boolean> evaluateUserAnswers(Response response) {
 		List<Boolean> answersEvaluation = Lists.newArrayList();
-		for(String currentAnswer : response.values){
+		for (String currentAnswer : response.values) {
 			boolean answerCorrect = groupedAnswersManager.isAnswerCorrectInAnyOfGroups(currentAnswer, response, response.groups);
 			answersEvaluation.add(answerCorrect);
 		}

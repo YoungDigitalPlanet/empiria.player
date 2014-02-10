@@ -19,7 +19,7 @@ public class PageContentView extends Composite {
 		titlePanel.setStyleName(styleNames.QP_PAGE_TITLE());
 	}
 
-	private void setParent(Panel panel){
+	private void setParent(Panel panel) {
 		pagePanel = panel;
 		pagePanel.add(itemsPanel);
 	}
@@ -36,7 +36,7 @@ public class PageContentView extends Composite {
 		return titlePanel;
 	}
 
-	public void setParentPanel(Panel parent){
+	public void setParentPanel(Panel parent) {
 		setParent(parent);
 	}
 }

@@ -1,13 +1,8 @@
 package eu.ydp.empiria.player.client.module.colorfill.view;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.canvas.client.Canvas;
@@ -41,7 +37,7 @@ import eu.ydp.gwtutil.junit.runners.PrepareForTest;
 
 @SuppressWarnings("PMD")
 @RunWith(ExMockRunner.class)
-@PrepareForTest({ Context2d.class, ImageData.class , NativeEvent.class })
+@PrepareForTest({ Context2d.class, ImageData.class, NativeEvent.class })
 public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	private static final int POSITION_Y = 20;
 	private static final int POSITION_X = 10;
@@ -77,7 +73,6 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 	public void before() {
 		setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
 
-
 		instance = injector.getInstance(ColorfillCanvasImpl.class);
 		canvas = mock(Canvas.class);
 		context2d = mock(Context2d.class);
@@ -86,8 +81,8 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 		doReturn(context2d).when(canvas).getContext2d();
 		doReturn(canvas).when(canvasStubView).getCanvas();
 
-		doReturn(POSITION_X).when(positionHelper).getXPositionRelativeToTarget(any(NativeEvent.class), Mockito.any(Element.class));
-		doReturn(POSITION_Y).when(positionHelper).getYPositionRelativeToTarget(any(NativeEvent.class), Mockito.any(Element.class));
+		doReturn(POSITION_X).when(positionHelper).getXPositionRelativeToTarget(any(NativeEvent.class), Matchers.any(Element.class));
+		doReturn(POSITION_Y).when(positionHelper).getYPositionRelativeToTarget(any(NativeEvent.class), Matchers.any(Element.class));
 
 	}
 
@@ -141,8 +136,8 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 		ColorfillAreaClickListener colorfillAreaClickListener = mock(ColorfillAreaClickListener.class);
 		instance.setAreaClickListener(colorfillAreaClickListener);
 
-		doReturn(-10).when(positionHelper).getXPositionRelativeToTarget(any(NativeEvent.class), Mockito.any(Element.class));
-		doReturn(-15).when(positionHelper).getYPositionRelativeToTarget(any(NativeEvent.class), Mockito.any(Element.class));
+		doReturn(-10).when(positionHelper).getXPositionRelativeToTarget(any(NativeEvent.class), Matchers.any(Element.class));
+		doReturn(-15).when(positionHelper).getYPositionRelativeToTarget(any(NativeEvent.class), Matchers.any(Element.class));
 
 		ArgumentCaptor<LoadHandler> loadHandlerCaptor = ArgumentCaptor.forClass(LoadHandler.class);
 		verify(canvasStubView).setImageLoadHandler(loadHandlerCaptor.capture());
@@ -154,7 +149,7 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 		NativeEvent nativeEvent = mock(NativeEvent.class);
 		commandCaptor.getValue().execute(nativeEvent);
 
-		verify(colorfillAreaClickListener,times(0)).onAreaClick(any(Area.class));
+		verify(colorfillAreaClickListener, times(0)).onAreaClick(any(Area.class));
 
 	}
 

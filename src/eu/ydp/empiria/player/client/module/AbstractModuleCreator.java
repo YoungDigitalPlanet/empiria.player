@@ -1,9 +1,8 @@
 package eu.ydp.empiria.player.client.module;
 
 /**
- * Klasa bedca prost implementacja ModuleCreator. Nalezy zaimplementowac medode
- * tworzaca modul
- *
+ * Klasa bedca prost implementacja ModuleCreator. Nalezy zaimplementowac medode tworzaca modul
+ * 
  */
 public abstract class AbstractModuleCreator extends SimpleModuleCreator<IModule> {
 	/**

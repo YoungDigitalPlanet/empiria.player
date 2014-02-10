@@ -33,7 +33,8 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 	private InteractionEventsListener interactionEventsListener;
 	private ParenthoodManager parenthood;
 
-	public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket moduleSocket, DisplayContentOptions options, InteractionEventsListener interactionEventsListener, ParenthoodManager parenthood) {
+	public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket moduleSocket, DisplayContentOptions options,
+			InteractionEventsListener interactionEventsListener, ParenthoodManager parenthood) {
 		this.modulesRegistrySocket = mrs;
 		this.options = options;
 		this.moduleSocket = moduleSocket;
@@ -101,9 +102,8 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 	}
 
 	/**
-	 * Parsuje pojedynczy wezel xml-a i generuje reprezentacje w postaci
-	 * widgeta. Widget jest dodawany do parentElement
-	 *
+	 * Parsuje pojedynczy wezel xml-a i generuje reprezentacje w postaci widgeta. Widget jest dodawany do parentElement
+	 * 
 	 * @param currNode
 	 * @param parentElement
 	 * @return
@@ -116,7 +116,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 				IModule module = modulesRegistrySocket.createModule((Element) currNode);
 				if (module instanceof IInlineModule) {
 					parenthood.addChild(module);
-					((IInlineModule) module).initModule((Element) currNode, moduleSocket,interactionEventsListener);
+					((IInlineModule) module).initModule((Element) currNode, moduleSocket, interactionEventsListener);
 					Widget moduleView = ((IInlineModule) module).getView();
 					if (moduleView != null) {
 						parentElement.appendChild(moduleView.getElement());
@@ -156,7 +156,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 			if (modulesRegistrySocket.isModuleSupported(moduleName) && modulesRegistrySocket.isInlineModule(moduleName)) {
 				IModule module = modulesRegistrySocket.createModule((Element) node);
 				if (module instanceof IInlineModule) {
-					((IInlineModule) module).initModule((Element) node, moduleSocket,interactionEventsListener);
+					((IInlineModule) module).initModule((Element) node, moduleSocket, interactionEventsListener);
 					Widget moduleView = ((IInlineModule) module).getView();
 					if (parent instanceof ComplexPanel && moduleView != null) {
 						((Panel) parent).add(moduleView);
@@ -179,7 +179,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 
 	/**
 	 * Generuje elementy dla dzieci wskazanego wezla
-	 *
+	 * 
 	 * @param nodes
 	 * @param parentElement
 	 * @return
@@ -194,7 +194,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 
 	/**
 	 * Generuje widgety dla dzieci wskazanego wezla
-	 *
+	 * 
 	 * @param nodes
 	 * @param parentElement
 	 * @return
@@ -224,8 +224,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 	}
 
 	@Override
-	public void generateInlineBody(String node,	com.google.gwt.dom.client.Element parentElement) {
-
+	public void generateInlineBody(String node, com.google.gwt.dom.client.Element parentElement) {
 
 		generateInlineBody(getElementFromString(node), parentElement);
 	}
@@ -235,7 +234,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 		return generateInlineBody(getElementFromString(mainNode), allAsWidget);
 	}
 
-	private Element getElementFromString(String value){
+	private Element getElementFromString(String value) {
 		com.google.gwt.xml.client.Document doc = XMLParser.createDocument();
 		com.google.gwt.xml.client.Element textElement = doc.createElement("content");
 

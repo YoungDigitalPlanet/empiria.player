@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -58,6 +56,5 @@ public class ConnectionEventHandlerJUnitTest {
 			index++;
 		}
 	}
-
 
 }

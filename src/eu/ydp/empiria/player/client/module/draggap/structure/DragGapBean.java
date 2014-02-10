@@ -26,7 +26,7 @@ public class DragGapBean extends ModuleBean {
 
 	@XmlAttribute(name = "sourcelistId")
 	private String sourcelistId = StringUtils.EMPTY_STRING;
-	
+
 	public String getName() {
 		return name;
 	}

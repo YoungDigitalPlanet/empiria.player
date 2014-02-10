@@ -36,11 +36,9 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Improved checkBox that enables checked control
- * for unattached component.
+ * Improved checkBox that enables checked control for unattached component.
  * 
- * This class also serves as a base class for
- * {@link com.google.gwt.user.client.ui.RadioButton}.
+ * This class also serves as a base class for {@link com.google.gwt.user.client.ui.RadioButton}.
  * 
  * <p>
  * <img class='gallery' src='AccessibleCheckBox.png'/>
@@ -60,373 +58,370 @@ import com.google.gwt.user.client.ui.Widget;
  * </p>
  */
 public class AccessibleCheckBox extends ButtonBase implements HasName, HasValue<Boolean> {
-  InputElement inputElem;
-  LabelElement labelElem;
-  private boolean valueChangeHandlerInitialized;
-  
-  public InputElement getInputElement(){
-	  return inputElem;
-  }
-  
-  /**
-   * Creates a check box with no label.
-   */
-  public AccessibleCheckBox() {
-    this(DOM.createInputCheck());
-    setStyleName("gwt-AccessibleCheckBox");
-  }
+	InputElement inputElem;
+	LabelElement labelElem;
+	private boolean valueChangeHandlerInitialized;
 
-  /**
-   * Creates a check box with the specified text label.
-   * 
-   * @param label the check box's label
-   */
-  public AccessibleCheckBox(String label) {
-    this();
-    setText(label);
-  }
+	public InputElement getInputElement() {
+		return inputElem;
+	}
 
-  /**
-   * Creates a check box with the specified text label.
-   * 
-   * @param label the check box's label
-   * @param asHTML <code>true</code> to treat the specified label as html
-   */
-  public AccessibleCheckBox(String label, boolean asHTML) {
-    this();
-    if (asHTML) {
-      setHTML(label);
-    } else {
-      setText(label);
-    }
-  }
+	/**
+	 * Creates a check box with no label.
+	 */
+	public AccessibleCheckBox() {
+		this(DOM.createInputCheck());
+		setStyleName("gwt-AccessibleCheckBox");
+	}
 
-  protected AccessibleCheckBox(Element elem) {
-    super(DOM.createSpan());
-    inputElem = InputElement.as(elem);
-    labelElem = Document.get().createLabelElement();
+	/**
+	 * Creates a check box with the specified text label.
+	 * 
+	 * @param label
+	 *            the check box's label
+	 */
+	public AccessibleCheckBox(String label) {
+		this();
+		setText(label);
+	}
 
-    getElement().appendChild(inputElem);
-    getElement().appendChild(labelElem);
+	/**
+	 * Creates a check box with the specified text label.
+	 * 
+	 * @param label
+	 *            the check box's label
+	 * @param asHTML
+	 *            <code>true</code> to treat the specified label as html
+	 */
+	public AccessibleCheckBox(String label, boolean asHTML) {
+		this();
+		if (asHTML) {
+			setHTML(label);
+		} else {
+			setText(label);
+		}
+	}
 
-    String uid = DOM.createUniqueId();
-    inputElem.setPropertyString("id", uid);
-    labelElem.setHtmlFor(uid);
+	protected AccessibleCheckBox(Element elem) {
+		super(DOM.createSpan());
+		inputElem = InputElement.as(elem);
+		labelElem = Document.get().createLabelElement();
 
-    // Accessibility: setting tab index to be 0 by default, ensuring element
-    // appears in tab sequence. FocusWidget's setElement method already
-    // calls setTabIndex, which is overridden below. However, at the time
-    // that this call is made, inputElem has not been created. So, we have
-    // to call setTabIndex again, once inputElem has been created.
-    setTabIndex(0);
-  }
+		getElement().appendChild(inputElem);
+		getElement().appendChild(labelElem);
 
-  public HandlerRegistration addValueChangeHandler(
-      ValueChangeHandler<Boolean> handler) {
-    // Is this the first value change handler? If so, time to add handlers
-    if (!valueChangeHandlerInitialized) {
-      ensureDomEventHandlers();
-      valueChangeHandlerInitialized = true;
-    }
-    return addHandler(handler, ValueChangeEvent.getType());
-  }
+		String uid = DOM.createUniqueId();
+		inputElem.setPropertyString("id", uid);
+		labelElem.setHtmlFor(uid);
 
-  /**
-   * Returns the value property of the input element that backs this widget.
-   * This is the value that will be associated with the AccessibleCheckBox name and
-   * submitted to the server if a {@link FormPanel} that holds it is submitted
-   * and the box is checked.
-   * <p>
-   * Don't confuse this with {@link #getValue}, which returns true or false if
-   * the widget is checked.
-   */
-  public String getFormValue() {
-    return inputElem.getValue();
-  }
+		// Accessibility: setting tab index to be 0 by default, ensuring element
+		// appears in tab sequence. FocusWidget's setElement method already
+		// calls setTabIndex, which is overridden below. However, at the time
+		// that this call is made, inputElem has not been created. So, we have
+		// to call setTabIndex again, once inputElem has been created.
+		setTabIndex(0);
+	}
 
-  @Override
-  public String getHTML() {
-    return labelElem.getInnerHTML();
-  }
+	@Override
+	public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Boolean> handler) {
+		// Is this the first value change handler? If so, time to add handlers
+		if (!valueChangeHandlerInitialized) {
+			ensureDomEventHandlers();
+			valueChangeHandlerInitialized = true;
+		}
+		return addHandler(handler, ValueChangeEvent.getType());
+	}
 
-  public String getName() {
-    return inputElem.getName();
-  }
+	/**
+	 * Returns the value property of the input element that backs this widget. This is the value that will be associated with the AccessibleCheckBox name and
+	 * submitted to the server if a {@link FormPanel} that holds it is submitted and the box is checked.
+	 * <p>
+	 * Don't confuse this with {@link #getValue}, which returns true or false if the widget is checked.
+	 */
+	public String getFormValue() {
+		return inputElem.getValue();
+	}
 
-  @Override
-  public int getTabIndex() {
-    return inputElem.getTabIndex();
-  }
+	@Override
+	public String getHTML() {
+		return labelElem.getInnerHTML();
+	}
 
-  @Override
-  public String getText() {
-    return labelElem.getInnerText();
-  }
+	@Override
+	public String getName() {
+		return inputElem.getName();
+	}
 
-  /**
-   * Determines whether this check box is currently checked. 
-   * <p>
-   * Note that this <em>is not</em> return the value property of the AccessibleCheckBox
-   * input element wrapped by this widget. For access to that property, see
-   * {@link #getFormValue()}
-   * 
-   * @return <code>true</code> if the check box is checked, false otherwise.
-   * Will not return null
-   */
-  public Boolean getValue() {
-    if (isAttached()) {
-      return inputElem.isChecked();
-    } else {
-      return inputElem.isDefaultChecked();
-    }
-  }
+	@Override
+	public int getTabIndex() {
+		return inputElem.getTabIndex();
+	}
 
-  /**
-   * Determines whether this check box is currently checked.
-   * 
-   * @return <code>true</code> if the check box is checked
-   */
-  public boolean isChecked() {
-	  return inputElem.isChecked(); 
-  }
+	@Override
+	public String getText() {
+		return labelElem.getInnerText();
+	}
 
-  @Override
-  public boolean isEnabled() {
-    return !inputElem.isDisabled();
-  }
+	/**
+	 * Determines whether this check box is currently checked.
+	 * <p>
+	 * Note that this <em>is not</em> return the value property of the AccessibleCheckBox input element wrapped by this widget. For access to that property, see
+	 * {@link #getFormValue()}
+	 * 
+	 * @return <code>true</code> if the check box is checked, false otherwise. Will not return null
+	 */
+	@Override
+	public Boolean getValue() {
+		if (isAttached()) {
+			return inputElem.isChecked();
+		} else {
+			return inputElem.isDefaultChecked();
+		}
+	}
 
-  @Override
-  public void setAccessKey(char key) {
-    inputElem.setAccessKey("" + key);
-  }
+	/**
+	 * Determines whether this check box is currently checked.
+	 * 
+	 * @return <code>true</code> if the check box is checked
+	 */
+	public boolean isChecked() {
+		return inputElem.isChecked();
+	}
 
-  /**
-   * Checks or unchecks this check box. Does not fire {@link ValueChangeEvent}.
-   * (If you want the event to fire, use {@link #setValue(Boolean, boolean)})
-   * 
-   * @param checked <code>true</code> to check the check box.
-   */
-  public void setChecked(boolean checked) {
-    inputElem.setChecked(checked);
-  }
+	@Override
+	public boolean isEnabled() {
+		return !inputElem.isDisabled();
+	}
 
-  @Override
-  public void setEnabled(boolean enabled) {
-    inputElem.setDisabled(!enabled);
-    if (enabled) {
-      removeStyleDependentName("disabled");
-    } else {
-      addStyleDependentName("disabled");
-    }
-  }
+	@Override
+	public void setAccessKey(char key) {
+		inputElem.setAccessKey("" + key);
+	}
 
-  @Override
-  public void setFocus(boolean focused) {
-    if (focused) {
-      inputElem.focus();
-    } else {
-      inputElem.blur();
-    }
-  }
+	/**
+	 * Checks or unchecks this check box. Does not fire {@link ValueChangeEvent}. (If you want the event to fire, use {@link #setValue(Boolean, boolean)})
+	 * 
+	 * @param checked
+	 *            <code>true</code> to check the check box.
+	 */
+	public void setChecked(boolean checked) {
+		inputElem.setChecked(checked);
+	}
 
-  /**
-   * Set the value property on the input element that backs this widget. This is
-   * the value that will be associated with the AccessibleCheckBox's name and submitted to
-   * the server if a {@link FormPanel} that holds it is submitted and the box is
-   * checked.
-   * <p>
-   * Don't confuse this with {@link #setValue}, which actually checks and
-   * unchecks the box.
-   * 
-   * @param value
-   */
-  public void setFormValue(String value) {
-    inputElem.setAttribute("value", value);
-  }
+	@Override
+	public void setEnabled(boolean enabled) {
+		inputElem.setDisabled(!enabled);
+		if (enabled) {
+			removeStyleDependentName("disabled");
+		} else {
+			addStyleDependentName("disabled");
+		}
+	}
 
-  @Override
-  public void setHTML(String html) {
-    labelElem.setInnerHTML(html);
-  }
+	@Override
+	public void setFocus(boolean focused) {
+		if (focused) {
+			inputElem.focus();
+		} else {
+			inputElem.blur();
+		}
+	}
 
-  public void setName(String name) {
-    inputElem.setName(name);
-  }
+	/**
+	 * Set the value property on the input element that backs this widget. This is the value that will be associated with the AccessibleCheckBox's name and
+	 * submitted to the server if a {@link FormPanel} that holds it is submitted and the box is checked.
+	 * <p>
+	 * Don't confuse this with {@link #setValue}, which actually checks and unchecks the box.
+	 * 
+	 * @param value
+	 */
+	public void setFormValue(String value) {
+		inputElem.setAttribute("value", value);
+	}
 
-  @Override
-  public void setTabIndex(int index) {
-    // Need to guard against call to setTabIndex before inputElem is
-    // initialized. This happens because FocusWidget's (a superclass of
-    // AccessibleCheckBox) setElement method calls setTabIndex before inputElem is
-    // initialized. See AccessibleCheckBox's protected constructor for more information.
-    if (inputElem != null) {
-      inputElem.setTabIndex(index);
-    }
-  }
+	@Override
+	public void setHTML(String html) {
+		labelElem.setInnerHTML(html);
+	}
 
-  @Override
-  public void setText(String text) {
-    labelElem.setInnerText(text);
-  }
+	@Override
+	public void setName(String name) {
+		inputElem.setName(name);
+	}
 
-  /**
-   * Checks or unchecks the text box.
-   * <p>
-   * Note that this <em>does not</em> set the value property of the AccessibleCheckBox
-   * input element wrapped by this widget. For access to that property, see
-   * {@link #setFormValue(String)}
-   * 
-   * @param value true to check, false to uncheck; must not be null
-   * @throws IllegalArgumentException if value is null
-   */
-  public void setValue(Boolean value) {
-    setValue(value, false);
-  }
+	@Override
+	public void setTabIndex(int index) {
+		// Need to guard against call to setTabIndex before inputElem is
+		// initialized. This happens because FocusWidget's (a superclass of
+		// AccessibleCheckBox) setElement method calls setTabIndex before inputElem is
+		// initialized. See AccessibleCheckBox's protected constructor for more information.
+		if (inputElem != null) {
+			inputElem.setTabIndex(index);
+		}
+	}
 
-  /**
-   * Checks or unchecks the text box, firing {@link ValueChangeEvent} if
-   * appropriate.
-   * <p>
-   * Note that this <em>does not</em> set the value property of the AccessibleCheckBox
-   * input element wrapped by this widget. For access to that property, see
-   * {@link #setFormValue(String)}
-   *
-   * @param value true to check, false to uncheck; must not be null
-   * @param fireEvents If true, and value has changed, fire a
-   *          {@link ValueChangeEvent}
-   * @throws IllegalArgumentException if value is null
-   */
-  public void setValue(Boolean value, boolean fireEvents) {
-    if (value == null) {
-      throw new IllegalArgumentException("value must not be null");
-    }
+	@Override
+	public void setText(String text) {
+		labelElem.setInnerText(text);
+	}
 
-    Boolean oldValue = getValue();
-    inputElem.setChecked(value);
-    inputElem.setDefaultChecked(value);
-    if (value.equals(oldValue)) {
-      return;
-    }
-    if (fireEvents) {
-      ValueChangeEvent.fire(this, value);
-    }
-  }
+	/**
+	 * Checks or unchecks the text box.
+	 * <p>
+	 * Note that this <em>does not</em> set the value property of the AccessibleCheckBox input element wrapped by this widget. For access to that property, see
+	 * {@link #setFormValue(String)}
+	 * 
+	 * @param value
+	 *            true to check, false to uncheck; must not be null
+	 * @throws IllegalArgumentException
+	 *             if value is null
+	 */
+	@Override
+	public void setValue(Boolean value) {
+		setValue(value, false);
+	}
 
-  // Unlike other widgets the AccessibleCheckBox sinks on its inputElement, not
-  // its wrapper
-  @Override
-  public void sinkEvents(int eventBitsToAdd) {
-    if (isOrWasAttached()) {
-      Event.sinkEvents(inputElem, 
-          eventBitsToAdd | Event.getEventsSunk(inputElem));
-    } else {
-      super.sinkEvents(eventBitsToAdd);
-    }
-  }
+	/**
+	 * Checks or unchecks the text box, firing {@link ValueChangeEvent} if appropriate.
+	 * <p>
+	 * Note that this <em>does not</em> set the value property of the AccessibleCheckBox input element wrapped by this widget. For access to that property, see
+	 * {@link #setFormValue(String)}
+	 * 
+	 * @param value
+	 *            true to check, false to uncheck; must not be null
+	 * @param fireEvents
+	 *            If true, and value has changed, fire a {@link ValueChangeEvent}
+	 * @throws IllegalArgumentException
+	 *             if value is null
+	 */
+	@Override
+	public void setValue(Boolean value, boolean fireEvents) {
+		if (value == null) {
+			throw new IllegalArgumentException("value must not be null");
+		}
 
-  protected void ensureDomEventHandlers() {
-    addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        // AccessibleCheckBoxes always toggle their value, no need to compare
-        // with old value. Radio buttons are not so lucky, see
-        // overrides in RadioButton
-        ValueChangeEvent.fire(AccessibleCheckBox.this, getValue());
-      }
-    });
-  }
+		Boolean oldValue = getValue();
+		inputElem.setChecked(value);
+		inputElem.setDefaultChecked(value);
+		if (value.equals(oldValue)) {
+			return;
+		}
+		if (fireEvents) {
+			ValueChangeEvent.fire(this, value);
+		}
+	}
 
-  /**
-   * <b>Affected Elements:</b>
-   * <ul>
-   * <li>-label = label next to AccessibleCheckBox.</li>
-   * </ul>
-   * 
-   * @see UIObject#onEnsureDebugId(String)
-   */
-  @Override
-  protected void onEnsureDebugId(String baseID) {
-    super.onEnsureDebugId(baseID);
-    ensureDebugId(labelElem, baseID, "label");
-    ensureDebugId(inputElem, baseID, "input");
-    labelElem.setHtmlFor(inputElem.getId());
-  }
+	// Unlike other widgets the AccessibleCheckBox sinks on its inputElement, not
+	// its wrapper
+	@Override
+	public void sinkEvents(int eventBitsToAdd) {
+		if (isOrWasAttached()) {
+			Event.sinkEvents(inputElem, eventBitsToAdd | Event.getEventsSunk(inputElem));
+		} else {
+			super.sinkEvents(eventBitsToAdd);
+		}
+	}
 
-  /**
-   * This method is called when a widget is attached to the browser's document.
-   * onAttach needs special handling for the AccessibleCheckBox case. Must still call
-   * {@link Widget#onAttach()} to preserve the <code>onAttach</code> contract.
-   */
-  @Override
-  protected void onLoad() {
-    setEventListener(inputElem, this);
-  }
+	protected void ensureDomEventHandlers() {
+		addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				// AccessibleCheckBoxes always toggle their value, no need to compare
+				// with old value. Radio buttons are not so lucky, see
+				// overrides in RadioButton
+				ValueChangeEvent.fire(AccessibleCheckBox.this, getValue());
+			}
+		});
+	}
 
-  /**
-   * This method is called when a widget is detached from the browser's
-   * document. Overridden because of IE bug that throws away checked state and
-   * in order to clear the event listener off of the <code>inputElem</code>.
-   */
-  @Override
-  protected void onUnload() {
-    // Clear out the inputElem's event listener (breaking the circular
-    // reference between it and the widget).
-    setEventListener(asOld(inputElem), null);
-    setValue(getValue());
-  }
+	/**
+	 * <b>Affected Elements:</b>
+	 * <ul>
+	 * <li>-label = label next to AccessibleCheckBox.</li>
+	 * </ul>
+	 * 
+	 * @see UIObject#onEnsureDebugId(String)
+	 */
+	@Override
+	protected void onEnsureDebugId(String baseID) {
+		super.onEnsureDebugId(baseID);
+		ensureDebugId(labelElem, baseID, "label");
+		ensureDebugId(inputElem, baseID, "input");
+		labelElem.setHtmlFor(inputElem.getId());
+	}
 
-  /**
-   * Replace the current input element with a new one. Preserves
-   * all state except for the name property, for nasty reasons
-   * related to radio button grouping. (See implementation of 
-   * {@link RadioButton#setName}.)
-   * 
-   * @param elem the new input element
-   */
-  protected void replaceInputElement(Element elem) {
-    InputElement newInputElem = InputElement.as(elem);
-    // Collect information we need to set
-    int tabIndex = getTabIndex();
-    boolean checked = getValue();
-    boolean enabled = isEnabled();
-    String formValue = getFormValue();
-    String uid = inputElem.getId();
-    String accessKey = inputElem.getAccessKey();
-    int sunkEvents = Event.getEventsSunk(inputElem);   
+	/**
+	 * This method is called when a widget is attached to the browser's document. onAttach needs special handling for the AccessibleCheckBox case. Must still
+	 * call {@link Widget#onAttach()} to preserve the <code>onAttach</code> contract.
+	 */
+	@Override
+	protected void onLoad() {
+		setEventListener(inputElem, this);
+	}
 
-    // Clear out the old input element
-    setEventListener(asOld(inputElem), null);
+	/**
+	 * This method is called when a widget is detached from the browser's document. Overridden because of IE bug that throws away checked state and in order to
+	 * clear the event listener off of the <code>inputElem</code>.
+	 */
+	@Override
+	protected void onUnload() {
+		// Clear out the inputElem's event listener (breaking the circular
+		// reference between it and the widget).
+		setEventListener(asOld(inputElem), null);
+		setValue(getValue());
+	}
 
-    getElement().replaceChild(newInputElem, inputElem);
+	/**
+	 * Replace the current input element with a new one. Preserves all state except for the name property, for nasty reasons related to radio button grouping.
+	 * (See implementation of {@link RadioButton#setName}.)
+	 * 
+	 * @param elem
+	 *            the new input element
+	 */
+	protected void replaceInputElement(Element elem) {
+		InputElement newInputElem = InputElement.as(elem);
+		// Collect information we need to set
+		int tabIndex = getTabIndex();
+		boolean checked = getValue();
+		boolean enabled = isEnabled();
+		String formValue = getFormValue();
+		String uid = inputElem.getId();
+		String accessKey = inputElem.getAccessKey();
+		int sunkEvents = Event.getEventsSunk(inputElem);
 
-    // Sink events on the new element
-    Event.sinkEvents(elem, Event.getEventsSunk(inputElem));
-    Event.sinkEvents(inputElem, 0);
-    inputElem = newInputElem;
+		// Clear out the old input element
+		setEventListener(asOld(inputElem), null);
 
-    // Setup the new element
-    Event.sinkEvents(inputElem, sunkEvents);
-    inputElem.setId(uid);
-    if (!"".equals(accessKey)) {
-      inputElem.setAccessKey(accessKey);
-    }
-    setTabIndex(tabIndex);
-    setValue(checked);
-    setEnabled(enabled);
-    setFormValue(formValue);
+		getElement().replaceChild(newInputElem, inputElem);
 
-    // Set the event listener
-    if (isAttached()) {
-      setEventListener(asOld(inputElem), this);
-    }
-  }
+		// Sink events on the new element
+		Event.sinkEvents(elem, Event.getEventsSunk(inputElem));
+		Event.sinkEvents(inputElem, 0);
+		inputElem = newInputElem;
 
-  private Element asOld(com.google.gwt.dom.client.Element elem) {
-    Element oldSchool = elem.cast();
-    return oldSchool;
-  }
+		// Setup the new element
+		Event.sinkEvents(inputElem, sunkEvents);
+		inputElem.setId(uid);
+		if (!"".equals(accessKey)) {
+			inputElem.setAccessKey(accessKey);
+		}
+		setTabIndex(tabIndex);
+		setValue(checked);
+		setEnabled(enabled);
+		setFormValue(formValue);
 
-  private void setEventListener(com.google.gwt.dom.client.Element e,
-      EventListener listener) {
-    DOM.setEventListener(asOld(e), listener);
-  }
+		// Set the event listener
+		if (isAttached()) {
+			setEventListener(asOld(inputElem), this);
+		}
+	}
+
+	private Element asOld(com.google.gwt.dom.client.Element elem) {
+		Element oldSchool = elem.cast();
+		return oldSchool;
+	}
+
+	private void setEventListener(com.google.gwt.dom.client.Element e, EventListener listener) {
+		DOM.setEventListener(asOld(e), listener);
+	}
 }

@@ -11,12 +11,12 @@ public class GapWidthBindingContext implements BindingContext {
 
 	List<Bindable> bindables;
 	private BindingType type;
-	
-	public GapWidthBindingContext(BindingType type){
+
+	public GapWidthBindingContext(BindingType type) {
 		this.type = type;
 		bindables = new ArrayList<Bindable>();
 	}
-	
+
 	@Override
 	public boolean add(Bindable bindable) {
 		bindables.add(bindable);
@@ -25,8 +25,8 @@ public class GapWidthBindingContext implements BindingContext {
 
 	public GapWidthBindingValue getGapWidthBindingOutcomeValue() {
 		GapWidthBindingValue value = new GapWidthBindingValue(0);
-		for (Bindable b : bindables){
-			value.merge((GapWidthBindingValue)b.getBindingValue(type));
+		for (Bindable b : bindables) {
+			value.merge((GapWidthBindingValue) b.getBindingValue(type));
 		}
 		return value;
 	}

@@ -26,8 +26,9 @@ public class HTML5MediaAvailableOptions implements MediaAvailableOptions {
 
 	@Override
 	public boolean isVolumeChangeSupported() {
-		//mobilna i inna niz ff i chrome bo tam dziala
-		if (UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN && !UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX, MobileUserAgent.CHROME)) {
+		// mobilna i inna niz ff i chrome bo tam dziala
+		if (UserAgentChecker.getMobileUserAgent() != MobileUserAgent.UNKNOWN
+				&& !UserAgentChecker.isMobileUserAgent(MobileUserAgent.FIREFOX, MobileUserAgent.CHROME)) {
 			return false;
 		}
 		return true;

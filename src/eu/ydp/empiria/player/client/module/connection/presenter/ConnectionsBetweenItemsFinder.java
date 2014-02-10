@@ -36,5 +36,4 @@ public class ConnectionsBetweenItemsFinder {
 		return Iterables.tryFind(connectionItems.getAllItems(), new IsClickInConnectionItemPredicate(clickPoint));
 	}
 
-
 }

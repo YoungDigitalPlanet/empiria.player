@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 
 import org.junit.Before;
@@ -19,41 +22,39 @@ import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemsMarkingControllerJUnitTest {
 
 	private ItemsMarkingController itemsMarkingController;
 	private OrderingItemsDao orderingItemsDao;
-	@Mock private ItemsResponseOrderController responseOrderController;
-	@Mock private OrderInteractionModuleModel model;
-	@Mock private ResponseSocket responseSocket;
+	@Mock
+	private ItemsResponseOrderController responseOrderController;
+	@Mock
+	private OrderInteractionModuleModel model;
+	@Mock
+	private ResponseSocket responseSocket;
 	private OrderingItem correctItem1;
 	private OrderingItem wrongItem;
 	private OrderingItem correctItem2;
 	private final List<Boolean> answersEvaluation = Lists.newArrayList(true, false, true);
-	
+
 	@Before
 	public void setUp() throws Exception {
 		orderingItemsDao = new OrderingItemsDao();
 		itemsMarkingController = new ItemsMarkingController(responseOrderController, responseSocket, model, orderingItemsDao);
-		
+
 		correctItem1 = createItem("correctItem1");
 		wrongItem = createItem("wrongItem");
 		correctItem2 = createItem("correctItem2");
-		
+
 		Response response = Mockito.mock(Response.class);
-		when(model.getResponse())
-			.thenReturn(response);
-		
-		when(responseSocket.evaluateResponse(response))
-			.thenReturn(answersEvaluation);
-		
+		when(model.getResponse()).thenReturn(response);
+
+		when(responseSocket.evaluateResponse(response)).thenReturn(answersEvaluation);
+
 		List<String> currentItemsOrder = Lists.newArrayList("correctItem1", "wrongItem", "correctItem2");
-		when(responseOrderController.getCurrentItemsOrderByAnswers())
-			.thenReturn(currentItemsOrder);
+		when(responseOrderController.getCurrentItemsOrderByAnswers()).thenReturn(currentItemsOrder);
 	}
 
 	@Test
@@ -75,12 +76,12 @@ public class ItemsMarkingControllerJUnitTest {
 			assertThat(orderingItem.getAnswerType()).isEqualTo(UserAnswerType.NONE);
 		}
 	}
-	
+
 	@Test
 	public void shouldMarkCorrectItems() throws Exception {
 		shouldMarkItems(UserAnswerType.CORRECT, MarkAnswersType.CORRECT, Lists.newArrayList(correctItem1, correctItem2));
 	}
-	
+
 	@Test
 	public void shouldMarkWrongItems() throws Exception {
 		shouldMarkItems(UserAnswerType.WRONG, MarkAnswersType.WRONG, Lists.newArrayList(wrongItem));

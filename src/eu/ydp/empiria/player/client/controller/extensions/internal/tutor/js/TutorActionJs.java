@@ -9,10 +9,10 @@ public class TutorActionJs extends JavaScriptObject {
 	}
 
 	public final native String getType()/*-{
-		return this.type;
-	}-*/;
+										return this.type;
+										}-*/;
 
 	public final native JsArray<TutorCommandJs> getCommands()/*-{
-		return this.commands;
-	}-*/;
+																return this.commands;
+																}-*/;
 }

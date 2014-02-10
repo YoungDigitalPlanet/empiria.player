@@ -15,5 +15,4 @@ public class GapWidthBindingManager extends BindingManagerBase {
 		return new GapWidthBindingContext(BindingType.GAP_WIDTHS);
 	}
 
-	
 }

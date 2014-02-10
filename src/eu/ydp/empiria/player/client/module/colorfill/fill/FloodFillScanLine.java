@@ -39,7 +39,7 @@ public class FloodFillScanLine {
 	}
 
 	private void fill() {
-		int x,y;
+		int x, y;
 		boolean spanLeft, spanRight;
 		while (!queue.isEmpty()) {
 			JsPoint p = queue.pop();

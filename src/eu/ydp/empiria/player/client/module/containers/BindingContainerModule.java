@@ -18,21 +18,21 @@ public abstract class BindingContainerModule<T> extends SimpleContainerModuleBas
 				gapWidthBindingManager = createGapWidthBindingManager();
 			return gapWidthBindingManager;
 		}
-		
+
 		if (bindingType == BindingType.GAP_MAXLENGHTS) {
 			if (gapMaxlengthBindingManager == null)
 				gapMaxlengthBindingManager = createGapMaxlengthBindingManager();
 			return gapMaxlengthBindingManager;
 		}
-		
+
 		return null;
 	}
-	
-	protected GapWidthBindingManager createGapWidthBindingManager(){
+
+	protected GapWidthBindingManager createGapWidthBindingManager() {
 		return new GapWidthBindingManager(true);
 	}
-	
-	protected GapMaxlengthBindingManager createGapMaxlengthBindingManager(){
+
+	protected GapMaxlengthBindingManager createGapMaxlengthBindingManager() {
 		return new GapMaxlengthBindingManager(true);
 	}
 }

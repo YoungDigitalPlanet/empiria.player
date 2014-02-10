@@ -7,7 +7,7 @@ public class InlineContainerStylesExtractor {
 
 	public Set<InlineFormattingContainerType> getInlineStyles(IModule module) {
 		Set<InlineFormattingContainerType> inlineStyles = null;
-		
+
 		if (module != null) {
 			inlineStyles = extractInlineStylesFromParentHierarchy(module);
 		} else {

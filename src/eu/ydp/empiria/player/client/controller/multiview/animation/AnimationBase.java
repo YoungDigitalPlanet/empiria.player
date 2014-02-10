@@ -5,11 +5,11 @@ import java.util.Set;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 
-
 public class AnimationBase implements Animation {
 	protected final Set<AnimationEndCallback> callbacks = new HashSet<AnimationEndCallback>();
 	private int xPosition;
 	private boolean running = false;
+
 	@Override
 	public void addAnimationEndCallback(AnimationEndCallback endCallback) {
 		callbacks.add(endCallback);

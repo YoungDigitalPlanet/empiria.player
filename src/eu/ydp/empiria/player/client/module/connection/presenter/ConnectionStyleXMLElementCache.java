@@ -24,10 +24,12 @@ public class ConnectionStyleXMLElementCache extends AbstractCache<MultiplePairMo
 	}
 
 	String template = "<root><connection class=\"$class\" /></root>";
-	private String getTemplate(String className){
+
+	private String getTemplate(String className) {
 		return template.replaceAll("\\$class", className);
 	}
-	private Element getXMLElement(String className){
+
+	private Element getXMLElement(String className) {
 		return (Element) xmlParser.parse(getTemplate(className)).getDocumentElement().getFirstChild();
 	}
 

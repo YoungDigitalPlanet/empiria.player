@@ -7,7 +7,7 @@ import com.google.common.collect.Maps;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 
 public class OutcomeListBuilder {
-	
+
 	private final Map<String, Outcome> map;
 
 	public OutcomeListBuilder() {

@@ -21,17 +21,12 @@ import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
-
 @SuppressWarnings("PMD")
 @RunWith(JUnitParamsRunner.class)
 public class ViewItemsSorterJUnitTest {
 
-	Map<String, Widget> itemsToSort = new ImmutableMap.Builder<String, Widget>().
-											put("1", mock(Widget.class)).
-											put("2", mock(Widget.class)).
-										    put("3", mock(Widget.class)).
-										    build();
-
+	Map<String, Widget> itemsToSort = new ImmutableMap.Builder<String, Widget>().put("1", mock(Widget.class)).put("2", mock(Widget.class))
+			.put("3", mock(Widget.class)).build();
 
 	@BeforeClass
 	public static void disarm() {
@@ -42,8 +37,6 @@ public class ViewItemsSorterJUnitTest {
 	public static void rearm() {
 		GWTMockUtilities.restore();
 	}
-
-
 
 	@Test
 	@Parameters({ "1,2,3", "2,1,3", "3,2,1", "2,2,1" })

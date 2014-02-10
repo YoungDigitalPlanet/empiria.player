@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.results.model;
 
-
 public class UserInteractionVariables {
 
 	private LastAnswersChanges lastAnswerChanges;
@@ -18,15 +17,19 @@ public class UserInteractionVariables {
 		this.lastmistaken = lastmistaken;
 		this.mistakes = mistakes;
 	}
+
 	public int getMistakes() {
 		return mistakes;
 	}
+
 	public void setMistakes(int mistakes) {
 		this.mistakes = mistakes;
 	}
+
 	public LastAnswersChanges getLastAnswerChanges() {
 		return lastAnswerChanges;
 	}
+
 	public void setLastAnswerChanges(LastAnswersChanges lastAnswerChanges) {
 		this.lastAnswerChanges = lastAnswerChanges;
 	}

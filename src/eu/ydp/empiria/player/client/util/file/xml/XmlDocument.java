@@ -20,7 +20,7 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
-*/
+ */
 package eu.ydp.empiria.player.client.util.file.xml;
 
 import com.google.gwt.xml.client.Document;
@@ -30,7 +30,6 @@ import com.google.gwt.xml.client.impl.DOMParseException;
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.TextDocument;
 
-
 public class XmlDocument {
 
 	private DocumentLoadCallback<Document> callback;
@@ -39,21 +38,23 @@ public class XmlDocument {
 	/**
 	 * Loads an XML document.
 	 * 
-	 * @param u Document URL
-	 * @param c Callback with on success and on error handlers
+	 * @param u
+	 *            Document URL
+	 * @param c
+	 *            Callback with on success and on error handlers
 	 */
-	public XmlDocument(String u, DocumentLoadCallback<Document> c){
-		
+	public XmlDocument(String u, DocumentLoadCallback<Document> c) {
+
 		this.callback = c;
 		this.url = u;
 
 		new TextDocument(url, new DocumentLoadCallback<String>() {
-			
+
 			@Override
 			public void loadingError(String message) {
 				callback.loadingError(message);
 			}
-			
+
 			@Override
 			public void finishedLoading(String text, String baseUrl) {
 				try {
@@ -65,6 +66,6 @@ public class XmlDocument {
 				}
 			}
 		});
-	  
+
 	}
-} 
+}

@@ -24,7 +24,6 @@ public class ModuleWrapper extends AbstractMediaController<ModuleWrapper> {
 		container.add(widget);
 	}
 
-
 	@Override
 	public ModuleWrapper getNewInstance() {
 		return null;

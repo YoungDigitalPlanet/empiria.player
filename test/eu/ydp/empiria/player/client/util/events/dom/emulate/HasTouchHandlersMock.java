@@ -5,7 +5,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.gwtutil.client.event.AbstractEventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
-public class HasTouchHandlersMock extends AbstractEventHandler<TouchHandler, TouchTypes,TouchEvent> implements HasTouchHandlers {
+public class HasTouchHandlersMock extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers {
 
 	@Override
 	public HandlerRegistration addTouchHandler(TouchHandler handler, Type<TouchHandler, TouchTypes> event) {
@@ -17,16 +17,16 @@ public class HasTouchHandlersMock extends AbstractEventHandler<TouchHandler, Tou
 		handler.onTouchEvent(event);
 	}
 
-	public void emulateEvent(TouchEvent event){
+	public void emulateEvent(TouchEvent event) {
 		fireEvent(event);
 	}
 
 	@Override
 	public HandlerRegistration[] addTouchHandlers(TouchHandler handler, Type<TouchHandler, TouchTypes>... event) {
-		 HandlerRegistration[] reg = new  HandlerRegistration[event.length];
-		 for(int x=0;x<reg.length;++x){
-			 reg[x] = addHandler(handler, event[x]);
-		 }
+		HandlerRegistration[] reg = new HandlerRegistration[event.length];
+		for (int x = 0; x < reg.length; ++x) {
+			reg[x] = addHandler(handler, event[x]);
+		}
 		return reg;
 	}
 

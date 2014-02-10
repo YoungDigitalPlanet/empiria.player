@@ -7,12 +7,12 @@ import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataS
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
 
-public abstract class ProviderValueHandlerBase implements FieldValueHandler{
-	
+public abstract class ProviderValueHandlerBase implements FieldValueHandler {
+
 	protected SessionDataSupplier sessionDataSupplier;
-	
+
 	@Inject
-	public ProviderValueHandlerBase(@Assisted SessionDataSupplier sessionDataSupplier){
+	public ProviderValueHandlerBase(@Assisted SessionDataSupplier sessionDataSupplier) {
 		this.sessionDataSupplier = sessionDataSupplier;
 	}
 
@@ -21,9 +21,9 @@ public abstract class ProviderValueHandlerBase implements FieldValueHandler{
 		VariableProviderSocket variableProvider = getVariableProvider(refItemIndex);
 		return countValue(info, variableProvider);
 	}
-	
+
 	abstract protected String countValue(ContentFieldInfo info, VariableProviderSocket provider);
-	
+
 	abstract protected VariableProviderSocket getVariableProvider(int refItemIndex);
-	
+
 }

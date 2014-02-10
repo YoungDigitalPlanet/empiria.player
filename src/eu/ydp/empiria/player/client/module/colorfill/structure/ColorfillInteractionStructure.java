@@ -9,7 +9,7 @@ import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
-public class ColorfillInteractionStructure extends AbstractModuleStructure<ColorfillInteractionBean, ColorfillInteractionModuleJAXBParserFactory>  {
+public class ColorfillInteractionStructure extends AbstractModuleStructure<ColorfillInteractionBean, ColorfillInteractionModuleJAXBParserFactory> {
 
 	@Inject
 	private ColorfillInteractionModuleJAXBParserFactory parserFactory;

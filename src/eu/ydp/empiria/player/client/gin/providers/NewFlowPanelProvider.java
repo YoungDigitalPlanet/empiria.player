@@ -10,7 +10,7 @@ public class NewFlowPanelProvider implements Provider<FlowPanel> {
 
 	@Inject
 	private GWTPanelFactoryImpl panelFactoryImpl;
-	
+
 	@Override
 	public FlowPanel get() {
 		return panelFactoryImpl.getFlowPanel();

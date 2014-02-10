@@ -8,10 +8,8 @@ import org.mockito.Mockito;
 import eu.ydp.empiria.player.client.AbstractModuleStructureTestBase;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 
-
 public class OrderInteractionStructureJUnitTest extends
-AbstractModuleStructureTestBase<OrderInteractionStructure, OrderInteractionBean, OrderInteractionModuleJAXBParserFactory>{
-
+		AbstractModuleStructureTestBase<OrderInteractionStructure, OrderInteractionBean, OrderInteractionModuleJAXBParserFactory> {
 
 	@Override
 	protected OrderInteractionStructure createModuleStructure() {
@@ -19,7 +17,7 @@ AbstractModuleStructureTestBase<OrderInteractionStructure, OrderInteractionBean,
 	}
 
 	@Test
-	public void structureTest(){
+	public void structureTest() {
 		OrderInteractionBean bean = createFromXML(OrderInteractionStructureMock.XML, Mockito.mock(YJsonArray.class));
 		assertThat(bean.getId()).isEqualTo("dummy1");
 	}

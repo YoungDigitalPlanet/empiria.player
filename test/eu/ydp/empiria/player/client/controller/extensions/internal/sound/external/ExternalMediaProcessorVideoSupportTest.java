@@ -11,15 +11,15 @@ import org.junit.runner.RunWith;
 public class ExternalMediaProcessorVideoSupportTest extends ExternalMediaProcessorTestBase {
 
 	@SuppressWarnings("unused")
-	private Object[] media_video(){
-		return $((Object[])TestMediaVideo.values());
+	private Object[] media_video() {
+		return $((Object[]) TestMediaVideo.values());
 	}
-	
+
 	@Test(expected = UnsupportedOperationException.class)
 	@Parameters(method = "media_video")
 	public void onReady(TestMediaVideo testMedias) {
 		// when
 		container.createMediaWrapper(testMedias);
 	}
-	
+
 }

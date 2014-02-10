@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.Tuto
 import eu.ydp.empiria.player.client.module.tutor.ActionType;
 
 public final class ActionTypePredicate implements Predicate<TutorActionJs> {
-	
+
 	private final ActionType type;
 
 	ActionTypePredicate(ActionType type) {
@@ -17,6 +17,6 @@ public final class ActionTypePredicate implements Predicate<TutorActionJs> {
 
 	@Override
 	public boolean apply(@Nullable TutorActionJs actionJs) {
-		return type.toString().equalsIgnoreCase( actionJs.getType() );
+		return type.toString().equalsIgnoreCase(actionJs.getType());
 	}
 }

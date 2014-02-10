@@ -11,7 +11,7 @@ public class ShapeModule extends SimpleModuleBase implements Factory<ShapeModule
 
 	protected PushButton button;
 
-	public ShapeModule(){
+	public ShapeModule() {
 		button = new PushButton();
 		button.setStyleName("qp-shape");
 	}

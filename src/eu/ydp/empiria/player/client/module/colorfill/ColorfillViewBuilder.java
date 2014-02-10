@@ -27,17 +27,17 @@ public class ColorfillViewBuilder {
 	}
 
 	public void buildView(ColorfillInteractionBean bean, ColorfillInteractionPresenter interactionPresenter) {
-			createButtons(bean.getButtons());
-			
-			setListenersOnView(interactionPresenter);
+		createButtons(bean.getButtons());
 
-			Image image = bean.getImage();
-			interactionView.setImage(image);
-			
-			Image correctlyColoredImage = bean.getCorrectImage();
-			if(correctlyColoredImage != null){
-				interactionView.setCorrectImage(correctlyColoredImage);
-			}
+		setListenersOnView(interactionPresenter);
+
+		Image image = bean.getImage();
+		interactionView.setImage(image);
+
+		Image correctlyColoredImage = bean.getCorrectImage();
+		if (correctlyColoredImage != null) {
+			interactionView.setCorrectImage(correctlyColoredImage);
+		}
 	}
 
 	private void createButtons(ButtonsContainer buttonsContainer) {
@@ -45,7 +45,7 @@ public class ColorfillViewBuilder {
 		createColorButtons(buttons);
 
 		EraserButton eraserButton = buttonsContainer.getEraserButton();
-		if(eraserButton != null){
+		if (eraserButton != null) {
 			createEraserButton(eraserButton);
 		}
 	}
@@ -56,7 +56,7 @@ public class ColorfillViewBuilder {
 			interactionView.createButton(colorModel, colorButton.getDescription());
 		}
 	}
-	
+
 	private void createEraserButton(EraserButton eraserButton) {
 		interactionView.createButton(ERASING_COLOR, eraserButton.getDescription());
 	}

@@ -5,7 +5,7 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 
-public class DragGapModuleJAXBParserFactoryTest  extends AbstractEmpiriaPlayerGWTTestCase {
+public class DragGapModuleJAXBParserFactoryTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	public void testParseDragGapModule() throws Exception {
 		StringBuilder fullXmlStringBuilder = new StringBuilder();
@@ -28,7 +28,6 @@ public class DragGapModuleJAXBParserFactoryTest  extends AbstractEmpiriaPlayerGW
 		assertEquals("responseIdentifier1", dragGapBean.getResponseIdentifier());
 		assertEquals("idOfSourceList", dragGapBean.getSourcelistId());
 	}
-
 
 	private DragGapBean parse(String xml) {
 		DragGapModuleJAXBParserFactory jaxbParserFactory = GWT.create(DragGapModuleJAXBParserFactory.class);

@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.util.events.scope.PageScope;
 
 /**
  * Testy dla {@link EventScope}
- *
+ * 
  */
 @SuppressWarnings("PMD")
 public class EventScopeJUnitTest {

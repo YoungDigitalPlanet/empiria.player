@@ -1,9 +1,6 @@
 package eu.ydp.empiria.player.client.module.object.template;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -14,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -26,7 +24,6 @@ import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
-
 
 public class ObjectTemplateParserTest extends AbstractTestBase {
 	private ObjectTemplateParser parser = null;
@@ -63,7 +60,7 @@ public class ObjectTemplateParserTest extends AbstractTestBase {
 	@Test
 	public void getMediaControllerNewInstanceTest() {
 		MediaControllerFactory factory = parser.factory;
-		when(factory.get(Mockito.any(ModuleTagName.class))).then(new Answer<MediaController<String>>() {
+		when(factory.get(Matchers.any(ModuleTagName.class))).then(new Answer<MediaController<String>>() {
 			@Override
 			public MediaController<String> answer(InvocationOnMock invocation) throws Throwable {
 				String param = String.valueOf(invocation.getArguments()[0]);
@@ -85,7 +82,7 @@ public class ObjectTemplateParserTest extends AbstractTestBase {
 	@Test
 	public void getMediaControllerNewInstanceWithXMLTest() {
 		MediaControllerFactory factory = parser.factory;
-		when(factory.get(Mockito.any(ModuleTagName.class), Mockito.any(TextTrackKind.class))).then(new Answer<MediaController<String>>() {
+		when(factory.get(Matchers.any(ModuleTagName.class), Matchers.any(TextTrackKind.class))).then(new Answer<MediaController<String>>() {
 			@Override
 			public MediaController<String> answer(InvocationOnMock invocation) throws Throwable {
 				String param = String.valueOf(invocation.getArguments()[1]);

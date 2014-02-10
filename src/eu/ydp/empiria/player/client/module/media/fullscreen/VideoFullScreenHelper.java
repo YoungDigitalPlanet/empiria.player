@@ -61,7 +61,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 	protected VideoControlHideTimer controlsHideTimer;
 	protected MediaWrapper<?> lastMediaWrapper = null;
 	protected MediaWrapper<?> synchronizeWithMediaWrapper = null;
-	private HandlerRegistration onDataReadyPlayHndlerRegistration =null;
+	private HandlerRegistration onDataReadyPlayHndlerRegistration = null;
 	private boolean playEventNeeded = true;
 
 	@PostConstruct
@@ -71,7 +71,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 
 	/**
 	 * Powiadamia listentery
-	 *
+	 * 
 	 * @param inFullScreen
 	 *            czy jest aktywny fullscreen
 	 */
@@ -126,14 +126,14 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 	protected void openFullScreenMobile(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
 		if (isHTML5VideoMediaWrapper(mediaWrapper) && !isHTML5MediaDataAvaliable(mediaWrapper)) {
 			playHTML5MediaAfterDataLoad(mediaWrapper);
-		}else{
+		} else {
 			openFullScreenMobileWhenDataReady(mediaWrapper);
 		}
 	}
 
 	private void playHTML5MediaAfterDataLoad(final MediaWrapper<?> mediaWrapper) {
 		((MediaBase) mediaWrapper.getMediaObject()).play();
-		onDataReadyPlayHndlerRegistration = eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY),mediaWrapper, new MediaEventHandler() {
+		onDataReadyPlayHndlerRegistration = eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), mediaWrapper, new MediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
 				playEventNeeded = false;
@@ -192,11 +192,11 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 	public void openFullScreen(MediaWrapper<?> fullScreenMediaWrapper, MediaWrapper<?> defaultMediaWrapper, Element template) {
 		playEventNeeded = true;
 		synchronizeWithMediaWrapper = defaultMediaWrapper;
-		
+
 		boolean isMobileUserAgent = UserAgentChecker.isMobileUserAgent();
 		boolean isSafari = UserAgentChecker.isUserAgent(UserAgent.SAFARI);
 		boolean isMobileFirefox = UserAgentChecker.isMobileUserAgent(FIREFOX);
-		
+
 		if ((isMobileUserAgent || isSafari) && !isMobileFirefox) {
 			openFullScreenMobile(defaultMediaWrapper, fullScreenMediaWrapper);
 		} else if (UserAgentChecker.isUserAgent(IE8, IE9, FIREFOX)) {

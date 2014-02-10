@@ -9,12 +9,13 @@ import eu.ydp.empiria.player.client.module.components.choicebutton.Identifiable;
 
 public class IdentifiableAnswersByTypeFinder {
 
-	public <R extends Identifiable> List<R> findAnswersObjectsOfGivenType(MarkAnswersType type, List<R> identifiableObjects, AbstractResponseModel<?> responseModel) {
+	public <R extends Identifiable> List<R> findAnswersObjectsOfGivenType(MarkAnswersType type, List<R> identifiableObjects,
+			AbstractResponseModel<?> responseModel) {
 		List<R> answerObjectsOfGivenType = new ArrayList<R>();
 		for (R answerObject : identifiableObjects) {
 			String answerId = answerObject.getId();
-			
-			if(isAnswerOfGivenType(answerId, type, responseModel)){
+
+			if (isAnswerOfGivenType(answerId, type, responseModel)) {
 				answerObjectsOfGivenType.add(answerObject);
 			}
 		}
@@ -23,14 +24,14 @@ public class IdentifiableAnswersByTypeFinder {
 
 	private boolean isAnswerOfGivenType(String answerId, MarkAnswersType type, AbstractResponseModel<?> responseModel) {
 		boolean correctAnswer = responseModel.isCorrectAnswer(answerId);
-		
-		if(MarkAnswersType.CORRECT.equals(type) && correctAnswer){
+
+		if (MarkAnswersType.CORRECT.equals(type) && correctAnswer) {
 			return true;
-		}else if(MarkAnswersType.WRONG.equals(type) && !correctAnswer){
+		} else if (MarkAnswersType.WRONG.equals(type) && !correctAnswer) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 }

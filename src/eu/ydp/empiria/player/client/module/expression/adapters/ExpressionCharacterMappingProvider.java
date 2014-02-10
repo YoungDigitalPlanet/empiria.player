@@ -14,12 +14,12 @@ public class ExpressionCharacterMappingProvider {
 	public static final String SELECTOR = ".qp-expression-mapping";
 
 	private final StyleSocket styleSocket;
-	
+
 	private final ExpressionCharactersMappingParser parser;
-	
+
 	private Map<String, String> mapping;
-	
-	@Inject 
+
+	@Inject
 	public ExpressionCharacterMappingProvider(StyleSocket styleSocket, ExpressionCharactersMappingParser parser) {
 		this.styleSocket = styleSocket;
 		this.parser = parser;
@@ -31,9 +31,9 @@ public class ExpressionCharacterMappingProvider {
 	}
 
 	private void ensureMappingInitalized() {
-		if (mapping == null){
+		if (mapping == null) {
 			Map<String, String> styles = styleSocket.getStyles(SELECTOR);
-			if (styles.containsKey(EMPIRIA_EXPRESSION_MAPPING)){
+			if (styles.containsKey(EMPIRIA_EXPRESSION_MAPPING)) {
 				String replacementsRaw = styles.get(EMPIRIA_EXPRESSION_MAPPING);
 				mapping = parser.parse(replacementsRaw);
 			} else {
@@ -41,5 +41,5 @@ public class ExpressionCharacterMappingProvider {
 			}
 		}
 	}
-	
+
 }

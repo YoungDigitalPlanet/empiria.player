@@ -17,11 +17,11 @@ public class TextInteractionModule extends BindingContainerModule<TextInteractio
 	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 	private final BookmarkingHelper bookmarkingHelper;
 
-	public TextInteractionModule(){
+	public TextInteractionModule() {
 		setContainerStyleName(styleNames.QP_TEXTINTERACTION());
 		bookmarkingHelper = new BookmarkingHelper(getView());
 	}
-	
+
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
 		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
@@ -56,8 +56,9 @@ public class TextInteractionModule extends BindingContainerModule<TextInteractio
 	public Rectangle getViewArea() {
 		return bookmarkingHelper.getViewArea();
 	}
+
 	@Override
 	public String getDefaultBookmarkTitle() {
-		return bookmarkingHelper.getDefaultBookmarkTitle(getView().getElement().getInnerText());
+		return BookmarkingHelper.getDefaultBookmarkTitle(getView().getElement().getInnerText());
 	}
 }

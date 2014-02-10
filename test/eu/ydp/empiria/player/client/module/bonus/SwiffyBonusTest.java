@@ -2,10 +2,7 @@ package eu.ydp.empiria.player.client.module.bonus;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,25 +31,25 @@ public class SwiffyBonusTest {
 	private EmpiriaPaths empiriaPaths;
 	@Mock
 	private SwiffyService swiffyService;
-	
+
 	@Test
 	public void execute() {
 		// given
 		String asset = "bonus1";
 		String fullUrl = "http://x.y.z/bonus1/bonus1.js";
 		Size size = new Size(100, 100);
-		when(empiriaPaths.getCommonsFilePath(asset+".js")).thenReturn(fullUrl);
+		when(empiriaPaths.getCommonsFilePath(asset + ".js")).thenReturn(fullUrl);
 		SwiffyObject swiffyObject = mock(SwiffyObject.class);
 		when(swiffyService.getSwiffyObject(asset, fullUrl)).thenReturn(swiffyObject);
 		bonus.setAsset(asset, size);
-		
+
 		// when
 		bonus.execute();
 
 		// then
 		verify(presenter).showAnimation(eq(swiffyObject), eq(size), any(EndHandler.class));
 	}
-	
+
 	@Test
 	public void handleEnd() {
 		// given
@@ -65,7 +62,7 @@ public class SwiffyBonusTest {
 
 		// when
 		endHandlerWrapper.getInstance().onEnd();
-		
+
 		// then
 		verify(swiffyService).clear(asset);
 	}

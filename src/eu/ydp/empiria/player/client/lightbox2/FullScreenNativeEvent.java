@@ -9,9 +9,10 @@ public final class FullScreenNativeEvent extends JavaScriptObject implements Ful
 	protected FullScreenNativeEvent() {
 		//
 	}
+
 	@Override
 	public native boolean isInFullScreen()/*-{
-		return this.isInFullScreen;
-	}-*/;
+											return this.isInFullScreen;
+											}-*/;
 
 }

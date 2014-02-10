@@ -15,8 +15,7 @@ public class MainFlowProcessorTest extends GWTTestCase {
 		return "eu.ydp.empiria.player.Player";
 	}
 
-
-	private MainFlowProcessor getMainFlowProcessor5TestPages(){
+	private MainFlowProcessor getMainFlowProcessor5TestPages() {
 		MainFlowProcessor mfp = new MainFlowProcessor();
 		mfp.setFlowOptions(new FlowOptions(false, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
 		mfp.init(5);
@@ -24,63 +23,63 @@ public class MainFlowProcessorTest extends GWTTestCase {
 		return mfp;
 	}
 
-	public void testGotoFirstPage(){
+	public void testGotoFirstPage() {
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
 		mfp.gotoFirstPage();
 		assertEquals(0, mfp.getCurrentPageIndex());
 	}
 
-	public void testGotoLastPage(){
+	public void testGotoLastPage() {
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
 		mfp.gotoLastPage();
 		assertEquals(4, mfp.getCurrentPageIndex());
 	}
 
-	public void testGotoIndex(){
+	public void testGotoIndex() {
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
 		mfp.gotoPage(2);
 		assertEquals(2, mfp.getCurrentPageIndex());
 	}
 
-	public void testNextPreviousPage(){
+	public void testNextPreviousPage() {
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
 		assertEquals(0, mfp.getCurrentPageIndex());
-		for (int i = 1 ; i < 5 ; i ++){
+		for (int i = 1; i < 5; i++) {
 			mfp.nextPage();
 			assertEquals(i, mfp.getCurrentPageIndex());
 		}
-		for (int i = 3 ; i >= 0 ; i --){
+		for (int i = 3; i >= 0; i--) {
 			mfp.previousPage();
 			assertEquals(i, mfp.getCurrentPageIndex());
 		}
 	}
 
-	public void testCheck(){
+	public void testCheck() {
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
 		mfp.checkPage();
 		assertEquals(true, mfp.getFlowFlagCheck());
 	}
 
-	public void testLock(){
+	public void testLock() {
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
 		mfp.lockPage();
 		assertEquals(true, mfp.getFlowFlagLock());
 	}
 
-	public void testUnlock(){
+	public void testUnlock() {
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
 		mfp.lockPage();
 		mfp.unlockPage();
 		assertEquals(false, mfp.getFlowFlagLock());
 	}
 
-	public void testShowAnswers(){
+	public void testShowAnswers() {
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
 		mfp.showAnswersPage();
 		assertEquals(true, mfp.getFlowFlagShowAnswers());
 	}
 
-	public void testContinue(){
+	public void testContinue() {
 		MainFlowProcessor mfp = getMainFlowProcessor5TestPages();
 		mfp.showAnswersPage();
 		mfp.continuePage();

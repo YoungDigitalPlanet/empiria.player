@@ -1,8 +1,9 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
-import static junitparams.JUnitParamsRunner.*;
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static junitparams.JUnitParamsRunner.$;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 

@@ -14,8 +14,10 @@ import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
 
 public class LabellingViewBuilder {
 
-	@Inject private Provider<LabellingView> viewProvider;
-	@Inject private Provider<LabellingChildView> childContainerProvider;
+	@Inject
+	private Provider<LabellingView> viewProvider;
+	@Inject
+	private Provider<LabellingChildView> childContainerProvider;
 
 	public LabellingView buildView(LabellingInteractionBean structure, BodyGeneratorSocket bgs) {
 		LabellingView view = viewProvider.get();
@@ -27,13 +29,13 @@ public class LabellingViewBuilder {
 
 	private void processChildren(LabellingInteractionBean structure, BodyGeneratorSocket bgs, LabellingView view) {
 		List<ChildBean> children = fetchChildBeanList(structure);
-		for (ChildBean child : children){
+		for (ChildBean child : children) {
 			createAndAddChild(view, child, bgs);
 		}
 	}
 
 	private List<ChildBean> fetchChildBeanList(LabellingInteractionBean structure) {
-		if (structure.getChildren() == null){
+		if (structure.getChildren() == null) {
 			return Lists.newArrayList();
 		}
 		return structure.getChildren().getChildBeanList();

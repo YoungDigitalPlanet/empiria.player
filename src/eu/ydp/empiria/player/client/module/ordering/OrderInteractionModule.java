@@ -29,7 +29,7 @@ public class OrderInteractionModule extends AbstractInteractionModule<OrderInter
 	@Inject
 	@ModuleScoped
 	private DragController dragController;
-	
+
 	@Override
 	public Widget getView() {
 		return presenter.asWidget();

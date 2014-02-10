@@ -87,12 +87,10 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
-import eu.ydp.gwtutil.client.UserAgentUtil;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 /**
- * Responsible for: - loading the content, - managing the content, - delivering
- * content to player, - managing state, results and reports about the
- * assessments.
+ * Responsible for: - loading the content, - managing the content, - delivering content to player, - managing state, results and reports about the assessments.
  * 
  * @author Rafal Rybacki
  * 

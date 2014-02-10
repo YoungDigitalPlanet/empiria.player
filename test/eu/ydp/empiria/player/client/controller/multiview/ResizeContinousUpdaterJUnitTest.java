@@ -1,10 +1,7 @@
 package eu.ydp.empiria.player.client.controller.multiview;
 
-
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -103,12 +100,11 @@ public class ResizeContinousUpdaterJUnitTest {
 		setTimerState(ResizeTimerState.PAGE_IS_GROWING, previousPageHeight, 0, ResizeContinousUpdater.WAIT_STOP_GROWING_ITERATIONS);
 
 		CurrentPageScope currentPageScope = Mockito.mock(CurrentPageScope.class);
-		when(pageScopeFactory.getCurrentPageScope())
-			.thenReturn(currentPageScope);
+		when(pageScopeFactory.getCurrentPageScope()).thenReturn(currentPageScope);
 
 		int rescheduleTime = resizeContinousUpdater.runContinousResizeUpdateAndReturnRescheduleTime();
 
-		validateTimerState(ResizeTimerState.PAGE_STOPED_GROWING, newPageHeight, 0, ResizeContinousUpdater.WAIT_STOP_GROWING_ITERATIONS+1);
+		validateTimerState(ResizeTimerState.PAGE_STOPED_GROWING, newPageHeight, 0, ResizeContinousUpdater.WAIT_STOP_GROWING_ITERATIONS + 1);
 		assertEquals(ResizeContinousUpdater.DELAY_MILLIS, rescheduleTime);
 		verifyPageResizedEventCorrectlyThrown(currentPageScope);
 		verify(forceRedrawHack).redraw();
@@ -149,7 +145,7 @@ public class ResizeContinousUpdaterJUnitTest {
 
 		int rescheduleTime = resizeContinousUpdater.runContinousResizeUpdateAndReturnRescheduleTime();
 
-		validateTimerState(ResizeTimerState.PAGE_STOPED_GROWING, newPageHeight, ResizeContinousUpdater.REPEAT_COUNT+1, 0);
+		validateTimerState(ResizeTimerState.PAGE_STOPED_GROWING, newPageHeight, ResizeContinousUpdater.REPEAT_COUNT + 1, 0);
 		assertEquals(ResizeContinousUpdater.IDLE_DELAY_MILLIS, rescheduleTime);
 	}
 
@@ -173,30 +169,30 @@ public class ResizeContinousUpdaterJUnitTest {
 	}
 
 	private void expectPageViewInteractions(int pageHeight) {
-		when(pageView.getCurrentVisiblePage())
-			.thenReturn(currentVisiblePage);
+		when(pageView.getCurrentVisiblePage()).thenReturn(currentVisiblePage);
 
-		when(pageView.getHeightForPage(currentVisiblePage))
-			.thenReturn(pageHeight);
+		when(pageView.getHeightForPage(currentVisiblePage)).thenReturn(pageHeight);
 	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
 
-	private void setTimerState(ResizeContinousUpdater.ResizeTimerState timerState, int previousPageHeight, int resizeCounter, int pageStopedGrowingCounter){
-		try{
+	private void setTimerState(ResizeContinousUpdater.ResizeTimerState timerState, int previousPageHeight, int resizeCounter, int pageStopedGrowingCounter) {
+		try {
 			reflectionsUtils.setValueInObjectOnField("timerState", resizeContinousUpdater, timerState);
 			reflectionsUtils.setValueInObjectOnField("previousPageHeight", resizeContinousUpdater, previousPageHeight);
 			reflectionsUtils.setValueInObjectOnField("resizeCounter", resizeContinousUpdater, resizeCounter);
 			reflectionsUtils.setValueInObjectOnField("pageStopedGrowingCounter", resizeContinousUpdater, pageStopedGrowingCounter);
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void validateTimerState(ResizeContinousUpdater.ResizeTimerState timerState, int previousPageHeight, int resizeCounter, int pageStopedGrowingCounter) throws Exception{
-		ResizeContinousUpdater.ResizeTimerState currentTimerState = (ResizeTimerState) reflectionsUtils.getValueFromFiledInObject("timerState", resizeContinousUpdater);
+	private void validateTimerState(ResizeContinousUpdater.ResizeTimerState timerState, int previousPageHeight, int resizeCounter, int pageStopedGrowingCounter)
+			throws Exception {
+		ResizeContinousUpdater.ResizeTimerState currentTimerState = (ResizeTimerState) reflectionsUtils.getValueFromFiledInObject("timerState",
+				resizeContinousUpdater);
 		int currentPreviousPageHeight = (Integer) reflectionsUtils.getValueFromFiledInObject("previousPageHeight", resizeContinousUpdater);
 		int currentResizeCounter = (Integer) reflectionsUtils.getValueFromFiledInObject("resizeCounter", resizeContinousUpdater);
 		int currentPageStopedGrowingCounter = (Integer) reflectionsUtils.getValueFromFiledInObject("pageStopedGrowingCounter", resizeContinousUpdater);

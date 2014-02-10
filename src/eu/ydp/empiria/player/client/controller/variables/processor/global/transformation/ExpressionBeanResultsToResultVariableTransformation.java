@@ -10,6 +10,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps.EntryTransformer;
 import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.controller.variables.processor.global.function.ModuleProcessingResultExtractingFunctions;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
@@ -64,7 +65,7 @@ public class ExpressionBeanResultsToResultVariableTransformation implements
 		Iterable<LastMistaken> lastMistakens = Iterables.transform(results, extractLastMistakenFunction);
 		boolean containsAnyWrong = Iterables.contains(lastMistakens, LastMistaken.WRONG);
 		boolean containsAnyCorrect = Iterables.contains(lastMistakens, LastMistaken.CORRECT);
-		if(containsAnyWrong) {
+		if (containsAnyWrong) {
 			return LastMistaken.WRONG;
 		} else if (containsAnyCorrect) {
 			return LastMistaken.CORRECT;

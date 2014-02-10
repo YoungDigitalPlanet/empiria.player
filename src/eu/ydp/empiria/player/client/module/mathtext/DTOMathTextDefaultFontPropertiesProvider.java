@@ -7,7 +7,7 @@ public class DTOMathTextDefaultFontPropertiesProvider {
 	public static final boolean BOLD = false;
 	public static final boolean ITALIC = false;
 	public static final String COLOR = "#000000";
-	
+
 	public DTOMathTextFontProperties createDefaultProprerties() {
 		DTOMathTextFontProperties defaultProperties = new DTOMathTextFontProperties();
 		defaultProperties.setBold(BOLD);
@@ -15,7 +15,7 @@ public class DTOMathTextDefaultFontPropertiesProvider {
 		defaultProperties.setColor(COLOR);
 		defaultProperties.setItalic(ITALIC);
 		defaultProperties.setSize(SIZE);
-		
+
 		return defaultProperties;
-	} 
+	}
 }

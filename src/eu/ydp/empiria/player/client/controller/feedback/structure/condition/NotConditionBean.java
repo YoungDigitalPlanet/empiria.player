@@ -4,11 +4,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name="not")
+@XmlRootElement(name = "not")
 public class NotConditionBean extends FeedbackConditionBase implements FeedbackCondition {
-	
+
 	public FeedbackCondition getCondition() {
 		return getAllConditions().get(0);
 	}

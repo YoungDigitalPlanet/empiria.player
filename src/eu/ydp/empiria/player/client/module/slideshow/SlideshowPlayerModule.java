@@ -37,7 +37,6 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 	@Inject
 	private SlideshowPlayerModuleFactory slideshowPlayerModuleFactory;
 
-
 	@Override
 	public void initModule(Element element) {
 		SlideshowMediaHandler mediaHandler = slideshowPlayerModuleFactory.getSlideshowMediaHandler(this, presenter);
@@ -64,47 +63,47 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 		return presenter.asWidget();
 	}
 
-	protected void onPlayEvent(){
-		if (presenter.isPlayButtonDown()){
+	protected void onPlayEvent() {
+		if (presenter.isPlayButtonDown()) {
 			playSlideshow();
 		} else {
 			pauseSlideshow();
 		}
 	}
 
-	protected void onStopEvent(){
+	protected void onStopEvent() {
 		presenter.setPlayButtonDown(false);
 		stopSlideshow();
 	}
 
-	protected void playSlideshow(){
-		if (!canScheduleNextSlide()){
+	protected void playSlideshow() {
+		if (!canScheduleNextSlide()) {
 			reset();
 		}
 
-		if (canScheduleNextSlide()){
+		if (canScheduleNextSlide()) {
 			scheduleNextSlide();
-		}else{
+		} else {
 			presenter.setPlayButtonDown(false);
 		}
 	}
 
-	protected void pauseSlideshow(){
+	protected void pauseSlideshow() {
 		timer.cancel();
 	}
 
-	protected void stopSlideshow(){
+	protected void stopSlideshow() {
 		timer.cancel();
 		reset();
 	}
 
-	protected void reset(){
+	protected void reset() {
 		currSlideIndex = 0;
 		showSlide(currSlideIndex);
 	}
 
-	protected void showSlide(int index){
-		if (index < slides.size()){
+	protected void showSlide(int index) {
+		if (index < slides.size()) {
 			presenter.showSlide(index);
 		}
 
@@ -112,40 +111,40 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 		presenter.setEnabledPreviousButton(index > 0);
 	}
 
-	protected void switchNextSlide(){
+	protected void switchNextSlide() {
 		showNextSlide();
-		if (canScheduleNextSlide()){
+		if (canScheduleNextSlide()) {
 			scheduleNextSlide();
-		}else{
+		} else {
 			presenter.setPlayButtonDown(false);
 		}
 	}
 
-	protected void showNextSlide(){
-		if (currSlideIndex+1 < slides.size()){
+	protected void showNextSlide() {
+		if (currSlideIndex + 1 < slides.size()) {
 			currSlideIndex++;
 		}
 
 		showSlide(currSlideIndex);
 	}
 
-	protected void showPreviousSlide(){
-		if (currSlideIndex > 0){
+	protected void showPreviousSlide() {
+		if (currSlideIndex > 0) {
 			currSlideIndex--;
 		}
 
 		showSlide(currSlideIndex);
 	}
 
-	protected boolean canScheduleNextSlide(){
+	protected boolean canScheduleNextSlide() {
 		return (currSlideIndex + 1 < slides.size());
 	}
 
-	protected void scheduleNextSlide(){
-		if (canScheduleNextSlide()){
-			int delay = slides.get(currSlideIndex+1).getStartTime() - slides.get(currSlideIndex).getStartTime();
+	protected void scheduleNextSlide() {
+		if (canScheduleNextSlide()) {
+			int delay = slides.get(currSlideIndex + 1).getStartTime() - slides.get(currSlideIndex).getStartTime();
 
-			if (delay <= 0){
+			if (delay <= 0) {
 				delay = 1;
 			}
 			timer.schedule(delay);
@@ -164,7 +163,7 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 		presenter.setViewClass(className);
 		presenter.setBodyGeneratorSocket(inlineBodyGeneratorSocket);
 
-		if (slideshowElement != null){
+		if (slideshowElement != null) {
 			Element titleElement = XMLUtils.getFirstElementWithTagName(slideshowElement, "title");
 
 			slides = createSlidesList(slideshowElement);
@@ -173,13 +172,13 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 		}
 	}
 
-	private List<Slide> createSlidesList(Element slideshowNode){
+	private List<Slide> createSlidesList(Element slideshowNode) {
 		List<Slide> slidesList = new ArrayList<Slide>();
 		NodeList slideNodes = slideshowNode.getElementsByTagName("slide");
 
-		for (int i = 0 ; i < slideNodes.getLength() ; i ++){
-			if (slideNodes.item(i).getNodeType() == Node.ELEMENT_NODE){
-				Slide slide = createSlide((Element)slideNodes.item(i));
+		for (int i = 0; i < slideNodes.getLength(); i++) {
+			if (slideNodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				Slide slide = createSlide((Element) slideNodes.item(i));
 				slidesList.add(slide);
 			}
 		}
@@ -194,7 +193,7 @@ public class SlideshowPlayerModule extends SimpleModuleBase implements Factory<S
 		return slidesList;
 	}
 
-	private Slide createSlide(Element slideNode){
+	private Slide createSlide(Element slideNode) {
 		return new Slide(slideNode);
 	}
 }

@@ -8,7 +8,7 @@ public class HTML5AudioMediaExecutor extends AbstractHTML5MediaExecutor<Audio> {
 	public void initExecutor() {
 		//
 	}
-	
+
 	@Override
 	public void setMedia(Audio media) {
 		super.setMedia(media);

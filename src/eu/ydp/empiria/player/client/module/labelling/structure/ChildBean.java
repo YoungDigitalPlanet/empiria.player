@@ -15,8 +15,10 @@ import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapt
 @XmlRootElement(name = "child")
 public class ChildBean {
 
-	@XmlAttribute private int x;
-	@XmlAttribute private int y;
+	@XmlAttribute
+	private int x;
+	@XmlAttribute
+	private int y;
 	@XmlValue
 	@XmlJavaTypeAdapter(value = XMLContentTypeAdapter.class)
 	private XMLContent content;

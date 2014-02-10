@@ -4,9 +4,9 @@ public class ColorModel {
 
 	public static ColorModel createFromRgbString(final String rgb) {
 		ColorModel cm = new ColorModel();
-		cm.red = Integer.parseInt(rgb.substring(0,2), 16);
+		cm.red = Integer.parseInt(rgb.substring(0, 2), 16);
 		cm.green = Integer.parseInt(rgb.substring(2, 4), 16);
-		cm.blue = Integer.parseInt(rgb.substring(4,6), 16);
+		cm.blue = Integer.parseInt(rgb.substring(4, 6), 16);
 		cm.alpha = 255;
 		return cm;
 	}
@@ -29,12 +29,13 @@ public class ColorModel {
 	private int blue;
 	private int alpha;
 
-	private ColorModel(){}
+	private ColorModel() {
+	}
 
-	public boolean isTransparent(){
+	public boolean isTransparent() {
 		return alpha < 255;
 	}
-	
+
 	public int getRed() {
 		return red;
 	}

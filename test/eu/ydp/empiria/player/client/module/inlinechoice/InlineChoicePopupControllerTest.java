@@ -1,18 +1,12 @@
 package eu.ydp.empiria.player.client.module.inlinechoice;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import static org.mockito.Mockito.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -65,7 +59,8 @@ public class InlineChoicePopupControllerTest extends AbstractTestBaseWithoutAuto
 		ModuleSocket moduleSocket = mock(ModuleSocket.class);
 		InteractionEventsListener moduleInteractionListener = mock(InteractionEventsListener.class);
 		instance.initModule(moduleSocket, moduleInteractionListener);
-		verify(eventsBus).addHandler(Mockito.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED)), Mockito.eq(instance), Mockito.any(EventScope.class));
+		verify(eventsBus)
+				.addHandler(Matchers.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED)), Matchers.eq(instance), Matchers.any(EventScope.class));
 	}
 
 	@Test
@@ -75,7 +70,7 @@ public class InlineChoicePopupControllerTest extends AbstractTestBaseWithoutAuto
 		instance.onPlayerEvent(event);
 		verify(exListBox).hidePopup();
 	}
-	
+
 	@Test
 	public void exListBoxShouldNotHideWhen_PageSwipeStarted() {
 		PlayerEvent event = mock(PlayerEvent.class);

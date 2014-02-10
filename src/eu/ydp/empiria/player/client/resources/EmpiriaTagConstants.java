@@ -19,7 +19,7 @@ public final class EmpiriaTagConstants {
 	public static final String NAME_FEEDBACK_INLINE = "feedbackInline";
 	public static final String NAME_FEEDBACKS = "feedbacks";
 	public static final String NAME_FEEDBACK = "feedback";
-	
+
 	private EmpiriaTagConstants() {
 	}
 }

@@ -13,8 +13,10 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 
 public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPanel>> {
-	@Inject protected StyleNameConstants styleNames;
-	@Inject protected GWTPanelFactory panelFactory;
+	@Inject
+	protected StyleNameConstants styleNames;
+	@Inject
+	protected GWTPanelFactory panelFactory;
 
 	protected SwipeType swipeType;
 

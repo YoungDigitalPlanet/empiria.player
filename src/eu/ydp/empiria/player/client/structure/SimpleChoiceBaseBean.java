@@ -9,7 +9,7 @@ import eu.ydp.gwtutil.client.StringUtils;
 public class SimpleChoiceBaseBean {
 
 	@XmlAttribute
-	protected String identifier=StringUtils.EMPTY_STRING;;
+	protected String identifier = StringUtils.EMPTY_STRING;;
 
 	public String getIdentifier() {
 		return identifier;

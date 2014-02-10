@@ -31,9 +31,8 @@ public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 	@Inject
 	private TextBoxChangeHandler textBoxChangeHandler;
 
-	
 	@PostConstruct
-	public void postConstruct(){
+	public void postConstruct() {
 		droppable = dragDropHelper.enableDropForWidget(new TextBox());
 		textBoxWidget = droppable.getDroppableWidget();
 		textBox = droppable.getOriginalWidget();
@@ -45,10 +44,10 @@ public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 	@Override
 	public void installViewInContainer(HasWidgets container) {
 		container.add(moduleWidget);
-		
-		moduleWidget.setStyleName( styleNames.QP_TEXTENTRY(), true );
+
+		moduleWidget.setStyleName(styleNames.QP_TEXTENTRY(), true);
 	}
-	
+
 	@Override
 	public HasWidgets getContainer() {
 		return moduleWidget;
@@ -74,7 +73,6 @@ public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 		moduleWidget.setStylePrimaryName(styleNames.QP_TEXT_TEXTENTRY());
 	}
 
-	
 	@Override
 	public void addPresenterHandler(PresenterHandler handler) {
 		textBoxChangeHandler.bind(droppable, handler);

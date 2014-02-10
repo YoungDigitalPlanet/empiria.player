@@ -16,7 +16,8 @@ import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableUtil;
 import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
-public class ScormSupportExtension extends InternalExtension implements PlayerJsObjectModifierExtension, SessionDataSocketUserExtension, DataSourceDataSocketUserExtension {
+public class ScormSupportExtension extends InternalExtension implements PlayerJsObjectModifierExtension, SessionDataSocketUserExtension,
+		DataSourceDataSocketUserExtension {
 
 	private static final Logger LOGGER = new Logger();
 
@@ -24,16 +25,16 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 	protected JavaScriptObject playerJsObject;
 	protected DataSourceDataSupplier dataSourceDataSupplier;
 	protected int masteryScore = 100;
-	
+
 	@Inject
 	private AssessmentReportFactory factory;
 	private ResultInfo result;
 	private HintInfo hint;
 	private VariableUtil variableUtil;
-	
+
 	@Override
 	public void setSessionDataSupplier(SessionDataSupplier sessionDataSupplier) {
-		this.sessionDataSupplier = sessionDataSupplier;		
+		this.sessionDataSupplier = sessionDataSupplier;
 	}
 
 	@Override
@@ -50,98 +51,98 @@ public class ScormSupportExtension extends InternalExtension implements PlayerJs
 	public void init() {
 		AssessmentSessionDataSocket assessmentSessionDataSocket = sessionDataSupplier.getAssessmentSessionDataSocket();
 		VariableProviderSocket assessmentVariableProvider = assessmentSessionDataSocket.getVariableProviderSocket();
-		
+
 		result = factory.getResultInfo(assessmentVariableProvider);
 		hint = factory.getHintInfo(assessmentVariableProvider);
 		variableUtil = new VariableUtil(assessmentVariableProvider);
-		
+
 		initPlayerJsObject(playerJsObject);
 	}
-	
+
 	private native void initPlayerJsObject(JavaScriptObject playerJsObject)/*-{
-		var instance = this;
-		playerJsObject.getScore = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getScore()();
-		}
-		playerJsObject.getScoreMax = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getScoreMax()();
-		}
-		playerJsObject.getErrors = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getErrors()();
-		}
-		playerJsObject.getLessonStatus = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getLessonStatus()();
-		}
-		playerJsObject.getAssessmentTime = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getAssessmentTime()();
-		}
-		playerJsObject.setMasteryScore = function(ms){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::setMasteryScore(I)(ms);
-		}
-		playerJsObject.getMistakes = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getMistakes()();
-		}
-		playerJsObject.getShowAnswers = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getShowAnswers()();
-		}
-		playerJsObject.getReset = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getReset()();
-		}
-		playerJsObject.getChecks = function(){
-			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getChecks()();
-		}
-	}-*/;
-	
-	protected void setMasteryScore(int ms){
+																			var instance = this;
+																			playerJsObject.getScore = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getScore()();
+																			}
+																			playerJsObject.getScoreMax = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getScoreMax()();
+																			}
+																			playerJsObject.getErrors = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getErrors()();
+																			}
+																			playerJsObject.getLessonStatus = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getLessonStatus()();
+																			}
+																			playerJsObject.getAssessmentTime = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getAssessmentTime()();
+																			}
+																			playerJsObject.setMasteryScore = function(ms){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::setMasteryScore(I)(ms);
+																			}
+																			playerJsObject.getMistakes = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getMistakes()();
+																			}
+																			playerJsObject.getShowAnswers = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getShowAnswers()();
+																			}
+																			playerJsObject.getReset = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getReset()();
+																			}
+																			playerJsObject.getChecks = function(){
+																			return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.ScormSupportExtension::getChecks()();
+																			}
+																			}-*/;
+
+	protected void setMasteryScore(int ms) {
 		masteryScore = ms;
 	}
 
-	protected int getAssessmentTime(){
+	protected int getAssessmentTime() {
 		int value = sessionDataSupplier.getAssessmentSessionDataSocket().getTimeAssessmentTotal();
 		return value;
 	}
 
-	protected int getScore(){
+	protected int getScore() {
 		return result.getDone();
 	}
 
-	protected int getScoreMax(){
+	protected int getScoreMax() {
 		return result.getTodo();
 	}
 
-	protected int getErrors(){
+	protected int getErrors() {
 		return result.getErrors();
 	}
-	
-	protected int getMistakes(){
+
+	protected int getMistakes() {
 		return hint.getMistakes();
 	}
-	
-	protected int getShowAnswers(){
+
+	protected int getShowAnswers() {
 		return hint.getShowAnswers();
 	}
-	
-	protected int getReset(){
+
+	protected int getReset() {
 		return hint.getReset();
 	}
-	
-	protected int getChecks(){
+
+	protected int getChecks() {
 		return hint.getChecks();
 	}
-	
-	protected String getLessonStatus(){
+
+	protected String getLessonStatus() {
 		int done = getScore();
 		int todo = getScoreMax();
 		int visited = variableUtil.getVariableIntValue("VISITED", 0);
 		int items = dataSourceDataSupplier.getItemsCount();
 		String status;
-		if (visited == items){
-			if (todo == 0){
+		if (visited == items) {
+			if (todo == 0) {
 				status = "COMPLETED";
 			} else {
 				int result = 100 * done / todo;
 				boolean passed = (result >= masteryScore);
-				if (passed){
+				if (passed) {
 					status = "PASSED";
 				} else {
 					status = "FAILED";

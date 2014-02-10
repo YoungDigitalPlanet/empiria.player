@@ -11,13 +11,16 @@ import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 public class FullscreenVideoMediaWrapper implements MediaWrapper<Widget> {
 
 	private static final int DURATION_MILLIPERCENT_MAX = 100 * 1000;
-	@Inject private UniqueIdGenerator idGnerator;
-	@Inject private ExternalFullscreenVideoMediaAvailableOptions availableOptions;
-	@Inject private ExternalFullscreenVideoImpl mediaObject; 
-	
+	@Inject
+	private UniqueIdGenerator idGnerator;
+	@Inject
+	private ExternalFullscreenVideoMediaAvailableOptions availableOptions;
+	@Inject
+	private ExternalFullscreenVideoImpl mediaObject;
+
 	private String id;
 	private double time;
-	
+
 	@Override
 	public MediaAvailableOptions getMediaAvailableOptions() {
 		return availableOptions;
@@ -27,14 +30,14 @@ public class FullscreenVideoMediaWrapper implements MediaWrapper<Widget> {
 	public Widget getMediaObject() {
 		return mediaObject.asWidget();
 	}
-	
-	public void setPoster(String url){
+
+	public void setPoster(String url) {
 		mediaObject.setPoster(url);
 	}
 
 	@Override
 	public String getMediaUniqId() {
-		if (id == null){
+		if (id == null) {
 			id = idGnerator.createUniqueId();
 		}
 		return id;

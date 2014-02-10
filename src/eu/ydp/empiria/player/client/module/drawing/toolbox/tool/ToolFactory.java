@@ -9,15 +9,15 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ToolFactory {
-	
+
 	@Inject
 	@ModuleScoped
 	private DrawCanvas canvas;
-	
+
 	public Tool createTool(ToolboxModel model) {
 		ToolType toolType = model.getToolType();
 		ColorModel colorModel = model.getColorModel();
-		
+
 		switch (toolType) {
 		case ERASER:
 			return new EraserTool(canvas);

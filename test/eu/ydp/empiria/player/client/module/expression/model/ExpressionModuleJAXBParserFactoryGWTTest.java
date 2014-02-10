@@ -9,27 +9,17 @@ import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.module.expression.ExpressionMode;
 
 @SuppressWarnings("PMD")
-public class ExpressionModuleJAXBParserFactoryGWTTest extends AbstractEmpiriaPlayerGWTTestCase{
+public class ExpressionModuleJAXBParserFactoryGWTTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	public void testParseExpressionsWithCDATA() throws Exception {
-		final String xml = "<expressions>" +
-								"<expression mode=\"commutation\">" +
-									"<![CDATA['a'+'b'=6]]>" +
-								"</expression>" +
-								"<expression mode=\"default\">" +
-									"<![CDATA[3'sign'5=15]]>" +
-								"</expression>" +
-								"<expression>" +
-									"<![CDATA[3'sign'5=15]]>" +
-								"</expression>" +
-							"</expressions>";
+		final String xml = "<expressions>" + "<expression mode=\"commutation\">" + "<![CDATA['a'+'b'=6]]>" + "</expression>" + "<expression mode=\"default\">"
+				+ "<![CDATA[3'sign'5=15]]>" + "</expression>" + "<expression>" + "<![CDATA[3'sign'5=15]]>" + "</expression>" + "</expressions>";
 
 		ExpressionsBean expressionsBean = parse(xml);
 		assertNotNull(expressionsBean);
 		List<ExpressionBean> expressions = expressionsBean.getExpressions();
 		assertNotNull(expressions);
 		assertEquals(3, expressionsBean.getExpressions().size());
-
 
 		ExpressionBean firstExpression = expressions.get(0);
 		assertEquals("'a'+'b'=6", firstExpression.getTemplate());
@@ -46,7 +36,6 @@ public class ExpressionModuleJAXBParserFactoryGWTTest extends AbstractEmpiriaPla
 		assertEquals(0, thirdExpression.getResponses().size());
 		assertEquals(ExpressionMode.DEFAULT, thirdExpression.getMode());
 	}
-
 
 	private ExpressionsBean parse(String xml) {
 		ExpressionModuleJAXBParserFactory jaxbParserFactory = GWT.create(ExpressionModuleJAXBParserFactory.class);

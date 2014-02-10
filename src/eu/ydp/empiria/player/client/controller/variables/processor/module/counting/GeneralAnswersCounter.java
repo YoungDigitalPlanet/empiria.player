@@ -4,17 +4,16 @@ import java.util.List;
 
 import com.google.common.base.Predicate;
 
-
 public class GeneralAnswersCounter {
 
-	public int countAnswersMatchingPredicate(List<String> answers, Predicate<String> predicate){
+	public int countAnswersMatchingPredicate(List<String> answers, Predicate<String> predicate) {
 		int counter = 0;
 		for (String answer : answers) {
-			if(predicate.apply(answer)){
+			if (predicate.apply(answer)) {
 				counter++;
 			}
 		}
 		return counter;
 	}
-	
+
 }

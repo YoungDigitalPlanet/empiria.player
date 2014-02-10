@@ -56,7 +56,7 @@ public abstract class Variable {
 		return compareValues(vec);
 	}
 
-	public boolean compareValues(Vector<String> testValues){
+	public boolean compareValues(Vector<String> testValues) {
 
 		if (values.size() != testValues.size()) {
 			return false;
@@ -64,10 +64,10 @@ public abstract class Variable {
 
 		boolean contains;
 
-		for (String ref : values){
+		for (String ref : values) {
 			contains = false;
-			for (String test : testValues){
-				if (ref.compareTo(test) == 0){
+			for (String test : testValues) {
+				if (ref.compareTo(test) == 0) {
 					contains = true;
 					break;
 				}
@@ -83,14 +83,13 @@ public abstract class Variable {
 		String value = this.values.get(0);
 		boolean result = false;
 		for (String testValue : testValues) {
-			if (regexMatcher.matches(value,"^(" + testValue + ")$")) {
+			if (regexMatcher.matches(value, "^(" + testValue + ")$")) {
 				result = true;
 				break;
 			}
 		}
 		return result;
 	}
-
 
 	@Override
 	public String toString() {

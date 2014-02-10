@@ -62,7 +62,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	@Inject
 	private ConnectionModuleViewImplHandlers handlers;
-	
+
 	private ConnectionColumnsBuilder connectionColumnsBuilder;
 	private final ConnectionPairEntry<ConnectionItem, ConnectionItem> connectionItemPair = new ConnectionPairEntry<ConnectionItem, ConnectionItem>();
 	private MultiplePairBean<SimpleAssociableChoiceBean> modelInterface;
@@ -151,7 +151,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		initColumns();
 		addCheckStyleHandler();
 		handlers.setView(this);
-		
+
 	}
 
 	private void addCheckStyleHandler() {
@@ -347,5 +347,5 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			currentSurface.drawLine(startPoint, endPoint);
 		}
 	}
-	
+
 }

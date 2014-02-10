@@ -18,7 +18,7 @@ public class SingleRunTutorEndHandler implements TutorEndHandler {
 	public void onEnd() {
 		fireTheEndHandlerIfPresent();
 	}
-	
+
 	@Override
 	public void onEndWithDefaultAction() {
 		executorService.execute(ActionType.DEFAULT, this);
@@ -32,7 +32,7 @@ public class SingleRunTutorEndHandler implements TutorEndHandler {
 			endHandlerInstance.onEnd();
 		}
 	}
-	
+
 	@Override
 	public void setEndHandler(EndHandler endHandler) {
 		this.endHandler = Optional.fromNullable(endHandler);

@@ -111,7 +111,8 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			ArrayList<Boolean> fixeds = new ArrayList<Boolean>();
 			NodeList optionNodes = element.getElementsByTagName("simpleChoice");
 			for (int i = 0; i < optionNodes.getLength(); i++) {
-				final SelectableChoice selectableChoice = createSelectableChoice((Element) optionNodes.item(i), getModuleSocket().getInlineBodyGeneratorSocket());
+				final SelectableChoice selectableChoice = createSelectableChoice((Element) optionNodes.item(i), getModuleSocket()
+						.getInlineBodyGeneratorSocket());
 				currOptions.add(selectableChoice);
 				if (shuffle && !XMLUtils.getAttributeAsBoolean((Element) optionNodes.item(i), "fixed")) {
 					optionsSet.push(selectableChoice);
@@ -171,7 +172,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	@Override
 	public void lock(boolean locked) {
 		this.locked = locked;
-		for(SelectableChoice option : options){
+		for (SelectableChoice option : options) {
 			option.setLocked(locked);
 		}
 	}
@@ -277,7 +278,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			ArrayList<String> currResponseValues = new ArrayList<String>();
 			Collection<SelectableChoice> selectedOptions = Collections2.filter(options, onlySelectedOptions);
 			for (SelectableChoice currSC : selectedOptions) {
-					currResponseValues.add(currSC.getIdentifier());
+				currResponseValues.add(currSC.getIdentifier());
 			}
 
 			if (!getResponse().compare(currResponseValues) || !getResponse().isInitialized()) {

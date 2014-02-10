@@ -12,24 +12,24 @@ public class ErrorAnswersCounter {
 
 	private final GeneralAnswersCounter generalAnswersCounter;
 	private final ErrorsToCountModeAdjuster errorsToCountModeAdjuster;
-	
+
 	@Inject
 	public ErrorAnswersCounter(GeneralAnswersCounter generalAnswersCounter, ErrorsToCountModeAdjuster errorsToCountModeAdjuster) {
 		this.generalAnswersCounter = generalAnswersCounter;
 		this.errorsToCountModeAdjuster = errorsToCountModeAdjuster;
 	}
 
-	public int countErrorAnswersAdjustedToMode(Response response){
+	public int countErrorAnswersAdjustedToMode(Response response) {
 		int amountOfErrorAnswers = countErrorsForNotOrderedAnswersInResponse(response);
 		CountMode countMode = response.getAppropriateCountMode();
 		int adjustedValue = errorsToCountModeAdjuster.adjustValueToCountMode(amountOfErrorAnswers, countMode);
 		return adjustedValue;
 	}
-	
-	private int countErrorsForNotOrderedAnswersInResponse(Response response){
+
+	private int countErrorsForNotOrderedAnswersInResponse(Response response) {
 		CorrectAnswers correctAnswers = response.correctAnswers;
 		Predicate<String> wrongAnswerPredicate = new WrongAnswerPredicate(correctAnswers);
-		
+
 		int errors = generalAnswersCounter.countAnswersMatchingPredicate(response.values, wrongAnswerPredicate);
 		return errors;
 	}

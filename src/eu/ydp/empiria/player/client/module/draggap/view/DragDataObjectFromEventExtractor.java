@@ -16,7 +16,7 @@ public class DragDataObjectFromEventExtractor {
 	public DragDataObjectFromEventExtractor(OverlayTypesParser overlayTypesParser) {
 		this.overlayTypesParser = overlayTypesParser;
 	}
-	
+
 	public Optional<DragDataObject> extractDroppedObjectFromEvent(DropEvent dropEvent) {
 		String jsonObject = dropEvent.getData("json");
 		Optional<DragDataObject> dragData;

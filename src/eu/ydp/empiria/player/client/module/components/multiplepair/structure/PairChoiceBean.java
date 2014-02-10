@@ -11,5 +11,4 @@ public interface PairChoiceBean extends HasFixed {
 
 	public abstract XMLContent getXmlContent();
 
-
 }

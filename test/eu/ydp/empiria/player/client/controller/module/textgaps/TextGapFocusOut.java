@@ -29,18 +29,18 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public abstract class TextGapFocusOut extends ExtensionTestBase {
 
-	private boolean  passed = false;
+	private boolean passed = false;
 
 	protected FlowRequestInvoker flowRequestInvoker;
 
-	protected void initDeliveryEngine(){
+	protected void initDeliveryEngine() {
 		List<Extension> exts = new ArrayList<Extension>();
 		exts.add(new MockModuleConnectorExtension());
 		exts.add(new FlowRequestInvokerExtension());
 		super.initDeliveryEngine(exts, false);
 	}
 
-	protected void setPassed(){
+	protected void setPassed() {
 		passed = true;
 	}
 
@@ -49,11 +49,13 @@ public abstract class TextGapFocusOut extends ExtensionTestBase {
 	}
 
 	@Override
-	protected XmlData[] getItemXMLDatas(){
+	protected XmlData[] getItemXMLDatas() {
 
-		Document itemDoc = XMLParser.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody><mockInteraction responseIdentifier=\"x\"/></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
+		Document itemDoc = XMLParser
+				.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody><mockInteraction responseIdentifier=\"x\"/></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 		XmlData itemData = new XmlData(itemDoc, "");
-		Document itemDoc2 = XMLParser.parse("<assessmentItem identifier=\"inlineChoice2\" title=\"Interactive text 2\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
+		Document itemDoc2 = XMLParser
+				.parse("<assessmentItem identifier=\"inlineChoice2\" title=\"Interactive text 2\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 		XmlData itemData2 = new XmlData(itemDoc2, "");
 
 		XmlData[] itemDatas = new XmlData[2];
@@ -63,7 +65,7 @@ public abstract class TextGapFocusOut extends ExtensionTestBase {
 		return itemDatas;
 	}
 
-	protected class FlowRequestInvokerExtension extends InternalExtension implements FlowRequestSocketUserExtension{
+	protected class FlowRequestInvokerExtension extends InternalExtension implements FlowRequestSocketUserExtension {
 
 		@Override
 		public void init() {
@@ -106,11 +108,11 @@ public abstract class TextGapFocusOut extends ExtensionTestBase {
 
 	}
 
-	protected class MockModule extends OneViewInteractionModuleBase implements Factory<MockModule>{
+	protected class MockModule extends OneViewInteractionModuleBase implements Factory<MockModule> {
 
 		private final EventsBus eventsBus = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase().getEventsBus();
 
-		public MockModule(){
+		public MockModule() {
 		}
 
 		@Override
@@ -150,7 +152,7 @@ public abstract class TextGapFocusOut extends ExtensionTestBase {
 
 				@Override
 				public void onPlayerEvent(PlayerEvent event) {
-					if(event.getType()==PlayerEventTypes.BEFORE_FLOW){
+					if (event.getType() == PlayerEventTypes.BEFORE_FLOW) {
 						setPassed();
 					}
 				}

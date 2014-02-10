@@ -22,15 +22,15 @@ public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHand
 	private BaseMediaConfiguration baseMediaConfiguration;
 	private HandlerRegistration touchHandlerRegistration;
 
-	public SoundExecutorHtml5(){
+	public SoundExecutorHtml5() {
 		audioCtrl = Audio.createIfSupported();
-		RootPanel.get().add( audioCtrl );
+		RootPanel.get().add(audioCtrl);
 		audioCtrl.setVisible(false);
 		simulateUserInteraction();
-		
-		if (audioCtrl != null){
+
+		if (audioCtrl != null) {
 			addEndedListener(audioCtrl.getElement());
-			audioCtrl.addEndedHandler(new EndedHandler(){
+			audioCtrl.addEndedHandler(new EndedHandler() {
 
 				@Override
 				public void onEnded(EndedEvent event) {
@@ -41,15 +41,15 @@ public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHand
 	}
 
 	private native void addEndedListener(Element audioElement)/*-{
-		var instance = this;
-		audioElement.addEventListener('ended', function(){
-				instance.@eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorHtml5::onEnded2()();
-			}
-		);
-	}-*/;
+																var instance = this;
+																audioElement.addEventListener('ended', function(){
+																instance.@eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorHtml5::onEnded2()();
+																}
+																);
+																}-*/;
 
-	protected void onEnded2(){
-		if (playing){
+	protected void onEnded2() {
+		if (playing) {
 			playing = false;
 			listener.onSoundFinished();
 		}
@@ -57,7 +57,7 @@ public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHand
 
 	@Override
 	public void play(String src) {
-		
+
 		if (audioCtrl != null) {
 			if (playing)
 				stop();
@@ -73,14 +73,16 @@ public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHand
 		audioCtrl.pause();
 		onEnded2();
 	}
-	
-	/** Ta metoda jest potrzebna aby obejsc problemy z odtwarzaniem dzwieku na iOS. Apple w swej madrosci nie pozwolilo na odtwarzanie dzwiekow
-	 * dopoki nie zostanie odtworzony jakikolwiek dzwiek w reakcji na dzialanie uzytkownika. */
+
+	/**
+	 * Ta metoda jest potrzebna aby obejsc problemy z odtwarzaniem dzwieku na iOS. Apple w swej madrosci nie pozwolilo na odtwarzanie dzwiekow dopoki nie
+	 * zostanie odtworzony jakikolwiek dzwiek w reakcji na dzialanie uzytkownika.
+	 */
 	protected void simulateUserInteraction() {
 		RootPanel root = RootPanel.get();
 		touchHandlerRegistration = root.addDomHandler(this, TouchStartEvent.getType());
 	}
-	
+
 	@Override
 	public void onTouchStart(TouchStartEvent event) {
 		touchHandlerRegistration.removeHandler();
@@ -131,7 +133,7 @@ public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHand
 	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration) {
 		this.baseMediaConfiguration = baseMediaConfiguration;
 	}
-	
+
 	@Override
 	public BaseMediaConfiguration getBaseMediaConfiguration() {
 		return baseMediaConfiguration;

@@ -2,21 +2,21 @@ package eu.ydp.empiria.player.client.controller.communication;
 
 public class ItemParameters {
 
-	public ItemParameters(){
+	public ItemParameters() {
 		modulesCount = 0;
 	}
 
-	public ItemParameters(int mc){
+	public ItemParameters(int mc) {
 		modulesCount = mc;
 	}
-	
+
 	private int modulesCount;
-	
-	public void setModulesCount(int mc){
+
+	public void setModulesCount(int mc) {
 		modulesCount = mc;
 	}
-	
-	public int getModulesCount(){
+
+	public int getModulesCount() {
 		return modulesCount;
 	}
 }

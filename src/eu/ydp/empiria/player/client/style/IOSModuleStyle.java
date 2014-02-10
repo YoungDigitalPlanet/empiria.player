@@ -18,7 +18,7 @@ public class IOSModuleStyle extends HashMap<String, String> implements ModuleSty
 	@Override
 	public String get(Object key) {
 		for (Map.Entry<String, String> entry : entrySet()) {
-			if (Objects.equal(key,entry.getKey())) {
+			if (Objects.equal(key, entry.getKey())) {
 				return entry.getValue();
 			}
 		}

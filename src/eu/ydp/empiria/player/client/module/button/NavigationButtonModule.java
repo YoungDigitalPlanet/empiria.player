@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.module.button;
 
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.BEFORE_FLOW;
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_CHANGE;
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_LOADED;
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -27,7 +25,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 	private boolean enabled = true;
 	private final NavigationButtonDirection direction;
 
-	//@Inject
+	// @Inject
 	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
 	public NavigationButtonModule(NavigationButtonDirection dir) {
@@ -39,9 +37,10 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 		eventsBus.addHandler(PlayerEvent.getTypes(PAGE_LOADED, BEFORE_FLOW, PAGE_CHANGE), this, new CurrentPageScope());
 	}
 
-	private boolean isFirstPage(){
+	private boolean isFirstPage() {
 		return (flowDataSupplier.getCurrentPageIndex() == 0);
 	}
+
 	private boolean isEnd() {
 		boolean retValue = false;
 		if (direction.equals(NavigationButtonDirection.PREVIOUS)) {
@@ -52,7 +51,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 		return retValue;
 	}
 
-	private void setStyleName(){
+	private void setStyleName() {
 		String currentStyleName = getCurrentStyleName(isEnabled());
 		if (currentStyleName != null) {
 			button.setStylePrimaryName(currentStyleName);

@@ -7,5 +7,5 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 public interface ProcessingResultsToOutcomeMapConverterFactory {
 
 	ProcessingResultsToOutcomeMapConverter createConverter(Map<String, Outcome> outcomes);
-	
+
 }
