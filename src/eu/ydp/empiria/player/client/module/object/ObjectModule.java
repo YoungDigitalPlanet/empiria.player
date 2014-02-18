@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.object;
 
-import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
+import static eu.ydp.empiria.player.client.util.SourceUtil.*;
 
 import java.util.Map;
 
@@ -50,6 +50,9 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 	private Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
 	@Inject
 	private StyleSocket styleSocket;
+	@Inject
+	private MediaChecker mediaChecker;
+	
 	private ObjectElementReader elementReader = new ObjectElementReader();
 
 	@Override
@@ -85,7 +88,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
 			Map<String, String> sources = getSource(element, type);
 			AudioPlayerModule player;
 
-			if (((!MediaChecker.isHtml5Mp3Support() && !SourceUtil.containsOgg(sources)) || !Audio.isSupported()) && UserAgentChecker.isLocal()) {
+			if (((!mediaChecker.isHtml5Mp3Supported() && !SourceUtil.containsOgg(sources)) || !Audio.isSupported()) && UserAgentChecker.isLocal()) {
 				player = new FlashAudioPlayerModule();
 			} else {
 				player = defaultAudioPlayerModuleProvider.get();

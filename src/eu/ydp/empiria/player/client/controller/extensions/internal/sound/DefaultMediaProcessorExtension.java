@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import static eu.ydp.gwtutil.client.util.MediaChecker.isHtml5Mp3Support;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +31,7 @@ import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
@@ -55,7 +54,9 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	private Provider<LocalSwfMediaExecutor> localSwfExecutorProvider;
 	@Inject
 	private Provider<LocalSwfMediaWrapper> localSwfWrapperProvider;
-
+	@Inject
+	private MediaChecker mediaChecker;
+	
 	@Override
 	public void initMediaProcessor() {
 		if (!initialized) {
@@ -159,7 +160,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 
 	private boolean isGeckoSupport(BaseMediaConfiguration bmc) {
 		boolean containsOgg = SourceUtil.containsOgg(bmc.getSources());
-		return containsOgg || isHtml5Mp3Support();
+		return containsOgg || mediaChecker.isHtml5Mp3Supported();
 	}
 
 	private MediaExecutor<Widget> createSWFVideoMediaExecutor() {
