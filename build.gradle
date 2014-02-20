@@ -17,6 +17,8 @@ buildscript {
 import org.apache.ivy.core.settings.IvySettings
 import eu.ydp.gradle.gwt.GWTCompileTask
 
+readBuildProperties()
+
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'eclipse'
@@ -40,8 +42,8 @@ ext {
     tstamp=new Date().format( "yyyyMMddHHmmssSSS")
     buildnumber="${System.env["BUILD_NUMBER"]?:"${tstamp}"}"
     jacocoReport = "${buildDir}/jacoco/testJUnit.exec"
-}
-
+}	
+	
 repositories {
     ivy {
         url "http://dev/ivyrep/public/"
@@ -63,6 +65,12 @@ repositories {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force group: 'eu.ydp', name: 'ydpgwtutils', version: ydp_gwt_utils_ver
+    }
+}
+
 dependencies {
     compile 'com.google.gwt:gwt-servlet:2.5.1'
     compile 'com.google.gwt:gwt-user:2.5.1'
@@ -75,7 +83,7 @@ dependencies {
     compile 'eu.ydp:mathPlayer:latest.integration'
     compile 'eu.ydp:canvasadapter:latest.integration'
     compile 'eu.ydp:jsfilerequest:latest.integration'
-    compile 'eu.ydp:ydpgwtutils:[1.11.0,1.11.1['
+    compile 'eu.ydp:ydpgwtutils:$ydp_gwt_utils_ver'
     compile 'eu.ydp:gwtFlashMedia:latest.integration'
     compile 'eu.ydp:gwtCreateJs:latest.integration'
     compile 'eu.ydp:jaxb4gwt:latest.integration'
@@ -99,7 +107,7 @@ eclipse {
     classpath {
         containers 'com.google.gwt.eclipse.core.GWT_CONTAINER'
 		
-		defaultOutputDir file('/war/WEB-INF/classes')
+        defaultOutputDir file('/war/WEB-INF/classes')
     }
 }
 
@@ -111,7 +119,6 @@ sonarRunner {
         property "sonar.jdbc.username", sonar_jdbc_username
         property "sonar.jdbc.password", sonar_jdbc_password
         property "sonar.projectName",  sonar_project_name
-
         property "sonar.core.codeCoveragePlugin", "jacoco"
     }
 }
@@ -136,6 +143,22 @@ sourceSets {
     
     sourceSets.test.runtimeClasspath += files(sourceSets.main.java.srcDirs)
     sourceSets.test.runtimeClasspath += files(sourceSets.test.java.srcDirs)
+}
+
+def readBuildProperties() {
+    def fileName = project.getProperties().get('buildProfile', 'master')
+    def filePath = "gradle/profiles/" + fileName + ".properties"
+		
+    file(filePath).withReader { reader -> 
+	    def props = new Properties() 
+        props.load(reader) 
+        
+        for(property in props) {
+            project.ext[property.key] = property.value
+        }
+    } 
+	
+    println "[Read  build config successfully from file: " + filePath + "]" 	
 }
 
 task testJUnit( type: Test ) {
