@@ -14,29 +14,26 @@ buildscript {
 	}
 }
 
-import org.apache.ivy.core.settings.IvySettings
 import eu.ydp.gradle.gwt.GWTCompileTask
-
-readBuildProperties()
-
-apply plugin: 'java'
-apply plugin: 'jacoco'
-apply plugin: 'eclipse'
-apply plugin: 'sonar-runner'
-apply plugin: 'ivy-publish'
-sourceCompatibility = 1.6
-compileJava.options.encoding = 'UTF-8'
-
-File userHome = new File( System.getProperty("user.home") );
-
-IvySettings ivySettings = new IvySettings();
-ivySettings.load(new File(userHome, ".ivy2/ivysettings.xml") );
 
 def empiriaWar = file( "war")
 def empiriaBuildDir = new File( empiriaWar, "empiria.player" )
 def empiriaWebkitWar = file( "build/gwt")
 def empiriaWebkitBuildDir = new File( empiriaWebkitWar, "empiria.player" )
 def versionFile= new File("${projectDir}${File.separator}src${File.separator}eu${File.separator}ydp${File.separator}empiria${File.separator}player${File.separator}client${File.separator}version${File.separator}version.txt")
+def buildProfile = project.getProperties().get('buildProfile', 'develop')
+
+println "Picked build profile [$buildProfile]"
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'eclipse'
+apply plugin: 'sonar-runner'
+apply from: "gradle/profiles/${buildProfile}.gradle"
+apply plugin: 'ivy-publish'
+
+sourceCompatibility = 1.6
+compileJava.options.encoding = 'UTF-8'
 
 ext {
     tstamp=new Date().format( "yyyyMMddHHmmssSSS")
@@ -67,7 +64,7 @@ repositories {
 
 configurations.all {
     resolutionStrategy {
-        force group: 'eu.ydp', name: 'ydpgwtutils', version: ydp_gwt_utils_ver
+        force group: 'eu.ydp', name: 'ydpgwtutils', version: "$ydp_gwt_utils_ver"
     }
 }
 
@@ -83,7 +80,6 @@ dependencies {
     compile 'eu.ydp:mathPlayer:latest.integration'
     compile 'eu.ydp:canvasadapter:latest.integration'
     compile 'eu.ydp:jsfilerequest:latest.integration'
-    compile 'eu.ydp:ydpgwtutils:$ydp_gwt_utils_ver'
     compile 'eu.ydp:gwtFlashMedia:latest.integration'
     compile 'eu.ydp:gwtCreateJs:latest.integration'
     compile 'eu.ydp:jaxb4gwt:latest.integration'
@@ -143,22 +139,6 @@ sourceSets {
     
     sourceSets.test.runtimeClasspath += files(sourceSets.main.java.srcDirs)
     sourceSets.test.runtimeClasspath += files(sourceSets.test.java.srcDirs)
-}
-
-def readBuildProperties() {
-    def fileName = project.getProperties().get('buildProfile', 'master')
-    def filePath = "gradle/profiles/" + fileName + ".properties"
-		
-    file(filePath).withReader { reader -> 
-	    def props = new Properties() 
-        props.load(reader) 
-        
-        for(property in props) {
-            project.ext[property.key] = property.value
-        }
-    } 
-	
-    println "[Read  build config successfully from file: " + filePath + "]" 	
 }
 
 task testJUnit( type: Test ) {
@@ -243,7 +223,7 @@ def configCopyMetaInfoAndZip( playerDir, targetZip ) {
 
 task createVersion(){
 	versionFile.createNewFile()
-	versionFile.write("${version}-${buildnumber}")
+	versionFile.write "${project.ext.version}-${buildnumber}"
 }
 
 task zipMain( dependsOn: [compileMain], type: Zip ) {
@@ -274,7 +254,7 @@ publishing {
         ivy(IvyPublication) {
             organisation 'eu.ydp'
             module 'empiriaPlayer'
-            revision "${version}-${buildnumber}"
+            revision "${project.ext.version}-${buildnumber}"
             descriptor.status = 'integration'
 			artifacts {
 	            artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
