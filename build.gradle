@@ -253,7 +253,7 @@ publishing {
     publications {
         ivy(IvyPublication) {
             organisation 'eu.ydp'
-            module 'empiriaPlayer-mh'
+            module 'empiriaPlayer'
             revision "${project.ext.version}-${buildnumber}"
             descriptor.status = 'integration'
 			artifacts {
