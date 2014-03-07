@@ -192,6 +192,11 @@ task compileMain(dependsOn: [classes], type: GWTCompileTask) {
     buildDir = empiriaWar
 }
 
+task compileDev(dependsOn: [classes], type: GWTCompileTask) {
+	module = 'eu.ydp.empiria.player.Player_dev'
+	buildDir = empiriaWar
+}
+
 task compileWebkit(dependsOn: [classes], type: GWTCompileTask) {
     module = 'eu.ydp.empiria.player.Player_webkit'
     buildDir = empiriaWebkitWar
