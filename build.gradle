@@ -69,29 +69,29 @@ configurations.all {
 }
 
 dependencies {
-    compile 'com.google.gwt:gwt-servlet:2.5.1'
-    compile 'com.google.gwt:gwt-user:2.5.1'
-    compile 'com.google.gwt:gwt-dev:2.5.1'
+    compile group: 'com.google.gwt', name: 'gwt-servlet', version: '2.5.1'
+    compile group: 'com.google.gwt', name: 'gwt-user', version: '2.5.1'
+    compile group: 'com.google.gwt', name: 'gwt-dev', version: '2.5.1'
 
-    compile 'com.google.gwt.inject:gin:2.0.0'
-    compile 'com.googlecode.gwtquery:gwtquery:1.3.3'
-    compile 'com.googlecode.gwtquery.bundles:gquery-dnd-bundle:1.0.6'
+    compile group: 'com.google.gwt.inject', name: 'gin', version: '2.0.0'
+    compile group: 'com.googlecode.gwtquery', name: 'gwtquery', version: '1.3.3'
+    compile group: 'com.googlecode.gwtquery.bundles', name: 'gquery-dnd-bundle', version: '1.0.6'
 
-    compile 'eu.ydp:mathPlayer:latest.integration'
-    compile 'eu.ydp:canvasadapter:latest.integration'
-    compile 'eu.ydp:jsfilerequest:latest.integration'
-    compile 'eu.ydp:gwtFlashMedia:latest.integration'
+    compile group: 'eu.ydp', name: 'mathPlayer', version: 'latest.integration'
+    compile group: 'eu.ydp', name: 'canvasadapter', version: 'latest.integration'
+    compile group: 'eu.ydp', name: 'jsfilerequest', version: 'latest.integration'
+    compile group: 'eu.ydp', name: 'gwtFlashMedia', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver
-    compile 'eu.ydp:jaxb4gwt:latest.integration'
-    compile 'eu.ydp:matheclipse-parser-gwt:0.0.10+'
+    compile group: 'eu.ydp', name: 'jaxb4gwt', version: 'latest.integration'
+    compile group: 'eu.ydp', name: 'matheclipse-parser-gwt', version: '0.0.10+'
 
-    testCompile 'org.hamcrest:hamcrest-library:1.3'
-    testCompile 'org.mockito:mockito-core:1.9.5'
-    testCompile 'junit:junit:4.11'
-    testCompile 'pl.pragmatists:JUnitParams:1.0.1'
-    testCompile 'org.easytesting:fest-assert-core:2.0M10'
-    testCompile 'xmlunit:xmlunit:1.3'
-    testCompile 'org.reflections:reflections:0.9.9-RC1'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'pl.pragmatists', name: 'JUnitParams', version: '1.0.1'
+    testCompile group: 'org.easytesting', name: 'fest-assert-core', version: '2.0M10'
+    testCompile group: 'xmlunit', name: 'xmlunit', version: '1.3'
+    testCompile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
 }
 
 eclipse {
