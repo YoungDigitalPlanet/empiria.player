@@ -8,4 +8,5 @@ ext {
 	sonar_jdbc_username="sonar"
 	sonar_jdbc_password="sonar"
 	ydp_gwt_utils_ver="1.10.rc-+"
+	gwt_createjs_ver='1.2.rc-+'
 }

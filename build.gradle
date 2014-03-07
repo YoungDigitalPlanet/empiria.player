@@ -81,7 +81,7 @@ dependencies {
     compile 'eu.ydp:canvasadapter:latest.integration'
     compile 'eu.ydp:jsfilerequest:latest.integration'
     compile 'eu.ydp:gwtFlashMedia:latest.integration'
-    compile 'eu.ydp:gwtCreateJs:latest.integration'
+    compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver
     compile 'eu.ydp:jaxb4gwt:latest.integration'
     compile 'eu.ydp:matheclipse-parser-gwt:0.0.10+'
 
