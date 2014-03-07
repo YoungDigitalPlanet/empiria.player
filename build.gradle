@@ -260,7 +260,7 @@ publishing {
             organisation 'eu.ydp'
             module 'empiriaPlayer'
             revision "${project.ext.version}-${buildnumber}"
-            descriptor.status = 'integration'
+            descriptor.status = project.ext.status
 			artifacts {
 	            artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
 	            	name 'empiriaplayer'
