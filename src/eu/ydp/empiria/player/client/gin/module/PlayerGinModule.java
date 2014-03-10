@@ -140,7 +140,6 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactoryImpl;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
-@SuppressWarnings("PMD")
 public class PlayerGinModule extends AbstractGinModule {
 
 	@Override
