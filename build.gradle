@@ -261,11 +261,16 @@ publishing {
             module 'empiriaPlayer'
             revision "${project.ext.version}-${buildnumber}"
             descriptor.status = 'integration'
+			configurations{
+				create("default")
+				create("webkit")
+			}
 			artifacts {
 	            artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
 	            	name 'empiriaplayer'
 	            	classifier "source"
 		            extension "zip"
+					conf "default"
 		         	builtBy distMain	         	
 	       		}
 	       		
@@ -273,6 +278,7 @@ publishing {
 	            	name 'empiriaplayer_webkit'
 	            	classifier "source"
 		            extension "zip"
+					conf "webkit"
 		         	builtBy distWebkit	         	
 	       		}       	
        		}	
