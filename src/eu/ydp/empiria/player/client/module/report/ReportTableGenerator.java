@@ -95,12 +95,13 @@ public class ReportTableGenerator {
 		boolean isElement = isElementNode(rowNode);
 		if (isElement) {
 
+			NodeList cellNodes = rowNode.getChildNodes();
 			String nodeName = rowNode.getNodeName();
+
 			if (nodeName.equals(RR)) {
-				generateHeaderRow(rowNode, currRow);
+				generateHeaderRow(currRow, cellNodes);
 				rowsCount++;
 			} else if (nodeName.equals(PRR)) {
-				NodeList cellNodes = rowNode.getChildNodes();
 				int pageRows = generatePageRows(currRow, cellNodes);
 				rowsCount += pageRows;
 			}
@@ -108,16 +109,14 @@ public class ReportTableGenerator {
 		return rowsCount;
 	}
 
-	private void generateHeaderRow(Node rowNode, int currRow) {
+	private void generateHeaderRow(int currRow, NodeList cellNodes) {
 		int currCol = 0;
-		NodeList cellNodes = rowNode.getChildNodes();
 
-		for (int d = 0; d < cellNodes.getLength(); d++) {
-			Node cellNode = cellNodes.item(d);
-			boolean isElement = isElementNode(cellNode);
+		for (int i = 0; i < cellNodes.getLength(); i++) {
+			Node cellNode = cellNodes.item(i);
+			boolean isCell = isElementNode(cellNode) && cellNode.getNodeName().equals(RD);
 
-			if (isElement && cellNode.getNodeName().equals(RD)) {
-
+			if (isCell) {
 				generateHeaderCell(currRow, currCol, cellNode);
 				currCol++;
 			}
@@ -125,15 +124,11 @@ public class ReportTableGenerator {
 	}
 
 	private void generateHeaderCell(int currRow, int currCol, Node cellNode) {
-		int colspan = 1;
-		if (((Element) cellNode).hasAttribute(COLSPAN_ATTR)) {
-			colspan = NumberUtils.tryParseInt(((Element) cellNode).getAttribute(COLSPAN_ATTR), 1);
-		}
 		Panel cellPanel = prepareCellPanel(cellNode);
+		Element cellElement = dataSourceDataSupplier.getItem(currRow);
+		int colspan = getColspan(cellElement);
 
-		Element element = dataSourceDataSupplier.getItem(currRow);
-
-		addCellToTableAndFormat(currRow, currCol, colspan, cellPanel, element);
+		addCellToTableAndFormat(currRow, currCol, colspan, cellPanel, cellElement);
 	}
 
 	private Panel prepareCellPanel(Node cellNode) {
@@ -146,7 +141,7 @@ public class ReportTableGenerator {
 	private void addCellToTableAndFormat(int currRow, int currCol, int colspan, Panel cellPanel, Element element) {
 		table.setWidget(currRow, currCol, cellPanel);
 		table.getFlexCellFormatter().setColSpan(currRow, currCol, colspan);
-		fillStyles(table, currCol, currRow);
+		addStylesToCell(table, currCol, currRow);
 
 		if (element != null) {
 			String className = XMLUtils.getAttributeAsString(element, CLASS);
@@ -160,39 +155,35 @@ public class ReportTableGenerator {
 		int pageRow = 0;
 
 		for (int i = 0; i < pagesIndexes.size(); i++) {
-			int currCol = 0;
 
 			int pageRowIndex = pagesIndexes.get(i).intValue();
 			int todo = getItemTodoValue(pageRowIndex);
 
-			// hiding pages which are not activites
 			boolean shouldRenderPageRow = (todo != 0 || showNonActivites);
 			if (shouldRenderPageRow) {
-				generatePageRow(currRow + pageRow, cellNodes, currCol, pageRowIndex);
+				generatePageRow(currRow + pageRow, cellNodes, pageRowIndex);
 				pageRow++;
 			}
 		}
 		return pageRow;
 	}
 
-	private void generatePageRow(int currRow, NodeList cellNodes, int currCol, int pageRowIndex) {
+	private void generatePageRow(int currRow, NodeList cellNodes, int pageRowIndex) {
+		int currCol = 0;
 		for (int i = 0; i < cellNodes.getLength(); i++) {
 			Node cellNode = cellNodes.item(i);
 			boolean isCell = isElementNode(cellNode) && cellNode.getNodeName().equals(RD);
 			if (isCell) {
-				generatePageCell(currRow, cellNode, currCol, pageRowIndex);
+				generatePageCell(currRow, currCol, cellNode, pageRowIndex);
 				currCol++;
 			}
 		}
 	}
 
-	private void generatePageCell(int currRow, Node cellNode, int currCol, int pageRowIndex) {
-		int colspan = 1;
-		if (((Element) cellNode).hasAttribute(COLSPAN_ATTR)) {
-			colspan = NumberUtils.tryParseInt(((Element) cellNode).getAttribute(COLSPAN_ATTR), 1);
-		}
+	private void generatePageCell(int currRow, int currCol, Node cellNode, int pageRowIndex) {
 		boolean deepCloning = true;
 		Element cellElement = (Element) cellNode.cloneNode(deepCloning);
+		int colspan = getColspan(cellElement);
 
 		addItemIndexAttrToLinkTags(pageRowIndex, cellElement);
 		addItemIndexAttrToInfoTags(pageRowIndex, cellElement);
@@ -202,6 +193,14 @@ public class ReportTableGenerator {
 		addCellToTableAndFormat(currRow, currCol, colspan, cellPanel, element);
 
 		table.getRowFormatter().addStyleName(currRow, PAGE_ROW_STYLE_PREFIX + String.valueOf(pageRowIndex));
+	}
+
+	private int getColspan(Element cellElement) {
+		int colspan = 1;
+		if (cellElement.hasAttribute(COLSPAN_ATTR)) {
+			colspan = NumberUtils.tryParseInt(cellElement.getAttribute(COLSPAN_ATTR), 1);
+		}
+		return colspan;
 	}
 
 	private void addItemIndexAttrToLinkTags(int itemIndex, Element cellElement) {
@@ -233,9 +232,9 @@ public class ReportTableGenerator {
 		return cellNode.getNodeType() == Node.ELEMENT_NODE;
 	}
 
-	private int getItemTodoValue(int itemIndex) {
+	private int getItemTodoValue(int pageRowIndex) {
 		int todo = 0;
-		String value = getItemValue(itemIndex, "TODO");
+		String value = getItemValue(pageRowIndex, "TODO");
 
 		if (value != null) {
 			todo = Integer.parseInt(value);
@@ -244,24 +243,23 @@ public class ReportTableGenerator {
 		return todo;
 	}
 
-	private String getItemValue(int itemIndex, String variableName) {
-		String outputValue = null;
-		ItemSessionDataSocket itemDataSocket = sessionDataSupplier.getItemSessionDataSocket(itemIndex);
+	private String getItemValue(int pageRowIndex, String variableName) {
+		ItemSessionDataSocket itemDataSocket = sessionDataSupplier.getItemSessionDataSocket(pageRowIndex);
 		VariableProviderSocket variableSocket = itemDataSocket.getVariableProviderSocket();
 		Variable variable = variableSocket.getVariableValue(variableName);
 
+		String outputValue = null;
 		if (variable != null) {
 			outputValue = variable.getValuesShort();
 		}
-
 		return outputValue;
 	}
 
-	private void fillStyles(FlexTable table, int currCol, int currRow) {
-		table.getFlexCellFormatter().addStyleName(currRow, currCol, TABLE_CELL_STYLE);
-		table.getFlexCellFormatter().addStyleName(currRow, currCol, TABLE_COL_PREFIX + currCol);
-		table.getRowFormatter().addStyleName(currRow, styleNames.QP_REPORT_TABLE_ROW());
-		table.getRowFormatter().addStyleName(currRow, styleNames.QP_REPORT_TABLE_ROW() + "-" + currRow);
+	private void addStylesToCell(FlexTable table, int col, int row) {
+		table.getFlexCellFormatter().addStyleName(row, col, TABLE_CELL_STYLE);
+		table.getFlexCellFormatter().addStyleName(row, col, TABLE_COL_PREFIX + col);
+		table.getRowFormatter().addStyleName(row, styleNames.QP_REPORT_TABLE_ROW());
+		table.getRowFormatter().addStyleName(row, styleNames.QP_REPORT_TABLE_ROW() + "-" + row);
 
 	}
 
