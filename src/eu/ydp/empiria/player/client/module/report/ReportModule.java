@@ -34,6 +34,18 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ReportModule extends ContainerModuleBase {
 
+	private static final String COLSPAN_ATTR = "colspan";
+	private static final String TABLE_COL_PREFIX = "qp-report-table-col-";
+	private static final String TABLE_CELL_STYLE = "qp-report-table-cell";
+	private static final String PAGE_ROW_STYLE_PREFIX = "qp-report-table-row-page-";
+	private static final String CLASS = "class";
+	private static final String INFO = "info";
+	private static final String URL = "url";
+	private static final String LINK = "link";
+	private final static String RR = "rr";
+	private final static String PRR = "prr";
+	private final static String RD = "rd";
+
 	protected SessionDataSupplier sessionDataSupplier;
 	protected DataSourceDataSupplier dataSourceDataSupplier;
 	protected FlowRequestInvoker flowRequestInvoker;
@@ -45,6 +57,11 @@ public class ReportModule extends ContainerModuleBase {
 	private Map<String, String> styles;
 	private Element element;
 
+	// dodane zmienne
+	private boolean showNonActivites;
+	private BodyGeneratorSocket bodyGeneratorSocket;
+	private static final String ITEM_INDEX = "itemIndex";
+
 	public ReportModule(FlowRequestInvoker flowRequestInvoker, DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier) {
 		this.flowRequestInvoker = flowRequestInvoker;
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
@@ -55,95 +72,155 @@ public class ReportModule extends ContainerModuleBase {
 	}
 
 	private void fillStyles(FlexTable table, int currCol, int currRow) {
-		table.getFlexCellFormatter().addStyleName(currRow, currCol, "qp-report-table-cell");
-		table.getFlexCellFormatter().addStyleName(currRow, currCol, "qp-report-table-col-" + currCol);
+		table.getFlexCellFormatter().addStyleName(currRow, currCol, TABLE_CELL_STYLE);
+		table.getFlexCellFormatter().addStyleName(currRow, currCol, TABLE_COL_PREFIX + currCol);
 		table.getRowFormatter().addStyleName(currRow, styleNames.QP_REPORT_TABLE_ROW());
 		table.getRowFormatter().addStyleName(currRow, styleNames.QP_REPORT_TABLE_ROW() + "-" + currRow);
 
 	}
 
-	private int renderRow(Node nodeToRender, int currRow, boolean showNonActivites, BodyGeneratorSocket bodyGenSocket, List<Integer> itemIndexes) {
-		if (nodeToRender.getNodeType() == Node.ELEMENT_NODE && "rr".equals(nodeToRender.getNodeName())) {
-			int currCol = 0;
-			NodeList cellNodes = nodeToRender.getChildNodes();
-			for (int d = 0; d < cellNodes.getLength(); d++) {
-				if (cellNodes.item(d).getNodeType() == Node.ELEMENT_NODE && "rd".equals(cellNodes.item(d).getNodeName())) {
-					int colspan = 1;
-					if (((Element) cellNodes.item(d)).hasAttribute("colspan")) {
-						colspan = NumberUtils.tryParseInt(((Element) cellNodes.item(d)).getAttribute("colspan"), 1);
-					}
-					Panel cellPanel = new FlowPanel();
-					cellPanel.setStyleName(styleNames.QP_REPORT_CELL());
-					bodyGenSocket.generateBody(cellNodes.item(d), cellPanel);
-					table.setWidget(currRow, currCol, cellPanel);
-					table.getFlexCellFormatter().setColSpan(currRow, currCol, colspan);
-					fillStyles(table, currCol, currRow);
-					Element el = dataSourceDataSupplier.getItem(currRow);
-					if (el != null) {
-						String className = XMLUtils.getAttributeAsString(el, "class");
-						if (className != null && !"".equals(className)) {
-							table.getRowFormatter().addStyleName(currRow, className);
-						}
-					}
-					currCol++;
-				}
-			}
-			currRow++;
-		} else if (nodeToRender.getNodeType() == Node.ELEMENT_NODE && "prr".equals(nodeToRender.getNodeName())) {
-			NodeList cellNodes = nodeToRender.getChildNodes();
-			for (int ir = 0; ir < itemIndexes.size(); ir++) {
-				int currCol = 0;
+	private int renderHeaderOrPageRow(Node nodeToRender, int currRow, List<Integer> itemIndexes) {
+		int rowsCount = 0;
 
-				int todo = getItemTodoValue(itemIndexes.get(ir));
-				int itemIndex = itemIndexes.get(ir);
+		boolean isElement = isElementNode(nodeToRender);
+		if (isElement) {
 
-				// hiding pages which are not activites
-				if (todo == 0 && !showNonActivites) {
-					continue;
-				}
-
-				for (int d = 0; d < cellNodes.getLength(); d++) {
-					if (cellNodes.item(d).getNodeType() == Node.ELEMENT_NODE && "rd".equals(cellNodes.item(d).getNodeName())) {
-						int colspan = 1;
-						if (((Element) cellNodes.item(d)).hasAttribute("colspan")) {
-							colspan = NumberUtils.tryParseInt(((Element) cellNodes.item(d)).getAttribute("colspan"), 1);
-						}
-						Node dNode = cellNodes.item(d).cloneNode(true);
-						NodeList linkNodes = ((Element) dNode).getElementsByTagName("link");
-						String name = "itemIndex";
-						for (int in = 0; in < linkNodes.getLength(); in++) {
-							if (!((Element) linkNodes.item(in)).hasAttribute(name) && !((Element) linkNodes.item(in)).hasAttribute("url")) {
-								((Element) linkNodes.item(in)).setAttribute(name, String.valueOf(itemIndex));
-							}
-						}
-						NodeList infoNodes = ((Element) dNode).getElementsByTagName("info");
-						for (int in = 0; in < infoNodes.getLength(); in++) {
-							if (!((Element) infoNodes.item(in)).hasAttribute(name)) {
-								((Element) infoNodes.item(in)).setAttribute(name, String.valueOf(itemIndex));
-							}
-						}
-						Panel cellPanel = new FlowPanel();
-						cellPanel.setStyleName(styleNames.QP_REPORT_CELL());
-						bodyGenSocket.generateBody(dNode, cellPanel);
-						table.setWidget(currRow, currCol, cellPanel);
-						table.getFlexCellFormatter().setColSpan(currRow, currCol, colspan);
-						fillStyles(table, currCol, currRow);
-						Element element = dataSourceDataSupplier.getItem(itemIndex);
-						if (element != null) {
-							String className = XMLUtils.getAttributeAsString(element, "class");
-							if (className != null && !"".equals(className)) {
-								table.getRowFormatter().addStyleName(currRow, className);
-							}
-						}
-						table.getRowFormatter().addStyleName(currRow, "qp-report-table-row-page-" + String.valueOf(itemIndex));
-						currCol++;
-
-					}
-				}
-				currRow++;
+			String nodeName = nodeToRender.getNodeName();
+			if (nodeName.equals(RR)) {
+				renderHeaderRow(nodeToRender, currRow);
+				rowsCount++;
+			} else if (nodeName.equals(PRR)) {
+				NodeList cellNodes = nodeToRender.getChildNodes();
+				int pageRows = renderPageRows(currRow, itemIndexes, cellNodes);
+				rowsCount += pageRows;
 			}
 		}
-		return currRow;
+		return rowsCount;
+	}
+
+	private int renderPageRows(int currRow, List<Integer> itemIndexes, NodeList cellNodes) {
+		int pageRow = 0;
+
+		for (int i = 0; i < itemIndexes.size(); i++) {
+			int currCol = 0;
+
+			int pageRowIndex = itemIndexes.get(i).intValue();
+			int todo = getItemTodoValue(pageRowIndex);
+
+			// hiding pages which are not activites
+			boolean shouldRenderPageRow = (todo != 0 || showNonActivites);
+			if (shouldRenderPageRow) {
+				renderPageRow(currRow + pageRow, cellNodes, currCol, pageRowIndex);
+				pageRow++;
+			}
+		}
+		return pageRow;
+	}
+
+	private void renderPageRow(int currRow, NodeList cellNodes, int currCol, int pageRowIndex) {
+		for (int i = 0; i < cellNodes.getLength(); i++) {
+			Node cellNode = cellNodes.item(i);
+			boolean isCell = isElementNode(cellNode) && cellNode.getNodeName().equals(RD);
+			if (isCell) {
+				renderPageCell(currRow, cellNode, currCol, pageRowIndex);
+				currCol++;
+			}
+		}
+	}
+
+	private boolean isElementNode(Node cellNode) {
+		return cellNode.getNodeType() == Node.ELEMENT_NODE;
+	}
+
+	private void renderPageCell(int currRow, Node cellNode, int currCol, int pageRowIndex) {
+		int colspan = 1;
+		if (((Element) cellNode).hasAttribute(COLSPAN_ATTR)) {
+			colspan = NumberUtils.tryParseInt(((Element) cellNode).getAttribute(COLSPAN_ATTR), 1);
+		}
+		boolean deepCloning = true;
+		Element cellElement = (Element) cellNode.cloneNode(deepCloning);
+
+		addItemIndexAttrToLinkTags(pageRowIndex, cellElement);
+		addItemIndexAttrToInfoTags(pageRowIndex, cellElement);
+
+		Panel cellPanel = prepareCellPanel(cellElement);
+		Element element = dataSourceDataSupplier.getItem(pageRowIndex);
+		addCellToTableAndFormat(currRow, currCol, colspan, cellPanel, element);
+
+		table.getRowFormatter().addStyleName(currRow, PAGE_ROW_STYLE_PREFIX + String.valueOf(pageRowIndex));
+	}
+
+	private void renderHeaderCell(int currRow, int currCol, Node cellNode) {
+		int colspan = 1;
+		if (((Element) cellNode).hasAttribute(COLSPAN_ATTR)) {
+			colspan = NumberUtils.tryParseInt(((Element) cellNode).getAttribute(COLSPAN_ATTR), 1);
+		}
+		Panel cellPanel = prepareCellPanel(cellNode);
+
+		Element element = dataSourceDataSupplier.getItem(currRow);
+
+		addCellToTableAndFormat(currRow, currCol, colspan, cellPanel, element);
+	}
+
+	private void addCellToTableAndFormat(int currRow, int currCol, int colspan, Panel cellPanel, Element element) {
+		table.setWidget(currRow, currCol, cellPanel);
+		table.getFlexCellFormatter().setColSpan(currRow, currCol, colspan);
+		fillStyles(table, currCol, currRow);
+
+		if (element != null) {
+			String className = XMLUtils.getAttributeAsString(element, CLASS);
+			if (className != null && !className.isEmpty()) {
+				table.getRowFormatter().addStyleName(currRow, className);
+			}
+		}
+	}
+
+	private Panel prepareCellPanel(Node cellNode) {
+		Panel cellPanel = new FlowPanel();
+		cellPanel.setStyleName(styleNames.QP_REPORT_CELL());
+		bodyGeneratorSocket.generateBody(cellNode, cellPanel);
+		return cellPanel;
+	}
+
+	private void addItemIndexAttrToLinkTags(int itemIndex, Element cellElement) {
+		NodeList linkNodes = cellElement.getElementsByTagName(LINK);
+		for (int i = 0; i < linkNodes.getLength(); i++) {
+			Element linkNode = (Element) linkNodes.item(i);
+			boolean hasURL = linkNode.hasAttribute(URL);
+			if (!hasURL) {
+				addItemIndexAttrIfNotExists(itemIndex, linkNode);
+			}
+		}
+	}
+
+	private void addItemIndexAttrToInfoTags(int itemIndex, Element cellElement) {
+		NodeList infoNodes = cellElement.getElementsByTagName(INFO);
+		for (int i = 0; i < infoNodes.getLength(); i++) {
+			Element infoNode = (Element) infoNodes.item(i);
+			addItemIndexAttrIfNotExists(itemIndex, infoNode);
+		}
+	}
+
+	private void renderHeaderRow(Node nodeToRender, int currRow) {
+		int currCol = 0;
+		NodeList cellNodes = nodeToRender.getChildNodes();
+
+		for (int d = 0; d < cellNodes.getLength(); d++) {
+			Node cellNode = cellNodes.item(d);
+			boolean isElement = isElementNode(cellNode);
+
+			if (isElement && cellNode.getNodeName().equals(RD)) {
+
+				renderHeaderCell(currRow, currCol, cellNode);
+				currCol++;
+			}
+		}
+	}
+
+	private void addItemIndexAttrIfNotExists(int itemIndex, Element element) {
+		if (!element.hasAttribute(ITEM_INDEX)) {
+			element.setAttribute(ITEM_INDEX, String.valueOf(itemIndex));
+		}
 	}
 
 	private Map<String, String> getStyles() {
@@ -176,14 +253,16 @@ public class ReportModule extends ContainerModuleBase {
 
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
+		// PO CO BSG W INITMODULE()?
 		super.initModule(element, moduleSocket, mil, bgs);
+		bodyGeneratorSocket = bgs;
 		this.element = element;
-		boolean showNonActivites = isShowNonActivites();
+		showNonActivites = isShowNonActivites();
 		List<Integer> itemIndexes = getRange();
 
 		table = new FlexTable();
 		table.setStyleName(styleNames.QP_REPORT_TABLE());
-		String cls = element.getAttribute("class");
+		String cls = element.getAttribute(CLASS);
 		if (cls != null) {
 			table.addStyleName(cls);
 		}
@@ -191,7 +270,8 @@ public class ReportModule extends ContainerModuleBase {
 		int currRow = 0;
 		NodeList rowNodes = element.getChildNodes();
 		for (int r = 0; r < rowNodes.getLength(); r++) {
-			currRow = renderRow(rowNodes.item(r), currRow, showNonActivites, bgs, itemIndexes);
+			int renderedRows = renderHeaderOrPageRow(rowNodes.item(r), currRow, itemIndexes);
+			currRow += renderedRows;
 		}
 		mainPanel.add(table);
 	}
