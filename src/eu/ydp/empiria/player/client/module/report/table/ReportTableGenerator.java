@@ -13,53 +13,53 @@ import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.module.report.table.extractor.PageTodoExtractor;
-import eu.ydp.empiria.player.client.module.report.table.extractor.PagesRangeExtractor;
-import eu.ydp.empiria.player.client.module.report.table.extractor.ShowNonActivitiesExtractor;
+import eu.ydp.empiria.player.client.module.report.table.cell.CellCoords;
+import eu.ydp.empiria.player.client.module.report.table.extraction.ColspanExtractor;
+import eu.ydp.empiria.player.client.module.report.table.extraction.PageTodoExtractor;
+import eu.ydp.empiria.player.client.module.report.table.extraction.PagesRangeExtractor;
+import eu.ydp.empiria.player.client.module.report.table.extraction.ShowNonActivitiesExtractor;
+import eu.ydp.empiria.player.client.module.report.table.modification.ItemIndexAppender;
+import eu.ydp.empiria.player.client.module.report.table.modification.RowStylesAppender;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ReportTableGenerator {
 
-	private static final String COLSPAN_ATTR = "colspan";
-
 	private static final String PAGE_ROW_STYLE_PREFIX = "qp-report-table-row-page-";
-	private static final String ITEM_INDEX = "itemIndex";
 	private static final String CLASS = "class";
-	private static final String INFO = "info";
-	private static final String URL = "url";
-	private static final String LINK = "link";
 	private final static String RR = "rr";
 	private final static String PRR = "prr";
 	private final static String RD = "rd";
 
 	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	private final BodyGeneratorSocket bodyGeneratorSocket;
-	private boolean showNonActivites;
+	private final StyleSocket styleSocket = PlayerGinjectorFactory.getPlayerGinjector().getStyleSocket();
 
-	private FlexTable table;
+	private final BodyGeneratorSocket bodyGeneratorSocket;
 	private final DataSourceDataSupplier dataSourceDataSupplier;
-	private final SessionDataSupplier sessionDataSupplier;
+
+	private final RowStylesAppender rowStylesAppender;
+	private final PageTodoExtractor pageTodoExtractor;
+	private final PagesRangeExtractor pagesRangeExtractor;
+	private final ShowNonActivitiesExtractor showNonActivitiesExtractor;
+	private final ItemIndexAppender itemIndexAppender;
+	private final ColspanExtractor colspanExtractor;
+
+	private boolean showNonActivites;
 	private List<Integer> pagesIndexes;
 
-	private final GeneratorHelper generatorHelper;
-
-	private final PageTodoExtractor pageTodoExtractor;
-
-	private final PagesRangeExtractor pagesRangeExtractor;
-
-	private final ShowNonActivitiesExtractor showNonActivitiesExtractor;
+	private FlexTable table;
 
 	public ReportTableGenerator(BodyGeneratorSocket bgs, DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier) {
 		this.bodyGeneratorSocket = bgs;
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
-		this.sessionDataSupplier = sessionDataSupplier;
 
-		this.generatorHelper = new GeneratorHelper();
+		this.rowStylesAppender = new RowStylesAppender(styleNames);
 		this.pageTodoExtractor = new PageTodoExtractor(sessionDataSupplier);
-		this.pagesRangeExtractor = new PagesRangeExtractor(dataSourceDataSupplier);
-		this.showNonActivitiesExtractor = new ShowNonActivitiesExtractor();
+		this.pagesRangeExtractor = new PagesRangeExtractor(styleSocket, dataSourceDataSupplier);
+		this.showNonActivitiesExtractor = new ShowNonActivitiesExtractor(styleSocket);
+		this.itemIndexAppender = new ItemIndexAppender();
+		this.colspanExtractor = new ColspanExtractor();
 	}
 
 	public FlexTable generate(Element element) {
@@ -128,7 +128,7 @@ public class ReportTableGenerator {
 	private void generateHeaderCell(CellCoords cellCoords, Node cellNode) {
 		Panel cellPanel = prepareCellPanel(cellNode);
 		Element cellElement = dataSourceDataSupplier.getItem(cellCoords.getRow());
-		int colspan = getColspan(cellElement);
+		int colspan = colspanExtractor.extract(cellElement);
 
 		addCellToTableAndFormat(cellCoords, colspan, cellPanel, cellElement);
 	}
@@ -143,7 +143,7 @@ public class ReportTableGenerator {
 	private void addCellToTableAndFormat(CellCoords cellCoords, int colspan, Panel cellPanel, Element element) {
 		table.setWidget(cellCoords.getRow(), cellCoords.getCol(), cellPanel);
 		table.getFlexCellFormatter().setColSpan(cellCoords.getRow(), cellCoords.getCol(), colspan);
-		generatorHelper.addStylesToCell(table, cellCoords);
+		rowStylesAppender.append(table, cellCoords);
 
 		if (element != null) {
 			String className = XMLUtils.getAttributeAsString(element, CLASS);
@@ -186,10 +186,10 @@ public class ReportTableGenerator {
 	private void generatePageCell(CellCoords cellCoords, Node cellNode, int pageRowIndex) {
 		boolean deepCloning = true;
 		Element cellElement = (Element) cellNode.cloneNode(deepCloning);
-		int colspan = getColspan(cellElement);
+		int colspan = colspanExtractor.extract(cellElement);
 
-		addItemIndexAttrToLinkTags(pageRowIndex, cellElement);
-		addItemIndexAttrToInfoTags(pageRowIndex, cellElement);
+		itemIndexAppender.appendToLinkTags(pageRowIndex, cellElement);
+		itemIndexAppender.appendToInfoTags(pageRowIndex, cellElement);
 
 		Panel cellPanel = prepareCellPanel(cellElement);
 		Element element = dataSourceDataSupplier.getItem(pageRowIndex);
@@ -198,41 +198,7 @@ public class ReportTableGenerator {
 		table.getRowFormatter().addStyleName(cellCoords.getRow(), PAGE_ROW_STYLE_PREFIX + String.valueOf(pageRowIndex));
 	}
 
-	private int getColspan(Element cellElement) {
-		int colspan = 1;
-		if (cellElement.hasAttribute(COLSPAN_ATTR)) {
-			colspan = NumberUtils.tryParseInt(cellElement.getAttribute(COLSPAN_ATTR), 1);
-		}
-		return colspan;
-	}
-
-	private void addItemIndexAttrToLinkTags(int itemIndex, Element cellElement) {
-		NodeList linkNodes = cellElement.getElementsByTagName(LINK);
-		for (int i = 0; i < linkNodes.getLength(); i++) {
-			Element linkNode = (Element) linkNodes.item(i);
-			boolean hasURL = linkNode.hasAttribute(URL);
-			if (!hasURL) {
-				addItemIndexAttrIfNotExists(itemIndex, linkNode);
-			}
-		}
-	}
-
-	private void addItemIndexAttrToInfoTags(int itemIndex, Element cellElement) {
-		NodeList infoNodes = cellElement.getElementsByTagName(INFO);
-		for (int i = 0; i < infoNodes.getLength(); i++) {
-			Element infoNode = (Element) infoNodes.item(i);
-			addItemIndexAttrIfNotExists(itemIndex, infoNode);
-		}
-	}
-
-	private void addItemIndexAttrIfNotExists(int itemIndex, Element element) {
-		if (!element.hasAttribute(ITEM_INDEX)) {
-			element.setAttribute(ITEM_INDEX, String.valueOf(itemIndex));
-		}
-	}
-
 	private boolean isElementNode(Node cellNode) {
 		return cellNode.getNodeType() == Node.ELEMENT_NODE;
 	}
-
 }

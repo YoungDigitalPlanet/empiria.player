@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.report.table.extractor;
+package eu.ydp.empiria.player.client.module.report.table.extraction;
 
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;

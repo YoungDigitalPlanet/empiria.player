@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.report.table.extractor;
+package eu.ydp.empiria.player.client.module.report.table.extraction;
 
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_REPORT_ITEMS_INCLUDE;
 
@@ -8,17 +8,17 @@ import java.util.Map;
 
 import com.google.gwt.xml.client.Element;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class PagesRangeExtractor {
 
-	private final StyleSocket styleSocket = PlayerGinjectorFactory.getPlayerGinjector().getStyleSocket();
 	private final DataSourceDataSupplier dataSourceDataSupplier;
+	private final StyleSocket styleSocket;
 
-	public PagesRangeExtractor(DataSourceDataSupplier dataSourceDataSupplier) {
+	public PagesRangeExtractor(StyleSocket styleSocket, DataSourceDataSupplier dataSourceDataSupplier) {
+		this.styleSocket = styleSocket;
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
 	}
 
