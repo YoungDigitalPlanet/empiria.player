@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.report;
+package eu.ydp.empiria.player.client.module.report.table.extractor;
 
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_REPORT_ITEMS_INCLUDE;
 
@@ -22,7 +22,7 @@ public class PagesRangeExtractor {
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
 	}
 
-	public List<Integer> getPagesRange(Element element) {
+	public List<Integer> extract(Element element) {
 		String range = "1:-1";
 		Map<String, String> styles = styleSocket.getStyles(element);
 		if (styles.containsKey(EMPIRIA_REPORT_ITEMS_INCLUDE)) {

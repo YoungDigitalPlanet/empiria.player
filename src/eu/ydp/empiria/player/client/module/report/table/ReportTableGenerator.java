@@ -1,9 +1,6 @@
-package eu.ydp.empiria.player.client.module.report;
-
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_REPORT_SHOW_NON_ACTIVITES;
+package eu.ydp.empiria.player.client.module.report.table;
 
 import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -15,20 +12,18 @@ import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
-import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.module.report.table.extractor.PageTodoExtractor;
+import eu.ydp.empiria.player.client.module.report.table.extractor.PagesRangeExtractor;
+import eu.ydp.empiria.player.client.module.report.table.extractor.ShowNonActivitiesExtractor;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ReportTableGenerator {
 
 	private static final String COLSPAN_ATTR = "colspan";
-	private static final String TABLE_COL_PREFIX = "qp-report-table-col-";
-	private static final String TABLE_CELL_STYLE = "qp-report-table-cell";
+
 	private static final String PAGE_ROW_STYLE_PREFIX = "qp-report-table-row-page-";
 	private static final String ITEM_INDEX = "itemIndex";
 	private static final String CLASS = "class";
@@ -40,7 +35,6 @@ public class ReportTableGenerator {
 	private final static String RD = "rd";
 
 	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	private final StyleSocket styleSocket = PlayerGinjectorFactory.getPlayerGinjector().getStyleSocket();
 	private final BodyGeneratorSocket bodyGeneratorSocket;
 	private boolean showNonActivites;
 
@@ -49,25 +43,32 @@ public class ReportTableGenerator {
 	private final SessionDataSupplier sessionDataSupplier;
 	private List<Integer> pagesIndexes;
 
+	private final GeneratorHelper generatorHelper;
+
+	private final PageTodoExtractor pageTodoExtractor;
+
+	private final PagesRangeExtractor pagesRangeExtractor;
+
+	private final ShowNonActivitiesExtractor showNonActivitiesExtractor;
+
 	public ReportTableGenerator(BodyGeneratorSocket bgs, DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier) {
 		this.bodyGeneratorSocket = bgs;
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
 		this.sessionDataSupplier = sessionDataSupplier;
+
+		this.generatorHelper = new GeneratorHelper();
+		this.pageTodoExtractor = new PageTodoExtractor(sessionDataSupplier);
+		this.pagesRangeExtractor = new PagesRangeExtractor(dataSourceDataSupplier);
+		this.showNonActivitiesExtractor = new ShowNonActivitiesExtractor();
 	}
 
 	public FlexTable generate(Element element) {
-		showNonActivites = isShowNonActivites(element);
-
-		pagesIndexes = getPagesIndexes(element);
+		showNonActivites = showNonActivitiesExtractor.extract(element);
+		pagesIndexes = pagesRangeExtractor.extract(element);
 
 		table = createTableWithStyles(element);
 		generateTableContent(element);
 		return table;
-	}
-
-	private List<Integer> getPagesIndexes(Element element) {
-		PagesRangeExtractor extractor = new PagesRangeExtractor(dataSourceDataSupplier);
-		return extractor.getPagesRange(element);
 	}
 
 	private FlexTable createTableWithStyles(Element element) {
@@ -117,18 +118,19 @@ public class ReportTableGenerator {
 			boolean isCell = isElementNode(cellNode) && cellNode.getNodeName().equals(RD);
 
 			if (isCell) {
-				generateHeaderCell(currRow, currCol, cellNode);
+				CellCoords cellCoords = new CellCoords(currRow, currCol);
+				generateHeaderCell(cellCoords, cellNode);
 				currCol++;
 			}
 		}
 	}
 
-	private void generateHeaderCell(int currRow, int currCol, Node cellNode) {
+	private void generateHeaderCell(CellCoords cellCoords, Node cellNode) {
 		Panel cellPanel = prepareCellPanel(cellNode);
-		Element cellElement = dataSourceDataSupplier.getItem(currRow);
+		Element cellElement = dataSourceDataSupplier.getItem(cellCoords.getRow());
 		int colspan = getColspan(cellElement);
 
-		addCellToTableAndFormat(currRow, currCol, colspan, cellPanel, cellElement);
+		addCellToTableAndFormat(cellCoords, colspan, cellPanel, cellElement);
 	}
 
 	private Panel prepareCellPanel(Node cellNode) {
@@ -138,15 +140,15 @@ public class ReportTableGenerator {
 		return cellPanel;
 	}
 
-	private void addCellToTableAndFormat(int currRow, int currCol, int colspan, Panel cellPanel, Element element) {
-		table.setWidget(currRow, currCol, cellPanel);
-		table.getFlexCellFormatter().setColSpan(currRow, currCol, colspan);
-		addStylesToCell(table, currCol, currRow);
+	private void addCellToTableAndFormat(CellCoords cellCoords, int colspan, Panel cellPanel, Element element) {
+		table.setWidget(cellCoords.getRow(), cellCoords.getCol(), cellPanel);
+		table.getFlexCellFormatter().setColSpan(cellCoords.getRow(), cellCoords.getCol(), colspan);
+		generatorHelper.addStylesToCell(table, cellCoords);
 
 		if (element != null) {
 			String className = XMLUtils.getAttributeAsString(element, CLASS);
 			if (className != null && !className.isEmpty()) {
-				table.getRowFormatter().addStyleName(currRow, className);
+				table.getRowFormatter().addStyleName(cellCoords.getRow(), className);
 			}
 		}
 	}
@@ -157,7 +159,7 @@ public class ReportTableGenerator {
 		for (int i = 0; i < pagesIndexes.size(); i++) {
 
 			int pageRowIndex = pagesIndexes.get(i).intValue();
-			int todo = getItemTodoValue(pageRowIndex);
+			int todo = pageTodoExtractor.extract(pageRowIndex);
 
 			boolean shouldRenderPageRow = (todo != 0 || showNonActivites);
 			if (shouldRenderPageRow) {
@@ -174,13 +176,14 @@ public class ReportTableGenerator {
 			Node cellNode = cellNodes.item(i);
 			boolean isCell = isElementNode(cellNode) && cellNode.getNodeName().equals(RD);
 			if (isCell) {
-				generatePageCell(currRow, currCol, cellNode, pageRowIndex);
+				CellCoords cellCoords = new CellCoords(currRow, currCol);
+				generatePageCell(cellCoords, cellNode, pageRowIndex);
 				currCol++;
 			}
 		}
 	}
 
-	private void generatePageCell(int currRow, int currCol, Node cellNode, int pageRowIndex) {
+	private void generatePageCell(CellCoords cellCoords, Node cellNode, int pageRowIndex) {
 		boolean deepCloning = true;
 		Element cellElement = (Element) cellNode.cloneNode(deepCloning);
 		int colspan = getColspan(cellElement);
@@ -190,9 +193,9 @@ public class ReportTableGenerator {
 
 		Panel cellPanel = prepareCellPanel(cellElement);
 		Element element = dataSourceDataSupplier.getItem(pageRowIndex);
-		addCellToTableAndFormat(currRow, currCol, colspan, cellPanel, element);
+		addCellToTableAndFormat(cellCoords, colspan, cellPanel, element);
 
-		table.getRowFormatter().addStyleName(currRow, PAGE_ROW_STYLE_PREFIX + String.valueOf(pageRowIndex));
+		table.getRowFormatter().addStyleName(cellCoords.getRow(), PAGE_ROW_STYLE_PREFIX + String.valueOf(pageRowIndex));
 	}
 
 	private int getColspan(Element cellElement) {
@@ -232,43 +235,4 @@ public class ReportTableGenerator {
 		return cellNode.getNodeType() == Node.ELEMENT_NODE;
 	}
 
-	private int getItemTodoValue(int pageRowIndex) {
-		int todo = 0;
-		String value = getItemValue(pageRowIndex, "TODO");
-
-		if (value != null) {
-			todo = Integer.parseInt(value);
-		}
-
-		return todo;
-	}
-
-	private String getItemValue(int pageRowIndex, String variableName) {
-		ItemSessionDataSocket itemDataSocket = sessionDataSupplier.getItemSessionDataSocket(pageRowIndex);
-		VariableProviderSocket variableSocket = itemDataSocket.getVariableProviderSocket();
-		Variable variable = variableSocket.getVariableValue(variableName);
-
-		String outputValue = null;
-		if (variable != null) {
-			outputValue = variable.getValuesShort();
-		}
-		return outputValue;
-	}
-
-	private void addStylesToCell(FlexTable table, int col, int row) {
-		table.getFlexCellFormatter().addStyleName(row, col, TABLE_CELL_STYLE);
-		table.getFlexCellFormatter().addStyleName(row, col, TABLE_COL_PREFIX + col);
-		table.getRowFormatter().addStyleName(row, styleNames.QP_REPORT_TABLE_ROW());
-		table.getRowFormatter().addStyleName(row, styleNames.QP_REPORT_TABLE_ROW() + "-" + row);
-
-	}
-
-	private boolean isShowNonActivites(Element element) {
-		boolean showNonActivites = true;
-		Map<String, String> styles = styleSocket.getStyles(element);
-		if (styles.containsKey(EMPIRIA_REPORT_SHOW_NON_ACTIVITES)) {
-			showNonActivites = Boolean.parseBoolean(styles.get(EMPIRIA_REPORT_SHOW_NON_ACTIVITES));
-		}
-		return showNonActivites;
-	}
 }

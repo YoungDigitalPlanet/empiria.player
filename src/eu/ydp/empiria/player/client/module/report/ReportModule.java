@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.report.table.ReportTableGenerator;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ReportModule extends ContainerModuleBase {
