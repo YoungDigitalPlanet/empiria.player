@@ -17,11 +17,10 @@ public class ShowNonActivitiesExtractor {
 	}
 
 	public boolean extract(Element element) {
-		boolean showNonActivites = true;
 		Map<String, String> styles = styleSocket.getStyles(element);
 		if (styles.containsKey(EMPIRIA_REPORT_SHOW_NON_ACTIVITES)) {
-			showNonActivites = Boolean.parseBoolean(styles.get(EMPIRIA_REPORT_SHOW_NON_ACTIVITES));
+			return Boolean.parseBoolean(styles.get(EMPIRIA_REPORT_SHOW_NON_ACTIVITES));
 		}
-		return showNonActivites;
+		return true;
 	}
 }

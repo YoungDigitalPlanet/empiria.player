@@ -19,15 +19,12 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ReportModule extends ContainerModuleBase {
 
-	protected SessionDataSupplier sessionDataSupplier;
-	protected DataSourceDataSupplier dataSourceDataSupplier;
-	protected String content;
+	private final SessionDataSupplier sessionDataSupplier;
+	private final DataSourceDataSupplier dataSourceDataSupplier;
 
-	protected Panel mainPanel;
-	protected FlexTable table;
-	protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-
-	// dodane zmienne
+	private final Panel mainPanel;
+	private FlexTable table;
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 
 	public ReportModule(FlowRequestInvoker flowRequestInvoker, DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier) {
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
@@ -39,7 +36,6 @@ public class ReportModule extends ContainerModuleBase {
 
 	@Override
 	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
-		// PO CO BSG W INITMODULE()?
 		super.initModule(element, moduleSocket, mil, bgs);
 
 		ReportTableGenerator reportTableGenerator = new ReportTableGenerator(bgs, dataSourceDataSupplier, sessionDataSupplier);

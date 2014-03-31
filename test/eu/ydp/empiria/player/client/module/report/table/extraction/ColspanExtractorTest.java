@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.report.table.extraction;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
@@ -21,11 +22,23 @@ public class ColspanExtractorTest {
 	private Element element;
 
 	@Test
-	public void testExtract() {
+	public void testExtractWhenExists() {
 		// given
 		int EXPECTED_COLSPAN = 2;
-		when(element.hasAttribute("colspan")).thenReturn(true);
 		when(element.getAttribute("colspan")).thenReturn("2");
+
+		// when
+		int colspan = testObj.extract(element);
+
+		// then
+		assertEquals(colspan, EXPECTED_COLSPAN);
+	}
+
+	@Test
+	public void testExtractWhenNotExists() {
+		// given
+		int EXPECTED_COLSPAN = 1;
+		when(element.getAttribute("colspan")).thenReturn(null);
 
 		// when
 		int colspan = testObj.extract(element);

@@ -14,6 +14,7 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 public class PagesRangeExtractor {
 
+	private static final String DEFAULT_RANGE = "1:-1";
 	private final DataSourceDataSupplier dataSourceDataSupplier;
 	private final StyleSocket styleSocket;
 
@@ -23,7 +24,7 @@ public class PagesRangeExtractor {
 	}
 
 	public List<Integer> extract(Element element) {
-		String range = "1:-1";
+		String range = DEFAULT_RANGE;
 		Map<String, String> styles = styleSocket.getStyles(element);
 		if (styles.containsKey(EMPIRIA_REPORT_ITEMS_INCLUDE)) {
 			range = styles.get(EMPIRIA_REPORT_ITEMS_INCLUDE);
@@ -31,7 +32,7 @@ public class PagesRangeExtractor {
 		return parseRange(range);
 	}
 
-	protected List<Integer> parseRange(String range) {
+	private List<Integer> parseRange(String range) {
 		List<Integer> items = new ArrayList<Integer>();
 		String[] level1 = range.split(",");
 		for (int i = 0; i < level1.length; i++) {

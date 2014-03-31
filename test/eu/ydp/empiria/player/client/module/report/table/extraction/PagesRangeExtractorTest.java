@@ -1,5 +1,11 @@
 package eu.ydp.empiria.player.client.module.report.table.extraction;
 
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_REPORT_ITEMS_INCLUDE;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+
+import static org.mockito.Mockito.when;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +20,6 @@ import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_REPORT_ITEMS_INCLUDE;
-
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PagesRangeExtractorTest {
@@ -34,7 +35,7 @@ public class PagesRangeExtractorTest {
 	private Element element;
 
 	@Test
-	public void shouldExtractCorrectRange() {
+	public void shouldExtractRangeWhenDefined() {
 		// given
 		int ITEMS_COUNT = 12;
 		when(dataSourceDataSupplier.getItemsCount()).thenReturn(ITEMS_COUNT);
@@ -48,5 +49,21 @@ public class PagesRangeExtractorTest {
 
 		// then
 		assertThat(pagesRange).containsExactly(0, 2, 8, 9, 10);
+	}
+
+	@Test
+	public void shouldExtractRangeWhenNotDefined() {
+		// given
+		int ITEMS_COUNT = 4;
+		when(dataSourceDataSupplier.getItemsCount()).thenReturn(ITEMS_COUNT);
+
+		Map<String, String> styles = new HashMap<String, String>();
+		when(styleSocket.getStyles(element)).thenReturn(styles);
+
+		// when
+		List<Integer> pagesRange = testObj.extract(element);
+
+		// then
+		assertThat(pagesRange).containsExactly(0, 1, 2, 3);
 	}
 }

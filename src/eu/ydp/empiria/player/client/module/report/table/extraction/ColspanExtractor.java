@@ -8,10 +8,6 @@ public class ColspanExtractor {
 	private static final String COLSPAN_ATTR = "colspan";
 
 	public int extract(Element cellElement) {
-		int colspan = 1;
-		if (cellElement.hasAttribute(COLSPAN_ATTR)) {
-			colspan = NumberUtils.tryParseInt(cellElement.getAttribute(COLSPAN_ATTR), 1);
-		}
-		return colspan;
+		return NumberUtils.tryParseInt(cellElement.getAttribute(COLSPAN_ATTR), 1);
 	}
 }
