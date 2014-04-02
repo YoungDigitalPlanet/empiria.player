@@ -1,14 +1,17 @@
 package eu.ydp.empiria.player.client.module.info;
 
+import java.util.List;
+
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandler;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
-
-import java.util.List;
+import eu.ydp.empiria.player.client.module.info.handler.ResultForPageIndexProvider;
 
 public class ContentFieldInfoListProvider {
 
@@ -20,6 +23,8 @@ public class ContentFieldInfoListProvider {
 	private FieldValueHandlerFactory handlerFactory;
 	@Inject
 	private ContentFieldInfoFactory contentFieldInfoFactory;
+	@Inject
+	private ResultExtractorsFactory resultExtractorsFactory;
 
 	private static final String TEST_RESULT = "test.result";
 	private static final String TEST_TITLE = "test.title";
@@ -147,7 +152,8 @@ public class ContentFieldInfoListProvider {
 
 	private List<ContentFieldInfo> getReportFeedbackInfos() {
 		List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
-		FieldValueHandler feedbackValueHandler = handlerFactory.getFeedbackValueHandler(sessionDataSupplier,dataSourceDataSupplier);
+		ResultForPageIndexProvider resultForPageIndexProvider = resultExtractorsFactory.createResultForPageIndexProvider(sessionDataSupplier);
+		FieldValueHandler feedbackValueHandler = handlerFactory.getFeedbackValueHandler(resultForPageIndexProvider, dataSourceDataSupplier);
 
 		contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_FEEDBACK, feedbackValueHandler));
 

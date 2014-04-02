@@ -4,12 +4,12 @@ import com.google.common.collect.Range;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
-public class ReportFeedbacks extends ProgressToStringRangeMap {
+public class ReportFeedbacksParser {
 
-	public static ReportFeedbacks fromElement(NodeList feedbacks) {
-		ReportFeedbacks reportFeedbacks = new ReportFeedbacks();
+	public ProgressToStringRangeMap parse(NodeList feedbacks) {
+		ProgressToStringRangeMap reportFeedbacks = new ProgressToStringRangeMap();
 
-		for (int i = 0; i < feedbacks.getLength(); i++ ){
+		for (int i = 0; i < feedbacks.getLength(); i++) {
 			Element feedbackElement = (Element) feedbacks.item(i);
 
 			Range<Integer> range = getRangeFromElement(feedbackElement);

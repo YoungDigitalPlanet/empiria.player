@@ -4,7 +4,8 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
-import eu.ydp.empiria.player.client.module.item.ReportFeedbacks;
+import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
+import eu.ydp.empiria.player.client.module.item.ReportFeedbacksParser;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
@@ -14,6 +15,13 @@ import java.util.List;
 
 public class ItemDataSource {
 
+	private XmlData data;
+	private StyleLinkDeclaration styleDeclaration;
+	private String title;
+	private ReportFeedbacksParser reportFeedbacksParser = new ReportFeedbacksParser();
+	private ProgressToStringRangeMap reportFeedbacks;
+	private final String errorMessage;
+
 	public ItemDataSource(XmlData d) {
 		data = d;
 		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
@@ -21,7 +29,7 @@ public class ItemDataSource {
 		Element rootElement = (Element) rootNode;
 		title = rootElement.getAttribute("title");
 		NodeList feedbacksNodeList = rootElement.getElementsByTagName("reportFeedback");
-		this.reportFeedbacks = ReportFeedbacks.fromElement(feedbacksNodeList);
+		this.reportFeedbacks = reportFeedbacksParser.parse(feedbacksNodeList);
 		errorMessage = "";
 	}
 
@@ -32,12 +40,6 @@ public class ItemDataSource {
 		}
 		errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ITEM_FAILED_TO_LOAD) + detail;
 	}
-
-	private XmlData data;
-	private StyleLinkDeclaration styleDeclaration;
-	private String title;
-	private ReportFeedbacks reportFeedbacks;
-	private final String errorMessage;
 
 	public XmlData getItemData() {
 		return data;
@@ -66,7 +68,7 @@ public class ItemDataSource {
 		}
 	}
 
-	public ReportFeedbacks getFeedbacks() {
+	public ProgressToStringRangeMap getFeedbacks() {
 		return reportFeedbacks;
 	}
 }

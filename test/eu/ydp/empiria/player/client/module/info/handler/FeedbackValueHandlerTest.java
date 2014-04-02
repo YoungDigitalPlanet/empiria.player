@@ -3,15 +3,16 @@ package eu.ydp.empiria.player.client.module.info.handler;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
-import eu.ydp.empiria.player.client.module.item.ReportFeedbacks;
+import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import static org.mockito.Mockito.when;
+
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FeedbackValueHandlerTest {
@@ -29,7 +30,7 @@ public class FeedbackValueHandlerTest {
 	@Mock
 	private ContentFieldInfo contentFieldInfo;
 	@Mock
-	private ReportFeedbacks reportFeedbacks;
+	private ProgressToStringRangeMap reportFeedbacks;
 	private final String EXPECTED_FEEDBACK = "feedback";
 	private int itemIndex = 1;
 

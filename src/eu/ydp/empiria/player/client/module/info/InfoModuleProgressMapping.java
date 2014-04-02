@@ -31,7 +31,8 @@ public class InfoModuleProgressMapping {
 
 	@Inject
 	private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
-	private final ProgressToStringRangeMap progressToStyleName = new ProgressToStringRangeMap();
+	@Inject
+	private ProgressToStringRangeMap progressToStyleName;
 
 	@PostConstruct
 	public void postConstruct() {

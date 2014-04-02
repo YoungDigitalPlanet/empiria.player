@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.data;
 
 import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.module.item.ReportFeedbacks;
+import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
 
 public interface DataSourceDataSupplier {
 	int getItemsCount();
@@ -19,5 +19,5 @@ public interface DataSourceDataSupplier {
 	 */
 	Element getItem(int itemIndex);
 
-	ReportFeedbacks getItemFeedbacks(int itemIndex);
+	ProgressToStringRangeMap getItemFeedbacks(int itemIndex);
 }

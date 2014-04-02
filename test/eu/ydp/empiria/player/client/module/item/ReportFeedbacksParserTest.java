@@ -6,8 +6,9 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 import org.junit.Test;
 
-public class ReportFeedbacksTest extends GWTTestCase {
+public class ReportFeedbacksParserTest extends GWTTestCase {
 
+	private ReportFeedbacksParser testObj;
 
 	private final String FEEDBACK_FOR_10_19 = "Feedback for 10-19";
 	private final String FEEDBACK_FOR_20_99 = "Feedback for 20-99";
@@ -24,13 +25,19 @@ public class ReportFeedbacksTest extends GWTTestCase {
 			"</reportFeedbacks>";
 	//@formatter:on
 
+
+	@Override
+	public void gwtSetUp() {
+		testObj = new ReportFeedbacksParser();
+	}
+
 	@Test
 	public void testCreateReportFeedbacksFromNodeList() {
 		// given
 		NodeList feedbacks = XMLParser.parse(INPUT).getElementsByTagName("reportFeedback");
 
 		// when
-		ReportFeedbacks reportFeedbacks = ReportFeedbacks.fromElement(feedbacks);
+		ProgressToStringRangeMap reportFeedbacks = testObj.parse(feedbacks);
 
 		// then
 		assertEquals(reportFeedbacks.getValueForProgress(0), "");

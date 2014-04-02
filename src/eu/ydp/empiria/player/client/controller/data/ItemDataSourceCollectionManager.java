@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.data;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
-import eu.ydp.empiria.player.client.module.item.ReportFeedbacks;
+import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class ItemDataSourceCollectionManager {
 		return new ArrayList<String>();
 	}
 
-	public ReportFeedbacks getFeedbacks(int index) {
+	public ProgressToStringRangeMap getFeedbacks(int index) {
 		return items[index].getFeedbacks();
 	}
 }

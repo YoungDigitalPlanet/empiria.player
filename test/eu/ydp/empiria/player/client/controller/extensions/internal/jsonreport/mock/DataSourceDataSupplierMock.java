@@ -6,7 +6,8 @@ import com.google.common.collect.Lists;
 import com.google.gwt.xml.client.Element;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.module.item.ReportFeedbacks;
+import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
+import eu.ydp.empiria.player.client.module.item.ReportFeedbacksParser;
 
 public class DataSourceDataSupplierMock implements DataSourceDataSupplier {
 
@@ -43,7 +44,7 @@ public class DataSourceDataSupplierMock implements DataSourceDataSupplier {
 	}
 
 	@Override
-	public ReportFeedbacks getItemFeedbacks(int itemIndex) {
+	public ProgressToStringRangeMap getItemFeedbacks(int itemIndex) {
 		return null;
 	}
 }

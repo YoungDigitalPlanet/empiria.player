@@ -1,12 +1,11 @@
 package eu.ydp.empiria.player.client.module.info.handler;
 
 
-import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableResult;
-import eu.ydp.empiria.player.client.controller.variables.VariableResultFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +22,7 @@ public class ResultForPageIndexProviderTest {
 	private ResultForPageIndexProvider testObj;
 
 	@Mock
-	private VariableResultFactory variableResultFactory;
+	private ResultExtractorsFactory variableResultFactory;
 	@Mock
 	private SessionDataSupplier sessionDataSupplier;
 	@Mock
@@ -40,14 +39,13 @@ public class ResultForPageIndexProviderTest {
 	public void setUp() {
 		when(sessionDataSupplier.getItemSessionDataSocket(pageIndex)).thenReturn(itemSessionDataSocket);
 		when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(variableProviderSocket);
-		when(variableResultFactory.getVariableResult(variableProviderSocket)).thenReturn(variableResult);
+		when(variableResultFactory.createVariableResult(variableProviderSocket)).thenReturn(variableResult);
 		when(variableResult.getResult()).thenReturn(EXPECTED_RESULT);
 	}
 
 	@Test
 	public void shouldGetCorrectResultForIndex() {
 		// given
-		testObj.setSessionDataSupplier(sessionDataSupplier);
 
 		// when
 		int actualResult = testObj.getFor(pageIndex);

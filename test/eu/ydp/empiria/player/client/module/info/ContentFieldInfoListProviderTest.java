@@ -2,12 +2,12 @@ package eu.ydp.empiria.player.client.module.info;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import eu.ydp.empiria.player.client.module.info.handler.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,7 +17,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
+import eu.ydp.empiria.player.client.module.info.handler.AssessmentResultValueHandler;
+import eu.ydp.empiria.player.client.module.info.handler.FeedbackValueHandler;
+import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
+import eu.ydp.empiria.player.client.module.info.handler.ItemIndexValueHandler;
+import eu.ydp.empiria.player.client.module.info.handler.PageCountValueHandler;
+import eu.ydp.empiria.player.client.module.info.handler.ProviderAssessmentValueHandler;
+import eu.ydp.empiria.player.client.module.info.handler.ProviderValueHandler;
+import eu.ydp.empiria.player.client.module.info.handler.ResultForPageIndexProvider;
+import eu.ydp.empiria.player.client.module.info.handler.ResultValueHandler;
+import eu.ydp.empiria.player.client.module.info.handler.TitleValueHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentFieldInfoListProviderTest {
@@ -36,6 +47,10 @@ public class ContentFieldInfoListProviderTest {
 	private AssessmentSessionDataSocket assessmentSessionDataSocket;
 	@Mock
 	private VariableProviderSocket variableProviderSocket;
+	@Mock
+	private ResultExtractorsFactory resultExtractorsFactory;
+	@Mock
+	private ResultForPageIndexProvider resultForPageIndexProvider;
 	@Mock
 	private ContentFieldInfo itemTodoContentFieldInfo;
 	@Mock
@@ -124,7 +139,8 @@ public class ContentFieldInfoListProviderTest {
 		when(handlerFactory.getPageCountValueHandler(dataSourceDataSupplier)).thenReturn(pageCountValueHandler);
 		when(handlerFactory.getAssessmentResultValueHandler(variableProviderSocket)).thenReturn(assessmentResultValueHandler);
 		when(handlerFactory.getResultValueHandler(sessionDataSupplier)).thenReturn(resultValueHandler);
-		when(handlerFactory.getFeedbackValueHandler(sessionDataSupplier, dataSourceDataSupplier)).thenReturn(feedbackValueHandler);
+		when(resultExtractorsFactory.createResultForPageIndexProvider(sessionDataSupplier)).thenReturn(resultForPageIndexProvider);
+		when(handlerFactory.getFeedbackValueHandler(resultForPageIndexProvider, dataSourceDataSupplier)).thenReturn(feedbackValueHandler);
 
 		when(contentFieldInfoFactory.create("item.todo", itemValueHandler)).thenReturn(itemTodoContentFieldInfo);
 		when(contentFieldInfoFactory.create("item.done", itemValueHandler)).thenReturn(itemDoneContentFieldInfo);
