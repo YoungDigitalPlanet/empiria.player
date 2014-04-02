@@ -60,6 +60,7 @@ import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
+import eu.ydp.empiria.player.client.controller.variables.VariableResultFactory;
 import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
@@ -249,6 +250,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(SlideshowPlayerModuleFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class).build(TouchReservationFactory.class));
 		install(new GinFactoryModuleBuilder().build(IdentificationModuleFactory.class));
+		install(new GinFactoryModuleBuilder().build(VariableResultFactory.class));
 	}
 
 	@Provides

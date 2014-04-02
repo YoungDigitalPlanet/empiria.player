@@ -32,6 +32,7 @@ import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoa
 import eu.ydp.empiria.player.client.controller.data.library.LibraryExtension;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoader;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoaderListener;
+import eu.ydp.empiria.player.client.module.item.ReportFeedbacks;
 import eu.ydp.empiria.player.client.preloader.view.ProgressBundle;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
@@ -370,6 +371,11 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	@Override
 	public String getItemTitle(int index) {
 		return itemDataCollectionManager.getTitlesList()[index];
+	}
+
+	@Override
+	public ReportFeedbacks getItemFeedbacks(int index) {
+		return itemDataCollectionManager.getFeedbacks(index);
 	}
 
 	@Inject

@@ -1,15 +1,16 @@
 package eu.ydp.empiria.player.client.controller.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
-
+import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
+import eu.ydp.empiria.player.client.module.item.ReportFeedbacks;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDataSource {
 
@@ -17,7 +18,10 @@ public class ItemDataSource {
 		data = d;
 		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
 		Node rootNode = data.getDocument().getElementsByTagName("assessmentItem").item(0);
-		title = ((Element) rootNode).getAttribute("title");
+		Element rootElement = (Element) rootNode;
+		title = rootElement.getAttribute("title");
+		NodeList feedbacksNodeList = rootElement.getElementsByTagName("reportFeedback");
+		this.reportFeedbacks = ReportFeedbacks.fromElement(feedbacksNodeList);
 		errorMessage = "";
 	}
 
@@ -32,6 +36,7 @@ public class ItemDataSource {
 	private XmlData data;
 	private StyleLinkDeclaration styleDeclaration;
 	private String title;
+	private ReportFeedbacks reportFeedbacks;
 	private final String errorMessage;
 
 	public XmlData getItemData() {
@@ -61,4 +66,7 @@ public class ItemDataSource {
 		}
 	}
 
+	public ReportFeedbacks getFeedbacks() {
+		return reportFeedbacks;
+	}
 }

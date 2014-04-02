@@ -1,15 +1,14 @@
 package eu.ydp.empiria.player.client.module.info;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandler;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
+
+import java.util.List;
 
 public class ContentFieldInfoListProvider {
 
@@ -41,30 +40,33 @@ public class ContentFieldInfoListProvider {
 	private static final String ITEM_CHECKS = "item.checks";
 	private static final String ITEM_DONE = "item.done";
 	private static final String ITEM_TODO = "item.todo";
+	private static final String ITEM_FEEDBACK = "item.feedback";
 
 	public List<ContentFieldInfo> get() {
 		List<ContentFieldInfo> fieldInfos = Lists.newArrayList();
 
-		List<ContentFieldInfo> itemValueContentFieldInfos = getItemValueContentFieldInfos();
-		List<ContentFieldInfo> assessmentValueContentFieldInfos = getAssessmentValueContentFieldInfos();
-		List<ContentFieldInfo> titleValueContentFieldInfos = getTitleValueContentFieldInfos();
-		List<ContentFieldInfo> itemIndexValueContentFieldInfos = getItemIndexValueContentFieldInfos();
-		List<ContentFieldInfo> pageCountValueContentFieldInfos = getPageCountValueContentFieldInfos();
-		List<ContentFieldInfo> resultValueContentFieldInfos = getResultValueContentFieldInfos();
-		List<ContentFieldInfo> assessmentResultValueContentFieldInfos = getAssessmentResultValueContentFieldInfos();
+		List<ContentFieldInfo> itemInfos = getItemInfos();
+		List<ContentFieldInfo> assessmentInfos = getAssessmentInfos();
+		List<ContentFieldInfo> titleInfos = getTitleInfos();
+		List<ContentFieldInfo> itemIndexInfos = getItemIndexInfos();
+		List<ContentFieldInfo> pageCountInfos = getPageCountInfos();
+		List<ContentFieldInfo> resultInfos = getResultInfos();
+		List<ContentFieldInfo> assessmentResultInfos = getAssessmentResultInfos();
+		List<ContentFieldInfo> reportFeedbackInfos = getReportFeedbackInfos();
 
-		fieldInfos.addAll(itemValueContentFieldInfos);
-		fieldInfos.addAll(assessmentValueContentFieldInfos);
-		fieldInfos.addAll(titleValueContentFieldInfos);
-		fieldInfos.addAll(itemIndexValueContentFieldInfos);
-		fieldInfos.addAll(pageCountValueContentFieldInfos);
-		fieldInfos.addAll(resultValueContentFieldInfos);
-		fieldInfos.addAll(assessmentResultValueContentFieldInfos);
+		fieldInfos.addAll(itemInfos);
+		fieldInfos.addAll(assessmentInfos);
+		fieldInfos.addAll(titleInfos);
+		fieldInfos.addAll(itemIndexInfos);
+		fieldInfos.addAll(pageCountInfos);
+		fieldInfos.addAll(resultInfos);
+		fieldInfos.addAll(assessmentResultInfos);
+		fieldInfos.addAll(reportFeedbackInfos);
 
 		return fieldInfos;
 	}
 
-	private List<ContentFieldInfo> getAssessmentResultValueContentFieldInfos() {
+	private List<ContentFieldInfo> getAssessmentResultInfos() {
 		List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
 		FieldValueHandler assessmentResultValueHandler = handlerFactory.getAssessmentResultValueHandler(getAssessmentVariableProvider());
 
@@ -73,7 +75,7 @@ public class ContentFieldInfoListProvider {
 		return contentFieldInfos;
 	}
 
-	private List<ContentFieldInfo> getResultValueContentFieldInfos() {
+	private List<ContentFieldInfo> getResultInfos() {
 		List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
 		FieldValueHandler resultValueHandler = handlerFactory.getResultValueHandler(sessionDataSupplier);
 
@@ -82,7 +84,7 @@ public class ContentFieldInfoListProvider {
 		return contentFieldInfos;
 	}
 
-	private List<ContentFieldInfo> getPageCountValueContentFieldInfos() {
+	private List<ContentFieldInfo> getPageCountInfos() {
 		List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
 		FieldValueHandler pageCountValueHandler = handlerFactory.getPageCountValueHandler(dataSourceDataSupplier);
 
@@ -91,7 +93,7 @@ public class ContentFieldInfoListProvider {
 		return contentFieldInfos;
 	}
 
-	private List<ContentFieldInfo> getItemIndexValueContentFieldInfos() {
+	private List<ContentFieldInfo> getItemIndexInfos() {
 		List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
 		FieldValueHandler itemIndexValueHandler = handlerFactory.getItemIndexValueHandler();
 
@@ -101,7 +103,7 @@ public class ContentFieldInfoListProvider {
 		return contentFieldInfos;
 	}
 
-	private List<ContentFieldInfo> getTitleValueContentFieldInfos() {
+	private List<ContentFieldInfo> getTitleInfos() {
 		List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
 		FieldValueHandler titleValueHandler = handlerFactory.getTitleValueHandler(dataSourceDataSupplier);
 
@@ -111,7 +113,7 @@ public class ContentFieldInfoListProvider {
 		return contentFieldInfos;
 	}
 
-	private List<ContentFieldInfo> getItemValueContentFieldInfos() {
+	private List<ContentFieldInfo> getItemInfos() {
 		List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
 		FieldValueHandler itemValueHandler = handlerFactory.getProviderValueHandler(sessionDataSupplier);
 
@@ -125,7 +127,7 @@ public class ContentFieldInfoListProvider {
 		return contentFieldInfos;
 	}
 
-	private List<ContentFieldInfo> getAssessmentValueContentFieldInfos() {
+	private List<ContentFieldInfo> getAssessmentInfos() {
 		List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
 		FieldValueHandler assessmentValueHandler = handlerFactory.getProviderAssessmentValueHandler(getAssessmentVariableProvider());
 
@@ -141,5 +143,14 @@ public class ContentFieldInfoListProvider {
 
 	private VariableProviderSocket getAssessmentVariableProvider() {
 		return sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket();
+	}
+
+	private List<ContentFieldInfo> getReportFeedbackInfos() {
+		List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
+		FieldValueHandler feedbackValueHandler = handlerFactory.getFeedbackValueHandler(sessionDataSupplier,dataSourceDataSupplier);
+
+		contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_FEEDBACK, feedbackValueHandler));
+
+		return contentFieldInfos;
 	}
 }
