@@ -21,7 +21,7 @@ public class FeedbackValueHandler implements FieldValueHandler {
 
 	@Override
 	public String getValue(ContentFieldInfo info, int refItemIndex) {
-		int result = resultForPageIndexProvider.getFor(refItemIndex);
+		int result = resultForPageIndexProvider.get(refItemIndex);
 		ProgressToStringRangeMap pageFeedbacks = dataSourceDataSupplier.getItemFeedbacks(refItemIndex);
 		return pageFeedbacks.getValueForProgress(result);
 	}

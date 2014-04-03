@@ -21,7 +21,7 @@ public class ResultForPageIndexProvider {
 		this.variableResultFactory = variableResultFactory;
 	}
 
-	public int getFor(int pageIndex) {
+	public int get(int pageIndex) {
 		ItemSessionDataSocket itemSessionDataSocket = sessionDataSupplier.getItemSessionDataSocket(pageIndex);
 		VariableProviderSocket socket = itemSessionDataSocket.getVariableProviderSocket();
 		VariableResult variableResult = variableResultFactory.createVariableResult(socket);

@@ -38,7 +38,7 @@ public class FeedbackValueHandlerTest {
 	@Before
 	public void setUp() {
 		Integer result = 10;
-		when(resultForPageIndexProvider.getFor(itemIndex)).thenReturn(result);
+		when(resultForPageIndexProvider.get(itemIndex)).thenReturn(result);
 		when(dataSourceDataSupplier.getItemFeedbacks(itemIndex)).thenReturn(reportFeedbacks);
 		when(reportFeedbacks.getValueForProgress(result)).thenReturn(EXPECTED_FEEDBACK);
 	}

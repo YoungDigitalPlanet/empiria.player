@@ -48,7 +48,7 @@ public class ResultForPageIndexProviderTest {
 		// given
 
 		// when
-		int actualResult = testObj.getFor(pageIndex);
+		int actualResult = testObj.get(pageIndex);
 
 		// then
 		assertThat(actualResult).isEqualTo(EXPECTED_RESULT);
