@@ -1,37 +1,45 @@
 package eu.ydp.empiria.player.client.module.info;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InfoModuleProgressMappingTest {
 
+	private InfoModuleProgressMapping testObj;
 	@Mock
 	private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
-	@InjectMocks
-	private InfoModuleProgressMapping instance;
+	private ProgressToStringRangeMap progressToStyleName;
+
 	String styleName = "xxx";
+
+	@Before
+	public void setUp() {
+		progressToStyleName = new ProgressToStringRangeMap();
+		testObj = new InfoModuleProgressMapping(cssMappingParser, progressToStyleName);
+	}
+
 
 	@Test
 	public void getStyleNameForProgress_FullRange() throws Exception {
 		Map<Integer, String> progressToStyleMapping = Maps.newHashMap();
 		doReturn(progressToStyleMapping).when(cssMappingParser).getCssProgressToStyleMapping();
 		progressToStyleMapping.put(0, styleName);
-		instance.postConstruct();
+		testObj.postConstruct();
 
-		String styleNameFromCss = instance.getStyleNameForProgress(10);
+		String styleNameFromCss = testObj.getStyleNameForProgress(10);
 		assertThat(styleNameFromCss).isEqualTo(styleName);
 	}
 
@@ -43,19 +51,19 @@ public class InfoModuleProgressMappingTest {
 		progressToStyleMapping.put(2, styleName + 2);
 		progressToStyleMapping.put(9, styleName + 9);
 
-		instance.postConstruct();
+		testObj.postConstruct();
 
-		String styleNameFromCss = instance.getStyleNameForProgress(1);
+		String styleNameFromCss = testObj.getStyleNameForProgress(1);
 		assertThat(styleNameFromCss).isEqualTo(styleName + 0);
-		styleNameFromCss = instance.getStyleNameForProgress(2);
+		styleNameFromCss = testObj.getStyleNameForProgress(2);
 		assertThat(styleNameFromCss).isEqualTo(styleName + 2);
-		styleNameFromCss = instance.getStyleNameForProgress(7);
+		styleNameFromCss = testObj.getStyleNameForProgress(7);
 		assertThat(styleNameFromCss).isEqualTo(styleName + 2);
-		styleNameFromCss = instance.getStyleNameForProgress(9);
+		styleNameFromCss = testObj.getStyleNameForProgress(9);
 		assertThat(styleNameFromCss).isEqualTo(styleName + 9);
-		styleNameFromCss = instance.getStyleNameForProgress(19);
+		styleNameFromCss = testObj.getStyleNameForProgress(19);
 		assertThat(styleNameFromCss).isEqualTo(styleName + 9);
-		styleNameFromCss = instance.getStyleNameForProgress(100);
+		styleNameFromCss = testObj.getStyleNameForProgress(100);
 		assertThat(styleNameFromCss).isEqualTo(styleName + 9);
 	}
 
@@ -66,17 +74,17 @@ public class InfoModuleProgressMappingTest {
 		String defaultStyleName = styleName + 10;
 		progressToStyleMapping.put(10, defaultStyleName);
 
-		instance.postConstruct();
+		testObj.postConstruct();
 
 		for (int x = 0; x < 10; ++x) {
-			String styleNameFromCss = instance.getStyleNameForProgress(x);
+			String styleNameFromCss = testObj.getStyleNameForProgress(x);
 			assertThat(styleNameFromCss).isNotNull();
 			assertThat(styleNameFromCss).isEmpty();
 
 		}
 
 		for (int x = 10; x < 100; ++x) {
-			String styleNameFromCss = instance.getStyleNameForProgress(x);
+			String styleNameFromCss = testObj.getStyleNameForProgress(x);
 			assertThat(styleNameFromCss).isNotNull();
 			assertThat(styleNameFromCss).isEqualTo(defaultStyleName);
 
@@ -92,13 +100,13 @@ public class InfoModuleProgressMappingTest {
 		progressToStyleMapping.put(0, defaultStyleName);
 		progressToStyleMapping.put(100, maxPercentStyleName);
 
-		instance.postConstruct();
+		testObj.postConstruct();
 
 		for (int x = 0; x < 100; ++x) {
-			String styleNameFromCss = instance.getStyleNameForProgress(x);
+			String styleNameFromCss = testObj.getStyleNameForProgress(x);
 			assertThat(styleNameFromCss).isEqualTo(defaultStyleName);
 		}
-		String styleNameFromCss = instance.getStyleNameForProgress(100);
+		String styleNameFromCss = testObj.getStyleNameForProgress(100);
 		assertThat(styleNameFromCss).isEqualTo(maxPercentStyleName);
 	}
 
@@ -107,10 +115,10 @@ public class InfoModuleProgressMappingTest {
 		Map<Integer, String> progressToStyleMapping = Maps.newHashMap();
 		doReturn(progressToStyleMapping).when(cssMappingParser).getCssProgressToStyleMapping();
 
-		instance.postConstruct();
+		testObj.postConstruct();
 
 		for (int x = 0; x < 100; ++x) {
-			String styleNameFromCss = instance.getStyleNameForProgress(x);
+			String styleNameFromCss = testObj.getStyleNameForProgress(x);
 			assertThat(styleNameFromCss).isNotNull();
 			assertThat(styleNameFromCss).isEmpty();
 		}
@@ -121,10 +129,10 @@ public class InfoModuleProgressMappingTest {
 		Map<Integer, String> progressToStyleMapping = Maps.newHashMap();
 		doReturn(progressToStyleMapping).when(cssMappingParser).getCssProgressToStyleMapping();
 
-		instance.postConstruct();
+		testObj.postConstruct();
 		List<Integer> wrongValues = Lists.newArrayList(Integer.MIN_VALUE, -897, -9, -1, 101, 987, Integer.MAX_VALUE);
 		for (Integer percent : wrongValues) {
-			String styleNameFromCss = instance.getStyleNameForProgress(percent);
+			String styleNameFromCss = testObj.getStyleNameForProgress(percent);
 			assertThat(styleNameFromCss).isNotNull();
 			assertThat(styleNameFromCss).isEmpty();
 		}
@@ -135,9 +143,9 @@ public class InfoModuleProgressMappingTest {
 		Map<Integer, String> progressToStyleMapping = Maps.newHashMap();
 		doReturn(progressToStyleMapping).when(cssMappingParser).getCssProgressToStyleMapping();
 		progressToStyleMapping.put(0, styleName);
-		instance.postConstruct();
+		testObj.postConstruct();
 
-		String styleNameFromCss = instance.getStyleNameForProgress(null);
+		String styleNameFromCss = testObj.getStyleNameForProgress(null);
 		assertThat(styleNameFromCss).isNotNull();
 		assertThat(styleNameFromCss).isEmpty();
 	}
