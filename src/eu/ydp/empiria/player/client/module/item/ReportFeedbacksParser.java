@@ -20,7 +20,7 @@ public class ReportFeedbacksParser {
 		return reportFeedbacks;
 	}
 
-	private static Range<Integer> getRangeFromElement(Element feedbackElement) {
+	private Range<Integer> getRangeFromElement(Element feedbackElement) {
 		int from = Integer.parseInt(feedbackElement.getAttribute("from"));
 		int to = Integer.parseInt(feedbackElement.getAttribute("to"));
 		return Range.closed(from, to);
