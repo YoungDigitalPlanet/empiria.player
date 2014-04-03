@@ -29,10 +29,16 @@ public class InfoModuleProgressMapping {
 		}
 	}
 
-	@Inject
-	private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
-	@Inject
 	private ProgressToStringRangeMap progressToStyleName;
+	private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
+
+	@Inject
+	public  InfoModuleProgressMapping(InfoModuleCssProgressMappingConfigurationParser cssMappingParser,
+	                                  ProgressToStringRangeMap progressToStyleName) {
+
+		this.cssMappingParser = cssMappingParser;
+		this.progressToStyleName = progressToStyleName;
+	}
 
 	@PostConstruct
 	public void postConstruct() {
