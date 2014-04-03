@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.controller.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
@@ -15,29 +12,23 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-
-import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
-import eu.ydp.empiria.player.client.controller.communication.InitialData;
-import eu.ydp.empiria.player.client.controller.communication.ItemData;
-import eu.ydp.empiria.player.client.controller.communication.PageData;
-import eu.ydp.empiria.player.client.controller.communication.PageDataError;
-import eu.ydp.empiria.player.client.controller.communication.PageDataSummary;
-import eu.ydp.empiria.player.client.controller.communication.PageDataTest;
-import eu.ydp.empiria.player.client.controller.communication.PageDataToC;
-import eu.ydp.empiria.player.client.controller.communication.PageReference;
-import eu.ydp.empiria.player.client.controller.communication.PageType;
+import eu.ydp.empiria.player.client.controller.communication.*;
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryExtension;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoader;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLoaderListener;
+import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
 import eu.ydp.empiria.player.client.preloader.view.ProgressBundle;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.file.xml.XmlDocument;
 import eu.ydp.gwtutil.client.PathUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier,
 		LibraryLoaderListener {
@@ -370,6 +361,11 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	@Override
 	public String getItemTitle(int index) {
 		return itemDataCollectionManager.getTitlesList()[index];
+	}
+
+	@Override
+	public ProgressToStringRangeMap getItemFeedbacks(int index) {
+		return itemDataCollectionManager.getFeedbacks(index);
 	}
 
 	@Inject

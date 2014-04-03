@@ -19,4 +19,6 @@ public interface FieldValueHandlerFactory {
 	ProviderAssessmentValueHandler getProviderAssessmentValueHandler(VariableProviderSocket assessmentVariableProvider);
 
 	AssessmentResultValueHandler getAssessmentResultValueHandler(VariableProviderSocket assessmentVariableProvider);
+
+	FeedbackValueHandler getFeedbackValueHandler(ResultForPageIndexProvider resultForPageIndexProvider, DataSourceDataSupplier dataSourceDataSupplier);
 }
