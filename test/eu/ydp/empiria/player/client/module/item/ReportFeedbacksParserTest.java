@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.item;
 
-
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
@@ -15,16 +14,15 @@ public class ReportFeedbacksParserTest extends GWTTestCase {
 
 	//@formatter:off
 	private final String INPUT = "" +
-			"<reportFeedbacks>" +
-				"<reportFeedback from=\"10\" to=\"19\">" +
+			"<reportFeedback>" +
+				"<reportFeedbackText from=\"10\" to=\"19\">" +
 					FEEDBACK_FOR_10_19 +
-				"</reportFeedback>" +
-				"<reportFeedback from=\"20\" to=\"99\">" +
+				"</reportFeedbackText>" +
+				"<reportFeedbackText from=\"20\" to=\"99\">" +
 					FEEDBACK_FOR_20_99 +
-				"</reportFeedback>" +
-			"</reportFeedbacks>";
+				"</reportFeedbackText>" +
+			"</reportFeedback>";
 	//@formatter:on
-
 
 	@Override
 	public void gwtSetUp() {
@@ -34,7 +32,7 @@ public class ReportFeedbacksParserTest extends GWTTestCase {
 	@Test
 	public void testCreateReportFeedbacksFromNodeList() {
 		// given
-		NodeList feedbacks = XMLParser.parse(INPUT).getElementsByTagName("reportFeedback");
+		NodeList feedbacks = XMLParser.parse(INPUT).getElementsByTagName("reportFeedbackText");
 
 		// when
 		ProgressToStringRangeMap reportFeedbacks = testObj.parse(feedbacks);
