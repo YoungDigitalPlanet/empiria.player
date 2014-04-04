@@ -28,7 +28,7 @@ public class ItemDataSource {
 		Node rootNode = data.getDocument().getElementsByTagName("assessmentItem").item(0);
 		Element rootElement = (Element) rootNode;
 		title = rootElement.getAttribute("title");
-		NodeList feedbacksNodeList = rootElement.getElementsByTagName("reportFeedback");
+		NodeList feedbacksNodeList = rootElement.getElementsByTagName("reportFeedbackText");
 		this.reportFeedbacks = reportFeedbacksParser.parse(feedbacksNodeList);
 		errorMessage = "";
 	}
