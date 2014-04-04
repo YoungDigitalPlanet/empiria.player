@@ -1,14 +1,16 @@
 package eu.ydp.empiria.player.client.controller.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
+import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemDataSourceCollectionManager {
+
 	public ItemDataSourceCollectionManager(ItemDataCollectionLoaderEventListener l) {
 		listener = l;
 	}
@@ -86,5 +88,9 @@ public class ItemDataSourceCollectionManager {
 			return items[itemIndex].getStyleLinksForUserAgent(userAgent);
 		}
 		return new ArrayList<String>();
+	}
+
+	public ProgressToStringRangeMap getFeedbacks(int index) {
+		return items[index].getFeedbacks();
 	}
 }

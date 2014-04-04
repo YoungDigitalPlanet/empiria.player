@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 import eu.ydp.gwtutil.client.NumberUtils;
 
@@ -11,7 +13,8 @@ public class VariableResult {
 
 	private int done;
 
-	public VariableResult(VariableProviderSocket variableProvider) {
+	@Inject
+	public VariableResult(@Assisted VariableProviderSocket variableProvider) {
 		VariableUtil util = new VariableUtil(variableProvider);
 		int done = NumberUtils.tryParseInt(util.getVariableValue(VariableName.DONE.toString(), DEFAULT_VALUE_FOR_INT));
 		int todo = NumberUtils.tryParseInt(util.getVariableValue(VariableName.TODO.toString(), DEFAULT_VALUE_FOR_INT));
