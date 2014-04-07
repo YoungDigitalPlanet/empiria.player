@@ -205,24 +205,15 @@ task compileWebkit(dependsOn: [classes], type: GWTCompileTask) {
 
 def configCopyMetaInfoAndZip( playerDir, targetZip ) {
     return {
-        def metadataProperties = [version: version, tstamp: tstamp, buildnumber: buildnumber]
+        def metadataProperties = [version: project.ext.version, tstamp: tstamp, buildnumber: buildnumber]
 
-        inputs.properties( metadataProperties )
-        inputs.file file("metadata.template.xml")
-
-        doFirst {
-            copy {
-                from file("metadata.template.xml")
-                into playerDir
-                rename ".*", "metadata.xml"
-                expand( metadataProperties )
-            }
-        }
-
-        archiveName = targetZip
-        destinationDir = file( "dist" )
-        include( [ "**/*"] )
+        archiveName targetZip
+        destinationDir file( "dist" )
         from playerDir
+		from(file("metadata.template.xml")) {
+			rename "metadata.template.xml", "metadata.xml"
+			expand metadataProperties
+		}
     }
 }
 
