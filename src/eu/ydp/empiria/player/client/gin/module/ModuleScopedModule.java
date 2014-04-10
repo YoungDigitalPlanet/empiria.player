@@ -37,6 +37,10 @@ import eu.ydp.empiria.player.client.module.colorfill.presenter.UserToResponseAre
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillBeanProxy;
 import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionStructure;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
+import eu.ydp.empiria.player.client.module.dictionary.DictionaryPopupPresenter;
+import eu.ydp.empiria.player.client.module.dictionary.DictionaryPresenter;
+import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonView;
+import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupView;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
@@ -107,6 +111,18 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindBonus();
 		bindProgressBonus();
 		bindVideoModule();
+		bindDictionary();
+	}
+
+	private void bindDictionary() {
+		bindModuleScoped(DictionaryPresenter.class, new TypeLiteral<ModuleScopedProvider<DictionaryPresenter>>() {
+		});
+		bindModuleScoped(DictionaryButtonView.class, new TypeLiteral<ModuleScopedProvider<DictionaryButtonView>>() {
+		});
+		bindModuleScoped(DictionaryPopupPresenter.class, new TypeLiteral<ModuleScopedProvider<DictionaryPopupPresenter>>() {
+		});
+		bindModuleScoped(DictionaryPopupView.class, new TypeLiteral<ModuleScopedProvider<DictionaryPopupView>>() {
+		});
 	}
 
 	private void bindVideoModule() {
