@@ -224,6 +224,21 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-connection-wrong")
 	public String QP_CONNECTION_WRONG();
 
+	@DefaultStringValue("qp-dictionary-button-wrapper")
+	public String QP_DICTIONARY_BUTTON_WRAPPER();
+
+	@DefaultStringValue("qp-dictionary-button")
+	public String QP_DICTIONARY_BUTTON();
+
+	@DefaultStringValue("qp-dictionary-popup")
+	public String QP_DICTIONARY_POPUP();
+
+	@DefaultStringValue("qp-dictionary-popup-container")
+	public String QP_DICTIONARY_POPUP_CONTAINER();
+
+	@DefaultStringValue("qp-dictionary-close-button")
+	public String QP_DICTIONARY_POPUP_CLOSE_BUTTON();
+
 	@DefaultStringValue("qp-drag-gap-correct")
 	public String QP_DRAG_GAP_CORRECT();
 
@@ -861,7 +876,9 @@ public interface StyleNameConstants extends Constants {
 	public String QP_TEXT_TEXTENTRY_WRONG();
 
 	/**
-	 * Ponieważ podstawowa clasa gapy 'qp-text-textentry' zmienia sie na *-corect, *-wrong Dodalem ten style aby w pewny sposob wyszukiwac gapy w testach E2E.
+	 * Ponieważ podstawowa clasa gapy 'qp-text-textentry' zmienia sie na
+	 * *-corect, *-wrong Dodalem ten style aby w pewny sposob wyszukiwac gapy w
+	 * testach E2E.
 	 */
 	@DefaultStringValue("qp-textentry")
 	public String QP_TEXTENTRY();

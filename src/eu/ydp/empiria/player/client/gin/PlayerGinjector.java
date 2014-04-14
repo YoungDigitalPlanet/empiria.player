@@ -29,6 +29,7 @@ import eu.ydp.empiria.player.client.gin.module.ButtonGinModule;
 import eu.ydp.empiria.player.client.gin.module.ChoiceGinModule;
 import eu.ydp.empiria.player.client.gin.module.ColorfillGinModule;
 import eu.ydp.empiria.player.client.gin.module.ConnectionGinModule;
+import eu.ydp.empiria.player.client.gin.module.DictionaryGinModule;
 import eu.ydp.empiria.player.client.gin.module.DragGapGinModule;
 import eu.ydp.empiria.player.client.gin.module.DrawingGinModule;
 import eu.ydp.empiria.player.client.gin.module.ModuleScopedModule;
@@ -59,7 +60,7 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 @GinModules(value = { PlayerGinModule.class, UtilGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class,
 		TextEntryGinModule.class, SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
 		OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class, DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
-		AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class })
+		AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class, DictionaryGinModule.class })
 public interface PlayerGinjector extends Ginjector {
 
 	ViewEngine getViewEngine();
