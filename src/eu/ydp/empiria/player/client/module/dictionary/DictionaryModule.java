@@ -27,6 +27,6 @@ public class DictionaryModule extends SimpleModuleBase {
 
 	@Override
 	protected void initModule(Element element) {
-		presenter.bind();
+		presenter.bindUi();
 	}
 }

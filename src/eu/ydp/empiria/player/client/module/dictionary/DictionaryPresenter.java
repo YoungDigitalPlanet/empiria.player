@@ -20,7 +20,7 @@ public class DictionaryPresenter {
 		this.dictionaryPopupPresenter = dictionaryPopupPresenter;
 	}
 
-	public void bind() {
+	public void bindUi() {
 		dictionaryPopupPresenter.bindUi();
 		dictionaryButtonView.addClickHandler(new ClickHandler() {
 
@@ -31,7 +31,7 @@ public class DictionaryPresenter {
 		});
 	}
 
-	public void clicked() {
+	private void clicked() {
 		dictionaryPopupPresenter.show();
 	}
 }

@@ -7,4 +7,7 @@ public interface DictionaryPopupView extends IsWidget {
 
 	void addClickHandler(ClickHandler clickHandler);
 
+	void show();
+
+	void hide();
 }
