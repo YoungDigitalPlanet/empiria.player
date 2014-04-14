@@ -12,8 +12,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonView;
+import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupView;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -24,30 +24,36 @@ public class DictionaryPresenterTest {
 	@Mock
 	private DictionaryButtonView dictionaryButtonView;
 	@Mock
-	private DictionaryPopupPresenter dictionaryPopupPresenter;
+	private DictionaryPopupView dictionaryPopupView;
+	@Mock
+	private ClickEvent event;
+
 	@Captor
 	private ArgumentCaptor<ClickHandler> clickCaptor;
 
 	@Test
-	public void shouldBindPopupPresenter() {
-		// when
+	public void shouldShowPopupOnClick() {
+		// given
 		testObj.bindUi();
+		verify(dictionaryButtonView).addClickHandler(clickCaptor.capture());
+
+		// when
+		clickCaptor.getValue().onClick(event);
 
 		// then
-		verify(dictionaryPopupPresenter).bindUi();
+		verify(dictionaryPopupView).show();
 	}
 
 	@Test
-	public void shouldShowPopupOnClick() {
+	public void shouldHidePopupOnCloseButtonClick() {
 		// given
-		ClickEvent event = mock(ClickEvent.class);
+		testObj.bindUi();
+		verify(dictionaryPopupView).addClickHandler(clickCaptor.capture());
 
 		// when
-		testObj.bindUi();
-		// then
-		verify(dictionaryButtonView).addClickHandler(clickCaptor.capture());
-
 		clickCaptor.getValue().onClick(event);
-		verify(dictionaryPopupPresenter).show();
+
+		// then
+		verify(dictionaryPopupView).hide();
 	}
 }

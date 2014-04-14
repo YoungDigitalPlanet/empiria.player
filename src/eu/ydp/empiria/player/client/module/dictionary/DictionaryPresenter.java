@@ -4,34 +4,50 @@ import javax.inject.Inject;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonView;
+import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class DictionaryPresenter {
 
 	private final DictionaryButtonView dictionaryButtonView;
 
-	private final DictionaryPopupPresenter dictionaryPopupPresenter;
+	private final DictionaryPopupView dictionaryPopupView;
 
 	@Inject
-	public DictionaryPresenter(@ModuleScoped DictionaryButtonView dictionaryButtonView, @ModuleScoped DictionaryPopupPresenter dictionaryPopupPresenter) {
+	public DictionaryPresenter(@ModuleScoped DictionaryButtonView dictionaryButtonView, @ModuleScoped DictionaryPopupView dictionaryPopupView) {
 		this.dictionaryButtonView = dictionaryButtonView;
-		this.dictionaryPopupPresenter = dictionaryPopupPresenter;
+		this.dictionaryPopupView = dictionaryPopupView;
 	}
 
 	public void bindUi() {
-		dictionaryPopupPresenter.bindUi();
 		dictionaryButtonView.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				clicked();
+				showPopup();
+			}
+		});
+		dictionaryPopupView.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				hidePopup();
 			}
 		});
 	}
 
-	private void clicked() {
-		dictionaryPopupPresenter.show();
+	private void hidePopup() {
+		dictionaryPopupView.hide();
+	}
+
+	private void showPopup() {
+		dictionaryPopupView.show();
+	}
+
+	public Widget getView() {
+		return dictionaryButtonView.asWidget();
 	}
 }

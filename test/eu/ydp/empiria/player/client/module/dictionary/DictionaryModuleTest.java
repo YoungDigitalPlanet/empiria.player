@@ -35,5 +35,4 @@ public class DictionaryModuleTest {
 		// then
 		verify(presenter).bindUi();
 	}
-
 }

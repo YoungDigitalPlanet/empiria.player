@@ -89,14 +89,6 @@ import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
-/**
- * Responsible for: - loading the content, - managing the content, - delivering
- * content to player, - managing state, results and reports about the
- * assessments.
- * 
- * @author Rafal Rybacki
- * 
- */
 public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
 	Integer initialItemIndex;
