@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.empiria.player.client.module.dictionary.external.components">
+	<g:FlowPanel styleName="dict-menu-container">
+		<g:FlowPanel styleName="dict-menu">
+			<g:FlowPanel styleName="dict-menu-header">
+				<g:PushButton styleName="dict-menu-exit-button" ui:field="exitButton"></g:PushButton>
+			</g:FlowPanel>
+			<g:FlowPanel styleName="dict-search-panel">
+				<g:FlowPanel styleName="dict-search-box-panel">
+					<g:FlowPanel styleName="dict-search-box-prefix"></g:FlowPanel>
+					<g:FlowPanel styleName="dict-search-box-container">
+						<c:PasteawareTextBox styleName="dict-search-box" ui:field="searchTextBox"/>
+					</g:FlowPanel>
+					<g:FlowPanel styleName="dict-search-box-sufix"></g:FlowPanel>
+				</g:FlowPanel>
+				<g:PushButton styleName="dict-seach-button" ui:field="searchButton">go</g:PushButton>
+			</g:FlowPanel>
+			<g:FlowPanel styleName="dict-quickletter-panel" ui:field="quickLettersPanel"></g:FlowPanel>
+			<g:FlowPanel styleName="dict-passwords-panel-container" ui:field="passwordsPanelContainer">
+				<g:FlowPanel styleName="dict-passwords-panel" ui:field="passwordsPanel">
+					<g:ScrollPanel styleName="dict-passwords-list-panel" ui:field="passwordsListPanel">
+						<g:FlowPanel styleName="dict-passwords-list-panel-body" ui:field="passwordsListPanelBody">
+						</g:FlowPanel>						
+					</g:ScrollPanel>
+				</g:FlowPanel>
+				<c:ScrollbarPanel ui:field="scrollbarPanel"></c:ScrollbarPanel>
+			</g:FlowPanel>
+		</g:FlowPanel>
+	</g:FlowPanel>
+</ui:UiBinder> 

@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:v="urn:import:eu.ydp.empiria.player.client.module.dictionary.external.view">
+	<g:FlowPanel styleName="dict-main">
+		<g:FlowPanel ui:field="containerView" styleName="dict-content-container">
+			<v:MenuView ui:field="menuView" />
+			<v:ExplanationView ui:field="explanationView" />
+		</g:FlowPanel>
+		<g:SimplePanel styleName="dict-header-panel">
+			<g:PushButton ui:field="exitButton" styleName="dict-exit-button"/>
+		</g:SimplePanel>
+	</g:FlowPanel>
+</ui:UiBinder> 

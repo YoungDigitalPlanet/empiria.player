@@ -1,0 +1,337 @@
+package eu.ydp.empiria.player.client.module.dictionary.external.view;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.ScrollEvent;
+import com.google.gwt.event.dom.client.ScrollHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
+import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteawareTextBox;
+import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteawareTextBox.PasteListener;
+import eu.ydp.empiria.player.client.module.dictionary.external.components.PushButtonWithIndex;
+import eu.ydp.empiria.player.client.module.dictionary.external.components.ScrollbarPanel;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesSocket;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.Options;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsResult;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsSocket;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.ViewType;
+import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChanger;
+import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChangerSupplier;
+import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityClient;
+
+public class MenuView extends Composite implements VisibilityClient {
+
+	private static final int PASSWORDS_COUNT_INIT = 25;
+	private static final int PASSWORDS_COUNT_EXTENSION = 25;
+
+	@UiField
+	PasteawareTextBox searchTextBox;
+	@UiField
+	PushButton searchButton;
+
+	@UiField
+	FlowPanel quickLettersPanel;
+
+	@UiField
+	FlowPanel passwordsPanelContainer;
+	@UiField
+	FlowPanel passwordsPanel;
+	@UiField
+	Panel passwordsListPanel;
+	@UiField
+	FlowPanel passwordsListPanelBody;
+	@UiField
+	PushButton exitButton;
+	@UiField
+	ScrollbarPanel scrollbarPanel;
+
+	private List<PushButtonWithIndex> passwordButtons;
+	private PasswordsResult passwordsResultString;
+	private String prevLetter;
+	private PushButton prevSelectedButton;
+	private PushButton showMoreButton;
+	private int prevScroll;
+
+	@Inject
+	private Provider<PasswordsSocket> passwordsSocket;
+	@Inject
+	private Provider<EntriesSocket> entriesSocket;
+	private final Supplier<VisibilityChanger> visibilityChangerSupplier = Suppliers.memoize(new VisibilityChangerSupplier());
+
+	private final Timer fillTimer = new Timer() {
+
+		@Override
+		public void run() {
+			refillPasswords();
+		}
+	};;
+
+	private static MenuViewUiBinder uiBinder = GWT.create(MenuViewUiBinder.class);
+
+	interface MenuViewUiBinder extends UiBinder<Widget, MenuView> {
+	}
+
+	public MenuView() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
+
+	public void show() {
+		visibilityChangerSupplier.get().show(this);
+	}
+
+	public void hide() {
+		visibilityChangerSupplier.get().hide(this);
+	}
+
+	@Override
+	public int getScrollTop() {
+		return passwordsListPanel.getElement().getScrollTop();
+	}
+
+	@Override
+	public void setScrollTop(int scroll) {
+		passwordsListPanel.getElement().setScrollTop(scroll);
+	}
+
+	@Override
+	public Style getElementStyle() {
+		return getElement().getStyle();
+	}
+
+	public void init(String selectedPassword) {
+		String initialPassword = (selectedPassword != null && selectedPassword.length() > 0) ? selectedPassword : "a";
+
+		searchTextBox.setText(selectedPassword);
+
+		fillQuickLetters();
+
+		fillPasswords(initialPassword);
+
+		if (Options.getViewType() == ViewType.FULL) {
+			showExplanationOfFirstItem(false);
+		}
+
+		passwordsListPanel.addDomHandler(new ScrollHandler() {
+
+			@Override
+			public void onScroll(ScrollEvent event) {
+				scrollbarPanel.updateScrollBar(passwordsPanel, passwordsListPanel);
+
+			}
+		}, ScrollEvent.getType());
+
+		searchTextBox.addPasteListener(new PasteListener() {
+
+			@Override
+			public void onPaste() {
+				startTimer();
+			}
+		});
+	}
+
+	@UiHandler("exitButton")
+	public void onExitClick(ClickEvent event) {
+		exitJs();
+	}
+
+	@UiHandler("searchTextBox")
+	public void onSearchKeyPress(KeyPressEvent event) {
+		if (Character.isLetter(event.getCharCode())) {
+			startTimer();
+		}
+	}
+
+	@UiHandler("searchTextBox")
+	public void onSearchKeyUp(KeyUpEvent event) {
+		if (event.getNativeKeyCode() == KeyCodes.KEY_BACKSPACE) {
+			startTimer();
+		} else if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+			showExplanationOfFirstItem(true);
+		}
+	}
+
+	@UiHandler("searchButton")
+	public void onSearchButtonClick(ClickEvent event) {
+		showExplanationOfFirstItem(true);
+	}
+
+	private void fillQuickLetters() {
+		Iterator<String> letter = passwordsSocket.get().getLetters().iterator();
+		if (Options.getViewType() == ViewType.FULL) {
+			fillQuickLettersFull(letter);
+		} else {
+			fillQuickLettersHalf(letter);
+		}
+	}
+
+	private void fillQuickLettersHalf(Iterator<String> letter) {
+		Panel qlList = new FlowPanel();
+		qlList.setStyleName("dict-quickletters-list");
+		while (letter.hasNext()) {
+			final String currLetter = letter.next();
+			PushButton quickLetterButton = new PushButton(currLetter);
+			quickLetterButton.setStyleName("dict-quickletter-button");
+			quickLetterButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					clearTextBox();
+					fillPasswords(currLetter);
+				}
+			});
+			qlList.add(quickLetterButton);
+		}
+		quickLettersPanel.add(qlList);
+	}
+
+	private void fillQuickLettersFull(Iterator<String> letter) {
+		Grid quickLettersTable = new Grid(2, 14);
+		int row = 0;
+		int col = 0;
+		while (letter.hasNext()) {
+			final String currLetter = letter.next();
+			PushButton quickLetterButton = new PushButton(currLetter);
+			quickLetterButton.setStyleName("dict-quickletter-button");
+			quickLetterButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					clearTextBox();
+					fillPasswords(currLetter);
+					showExplanationOfFirstItem(true);
+				}
+			});
+
+			quickLettersTable.setWidget(row, col, quickLetterButton);
+			if (row == 0) {
+				row = 1;
+			} else {
+				row = 0;
+				col++;
+			}
+		}
+		quickLettersPanel.add(quickLettersTable);
+	}
+
+	private void startTimer() {
+		fillTimer.cancel();
+		fillTimer.schedule(200);
+	}
+
+	private void clearTextBox() {
+		searchTextBox.setText("");
+	}
+
+	private void refillPasswords() {
+		fillPasswords(searchTextBox.getText());
+	}
+
+	private void fillPasswords(String text) {
+		prevLetter = text;
+		passwordsResultString = passwordsSocket.get().getPasswords(text);
+		if (passwordsResultString != null) {
+			passwordsListPanelBody.clear();
+			scrollbarPanel.setScrollTop(passwordsPanel.getElement(), 0);
+			passwordButtons = new ArrayList<PushButtonWithIndex>();
+			prevSelectedButton = null;
+			fillOptions(passwordsResultString.getList(), passwordsResultString.getIndex(), PASSWORDS_COUNT_INIT);
+		}
+	}
+
+	private void fillOptions(List<String> pwds, int firstPasswordIndex, int count) {
+
+		int alreadyShownOptionsCount = passwordButtons.size();
+
+		for (int i = alreadyShownOptionsCount; i < pwds.size() && i < alreadyShownOptionsCount + count; i++) {
+			final PushButtonWithIndex currPwd = new PushButtonWithIndex(pwds.get(i));
+			currPwd.setIndex(firstPasswordIndex + i);
+			currPwd.setStylePrimaryName("dict-password-button");
+			currPwd.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					selectButton(currPwd, true);
+				}
+			});
+			passwordButtons.add(currPwd);
+			passwordsListPanelBody.insert(currPwd, passwordButtons.size() - 1);
+		}
+
+		if (pwds.size() <= passwordButtons.size()) {
+			passwordsListPanelBody.remove(getShowMoreButton());
+		} else if (getShowMoreButton().getParent() != passwordsListPanelBody) {
+			passwordsListPanelBody.add(getShowMoreButton());
+		}
+
+	}
+
+	private PushButton getShowMoreButton() {
+		if (showMoreButton != null) {
+			return showMoreButton;
+		}
+		showMoreButton = new PushButton("Show more");
+		showMoreButton.setStylePrimaryName("dict-showmore-button");
+		showMoreButton.getElement().getElementsByTagName("input").getItem(0).getStyle().setPosition(Position.RELATIVE);
+		showMoreButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showMore();
+			}
+		});
+		return showMoreButton;
+	}
+
+	private void showMore() {
+		fillOptions(passwordsResultString.getList(), passwordsResultString.getIndex(), PASSWORDS_COUNT_EXTENSION);
+
+	}
+
+	private void showExplanationOfFirstItem(boolean playSound) {
+		if (passwordButtons.size() > 0) {
+			selectButton(passwordButtons.get(0), playSound);
+		}
+	}
+
+	private void showExplanation(String pwd, int index, boolean playSound) {
+		entriesSocket.get().loadEntry(pwd, index, playSound);
+	}
+
+	private void selectButton(PushButtonWithIndex buttonToSelect, boolean playSound) {
+		unselectAllButtons();
+		prevSelectedButton = buttonToSelect;
+		buttonToSelect.addStyleDependentName("selected");
+		showExplanation(buttonToSelect.getText(), buttonToSelect.getIndex(), playSound);
+	}
+
+	private void unselectAllButtons() {
+		if (prevSelectedButton != null) {
+			prevSelectedButton.removeStyleDependentName("selected");
+		}
+	}
+
+	private native void exitJs()/*-{
+								if (typeof $wnd.dictionaryExit == 'function'){
+								$wnd.dictionaryExit();
+								}
+								}-*/;
+}

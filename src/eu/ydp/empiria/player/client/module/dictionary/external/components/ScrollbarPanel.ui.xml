@@ -1,0 +1,11 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:AbsolutePanel styleName="empiria-tools-scroll-container" ui:field="scrollPanelContainer">
+		<g:FlowPanel styleName="empiria-tools-scroll-panel-hidden" ui:field="scrollPanel">
+			<g:FlowPanel styleName="empiria-tools-scroll-header" ui:field="scrollHeader"></g:FlowPanel>
+			<g:FlowPanel styleName="empiria-tools-scroll-body" ui:field="scrollBody"></g:FlowPanel>
+			<g:FlowPanel styleName="empiria-tools-scroll-footer" ui:field="scrollFooter"></g:FlowPanel>
+		</g:FlowPanel>
+	</g:AbsolutePanel>
+</ui:UiBinder> 
