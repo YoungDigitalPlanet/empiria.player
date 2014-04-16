@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -51,5 +52,10 @@ public class DictionaryPopupViewImpl extends Composite implements DictionaryPopu
 	public void hide() {
 		RootPanel rootPanel = rootPanelDelegate.getRootPanel();
 		rootPanel.remove(this);
+	}
+
+	@Override
+	public Panel getContainer() {
+		return container;
 	}
 }

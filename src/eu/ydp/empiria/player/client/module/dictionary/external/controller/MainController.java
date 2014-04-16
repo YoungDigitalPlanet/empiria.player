@@ -17,10 +17,14 @@ public class MainController implements PasswordsLoadingListener, ExplanationList
 	private MainView mainView;
 
 	private Panel root;
+	private boolean shouldInitialized = true;
 
 	public void init(Panel root) {
-		this.root = root;
-		passwordsController.load();
+		if (shouldInitialized) {
+			this.root = root;
+			passwordsController.load();
+			shouldInitialized = false;
+		}
 	}
 
 	@Override

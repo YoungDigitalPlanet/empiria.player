@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.MainController;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonView;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupView;
 
@@ -27,6 +28,8 @@ public class DictionaryPresenterTest {
 	private DictionaryPopupView dictionaryPopupView;
 	@Mock
 	private ClickEvent event;
+	@Mock
+	private MainController mainController;
 
 	@Captor
 	private ArgumentCaptor<ClickHandler> clickCaptor;
