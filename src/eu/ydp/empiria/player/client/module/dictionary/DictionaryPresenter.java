@@ -2,14 +2,14 @@ package eu.ydp.empiria.player.client.module.dictionary;
 
 import javax.inject.Inject;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.MainController;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonView;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupView;
+import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class DictionaryPresenter {
@@ -29,17 +29,17 @@ public class DictionaryPresenter {
 	}
 
 	public void bindUi() {
-		dictionaryButtonView.addClickHandler(new ClickHandler() {
+		dictionaryButtonView.addHandler(new Command() {
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void execute(NativeEvent event) {
 				showPopup();
 			}
 		});
-		dictionaryPopupView.addClickHandler(new ClickHandler() {
+		dictionaryPopupView.addHandler(new Command() {
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void execute(NativeEvent event) {
 				hidePopup();
 			}
 		});
