@@ -1,8 +1,11 @@
 package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
+import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.Singleton;
 
+import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.DictionaryFileRequestCallback;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesController;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.MainController;
@@ -16,6 +19,7 @@ import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonView;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonViewImpl;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupView;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupViewImpl;
+import eu.ydp.jsfilerequest.client.FileRequestCallback;
 
 public class DictionaryGinModule extends AbstractGinModule {
 
@@ -36,5 +40,9 @@ public class DictionaryGinModule extends AbstractGinModule {
 		bind(MainView.class).in(Singleton.class);
 		bind(MenuView.class).in(Singleton.class);
 		bind(ExplanationView.class).in(Singleton.class);
+
+		install(new GinFactoryModuleBuilder().implement(
+				FileRequestCallback.class, DictionaryFileRequestCallback.class)
+				.build(DictionaryModuleFactory.class));
 	}
 }
