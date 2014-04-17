@@ -1,10 +1,8 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import java.util.Arrays;
-
-import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
@@ -12,11 +10,15 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
-import eu.ydp.empiria.player.client.module.dictionary.external.util.DocumentLoader;
-import eu.ydp.empiria.player.client.module.dictionary.external.util.DocumentLoadingListener;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
+import eu.ydp.gwtutil.client.debug.log.Logger;
+import eu.ydp.gwtutil.client.scheduler.Scheduler;
+import eu.ydp.jsfilerequest.client.FileRequest;
+import eu.ydp.jsfilerequest.client.FileRequestCallback;
+import eu.ydp.jsfilerequest.client.FileRequestException;
+import eu.ydp.jsfilerequest.client.FileResponse;
 
-public class EntriesController implements DocumentLoadingListener {
+public class EntriesController implements FileRequestCallback {
 
 	private static final String RELATIVE_EXPLANATIONS_DIR = "dictionary/explanations/";
 
@@ -24,6 +26,10 @@ public class EntriesController implements DocumentLoadingListener {
 
 	@Inject
 	private Provider<ExplanationListener> listenerProvider;
+	@Inject
+	private Scheduler scheduler;
+	@Inject
+	private Logger logger;
 
 	private int lastIndex;
 	private boolean lastPlaySound;
@@ -37,20 +43,38 @@ public class EntriesController implements DocumentLoadingListener {
 	public void loadEntry(String password, int index, boolean playSound) {
 		lastIndex = index;
 		lastPlaySound = playSound;
-		final String path = EXPLANATIONS_DIR
-				+ intToString(new Integer(index / 50) * 50, 5) + ".xml";
-		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+		final String path = getFilePathForIndex(index);
+
+		scheduler.scheduleDeferred(new ScheduledCommand() {
 
 			@Override
 			public void execute() {
-				DocumentLoader.load(path, EntriesController.this);
+				FileRequest fileRequest = GWT.create(FileRequest.class);
+				try {
+					fileRequest.setUrl(path);
+					fileRequest.send(null, EntriesController.this);
+				} catch (FileRequestException exception) {
+					logger.error(exception);
+				}
 			}
 		});
 	}
 
+	private String getFilePathForIndex(int index) {
+		return EXPLANATIONS_DIR + formatNumber(calculateOffset(index)) + ".xml";
+	}
+
+	private int calculateOffset(int index) {
+		return new Integer(index / 50) * 50;
+	}
+
+	private String formatNumber(int num) {
+		return NumberFormat.getFormat("00000").format(num);
+	}
+
 	@Override
-	public void onDocumentLoaded(String text) {
-		Document document = XMLParser.parse(text);
+	public void onResponseReceived(FileRequest request, FileResponse response) {
+		Document document = XMLParser.parse(response.getText());
 		Element element = (Element) document.getElementsByTagName("word").item(
 				lastIndex % 50);
 
@@ -60,14 +84,7 @@ public class EntriesController implements DocumentLoadingListener {
 	}
 
 	@Override
-	public void onDocumentLoadError(String error) {
-		Window.alert("Error loading entry:\n" + error);
-	}
-
-	private static String intToString(int num, int digits) {
-		char[] zeros = new char[digits];
-		Arrays.fill(zeros, '0');
-		NumberFormat df = NumberFormat.getFormat(String.valueOf(zeros));
-		return df.format(num);
+	public void onError(FileRequest request, Throwable exception) {
+		logger.error(exception);
 	}
 }

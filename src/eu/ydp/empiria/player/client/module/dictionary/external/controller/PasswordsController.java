@@ -8,15 +8,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.google.gwt.user.client.Window;
+import com.google.gwt.core.shared.GWT;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.util.DocumentLoader;
-import eu.ydp.empiria.player.client.module.dictionary.external.util.DocumentLoadingListener;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
+import eu.ydp.gwtutil.client.debug.log.Logger;
+import eu.ydp.jsfilerequest.client.FileRequest;
+import eu.ydp.jsfilerequest.client.FileRequestCallback;
+import eu.ydp.jsfilerequest.client.FileRequestException;
+import eu.ydp.jsfilerequest.client.FileResponse;
 
-public class PasswordsController implements DocumentLoadingListener, PasswordsSocket {
+public class PasswordsController implements PasswordsSocket,
+		FileRequestCallback {
 
 	private static final String PASSWORD_FILE_PATH = "dictionary/passwords/passwords.txt";
 	private final String PASSWORDS_PATH;
@@ -26,6 +30,8 @@ public class PasswordsController implements DocumentLoadingListener, PasswordsSo
 	private Provider<PasswordsLoadingListener> listenerProvider;
 	@Inject
 	private Provider<PasswordsResultFinder> finderProvider;
+	@Inject
+	private Logger logger;
 
 	private Map<String, List<String>> passwords;
 	private Map<String, Integer> baseIndexes;
@@ -36,37 +42,13 @@ public class PasswordsController implements DocumentLoadingListener, PasswordsSo
 	}
 
 	public void load() {
-		DocumentLoader.load(PASSWORDS_PATH, this);
-	}
-
-	@Override
-	public void onDocumentLoaded(String text) {
-
-		passwords = new LinkedHashMap<String, List<String>>();
-
-		String[] wordsByLetters = text.split(DICTIONARY_DELIMITER);
-
-		for (int i = 0; i < wordsByLetters.length; i++) {
-			if (wordsByLetters[i].length() > 0) {
-				List<String> letters = Arrays.asList(wordsByLetters[i].split("\n"));
-				passwords.put(letters.get(0).substring(0, 1).toLowerCase(), letters);
-			}
+		FileRequest fileRequest = GWT.create(FileRequest.class);
+		try {
+			fileRequest.setUrl(PASSWORDS_PATH);
+			fileRequest.send(null, this);
+		} catch (FileRequestException exception) {
+			logger.error(exception);
 		}
-
-		baseIndexes = new TreeMap<String, Integer>();
-		int indexSum = 0;
-
-		for (List<String> currList : passwords.values()) {
-			baseIndexes.put(currList.get(0).substring(0, 1).toLowerCase(), indexSum);
-			indexSum += currList.size();
-		}
-
-		listenerProvider.get().onPasswordsLoaded();
-	}
-
-	@Override
-	public void onDocumentLoadError(String error) {
-		Window.alert("Error loading passwords list:\n" + error);
 	}
 
 	@Override
@@ -93,7 +75,8 @@ public class PasswordsController implements DocumentLoadingListener, PasswordsSo
 			return null;
 		}
 		PasswordsResultFinder finder = finderProvider.get();
-		PasswordsResult matchingPasswords = finder.findPhrasesMatchingPrefix(currPasswords, baseIndexes, text.toLowerCase());
+		PasswordsResult matchingPasswords = finder.findPhrasesMatchingPrefix(
+				currPasswords, baseIndexes, text.toLowerCase());
 		return matchingPasswords;
 	}
 
@@ -119,6 +102,40 @@ public class PasswordsController implements DocumentLoadingListener, PasswordsSo
 	@Override
 	public Set<String> getLetters() {
 		return passwords.keySet();
+	}
+
+	@Override
+	public void onResponseReceived(FileRequest request, FileResponse response) {
+		passwords = new LinkedHashMap<String, List<String>>();
+
+		String text = response.getText();
+
+		String[] wordsByLetters = text.split(DICTIONARY_DELIMITER);
+
+		for (int i = 0; i < wordsByLetters.length; i++) {
+			if (wordsByLetters[i].length() > 0) {
+				List<String> letters = Arrays.asList(wordsByLetters[i]
+						.split("\n"));
+				passwords.put(letters.get(0).substring(0, 1).toLowerCase(),
+						letters);
+			}
+		}
+
+		baseIndexes = new TreeMap<String, Integer>();
+		int indexSum = 0;
+
+		for (List<String> currList : passwords.values()) {
+			baseIndexes.put(currList.get(0).substring(0, 1).toLowerCase(),
+					indexSum);
+			indexSum += currList.size();
+		}
+
+		listenerProvider.get().onPasswordsLoaded();
+	}
+
+	@Override
+	public void onError(FileRequest request, Throwable exception) {
+		logger.error(exception);
 	}
 
 }
