@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
+import eu.ydp.gwtutil.client.util.NumberFormatWrapper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DictionaryFilenameProviderTest {

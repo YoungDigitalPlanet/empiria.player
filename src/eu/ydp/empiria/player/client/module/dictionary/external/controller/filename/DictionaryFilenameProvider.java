@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.dictionary.external.controller.filen
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
+import eu.ydp.gwtutil.client.util.NumberFormatWrapper;
 
 public class DictionaryFilenameProvider {
 

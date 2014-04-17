@@ -12,15 +12,6 @@ public class Entry {
 	private final String angSound;
 	private final String descrSound;
 
-	public Entry() {
-		ang = "";
-		pol = "";
-		post = "";
-		desc = "";
-		angSound = "";
-		descrSound = "";
-	}
-
 	public Entry(Element element) {
 		ang = fetchValue(element, "ang", false);
 		pol = fetchValue(element, "pol", true);
@@ -36,7 +27,8 @@ public class Entry {
 			NodeList polNodes = element.getElementsByTagName(name);
 			if (polNodes.getLength() > 0) {
 				value = polNodes.item(0).toString();
-				value = value.substring(value.indexOf(">") + 1, value.lastIndexOf("</"));
+				value = value.substring(value.indexOf(">") + 1,
+						value.lastIndexOf("</"));
 			}
 		}
 		if (value == null) {

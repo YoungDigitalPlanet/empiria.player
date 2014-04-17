@@ -4,7 +4,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.XMLParser;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -12,6 +11,7 @@ import eu.ydp.empiria.player.client.module.dictionary.external.controller.filena
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
+import eu.ydp.gwtutil.client.xml.IXMLParser;
 import eu.ydp.jsfilerequest.client.FileRequest;
 import eu.ydp.jsfilerequest.client.FileRequestCallback;
 import eu.ydp.jsfilerequest.client.FileRequestException;
@@ -27,6 +27,8 @@ public class EntriesController implements FileRequestCallback {
 	private DictionaryFilenameProvider dictionaryFilenameProvider;
 	@Inject
 	private Logger logger;
+	@Inject
+	private IXMLParser xmlParser;
 
 	private int lastIndex;
 	private boolean lastPlaySound;
@@ -54,13 +56,17 @@ public class EntriesController implements FileRequestCallback {
 
 	@Override
 	public void onResponseReceived(FileRequest request, FileResponse response) {
-		Document document = XMLParser.parse(response.getText());
+		String responseText = response.getText();
+		Entry entry = createElement(responseText);
+
+		listenerProvider.get().onEntryLoaded(entry, lastPlaySound);
+	}
+
+	private Entry createElement(String response) {
+		Document document = xmlParser.parse(response);
 		Element element = (Element) document.getElementsByTagName("word").item(
 				lastIndex % 50);
-
-		Entry e = new Entry(element);
-
-		listenerProvider.get().onEntryLoaded(e, lastPlaySound);
+		return new Entry(element);
 	}
 
 	@Override
