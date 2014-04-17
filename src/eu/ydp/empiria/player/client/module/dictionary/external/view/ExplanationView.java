@@ -19,7 +19,6 @@ import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
-import eu.ydp.empiria.player.client.module.dictionary.external.util.CertProvider;
 
 public class ExplanationView extends Composite {
 
@@ -56,8 +55,6 @@ public class ExplanationView extends Composite {
 
 	@Inject
 	private Provider<ExplanationListener> listenerProvider;
-	@Inject
-	private CertProvider certProvider;
 
 	public ExplanationView() {
 		initWidget(uiBinder.createAndBindUi(this));

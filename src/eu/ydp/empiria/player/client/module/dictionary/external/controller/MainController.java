@@ -12,25 +12,23 @@ public class MainController implements PasswordsLoadingListener, ExplanationList
 	@Inject
 	private PasswordsController passwordsController;
 	@Inject
-	private EntriesController entriesController;
-	@Inject
 	private MainView mainView;
 
-	private Panel root;
+	private Panel wrappingPanel;
 	private boolean shouldInitialized = true;
 
-	public void init(Panel root) {
+	public void init(Panel panel) {
 		if (shouldInitialized) {
-			this.root = root;
+			this.wrappingPanel = panel;
 			passwordsController.load();
 			shouldInitialized = false;
 		}
 	}
-
+	
 	@Override
 	public void onPasswordsLoaded() {
 		mainView.init(getSelectedPassword());
-		root.add(mainView);
+		wrappingPanel.add(mainView);
 	}
 
 	@Override

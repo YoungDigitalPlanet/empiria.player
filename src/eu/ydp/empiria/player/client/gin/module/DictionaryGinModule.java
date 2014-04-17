@@ -4,7 +4,6 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesController;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesSocket;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.MainController;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsController;
@@ -32,7 +31,6 @@ public class DictionaryGinModule extends AbstractGinModule {
 		bind(PasswordsSocket.class).to(PasswordsController.class);
 		bind(PasswordsController.class).in(Singleton.class);
 
-		bind(EntriesSocket.class).to(EntriesController.class);
 		bind(EntriesController.class).in(Singleton.class);
 
 		bind(MainView.class).in(Singleton.class);

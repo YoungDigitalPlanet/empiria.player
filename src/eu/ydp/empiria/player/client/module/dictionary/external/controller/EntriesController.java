@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.module.dictionary.external.util.DocumentLoad
 import eu.ydp.empiria.player.client.module.dictionary.external.util.DocumentLoadingListener;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 
-public class EntriesController implements EntriesSocket, DocumentLoadingListener {
+public class EntriesController implements DocumentLoadingListener {
 
 	private static final String RELATIVE_EXPLANATIONS_DIR = "dictionary/explanations/";
 
@@ -34,11 +34,11 @@ public class EntriesController implements EntriesSocket, DocumentLoadingListener
 		EXPLANATIONS_DIR = commonsPath + RELATIVE_EXPLANATIONS_DIR;
 	}
 
-	@Override
 	public void loadEntry(String password, int index, boolean playSound) {
 		lastIndex = index;
 		lastPlaySound = playSound;
-		final String path = EXPLANATIONS_DIR + intToString(new Integer(index / 50) * 50, 5) + ".xml";
+		final String path = EXPLANATIONS_DIR
+				+ intToString(new Integer(index / 50) * 50, 5) + ".xml";
 		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 
 			@Override
@@ -51,7 +51,8 @@ public class EntriesController implements EntriesSocket, DocumentLoadingListener
 	@Override
 	public void onDocumentLoaded(String text) {
 		Document document = XMLParser.parse(text);
-		Element element = (Element) document.getElementsByTagName("word").item(lastIndex % 50);
+		Element element = (Element) document.getElementsByTagName("word").item(
+				lastIndex % 50);
 
 		Entry e = new Entry(element);
 
