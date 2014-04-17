@@ -15,13 +15,19 @@ public class EmpiriaPaths {
 	public String getBasePath() {
 		AssessmentData assessmentData = dataSourceManager.getAssessmentData();
 		XmlData data = assessmentData.getData();
-		return ensureEndingSlash(data.getBaseURL());
+		return ensureTrailingSlash(data.getBaseURL());
 	}
 
 	public String getCommonsPath() {
 		String baseURL = getBasePath();
 		String commonsPath = baseURL + "common";
-		return ensureEndingSlash(commonsPath);
+		return ensureTrailingSlash(commonsPath);
+	}
+
+	public String getPathRelativeToCommons(String path) {
+		String commonsPath = getCommonsPath();
+		String relativePath = commonsPath + path;
+		return ensureTrailingSlash(relativePath);
 	}
 
 	public String getCommonsFilePath(String filename) {
@@ -29,7 +35,7 @@ public class EmpiriaPaths {
 		return commonsPath + filename;
 	}
 
-	private String ensureEndingSlash(String path) {
+	private String ensureTrailingSlash(String path) {
 		if (!path.endsWith(SEPARATOR)) {
 			path += SEPARATOR;
 		}

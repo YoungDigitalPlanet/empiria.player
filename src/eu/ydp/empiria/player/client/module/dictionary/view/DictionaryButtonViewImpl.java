@@ -1,13 +1,15 @@
 package eu.ydp.empiria.player.client.module.dictionary.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
+import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 public class DictionaryButtonViewImpl extends Composite implements DictionaryButtonView {
@@ -25,8 +27,11 @@ public class DictionaryButtonViewImpl extends Composite implements DictionaryBut
 	@UiField
 	CustomPushButton showPopupButton;
 
+	@Inject
+	private UserInteractionHandlerFactory userInteractionHandlerFactory;
+
 	@Override
-	public void addClickHandler(ClickHandler clickHandler) {
-		showPopupButton.addClickHandler(clickHandler);
+	public void addHandler(Command command) {
+		userInteractionHandlerFactory.createUserClickHandler(command).apply(showPopupButton);
 	}
 }
