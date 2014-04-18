@@ -6,7 +6,5 @@ public interface PasswordsSocket {
 
 	public PasswordsResult getPasswords(String letter);
 
-	public int getPasswordIndex(String password);
-
 	public Set<String> getLetters();
 }

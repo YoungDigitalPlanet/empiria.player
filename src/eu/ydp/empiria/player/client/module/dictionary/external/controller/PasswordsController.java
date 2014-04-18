@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,25 +76,6 @@ public class PasswordsController implements PasswordsSocket, FileRequestCallback
 		PasswordsResultFinder finder = finderProvider.get();
 		PasswordsResult matchingPasswords = finder.findPhrasesMatchingPrefix(currPasswords, baseIndexes, text.toLowerCase());
 		return matchingPasswords;
-	}
-
-	@Override
-	public int getPasswordIndex(String password) {
-		if (password == null || password.length() == 0) {
-			return -1;
-		}
-		String letter = password.substring(0, 1).toLowerCase();
-		Iterator<String> letters = passwords.keySet().iterator();
-		int index = 0;
-		while (true) {
-			String currLetter = letters.next();
-			if (currLetter.equals(letter)) {
-				break;
-			}
-			index += passwords.get(currLetter).size();
-		}
-		index += passwords.get(letter).indexOf(password);
-		return index;
 	}
 
 	@Override
