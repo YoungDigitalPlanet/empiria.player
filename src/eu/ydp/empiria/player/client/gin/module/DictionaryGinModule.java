@@ -15,6 +15,8 @@ import eu.ydp.empiria.player.client.module.dictionary.external.controller.Passwo
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.MainView;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.MenuView;
+import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChanger;
+import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChangerProvider;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonView;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonViewImpl;
 import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupView;
@@ -41,8 +43,10 @@ public class DictionaryGinModule extends AbstractGinModule {
 		bind(MenuView.class).in(Singleton.class);
 		bind(ExplanationView.class).in(Singleton.class);
 
-		install(new GinFactoryModuleBuilder().implement(
-				FileRequestCallback.class, DictionaryFileRequestCallback.class)
-				.build(DictionaryModuleFactory.class));
+		bind(VisibilityChanger.class).toProvider(VisibilityChangerProvider.class);
+		bind(VisibilityChanger.class).in(Singleton.class);
+
+		install(new GinFactoryModuleBuilder().implement(FileRequestCallback.class, DictionaryFileRequestCallback.class).build(DictionaryModuleFactory.class));
+
 	}
 }

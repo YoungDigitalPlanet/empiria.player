@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
@@ -39,7 +37,6 @@ import eu.ydp.empiria.player.client.module.dictionary.external.controller.Passwo
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsSocket;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ViewType;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChanger;
-import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChangerSupplier;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityClient;
 
 public class MenuView extends Composite implements VisibilityClient {
@@ -79,7 +76,8 @@ public class MenuView extends Composite implements VisibilityClient {
 	private Provider<PasswordsSocket> passwordsSocket;
 	@Inject
 	private EntriesController entriesController;
-	private final Supplier<VisibilityChanger> visibilityChangerSupplier = Suppliers.memoize(new VisibilityChangerSupplier());
+	@Inject
+	private VisibilityChanger visibilityChanger;
 
 	private final Timer fillTimer = new Timer() {
 
@@ -99,11 +97,11 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	public void show() {
-		visibilityChangerSupplier.get().show(this);
+		visibilityChanger.show(this);
 	}
 
 	public void hide() {
-		visibilityChangerSupplier.get().hide(this);
+		visibilityChanger.hide(this);
 	}
 
 	@Override
@@ -330,8 +328,8 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	private native void exitJs()/*-{
-								if (typeof $wnd.dictionaryExit == 'function') {
-								$wnd.dictionaryExit();
-								}
-								}-*/;
+		if (typeof $wnd.dictionaryExit == 'function') {
+			$wnd.dictionaryExit();
+		}
+	}-*/;
 }
