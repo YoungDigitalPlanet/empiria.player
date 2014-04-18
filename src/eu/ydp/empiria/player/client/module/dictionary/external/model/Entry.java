@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.model;
 
-
 public class Entry {
 
 	private final String ang;
@@ -10,8 +9,7 @@ public class Entry {
 	private final String angSound;
 	private final String descrSound;
 
-	Entry(String ang, String pol, String post, String desc, String angSound,
-			String descrSound) {
+	Entry(String ang, String pol, String post, String desc, String angSound, String descrSound) {
 		this.ang = ang;
 		this.pol = pol;
 		this.post = post;

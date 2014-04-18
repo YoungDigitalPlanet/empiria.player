@@ -23,10 +23,8 @@ public class EntriesController {
 	@Inject
 	private DictionaryModuleFactory dictionaryModuleFactory;
 
-	public void loadEntry(String password, final int index,
-			final boolean playSound) {
-		final String path = dictionaryFilenameProvider
-				.getFilePathForIndex(index);
+	public void loadEntry(String password, final int index, final boolean playSound) {
+		final String path = dictionaryFilenameProvider.getFilePathForIndex(index);
 
 		scheduler.scheduleDeferred(new ScheduledCommand() {
 
@@ -34,8 +32,7 @@ public class EntriesController {
 			public void execute() {
 				FileRequest fileRequest = GWT.create(FileRequest.class);
 				try {
-					FileRequestCallback fileRequestCallback = dictionaryModuleFactory
-							.createFileRequestCallback(index, playSound);
+					FileRequestCallback fileRequestCallback = dictionaryModuleFactory.createFileRequestCallback(index, playSound);
 
 					fileRequest.setUrl(path);
 					fileRequest.send(null, fileRequestCallback);

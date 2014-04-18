@@ -19,8 +19,7 @@ import eu.ydp.jsfilerequest.client.FileRequestCallback;
 import eu.ydp.jsfilerequest.client.FileRequestException;
 import eu.ydp.jsfilerequest.client.FileResponse;
 
-public class PasswordsController implements PasswordsSocket,
-		FileRequestCallback {
+public class PasswordsController implements PasswordsSocket, FileRequestCallback {
 
 	private static final String PASSWORD_FILE_PATH = "dictionary/passwords/passwords.txt";
 	private final String PASSWORDS_PATH;
@@ -75,8 +74,7 @@ public class PasswordsController implements PasswordsSocket,
 			return null;
 		}
 		PasswordsResultFinder finder = finderProvider.get();
-		PasswordsResult matchingPasswords = finder.findPhrasesMatchingPrefix(
-				currPasswords, baseIndexes, text.toLowerCase());
+		PasswordsResult matchingPasswords = finder.findPhrasesMatchingPrefix(currPasswords, baseIndexes, text.toLowerCase());
 		return matchingPasswords;
 	}
 
@@ -114,10 +112,8 @@ public class PasswordsController implements PasswordsSocket,
 
 		for (int i = 0; i < wordsByLetters.length; i++) {
 			if (wordsByLetters[i].length() > 0) {
-				List<String> letters = Arrays.asList(wordsByLetters[i]
-						.split("\n"));
-				passwords.put(letters.get(0).substring(0, 1).toLowerCase(),
-						letters);
+				List<String> letters = Arrays.asList(wordsByLetters[i].split("\n"));
+				passwords.put(letters.get(0).substring(0, 1).toLowerCase(), letters);
 			}
 		}
 
@@ -125,8 +121,7 @@ public class PasswordsController implements PasswordsSocket,
 		int indexSum = 0;
 
 		for (List<String> currList : passwords.values()) {
-			baseIndexes.put(currList.get(0).substring(0, 1).toLowerCase(),
-					indexSum);
+			baseIndexes.put(currList.get(0).substring(0, 1).toLowerCase(), indexSum);
 			indexSum += currList.size();
 		}
 

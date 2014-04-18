@@ -24,7 +24,7 @@ public class MainController implements PasswordsLoadingListener, ExplanationList
 			shouldInitialized = false;
 		}
 	}
-	
+
 	@Override
 	public void onPasswordsLoaded() {
 		mainView.init(getSelectedPassword());

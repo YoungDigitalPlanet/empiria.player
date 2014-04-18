@@ -79,8 +79,7 @@ public class MenuView extends Composite implements VisibilityClient {
 	private Provider<PasswordsSocket> passwordsSocket;
 	@Inject
 	private EntriesController entriesController;
-	private final Supplier<VisibilityChanger> visibilityChangerSupplier = Suppliers
-			.memoize(new VisibilityChangerSupplier());
+	private final Supplier<VisibilityChanger> visibilityChangerSupplier = Suppliers.memoize(new VisibilityChangerSupplier());
 
 	private final Timer fillTimer = new Timer() {
 
@@ -90,8 +89,7 @@ public class MenuView extends Composite implements VisibilityClient {
 		}
 	};;
 
-	private static MenuViewUiBinder uiBinder = GWT
-			.create(MenuViewUiBinder.class);
+	private static MenuViewUiBinder uiBinder = GWT.create(MenuViewUiBinder.class);
 
 	interface MenuViewUiBinder extends UiBinder<Widget, MenuView> {
 	}
@@ -124,8 +122,7 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	public void init(String selectedPassword) {
-		String initialPassword = (selectedPassword != null && selectedPassword
-				.length() > 0) ? selectedPassword : "a";
+		String initialPassword = (selectedPassword != null && selectedPassword.length() > 0) ? selectedPassword : "a";
 
 		searchTextBox.setText(selectedPassword);
 
@@ -141,8 +138,7 @@ public class MenuView extends Composite implements VisibilityClient {
 
 			@Override
 			public void onScroll(ScrollEvent event) {
-				scrollbarPanel.updateScrollBar(passwordsPanel,
-						passwordsListPanel);
+				scrollbarPanel.updateScrollBar(passwordsPanel, passwordsListPanel);
 
 			}
 		}, ScrollEvent.getType());
@@ -259,20 +255,16 @@ public class MenuView extends Composite implements VisibilityClient {
 			scrollbarPanel.setScrollTop(passwordsPanel.getElement(), 0);
 			passwordButtons = new ArrayList<PushButtonWithIndex>();
 			prevSelectedButton = null;
-			fillOptions(passwordsResultString.getList(),
-					passwordsResultString.getIndex(), PASSWORDS_COUNT_INIT);
+			fillOptions(passwordsResultString.getList(), passwordsResultString.getIndex(), PASSWORDS_COUNT_INIT);
 		}
 	}
 
-	private void fillOptions(List<String> pwds, int firstPasswordIndex,
-			int count) {
+	private void fillOptions(List<String> pwds, int firstPasswordIndex, int count) {
 
 		int alreadyShownOptionsCount = passwordButtons.size();
 
-		for (int i = alreadyShownOptionsCount; i < pwds.size()
-				&& i < alreadyShownOptionsCount + count; i++) {
-			final PushButtonWithIndex currPwd = new PushButtonWithIndex(
-					pwds.get(i));
+		for (int i = alreadyShownOptionsCount; i < pwds.size() && i < alreadyShownOptionsCount + count; i++) {
+			final PushButtonWithIndex currPwd = new PushButtonWithIndex(pwds.get(i));
 			currPwd.setIndex(firstPasswordIndex + i);
 			currPwd.setStylePrimaryName("dict-password-button");
 			currPwd.addClickHandler(new ClickHandler() {
@@ -299,8 +291,7 @@ public class MenuView extends Composite implements VisibilityClient {
 		}
 		showMoreButton = new PushButton("Show more");
 		showMoreButton.setStylePrimaryName("dict-showmore-button");
-		showMoreButton.getElement().getElementsByTagName("input").getItem(0)
-				.getStyle().setPosition(Position.RELATIVE);
+		showMoreButton.getElement().getElementsByTagName("input").getItem(0).getStyle().setPosition(Position.RELATIVE);
 		showMoreButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -311,8 +302,7 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	private void showMore() {
-		fillOptions(passwordsResultString.getList(),
-				passwordsResultString.getIndex(), PASSWORDS_COUNT_EXTENSION);
+		fillOptions(passwordsResultString.getList(), passwordsResultString.getIndex(), PASSWORDS_COUNT_EXTENSION);
 
 	}
 
@@ -326,13 +316,11 @@ public class MenuView extends Composite implements VisibilityClient {
 		entriesController.loadEntry(pwd, index, playSound);
 	}
 
-	private void selectButton(PushButtonWithIndex buttonToSelect,
-			boolean playSound) {
+	private void selectButton(PushButtonWithIndex buttonToSelect, boolean playSound) {
 		unselectAllButtons();
 		prevSelectedButton = buttonToSelect;
 		buttonToSelect.addStyleDependentName("selected");
-		showExplanation(buttonToSelect.getText(), buttonToSelect.getIndex(),
-				playSound);
+		showExplanation(buttonToSelect.getText(), buttonToSelect.getIndex(), playSound);
 	}
 
 	private void unselectAllButtons() {
@@ -342,8 +330,8 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	private native void exitJs()/*-{
-		if (typeof $wnd.dictionaryExit == 'function') {
-			$wnd.dictionaryExit();
-		}
-	}-*/;
+								if (typeof $wnd.dictionaryExit == 'function') {
+								$wnd.dictionaryExit();
+								}
+								}-*/;
 }

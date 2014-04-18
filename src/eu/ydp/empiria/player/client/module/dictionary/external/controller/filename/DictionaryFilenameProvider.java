@@ -14,8 +14,7 @@ public class DictionaryFilenameProvider {
 	private final EmpiriaPaths empiriaPaths;
 
 	@Inject
-	public DictionaryFilenameProvider(EmpiriaPaths empiriaPaths,
-			NumberFormatWrapper numberFormatWrapper) {
+	public DictionaryFilenameProvider(EmpiriaPaths empiriaPaths, NumberFormatWrapper numberFormatWrapper) {
 		this.empiriaPaths = empiriaPaths;
 		this.numberFormatWrapper = numberFormatWrapper;
 	}
