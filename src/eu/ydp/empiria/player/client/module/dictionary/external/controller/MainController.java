@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.inject.Inject;
 
@@ -27,7 +26,7 @@ public class MainController implements PasswordsLoadingListener, ExplanationList
 
 	@Override
 	public void onPasswordsLoaded() {
-		mainView.init(getSelectedPassword());
+		mainView.init();
 		wrappingPanel.add(mainView);
 	}
 
@@ -40,20 +39,4 @@ public class MainController implements PasswordsLoadingListener, ExplanationList
 	public void onBackClick() {
 		mainView.hideExplanation();
 	}
-
-	private String getSelectedPassword() {
-		String pwd = getSelectedPasswordNative();
-		if (pwd != null) {
-			pwd = URL.decode(pwd);
-		}
-		return pwd;
-	}
-
-	private native String getSelectedPasswordNative()/*-{
-														if (typeof $wnd.empiriaDictionaryInternalGetPassword == 'function'){
-														return $wnd.empiriaDictionaryInternalGetPassword();
-														}
-														return "";
-														}-*/;
-
 }

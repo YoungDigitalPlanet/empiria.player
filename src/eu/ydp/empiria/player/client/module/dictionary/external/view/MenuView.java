@@ -119,10 +119,8 @@ public class MenuView extends Composite implements VisibilityClient {
 		return getElement().getStyle();
 	}
 
-	public void init(String selectedPassword) {
-		String initialPassword = (selectedPassword != null && selectedPassword.length() > 0) ? selectedPassword : "a";
-
-		searchTextBox.setText(selectedPassword);
+	public void init() {
+		String initialPassword = "a";
 
 		fillQuickLetters();
 
