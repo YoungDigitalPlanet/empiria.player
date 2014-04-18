@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -30,6 +29,8 @@ public class PasswordsController implements PasswordsSocket, FileRequestCallback
 	@Inject
 	private Provider<PasswordsResultFinder> finderProvider;
 	@Inject
+	private Provider<FileRequest> fileRequestProvider;
+	@Inject
 	private Logger logger;
 
 	private Map<String, List<String>> passwords;
@@ -41,8 +42,8 @@ public class PasswordsController implements PasswordsSocket, FileRequestCallback
 	}
 
 	public void load() {
-		FileRequest fileRequest = GWT.create(FileRequest.class);
 		try {
+			FileRequest fileRequest = fileRequestProvider.get();
 			fileRequest.setUrl(PASSWORDS_PATH);
 			fileRequest.send(null, this);
 		} catch (FileRequestException exception) {
