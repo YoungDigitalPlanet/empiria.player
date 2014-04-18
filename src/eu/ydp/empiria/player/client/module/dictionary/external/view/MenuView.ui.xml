@@ -10,7 +10,7 @@
 				<g:FlowPanel styleName="dict-search-box-panel">
 					<g:FlowPanel styleName="dict-search-box-prefix"></g:FlowPanel>
 					<g:FlowPanel styleName="dict-search-box-container">
-						<c:PasteawareTextBox styleName="dict-search-box" ui:field="searchTextBox"/>
+						<c:PasteAwareTextBox styleName="dict-search-box" ui:field="searchTextBox"/>
 					</g:FlowPanel>
 					<g:FlowPanel styleName="dict-search-box-sufix"></g:FlowPanel>
 				</g:FlowPanel>

@@ -27,8 +27,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteawareTextBox;
-import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteawareTextBox.PasteListener;
+import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox;
+import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox.PasteListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PushButtonWithIndex;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.ScrollbarPanel;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesController;
@@ -45,7 +45,7 @@ public class MenuView extends Composite implements VisibilityClient {
 	private static final int PASSWORDS_COUNT_EXTENSION = 25;
 
 	@UiField
-	PasteawareTextBox searchTextBox;
+    PasteAwareTextBox searchTextBox;
 	@UiField
 	PushButton searchButton;
 
