@@ -79,13 +79,13 @@ public class ExplanationView extends Composite {
 
 	public void displayEntry(Entry entry, boolean isPlaySound) {
 		if (entry != null) {
-			postLabel.setText(entry.getPost());
-			angLabel.setText(entry.getAng());
-			polLabel.setHTML(entry.getPol());
-			descLabel.setText(entry.getDesc());
-			descrSound = entry.getDescrSound();
+			postLabel.setText(entry.getType());
+			angLabel.setText(entry.getEntry());
+			polLabel.setHTML(entry.getEntryDescription());
+			descLabel.setText(entry.getEntryExample());
+			descrSound = entry.getEntryExampleSound();
 			if (isPlaySound) {
-				playSound(entry.getAngSound());
+				playSound(entry.getEntrySound());
 			}
 		}
 	}

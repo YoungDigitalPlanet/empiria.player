@@ -2,44 +2,44 @@ package eu.ydp.empiria.player.client.module.dictionary.external.model;
 
 public class Entry {
 
-	private final String ang;
-	private final String pol;
-	private final String post;
-	private final String desc;
-	private final String angSound;
-	private final String descrSound;
+	private final String entry;
+	private final String entryDescription;
+	private final String type;
+	private final String entryExample;
+	private final String entrySound;
+	private final String entryExampleSound;
 
-	Entry(String ang, String pol, String post, String desc, String angSound, String descrSound) {
-		this.ang = ang;
-		this.pol = pol;
-		this.post = post;
-		this.desc = desc;
-		this.angSound = angSound;
-		this.descrSound = descrSound;
+	Entry(String entry, String entryDescription, String type, String entryExample, String entrySound, String entryExampleSound) {
+		this.entry = entry;
+		this.entryDescription = entryDescription;
+		this.type = type;
+		this.entryExample = entryExample;
+		this.entrySound = entrySound;
+		this.entryExampleSound = entryExampleSound;
 	}
 
-	public String getAng() {
-		return ang;
+	public String getEntry() {
+		return entry;
 	}
 
-	public String getPol() {
-		return pol;
+	public String getEntryDescription() {
+		return entryDescription;
 	}
 
-	public String getPost() {
-		return post;
+	public String getType() {
+		return type;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getEntryExample() {
+		return entryExample;
 	}
 
-	public String getAngSound() {
-		return angSound;
+	public String getEntrySound() {
+		return entrySound;
 	}
 
-	public String getDescrSound() {
-		return descrSound;
+	public String getEntryExampleSound() {
+		return entryExampleSound;
 	}
 
 }
