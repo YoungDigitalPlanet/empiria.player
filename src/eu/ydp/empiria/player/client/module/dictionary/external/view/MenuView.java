@@ -41,11 +41,15 @@ import eu.ydp.empiria.player.client.module.dictionary.external.controller.ViewTy
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChanger;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChangerSupplier;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityClient;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class MenuView extends Composite implements VisibilityClient {
 
 	private static final int PASSWORDS_COUNT_INIT = 25;
 	private static final int PASSWORDS_COUNT_EXTENSION = 25;
+
+	@Inject
+	private StyleNameConstants styleNameConstants;
 
 	@UiField
 	PasteawareTextBox searchTextBox;
@@ -75,6 +79,8 @@ public class MenuView extends Composite implements VisibilityClient {
 	private PushButton showMoreButton;
 	private int prevScroll;
 
+	@Inject
+	private StyleNameConstants slyNameConstants;
 	@Inject
 	private Provider<PasswordsSocket> passwordsSocket;
 	@Inject
@@ -189,11 +195,11 @@ public class MenuView extends Composite implements VisibilityClient {
 
 	private void fillQuickLettersHalf(Iterator<String> letter) {
 		Panel qlList = new FlowPanel();
-		qlList.setStyleName("dict-quickletters-list");
+		qlList.setStyleName(styleNameConstants.QP_DICTIONARY_QUICKLETTERS_LIST());
 		while (letter.hasNext()) {
 			final String currLetter = letter.next();
 			PushButton quickLetterButton = new PushButton(currLetter);
-			quickLetterButton.setStyleName("dict-quickletter-button");
+			quickLetterButton.setStyleName(styleNameConstants.QP_DICTIONARY_QUICKLETTERS_LIST());
 			quickLetterButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -213,7 +219,7 @@ public class MenuView extends Composite implements VisibilityClient {
 		while (letter.hasNext()) {
 			final String currLetter = letter.next();
 			PushButton quickLetterButton = new PushButton(currLetter);
-			quickLetterButton.setStyleName("dict-quickletter-button");
+			quickLetterButton.setStyleName(styleNameConstants.QP_DICTIONARY_QUICKLETTERS_BUTTON());
 			quickLetterButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -266,7 +272,7 @@ public class MenuView extends Composite implements VisibilityClient {
 		for (int i = alreadyShownOptionsCount; i < pwds.size() && i < alreadyShownOptionsCount + count; i++) {
 			final PushButtonWithIndex currPwd = new PushButtonWithIndex(pwds.get(i));
 			currPwd.setIndex(firstPasswordIndex + i);
-			currPwd.setStylePrimaryName("dict-password-button");
+			currPwd.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_PASSWORD_BUTTON());
 			currPwd.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -290,7 +296,7 @@ public class MenuView extends Composite implements VisibilityClient {
 			return showMoreButton;
 		}
 		showMoreButton = new PushButton("Show more");
-		showMoreButton.setStylePrimaryName("dict-showmore-button");
+		showMoreButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_SHOW_MORE_BUTTON());
 		showMoreButton.getElement().getElementsByTagName("input").getItem(0).getStyle().setPosition(Position.RELATIVE);
 		showMoreButton.addClickHandler(new ClickHandler() {
 			@Override

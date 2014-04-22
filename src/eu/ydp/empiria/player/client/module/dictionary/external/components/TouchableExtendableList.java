@@ -14,7 +14,11 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+
 public class TouchableExtendableList extends FlowPanel {
+
+	private StyleNameConstants styleNameConstants;
 
 	protected AbsolutePanel mainPanel;
 	protected Panel listPanel;
@@ -32,9 +36,9 @@ public class TouchableExtendableList extends FlowPanel {
 		super();
 
 		mainPanel = new AbsolutePanel();
-		mainPanel.setStyleName("tel-main");
+		mainPanel.setStyleName(styleNameConstants.QP_DICTIONARY_TEL_MAIN());
 		listPanel = new FlowPanel();
-		listPanel.setStyleName("tel-list");
+		listPanel.setStyleName(styleNameConstants.QP_DICTIONARY_TEL_LIST());
 		mainPanel.add(listPanel);
 		add(mainPanel);
 		items = new ArrayList<TouchableExtendableListItem>();

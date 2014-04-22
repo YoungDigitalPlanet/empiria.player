@@ -20,6 +20,7 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.util.CertProvider;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ExplanationView extends Composite {
 
@@ -27,6 +28,9 @@ public class ExplanationView extends Composite {
 
 	interface ExplanationViewUiBinder extends UiBinder<Widget, ExplanationView> {
 	}
+
+	@Inject
+	private StyleNameConstants styleNameConstants;
 
 	@UiField
 	Panel postPanel;
@@ -127,20 +131,20 @@ public class ExplanationView extends Composite {
 	private void playDescrSound() {
 		if (descrSound != null && !descrSound.equals("")) {
 			playSound(descrSound);
-			playButton.setStylePrimaryName("dict-explanation-play-button-playing");
+			playButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON_PLAYING());
 			playingDescr = true;
 		}
 	}
 
 	// changed
 	public void stopDescrSound() {
-		playButton.setStylePrimaryName("dict-explanation-play-button");
+		playButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON());
 		playingDescr = false;
 		stopSoundJs();
 	}
 
 	private void soundDescrFinished() {
-		playButton.setStylePrimaryName("dict-explanation-play-button");
+		playButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON());
 		playingDescr = false;
 	}
 

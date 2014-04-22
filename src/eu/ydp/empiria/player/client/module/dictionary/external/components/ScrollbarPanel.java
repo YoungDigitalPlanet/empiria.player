@@ -10,6 +10,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ScrollbarPanel extends Composite {
 
@@ -17,6 +20,9 @@ public class ScrollbarPanel extends Composite {
 
 	interface ScrollbarPanelUiBinder extends UiBinder<Widget, ScrollbarPanel> {
 	}
+
+	@Inject
+	private StyleNameConstants styleNameConstants;
 
 	@UiField
 	AbsolutePanel scrollPanelContainer;
@@ -28,6 +34,7 @@ public class ScrollbarPanel extends Composite {
 	FlowPanel scrollBody;
 	@UiField
 	FlowPanel scrollFooter;
+
 	protected Timer scrollbarTimer;
 
 	public ScrollbarPanel() {
@@ -70,7 +77,7 @@ public class ScrollbarPanel extends Composite {
 		scrollbarTimer.cancel();
 		scrollbarTimer.schedule(500);
 		opacityto(scrollPanel.getElement(), 100);
-		scrollPanel.setStyleName("empiria-tools-scroll-panel");
+		scrollPanel.setStyleName(styleNameConstants.QP_DICTIONARY_SCROLL_CONTAINER());
 	}
 
 	public native int getScrollTop(Element el)/*-{
