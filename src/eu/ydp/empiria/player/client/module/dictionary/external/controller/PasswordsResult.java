@@ -1,7 +1,8 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 public class PasswordsResult {
 
@@ -9,7 +10,7 @@ public class PasswordsResult {
 	private final Integer index;
 
 	public PasswordsResult() {
-		this.list = new ArrayList<String>();
+		this.list = Lists.newArrayList();
 		this.index = -1;
 	}
 
