@@ -10,17 +10,17 @@
 				<g:FlowPanel styleName="dict-search-box-panel">
 					<g:FlowPanel styleName="dict-search-box-prefix"></g:FlowPanel>
 					<g:FlowPanel styleName="dict-search-box-container">
-						<c:PasteawareTextBox styleName="dict-search-box" ui:field="searchTextBox"/>
+						<c:PasteAwareTextBox styleName="dict-search-box" ui:field="searchTextBox"/>
 					</g:FlowPanel>
 					<g:FlowPanel styleName="dict-search-box-sufix"></g:FlowPanel>
 				</g:FlowPanel>
 				<g:PushButton styleName="dict-seach-button" ui:field="searchButton">go</g:PushButton>
 			</g:FlowPanel>
 			<g:FlowPanel styleName="dict-quickletter-panel" ui:field="quickLettersPanel"></g:FlowPanel>
-			<g:FlowPanel styleName="dict-passwords-panel-container" ui:field="passwordsPanelContainer">
-				<g:FlowPanel styleName="dict-passwords-panel" ui:field="passwordsPanel">
-					<g:ScrollPanel styleName="dict-passwords-list-panel" ui:field="passwordsListPanel">
-						<g:FlowPanel styleName="dict-passwords-list-panel-body" ui:field="passwordsListPanelBody">
+			<g:FlowPanel styleName="dict-words-panel-container" ui:field="passwordsPanelContainer">
+				<g:FlowPanel styleName="dict-words-panel" ui:field="passwordsPanel">
+					<g:ScrollPanel styleName="dict-words-list-panel" ui:field="passwordsListPanel">
+						<g:FlowPanel styleName="dict-words-list-panel-body" ui:field="passwordsListPanelBody">
 						</g:FlowPanel>						
 					</g:ScrollPanel>
 				</g:FlowPanel>

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.google.common.collect.Range;
 
-public class PasswordFinderLetterCaseTest extends AbstractPasswordsFinderTestBase {
+public class WordFinderLetterCaseTest extends AbstractPasswordsFinderTestBase {
 
 	@Override
 	protected Object[][] getParams() {

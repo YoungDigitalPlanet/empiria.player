@@ -34,12 +34,12 @@ public class MainView extends SimplePanel {
 	@UiField
 	PushButton exitButton;
 
-	public void init(String selectedPassword) {
+	public void init() {
 		if (Options.getViewType() == ViewType.HALF) {
 			explanationView.hide();
 		}
 		setWidget(uiBinder.createAndBindUi(this));
-		menuView.init(selectedPassword);
+		menuView.init();
 	}
 
 	@UiHandler("exitButton")
@@ -69,8 +69,8 @@ public class MainView extends SimplePanel {
 	}
 
 	private native void exitJs()/*-{
-								if (typeof $wnd.dictionaryExit == 'function'){
-								$wnd.dictionaryExit();
-								}
-								}-*/;
+		if (typeof $wnd.dictionaryExit == 'function') {
+			$wnd.dictionaryExit();
+		}
+	}-*/;
 }

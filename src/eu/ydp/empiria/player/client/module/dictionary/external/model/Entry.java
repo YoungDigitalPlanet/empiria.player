@@ -1,71 +1,45 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.model;
 
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NodeList;
-
 public class Entry {
 
-	private final String ang;
-	private final String pol;
-	private final String post;
-	private final String desc;
-	private final String angSound;
-	private final String descrSound;
+	private final String entry;
+	private final String entryDescription;
+	private final String type;
+	private final String entryExample;
+	private final String entrySound;
+	private final String entryExampleSound;
 
-	public Entry() {
-		ang = "";
-		pol = "";
-		post = "";
-		desc = "";
-		angSound = "";
-		descrSound = "";
+	Entry(String entry, String entryDescription, String type, String entryExample, String entrySound, String entryExampleSound) {
+		this.entry = entry;
+		this.entryDescription = entryDescription;
+		this.type = type;
+		this.entryExample = entryExample;
+		this.entrySound = entrySound;
+		this.entryExampleSound = entryExampleSound;
 	}
 
-	public Entry(Element element) {
-		ang = fetchValue(element, "ang", false);
-		pol = fetchValue(element, "pol", true);
-		post = fetchValue(element, "post", false);
-		desc = fetchValue(element, "desc", false);
-		angSound = fetchValue(element, "angSound", false);
-		descrSound = fetchValue(element, "descrSound", false);
+	public String getEntry() {
+		return entry;
 	}
 
-	String fetchValue(Element element, String name, boolean checkChildNode) {
-		String value = null;
-		if (checkChildNode) {
-			NodeList polNodes = element.getElementsByTagName(name);
-			if (polNodes.getLength() > 0) {
-				value = polNodes.item(0).toString();
-				value = value.substring(value.indexOf(">") + 1, value.lastIndexOf("</"));
-			}
-		}
-		if (value == null) {
-			value = element.getAttribute(name);
-		}
-		return value;
+	public String getEntryDescription() {
+		return entryDescription;
 	}
 
-	public String getAng() {
-		return ang;
+	public String getType() {
+		return type;
 	}
 
-	public String getPol() {
-		return pol;
+	public String getEntryExample() {
+		return entryExample;
 	}
 
-	public String getPost() {
-		return post;
+	public String getEntrySound() {
+		return entrySound;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getEntryExampleSound() {
+		return entryExampleSound;
 	}
 
-	public String getAngSound() {
-		return angSound;
-	}
-
-	public String getDescrSound() {
-		return descrSound;
-	}
 }

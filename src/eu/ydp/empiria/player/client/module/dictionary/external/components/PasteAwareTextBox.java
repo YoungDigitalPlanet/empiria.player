@@ -3,11 +3,11 @@ package eu.ydp.empiria.player.client.module.dictionary.external.components;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.TextBox;
 
-public class PasteawareTextBox extends TextBox {
+public class PasteAwareTextBox extends TextBox {
 
 	private PasteListener pasteListener;
 
-	public PasteawareTextBox() {
+	public PasteAwareTextBox() {
 		super();
 		registerNativePasteEvent(this.getElement());
 	}
@@ -27,7 +27,7 @@ public class PasteawareTextBox extends TextBox {
 	private native void registerNativePasteEvent(Element element)/*-{
 																	var instance = this;
 																	element.addEventListener ("input", function(){
-																	instance.@eu.ydp.empiria.player.client.module.dictionary.external.components.PasteawareTextBox::onPaste()();
+																	instance.@eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox::onPaste()();
 																	}, false);
 																	}-*/;
 }
