@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-public interface PasswordsLoadingListener {
+public interface WordsLoadingListener {
 
-	public void onPasswordsLoaded();
+	public void onWordsLoaded();
 
 }

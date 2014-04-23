@@ -4,37 +4,37 @@ import java.util.Set;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.filename.PasswordFilenameProvider;
-import eu.ydp.empiria.player.client.module.dictionary.external.model.Passwords;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.filename.WordsFilenameProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.jsfilerequest.client.FileRequest;
 import eu.ydp.jsfilerequest.client.FileRequestCallback;
 import eu.ydp.jsfilerequest.client.FileRequestException;
 import eu.ydp.jsfilerequest.client.FileResponse;
 
-public class PasswordsController implements PasswordsSocket, FileRequestCallback {
+public class WordsController implements WordsSocket, FileRequestCallback {
 
     @Inject
-    private Provider<PasswordsLoadingListener> listenerProvider;
+    private Provider<WordsLoadingListener> listenerProvider;
     @Inject
-    private PasswordFinder passwordFinder;
+    private WordFinder wordFinder;
     @Inject
     private Provider<FileRequest> fileRequestProvider;
     @Inject
-    private PasswordFilenameProvider passwordFilenameProvider;
+    private WordsFilenameProvider wordsFilenameProvider;
     @Inject
     private Logger logger;
     @Inject
-    private PasswordsExtractor passwordsExtractor;
+    private WordsExtractor wordsExtractor;
 
-    private Passwords passwords;
+    private Words words;
 
     public void load() {
         try {
-            String passwordFilename = passwordFilenameProvider.getName();
+            String wordsFilename = wordsFilenameProvider.getName();
 
             FileRequest fileRequest = fileRequestProvider.get();
-            fileRequest.setUrl(passwordFilename);
+            fileRequest.setUrl(wordsFilename);
             fileRequest.send(null, this);
         } catch (FileRequestException exception) {
             logger.error(exception);
@@ -42,22 +42,22 @@ public class PasswordsController implements PasswordsSocket, FileRequestCallback
     }
 
     @Override
-    public PasswordsResult getPasswords(String text) {
-        return passwordFinder.getPasswordsResult(text, passwords);
+    public WordsResult getWords(String text) {
+        return wordFinder.getWordsResult(text, words);
     }
 
     @Override
     public Set<String> getLetters() {
-        return passwords.getFirstLetters();
+        return words.getFirstLetters();
     }
 
     @Override
     public void onResponseReceived(FileRequest request, FileResponse response) {
         String text = response.getText();
 
-        passwords = passwordsExtractor.extractPasswords(text);
+        words = wordsExtractor.extractWords(text);
 
-        listenerProvider.get().onPasswordsLoaded();
+        listenerProvider.get().onWordsLoaded();
     }
 
     @Override

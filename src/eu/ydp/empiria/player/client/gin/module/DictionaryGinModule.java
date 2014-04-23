@@ -5,13 +5,8 @@ import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.DictionaryFileRequestCallback;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesController;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.MainController;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsController;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsLoadingListener;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsSocket;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.*;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsSocket;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.MainView;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.MenuView;
@@ -30,12 +25,12 @@ public class DictionaryGinModule extends AbstractGinModule {
 		bind(DictionaryButtonView.class).to(DictionaryButtonViewImpl.class);
 		bind(DictionaryPopupView.class).to(DictionaryPopupViewImpl.class);
 
-		bind(PasswordsLoadingListener.class).to(MainController.class);
+		bind(WordsLoadingListener.class).to(MainController.class);
 		bind(ExplanationListener.class).to(MainController.class);
 		bind(MainController.class).in(Singleton.class);
 
-		bind(PasswordsSocket.class).to(PasswordsController.class);
-		bind(PasswordsController.class).in(Singleton.class);
+		bind(WordsSocket.class).to(WordsController.class);
+		bind(WordsController.class).in(Singleton.class);
 
 		bind(EntriesController.class).in(Singleton.class);
 

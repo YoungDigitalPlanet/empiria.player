@@ -4,14 +4,14 @@ import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 
 import javax.inject.Inject;
 
-public class PasswordFilenameProvider {
+public class WordsFilenameProvider {
 
-    private static final String PASSWORD_FILE_PATH = "dictionary/passwords/passwords.txt";
+    private static final String WORDS_FILE_PATH = "dictionary/words/words.txt";
 
     @Inject
     private EmpiriaPaths empiriaPaths;
 
-    public String getName(){
-        return empiriaPaths.getCommonsFilePath(PASSWORD_FILE_PATH);
+    public String getName() {
+        return empiriaPaths.getCommonsFilePath(WORDS_FILE_PATH);
     }
 }

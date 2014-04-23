@@ -6,10 +6,10 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.MainView;
 
-public class MainController implements PasswordsLoadingListener, ExplanationListener {
+public class MainController implements WordsLoadingListener, ExplanationListener {
 
 	@Inject
-	private PasswordsController passwordsController;
+	private WordsController passwordsController;
 	@Inject
 	private MainView mainView;
 
@@ -25,7 +25,7 @@ public class MainController implements PasswordsLoadingListener, ExplanationList
 	}
 
 	@Override
-	public void onPasswordsLoaded() {
+	public void onWordsLoaded() {
 		mainView.init();
 		wrappingPanel.add(mainView);
 	}

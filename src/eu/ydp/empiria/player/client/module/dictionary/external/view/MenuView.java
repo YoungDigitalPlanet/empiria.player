@@ -31,11 +31,8 @@ import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteA
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox.PasteListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PushButtonWithIndex;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.ScrollbarPanel;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesController;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.Options;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsResult;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsSocket;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.ViewType;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.*;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsSocket;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChanger;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityClient;
 
@@ -66,14 +63,14 @@ public class MenuView extends Composite implements VisibilityClient {
 	ScrollbarPanel scrollbarPanel;
 
 	private List<PushButtonWithIndex> passwordButtons;
-	private PasswordsResult passwordsResultString;
+	private WordsResult wordsResultString;
 	private String prevLetter;
 	private PushButton prevSelectedButton;
 	private PushButton showMoreButton;
 	private int prevScroll;
 
 	@Inject
-	private Provider<PasswordsSocket> passwordsSocket;
+	private Provider<WordsSocket> passwordsSocket;
 	@Inject
 	private EntriesController entriesController;
 	@Inject
@@ -245,13 +242,13 @@ public class MenuView extends Composite implements VisibilityClient {
 
 	private void fillPasswords(String text) {
 		prevLetter = text;
-		passwordsResultString = passwordsSocket.get().getPasswords(text);
-		if (passwordsResultString != null) {
+		wordsResultString = passwordsSocket.get().getWords(text);
+		if (wordsResultString != null) {
 			passwordsListPanelBody.clear();
 			scrollbarPanel.setScrollTop(passwordsPanel.getElement(), 0);
 			passwordButtons = new ArrayList<PushButtonWithIndex>();
 			prevSelectedButton = null;
-			fillOptions(passwordsResultString.getList(), passwordsResultString.getIndex(), PASSWORDS_COUNT_INIT);
+			fillOptions(wordsResultString.getList(), wordsResultString.getIndex(), PASSWORDS_COUNT_INIT);
 		}
 	}
 
@@ -298,7 +295,7 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	private void showMore() {
-		fillOptions(passwordsResultString.getList(), passwordsResultString.getIndex(), PASSWORDS_COUNT_EXTENSION);
+		fillOptions(wordsResultString.getList(), wordsResultString.getIndex(), PASSWORDS_COUNT_EXTENSION);
 
 	}
 
