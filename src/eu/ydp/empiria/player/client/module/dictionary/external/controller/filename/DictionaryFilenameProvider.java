@@ -21,7 +21,8 @@ public class DictionaryFilenameProvider {
 
 	public String getFilePathForIndex(int index) {
 		final String explanationsDir = extractExplanationsDir();
-		return explanationsDir + formatNumber(calculateOffset(index)) + ".xml";
+        int offset = calculateOffset(index);
+        return explanationsDir + formatNumber(offset) + ".xml";
 	}
 
 	private String extractExplanationsDir() {

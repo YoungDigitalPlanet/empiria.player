@@ -14,13 +14,13 @@ public class MainController implements WordsLoadingListener, ExplanationListener
 	private MainView mainView;
 
 	private Panel wrappingPanel;
-	private boolean shouldInitialized = true;
+	private boolean shouldBeInitialized = true;
 
 	public void init(Panel panel) {
-		if (shouldInitialized) {
+		if (shouldBeInitialized) {
 			this.wrappingPanel = panel;
 			passwordsController.load();
-			shouldInitialized = false;
+			shouldBeInitialized = false;
 		}
 	}
 
