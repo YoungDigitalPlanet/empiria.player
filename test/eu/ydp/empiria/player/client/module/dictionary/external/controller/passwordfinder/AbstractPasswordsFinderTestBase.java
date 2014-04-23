@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.dictionary.external.controller.passw
 import java.util.List;
 import java.util.Map;
 
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsResult;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -11,8 +12,7 @@ import org.junit.runner.RunWith;
 
 import com.google.common.collect.Range;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsResult;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsResultFinder;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsResultFinder;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.search.BinarySearchBestMatch;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.search.LinearSearch;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,7 +29,7 @@ public abstract class AbstractPasswordsFinderTestBase {
 
 	protected static final int MAX_BRACED_WORDS = 11;
 
-	private final PasswordsResultFinder finder = new PasswordsResultFinder(new BinarySearchBestMatch<String>(), new LinearSearch<String>());
+	private final WordsResultFinder finder = new WordsResultFinder(new BinarySearchBestMatch<String>(), new LinearSearch<String>());
 	private final WordsPermutationUtil util = new WordsPermutationUtil();
 
 	protected abstract Object[][] getParams();
@@ -59,7 +59,7 @@ public abstract class AbstractPasswordsFinderTestBase {
 		Map<String, Integer> baseIndexes = mock(Map.class);
 		doReturn(0).when(baseIndexes).get(anyString());
 
-		PasswordsResult pwds = finder.findPhrasesMatchingPrefix(words, baseIndexes, needle);
+		WordsResult pwds = finder.findPhrasesMatchingPrefix(words, baseIndexes, needle);
 		if (expectedFirstFound == null) {
 			assertThat(pwds.getList().isEmpty(), equalTo(true));
 		} else {

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
@@ -29,17 +27,16 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteawareTextBox;
-import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteawareTextBox.PasteListener;
+import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox;
+import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox.PasteListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PushButtonWithIndex;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.ScrollbarPanel;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesSocket;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesController;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.Options;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsResult;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.PasswordsSocket;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ViewType;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsResult;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsSocket;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChanger;
-import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChangerSupplier;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityClient;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
@@ -48,11 +45,8 @@ public class MenuView extends Composite implements VisibilityClient {
 	private static final int PASSWORDS_COUNT_INIT = 25;
 	private static final int PASSWORDS_COUNT_EXTENSION = 25;
 
-	@Inject
-	private StyleNameConstants styleNameConstants;
-
 	@UiField
-	PasteawareTextBox searchTextBox;
+	PasteAwareTextBox searchTextBox;
 	@UiField
 	PushButton searchButton;
 
@@ -69,23 +63,27 @@ public class MenuView extends Composite implements VisibilityClient {
 	FlowPanel passwordsListPanelBody;
 	@UiField
 	PushButton exitButton;
-	@UiField
+	@Inject
+	@UiField(provided = true)
 	ScrollbarPanel scrollbarPanel;
 
 	private List<PushButtonWithIndex> passwordButtons;
-	private PasswordsResult passwordsResultString;
+	private WordsResult wordsResultString;
 	private String prevLetter;
 	private PushButton prevSelectedButton;
 	private PushButton showMoreButton;
 	private int prevScroll;
 
 	@Inject
-	private StyleNameConstants slyNameConstants;
+	private StyleNameConstants styleNameConstants;
 	@Inject
-	private Provider<PasswordsSocket> passwordsSocket;
+	private Provider<WordsSocket> passwordsSocket;
 	@Inject
-	private Provider<EntriesSocket> entriesSocket;
-	private final Supplier<VisibilityChanger> visibilityChangerSupplier = Suppliers.memoize(new VisibilityChangerSupplier());
+	private EntriesController entriesController;
+	@Inject
+	private VisibilityChanger visibilityChanger;
+	@Inject
+	private MenuViewNative menuViewNative;
 
 	private final Timer fillTimer = new Timer() {
 
@@ -93,7 +91,7 @@ public class MenuView extends Composite implements VisibilityClient {
 		public void run() {
 			refillPasswords();
 		}
-	};;
+	};
 
 	private static MenuViewUiBinder uiBinder = GWT.create(MenuViewUiBinder.class);
 
@@ -105,11 +103,11 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	public void show() {
-		visibilityChangerSupplier.get().show(this);
+		visibilityChanger.show(this);
 	}
 
 	public void hide() {
-		visibilityChangerSupplier.get().hide(this);
+		visibilityChanger.hide(this);
 	}
 
 	@Override
@@ -127,10 +125,8 @@ public class MenuView extends Composite implements VisibilityClient {
 		return getElement().getStyle();
 	}
 
-	public void init(String selectedPassword) {
-		String initialPassword = (selectedPassword != null && selectedPassword.length() > 0) ? selectedPassword : "a";
-
-		searchTextBox.setText(selectedPassword);
+	public void init() {
+		String initialPassword = "a";
 
 		fillQuickLetters();
 
@@ -160,7 +156,7 @@ public class MenuView extends Composite implements VisibilityClient {
 
 	@UiHandler("exitButton")
 	public void onExitClick(ClickEvent event) {
-		exitJs();
+		menuViewNative.exitJs();
 	}
 
 	@UiHandler("searchTextBox")
@@ -199,7 +195,7 @@ public class MenuView extends Composite implements VisibilityClient {
 		while (letter.hasNext()) {
 			final String currLetter = letter.next();
 			PushButton quickLetterButton = new PushButton(currLetter);
-			quickLetterButton.setStyleName(styleNameConstants.QP_DICTIONARY_QUICKLETTERS_LIST());
+			quickLetterButton.setStyleName(styleNameConstants.QP_DICTIONARY_QUICKLETTERS_BUTTON());
 			quickLetterButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -255,13 +251,13 @@ public class MenuView extends Composite implements VisibilityClient {
 
 	private void fillPasswords(String text) {
 		prevLetter = text;
-		passwordsResultString = passwordsSocket.get().getPasswords(text);
-		if (passwordsResultString != null) {
+		wordsResultString = passwordsSocket.get().getWords(text);
+		if (wordsResultString != null) {
 			passwordsListPanelBody.clear();
 			scrollbarPanel.setScrollTop(passwordsPanel.getElement(), 0);
 			passwordButtons = new ArrayList<PushButtonWithIndex>();
 			prevSelectedButton = null;
-			fillOptions(passwordsResultString.getList(), passwordsResultString.getIndex(), PASSWORDS_COUNT_INIT);
+			fillOptions(wordsResultString.getList(), wordsResultString.getIndex(), PASSWORDS_COUNT_INIT);
 		}
 	}
 
@@ -308,7 +304,7 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	private void showMore() {
-		fillOptions(passwordsResultString.getList(), passwordsResultString.getIndex(), PASSWORDS_COUNT_EXTENSION);
+		fillOptions(wordsResultString.getList(), wordsResultString.getIndex(), PASSWORDS_COUNT_EXTENSION);
 
 	}
 
@@ -319,7 +315,7 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	private void showExplanation(String pwd, int index, boolean playSound) {
-		entriesSocket.get().loadEntry(pwd, index, playSound);
+		entriesController.loadEntry(pwd, index, playSound);
 	}
 
 	private void selectButton(PushButtonWithIndex buttonToSelect, boolean playSound) {
@@ -334,10 +330,4 @@ public class MenuView extends Composite implements VisibilityClient {
 			prevSelectedButton.removeStyleDependentName("selected");
 		}
 	}
-
-	private native void exitJs()/*-{
-								if (typeof $wnd.dictionaryExit == 'function'){
-								$wnd.dictionaryExit();
-								}
-								}-*/;
 }

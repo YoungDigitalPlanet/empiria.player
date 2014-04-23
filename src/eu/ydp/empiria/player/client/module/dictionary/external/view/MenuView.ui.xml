@@ -7,11 +7,11 @@
 			<g:FlowPanel styleName="{res.QP_DICTIONARY_MENU_HEADER}">
 				<g:PushButton styleName="{res.QP_DICTIONARY_MENU_EXIT_BUTTON}" ui:field="exitButton"></g:PushButton>
 			</g:FlowPanel>
-			<g:FlowPanel styleName="{res.QP_DICTIONARY_MENU_EXIT_BUTTON}">
+			<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_PANEL}">
 				<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_BOX_PANEL}">
 					<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_BOX_PREFIX}"></g:FlowPanel>
 					<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_BOX_CONTAINER}">
-						<c:PasteawareTextBox styleName="{res.QP_DICTIONARY_SEARCH_BOX}" ui:field="searchTextBox"/>
+						<c:PasteAwareTextBox styleName="{res.QP_DICTIONARY_SEARCH_BOX}" ui:field="searchTextBox"/>
 					</g:FlowPanel>
 					<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_BOX_SUFFIX}"></g:FlowPanel>
 				</g:FlowPanel>

@@ -1,19 +1,20 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PasswordsResult {
+import com.google.common.collect.Lists;
+
+public class WordsResult {
 
 	private final List<String> list;
 	private final Integer index;
 
-	public PasswordsResult() {
-		this.list = new ArrayList<String>();
+	public WordsResult() {
+		this.list = Lists.newArrayList();
 		this.index = -1;
 	}
 
-	public PasswordsResult(List<String> list, Integer index) {
+	public WordsResult(List<String> list, Integer index) {
 		this.list = list;
 		this.index = index;
 	}

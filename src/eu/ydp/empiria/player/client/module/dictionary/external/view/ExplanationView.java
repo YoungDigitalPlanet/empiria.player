@@ -19,7 +19,6 @@ import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
-import eu.ydp.empiria.player.client.module.dictionary.external.util.CertProvider;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ExplanationView extends Composite {
@@ -60,8 +59,6 @@ public class ExplanationView extends Composite {
 
 	@Inject
 	private Provider<ExplanationListener> listenerProvider;
-	@Inject
-	private CertProvider certProvider;
 
 	public ExplanationView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -86,13 +83,13 @@ public class ExplanationView extends Composite {
 
 	public void displayEntry(Entry entry, boolean isPlaySound) {
 		if (entry != null) {
-			postLabel.setText(entry.getPost());
-			angLabel.setText(entry.getAng());
-			polLabel.setHTML(entry.getPol());
-			descLabel.setText(entry.getDesc());
-			descrSound = entry.getDescrSound();
+			postLabel.setText(entry.getType());
+			angLabel.setText(entry.getEntry());
+			polLabel.setHTML(entry.getEntryDescription());
+			descLabel.setText(entry.getEntryExample());
+			descrSound = entry.getEntryExampleSound();
 			if (isPlaySound) {
-				playSound(entry.getAngSound());
+				playSound(entry.getEntrySound());
 			}
 		}
 	}

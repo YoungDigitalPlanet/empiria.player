@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.google.common.collect.Range;
 
-public class PasswordFinderStandardTest extends AbstractPasswordsFinderTestBase {
+public class WordFinderStandardTest extends AbstractPasswordsFinderTestBase {
 
 	@Override
 	protected Object[][] getParams() {
