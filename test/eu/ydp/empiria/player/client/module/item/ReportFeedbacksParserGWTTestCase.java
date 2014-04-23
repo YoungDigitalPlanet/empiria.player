@@ -3,9 +3,8 @@ package eu.ydp.empiria.player.client.module.item;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
-import org.junit.Test;
 
-public class ReportFeedbacksParserTest extends GWTTestCase {
+public class ReportFeedbacksParserGWTTestCase extends GWTTestCase {
 
 	private ReportFeedbacksParser testObj;
 
@@ -29,7 +28,6 @@ public class ReportFeedbacksParserTest extends GWTTestCase {
 		testObj = new ReportFeedbacksParser();
 	}
 
-	@Test
 	public void testCreateReportFeedbacksFromNodeList() {
 		// given
 		NodeList feedbacks = XMLParser.parse(INPUT).getElementsByTagName("reportFeedbackText");
