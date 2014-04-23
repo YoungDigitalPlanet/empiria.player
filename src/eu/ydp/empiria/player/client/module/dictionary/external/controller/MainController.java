@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.module.dictionary.external.view.MainView;
 public class MainController implements WordsLoadingListener, ExplanationListener {
 
 	@Inject
-	private WordsController passwordsController;
+	private WordsController wordsController;
 	@Inject
 	private MainView mainView;
 
@@ -19,7 +19,7 @@ public class MainController implements WordsLoadingListener, ExplanationListener
 	public void init(Panel panel) {
 		if (shouldBeInitialized) {
 			this.wrappingPanel = panel;
-			passwordsController.load();
+			wordsController.load();
 			shouldBeInitialized = false;
 		}
 	}
