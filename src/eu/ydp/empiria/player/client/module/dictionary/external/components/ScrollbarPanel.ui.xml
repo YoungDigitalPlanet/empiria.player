@@ -1,11 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<g:AbsolutePanel styleName="empiria-tools-scroll-container" ui:field="scrollPanelContainer">
-		<g:FlowPanel styleName="empiria-tools-scroll-panel-hidden" ui:field="scrollPanel">
-			<g:FlowPanel styleName="empiria-tools-scroll-header" ui:field="scrollHeader"></g:FlowPanel>
-			<g:FlowPanel styleName="empiria-tools-scroll-body" ui:field="scrollBody"></g:FlowPanel>
-			<g:FlowPanel styleName="empiria-tools-scroll-footer" ui:field="scrollFooter"></g:FlowPanel>
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+	<g:AbsolutePanel styleName="{res.QP_DICTIONARY_SCROLL_CONTAINER}" ui:field="scrollPanelContainer">
+		<g:FlowPanel styleName="{res.QP_DICTIONARY_SCROLL_PANEL_HIDDEN}" ui:field="scrollPanel">
+			<g:FlowPanel styleName="{res.QP_DICTIONARY_TOOLS_SCROLL_HEADER}" ui:field="scrollHeader"></g:FlowPanel>
+			<g:FlowPanel styleName="{res.QP_DICTIONARY_TOOLS_SCROLL_BODY}" ui:field="scrollBody"></g:FlowPanel>
+			<g:FlowPanel styleName="{res.QP_DICTIONARY_TOOLS_SCROLL_FOOTER}" ui:field="scrollFooter"></g:FlowPanel>
 		</g:FlowPanel>
 	</g:AbsolutePanel>
 </ui:UiBinder> 
