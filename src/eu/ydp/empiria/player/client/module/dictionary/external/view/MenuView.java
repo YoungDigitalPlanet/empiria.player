@@ -63,7 +63,6 @@ public class MenuView extends Composite implements VisibilityClient {
 	FlowPanel passwordsListPanelBody;
 	@UiField
 	PushButton exitButton;
-	@Inject
 	@UiField(provided = true)
 	ScrollbarPanel scrollbarPanel;
 
@@ -98,9 +97,11 @@ public class MenuView extends Composite implements VisibilityClient {
 	interface MenuViewUiBinder extends UiBinder<Widget, MenuView> {
 	}
 
-	public MenuView() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+	 @Inject
+    public MenuView(ScrollbarPanel scrollbarPanel) {
+        this.scrollbarPanel = scrollbarPanel;
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
 	public void show() {
 		visibilityChanger.show(this);

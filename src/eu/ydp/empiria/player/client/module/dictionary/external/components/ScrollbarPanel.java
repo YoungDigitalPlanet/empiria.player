@@ -31,7 +31,7 @@ public class ScrollbarPanel extends Composite {
     @UiField
     FlowPanel scrollFooter;
     @Inject
-    ScrollBarPanelNative scrollBarPanelNative;
+    private ScrollBarPanelNative scrollBarPanelNative;
     protected Timer scrollbarTimer;
 
     public ScrollbarPanel() {
@@ -93,7 +93,7 @@ public class ScrollbarPanel extends Composite {
         scrollBarPanelNative.opacityto(elm, v);
     }
 
-    protected void fadeOutJs(com.google.gwt.dom.client.Element element, int fadeEffectTime){
+    protected void fadeOutJs(com.google.gwt.dom.client.Element element, int fadeEffectTime) {
         scrollBarPanelNative.fadeOutJs(element, fadeEffectTime);
     }
 }
