@@ -32,22 +32,22 @@ public class ExplanationView extends Composite {
 	private StyleNameConstants styleNameConstants;
 
 	@UiField
-	Panel postPanel;
+	Panel typePanel;
 	@UiField
-	Panel angPanel;
+	Panel entryPanel;
 	@UiField
-	Panel polPanel;
+	Panel entryDescriptionPanel;
 	@UiField
-	Panel descPanel;
+	Panel entryExamplePanel;
 
 	@UiField
-	Label postLabel;
+	Label typeLabel;
 	@UiField
-	Label angLabel;
+	Label entryLabel;
 	@UiField
-	InlineHTML polLabel;
+	InlineHTML entryDescriptionLabel;
 	@UiField
-	Label descLabel;
+	Label entryExampleLabel;
 
 	@UiField
 	PushButton backButton;
@@ -71,7 +71,7 @@ public class ExplanationView extends Composite {
 		listenerProvider.get().onBackClick();
 	}
 
-	@UiHandler("descPanel")
+	@UiHandler("entryExamplePanel")
 	public void descPanelMouseUp(MouseUpEvent event) {
 		onPlayDescrClick();
 	}
@@ -83,10 +83,10 @@ public class ExplanationView extends Composite {
 
 	public void displayEntry(Entry entry, boolean isPlaySound) {
 		if (entry != null) {
-			postLabel.setText(entry.getType());
-			angLabel.setText(entry.getEntry());
-			polLabel.setHTML(entry.getEntryDescription());
-			descLabel.setText(entry.getEntryExample());
+			typeLabel.setText(entry.getType());
+			entryLabel.setText(entry.getEntry());
+			entryDescriptionLabel.setHTML(entry.getEntryDescription());
+			entryExampleLabel.setText(entry.getEntryExample());
 			descrSound = entry.getEntryExampleSound();
 			if (isPlaySound) {
 				playSound(entry.getEntrySound());

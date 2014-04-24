@@ -224,11 +224,89 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-connection-wrong")
 	public String QP_CONNECTION_WRONG();
 
+	@DefaultStringValue("qp-dictionary-button")
+	public String QP_DICTIONARY_BUTTON();
+
 	@DefaultStringValue("qp-dictionary-button-wrapper")
 	public String QP_DICTIONARY_BUTTON_WRAPPER();
 
-	@DefaultStringValue("qp-dictionary-button")
-	public String QP_DICTIONARY_BUTTON();
+	@DefaultStringValue("qp-dictionary-close-button")
+	public String QP_DICTIONARY_POPUP_CLOSE_BUTTON();
+
+	@DefaultStringValue("qp-dictionary-content-container")
+	public String QP_DICTIONARY_CONTENT_CONTAINER();
+
+	@DefaultStringValue("qp-dictionary-exit-button")
+	public String QP_DICTIONARY_EXIT_BUTTON();
+
+	@DefaultStringValue("qp-dictionary-explanation")
+	public String QP_DICTIONARY_EXPLANATION();
+
+	@DefaultStringValue("qp-dictionary-explanation-back-button")
+	public String QP_DICTIONARY_EXPLANATION_BACK_BUTTON();
+
+	@DefaultStringValue("qp-dictionary-explanation-entry")
+	public String QP_DICTIONARY_EXPLANATION_ENTRY();
+
+	@DefaultStringValue("qp-dictionary-explanation-entry-description")
+	public String QP_DICTIONARY_EXPLANATION_ENTRY_DESCRIPTION();
+
+	@DefaultStringValue("qp-dictionary-explanation-entry-description-label")
+	public String QP_DICTIONARY_EXPLANATION_ENTRY_DESCRIPTION_LABEL();
+
+	@DefaultStringValue("qp-dictionary-explanation-entry-example")
+	public String QP_DICTIONARY_EXPLANATION_ENTRY_EXAMPLE();
+
+	@DefaultStringValue("qp-dictionary-explanation-entry-example-label")
+	public String QP_DICTIONARY_EXPLANATION_ENTRY_EXAMPLE_LABEL();
+
+	@DefaultStringValue("qp-dictionary-explanation-entry-label")
+	public String QP_DICTIONARY_EXPLANATION_ENTRY_LABEL();
+
+	@DefaultStringValue("qp-dictionary-explanation-play-button")
+	public String QP_DICTIONARY_EXPLANATION_PLAY_BUTTON();
+
+	@DefaultStringValue("qp-dictionary-explanation-play-button-playing")
+	public String QP_DICTIONARY_EXPLANATION_PLAY_BUTTON_PLAYING();
+
+	@DefaultStringValue("qp-dictionary-explanation-type")
+	public String QP_DICTIONARY_EXPLANATION_TYPE();
+
+	@DefaultStringValue("qp-dictionary-explanation-type-label")
+	public String QP_DICTIONARY_EXPLANATION_TYPE_LABEL();
+
+	@DefaultStringValue("qp-dictionary-header-panel")
+	public String QP_DICTIONARY_HEADER_PANEL();
+
+	@DefaultStringValue("qp-dictionary-main")
+	public String QP_DICTIONARY_MAIN();
+
+	@DefaultStringValue("qp-dictionary-menu")
+	public String QP_DICTIONARY_MENU();
+
+	@DefaultStringValue("qp-dictionary-menu-container")
+	public String QP_DICTIONARY_MENU_CONTAINER();
+
+	@DefaultStringValue("qp-dictionary-menu-exit-button")
+	public String QP_DICTIONARY_MENU_EXIT_BUTTON();
+
+	@DefaultStringValue("qp-dictionary-menu-header")
+	public String QP_DICTIONARY_MENU_HEADER();
+
+	@DefaultStringValue("qp-dictionary-password-button")
+	public String QP_DICTIONARY_PASSWORD_BUTTON();
+
+	@DefaultStringValue("qp-dictionary-password-list-panel")
+	public String QP_DICTIONARY_PASSWORD_LIST_PANEL();
+
+	@DefaultStringValue("qp-dictionary-password-list-panel-body")
+	public String QP_DICTIONARY_PASSWORD_LIST_PANEL_BODY();
+
+	@DefaultStringValue("qp-dictionary-password-panel-container")
+	public String QP_DICTIONARY_PASSWORD_PANEL_CONTAINER();
+
+	@DefaultStringValue("qp-dictionary-password-panel")
+	public String QP_DICTIONARY_PASSWORD_PANEL();
 
 	@DefaultStringValue("qp-dictionary-popup")
 	public String QP_DICTIONARY_POPUP();
@@ -236,14 +314,20 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-dictionary-popup-container")
 	public String QP_DICTIONARY_POPUP_CONTAINER();
 
-	@DefaultStringValue("qp-dictionary-close-button")
-	public String QP_DICTIONARY_POPUP_CLOSE_BUTTON();
-
 	@DefaultStringValue("qp-dictionary-scroll-container")
 	public String QP_DICTIONARY_SCROLL_CONTAINER();
 
 	@DefaultStringValue("qp-dictionary-scroll-panel-hidden")
 	public String QP_DICTIONARY_SCROLL_PANEL_HIDDEN();
+
+	@DefaultStringValue("qp-dictionary-tel-main")
+	public String QP_DICTIONARY_TEL_MAIN();
+
+	@DefaultStringValue("qp-dictionary-tel-item")
+	public String QP_DICTIONARY_TEL_ITEM();
+
+	@DefaultStringValue("qp-dictionary-tel-list")
+	public String QP_DICTIONARY_TEL_LIST();
 
 	@DefaultStringValue("qp-dictionary-tools-scroll-header")
 	public String QP_DICTIONARY_TOOLS_SCROLL_HEADER();
@@ -253,66 +337,6 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-dictionary-tools-scroll-footer")
 	public String QP_DICTIONARY_TOOLS_SCROLL_FOOTER();
-
-	@DefaultStringValue("qp-dictionary-explanation")
-	public String QP_DICTIONARY_EXPLANATION();
-
-	@DefaultStringValue("qp-dictionary-explanation-back-button")
-	public String QP_DICTIONARY_EXPLANATION_BACK_BUTTON();
-
-	@DefaultStringValue("qp-dictionary-explanation-post")
-	public String QP_DICTIONARY_EXPLANATION_POST();
-
-	@DefaultStringValue("qp-dictionary-explanation-post-label")
-	public String QP_DICTIONARY_EXPLANATION_POST_LABEL();
-
-	@DefaultStringValue("qp-dictionary-explanation-language-ang")
-	public String QP_DICTIONARY_EXPLANATION_LANGUAGE_ANG();
-
-	@DefaultStringValue("qp-dictionary-explanation-language-ang-label")
-	public String QP_DICTIONARY_EXPLANATION_LANGUAGE_ANG_LABEL();
-
-	@DefaultStringValue("qp-dictionary-explanation-language-pol")
-	public String QP_DICTIONARY_EXPLANATION_LANGUAGE_POL();
-
-	@DefaultStringValue("qp-dictionary-explanation-language-pol-label")
-	public String QP_DICTIONARY_EXPLANATION_LANGUAGE_POL_LABEL();
-
-	@DefaultStringValue("qp-dictionary-explanation-description")
-	public String QP_DICTIONARY_EXPLANATION_DESCRIPTION();
-
-	@DefaultStringValue("qp-dictionary-explanation-description-label")
-	public String QP_DICTIONARY_EXPLANATION_DESCRIPTION_LABEL();
-
-	@DefaultStringValue("qp-dictionary-explanation-play-button")
-	public String QP_DICTIONARY_EXPLANATION_PLAY_BUTTON();
-
-	@DefaultStringValue("qp-dictionary-explanation-play-button-playing")
-	public String QP_DICTIONARY_EXPLANATION_PLAY_BUTTON_PLAYING();
-
-	@DefaultStringValue("qp-dictionary-main")
-	public String QP_DICTIONARY_MAIN();
-
-	@DefaultStringValue("qp-dictionary-content-container")
-	public String QP_DICTIONARY_CONTENT_CONTAINER();
-
-	@DefaultStringValue("qp-dictionary-header-panel")
-	public String QP_DICTIONARY_HEADER_PANEL();
-
-	@DefaultStringValue("qp-dictionary-exit-button")
-	public String QP_DICTIONARY_EXIT_BUTTON();
-
-	@DefaultStringValue("qp-dictionary-menu-container")
-	public String QP_DICTIONARY_MENU_CONTAINER();
-
-	@DefaultStringValue("qp-dictionary-menu")
-	public String QP_DICTIONARY_MENU();
-
-	@DefaultStringValue("qp-dictionary-menu-header")
-	public String QP_DICTIONARY_MENU_HEADER();
-
-	@DefaultStringValue("qp-dictionary-menu-exit-button")
-	public String QP_DICTIONARY_MENU_EXIT_BUTTON();
 
 	@DefaultStringValue("qp-dictionary-search-panel")
 	public String QP_DICTIONARY_SEARCH_PANEL();
@@ -338,38 +362,14 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-dictionary-show-more-button")
 	public String QP_DICTIONARY_SHOW_MORE_BUTTON();
 
-	@DefaultStringValue("qp-dictionary-quickletters-panel")
-	public String QP_DICTIONARY_QUICKLETTERS_PANEL();
+	@DefaultStringValue("qp-dictionary-quickletters-button")
+	public String QP_DICTIONARY_QUICKLETTERS_BUTTON();
 
 	@DefaultStringValue("qp-dictionary-quickletters-list")
 	public String QP_DICTIONARY_QUICKLETTERS_LIST();
 
-	@DefaultStringValue("qp-dictionary-quickletters-button")
-	public String QP_DICTIONARY_QUICKLETTERS_BUTTON();
-
-	@DefaultStringValue("qp-dictionary-password-panel-container")
-	public String QP_DICTIONARY_PASSWORD_PANEL_CONTAINER();
-
-	@DefaultStringValue("qp-dictionary-password-panel")
-	public String QP_DICTIONARY_PASSWORD_PANEL();
-
-	@DefaultStringValue("qp-dictionary-password-button")
-	public String QP_DICTIONARY_PASSWORD_BUTTON();
-
-	@DefaultStringValue("qp-dictionary-password-list-panel")
-	public String QP_DICTIONARY_PASSWORD_LIST_PANEL();
-
-	@DefaultStringValue("qp-dictionary-password-list-panel-body")
-	public String QP_DICTIONARY_PASSWORD_LIST_PANEL_BODY();
-
-	@DefaultStringValue("qp-dictionary-tel-main")
-	public String QP_DICTIONARY_TEL_MAIN();
-
-	@DefaultStringValue("qp-dictionary-tel-list")
-	public String QP_DICTIONARY_TEL_LIST();
-
-	@DefaultStringValue("qp-dictionary-tel-item")
-	public String QP_DICTIONARY_TEL_ITEM();
+	@DefaultStringValue("qp-dictionary-quickletters-panel")
+	public String QP_DICTIONARY_QUICKLETTERS_PANEL();
 
 	@DefaultStringValue("qp-drag-gap-correct")
 	public String QP_DRAG_GAP_CORRECT();

@@ -4,17 +4,17 @@
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
     <g:FlowPanel styleName="{res.QP_DICTIONARY_EXPLANATION}">
     	<g:PushButton styleName="{res.QP_DICTIONARY_EXPLANATION_BACK_BUTTON}" ui:field="backButton" />
-    	<g:FlowPanel styleName="{res.QP_DICTIONARY_EXPLANATION_POST}" ui:field="postPanel">
-    		<g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_POST_LABEL}" ui:field="postLabel"/>
+    	<g:FlowPanel styleName="{res.QP_DICTIONARY_EXPLANATION_TYPE}" ui:field="typePanel">
+    		<g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_TYPE_LABEL}" ui:field="typeLabel"/>
     	</g:FlowPanel>
-    	<g:FlowPanel styleName="{res.QP_DICTIONARY_EXPLANATION_LANGUAGE_ANG}" ui:field="angPanel">
-    		<g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_LANGUAGE_ANG_LABEL}" ui:field="angLabel"/>
+    	<g:FlowPanel styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY}" ui:field="entryPanel">
+    		<g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_LABEL}" ui:field="entryLabel"/>
     	</g:FlowPanel>
-    	<g:FlowPanel styleName="{res.QP_DICTIONARY_EXPLANATION_LANGUAGE_POL}" ui:field="polPanel">
-    		<g:InlineHTML styleName="{res.QP_DICTIONARY_EXPLANATION_LANGUAGE_POL_LABEL}" ui:field="polLabel"/>
+    	<g:FlowPanel styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_DESCRIPTION}" ui:field="entryDescriptionPanel">
+    		<g:InlineHTML styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_DESCRIPTION_LABEL}" ui:field="entryDescriptionLabel"/>
     	</g:FlowPanel>
-    	<g:FocusPanel styleName="{res.QP_DICTIONARY_EXPLANATION_DESCRIPTION}" ui:field="descPanel">
-    		<g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_DESCRIPTION_LABEL}" ui:field="descLabel"/>
+    	<g:FocusPanel styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_EXAMPLE}" ui:field="entryExamplePanel">
+    		<g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_EXAMPLE_LABEL}" ui:field="entryExampleLabel"/>
     	</g:FocusPanel>
     	<g:PushButton styleName="{res.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON}" ui:field="playButton" text="play" />
     </g:FlowPanel>
