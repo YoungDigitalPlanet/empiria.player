@@ -10,55 +10,54 @@ import java.util.Map;
 
 public class WordsExtractor {
 
-    private static final String DICTIONARY_DELIMITER = "#####\n";
-    public static final String WORD_DELIMITER = "\n";
+	private static final String DICTIONARY_DELIMITER = "#####\n";
+	public static final String WORD_DELIMITER = "\n";
 
-    public Words extractWords(String text) {
-        Map<String, List<String>> wordsByLetter = splitToWordsMap(text);
-        Map<String, Integer> baseIndexes = buildIndexes(wordsByLetter);
+	public Words extractWords(String text) {
+		Map<String, List<String>> wordsByLetter = splitToWordsMap(text);
+		Map<String, Integer> baseIndexes = buildIndexes(wordsByLetter);
 
-        return new Words(wordsByLetter, baseIndexes);
-    }
+		return new Words(wordsByLetter, baseIndexes);
+	}
 
-    private Map<String, List<String>> splitToWordsMap(String text) {
-        Map<String, List<String>> wordsMap = Maps.newLinkedHashMap();
+	private Map<String, List<String>> splitToWordsMap(String text) {
+		Map<String, List<String>> wordsMap = Maps.newLinkedHashMap();
 
-        Iterable<String> parsedWordsByLetter = Splitter.on(DICTIONARY_DELIMITER).split(text);
+		Iterable<String> parsedWordsByLetter = Splitter.on(DICTIONARY_DELIMITER).trimResults()
+													   .omitEmptyStrings().split(text);
 
-        for (String wordsByLetter : parsedWordsByLetter) {
-            if (!wordsByLetter.isEmpty()) {
-                List<String> words = splitWords(wordsByLetter);
-                addWords(words, wordsMap);
-            }
-        }
-        return wordsMap;
-    }
+		for (String wordsByLetter : parsedWordsByLetter) {
+			List<String> words = splitWords(wordsByLetter);
+			addWords(words, wordsMap);
+		}
+		return wordsMap;
+	}
 
-    private Map<String, Integer> buildIndexes(Map<String, List<String>> passwordsByLetter) {
-        Map<String, Integer> baseIndexes = Maps.newTreeMap();
-        int indexSum = 0;
-        for (List<String> currList : passwordsByLetter.values()) {
-            String firstLetter = extractFirstWordsFirstLetter(currList);
-            baseIndexes.put(firstLetter, indexSum);
-            indexSum += currList.size();
-        }
+	private Map<String, Integer> buildIndexes(Map<String, List<String>> passwordsByLetter) {
+		Map<String, Integer> baseIndexes = Maps.newTreeMap();
+		int indexSum = 0;
+		for (List<String> currList : passwordsByLetter.values()) {
+			String firstLetter = extractFirstWordsFirstLetter(currList);
+			baseIndexes.put(firstLetter, indexSum);
+			indexSum += currList.size();
+		}
 
-        return baseIndexes;
-    }
+		return baseIndexes;
+	}
 
-    private List<String> splitWords(String wordsByLetter) {
-        Iterable<String> words = Splitter.on(WORD_DELIMITER).split(wordsByLetter);
-        return Lists.newArrayList(words);
-    }
+	private List<String> splitWords(String wordsByLetter) {
+		Iterable<String> words = Splitter.on(WORD_DELIMITER).split(wordsByLetter);
+		return Lists.newArrayList(words);
+	}
 
-    private void addWords(List<String> words, Map<String, List<String>> passwordsByLetter) {
-        String firstLetter = extractFirstWordsFirstLetter(words);
-        passwordsByLetter.put(firstLetter, words);
-    }
+	private void addWords(List<String> words, Map<String, List<String>> passwordsByLetter) {
+		String firstLetter = extractFirstWordsFirstLetter(words);
+		passwordsByLetter.put(firstLetter, words);
+	}
 
-    private String extractFirstWordsFirstLetter(List<String> currList) {
-        String firstWord = currList.get(0);
-        return firstWord.substring(0, 1).toLowerCase();
-    }
+	private String extractFirstWordsFirstLetter(List<String> currList) {
+		String firstWord = currList.get(0);
+		return firstWord.substring(0, 1).toLowerCase();
+	}
 
 }
