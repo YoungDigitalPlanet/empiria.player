@@ -8,14 +8,16 @@ public class Entry {
 	private final String entryExample;
 	private final String entrySound;
 	private final String entryExampleSound;
+	private final String label;
 
-	Entry(String entry, String entryDescription, String type, String entryExample, String entrySound, String entryExampleSound) {
+	Entry(String entry, String entryDescription, String type, String entryExample, String entrySound, String entryExampleSound, String label) {
 		this.entry = entry;
 		this.entryDescription = entryDescription;
 		this.type = type;
 		this.entryExample = entryExample;
 		this.entrySound = entrySound;
 		this.entryExampleSound = entryExampleSound;
+		this.label = label;
 	}
 
 	public String getEntry() {
@@ -42,4 +44,7 @@ public class Entry {
 		return entryExampleSound;
 	}
 
+	public String getLabel() {
+		return label;
+	}
 }
