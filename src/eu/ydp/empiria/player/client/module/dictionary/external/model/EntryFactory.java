@@ -4,7 +4,6 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
-
 import eu.ydp.gwtutil.client.xml.IXMLParser;
 
 public class EntryFactory {
@@ -16,6 +15,7 @@ public class EntryFactory {
 	private static final String ENTRY_EXAMPLE_ATTR_NAME = "entryExample";
 	private static final String ENTRY_SOUND_ATTR_NAME = "entrySound";
 	private static final String ENTRY_EXAMPLE_SOUND_ATTR_NAME = "entryExampleSound";
+	private static final String ENTRY_LABEL_ATTR_NAME = "label";
 
 	@Inject
 	private IXMLParser xmlParser;
@@ -35,8 +35,9 @@ public class EntryFactory {
 		String entryExample = fetchValue(word, ENTRY_EXAMPLE_ATTR_NAME);
 		String entrySound = fetchValue(word, ENTRY_SOUND_ATTR_NAME);
 		String entryExampleSound = fetchValue(word, ENTRY_EXAMPLE_SOUND_ATTR_NAME);
+		String label = fetchValue(word, ENTRY_LABEL_ATTR_NAME);
 
-		return new Entry(entry, entryDescription, type, entryExample, entrySound, entryExampleSound);
+		return new Entry(entry, entryDescription, type, entryExample, entrySound, entryExampleSound, label);
 	}
 
 	private String fetchValue(Element element, String name) {

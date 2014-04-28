@@ -16,6 +16,9 @@
     	<g:FocusPanel styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_EXAMPLE}" ui:field="entryExamplePanel">
     		<g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_EXAMPLE_LABEL}" ui:field="entryExampleLabel"/>
     	</g:FocusPanel>
+        <g:FocusPanel styleName="{res.QP_DICTIONARY_EXPLANATION_SOURCE}" ui:field="labelPanel">
+    		<g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_SOURCE_LABEL}" ui:field="labelLabel"/>
+        </g:FocusPanel>
     	<g:PushButton styleName="{res.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON}" ui:field="playButton" text="play" />
     </g:FlowPanel>
 </ui:UiBinder>
