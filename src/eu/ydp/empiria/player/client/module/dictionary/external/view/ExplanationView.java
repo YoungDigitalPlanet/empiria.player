@@ -17,11 +17,15 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.media.SoundPlayer;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
+import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 
-public class ExplanationView extends Composite {
+public class ExplanationView extends Composite implements MediaEventHandler {
 
 	private static ExplanationViewUiBinder uiBinder = GWT.create(ExplanationViewUiBinder.class);
 
@@ -30,6 +34,12 @@ public class ExplanationView extends Composite {
 
 	@Inject
 	private StyleNameConstants styleNameConstants;
+
+	@Inject
+	private EmpiriaPaths empiriaPaths;
+
+	@Inject
+	private SoundPlayer soundPlayer;
 
 	@UiField
 	Panel typePanel;
@@ -63,7 +73,7 @@ public class ExplanationView extends Composite {
 	public ExplanationView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		playingDescr = false;
-		initJs();
+		// soundPlayer.addExternalHandler(this);
 	}
 
 	@UiHandler("backButton")
@@ -89,7 +99,7 @@ public class ExplanationView extends Composite {
 			entryExampleLabel.setText(entry.getEntryExample());
 			descrSound = entry.getEntryExampleSound();
 			if (isPlaySound) {
-				playSound(entry.getEntrySound());
+				play(entry.getEntrySound());
 			}
 		}
 	}
@@ -110,13 +120,6 @@ public class ExplanationView extends Composite {
 		stopDescrSound();
 	}
 
-	private native void initJs()/*-{
-								var instance = this;
-								$wnd.dictionarySoundFinished2 = function(){
-								instance.@eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView::soundDescrFinished()();
-								}
-								}-*/;
-
 	private void onPlayDescrClick() {
 		if (playingDescr) {
 			stopDescrSound();
@@ -127,57 +130,36 @@ public class ExplanationView extends Composite {
 
 	private void playDescrSound() {
 		if (descrSound != null && !descrSound.equals("")) {
-			playSound(descrSound);
+			play(descrSound);
 			playButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON_PLAYING());
 			playingDescr = true;
 		}
 	}
 
-	// changed
 	public void stopDescrSound() {
-		playButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON());
-		playingDescr = false;
-		stopSoundJs();
-	}
-
-	private void soundDescrFinished() {
+		stop();
 		playButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON());
 		playingDescr = false;
 	}
 
-	private void playSound(String file) {
-		String path = getMediaLinkJs(file);
-		String cert = "";
-		playSoundJs(path, cert);
+	private void play(String file) {
+		String path = empiriaPaths.getCommonsFilePath("dictionary") + "/media/" + "audio.mp3";
+		soundPlayer.play(path);
 	}
 
-	private String getKey(String url) {
-		String length = String.valueOf(url.length());
-		if (url.length() + length.length() > 24) {
-			url = url.substring(0, 24 - length.length());
-		}
-		while (url.length() + length.length() < 24) {
-			length = "0" + length;
-		}
-		return url + length;
+	private void stop() {
+		soundPlayer.stop();
 	}
 
-	private native void playSoundJs(String file, String cert)/*-{
-																if (typeof $wnd.dictionaryPlaySound == 'function'){
-																$wnd.dictionaryPlaySound(file, cert);
-																}
-																}-*/;
+	@Override
+	public void onMediaEvent(MediaEvent event) {
+		switch (event.getType()) {
+		case ON_END:
+			playButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON());
+			playingDescr = false;
+		default:
+			break;
+		}
+	}
 
-	private native void stopSoundJs()/*-{
-										if (typeof $wnd.dictionaryStopSound == 'function'){
-										$wnd.dictionaryStopSound();
-										}
-										}-*/;
-
-	private native String getMediaLinkJs(String file)/*-{
-														if (typeof $wnd.dictionaryGetMediaLink == 'function'){
-														return $wnd.dictionaryGetMediaLink(file);
-														}
-														return file;
-														}-*/;
 }
