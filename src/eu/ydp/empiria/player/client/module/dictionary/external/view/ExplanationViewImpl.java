@@ -43,6 +43,8 @@ public class ExplanationViewImpl extends Composite implements ExplanationView {
 	Panel entryDescriptionPanel;
 	@UiField
 	Panel entryExamplePanel;
+	@UiField
+	Panel labelPanel;
 
 	@UiField
 	Label typeLabel;
@@ -57,6 +59,8 @@ public class ExplanationViewImpl extends Composite implements ExplanationView {
 	PushButton backButton;
 	@UiField
 	PushButton playButton;
+	@UiField
+	Label labelLabel;
 
 	@Inject
 	private Provider<ExplanationListener> listenerProvider;
@@ -86,6 +90,7 @@ public class ExplanationViewImpl extends Composite implements ExplanationView {
 		entryLabel.setText(entry.getEntry());
 		entryDescriptionLabel.setHTML(entry.getEntryDescription());
 		entryExampleLabel.setText(entry.getEntryExample());
+		labelLabel.setText(entry.getLabel());
 	}
 
 	@Override

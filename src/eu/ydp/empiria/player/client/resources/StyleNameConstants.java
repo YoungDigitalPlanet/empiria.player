@@ -269,6 +269,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-dictionary-explanation-play-button-playing")
 	public String QP_DICTIONARY_EXPLANATION_PLAY_BUTTON_PLAYING();
 
+	@DefaultStringValue("qp-dictionary-explanation-source")
+	public String QP_DICTIONARY_EXPLANATION_SOURCE();
+
+	@DefaultStringValue("qp-dictionary-explanation-source-label")
+	public String QP_DICTIONARY_EXPLANATION_SOURCE_LABEL();
+
 	@DefaultStringValue("qp-dictionary-explanation-type")
 	public String QP_DICTIONARY_EXPLANATION_TYPE();
 
