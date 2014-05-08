@@ -12,6 +12,8 @@ public class MainController implements WordsLoadingListener, ExplanationListener
 	private WordsController wordsController;
 	@Inject
 	private MainView mainView;
+	@Inject
+	private ExplanationController explanationController;
 
 	private Panel wrappingPanel;
 	private boolean shouldBeInitialized = true;
@@ -20,6 +22,7 @@ public class MainController implements WordsLoadingListener, ExplanationListener
 		if (shouldBeInitialized) {
 			this.wrappingPanel = panel;
 			wordsController.load();
+			explanationController.init();
 			shouldBeInitialized = false;
 		}
 	}
@@ -28,15 +31,38 @@ public class MainController implements WordsLoadingListener, ExplanationListener
 	public void onWordsLoaded() {
 		mainView.init();
 		wrappingPanel.add(mainView);
+		mainView.addViewToContainerView(explanationController.getView());
+
+		if (Options.getViewType() == ViewType.HALF) {
+			explanationController.show();
+		}
 	}
 
 	@Override
-	public void onEntryLoaded(Entry entry, boolean playSound) {
-		mainView.showExplanation(entry, playSound);
+	public void onEntryLoaded(final Entry entry, final boolean playSound) {
+		if (Options.getViewType() == ViewType.HALF) {
+			mainView.hideMenu();
+			explanationController.show();
+		}
+
+		if (entry != null) {
+			processEntry(entry, playSound);
+		}
+	}
+
+	private void processEntry(Entry entry, boolean playSound) {
+		if (playSound) {
+			explanationController.processEntryAndPlaySound(entry);
+		} else {
+			explanationController.processEntry(entry);
+		}
 	}
 
 	@Override
 	public void onBackClick() {
-		mainView.hideExplanation();
+		if (Options.getViewType() == ViewType.HALF) {
+			mainView.showMenu();
+			explanationController.hide();
+		}
 	}
 }

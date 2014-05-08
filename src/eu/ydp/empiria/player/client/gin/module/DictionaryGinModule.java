@@ -5,9 +5,15 @@ import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.Singleton;
 
 import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.*;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.DictionaryFileRequestCallback;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesController;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.MainController;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsController;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsLoadingListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsSocket;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
+import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationViewImpl;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.MainView;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.MenuView;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChanger;
@@ -34,9 +40,11 @@ public class DictionaryGinModule extends AbstractGinModule {
 
 		bind(EntriesController.class).in(Singleton.class);
 
+		bind(ExplanationView.class).to(ExplanationViewImpl.class);
+
 		bind(MainView.class).in(Singleton.class);
 		bind(MenuView.class).in(Singleton.class);
-		bind(ExplanationView.class).in(Singleton.class);
+		bind(ExplanationViewImpl.class).in(Singleton.class);
 
 		bind(VisibilityChanger.class).toProvider(VisibilityChangerProvider.class);
 		bind(VisibilityChanger.class).in(Singleton.class);

@@ -5,7 +5,6 @@
 	<g:FlowPanel styleName="{res.QP_DICTIONARY_MAIN}">
 		<g:FlowPanel ui:field="containerView" styleName="{res.QP_DICTIONARY_CONTENT_CONTAINER}">
 			<v:MenuView ui:field="menuView" />
-			<v:ExplanationView ui:field="explanationView" />
 		</g:FlowPanel>
 		<g:SimplePanel styleName="{res.QP_DICTIONARY_HEADER_PANEL}">
 			<g:PushButton ui:field="exitButton" styleName="{res.QP_DICTIONARY_EXIT_BUTTON}"/>
