@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -39,12 +38,8 @@ public class MediaWrapperControllerTest {
 	@Captor
 	private ArgumentCaptor<MediaEvent> mediaEventCaptor;
 
+	@Mock
 	private MediaWrapper<Widget> mediaWrapper;
-
-	@Before
-	public void setUp() {
-		mediaWrapper = mock(MediaWrapper.class);
-	}
 
 	@Test
 	public void shouldAddMediaWrapperControls() {

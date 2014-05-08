@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
@@ -41,16 +42,21 @@ public class ExplanationEntrySoundControllerTest {
 	private EventsBus eventsBus;
 	@Mock
 	private MediaWrapperController mediaWrapperController;
+	@Mock
+	private MediaWrapper<Widget> mediaWrapper;
+	@Mock
+	private Entry entry;
+
 	@Captor
 	private ArgumentCaptor<PlayerEvent> playerEventCaptor;
 
 	private CallbackRecevier<MediaWrapper<Widget>> callbackRecevier;
-	private MediaWrapper<Widget> mediaWrapper;
+
 	private static final String FILE_NAME = "test.mp3";
 
 	@Before
 	public void setUp() {
-		mediaWrapper = mock(MediaWrapper.class);
+		when(entry.getEntrySound()).thenReturn(FILE_NAME);
 	}
 
 	@Test
@@ -60,7 +66,7 @@ public class ExplanationEntrySoundControllerTest {
 		when(mimeSourceProvider.getSourcesWithTypes(FILE_NAME)).thenReturn(sourcesWithTypes);
 
 		// when
-		testObj.playEntrySound(FILE_NAME);
+		testObj.playEntrySound(entry);
 
 		// then
 		verify(eventsBus).fireEvent(playerEventCaptor.capture());
@@ -80,7 +86,7 @@ public class ExplanationEntrySoundControllerTest {
 			}
 		}).when(eventsBus).fireEvent(any(PlayerEvent.class));
 
-		testObj.playEntrySound(FILE_NAME);
+		testObj.playEntrySound(entry);
 		callbackRecevier.setCallbackReturnObject(mediaWrapper);
 
 		// then

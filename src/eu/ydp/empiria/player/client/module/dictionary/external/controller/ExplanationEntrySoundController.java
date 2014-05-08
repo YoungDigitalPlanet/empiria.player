@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -23,7 +24,9 @@ public class ExplanationEntrySoundController {
 	@Inject
 	private MediaWrapperController mediaWrapperController;
 
-	public void playEntrySound(String fileName) {
+	public void playEntrySound(Entry entry) {
+		String fileName = entry.getEntrySound();
+
 		Map<String, String> sourcesWithTypes = mimeSourceProvider.getSourcesWithTypes(fileName);
 
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, false, true);

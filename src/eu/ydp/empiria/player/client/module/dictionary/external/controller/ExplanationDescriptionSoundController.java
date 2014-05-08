@@ -8,7 +8,7 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
-import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -22,7 +22,6 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 public class ExplanationDescriptionSoundController {
 
 	private final ExplanationView explanationView;
-	private final MimeSourceProvider mimeSourceProvider;
 	private final EventsBus eventsBus;
 	private final MediaWrapperController mediaWrapperController;
 	private final MediaWrapperCreator mediaWrapperCreator;
@@ -32,11 +31,10 @@ public class ExplanationDescriptionSoundController {
 	private final Provider<CurrentPageScope> currentPageScopeProvider;
 
 	@Inject
-	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView, EventsBus eventsBus, MimeSourceProvider mimeSourceProvider,
-			MediaWrapperController mediaWrapperController, Provider<CurrentPageScope> currentPageScopeProvider, MediaWrapperCreator mediaWrapperCreator) {
+	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView, EventsBus eventsBus, MediaWrapperController mediaWrapperController,
+			Provider<CurrentPageScope> currentPageScopeProvider, MediaWrapperCreator mediaWrapperCreator) {
 		this.explanationView = explanationView;
 		this.eventsBus = eventsBus;
-		this.mimeSourceProvider = mimeSourceProvider;
 		this.mediaWrapperController = mediaWrapperController;
 		this.currentPageScopeProvider = currentPageScopeProvider;
 		this.mediaWrapperCreator = mediaWrapperCreator;
@@ -47,13 +45,13 @@ public class ExplanationDescriptionSoundController {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
-				extracted(mw);
+				onMediaWrapperCallback(mw);
 			}
 
 		});
 	}
 
-	private void extracted(MediaWrapper<Widget> mw) {
+	private void onMediaWrapperCallback(MediaWrapper<Widget> mw) {
 		mediaWrapper = mw;
 		explanationView.setPlayingButtonStyle();
 		AbstractMediaEventHandler handler = createDescriptionSoundMediaHandler();
@@ -75,16 +73,17 @@ public class ExplanationDescriptionSoundController {
 		};
 	}
 
-	public void playOrStopDescriptionSound(String fileName) {
+	public void playOrStopDescriptionSound(Entry entry) {
 		if (playing) {
 			stop();
 		} else {
+			String fileName = entry.getEntryExampleSound();
 			playDescrSound(fileName);
 		}
 	}
 
 	private void playDescrSound(String fileName) {
-		if (fileName != null && !fileName.equals("")) {
+		if (fileName != null && !fileName.isEmpty()) {
 			playDescriptionSound(fileName);
 		}
 	}

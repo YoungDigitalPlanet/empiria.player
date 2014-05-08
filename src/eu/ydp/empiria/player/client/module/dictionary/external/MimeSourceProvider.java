@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.empiria.player.client.util.MimeUtil;
 
 public class MimeSourceProvider {
+	private static final String dictionaryMediaPath = "dictionary/media/";
 
 	@Inject
 	private EmpiriaPaths empiriaPaths;
@@ -17,8 +18,8 @@ public class MimeSourceProvider {
 	private MimeUtil mimeUtil;
 
 	public Map<String, String> getSourcesWithTypes(String fileName) {
-		String dictionaryFilePath = "dictionary" + "/media/" + fileName;
-		String path = empiriaPaths.getCommonsFilePath(dictionaryFilePath);
+		String dictionaryMediaFilePath = dictionaryMediaPath + fileName;
+		String path = empiriaPaths.getCommonsFilePath(dictionaryMediaFilePath);
 
 		Map<String, String> sourcesWithTypes = Maps.newHashMap();
 		sourcesWithTypes.put(path, mimeUtil.getMimeTypeFromExtension(path));

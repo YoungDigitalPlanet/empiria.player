@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -20,6 +21,7 @@ import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperContr
 import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationDescriptionSoundController;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.MediaWrapperCreator;
+import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -58,7 +60,11 @@ public class ExplanationDescriptionSoundControllerTest {
 	@Mock
 	private Provider<CurrentPageScope> currentPageScropProvider;
 
+	@Mock
 	private MediaWrapper<Widget> mediaWrapper;
+
+	@Mock
+	private Entry entryWithValidFileName;
 
 	private final MocksCollector mocksCollector = new MocksCollector();
 
@@ -79,7 +85,7 @@ public class ExplanationDescriptionSoundControllerTest {
 
 	@Before
 	public void setUp() {
-		mediaWrapper = mock(MediaWrapper.class);
+		when(entryWithValidFileName.getEntryExampleSound()).thenReturn(FILE_NAME);
 	}
 
 	@Test
@@ -88,20 +94,21 @@ public class ExplanationDescriptionSoundControllerTest {
 		when(currentPageScropProvider.get()).thenReturn(currentPageScope);
 
 		// when
-		testObj.playOrStopDescriptionSound(FILE_NAME);
+		testObj.playOrStopDescriptionSound(entryWithValidFileName);
 
 		// then
 		verify(mediaWrapperCreator).create(eq(FILE_NAME), callbackReceiverCaptor.capture());
 		callbackReceiverCaptor.getValue().setCallbackReturnObject(mediaWrapper);
 
-		verify(explanationView).setPlayingButtonStyle();
-		verifySourceHandlerAdding(MediaEventTypes.ON_PAUSE, currentPageScope);
-		verifySourceHandlerAdding(MediaEventTypes.ON_END, currentPageScope);
-		verifySourceHandlerAdding(MediaEventTypes.ON_STOP, currentPageScope);
-		verifySourceHandlerAdding(MediaEventTypes.ON_PLAY, currentPageScope);
+		InOrder inOrder = inOrder(mocksCollector.getMocks());
+		inOrder.verify(explanationView).setPlayingButtonStyle();
+		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_PAUSE, currentPageScope);
+		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_END, currentPageScope);
+		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_STOP, currentPageScope);
+		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_PLAY, currentPageScope);
 
-		verify(mediaWrapperController).addMediaWrapperControls(mediaWrapper);
-		verify(mediaWrapperController).play(mediaWrapper);
+		inOrder.verify(mediaWrapperController).addMediaWrapperControls(mediaWrapper);
+		inOrder.verify(mediaWrapperController).play(mediaWrapper);
 	}
 
 	@Test
@@ -113,7 +120,7 @@ public class ExplanationDescriptionSoundControllerTest {
 		CurrentPageScope currentPageScope = mock(CurrentPageScope.class);
 		when(currentPageScropProvider.get()).thenReturn(currentPageScope);
 
-		testObj.playOrStopDescriptionSound(FILE_NAME);
+		testObj.playOrStopDescriptionSound(entryWithValidFileName);
 		verify(mediaWrapperCreator).create(eq(FILE_NAME), callbackReceiverCaptor.capture());
 		callbackReceiverCaptor.getValue().setCallbackReturnObject(mediaWrapper);
 
@@ -128,7 +135,7 @@ public class ExplanationDescriptionSoundControllerTest {
 	}
 
 	@Test
-	public void shouldDoNothignWhenEventIsPlay() {
+	public void shouldDoNothingWhenEventIsPlay() {
 		// given
 		MediaEvent mediaEvent = mock(MediaEvent.class);
 		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_PLAY);
@@ -136,7 +143,7 @@ public class ExplanationDescriptionSoundControllerTest {
 		CurrentPageScope currentPageScope = mock(CurrentPageScope.class);
 		when(currentPageScropProvider.get()).thenReturn(currentPageScope);
 
-		testObj.playOrStopDescriptionSound(FILE_NAME);
+		testObj.playOrStopDescriptionSound(entryWithValidFileName);
 		verify(mediaWrapperCreator).create(eq(FILE_NAME), callbackReceiverCaptor.capture());
 		callbackReceiverCaptor.getValue().setCallbackReturnObject(mediaWrapper);
 
@@ -153,37 +160,40 @@ public class ExplanationDescriptionSoundControllerTest {
 	@Test
 	public void shouldNotPlayWhenFileNameIsNull() {
 		// given
-		String fileName = null;
+		Entry entry = mock(Entry.class);
 
 		// when
-		testObj.playOrStopDescriptionSound(fileName);
+		testObj.playOrStopDescriptionSound(entry);
 
 		// then
+		verify(entry).getEntryExampleSound();
 		verifyZeroInteractions(mocksCollector.getMocks());
 	}
 
 	@Test
 	public void shouldNotPlayWhenFileNameIsEmptyString() {
 		// given
-		String fileName = "";
+		Entry entry = mock(Entry.class);
+		when(entry.getEntryExampleSound()).thenReturn("");
 
 		// when
-		testObj.playOrStopDescriptionSound(fileName);
+		testObj.playOrStopDescriptionSound(entry);
 
 		// then
+		verify(entry).getEntryExampleSound();
 		verifyZeroInteractions(mocksCollector.getMocks());
 	}
 
 	@Test
 	public void shouldStopPlaying() {
 		// given
-		testObj.playOrStopDescriptionSound(FILE_NAME);
+		testObj.playOrStopDescriptionSound(entryWithValidFileName);
 
 		// when
 		verify(mediaWrapperCreator).create(eq(FILE_NAME), callbackReceiverCaptor.capture());
 		callbackReceiverCaptor.getValue().setCallbackReturnObject(mediaWrapper);
-		// testObj.stop();
-		testObj.playOrStopDescriptionSound(FILE_NAME);
+
+		testObj.playOrStopDescriptionSound(entryWithValidFileName);
 
 		// then
 		verify(explanationView).setStopButtonStyle();
@@ -192,5 +202,10 @@ public class ExplanationDescriptionSoundControllerTest {
 
 	private void verifySourceHandlerAdding(MediaEventTypes type, CurrentPageScope currentPageScope) {
 		verify(eventsBus).addHandlerToSource(eq(MediaEvent.getType(type)), eq(mediaWrapper), abstractMediaHandlerCaptor.capture(), eq(currentPageScope));
+	}
+
+	private void verifyInOrderSourceHandlerAdding(InOrder inOrder, MediaEventTypes type, CurrentPageScope currentPageScope) {
+		inOrder.verify(eventsBus)
+				.addHandlerToSource(eq(MediaEvent.getType(type)), eq(mediaWrapper), abstractMediaHandlerCaptor.capture(), eq(currentPageScope));
 	}
 }

@@ -16,7 +16,7 @@ public class ExplanationController {
 
 	private final ExplanationView explanationView;
 
-	private String descrSound;
+	private Entry entry;
 	private final ExplanationEntrySoundController explanationEntrySoundController;
 	private final ExplanationDescriptionSoundController explanationDescriptionSoundController;
 
@@ -35,12 +35,12 @@ public class ExplanationController {
 
 	public void processEntryAndPlaySound(Entry entry) {
 		processEntry(entry);
-		explanationEntrySoundController.playEntrySound(entry.getEntrySound());
+		explanationEntrySoundController.playEntrySound(entry);
 	}
 
 	public void processEntry(Entry entry) {
 		explanationView.processEntry(entry);
-		descrSound = entry.getEntryExampleSound();
+		this.entry = entry;
 	}
 
 	public void show() {
@@ -61,7 +61,7 @@ public class ExplanationController {
 
 			@Override
 			public void onMouseUp(MouseUpEvent event) {
-				explanationDescriptionSoundController.playOrStopDescriptionSound(descrSound);
+				explanationDescriptionSoundController.playOrStopDescriptionSound(entry);
 			}
 		});
 	}
@@ -71,7 +71,7 @@ public class ExplanationController {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				explanationDescriptionSoundController.playOrStopDescriptionSound(descrSound);
+				explanationDescriptionSoundController.playOrStopDescriptionSound(entry);
 			}
 		});
 	}

@@ -14,7 +14,6 @@ import org.mockito.stubbing.Answer;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 
-import eu.ydp.empiria.player.client.MocksCollector;
 import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
@@ -35,7 +34,8 @@ public class ExplanationControllerTest {
 	@Mock
 	private ExplanationEntrySoundController explanationEntrySoundController;
 
-	private final MocksCollector mocksCollector = new MocksCollector();
+	@Mock
+	private Entry entry;
 
 	private ClickHandler clickHandler;
 	private MouseUpHandler mouseUpHandler;
@@ -67,7 +67,7 @@ public class ExplanationControllerTest {
 		testObj.processEntryAndPlaySound(entry);
 
 		// then
-		verify(explanationEntrySoundController).playEntrySound(entry.getEntrySound());
+		verify(explanationEntrySoundController).playEntrySound(entry);
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class ExplanationControllerTest {
 	}
 
 	@Test
-	public void shouldHide() {
+	public void shouldStopPlayingSoundWhenHidingView() {
 		// when
 		testObj.hide();
 
@@ -90,10 +90,8 @@ public class ExplanationControllerTest {
 	}
 
 	@Test
-	public void shouldInit() {
+	public void shouldAddViewHandlersOnInit() {
 		// given
-		String fileName = "test.mp3";
-
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) {
@@ -139,7 +137,7 @@ public class ExplanationControllerTest {
 		mouseUpHandler.onMouseUp(null);
 
 		// then
-		verify(explanationDescriptionSoundController).playOrStopDescriptionSound(file);
+		verify(explanationDescriptionSoundController).playOrStopDescriptionSound(entry);
 	}
 
 	@Test
@@ -163,6 +161,6 @@ public class ExplanationControllerTest {
 		clickHandler.onClick(null);
 
 		// then
-		verify(explanationDescriptionSoundController).playOrStopDescriptionSound(file);
+		verify(explanationDescriptionSoundController).playOrStopDescriptionSound(entry);
 	}
 }
