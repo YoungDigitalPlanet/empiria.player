@@ -1,0 +1,32 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.empiria.player.client.module.dictionary.external.components">
+	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+	<g:FlowPanel styleName="{res.QP_DICTIONARY_MENU_CONTAINER}">
+		<g:FlowPanel styleName="{res.QP_DICTIONARY_MENU}">
+			<g:FlowPanel styleName="{res.QP_DICTIONARY_MENU_HEADER}">
+				<g:PushButton styleName="{res.QP_DICTIONARY_MENU_EXIT_BUTTON}" ui:field="exitButton"></g:PushButton>
+			</g:FlowPanel>
+			<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_PANEL}">
+				<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_BOX_PANEL}">
+					<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_BOX_PREFIX}"></g:FlowPanel>
+					<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_BOX_CONTAINER}">
+						<c:PasteAwareTextBox styleName="{res.QP_DICTIONARY_SEARCH_BOX}" ui:field="searchTextBox"/>
+					</g:FlowPanel>
+					<g:FlowPanel styleName="{res.QP_DICTIONARY_SEARCH_BOX_SUFFIX}"></g:FlowPanel>
+				</g:FlowPanel>
+				<g:PushButton styleName="{res.QP_DICTIONARY_SEARCH_BUTTON}" ui:field="searchButton">go</g:PushButton>
+			</g:FlowPanel>
+			<g:FlowPanel styleName="{res.QP_DICTIONARY_QUICKLETTERS_PANEL}" ui:field="quickLettersPanel"></g:FlowPanel>
+			<g:FlowPanel styleName="{res.QP_DICTIONARY_PASSWORD_PANEL_CONTAINER}" ui:field="passwordsPanelContainer">
+				<g:FlowPanel styleName="{res.QP_DICTIONARY_PASSWORD_PANEL}" ui:field="passwordsPanel">
+					<g:ScrollPanel styleName="{res.QP_DICTIONARY_PASSWORD_LIST_PANEL}" ui:field="passwordsListPanel">
+						<g:FlowPanel styleName="{res.QP_DICTIONARY_PASSWORD_LIST_PANEL_BODY}" ui:field="passwordsListPanelBody">
+						</g:FlowPanel>						
+					</g:ScrollPanel>
+				</g:FlowPanel>
+				<c:ScrollbarPanel ui:field="scrollbarPanel"></c:ScrollbarPanel>
+			</g:FlowPanel>
+		</g:FlowPanel>
+	</g:FlowPanel>
+</ui:UiBinder> 
