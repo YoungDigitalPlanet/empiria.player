@@ -22,6 +22,7 @@ import eu.ydp.empiria.player.client.module.containers.SubHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
+import eu.ydp.empiria.player.client.module.dictionary.DictionaryModule;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModule;
 import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
 import eu.ydp.empiria.player.client.module.flash.FlashModule;
@@ -50,7 +51,6 @@ import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule
 import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 import eu.ydp.empiria.player.client.module.video.VideoModule;
 
-@SuppressWarnings({ "PMD" })
 public class ModuleProviderFactory {
 	@Inject
 	private Provider<ConnectionModule> connectionModule;
@@ -144,6 +144,8 @@ public class ModuleProviderFactory {
 	private Provider<ProgressBonusModule> progressBonusModule;
 	@Inject
 	private Provider<VideoModule> videoModule;
+	@Inject
+	private Provider<DictionaryModule> dictionaryModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -327,5 +329,9 @@ public class ModuleProviderFactory {
 
 	public Provider<VideoModule> getVideoModule() {
 		return videoModule;
+	}
+
+	public Provider<DictionaryModule> getDictionaryModule() {
+		return dictionaryModule;
 	}
 }

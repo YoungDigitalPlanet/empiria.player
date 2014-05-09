@@ -140,6 +140,8 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactoryImpl;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
 import eu.ydp.gwtutil.client.xml.XMLParser;
+import eu.ydp.jsfilerequest.client.FileRequest;
+import eu.ydp.jsfilerequest.client.standard.StandardFileRequest;
 
 public class PlayerGinModule extends AbstractGinModule {
 
@@ -227,6 +229,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(FlowDataSupplier.class).annotatedWith(FlowManagerDataSupplier.class).toProvider(FlowDataSupplierProvider.class);
 		bind(AssetOpenDelegatorService.class).in(Singleton.class);
 		bind(VideoPlayerFactory.class).in(Singleton.class);
+		bind(FileRequest.class).to(StandardFileRequest.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
@@ -245,8 +248,9 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
 		install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
 		install(new GinFactoryModuleBuilder().build(LinkModuleFactory.class));
-		install(new GinFactoryModuleBuilder().implement(IStickieView.class, StickieView.class).implement(IStickiePresenter.class, StickiePresenter.class)
-				.build(StickieFactory.class));
+		install(new GinFactoryModuleBuilder().implement(IStickieView.class, StickieView.class)
+												.implement(IStickiePresenter.class, StickiePresenter.class)
+												.build(StickieFactory.class));
 		install(new GinFactoryModuleBuilder().build(SlideshowPlayerModuleFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class).build(TouchReservationFactory.class));
 		install(new GinFactoryModuleBuilder().build(IdentificationModuleFactory.class));

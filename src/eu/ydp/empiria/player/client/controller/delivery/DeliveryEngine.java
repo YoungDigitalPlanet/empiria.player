@@ -89,12 +89,6 @@ import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
-/**
- * Responsible for: - loading the content, - managing the content, - delivering content to player, - managing state, results and reports about the assessments.
- * 
- * @author Rafal Rybacki
- * 
- */
 public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
 	Integer initialItemIndex;
@@ -303,6 +297,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getBonusModule(), ModuleTagName.BONUS, false));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getProgressBonusModule(), ModuleTagName.PROGRESS_BONUS, false));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getVideoModule(), ModuleTagName.VIDEO, false));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getDictionaryModule(), ModuleTagName.DICTIONARY, false));
 		loadExtension(singleModuleInstanceProvider.getInfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(singleModuleInstanceProvider.getLinkModuleConnectorExtension());
