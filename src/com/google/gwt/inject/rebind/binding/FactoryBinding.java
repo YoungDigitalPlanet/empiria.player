@@ -31,7 +31,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import com.google.gwt.dev.util.Preconditions;
+import com.google.common.base.Preconditions;
 import com.google.gwt.inject.rebind.reflect.MethodLiteral;
 import com.google.gwt.inject.rebind.reflect.NoSourceNameException;
 import com.google.gwt.inject.rebind.reflect.ReflectUtil;
@@ -168,7 +168,7 @@ public class FactoryBinding extends AbstractBinding implements Binding {
 
 		String assistedInjectMethodName = nameGenerator.getAssistedInjectMethodName(factoryKey, assisted.method.getName());
 		String assistedInjectSignature = ReflectUtil.signatureBuilder(assisted.method).withMethodName(assistedInjectMethodName).removeAbstractModifier()
-				.build();
+													.build();
 
 		SourceSnippet memberInjectCall = SourceSnippets.callMemberInject(assisted.implementation, "result");
 		SourceSnippet methodCall = methodCallUtil.createMethodCallWithInjection(assisted.constructor, null, assisted.parameterNames, nameGenerator,
