@@ -32,7 +32,7 @@ apply plugin: 'sonar-runner'
 apply from: "gradle/profiles/${buildProfile}.gradle"
 apply plugin: 'ivy-publish'
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.7
 compileJava.options.encoding = 'UTF-8'
 
 ext {
