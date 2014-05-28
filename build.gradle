@@ -1,26 +1,26 @@
 buildscript {
-	repositories {
-		ivy {
-			url "http://dev/ivyrep/public/"
-			layout 'pattern' , {
-				artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-				ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-			}
-		}
-	}
+    repositories {
+        ivy {
+            url "http://dev/ivyrep/public/"
+            layout 'pattern', {
+                artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+                ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+            }
+        }
+    }
 
-	dependencies {
-		classpath group: 'eu.ydp', name: 'gradleGwtCompilerPlugin', version: 'latest.integration'
-	}
+    dependencies {
+        classpath group: 'eu.ydp', name: 'gradleGwtCompilerPlugin', version: 'latest.integration'
+    }
 }
 
 import eu.ydp.gradle.gwt.GWTCompileTask
 
-def empiriaWar = file( "war")
-def empiriaBuildDir = new File( empiriaWar, "empiria.player" )
-def empiriaWebkitWar = file( "build/gwt")
-def empiriaWebkitBuildDir = new File( empiriaWebkitWar, "empiria.player" )
-def versionFile= new File("${projectDir}${File.separator}src${File.separator}eu${File.separator}ydp${File.separator}empiria${File.separator}player${File.separator}client${File.separator}version${File.separator}version.txt")
+def empiriaWar = file("war")
+def empiriaBuildDir = new File(empiriaWar, "empiria.player")
+def empiriaWebkitWar = file("build/gwt")
+def empiriaWebkitBuildDir = new File(empiriaWebkitWar, "empiria.player")
+def versionFile = new File("${projectDir}${File.separator}src${File.separator}eu${File.separator}ydp${File.separator}empiria${File.separator}player${File.separator}client${File.separator}version${File.separator}version.txt")
 def buildProfile = project.getProperties().get('buildProfile', 'develop')
 
 println "Picked build profile [$buildProfile]"
@@ -36,22 +36,22 @@ sourceCompatibility = 1.6
 compileJava.options.encoding = 'UTF-8'
 
 ext {
-    tstamp=new Date().format( "yyyyMMddHHmmssSSS")
-    buildnumber="${System.env["BUILD_NUMBER"]?:"${tstamp}"}"
+    tstamp = new Date().format("yyyyMMddHHmmssSSS")
+    buildnumber = "${System.env["BUILD_NUMBER"] ?: "${tstamp}"}"
     jacocoReport = "${buildDir}/jacoco/testJUnit.exec"
-}	
-	
+}
+
 repositories {
     ivy {
         url "http://dev/ivyrep/public/"
-        layout 'pattern' , {
+        layout 'pattern', {
             artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
             ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
         }
     }
     ivy {
         url "http://dev/ivyrep/shared/"
-        layout 'pattern' , {
+        layout 'pattern', {
             artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
             ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
         }
@@ -106,7 +106,7 @@ eclipse {
     }
     classpath {
         containers 'com.google.gwt.eclipse.core.GWT_CONTAINER'
-		
+
         defaultOutputDir file('/war/WEB-INF/classes')
     }
 }
@@ -118,7 +118,7 @@ sonarRunner {
         property "sonar.jdbc.driverClassName", sonar_jdbc_driverClassName
         property "sonar.jdbc.username", sonar_jdbc_username
         property "sonar.jdbc.password", sonar_jdbc_password
-        property "sonar.projectName",  sonar_project_name
+        property "sonar.projectName", sonar_project_name
         property "sonar.core.codeCoveragePlugin", "jacoco"
     }
 }
@@ -140,12 +140,12 @@ sourceSets {
             srcDir 'test/'
         }
     }
-    
+
     sourceSets.test.runtimeClasspath += files(sourceSets.main.java.srcDirs)
     sourceSets.test.runtimeClasspath += files(sourceSets.test.java.srcDirs)
 }
 
-task testJUnit( type: Test ) {
+task testJUnit(type: Test) {
     jacoco {
         enabled = true
     }
@@ -154,9 +154,9 @@ task testJUnit( type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss1M']  )
+    jvmArgs(['-XX:MaxPermSize=256M', '-Xss1M'])
 }
-task testGWTUnit(type: Test ) {
+task testGWTUnit(type: Test) {
     jacoco {
         enabled = false
     }
@@ -166,11 +166,11 @@ task testGWTUnit(type: Test ) {
 
     forkEvery = 1
     maxHeapSize = '512M'
-    jvmArgs( ['-XX:MaxPermSize=256M', '-Xss1M']  )
+    jvmArgs(['-XX:MaxPermSize=256M', '-Xss1M'])
 
 }
 
-task test( overwrite: true, dependsOn: [testJUnit,testGWTUnit] ) {
+task test(overwrite: true, dependsOn: [testJUnit, testGWTUnit]) {
     ext {
         // this is needed for sonarRunner
         reports = [junitXml: [destination: file("${buildDir}/test-results")]]
@@ -197,8 +197,8 @@ task compileMain(dependsOn: [classes], type: GWTCompileTask) {
 }
 
 task compileDev(dependsOn: [classes], type: GWTCompileTask) {
-	module = 'eu.ydp.empiria.player.Player_dev'
-	buildDir = empiriaWar
+    module = 'eu.ydp.empiria.player.Player_dev'
+    buildDir = empiriaWar
 }
 
 task compileWebkit(dependsOn: [classes], type: GWTCompileTask) {
@@ -207,45 +207,45 @@ task compileWebkit(dependsOn: [classes], type: GWTCompileTask) {
 }
 
 
-def configCopyMetaInfoAndZip( playerDir, targetZip ) {
+def configCopyMetaInfoAndZip(playerDir, targetZip) {
     return {
         def metadataProperties = [version: project.ext.version, tstamp: tstamp, buildnumber: buildnumber]
 
         archiveName targetZip
-        destinationDir file( "dist" )
+        destinationDir file("dist")
         from playerDir
-		from(file("metadata.template.xml")) {
-			rename "metadata.template.xml", "metadata.xml"
-			expand metadataProperties
-		}
+        from(file("metadata.template.xml")) {
+            rename "metadata.template.xml", "metadata.xml"
+            expand metadataProperties
+        }
     }
 }
 
-task createVersion(){
-	versionFile.createNewFile()
-	versionFile.write "${project.ext.version}-${buildnumber}"
+task createVersion() {
+    versionFile.createNewFile()
+    versionFile.write "${project.ext.version}-${buildnumber}"
 }
 
-task zipMain( dependsOn: [compileMain], type: Zip ) {
-    configure configCopyMetaInfoAndZip( empiriaBuildDir, "empiriaplayer.zip")
+task zipMain(dependsOn: [compileMain], type: Zip) {
+    configure configCopyMetaInfoAndZip(empiriaBuildDir, "empiriaplayer.zip")
 }
-task zipWebkit( dependsOn: [compileWebkit], type: Zip ) {
-    configure configCopyMetaInfoAndZip( empiriaWebkitBuildDir, "empiriaplayer_webkit.zip")
+task zipWebkit(dependsOn: [compileWebkit], type: Zip) {
+    configure configCopyMetaInfoAndZip(empiriaWebkitBuildDir, "empiriaplayer_webkit.zip")
 }
 
-task compileAll( dependsOn: [compileMain, compileWebkit] )
+task compileAll(dependsOn: [compileMain, compileWebkit])
 
-task distMain( dependsOn: [cleanCache, createVersion, test, zipMain] )
-task distWebkit( dependsOn: [cleanCache, createVersion, test, zipWebkit] )
+task distMain(dependsOn: [cleanCache, createVersion, test, zipMain])
+task distWebkit(dependsOn: [cleanCache, createVersion, test, zipWebkit])
 
-task dist( dependsOn: [distMain, distWebkit] )
+task dist(dependsOn: [distMain, distWebkit])
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '1.10'
+    gradleVersion = '1.10'
 }
 
 tasks.withType(JavaCompile) {
-    options.compilerArgs = [ "-implicit:none" ]
+    options.compilerArgs = ["-implicit:none"]
     options.compilerArgs += ["-sourcepath", ""]
 }
 
@@ -256,33 +256,33 @@ publishing {
             module 'empiriaPlayer'
             revision "${project.ext.version}-${buildnumber}"
             descriptor.status = project.ext.status
-			configurations{
-				create("default")			
-				create("webkit")				
+            configurations {
+                create("default")
+                create("webkit")
             }
-			artifacts {
-	            artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
-	            	name 'empiriaplayer'
-	            	classifier "source"
-		            extension "zip"
-					conf "default"
-					builtBy distMain		         	         	
-	       		}
-	       		
-	       		artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer_webkit.zip") {
-	            	name 'empiriaplayer_webkit'
-	            	classifier "source"
-		            extension "zip"
-					conf "webkit"			
-					builtBy distWebkit
-	       		}       	
-       		}	
+            artifacts {
+                artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
+                    name 'empiriaplayer'
+                    classifier "source"
+                    extension "zip"
+                    conf "default"
+                    builtBy distMain
+                }
+
+                artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer_webkit.zip") {
+                    name 'empiriaplayer_webkit'
+                    classifier "source"
+                    extension "zip"
+                    conf "webkit"
+                    builtBy distWebkit
+                }
+            }
         }
     }
     repositories {
         ivy {
             url 'http://dev/ivyrep/public'
-            layout 'pattern' , {
+            layout 'pattern', {
                 artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
                 ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
             }
