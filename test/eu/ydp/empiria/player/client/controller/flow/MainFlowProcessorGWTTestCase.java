@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
 import com.google.gwt.junit.client.GWTTestCase;
-
 import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -12,7 +11,7 @@ public class MainFlowProcessorGWTTestCase extends GWTTestCase {
 
 	@Override
 	public String getModuleName() {
-		return "eu.ydp.empiria.player.Player";
+		return "eu.ydp.empiria.player.Player_test";
 	}
 
 	private MainFlowProcessor getMainFlowProcessor5TestPages() {

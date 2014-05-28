@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='empiria.player'>
+    <inherits name="eu.ydp.empiria.player.Player"/>
+
+    <set-configuration-property name="devModeRedirectEnabled" value="false"/>
+</module>
