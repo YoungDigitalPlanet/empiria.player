@@ -65,7 +65,6 @@ repositories {
 configurations.all {
     resolutionStrategy {
         force group: 'eu.ydp', name: 'ydpgwtutils', version: "$ydp_gwt_utils_ver"
-        force group: 'com.googlecode.gwtquery', name: 'gwtquery', version: '1.4.2'
     }
 }
 
@@ -76,9 +75,7 @@ dependencies {
 
     compile group: 'com.google.gwt.inject', name: 'gin', version: '2.1.2'
     compile group: 'com.googlecode.gwtquery', name: 'gwtquery', version: '1.4.2'
-    compile group: 'com.googlecode.gwtquery.plugins', name: 'droppable-plugin', version: '1.0.8'
-    compile group: 'com.googlecode.gwtquery.plugins', name: 'draggable-plugin', version: '1.0.4'
-//    compile group: 'com.googlecode.gwtquery.bundles', name: 'gquery-dnd-bundle', version: '1.0.6'
+    compile group: 'com.googlecode.gwtquery.bundles', name: 'gquery-dnd-bundle', version: '1.0.6'
     compile group: 'com.google.guava', name: 'guava-gwt', version: '17.0'
 
     compile group: 'eu.ydp', name: 'mathPlayer', version: 'latest.integration'
