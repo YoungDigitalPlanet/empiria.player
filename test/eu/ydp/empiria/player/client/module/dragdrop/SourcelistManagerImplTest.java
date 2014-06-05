@@ -1,9 +1,10 @@
 package eu.ydp.empiria.player.client.module.dragdrop;
 
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.time.TemporaryFlag;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,11 +13,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
 
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.gwtutil.client.util.geom.HasDimensions;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SourcelistManagerImplTest {
@@ -37,6 +36,9 @@ public class SourcelistManagerImplTest {
 	private Sourcelist sourcelist2;
 	@Mock
 	private SourcelistLockingController sourcelistLockingController;
+	@Mock
+	private TemporaryFlag dragEndLocked;
+
 	private final String CLIENT_1_ID = "id1";
 	private final String CLIENT_2_ID = "id2";
 	private final String CLIENT_3_ID = "id3";
@@ -47,6 +49,8 @@ public class SourcelistManagerImplTest {
 
 	private final String SOURCELIST_1_ID = "SOURCELIST_1_ID";
 	private final String SOURCELIST_2_ID = "SOURCELIST_2_ID";
+
+	private final static int DRAG_END_LOCKED_TIME = 50;
 
 	@Before
 	public void setUp() {
@@ -129,6 +133,9 @@ public class SourcelistManagerImplTest {
 
 	@Test
 	public void shouldMoveItemFromSourcelist() {
+		//given
+		when(dragEndLocked.isSet()).thenReturn(false);
+
 		// when
 		manager.dragEnd(ITEM_2_ID, SOURCELIST_2_ID, CLIENT_3_ID);
 
@@ -136,6 +143,32 @@ public class SourcelistManagerImplTest {
 		verify(client3).setDragItem(ITEM_2_ID);
 		verify(sourcelist2).useItem(ITEM_2_ID);
 		verify(sourcelist2).restockItem(ITEM_3_ID);
+	}
+
+	@Test
+	public void shouldNotMoveItemWhenOtherItemMovedBefore() {
+		// given
+		when(dragEndLocked.isSet()).thenReturn(true);
+
+		// when
+		manager.dragEnd(ITEM_2_ID, SOURCELIST_2_ID, CLIENT_3_ID);
+
+		// then
+		verify(client3, never()).setDragItem(ITEM_2_ID);
+		verify(sourcelist2, never()).useItem(ITEM_2_ID);
+		verify(sourcelist2, never()).restockItem(ITEM_3_ID);
+	}
+
+	@Test
+	public void shouldLockDragEndForMoment() {
+		// given
+		when(dragEndLocked.isSet()).thenReturn(false);
+
+		// when
+		manager.dragEnd(ITEM_2_ID, SOURCELIST_2_ID, CLIENT_3_ID);
+
+		// then
+		verify(dragEndLocked).setFor(DRAG_END_LOCKED_TIME);
 	}
 
 	@Test
