@@ -70,9 +70,9 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 
 	@Override
 	public void dragEnd(String itemId, String sourceModuleId, String targetModuleId) {
-		if (!dragEndLocked.isFlag() && !sourceModuleId.equals(targetModuleId)) {
+		if (!dragEndLocked.isSet() && !sourceModuleId.equals(targetModuleId)) {
 			moveItemFromSourceToTarget(itemId, sourceModuleId, targetModuleId);
-			dragEndLocked.setFlagFor(DRAG_END_LOCKED_TIME);
+			dragEndLocked.setFor(DRAG_END_LOCKED_TIME);
 		}
 	}
 

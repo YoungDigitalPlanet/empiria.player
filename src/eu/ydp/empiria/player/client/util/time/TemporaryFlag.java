@@ -4,21 +4,17 @@ import com.google.gwt.user.client.Timer;
 
 public class TemporaryFlag {
 
-	private boolean flag = false;
+	private final Timer timer = new Timer() {
+		@Override
+		public void run() {
+		}
+	};
 
-	public void setFlagFor(int milliSeconds) {
-		flag = true;
-
-		Timer timer = new Timer() {
-			@Override
-			public void run() {
-				flag = false;
-			}
-		};
+	public void setFor(int milliSeconds) {
 		timer.schedule(milliSeconds);
 	}
 
-	public boolean isFlag() {
-		return flag;
+	public boolean isSet() {
+		return timer.isRunning();
 	}
 }

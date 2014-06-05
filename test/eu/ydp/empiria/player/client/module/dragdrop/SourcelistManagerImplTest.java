@@ -134,7 +134,7 @@ public class SourcelistManagerImplTest {
 	@Test
 	public void shouldMoveItemFromSourcelist() {
 		//given
-		when(dragEndLocked.isFlag()).thenReturn(false);
+		when(dragEndLocked.isSet()).thenReturn(false);
 
 		// when
 		manager.dragEnd(ITEM_2_ID, SOURCELIST_2_ID, CLIENT_3_ID);
@@ -146,9 +146,9 @@ public class SourcelistManagerImplTest {
 	}
 
 	@Test
-	public void shouldNotMoveItem() {
+	public void shouldNotMoveItemWhenOtherItemMovedBefore() {
 		// given
-		when(dragEndLocked.isFlag()).thenReturn(true);
+		when(dragEndLocked.isSet()).thenReturn(true);
 
 		// when
 		manager.dragEnd(ITEM_2_ID, SOURCELIST_2_ID, CLIENT_3_ID);
@@ -162,13 +162,13 @@ public class SourcelistManagerImplTest {
 	@Test
 	public void shouldLockDragEndForMoment() {
 		// given
-		when(dragEndLocked.isFlag()).thenReturn(false);
+		when(dragEndLocked.isSet()).thenReturn(false);
 
 		// when
 		manager.dragEnd(ITEM_2_ID, SOURCELIST_2_ID, CLIENT_3_ID);
 
 		// then
-		verify(dragEndLocked).setFlagFor(DRAG_END_LOCKED_TIME);
+		verify(dragEndLocked).setFor(DRAG_END_LOCKED_TIME);
 	}
 
 	@Test
