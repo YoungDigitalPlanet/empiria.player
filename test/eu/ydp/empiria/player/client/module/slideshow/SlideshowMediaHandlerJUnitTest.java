@@ -1,25 +1,23 @@
 package eu.ydp.empiria.player.client.module.slideshow;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.slideshow.SlideshowPlayerEvent;
 import eu.ydp.empiria.player.client.util.events.slideshow.SlideshowPlayerEventType;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("PMD")
 @RunWith(JUnitParamsRunner.class)
@@ -70,6 +68,6 @@ public class SlideshowMediaHandlerJUnitTest extends AbstractTestBaseWithoutAutoI
 	}
 
 	public Object[] getTypes() {
-		return JUnitParamsRunner.$(SlideshowPlayerEventType.values());
+		return SlideshowPlayerEventType.values();
 	}
 }
