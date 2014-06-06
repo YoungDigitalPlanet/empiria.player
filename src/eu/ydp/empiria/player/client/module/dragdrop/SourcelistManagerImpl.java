@@ -1,33 +1,38 @@
 package eu.ydp.empiria.player.client.module.dragdrop;
 
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.time.TemporaryFlag;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
+import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.List;
+
 public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHandler {
+
+	private final static int DRAG_END_LOCKED_TIME = 50;
 
 	@Inject
 	@PageScoped
 	private SourcelistManagerModel model;
 	@Inject
 	private EventsBus eventsBus;
+
 	@Inject
 	@PageScoped
 	private SourcelistLockingController sourcelistLockingController;
+
+	@Inject
+	private TemporaryFlag dragEndLocked;
 
 	private final Function<SourcelistClient, String> clientToItemid = new Function<SourcelistClient, String>() {
 
@@ -65,8 +70,9 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 
 	@Override
 	public void dragEnd(String itemId, String sourceModuleId, String targetModuleId) {
-		if (!sourceModuleId.equals(targetModuleId)) {
+		if (!dragEndLocked.isSet() && !sourceModuleId.equals(targetModuleId)) {
 			moveItemFromSourceToTarget(itemId, sourceModuleId, targetModuleId);
+			dragEndLocked.setFor(DRAG_END_LOCKED_TIME);
 		}
 	}
 
