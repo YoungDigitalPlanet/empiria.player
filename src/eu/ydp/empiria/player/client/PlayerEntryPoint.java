@@ -30,6 +30,7 @@ import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.gwtutil.client.Alternative;
 import eu.ydp.gwtutil.client.debug.log.Logger;
+import eu.ydp.gwtutil.client.debug.log.UncaughtExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class PlayerEntryPoint implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		Logger logger = PlayerGinjectorFactory.getPlayerGinjector().getLogger();
-		//		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(logger));
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(logger));
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
