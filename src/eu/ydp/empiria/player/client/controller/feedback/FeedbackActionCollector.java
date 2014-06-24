@@ -11,9 +11,9 @@ import java.util.*;
 
 public class FeedbackActionCollector {
 
-	private static final Function<FeedbackAction, Class> classExtractor = new Function<FeedbackAction, Class>() {
+	private static final Function<FeedbackAction, Class<? extends FeedbackAction>> classExtractor = new Function<FeedbackAction, Class<? extends FeedbackAction>>() {
 		@Override
-		public Class apply(FeedbackAction currentAction) {
+		public Class<? extends FeedbackAction> apply(FeedbackAction currentAction) {
 			return currentAction.getClass();
 		}
 	};
@@ -52,7 +52,7 @@ public class FeedbackActionCollector {
 	}
 
 	private void clearChildActions(IModule currentModule, List<FeedbackAction> currentActions) {
-		final Collection<Class> classesToRemove = getCurrentActionsClasses(currentActions);
+		final Collection<Class<? extends FeedbackAction>> classesToRemove = getCurrentActionsClasses(currentActions);
 		Collection<IModule> sourcesToClear = getSourcesToClear(currentModule);
 		for (IModule sourceToRemove : sourcesToClear) {
 			List<FeedbackAction> actionsConsideredToRemove = source2actions.get(sourceToRemove);
@@ -79,8 +79,8 @@ public class FeedbackActionCollector {
 		};
 		return Collections2.filter(modulesCopy, isParentPredicate);
 	}
-	
-	private Collection<Class> getCurrentActionsClasses(List<FeedbackAction> currentActions) {
+
+	private Collection<Class<? extends FeedbackAction>> getCurrentActionsClasses(List<FeedbackAction> currentActions) {
 		return Collections2.transform(currentActions, classExtractor);
 	}
 
