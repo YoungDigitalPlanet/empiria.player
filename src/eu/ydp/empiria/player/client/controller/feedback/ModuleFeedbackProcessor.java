@@ -99,11 +99,9 @@ public class ModuleFeedbackProcessor {
 		List<FeedbackActionProcessor> processors = getFeedbackProcessors(module);
 
 		for (FeedbackActionProcessor processor : processors) {
-			if (fromNullable(processor).isPresent()) {
-				List<FeedbackAction> actions = feedbackActionCollector.getActions();
-				List<FeedbackAction> processedActions = processor.processActions(actions);
-				feedbackActionCollector.removeActions(processedActions);
-			}
+			List<FeedbackAction> actions = feedbackActionCollector.getActions();
+			List<FeedbackAction> processedActions = processor.processActions(actions);
+			feedbackActionCollector.removeActions(processedActions);
 		}
 	}
 

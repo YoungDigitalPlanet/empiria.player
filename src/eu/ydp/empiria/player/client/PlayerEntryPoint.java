@@ -23,30 +23,25 @@
  */
 package eu.ydp.empiria.player.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.*;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
-
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.gwtutil.client.Alternative;
 import eu.ydp.gwtutil.client.debug.log.Logger;
-import eu.ydp.gwtutil.client.debug.log.UncaughtExceptionHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class PlayerEntryPoint implements EntryPoint {
 
-	/** Player object */
+	/**
+	 * Player object
+	 */
 	private static Player player;
 	private static String url1;
 	private static JavaScriptObject jsObject;
@@ -59,7 +54,7 @@ public class PlayerEntryPoint implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		Logger logger = PlayerGinjectorFactory.getPlayerGinjector().getLogger();
-		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(logger));
+		//		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(logger));
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
@@ -74,40 +69,40 @@ public class PlayerEntryPoint implements EntryPoint {
 	 * Init Javascript API
 	 */
 	private native void initJavaScriptAPI() /*-{
-											// CreatePlayer		
-											$wnd.empiriaCreatePlayer = function(id) {
-											var player = @eu.ydp.empiria.player.client.PlayerEntryPoint::createPlayer(Ljava/lang/String;)(id);
-											player.load = function(url) {
-											@eu.ydp.empiria.player.client.PlayerEntryPoint::load(Ljava/lang/String;)(url);
-											}
-											player.loadFromData = function(assessmentData, itemDatas) {
-											@eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
-											}
+        // CreatePlayer
+        $wnd.empiriaCreatePlayer = function (id) {
+            var player = @eu.ydp.empiria.player.client.PlayerEntryPoint::createPlayer(Ljava/lang/String;)(id);
+            player.load = function (url) {
+                @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Ljava/lang/String;)(url);
+            }
+            player.loadFromData = function (assessmentData, itemDatas) {
+                @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
+            }
 
-											// ładowanie rozszerzeń (pluginów i addonów)
-											player.loadExtension = function(obj) {
-											if (typeof obj == 'object')
-											@eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
-											else if (typeof obj == 'string')
-											@eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Ljava/lang/String;)(obj);
-											}
+            // ładowanie rozszerzeń (pluginów i addonów)
+            player.loadExtension = function (obj) {
+                if (typeof obj == 'object')
+                    @eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
+                else if (typeof obj == 'string')
+                    @eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Ljava/lang/String;)(obj);
+            }
 
-											return player;
-											}
+            return player;
+        }
 
-											$wnd.getPlayerVersion = function() {
-											return @eu.ydp.empiria.player.client.version.Version::getVersion()();
-											}
+        $wnd.getPlayerVersion = function () {
+            return @eu.ydp.empiria.player.client.version.Version::getVersion()();
+        }
 
-											// Call App loaded function
-											if (typeof $wnd.empiriaPlayerAppLoaded == 'function') {
-											$wnd.empiriaPlayerAppLoaded();
-											}
-											}-*/;
+        // Call App loaded function
+        if (typeof $wnd.empiriaPlayerAppLoaded == 'function') {
+            $wnd.empiriaPlayerAppLoaded();
+        }
+    }-*/;
 
 	/**
 	 * createPlayer js interface
-	 * 
+	 *
 	 * @param node_id
 	 */
 	public static JavaScriptObject createPlayer(String node_id) {
@@ -118,7 +113,7 @@ public class PlayerEntryPoint implements EntryPoint {
 
 	/**
 	 * Load assessment from this url
-	 * 
+	 *
 	 * @param url
 	 */
 	public static void load(final String url) {
@@ -152,7 +147,7 @@ public class PlayerEntryPoint implements EntryPoint {
 
 	/**
 	 * Load assessment from string data
-	 * 
+	 *
 	 * @param url
 	 */
 	public static void load(final JavaScriptObject assessmentData, final JavaScriptObject itemDatas) {
@@ -181,23 +176,23 @@ public class PlayerEntryPoint implements EntryPoint {
 	}
 
 	private native static String decodeXmlDataDocument(JavaScriptObject data)/*-{
-																				if (typeof data.document == 'string')
-																				return data.document;
-																				return "";
-																				}-*/;
+        if (typeof data.document == 'string')
+            return data.document;
+        return "";
+    }-*/;
 
 	private native static String decodeXmlDataBaseURL(JavaScriptObject data)/*-{
-																			if (typeof data.baseURL == 'string')
-																			return data.baseURL;
-																			return "";
-																			}-*/;
+        if (typeof data.baseURL == 'string')
+            return data.baseURL;
+        return "";
+    }-*/;
 
 	public static void loadExtension(JavaScriptObject extension) {
-		extensionsToLoad.add(Alternative.<String, JavaScriptObject> createForOther(extension));
+		extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForOther(extension));
 	}
 
 	public static void loadExtension(String extension) {
-		extensionsToLoad.add(Alternative.<String, JavaScriptObject> createForMain(extension));
+		extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForMain(extension));
 	}
 
 }

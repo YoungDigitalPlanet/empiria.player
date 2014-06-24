@@ -68,7 +68,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0)
 		};
 
-		String[] expectedUrls = new String[] { /*GOOD_MP3,*/ CONTAINER_OK_MP3 };
+		String[] expectedUrls = new String[] { CONTAINER_OK_MP3 };
 
 		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -102,7 +102,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 				ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0),
 				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0)
 		};
-		String[] expectedUrls = new String[] { /*WRONG_MP3,*/ CONTAINER_WRONG_MP3 };
+		String[] expectedUrls = new String[] { CONTAINER_WRONG_MP3 };
 
 		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -118,7 +118,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 				ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0),
 				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(0)
 		};
-		String[] expectedUrls = new String[] {/* GOOD_MP3, ALLOK_MP3, */CONTAINER_OK_MP3, CONTAINER_ALL_OK_MP3 };
+		String[] expectedUrls = new String[] { CONTAINER_OK_MP3, CONTAINER_ALL_OK_MP3 };
 
 		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -128,13 +128,13 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	}
 
 	@Test
-	public void shouldProcessOkFeedbackWhen_allAreDoneWithOneError() {
+	public void shouldProcessOkFeedback_WhenAllAreDoneWithOneError() {
 		// given
 		ModuleInfo[] infos = new ModuleInfo[] {
 				ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0),
 				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(1)
 		};
-		String[] expectedUrls = new String[] { /*GOOD_MP3, ALLOK_MP3,*/ CONTAINER_OK_MP3 };
+		String[] expectedUrls = new String[] { CONTAINER_OK_MP3 };
 
 		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -144,13 +144,13 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 	}
 
 	@Test
-	public void shouldProcessWrongFeedbackWhen_allAreDoneWithOneError() {
+	public void shouldProcessWrongFeedback_WhenAllAreDoneWithOneError() {
 		// given
 		ModuleInfo[] infos = new ModuleInfo[] {
 				ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(3).setTodo(3).setErrors(0),
 				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(1)
 		};
-		String[] expectedUrls = new String[] { /*WRONG_MP3, ALLOK_MP3, */CONTAINER_WRONG_MP3 };
+		String[] expectedUrls = new String[] { CONTAINER_WRONG_MP3 };
 
 		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
