@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.module.gap.GapModulePesenterBase;
@@ -26,11 +27,12 @@ public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 
 	@UiField
 	protected FlowPanel mainPanel;
-	@UiField
+	@UiField(provided = true)
 	protected ExListBox listBox;
 
 	@Inject
-	public InlineChoiceMathGapModulePresenter(SwypeBlocker swypeBlocker) {
+	public InlineChoiceMathGapModulePresenter(SwypeBlocker swypeBlocker, Provider<ExListBox> exListBoxProvider) {
+		listBox = exListBoxProvider.get();
 		uiBinder.createAndBindUi(this);
 		swypeBlocker.addBlockOnOpenCloseHandler(listBox);
 	}
@@ -76,7 +78,8 @@ public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 	}
 
 	@Override
-	// czy inlinechoice moze miec ustawione maxlength w stylach? jeśli nie to można to wywalić -> GapBase.setMaxlengthBinding()
+	// czy inlinechoice moze miec ustawione maxlength w stylach? jeśli nie to
+	// można to wywalić -> GapBase.setMaxlengthBinding()
 	public void setMaxLength(int length) {
 	}
 }
