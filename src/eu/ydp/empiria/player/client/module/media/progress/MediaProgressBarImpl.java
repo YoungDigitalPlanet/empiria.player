@@ -1,9 +1,5 @@
 package eu.ydp.empiria.player.client.module.media.progress;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
-
-import javax.annotation.PostConstruct;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style;
@@ -13,7 +9,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaScroll;
 import eu.ydp.empiria.player.client.module.media.button.SimpleMediaButton;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -22,6 +17,10 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
+
+import javax.annotation.PostConstruct;
+
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
 
 public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarImpl> implements MediaProgressBar {
 
@@ -63,7 +62,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * wielkosc przycisku wyswietlanego na pasku postepu
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -87,7 +86,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * dlugosc paska postepu
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -124,7 +123,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * ustawia suwak na odpowiedniej pozycji
-	 * 
+	 *
 	 * @param positionX
 	 */
 	@Override
@@ -134,7 +133,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	/**
 	 * ustawia suwak na odpowiedniej pozycji
-	 * 
+	 *
 	 * @param positionX
 	 */
 	protected void moveScroll(final int positionX, boolean force) {// NOPMD
@@ -147,19 +146,31 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 
 	private void setAfterButtonPositionAndStyle(final int leftOffsetForProgressButton) {
 		Style afterButtonStyle = afterButton.getElement().getStyle();
-		afterButtonStyle.setWidth(positionCalculator.getWidthForAfterProgressElement(leftOffsetForProgressButton), Unit.PX);
+
+		double percentWidth = leftOffsetForProgressButton / ((double) mainProgressDiv.getElement().getClientWidth());
+		afterButtonStyle.setWidth(100 - (100 * percentWidth), Unit.PCT);
+
+		//		afterButtonStyle.setWidth(positionCalculator.getWidthForAfterProgressElement(leftOffsetForProgressButton), Unit.PX);
 		afterButtonStyle.setProperty(positionCalculator.getPositionPropertyForAfterProgressElement(), "0px");
 	}
 
 	private void setBeforeButtonPositionAndStyle(final int leftOffsetForProgressButton) {
 		Style beforeButtonStyle = beforeButton.getElement().getStyle();
-		beforeButtonStyle.setWidth(leftOffsetForProgressButton + getHalfOfProgressButtonWidth(), Unit.PX);
+
+		double percentWidth = leftOffsetForProgressButton / ((double) mainProgressDiv.getElement().getClientWidth());
+		beforeButtonStyle.setWidth(100 * percentWidth, Unit.PCT);
+
+		//		beforeButtonStyle.setWidth(leftOffsetForProgressButton + getHalfOfProgressButtonWidth(), Unit.PX);
 		beforeButtonStyle.setProperty(positionCalculator.getPositionPropertyForBeforeProgressElement(), "0px");
 	}
 
 	private void setButtonPosition(final int leftOffsetForProgressButton) {
 		int leftOffsetForProgress = positionCalculator.calculateCurrentPosistionForScroll(leftOffsetForProgressButton);
-		button.getElement().getStyle().setLeft(leftOffsetForProgress, Unit.PX);
+
+		double percentWidth = leftOffsetForProgressButton / ((double) mainProgressDiv.getElement().getClientWidth());
+		button.getElement().getStyle().setLeft(100 * percentWidth, Unit.PCT);
+
+		//		button.getElement().getStyle().setLeft(leftOffsetForProgress, Unit.PX);
 	}
 
 	private int getHalfOfProgressButtonWidth() {
