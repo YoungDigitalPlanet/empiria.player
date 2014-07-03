@@ -147,30 +147,26 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	private void setAfterButtonPositionAndStyle(final int leftOffsetForProgressButton) {
 		Style afterButtonStyle = afterButton.getElement().getStyle();
 
-		double percentWidth = leftOffsetForProgressButton / ((double) mainProgressDiv.getElement().getClientWidth());
-		afterButtonStyle.setWidth(100 - (100 * percentWidth), Unit.PCT);
+		double percentWidth = positionCalculator.getPercentWidth(leftOffsetForProgressButton);
+		afterButtonStyle.setWidth(100 - percentWidth, Unit.PCT);
 
-		//		afterButtonStyle.setWidth(positionCalculator.getWidthForAfterProgressElement(leftOffsetForProgressButton), Unit.PX);
 		afterButtonStyle.setProperty(positionCalculator.getPositionPropertyForAfterProgressElement(), "0px");
 	}
 
 	private void setBeforeButtonPositionAndStyle(final int leftOffsetForProgressButton) {
 		Style beforeButtonStyle = beforeButton.getElement().getStyle();
 
-		double percentWidth = leftOffsetForProgressButton / ((double) mainProgressDiv.getElement().getClientWidth());
-		beforeButtonStyle.setWidth(100 * percentWidth, Unit.PCT);
+		double percentWidth = positionCalculator.getPercentWidth(leftOffsetForProgressButton);
+		beforeButtonStyle.setWidth(percentWidth, Unit.PCT);
 
-		//		beforeButtonStyle.setWidth(leftOffsetForProgressButton + getHalfOfProgressButtonWidth(), Unit.PX);
 		beforeButtonStyle.setProperty(positionCalculator.getPositionPropertyForBeforeProgressElement(), "0px");
 	}
 
 	private void setButtonPosition(final int leftOffsetForProgressButton) {
 		int leftOffsetForProgress = positionCalculator.calculateCurrentPosistionForScroll(leftOffsetForProgressButton);
 
-		double percentWidth = leftOffsetForProgressButton / ((double) mainProgressDiv.getElement().getClientWidth());
-		button.getElement().getStyle().setLeft(100 * percentWidth, Unit.PCT);
-
-		//		button.getElement().getStyle().setLeft(leftOffsetForProgress, Unit.PX);
+		double percentWidth = positionCalculator.getPercentWidth(leftOffsetForProgress);
+		button.getElement().getStyle().setLeft(percentWidth, Unit.PCT);
 	}
 
 	private int getHalfOfProgressButtonWidth() {
