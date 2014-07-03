@@ -70,4 +70,9 @@ class MediaProgressBarPositionCalculator {
 
 	}
 
+	public double getPercentWidth(int width) {
+		double overallWidth = (double) (mediaProgressBar.getScrollWidth() + mediaProgressBar.getButtonWidth());
+		return 100 * width / overallWidth;
+	}
+
 }

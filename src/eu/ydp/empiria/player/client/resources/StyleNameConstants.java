@@ -683,6 +683,27 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-media-progressbar")
 	public String QP_MEDIA_PROGRESSBAR();
 
+	@DefaultStringValue("qp-media-progressbar-center")
+	public String QP_MEDIA_PROGRESSBAR_CENTER();
+
+	@DefaultStringValue("qp-media-progressbar-center-button")
+	public String QP_MEDIA_PROGRESSBAR_CENTER_BUTTON();
+
+	@DefaultStringValue("qp-media-progressbar-center-button-after")
+	public String QP_MEDIA_PROGRESSBAR_CENTER_BUTTON_AFTER();
+
+	@DefaultStringValue("qp-media-progressbar-center-button-before")
+	public String QP_MEDIA_PROGRESSBAR_CENTER_BUTTON_BEFORE();
+
+	@DefaultStringValue("qp-media-progressbar-center-info")
+	public String QP_MEDIA_PROGRESSBAR_CENTER_INFO();
+
+	@DefaultStringValue("qp-media-progressbar-right")
+	public String QP_MEDIA_PROGRESSBAR_RIGHT();
+
+	@DefaultStringValue("qp-media-progressbar-left")
+	public String QP_MEDIA_PROGRESSBAR_LEFT();
+
 	@DefaultStringValue("qp-media-text-track")
 	public String QP_MEDIA_TEXT_TRACK();
 
