@@ -1,17 +1,22 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 
+import java.util.*;
+
 public class FeedbackActionCollector {
+
+	private static final Function<FeedbackAction, Class<? extends FeedbackAction>> classExtractor = new Function<FeedbackAction, Class<? extends FeedbackAction>>() {
+		@Override
+		public Class<? extends FeedbackAction> apply(FeedbackAction currentAction) {
+			return currentAction.getClass();
+		}
+	};
 
 	private IModule source;
 
@@ -43,6 +48,50 @@ public class FeedbackActionCollector {
 		} else {
 			source2actions.putAll(source, actions);
 		}
+		clearChildActions(source, actions);
+	}
+
+	private void clearChildActions(IModule currentModule, List<FeedbackAction> currentActions) {
+		final Collection<Class<? extends FeedbackAction>> classesToRemove = getCurrentActionsClasses(currentActions);
+		Collection<IModule> sourcesToClear = getSourcesToClear(currentModule);
+		for (IModule sourceToRemove : sourcesToClear) {
+			List<FeedbackAction> actionsConsideredToRemove = source2actions.get(sourceToRemove);
+			Predicate<FeedbackAction> classPredicate = new Predicate<FeedbackAction>() {
+				@Override
+				public boolean apply(FeedbackAction actionConsideredToRemove) {
+					Class<? extends FeedbackAction> classConsideredToRemove = actionConsideredToRemove.getClass();
+					return classesToRemove.contains(classConsideredToRemove);
+				}
+			};
+			Iterables.removeIf(actionsConsideredToRemove, classPredicate);
+		}
+	}
+
+	private Collection<IModule> getSourcesToClear(final IModule currentModule) {
+		Set<IModule> modulesCopy = Sets.newHashSet(source2actions.keySet());
+
+		Predicate<IModule> isParentPredicate = new Predicate<IModule>() {
+			@Override
+			public boolean apply(IModule source) {
+				List<HasChildren> parents = getParentHierarchy(source);
+				return parents.contains(currentModule);
+			}
+		};
+		return Collections2.filter(modulesCopy, isParentPredicate);
+	}
+
+	private Collection<Class<? extends FeedbackAction>> getCurrentActionsClasses(List<FeedbackAction> currentActions) {
+		return Collections2.transform(currentActions, classExtractor);
+	}
+
+	private List<HasChildren> getParentHierarchy(IModule source) {
+		List<HasChildren> parents = new ArrayList<>();
+		HasChildren parent = source.getParentModule();
+		while (parent != null) {
+			parents.add(parent);
+			parent = parent.getParentModule();
+		}
+		return parents;
 	}
 
 	public void removeActions(List<FeedbackAction> actionsToRemove) {

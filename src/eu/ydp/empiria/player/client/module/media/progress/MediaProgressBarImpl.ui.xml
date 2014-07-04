@@ -1,15 +1,15 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:eu.ydp.empiria.player.client.module.media.button">
-		<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
-	<g:FlowPanel ui:field="progressBar" styleName="{res.QP_MEDIA_PROGRESSBAR}">
-		<g:FlowPanel styleName="qp-media-progressbar-left"/>
-		<g:FlowPanel ui:field="mainProgressDiv" styleName="qp-media-progressbar-center">
-			<g:FlowPanel styleName="qp-media-progressbar-center-info" />
-			<g:FlowPanel ui:field="beforeButton" styleName="qp-media-progressbar-center-button-before" />
-			<b:SimpleMediaButton ui:field="button" styleName="qp-media-progressbar-center-button" />
-			<g:FlowPanel ui:field="afterButton" styleName="qp-media-progressbar-center-button-after" />
-		</g:FlowPanel>
-		<g:FlowPanel styleName="qp-media-progressbar-right" />
-	</g:FlowPanel>
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:eu.ydp.empiria.player.client.module.media.button">
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <g:FlowPanel ui:field="progressBar" styleName="{res.QP_MEDIA_PROGRESSBAR}">
+        <g:FlowPanel styleName="{res.QP_MEDIA_PROGRESSBAR_LEFT}"/>
+        <g:FlowPanel ui:field="mainProgressDiv" styleName="{res.QP_MEDIA_PROGRESSBAR_CENTER}">
+            <g:FlowPanel styleName="{res.QP_MEDIA_PROGRESSBAR_CENTER_INFO}"/>
+            <g:FlowPanel ui:field="beforeButton" styleName="{res.QP_MEDIA_PROGRESSBAR_CENTER_BUTTON_BEFORE}"/>
+            <b:SimpleMediaButton ui:field="button" styleName="{res.QP_MEDIA_PROGRESSBAR_CENTER_BUTTON}"/>
+            <g:FlowPanel ui:field="afterButton" styleName="{res.QP_MEDIA_PROGRESSBAR_CENTER_BUTTON_AFTER}"/>
+        </g:FlowPanel>
+        <g:FlowPanel styleName="{res.QP_MEDIA_PROGRESSBAR_RIGHT}"/>
+    </g:FlowPanel>
 </ui:UiBinder>

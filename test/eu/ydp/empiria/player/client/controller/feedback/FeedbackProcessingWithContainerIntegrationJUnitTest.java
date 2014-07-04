@@ -1,23 +1,8 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
-
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.MockitoAnnotations;
-
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
-
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertiesCollectorTestHelper.ModuleInfo;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
@@ -28,6 +13,19 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrl
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.MockitoAnnotations;
+
+import java.util.List;
+
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 public class FeedbackProcessingWithContainerIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
@@ -64,63 +62,100 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 
 	@Test
 	public void shouldProcessOkFeedback() {
-		ModuleInfo[] infos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0),
-				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0) };
+		// given
+		ModuleInfo[] infos = new ModuleInfo[] {
+				ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0)
+		};
 
+		String[] expectedUrls = new String[] { CONTAINER_OK_MP3 };
+
+		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
-		String[] expectedUrls = new String[] { GOOD_MP3, CONTAINER_OK_MP3 };
+
+		// then
 		assertAllUrlActions(capturedActions, expectedUrls);
 	}
 
 	@Test
 	public void shouldIgnoreUnselectFeedback() {
-		ModuleInfo[] infos = new ModuleInfo[] { ModuleInfo.create("-" + MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0),
+		// given
+		ModuleInfo[] infos = new ModuleInfo[] {
+				ModuleInfo.create("-" + MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0),
 				ModuleInfo.create("-" + MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0),
 				ModuleInfo.create(null).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0),
-				ModuleInfo.create("+").setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0) };
+				ModuleInfo.create("+").setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0)
+		};
+		String[] expectedUrls = new String[] { };
 
+		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
-		String[] expectedUrls = new String[] {};
+
+		// then
 		assertAllUrlActions(capturedActions, expectedUrls);
 	}
 
 	@Test
 	public void shouldProcessWrongFeedback() {
-		ModuleInfo[] infos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0),
-				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0) };
+		// given
+		ModuleInfo[] infos = new ModuleInfo[] {
+				ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0)
+		};
+		String[] expectedUrls = new String[] { CONTAINER_WRONG_MP3 };
 
+		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
-		String[] expectedUrls = new String[] { WRONG_MP3, CONTAINER_WRONG_MP3 };
+
+		// then
 		assertAllUrlActions(capturedActions, expectedUrls);
 	}
 
 	@Test
 	public void shouldProcessAllOkFeedback() {
-		ModuleInfo[] infos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0),
-				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(0) };
+		// given
+		ModuleInfo[] infos = new ModuleInfo[] {
+				ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(0)
+		};
+		String[] expectedUrls = new String[] { CONTAINER_OK_MP3, CONTAINER_ALL_OK_MP3 };
 
+		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
-		String[] expectedUrls = new String[] { GOOD_MP3, ALLOK_MP3, CONTAINER_OK_MP3, CONTAINER_ALL_OK_MP3 };
+
+		// then
 		assertAllUrlActions(capturedActions, expectedUrls);
 	}
 
 	@Test
-	public void shouldProcessOkFeedbackWhen_allAreDoneWithOneError() {
-		ModuleInfo[] infos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0),
-				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(1) };
+	public void shouldProcessOkFeedback_WhenAllAreDoneWithOneError() {
+		// given
+		ModuleInfo[] infos = new ModuleInfo[] {
+				ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(3).setTodo(3).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(1)
+		};
+		String[] expectedUrls = new String[] { CONTAINER_OK_MP3 };
 
+		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
-		String[] expectedUrls = new String[] { GOOD_MP3, ALLOK_MP3, CONTAINER_OK_MP3 };
+
+		// then
 		assertAllUrlActions(capturedActions, expectedUrls);
 	}
 
 	@Test
-	public void shouldProcessWrongFeedbackWhen_allAreDoneWithOneError() {
-		ModuleInfo[] infos = new ModuleInfo[] { ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(3).setTodo(3).setErrors(0),
-				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(1) };
+	public void shouldProcessWrongFeedback_WhenAllAreDoneWithOneError() {
+		// given
+		ModuleInfo[] infos = new ModuleInfo[] {
+				ModuleInfo.create(MODULE_1).setLastOk(WRONG).setDone(3).setTodo(3).setErrors(0),
+				ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(6).setTodo(6).setErrors(1)
+		};
+		String[] expectedUrls = new String[] { CONTAINER_WRONG_MP3 };
 
+		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
-		String[] expectedUrls = new String[] { WRONG_MP3, ALLOK_MP3, CONTAINER_WRONG_MP3 };
+
+		// then
 		assertAllUrlActions(capturedActions, expectedUrls);
 	}
 
@@ -134,7 +169,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 		ModuleFeedbackProcessor processor = injector.getInstance(ModuleFeedbackProcessor.class);
 		processor.processFeedbacks(helper.getVariables(), (IUniqueModule) sender);
 
-		verify(processor.soundProcessor, times(2)).processActions(captor.capture());
+		verify(processor.soundProcessor, times(1)).processActions(captor.capture());
 
 		return captor.getAllValues();
 	}
@@ -143,7 +178,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 		int index = 0;
 		int totalSize = 0;
 
-		assertThat(allActions.size(), is(equalTo(2)));
+		assertThat(allActions.size(), is(equalTo(1)));
 
 		for (List<FeedbackAction> actions : allActions) {
 			totalSize += actions.size();
