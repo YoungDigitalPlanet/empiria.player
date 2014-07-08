@@ -1,28 +1,30 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.StringUtils;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
+
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_FONT_SIZE;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_WIDTH;
 
 public class TextEntryGapModule extends TextEntryGapBase implements SourcelistClient {
+
+	private static final String INITIAL_TEXT_ATTR = "initialText";
 
 	protected Map<String, String> styles;
 
 	@Inject
 	TextEntryModulePresenter textEntryPresenter;
-
 	protected Integer fontSize = 16;
+	private String initialText;
 
 	@PostConstruct
 	@Override
@@ -43,6 +45,33 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 		installViewPanel(placeholders.get(0));
 
 		initReplacements(styles);
+		parseInitialText();
+		fillGapWithInitial();
+	}
+
+	private void parseInitialText() {
+		String initialTextAttr = getElementAttributeValue(INITIAL_TEXT_ATTR);
+		initialText = (initialTextAttr != null ? initialTextAttr : StringUtils.EMPTY_STRING);
+	}
+
+	private void fillGapWithInitial() {
+		textEntryPresenter.setText(initialText);
+	}
+
+	@Override
+	public void reset() {
+		super.reset();
+		fillGapWithInitial();
+	}
+
+	@Override
+	protected void setPreviousAnswer() {
+		presenter.setText(preparePreviousAnswer());
+	}
+
+	public String preparePreviousAnswer() {
+		String valueFormResponse = getCurrentResponseValue();
+		return valueFormResponse.isEmpty() ? initialText : valueFormResponse;
 	}
 
 	@Override

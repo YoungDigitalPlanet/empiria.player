@@ -1,16 +1,8 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static com.google.common.base.Optional.fromNullable;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
@@ -18,6 +10,13 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import static com.google.common.base.Optional.fromNullable;
 
 public class ModuleFeedbackProcessor {
 
@@ -54,13 +53,13 @@ public class ModuleFeedbackProcessor {
 		feedbackActionCollector.setSource(sender);
 		propertiesCollector.setVariables(variables);
 		processFeedbackActionCollector(sender);
+		processActions(sender);
 	}
 
 	private void processFeedbackActionCollector(IModule source) {
 		if (fromNullable(source).isPresent()) {
 			appendPropertiesToSource(source);
 			appendActionsToSource(source);
-			processActions(source);
 
 			processFeedbackActionCollector(source.getParentModule());
 		}
@@ -100,10 +99,9 @@ public class ModuleFeedbackProcessor {
 		List<FeedbackActionProcessor> processors = getFeedbackProcessors(module);
 
 		for (FeedbackActionProcessor processor : processors) {
-			if (fromNullable(processor).isPresent()) {
-				List<FeedbackAction> processedActions = processor.processActions(feedbackActionCollector.getActions());
-				feedbackActionCollector.removeActions(processedActions);
-			}
+			List<FeedbackAction> actions = feedbackActionCollector.getActions();
+			List<FeedbackAction> processedActions = processor.processActions(actions);
+			feedbackActionCollector.removeActions(processedActions);
 		}
 	}
 

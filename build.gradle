@@ -175,6 +175,10 @@ task test(overwrite: true, dependsOn: [testJUnit, testGWTUnit]) {
     }
 }
 
+jacoco {
+    toolVersion = '0.7.1.201405082137'
+}
+
 jacocoTestReport {
     executionData = files(jacocoReport)
     reports {
