@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.selection;
 
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
-
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -43,5 +42,10 @@ public class SelectionModule extends AbstractInteractionModule<SelectionModule, 
 	@Override
 	protected AbstractModuleStructure<SelectionInteractionBean, ? extends JAXBParserFactory<SelectionInteractionBean>> getStructure() {
 		return structure;
+	}
+
+	@Override
+	public boolean isIgnored() {
+		return getStructure().getBean().isIgnored();
 	}
 }

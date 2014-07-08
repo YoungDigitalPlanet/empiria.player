@@ -99,4 +99,9 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
 		applyIdAndClassToView((Widget) presenter.getContainer());
 		presenter.installViewInContainer(placeholder);
 	}
+
+	@Override
+	public boolean isIgnored() {
+		return "true".equals(getElementAttributeValue(IGNORED_ATTR));
+	}
 }
