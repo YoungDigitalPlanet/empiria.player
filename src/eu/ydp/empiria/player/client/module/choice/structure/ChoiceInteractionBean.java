@@ -1,17 +1,12 @@
 package eu.ydp.empiria.player.client.module.choice.structure;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasShuffle;
 import eu.ydp.empiria.player.client.structure.InteractionModuleBean;
 import eu.ydp.gwtutil.client.StringUtils;
+
+import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "choiceInteraction")
@@ -21,6 +16,8 @@ public class ChoiceInteractionBean extends InteractionModuleBean implements HasS
 	private int maxChoices;
 	@XmlAttribute
 	private boolean shuffle;
+	@XmlAttribute
+	private boolean ignored;
 	@XmlElement(name = "simpleChoice")
 	private List<SimpleChoiceBean> simpleChoices;
 	@XmlElement
@@ -64,4 +61,11 @@ public class ChoiceInteractionBean extends InteractionModuleBean implements HasS
 		this.prompt = prompt;
 	}
 
+	public boolean isIgnored() {
+		return ignored;
+	}
+
+	public void setIgnored(boolean ignored) {
+		this.ignored = ignored;
+	}
 }
