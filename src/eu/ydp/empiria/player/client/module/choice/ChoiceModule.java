@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.choice;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
