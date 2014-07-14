@@ -17,12 +17,14 @@ public class GlobalVariablesProvider {
 	private GlobalVariablesProcessor globalVariablesProcessor;
 
 	public GlobalVariables retrieveGlobalVariables(ModulesProcessingResults modulesProcessingResults, Map<String, Response> responses, IUniqueModule sender) {
-		if (sender instanceof IIgnored) {
-			if (((IIgnored) sender).isIgnored()) {
-				return GlobalVariables.createEmpty();
-			}
+		if (isIgnored(sender)) {
+			return GlobalVariables.createEmpty();
 		}
 		return calculateGlobalVariables(modulesProcessingResults, responses);
+	}
+
+	private boolean isIgnored(IUniqueModule module) {
+		return module instanceof IIgnored && ((IIgnored) module).isIgnored();
 	}
 
 	private GlobalVariables calculateGlobalVariables(ModulesProcessingResults modulesProcessingResults, Map<String, Response> responses) {
