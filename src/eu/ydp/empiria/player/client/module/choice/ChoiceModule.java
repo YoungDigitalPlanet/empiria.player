@@ -60,4 +60,12 @@ public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, Choice
 	public boolean isIgnored() {
 		return getStructure().getBean().isIgnored();
 	}
+
+	@Override
+	public void markAnswers(boolean mark) {
+		if (isIgnored()) {
+			return;
+		}
+		super.markAnswers(mark);
+	}
 }

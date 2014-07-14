@@ -48,4 +48,12 @@ public class SelectionModule extends AbstractInteractionModule<SelectionModule, 
 	public boolean isIgnored() {
 		return getStructure().getBean().isIgnored();
 	}
+
+	@Override
+	public void markAnswers(boolean mark) {
+		if (isIgnored()) {
+			return;
+		}
+		super.markAnswers(mark);
+	}
 }

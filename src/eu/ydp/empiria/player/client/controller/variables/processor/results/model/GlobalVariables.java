@@ -2,14 +2,11 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results.mode
 
 public class GlobalVariables implements ResultVariables {
 
-	private int todo;
-	private int done;
-	private int mistakes;
-	private int errors;
-	private LastMistaken lastMistaken;
-
-	public GlobalVariables() {
-	}
+	private final int todo;
+	private final int done;
+	private final int mistakes;
+	private final int errors;
+	private final LastMistaken lastMistaken;
 
 	public GlobalVariables(int todo, int done, int errors, int mistakes, LastMistaken lastMistaken) {
 		this.todo = todo;
@@ -24,17 +21,9 @@ public class GlobalVariables implements ResultVariables {
 		return todo;
 	}
 
-	public void setTodo(int todo) {
-		this.todo = todo;
-	}
-
 	@Override
 	public int getDone() {
 		return done;
-	}
-
-	public void setDone(int done) {
-		this.done = done;
 	}
 
 	@Override
@@ -42,26 +31,14 @@ public class GlobalVariables implements ResultVariables {
 		return mistakes;
 	}
 
-	public void setMistakes(int mistakes) {
-		this.mistakes = mistakes;
-	}
-
 	@Override
 	public int getErrors() {
 		return errors;
 	}
 
-	public void setErrors(int errors) {
-		this.errors = errors;
-	}
-
 	@Override
 	public LastMistaken getLastMistaken() {
 		return lastMistaken;
-	}
-
-	public void setLastMistaken(LastMistaken lastMistaken) {
-		this.lastMistaken = lastMistaken;
 	}
 
 	@Override
@@ -109,5 +86,9 @@ public class GlobalVariables implements ResultVariables {
 			return false;
 		}
 		return true;
+	}
+
+	public static GlobalVariables createEmpty() {
+		return new GlobalVariables(0, 0, 0, 0, LastMistaken.NONE);
 	}
 }

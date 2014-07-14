@@ -1,16 +1,9 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS;
-
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
@@ -22,6 +15,12 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
+
+import java.util.List;
+import java.util.Map;
+
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS;
 
 public abstract class TextEntryGapBase extends GapBase implements SourcelistClient {
 
@@ -200,5 +199,13 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 			sourcelistManager.onUserValueChanged();
 			updateResponse(true);
 		}
+	}
+
+	@Override
+	public void markAnswers(boolean mark) {
+		if (isIgnored()) {
+			return;
+		}
+		super.markAnswers(mark);
 	}
 }
