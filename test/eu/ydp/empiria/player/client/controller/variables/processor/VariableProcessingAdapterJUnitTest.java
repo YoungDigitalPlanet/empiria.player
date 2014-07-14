@@ -1,20 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Mockito.*;
-
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import com.google.common.collect.ImmutableMap;
-import com.google.gwt.thirdparty.guava.common.collect.Maps;
-
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesProcessor;
@@ -23,11 +9,23 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.Modul
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFacade;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Map;
+
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VariableProcessingAdapterJUnitTest {
 
-	private VariableProcessingAdapter variableProcessingAdapter;
+	@InjectMocks
+	private VariableProcessingAdapter testObj;
 
 	@Mock
 	private ModulesVariablesProcessor modulesVariablesProcessor;
@@ -39,18 +37,14 @@ public class VariableProcessingAdapterJUnitTest {
 	private ModulesProcessingResults modulesProcessingResults;
 	@Mock
 	private AnswerEvaluationSupplier answerEvaluationProvider;
-
-	@Before
-	public void setUp() throws Exception {
-		variableProcessingAdapter = new VariableProcessingAdapter(modulesVariablesProcessor, answerEvaluationProvider, globalVariablesProcessor,
-				resultsToOutcomeMapConverterFacade);
-	}
+	@Mock
+	private Map<String, Response> responses;
+	@Mock
+	private Map<String, Outcome> outcomes;
 
 	@Test
 	public void shouldProcessResponsesAndReturnResultConvertedToOldMap() throws Exception {
 		// given
-		Map<String, Response> responses = Maps.newHashMap();
-		Map<String, Outcome> outcomes = Maps.newHashMap();
 		ProcessingMode processingMode = ProcessingMode.USER_INTERACT;
 		final String ID = "ID";
 
@@ -59,11 +53,13 @@ public class VariableProcessingAdapterJUnitTest {
 		Map<String, DtoModuleProcessingResult> processingResults = ImmutableMap.of(ID, DtoModuleProcessingResult.fromDefaultVariables());
 		when(modulesProcessingResults.getMapOfProcessingResults()).thenReturn(processingResults);
 
-		GlobalVariables globalVariables = new GlobalVariables();
+		GlobalVariables globalVariables = mock(GlobalVariables.class);
 		when(globalVariablesProcessor.calculateGlobalVariables(processingResults, responses)).thenReturn(globalVariables);
 
+		IUniqueModule sender = mock(IUniqueModule.class);
+
 		// when
-		variableProcessingAdapter.processResponseVariables(responses, outcomes, processingMode);
+		testObj.processResponseVariables(responses, outcomes, processingMode, sender);
 
 		// then
 		verify(modulesVariablesProcessor).processVariablesForResponses(responses, processingMode);
@@ -72,14 +68,16 @@ public class VariableProcessingAdapterJUnitTest {
 		verify(resultsToOutcomeMapConverterFacade).convert(outcomes, modulesProcessingResults, globalVariables);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldUpdateAnswerEvaluationProvider() throws Exception {
 		// given
-		when(modulesVariablesProcessor.processVariablesForResponses(anyMap(), any(ProcessingMode.class))).thenReturn(modulesProcessingResults);
+		ProcessingMode processingMode = ProcessingMode.USER_INTERACT;
+
+		when(modulesVariablesProcessor.processVariablesForResponses(responses, processingMode)).thenReturn(modulesProcessingResults);
+		IUniqueModule sender = mock(IUniqueModule.class);
 
 		// when
-		variableProcessingAdapter.processResponseVariables(mock(Map.class), mock(Map.class), ProcessingMode.USER_INTERACT);
+		testObj.processResponseVariables(responses, outcomes, processingMode, sender);
 
 		// then
 		verify(answerEvaluationProvider).updateModulesProcessingResults(modulesProcessingResults);

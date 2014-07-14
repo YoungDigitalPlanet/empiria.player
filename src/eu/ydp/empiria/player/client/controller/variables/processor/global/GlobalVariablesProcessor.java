@@ -1,19 +1,18 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
-import static eu.ydp.gwtutil.client.collections.CollectionsUtil.intCollectionSum;
-
-import java.util.Map;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.function.ResultVariablesExtractingFunctions;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ResultVariables;
+
+import java.util.Map;
+
+import static eu.ydp.gwtutil.client.collections.CollectionsUtil.intCollectionSum;
 
 public class GlobalVariablesProcessor {
 
@@ -26,7 +25,7 @@ public class GlobalVariablesProcessor {
 	public GlobalVariables calculateGlobalVariables(Map<String, DtoModuleProcessingResult> modulesProcessingResults, Map<String, Response> responses) {
 		Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
 		int done = calculateSumOfDone(resultVariables);
-		int todo = calcuateSumOfTodoVariables(resultVariables);
+		int todo = calculateSumOfTodoVariables(resultVariables);
 		int mistakes = calculateSumOfMistakes(resultVariables);
 		int errors = calculateSumOfErrors(resultVariables);
 
@@ -41,7 +40,7 @@ public class GlobalVariablesProcessor {
 		return doneSum;
 	}
 
-	private int calcuateSumOfTodoVariables(Iterable<ResultVariables> modulesProcessingResults) {
+	private int calculateSumOfTodoVariables(Iterable<ResultVariables> modulesProcessingResults) {
 		Function<ResultVariables, Integer> extractTodoFunction = extractingFunctions.getExtractTodoFunction();
 		int todoSum = calculateSumOfIterables(modulesProcessingResults, extractTodoFunction);
 		return todoSum;
