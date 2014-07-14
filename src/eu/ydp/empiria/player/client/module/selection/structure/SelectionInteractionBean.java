@@ -1,15 +1,10 @@
 package eu.ydp.empiria.player.client.module.selection.structure;
 
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasShuffle;
 import eu.ydp.empiria.player.client.structure.InteractionModuleBean;
+
+import javax.xml.bind.annotation.*;
+import java.util.List;
 
 @XmlRootElement(name = "selectionInteraction")
 @XmlAccessorType(XmlAccessType.NONE)
@@ -26,6 +21,9 @@ public class SelectionInteractionBean extends InteractionModuleBean implements H
 
 	@XmlAttribute
 	private boolean shuffle;
+
+	@XmlAttribute
+	private boolean ignored;
 
 	@XmlElement(name = "simpleChoice")
 	private List<SelectionSimpleChoiceBean> simpleChoices;
@@ -80,5 +78,13 @@ public class SelectionInteractionBean extends InteractionModuleBean implements H
 
 	public void setShuffle(boolean shuffle) {
 		this.shuffle = shuffle;
+	}
+
+	public boolean isIgnored() {
+		return ignored;
+	}
+
+	public void setIgnored(boolean ignored) {
+		this.ignored = ignored;
 	}
 }
