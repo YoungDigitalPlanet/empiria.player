@@ -14,9 +14,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
-import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
 import eu.ydp.empiria.player.client.controller.multiview.animation.AnimationEndCallback;
@@ -46,8 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MultiPageController extends InternalExtension implements PlayerEventHandler, FlowRequestSocketUserExtension, FlowDataSocketUserExtension,
-		IMultiPageController {
+public class MultiPageController extends InternalExtension implements PlayerEventHandler, FlowRequestSocketUserExtension, IMultiPageController {
 
 	@Inject
 	private EventsBus eventsBus;
@@ -96,7 +93,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	private ResizeTimer resizeTimer;
 	private AnimationEndCallback animationCallback = null;
-	private FlowDataSupplier flowDataSupplier;
 
 	private final Set<HandlerRegistration> touchHandlers = new HashSet<>();
 	private boolean focusDroped;
@@ -397,11 +393,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 		flowRequestInvoker = fri;
 	}
 
-	@Override
-	public void setFlowDataSupplier(FlowDataSupplier supplier) {
-		flowDataSupplier = supplier;
-	}
-
 	private void configure() {
 		configureSwipe();
 	}
@@ -419,11 +410,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 		resizeTimer = new ResizeTimer(resizeContinousUpdater);
 		view.add(mainPanel);
 
-	}
-
-	@Override
-	public ExtensionType getType() {
-		return ExtensionType.MULTITYPE;
 	}
 
 	public boolean isSwipeDisabled() {
