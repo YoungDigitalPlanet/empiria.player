@@ -71,7 +71,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	@Named("multiPageControllerMainPanel")
 	private FlowPanel mainPanel;
 	@Inject
-	private Instance<SwipeType> swipeType;
+	private SwipeType swipeType;
 
 	private static final int activePageCount = 3;
 	private int currentVisiblePage = -1;
@@ -384,11 +384,11 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	}
 
 	public boolean isSwipeDisabled() {
-		return swipeType.get() == SwipeType.DISABLED;
+		return swipeType == SwipeType.DISABLED;
 	}
 
 	private void configureSwipe() {
-		if (swipeType.get() == SwipeType.DISABLED) {
+		if (swipeType == SwipeType.DISABLED) {
 			for (HandlerRegistration registration : touchHandlers) {
 				registration.removeHandler();
 			}
@@ -401,7 +401,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_END)));
 			setVisiblePageCount(3);
 		}
-		panelsCache.setSwipeType(swipeType.get());
+		panelsCache.setSwipeType(swipeType);
 	}
 
 	private void setVisiblePageCount(int count) {

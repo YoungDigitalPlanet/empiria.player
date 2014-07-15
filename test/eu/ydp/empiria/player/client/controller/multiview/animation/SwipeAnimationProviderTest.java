@@ -1,44 +1,43 @@
 package eu.ydp.empiria.player.client.controller.multiview.animation;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-
+import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
+import eu.ydp.empiria.player.client.inject.Instance;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
-import eu.ydp.empiria.player.client.inject.Instance;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SwipeAnimationProviderTest {
+
+	@InjectMocks
+	private SwipeAnimationProvider testObj;
+
 	@Mock
-	private Instance<SwipeType> swipeType;
+	private Provider<SwipeType> swipeTypeProvider;
 	@Mock
 	private Instance<AnimationBase> animationBase;
 	@Mock
 	private Instance<NoAnimation> noAnimation;
 
-	@InjectMocks
-	SwipeAnimationProvider instance;
-
 	@Test
 	public void getWhenSwipeIsDisabled() throws Exception {
-		doReturn(SwipeType.DISABLED).when(swipeType).get();
+		when(swipeTypeProvider.get()).thenReturn(SwipeType.DISABLED);
 		NoAnimation animation = mock(NoAnimation.class);
 		doReturn(animation).when(noAnimation).get();
-		assertThat(instance.get()).isEqualTo(animation);
+		assertThat(testObj.get()).isEqualTo(animation);
 	}
 
 	@Test
 	public void getWhenSwipeIsEnabled() throws Exception {
-		doReturn(SwipeType.DEFAULT).when(swipeType).get();
+		when(swipeTypeProvider.get()).thenReturn(SwipeType.DEFAULT);
 		AnimationBase animation = mock(AnimationBase.class);
 		doReturn(animation).when(animationBase).get();
-		assertThat(instance.get()).isEqualTo(animation);
+		assertThat(testObj.get()).isEqualTo(animation);
 	}
-
 }

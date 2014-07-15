@@ -219,7 +219,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(LabellingView.class).to(LabellingViewImpl.class);
 		bind(LabellingChildView.class).to(LabellingChildViewImpl.class);
 		bind(String.class).annotatedWith(UniqueId.class).toProvider(UniqIdStringProvider.class);
-		bind(SwipeType.class).toProvider(SwipeTypeProvider.class);
+		bind(SwipeType.class).toProvider(SwipeTypeProvider.class).in(Singleton.class);
 		bind(Animation.class).toProvider(SwipeAnimationProvider.class);
 		bind(ExpressionCharacterMappingProvider.class).in(Singleton.class);
 		bind(TutorService.class).in(Singleton.class);
