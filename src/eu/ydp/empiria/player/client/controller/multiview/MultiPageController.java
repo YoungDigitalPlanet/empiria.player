@@ -1,10 +1,5 @@
 package eu.ydp.empiria.player.client.controller.multiview;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
@@ -16,9 +11,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-
 import eu.ydp.empiria.player.client.controller.Page;
-import eu.ydp.empiria.player.client.controller.extensions.Extension;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
@@ -34,7 +27,6 @@ import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHack;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
@@ -49,8 +41,13 @@ import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class MultiPageController extends InternalExtension implements PlayerEventHandler, FlowRequestSocketUserExtension, FlowDataSocketUserExtension,
-		Extension, IMultiPageController {
+		IMultiPageController {
 
 	@Inject
 	private EventsBus eventsBus;
@@ -64,8 +61,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	private Page page;
 	@Inject
 	private MultiPageView view;
-	@Inject
-	private StyleSocket styleSocket;
 	@Inject
 	private Instance<Animation> animation;
 	@Inject
@@ -93,20 +88,17 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	private float currentPosition;
 
 	private FlowRequestInvoker flowRequestInvoker;
-	private final Set<Integer> measuredPanels = new HashSet<Integer>();
+	private final Set<Integer> measuredPanels = new HashSet<>();
 	private int swipeLength = 220;
 
-	/**
-	 * ktore strony zostaly zaladowane
-	 */
-	private final Set<Integer> loadedPages = new HashSet<Integer>();
+	private final Set<Integer> loadedPages = new HashSet<>();
 	private int pageProgressBar = -1;
 
 	private ResizeTimer resizeTimer;
 	private AnimationEndCallback animationCallback = null;
 	private FlowDataSupplier flowDataSupplier;
 
-	private final Set<HandlerRegistration> touchHandlers = new HashSet<HandlerRegistration>();
+	private final Set<HandlerRegistration> touchHandlers = new HashSet<>();
 	private boolean focusDroped;
 
 	private void setStylesForPages(boolean swipeStarted) {
@@ -168,12 +160,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 		hideProgressBarForPage(pageNumber);
 	}
 
-	/**
-	 * zwraca Panel bdacy kontenerem dla widgetow ze strony pageNumber
-	 * 
-	 * @param pageNumber
-	 * @return
-	 */
 	public FlowPanel getViewForPage(Integer pageNumber) {
 		boolean pageWasCreated = panelsCache.isPresent(pageNumber);
 		KeyValue<FlowPanel, FlowPanel> panel = panelsCache.getOrCreateAndPut(pageNumber);
@@ -266,22 +252,12 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 		}
 	}
 
-	/**
-	 * animacja
-	 * 
-	 * @param from
-	 *            absolutna pozycja elementu
-	 * @param to
-	 *            absolutna pozycja elementu cel
-	 * @param direction
-	 */
-
 	@Override
 	public void animatePageSwitch() {
 		animatePageSwitch(getPositionLeft(), getCurrentPosition(), null, MultiPageController.QUICK_ANIMATION_TIME, true);
 	}
 
-	private void animatePageSwitch(float from, final float to, final NavigationButtonDirection direction, int duration, final boolean onlyPositionReset) {// NOPMD
+	private void animatePageSwitch(float from, final float to, final NavigationButtonDirection direction, int duration, final boolean onlyPositionReset) {
 		if (Math.abs(from - to) > 1) {
 			if (!onlyPositionReset) {
 				Window.scrollTo(0, 0);
@@ -327,7 +303,7 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 		for (int x = 0; x < elementsByTagName.getLength(); ++x) {
 			elementsByTagName.getItem(x).blur();
 		}
-	};
+	}
 
 	@Override
 	public void move(boolean swipeRight, float length) {
@@ -346,7 +322,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 		} else {
 			style.setLeft(position + length, Unit.PCT);
 		}
-
 	}
 
 	private void showProgressBarForPage(int pageIndex) {
@@ -381,8 +356,8 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 	}
 
 	public native int getInnerWidth()/*-{
-										return $wnd.innerWidth;
-										}-*/;
+        return $wnd.innerWidth;
+    }-*/;
 
 	@Override
 	public boolean isZoomed() {
@@ -478,10 +453,6 @@ public class MultiPageController extends InternalExtension implements PlayerEven
 
 	public int getCurrentVisiblePage() {
 		return currentVisiblePage;
-	}
-
-	public Set<Integer> getMeasuredPanels() {
-		return measuredPanels;
 	}
 
 	public FlowPanel getMainPanel() {
