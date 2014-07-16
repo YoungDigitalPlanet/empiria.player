@@ -212,8 +212,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	 */
 	private void dropFocus() {
 		focusDropped = true;
-		RootPanel rootPanel = rootPanelDelegate.getRootPanel();
-		NodeList<Element> elementsByTagName = rootPanel.getBodyElement().getElementsByTagName("input");
+		NodeList<Element> elementsByTagName = rootPanelDelegate.getBodyElement().getElementsByTagName("input");
 		for (int x = 0; x < elementsByTagName.getLength(); ++x) {
 			elementsByTagName.getItem(x).blur();
 		}
