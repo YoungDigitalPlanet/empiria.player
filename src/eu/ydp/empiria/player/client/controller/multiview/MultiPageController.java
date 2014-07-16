@@ -197,7 +197,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		}
 
 		List<Integer> pagesToAttache = visiblePagesManager.getPagesToAttache(currentVisiblePage);
-
 		for (Integer pageIndex : pagesToAttache) {
 			final KeyValue<FlowPanel, FlowPanel> pair = panelsCache.getOrCreateAndPut(pageIndex);
 			scheduleDeferredAttachToParent(pair, pageIndex);
@@ -206,7 +205,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	@Override
 	public void animatePageSwitch() {
-		animatePageSwitch(getPositionLeft(), getCurrentPosition(), null, MultiPageController.QUICK_ANIMATION_TIME, true);
+		animatePageSwitch(getPositionLeft(), getCurrentPosition(), null, QUICK_ANIMATION_TIME, true);
 	}
 
 	private void animatePageSwitch(float from, final float to, final NavigationButtonDirection direction, int duration, final boolean onlyPositionReset) {
@@ -360,8 +359,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		PageViewLoadedHandler pageViewLoadedHandler = new PageViewLoadedHandler(this);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), pageViewLoadedHandler);
 
-		ResizeContinousUpdater resizeContinousUpdater = new ResizeContinousUpdater(pageScopeFactory, eventsBus, this, forceRedrawHack);
-		resizeTimer = new ResizeTimer(resizeContinousUpdater);
+		ResizeContinuousUpdater resizeContinuousUpdater = new ResizeContinuousUpdater(pageScopeFactory, eventsBus, this, forceRedrawHack);
+		resizeTimer = new ResizeTimer(resizeContinuousUpdater);
 		view.add(mainPanel);
 	}
 
