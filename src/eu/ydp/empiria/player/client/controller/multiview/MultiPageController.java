@@ -222,7 +222,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 						public void execute() {
 							clearPagesStyles();
 							if (direction != null) {
-								flowRequestInvoker.invokeRequest(NavigationButtonDirection.getRequest(direction));
+								flowRequestInvoker.invokeRequest(direction.getRequest());
 							}
 							if (!onlyPositionReset) {
 								eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));

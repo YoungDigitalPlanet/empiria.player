@@ -1,26 +1,31 @@
 package eu.ydp.empiria.player.client.module.button;
 
-import static eu.ydp.empiria.player.client.util.MapCreator.m;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 
 public enum NavigationButtonDirection {
-	NEXT, PREVIOUS;
+	NEXT {
+		@Override
+		public FlowRequest getRequest() {
+			return new FlowRequest.NavigateNextItem();
+		}
 
-	private static final Map<NavigationButtonDirection, String> DIR2NAME = m(new HashMap<NavigationButtonDirection, String>()).p(NEXT, "next").p(PREVIOUS,
-			"prev");
+		@Override public String getName() {
+			return "next";
+		}
+	},
+	PREVIOUS {
+		@Override
+		public FlowRequest getRequest() {
+			return new FlowRequest.NavigatePreviousItem();
+		}
 
-	private static final Map<NavigationButtonDirection, FlowRequest> DIR2REQUEST = m(new HashMap<NavigationButtonDirection, FlowRequest>()).p(NEXT,
-			new FlowRequest.NavigateNextItem()).p(PREVIOUS, new FlowRequest.NavigatePreviousItem());
+		@Override public String getName() {
+			return "prev";
+		}
+	};
 
-	public static final FlowRequest getRequest(NavigationButtonDirection direction) {
-		return DIR2REQUEST.get(direction);
-	}
+	public abstract FlowRequest getRequest();
 
-	public static final String getName(NavigationButtonDirection direction) {
-		return DIR2NAME.get(direction);
-	}
+	public abstract String getName();
+
 }
