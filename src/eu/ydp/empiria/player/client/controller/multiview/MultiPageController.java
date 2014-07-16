@@ -6,7 +6,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -35,6 +34,7 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.KeyValue;
+import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
@@ -74,6 +74,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private SwipeType swipeType;
 	@Inject
 	private MultiPageControllerStyleManager multiPageControllerStyleManager;
+	@Inject
+	private WindowDelegate windowDelegate;
 
 	private static final int activePageCount = 3;
 	private int currentVisiblePage = -1;
@@ -204,7 +206,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private void animatePageSwitch(float from, final float to, final NavigationButtonDirection direction, int duration, final boolean onlyPositionReset) {
 		if (Math.abs(from - to) > 1) {
 			if (!onlyPositionReset) {
-				Window.scrollTo(0, 0);
+				windowDelegate.scrollTo(0, 0);
 			}
 			animation.get().removeAnimationEndCallback(animationCallback);
 			animationCallback = new AnimationEndCallback() {
@@ -310,7 +312,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	@Override
 	public boolean isZoomed() {
-		return getInnerWidth() != Window.getClientWidth() && getInnerWidth() - 1 != Window.getClientWidth();
+		int clientWidth = windowDelegate.getClientWidth();
+		return getInnerWidth() != clientWidth && getInnerWidth() - 1 != clientWidth;
 	}
 
 	@Override
