@@ -93,7 +93,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private ResizeTimer resizeTimer;
 
 	private final Set<HandlerRegistration> touchHandlers = new HashSet<>();
-	private boolean focusDroped;
+	private boolean focusDropped;
 
 	private static final Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel> keyPanelExtractor = new Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel>() {
 		@Override public FlowPanel apply(KeyValue<FlowPanel, FlowPanel> keyValue) {
@@ -211,7 +211,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	 * Na androidzie podczas swipe gapy zle sie rysowaly nachodzac na siebie. Pozbycie sie z nich focusa na czas swipe rozwiazalo problem
 	 */
 	private void dropFocus() {
-		focusDroped = true;
+		focusDropped = true;
 		RootPanel rootPanel = rootPanelDelegate.getRootPanel();
 		NodeList<Element> elementsByTagName = rootPanel.getBodyElement().getElementsByTagName("input");
 		for (int x = 0; x < elementsByTagName.getLength(); ++x) {
@@ -221,7 +221,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	@Override
 	public void move(boolean swipeRight, float length) {
-		if (!focusDroped && UserAgentChecker.isStackAndroidBrowser()) {
+		if (!focusDropped && UserAgentChecker.isStackAndroidBrowser()) {
 			dropFocus();
 		}
 		if (swipeRight) {
@@ -275,7 +275,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	@Override
 	public void resetFocusAndStyles() {
-		focusDroped = false;
+		focusDropped = false;
 		clearPagesStyles();
 	}
 
