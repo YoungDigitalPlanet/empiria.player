@@ -80,7 +80,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	@Inject
 	private RootPanelDelegate rootPanelDelegate;
 
-	private static final int activePageCount = 3;
 	private int currentVisiblePage = -1;
 	private final static int WIDTH = 100;
 	private final static int DEFAULT_ANIMATION_TIME = 500;
@@ -132,9 +131,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		resizeTimer.schedule(350);
 		if (currentVisiblePage != pageNumber && pageNumber >= 0) {
 			this.currentVisiblePage = pageNumber;
-			if (activePageCount > 1) {
-				animatePageSwitch(getPositionLeft(), -pageNumber * WIDTH, null, DEFAULT_ANIMATION_TIME, false);
-			}
+			animatePageSwitch(getPositionLeft(), -pageNumber * WIDTH, null, DEFAULT_ANIMATION_TIME, false);
 		} else {
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
 		}
@@ -166,6 +163,20 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		return pageNumber > currentVisiblePage;
 	}
 
+	@Override
+	public void detachAttachPanels() {
+		Set<Integer> pagesToDetach = visiblePagesManager.getPagesToDetach(currentVisiblePage);
+		for (final Integer pageIndex : pagesToDetach) {
+			scheduleDeferredRemoveFromParent(pageIndex);
+		}
+
+		List<Integer> pagesToAttache = visiblePagesManager.getPagesToAttache(currentVisiblePage);
+		for (Integer pageIndex : pagesToAttache) {
+			final KeyValue<FlowPanel, FlowPanel> pair = panelsCache.getOrCreateAndPut(pageIndex);
+			scheduleDeferredAttachToParent(pair, pageIndex);
+		}
+	}
+
 	private void scheduleDeferredRemoveFromParent(final int page) {
 		scheduler.scheduleDeferred(new ScheduledCommand() {
 			@Override
@@ -183,24 +194,11 @@ public class MultiPageController extends InternalExtension implements FlowReques
 				FlowPanel pageContentPanel = pair.getValue();
 				placeHolderPanel.add(pageContentPanel);
 				if (pageNumber == currentVisiblePage) {
-					setHeight(getHeightForPage(currentVisiblePage));
+					int height = getHeightForPage(currentVisiblePage);
+					setHeight(height);
 				}
 			}
 		});
-	}
-
-	@Override
-	public void detachAttachPanels() {
-		Set<Integer> pagesToDetach = visiblePagesManager.getPagesToDetach(currentVisiblePage);
-		for (final Integer pageIndex : pagesToDetach) {
-			scheduleDeferredRemoveFromParent(pageIndex);
-		}
-
-		List<Integer> pagesToAttache = visiblePagesManager.getPagesToAttache(currentVisiblePage);
-		for (Integer pageIndex : pagesToAttache) {
-			final KeyValue<FlowPanel, FlowPanel> pair = panelsCache.getOrCreateAndPut(pageIndex);
-			scheduleDeferredAttachToParent(pair, pageIndex);
-		}
 	}
 
 	@Override
@@ -275,16 +273,20 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		}
 	}
 
-	private Style getStyle() {
+	public Style getStyle() {
 		return mainPanel.getElement().getStyle();
 	}
 
 	private void showProgressBarForPage(int pageIndex) {
-		if (!loadedPages.contains(pageIndex) && pageProgressBar != pageIndex && page.isNotLastPage(pageIndex) && pageIndex >= 0) {
+		if (!loadedPages.contains(pageIndex) && isValidPageNumber(pageIndex)) {
 			Panel panel = getViewForPage(pageIndex);
 			panel.add(new ProgressPanel());
 			pageProgressBar = pageIndex;
 		}
+	}
+
+	private boolean isValidPageNumber(int pageIndex) {
+		return pageProgressBar != pageIndex && page.isNotLastPage(pageIndex) && pageIndex >= 0;
 	}
 
 	protected void hideProgressBarForPage(int pageIndex) {
@@ -392,10 +394,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	public int getCurrentVisiblePage() {
 		return currentVisiblePage;
-	}
-
-	public FlowPanel getMainPanel() {
-		return mainPanel;
 	}
 
 	public float getWidth() {
