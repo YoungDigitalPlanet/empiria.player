@@ -17,13 +17,10 @@ import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
-import eu.ydp.empiria.player.client.controller.multiview.animation.AnimationEndCallback;
 import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
 import eu.ydp.empiria.player.client.controller.multiview.touch.MultiPageTouchHandler;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
-import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHack;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -57,8 +54,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	@Inject
 	private MultiPageView view;
 	@Inject
-	private Instance<Animation> animation;
-	@Inject
 	private TouchRecognitionFactory touchRecognitionFactory;
 	@Inject
 	private PageScopeFactory pageScopeFactory;
@@ -79,6 +74,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private WindowDelegate windowDelegate;
 	@Inject
 	private RootPanelDelegate rootPanelDelegate;
+	@Inject
+	private PageSwitchAnimation pageSwitchAnimation;
 
 	private int currentVisiblePage = -1;
 	private final static int WIDTH = 100;
@@ -94,7 +91,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private int pageProgressBar = -1;
 
 	private ResizeTimer resizeTimer;
-	private AnimationEndCallback animationCallback = null;
 
 	private final Set<HandlerRegistration> touchHandlers = new HashSet<>();
 	private boolean focusDroped;
@@ -131,7 +127,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		resizeTimer.schedule(350);
 		if (currentVisiblePage != pageNumber && pageNumber >= 0) {
 			this.currentVisiblePage = pageNumber;
-			animatePageSwitch(getPositionLeft(), -pageNumber * WIDTH, null, DEFAULT_ANIMATION_TIME, false);
+			pageSwitchAnimation.animatePageSwitch(this, getPositionLeft(), -pageNumber * WIDTH, null, DEFAULT_ANIMATION_TIME, false);
 		} else {
 			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
 		}
@@ -203,38 +199,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	@Override
 	public void animatePageSwitch() {
-		animatePageSwitch(getPositionLeft(), getCurrentPosition(), null, QUICK_ANIMATION_TIME, true);
-	}
-
-	private void animatePageSwitch(float from, final float to, final NavigationButtonDirection direction, int duration, final boolean onlyPositionReset) {
-		if (Math.abs(from - to) > 1) {
-			if (!onlyPositionReset) {
-				windowDelegate.scrollTo(0, 0);
-			}
-			animation.get().removeAnimationEndCallback(animationCallback);
-			animationCallback = new AnimationEndCallback() {
-				@Override
-				public void onComplate(int position) {
-					scheduler.scheduleDeferred(new ScheduledCommand() {
-						@Override
-						public void execute() {
-							clearPagesStyles();
-							if (direction != null) {
-								flowRequestInvoker.invokeRequest(direction.getRequest());
-							}
-							if (!onlyPositionReset) {
-								eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
-							}
-							currentPosition = to;
-						}
-					});
-				}
-			};
-			animation.get().addAnimationEndCallback(animationCallback);
-			animation.get().goTo(mainPanel, Math.round((to / WIDTH)) * WIDTH, duration);
-		} else if (!onlyPositionReset) {
-			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
-		}
+		pageSwitchAnimation.animatePageSwitch(this, getPositionLeft(), getCurrentPosition(), null, QUICK_ANIMATION_TIME, true);
 	}
 
 	private float getPositionLeft() {
@@ -310,7 +275,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	@Override
 	public void resetFocusAndStyles() {
-		this.focusDroped = false;
+		focusDroped = false;
 		clearPagesStyles();
 	}
 
@@ -324,7 +289,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	@Override
 	public void switchPage() {
 		if (multiPageTouchHandler.getTouchReservation()) {
-			animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
+			pageSwitchAnimation.animatePageSwitch(this, getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 			return;
 		}
 
@@ -332,13 +297,13 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		float percent = (float) swipeLength / rootPanelDelegate.getOffsetWidth() * 100;
 		if (direction != null) {
 			if (direction == NavigationButtonDirection.PREVIOUS && page.getCurrentPageNumber() > 0) {
-				animatePageSwitch(getPositionLeft(), getPositionLeft() + (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
+				pageSwitchAnimation.animatePageSwitch(this, getPositionLeft(), getPositionLeft() + (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE_STARTED));
 			} else if (direction == NavigationButtonDirection.NEXT && page.isNotLastPage(page.getCurrentPageNumber())) {
-				animatePageSwitch(getPositionLeft(), getPositionLeft() - (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
+				pageSwitchAnimation.animatePageSwitch(this, getPositionLeft(), getPositionLeft() - (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE_STARTED));
 			} else {
-				animatePageSwitch(getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
+				pageSwitchAnimation.animatePageSwitch(this, getPositionLeft(), currentPosition, null, QUICK_ANIMATION_TIME, true);
 			}
 		}
 	}
@@ -396,7 +361,11 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		return currentVisiblePage;
 	}
 
-	public float getWidth() {
+	public FlowPanel getMainPanel() {
+		return mainPanel;
+	}
+
+	public int getWidth() {
 		return WIDTH;
 	}
 
@@ -406,7 +375,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	@Override
 	public boolean isAnimationRunning() {
-		return animation.get().isRunning();
+		return pageSwitchAnimation.isAnimationRunning();
 	}
 
 	private float getCurrentPosition() {
@@ -415,5 +384,13 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	public void setSwipeLength(int swipeLength) {
 		this.swipeLength = swipeLength;
+	}
+
+	public void setCurrentPosition(float currentPosition) {
+		this.currentPosition = currentPosition;
+	}
+
+	public void invokeNavigationRequest(NavigationButtonDirection direction) {
+		flowRequestInvoker.invokeRequest(direction.getRequest());
 	}
 }
