@@ -280,7 +280,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	}
 
 	private void showProgressBarForPage(int pageIndex) {
-		if (!loadedPages.contains(pageIndex) && pageProgressBar != pageIndex && pageIndex < page.getPageCount() - 1 && pageIndex >= 0) {
+		if (!loadedPages.contains(pageIndex) && pageProgressBar != pageIndex && page.isNotLastPage(pageIndex) && pageIndex >= 0) {
 			Panel panel = getViewForPage(pageIndex);
 			panel.add(new ProgressPanel());
 			pageProgressBar = pageIndex;
@@ -288,7 +288,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	}
 
 	protected void hideProgressBarForPage(int pageIndex) {
-		if (pageIndex < page.getPageCount() - 1) {
+		if (page.isNotLastPage(pageIndex)) {
 			FlowPanel panel = getViewForPage(pageIndex);
 			for (int x = 0; x < panel.getWidgetCount(); ++x) {
 				if (panel.getWidget(x) instanceof ProgressPanel) {
@@ -332,7 +332,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 			if (direction == NavigationButtonDirection.PREVIOUS && page.getCurrentPageNumber() > 0) {
 				animatePageSwitch(getPositionLeft(), getPositionLeft() + (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE_STARTED));
-			} else if (direction == NavigationButtonDirection.NEXT && page.getCurrentPageNumber() < page.getPageCount() - 1) {
+			} else if (direction == NavigationButtonDirection.NEXT && page.isNotLastPage(page.getCurrentPageNumber())) {
 				animatePageSwitch(getPositionLeft(), getPositionLeft() - (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE_STARTED));
 			} else {
