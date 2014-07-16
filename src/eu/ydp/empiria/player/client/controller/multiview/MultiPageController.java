@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.multiview;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
@@ -30,10 +31,10 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.KeyValue;
+import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
@@ -76,6 +77,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private MultiPageControllerStyleManager multiPageControllerStyleManager;
 	@Inject
 	private WindowDelegate windowDelegate;
+	@Inject
+	private RootPanelDelegate rootPanelDelegate;
 
 	private static final int activePageCount = 3;
 	private int currentVisiblePage = -1;
@@ -97,12 +100,13 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private final Set<HandlerRegistration> touchHandlers = new HashSet<>();
 	private boolean focusDroped;
 
+	private static final Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel> keyPanelExtractor = new Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel>() {
+		@Override public FlowPanel apply(KeyValue<FlowPanel, FlowPanel> keyValue) {
+			return keyValue.getKey();
+		}
+	};
+
 	private void clearPagesStyles() {
-		Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel> keyPanelExtractor = new Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel>() {
-			@Override public FlowPanel apply(KeyValue<FlowPanel, FlowPanel> keyValue) {
-				return keyValue.getKey();
-			}
-		};
 		Collection<KeyValue<FlowPanel, FlowPanel>> cacheValues = panelsCache.getCache().values();
 		Collection<FlowPanel> keyPanels = Collections2.transform(cacheValues, keyPanelExtractor);
 		multiPageControllerStyleManager.clearPagesStyles(keyPanels);
@@ -246,7 +250,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	 */
 	private void dropFocus() {
 		focusDroped = true;
-		NodeList<com.google.gwt.dom.client.Element> elementsByTagName = RootPanel.getBodyElement().getElementsByTagName("input");
+		RootPanel rootPanel = rootPanelDelegate.getRootPanel();
+		NodeList<Element> elementsByTagName = rootPanel.getBodyElement().getElementsByTagName("input");
 		for (int x = 0; x < elementsByTagName.getLength(); ++x) {
 			elementsByTagName.getItem(x).blur();
 		}
@@ -308,14 +313,11 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		clearPagesStyles();
 	}
 
-	public native int getInnerWidth()/*-{
-        return $wnd.innerWidth;
-    }-*/;
-
 	@Override
 	public boolean isZoomed() {
 		int clientWidth = windowDelegate.getClientWidth();
-		return getInnerWidth() != clientWidth && getInnerWidth() - 1 != clientWidth;
+		int innerWidth = windowDelegate.getInnerWidth();
+		return innerWidth != clientWidth && innerWidth - 1 != clientWidth;
 	}
 
 	@Override
@@ -326,7 +328,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		}
 
 		NavigationButtonDirection direction = multiPageTouchHandler.getDirection();
-		float percent = (float) swipeLength / RootPanel.get().getOffsetWidth() * 100;
+		float percent = (float) swipeLength / rootPanelDelegate.getOffsetWidth() * 100;
 		if (direction != null) {
 			if (direction == NavigationButtonDirection.PREVIOUS && page.getCurrentPageNumber() > 0) {
 				animatePageSwitch(getPositionLeft(), getPositionLeft() + (WIDTH - percent), direction, DEFAULT_ANIMATION_TIME, true);
@@ -375,7 +377,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 			touchHandlers.clear();
 			setVisiblePageCount(1);
 		} else {
-			HasTouchHandlers touchHandler = touchRecognitionFactory.getTouchRecognition(RootPanel.get(), false);
+			RootPanel rootPanel = rootPanelDelegate.getRootPanel();
+			HasTouchHandlers touchHandler = touchRecognitionFactory.getTouchRecognition(rootPanel, false);
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_START)));
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_MOVE)));
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_END)));
