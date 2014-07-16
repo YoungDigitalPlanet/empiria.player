@@ -66,7 +66,7 @@ public class MultiPageControllerStyleManagerTest {
 		boolean isChangeToNextPage = true;
 
 		// when
-		testObj.sth(keyPanel1, isChangeToNextPage);
+		testObj.setPageStyles(keyPanel1, isChangeToNextPage);
 
 		// then
 		verify(keyPanel1).addStyleName(UNSELECTED_STYLE);
@@ -79,7 +79,7 @@ public class MultiPageControllerStyleManagerTest {
 		boolean isChangeToNextPage = false;
 
 		// when
-		testObj.sth(keyPanel1, isChangeToNextPage);
+		testObj.setPageStyles(keyPanel1, isChangeToNextPage);
 
 		// then
 		verify(keyPanel1).addStyleName(UNSELECTED_STYLE);

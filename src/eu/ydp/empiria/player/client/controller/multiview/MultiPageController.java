@@ -159,7 +159,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		FlowPanel panel = panelsPair.getKey();
 
 		boolean isChangeToNextPage = isChangeToNextPage(pageNumber);
-		multiPageControllerStyleManager.sth(panel, isChangeToNextPage);
+		multiPageControllerStyleManager.setPageStyles(panel, isChangeToNextPage);
 	}
 
 	private boolean isChangeToNextPage(Integer pageNumber) {

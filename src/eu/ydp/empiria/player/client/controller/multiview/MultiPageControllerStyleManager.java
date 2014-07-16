@@ -20,7 +20,7 @@ public class MultiPageControllerStyleManager {
 		}
 	}
 
-	public void sth(FlowPanel panel, boolean isChangeToNextPage) {
+	public void setPageStyles(FlowPanel panel, boolean isChangeToNextPage) {
 		panel.addStyleName(styleNames.QP_PAGE_UNSELECTED());
 		String pageDirectionChangeStyle = findPageDirectionChangeStyle(isChangeToNextPage);
 		panel.addStyleName(pageDirectionChangeStyle);
