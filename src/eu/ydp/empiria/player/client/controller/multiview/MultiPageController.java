@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.multiview;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
@@ -23,7 +25,6 @@ import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHack;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
@@ -37,6 +38,7 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,8 +47,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	@Inject
 	private EventsBus eventsBus;
-	@Inject
-	private StyleNameConstants styleNames;
 	@Inject
 	private Scheduler scheduler;
 	@Inject
@@ -72,6 +72,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private FlowPanel mainPanel;
 	@Inject
 	private SwipeType swipeType;
+	@Inject
+	private MultiPageControllerStyleManager multiPageControllerStyleManager;
 
 	private static final int activePageCount = 3;
 	private int currentVisiblePage = -1;
@@ -93,14 +95,15 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private final Set<HandlerRegistration> touchHandlers = new HashSet<>();
 	private boolean focusDroped;
 
-	private void setStylesForPages() {
-		for (KeyValue<FlowPanel, FlowPanel> panel : panelsCache.getCache().values()) {
-			FlowPanel flowPanel = panel.getKey();
-			flowPanel.removeStyleName(styleNames.QP_PAGE_UNSELECTED());
-			flowPanel.removeStyleName(styleNames.QP_PAGE_SELECTED());
-			flowPanel.removeStyleName(styleNames.QP_PAGE_PREV());
-			flowPanel.removeStyleName(styleNames.QP_PAGE_NEXT());
-		}
+	private void clearPagesStyles() {
+		Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel> keyPanelExtractor = new Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel>() {
+			@Override public FlowPanel apply(KeyValue<FlowPanel, FlowPanel> keyValue) {
+				return keyValue.getKey();
+			}
+		};
+		Collection<KeyValue<FlowPanel, FlowPanel>> cacheValues = panelsCache.getCache().values();
+		Collection<FlowPanel> keyPanels = Collections2.transform(cacheValues, keyPanelExtractor);
+		multiPageControllerStyleManager.clearPagesStyles(keyPanels);
 	}
 
 	protected int getHeightForPage(int pageNumber) {
@@ -148,18 +151,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		KeyValue<FlowPanel, FlowPanel> panelsPair = panelsCache.getOrCreateAndPut(pageNumber);
 		FlowPanel panel = panelsPair.getKey();
 
-		panel.addStyleName(styleNames.QP_PAGE_UNSELECTED());
-
-		String pageDirectionChangeStyle = findPageDirectionChangeStyle(pageNumber);
-		panel.addStyleName(pageDirectionChangeStyle);
-	}
-
-	private String findPageDirectionChangeStyle(Integer pageNumber) {
-		if (isChangeToNextPage(pageNumber)) {
-			return styleNames.QP_PAGE_NEXT();
-		} else {
-			return styleNames.QP_PAGE_PREV();
-		}
+		boolean isChangeToNextPage = isChangeToNextPage(pageNumber);
+		multiPageControllerStyleManager.sth(panel, isChangeToNextPage);
 	}
 
 	private boolean isChangeToNextPage(Integer pageNumber) {
@@ -220,7 +213,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 					scheduler.scheduleDeferred(new ScheduledCommand() {
 						@Override
 						public void execute() {
-							setStylesForPages();
+							clearPagesStyles();
 							if (direction != null) {
 								flowRequestInvoker.invokeRequest(NavigationButtonDirection.getRequest(direction));
 							}
@@ -308,7 +301,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	@Override
 	public void resetFocusAndStyles() {
 		this.focusDroped = false;
-		setStylesForPages();
+		clearPagesStyles();
 	}
 
 	public native int getInnerWidth()/*-{
@@ -365,7 +358,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), new PlayerEventHandler() {
 			@Override public void onPlayerEvent(PlayerEvent event) {
 				reset();
-
 			}
 		});
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), new PlayerEventHandler() {
