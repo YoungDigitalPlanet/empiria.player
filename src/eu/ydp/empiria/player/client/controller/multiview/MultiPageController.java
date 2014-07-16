@@ -121,7 +121,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		}
 	}
 
-	private void setVisiblePage(int pageNumber) {
+	@Override
+	public void setVisiblePage(int pageNumber) {
 		showProgressBarForPage(pageNumber);
 		resizeTimer.cancelAndReset();
 		resizeTimer.schedule(350);
@@ -184,7 +185,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		});
 	}
 
-	private void detachAttachPanels() {
+	@Override
+	public void detachAttachPanels() {
 		Set<Integer> pagesToDetach = visiblePagesManager.getPagesToDetach(currentVisiblePage);
 		for (final Integer pageIndex : pagesToDetach) {
 			scheduleDeferredRemoveFromParent(pageIndex);
@@ -237,7 +239,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private float getPositionLeft() {
 		Style style = getStyle();
 		return NumberUtils.tryParseFloat(style.getLeft().replaceAll("[a-z%]+$", ""));
-
 	}
 
 	/**
@@ -294,7 +295,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		}
 	}
 
-	private void reset() {
+	@Override
+	public void reset() {
 		multiPageTouchHandler.resetModelAndTimer();
 		resetFocusAndStyles();
 		multiPageTouchHandler.setTouchReservation(true);
@@ -349,25 +351,12 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		view.setController(this);
 		configureSwipe();
 
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW), new PlayerEventHandler() {
-			@Override public void onPlayerEvent(PlayerEvent event) {
-				Integer pageNumber = 0;
-				if (event.getValue() != null) {
-					pageNumber = (Integer) event.getValue();
-				}
-				setVisiblePage(pageNumber);
-			}
-		});
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), new PlayerEventHandler() {
-			@Override public void onPlayerEvent(PlayerEvent event) {
-				reset();
-			}
-		});
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), new PlayerEventHandler() {
-			@Override public void onPlayerEvent(PlayerEvent event) {
-				detachAttachPanels();
-			}
-		});
+		LoadPageViewHandler loadPageViewHandler = new LoadPageViewHandler(this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW), loadPageViewHandler);
+		TouchReservationHandler touchReservationHandler = new TouchReservationHandler(this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), touchReservationHandler);
+		PageViewLoadedHandler pageViewLoadedHandler = new PageViewLoadedHandler(this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), pageViewLoadedHandler);
 
 		ResizeContinousUpdater resizeContinousUpdater = new ResizeContinousUpdater(pageScopeFactory, eventsBus, this, forceRedrawHack);
 		resizeTimer = new ResizeTimer(resizeContinousUpdater);
