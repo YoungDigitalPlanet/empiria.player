@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller.multiview;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
@@ -33,7 +32,6 @@ import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
-import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 import java.util.Collection;
@@ -45,8 +43,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	@Inject
 	private EventsBus eventsBus;
-	@Inject
-	private Scheduler scheduler;
 	@Inject
 	private PanelCache panelsCache;
 	@Inject
@@ -76,6 +72,10 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private RootPanelDelegate rootPanelDelegate;
 	@Inject
 	private PageSwitchAnimation pageSwitchAnimation;
+	@Inject
+	private PanelAttacher panelAttacher;
+	@Inject
+	private PanelDetacher panelDetacher;
 
 	private int currentVisiblePage = -1;
 	private final static int WIDTH = 100;
@@ -162,39 +162,10 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	@Override
 	public void detachAttachPanels() {
 		Set<Integer> pagesToDetach = visiblePagesManager.getPagesToDetach(currentVisiblePage);
-		for (final Integer pageIndex : pagesToDetach) {
-			scheduleDeferredRemoveFromParent(pageIndex);
-		}
+		panelDetacher.detach(pagesToDetach);
 
 		List<Integer> pagesToAttache = visiblePagesManager.getPagesToAttache(currentVisiblePage);
-		for (Integer pageIndex : pagesToAttache) {
-			final KeyValue<FlowPanel, FlowPanel> pair = panelsCache.getOrCreateAndPut(pageIndex);
-			scheduleDeferredAttachToParent(pair, pageIndex);
-		}
-	}
-
-	private void scheduleDeferredRemoveFromParent(final int page) {
-		scheduler.scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				panelsCache.getOrCreateAndPut(page).getValue().removeFromParent();
-			}
-		});
-	}
-
-	private void scheduleDeferredAttachToParent(final KeyValue<FlowPanel, FlowPanel> pair, final int pageNumber) {
-		scheduler.scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				FlowPanel placeHolderPanel = pair.getKey();
-				FlowPanel pageContentPanel = pair.getValue();
-				placeHolderPanel.add(pageContentPanel);
-				if (pageNumber == currentVisiblePage) {
-					int height = getHeightForPage(currentVisiblePage);
-					setHeight(height);
-				}
-			}
-		});
+		panelAttacher.attach(this, pagesToAttache);
 	}
 
 	@Override
@@ -335,7 +306,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	}
 
 	private void configureSwipe() {
-		if (swipeType == SwipeType.DISABLED) {
+		if (isSwipeDisabled()) {
 			for (HandlerRegistration registration : touchHandlers) {
 				registration.removeHandler();
 			}
@@ -391,5 +362,14 @@ public class MultiPageController extends InternalExtension implements FlowReques
 
 	public void invokeNavigationRequest(NavigationButtonDirection direction) {
 		flowRequestInvoker.invokeRequest(direction.getRequest());
+	}
+
+	public void setCurrentPageHeight() {
+		int height = getHeightForPage(currentVisiblePage);
+		setHeight(height);
+	}
+
+	public boolean isCurrentPage(int pageNumber) {
+		return pageNumber == currentVisiblePage;
 	}
 }
