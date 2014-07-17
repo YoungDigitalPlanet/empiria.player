@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.name.Named;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.controller.Page;
@@ -63,7 +64,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	@Named("multiPageControllerMainPanel")
 	private FlowPanel mainPanel;
 	@Inject
-	private SwipeType swipeType;
+	private Provider<SwipeType> swipeType;
 	@Inject
 	private MultiPageControllerStyleManager multiPageControllerStyleManager;
 	@Inject
@@ -302,7 +303,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	}
 
 	public boolean isSwipeDisabled() {
-		return swipeType == SwipeType.DISABLED;
+		return swipeType.get() == SwipeType.DISABLED;
 	}
 
 	private void configureSwipe() {
@@ -320,7 +321,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 			touchHandlers.add(touchHandler.addTouchHandler(multiPageTouchHandler, TouchEvent.getType(TouchTypes.TOUCH_END)));
 			setVisiblePageCount(3);
 		}
-		panelsCache.setSwipeType(swipeType);
+		panelsCache.setSwipeType(swipeType.get());
 	}
 
 	private void setVisiblePageCount(int count) {
