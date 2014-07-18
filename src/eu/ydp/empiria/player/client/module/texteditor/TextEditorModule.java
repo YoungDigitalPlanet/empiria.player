@@ -30,7 +30,6 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 
 	@Override
 	public void reset() {
-		presenter.setContent("");
 	}
 
 	@Override
@@ -49,12 +48,12 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 
 	@Override
 	public void markAnswers(boolean mark) {
-
+		lock(mark);
 	}
 
 	@Override
 	public void showCorrectAnswers(boolean show) {
-
+		lock(show);
 	}
 
 	@Override
