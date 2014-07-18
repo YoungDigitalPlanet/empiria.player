@@ -2,7 +2,19 @@ package eu.ydp.empiria.player.client.module.texteditor.wrapper;
 
 public class TextEditorJSWrapper {
 
-	public native final void convert(String moduleId) /*-{
+	public void convert(String moduleId) {
+		convertNative(moduleId);
+	}
+
+	public void setContent(String moduleId, String text) {
+		setContentNative(moduleId, text);
+	}
+
+	public String getContent(String moduleId) {
+		return getContentNative(moduleId);
+	}
+
+	private native final void convertNative(String moduleId) /*-{
         var options = {
             link: false,
             indent: false,
@@ -15,11 +27,11 @@ public class TextEditorJSWrapper {
         $wnd.$("#" + moduleId + " textarea").jqte(options);
     }-*/;
 
-	public native final void setContent(String moduleId, String text) /*-{
+	private native final void setContentNative(String moduleId, String text) /*-{
         $wnd.$("#" + moduleId + " textarea").jqteVal(text);
     }-*/;
 
-	public native final String getContent(String moduleId) /*-{
+	private native final String getContentNative(String moduleId) /*-{
         return $wnd.$("#" + moduleId + " textarea").val();
     }-*/;
 }
