@@ -214,14 +214,14 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	}
 
 	private void showProgressBarForPage(int pageIndex) {
-		if (!loadedPages.contains(pageIndex) && isValidPageNumber(pageIndex)) {
+		if (!loadedPages.contains(pageIndex) && isValidPageIndex(pageIndex)) {
 			Panel panel = getViewForPage(pageIndex);
 			panel.add(new ProgressPanel());
 			pageProgressBar = pageIndex;
 		}
 	}
 
-	private boolean isValidPageNumber(int pageIndex) {
+	private boolean isValidPageIndex(int pageIndex) {
 		return pageProgressBar != pageIndex && page.isNotLastPage(pageIndex) && pageIndex >= 0;
 	}
 
@@ -291,10 +291,10 @@ public class MultiPageController extends InternalExtension implements FlowReques
 		configureSwipe();
 
 		LoadPageViewHandler loadPageViewHandler = new LoadPageViewHandler(this);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW), loadPageViewHandler);
 		TouchReservationHandler touchReservationHandler = new TouchReservationHandler(this);
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), touchReservationHandler);
 		PageViewLoadedHandler pageViewLoadedHandler = new PageViewLoadedHandler(this);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW), loadPageViewHandler);
+		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), touchReservationHandler);
 		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), pageViewLoadedHandler);
 
 		ResizeContinuousUpdater resizeContinuousUpdater = new ResizeContinuousUpdater(pageScopeFactory, eventsBus, this, forceRedrawHack);
