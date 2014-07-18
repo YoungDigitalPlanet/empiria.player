@@ -6,7 +6,6 @@ import com.google.inject.Key;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
-
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
@@ -15,14 +14,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorIdProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.BonusConfigModuleScopeProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.CssStylesModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.PersonaServiceModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.ProgressBonusConfigModuleScopeProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.TutorConfigModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.WithCacheCssStylesModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
+import eu.ydp.empiria.player.client.gin.scopes.module.providers.*;
 import eu.ydp.empiria.player.client.module.bonus.BonusProvider;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
@@ -66,15 +58,13 @@ import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
 import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
+import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
+import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
 import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
-import eu.ydp.empiria.player.client.module.tutor.actions.OnOkAction;
-import eu.ydp.empiria.player.client.module.tutor.actions.OnPageAllOkAction;
-import eu.ydp.empiria.player.client.module.tutor.actions.OnWrongAction;
-import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeGenerator;
-import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeProvider;
+import eu.ydp.empiria.player.client.module.tutor.actions.*;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
@@ -111,6 +101,14 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindProgressBonus();
 		bindVideoModule();
 		bindDictionary();
+		bindTextEditor();
+	}
+
+	private void bindTextEditor() {
+		bindModuleScoped(TextEditorPresenter.class, new TypeLiteral<ModuleScopedProvider<TextEditorPresenter>>() {
+		});
+		bindModuleScoped(TextEditorView.class, new TypeLiteral<ModuleScopedProvider<TextEditorView>>() {
+		});
 	}
 
 	private void bindDictionary() {
