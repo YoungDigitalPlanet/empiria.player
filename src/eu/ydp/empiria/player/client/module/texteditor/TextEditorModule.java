@@ -73,6 +73,7 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 
 	@Override
 	public void onBodyUnload() {
+		presenter.convertEditor();
 	}
 
 	@Override

@@ -19,7 +19,16 @@ public class TextEditorModuleTest {
 	private TextEditorPresenter presenter;
 
 	@Test
-	public void chouldConvertEditorOnBodyLoad() {
+	public void shouldConvertEditorOnBodyLoad() {
+		// when
+		testObj.onBodyLoad();
+
+		// then
+		verify(presenter).convertEditor();
+	}
+
+	@Test
+	public void shouldConvertEditorOnBodyUnload() {
 		// when
 		testObj.onBodyLoad();
 
