@@ -27,8 +27,8 @@ public class MultiPageView extends FlowPanel implements ResizeHandler {
 	}
 
 	public void setSwipeDisabled(boolean swipeDisabled) {
-		Style style = controller.getMainPanel().getElement().getStyle();
-		Style elmentStyle = getElement().getStyle();
+		Style style = controller.getStyle();
+		Style elementStyle = getElement().getStyle();
 
 		style.setWidth(controller.getWidth(), Unit.PCT);
 
@@ -36,12 +36,12 @@ public class MultiPageView extends FlowPanel implements ResizeHandler {
 			style.clearPosition();
 			style.clearTop();
 			style.clearLeft();
-			elmentStyle.clearPosition();
+			elementStyle.clearPosition();
 		} else {
 			style.setPosition(Position.ABSOLUTE);
 			style.setTop(0, Unit.PX);
 			style.setLeft(0, Unit.PX);
-			elmentStyle.setPosition(Position.RELATIVE);
+			elementStyle.setPosition(Position.RELATIVE);
 		}
 
 		setSwipeLength();

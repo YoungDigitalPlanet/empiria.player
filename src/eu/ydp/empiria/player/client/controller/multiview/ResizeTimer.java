@@ -4,20 +4,20 @@ import com.google.gwt.user.client.Timer;
 
 public class ResizeTimer extends Timer {
 
-	private final ResizeContinousUpdater resizeContinousUpdater;
+	private final ResizeContinuousUpdater resizeContinuousUpdater;
 
-	public ResizeTimer(ResizeContinousUpdater resizeContinousUpdater) {
-		this.resizeContinousUpdater = resizeContinousUpdater;
+	public ResizeTimer(ResizeContinuousUpdater resizeContinuousUpdater) {
+		this.resizeContinuousUpdater = resizeContinuousUpdater;
 	}
 
 	public void cancelAndReset() {
 		super.cancel();
-		resizeContinousUpdater.reset();
+		resizeContinuousUpdater.reset();
 	}
 
 	@Override
 	public void run() {
-		int rescheduleTime = resizeContinousUpdater.runContinousResizeUpdateAndReturnRescheduleTime();
+		int rescheduleTime = resizeContinuousUpdater.runContinousResizeUpdateAndReturnRescheduleTime();
 
 		if (rescheduleTime > 0) {
 			schedule(rescheduleTime);
