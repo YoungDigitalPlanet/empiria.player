@@ -1,14 +1,11 @@
 package eu.ydp.empiria.player.client.module.button;
 
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.module.ControlModule;
@@ -18,6 +15,8 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
+
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
 
 public class NavigationButtonModule extends ControlModule implements ISimpleModule, PlayerEventHandler {
 
@@ -92,7 +91,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 				@Override
 				public void onClick(ClickEvent event) {
 					if (isEnabled() && !isEnd()) {
-						flowRequestInvoker.invokeRequest(NavigationButtonDirection.getRequest(direction));
+						flowRequestInvoker.invokeRequest(direction.getRequest());
 					}
 				}
 			});
@@ -102,7 +101,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 	}
 
 	private String getStyleName() {
-		return "qp-" + NavigationButtonDirection.getName(direction) + "-button";
+		return "qp-" + direction.getName() + "-button";
 	}
 
 	private Boolean isLastPage() {
