@@ -25,6 +25,10 @@ public class Page extends InternalExtension implements FlowDataSocketUserExtensi
 		}
 	}
 
+	public boolean isNotLastPage(int pageIndex) {
+		return pageIndex < getPageCount() - 1;
+	}
+
 	@Override
 	public void init() {// NOPMD
 

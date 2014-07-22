@@ -2,13 +2,12 @@ package eu.ydp.empiria.player.client.controller.multiview.animation;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
 import eu.ydp.empiria.player.client.inject.Instance;
 
 public class SwipeAnimationProvider implements Provider<Animation> {
 	@Inject
-	private Instance<SwipeType> swipeType;
+	private Provider<SwipeType> swipeType;
 	@Inject
 	private Instance<AnimationBase> animationBase;
 	@Inject

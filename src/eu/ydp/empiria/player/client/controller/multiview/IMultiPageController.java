@@ -14,4 +14,9 @@ public interface IMultiPageController {
 
 	void switchPage();
 
+	void detachAttachPanels();
+
+	void reset();
+
+	void setVisiblePage(int pageNumber);
 }
