@@ -1,15 +1,15 @@
 package eu.ydp.empiria.player.client.controller.feedback.player;
 
-import javax.annotation.PostConstruct;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.html5.HTML5AudioMediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+
+import javax.annotation.PostConstruct;
 
 public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 
@@ -24,6 +24,14 @@ public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 	@Inject
 	public SingleFeedbackSoundPlayer(@Assisted MediaWrapper<?> mediaWrapper) {
 		this.mediaWrapper = mediaWrapper;
+		overrideWrapperOptionsIfNeeded(mediaWrapper);
+	}
+
+	private void overrideWrapperOptionsIfNeeded(MediaWrapper<?> mediaWrapper) {
+		if (mediaWrapper instanceof HTML5AudioMediaWrapper) {
+			((HTML5AudioMediaWrapper) mediaWrapper)
+					.setMediaAvailableOptions(new HTML5MediaForFeedbacksAvailableOptions());
+		}
 	}
 
 	@PostConstruct
@@ -66,16 +74,16 @@ public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 	@Override
 	public void onMediaEvent(MediaEvent event) {
 		switch (event.getType()) {
-		case ON_PAUSE:
-		case ON_STOP:
-			setPlayed(false);
-			playIfRequired();
-			break;
-		case ON_PLAY:
-			setPlayed(true);
-			break;
-		default:
-			break;
+			case ON_PAUSE:
+			case ON_STOP:
+				setPlayed(false);
+				playIfRequired();
+				break;
+			case ON_PLAY:
+				setPlayed(true);
+				break;
+			default:
+				break;
 		}
 	}
 }
