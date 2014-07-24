@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback.player;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.HTML5AudioMediaWrapper;
@@ -9,34 +10,32 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-import javax.annotation.PostConstruct;
-
 public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 
-	@Inject
-	protected EventsBus eventsBus;
+	private EventsBus eventsBus;
+	private MediaWrapper<?> mediaWrapper;
+	private Provider<HTML5MediaForFeedbacksAvailableOptions> optionsProvider;
 
-	protected MediaWrapper<?> mediaWrapper;
-
-	protected boolean plaing = false;
+	private boolean playing = false;
 	protected boolean playAfterStop = false;
 
 	@Inject
-	public SingleFeedbackSoundPlayer(@Assisted MediaWrapper<?> mediaWrapper) {
+	public SingleFeedbackSoundPlayer(@Assisted MediaWrapper<?> mediaWrapper, EventsBus eventsBus, Provider<HTML5MediaForFeedbacksAvailableOptions> optionsProvider) {
 		this.mediaWrapper = mediaWrapper;
+		this.eventsBus = eventsBus;
+		this.optionsProvider = optionsProvider;
 		overrideWrapperOptionsIfNeeded(mediaWrapper);
+		eventsBus.addHandlerToSource(MediaEvent.getTypes(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PAUSE, MediaEventTypes.ON_PLAY), mediaWrapper, this);
+
 	}
 
 	private void overrideWrapperOptionsIfNeeded(MediaWrapper<?> mediaWrapper) {
 		if (mediaWrapper instanceof HTML5AudioMediaWrapper) {
+			HTML5MediaForFeedbacksAvailableOptions options = optionsProvider.get();
 			((HTML5AudioMediaWrapper) mediaWrapper)
-					.setMediaAvailableOptions(new HTML5MediaForFeedbacksAvailableOptions());
+					.setMediaAvailableOptions(options);
 		}
-	}
 
-	@PostConstruct
-	public void postConstruct() {
-		eventsBus.addHandlerToSource(MediaEvent.getTypes(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PAUSE, MediaEventTypes.ON_PLAY), mediaWrapper, this);
 	}
 
 	protected void firePlayEvent(final MediaWrapper<?> mediaWrapper) {
@@ -64,11 +63,11 @@ public class SingleFeedbackSoundPlayer implements MediaEventHandler {
 	}
 
 	protected boolean isPlayed() {
-		return plaing;
+		return playing;
 	}
 
 	public void setPlayed(boolean isPlayed) {
-		this.plaing = isPlayed;
+		this.playing = isPlayed;
 	}
 
 	@Override
