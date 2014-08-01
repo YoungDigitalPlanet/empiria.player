@@ -7,6 +7,8 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.dom.client.TouchCancelEvent;
+import com.google.gwt.event.dom.client.TouchCancelHandler;
 import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchEndHandler;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
@@ -24,11 +26,12 @@ import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 //TODO dopisac rozpoznawanie gestow
 public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, TouchStartHandler,
-		TouchEndHandler, TouchMoveHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler {
+		TouchEndHandler, TouchMoveHandler, TouchCancelHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler {
 	private final Widget listenOn;
 	private boolean touchMoveHandlers = false;
 	private boolean touchStartHandlers = false;
 	private boolean touchEndHandlers = false;
+	private boolean touchCancelHandlers = false;
 	private boolean emulateClickAsTouch = true;
 	private boolean globalTouchEnd;
 
@@ -81,26 +84,27 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		}
 	}
 
-	private void checkEvent(NativeEvent event) {
-		// if (!(listenOn instanceof FocusWidget) &&
-		// UserAgentChecker.isStackAndroidBrowser()) {
-		// // event.preventDefault();
-		// }
+	private void addTouchCancelHandlers() {
+		if (!touchCancelHandlers) {
+			listenOn.addDomHandler(this, TouchCancelEvent.getType());
+			touchCancelHandlers = false;
+		}
 	}
 
 	private void touchStart(NativeEvent event) {
-		checkEvent(event);
 		fireEvent(new TouchEvent(TouchTypes.TOUCH_START, event));
 	}
 
 	private void touchEnd(NativeEvent event) {
-		checkEvent(event);
 		fireEvent(new TouchEvent(TouchTypes.TOUCH_END, event));
 	}
 
 	private void touchMove(NativeEvent event) {
-		checkEvent(event);
 		fireEvent(new TouchEvent(TouchTypes.TOUCH_MOVE, event));
+	}
+
+	private void touchCancel(NativeEvent event) {
+		fireEvent(new TouchEvent(TouchTypes.TOUCH_CANCEL, event));
 	}
 
 	@Override
@@ -119,10 +123,12 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		case TOUCH_MOVE:
 			addTouchMoveHandlers();
 			break;
+		case TOUCH_CANCEL:
+			addTouchCancelHandlers();
+			break;
 		default:
 			break;
 		}
-
 	}
 
 	@Override
@@ -152,7 +158,6 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		touchStart(event.getNativeEvent());
-
 	}
 
 	@Override
@@ -169,6 +174,11 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 	@Override
 	public void onTouchStart(TouchStartEvent event) {
 		touchStart(event.getNativeEvent());
-
 	}
+
+	@Override
+	public void onTouchCancel(TouchCancelEvent event) {
+		touchCancel(event.getNativeEvent());
+	}
+
 }
