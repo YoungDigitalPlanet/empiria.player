@@ -29,9 +29,6 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		TouchEndHandler, TouchMoveHandler, TouchCancelHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler {
 	private final Widget listenOn;
 	private boolean touchMoveHandlers = false;
-	private boolean touchStartHandlers = false;
-	private boolean touchEndHandlers = false;
-	private boolean touchCancelHandlers = false;
 	private boolean emulateClickAsTouch = true;
 	private boolean globalTouchEnd;
 
@@ -65,30 +62,21 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 	}
 
 	private void addTouchEndHandlers() {
-		if (!touchEndHandlers) {
-			listenOn.addDomHandler(this, TouchEndEvent.getType());
-			if (emulateClickAsTouch) {
-				((globalTouchEnd) ? RootPanel.get() : listenOn).addDomHandler(this, MouseUpEvent.getType());
-			}
-			touchEndHandlers = false;
+		listenOn.addDomHandler(this, TouchEndEvent.getType());
+		if (emulateClickAsTouch) {
+			((globalTouchEnd) ? RootPanel.get() : listenOn).addDomHandler(this, MouseUpEvent.getType());
 		}
 	}
 
 	private void addTouchStartHandlers() {
-		if (!touchStartHandlers) {
-			listenOn.addDomHandler(this, TouchStartEvent.getType());
-			if (emulateClickAsTouch) {
-				listenOn.addDomHandler(this, MouseDownEvent.getType());
-			}
-			touchStartHandlers = false;
+		listenOn.addDomHandler(this, TouchStartEvent.getType());
+		if (emulateClickAsTouch) {
+			listenOn.addDomHandler(this, MouseDownEvent.getType());
 		}
 	}
 
 	private void addTouchCancelHandlers() {
-		if (!touchCancelHandlers) {
-			listenOn.addDomHandler(this, TouchCancelEvent.getType());
-			touchCancelHandlers = false;
-		}
+		listenOn.addDomHandler(this, TouchCancelEvent.getType());
 	}
 
 	private void touchStart(NativeEvent event) {
