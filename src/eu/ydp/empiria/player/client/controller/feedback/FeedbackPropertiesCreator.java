@@ -1,17 +1,16 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
+import com.google.common.collect.Maps;
+import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
-
-import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 
 /*
  EDIT_RESPONSE_2-DONE - ile zrobionych poprawnie
@@ -94,7 +93,7 @@ public class FeedbackPropertiesCreator {
 
 	private boolean isAllOk() {
 		int todo = getIntegerVariable(TODO);
-		return getIntegerVariable(DONE) == todo && todo != 0 && getIntegerVariable(ERRORS) == 0;
+		return getIntegerVariable(DONE) == todo && getIntegerVariable(ERRORS) == 0;
 	}
 
 	private double getResultValue() {
